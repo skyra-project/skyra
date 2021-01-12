@@ -1,8 +1,10 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Guild, GuildMember, TextChannel, User } from 'discord.js';
-import { Event, EventOptions, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event, EventOptions } from 'klasa';
 
 const enum Matches {
 	Guild = '%GUILD%',
@@ -18,7 +20,7 @@ export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 
 	public async run(member: GuildMember) {
-		const [channelID, content, language] = await member.guild.readSettings((settings) => [
+		const [channelID, content, t] = await member.guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Greeting],
 			settings[GuildSettings.Messages.Greeting],
 			settings.getLanguage()
@@ -28,13 +30,13 @@ export default class extends Event {
 
 		const channel = member.guild.channels.cache.get(channelID) as TextChannel;
 		if (channel && channel.postable) {
-			return channel.send(this.transformMessage(content, language, member.guild, member.user));
+			return channel.send(this.transformMessage(content, t, member.guild, member.user));
 		}
 
 		return member.guild.writeSettings([[GuildSettings.Channels.Greeting, null]]);
 	}
 
-	private transformMessage(str: string, language: Language, guild: Guild, user: User) {
+	private transformMessage(str: string, t: TFunction, guild: Guild, user: User) {
 		return str.replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
 				case Matches.Member:
@@ -46,7 +48,7 @@ export default class extends Event {
 				case Matches.Guild:
 					return guild.name;
 				case Matches.Position:
-					return language.ordinal(guild.memberCount);
+					return t(LanguageKeys.Globals.OrdinalValue, { value: guild.memberCount });
 				case Matches.MemberCount:
 					return guild.memberCount.toString();
 				default:

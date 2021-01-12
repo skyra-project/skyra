@@ -1,20 +1,19 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ENABLE_INFLUX } from '#root/config';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	description: LanguageKeys.Commands.System.RebootDescription,
+	extendedHelp: LanguageKeys.Commands.System.RebootExtended,
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: (language) => language.get(LanguageKeys.Commands.System.RebootDescription),
-			guarded: true,
-			permissionLevel: PermissionLevels.BotOwner
-		});
-	}
-
 	public async run(message: KlasaMessage) {
-		await message.sendLocale(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
+		await message.sendTranslated(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
 
 		if (ENABLE_INFLUX) {
 			try {

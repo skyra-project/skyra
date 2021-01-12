@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Weeb.NekoDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.NekoExtended),
+	description: LanguageKeys.Commands.Weeb.NekoDescription,
+	extendedHelp: LanguageKeys.Commands.Weeb.NekoExtended,
 	queryType: 'neko',
 	responseName: LanguageKeys.Commands.Weeb.Neko
 })

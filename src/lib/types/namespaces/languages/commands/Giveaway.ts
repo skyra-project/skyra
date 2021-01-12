@@ -1,10 +1,10 @@
 import { T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const GiveawayDescription = T<string>('commandGiveawayDescription');
-export const GiveawayExtended = T<LanguageHelpDisplayOptions>('commandGiveawayExtended');
-export const GiveawayRerollDescription = T<string>('commandGiveawayRerollDescription');
-export const GiveawayRerollExtended = T<LanguageHelpDisplayOptions>('commandGiveawayRerollExtended');
-export const GiveawayScheduleDescription = T<string>('commandGiveawayScheduleDescription');
-export const GiveawayScheduleExtended = T<LanguageHelpDisplayOptions>('commandGiveawayScheduleExtended');
-export const GiveawayRerollInvalid = T<string>('commandGiveawayRerollInvalid');
+export const GiveawayDescription = T<string>('commands/giveaway:giveawayDescription');
+export const GiveawayExtended = T<LanguageHelpDisplayOptions>('commands/giveaway:giveawayExtended');
+export const GiveawayRerollDescription = T<string>('commands/giveaway:giveawayRerollDescription');
+export const GiveawayRerollExtended = T<LanguageHelpDisplayOptions>('commands/giveaway:giveawayRerollExtended');
+export const GiveawayScheduleDescription = T<string>('commands/giveaway:giveawayScheduleDescription');
+export const GiveawayScheduleExtended = T<LanguageHelpDisplayOptions>('commands/giveaway:giveawayScheduleExtended');
+export const GiveawayRerollInvalid = T<string>('commands/giveaway:giveawayRerollInvalid');

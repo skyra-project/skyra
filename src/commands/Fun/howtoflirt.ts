@@ -28,8 +28,8 @@ const imageCoordinates = [
 	aliases: ['pants'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtExtended),
+	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

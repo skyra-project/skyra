@@ -1,10 +1,17 @@
+import { cast } from '#utils/util';
 import { Message, Permissions, Structures, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
 
 export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextChannel')) {
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ channel: this, guild: this.guild })
+		);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
+	}
+
 	public set sniped(value: Message | null) {
 		const previous = snipes.get(this);
 		if (typeof previous !== 'undefined') this.client.clearTimeout(previous.timeout);
@@ -23,13 +30,6 @@ export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextCha
 	public get sniped() {
 		const current = snipes.get(this);
 		return typeof current === 'undefined' ? null : current.message;
-	}
-
-	public async fetchLanguage() {
-		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild });
-		const language = this.client.languages.get(languageKey);
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
 	}
 
 	public get attachable() {
@@ -56,7 +56,7 @@ export interface SnipedMessage {
 
 declare module 'discord.js' {
 	export interface TextChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<Language>;
+		fetchLanguage(): Promise<string>;
 		sniped: Message | null;
 		readonly attachable: boolean;
 		readonly embedable: boolean;

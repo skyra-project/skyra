@@ -5,14 +5,14 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { ApplyOptions } from '@skyra/decorators';
 import { Permissions, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['lock', 'unlock'],
 	cooldown: 5,
 	subcommands: true,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.LockdownDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.LockdownExtended),
+	description: LanguageKeys.Commands.Moderation.LockdownDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.LockdownExtended,
 	runIn: ['text'],
 	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
 	usageDelim: ' ',
@@ -25,34 +25,34 @@ export default class extends SkyraCommand {
 	}
 
 	public async unlock(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const entry = message.guild.security.lockdowns.get(channel.id);
 
 		if (typeof entry === 'undefined') {
-			throw language.get(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
+			throw t(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
 		}
 
-		return entry.timeout ? entry.timeout.stop() : this._unlock(message, language, channel);
+		return entry.timeout ? entry.timeout.stop() : this._unlock(message, t, channel);
 	}
 
 	public async lock(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		// If there was a lockdown, abort lock
 		if (message.guild.security.lockdowns.has(channel.id)) {
-			throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+			throw t(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 		}
 
 		// Get the role, then check if the user could send messages
 		const role = message.guild.roles.cache.get(message.guild.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
-		if (!couldSend) throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (!couldSend) throw t(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 
 		// If they can send, begin locking
-		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.LockdownLocking, [{ channel: channel.toString() }]);
+		const response = await message.send(t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
 		if (message.channel.postable) {
-			await response.edit(language.get(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
+			await response.edit(t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
 		}
 
 		// Create the timeout
@@ -62,13 +62,13 @@ export default class extends SkyraCommand {
 		// Perform cleanup later
 		if (timeout) {
 			await timeout.run();
-			await this._unlock(message, language, channel);
+			await this._unlock(message, t, channel);
 		}
 	}
 
-	private async _unlock(message: GuildMessage, language: Language, channel: TextChannel) {
+	private async _unlock(message: GuildMessage, t: TFunction, channel: TextChannel) {
 		channel.guild.security.lockdowns.delete(channel.id);
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
-		return message.send(language.get(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
+		return message.send(t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
 	}
 }

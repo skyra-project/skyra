@@ -3,9 +3,7 @@
 	"projectOwner": "skyra-project",
 	"repoType": "github",
 	"repoHost": "https://github.com",
-	"files": [
-		"README.md"
-	],
+	"files": ["README.md"],
 	"imageSize": 100,
 	"commit": true,
 	"commitConvention": "angular",
@@ -63,198 +61,140 @@
 			"name": "Jacz",
 			"avatar_url": "https://avatars3.githubusercontent.com/u/23615291?v=4",
 			"profile": "https://jaczaus.me/",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "vladfrangu",
 			"name": "Vlad Frangu",
 			"avatar_url": "https://avatars3.githubusercontent.com/u/17960496?v=4",
 			"profile": "https://github.com/vladfrangu",
-			"contributions": [
-				"code",
-				"doc",
-				"bug",
-				"review",
-				"userTesting"
-			]
+			"contributions": ["code", "doc", "bug", "review", "userTesting"]
 		},
 		{
 			"login": "Skillz4Killz",
 			"name": "Skillz4Killz",
 			"avatar_url": "https://avatars3.githubusercontent.com/u/23035000?v=4",
 			"profile": "https://github.com/Skillz4Killz",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "cfanoulis",
 			"name": "Charalampos Fanoulis",
 			"avatar_url": "https://avatars3.githubusercontent.com/u/38255093?v=4",
 			"profile": "https://github.com/cfanoulis",
-			"contributions": [
-				"code",
-				"translation",
-				"ideas",
-				"projectManagement",
-				"maintenance"
-			]
+			"contributions": ["code", "translation", "ideas", "projectManagement", "maintenance"]
 		},
 		{
 			"login": "QuantumlyTangled",
 			"name": "Nejc Drobnic",
 			"avatar_url": "https://avatars1.githubusercontent.com/u/7919610?v=4",
 			"profile": "https://quantumlytangled.com/",
-			"contributions": [
-				"code",
-				"translation",
-				"ideas",
-				"doc",
-				"infra"
-			]
+			"contributions": ["code", "translation", "ideas", "doc", "infra"]
 		},
 		{
 			"login": "tech6hutch",
 			"name": "Hutch",
 			"avatar_url": "https://avatars1.githubusercontent.com/u/25398066?v=4",
 			"profile": "http://moorewebcode.com/",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "PyroTechniac",
 			"name": "Gryffon Bellish",
 			"avatar_url": "https://avatars2.githubusercontent.com/u/39341355?v=4",
 			"profile": "https://github.com/PyroTechniac",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "Tylertron1998",
 			"name": "Tyler Davis",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/34944514?v=4",
 			"profile": "https://github.com/Tylertron1998",
-			"contributions": [
-				"doc"
-			]
+			"contributions": ["doc"]
 		},
 		{
 			"login": "KunoichiZ",
 			"name": "Kaoru",
 			"avatar_url": "https://avatars1.githubusercontent.com/u/19984244?v=4",
 			"profile": "https://github.com/KunoichiZ",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "superusercode",
 			"name": "Code.",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/60588434?v=4",
 			"profile": "https://github.com/superusercode",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "YorkAARGH",
 			"name": "York",
 			"avatar_url": "https://avatars1.githubusercontent.com/u/20838878?v=4",
 			"profile": "https://github.com/YorkAARGH",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "ImmortalSnake",
 			"name": "ImmortalSnake",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/47276574?v=4",
 			"profile": "https://github.com/ImmortalSnake",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "NM-EEA-Y",
 			"name": "Skyra",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/61647701?v=4",
 			"profile": "https://skyra.pw/",
-			"contributions": [
-				"infra"
-			]
+			"contributions": ["infra"]
 		},
 		{
 			"login": "gc",
 			"name": "GC",
 			"avatar_url": "https://avatars2.githubusercontent.com/u/30398469?v=4",
 			"profile": "https://github.com/gc",
-			"contributions": [
-				"code"
-			]
+			"contributions": ["code"]
 		},
 		{
 			"login": "Rexogamer",
 			"name": "Ed L",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/42586271?v=4",
 			"profile": "https://github.com/Rexogamer",
-			"contributions": [
-				"translation"
-			]
+			"contributions": ["translation"]
 		},
 		{
 			"login": "Soumil07",
 			"name": "Soumil07",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/29275227?v=4",
 			"profile": "https://github.com/Soumil07",
-			"contributions": [
-				"code",
-				"translation",
-				"review",
-				"platform",
-				"maintenance",
-				"bug"
-			]
+			"contributions": ["code", "translation", "review", "platform", "maintenance", "bug"]
 		},
 		{
 			"login": "AdityaTD",
 			"name": "Aditya N. Tripathi",
 			"avatar_url": "https://avatars0.githubusercontent.com/u/9266227?v=4",
 			"profile": "http://www.adityatd.me/",
-			"contributions": [
-				"code",
-				"bug"
-			]
+			"contributions": ["code", "bug"]
 		},
 		{
 			"login": "dependabot-preview[bot]",
 			"name": "dependabot-preview[bot]",
 			"avatar_url": "https://avatars3.githubusercontent.com/in/2141?v=4",
 			"profile": "https://github.com/apps/dependabot-preview",
-			"contributions": [
-				"maintenance"
-			]
+			"contributions": ["maintenance"]
 		},
 		{
 			"login": "dependabot[bot]",
 			"name": "dependabot[bot]",
 			"avatar_url": "https://avatars0.githubusercontent.com/in/29110?v=4",
 			"profile": "https://github.com/apps/dependabot",
-			"contributions": [
-				"maintenance"
-			]
+			"contributions": ["maintenance"]
 		},
 		{
 			"login": "depfu[bot]",
 			"name": "depfu[bot]",
 			"avatar_url": "https://avatars3.githubusercontent.com/in/715?v=4",
 			"profile": "https://github.com/apps/depfu",
-			"contributions": [
-				"maintenance"
-			]
+			"contributions": ["maintenance"]
 		}
 	],
 	"contributorsPerLine": 7

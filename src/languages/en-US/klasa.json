@@ -1,0 +1,12 @@
+{
+	"commandMessageMissing": "Missing one or more required arguments after end of input.",
+	"commandMessageMissingOptionals": "Missing a required option: ({{possibles}})",
+	"commandMessageMissingRequired": "{{name}} is a required argument.",
+	"commandMessageNoMatch": "Your option didn't match any of the possibilities: ({{possibles}})",
+	"messagePromptTimeout": "The prompt has timed out.",
+	"monitorCommandHandlerAborted": "Aborted",
+	"monitorCommandHandlerRepeatingReprompt": "{{tag}} | **{{name}}** is a repeating argument | You have **{{time}}** seconds to respond to this prompt with additional valid arguments. Type **{{cancelOptions}}** to cancel this prompt.",
+	"monitorCommandHandlerReprompt": "{{tag}} | **{{name}}** | You have **{{time}}** seconds to respond to this prompt with a valid argument. Type **{{cancelOptions}}** to abort this prompt.",
+	"reactionhandlerPrompt": "Which page would you like to jump to?",
+	"textPromptAbortOptions": ["abort", "cancel", "stop"]
+}

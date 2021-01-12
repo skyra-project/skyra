@@ -8,39 +8,36 @@ import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Anime.AnimeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Anime.AnimeExtended),
+	description: LanguageKeys.Commands.Anime.AnimeDescription,
+	extendedHelp: LanguageKeys.Commands.Anime.AnimeExtended,
 	usage: '<animeName:string>'
 })
 export default class extends RichDisplayCommand {
-	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [animeName]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { hits: entries } = await this.fetchAPI(language, animeName);
-		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
+		const { hits: entries } = await this.fetchAPI(t, animeName);
+		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, language, message);
+		const display = await this.buildDisplay(entries, t, message);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, animeName: string) {
+	private async fetchAPI(t: TFunction, animeName: string) {
 		try {
 			return fetch<Kitsu.KitsuResult>(
 				API_URL,
@@ -62,12 +59,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], language: Language, message: GuildMessage) {
-		const embedData = language.get(LanguageKeys.Commands.Anime.AnimeEmbedData);
+	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
+		const embedData = t(LanguageKeys.Commands.Anime.AnimeEmbedData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -94,27 +91,27 @@ export default class extends RichDisplayCommand {
 				entry.titles.en || entry.titles.en_us,
 				entry.titles.ja_jp,
 				entry.canonicalTitle
-			].map((title) => title || language.get(LanguageKeys.Globals.None));
+			].map((title) => title || t(LanguageKeys.Globals.None));
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(animeURL)
 					.setDescription(
-						language.get(LanguageKeys.Commands.Anime.AnimeOutputDescription, {
+						t(LanguageKeys.Commands.Anime.AnimeOutputDescription, {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
-							synopsis: synopsis ?? language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
+							synopsis: synopsis ?? t(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
 						})
 					)
 					.setThumbnail(entry.posterImage?.original ?? '')
-					.addField(embedData.type, language.get(LanguageKeys.Commands.Anime.AnimeTypes)[type.toUpperCase()] || type, true)
+					.addField(embedData.type, t(LanguageKeys.Commands.Anime.AnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
-					.addField(embedData.episodeLength, language.duration(entry.episodeLength * 60 * 1000), true)
+					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
-					.addField(embedData.firstAirDate, this.kTimestamp.display(entry.startDate * 1000), true)
+					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}

@@ -1,0 +1,6 @@
+{
+	"twitchEmbedDescription": "¡{{userName}} está ahora en directo!",
+	"twitchEmbedDescriptionWithGame": "{{userName}} ahora está en directo - ¡Transmitiendo {{gameName}}!",
+	"twitchNoGameName": "*Nombre del juego no establecido*",
+	"twitchEmbedFooter": "Notificaciones Twitch de Skyra"
+}

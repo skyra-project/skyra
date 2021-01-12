@@ -1,0 +1,23 @@
+{
+	"catfactDescription": "",
+	"catfactExtended": {
+		"extendedHelp": ""
+	},
+	"catfactTitle": "Факт о кошках",
+	"dogDescription": "Милые собачки! ❤",
+	"dogExtended": {
+		"extendedHelp": ""
+	},
+	"foxDescription": "Позвольте мне показать вам изображение лисицы!",
+	"foxExtended": {
+		"extendedHelp": "Эта команда выдаёт случайное изображение с [randomfox.ca](https://randomfox.ca/)"
+	},
+	"kittyDescription": "КОТЯТА!",
+	"kittyExtended": {
+		"extendedHelp": ""
+	},
+	"shibeDescription": "",
+	"shibeExtended": {
+		"extendedHelp": ""
+	}
+}

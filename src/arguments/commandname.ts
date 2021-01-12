@@ -13,6 +13,6 @@ export default class extends Argument {
 		const command = await new FuzzySearch(this.client.commands, (command) => command.name, filter).run(message, arg, possible.min || undefined);
 		if (command) return command[1];
 
-		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidPiece, { name: possible.name, piece: 'command' });
+		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidPiece, { name: possible.name, piece: 'command' });
 	}
 }

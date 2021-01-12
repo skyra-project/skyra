@@ -1,25 +1,22 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { CommandStore } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: LanguageKeys.Commands.Moderation.CaseDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<latest|case:integer{0,2147483647}>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: (language) => language.get(LanguageKeys.Commands.Moderation.CaseDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.CaseExtended),
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<latest|case:integer{0,2147483647}>'
-		});
-	}
-
 	public async run(message: GuildMessage, [index]: [number | 'latest']) {
 		const modlog = index === 'latest' ? (await message.guild.moderation.fetch()).last() : await message.guild.moderation.fetch(index);
 		if (modlog) return message.send(await modlog.prepareEmbed());
-		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ReasonNotExists);
+		throw await message.resolveKey(LanguageKeys.Commands.Moderation.ReasonNotExists);
 	}
 }

@@ -10,16 +10,15 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['a', 'av', 'ava'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.AvatarDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.AvatarExtended),
+	description: LanguageKeys.Commands.Tools.AvatarDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.AvatarExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[user:username]',
 	flagSupport: true
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const language = await message.fetchLanguage();
-		if (!user.avatar) throw language.get(LanguageKeys.Commands.Tools.AvatarNone);
+		if (!user.avatar) throw await message.resolveKey(LanguageKeys.Commands.Tools.AvatarNone);
 
 		const sizeFlag = Reflect.get(message.flagArgs, 'size');
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;

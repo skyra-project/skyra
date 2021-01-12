@@ -218,7 +218,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;
-		const checkSoftban = type === Moderation.TypeVariation.Ban;
+		const checkSoftBan = type === Moderation.TypeVariation.Ban;
 		for (const entry of this.#manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
 			if (this.userID !== entry.userID || before > entry.createdTimestamp) continue;
@@ -227,7 +227,7 @@ export class ModerationEntity extends BaseEntity {
 			if (type === entry.typeVariation) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
-			if (checkSoftban && entry.type === Moderation.TypeCodes.Softban) return false;
+			if (checkSoftBan && entry.type === Moderation.TypeCodes.SoftBan) return false;
 		}
 
 		// For all other cases, it should send
@@ -307,29 +307,35 @@ export class ModerationEntity extends BaseEntity {
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
-		const [prefix, language] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
-		const formattedDuration = this.duration
-			? language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
-			: '';
-		const description = language.get(LanguageKeys.Commands.Moderation.ModerationLogDescription, {
-			data: {
-				type: this.title,
-				userName: user.username,
-				userDiscriminator: user.discriminator,
-				userID: this.userID,
-				reason: this.reason!,
-				prefix,
-				caseID: this.caseID,
-				formattedDuration
+		const [prefix, t] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
+		const descriptionData: Moderation.ModerationManagerDescriptionData = {
+			type: this.title,
+			userName: user.username,
+			userDiscriminator: user.discriminator,
+			userID: this.userID,
+			reason: this.reason,
+			prefix,
+			caseID: this.caseID,
+			formattedDuration
+		};
+
+		const body = t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, { data: descriptionData });
+		const reason = t(
+			this.reason
+				? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
+				: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
+			{
+				data: descriptionData
 			}
-		});
+		);
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(description)
+			.setDescription(`${body}\n${reason}`)
 			.setFooter(
-				language.get(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
+				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

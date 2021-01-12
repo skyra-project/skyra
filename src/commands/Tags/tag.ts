@@ -16,8 +16,8 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['tags', 'customcommand', 'copypasta'],
-	description: (language) => language.get(LanguageKeys.Commands.Tags.TagDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tags.TagExtended),
+	description: LanguageKeys.Commands.Tags.TagDescription,
+	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
@@ -30,7 +30,7 @@ import { MessageEmbed } from 'discord.js';
 		'tagname',
 		async (arg, possible, message, [action]) => {
 			if (action === 'list' || action === 'reset') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: possible.name });
+			if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidString, { name: possible.name });
 			return arg.toLowerCase();
 		}
 	]
@@ -41,87 +41,87 @@ export default class extends SkyraCommand {
 	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
+		throw await message.resolveKey(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async add(message: GuildMessage, [id, content]: [string, string]) {
 		// Check for permissions and content length
-		if (!content) throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagContentRequired);
+		if (!content) throw await message.resolveKey(LanguageKeys.Commands.Tags.TagContentRequired);
 
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			if (settings[GuildSettings.CustomCommands].some((command) => command.id === id))
-				throw language.get(LanguageKeys.Commands.Tags.TagExists, { tag: id });
+				throw t(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].push(this.createTag(message, id, content));
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }));
+		return message.send(t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }));
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
+		throw await message.resolveKey(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async remove(message: GuildMessage, [id]: [string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
+			if (tagIndex === -1) throw t(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Tags.TagRemoved, { name: id }));
+		return message.send(t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }));
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
+		throw await message.resolveKey(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async reset(message: GuildMessage) {
-		const language = await message.guild.writeSettings((settings) => {
+		await message.guild.writeSettings((settings) => {
 			settings[GuildSettings.CustomCommands].length = 0;
-			return settings.getLanguage();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Tags.TagReset));
+		return message.sendTranslated(LanguageKeys.Commands.Tags.TagReset);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
+		throw await message.resolveKey(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async edit(message: GuildMessage, [id, content]: [string, string]) {
-		if (!content) throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagContentRequired);
+		if (!content) throw await message.resolveKey(LanguageKeys.Commands.Tags.TagContentRequired);
 
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
+			if (tagIndex === -1) throw t(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(message, id, content));
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }));
+		return message.send(t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: GuildMessage) {
 		// Get tags, prefix, and language
-		const [[tags, prefix], language] = await Promise.all([
-			message.guild.readSettings([GuildSettings.CustomCommands, GuildSettings.Prefix]),
-			message.fetchLanguage()
+		const [tags, prefix, t] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.CustomCommands],
+			settings[GuildSettings.Prefix],
+			settings.getLanguage()
 		]);
-		if (!tags.length) throw language.get(LanguageKeys.Commands.Tags.TagListEmpty);
+		if (!tags.length) throw t(LanguageKeys.Commands.Tags.TagListEmpty);
 
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(language.get(LanguageKeys.System.Loading)))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
 		);
 
 		// Get prefix and display all tags

@@ -10,22 +10,22 @@ export default class extends SkyraCommand {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Social.BalanceDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.BalanceExtended),
+			description: LanguageKeys.Commands.Social.BalanceDescription,
+			extendedHelp: LanguageKeys.Commands.Social.BalanceExtended,
 			usage: '[user:username]',
 			spam: true
 		});
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const language = await message.fetchLanguage();
-		if (user.bot) throw language.get(LanguageKeys.Commands.Social.BalanceBots);
+		const t = await message.fetchT();
+		if (user.bot) throw t(LanguageKeys.Commands.Social.BalanceBots);
 
 		const { users } = await DbSet.connect();
 		const money = (await users.findOne(user.id))?.money ?? 0;
 
 		return message.author === user
-			? message.send(language.get(LanguageKeys.Commands.Social.BalanceSelf, { amount: language.groupDigits(money) }))
-			: message.send(language.get(LanguageKeys.Commands.Social.Balance, { user: user.username, amount: language.groupDigits(money) }));
+			? message.send(t(LanguageKeys.Commands.Social.BalanceSelf, { amount: money }))
+			: message.send(t(LanguageKeys.Commands.Social.Balance, { user: user.username, amount: money }));
 	}
 }

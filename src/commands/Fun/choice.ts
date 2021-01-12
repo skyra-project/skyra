@@ -1,32 +1,33 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { TFunction } from 'i18next';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['choose', 'choise', 'pick'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.ChoiceDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChoiceExtended),
+	description: LanguageKeys.Commands.Fun.ChoiceDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.ChoiceExtended,
 	usage: '<words:string> [...]',
 	usageDelim: ',',
 	spam: true
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
-		const words = await this.filterWords(message, options);
-		return message.sendLocale(LanguageKeys.Commands.Fun.ChoiceOutput, [
-			{
+		const t = await message.fetchT();
+		const words = await this.filterWords(t, options);
+		return message.send(
+			t(LanguageKeys.Commands.Fun.ChoiceOutput, {
 				user: message.author.toString(),
 				word: words[Math.floor(Math.random() * words.length)]
-			}
-		]);
+			})
+		);
 	}
 
-	private async filterWords(message: KlasaMessage, words: string[]) {
-		const i18n = await message.fetchLanguage();
-		if (words.length < 2) throw i18n.get(LanguageKeys.Commands.Fun.ChoiceMissing);
+	private async filterWords(t: TFunction, words: string[]) {
+		if (words.length < 2) throw t(LanguageKeys.Commands.Fun.ChoiceMissing);
 
 		const output = new Set<string>();
 		const filtered = new Set<string>();
@@ -38,6 +39,6 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw i18n.get(LanguageKeys.Commands.Fun.ChoiceDuplicates, { words: [...filtered].join("', '") });
+		throw t(LanguageKeys.Commands.Fun.ChoiceDuplicates, { words: [...filtered].join("', '") });
 	}
 }

@@ -5,7 +5,7 @@ import { isNullish } from '#lib/misc';
 import type { SkyraClient } from '#lib/SkyraClient';
 import type { AnyObject, CustomGet } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import type { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { container } from 'tsyringe';
 import type { SchemaGroup } from './SchemaGroup';
 
@@ -94,24 +94,24 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		return value as Serializer<GuildEntity[K]>;
 	}
 
-	public async parse(settings: GuildEntity, language: Language, value: string): Promise<GuildEntity[K]> {
+	public async parse(settings: GuildEntity, t: TFunction, value: string): Promise<GuildEntity[K]> {
 		const { serializer } = this;
-		const context = this.getContext(settings, language);
+		const context = this.getContext(settings, t);
 
 		const result = await serializer.parse(value, context);
 		if (result.success) return result.value;
 		throw result.error.message;
 	}
 
-	public stringify(settings: GuildEntity, language: Language, value: GuildEntity[K]): string {
+	public stringify(settings: GuildEntity, t: TFunction, value: GuildEntity[K]): string {
 		const { serializer } = this;
-		const context = this.getContext(settings, language);
+		const context = this.getContext(settings, t);
 		return serializer.stringify(value, context);
 	}
 
-	public display(settings: GuildEntity, language: Language): string {
+	public display(settings: GuildEntity, t: TFunction): string {
 		const { serializer } = this;
-		const context = this.getContext(settings, language);
+		const context = this.getContext(settings, t);
 
 		if (this.array) {
 			const values = settings[this.property] as readonly any[];
@@ -121,14 +121,14 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		}
 
 		const value = settings[this.property];
-		return isNullish(value) ? language.get(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
+		return isNullish(value) ? t(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
 	}
 
-	public getContext(settings: GuildEntity, language: Language): SerializerUpdateContext {
+	public getContext(settings: GuildEntity, language: TFunction): SerializerUpdateContext {
 		const context: SerializerUpdateContext = {
 			entity: settings,
 			guild: settings.guild,
-			language,
+			t: language,
 			entry: this
 		};
 

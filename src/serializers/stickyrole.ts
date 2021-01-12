@@ -3,26 +3,26 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<StickyRole> {
-	public parse(_: string, context: SerializerUpdateContext) {
-		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
+	public parse(_: string, { t }: SerializerUpdateContext) {
+		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: StickyRole, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: StickyRole, { t, guild }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 2 &&
 			typeof value.user === 'string' &&
 			Array.isArray(value.roles) &&
-			value.roles.every((role) => typeof role === 'string' && context.guild.roles.cache.has(role))
+			value.roles.every((role) => typeof role === 'string' && guild.roles.cache.has(role))
 		)
 			return true;
 
-		throw context.language.get(LanguageKeys.Serializers.StickyRoleInvalid);
+		throw t(LanguageKeys.Serializers.StickyRoleInvalid);
 	}
 
-	public stringify(value: StickyRole, context: SerializerUpdateContext) {
-		const username = this.client.users.cache.get(value.user)?.username ?? context.language.get(LanguageKeys.Misc.UnknownUser);
-		const roles = value.roles.map((role) => context.guild.roles.cache.get(role)?.name ?? context.language.get(LanguageKeys.Misc.UnknownRole));
+	public stringify(value: StickyRole, { t, guild }: SerializerUpdateContext) {
+		const username = this.client.users.cache.get(value.user)?.username ?? t(LanguageKeys.Misc.UnknownUser);
+		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? t(LanguageKeys.Misc.UnknownRole));
 		return `[${username} -> ${roles}]`;
 	}
 }

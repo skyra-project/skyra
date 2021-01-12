@@ -26,8 +26,8 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Social.MarryDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.MarryExtended),
+	description: LanguageKeys.Commands.Social.MarryDescription,
+	extendedHelp: LanguageKeys.Commands.Social.MarryExtended,
 	usage: '(user:username)'
 })
 @CreateResolvers([
@@ -46,17 +46,17 @@ export default class extends RichDisplayCommand {
 
 	private async marry(message: GuildMessage, user: User) {
 		const { author, channel } = message;
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		switch (user.id) {
 			case CLIENT_ID:
-				return message.sendLocale(LanguageKeys.Commands.Social.MarrySkyra);
+				return message.send(t(LanguageKeys.Commands.Social.MarrySkyra));
 			case AELIA_ID:
-				return message.sendLocale(LanguageKeys.Commands.Social.MarryAelia);
+				return message.send(t(LanguageKeys.Commands.Social.MarryAelia));
 			case author.id:
-				return message.sendLocale(LanguageKeys.Commands.Social.MarrySelf);
+				return message.send(t(LanguageKeys.Commands.Social.MarrySelf));
 		}
-		if (user.bot) return message.sendLocale(LanguageKeys.Commands.Social.MarryBots);
+		if (user.bot) return message.send(t(LanguageKeys.Commands.Social.MarryBots));
 
 		const { users, clients } = await DbSet.connect();
 		const clientSettings = await clients.findOne(CLIENT_ID);
@@ -65,13 +65,13 @@ export default class extends RichDisplayCommand {
 			// Retrieve the author's spouses
 			const spouses = await users.fetchSpouses(authorID);
 			if (spouses.includes(targetID)) {
-				throw language.get(LanguageKeys.Commands.Social.MarryAlreadyMarried, { user });
+				throw t(LanguageKeys.Commands.Social.MarryAlreadyMarried, { user });
 			}
 
 			// Check if the author can marry another user
 			const authorLimit = premiumUsers.includes(authorID) ? 20 : 10;
 			if (spouses.length >= authorLimit) {
-				throw language.get(LanguageKeys.Commands.Social.MarryAuthorTooMany, { limit: authorLimit });
+				throw t(LanguageKeys.Commands.Social.MarryAuthorTooMany, { limit: authorLimit });
 			}
 
 			// Retrieve the target's spouses
@@ -80,36 +80,31 @@ export default class extends RichDisplayCommand {
 			// Check if the target can marry another user
 			const targetLimit = premiumUsers.includes(targetID) ? 20 : 10;
 			if (targetSpouses.length >= targetLimit) {
-				throw language.get(LanguageKeys.Commands.Social.MarryTargetTooMany, { limit: targetLimit });
+				throw t(LanguageKeys.Commands.Social.MarryTargetTooMany, { limit: targetLimit });
 			}
 
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await askYesNo(channel, author, language.get(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
+				const answer = await askYesNo(channel, author, t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
 				if (answer !== YesNoAnswer.Yes)
-					return message.sendLocale(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, [
-						{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }
-					]);
+					return message.send(
+						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, [
+							{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }
+						])
+					);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await askYesNo(
-					channel,
-					author,
-					language.get(
-						targetSpouses.length === 1 ? LanguageKeys.Commands.Social.MarryTaken : LanguageKeys.Commands.Social.MarryTakenPlural,
-						{ count: targetSpouses.length }
-					)
-				);
-				if (answer !== YesNoAnswer.Yes) return message.sendLocale(LanguageKeys.Commands.Social.MarryMultipleCancel);
+				const answer = await askYesNo(channel, author, t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
+				if (answer !== YesNoAnswer.Yes) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
 			}
 
-			const answer = await askYesNo(channel, user, language.get(LanguageKeys.Commands.Social.MarryPetition, { author, user }));
+			const answer = await askYesNo(channel, user, t(LanguageKeys.Commands.Social.MarryPetition, { author, user }));
 			switch (answer) {
 				case YesNoAnswer.Timeout:
-					return message.sendLocale(LanguageKeys.Commands.Social.MarryNoreply);
+					return message.send(t(LanguageKeys.Commands.Social.MarryNoReply));
 				case YesNoAnswer.ImplicitNo:
-					return message.sendLocale(LanguageKeys.Commands.Social.MarryDenied);
+					return message.send(t(LanguageKeys.Commands.Social.MarryDenied));
 				case YesNoAnswer.Yes:
 					break;
 				default:
@@ -120,7 +115,7 @@ export default class extends RichDisplayCommand {
 			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));
 			await settings.save();
 
-			return message.sendLocale(LanguageKeys.Commands.Social.MarryAccepted, [{ author, user }]);
+			return message.send(t(LanguageKeys.Commands.Social.MarryAccepted, { author: author.toString(), user: user.toString() }));
 		});
 	}
 }

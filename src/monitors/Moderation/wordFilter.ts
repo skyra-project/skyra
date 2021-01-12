@@ -8,7 +8,7 @@ import { floatPromise, getContent } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { remove as removeConfusables } from 'confusables';
 import { TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationWords;
@@ -35,23 +35,23 @@ export default class extends ModerationMonitor {
 		return regex ? this.filter(removeConfusables(content), regex) : null;
 	}
 
-	protected async onDelete(message: GuildMessage, language: Language, value: FilterResults) {
+	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
 		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			await message.author.send(language.get(LanguageKeys.Monitors.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) }));
+			await message.author.send(t(LanguageKeys.Monitors.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) }));
 		}
 	}
 
-	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() }));
+	protected onAlert(message: GuildMessage, t: TFunction) {
+		return message.alert(t(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage, language: Language, results: FilterResults) {
+	protected onLogMessage(message: GuildMessage, t: TFunction, results: FilterResults) {
 		return new SkyraEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.WordFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.WordFooter)}`)
 			.setTimestamp();
 	}
 

@@ -4,19 +4,19 @@ import { resolveEmoji } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const resolved = resolveEmoji(value);
 		if (resolved === null) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.name }));
 		}
 
 		return this.ok(resolved);
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
 		const resolved = resolveEmoji(value);
 		if (resolved === null || value !== resolved) {
-			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+			throw new Error(t(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.name }));
 		}
 
 		return true;

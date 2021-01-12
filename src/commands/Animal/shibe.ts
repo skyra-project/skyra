@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Animal.ShibeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.ShibeDescription),
+	description: LanguageKeys.Commands.Animal.ShibeDescription,
+	extendedHelp: LanguageKeys.Commands.Animal.ShibeExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	spam: true
 })

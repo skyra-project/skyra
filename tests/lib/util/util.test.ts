@@ -2,6 +2,7 @@ import { client } from '#mocks/MockInstances';
 import { Mime, Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
+import type { DeepPartial } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import {
 	CategoryChannel,
@@ -15,12 +16,12 @@ import {
 	TextChannel,
 	VoiceChannel
 } from 'discord.js';
-import { createReadStream, promises as fsPromises } from 'fs';
+import { createReadStream } from 'fs';
+import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { KlasaMessage } from 'klasa';
+import nock from 'nock';
 import { resolve } from 'path';
-import { DeepPartial } from 'typeorm';
-import nock = require('nock');
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {
@@ -492,7 +493,7 @@ describe('Utils', () => {
 	describe('getImage', () => {
 		test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
 			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
-			const buffer = await fsPromises.readFile(filePath);
+			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = filePath;
 			fakeAttachment.height = 32;
@@ -509,7 +510,7 @@ describe('Utils', () => {
 
 		test('GIVEN message w/ attachments w/ image w/ proxyURL attachment THEN returns url', async () => {
 			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
-			const buffer = await fsPromises.readFile(filePath);
+			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = filePath;
 			fakeAttachment.proxyURL = filePath;
@@ -527,7 +528,7 @@ describe('Utils', () => {
 
 		test('GIVEN message w/ attachments w/o image attachment THEN passes through to embed checking', async () => {
 			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
-			const buffer = await fsPromises.readFile(filePath);
+			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = 'not_an_image';
 			fakeAttachment.proxyURL = 'not_an_image';

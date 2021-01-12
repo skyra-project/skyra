@@ -4,7 +4,7 @@ import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationAttachments;
@@ -32,16 +32,16 @@ export default class extends ModerationMonitor {
 		return message.nuke();
 	}
 
-	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.AttachmentFilter, { user: message.author.toString() }));
+	protected onAlert(message: GuildMessage, t: TFunction) {
+		return message.alert(t(LanguageKeys.Monitors.AttachmentFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage, language: Language) {
+	protected onLogMessage(message: GuildMessage, t: TFunction) {
 		return new MessageEmbed()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.AttachmentFilterFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.AttachmentFilterFooter)}`)
 			.setTimestamp();
 	}
 }

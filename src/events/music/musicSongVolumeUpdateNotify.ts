@@ -9,16 +9,17 @@ export default class extends AudioEvent {
 	}
 
 	private async getExtremeVolume(channel: MessageAcknowledgeable, volume: number): Promise<string> {
-		const language = await channel.guild.fetchLanguage();
-		return language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
+		const t = await channel.guild.fetchT();
+		return t(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 			emoji: '📢',
-			text: pickRandom(language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
+			text: pickRandom(t(LanguageKeys.Commands.Music.VolumeChangedTexts)),
 			volume
 		});
 	}
 
-	private getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): Promise<string> {
-		return channel.guild.fetchLocale(LanguageKeys.Commands.Music.VolumeChanged, {
+	private async getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): Promise<string> {
+		const t = await channel.guild.fetchT();
+		return t(LanguageKeys.Commands.Music.VolumeChanged, {
 			emoji: this.getEmoji(previous, next),
 			volume: next
 		});

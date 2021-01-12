@@ -3,7 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 const enum CoinType {
 	Heads,
@@ -14,8 +15,8 @@ const enum CoinType {
 	aliases: ['cf'],
 	bucket: 2,
 	cooldown: 7,
-	description: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipExtended),
+	description: LanguageKeys.Commands.Games.CoinFlipDescription,
+	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '(coin:cointype) (wager:coinwager)',
 	usageDelim: ' '
@@ -25,10 +26,10 @@ const enum CoinType {
 		'cointype',
 		async (arg, _possible, message) => {
 			if (!arg) return null;
-			const language = await message.fetchLanguage();
+			const t = await message.fetchT();
 			const lArg = arg.toLowerCase();
-			const face = language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw language.get(LanguageKeys.Commands.Games.CoinFlipInvalidCoinname, { arg });
+			const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
+			if (face === -1) throw t(LanguageKeys.Commands.Games.CoinFlipInvalidCoinName, { arg });
 			return face;
 		}
 	],
@@ -44,17 +45,17 @@ export default class extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
 	public async run(message: KlasaMessage, [guess, wager]: [CoinType | null, number | 'cashless']) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
-		if (guess === null) return this.noGuess(message, language);
-		if (wager === 'cashless') return this.cashless(message, language, guess);
+		if (guess === null) return this.noGuess(message, t);
+		if (wager === 'cashless') return this.cashless(message, t, guess);
 
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 
 		if (balance < wager) {
-			throw language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+			throw t(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const result = this.flipCoin();
@@ -64,14 +65,14 @@ export default class extends SkyraCommand {
 
 		return message.send(
 			(await this.buildEmbed(message, result))
-				.setTitle(language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
+				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
-					language.get(
+					t(
 						won
 							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
 							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
 						{
-							result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
+							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
 							wager
 						}
 					)
@@ -79,30 +80,30 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async cashless(message: KlasaMessage, language: Language, guess: CoinType) {
+	private async cashless(message: KlasaMessage, t: TFunction, guess: CoinType) {
 		const result = this.flipCoin();
 		const won = result === guess;
 
 		return message.send(
 			(await this.buildEmbed(message, result))
-				.setTitle(language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
+				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
-					language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
-						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+					t(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);
 	}
 
-	private async noGuess(message: KlasaMessage, language: Language) {
+	private async noGuess(message: KlasaMessage, t: TFunction) {
 		const result = this.flipCoin();
 
 		return message.send(
 			(await this.buildEmbed(message, result)) //
-				.setTitle(language.get(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
+				.setTitle(t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
 				.setDescription(
-					language.get(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
-						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);

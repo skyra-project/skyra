@@ -1,0 +1,21 @@
+{
+	"caseNotExists": "{{REDCROSS}} I am sorry, but the selected moderation log case does not exist.",
+	"caseNotExists_plural": "{{REDCROSS}} I am sorry, but none of the selected moderation logs cases exist.",
+	"logAppealed": "{{REDCROSS}} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.",
+	"logDescriptionTypeAndUser": "❯ **Type**: {{data.type}}\n❯ **User:** {{data.userName}}#{{data.userDiscriminator}} ({{data.userID}})",
+	"logDescriptionWithReason": "❯ **Reason:** {{data.reason}}{{data.formattedDuration}}",
+	"logDescriptionWithoutReason": "❯ **Reason:** Please use `{{data.prefix}}reason {{data.caseID}} <reason>` to set the reason.{{data.formattedDuration}}",
+	"logExpiresIn": "\n❯ **Expires In**: {{duration, duration}}",
+	"logFooter": "Case {{caseID}}",
+	"muteCannotManageRoles": "I must have **{{MANAGE_ROLES, permissions}}** permissions to be able to mute.",
+	"muteLowHierarchy": "I cannot mute a user which higher role hierarchy than me.",
+	"muteNotConfigured": "The muted role must be configured for this action to happen.",
+	"muteNotExists": "The specified user is not muted.",
+	"muteNotInMember": "The muted role is not set in the member.",
+	"restrictionNotConfigured": "The restriction role must be configured for this action to happen",
+	"roleHigher": "The selected member has a role position that is higher than or equal to yours.",
+	"roleHigherSkyra": "The selected member has a role position that is higher than or equal to mine.",
+	"success": "Successfully executed the command.",
+	"toSkyra": "Why... I thought you loved me! 💔",
+	"userSelf": "Why would you do that to yourself?"
+}

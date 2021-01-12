@@ -9,7 +9,7 @@ import { pickRandom } from '#utils/util';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { getManager } from 'typeorm';
 
 const CDN_URL = CdnUrls.BannersBasePath;
@@ -18,8 +18,8 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Social.BannerDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.BannerExtended),
+	description: LanguageKeys.Commands.Social.BannerDescription,
+	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	subcommands: true,
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, [banner]: [BannerCache]) {
-		const [{ users }, [prefix, language]] = await Promise.all([
+		const [{ users }, [prefix, t]] = await Promise.all([
 			DbSet.connect(),
 			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
 		]);
@@ -42,15 +42,13 @@ export default class extends SkyraCommand {
 		const author = await users.ensureProfile(message.author.id);
 		const banners = new Set(author.profile.banners);
 		if (banners.has(banner.id)) {
-			throw language.get(LanguageKeys.Commands.Social.BannerBought, { prefix, banner: banner.id });
+			throw t(LanguageKeys.Commands.Social.BannerBought, { prefix, banner: banner.id });
 		}
 
-		if (author.money < banner.price) throw language.get(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
+		if (author.money < banner.price) throw t(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
 
 		const accepted = await this.prompt(message, banner);
-		if (!accepted) throw language.get(LanguageKeys.Commands.Social.BannerPaymentCancelled);
-
-		if (author.money < banner.price) throw language.get(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
+		if (!accepted) throw t(LanguageKeys.Commands.Social.BannerPaymentCancelled);
 
 		await getManager().transaction(async (em) => {
 			const existingBannerAuthor = await em.findOne(UserEntity, banner.author);
@@ -70,58 +68,58 @@ export default class extends SkyraCommand {
 			await em.save(author);
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.BannerBuy, { banner: banner.title }));
+		return message.send(t(LanguageKeys.Commands.Social.BannerBuy, { banner: banner.title }));
 	}
 
 	public async reset(message: GuildMessage) {
-		const [{ users }, [prefix, language]] = await Promise.all([
+		const [{ users }, [prefix, t]] = await Promise.all([
 			DbSet.connect(),
 			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
 		]);
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
-			if (user.profile.bannerProfile === '0001') throw language.get(LanguageKeys.Commands.Social.BannerResetDefault);
+			if (!user.profile.banners.length) throw t(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
+			if (user.profile.bannerProfile === '0001') throw t(LanguageKeys.Commands.Social.BannerResetDefault);
 
 			user.profile.bannerProfile = '0001';
 			return user.save();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.BannerReset));
+		return message.send(t(LanguageKeys.Commands.Social.BannerReset));
 	}
 
 	public async set(message: GuildMessage, [banner]: [BannerCache]) {
-		const [{ users }, [prefix, language]] = await Promise.all([
+		const [{ users }, [prefix, t]] = await Promise.all([
 			DbSet.connect(),
 			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
 		]);
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
-			if (!user.profile.banners.includes(banner.id)) throw language.get(LanguageKeys.Commands.Social.BannerSetNotBought);
+			if (!user.profile.banners.length) throw t(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
+			if (!user.profile.banners.includes(banner.id)) throw t(LanguageKeys.Commands.Social.BannerSetNotBought);
 
 			user.profile.bannerProfile = banner.id;
 			return user.save();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.BannerSet, { banner: banner.title }));
+		return message.send(t(LanguageKeys.Commands.Social.BannerSet, { banner: banner.title }));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage) {
-		const [response] = await this.listPrompt.createPrompt(message).run(await message.fetchLocale(LanguageKeys.Commands.Social.BannerPrompt));
+		const [response] = await this.listPrompt.createPrompt(message).run(await message.resolveKey(LanguageKeys.Commands.Social.BannerPrompt));
 		return response === 'all' ? this.buyList(message) : this.userList(message);
 	}
 
 	public async init() {
 		this.createCustomResolver('banner', async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Social.BannerMissing, type);
+			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Social.BannerMissing, type);
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
-			throw await message.fetchLocale(LanguageKeys.Commands.Social.BannerNotexists, {
+			throw await message.resolveKey(LanguageKeys.Commands.Social.BannerNotExists, {
 				prefix: await message.guild!.readSettings(GuildSettings.Prefix)
 			});
 		});
@@ -151,16 +149,16 @@ export default class extends SkyraCommand {
 	}
 
 	private async buyList(message: GuildMessage) {
-		return this.runDisplay(message, await message.fetchLanguage(), this.display);
+		return this.runDisplay(message, await message.fetchT(), this.display);
 	}
 
 	private async userList(message: GuildMessage) {
-		const [prefix, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+		const [prefix, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 
 		const { users } = await DbSet.connect();
 		const user = await users.ensureProfile(message.author.id);
 		const banners = new Set(user.profile.banners);
-		if (!banners.size) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
+		if (!banners.size) throw t(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		for (const id of banners) {
@@ -175,13 +173,13 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		return this.runDisplay(message, language, display);
+		return this.runDisplay(message, t, display);
 	}
 
-	private async runDisplay(message: GuildMessage, language: Language, display: UserRichDisplay | null) {
+	private async runDisplay(message: GuildMessage, t: TFunction, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.send(
-				new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+				new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await display.start(response, message.author.id);
 			return response;

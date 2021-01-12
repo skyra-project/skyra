@@ -9,8 +9,8 @@ import { User } from 'discord.js';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sn'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.SetNicknameDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.SetNicknameExtended),
+	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_NICKNAMES'],

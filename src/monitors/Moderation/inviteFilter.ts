@@ -4,7 +4,7 @@ import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 const enum CodeType {
 	DiscordGG,
@@ -56,21 +56,16 @@ export default class extends ModerationMonitor {
 		return message.nuke();
 	}
 
-	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() }));
+	protected onAlert(message: GuildMessage, t: TFunction) {
+		return message.alert(t(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage, language: Language, links: readonly string[]) {
+	protected onLogMessage(message: GuildMessage, t: TFunction, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(
-				language.get(links.length === 1 ? LanguageKeys.Monitors.InviteFilterLog : LanguageKeys.Monitors.InviteFilterLogPlural, {
-					links,
-					count: links.length
-				})
-			)
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.InviteFooter)}`)
+			.setDescription(t(LanguageKeys.Monitors.InviteFilterLog, { links, count: links.length }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.InviteFooter)}`)
 			.setTimestamp();
 	}
 

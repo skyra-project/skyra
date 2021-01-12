@@ -7,7 +7,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['replay'],
-	description: (language) => language.get(LanguageKeys.Commands.Music.RepeatDescription)
+	description: LanguageKeys.Commands.Music.RepeatDescription,
+	extendedHelp: LanguageKeys.Commands.Music.RepeatExtended
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

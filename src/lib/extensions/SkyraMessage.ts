@@ -4,8 +4,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
@@ -13,17 +12,15 @@ const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
 export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) {
 	public async fetchLanguage() {
-		const languageKey = await this.client.fetchLanguage(this);
-		const language = this.client.languages.get(languageKey);
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
+		const lang: string = await this.client.fetchLanguage(this);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 
 	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw await this.fetchLocale(LanguageKeys.Misc.MessagePromptTimeout);
+		if (responses.size === 0) throw await this.resolveKey(LanguageKeys.Misc.MessagePromptTimeout);
 		return responses.first()!;
 	}
 
@@ -103,10 +100,10 @@ declare module 'discord.js' {
 	}
 
 	interface Message extends TextBasedExtensions {
-		fetchLanguage(): Promise<Language>;
+		fetchLanguage(): Promise<string>;
 		prompt(content: string, time?: number): Promise<Message>;
-		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		alert(content: string, timer?: number): Promise<Message>;
 		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
 		nuke(time?: number): Promise<Message>;

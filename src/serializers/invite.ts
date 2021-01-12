@@ -4,25 +4,25 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 export default class UserSerializer extends Serializer<string> {
 	private readonly kRegExp = /^(?:https?:\/\/)?(?:www.)?(?:discord\.gg\/|discordapp\.com\/invite\/)?(?<code>[\w\d-]{2,})$/i;
 
-	public async parse(value: string, context: SerializerUpdateContext) {
+	public async parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const parsed = this.kRegExp.exec(value);
 		if (parsed === null) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidInvite, { name: context.entry.name }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidInvite, { name: entry.name }));
 		}
 
 		const { code } = parsed.groups!;
 		const invite = await this.client.invites.fetch(code);
 		if (invite === null || !Reflect.has(invite, 'guildID')) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidInvite, { name: context.entry.name }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidInvite, { name: entry.name }));
 		}
 
 		return this.ok(code);
 	}
 
-	public async isValid(value: string, context: SerializerUpdateContext): Promise<boolean> {
+	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
 		const invite = await this.client.invites.fetch(value);
 		if (invite === null || !Reflect.has(invite, 'guildID')) {
-			throw context.language.get(LanguageKeys.Resolvers.InvalidInvite, { name: context.entry.name });
+			throw t(LanguageKeys.Resolvers.InvalidInvite, { name: entry.name });
 		}
 
 		return true;

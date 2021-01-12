@@ -6,12 +6,13 @@ import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { DMChannel, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Games.TriviaDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.TriviaExtended),
+	description: LanguageKeys.Commands.Games.TriviaDescription,
+	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
 	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
 	usageDelim: ' ',
 	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
@@ -23,7 +24,7 @@ import { KlasaMessage, Language } from 'klasa';
 			if (!arg) return CATEGORIES.general;
 			arg = arg.toLowerCase();
 			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw await message.fetchLocale(LanguageKeys.Commands.Games.TriviaInvalidCategory);
+			if (!category) throw await message.resolveKey(LanguageKeys.Commands.Games.TriviaInvalidCategory);
 			return category;
 		}
 	],
@@ -50,13 +51,13 @@ export default class extends SkyraCommand {
 			number?
 		]
 	) {
-		const language = await message.fetchLanguage();
-		if (this.#channels.has(message.channel.id)) throw language.get(LanguageKeys.Commands.Games.TriviaActiveGame);
+		const t = await message.fetchT();
+		if (this.#channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.TriviaActiveGame);
 
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
+			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
@@ -64,7 +65,7 @@ export default class extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.send(this.buildQuestionEmbed(language, data, possibleAnswers));
+			await message.send(this.buildQuestionEmbed(t, data, possibleAnswers));
 			const filter = (msg: KlasaMessage) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
@@ -84,21 +85,21 @@ export default class extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
+					return message.channel.send(t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
-					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
+					if (!winner) return message.channel.send(t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
+					return message.channel.send(t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
 		} catch {
 			this.#channels.delete(message.channel.id);
-			throw language.get(LanguageKeys.Misc.UnexpectedIssue);
+			throw t(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}
 
-	public buildQuestionEmbed(language: Language, data: QuestionData, possibleAnswers: string[]) {
-		const titles = language.get(LanguageKeys.Commands.Games.TriviaEmbedTitles);
+	public buildQuestionEmbed(t: TFunction, data: QuestionData, possibleAnswers: string[]) {
+		const titles = t(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
 			.setAuthor(titles.trivia)

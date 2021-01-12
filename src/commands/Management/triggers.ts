@@ -13,8 +13,8 @@ const REG_TYPE = /^(alias|reaction)$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Management.TriggersDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.TriggersExtended),
+	description: LanguageKeys.Commands.Management.TriggersDescription,
+	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -27,14 +27,14 @@ const REG_TYPE = /^(alias|reaction)$/i;
 		async (arg, _, message, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoType);
+			throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersNoType);
 		}
 	],
 	[
 		'input',
 		async (arg, _, message, [action]) => {
 			if (action === 'show') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoOutput);
+			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersNoOutput);
 			return arg.toLowerCase();
 		}
 	],
@@ -42,23 +42,23 @@ const REG_TYPE = /^(alias|reaction)$/i;
 		'output',
 		async (arg, _, message, [action, type]) => {
 			if (action === 'show' || action === 'remove') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoOutput);
+			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersNoOutput);
 			if (type === 'reaction') {
 				const emoji = resolveEmoji(arg);
-				if (!emoji) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidReaction);
+				if (!emoji) throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersInvalidReaction);
 
 				try {
 					await message.react(emoji);
 					return emoji;
 				} catch {
-					throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidReaction);
+					throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersInvalidReaction);
 				}
 			}
 
 			if (type === 'alias') {
 				const command = message.client.commands.get(arg);
 				if (command && command.permissionLevel < PermissionLevels.BotOwner) return command.name;
-				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidAlias);
+				throw await message.resolveKey(LanguageKeys.Commands.Management.TriggersInvalidAlias);
 			}
 
 			return null;
@@ -67,44 +67,44 @@ const REG_TYPE = /^(alias|reaction)$/i;
 ])
 export default class extends SkyraCommand {
 	public async remove(message: GuildMessage, [type, input]: [string, string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const key = this.getListName(type);
 
 			const list = settings[key];
 
 			const index = list.findIndex((entry) => entry.input === input);
-			if (index === -1) throw language.get(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
+			if (index === -1) throw t(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
 
 			list.splice(index, 1);
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.TriggersRemove));
+		return message.send(t(LanguageKeys.Commands.Management.TriggersRemove));
 	}
 
 	public async add(message: GuildMessage, [type, input, output]: [string, string, string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const key = this.getListName(type);
 
 			const list = settings[key];
 
 			const alreadySet = list.some((entry) => entry.input === input);
-			if (alreadySet) throw language.get(LanguageKeys.Commands.Management.TriggersAddTaken);
+			if (alreadySet) throw t(LanguageKeys.Commands.Management.TriggersAddTaken);
 
 			list.push(this.format(type, input, output) as any);
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.TriggersAdd));
+		return message.send(t(LanguageKeys.Commands.Management.TriggersAdd));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage) {
-		const [aliases, includes, language] = await message.guild.readSettings((settings) => [
+		const [aliases, includes, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Trigger.Alias],
 			settings[GuildSettings.Trigger.Includes],
 			settings.getLanguage()
@@ -117,7 +117,7 @@ export default class extends SkyraCommand {
 		for (const react of includes) {
 			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
-		if (!output.length) throw language.get(LanguageKeys.Commands.Management.TriggersListEmpty);
+		if (!output.length) throw t(LanguageKeys.Commands.Management.TriggersListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()

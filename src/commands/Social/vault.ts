@@ -4,12 +4,13 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bank'],
-	description: (language) => language.get(LanguageKeys.Commands.Social.VaultDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.VaultExtended),
+	description: LanguageKeys.Commands.Social.VaultDescription,
+	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	subcommands: true,
 	usage: '<deposit|dep|withdraw|with|show:default> (coins:coins)',
@@ -28,14 +29,14 @@ import { KlasaMessage, Language } from 'klasa';
 			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw await message.fetchLocale(LanguageKeys.Commands.Social.VaultInvalidCoins);
+			throw await message.resolveKey(LanguageKeys.Commands.Social.VaultInvalidCoins);
 		}
 	]
 ])
 export default class Vault extends SkyraCommand {
 	public async deposit(message: KlasaMessage, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -43,7 +44,7 @@ export default class Vault extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && money < coins) {
-				throw language.get(LanguageKeys.Commands.Social.VaultNotEnoughMoney, { money });
+				throw t(LanguageKeys.Commands.Social.VaultNotEnoughMoney, { money });
 			}
 
 			const newMoney = money - coins;
@@ -53,7 +54,7 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, language, money, vault, coins, true));
+		return message.send(await this.buildEmbed(message, t, money, vault, coins, true));
 	}
 
 	public async dep(...args: ArgumentTypes<Vault['deposit']>) {
@@ -62,7 +63,7 @@ export default class Vault extends SkyraCommand {
 
 	public async withdraw(message: KlasaMessage, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -70,7 +71,7 @@ export default class Vault extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && vault < coins) {
-				throw language.get(LanguageKeys.Commands.Social.VaultNotEnoughInVault, { vault });
+				throw t(LanguageKeys.Commands.Social.VaultNotEnoughInVault, { vault });
 			}
 
 			const newMoney = money + coins;
@@ -80,7 +81,7 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, language, money, vault, coins));
+		return message.send(await this.buildEmbed(message, t, money, vault, coins));
 	}
 
 	public async with(...args: ArgumentTypes<Vault['withdraw']>) {
@@ -89,9 +90,9 @@ export default class Vault extends SkyraCommand {
 
 	public async show(message: KlasaMessage) {
 		const { users } = await DbSet.connect();
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const settings = await users.ensureProfile(message.author.id);
-		return message.send(await this.buildEmbed(message, language, settings.money, settings.profile.vault));
+		return message.send(await this.buildEmbed(message, t, settings.money, settings.profile.vault));
 	}
 
 	private updateBalance(money: number, vault: number, settings: UserEntity) {
@@ -100,8 +101,8 @@ export default class Vault extends SkyraCommand {
 		return settings.save();
 	}
 
-	private async buildEmbed(message: KlasaMessage, language: Language, money: number, vault: number, coins?: number, hasDeposited = false) {
-		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = language.get(
+	private async buildEmbed(message: KlasaMessage, t: TFunction, money: number, vault: number, coins?: number, hasDeposited = false) {
+		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = t(
 			LanguageKeys.Commands.Social.VaultEmbedData,
 			{ coins }
 		);

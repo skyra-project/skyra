@@ -5,9 +5,10 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {
 	/**
@@ -42,25 +43,25 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const language = await message.guild.fetchLanguage();
-		const { url } = await this.fetch(language, query);
+		const t = await message.guild.fetchT();
+		const { url } = await this.fetch(t, query);
 
 		return message.send(
 			Boolean(this.usage.parsedUsage.length)
-				? language.get(this.responseName as ComplexKey, { user: params![0].username })
-				: language.get(this.responseName as SimpleKey),
+				? t(this.responseName as ComplexKey, { user: params![0].username })
+				: t(this.responseName as SimpleKey),
 			{
 				embed: new MessageEmbed()
 					.setTitle('→')
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(language.get(LanguageKeys.System.PoweredByWeebSh))
+					.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
-	private async fetch(language: Language, url: URL): Promise<WeebCommandResult> {
+	private async fetch(t: TFunction, url: URL): Promise<WeebCommandResult> {
 		try {
 			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
 		} catch (unknownError: unknown) {
@@ -68,17 +69,17 @@ export abstract class WeebCommand extends SkyraCommand {
 
 			// If we received a 5XX code error, warn the user about the service's unavailability.
 			if (error.code >= 500) {
-				throw language.get(LanguageKeys.Commands.Weeb.UnavailableError);
+				throw t(LanguageKeys.Commands.Weeb.UnavailableError);
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
 			this.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
-			throw language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
+			throw t(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
 }
 
-export interface WeebCommandOptions extends CommandOptions {
+export interface WeebCommandOptions extends SkyraCommandOptions {
 	queryType: string;
 	responseName: SimpleKey | ComplexKey;
 }

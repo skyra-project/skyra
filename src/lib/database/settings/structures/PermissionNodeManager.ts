@@ -55,7 +55,8 @@ export class PermissionNodeManager implements IBaseManager {
 		} else {
 			const previous = nodes[nodeIndex];
 			if ((action === 'allow' && previous.allow.includes(command)) || (action === 'deny' && previous.deny.includes(command))) {
-				throw this.#settings.getLanguage().get(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command });
+				const t = this.#settings.getLanguage();
+				throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command });
 			}
 
 			const node: Node = {
@@ -72,13 +73,13 @@ export class PermissionNodeManager implements IBaseManager {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = this.#settings[key];
-		const language = this.#settings.getLanguage();
+		const t = this.#settings.getLanguage();
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-		if (nodeIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+		if (nodeIndex === -1) throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		const previous = nodes[nodeIndex];
 		const commandIndex = previous[action].indexOf(command);
-		if (commandIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesCommandNotExists);
+		if (commandIndex === -1) throw t(LanguageKeys.Commands.Management.PermissionNodesCommandNotExists);
 
 		const node: Nodes[number] = {
 			id: target.id,
@@ -97,8 +98,8 @@ export class PermissionNodeManager implements IBaseManager {
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
 		if (nodeIndex === -1) {
-			const language = this.#settings.getLanguage();
-			throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+			const t = this.#settings.getLanguage();
+			throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 		}
 
 		this.#settings[key].splice(nodeIndex, 1);

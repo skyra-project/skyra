@@ -8,8 +8,8 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.ReasonDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ReasonExtended),
+	description: LanguageKeys.Commands.Moderation.ReasonDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -29,12 +29,7 @@ export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild.moderation.fetch(cases);
 		if (!entries.size) {
-			throw await message.fetchLocale(
-				cases.length === 1
-					? LanguageKeys.Commands.Moderation.ModerationCaseNotExists
-					: LanguageKeys.Commands.Moderation.ModerationCaseNotExistsPlural,
-				{ count: cases.length }
-			);
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: cases.length });
 		}
 
 		const imageURL = getImage(message);
@@ -55,14 +50,11 @@ export default class extends SkyraCommand {
 
 		return message.alert(
 			(
-				await message.fetchLocale(
-					cases.length === 1 ? LanguageKeys.Commands.Moderation.ReasonUpdated : LanguageKeys.Commands.Moderation.ReasonUpdatedPlural,
-					{
-						entries: cases,
-						newReason: reason,
-						count: cases.length
-					}
-				)
+				await message.resolveKey(LanguageKeys.Commands.Moderation.ReasonUpdated, {
+					entries: cases,
+					newReason: reason,
+					count: cases.length
+				})
 			).join('\n')
 		);
 	}

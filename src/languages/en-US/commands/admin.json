@@ -1,0 +1,81 @@
+{
+	"blocklistDescription": "Block or allow users and guilds from using my functionalities.",
+	"blocklistExtended": {
+		"extendedHelp": "Block users that abuse my functions from using me in the future, naughty naughty people!"
+	},
+	"blocklistResetSuccess": "{{GREENTICK}} Successfully reset blocked users and guilds",
+	"blocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
+	"confNoKey": "You must provide a key",
+	"confNoValue": "You must provide a value",
+	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
+	"confUpdated": "Successfully updated the key **{{key}}**: `{{response}}`",
+	"confKeyNotArray": "This key is not array type. Use the action 'reset' instead.",
+	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
+	"confGet": "The value for the key **{{key}}** is: `{{value}}`",
+	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
+	"confNochange": "The value for **{{key}}** was already that value.",
+	"confServerDescription": "Define per-server settings.",
+	"confServerExtended": {
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the web dashboard (<https://skyra.pw>)."
+	},
+	"confServer": "**Server Setting {{key}}**\n{{list}}",
+	"confUserDescription": "Define per-user settings.",
+	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
+	"confUser": "**User Setting {{key}}**\n{{list}}",
+	"confSettingNotSet": "Not Set",
+	"heapSnapshotDescription": "Creates a heapdump for finding memory leaks.",
+	"heapSnapshotExtended": {
+		"extendedHelp": "The heapsnapshot command is very useful for bots that have memory issues, it uses the heapdump library which freezes the entire process for a moment to analyze all elements from the process' HEAP, NEVER share heapsnapshot files with anybody, as everything your bot holds is included in that file.\n\nTo open heapsnapshot files, open Google Chrome, open Developer Tools, go to the tab Memory, and in Profiles, click on the bottom \"load\". Finally, open the profile and you will be given a table of all objects in your process, have fun!\n\n\n\nP.S: heapsnapshot files are as big as the amount of RAM you use, in big bots, the snapshots can freeze the bot much longer and the files can be much heavier."
+	},
+	"rolesetDescription": "Manage unique role sets.",
+	"rolesetExtended": {
+		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
+		"explainedUsage": [
+			["add", "Create a new roleset or add a role to an existing one."],
+			["remove", "Remove a role from an existing roleset."],
+			["reset", "Removes all roles from a roleset or, if not specified, all existing rolesets."],
+			["list", "Lists all rolesets."],
+			["auto", "Adds or removes a roleset."]
+		],
+		"examples": [
+			"add regions America",
+			"add regions Africa America Asia Europe",
+			"remove regions America",
+			"reset",
+			"reset regions",
+			"list",
+			"regions America",
+			"regions Africa America Asia Europe"
+		],
+		"reminder": "This command can add and/or remove multiple roles at the same time."
+	},
+	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
+	"rolesetAdded": "The {{name}} unique role set now has the following roles as well: {{roles, andList}}.",
+	"rolesetInvalidName": "You can not remove the {{name}} unique role set because it does not exist.",
+	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, andList}}",
+	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this groupo.",
+	"rolesetResetAll": "{{GREENTICK}} Successfully removed all rolesets.",
+	"rolesetResetNotExists": "{{REDCROSS}} The roleset `{{name}}` does not exist in this server.",
+	"rolesetResetGroup": "{{GREENTICK}} Successfully removed the roleset `{{name}}` from this server.",
+	"rolesetUpdated": "The {{name}} unique role set has been updated.",
+	"rolesetNoRolesets": "You have no rolesets.",
+	"confMenuNopermissions": "I need the {{ADD_REACTIONS, permissions}} and {{MANAGE_MESSAGES, permissions}} permissions to be able to run the menu.",
+	"confMenuRenderAtFolder": "Currently at: 📁 {{path}}",
+	"confMenuRenderAtPiece": "Currently at: ⚙️ {{path}}",
+	"confMenuRenderNokeys": "There are no configurable keys for this folder",
+	"confMenuRenderSelect": "Please type in any of the following entries' names",
+	"confMenuRenderTctitle": "Text s:",
+	"confMenuRenderUpdate": "• Update Value → `set <value>`",
+	"confMenuRenderRemove": "• Remove Value → `remove <value>`",
+	"confMenuRenderReset": "• Reset Value → `reset`",
+	"confMenuRenderUndo": "• Undo Update → `undo`",
+	"confMenuRenderCvalue": "Current Value: **``{{value}}``**",
+	"confMenuRenderBack": "Press ◀ to go back",
+	"confMenuInvalidKey": "Invalid Key, please try again with any of the following options.",
+	"confMenuInvalidAction": "Invalid Action, please try again with any of the following options.",
+	"confMenuSaved": "Successfully saved all changes.",
+	"updateDescription": "Update the bot",
+	"updateExtended": {
+		"extendedHelp": "Some polish here, some cleanup there, and whatyaknow, I'm suddenly a whole new android!"
+	}
+}

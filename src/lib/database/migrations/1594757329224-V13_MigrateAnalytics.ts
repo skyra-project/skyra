@@ -1,6 +1,6 @@
 import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
 import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
-import { InfluxDB, Point, WritePrecision } from '@influxdata/influxdb-client';
+import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
@@ -20,7 +20,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const categories = new Map<string, CategoryData>(JSON.parse(await readFile(join(__dirname, CATEGORIES_FILE), 'utf-8')));
 
 		const influx = new InfluxDB(INFLUX_OPTIONS);
-		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
+		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, 's');
 
 		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */ `SELECT * FROM command_counter`);
 

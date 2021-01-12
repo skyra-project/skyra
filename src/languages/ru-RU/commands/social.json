@@ -1,0 +1,384 @@
+{
+	"autoRolePointsRequired": "",
+	"autoRoleUpdateConfigured": "",
+	"autoRoleUpdateUnconfigured": "",
+	"autoRoleUpdate": "",
+	"autoRoleRemove": "",
+	"autoRoleAdd": "",
+	"autoRoleListEmpty": "",
+	"autoRoleUnknownRole": "",
+	"balance": "",
+	"balanceSelf": "",
+	"balanceBots": "",
+	"socialMemberNotexists": "",
+	"socialAdd": "",
+	"socialAdd_plural": "",
+	"socialRemove": "",
+	"socialRemove_plural": "",
+	"socialUnchanged": "",
+	"socialReset": "",
+	"bannerMissing": "",
+	"bannerNotexists": "",
+	"bannerUserlistEmpty": "",
+	"bannerResetDefault": "",
+	"bannerReset": "",
+	"bannerSetNotBought": "Вы ещё не купили этот баннер.",
+	"bannerSet": "",
+	"bannerBought": "",
+	"bannerMoney": "",
+	"bannerPaymentCancelled": "",
+	"bannerBuy": "",
+	"bannerPrompt": "",
+	"toggleDarkModeEnabled": "",
+	"toggleDarkModeDisabled": "",
+	"dailyTime": "",
+	"dailyTimeSuccess": "",
+	"dailyGrace": "",
+	"dailyGraceAccepted": "",
+	"dailyGraceDenied": "",
+	"dailyCollect": "",
+	"level": {
+		"level": "",
+		"experience": "",
+		"nextIn": ""
+	},
+	"divorceSelf": "",
+	"divorceNotTaken": "",
+	"divorcePrompt": "",
+	"divorceCancel": "",
+	"divorceDm": "Простите... но... вы помните {{user}}? Он/а решил/а расстаться с вами 💔!",
+	"divorceSuccess": "",
+	"marryWith": "",
+	"marryNotTaken": "",
+	"marrySkyra": "",
+	"marryAelia": "",
+	"marryBots": "",
+	"marrySelf": "",
+	"marryAuthorTaken": "",
+	"marryAuthorMultipleCancel": "",
+	"marryTaken": "",
+	"marryTaken_plural": "",
+	"marryAlreadyMarried": "Вы уже состоите в браке с {{user}}, вы забыли об этом?",
+	"marryAuthorTooMany": "",
+	"marryTargetTooMany": "",
+	"marryMultipleCancel": "",
+	"marryPetition": "",
+	"marryNoreply": "",
+	"marryDenied": "",
+	"marryAccepted": "",
+	"mylevel": "",
+	"mylevelSelf": "",
+	"mylevelNext": "",
+	"payMissingMoney": "",
+	"payPrompt": "",
+	"payPromptAccept": "",
+	"payPromptDeny": "",
+	"paySelf": "",
+	"socialPayBot": "",
+	"profile": {
+		"globalRank": "",
+		"credits": "",
+		"reputation": "",
+		"experience": "",
+		"level": ""
+	},
+	"profileMoney": "",
+	"remindmeCreate": "",
+	"remindmeCreateNoDuration": "",
+	"remindmeCreateNoDescription": "",
+	"remindmeDeleteNoId": "",
+	"remindmeDelete": "",
+	"remindmeListEmpty": "",
+	"remindmeShowFooter": "",
+	"remindmeInvalidId": "",
+	"remindmeNotfound": "",
+	"reputationTime": "",
+	"reputationUsable": "",
+	"reputationUserNotfound": "",
+	"reputationSelf": "",
+	"reputationBots": "",
+	"reputationGive": "",
+	"reputationsBots": "",
+	"reputationsSelf": "",
+	"reputation": "",
+	"reputation_plural": "",
+	"reputations": "",
+	"autoRoleRequireRole": "",
+	"scoreboardPosition": "",
+	"setColor": "Цвет изменён на {{color}}",
+	"socialDescription": "",
+	"socialExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"bannerDescription": "",
+	"bannerExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"toggleDarkModeDescription": "",
+	"toggleDarkModeExtended": {
+		"extendedHelp": ""
+	},
+	"autoRoleDescription": "",
+	"autoRoleExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"balanceDescription": "",
+	"balanceExtended": {
+		"extendedHelp": ""
+	},
+	"dailyDescription": "",
+	"dailyExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"leaderboardDescription": "",
+	"leaderboardExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"leaderboardListifyPage": "",
+	"levelDescription": "",
+	"levelExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"divorceDescription": "",
+	"divorceExtended": {
+		"extendedHelp": ""
+	},
+	"marryDescription": "",
+	"marryExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
+	"marriedExtended": {
+		"extendedHelp": ""
+	},
+	"mylevelDescription": "",
+	"mylevelExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"payDescription": "",
+	"payExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"profileDescription": "",
+	"profileExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"remindmeDescription": "",
+	"remindmeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"reputationDescription": "",
+	"reputationExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"setColorDescription": "",
+	"setColorExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"possibleFormats": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"vaultDescription": "",
+	"vaultEmbedData": {
+		"accountMoney": "",
+		"accountVault": "",
+		"depositedDescription": "",
+		"showDescription": "",
+		"withdrewDescription": ""
+	},
+	"vaultExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"vaultInvalidCoins": "",
+	"vaultNotEnoughInVault": "",
+	"vaultNotEnoughMoney": ""
+}

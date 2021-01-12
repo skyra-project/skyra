@@ -8,33 +8,33 @@ export default class UserSerializer extends Serializer<CustomCommand> {
 		return this.error('Adding or.');
 	}
 
-	public isValid(value: CustomCommand, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: CustomCommand, { t }: SerializerUpdateContext): Awaited<boolean> {
 		if (typeof value.id !== 'string') {
-			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidId));
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidId));
 		}
 
 		if (value.id.length > 50) {
-			throw context.language.get(LanguageKeys.Commands.Tags.TagNameTooLong);
+			throw t(LanguageKeys.Commands.Tags.TagNameTooLong);
 		}
 
 		if (value.id.includes('`') || value.id.includes(ZeroWidthSpace)) {
-			throw context.language.get(LanguageKeys.Commands.Tags.TagNameNotAllowed);
+			throw t(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 		}
 
 		if (typeof value.embed !== 'boolean') {
-			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
 		}
 
 		if (typeof value.color !== 'number') {
-			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidColor));
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidColor));
 		}
 
 		if (typeof value.content !== 'string') {
-			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidContent));
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidContent));
 		}
 
 		if (!Array.isArray(value.args) || value.args.some((arg) => typeof arg !== 'string')) {
-			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidArgs));
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidArgs));
 		}
 
 		return true;

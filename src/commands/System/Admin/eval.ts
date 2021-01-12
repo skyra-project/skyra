@@ -13,8 +13,8 @@ import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['ev'],
-	description: (language) => language.get(LanguageKeys.Commands.System.EvalDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EvalExtended),
+	description: LanguageKeys.Commands.System.EvalDescription,
+	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<expression:str>',
@@ -53,10 +53,10 @@ export default class extends SkyraCommand {
 
 	private async timedEval(message: KlasaMessage, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: language.get(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
+				result: t(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

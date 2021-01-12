@@ -10,8 +10,8 @@ import { TextChannel } from 'discord.js';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended),
+	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
+	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -26,32 +26,30 @@ import { TextChannel } from 'discord.js';
 			if (!arg) return message.channel;
 			const channel = await message.client.arguments.get('textchannelname')!.run(arg, _, message);
 			if (channel.type === 'text') return channel;
-			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteTextChannel);
+			throw await message.resolveKey(LanguageKeys.Commands.Management.ManageCommandAutoDeleteTextChannel);
 		}
 	],
 	['timespan', (arg, _, message, [type]) => (type === 'add' ? message.client.arguments.get('timespan')!.run(arg, _, message) : undefined)]
 ])
 export default class extends SkyraCommand {
 	public async show(message: GuildMessage) {
-		const [commandAutoDelete, language] = await message.guild.readSettings((settings) => [
+		const [commandAutoDelete, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.CommandAutoDelete],
 			settings.getLanguage()
 		]);
-		if (!commandAutoDelete.length) throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
+		if (!commandAutoDelete.length) throw t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];
 		for (const entry of commandAutoDelete) {
 			const channel = this.client.channels.cache.get(entry[0]) as TextChannel;
-			if (channel) list.push(`${channel.name.padEnd(26)} :: ${language.duration(entry[1] / 60000)}`);
+			if (channel) list.push(`${channel.name.padEnd(26)} :: ${t(LanguageKeys.Globals.DurationValue, { value: entry[1] / 60000 })}`);
 		}
-		if (!list.length) throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
-		return message.send(
-			language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) })
-		);
+		if (!list.length) throw t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
+		return message.send(t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) }));
 	}
 
 	public async add(message: GuildMessage, [channel, duration]: [TextChannel, number]) {
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			const commandAutodelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutodelete.findIndex(([id]) => id === channel.id);
 			const value: readonly [string, number] = [channel.id, duration];
@@ -62,34 +60,32 @@ export default class extends SkyraCommand {
 			return settings.getLanguage();
 		});
 
-		return message.send(
-			language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time: duration })
-		);
+		return message.send(t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time: duration }));
 	}
 
 	public async remove(message: GuildMessage, [channel]: [TextChannel]) {
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			const commandAutodelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutodelete.findIndex(([id]) => id === channel.id);
-			const language = settings.getLanguage();
+			const t = settings.getLanguage();
 
 			if (index === -1) {
-				throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });
+				throw t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });
 			}
 
 			commandAutodelete.splice(index, 1);
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() }));
+		return message.send(t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() }));
 	}
 
 	public async reset(message: GuildMessage) {
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			settings[GuildSettings.CommandAutoDelete].length = 0;
 			return settings.getLanguage();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset));
+		return message.send(t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset));
 	}
 }

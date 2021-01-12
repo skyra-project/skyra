@@ -1,0 +1,19 @@
+{
+	"and": "and",
+	"default": "{{key}} has not been localised for en-GB yet.",
+	"defaultLanguage": "Default Language",
+	"is": "is",
+	"no": "No",
+	"none": "None",
+	"or": "or",
+	"unknown": "unknown",
+	"yes": "Yes",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"timeDateValue": "{{value, timeDate}}",
+	"timeFullValue": "{{value, timeFull}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
+}

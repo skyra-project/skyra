@@ -12,8 +12,8 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['autoroles', 'levelrole', 'lvlrole'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Social.AutoRoleDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.AutoRoleExtended),
+	description: LanguageKeys.Commands.Social.AutoRoleDescription,
+	extendedHelp: LanguageKeys.Commands.Social.AutoRoleExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	runIn: ['text'],
@@ -39,16 +39,16 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 ])
 export default class extends SkyraCommand {
 	public async init() {
-		this.customizeResponse('role', (message) => message.fetchLocale(LanguageKeys.Misc.CommandRequireRole)) //
-			.customizeResponse('points', (message) => message.fetchLocale(LanguageKeys.Commands.Social.AutoRolePointsRequired));
+		this.customizeResponse('role', (message) => message.resolveKey(LanguageKeys.Commands.Social.AutoRoleRequireRole)) //
+			.customizeResponse('points', (message) => message.resolveKey(LanguageKeys.Commands.Social.AutoRolePointsRequired));
 	}
 
 	public async show(message: GuildMessage) {
 		const output = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+			const t = settings.getLanguage();
 			const autoRoles = settings[GuildSettings.Roles.Auto];
 
-			if (!autoRoles.length) throw language.get(LanguageKeys.Commands.Social.AutoRoleListEmpty);
+			if (!autoRoles.length) throw t(LanguageKeys.Commands.Social.AutoRoleListEmpty);
 
 			const filtered = new Set(autoRoles);
 			const output: string[] = [];
@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 				settings[GuildSettings.Roles.Auto] = [...filtered];
 			}
 
-			if (!output.length) throw language.get(LanguageKeys.Commands.Social.AutoRoleListEmpty);
+			if (!output.length) throw t(LanguageKeys.Commands.Social.AutoRoleListEmpty);
 
 			return output;
 		});
@@ -71,58 +71,58 @@ export default class extends SkyraCommand {
 	}
 
 	public async add(message: GuildMessage, [role, points]: [Role, number]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const roles = settings[GuildSettings.Roles.Auto];
 
 			if (roles.length && roles.some((entry) => entry.id === role.id)) {
-				throw language.get(LanguageKeys.Commands.Social.AutoRoleUpdateConfigured);
+				throw t(LanguageKeys.Commands.Social.AutoRoleUpdateConfigured);
 			}
 
 			const sorted = [...roles, { id: role.id, points }].sort(SORT);
 
 			settings[GuildSettings.Roles.Auto] = sorted;
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.AutoRoleAdd, { role, points }));
+		return message.send(t(LanguageKeys.Commands.Social.AutoRoleAdd, { role, points }));
 	}
 
 	public async remove(message: GuildMessage, [role]: [Role]) {
-		const [roleEntry, language] = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const [roleEntry, t] = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const roles = settings[GuildSettings.Roles.Auto];
 			const roleIndex = roles.findIndex((entry) => entry.id === role.id);
 
 			if (roleIndex === -1) {
-				throw language.get(LanguageKeys.Commands.Social.AutoRoleUpdateConfigured);
+				throw t(LanguageKeys.Commands.Social.AutoRoleUpdateUnconfigured);
 			}
 
 			const roleEntry = roles[roleIndex];
 			roles.splice(roleIndex, 1);
 
-			return [roleEntry, language];
+			return [roleEntry, t];
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.AutoRoleRemove, { role, before: roleEntry.points }));
+		return message.send(t(LanguageKeys.Commands.Social.AutoRoleRemove, { role, before: roleEntry.points }));
 	}
 
 	public async update(message: GuildMessage, [role, points]: [Role, number]) {
-		const [autoRole, language] = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const [autoRole, t] = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((entry) => entry.id === role.id);
 
 			if (roleIndex === -1) {
-				throw language.get(LanguageKeys.Commands.Social.AutoRoleUpdateUnconfigured);
+				throw t(LanguageKeys.Commands.Social.AutoRoleUpdateUnconfigured);
 			}
 
 			const autoRole = settings[GuildSettings.Roles.Auto][roleIndex];
 			const clone = deepClone(settings[GuildSettings.Roles.Auto]);
 
 			settings[GuildSettings.Roles.Auto] = clone.sort(SORT);
-			return [autoRole, language];
+			return [autoRole, t];
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Social.AutoRoleUpdate, { role, points, before: autoRole.points }));
+		return message.send(t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role, points, before: autoRole.points }));
 	}
 }

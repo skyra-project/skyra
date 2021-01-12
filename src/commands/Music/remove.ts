@@ -6,24 +6,25 @@ import { requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.RemoveDescription),
+	description: LanguageKeys.Commands.Music.RemoveDescription,
+	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended,
 	usage: '<number:integer>'
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage, [index]: [number]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		if (index < 0) throw language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		if (index < 0) throw t(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const count = await audio.count();
 		if (index >= count) {
-			throw language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
-				songs: language.get(count === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural, {
+			throw t(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
+				songs: t(LanguageKeys.Commands.Music.AddPlaylistSongs, {
 					count
 				})
 			});

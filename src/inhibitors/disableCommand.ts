@@ -12,11 +12,11 @@ export default class extends Inhibitor {
 	}
 
 	private async runDM(message: KlasaMessage, command: SkyraCommand) {
-		if (!command.enabled) throw await message.fetchLocale(LanguageKeys.Inhibitors.DisabledGlobal);
+		if (!command.enabled) throw await message.resolveKey(LanguageKeys.Inhibitors.DisabledGlobal);
 	}
 
 	private async runGuild(message: GuildMessage, command: SkyraCommand) {
-		const [disabled, language] = await message.guild.readSettings((settings) => [
+		const [disabled, t] = await message.guild.readSettings((settings) => [
 			this.checkGuildDisabled(settings, message, command),
 			settings.getLanguage()
 		]);
@@ -25,7 +25,7 @@ export default class extends Inhibitor {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) throw true;
 		}
 
-		if (!command.enabled) throw language.get(LanguageKeys.Inhibitors.DisabledGlobal);
+		if (!command.enabled) throw t(LanguageKeys.Inhibitors.DisabledGlobal);
 	}
 
 	private checkGuildDisabled(settings: GuildEntity, message: GuildMessage, command: SkyraCommand) {

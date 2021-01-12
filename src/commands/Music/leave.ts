@@ -5,8 +5,8 @@ import { requireDj, requireSkyraInVoiceChannel } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.LeaveDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.LeaveExtended),
+	description: LanguageKeys.Commands.Music.LeaveDescription,
+	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,
 	flagSupport: true
 })
 export default class extends MusicCommand {
@@ -24,6 +24,6 @@ export default class extends MusicCommand {
 			await audio.clear();
 		}
 
-		return message.sendLocale(LanguageKeys.Commands.Music.LeaveSuccess, [{ channel: `<#${channelID}>` }]);
+		return message.sendTranslated(LanguageKeys.Commands.Music.LeaveSuccess, [{ channel: `<#${channelID}>` }]);
 	}
 }

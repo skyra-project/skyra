@@ -11,7 +11,7 @@ import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/gr
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 enum BaseStats {
 	hp = 'HP',
@@ -25,31 +25,31 @@ enum BaseStats {
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Pokemon.PokedexDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.PokedexExtended),
+	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
+	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), language);
+		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), t);
 
-		await this.buildDisplay(message, pokeDetails, language) //
+		await this.buildDisplay(message, pokeDetails, t) //
 			.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(pokemon: string, language: Language) {
+	private async fetchAPI(pokemon: string, t: TFunction) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
+			throw t(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
 		}
 	}
 
@@ -151,17 +151,17 @@ export default class extends RichDisplayCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(message: GuildMessage, pokeDetails: DexDetails, language: Language) {
+	private buildDisplay(message: GuildMessage, pokeDetails: DexDetails, t: TFunction) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
+		const embedTranslations = t(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
 			otherFormes: pokeDetails.otherFormes ?? [],
 			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
-		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }, language);
+		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }, t);
 	}
 
 	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
@@ -191,11 +191,8 @@ export default class extends RichDisplayCommand {
 			);
 	}
 
-	private parseRegularPokemon(
-		{ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs,
-		language: Language
-	) {
-		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
+	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs, t: TFunction) {
+		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,

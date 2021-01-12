@@ -1,0 +1,101 @@
+{
+	"dmDescription": "",
+	"dmExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"evalDescription": "",
+	"evalExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"execDescription": "",
+	"execExtended": {
+		"extendedHelp": ""
+	},
+	"setAvatarDescription": "",
+	"setAvatarExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"donateDescription": "",
+	"donateExtended": {
+		"extendedHelp": ""
+	},
+	"echoDescription": "",
+	"echoExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"feedbackDescription": "",
+	"feedbackExtended": {
+		"extendedHelp": ""
+	},
+	"statsDescription": "",
+	"statsExtended": {
+		"extendedHelp": ""
+	},
+	"evalTimeout": "",
+	"evalError": "",
+	"statsTitles": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"statsFields": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"disable": "",
+	"disableDescription": "",
+	"disableExtended": {
+		"extendedHelp": ""
+	},
+	"disableWarn": "",
+	"dmNotSent": "",
+	"dmSent": "",
+	"enable": "",
+	"enableDescription": "",
+	"enableExtended": {
+		"extendedHelp": ""
+	},
+	"load": "",
+	"loadDescription": "",
+	"loadExtended": {
+		"extendedHelp": ""
+	},
+	"loadError": "",
+	"loadFail": "",
+	"reboot": "",
+	"rebootDescription": "",
+	"rebootExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"reload": "",
+	"reloadAll": "",
+	"reloadDescription": "",
+	"reloadExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"reloadEverything": "",
+	"reloadFailed": "",
+	"unload": "",
+	"unloadDescription": "",
+	"unloadExtended": {
+		"extendedHelp": ""
+	},
+	"unloadWarn": "",
+	"supportDescription": "",
+	"supportEmbedDescription": "",
+	"supportEmbedTitle": "",
+	"supportExtended": {
+		"extendedHelp": ""
+	}
+}

@@ -1,0 +1,288 @@
+{
+	"randRedditRequiredReddit": "",
+	"randRedditInvalidArgument": "",
+	"randRedditBanned": "",
+	"randRedditFail": "",
+	"randRedditAllNsfw": "",
+	"randRedditAllNsfl": "",
+	"randRedditMessage": "",
+	"randRedditErrorPrivate": "",
+	"randRedditErrorQuarantined": "",
+	"randRedditErrorNotFound": "",
+	"randRedditErrorBanned": "",
+	"redditUserComplexityLevels": [
+		"zelo nizko",
+		"nizko",
+		"srednje",
+		"visoko",
+		"zelo visoko",
+		"zelo visoko"
+	],
+	"redditUserInvalidUser": "`{{user}}` ni veljavno Reddit uporabniško ime",
+	"redditUserQueryFailed": "",
+	"redditUserTitles": {
+		"linkKarma": "",
+		"commentKarma": "",
+		"totalComments": "",
+		"totalSubmissions": "",
+		"commentControversiality": "",
+		"textComplexity": "",
+		"top5Subreddits": "",
+		"bySubmissions": "",
+		"byComments": "",
+		"bestComment": "",
+		"worstComment": ""
+	},
+	"redditUserData": {
+		"overviewFor": "",
+		"permalink": "",
+		"dataAvailableFor": "",
+		"joinedReddit": ""
+	},
+	"snipeEmpty": "",
+	"snipeTitle": "",
+	"upvoteMessage": "",
+	"vaporwaveOutput": "",
+	"cuddleDescription": "",
+	"cuddleExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"uporabnik",
+				""
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
+	},
+	"deletthisDescription": "",
+	"deletthisExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"uporabnik",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"fDescription": "",
+	"fExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"goodnightDescription": "",
+	"goodnightExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"goofytimeDescription": "",
+	"goofytimeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"hugDescription": "",
+	"hugExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"ineedhealingDescription": "",
+	"ineedhealingExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"randRedditDescription": "",
+	"randRedditExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"redditUserDescription": "",
+	"redditUserExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"shipDescription": "",
+	"shipExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"shipData": {
+		"title": "",
+		"description": ""
+	},
+	"chaseDescription": "",
+	"chaseExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"shindeiruDescription": "",
+	"shindeiruExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"peepoloveDescription": "",
+	"peepoloveExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"slapDescription": "",
+	"slapExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"snipeDescription": "",
+	"snipeExtended": {
+		"extendedHelp": ""
+	},
+	"thesearchDescription": "",
+	"thesearchExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"triggeredDescription": "",
+	"triggeredExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"upvoteDescription": "",
+	"upvoteExtended": {
+		"extendedHelp": ""
+	},
+	"vaporwaveDescription": "",
+	"vaporwaveExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	}
+}

@@ -34,20 +34,20 @@ export class ChannelConfigurationCommand extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		const channelID = channel.id;
 
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			// If it's the same value, throw:
 			if (settings[this.settingsKey] === channelID) {
-				throw language.get(LanguageKeys.Misc.ConfigurationEquals);
+				throw t(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
 			settings[this.settingsKey] = channelID;
 
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(this.responseKey, { channel: channel.toString() }));
+		return message.send(t(this.responseKey, { channel: channel.toString() }));
 	}
 }

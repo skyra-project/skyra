@@ -1,13 +1,13 @@
-import { Permissions, Structures } from 'discord.js';
-import { Language } from 'klasa';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
+import { cast } from '#utils/util';
+import { Message, Permissions, Structures } from 'discord.js';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsChannel')) {
 	public async fetchLanguage() {
-		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild });
-		const language = this.client.languages.get(languageKey);
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ channel: this, guild: this.guild })
+		);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 
 	public get attachable() {
@@ -29,7 +29,7 @@ export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsCha
 
 declare module 'discord.js' {
 	export interface NewsChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<Language>;
+		fetchLanguage(): Promise<string>;
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;

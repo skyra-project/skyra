@@ -1,14 +1,14 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { SelfModerationCommand } from '#lib/structures/SelfModerationCommand';
+import { SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { KeyOfType } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['reaction-mode', 'r-mode'],
-	description: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeExtended)
+	description: LanguageKeys.Commands.Management.ReactionModeDescription,
+	extendedHelp: LanguageKeys.Commands.Management.ReactionModeExtended
 })
 export default class extends SelfModerationCommand {
 	protected $adder: AdderKey = 'reactions';

@@ -3,7 +3,7 @@ import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
-	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommand.Options = {}) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommand.Options) {
 		super(store, file, directory, { ...options, runIn: ['text'] });
 	}
 

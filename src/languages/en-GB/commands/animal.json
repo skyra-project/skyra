@@ -1,0 +1,23 @@
+{
+	"catfactDescription": "Let me tell you a mysterious cat fact.",
+	"catfactExtended": {
+		"extendedHelp": ""
+	},
+	"catfactTitle": "Cat Fact",
+	"dogDescription": "Cute doggos! ❤",
+	"dogExtended": {
+		"extendedHelp": ""
+	},
+	"foxDescription": "Let me show you an image of a fox!",
+	"foxExtended": {
+		"extendedHelp": ""
+	},
+	"kittyDescription": "KITTENS!",
+	"kittyExtended": {
+		"extendedHelp": ""
+	},
+	"shibeDescription": "Cute shibas!",
+	"shibeExtended": {
+		"extendedHelp": ""
+	}
+}

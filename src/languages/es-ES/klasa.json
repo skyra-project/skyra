@@ -1,0 +1,16 @@
+{
+	"commandMessageMissing": "Faltan uno o más argumentos requeridos después del final de la entrada.",
+	"commandMessageMissingOptionals": "Falta una opción requerida: ({{possibles}})",
+	"commandMessageMissingRequired": "{{name}} es un argumento requerido.",
+	"commandMessageNoMatch": "Tu opción no coincide con ninguna de las posibilidades: ({{possibles}})",
+	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
+	"monitorCommandHandlerAborted": "Cancelado",
+	"monitorCommandHandlerRepeatingReprompt": "{{tag}} | **{{name}}** es un argumento repetitivo | Tienes **{{time}}** segundos para responder a este prompt con argumentos válidos adicionales. Escribe **{{cancelOptions}}** para cancelar esta petición.",
+	"monitorCommandHandlerReprompt": "{{tag}} | **{{name}}** | Tienes **{{time}}** segundos para responder a este mensaje con un argumento válido. Escribe **{{cancelOptions}}** para abortar esta petición.",
+	"reactionhandlerPrompt": "¿A qué página le gustaría saltar?",
+	"textPromptAbortOptions": [
+		"abortar",
+		"cancelar",
+		"parar"
+	]
+}

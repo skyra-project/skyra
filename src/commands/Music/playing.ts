@@ -9,7 +9,8 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['np', 'nowplaying'],
-	description: (language) => language.get(LanguageKeys.Commands.Music.PlayingDescription),
+	description: LanguageKeys.Commands.Music.PlayingDescription,
+	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends MusicCommand {
@@ -20,7 +21,7 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 
 		const entry = await audio.getCurrentTrack();
-		if (!entry) throw await message.fetchLocale(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		if (!entry) throw await message.resolveKey(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
 		const embed = await this.getMessageEmbed(message, track);
@@ -33,7 +34,7 @@ export default class extends MusicCommand {
 			.setTitle(track.title)
 			.setURL(track.uri)
 			.setAuthor(track.author)
-			.setDescription(await message.fetchLocale(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
+			.setDescription(await message.resolveKey(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(track.uri, track.identifier);

@@ -10,19 +10,19 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['escape'],
 	bucket: 2,
 	cooldown: 60,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.EscaperopeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.EscaperopeExtended)
+	description: LanguageKeys.Commands.Fun.EscapeRopeDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		if (message.deletable) await message.nuke().catch(() => null);
-		const language = await message.fetchLanguage();
 
+		const t = await message.fetchT();
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)
-				.setDescription(language.get(LanguageKeys.Commands.Fun.EscaperopeOutput, { user: message.author.toString() }))
+				.setDescription(t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))
 				.setAuthor(
 					message.member?.displayName ?? message.author.username,
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

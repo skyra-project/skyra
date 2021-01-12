@@ -7,7 +7,8 @@ import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Language, Monitor } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
@@ -52,7 +53,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		);
 	}
 
-	protected processSoftPunishment(message: GuildMessage, language: Language, bitField: SelfModeratorBitField, preProcessed: T) {
+	protected processSoftPunishment(message: GuildMessage, language: TFunction, bitField: SelfModeratorBitField, preProcessed: T) {
 		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
 			floatPromise(this, this.onDelete(message, language, preProcessed) as any);
 		}
@@ -66,7 +67,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		}
 	}
 
-	protected async processHardPunishment(message: GuildMessage, language: Language, points: number, maximum: number) {
+	protected async processHardPunishment(message: GuildMessage, language: TFunction, points: number, maximum: number) {
 		const [action, duration] = await message.guild.readSettings([this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
 		switch (action) {
 			case SelfModeratorHardActionFlags.Warning:
@@ -87,73 +88,58 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		}
 	}
 
-	protected async onWarning(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
+	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason:
-					maximum === 0
-						? language.get(this.reasonLanguageKey)
-						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
 		);
 	}
 
-	protected async onKick(message: GuildMessage, language: Language, points: number, maximum: number) {
+	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason:
-					maximum === 0
-						? language.get(this.reasonLanguageKey)
-						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 			})
 		);
 	}
 
-	protected async onMute(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
+	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason:
-					maximum === 0
-						? language.get(this.reasonLanguageKey)
-						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
 		);
 	}
 
-	protected async onSoftBan(message: GuildMessage, language: Language, points: number, maximum: number) {
+	protected async onSoftBan(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.softBan(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason:
-						maximum === 0
-							? language.get(this.reasonLanguageKey)
-							: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
 				1
 			)
 		);
 	}
 
-	protected async onBan(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
+	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.ban(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason:
-						maximum === 0
-							? language.get(this.reasonLanguageKey)
-							: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 					duration
 				},
 				0
@@ -167,7 +153,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		unlock();
 	}
 
-	protected onLog(message: GuildMessage, language: Language, value: T): Awaited<void> {
+	protected onLog(message: GuildMessage, language: TFunction, value: T): Awaited<void> {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, language, value));
 	}
 
@@ -181,9 +167,9 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 
 	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;
-	protected abstract onDelete(message: GuildMessage, language: Language, value: T): Awaited<unknown>;
-	protected abstract onAlert(message: GuildMessage, language: Language, value: T): Awaited<unknown>;
-	protected abstract onLogMessage(message: GuildMessage, language: Language, value: T): Awaited<MessageEmbed>;
+	protected abstract onDelete(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
+	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
+	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaited<MessageEmbed>;
 
 	private checkPreRun(message: GuildMessage) {
 		return message.guild.readSettings(

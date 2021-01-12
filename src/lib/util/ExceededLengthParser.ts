@@ -12,7 +12,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'file': {
 			if (message.channel.attachable) {
 				return message.channel.send(
-					await message.fetchLocale(
+					await message.resolveKey(
 						options.time !== undefined && options.footer !== undefined
 							? LanguageKeys.System.ExceededLengthOutputFileWithTypeAndTime
 							: LanguageKeys.System.ExceededLengthOutputFile,
@@ -37,7 +37,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			if (!options.url)
 				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
 			if (options.url)
-				return message.sendLocale(
+				return message.sendTranslated(
 					options.time !== undefined && options.footer !== undefined
 						? LanguageKeys.System.ExceededLengthOutputHastebinWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputHastebin,
@@ -51,7 +51,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'log': {
 			if (options.canLogToConsole) {
 				message.client.emit(Events.Log, options.result);
-				return message.sendLocale(
+				return message.sendTranslated(
 					options.time !== undefined && options.footer !== undefined
 						? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputConsole,
@@ -78,7 +78,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					{ code: 'md' }
 				);
 			}
-			return message.sendLocale(
+			return message.sendTranslated(
 				options.success
 					? options.time !== undefined && options.footer !== undefined
 						? LanguageKeys.System.ExceededLengthOutputWithTypeAndTime
@@ -105,7 +105,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message
-			.prompt(await message.fetchLocale(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
+			.prompt(await message.resolveKey(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
 			.catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();

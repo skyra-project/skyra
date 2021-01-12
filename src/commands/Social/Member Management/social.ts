@@ -9,8 +9,8 @@ import { User } from 'discord.js';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Social.SocialDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.SocialExtended),
+	description: LanguageKeys.Commands.Social.SocialDescription,
+	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -35,9 +35,7 @@ export default class extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, [
-				{ user: user.username, amount: newAmount, count: amount }
-			]);
+			return message.sendTranslated(LanguageKeys.Commands.Social.SocialAdd, [{ user: user.username, amount: newAmount, count: amount }]);
 		}
 
 		const created = new MemberEntity();
@@ -46,23 +44,19 @@ export default class extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, [
-			{ user: user.username, amount, count: amount }
-		]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.SocialAdd, [{ user: user.username, amount, count: amount }]);
 	}
 
 	public async remove(message: GuildMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
-		if (!settings) throw await message.fetchLocale(LanguageKeys.Commands.Social.SocialMemberNotexists);
+		if (!settings) throw await message.resolveKey(LanguageKeys.Commands.Social.SocialMemberNotExists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialRemove : LanguageKeys.Commands.Social.SocialRemovePlural, [
-			{ user: user.username, amount: newAmount, count: amount }
-		]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.SocialRemove, [{ user: user.username, amount: newAmount, count: amount }]);
 	}
 
 	public async set(message: GuildMessage, [user, amount]: [User, number]) {
@@ -85,17 +79,17 @@ export default class extends SkyraCommand {
 		}
 
 		const variation = amount - oldValue;
-		const language = await message.fetchLanguage();
-		if (variation === 0) return language.get(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
+		const t = await message.fetchT();
+		if (variation === 0) return t(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
 
 		return message.send(
 			variation > 0
-				? language.get(variation === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, {
+				? t(LanguageKeys.Commands.Social.SocialAdd, {
 						user: user.username,
 						amount,
 						count: variation
 				  })
-				: language.get(variation === -1 ? LanguageKeys.Commands.Social.SocialRemove : LanguageKeys.Commands.Social.SocialRemovePlural, {
+				: t(LanguageKeys.Commands.Social.SocialRemove, {
 						user: user.username,
 						amount,
 						count: -variation
@@ -106,6 +100,6 @@ export default class extends SkyraCommand {
 	public async reset(message: GuildMessage, [user]: [User]) {
 		const { members } = await DbSet.connect();
 		await members.delete({ userID: user.id, guildID: message.guild.id });
-		return message.sendLocale(LanguageKeys.Commands.Social.SocialReset, [{ user: user.username }]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.SocialReset, [{ user: user.username }]);
 	}
 }

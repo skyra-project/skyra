@@ -9,19 +9,19 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['chucknorris'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.NorrisDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.NorrisExtended),
+	description: LanguageKeys.Commands.Fun.NorrisDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.NorrisExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(language.get(LanguageKeys.Commands.Fun.NorrisOutput))
+				.setTitle(t(LanguageKeys.Commands.Fun.NorrisOutput))
 				.setURL(data.url)
 				.setThumbnail(data.icon_url)
 				.setDescription(data.value)

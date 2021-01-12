@@ -14,8 +14,8 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
-	description: (language) => language.get(LanguageKeys.Commands.Google.GimageDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GimageExtended),
+	description: LanguageKeys.Commands.Google.GimageDescription,
+	extendedHelp: LanguageKeys.Commands.Google.GimageExtended,
 	usage: '<query:query>'
 })
 @CreateResolvers([
@@ -29,13 +29,13 @@ import { MessageEmbed } from 'discord.js';
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const [response, { items }] = await Promise.all([
-			message.send(new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
+			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
-		if (!items || !items.length) throw language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw t(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

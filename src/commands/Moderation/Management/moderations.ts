@@ -15,43 +15,36 @@ import { MessageEmbed, User } from 'discord.js';
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsExtended),
+	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
 
-		if (!entries.size) throw language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(
-					language.get(
-						entries.size === 1
-							? LanguageKeys.Commands.Moderation.ModerationsAmount
-							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
-						{ count: entries.size }
-					)
-				)
+				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		);
 
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
 
 		// Set up the formatter
-		const durationDisplay = language.duration.bind(language);
+		const durationDisplay = (value: number) => t(LanguageKeys.Globals.DurationValue, { value });
 		const displayName = action === 'all';
 		const format = target
 			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)

@@ -7,15 +7,18 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Announcement.SubscribeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Announcement.SubscribeExtended),
+	description: LanguageKeys.Commands.Announcement.SubscribeDescription,
+	extendedHelp: LanguageKeys.Commands.Announcement.SubscribeExtended,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	runIn: ['text']
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage) {
 		const role = await announcementCheck(message);
-		const allRoleSets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
+		const [allRoleSets, t] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Roles.UniqueRoleSets],
+			settings.getLanguage()
+		]);
 
 		// Get all the role ids that the member has and remove the guild id so we don't assign the everyone role
 		const memberRolesSet = new Set(message.member.roles.cache.keys());
@@ -33,6 +36,6 @@ export default class extends SkyraCommand {
 
 		await message.member.roles.set([...memberRolesSet]);
 
-		return message.sendLocale(LanguageKeys.Commands.Announcement.SubscribeSuccess, [{ role: role.name }]);
+		return message.send(t(LanguageKeys.Commands.Announcement.SubscribeSuccess, [{ role: role.name }]));
 	}
 }

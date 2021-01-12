@@ -3,16 +3,16 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const guild = this.client.guilds.cache.get(value);
 		if (guild) return this.ok(guild.id);
-		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidGuild, { name: context.entry.name }));
+		return this.error(t(LanguageKeys.Resolvers.InvalidGuild, { name: entry.name }));
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
 		const guild = this.client.guilds.cache.get(value);
 		if (!guild) {
-			throw context.language.get(LanguageKeys.Resolvers.InvalidGuild, { name: context.entry.name });
+			throw t(LanguageKeys.Resolvers.InvalidGuild, { name: entry.name });
 		}
 
 		return true;

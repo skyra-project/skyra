@@ -9,13 +9,13 @@ import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, sea
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.FFXIVDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.FFXIVExtended),
+	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
+	extendedHelp: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
 	flagSupport: true,
 	subcommands: true,
 	usage: '<item|character:default> <search:...string>',
@@ -23,51 +23,51 @@ import { Language } from 'klasa';
 })
 export default class extends RichDisplayCommand {
 	public async character(message: GuildMessage, [name]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const characterDetails = await this.fetchCharacter(language, name, Reflect.get(message.flagArgs, 'server'));
-		const display = await this.buildCharacterDisplay(message, language, characterDetails.Character);
+		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
+		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	public async item(message: GuildMessage, [item]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const itemDetails = await this.fetchItems(language, item);
-		const display = await this.buildItemDisplay(message, language, itemDetails);
+		const itemDetails = await this.fetchItems(t, item);
+		const display = await this.buildItemDisplay(message, t, itemDetails);
 
 		await display.start(response, message.author.id);
 
 		return response;
 	}
 
-	private async fetchCharacter(language: Language, name: string, server?: string) {
-		const searchResult = await searchCharacter(language, name, server);
+	private async fetchCharacter(t: TFunction, name: string, server?: string) {
+		const searchResult = await searchCharacter(t, name, server);
 
-		if (!searchResult.Results.length) throw language.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		if (!searchResult.Results.length) throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 
-		return getCharacterDetails(language, searchResult.Results[0].ID);
+		return getCharacterDetails(t, searchResult.Results[0].ID);
 	}
 
-	private async fetchItems(i18n: Language, item: string) {
-		const searchResult = await searchItem(i18n, item);
+	private async fetchItems(t: TFunction, item: string) {
+		const searchResult = await searchItem(t, item);
 
-		if (!searchResult.Results.length) throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
+		if (!searchResult.Results.length) throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
 
 		return searchResult.Results;
 	}
 
-	private async buildCharacterDisplay(message: GuildMessage, language: Language, character: FFXIV.Character) {
+	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: FFXIV.Character) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -78,7 +78,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const titles = language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
+		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -139,8 +139,8 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
-	private async buildItemDisplay(message: GuildMessage, language: Language, items: FFXIV.ItemSearchResult[]) {
-		const titles = language.get(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
+	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: FFXIV.ItemSearchResult[]) {
+		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

@@ -1,6 +1,7 @@
 {
 	"extends": "@sapphire",
 	"rules": {
+		"@typescript-eslint/no-base-to-string": 0,
 		"@typescript-eslint/no-throw-literal": 0,
 		"@typescript-eslint/restrict-plus-operands": 0,
 		"@typescript-eslint/naming-convention": 0

@@ -10,7 +10,7 @@ import { pickRandom } from '#utils/util';
 import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 const kPokemonTypes = new Set([
 	'bug',
@@ -36,8 +36,8 @@ const kPokemonTypes = new Set([
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Pokemon.TypeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.TypeExtended),
+	description: LanguageKeys.Commands.Pokemon.TypeDescription,
+	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended,
 	usage: '<types:type{2}>'
 })
 @CreateResolvers([
@@ -46,10 +46,10 @@ const kPokemonTypes = new Set([
 		async (arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
-			if (arg.length > 2) throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
+			if (arg.length > 2) throw await message.resolveKey(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
+				if (!kPokemonTypes.has(type)) throw await message.resolveKey(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
 			}
 
 			return arg;
@@ -58,24 +58,24 @@ const kPokemonTypes = new Set([
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [types]: [Types[]]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const typeMatchups = await this.fetchAPI(types, language);
+		const typeMatchups = await this.fetchAPI(types, t);
 
-		const display = await this.buildDisplay(message, types, typeMatchups, language);
+		const display = await this.buildDisplay(message, types, typeMatchups, t);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(types: Types[], language: Language) {
+	private async fetchAPI(types: Types[], t: TFunction) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
-				types: types.map((val) => `\`${val}\``).join(` ${language.get(LanguageKeys.Globals.And)} `)
+			throw t(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
+				types: types.map((val) => `\`${val}\``)
 			});
 		}
 	}
@@ -100,9 +100,9 @@ export default class extends RichDisplayCommand {
 		return regularMatchup.map((type) => `\`${type}\``).join(', ');
 	}
 
-	private async buildDisplay(message: GuildMessage, types: Types[], typeMatchups: TypeMatchups, language: Language) {
-		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
-		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
+	private async buildDisplay(message: GuildMessage, types: Types[], typeMatchups: TypeMatchups, t: TFunction) {
+		const embedTranslations = t(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
+		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
 			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,

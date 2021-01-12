@@ -13,8 +13,8 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 	bucket: 2,
 	cooldown: 5,
 	cooldownLevel: 'channel',
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.SlowmodeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.SlowmodeExtended),
+	description: LanguageKeys.Commands.Moderation.SlowmodeDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_CHANNELS'],
 	runIn: ['text'],
@@ -25,12 +25,14 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 ])
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [cooldown]: ['reset' | 'off' | number]) {
+		const t = await message.fetchT();
+
 		if (cooldown === 'reset' || cooldown === 'off' || cooldown < 0) cooldown = 0;
-		else if (cooldown > MAXIMUM_TIME) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.SlowmodeTooLong);
+		else if (cooldown > MAXIMUM_TIME) throw t(LanguageKeys.Commands.Moderation.SlowmodeTooLong);
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
 		return cooldown === 0
-			? message.sendLocale(LanguageKeys.Commands.Moderation.SlowmodeReset)
-			: message.sendLocale(LanguageKeys.Commands.Moderation.SlowmodeSet, [{ cooldown: cooldown * 1000 }]);
+			? message.send(t(LanguageKeys.Commands.Moderation.SlowmodeReset))
+			: message.send(t(LanguageKeys.Commands.Moderation.SlowmodeSet, { cooldown: cooldown * 1000 }));
 	}
 }

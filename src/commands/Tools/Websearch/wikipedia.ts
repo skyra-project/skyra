@@ -4,31 +4,32 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes, isImageURL } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['wiki'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.WikipediaDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.WikipediaExtended),
+	description: LanguageKeys.Commands.Tools.WikipediaDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<query:string>'
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const language = await message.fetchLanguage();
-		const text = await this.fetchText(input, language);
+		const t = await message.fetchT();
+		const text = await this.fetchText(input, t);
 
 		// Only fetch images if the channel is NSFW permitted
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
+			throw t(LanguageKeys.Commands.Tools.WikipediaNotFound);
 		}
 
 		const pageInformation = text.query.pages[text.query.pageids[0]];
 		const pageUrl = `https://en.wikipedia.org/wiki/${this.parseURL(pageInformation.title)}`;
-		const definition = this.content(pageInformation.extract, pageUrl, language);
+		const definition = this.content(pageInformation.extract, pageUrl, t);
 
 		const embed = new MessageEmbed()
 			.setTitle(pageInformation.title)
@@ -51,7 +52,7 @@ export default class extends SkyraCommand {
 		return message.send(embed);
 	}
 
-	private async fetchText(input: string, language: Language) {
+	private async fetchText(input: string, t: TFunction) {
 		try {
 			const url = this.getBaseUrl(input);
 			url.searchParams.append('prop', 'extracts');
@@ -61,7 +62,7 @@ export default class extends SkyraCommand {
 
 			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -94,9 +95,9 @@ export default class extends SkyraCommand {
 		return encodeURIComponent(url.replace(/[ ]/g, '_').replace(/\(/g, '%28').replace(/\)/g, '%29'));
 	}
 
-	private content(definition: string, url: string, language: Language) {
+	private content(definition: string, url: string, t: TFunction) {
 		if (definition.length < 300) return definition;
-		return language.get(LanguageKeys.Misc.SystemTextTruncated, { definition, url });
+		return t(LanguageKeys.Misc.SystemTextTruncated, { definition, url });
 	}
 }
 

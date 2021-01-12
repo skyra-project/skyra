@@ -1,0 +1,5 @@
+{
+	"invalid": "{{name}} must be a number or a range of numbers.",
+	"max_plural": "{{name}} accepts a range of maximum {{maximum}} numbers",
+	"max": "{{name}} accepts a range of maximum {{maximum}} number"
+}

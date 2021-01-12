@@ -3,7 +3,8 @@ import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
-import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
+import type { TFunction } from 'i18next';
+import { AliasPiece, constants, MentionRegex } from 'klasa';
 
 export interface Ok<T> {
 	success: true;
@@ -75,11 +76,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param entry The schema entry that manages the key
 	 * @param language The language that is used for this context
 	 */
-	protected minOrMax(
-		value: T,
-		length: number,
-		{ entry: { minimum, maximum, inclusive, name }, language }: SerializerUpdateContext
-	): SerializerResult<T> {
+	protected minOrMax(value: T, length: number, { entry: { minimum, maximum, inclusive, name }, t }: SerializerUpdateContext): SerializerResult<T> {
 		if (minimum !== null && maximum !== null) {
 			if ((length >= minimum && length <= maximum && inclusive) || (length > minimum && length < maximum && !inclusive)) {
 				return this.ok(value);
@@ -87,7 +84,7 @@ export abstract class Serializer<T> extends AliasPiece {
 
 			if (minimum === maximum) {
 				return this.error(
-					language.get(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
+					t(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
 						name,
 						min: minimum
 					})
@@ -95,7 +92,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
 					name,
 					min: minimum,
 					max: maximum
@@ -109,7 +106,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
 					name,
 					min: minimum
 				})
@@ -122,7 +119,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
 					name,
 					max: maximum
 				})
@@ -142,5 +139,5 @@ export interface SerializerUpdateContext {
 	entry: SchemaKey;
 	entity: GuildEntity;
 	guild: Guild;
-	language: Language;
+	t: TFunction;
 }

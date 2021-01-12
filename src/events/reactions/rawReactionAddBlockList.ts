@@ -75,13 +75,13 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
 			this,
-			data.channel.sendLocale(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
+			data.channel.sendTranslated(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
 		const user = await this.client.users.fetch(data.userID);
-		const language = await data.guild.fetchLanguage();
+		const t = await data.guild.fetchT();
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -90,10 +90,8 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 					? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name!)}.png`
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
-			.setDescription(
-				`[${language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
-			)
-			.setFooter(`${data.channel.name} | ${language.get(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
+			.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
+			.setFooter(`${data.channel.name} | ${t(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
 			.setTimestamp();
 	}
 

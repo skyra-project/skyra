@@ -1,31 +1,29 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, version } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { cpus, uptime } from 'os';
+import { KlasaMessage } from 'klasa';
+import { CpuInfo, cpus, uptime } from 'os';
 
-export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['stats', 'sts'],
-			bucket: 2,
-			cooldown: 15,
-			description: (language) => language.get(LanguageKeys.Commands.System.StatsDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.StatsExtended),
-			requiredPermissions: ['EMBED_LINKS']
-		});
-	}
-
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['stats', 'sts'],
+	bucket: 2,
+	cooldown: 15,
+	description: LanguageKeys.Commands.System.StatsDescription,
+	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
+	requiredPermissions: ['EMBED_LINKS']
+})
+export default class UserCommand extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		return message.send(await this.buildEmbed(message));
 	}
 
 	private async buildEmbed(message: KlasaMessage) {
-		const language = await message.fetchLanguage();
-		const titles = language.get(LanguageKeys.Commands.System.StatsTitles);
-		const fields = language.get(LanguageKeys.Commands.System.StatsFields, {
+		const t = await message.fetchT();
+		const titles = t(LanguageKeys.Commands.System.StatsTitles);
+		const fields = t(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
 			usage: this.usageStatistics
@@ -39,10 +37,10 @@ export default class extends SkyraCommand {
 
 	private get generalStatistics(): StatsGeneral {
 		return {
-			channels: this.client.channels.cache.size.toLocaleString(),
-			guilds: this.client.guilds.cache.size.toLocaleString(),
+			channels: this.client.channels.cache.size,
+			guilds: this.client.guilds.cache.size,
 			nodeJs: process.version,
-			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0),
 			version: `v${version}`
 		};
 	}
@@ -58,18 +56,22 @@ export default class extends SkyraCommand {
 	private get usageStatistics(): StatsUsage {
 		const usage = process.memoryUsage();
 		return {
-			cpuLoad: cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100),
-			ramTotal: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
-			ramUsed: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
+			cpuLoad: cpus().map(UserCommand.formatCpuInfo.bind(null)).join(' | '),
+			ramTotal: usage.heapTotal / 1048576,
+			ramUsed: usage.heapUsed / 1048576
 		};
+	}
+
+	private static formatCpuInfo({ times }: CpuInfo) {
+		return `${roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100}%`;
 	}
 }
 
 export interface StatsGeneral {
-	channels: string;
-	guilds: string;
+	channels: number;
+	guilds: number;
 	nodeJs: string;
-	users: string;
+	users: number;
 	version: string;
 }
 
@@ -80,7 +82,7 @@ export interface StatsUptime {
 }
 
 export interface StatsUsage {
-	cpuLoad: number[];
-	ramTotal: string;
-	ramUsed: string;
+	cpuLoad: string;
+	ramTotal: number;
+	ramUsed: number;
 }

@@ -13,8 +13,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get(LanguageKeys.Commands.Misc.ThesearchDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ThesearchExtended),
+			description: LanguageKeys.Commands.Misc.TheSearchDescription,
+			extendedHelp: LanguageKeys.Commands.Misc.TheSearchExtended,
 			requiredPermissions: ['ATTACH_FILES'],
 			spam: true,
 			usage: '<text:string>'

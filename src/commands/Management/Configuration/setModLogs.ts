@@ -4,9 +4,9 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ChannelConfigurationCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Management.SetModerationLogsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetModerationLogsExtended),
-	responseKey: LanguageKeys.Commands.Management.SetModLogsSet,
+	description: LanguageKeys.Commands.Management.SetModerationLogsDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetModerationLogsExtended,
+	responseKey: LanguageKeys.Commands.Management.SetModerationLogsSet,
 	settingsKey: GuildSettings.Channels.ModerationLogs
 })
 export default class extends ChannelConfigurationCommand {}

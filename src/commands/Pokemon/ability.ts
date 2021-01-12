@@ -6,28 +6,29 @@ import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } fro
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Pokemon.AbilityDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.AbilityExtended),
+	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
+	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<ability:str>'
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
-		const language = await message.fetchLanguage();
-		const abilityDetails = await this.fetchAPI(language, ability.toLowerCase());
-		const embedTitles = language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
+		const t = await message.fetchT();
+		const abilityDetails = await this.fetchAPI(t, ability.toLowerCase());
+		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(`${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
 			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 			.addField(
-				language.get(LanguageKeys.System.PokedexExternalResource),
+				t(LanguageKeys.System.PokedexExternalResource),
 				[
 					`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
 					`[Serebii](${abilityDetails.serebiiPage})`,
@@ -42,12 +43,12 @@ export default class extends SkyraCommand {
 		return message.send(embed);
 	}
 
-	private async fetchAPI(language: Language, ability: string) {
+	private async fetchAPI(t: TFunction, ability: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
+			throw t(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

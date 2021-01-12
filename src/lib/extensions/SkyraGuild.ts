@@ -5,9 +5,11 @@ import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
 import { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
+import { cast } from '#utils/util';
+import { Primitive } from '@sapphire/utilities';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
-import { Guild, Structures } from 'discord.js';
-import type { Language } from 'klasa';
+import { Message, Structures } from 'discord.js';
+import { TFunction } from 'i18next';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
@@ -19,15 +21,19 @@ export class SkyraGuild extends Structures.get('Guild') {
 		return this.client.audio.queues!.get(this.id);
 	}
 
-	public fetchLanguage(this: Guild): Promise<Language> {
-		return this.readSettings((entity) => this.client.languages.get(entity.language)!);
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ guild: this, channel: null })
+		);
+		return lang ?? this.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 
-	public fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-	public fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
-	public async fetchLocale(value: any, args?: any) {
-		const language = await this.fetchLanguage();
-		return language.get(value, args);
+	public async fetchT(): Promise<TFunction> {
+		return this.client.i18n.fetchT(await this.fetchLanguage());
+	}
+
+	public async resolveKey(key: string, ...values: readonly any[]): Promise<string> {
+		return this.client.i18n.fetchLocale(await this.fetchLanguage(), key, ...values);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -48,7 +54,14 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly stickyRoles: StickyRoleManager;
-		fetchLanguage(): Promise<Language>;
+
+		fetchLanguage(): Promise<string>;
+		fetchT(): Promise<TFunction>;
+		resolveKey<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+		resolveKey<K extends string, TArgs, TReturn>(
+			value: CustomFunctionGet<K, TArgs, TReturn>,
+			args: TArgs
+		): Promise<TReturn extends Primitive | any[] ? TReturn : never>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;
@@ -154,9 +167,6 @@ declare module 'discord.js' {
 		): Promise<void>;
 		writeSettings<K extends keyof T>(pairs: readonly [K, T[K]][]): Promise<void>;
 		writeSettings<R>(cb: SettingsCollectionCallback<T, R>): Promise<R>;
-
-		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 
 		_patch(data: GatewayGuildCreateDispatch['d'] & { shardID: number }): void;
 	}

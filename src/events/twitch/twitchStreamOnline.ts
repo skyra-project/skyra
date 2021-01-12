@@ -7,7 +7,8 @@ import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event } from 'klasa';
 
 export default class extends Event {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
@@ -31,7 +32,7 @@ export default class extends Event {
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
-			const [allSubscriptions, language] = await guild.readSettings((settings) => [
+			const [allSubscriptions, t] = await guild.readSettings((settings) => [
 				settings[GuildSettings.Notifications.Stream.Twitch.Streamers],
 				settings.getLanguage()
 			]);
@@ -62,9 +63,9 @@ export default class extends Event {
 						const embedData = this.transformTextToObject(data, game);
 
 						// Construct a message embed and send it.
-						floatPromise(this, channel.send(this.buildEmbed(embedData, language)));
+						floatPromise(this, channel.send(this.buildEmbed(embedData, t)));
 					} else {
-						const message = this.transformTextToString(subscription.message, data, language, game);
+						const message = this.transformTextToString(subscription.message, data, t, game);
 						floatPromise(this, channel.send(message));
 					}
 				}
@@ -76,7 +77,7 @@ export default class extends Event {
 		return response.ok();
 	}
 
-	private transformTextToString(source: string, notification: PostStreamBodyData, i18n: Language, game?: TwitchHelixGameSearchResult) {
+	private transformTextToString(source: string, notification: PostStreamBodyData, t: TFunction, game?: TwitchHelixGameSearchResult) {
 		return source.replace(TWITCH_REPLACEABLES_REGEX, (match) => {
 			switch (match) {
 				case TWITCH_REPLACEABLES_MATCHES.ID:
@@ -86,7 +87,7 @@ export default class extends Event {
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
 					return notification.viewer_count.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					return game?.name ?? i18n.get(LanguageKeys.Notifications.TwitchNoGameName);
+					return game?.name ?? t(LanguageKeys.Notifications.TwitchNoGameName);
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
 					return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
@@ -117,17 +118,17 @@ export default class extends Event {
 		};
 	}
 
-	private buildEmbed(data: TwitchOnlineEmbedData, i18n: Language) {
+	private buildEmbed(data: TwitchOnlineEmbedData, t: TFunction) {
 		return new MessageEmbed()
 			.setThumbnail(data.thumbnail_url)
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.user_name}`)
 			.setDescription(
 				data.game_name
-					? i18n.get(LanguageKeys.Notifications.TwitchEmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
-					: i18n.get(LanguageKeys.Notifications.TwitchEmbedDescription, { userName: data.user_name })
+					? t(LanguageKeys.Notifications.TwitchEmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
+					: t(LanguageKeys.Notifications.TwitchEmbedDescription, { userName: data.user_name })
 			)
-			.setFooter(i18n.get(LanguageKeys.Notifications.TwitchEmbedFooter))
+			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp(data.started_at)
 			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');

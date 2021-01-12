@@ -1,0 +1,31 @@
+{
+	"yarnDescription": "",
+	"yarnExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"yarnEmbedDescriptionAuthor": "❯ Автор: {{author}}",
+	"yarnEmbedDescriptionDateCreated": "❯ Дата создания: **{{dateCreated}}**",
+	"yarnEmbedDescriptionDateModified": "❯ Дата изменения: **{{dateModified}}**",
+	"yarnEmbedDescriptionDependenciesLabel": "__*Зависимости:*__",
+	"yarnEmbedDescriptionDependenciesNoDeps": "Нет зависимостей {{GREENTICK}}!",
+	"yarnEmbedDescriptionDeprecated": "",
+	"yarnEmbedDescriptionLatestVersion": "❯ Последняя версия: **{{latestVersionNumber}}**",
+	"yarnEmbedDescriptionLicense": "❯ Лицензия: **{{license}}**",
+	"yarnEmbedDescriptionMainFile": "",
+	"yarnEmbedDescriptionMaintainers": "",
+	"yarnEmbedMoreText": "",
+	"yarnNoPackage": "",
+	"yarnPackageNotFound": "",
+	"yarnUnpublishedPackage": ""
+}

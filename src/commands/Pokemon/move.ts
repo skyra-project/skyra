@@ -11,41 +11,41 @@ import { MoveEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveExtended),
+	description: LanguageKeys.Commands.Pokemon.MoveDescription,
+	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended,
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [move]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const moveData = await this.fetchAPI(move.toLowerCase(), language);
+		const moveData = await this.fetchAPI(move.toLowerCase(), t);
 
-		const display = await this.buildDisplay(message, moveData, language);
+		const display = await this.buildDisplay(message, moveData, t);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(move: string, language: Language) {
+	private async fetchAPI(move: string, t: TFunction) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
+			throw t(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, moveData: MoveEntry, language: Language) {
-		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
-			availableInGen8: language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
+	private async buildDisplay(message: GuildMessage, moveData: MoveEntry, t: TFunction) {
+		const embedTranslations = t(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
+			availableInGen8: t(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
-		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
+		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,

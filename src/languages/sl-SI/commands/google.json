@@ -1,0 +1,86 @@
+{
+	"currentTimeDescription": "",
+	"currentTimeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"location",
+				""
+			]
+		],
+		"examples": [
+			"Antarktika",
+			"Arizona"
+		]
+	},
+	"currentTimeLocationNotFound": "",
+	"currentTimeTitles": {
+		"currentTime": "Trenutni Čas",
+		"currentDate": "Trenutni Datum",
+		"country": "Država",
+		"gmsOffset": "GMT Odmik",
+		"dst": ""
+	},
+	"currentTimeDst": "",
+	"currentTimeNoDst": "",
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"Discord",
+			"Skyra"
+		]
+	},
+	"gimageDescription": "",
+	"gimageExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"Discord",
+			"Skyra"
+		],
+		"reminder": ""
+	},
+	"lmgtfyDescription": "",
+	"lmgtfyExtended": {
+		"explainedUsage": [
+			[
+				"query",
+				""
+			]
+		]
+	},
+	"lmgtfyClick": "",
+	"weatherDescription": "",
+	"weatherExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"city",
+				""
+			]
+		],
+		"examples": [
+			"Antarktika",
+			"Arizona"
+		],
+		"reminder": ""
+	},
+	"errorZeroResults": "",
+	"errorRequestDenied": "",
+	"errorInvalidRequest": "",
+	"errorOverQueryLimit": "",
+	"errorPermissionDenied": "",
+	"errorUnknown": ""
+}

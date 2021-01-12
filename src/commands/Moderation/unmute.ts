@@ -8,8 +8,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['um'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.UnmuteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.UnmuteExtended),
+	description: LanguageKeys.Commands.Moderation.UnmuteDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.UnmuteExtended,
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 		if (message.command !== this || message.guild === null) return false;
 		const id = await message.guild.readSettings(this.kPath);
 		if (id && message.guild.roles.cache.has(id)) return false;
-		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
+		throw await message.resolveKey(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
 			prefix: await message.guild.readSettings(GuildSettings.Prefix),
 			path: this.kPath
 		});

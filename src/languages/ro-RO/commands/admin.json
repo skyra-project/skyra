@@ -1,0 +1,96 @@
+{
+	"blocklistDescription": "",
+	"blocklistExtended": {
+		"extendedHelp": ""
+	},
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
+	"confNoKey": "Trebuie să furnizați o cheie",
+	"confNoValue": "Trebuie să furnizați o valoare",
+	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
+	"confUpdated": "S-a actualizat cu succes cheia **{{key}}**: `{{response}}`",
+	"confKeyNotArray": "Această cheie nu este o listă. Utilizați în schimb acțiunea \"reset\".",
+	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
+	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
+	"confReset": "Cheia **{{key}}** a fost resetată la: `{{value}}`",
+	"confNochange": "Cheia **{{key}}** are deja această valoare.",
+	"confServerDescription": "",
+	"confServerExtended": {
+		"extendedHelp": ""
+	},
+	"confServer": "",
+	"confUserDescription": "",
+	"confDashboardOnlyKey": "",
+	"confUser": "",
+	"confSettingNotSet": "",
+	"heapSnapshotDescription": "",
+	"heapSnapshotExtended": {
+		"extendedHelp": ""
+	},
+	"rolesetDescription": "",
+	"rolesetExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetInvalidName": "",
+	"rolesetRemoved": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "",
+	"rolesetResetNotExists": "",
+	"rolesetResetGroup": "",
+	"rolesetUpdated": "",
+	"rolesetNoRolesets": "",
+	"confMenuNopermissions": "",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderTctitle": "",
+	"confMenuRenderUpdate": "",
+	"confMenuRenderRemove": "",
+	"confMenuRenderReset": "",
+	"confMenuRenderUndo": "",
+	"confMenuRenderCvalue": "",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": "",
+	"updateDescription": "",
+	"updateExtended": {
+		"extendedHelp": ""
+	}
+}

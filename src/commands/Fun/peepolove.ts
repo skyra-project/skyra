@@ -12,8 +12,8 @@ import { join } from 'path';
 	aliases: ['pepelove'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveExtended),
+	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<image:image>'

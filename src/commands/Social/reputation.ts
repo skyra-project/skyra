@@ -13,8 +13,8 @@ export default class extends SkyraCommand {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get(LanguageKeys.Commands.Social.ReputationDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ReputationExtended),
+			description: LanguageKeys.Commands.Social.ReputationDescription,
+			extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',
@@ -34,30 +34,27 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const selfSettings = await users.ensureProfileAndCooldowns(message.author.id);
 		const extSettings = user ? await users.ensureProfile(user.id) : null;
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		if (check) {
-			if (user.bot) throw language.get(LanguageKeys.Commands.Social.ReputationsBots);
-			const reputationPoints =
-				extSettings!.reputations === 1
-					? language.get(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations })
-					: language.get(LanguageKeys.Commands.Social.ReputationPlural, { count: extSettings!.reputations });
+			if (user.bot) throw t(LanguageKeys.Commands.Social.ReputationsBots);
+			const reputationPoints = t(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations });
 			return message.send(
 				message.author === user
-					? language.get(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
-					: language.get(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })
+					? t(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
+					: t(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })
 			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
 
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.sendLocale(LanguageKeys.Commands.Social.ReputationTime, [{ remaining: timeReputation + Time.Day - now }]);
+			return message.sendTranslated(LanguageKeys.Commands.Social.ReputationTime, [{ remaining: timeReputation + Time.Day - now }]);
 		}
 
-		if (!user) return message.sendLocale(LanguageKeys.Commands.Social.ReputationUsable);
-		if (user.bot) throw language.get(LanguageKeys.Commands.Social.ReputationsBots);
-		if (user === message.author) throw language.get(LanguageKeys.Commands.Social.ReputationSelf);
+		if (!user) return message.sendTranslated(LanguageKeys.Commands.Social.ReputationUsable);
+		if (user.bot) throw t(LanguageKeys.Commands.Social.ReputationsBots);
+		if (user === message.author) throw t(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;
@@ -65,6 +62,6 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Social.ReputationGive, [{ user: user.toString() }]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.ReputationGive, [{ user: user.toString() }]);
 	}
 }

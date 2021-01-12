@@ -3,9 +3,11 @@ import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { KeyOfType } from '#lib/types/Utils';
-import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 import { codeBlock } from '@sapphire/utilities';
+import { TFunction } from 'i18next';
+import { CommandStore, Duration } from 'klasa';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export enum AKeys {
 	Enable,
@@ -81,8 +83,8 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 	['ban', SelfModeratorHardActionFlags.Ban]
 ]);
 
-export abstract class SelfModerationCommand extends Command {
-	protected constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions = {}) {
+export abstract class SelfModerationCommand extends SkyraCommand {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
 		super(store, file, directory, {
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
@@ -96,7 +98,7 @@ export abstract class SelfModerationCommand extends Command {
 			if (typeof arg === 'undefined') return AKeys.Show;
 			const action = kActions.get(arg.toLowerCase());
 			if (typeof action === 'undefined') {
-				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
+				throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
 			}
 
 			return action;
@@ -105,13 +107,13 @@ export abstract class SelfModerationCommand extends Command {
 			if (type === AKeys.Disable) return false;
 			if (type === AKeys.Show) return null;
 			if (!arg) {
-				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
+				throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
 			}
 
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
 				if (typeof softAction === 'undefined') {
-					throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftaction, { name: this.name });
+					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
 				}
 
 				const previousSoftAction = await message.guild!.readSettings(this.keySoftAction);
@@ -121,7 +123,7 @@ export abstract class SelfModerationCommand extends Command {
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
 				if (typeof hardAction === 'undefined') {
-					throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardaction, { name: this.name });
+					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name });
 				}
 
 				return hardAction;
@@ -151,18 +153,18 @@ export abstract class SelfModerationCommand extends Command {
 		if (action === AKeys.Show) return this.show(message);
 
 		const key = this.getProperty(action)!;
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			Reflect.set(settings, key, value);
 			return settings.getLanguage();
 		});
 
 		switch (action) {
 			case AKeys.SoftAction: {
-				value = SelfModerationCommand.displaySoftAction(language, value as number).join('`, `');
+				value = SelfModerationCommand.displaySoftAction(t, value as number).join('`, `');
 				break;
 			}
 			case AKeys.HardAction: {
-				value = language.get(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
+				value = t(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
 				break;
 			}
 			case AKeys.Enable:
@@ -173,11 +175,11 @@ export abstract class SelfModerationCommand extends Command {
 				break;
 		}
 
-		return message.send(SelfModerationCommand.getLanguageKey(language, action, value));
+		return message.send(SelfModerationCommand.getLanguageKey(t, action, value));
 	}
 
 	protected async show(message: GuildMessage) {
-		const [enabled, softAction, hardAction, hardActionDuration, adder, language] = await message.guild.readSettings((settings) => [
+		const [enabled, softAction, hardAction, hardActionDuration, adder, t] = await message.guild.readSettings((settings) => [
 			settings[this.keyEnabled],
 			settings[this.keySoftAction],
 			settings[this.keyHardAction],
@@ -186,27 +188,26 @@ export abstract class SelfModerationCommand extends Command {
 			settings.getLanguage()
 		]);
 
-		const i18n = language.get.bind(language);
-		const duration = language.duration.bind(language);
-		const [yes, no] = [i18n(LanguageKeys.Resolvers.BoolEnabled), i18n(LanguageKeys.Resolvers.BoolDisabled)];
+		const [yes, no] = [t(LanguageKeys.Resolvers.BoolEnabled), t(LanguageKeys.Resolvers.BoolDisabled)];
 		return message.send(
 			codeBlock(
 				'prolog',
-				i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
+				t(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
 					kEnabled: enabled ? yes : no,
 					kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
 					kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
 					kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-					kHardAction: i18n(SelfModerationCommand.displayHardAction(hardAction)),
+					kHardAction: t(SelfModerationCommand.displayHardAction(hardAction)),
 					hardActionDurationText:
 						hardActionDuration === null
-							? i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
-							: duration(hardActionDuration),
-					thresholdMaximumText: adder?.maximum ? adder.maximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+							? t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
+							: t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration }),
+					thresholdMaximumText: adder?.maximum ? adder.maximum : t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
 					thresholdDurationText: adder?.duration
-						? duration(adder.duration)
-						: i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
-				}).join('\n')
+						? t(LanguageKeys.Globals.DurationValue, { value: adder.duration })
+						: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+					joinArrays: '\n'
+				})
 			)
 		);
 	}
@@ -231,44 +232,41 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
-	private static displaySoftAction(language: Language, softAction: number) {
+	private static displaySoftAction(t: TFunction, softAction: number) {
 		const actions: string[] = [];
-		if (SelfModerationCommand.has(softAction, ASKeys.Alert))
-			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionAlert));
-		if (SelfModerationCommand.has(softAction, ASKeys.Log))
-			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionLog));
-		if (SelfModerationCommand.has(softAction, ASKeys.Delete))
-			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionDelete));
+		if (SelfModerationCommand.has(softAction, ASKeys.Alert)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionAlert));
+		if (SelfModerationCommand.has(softAction, ASKeys.Log)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionLog));
+		if (SelfModerationCommand.has(softAction, ASKeys.Delete)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionDelete));
 		return actions;
 	}
 
-	private static getLanguageKey(language: Language, action: AKeys, value: unknown) {
+	private static getLanguageKey(t: TFunction, action: AKeys, value: unknown) {
 		switch (action) {
 			case AKeys.Enable:
-				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled);
+				return t(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled);
 			case AKeys.Disable:
-				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled);
+				return t(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled);
 			case AKeys.SoftAction: {
 				return value
-					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftActionWithValue, { value: value as string })
-					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftAction);
+					? t(LanguageKeys.Commands.Moderation.AutomaticParameterSoftActionWithValue, { value: value as string })
+					: t(LanguageKeys.Commands.Moderation.AutomaticParameterSoftAction);
 			}
 			case AKeys.HardAction:
-				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardAction, { value: value as string });
+				return t(LanguageKeys.Commands.Moderation.AutomaticParameterHardAction, { value: value as string });
 			case AKeys.HardActionDuration: {
 				return value
-					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDurationWithValue, { value: value as number })
-					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDuration);
+					? t(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDurationWithValue, { value: value as number })
+					: t(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDuration);
 			}
 			case AKeys.ThresholdMaximum: {
 				return value
-					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximumWithValue, { value: value as number })
-					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximum);
+					? t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximumWithValue, { value: value as number })
+					: t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximum);
 			}
 			case AKeys.ThresholdDuration: {
 				return value
-					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDurationWithValue, { value: value as number })
-					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDuration);
+					? t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDurationWithValue, { value: value as number })
+					: t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDuration);
 			}
 			default:
 				throw new Error('Unexpected.');
@@ -284,7 +282,7 @@ export abstract class SelfModerationCommand extends Command {
 			case SelfModeratorHardActionFlags.Mute:
 				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionMute;
 			case SelfModeratorHardActionFlags.SoftBan:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionSoftban;
+				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionSoftBan;
 			case SelfModeratorHardActionFlags.Warning:
 				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionWarning;
 			default:
@@ -303,15 +301,15 @@ export abstract class SelfModerationCommand extends Command {
 	private static async parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) {
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name });
+			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name });
 		}
 
 		if (key.minimum !== null && parsed < key.minimum) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
 		}
 
 		if (key.maximum !== null && parsed > key.maximum) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
 		}
 		return parsed;
 	}
@@ -319,18 +317,18 @@ export abstract class SelfModerationCommand extends Command {
 	private static async parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) {
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name });
+			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name });
 		}
 
 		if (key.minimum !== null && parsed.offset < key.minimum) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
 				minimum: key.minimum,
 				value: parsed.offset
 			});
 		}
 
 		if (key.maximum !== null && parsed.offset > key.maximum) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
 				maximum: key.maximum,
 				value: parsed.offset
 			});

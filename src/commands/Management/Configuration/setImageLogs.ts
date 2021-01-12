@@ -4,8 +4,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ChannelConfigurationCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Management.SetImageLogsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetImageLogsExtended),
+	description: LanguageKeys.Commands.Management.SetImageLogsDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetImageLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetImageLogsSet,
 	settingsKey: GuildSettings.Channels.ImageLogs
 })

@@ -4,12 +4,13 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
+import { TFunction } from 'i18next';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.General.InviteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.General.InviteExtended),
+	description: LanguageKeys.Commands.General.InviteDescription,
+	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
 	usage: '[noperms]',
 	flagSupport: true,
 	guarded: true,
@@ -17,31 +18,30 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
+		const t = await message.fetchT();
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.send(await this.getEmbed(message, { permissions: false }));
+			return message.send(await this.getEmbed(t, { permissions: false }));
 		}
 
-		return message.send(await this.getEmbed(message, { permissions: true }));
+		return message.send(await this.getEmbed(t, { permissions: true }));
 	}
 
 	public async init() {
 		if (this.client.application && !this.client.application.botPublic) this.permissionLevel = PermissionLevels.BotOwner;
 	}
 
-	private async getEmbed(message: KlasaMessage, { permissions }: { permissions: boolean }): Promise<MessageEmbed> {
-		const language = await message.fetchLanguage();
-
+	private getEmbed(t: TFunction, { permissions }: { permissions: boolean }): MessageEmbed {
 		return new MessageEmbed() //
 			.setColor(BrandingColors.Primary)
 			.setDescription(
 				[
 					[
-						`[${language.get(LanguageKeys.Commands.General.InvitePermissionInviteText)}](https://invite.skyra.pw${
+						`[${t(LanguageKeys.Commands.General.InvitePermissionInviteText)}](https://invite.skyra.pw${
 							permissions ? '' : '/no-permissions'
 						})`,
-						`[${language.get(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://join.skyra.pw)`
+						`[${t(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://join.skyra.pw)`
 					].join(' | '),
-					permissions ? language.get(LanguageKeys.Commands.General.InvitePermissionsDescription) : undefined
+					permissions ? t(LanguageKeys.Commands.General.InvitePermissionsDescription) : undefined
 				]
 					.filter(Boolean)
 					.join('\n')

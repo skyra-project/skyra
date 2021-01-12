@@ -20,6 +20,7 @@ export const enum GoogleResponseCodes {
 	InvalidRequest = 'INVALID_REQUEST',
 	OverQueryLimit = 'OVER_QUERY_LIMIT',
 	UnknownError = 'UNKNOWN_ERROR',
+	PermissionDenied = 'PERMISSION_DENIED',
 	Ok = 'OK',
 	Failed = 'FAILED'
 }
@@ -30,8 +31,8 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
-	if (status !== GoogleResponseCodes.Ok) throw await message.fetchLocale(handleNotOK(status, message.client));
-	if (results.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
+	if (status !== GoogleResponseCodes.Ok) throw await message.resolveKey(handleNotOK(status, message.client));
+	if (results.length === 0) throw await message.resolveKey(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
 
 	return {
 		formattedAddress: results[0].formatted_address,
@@ -52,8 +53,9 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 		if (type === CustomSearchType.Image) url.searchParams.append('searchType', 'image');
 
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
-	} catch {
-		throw await message.fetchLocale(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
+	} catch (err) {
+		const { error } = err.toJSON() as GoogleResultError;
+		throw await message.resolveKey(handleNotOK(error.status, message.client));
 	}
 }
 
@@ -67,6 +69,9 @@ export function handleNotOK(status: GoogleResponseCodes, client: Client): Custom
 			return LanguageKeys.Commands.Google.MessagesErrorInvalidRequest;
 		case GoogleResponseCodes.OverQueryLimit:
 			return LanguageKeys.Commands.Google.MessagesErrorOverQueryLimit;
+		case GoogleResponseCodes.PermissionDenied:
+			client.emit(Events.Wtf, 'Google::handleNotOK | Permission Denied');
+			return LanguageKeys.Commands.Google.MessagesErrorPermissionDenied;
 		default:
 			client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
 			return LanguageKeys.Commands.Google.MessagesErrorUnknown;
@@ -158,4 +163,19 @@ interface GoogleImage {
 	thumbnailLink: string;
 	thumbnailWidth: number;
 	width: number;
+}
+
+export interface GoogleResultError {
+	error: GoogleResultErrorData;
+}
+
+export interface GoogleResultErrorData {
+	code: number;
+	errors: GoogleResultErrorDataErrorEntry[];
+	message: string;
+	status: GoogleResponseCodes;
+}
+
+export interface GoogleResultErrorDataErrorEntry {
+	code: number;
 }

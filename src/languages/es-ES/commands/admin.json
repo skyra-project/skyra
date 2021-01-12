@@ -1,0 +1,96 @@
+{
+	"blocklistDescription": "",
+	"blocklistExtended": {
+		"extendedHelp": ""
+	},
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
+	"confNoKey": "Debes proporcionar el nombre de una clave de configuración",
+	"confNoValue": "Debes proporcionar un valor",
+	"confGuarded": "{{name, toTitleCase}} no puede ser deshabilitado.",
+	"confUpdated": "Se actualizó correctamente la clave **{{key}}**: `{{response}}`",
+	"confKeyNotArray": "Esta clave no acepta múltiples valores. Usa la acción 'reset' en su lugar.",
+	"confGetNoExt": "La clave **{{key}}** parece no existir.",
+	"confGet": "El valor para la clave **{{key}}** es: `{{value}}`",
+	"confReset": "La clave **{{key}}** ha sido restablecida a: `{{value}}`",
+	"confNochange": "El valor de **{{key}}** ya era de ese valor.",
+	"confServerDescription": "Define los ajustes por servidor.",
+	"confServerExtended": {
+		"extendedHelp": ""
+	},
+	"confServer": "**Configuración del servidor {{key}}**\n{{list}}",
+	"confUserDescription": "Define los ajustes del usuario.",
+	"confDashboardOnlyKey": "`{{key}}` sólo puede configurarse a través del panel web (<https://skyra.pw>)",
+	"confUser": "",
+	"confSettingNotSet": "",
+	"heapSnapshotDescription": "",
+	"heapSnapshotExtended": {
+		"extendedHelp": ""
+	},
+	"rolesetDescription": "",
+	"rolesetExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetInvalidName": "",
+	"rolesetRemoved": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "",
+	"rolesetResetNotExists": "",
+	"rolesetResetGroup": "",
+	"rolesetUpdated": "",
+	"rolesetNoRolesets": "",
+	"confMenuNopermissions": "",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderTctitle": "",
+	"confMenuRenderUpdate": "",
+	"confMenuRenderRemove": "",
+	"confMenuRenderReset": "",
+	"confMenuRenderUndo": "",
+	"confMenuRenderCvalue": "",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": "",
+	"updateDescription": "",
+	"updateExtended": {
+		"extendedHelp": ""
+	}
+}

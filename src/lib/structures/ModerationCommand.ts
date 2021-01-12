@@ -7,7 +7,8 @@ import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions'
 import { cast, floatPromise } from '#utils/util';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import { User } from 'discord.js';
-import { CommandStore, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { CommandStore } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -53,7 +54,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
-		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, language] = await message.guild.readSettings((settings) => [
+		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.ModerationAutoDelete],
 			settings[GuildSettings.Messages.ModerationMessageDisplay],
 			settings[GuildSettings.Messages.ModerationReasonDisplay],
@@ -64,7 +65,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		for (const target of new Set(targets)) {
 			try {
 				const handled = { ...handledRaw, target, preHandled };
-				await this.checkModeratable(message, language, handled);
+				await this.checkModeratable(message, t, handled);
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
@@ -92,17 +93,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
-					? cases.length === 1
-						? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
-						: LanguageKeys.Commands.Moderation.ModerationOutputWithReasonPlural
-					: cases.length === 1
-					? LanguageKeys.Commands.Moderation.ModerationOutput
-					: LanguageKeys.Commands.Moderation.ModerationOutputPlural;
+					? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
+					: LanguageKeys.Commands.Moderation.ModerationOutput;
 				output.push(
-					language.get(langKey, {
+					t(langKey, {
 						count: cases.length,
 						range,
-						users: language.list(users, language.get(LanguageKeys.Globals.And)),
+						users,
 						reason: logReason
 					})
 				);
@@ -111,15 +108,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					language.get(
-						users.length === 1
-							? LanguageKeys.Commands.Moderation.ModerationFailed
-							: LanguageKeys.Commands.Moderation.ModerationFailedPlural,
-						{
-							users: language.list(users, language.get(LanguageKeys.Globals.And)),
-							count: users.length
-						}
-					)
+					t(LanguageKeys.Commands.Moderation.ModerationFailed, {
+						users,
+						count: users.length
+					})
 				);
 			}
 
@@ -140,24 +132,24 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, language: Language, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, t: TFunction, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw language.get(LanguageKeys.Misc.CommandUserself);
+			throw t(LanguageKeys.Commands.Moderation.UserSelf);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw language.get(LanguageKeys.Misc.CommandToskyra);
+			throw t(LanguageKeys.Commands.Moderation.ToSkyra);
 		}
 
 		const member = await message.guild.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw language.get(LanguageKeys.Misc.UserNotInGuild);
+			if (this.requiredMember) throw t(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
-			if (targetHighestRolePosition >= message.member.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigher);
+			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member.roles.highest.position) throw t(LanguageKeys.Commands.Moderation.RoleHigher);
 		}
 
 		return member;

@@ -7,7 +7,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['vol'],
-	description: (language) => language.get(LanguageKeys.Commands.Music.VolumeDescription),
+	description: LanguageKeys.Commands.Music.VolumeDescription,
+	extendedHelp: LanguageKeys.Commands.Music.VolumeExtended,
 	usage: '[volume:number]'
 })
 export default class extends MusicCommand {
@@ -21,12 +22,12 @@ export default class extends MusicCommand {
 
 		// If no argument was given
 		if (typeof volume === 'undefined' || volume === previous) {
-			return message.sendLocale(LanguageKeys.Commands.Music.VolumeSuccess, [{ volume: previous }]);
+			return message.sendTranslated(LanguageKeys.Commands.Music.VolumeSuccess, [{ volume: previous }]);
 		}
 
 		const channel = audio.voiceChannel!;
 		if (channel.listeners.length >= 4 && !(await message.member.canManage(channel))) {
-			throw await message.fetchLocale(LanguageKeys.Inhibitors.MusicDjMember);
+			throw await message.resolveKey(LanguageKeys.Inhibitors.MusicDjMember);
 		}
 
 		// Set the volume

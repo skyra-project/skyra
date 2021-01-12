@@ -8,21 +8,21 @@ import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.UrbanDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.UrbanExtended),
+	description: LanguageKeys.Commands.Tools.UrbanDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.UrbanExtended,
 	nsfw: true,
 	usage: '<query:string>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -31,13 +31,13 @@ export default class extends RichDisplayCommand {
 		);
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = await this.buildDisplay(list, message, language, query);
+		const display = await this.buildDisplay(list, message, t, query);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: Language, query: string) {
+	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: TFunction, query: string) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
@@ -62,9 +62,9 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
-	private parseDefinition(definition: string, permalink: string, i18n: Language) {
+	private parseDefinition(definition: string, permalink: string, i18n: TFunction) {
 		if (definition.length < 750) return definition;
-		return i18n.get(LanguageKeys.Misc.SystemTextTruncated, { definition: cutText(definition, 750), url: permalink });
+		return i18n(LanguageKeys.Misc.SystemTextTruncated, { definition: cutText(definition, 750), url: permalink });
 	}
 }
 

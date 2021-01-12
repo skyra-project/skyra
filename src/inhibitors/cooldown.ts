@@ -22,8 +22,8 @@ export default class extends Inhibitor {
 		}
 
 		if (existing && existing.limited) {
-			const language = await message.fetchLanguage();
-			throw language.get(LanguageKeys.Inhibitors.Cooldown, { remaining: language.duration(existing.remainingTime) });
+			const t = await message.fetchT();
+			throw t(LanguageKeys.Inhibitors.Cooldown, { remaining: existing.remainingTime });
 		}
 	}
 }

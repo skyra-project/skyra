@@ -8,7 +8,7 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(message: GuildMessage) {
-		const [threshold, nms, language] = await message.guild.readSettings((settings) => [
+		const [threshold, nms, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.NoMentionSpam.MentionsAllowed],
 			settings.nms,
 			settings.getLanguage()
@@ -17,14 +17,14 @@ export default class extends Event {
 		const lock = message.guild.moderation.createLock();
 		try {
 			await message.guild.members
-				.ban(message.author.id, { days: 0, reason: language.get(LanguageKeys.Monitors.NmsFooter) })
+				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Monitors.NoMentionSpamFooter) })
 				.catch((error) => this.client.emit(Events.ApiError, error));
-			await message
-				.sendLocale(LanguageKeys.Monitors.NmsMessage, [{ user: message.author }])
+			await message.channel
+				.send(t(LanguageKeys.Monitors.NoMentionSpamMessage, { user: message.author }))
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			nms.delete(message.author.id);
 
-			const reason = language.get(LanguageKeys.Monitors.NmsModlog, { threshold });
+			const reason = t(LanguageKeys.Monitors.NoMentionSpamModerationLog, { threshold });
 			await message.guild.moderation
 				.create({
 					userID: message.author.id,

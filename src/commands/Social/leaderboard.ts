@@ -17,8 +17,8 @@ export default class extends SkyraCommand {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Social.LeaderboardDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LeaderboardExtended),
+			description: LanguageKeys.Commands.Social.LeaderboardDescription,
+			extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' ',
@@ -56,9 +56,9 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		if (promises.length) {
-			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
+			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {
@@ -66,8 +66,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(language.get(LanguageKeys.FuzzySearch.Page, { page: index + 1, pageCount, results: listSize.toLocaleString() }));
-		page.push(language.get(LanguageKeys.Misc.CommandScoreboardPosition, { position }));
+		page.push(t(LanguageKeys.Commands.Social.LeaderboardListifyPage, { page: index + 1, pageCount, results: listSize }));
+		page.push(t(LanguageKeys.Commands.Social.ScoreboardPosition, { position }));
 
 		return page;
 	}

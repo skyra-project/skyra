@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['sniped'],
-			description: (language) => language.get(LanguageKeys.Commands.Misc.SnipeDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.SnipeExtended),
+			description: LanguageKeys.Commands.Misc.SnipeDescription,
+			extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
@@ -19,10 +19,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: GuildMessage) {
 		const { sniped } = message.channel as TextChannel;
-		if (sniped === null) throw await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeEmpty);
+		if (sniped === null) throw await message.resolveKey(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
-			.setTitle(await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeTitle))
+			.setTitle(await message.resolveKey(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(await DbSet.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);

@@ -6,13 +6,15 @@ import type { InviteStore } from '#lib/structures/InviteStore';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
 import type { WebsocketHandler } from '#lib/websocket/WebsocketHandler';
+import type { O } from '#utils/constants';
 import type { ConnectFourManager } from '#utils/Games/ConnectFourManager';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
-import type { PermissionString } from 'discord.js';
+import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
+import 'i18next';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
@@ -31,11 +33,14 @@ declare module 'discord.js' {
 		readonly schedules: ScheduleManager;
 		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
+		readonly i18n: I18nextHandler;
 		readonly version: string;
 		readonly webhookDatabase: Webhook | null;
 		readonly webhookError: Webhook;
 		readonly webhookFeedback: Webhook | null;
 		readonly websocket: WebsocketHandler;
+
+		fetchLanguage(message: Message): Promise<string>;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
@@ -93,18 +98,7 @@ declare module 'klasa' {
 		schedule?: {
 			interval: number;
 		};
-	}
-
-	interface Language {
-		PERMISSIONS: Record<PermissionString, string>;
-		HUMAN_LEVELS: Record<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH', string>;
-		duration(time: number, precision?: number): string;
-		ordinal(cardinal: number): string;
-		list(values: readonly string[], conjunction: string): string;
-		groupDigits(number: number): string;
-
-		get<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
-		get<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
+		i18n?: I18nOptions;
 	}
 
 	interface PieceDefaults {
@@ -126,5 +120,21 @@ declare module 'klasa-dashboard-hooks' {
 		refresh: string;
 		user_id: string;
 		expires: number;
+	}
+}
+
+declare module 'i18next' {
+	export interface TFunction {
+		lng: string;
+		ns?: string;
+
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: TOptionsBase | string): TReturn;
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options?: TOptionsBase | string): TReturn;
+		<K extends string, TArgs extends O, TReturn>(key: CustomFunctionGet<K, TArgs, TReturn>, options?: TOptions<TArgs>): TReturn;
+		<K extends string, TArgs extends O, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			defaultValue: TReturn,
+			options?: TOptions<TArgs>
+		): TReturn;
 	}
 }

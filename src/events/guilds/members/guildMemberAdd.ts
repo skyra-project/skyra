@@ -22,7 +22,7 @@ export default class extends Event {
 		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted
-		const [roleID, language] = await member.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
+		const [roleID, t] = await member.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
 		if (roleID && stickyRoles.includes(roleID)) {
 			// Handle mute
 			const role = member.guild.roles.cache.get(roleID);
@@ -34,12 +34,12 @@ export default class extends Event {
 					.setColor(Colors.Amber)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 					.setDescription(
-						language.get(LanguageKeys.Events.GuildMemberAddDescription, {
+						t(LanguageKeys.Events.GuildMemberAddDescription, {
 							mention: member.toString(),
 							time: Date.now() - member.user.createdTimestamp
 						})
 					)
-					.setFooter(language.get(LanguageKeys.Events.GuildMemberAddMute))
+					.setFooter(t(LanguageKeys.Events.GuildMemberAddMute))
 					.setTimestamp()
 			);
 

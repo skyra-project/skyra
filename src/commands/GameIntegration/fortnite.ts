@@ -9,12 +9,12 @@ import { Fortnite } from '#utils/GameIntegration/Fortnite';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.FortniteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.FortniteExtended),
+	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
+	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended,
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
@@ -22,19 +22,19 @@ export default class extends RichDisplayCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
 	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const fortniteUser = await this.fetchAPI(language, user, platform);
-		const display = await this.buildDisplay(message, language, fortniteUser);
+		const fortniteUser = await this.fetchAPI(t, user, platform);
+		const display = await this.buildDisplay(message, t, fortniteUser);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, user: string, platform: platform) {
+	private async fetchAPI(t: TFunction, user: string, platform: platform) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -47,26 +47,26 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw language.get(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
+			throw t(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 	}
 
 	private async buildDisplay(
 		message: GuildMessage,
-		language: Language,
+		t: TFunction,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
+				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedSectionTitles = language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
+		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
 		display.addPage((embed) => {
 			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
-			const ltsData = language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
+			const ltsData = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 				winCount: lts.find((el) => el.key === 'wins')!.value,
 				killCount: lts.find((el) => el.key === 'kills')!.value,
 				kdrCount: lts.find((el) => el.key === 'k/d')!.value,
@@ -98,7 +98,7 @@ export default class extends RichDisplayCommand {
 
 		if (p2) {
 			display.addPage((embed) => {
-				const p2Data = language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
+				const p2Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p2.top1.value,
 					killCount: p2.kills.value,
 					kdrCount: p2.kd.value,
@@ -132,7 +132,7 @@ export default class extends RichDisplayCommand {
 
 		if (p10) {
 			display.addPage((embed) => {
-				const p10Data = language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
+				const p10Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p10.top1.value,
 					killCount: p10.kills.value,
 					kdrCount: p10.kd.value,
@@ -166,7 +166,7 @@ export default class extends RichDisplayCommand {
 
 		if (p9) {
 			display.addPage((embed) => {
-				const p9Data = language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
+				const p9Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p9.top1.value,
 					killCount: p9.kills.value,
 					kdrCount: p9.kd.value,

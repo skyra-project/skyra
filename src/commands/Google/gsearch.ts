@@ -13,8 +13,8 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Google.GsearchDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GsearchExtended),
+	description: LanguageKeys.Commands.Google.GsearchDescription,
+	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended,
 	usage: '<query:query>'
 })
 @CreateResolvers([
@@ -28,13 +28,13 @@ import { MessageEmbed } from 'discord.js';
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const [response, { items }] = await Promise.all([
-			message.send(new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
+			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
-		if (!items || !items.length) throw language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw t(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

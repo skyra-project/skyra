@@ -9,7 +9,7 @@ import { floatPromise, pickRandom } from '#utils/util';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { DbSet } from '../database/structures/DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
@@ -24,7 +24,7 @@ const enum UpdateType {
 
 export class SettingsMenu {
 	private readonly message: GuildMessage;
-	private language: Language;
+	private t: TFunction;
 	private schema: SchemaKey | SchemaGroup;
 	private messageCollector: MessageCollector | null = null;
 	private errorMessage: string | null = null;
@@ -33,9 +33,9 @@ export class SettingsMenu {
 	private response: GuildMessage | null = null;
 	private oldValue: unknown = undefined;
 
-	public constructor(message: GuildMessage, language: Language) {
+	public constructor(message: GuildMessage, language: TFunction) {
 		this.message = message;
-		this.language = language;
+		this.t = language;
 		this.schema = configurableGroups;
 		this.embed = new MessageEmbed().setAuthor(
 			this.message.author.username,
@@ -49,7 +49,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = (await this.message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.language.get(LanguageKeys.System.Loading)))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.t(LanguageKeys.System.Loading)))
 		)) as GuildMessage;
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
@@ -60,10 +60,10 @@ export class SettingsMenu {
 	}
 
 	private async render() {
-		const i18n = this.language;
+		const { t } = this;
 		const description: string[] = [];
 		if (isSchemaGroup(this.schema)) {
-			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.name }));
+			description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.name }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -73,16 +73,16 @@ export class SettingsMenu {
 				else keys.push(key);
 			}
 
-			if (!folders.length && !keys.length) description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderNokeys));
+			if (!folders.length && !keys.length) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderNokeys));
 			else
 				description.push(
-					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderSelect),
+					t(LanguageKeys.Commands.Admin.ConfMenuRenderSelect),
 					'',
 					...folders.map((folder) => `📁 ${folder}`),
 					...keys.map((key) => `⚙️ ${key}`)
 				);
 		} else {
-			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.name }));
+			description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.name }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 
 			const [value, serialized, language] = await this.message.guild.readSettings((settings) => {
@@ -90,17 +90,17 @@ export class SettingsMenu {
 				const key = this.schema as SchemaKey;
 				return [settings[key.property], key.display(settings, language), language];
 			});
-			this.language = language;
+			this.t = language;
 			description.push(
-				i18n.get(this.schema.description),
+				t(this.schema.description),
 				'',
-				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
-				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
-				this.schema.array && (value as unknown[]).length ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderRemove) : '',
-				this.updatedValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
-				this.updatedValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
+				t(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
+				t(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
+				this.schema.array && (value as unknown[]).length ? t(LanguageKeys.Commands.Admin.ConfMenuRenderRemove) : '',
+				this.updatedValue ? t(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
+				this.updatedValue ? t(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
 				'',
-				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
+				t(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
 					value: serialized
 				})
 			);
@@ -113,7 +113,7 @@ export class SettingsMenu {
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
-			.setFooter(parent ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
+			.setFooter(parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();
 	}
 
@@ -129,7 +129,7 @@ export class SettingsMenu {
 				this.schema = schema as SchemaKey | SchemaGroup;
 				this.oldValue = undefined;
 			} else {
-				this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
+				this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
 			}
 		} else {
 			const [command, ...params] = message.content.split(' ');
@@ -138,7 +138,7 @@ export class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), UpdateType.Remove);
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null, UpdateType.Reset);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
+			else this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
 
 		if (!this.errorMessage) floatPromise(this.message, message.nuke());
@@ -222,21 +222,21 @@ export class SettingsMenu {
 
 				switch (action) {
 					case UpdateType.Set: {
-						this.language = await set(settings, key, value as string);
+						this.t = await set(settings, key, value as string);
 						break;
 					}
 					case UpdateType.Remove: {
-						this.language = await remove(settings, key, value as string);
+						this.t = await remove(settings, key, value as string);
 						break;
 					}
 					case UpdateType.Reset: {
 						Reflect.set(settings, key.property, key.default);
-						this.language = settings.getLanguage();
+						this.t = settings.getLanguage();
 						break;
 					}
 					case UpdateType.Replace: {
 						Reflect.set(settings, key.property, value);
-						this.language = settings.getLanguage();
+						this.t = settings.getLanguage();
 						break;
 					}
 				}
@@ -245,7 +245,7 @@ export class SettingsMenu {
 			});
 
 			if (skipped) {
-				this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });
+				this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });
 			} else {
 				this.oldValue = oldValue;
 			}
@@ -259,7 +259,7 @@ export class SettingsMenu {
 			await this.tryUpdate(this.oldValue, UpdateType.Replace);
 		} else {
 			const key = this.schema as SchemaKey;
-			this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });
+			this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });
 		}
 	}
 
@@ -269,7 +269,7 @@ export class SettingsMenu {
 				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response
-				.edit(this.language.get(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
+				.edit(this.t(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
 				.catch((error) => this.message.client.emit(Events.ApiError, error));
 		}
 

@@ -1,0 +1,8 @@
+project_id: '434340'
+api_token_env: 'CROWDIN_PERSONAL_TOKEN'
+commit_message: 'chore(i18n-crowdin): new translations for %original_file_name% (%language%) [skip ci]'
+append_commit_message: false
+
+files:
+  - source: /src/languages/en-US/**/*.json
+    translation: /src/languages/%locale%/**/%original_file_name%

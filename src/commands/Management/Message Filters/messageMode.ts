@@ -1,14 +1,14 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { SelfModerationCommand } from '#lib/structures/SelfModerationCommand';
+import { SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { KeyOfType } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['message-mode', 'msg-mode', 'm-mode'],
-	description: (language) => language.get(LanguageKeys.Commands.Management.MessageModeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.MessageModeExtended)
+	description: LanguageKeys.Commands.Management.MessageModeDescription,
+	extendedHelp: LanguageKeys.Commands.Management.MessageModeExtended
 })
 export default class extends SelfModerationCommand {
 	protected $adder: AdderKey = 'messages';

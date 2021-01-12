@@ -6,15 +6,15 @@ import { requireUserInVoiceChannel } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.AddDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.AddExtended),
+	description: LanguageKeys.Commands.Music.AddDescription,
+	extendedHelp: LanguageKeys.Commands.Music.AddExtended,
 	usage: '<song:song>',
 	flagSupport: true
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
 	public async run(message: GuildMessage, [songs]: [string[]]) {
-		if (!songs || !songs.length) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
+		if (!songs || !songs.length) throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
 
 		const tracks = songs.map((track) => ({ author: message.author.id, track }));
 		await message.guild.audio.add(...tracks);

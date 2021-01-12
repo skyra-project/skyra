@@ -11,8 +11,8 @@ import {
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.PromoteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PromoteExtended),
+	description: LanguageKeys.Commands.Music.PromoteDescription,
+	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended,
 	usage: '<number:integer>'
 })
 export default class extends MusicCommand {
@@ -25,19 +25,14 @@ export default class extends MusicCommand {
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		const language = await message.fetchLanguage();
-		if (index < 0) throw language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		const t = await message.fetchT();
+		if (index < 0) throw t(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const length = await audio.count();
 		if (index >= length) {
-			throw language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
-				songs: language.get(
-					length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
-					{
-						count: length
-					}
-				)
+			throw t(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
+				songs: t(LanguageKeys.Commands.Music.AddPlaylistSongs, { count: length })
 			});
 		}
 
@@ -45,6 +40,6 @@ export default class extends MusicCommand {
 		const track = await audio.player.node.decode(entry!.track);
 
 		await audio.moveTracks(index, 0);
-		await message.channel.send(language.get(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
+		await message.channel.send(t(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
 	}
 }

@@ -1,0 +1,475 @@
+{
+	"permissions": "",
+	"permissionsAll": "",
+	"flow": "",
+	"timeTimed": "",
+	"timeUndefinedTime": "",
+	"timeUnsupportedType": "",
+	"timeNotScheduled": "",
+	"timeAborted": "",
+	"timeScheduled": "",
+	"slowmodeSet": "",
+	"slowmodeReset": "",
+	"slowmodeTooLong": "",
+	"timeDescription": "",
+	"timeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"banNotBannable": "",
+	"dehoistStarting": "",
+	"dehoistProgress": "",
+	"dehoistEmbed": {
+		"title": "",
+		"descriptionNoone": "",
+		"descriptionWithError": "",
+		"descriptionWithMultipleErrors": "",
+		"description": "",
+		"descriptionMultipleMembers": "",
+		"fieldErrorTitle": ""
+	},
+	"kickNotKickable": "",
+	"lockdownLock": "",
+	"lockdownLocking": "",
+	"lockdownLocked": "",
+	"lockdownUnlocked": "",
+	"lockdownOpen": "",
+	"muteLowlevel": "",
+	"muteConfigureCancelled": "",
+	"muteConfigure": "",
+	"muteConfigureToomanyRoles": "",
+	"muteMuted": "",
+	"muteUserNotMuted": "",
+	"muteUnconfigured": "",
+	"mutecreateMissingPermission": "",
+	"restrictLowlevel": "",
+	"pruneInvalid": "",
+	"pruneAlert": "",
+	"pruneAlert_plural": "",
+	"pruneInvalidPosition": "",
+	"pruneInvalidFilter": "",
+	"pruneNoDeletes": "",
+	"pruneLogHeader": "",
+	"pruneLogMessage": "",
+	"pruneLogMessage_plural": "",
+	"reasonMissingCase": "",
+	"reasonNotExists": "",
+	"reasonUpdated": [
+		"",
+		""
+	],
+	"reasonUpdated_plural": [
+		"",
+		""
+	],
+	"toggleModerationDmToggledEnabled": "",
+	"toggleModerationDmToggledDisabled": "",
+	"unbanMissingPermission": "",
+	"unmuteMissingPermission": "",
+	"vmuteMissingPermission": "",
+	"vmuteUserNotMuted": "",
+	"warnDm": "",
+	"warnMessage": "",
+	"moderationOutput": "",
+	"moderationOutput_plural": "",
+	"moderationOutputWithReason": "",
+	"moderationOutputWithReason_plural": "",
+	"moderationFailed": "",
+	"moderationFailed_plural": "",
+	"moderationDmFooter": "",
+	"moderationDmDescription": "",
+	"moderationDmDescriptionWithReason": "",
+	"moderationDmDescriptionWithDuration": "",
+	"moderationDmDescriptionWithReasonWithDuration": "",
+	"moderationDays": "",
+	"historyDescription": "",
+	"historyExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"historyFooterNew": "",
+	"historyFooterWarning": "",
+	"historyFooterWarning_plural": "",
+	"historyFooterMutes": "",
+	"historyFooterMutes_plural": "",
+	"historyFooterKicks": "",
+	"historyFooterKicks_plural": "",
+	"historyFooterBans": "",
+	"historyFooterBans_plural": "",
+	"moderationsDescription": "",
+	"moderationsExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"moderationsEmpty": "",
+	"moderationsAmount": "",
+	"moderationsAmount_plural": "",
+	"mutesDescription": "",
+	"mutesExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"warningsDescription": "",
+	"warningsExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"slowmodeDescription": "",
+	"slowmodeExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"banDescription": "",
+	"banExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"dehoistDescription": "",
+	"dehoistExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"kickDescription": "",
+	"kickExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"lockdownDescription": "",
+	"lockdownExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"muteDescription": "",
+	"muteExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"setNicknameDescription": "",
+	"setNicknameExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"addRoleDescription": "",
+	"addRoleExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"removeroleDescription": "",
+	"removeroleExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"pruneDescription": "",
+	"pruneExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"caseDescription": "",
+	"caseExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"permissionsDescription": "",
+	"permissionsExtended": {
+		"extendedHelp": ""
+	},
+	"flowDescription": "",
+	"flowExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"reasonDescription": "",
+	"reasonExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"restrictAttachmentDescription": "",
+	"restrictAttachmentExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"restrictEmbedDescription": "",
+	"restrictEmbedExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"restrictEmojiDescription": "",
+	"restrictEmojiExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"restrictReactionDescription": "",
+	"restrictReactionExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"restrictVoiceDescription": "",
+	"restrictVoiceExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"softBanDescription": "",
+	"softBanExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"toggleModerationDmDescription": "",
+	"toggleModerationDmExtended": {
+		"extendedHelp": ""
+	},
+	"unbanDescription": "",
+	"unbanExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"unmuteDescription": "",
+	"unmuteExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"unrestrictAttachmentDescription": "",
+	"unrestrictAttachmentExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictEmbedDescription": "",
+	"unrestrictEmbedExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictEmojiDescription": "",
+	"unrestrictEmojiExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictReactionDescription": "",
+	"unrestrictReactionExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictVoiceDescription": "",
+	"unrestrictVoiceExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unwarnDescription": "",
+	"unwarnExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"vmuteDescription": "",
+	"vmuteExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"voiceKickDescription": "",
+	"voiceKickExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"vunmuteDescription": "",
+	"vunmuteExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"warnDescription": "",
+	"warnExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	}
+}

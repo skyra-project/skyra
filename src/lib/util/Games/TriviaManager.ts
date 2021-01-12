@@ -1,17 +1,4 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { fetch, FetchResultTypes } from '#utils/util';
-
-export async function getQuestion(category: number, difficulty = QuestionDifficulty.Easy, questionType = QuestionType.Multiple) {
-	const url = new URL('https://opentdb.com/api.php');
-	url.searchParams.append('amount', '1');
-	url.searchParams.append('category', category.toString());
-	url.searchParams.append('difficulty', difficulty);
-	url.searchParams.append('type', questionType);
-
-	const { response_code, results } = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
-	if (response_code === 0 && results.length) return results[0];
-	throw new Error('Invalid request');
-}
 
 export interface TriviaResultOk {
 	response_code: number;
@@ -68,3 +55,15 @@ export const CATEGORIES = {
 	manga: 31,
 	cartoon: 32
 };
+
+export async function getQuestion(category: number, difficulty = QuestionDifficulty.Easy, questionType = QuestionType.Multiple) {
+	const url = new URL('https://opentdb.com/api.php');
+	url.searchParams.append('amount', '1');
+	url.searchParams.append('category', category.toString());
+	url.searchParams.append('difficulty', difficulty);
+	url.searchParams.append('type', questionType);
+
+	const { response_code, results } = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
+	if (response_code === 0 && results.length) return results[0];
+	throw new Error('Invalid request');
+}

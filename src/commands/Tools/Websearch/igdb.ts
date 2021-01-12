@@ -8,10 +8,9 @@ import { BrandingColors, Mime } from '#utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '#utils/External/IgdbTypes';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 const API_URL = 'https://api.igdb.com/v4/games';
 
@@ -25,12 +24,11 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.IgdbDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.IgdbExtended),
+	description: LanguageKeys.Commands.Tools.IgdbDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
-	private readonly releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
 		'Content-Type': Mime.Types.TextPlain,
@@ -58,20 +56,20 @@ export default class extends RichDisplayCommand {
 	].join('; ');
 
 	public async run(message: GuildMessage, [game]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const entries = await this.fetchAPI(language, game);
-		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
+		const entries = await this.fetchAPI(t, game);
+		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, language, entries);
+		const display = await this.buildDisplay(message, t, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, game: string) {
+	private async fetchAPI(t: TFunction, game: string) {
 		try {
 			return await fetch<Game[]>(
 				API_URL,
@@ -86,13 +84,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, language: Language, entries: Game[]) {
-		const titles = language.get(LanguageKeys.Commands.Tools.IgdbTitles);
-		const fieldsData = language.get(LanguageKeys.Commands.Tools.IgdbData);
+	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
+		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
+		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
@@ -110,7 +108,7 @@ export default class extends RichDisplayCommand {
 							'',
 							`**${titles.userScore}**: ${userRating}`,
 							`**${titles.ageRating}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.noAgeRatings)}`,
-							`**${titles.releaseDate}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.noReleaseDate)}`,
+							`**${titles.releaseDate}**: ${this.resolveReleaseDate(t, game.release_dates, fieldsData.noReleaseDate)}`,
 							`**${titles.genres}**: ${this.resolveGenres(game.genres, fieldsData.noGenres)}`,
 							`**${titles.developers}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.noDevelopers)}`,
 							`**${titles.platform}**: ${this.resolvePlatforms(game.platforms, fieldsData.noPlatforms)}`
@@ -157,9 +155,9 @@ export default class extends RichDisplayCommand {
 			.join(', ');
 	}
 
-	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
+	private resolveReleaseDate(t: TFunction, releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return this.releaseDateTimestamp.displayUTC(releaseDates[0].date * 1000);
+		return t(LanguageKeys.Globals.TimeDateValue, { value: releaseDates[0].date * 1000 });
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

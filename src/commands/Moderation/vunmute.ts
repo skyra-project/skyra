@@ -6,8 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uvm', 'vum', 'unvmute'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteExtended),
+	description: LanguageKeys.Commands.Moderation.VunmuteDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.VunmuteExtended,
 	requiredMember: true,
 	requiredPermissions: ['MUTE_MEMBERS']
 })
@@ -24,9 +24,9 @@ export default class extends ModerationCommand {
 		);
 	}
 
-	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, language, context);
-		if (member && !member.voice.serverMute) throw language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, t, context);
+		if (member && !member.voice.serverMute) throw t(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		return member;
 	}
 }

@@ -2,9 +2,9 @@
 // Import all dependencies
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions, KlasaMessage } from 'klasa';
+import { KlasaClient, KlasaClientOptions } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
-import { Webhook } from 'discord.js';
+import { Message, Webhook } from 'discord.js';
 
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
@@ -25,14 +25,14 @@ import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR
 import './extensions';
 
 // Import setup files
-import './setup/PermissionsLevels';
-import './setup/Canvas';
+import './setup';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
+import { I18nextHandler } from '@sapphire/plugin-i18next';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -101,10 +101,13 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
+	@enumerable(false)
+	public i18n: I18nextHandler = new I18nextHandler(this.options.i18n);
+
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
-		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
+		// @ts-ignore Shut the fuck up TS
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
 			const guild = this.guilds.cache.get(guildID);
@@ -116,6 +119,7 @@ export class SkyraClient extends KlasaClient {
 	}
 
 	public async login(token?: string) {
+		await this.i18n.init();
 		await this.schedules.init();
 		return super.login(token);
 	}
@@ -124,7 +128,7 @@ export class SkyraClient extends KlasaClient {
 	 * Retrieves the prefix for the guild.
 	 * @param message The message that gives context.
 	 */
-	public fetchPrefix(message: KlasaMessage) {
+	public fetchPrefix(message: Message) {
 		if (!message.guild) return this.options.prefix;
 		return message.guild.readSettings(GuildSettings.Prefix);
 	}
@@ -133,9 +137,8 @@ export class SkyraClient extends KlasaClient {
 	 * Retrieves the language key for the message.
 	 * @param message The message that gives context.
 	 */
-	public fetchLanguage(message: KlasaMessage) {
-		if (!message.guild) return Promise.resolve(this.options.language ?? 'en-US');
-		return message.guild.readSettings(GuildSettings.Language);
+	public async fetchLanguage(message: Message) {
+		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
 	}
 }
 

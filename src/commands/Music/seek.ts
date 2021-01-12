@@ -6,7 +6,8 @@ import { requireDj, requireMusicPlaying } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.SeekDescription),
+	description: LanguageKeys.Commands.Music.SeekDescription,
+	extendedHelp: LanguageKeys.Commands.Music.SeekExtended,
 	usage: '<position:timespan>'
 })
 export default class extends MusicCommand {

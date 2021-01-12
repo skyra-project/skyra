@@ -9,13 +9,13 @@ import { fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['gr', 'groll'],
-	description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollExtended),
+	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
+	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
 	requiredPermissions: ['READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[winners:number{1,100}] [message:message]',
@@ -26,20 +26,20 @@ export default class extends SkyraCommand {
 	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
 	public async run(message: GuildMessage, [winnerAmount = 1, rawTarget]: [number, GuildMessage | undefined]) {
-		const language = await message.fetchLanguage();
-		const target = await this.resolveMessage(message, rawTarget, language);
+		const t = await message.fetchT();
+		const target = await this.resolveMessage(message, rawTarget, t);
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? language.get(LanguageKeys.Giveaway.EndedMessage, {
+			? t(LanguageKeys.Giveaway.EndedMessage, {
 					winners: winners.map((winner) => `<@${winner}>`),
 					title: title!
 			  })
-			: language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
+			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
-	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined, language: Language) {
+	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined, t: TFunction) {
 		const target = rawTarget
 			? // If rawMessage is defined then we check everything sans the colour
 			  this.validateMessage(rawTarget)
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
 			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as GuildMessage;
-		throw language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
+		throw t(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
 	}
 
 	private async pickWinners(message: GuildMessage, winnerAmount: number) {

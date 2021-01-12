@@ -3,6 +3,6 @@ import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
 	public async run(message: KlasaMessage) {
-		await message.alert(await message.fetchLocale(LanguageKeys.Monitors.NmsAlert));
+		await message.alert(await message.resolveKey(LanguageKeys.Monitors.NoMentionSpamAlert));
 	}
 }

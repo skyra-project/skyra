@@ -1,0 +1,19 @@
+{
+	"and": "in",
+	"default": "{{key}} še ni lokaliziran za sl-SI.",
+	"defaultLanguage": "Prevzeti Jezik",
+	"is": "je",
+	"no": "Ne",
+	"none": "Nič",
+	"or": "ali",
+	"unknown": "neznano",
+	"yes": "Da",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"timeDateValue": "{{value, timeDate}}",
+	"timeFullValue": "{{value, timeFull}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
+}

@@ -6,7 +6,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Emojis, Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
-import { Language } from 'klasa';
+import type { TFunction } from 'i18next';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
@@ -14,8 +14,8 @@ const { FLAGS } = Permissions;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['userinfo', 'uinfo'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.WhoisDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.WhoisExtended),
+	description: LanguageKeys.Commands.Tools.WhoisDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '(user:username)'
@@ -40,14 +40,14 @@ export default class extends SkyraCommand {
 
 	public async run(message: GuildMessage, [user]: [User]) {
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
-		return message.send(member ? this.member(language, member) : this.user(language, user));
+		return message.send(member ? this.member(t, member) : this.user(t, user));
 	}
 
-	private user(language: Language, user: User) {
-		const titles = language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
-		const fields = language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
+	private user(t: TFunction, user: User) {
+		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles);
+		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, { user, createdTimestampOffset: Date.now() - user.createdTimestamp });
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
@@ -58,9 +58,13 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 	}
 
-	private member(language: Language, member: GuildMember) {
-		const titles = language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
-		const fields = language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
+	private member(t: TFunction, member: GuildMember) {
+		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles);
+		const fields = t(LanguageKeys.Commands.Tools.WhoisMemberFields, {
+			member,
+			createdTimestampOffset: Date.now() - member.user.createdTimestamp,
+			joinedTimestampOffset: Date.now() - member.joinedTimestamp!
+		});
 
 		const embed = new SkyraEmbed()
 			.setColor(member.displayColor || Colors.White)
@@ -71,8 +75,8 @@ export default class extends SkyraCommand {
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
-		this.applyMemberRoles(language, member, embed);
-		this.applyMemberKeyPermissions(language, member, embed);
+		this.applyMemberRoles(t, member, embed);
+		this.applyMemberKeyPermissions(t, member, embed);
 		return embed;
 	}
 
@@ -82,35 +86,27 @@ export default class extends SkyraCommand {
 		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
-	private applyMemberRoles(language: Language, member: GuildMember, embed: SkyraEmbed) {
+	private applyMemberRoles(t: TFunction, member: GuildMember, embed: SkyraEmbed) {
 		if (member.roles.cache.size <= 1) return;
 
 		const roles = member.roles.cache.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.splitFields(
-			language.get(roles.size === 1 ? LanguageKeys.Commands.Tools.WhoisMemberRoles : LanguageKeys.Commands.Tools.WhoisMemberRolesPlural, {
-				count: roles.size
-			}),
-			[...roles.values()].join(' ')
-		);
+		embed.splitFields(t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roles.size }), [...roles.values()].join(' '));
 	}
 
-	private applyMemberKeyPermissions(language: Language, member: GuildMember, embed: SkyraEmbed) {
+	private applyMemberKeyPermissions(t: TFunction, member: GuildMember, embed: SkyraEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
-			embed.addField(
-				language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
-				language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll)
-			);
+			embed.addField(t(LanguageKeys.Commands.Tools.WhoisMemberPermissions), t(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll));
 			return;
 		}
 
 		const permissions: string[] = [];
 		for (const [name, bit] of this.kKeyPermissions) {
-			if (member.permissions.has(bit)) permissions.push(language.PERMISSIONS[name]);
+			if (member.permissions.has(bit)) permissions.push(t(`permissions:${name}`));
 		}
 
 		if (permissions.length > 0) {
-			embed.addField(language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
+			embed.addField(t(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
 		}
 	}
 

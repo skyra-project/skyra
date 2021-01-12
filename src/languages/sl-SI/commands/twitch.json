@@ -1,0 +1,93 @@
+{
+	"followage": "",
+	"followageMissingEntries": "",
+	"followageNotFollowing": "",
+	"twitchNoEntries": "",
+	"twitchTitles": {
+		"followers": "",
+		"views": "",
+		"clickToVisit": "",
+		"partner": "Partner"
+	},
+	"twitchPartnershipWithoutAffiliate": "",
+	"twitchAffiliateStatus": {
+		"affiliated": "",
+		"partnered": ""
+	},
+	"twitchCreatedAt": "Ustvarjeno ob:",
+	"twitchSubscriptionRequiredStreamer": "",
+	"twitchSubscriptionStreamerNotFound": "",
+	"twitchSubscriptionRequiredChannel": "",
+	"twitchSubscriptionRequiredStatus": "",
+	"twitchSubscriptionStatusValues": [
+		"",
+		""
+	],
+	"twitchSubscriptionInvalidStatus": "",
+	"twitchSubscriptionRequiredContent": "",
+	"twitchSubscriptionAddDuplicated": "",
+	"twitchSubscriptionAddSuccessOffline": "",
+	"twitchSubscriptionAddSuccessLive": "",
+	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
+	"twitchSubscriptionRemoveEntryNotExists": "",
+	"twitchSubscriptionRemoveSuccessOffline": "",
+	"twitchSubscriptionRemoveSuccessLive": "",
+	"twitchSubscriptionResetEmpty": "",
+	"twitchSubscriptionResetSuccess": "",
+	"twitchSubscriptionResetSuccess_plural": "",
+	"twitchSubscriptionResetStreamerNotSubscribed": "",
+	"twitchSubscriptionResetChannelSuccess": "",
+	"twitchSubscriptionResetChannelSuccess_plural": "",
+	"twitchSubscriptionShowStreamerNotSubscribed": "",
+	"twitchSubscriptionShowStatus": [
+		"",
+		""
+	],
+	"twitchSubscriptionShowEmpty": "",
+	"twitchSubscriptionShowUnknownUser": "Neznano",
+	"followageDescription": "",
+	"followageExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"twitchDescription": "",
+	"twitchExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"riotgames"
+		]
+	},
+	"twitchSubscriptionDescription": "",
+	"twitchSubscriptionExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"add favna #twitch online --embed",
+			"add favna #twitch online %USER_NAME% je šel v živo | %TITLE%",
+			"remove kyranet #twitch online",
+			"reset kyranet",
+			"reset",
+			"show kyranet",
+			"show"
+		]
+	}
+}

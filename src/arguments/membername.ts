@@ -8,13 +8,13 @@ const USER_REGEXP = Argument.regex.userOrMember;
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<GuildMember> {
-		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
 		const result = await this.fetchMember(arg, message);
 		if (result) return message.guild!.members.add(result);
-		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 
 	private async resolveMember(message: KlasaMessage, query: string): Promise<GuildMember | null> {
@@ -23,7 +23,7 @@ export default class extends Argument {
 
 		const member = await message.guild!.members.fetch(result[1]);
 		if (member) return member;
-		throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
+		throw await message.resolveKey(LanguageKeys.Misc.UserNotExistent);
 	}
 
 	private async fetchMember(query: string, message: KlasaMessage) {

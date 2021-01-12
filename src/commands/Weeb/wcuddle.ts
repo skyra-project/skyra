@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Weeb.CuddleDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.CuddleExtended),
+	description: LanguageKeys.Commands.Weeb.CuddleDescription,
+	extendedHelp: LanguageKeys.Commands.Weeb.CuddleExtended,
 	queryType: 'cuddle',
 	responseName: LanguageKeys.Commands.Weeb.Cuddle,
 	usage: '<user:username>'

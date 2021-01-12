@@ -9,8 +9,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanExtended),
+	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
@@ -38,14 +38,14 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, language, context);
-		if (member && !member.bannable) throw language.get(LanguageKeys.Commands.Moderation.BanNotBannable);
+	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, t, context);
+		if (member && !member.bannable) throw t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 
 	private async getDays(message: GuildMessage) {
-		const regex = new RegExp(await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
+		const regex = new RegExp(await message.resolveKey(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

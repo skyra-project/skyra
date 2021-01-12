@@ -13,8 +13,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Misc.ShipDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ShipExtended),
+	description: LanguageKeys.Commands.Misc.ShipDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '(firstUser:user) (secondUser:user)',
 	usageDelim: ' '
@@ -67,7 +67,8 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const data = await message.fetchLocale(LanguageKeys.Commands.Misc.ShipData, {
+		const t = await message.fetchT();
+		const data = t(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])

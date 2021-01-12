@@ -1,38 +1,35 @@
 import { GuildSettings } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Management.SetStarboardEmojiDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetStarboardEmojiExtended),
+	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	usage: '<emoji:emoji>'
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [emoji]: [string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			// If it's the same value, throw:
 			if (settings[GuildSettings.Starboard.Emoji] === emoji) {
-				throw language.get(LanguageKeys.Misc.ConfigurationEquals);
+				throw t(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
 			settings[GuildSettings.Starboard.Emoji] = emoji;
 
-			return language;
+			return t;
 		});
 
-		return message.send(
-			language.get(LanguageKeys.Commands.Management.SetStarboardEmojiSet, { emoji: emoji.includes(':') ? `<${emoji}>` : emoji })
-		);
+		return message.send(t(LanguageKeys.Commands.Management.SetStarboardEmojiSet, { emoji: emoji.includes(':') ? `<${emoji}>` : emoji }));
 	}
 }

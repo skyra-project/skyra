@@ -11,8 +11,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.WakandaDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.WakandaExtended),
+	description: LanguageKeys.Commands.Fun.WakandaDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '[user:username]'
 })

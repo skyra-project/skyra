@@ -6,8 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['p'],
-	description: (language) => language.get(LanguageKeys.Commands.Music.PlayDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PlayExtended),
+	description: LanguageKeys.Commands.Music.PlayDescription,
+	extendedHelp: LanguageKeys.Commands.Music.PlayExtended,
 	usage: '[song:song]',
 	flagSupport: true
 })
@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 		// Retrieve the currently playing track, then check if there is at least one track to be played.
 		const current = await audio.getCurrentTrack();
 		if (!current && (await audio.count()) === 0) {
-			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
+			return message.sendTranslated(LanguageKeys.Commands.Music.PlayQueueEmpty);
 		}
 
 		// If Skyra is not in a voice channel, join
@@ -35,13 +35,13 @@ export default class extends MusicCommand {
 
 		// If Skyra is already playing, send a message.
 		if (audio.playing) {
-			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePlaying);
+			return message.sendTranslated(LanguageKeys.Commands.Music.PlayQueuePlaying);
 		}
 
 		if (current && audio.paused) {
 			await audio.resume();
 			const track = await audio.player.node.decode(current.track);
-			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: `<${track.uri}>` }]);
+			await message.sendTranslated(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: `<${track.uri}>` }]);
 		} else {
 			await audio.setTextChannelID(message.channel.id);
 			await audio.start();

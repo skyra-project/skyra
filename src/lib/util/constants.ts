@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { LanguageFormatters } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
-import { DEV } from '#root/config';
+import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
+import { getHandler } from '#root/languages/index';
+import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
+import { codeBlock, toTitleCase } from '@sapphire/utilities';
+import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
 
@@ -90,7 +95,7 @@ export namespace Moderation {
 		Kick = 0b00000001,
 		Mute = 0b00000010,
 		Prune = 0b00000011,
-		Softban = 0b00000100,
+		SoftBan = 0b00000100,
 		VoiceKick = 0b00000101,
 		VoiceMute = 0b00000110,
 		Warning = 0b00000111,
@@ -120,7 +125,7 @@ export namespace Moderation {
 		Warning = TypeVariation.Warning,
 		Mute = TypeVariation.Mute,
 		Kick = TypeVariation.Kick,
-		Softban = TypeVariation.Softban,
+		SoftBan = TypeVariation.SoftBan,
 		Ban = TypeVariation.Ban,
 		VoiceMute = TypeVariation.VoiceMute,
 		VoiceKick = TypeVariation.VoiceKick,
@@ -176,7 +181,7 @@ export namespace Moderation {
 		[TypeCodes.Warning, { color: Colors.Yellow, title: 'Warning' }],
 		[TypeCodes.Mute, { color: Colors.Amber, title: 'Mute' }],
 		[TypeCodes.Kick, { color: Colors.Orange, title: 'Kick' }],
-		[TypeCodes.Softban, { color: Colors.DeepOrange, title: 'Softban' }],
+		[TypeCodes.SoftBan, { color: Colors.DeepOrange, title: 'SoftBan' }],
 		[TypeCodes.Ban, { color: Colors.Red, title: 'Ban' }],
 		[TypeCodes.VoiceMute, { color: Colors.Amber, title: 'Voice Mute' }],
 		[TypeCodes.VoiceKick, { color: Colors.Orange, title: 'Voice Kick' }],
@@ -288,6 +293,109 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 	nms: {
 		everyone: 5,
 		role: 2
+	},
+	i18n: {
+		defaultMissingKey: 'default',
+		defaultNS: 'globals',
+		i18next: (_: string[], languages: string[]) => ({
+			debug: DEV,
+			supportedLngs: languages,
+			preload: languages,
+			returnObjects: true,
+			returnEmptyString: false,
+			returnNull: false,
+			load: 'all',
+			lng: 'en-US',
+			fallbackLng: 'en-US',
+			defaultNS: 'globals',
+			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
+			initImmediate: false,
+			interpolation: {
+				escapeValue: false,
+				defaultVariables: {
+					TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
+					VERSION: SKYRA_VERSION,
+					LOADING: Emojis.Loading,
+					SHINY: Emojis.Shiny,
+					GREENTICK: Emojis.GreenTick,
+					REDCROSS: Emojis.RedCross,
+					/* Permissions */
+					ADMINISTRATOR: 'ADMINISTRATOR',
+					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
+					MANAGE_GUILD: 'MANAGE_GUILD',
+					MANAGE_ROLES: 'MANAGE_ROLES',
+					MANAGE_CHANNELS: 'MANAGE_CHANNELS',
+					KICK_MEMBERS: 'KICK_MEMBERS',
+					BAN_MEMBERS: 'BAN_MEMBERS',
+					CREATE_INSTANT_INVITE: 'CREATE_INSTANT_INVITE',
+					CHANGE_NICKNAME: 'CHANGE_NICKNAME',
+					MANAGE_NICKNAMES: 'MANAGE_NICKNAMES',
+					MANAGE_EMOJIS: 'MANAGE_EMOJIS',
+					MANAGE_WEBHOOKS: 'MANAGE_WEBHOOKS',
+					VIEW_CHANNEL: 'VIEW_CHANNEL',
+					SEND_MESSAGES: 'SEND_MESSAGES',
+					SEND_TTS_MESSAGES: 'SEND_TTS_MESSAGES',
+					MANAGE_MESSAGES: 'MANAGE_MESSAGES',
+					EMBED_LINKS: 'EMBED_LINKS',
+					ATTACH_FILES: 'ATTACH_FILES',
+					READ_MESSAGE_HISTORY: 'READ_MESSAGE_HISTORY',
+					MENTION_EVERYONE: 'MENTION_EVERYONE',
+					USE_EXTERNAL_EMOJIS: 'USE_EXTERNAL_EMOJIS',
+					ADD_REACTIONS: 'ADD_REACTIONS',
+					CONNECT: 'CONNECT',
+					SPEAK: 'SPEAK',
+					STREAM: 'STREAM',
+					MUTE_MEMBERS: 'MUTE_MEMBERS',
+					DEAFEN_MEMBERS: 'DEAFEN_MEMBERS',
+					MOVE_MEMBERS: 'MOVE_MEMBERS',
+					USE_VAD: 'USE_VAD',
+					PRIORITY_SPEAKER: 'PRIORITY_SPEAKER',
+					VIEW_GUILD_INSIGHTS: 'VIEW_GUILD_INSIGHTS'
+				},
+				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
+					switch (format as LanguageFormatters) {
+						case LanguageFormatters.AndList: {
+							return getHandler(language!).listAnd.format(value as string[]);
+						}
+						case LanguageFormatters.OrList: {
+							return getHandler(language!).listOr.format(value as string[]);
+						}
+						case LanguageFormatters.Permissions: {
+							return i18next.t(`permissions:${value}`, { ...options, lng: language });
+						}
+						case LanguageFormatters.HumanLevels: {
+							return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
+						}
+						case LanguageFormatters.ToTitleCase: {
+							return toTitleCase(value);
+						}
+						case LanguageFormatters.JsCodeBlock: {
+							return codeBlock('js', value);
+						}
+						case LanguageFormatters.Number: {
+							return getHandler(language!).number.format(value as number);
+						}
+						case LanguageFormatters.NumberCompact: {
+							return getHandler(language!).numberCompact.format(value as number);
+						}
+						case LanguageFormatters.Ordinal: {
+							return getHandler(language!).ordinal(value as number);
+						}
+						case LanguageFormatters.Duration: {
+							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
+						}
+						case LanguageFormatters.TimeDate:
+							return getHandler(language!).timeDate.format(value as number);
+						case LanguageFormatters.TimeFull:
+						case LanguageFormatters.Timestamp: {
+							return getHandler(language!).timeFull.format(value as number);
+						}
+						default:
+							return value as string;
+					}
+				}
+			}
+		})
 	}
 };
 

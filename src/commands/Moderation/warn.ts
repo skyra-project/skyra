@@ -7,8 +7,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['w', 'warning'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.WarnDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.WarnExtended),
+	description: LanguageKeys.Commands.Moderation.WarnDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.WarnExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredMember: true,
 	optionalDuration: true

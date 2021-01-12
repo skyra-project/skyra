@@ -1,0 +1,6 @@
+{
+	"aborted": "Se ha abortado la petición con éxito.",
+	"attemptFailed": "Entrada no válida. Intento **{{attempt}}** de **{{maxAttempts}}**\n{{list}}",
+	"multipleChoice_plural": "Hay {{count}} resultados. Por favor, elige un número entre 1 y {{count}}, o escribe **`CANCEL`** para cancelar la solicitud.\n{{list}}",
+	"multipleChoice": "Hay {{count}} resultado. Por favor, elige un número entre 1 y {{count}}, o escribe **`CANCEL`** para cancelar la solicitud.\n{{list}}"
+}

@@ -5,7 +5,8 @@ import { requireDj, requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.ShuffleDescription)
+	description: LanguageKeys.Commands.Music.ShuffleDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
@@ -15,6 +16,6 @@ export default class extends MusicCommand {
 		await audio.shuffleTracks();
 
 		const amount = await audio.count();
-		await message.sendLocale(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
+		await message.sendTranslated(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
 	}
 }

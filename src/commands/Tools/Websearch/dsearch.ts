@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: (language) => language.get(LanguageKeys.Commands.Tools.DuckDuckGoDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.DuckDuckGoExtended),
+			description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
+			extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
 			usage: '<query:string>',
 			usageDelim: ' ',
 			requiredPermissions: ['EMBED_LINKS']
@@ -21,13 +21,13 @@ export default class extends SkyraCommand {
 		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Tools.DuckDuckGoNotfound);
+			throw await message.resolveKey(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
 		}
 
 		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(await message.fetchLocale(LanguageKeys.Commands.Tools.DuckDuckGoLookalso), body.RelatedTopics[0].Text);
+			embed.addField(await message.resolveKey(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
 		}
 
 		return message.send(embed);

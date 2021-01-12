@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['letmegooglethatforyou'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyExtended),
+	description: LanguageKeys.Commands.Google.LmgtfyDescription,
+	extendedHelp: LanguageKeys.Commands.Google.LmgtfyExtended,
 	usage: '<query:string>',
 	requiredPermissions: ['EMBED_LINKS'],
 	flagSupport: true
@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(
-					`[${await message.fetchLocale(LanguageKeys.Commands.Google.LmgtfyClick)}](https://lmgtfy.com?q=${encodeURIComponent(
+					`[${await message.resolveKey(LanguageKeys.Commands.Google.LmgtfyClick)}](https://lmgtfy.com?q=${encodeURIComponent(
 						query
 					)}&s=${searchEngine})`
 				)

@@ -1,0 +1,20 @@
+{
+	"starDescription": "Get a random starred message from the database or the star leaderboard.",
+	"starExtended": {
+		"extendedHelp": "This command shows a random starred message or the starboard usage and leaderboard for this server."
+	},
+	"starMessages_plural": "{{count}} messages",
+	"starMessages": "{{count}} message",
+	"starNoChannel": "I'm sorry, but a starboard channel hasn't been set up.",
+	"starNostars": "There is no starred message.",
+	"stars_plural": "{{count}} stars",
+	"stars": "{{count}} star",
+	"starStats": "Starboard Stats",
+	"starStatsDescription": "{{messages}} starred with a total of {{stars}}",
+	"starTopreceivers": "Top Star Receivers",
+	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} stars)",
+	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} star)",
+	"starTopstarred": "Top Starred Posts",
+	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stars)",
+	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} star)"
+}

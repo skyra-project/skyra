@@ -1,0 +1,43 @@
+{
+	"helpAllFlag": "",
+	"helpCommandCount": "",
+	"helpCommandCount_plural": "",
+	"helpData": {
+		"extended": "",
+		"footer": "",
+		"title": "",
+		"usage": ""
+	},
+	"helpDescription": "",
+	"helpExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"helpDm": "",
+	"helpNodm": "",
+	"helpNoExtended": "",
+	"infoBody": "",
+	"infoDescription": "",
+	"infoExtended": {
+		"extendedHelp": ""
+	},
+	"inviteDescription": "",
+	"inviteExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"invitePermissionInviteText": "",
+	"invitePermissionsDescription": "",
+	"invitePermissionSupportServerText": "",
+	"ping": "",
+	"pingDescription": "",
+	"pingExtended": {
+		"extendedHelp": ""
+	},
+	"pingPong": ""
+}

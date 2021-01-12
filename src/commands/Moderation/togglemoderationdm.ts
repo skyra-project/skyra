@@ -7,8 +7,8 @@ import { ApplyOptions } from '@skyra/decorators';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.ToggleModerationDmDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ToggleModerationDmExtended)
+	description: LanguageKeys.Commands.Moderation.ToggleModerationDmDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage) {
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale(
+		return message.sendTranslated(
 			updated.moderationDM
 				? LanguageKeys.Commands.Moderation.ToggleModerationDmToggledEnabled
 				: LanguageKeys.Commands.Moderation.ToggleModerationDmToggledDisabled

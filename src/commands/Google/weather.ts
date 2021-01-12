@@ -30,8 +30,8 @@ const enum TemperatureUnit {
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 120,
-	description: (language) => language.get(LanguageKeys.Commands.Google.WeatherDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.WeatherExtended),
+	description: LanguageKeys.Commands.Google.WeatherDescription,
+	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '<city:string>',
 	flagSupport: true

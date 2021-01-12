@@ -8,18 +8,18 @@ import { AliasPieceOptions } from 'klasa';
 	aliases: ['bool']
 })
 export default class UserSerializer extends Serializer<boolean> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const boolean = value.toLowerCase();
-		if (context.language.get(LanguageKeys.Resolvers.BoolTrueOptions).includes(boolean)) return this.ok(true);
-		if (context.language.get(LanguageKeys.Resolvers.BoolFalseOptions).includes(boolean)) return this.ok(false);
-		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidBool, { name: context.entry.name }));
+		if (t(LanguageKeys.Resolvers.BoolTrueOptions).includes(boolean)) return this.ok(true);
+		if (t(LanguageKeys.Resolvers.BoolFalseOptions).includes(boolean)) return this.ok(false);
+		return this.error(t(LanguageKeys.Resolvers.InvalidBool, { name: entry.name }));
 	}
 
 	public isValid(value: boolean): Awaited<boolean> {
 		return typeof value === 'boolean';
 	}
 
-	public stringify(value: boolean, context: SerializerUpdateContext): string {
-		return context.language.get(value ? LanguageKeys.Resolvers.BoolEnabled : LanguageKeys.Resolvers.BoolDisabled);
+	public stringify(value: boolean, { t }: SerializerUpdateContext): string {
+		return t(value ? LanguageKeys.Resolvers.BoolEnabled : LanguageKeys.Resolvers.BoolDisabled);
 	}
 }

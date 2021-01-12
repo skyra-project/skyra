@@ -1,16 +1,16 @@
 import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const BrawlstarsDescription = T<string>('commandBrawlstarsDescription');
-export const BrawlstarsExtended = T<LanguageHelpDisplayOptions>('commandBrawlstarsExtended');
-export const BrawlstarsPlayerEmbedTitles = T<{
+export const BrawlStarsDescription = T<string>('commands/gameIntegration:brawlstarsDescription');
+export const BrawlStarsExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:brawlstarsExtended');
+export const BrawlStarsPlayerEmbedTitles = T<{
 	trophies: string;
 	exp: string;
 	events: string;
 	gamesModes: string;
 	other: string;
-}>('commandBrawlstarsPlayerEmbedTitles');
-export const BrawlstarsPlayerEmbedFields = T<{
+}>('commands/gameIntegration:brawlstarsPlayerEmbedTitles');
+export const BrawlStarsPlayerEmbedFields = T<{
 	total: string;
 	personalBest: string;
 	experienceLevel: string;
@@ -22,8 +22,8 @@ export const BrawlstarsPlayerEmbedFields = T<{
 	victoriesSolo: string;
 	club: string;
 	brawlersUnlocked: string;
-}>('commandBrawlstarsPlayerEmbedFields');
-export const BrawlstarsClubEmbedTitles = T<{
+}>('commands/gameIntegration:brawlstarsPlayerEmbedFields');
+export const BrawlStarsClubEmbedTitles = T<{
 	totalTrophies: string;
 	averageTrophies: string;
 	requiredTrophies: string;
@@ -31,13 +31,13 @@ export const BrawlstarsClubEmbedTitles = T<{
 	type: string;
 	top5Members: string;
 	president: string;
-}>('commandBrawlstarsClubEmbedTitles');
-export const BrawlstarsClubEmbedFields = T<{
+}>('commands/gameIntegration:brawlstarsClubEmbedTitles');
+export const BrawlStarsClubEmbedFields = T<{
 	noPresident: string;
-}>('commandBrawlstarsClubEmbedFields');
-export const ClashofclansDescription = T<string>('commandClashofclansDescription');
-export const ClashofclansExtended = T<LanguageHelpDisplayOptions>('commandClashofclansExtended');
-export const ClashofclansPlayerEmbedTitles = T<{
+}>('commands/gameIntegration:brawlstarsClubEmbedFields');
+export const ClashOfClansDescription = T<string>('commands/gameIntegration:clashofclansDescription');
+export const ClashOfClansExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:clashofclansExtended');
+export const ClashOfClansPlayerEmbedTitles = T<{
 	xpLevel: string;
 	builderHallLevel: string;
 	townhallLevel: string;
@@ -58,8 +58,8 @@ export const ClashofclansPlayerEmbedTitles = T<{
 	noRole: string;
 	noClan: string;
 	noLeague: string;
-}>('commandClashofclansPlayerEmbedTitles');
-export const ClashofclansClanEmbedTitles = T<{
+}>('commands/gameIntegration:clashofclansPlayerEmbedTitles');
+export const ClashOfClansClanEmbedTitles = T<{
 	clanLevel: string;
 	clanPoints: string;
 	clanVersusPoints: string;
@@ -80,15 +80,15 @@ export const ClashofclansClanEmbedTitles = T<{
 		oncePerWeek: string;
 		lessThanOncePerWeek: string;
 	};
-}>('commandClashofclansClanEmbedTitles');
-export const BrawlStarsInvalidPlayerTag = FT<{ playertag: string }, string>('commandBrawlStarsInvalidPlayerTag');
-export const BrawlStarsClansQueryFail = FT<{ clan: string }, string>('commandBrawlStarsClansQueryFail');
-export const BrawlStarsPlayersQueryFail = FT<{ playertag: string }, string>('commandBrawlStarsPlayersQueryFail');
-export const ClashOfClansInvalidPlayerTag = FT<{ playertag: string }, string>('commandClashofclansInvalidPlayerTag');
-export const ClashOfClansClansQueryFail = FT<{ clan: string }, string>('commandClashOfClansClansQueryFail');
-export const ClashOfClansPlayersQueryFail = FT<{ playertag: string }, string>('commandClashofclansPlayersQueryFail');
-export const FFXIVDescription = T<string>('commandFFXIVDescription');
-export const FFXIVExtended = T<LanguageHelpDisplayOptions>('commandFFXIVExtended');
+}>('commands/gameIntegration:clashofclansClanEmbedTitles');
+export const BrawlStarsInvalidPlayerTag = FT<{ playertag: string }, string>('commands/gameIntegration:brawlStarsInvalidPlayerTag');
+export const BrawlStarsClansQueryFail = FT<{ clan: string }, string>('commands/gameIntegration:brawlStarsClansQueryFail');
+export const BrawlStarsPlayersQueryFail = FT<{ playertag: string }, string>('commands/gameIntegration:brawlStarsPlayersQueryFail');
+export const ClashOfClansInvalidPlayerTag = FT<{ playertag: string }, string>('commands/gameIntegration:clashofclansInvalidPlayerTag');
+export const ClashOfClansClansQueryFail = FT<{ clan: string }, string>('commands/gameIntegration:clashOfClansClansQueryFail');
+export const ClashOfClansPlayersQueryFail = FT<{ playertag: string }, string>('commands/gameIntegration:clashofclansPlayersQueryFail');
+export const FFXIVDescription = T<string>('commands/gameIntegration:FFXIVDescription');
+export const FFXIVExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:FFXIVExtended');
 export const FFXIVCharacterFields = T<{
 	serverAndDc: string;
 	tribe: string;
@@ -109,26 +109,26 @@ export const FFXIVCharacterFields = T<{
 	magicalRangedDps: string;
 	dohClasses: string;
 	dolClasses: string;
-}>('commandFFXIVCharacterFields');
+}>('commands/gameIntegration:FFXIVCharacterFields');
 export const FFXIVItemFields = T<{
 	kind: string;
 	category: string;
 	levelEquip: string;
 	none: string;
-}>('commandFFXIVItemFields');
-export const FFXIVNoCharacterFound = T<string>('commandFFXIVNoCharacterFound');
-export const FFXIVInvalidServer = T<string>('commandFFXIVInvalidServer');
-export const FFXIVNoItemFound = T<string>('commandFFXIVNoItemFound');
-export const FortniteDescription = T<string>('commandFortniteDescription');
-export const FortniteExtended = T<LanguageHelpDisplayOptions>('commandFortniteExtended');
-export const FortniteNoUser = T<string>('commandFortniteNoUser');
-export const FortniteEmbedTitle = FT<{ epicUserHandle: string }, string>('commandFortniteEmbedTitle');
+}>('commands/gameIntegration:FFXIVItemFields');
+export const FFXIVNoCharacterFound = T<string>('commands/gameIntegration:FFXIVNoCharacterFound');
+export const FFXIVInvalidServer = T<string>('commands/gameIntegration:FFXIVInvalidServer');
+export const FFXIVNoItemFound = T<string>('commands/gameIntegration:FFXIVNoItemFound');
+export const FortniteDescription = T<string>('commands/gameIntegration:fortniteDescription');
+export const FortniteExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:fortniteExtended');
+export const FortniteNoUser = T<string>('commands/gameIntegration:fortniteNoUser');
+export const FortniteEmbedTitle = FT<{ epicUserHandle: string }, string>('commands/gameIntegration:fortniteEmbedTitle');
 export const FortniteEmbedSectionTitles = T<{
 	lifetimeStats: string;
 	solos: string;
 	duos: string;
 	squads: string;
-}>('commandFortniteEmbedSectionTitles');
+}>('commands/gameIntegration:fortniteEmbedSectionTitles');
 export const FortniteEmbedStats = FT<
 	{
 		winCount: string;
@@ -156,13 +156,13 @@ export const FortniteEmbedStats = FT<
 		top12s: string;
 		top25s: string;
 	}
->('commandFortniteEmbedStats');
-export const OverwatchDescription = T<string>('commandOverwatchDescription');
-export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commandOverwatchExtended');
-export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('commandOverwatchInvalidPlayerName');
-export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commandOverwatchQueryFail');
-export const OverwatchNoStats = FT<{ player: string }, string>('commandOverwatchNoStats');
-export const OverwatchNoAverage = T<string>('commandOverwatchNoAverage');
+>('commands/gameIntegration:fortniteEmbedStats');
+export const OverwatchDescription = T<string>('commands/gameIntegration:overwatchDescription');
+export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:overwatchExtended');
+export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');
+export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commands/gameIntegration:overwatchQueryFail');
+export const OverwatchNoStats = FT<{ player: string }, string>('commands/gameIntegration:overwatchNoStats');
+export const OverwatchNoAverage = T<string>('commands/gameIntegration:overwatchNoAverage');
 export const OverwatchEmbedDataStats = FT<
 	{
 		finalBlows: number;
@@ -190,8 +190,8 @@ export const OverwatchEmbedDataStats = FT<
 		silverMedals: string;
 		bronzeMedals: string;
 	}
->('commandOverwatchEmbedDataStats');
-export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: string }, string>('commandOverwatchEmbedDataTopHero');
+>('commands/gameIntegration:overwatchEmbedDataStats');
+export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: number }, string>('commands/gameIntegration:overwatchEmbedDataTopHero');
 export const OverwatchEmbedData = FT<
 	{
 		authorName: string;
@@ -200,7 +200,7 @@ export const OverwatchEmbedData = FT<
 		totalGamesWon: number;
 	},
 	OverwatchEmbedDataReturn
->('commandOverwatchEmbedData');
+>('commands/gameIntegration:overwatchEmbedData');
 
 export interface OverwatchEmbedDataReturn {
 	title: string;

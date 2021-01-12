@@ -1,0 +1,21 @@
+{
+	"channelsAnnouncements": "Le canal pour les annonces. À côté de la clé `roles.subscriber`, ceci est requis pour la commande announce.",
+	"channelsFarewell": "Le canal sur lequel je vais faire des adieux. Il faut activer les évènements et configurer les messages dans d'autres catégories.",
+	"channelsGreeting": "Le canal sur lequel je vais faire de petits coucous aux nouveaux membres. Il faut activer les évènements et configurer les messages dans d'autres catégories.",
+	"channelsIgnoreAll": "Les canaux que je devrais ignorer pour tous les types de logging.",
+	"channelsIgnoreMessageDelete": "Les canaux que je devrais ignorer quand les messages sont supprimés.",
+	"channelsIgnoreMessageEdit": "Les canaux que je devrais ignorer quand les messages sont modifiés.",
+	"channelsIgnoreReactionAdd": "Les canaux que je devrais ignorer quand des réactions sont ajoutées aux messages.",
+	"channelsImageLogs": "Le canal sur lequel je vais envoyer toutes les images que je vois.",
+	"channelsMemberLogs": "Le canaux pour les logs des membres. Il faut activer l'évènement `events.memberAdd` pour les nouveaux membres et `events.memberRemove` pour ceux qui ont quitté le serveur.",
+	"channelsMessageLogs": "Le canal pour les logs des messages SFW. Il faut activer l'évènement `events.messageDelete` pour les messages supprimés et `events.messageEdit` pour les messages modifiés.",
+	"channelsModerationLogs": "Le canal pour les logs de modération. Une fois configuré, je vais poster des entrées de modération public sur ce canal. Si vous avez activé l'évènement `events.banRemove`, je vais aussi poster des entrées anonymes.",
+	"channelsNsfwMessageLogs": "Le canal pour les logs des messages NSFW; cette option est la même que `channelsMessageLogs` sauf pour les messages NSFW.",
+	"channelsPruneLogs": "Le canal pour les logs des messages élagués ; cette option est la même que `channelsMessageLogs` sauf pour les annonces des messages élagués.",
+	"channelsReactionLogs": "Le canal pour les logs des réactions ; cette option est la même que `channelsMessageLogs` sauf pour les réactions ajoutées aux messages. Si vous voulez que j'ignore les Twemoji (les émojis par défauts), vous pouvez désactiver `events.twemoji-reactions`.",
+	"channelsRoles": "Le canal pour les rôles de réaction ; ajouter une réaction vous donnera un rôle configuré.",
+	"channelsSpam": "Le canal vers lequel je devrais rediriger les utilisateurs quand ils utilisent des commandes que je considère comme spammy.",
+	"dashboardOnlyKey": "Cette clé ne peut être configurée que via [le tableau de bord web](https://skyra.pw)",
+	"disabledChannels": "La liste des canaux où les commandes sont désactivées ; par exemple, ajouter le canal general va interdire l'utilisation des commandes là. Les modérateurs ne sont pas soumis à cette restriction.",
+	"disabledCommands": "Les commandes désactivées. Les commandes de base ne peuvent pas être désactivées et les modérateurs peuvent encore les utiliser. Les noms des commandes doivent être en minuscule."
+}

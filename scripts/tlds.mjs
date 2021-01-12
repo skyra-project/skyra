@@ -1,4 +1,4 @@
-import { promises as fsp } from 'fs';
+import { writeFile } from 'fs/promises';
 import fetch from 'node-fetch';
 import { dirname, join } from 'path';
 import { toUnicode } from 'punycode';
@@ -27,4 +27,4 @@ const content = source
 	})
 	.join('\n');
 
-await fsp.writeFile(join(__dirname, '..', 'src', 'lib', 'util', 'Links', 'TLDs.ts'), header + content + footer);
+await writeFile(join(__dirname, '..', 'src', 'lib', 'util', 'Links', 'TLDs.ts'), header + content + footer);

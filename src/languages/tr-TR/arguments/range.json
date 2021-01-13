@@ -1,5 +1,1 @@
-{
-	"invalid": "{{name}} bir sayı veya bir sayı aralığı olmalıdır.",
-	"max_plural": "{{name}} sadece {{maximum}} sayıların aralığını kabul eder",
-	"max": "{{name}} sadece {{maximum}} sayı aralığını kabul eder"
-}
+{}

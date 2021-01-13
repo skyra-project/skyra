@@ -500,5 +500,5 @@
 	"wheelOfFortuneExtended": {
 		"extendedHelp": ""
 	},
-	"balanceDifference": "**Antes**: {{previous, number}} {{SHINY}}\n**Después**: {{next, number}} {{SHINY}}"
+	"balanceDifference": ""
 }

@@ -1,5 +1,5 @@
 {
-	"avatarDescription": "",
+	"avatarDescription": "View somebody's avatar at full size.",
 	"avatarExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -10,15 +10,15 @@
 		],
 		"reminder": ""
 	},
-	"avatarNone": "",
+	"avatarNone": "That user has not set an avatar.",
 	"color": "",
-	"colorDescription": "",
+	"colorDescription": "Displays some awesome colours.",
 	"colorExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"colour",
+				"A colour resolvable."
 			]
 		],
 		"examples": [
@@ -44,7 +44,7 @@
 			]
 		]
 	},
-	"contentDescription": "",
+	"contentDescription": "Get a message's raw content.",
 	"contentExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [

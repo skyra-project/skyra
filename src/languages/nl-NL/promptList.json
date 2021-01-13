@@ -1,6 +1,1 @@
-{
-	"aborted": "De vraag is succesvol afgebroken.",
-	"attemptFailed": "Ongeldige invoer. Poging **{{attempt}}** van **{{maxAttempts}}**\n{{list}}",
-	"multipleChoice_plural": "Er zijn {{count}} resultaten. Kies een getal tussen 1 en {{count}}, of schrijf **`CANCEL`** om het bericht te annuleren.\n{{list}}",
-	"multipleChoice": "Er is {{count}} resultaat. Kies een getal tussen 1 en {{count}}, of schrijf **`CANCEL`** om het bericht te annuleren.\n{{list}}"
-}
+{}

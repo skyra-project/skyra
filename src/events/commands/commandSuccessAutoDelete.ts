@@ -1,8 +1,11 @@
 import { GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
-import { Finalizer } from 'klasa';
+import { EventOptions } from 'klasa';
 
-export default class extends Finalizer {
+@ApplyOptions<EventOptions>({ event: Events.CommandSuccess })
+export default class extends Event {
 	public async run(message: Message) {
 		if (!message.guild) return;
 

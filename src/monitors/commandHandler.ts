@@ -58,8 +58,7 @@ export default class extends Monitor {
 					/* eslint-enable prettier/prettier */
 					timer.stop();
 					const response = await commandRun;
-					floatPromise(this, this.client.finalizers.run(message, message.command!, response, timer));
-					this.client.emit(Events.CommandSuccess, message, message.command, message.params, response);
+					this.client.emit(Events.CommandSuccess, message, message.command!, response, timer);
 				} catch (error) {
 					this.client.emit(Events.CommandError, message, message.command, message.params, error);
 				}

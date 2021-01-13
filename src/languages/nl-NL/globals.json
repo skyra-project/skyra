@@ -1,1 +1,10 @@
-{}
+{
+	"and": "en",
+	"default": "{{key}} is nog niet gelokaliseerd voor nl-NL.",
+	"defaultLanguage": "Standaard taal",
+	"no": "Nee",
+	"none": "Geen",
+	"or": "of",
+	"unknown": "onbekend",
+	"yes": "Ja"
+}

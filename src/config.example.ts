@@ -4,8 +4,9 @@ import { ApiRequest } from '#lib/structures/api/ApiRequest';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import type { APIWebhook } from 'discord-api-types/v6';
+import type { ClientOptions } from 'discord.js';
 import type { RedisOptions } from 'ioredis';
-import type { KlasaClientOptions, PostgresOptions } from 'klasa';
+import type { PoolConfig } from 'pg';
 
 export const DEV = Reflect.has(process.env, 'DEV') ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
@@ -34,7 +35,7 @@ export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';
 export const LAVALINK_PASSWORD = 'skyra';
 
-export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
+export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
 	user: PGSQL_DATABASE_USER
@@ -59,7 +60,7 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 
 export const VERSION = '5.5.0 Nirom';
 
-export const CLIENT_OPTIONS: KlasaClientOptions = {
+export const CLIENT_OPTIONS: ClientOptions = {
 	audio: {
 		userID: CLIENT_ID,
 		password: LAVALINK_PASSWORD,

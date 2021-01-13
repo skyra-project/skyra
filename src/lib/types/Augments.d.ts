@@ -85,10 +85,8 @@ declare module 'discord.js' {
 		emit(event: Events.TwitchStreamHookedAnalytics, status: AnalyticsSchema.TwitchStreamStatus): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
-}
 
-declare module 'klasa' {
-	interface KlasaClientOptions {
+	interface ClientOptions {
 		audio: QueueClientOptions;
 		dev?: boolean;
 		nms?: {
@@ -100,7 +98,9 @@ declare module 'klasa' {
 		};
 		i18n?: I18nOptions;
 	}
+}
 
+declare module 'klasa' {
 	interface PieceDefaults {
 		serializers?: AliasPieceOptions;
 		tasks?: PieceOptions;
@@ -110,8 +110,6 @@ declare module 'klasa' {
 		// @ts-expect-error 1070
 		run<T>(arg: string | undefined, possible: Possible, message: Message, filter?: (entry: T) => boolean): any;
 	}
-
-	type PostgresOptions = Omit<PoolConfig, 'stream' | 'ssl'> & Record<PropertyKey, unknown>;
 }
 
 declare module 'klasa-dashboard-hooks' {

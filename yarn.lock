@@ -3897,13 +3897,13 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   version "0.0.1-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/a3c0082cb4c46dde36b65daaf1f5489aef1f51d9"
+  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/5230fcf36362f8546a87fa66c354ee843db1f099"
   dependencies:
     node-fetch "^2.6.1"
 
 klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/352b3860bad5c75172db5b8aa6456992fe9e3947"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/b47df2607588659a443c1669a04d56429ac10393"
   dependencies:
     fs-nextra "^0.5.1"
 

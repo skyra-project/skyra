@@ -11,11 +11,10 @@ import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
 export default class extends Event {
-	public async run(guild: Guild, { user }: GatewayGuildMemberRemoveDispatch['d']) {
+	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const [enabled, t] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
 		if (!enabled) return;
 
-		const member = guild.members.cache.get(user.id);
 		const isModerationAction = await this.isModerationAction(guild, user);
 
 		const footer = isModerationAction.kicked
@@ -62,8 +61,8 @@ export default class extends Event {
 		};
 	}
 
-	private processJoinedTimestamp(member: GuildMember | undefined) {
-		if (typeof member === 'undefined') return -1;
+	private processJoinedTimestamp(member: GuildMember | null) {
+		if (member === null) return -1;
 		if (member.joinedTimestamp === null) return -1;
 		return Date.now() - member.joinedTimestamp;
 	}

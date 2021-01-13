@@ -5,50 +5,50 @@
 	},
 	"blocklistResetSuccess": "",
 	"blocklistSaveSuccess": "",
-	"confNoKey": "",
+	"confNoKey": "आपको एक कुंजी देनी होगी।",
 	"confNoValue": "",
 	"confGuarded": "",
 	"confUpdated": "",
-	"confKeyNotArray": "",
-	"confGetNoExt": "",
-	"confGet": "",
-	"confReset": "",
-	"confNochange": "",
-	"confServerDescription": "",
+	"confKeyNotArray": "यह कुंजी अथवा की किसी भी सरणी का प्रकार नहीं है। इसके बजाय 'reset' कार्य का उपयोग करे।",
+	"confGetNoExt": "{{key}} यह कुंजी मौजूद नहीं है।",
+	"confGet": "{{key}} इस कुंजी का मूल्य {{value}} के बराबर है।",
+	"confReset": "{{key}} कुंजी का मूल्य {{value}} के बराबर स्थापित किया गया है।",
+	"confNochange": "{{key}} कुंजी का मूल्य पहले से दिए गए मूल्य के अनुसार है।",
+	"confServerDescription": "सर्वर सेटिंग्स के अनुसार निश्चित करे।",
 	"confServerExtended": {
 		"extendedHelp": ""
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
-	"confUser": "",
+	"confServer": "**सर्वर सेटिंग्स {{key}}**\n{{list}}",
+	"confUserDescription": "यूजर सेटिंग्स के अनुसार निश्चित करे।",
+	"confDashboardOnlyKey": "{{key}} केवल वेब डैशबोर्ड (<https://skyra.pw>) माध्यम से ही इसे रूप दिया जा सकता हैं।",
+	"confUser": "**यूजर सेटिंग्स {{key}}**\n{{list}}",
 	"confSettingNotSet": "",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "विविध किरदार संच का प्रबंध करे।",
 	"rolesetExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"",
-				""
+				"एक नया किरदार संच बनाए अथवा मौजूदा किसी संच में किरदार को जोड़े।"
+			],
+			[
+				"हटाएं",
+				"मौजूदा किरदार संच में से कोई एक किरदार हटाएं।"
+			],
+			[
+				"पुन: विस्थापन",
+				"किसी एक किरदार संच में से सभी किरदार हटाए, अथवा निश्चित ना होने पर, सभी किरदार संच।"
 			],
 			[
 				"",
-				""
+				"सभी भूमिकाओं को सूचीबद्ध करता है।"
 			],
 			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
+				"स्वत:",
 				""
 			]
 		],

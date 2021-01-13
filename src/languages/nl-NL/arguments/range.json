@@ -1,5 +1,1 @@
-{
-	"invalid": "{{name}} moet een getal of een bereik van getallen zijn.",
-	"max_plural": "{{name}} accepteert een bereik van maximaal {{maximum}} getallen",
-	"max": "{{name}} accepteert een bereik van maximaal {{maximum}} getal"
-}
+{}

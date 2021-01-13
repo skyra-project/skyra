@@ -11,6 +11,7 @@ export default class extends Event {
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		this.client.emit(Events.RawMemberRemove, guild, data);
+		const member = guild.members.cache.get(data.user.id) ?? null;
+		this.client.emit(Events.RawMemberRemove, guild, member, data);
 	}
 }

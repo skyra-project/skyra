@@ -14,7 +14,6 @@ export const enum Events {
 	Disconnect = 'disconnect',
 	Error = 'error',
 	EventError = 'eventError',
-	FinalizerError = 'finalizerError',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',
 	GuildAnnouncementError = 'guildAnnouncementError',
 	GuildAnnouncementSend = 'guildAnnouncementSend',

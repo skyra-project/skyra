@@ -25,7 +25,6 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/commands',
 		'<rootDir>/src/events',
 		'<rootDir>/src/extendables',
-		'<rootDir>/src/finalizers',
 		'<rootDir>/src/inhibitors',
 		'<rootDir>/src/ipcMonitors',
 		'<rootDir>/src/languages',

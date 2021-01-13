@@ -16,8 +16,8 @@ export default class extends Inhibitor {
 		let existing: Cooldown | undefined = undefined;
 
 		try {
-			const finalizer = this.client.events.get('commandSuccessCooldown') as CommandCooldown;
-			existing = finalizer.getCooldown(message, command);
+			const event = this.client.events.get('commandSuccessCooldown') as CommandCooldown;
+			existing = event.getCooldown(message, command);
 		} catch (err) {
 			return;
 		}

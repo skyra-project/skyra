@@ -89,9 +89,9 @@ export default class extends RichDisplayCommand {
 				const answer = await askYesNo(channel, author, t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
 				if (answer !== YesNoAnswer.Yes)
 					return message.send(
-						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, [
-							{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }
-						])
+						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, {
+							user: await this.client.users.fetch(spouses[0]).then((user) => user.username)
+						})
 					);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {

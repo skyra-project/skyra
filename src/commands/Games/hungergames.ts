@@ -124,7 +124,7 @@ export default class extends SkyraCommand {
 			}
 
 			// The match finished with one remaining player
-			return message.send(t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value }));
+			return message.send(t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
 		} finally {
 			game.llrc.end();
 		}

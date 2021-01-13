@@ -40,7 +40,7 @@ export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) 
 			options = content!;
 			content = null;
 		}
-		const message = await this.send(content, options as MessageOptions);
+		const message = (await this.send(content, options as MessageOptions)) as Message;
 		return this.reactable ? awaitReaction(this, message, promptOptions) : awaitMessage(this, promptOptions);
 	}
 

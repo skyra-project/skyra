@@ -876,6 +876,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-3.0.0.tgz#eaa4287c07dd4eaaa2ebd8ec590c538b5379a659"
   integrity sha512-C0ooDOLzjtm4Iu0U4KxTIPEE2PNCN8rcTEpHphIFxxxQ5xZleu5ecX70KrPxXjmLKF/h3JUaDVt08KBeZwiC2Q==
 
+"@skyra/editable-commands@skyra-project/editable-commands#build":
+  version "1.0.0"
+  resolved "https://codeload.github.com/skyra-project/editable-commands/tar.gz/45cbdc4bc6c4315f5c6ce03c81e768bd23b34d35"
+
 "@skyra/saelem@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-3.0.1.tgz#2e0f20449dbfa95525cc235c6d663ac73462e443"
@@ -3901,9 +3905,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.1"
 
-klasa@skyra-project/klasa#settings:
+klasa@skyra-project/klasa#refactor/remove-editable-commands:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/7e678e8f057367087bf4341083567a9a09fb1c40"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/b6f6dbb7885d869cc4c26d50e8f5b07605bac04c"
   dependencies:
     fs-nextra "^0.5.1"
 

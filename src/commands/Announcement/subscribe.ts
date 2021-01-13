@@ -36,6 +36,6 @@ export default class extends SkyraCommand {
 
 		await message.member.roles.set([...memberRolesSet]);
 
-		return message.send(t(LanguageKeys.Commands.Announcement.SubscribeSuccess, [{ role: role.name }]));
+		return message.send(t(LanguageKeys.Commands.Announcement.SubscribeSuccess, { role: role.name }));
 	}
 }

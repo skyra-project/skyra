@@ -40,7 +40,7 @@
 				"Een rol van een bestaande rol groep verwijderen."
 			],
 			[
-				"",
+				"reset",
 				"Verwijder alle rollen van een rol groep of, wanneer niet gespecificeerd, alle bestaande rol groepen."
 			],
 			[
@@ -56,8 +56,8 @@
 			"add regions Amerika",
 			"add regions Afrika Amerika Azië Europa",
 			"remove regions Amerika",
-			"",
-			"",
+			"reset",
+			"reset regions",
 			"lijst",
 			"regions Amerika",
 			"regions Afrika Amerika Azië Europe"

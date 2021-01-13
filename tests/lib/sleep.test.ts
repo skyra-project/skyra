@@ -1,4 +1,4 @@
-import { sleep } from '#utils/sleep';
+import { sleep } from '#utils/Promisified/sleep';
 
 test('sleep(cozy)', async () => {
 	const pending = sleep(1);

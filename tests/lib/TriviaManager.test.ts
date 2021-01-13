@@ -1,4 +1,4 @@
-import { CATEGORIES, getQuestion, QuestionDifficulty, QuestionType } from '#utils/Games/TriviaManager';
+import { CATEGORIES, getQuestion, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import nock from 'nock';
 
 describe('TriviaManager', () => {

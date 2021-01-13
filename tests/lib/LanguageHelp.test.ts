@@ -1,4 +1,4 @@
-import { LanguageHelp } from '#utils/LanguageHelp';
+import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 
 describe('LanguageHelp builder', () => {
 	const builder = new LanguageHelp()

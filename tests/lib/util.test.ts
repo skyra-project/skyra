@@ -81,7 +81,7 @@ describe('Utils', () => {
 
 	describe('streamToBuffer', () => {
 		test('GIVEN path to file THEN converts to Buffer', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
 			const readStream = createReadStream(filePath);
 			const buffer = await utils.streamToBuffer(readStream);
 
@@ -491,7 +491,7 @@ describe('Utils', () => {
 
 	describe('getImage', () => {
 		test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
 			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = filePath;
@@ -508,7 +508,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/ attachments w/ image w/ proxyURL attachment THEN returns url', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
 			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = filePath;
@@ -526,7 +526,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/ attachments w/o image attachment THEN passes through to embed checking', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
 			const buffer = await readFile(filePath);
 			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
 			fakeAttachment.url = 'not_an_image';

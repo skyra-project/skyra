@@ -5,47 +5,47 @@
 	},
 	"blocklistResetSuccess": "",
 	"blocklistSaveSuccess": "",
-	"confNoKey": "",
-	"confNoValue": "",
-	"confGuarded": "",
-	"confUpdated": "",
-	"confKeyNotArray": "",
-	"confGetNoExt": "",
-	"confGet": "",
-	"confReset": "",
-	"confNochange": "",
-	"confServerDescription": "",
+	"confNoKey": "You must provide a key",
+	"confNoValue": "You must provide a value",
+	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
+	"confUpdated": "Successfully updated the key **{{key}}**: `{{response}}`",
+	"confKeyNotArray": "This key is not array type. Use the action 'reset' instead.",
+	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
+	"confGet": "The value for the key **{{key}}** is: `{{value}}`",
+	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
+	"confNochange": "The value for **{{key}}** was already that value.",
+	"confServerDescription": "Define per-server settings.",
 	"confServerExtended": {
 		"extendedHelp": ""
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
+	"confServer": "**Server Setting {{key}}**\n{{list}}",
+	"confUserDescription": "Define per-user settings.",
+	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
 	"confUser": "",
-	"confSettingNotSet": "",
+	"confSettingNotSet": "Not Set",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"add",
+				"Create a new roleset or add a role to an existing one."
 			],
 			[
-				"",
-				""
+				"remove",
+				"Remove a role from an existing roleset."
 			],
 			[
-				"",
-				""
+				"reset",
+				"Removes all roles from a roleset or, if not specified, all existing rolesets."
 			],
 			[
-				"",
-				""
+				"list",
+				"Lists all rolesets."
 			],
 			[
 				"",

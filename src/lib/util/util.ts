@@ -1,10 +1,10 @@
 import { GuildSettings } from '#lib/database';
 import { FetchError } from '#lib/errors/FetchError';
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
@@ -29,7 +29,7 @@ import { ValueTransformer } from 'typeorm';
 import { Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
-import { api } from './Models/Api';
+import { api } from '../discord/Api';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;

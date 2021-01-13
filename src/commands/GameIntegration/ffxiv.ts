@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { FFXIV } from '#utils/GameIntegration/FFXIVTypings';
-import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/GameIntegration/FFXIVUtils';
+import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
+import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';

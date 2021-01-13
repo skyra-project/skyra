@@ -1,5 +1,5 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
 import { ApplyOptions } from '@skyra/decorators';
 import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 import { createGunzip, createInflate } from 'zlib';

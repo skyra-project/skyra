@@ -1,8 +1,8 @@
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { requireDj, requireMusicPlaying } from '#lib/audio';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { requireDj, requireMusicPlaying } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({

@@ -1,6 +1,6 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
 import Collection from '@discordjs/collection';

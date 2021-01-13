@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
-import { AnalyticsEvent } from '#utils/Tracking/Analytics/structures/AnalyticsEvent';
+import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@skyra/decorators';
 import { EventOptions } from 'klasa';

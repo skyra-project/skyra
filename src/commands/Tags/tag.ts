@@ -2,11 +2,11 @@
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { parse as parseColour } from '#utils/Color';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';

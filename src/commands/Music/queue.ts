@@ -1,11 +1,10 @@
-import { Queue } from '#lib/audio';
+import { Queue, requireQueueNotEmpty } from '#lib/audio';
 import { DbSet } from '#lib/database';
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types/Discord';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { pickRandom, showSeconds } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import { TrackInfo } from '@skyra/audio';

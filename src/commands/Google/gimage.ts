@@ -1,10 +1,10 @@
 import { DbSet } from '#lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors } from '#utils/constants';
-import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/Google';
+import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { IMAGE_EXTENSION, pickRandom } from '#utils/util';
 import { parseURL } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

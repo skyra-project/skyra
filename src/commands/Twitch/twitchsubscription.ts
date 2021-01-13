@@ -6,12 +6,12 @@ import {
 	NotificationsStreamTwitch,
 	TwitchStreamSubscriptionEntity
 } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, Time } from '#utils/constants';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { pickRandom } from '#utils/util';

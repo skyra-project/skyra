@@ -1,7 +1,7 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
-import { GuildSettings } from '#lib/database/tableKeys';
+import { GuildSettings } from '#lib/database/keys';
 import type { SkyraClient } from '#lib/SkyraClient';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import Collection from '@discordjs/collection';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';

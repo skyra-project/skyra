@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { LanguageFormatters } from '#lib/types/Constants';
-import { Colors } from '#lib/types/constants/Constants';
+import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
+import { Colors, LanguageFormatters } from '#lib/types/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
-import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import { ClientOptions } from 'discord.js';
 import i18next, { FormatFunction } from 'i18next';
@@ -298,7 +297,6 @@ export const clientOptions: Partial<ClientOptions> = {
 		defaultMissingKey: 'default',
 		defaultNS: 'globals',
 		i18next: (_: string[], languages: string[]) => ({
-			debug: DEV,
 			supportedLngs: languages,
 			preload: languages,
 			returnObjects: true,

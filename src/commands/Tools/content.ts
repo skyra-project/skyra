@@ -1,8 +1,8 @@
 import { Serializer } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
-import { ContentExtraData, handleMessage } from '#utils/ExceededLengthParser';
+import { ContentExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

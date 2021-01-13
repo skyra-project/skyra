@@ -1,7 +1,7 @@
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { requireMusicPlaying } from '#lib/audio';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { requireMusicPlaying } from '#utils/Music/Decorators';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';

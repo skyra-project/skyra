@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { pickRandom } from '#utils/util';
 import type { Message } from 'discord.js';

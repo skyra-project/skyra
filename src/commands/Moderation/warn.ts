@@ -1,6 +1,6 @@
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/ModerationMonitor';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
 import { GuildMessage } from '#lib/types';
-import { Colors } from '#lib/types/constants/Constants';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Colors } from '#lib/types/Constants';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 

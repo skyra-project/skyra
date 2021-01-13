@@ -1,5 +1,5 @@
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
 import { Awaited } from '@sapphire/utilities';
 

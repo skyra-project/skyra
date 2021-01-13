@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ApiResponse } from '#lib/api/ApiResponse';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';

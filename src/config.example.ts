@@ -1,7 +1,7 @@
 // Remove `.example` from the file extension to configure Skyra
 
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
 import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import type { APIWebhook } from 'discord-api-types/v6';
 import type { ClientOptions } from 'discord.js';

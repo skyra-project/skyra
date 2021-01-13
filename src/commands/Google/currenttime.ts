@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TOKENS } from '#root/config';
-import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/Google';
+import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';

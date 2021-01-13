@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { GuildSettings, StickyRole } from '#lib/database';
-import { isNullish } from '#lib/misc';
+import { isNullish } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 
 export interface StickyRoleManagerExtraContext {

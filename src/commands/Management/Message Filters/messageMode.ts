@@ -1,8 +1,8 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
-import { SelfModerationCommand } from '#lib/structures/SelfModerationCommand';
-import { SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SelfModerationCommand } from '#lib/structures/commands/SelfModerationCommand';
+import { SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { KeyOfType } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({

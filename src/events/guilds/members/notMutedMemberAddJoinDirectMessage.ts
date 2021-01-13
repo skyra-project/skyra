@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

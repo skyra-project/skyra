@@ -1,5 +1,5 @@
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

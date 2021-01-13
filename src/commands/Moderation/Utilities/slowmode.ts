@@ -1,7 +1,7 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';

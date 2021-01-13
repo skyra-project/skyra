@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
-import { Colors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum, Moderation } from '#utils/constants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

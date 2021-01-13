@@ -1,9 +1,9 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { clean } from '#utils/clean';
-import { EvalExtraData, handleMessage } from '#utils/ExceededLengthParser';
-import { sleep } from '#utils/sleep';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { clean } from '#utils/Sanitizer/clean';
+import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
+import { sleep } from '#utils/Promisified/sleep';
 import { cast } from '#utils/util';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';

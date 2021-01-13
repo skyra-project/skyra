@@ -1,8 +1,8 @@
 import { FetchError } from '#lib/errors/FetchError';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { Reddit } from '#lib/types/definitions/Reddit';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';

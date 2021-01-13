@@ -1,5 +1,5 @@
 import { Time } from '#utils/constants';
-import { api } from '#utils/Models/Api';
+import { api } from '#lib/discord/Api';
 import { resolveOnErrorCodes } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';

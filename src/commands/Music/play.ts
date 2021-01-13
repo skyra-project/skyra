@@ -1,7 +1,7 @@
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { requireUserInVoiceChannel } from '#lib/audio';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { requireUserInVoiceChannel } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({

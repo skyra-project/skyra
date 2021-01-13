@@ -1,6 +1,6 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
-import { CookieStore } from '#lib/structures/api/CookieStore';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
+import { CookieStore } from '#lib/api/CookieStore';
 import { DEV } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';

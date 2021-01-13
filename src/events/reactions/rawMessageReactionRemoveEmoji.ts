@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { api } from '#utils/Models/Api';
+import { api } from '#lib/discord/Api';
 import { compareEmoji } from '#utils/util';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';

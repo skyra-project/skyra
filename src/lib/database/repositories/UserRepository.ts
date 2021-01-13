@@ -3,12 +3,12 @@ import { UserCooldownEntity } from '#lib/database/entities/UserCooldownEntity';
 import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
 import Ccollection from '@discordjs/collection';
-import { AsyncQueue } from '@klasa/async-queue';
+import { AsyncQueue } from '@sapphire/async-queue';
 import { TimerManager } from '@sapphire/time-utilities';
 import { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
-import { DbSet } from '../structures/DbSet';
+import { DbSet } from '../utils/DbSet';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {

@@ -1,4 +1,4 @@
-import '#utils/initClean';
+import '#utils/Sanitizer/initClean';
 import 'reflect-metadata';
 
 import { DbSet } from '#lib/database';

@@ -1,6 +1,6 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import type { TFunction } from 'i18next';

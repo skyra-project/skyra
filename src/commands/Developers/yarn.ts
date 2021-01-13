@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CdnUrls } from '#lib/types/Constants';
 import { YarnPkg } from '#lib/types/definitions/Yarnpkg';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors } from '#utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';

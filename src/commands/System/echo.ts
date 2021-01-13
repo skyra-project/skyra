@@ -1,7 +1,7 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MessageOptions, TextChannel } from 'discord.js';
 import { CommandStore } from 'klasa';
 

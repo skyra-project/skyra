@@ -1,9 +1,9 @@
 import { DbSet, GuildSettings, UserEntity } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { roundNumber } from '@sapphire/utilities';

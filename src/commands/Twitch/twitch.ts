@@ -1,6 +1,6 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CdnUrls } from '#lib/types/Constants';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';

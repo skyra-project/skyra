@@ -1,10 +1,10 @@
 import { QueueEntry } from '#lib/audio';
 import { GuildSettings } from '#lib/database';
-import { empty, filter, map, take } from '#lib/misc';
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { empty, filter, map, take } from '#utils/iterator';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { Track } from '@skyra/audio';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

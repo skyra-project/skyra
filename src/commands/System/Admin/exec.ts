@@ -1,7 +1,7 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { exec } from '#utils/exec';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { exec } from '#utils/Promisified/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

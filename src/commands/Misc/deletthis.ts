@@ -1,5 +1,5 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CLIENT_ID } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';

@@ -1,5 +1,5 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { Message, MessageEmbed } from 'discord.js';
 import { CommandStore } from 'klasa';

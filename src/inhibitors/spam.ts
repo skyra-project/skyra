@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Message } from 'discord.js';
 import { Inhibitor, RateLimitManager } from 'klasa';
 

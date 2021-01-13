@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors } from '#utils/constants';
 import { announcementCheck, extractMentions } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

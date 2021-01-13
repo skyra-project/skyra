@@ -1,6 +1,6 @@
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { api } from '#utils/Models/Api';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { api } from '#lib/discord/Api';
 import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { GuildMember } from 'discord.js';
 import { Argument, Possible } from 'klasa';

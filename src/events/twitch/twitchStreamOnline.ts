@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ApiResponse } from '#lib/api/ApiResponse';
 import { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';

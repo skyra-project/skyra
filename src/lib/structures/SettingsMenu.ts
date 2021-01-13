@@ -1,16 +1,16 @@
 import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '#lib/database';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, Time, ZeroWidthSpace } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { api } from '#utils/Models/Api';
+import { api } from '#lib/discord/Api';
 import { floatPromise, pickRandom } from '#utils/util';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { DbSet } from '../database/structures/DbSet';
+import { DbSet } from '../database/utils/DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;

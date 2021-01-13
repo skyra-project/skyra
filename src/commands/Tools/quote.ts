@@ -1,7 +1,7 @@
 import { DbSet, Serializer } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

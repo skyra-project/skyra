@@ -12,7 +12,7 @@ import { ScheduleManager } from './structures/managers/ScheduleManager';
 
 // Import all utils
 import { clientOptions } from './util/constants';
-import { ConnectFourManager } from './util/Games/ConnectFourManager';
+import { ConnectFourManager } from './structures/managers/ConnectFourManager';
 import { enumerable } from './util/util';
 import { Leaderboard } from './util/Leaderboard';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
@@ -28,7 +28,7 @@ import './extensions';
 import './setup';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
-import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
+import { AnalyticsData } from '#lib/structures/AnalyticsData';
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';

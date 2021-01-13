@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors } from '#utils/constants';
-import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/Pokemon';
+import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { pickRandom } from '#utils/util';
 import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

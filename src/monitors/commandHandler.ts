@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
 import { Message } from 'discord.js';

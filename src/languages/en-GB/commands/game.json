@@ -1,5 +1,5 @@
 {
-	"c4Description": "",
+	"c4Description": "Play Connect Four with somebody.",
 	"c4Extended": {
 		"extendedHelp": ""
 	},
@@ -9,7 +9,7 @@
 	"c4GameNextTurn0": "",
 	"c4GameWin": "",
 	"c4GameWinTurn0": "",
-	"c4Prompt": "",
+	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect Four match. Reply with **yes** to accept!",
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
 	"coinFlipCoinnames": [
@@ -450,12 +450,12 @@
 	},
 	"slotmachinesLoss": "",
 	"slotmachinesWin": "",
-	"ticTacToeDescription": "",
+	"ticTacToeDescription": "Play noughts and crosses with somebody.",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
 		"extendedHelp": ""
 	},
-	"ticTacToePrompt": "",
+	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a noughts and crosses match. Reply with **yes** to accept!",
 	"ticTacToeTurn": "",
 	"ticTacToeWinner": "",
 	"triviaActiveGame": "",

@@ -3901,9 +3901,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.1"
 
-klasa@skyra-project/klasa#refactor/remove-finalizers:
+klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/98c2decf9bb3b8679e5976fd69f8a196fa6df9f5"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/7e678e8f057367087bf4341083567a9a09fb1c40"
   dependencies:
     fs-nextra "^0.5.1"
 

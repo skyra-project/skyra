@@ -5,23 +5,23 @@
 		"onwaar",
 		"o",
 		"nee",
-		"",
+		"n",
 		"uit",
 		"uitschakelen",
 		"uitgeschakeld",
-		"",
-		""
+		"0",
+		"-"
 	],
 	"boolTrueOptions": [
 		"waar",
-		"",
+		"t",
 		"ja",
 		"j",
 		"aan",
 		"inschakelen",
 		"ingeschakeld",
-		"",
-		""
+		"1",
+		"+"
 	],
 	"channelNotInGuild": "Het spijt me, maar dat commando kan alleen in een server worden uitgevoerd.",
 	"channelNotInGuildSubCommand": "{{REDCROSS}} Het spijt me, maar het subcommando `{{subcommand}}` voor het commando `{{command}}` kan alleen gebruikt worden in een server.",

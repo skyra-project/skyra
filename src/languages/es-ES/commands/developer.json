@@ -9,9 +9,9 @@
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
 		]
 	},
 	"yarnEmbedDescriptionAuthor": "❯ Autor: {{author}}",

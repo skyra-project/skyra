@@ -1,59 +1,59 @@
 {
-	"avatarDescription": "View somebody's avatar at full size.",
+	"avatarDescription": "",
 	"avatarExtended": {
-		"extendedHelp": "As this command's name says, it shows somebody's avatar.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"user",
-				"(Optional) A user mention. Defaults to the author if the input is invalid or not given."
+				"",
+				""
 			]
 		],
-		"reminder": "Use the --size flag to change the avatar's size."
+		"reminder": ""
 	},
-	"avatarNone": "That user has not set an avatar.",
+	"avatarNone": "",
 	"color": "",
-	"colorDescription": "Displays some awesome colours.",
+	"colorDescription": "",
 	"colorExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"colour",
-				"A colour resolvable."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"#dfdfdf >25",
-			"rgb(200, 130, 75)"
+			"",
+			""
 		],
 		"possibleFormats": [
 			[
-				"HEX",
-				"#dfdfdf"
+				"",
+				""
 			],
 			[
-				"RGB",
-				"rgb(200, 200, 200)"
+				"",
+				""
 			],
 			[
-				"HSL",
-				"hsl(350, 100, 100)"
+				"",
+				""
 			],
 			[
-				"B10",
-				"14671839"
+				"",
+				""
 			]
 		]
 	},
-	"contentDescription": "Get a message's raw content.",
+	"contentDescription": "",
 	"contentExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"channel",
+				"",
 				""
 			],
 			[
-				"message",
+				"",
 				""
 			]
 		]

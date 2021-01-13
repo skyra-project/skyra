@@ -22,7 +22,7 @@
 	"bannerUserlistEmpty": "",
 	"bannerResetDefault": "",
 	"bannerReset": "",
-	"bannerSetNotBought": "Вы ещё не купили этот баннер.",
+	"bannerSetNotBought": "",
 	"bannerSet": "",
 	"bannerBought": "",
 	"bannerMoney": "",
@@ -46,7 +46,7 @@
 	"divorceNotTaken": "",
 	"divorcePrompt": "",
 	"divorceCancel": "",
-	"divorceDm": "Простите... но... вы помните {{user}}? Он/а решил/а расстаться с вами 💔!",
+	"divorceDm": "",
 	"divorceSuccess": "",
 	"marryWith": "",
 	"marryNotTaken": "",
@@ -58,7 +58,7 @@
 	"marryAuthorMultipleCancel": "",
 	"marryTaken": "",
 	"marryTaken_plural": "",
-	"marryAlreadyMarried": "Вы уже состоите в браке с {{user}}, вы забыли об этом?",
+	"marryAlreadyMarried": "",
 	"marryAuthorTooMany": "",
 	"marryTargetTooMany": "",
 	"marryMultipleCancel": "",
@@ -105,7 +105,7 @@
 	"reputations": "",
 	"autoRoleRequireRole": "",
 	"scoreboardPosition": "",
-	"setColor": "Цвет изменён на {{color}}",
+	"setColor": "",
 	"socialDescription": "",
 	"socialExtended": {
 		"extendedHelp": "",
@@ -238,7 +238,7 @@
 			""
 		]
 	},
-	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
+	"marriedDescription": "",
 	"marriedExtended": {
 		"extendedHelp": ""
 	},

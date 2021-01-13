@@ -9,7 +9,7 @@
 			]
 		],
 		"examples": [
-			""
+			"One Piece"
 		]
 	},
 	"mangaDescription": "Busca tu manga favorito por su título con este comando.",
@@ -22,8 +22,8 @@
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Stone Ocean",
+			"One Piece"
 		]
 	},
 	"waifuDescription": "Publica una imagen de una waifu generada al azar.",
@@ -31,7 +31,7 @@
 		"extendedHelp": "Este comando publica un waifu aleatorio generado por <https://thiswaifudoesnotexist.net/>"
 	},
 	"animeTypes": {
-		"tv": "",
+		"tv": "📺 TV",
 		"movie": "🎥 Película",
 		"ova": "📼 Animación original de vídeo",
 		"special": "🎴 Especial"
@@ -51,10 +51,10 @@
 	},
 	"mangaOutputDescription": "**Título en inglés:** {{englishTitle}}\n**Título japonés:** {{japaneseTitle}}\n**Título canónico:** {{canonicalTitle}}\n{{synopsis}}",
 	"mangaTypes": {
-		"manga": "",
-		"novel": "",
-		"manhwa": "",
-		"oneShot": "",
+		"manga": "📘 Manga",
+		"novel": "📕 Novel",
+		"manhwa": "🇰🇷 Manhwa",
+		"oneShot": "☄ One Shot",
 		"special": "🎴 Especial"
 	},
 	"mangaEmbedData": {

@@ -1,68 +1,68 @@
 {
 	"blocklistDescription": "",
 	"blocklistExtended": {
-		"extendedHelp": "Blokkeer gebruikers die mij misbruiken om in de toekomst mij verder te misbruiken, stoute, stoute mensen!"
+		"extendedHelp": ""
 	},
-	"blocklistResetSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol gereset",
-	"blocklistSaveSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol geüpdate",
-	"confNoKey": "Je moet een key opgeven",
-	"confNoValue": "Een waarde is vereist",
-	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",
-	"confUpdated": "**{{key}}** is succesvol bijgewerkt: `{{response}}`",
-	"confKeyNotArray": "De waarde is niet van type lijst. Gebruik in plaats daarvan de 'reset' actie.",
-	"confGetNoExt": "De sleutel **{{key}}** lijkt niet te bestaan.",
-	"confGet": "De waarde voor **{{key}}** is: `{{value}}`",
-	"confReset": "**{{key}}** is gereset naar: `{{value}}`",
-	"confNochange": "De waarde voor **{{key}}** is hetzelfde gebleven.",
-	"confServerDescription": "Definieer instellingen per server.",
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
+	"confNoKey": "",
+	"confNoValue": "",
+	"confGuarded": "",
+	"confUpdated": "",
+	"confKeyNotArray": "",
+	"confGetNoExt": "",
+	"confGet": "",
+	"confReset": "",
+	"confNochange": "",
+	"confServerDescription": "",
 	"confServerExtended": {
-		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>)."
+		"extendedHelp": ""
 	},
-	"confServer": "**Server Instelling {{key}}**\n{{list}}",
-	"confUserDescription": "Definieer instellingen per gebruiker.",
-	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
-	"confUser": "**Gebruiker Instelling {{key}}**\n{{list}}",
-	"confSettingNotSet": "Niet ingesteld",
-	"heapSnapshotDescription": "Maakt een heapdump voor het vinden van geheugenlekken.",
+	"confServer": "",
+	"confUserDescription": "",
+	"confDashboardOnlyKey": "",
+	"confUser": "",
+	"confSettingNotSet": "",
+	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "Beheer unieke rolesets.",
+	"rolesetDescription": "",
 	"rolesetExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"toevoegen",
-				"Maak een nieuwe rol groep of voeg een bestaande toe."
+				"",
+				""
 			],
 			[
-				"verwijderen",
-				"Een rol van een bestaande rol groep verwijderen."
+				"",
+				""
 			],
 			[
-				"reset",
-				"Verwijder alle rollen van een rol groep of, wanneer niet gespecificeerd, alle bestaande rol groepen."
+				"",
+				""
 			],
 			[
-				"lijst",
-				"Geeft alle rollen weer."
+				"",
+				""
 			],
 			[
-				"automatisch",
-				"Voeg rol groep to of verwijder een rol groep."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"add regions Amerika",
-			"add regions Afrika Amerika Azië Europa",
-			"remove regions Amerika",
-			"reset",
-			"reset regions",
-			"lijst",
-			"regions Amerika",
-			"regions Afrika Amerika Azië Europe"
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen."
+		"reminder": ""
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
@@ -73,7 +73,7 @@
 	"rolesetResetNotExists": "",
 	"rolesetResetGroup": "",
 	"rolesetUpdated": "",
-	"rolesetNoRolesets": "Je hebt geen rolesets.",
+	"rolesetNoRolesets": "",
 	"confMenuNopermissions": "",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",

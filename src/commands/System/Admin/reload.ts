@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 					if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.name}.loadAll().then(() => this.${piece.name}.init());
 				`);
 			}
-			return message.send(t(LanguageKeys.Commands.System.ReloadAll, { type: piece, time: timer.stop() }));
+			return message.send(t(LanguageKeys.Commands.System.ReloadAll, { type: piece.name, time: timer.stop().toString() }));
 		}
 
 		try {
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 					if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').reload();
 				`);
 			}
-			return message.send(t(LanguageKeys.Commands.System.Reload, { type: itm.type, name: itm.name, time: timer.stop() }));
+			return message.send(t(LanguageKeys.Commands.System.Reload, { type: itm.type, name: itm.name, time: timer.stop().toString() }));
 		} catch (err) {
 			piece.store.set(piece);
 			return message.send(t(LanguageKeys.Commands.System.ReloadFailed, { type: piece.type, name: piece.name }));
@@ -62,6 +62,6 @@ export default class extends SkyraCommand {
 				});
 			`);
 		}
-		return message.send(t(LanguageKeys.Commands.System.ReloadEverything, { time: timer.stop() }));
+		return message.send(t(LanguageKeys.Commands.System.ReloadEverything, { time: timer.stop().toString() }));
 	}
 }

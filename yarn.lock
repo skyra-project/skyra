@@ -876,6 +876,11 @@
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-3.0.0.tgz#eaa4287c07dd4eaaa2ebd8ec590c538b5379a659"
   integrity sha512-C0ooDOLzjtm4Iu0U4KxTIPEE2PNCN8rcTEpHphIFxxxQ5xZleu5ecX70KrPxXjmLKF/h3JUaDVt08KBeZwiC2Q==
 
+"@skyra/editable-commands@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/editable-commands/-/editable-commands-1.0.0.tgz#3aab646cbd5cfc1f676eea95222e1db50b119409"
+  integrity sha512-lZwz9XgYXNsEzJ+e8d5k2NX4MhbxrTI/tCg75VEftD0sbTzyZJQfRAwKvOv/QfEgIKYb2JoneZeAUkhtoWaLhQ==
+
 "@skyra/saelem@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-3.0.1.tgz#2e0f20449dbfa95525cc235c6d663ac73462e443"
@@ -3903,7 +3908,7 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
 
 klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/7e678e8f057367087bf4341083567a9a09fb1c40"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/a034d1028745012c876860549eec613f45a38301"
   dependencies:
     fs-nextra "^0.5.1"
 

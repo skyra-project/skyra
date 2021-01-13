@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
 import { access } from 'fs/promises';
-import { Stopwatch, Store } from 'klasa';
+import { Piece, Stopwatch, Store } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		const t = await message.fetchT();
 		const splitPath = (path.endsWith('.js') ? path : `${path}.js`).split(this.regExp);
 		const timer = new Stopwatch();
-		const piece = await (core ? this.tryEach(store, splitPath) : store.load(store.userDirectory, splitPath));
+		const piece = (await (core ? this.tryEach(store, splitPath) : store.load(store.userDirectory, splitPath))) as Piece;
 
 		try {
 			if (!piece) throw t(LanguageKeys.Commands.System.LoadFail);

@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { FuzzySearch } from '#utils/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
-import { Guild, GuildChannel, User } from 'discord.js';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Guild, GuildChannel, Message, User } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 const CHANNEL_REGEXP = Argument.regex.channel;
 
@@ -16,7 +16,7 @@ export default class extends Argument {
 		return (channelID !== null && guild.channels.cache.get(channelID[1])) ?? null;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
+	public async run(arg: string, possible: Possible, message: Message, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
 		if (!message.guild) throw await message.resolveKey(LanguageKeys.Resolvers.ChannelNotInGuild);
 		filter = this.getFilter(message.author, filter);

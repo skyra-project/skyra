@@ -7,9 +7,9 @@ import { LanguageHelp } from '#utils/LanguageHelp';
 import { pickRandom } from '#utils/util';
 import { isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
-import { Command, KlasaMessage } from 'klasa';
+import { Command } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
+	public async run(message: Message, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		const t = await message.fetchT();
 
 		if (message.flagArgs.categories || message.flagArgs.cat) {
@@ -110,7 +110,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async buildHelp(message: KlasaMessage, language: TFunction, prefix: string) {
+	private async buildHelp(message: Message, language: TFunction, prefix: string) {
 		const commands = await this._fetchCommands(message);
 
 		const helpMessage: string[] = [];
@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 		return helpMessage.join('\n');
 	}
 
-	private async buildDisplay(message: KlasaMessage, language: TFunction, prefix: string) {
+	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await this._fetchCommands(message);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private async buildCommandHelp(message: KlasaMessage, t: TFunction, command: SkyraCommand) {
+	private async buildCommandHelp(message: Message, t: TFunction, command: SkyraCommand) {
 		const builderData = t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
@@ -168,7 +168,7 @@ export default class extends SkyraCommand {
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
-	private async _fetchCommands(message: KlasaMessage) {
+	private async _fetchCommands(message: Message) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
 		const commands = new Collection<string, SkyraCommand[]>();
 		await Promise.all(

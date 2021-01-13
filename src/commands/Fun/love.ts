@@ -3,8 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { CdnUrls } from '#lib/types/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -16,7 +15,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [user]: [User]) {
+	public async run(message: Message, [user]: [User]) {
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);

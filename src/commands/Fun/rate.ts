@@ -4,7 +4,7 @@ import { CLIENT_ID } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	private devRegex = new RegExp(`^(kyra|favna|${[...this.client.owners].map((owner) => `<@!${owner.id}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${CLIENT_ID}>)$`, 'i');
 
-	public async run(message: KlasaMessage, [user]: [string]) {
+	public async run(message: Message, [user]: [string]) {
 		// Escape all markdown
 		user = escapeMarkdown(user);
 		const t = await message.fetchT();

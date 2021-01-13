@@ -2,7 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage, Piece } from 'klasa';
+import { Message } from 'discord.js';
+import { Piece } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.DisableDescription,
@@ -12,7 +13,7 @@ import { KlasaMessage, Piece } from 'klasa';
 	usage: '<Piece:piece>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [piece]: [Piece]) {
+	public async run(message: Message, [piece]: [Piece]) {
 		if ((piece.type === 'event' && piece.name === 'coreMessage') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
 			return message.sendTranslated(LanguageKeys.Commands.System.DisableWarn);
 		}

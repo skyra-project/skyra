@@ -1,8 +1,8 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [query]: [string]) {
+	public async run(message: Message, [query]: [string]) {
 		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {

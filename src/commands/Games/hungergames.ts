@@ -11,8 +11,8 @@ import { sleep } from '#utils/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
@@ -150,7 +150,7 @@ export default class extends SkyraCommand {
 			// Fetch the member for level measuring purposes
 			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
-			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call(
+			const hasLevel = await Message.prototype.hasAtLeastPermissionLevel.call(
 				{
 					author: member.user,
 					client: this.client,

@@ -5,8 +5,8 @@ import { TOKENS } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { Permissions } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message, Permissions } from 'discord.js';
+import { CommandStore } from 'klasa';
 
 const kPermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]).freeze();
 
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: Message, [input]: [string]) {
 		const url = new URL('https://www.googleapis.com/youtube/v3/search');
 		url.searchParams.append('part', 'snippet');
 		url.searchParams.append('safeSearch', 'strict');

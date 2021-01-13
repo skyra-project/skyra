@@ -3,7 +3,8 @@ import { Events, PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
-import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
+import { Message } from 'discord.js';
+import { Monitor, MonitorStore, Stopwatch } from 'klasa';
 
 export default class extends Monitor {
 	public constructor(store: MonitorStore, file: string[], directory: string) {
@@ -13,7 +14,7 @@ export default class extends Monitor {
 		});
 	}
 
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		if (message.guild && message.guild.me === null) await message.guild.members.fetch(CLIENT_ID);
 		if (!message.channel.postable) return undefined;
 
@@ -26,7 +27,7 @@ export default class extends Monitor {
 		return this.runCommand(message);
 	}
 
-	public async sendPrefixReminder(message: KlasaMessage) {
+	public async sendPrefixReminder(message: Message) {
 		if (message.guild !== null) {
 			const disabledChannels = await message.guild.readSettings(GuildSettings.DisabledChannels);
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) return;
@@ -40,13 +41,12 @@ export default class extends Monitor {
 		});
 	}
 
-	public async runCommand(message: KlasaMessage) {
+	public async runCommand(message: Message) {
 		const timer = new Stopwatch();
 		if (this.client.options.typing) floatPromise(this, message.channel.startTyping());
 		try {
 			await this.client.inhibitors.run(message, message.command!);
 			try {
-				// @ts-expect-error 2341
 				await message.prompter!.run();
 				try {
 					const subcommand = message.command!.subcommands ? message.params.shift() : undefined;

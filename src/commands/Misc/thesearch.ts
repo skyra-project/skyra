@@ -1,27 +1,25 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '#utils/constants';
+import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: LanguageKeys.Commands.Misc.TheSearchDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.TheSearchExtended,
+	requiredPermissions: ['ATTACH_FILES'],
+	spam: true,
+	usage: '<text:string>'
+})
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: LanguageKeys.Commands.Misc.TheSearchDescription,
-			extendedHelp: LanguageKeys.Commands.Misc.TheSearchExtended,
-			requiredPermissions: ['ATTACH_FILES'],
-			spam: true,
-			usage: '<text:string>'
-		});
-	}
-
-	public async run(message: KlasaMessage, [text]: [string]) {
+	public async run(message: Message, [text]: [string]) {
 		const attachment = await this.generate(text);
 		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}

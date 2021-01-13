@@ -1,9 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,
@@ -13,7 +12,7 @@ import type { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [userName, channelName]: [string, string]) {
+	public async run(message: Message, [userName, channelName]: [string, string]) {
 		const t = await message.fetchT();
 		// Get the User objects for the user and channel names
 		const [user, channel] = await this.retrieveResults(t, userName, channelName);

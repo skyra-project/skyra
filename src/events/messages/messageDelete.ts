@@ -1,8 +1,9 @@
 import { Events } from '#lib/types/Enums';
-import { Event, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Event } from 'klasa';
 
 export default class extends Event {
-	public run(message: KlasaMessage) {
+	public run(message: Message) {
 		if (message.partial || !message.guild || message.author.bot) return;
 		this.client.emit(Events.GuildMessageDelete, message);
 	}

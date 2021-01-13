@@ -1,9 +1,10 @@
 import { fetchAvatar } from '#utils/util';
 import { Image } from 'canvas';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<Image> {
+	public async run(arg: string, possible: Possible, message: Message): Promise<Image> {
 		// If theres nothing provided, search the channel for an image.
 		if (!arg) {
 			// ! TODO: Re-enable after moving to sapphire!!

@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { FuzzySearch } from '#utils/FuzzySearch';
-import { Guild, Role } from 'discord.js';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Guild, Message, Role } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 const ROLE_REGEXP = Argument.regex.role;
 
@@ -10,7 +10,7 @@ export default class extends Argument {
 		return this.store.get('role')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: Role) => boolean): Promise<Role> {
+	public async run(arg: string, possible: Possible, message: Message, filter?: (entry: Role) => boolean): Promise<Role> {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidRoleName, { name: possible.name });
 		if (!message.guild) return this.role.run(arg, possible, message);
 		const resRole = this.resolveRole(arg, message.guild);

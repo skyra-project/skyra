@@ -1,25 +1,22 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { parse } from '#utils/Color';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { Message, MessageEmbed } from 'discord.js';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['setcolour'],
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Social.SetColorDescription,
+	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true,
+	usage: '<color:string>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['setcolour'],
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Social.SetColorDescription,
-			extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true,
-			usage: '<color:string>'
-		});
-	}
-
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: Message, [input]: [string]) {
 		const { hex, b10 } = parse(input);
 
 		const { users } = await DbSet.connect();

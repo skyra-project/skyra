@@ -3,9 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bank'],
@@ -34,7 +33,7 @@ import { KlasaMessage } from 'klasa';
 	]
 ])
 export default class Vault extends SkyraCommand {
-	public async deposit(message: KlasaMessage, [coins]: [number]) {
+	public async deposit(message: Message, [coins]: [number]) {
 		const { users } = await DbSet.connect();
 		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
@@ -61,7 +60,7 @@ export default class Vault extends SkyraCommand {
 		return this.deposit(...args);
 	}
 
-	public async withdraw(message: KlasaMessage, [coins]: [number]) {
+	public async withdraw(message: Message, [coins]: [number]) {
 		const { users } = await DbSet.connect();
 		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
@@ -88,7 +87,7 @@ export default class Vault extends SkyraCommand {
 		return this.withdraw(...args);
 	}
 
-	public async show(message: KlasaMessage) {
+	public async show(message: Message) {
 		const { users } = await DbSet.connect();
 		const t = await message.fetchT();
 		const settings = await users.ensureProfile(message.author.id);
@@ -101,7 +100,7 @@ export default class Vault extends SkyraCommand {
 		return settings.save();
 	}
 
-	private async buildEmbed(message: KlasaMessage, t: TFunction, money: number, vault: number, coins?: number, hasDeposited = false) {
+	private async buildEmbed(message: Message, t: TFunction, money: number, vault: number, coins?: number, hasDeposited = false) {
 		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = t(
 			LanguageKeys.Commands.Social.VaultEmbedData,
 			{ coins }

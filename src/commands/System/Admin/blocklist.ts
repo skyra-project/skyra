@@ -6,8 +6,7 @@ import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Guild, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Guild, Message, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['blacklist'],
@@ -37,7 +36,7 @@ import { KlasaMessage } from 'klasa';
 	]
 ])
 export default class extends SkyraCommand {
-	public async show(message: KlasaMessage) {
+	public async show(message: Message) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.findOneOrFail({ id: CLIENT_ID });
 
@@ -69,7 +68,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async reset(message: KlasaMessage) {
+	public async reset(message: Message) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.ensure();
 
@@ -81,7 +80,7 @@ export default class extends SkyraCommand {
 		return message.sendTranslated(LanguageKeys.Commands.Admin.BlocklistResetSuccess);
 	}
 
-	public async remove(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
+	public async remove(message: Message, usersAndGuilds: User[] | Guild[]) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.ensure();
 
@@ -102,7 +101,7 @@ export default class extends SkyraCommand {
 		return message.sendTranslated(LanguageKeys.Commands.Admin.BlocklistSaveSuccess);
 	}
 
-	public async set(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
+	public async set(message: Message, usersAndGuilds: User[] | Guild[]) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.ensure();
 

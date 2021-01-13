@@ -27,7 +27,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 import { writeHeapSnapshot } from 'v8';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -37,7 +37,7 @@ import { writeHeapSnapshot } from 'v8';
 	permissionLevel: PermissionLevels.BotOwner
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		await message.send('Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)

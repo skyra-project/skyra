@@ -1,14 +1,14 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { Permissions, PermissionString, TextChannel } from 'discord.js';
-import { Command, Inhibitor, KlasaMessage } from 'klasa';
+import { Message, Permissions, PermissionString, TextChannel } from 'discord.js';
+import { Command, Inhibitor } from 'klasa';
 
 export default class extends Inhibitor {
 	// VIEW_CHANNEL, SEND_MESSAGES, SEND_TTS_MESSAGES, EMBED_LINKS, ATTACH_FILES,
 	// READ_MESSAGE_HISTORY, MENTION_EVERYONE, USE_EXTERNAL_EMOJIS, ADD_REACTIONS
 	private impliedPermissions = new Permissions(515136).freeze();
 
-	public async run(message: KlasaMessage, command: Command) {
+	public async run(message: Message, command: Command) {
 		let missing: PermissionString[] | undefined = undefined;
 
 		// If the message was sent in a guild channel, check for channel permissions.

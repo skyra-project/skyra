@@ -4,14 +4,15 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isNullish } from '@sapphire/utilities';
-import { Inhibitor, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Inhibitor } from 'klasa';
 
 export default class extends Inhibitor {
-	public run(message: KlasaMessage, command: SkyraCommand) {
+	public run(message: Message, command: SkyraCommand) {
 		return message.guild ? this.runGuild(message as GuildMessage, command) : this.runDM(message, command);
 	}
 
-	private async runDM(message: KlasaMessage, command: SkyraCommand) {
+	private async runDM(message: Message, command: SkyraCommand) {
 		if (!command.enabled) throw await message.resolveKey(LanguageKeys.Inhibitors.DisabledGlobal);
 	}
 

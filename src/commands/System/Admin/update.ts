@@ -6,8 +6,8 @@ import { exec } from '#utils/exec';
 import { sleep } from '#utils/sleep';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { rm } from 'fs/promises';
-import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -20,7 +20,7 @@ import { resolve } from 'path';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [branch = 'main']: [string?]) {
+	public async run(message: Message, [branch = 'main']: [string?]) {
 		// Fetch repository and pull if possible
 		await this.fetch(message, branch);
 
@@ -34,24 +34,24 @@ export default class extends SkyraCommand {
 		await this.compile(message);
 	}
 
-	private async compile(message: KlasaMessage) {
+	private async compile(message: Message) {
 		const { stderr, code } = await this.exec('yarn build');
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
 	}
 
-	private async cleanDist(message: KlasaMessage) {
+	private async cleanDist(message: Message) {
 		await rm(resolve(rootFolder, 'dist'), { recursive: true, force: true });
 		return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 	}
 
-	private async updateDependencies(message: KlasaMessage) {
+	private async updateDependencies(message: Message) {
 		const { stderr, code } = await this.exec('yarn install --frozen-lockfile');
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully updated dependencies.`);
 	}
 
-	private async fetch(message: KlasaMessage, branch: string) {
+	private async fetch(message: Message, branch: string) {
 		await this.exec('git fetch');
 		const { stdout, stderr } = await this.exec(`git pull origin ${branch}`);
 
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async stash(message: KlasaMessage) {
+	private async stash(message: Message) {
 		await message.send('Unsuccessful pull, stashing...');
 		await sleep(1000);
 		const { stdout, stderr } = await this.exec('git stash');
@@ -86,7 +86,7 @@ export default class extends SkyraCommand {
 		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || '✔', cutText(stderr, 100) || '✔'].join('\n-=-=-=-\n')));
 	}
 
-	private async checkout(message: KlasaMessage, branch: string) {
+	private async checkout(message: Message, branch: string) {
 		await message.send(`Switching to ${branch}...`);
 		await this.exec(`git checkout ${branch}`);
 		return message.send(`${Emojis.GreenTick} Switched to ${branch}.`);

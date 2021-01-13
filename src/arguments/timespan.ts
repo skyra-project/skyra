@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber } from '@sapphire/utilities';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		const duration = new Duration(arg);
 
 		if (duration.offset <= 0 || !isNumber(duration.fromNow.getTime())) {

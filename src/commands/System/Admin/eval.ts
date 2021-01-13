@@ -8,7 +8,8 @@ import { cast } from '#utils/util';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage, Stopwatch } from 'klasa';
+import { Message } from 'discord.js';
+import { Stopwatch } from 'klasa';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -23,7 +24,7 @@ import { inspect } from 'util';
 export default class extends SkyraCommand {
 	private readonly kTimeout = 60000;
 
-	public async run(message: KlasaMessage, [code]: [string]) {
+	public async run(message: Message, [code]: [string]) {
 		const flagTime =
 			'no-timeout' in message.flagArgs ? (Reflect.has(message.flagArgs, 'wait') ? Number(message.flagArgs.wait) : this.kTimeout) : Infinity;
 		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
@@ -51,7 +52,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async timedEval(message: KlasaMessage, code: string, flagTime: number) {
+	private async timedEval(message: Message, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		const t = await message.fetchT();
 		return Promise.race([
@@ -66,7 +67,7 @@ export default class extends SkyraCommand {
 	}
 
 	// Eval the input
-	private async eval(message: KlasaMessage, code: string) {
+	private async eval(message: Message, code: string) {
 		const stopwatch = new Stopwatch();
 		let success: boolean | undefined = undefined;
 		let syncTime: string | undefined = undefined;

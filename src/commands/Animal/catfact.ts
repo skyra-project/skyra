@@ -3,9 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
-import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -19,7 +18,7 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private facts: readonly string[] = [];
 
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		return message.send(
 			new MessageEmbed()

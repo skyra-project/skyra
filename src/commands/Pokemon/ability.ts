@@ -5,9 +5,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '#utils/Pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
@@ -18,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<ability:str>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [ability]: [string]) {
+	public async run(message: Message, [ability]: [string]) {
 		const t = await message.fetchT();
 		const abilityDetails = await this.fetchAPI(t, ability.toLowerCase());
 		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);

@@ -2,14 +2,15 @@ import { GuildSettings } from '#lib/database';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
+import { Message } from 'discord.js';
+import { Inhibitor, RateLimitManager } from 'klasa';
 
 export default class extends Inhibitor {
 	public spamProtection = true;
 
 	private readonly ratelimit = new RateLimitManager(1, 30000);
 
-	public async run(message: KlasaMessage, command: SkyraCommand) {
+	public async run(message: Message, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
 		const [channelID, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Channels.Spam], settings.getLanguage()]);

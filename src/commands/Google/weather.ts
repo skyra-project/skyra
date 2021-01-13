@@ -7,7 +7,7 @@ import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 import { join } from 'path';
 
 const COLORS = {
@@ -37,7 +37,7 @@ const enum TemperatureUnit {
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [query]: [string]) {
+	public async run(message: Message, [query]: [string]) {
 		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, query);
 
 		const params = `${lat},${lng}`;
@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async draw(
-		message: KlasaMessage,
+		message: Message,
 		{ geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity, temperatureUnit }: WeatherData
 	) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];

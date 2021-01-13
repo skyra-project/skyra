@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { pickRandom } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
 
@@ -17,7 +17,7 @@ const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What'
 	usage: '<question:string>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: Message, [input]: [string]) {
 		const t = await message.fetchT();
 		return message.send(
 			t(LanguageKeys.Commands.Fun.EightballOutput, {

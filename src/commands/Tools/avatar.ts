@@ -2,8 +2,7 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { ImageSize, MessageEmbed, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { ImageSize, Message, MessageEmbed, User } from 'discord.js';
 
 const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 
@@ -17,7 +16,7 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
+	public async run(message: Message, [user = message.author]: [User]) {
 		if (!user.avatar) throw await message.resolveKey(LanguageKeys.Commands.Tools.AvatarNone);
 
 		const sizeFlag = Reflect.get(message.flagArgs, 'size');

@@ -4,10 +4,9 @@ import { Time } from '#utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#utils/Games/TriviaManager';
 import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { DMChannel, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
+import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -43,7 +42,7 @@ export default class extends SkyraCommand {
 	#channels = new Set<string>();
 
 	public async run(
-		message: KlasaMessage,
+		message: Message,
 		[category = CATEGORIES.general, questionType = QuestionType.Multiple, difficulty = QuestionDifficulty.Easy, duration = 30]: [
 			number,
 			QuestionType?,
@@ -66,7 +65,7 @@ export default class extends SkyraCommand {
 			const correctAnswer = decode(data.correct_answer);
 
 			await message.send(this.buildQuestionEmbed(t, data, possibleAnswers));
-			const filter = (msg: KlasaMessage) => {
+			const filter = (msg: Message) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
@@ -77,7 +76,7 @@ export default class extends SkyraCommand {
 			const participants = new Set<string>();
 
 			collector
-				.on('collect', (collected: KlasaMessage) => {
+				.on('collect', (collected: Message) => {
 					if (participants.has(collected.author.id)) return;
 					const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
 					if (attempt === decode(data.correct_answer)) {

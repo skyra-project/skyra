@@ -19,7 +19,6 @@ import {
 import { createReadStream } from 'fs';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
-import { KlasaMessage } from 'klasa';
 import nock from 'nock';
 import { resolve } from 'path';
 
@@ -499,7 +498,7 @@ describe('Utils', () => {
 			fakeAttachment.height = 32;
 			fakeAttachment.width = 32;
 
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: []
 			};
@@ -517,7 +516,7 @@ describe('Utils', () => {
 			fakeAttachment.height = 32;
 			fakeAttachment.width = 32;
 
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: []
 			};
@@ -535,7 +534,7 @@ describe('Utils', () => {
 			fakeAttachment.height = 32;
 			fakeAttachment.width = 32;
 
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: [
 					{
@@ -550,7 +549,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/o attachments w/ embed type === image THEN returns embedded image url', () => {
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>(),
 				embeds: [
 					{
@@ -565,7 +564,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/o attachments w/ embed w/ image THEN returns embedded image url', () => {
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>(),
 				embeds: [
 					{
@@ -580,7 +579,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/o attachments w/ embed w/o image THEN returns null', () => {
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>(),
 				embeds: [
 					{
@@ -595,7 +594,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN message w/o attachments w/o embed THEN returns null', () => {
-			const fakeMessage: DeepPartial<KlasaMessage> = {
+			const fakeMessage: DeepPartial<Message> = {
 				attachments: new Collection<string, MessageAttachment>(),
 				embeds: []
 			};

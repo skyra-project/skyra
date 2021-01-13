@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, ArgumentOptions, Possible } from 'klasa';
 
 /** Identical implementation as restString from Klasa, but for overwatchplayer */
 @ApplyOptions<ArgumentOptions>({
@@ -11,13 +12,13 @@ export default class extends Argument {
 		return this.store.get('overwatchplayer')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<string> {
+	public async run(arg: string, possible: Possible, message: Message): Promise<string> {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,
 			usage: { usageDelim }
-		} = message['prompter']!;
+		} = message.prompter!;
 		const index = args.indexOf(arg);
 		const rest = args.splice(index, args.length - index).join(usageDelim!);
 		args.push(rest);

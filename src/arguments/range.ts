@@ -1,9 +1,10 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { parseRange } from '#utils/util';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Arguments.RangeInvalid, { name: possible.name });
 
 		const number = Number(arg);

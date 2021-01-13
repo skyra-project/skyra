@@ -2,8 +2,7 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['letmegooglethatforyou'],
@@ -15,7 +14,7 @@ import { KlasaMessage } from 'klasa';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [query]: [string]) {
+	public async run(message: Message, [query]: [string]) {
 		const searchEngine = this.parseSearchEngine(message.flagArgs);
 		return message.send(
 			new MessageEmbed()
@@ -28,7 +27,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private parseSearchEngine(flags: KlasaMessage['flagArgs']) {
+	private parseSearchEngine(flags: Message['flagArgs']) {
 		for (const key of Object.keys(flags)) {
 			switch (key) {
 				case 'duckduckgo':

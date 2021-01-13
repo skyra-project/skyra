@@ -6,8 +6,7 @@ import { ContentExtraData, handleMessage } from '#utils/ExceededLengthParser';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
@@ -30,7 +29,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [, target]: [TextChannel, KlasaMessage]) {
+	public async run(message: Message, [, target]: [TextChannel, Message]) {
 		const attachments = target.attachments.size ? target.attachments.map((att) => `📁 <${att.url}>`).join('\n') : '';
 		const content = escapeCodeBlock(getContent(target) || ZeroWidthSpace);
 

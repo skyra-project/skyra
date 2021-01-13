@@ -3,8 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed, version } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -16,11 +15,11 @@ import { CpuInfo, cpus, uptime } from 'os';
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class UserCommand extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		return message.send(await this.buildEmbed(message));
 	}
 
-	private async buildEmbed(message: KlasaMessage) {
+	private async buildEmbed(message: Message) {
 		const t = await message.fetchT();
 		const titles = t(LanguageKeys.Commands.System.StatsTitles);
 		const fields = t(LanguageKeys.Commands.System.StatsFields, {

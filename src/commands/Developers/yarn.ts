@@ -7,9 +7,8 @@ import { BrandingColors } from '#utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],
@@ -29,7 +28,7 @@ import { KlasaMessage } from 'klasa';
 	]
 ])
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [pkg]: [string]) {
+	public async run(message: Message, [pkg]: [string]) {
 		const t = await message.fetchT();
 		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
 		// since we repeat this over and over, but was out of #1301's scope.
@@ -53,7 +52,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage, t: TFunction) {
+	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction) {
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies

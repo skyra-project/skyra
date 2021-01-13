@@ -1,8 +1,9 @@
 import { GuildSettings } from '#lib/database';
-import { Finalizer, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Finalizer } from 'klasa';
 
 export default class extends Finalizer {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		if (!message.guild) return;
 
 		const commandAutodelete = await message.guild.readSettings(GuildSettings.CommandAutoDelete);

@@ -6,9 +6,8 @@ import { fetchSaelem, getHoroscope } from '#utils/Saelem';
 import { createPick } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Days, Sunsigns } from '@skyra/saelem';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const kSunSigns = new Set([
 	'capricorn',
@@ -47,7 +46,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 	]
 ])
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
+	public async run(message: Message, [sign, day]: [Sunsigns, Days]) {
 		const t = await message.fetchT();
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(t, sign, day);
 

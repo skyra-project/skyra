@@ -5,9 +5,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { fetch, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
@@ -19,7 +18,7 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 	usage: '<country:str>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [countryName]: [string]) {
+	public async run(message: Message, [countryName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -41,7 +40,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async buildDisplay(message: KlasaMessage, t: TFunction, countries: CountryResultOk) {
+	private async buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));

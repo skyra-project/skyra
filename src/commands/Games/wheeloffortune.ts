@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { WheelOfFortune } from '#utils/Games/WheelOfFortune';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['wof'],
@@ -14,7 +14,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<wager:wager>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [wager]: [number]) {
+	public async run(message: Message, [wager]: [number]) {
 		const t = await message.fetchT();
 		const { users } = await DbSet.connect();
 		const settings = await users.ensureProfile(message.author.id);

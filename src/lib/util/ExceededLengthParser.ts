@@ -1,13 +1,13 @@
 import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 import { fetch, FetchMethods, FetchResultTypes } from './util';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
-	message: KlasaMessage,
+	message: Message,
 	options: HandleMessageData<ED>
-): Promise<KlasaMessage | KlasaMessage[] | null> {
+): Promise<Message | Message[] | null> {
 	switch (options.sendAs) {
 		case 'file': {
 			if (message.channel.attachable) {
@@ -26,7 +26,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 							}
 						]
 					}
-				) as Promise<KlasaMessage>;
+				);
 			}
 
 			await getTypeOutput(message, options);
@@ -42,7 +42,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						? LanguageKeys.System.ExceededLengthOutputHastebinWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputHastebin,
 					[{ url: options.url, time: options.time, type: options.footer }]
-				) as Promise<KlasaMessage>;
+				);
 			options.hastebinUnavailable = true;
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -56,7 +56,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputConsole,
 					[{ time: options.time, type: options.footer }]
-				) as Promise<KlasaMessage>;
+				);
 			}
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -91,12 +91,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						type: options.footer
 					}
 				]
-			) as Promise<KlasaMessage>;
+			);
 		}
 	}
 }
 
-async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage, options: HandleMessageData<ED>) {
+async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, options: HandleMessageData<ED>) {
 	const _options = ['none', 'abort'];
 	if (options.canLogToConsole) _options.push('log');
 

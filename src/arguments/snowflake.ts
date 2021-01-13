@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
 	/**
@@ -14,7 +15,7 @@ export default class extends Argument {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 
 		if (this.kRegExp.test(arg)) {

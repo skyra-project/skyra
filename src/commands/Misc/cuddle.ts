@@ -5,8 +5,7 @@ import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -21,12 +20,12 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user]: [User]) {
+	public async run(message: Message, [user]: [User]) {
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'cuddle.png' }] });
 	}
 
-	public async generate(message: KlasaMessage, user: User) {
+	public async generate(message: Message, user: User) {
 		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */

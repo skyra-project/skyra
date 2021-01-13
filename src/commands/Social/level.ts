@@ -6,8 +6,7 @@ import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
-import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, User } from 'discord.js';
 import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -27,12 +26,12 @@ export default class extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [scope = 'local', user = message.author]: ['local' | 'global', User]) {
+	public async run(message: Message, [scope = 'local', user = message.author]: ['local' | 'global', User]) {
 		const output = await this.showProfile(message, scope, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
-	public async showProfile(message: KlasaMessage, scope: 'local' | 'global', user: User) {
+	public async showProfile(message: Message, scope: 'local' | 'global', user: User) {
 		const { members, users } = await DbSet.connect();
 		const settings = await users.ensureProfile(user.id);
 		const { level, points } = scope === 'local' && message.guild ? await members.ensure(user.id, message.guild.id) : settings;

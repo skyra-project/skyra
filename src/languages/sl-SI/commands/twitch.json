@@ -14,7 +14,7 @@
 		"affiliated": "",
 		"partnered": ""
 	},
-	"twitchCreatedAt": "",
+	"twitchCreatedAt": "Ustvarjeno ob:",
 	"twitchSubscriptionRequiredStreamer": "",
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionRequiredChannel": "",
@@ -44,7 +44,7 @@
 		""
 	],
 	"twitchSubscriptionShowEmpty": "",
-	"twitchSubscriptionShowUnknownUser": "",
+	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {
 		"extendedHelp": "",
@@ -82,7 +82,7 @@
 		],
 		"examples": [
 			"",
-			"",
+			"add favna #twitch online %USER_NAME% je šel v živo | %TITLE%",
 			"",
 			"",
 			"",

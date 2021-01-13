@@ -3,8 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { CdnUrls } from '#lib/types/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['escape'],
@@ -14,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		if (message.deletable) await message.nuke().catch(() => null);
 
 		const t = await message.fetchT();

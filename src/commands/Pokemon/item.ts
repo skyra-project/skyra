@@ -5,9 +5,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/Pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pokeitem', 'bag'],
@@ -18,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<item:str>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [item]: [string]) {
+	public async run(message: Message, [item]: [string]) {
 		const t = await message.fetchT();
 		const itemDetails = await this.fetchAPI(t, item.toLowerCase());
 

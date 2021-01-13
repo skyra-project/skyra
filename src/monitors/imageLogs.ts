@@ -8,7 +8,7 @@ import { MessageLogsEnum } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
@@ -70,7 +70,7 @@ export default class extends Monitor {
 		}
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
 			message.attachments.size !== 0 &&

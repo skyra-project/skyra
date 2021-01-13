@@ -3,9 +3,8 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
@@ -17,13 +16,13 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
+	public async run(message: Message, [noperms]: ['noperms' | undefined]) {
 		const t = await message.fetchT();
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.send(await this.getEmbed(t, { permissions: false }));
+			return message.send(this.getEmbed(t, { permissions: false }));
 		}
 
-		return message.send(await this.getEmbed(t, { permissions: true }));
+		return message.send(this.getEmbed(t, { permissions: true }));
 	}
 
 	public async init() {

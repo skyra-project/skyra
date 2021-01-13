@@ -4,8 +4,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { floatPromise, resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.Social.DivorceDescription,
@@ -14,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<user:user>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [user]: [User]) {
+	public async run(message: Message, [user]: [User]) {
 		const t = await message.fetchT();
 		if (user === message.author) throw t(LanguageKeys.Commands.Social.DivorceSelf);
 

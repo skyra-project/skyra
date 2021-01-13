@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
@@ -11,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: LanguageKeys.Commands.Social.ToggleDarkModeExtended
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, []: []) {
+	public async run(message: Message) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);

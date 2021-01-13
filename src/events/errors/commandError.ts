@@ -5,13 +5,13 @@ import { rootFolder } from '#utils/constants';
 import { cast } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
-import { Command, Event, KlasaMessage } from 'klasa';
+import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
+import { Command, Event } from 'klasa';
 
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 
 export default class extends Event {
-	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
+	public async run(message: Message, command: Command, _: string[], error: string | Error) {
 		// Re-assign it to the Error or string for TS as the promise has now been awaited
 		error = cast<Error | string>(error);
 
@@ -54,7 +54,7 @@ export default class extends Event {
 		return undefined;
 	}
 
-	private async sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {
+	private async sendErrorChannel(message: Message, command: Command, error: Error) {
 		const lines = [this.getLinkLine(message.url), this.getCommandLine(command), this.getArgumentsLine(message.args), this.getErrorLine(error)];
 
 		// If it's a DiscordAPIError or a HTTPError, add the HTTP path and code lines after the second one.
@@ -118,7 +118,7 @@ export default class extends Event {
 		return `**Error**: ${codeBlock('js', error.stack || error)}`;
 	}
 
-	private getWarnError(message: KlasaMessage) {
+	private getWarnError(message: Message) {
 		return `ERROR: /${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`;
 	}
 }

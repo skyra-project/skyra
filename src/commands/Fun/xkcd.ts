@@ -3,9 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
@@ -16,7 +15,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '[query:string]'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: Message, [input]: [string]) {
 		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
 		const t = await message.fetchT();
 

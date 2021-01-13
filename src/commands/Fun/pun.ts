@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Mime } from '#utils/constants';
 import { fetch } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -12,7 +12,7 @@ import { KlasaMessage } from 'klasa';
 	spam: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		try {
 			const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {
 				headers: {

@@ -3,7 +3,7 @@ import { Events, PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ENABLE_INFLUX } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.RebootDescription,
@@ -12,7 +12,7 @@ import { KlasaMessage } from 'klasa';
 	permissionLevel: PermissionLevels.BotOwner
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		await message.sendTranslated(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
 
 		if (ENABLE_INFLUX) {

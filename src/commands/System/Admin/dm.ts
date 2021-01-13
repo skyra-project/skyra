@@ -2,8 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageOptions, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageOptions, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.DmDescription,
@@ -14,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [user, content]: [User, string]) {
+	public async run(message: Message, [user, content]: [User, string]) {
 		const attachment = message.attachments.size > 0 ? message.attachments.first()!.url : null;
 		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];

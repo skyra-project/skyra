@@ -4,9 +4,9 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [location]: [string]) {
+	public async run(message: Message, [location]: [string]) {
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
 		const t = await message.fetchT();
 		const { status, ...timeData } = await this.fetchAPI(t, lat, lng);

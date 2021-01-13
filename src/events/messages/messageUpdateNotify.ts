@@ -8,11 +8,12 @@ import { MessageLogsEnum } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@skyra/decorators';
 import { diffWordsWithSpace } from 'diff';
-import { Event, EventOptions, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })
 export default class extends Event {
-	public async run(old: KlasaMessage, message: GuildMessage) {
+	public async run(old: Message, message: GuildMessage) {
 		if (!message.guild || old.content === message.content || message.author.bot) return;
 
 		const [enabled, ignoredChannels, ignoredEdits, ignoredAll, t] = await message.guild.readSettings((settings) => [

@@ -5,8 +5,7 @@ import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -21,7 +20,7 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user]: [User]) {
+	public async run(message: Message, [user]: [User]) {
 		const attachment = await this.generate(user, message.author);
 		return message.channel.send({ files: [{ attachment, name: 'Shindeiru.png' }] });
 	}

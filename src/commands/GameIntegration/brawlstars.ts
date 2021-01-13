@@ -6,9 +6,8 @@ import { BrawlStarsEmojis, Emojis } from '#utils/constants';
 import { BrawlStars } from '#utils/GameIntegration/BrawlStars';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
@@ -67,7 +66,7 @@ export interface BrawlStarsGIData {
 	]
 ])
 export default class extends SkyraCommand {
-	public async player(message: KlasaMessage, [tag]: [string]) {
+	public async player(message: Message, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 		const t = await message.fetchT();
@@ -89,7 +88,7 @@ export default class extends SkyraCommand {
 		return message.send(await this.buildPlayerEmbed(message, t, playerData));
 	}
 
-	public async club(message: KlasaMessage, [tag]: [string]) {
+	public async club(message: Message, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 		const t = await message.fetchT();
@@ -111,7 +110,7 @@ export default class extends SkyraCommand {
 		return message.send(await this.buildClubEmbed(message, t, clubData));
 	}
 
-	private async buildPlayerEmbed(message: KlasaMessage, t: TFunction, player: BrawlStars.Player) {
+	private async buildPlayerEmbed(message: Message, t: TFunction, player: BrawlStars.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedFields);
 		const digitFormat = (value: number) => t(LanguageKeys.Globals.NumberValue, { value });
@@ -165,7 +164,7 @@ export default class extends SkyraCommand {
 			);
 	}
 
-	private async buildClubEmbed(message: KlasaMessage, t: TFunction, club: BrawlStars.Club) {
+	private async buildClubEmbed(message: Message, t: TFunction, club: BrawlStars.Club) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedFields);
 		const digitFormat = (value: number) => t(LanguageKeys.Globals.NumberValue, { value });

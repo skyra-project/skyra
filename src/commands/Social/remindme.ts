@@ -7,8 +7,7 @@ import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
 	List = 'list',
@@ -102,7 +101,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	]
 ])
 export default class extends SkyraCommand {
-	public async create(message: KlasaMessage, [duration, description]: [number, string]) {
+	public async create(message: Message, [duration, description]: [number, string]) {
 		const task = await this.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
 			data: {
@@ -114,11 +113,11 @@ export default class extends SkyraCommand {
 		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeCreate, [{ id: task.id.toString() }]);
 	}
 
-	@requiresGuildContext((message: KlasaMessage) =>
+	@requiresGuildContext((message: Message) =>
 		message.sendTranslated(LanguageKeys.Resolvers.ChannelNotInGuildSubCommand, [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async list(message: KlasaMessage) {
+	public async list(message: Message) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
@@ -152,7 +151,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiredPermissions(['EMBED_LINKS'])
-	public async show(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
+	public async show(message: Message, [task]: [ReminderScheduledTask]) {
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -166,7 +165,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
+	public async delete(message: Message, [task]: [ReminderScheduledTask]) {
 		const { id } = task;
 		await task.delete();
 		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeDelete, [{ task, id }]);

@@ -2,8 +2,7 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['support-server', 'server'],
@@ -13,7 +12,7 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		const t = await message.fetchT();
 		return message.send(
 			new MessageEmbed()

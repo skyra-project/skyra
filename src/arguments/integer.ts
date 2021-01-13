@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, ArgumentOptions, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['int'] })
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 
 		const number = Number(arg);

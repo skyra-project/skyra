@@ -1,6 +1,7 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { Finalizer, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Finalizer, Inhibitor, InhibitorStore } from 'klasa';
 
 export default class extends Inhibitor {
 	public constructor(store: InhibitorStore, file: string[], directory: string) {
@@ -9,7 +10,7 @@ export default class extends Inhibitor {
 		});
 	}
 
-	public async run(message: KlasaMessage, command: SkyraCommand) {
+	public async run(message: Message, command: SkyraCommand) {
 		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;
 
 		let existing: Cooldown | undefined = undefined;
@@ -29,7 +30,7 @@ export default class extends Inhibitor {
 }
 
 interface CommandCooldown extends Finalizer {
-	getCooldown(message: KlasaMessage, command: SkyraCommand): Cooldown;
+	getCooldown(message: Message, command: SkyraCommand): Cooldown;
 }
 
 interface Cooldown {

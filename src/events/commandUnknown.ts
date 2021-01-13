@@ -3,10 +3,11 @@ import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { cast, floatPromise } from '#utils/util';
-import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
+import { Message } from 'discord.js';
+import { Command, Event, Stopwatch } from 'klasa';
 
 export default class extends Event {
-	public async run(message: KlasaMessage, command: string) {
+	public async run(message: Message, command: string) {
 		if (!message.guild) return null;
 
 		const [disabledChannels, tags, aliases] = await message.guild.readSettings([
@@ -28,23 +29,19 @@ export default class extends Event {
 		return null;
 	}
 
-	public runCommand(message: KlasaMessage, command: Command) {
+	public runCommand(message: Message, command: Command) {
 		const commandHandler = cast<CommandHandler>(this.client.monitors.get('commandHandler'));
 		message.command = command;
-		Reflect.set(
-			message,
-			'prompter',
-			message.command.usage.createPrompt(message, {
-				flagSupport: message.command.flagSupport,
-				quotedStringSupport: message.command.quotedStringSupport,
-				time: message.command.promptTime,
-				limit: message.command.promptLimit
-			})
-		);
+		message.prompter = message.command.usage.createPrompt(message, {
+			flagSupport: message.command.flagSupport,
+			quotedStringSupport: message.command.quotedStringSupport,
+			time: message.command.promptTime,
+			limit: message.command.promptLimit
+		});
 		return commandHandler.runCommand(message);
 	}
 
-	public async runTag(message: KlasaMessage, command: string) {
+	public async runTag(message: Message, command: string) {
 		const tagCommand = this.client.commands.get('tag') as TagCommand;
 		const timer = new Stopwatch();
 
@@ -66,10 +63,10 @@ export default class extends Event {
 }
 
 interface TagCommand extends SkyraCommand {
-	add(message: KlasaMessage, args: [string, string]): Promise<KlasaMessage>;
-	remove(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
-	edit(message: KlasaMessage, args: [string, string]): Promise<KlasaMessage>;
-	list(message: KlasaMessage): Promise<KlasaMessage>;
-	show(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
-	source(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
+	add(message: Message, args: [string, string]): Promise<Message>;
+	remove(message: Message, args: [string]): Promise<Message>;
+	edit(message: Message, args: [string, string]): Promise<Message>;
+	list(message: Message): Promise<Message>;
+	show(message: Message, args: [string]): Promise<Message>;
+	source(message: Message, args: [string]): Promise<Message>;
 }

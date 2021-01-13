@@ -1,7 +1,7 @@
 import { CustomGet } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
-import { PermissionResolvable, Permissions } from 'discord.js';
-import { Command, CommandOptions, CommandStore, KlasaMessage } from 'klasa';
+import { Message, PermissionResolvable, Permissions } from 'discord.js';
+import { Command, CommandOptions, CommandStore } from 'klasa';
 
 export abstract class SkyraCommand extends Command {
 	public description: CustomGet<string, string>;
@@ -25,12 +25,12 @@ export abstract class SkyraCommand extends Command {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public run(message: KlasaMessage, _params: any[]): any {
+	public run(message: Message, _params: any[]): any {
 		return message;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public inhibit(_message: KlasaMessage): Promise<boolean> | boolean {
+	public inhibit(_message: Message): Promise<boolean> | boolean {
 		return false;
 	}
 }

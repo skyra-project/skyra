@@ -5,8 +5,7 @@ import { exec } from '#utils/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageAttachment } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['execute'],
@@ -18,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: Message, [input]: [string]) {
 		const result = await exec(input, { timeout: Reflect.has(message.flagArgs, 'timeout') ? Number(message.flagArgs.timeout) : 60000 }).catch(
 			(error) => ({
 				stdout: null,

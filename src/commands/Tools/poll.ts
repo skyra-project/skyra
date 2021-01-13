@@ -2,7 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 const NUMBER_OPTS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
@@ -18,7 +18,7 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, options: string[]) {
+	public async run(message: Message, options: string[]) {
 		const t = await message.fetchT();
 
 		// since klasa usage is trash

@@ -1,9 +1,10 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { FuzzySearch } from '#utils/FuzzySearch';
-import { Argument, Command, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Command, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		const found = this.client.commands.get(arg.toLowerCase());
 		if (found) return found;
 

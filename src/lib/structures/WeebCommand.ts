@@ -6,7 +6,7 @@ import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { TFunction } from 'i18next';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -58,7 +58,7 @@ export abstract class WeebCommand extends SkyraCommand {
 					.setImage(url)
 					.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
 			}
-		) as Promise<KlasaMessage | KlasaMessage[]>;
+		);
 	}
 
 	private async fetch(t: TFunction, url: URL): Promise<WeebCommandResult> {

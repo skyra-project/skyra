@@ -3,7 +3,8 @@ import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { hexConcat, luminance, parse } from '#utils/Color';
 import { Canvas, rgb } from 'canvas-constructor';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { CommandStore } from 'klasa';
 
 /* Color limiter */
 const rL = (color: number) => color / 255;
@@ -23,7 +24,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [input, diff = 10]: [string, number]) {
+	public async run(message: Message, [input, diff = 10]: [string, number]) {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);

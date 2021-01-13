@@ -2,8 +2,9 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { access } from 'fs/promises';
-import { KlasaMessage, Stopwatch, Store } from 'klasa';
+import { Stopwatch, Store } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -18,7 +19,7 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private regExp = /\\\\?|\//g;
 
-	public async run(message: KlasaMessage, [core, store, path]: ['core', Store<any, any>, string]) {
+	public async run(message: Message, [core, store, path]: ['core', Store<any, any>, string]) {
 		const t = await message.fetchT();
 		const splitPath = (path.endsWith('.js') ? path : `${path}.js`).split(this.regExp);
 		const timer = new Stopwatch();

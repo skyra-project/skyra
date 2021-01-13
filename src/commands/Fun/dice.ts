@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['roll'],
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public async run(message: KlasaMessage, [amountOrDice = 1]: [number | string | undefined]) {
+	public async run(message: Message, [amountOrDice = 1]: [number | string | undefined]) {
 		const t = await message.fetchT();
 		return message.send(
 			t(LanguageKeys.Commands.Fun.DiceOutput, {

@@ -1,6 +1,6 @@
 import { Time } from '#utils/constants';
-import { Client, DMChannel, MessageEmbed, MessageReaction, NewsChannel, Permissions, TextChannel, User } from 'discord.js';
-import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
+import { Client, DMChannel, Message, MessageEmbed, MessageReaction, NewsChannel, Permissions, TextChannel, User } from 'discord.js';
+import { ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
 
 export class UserRichDisplay extends RichDisplay {
 	public constructor(embed?: MessageEmbed) {
@@ -8,7 +8,7 @@ export class UserRichDisplay extends RichDisplay {
 		this.useCustomFooters();
 	}
 
-	public async start(message: KlasaMessage, target: string = message.author.id, rawOptions: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
+	public async start(message: Message, target: string = message.author.id, rawOptions: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
 		const options = {
 			filter: (_: MessageReaction, user: User) => user.id === target,
 			time: Time.Minute * 5,

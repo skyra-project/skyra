@@ -2,9 +2,8 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const enum CoinType {
 	Heads,
@@ -44,7 +43,7 @@ const enum CoinType {
 export default class extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
-	public async run(message: KlasaMessage, [guess, wager]: [CoinType | null, number | 'cashless']) {
+	public async run(message: Message, [guess, wager]: [CoinType | null, number | 'cashless']) {
 		const t = await message.fetchT();
 
 		if (guess === null) return this.noGuess(message, t);
@@ -80,7 +79,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async cashless(message: KlasaMessage, t: TFunction, guess: CoinType) {
+	private async cashless(message: Message, t: TFunction, guess: CoinType) {
 		const result = this.flipCoin();
 		const won = result === guess;
 
@@ -95,7 +94,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async noGuess(message: KlasaMessage, t: TFunction) {
+	private async noGuess(message: Message, t: TFunction) {
 		const result = this.flipCoin();
 
 		return message.send(
@@ -113,7 +112,7 @@ export default class extends SkyraCommand {
 		return Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
 	}
 
-	private async buildEmbed(message: KlasaMessage, result: CoinType) {
+	private async buildEmbed(message: Message, result: CoinType) {
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`);

@@ -14,6 +14,7 @@ import {
 	Guild,
 	GuildChannel,
 	GuildMember,
+	Message,
 	MessageEmbed,
 	PermissionOverwriteOption,
 	Permissions,
@@ -22,7 +23,6 @@ import {
 	User
 } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 export const enum ModerationSetupRestriction {
 	Reaction = 'rolesRestrictedReaction',
@@ -622,7 +622,7 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
-	public async muteSetup(message: KlasaMessage) {
+	public async muteSetup(message: Message) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
 		if (roleID && this.guild.roles.cache.has(roleID)) throw t(LanguageKeys.Commands.Moderation.ActionSetupMuteExists);
 		if (this.guild.roles.cache.size >= 250) throw t(LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles);
@@ -631,7 +631,7 @@ export class ModerationActions {
 		return this.sharedRoleSetup(message, RoleDataKey.Muted, GuildSettings.Roles.Muted);
 	}
 
-	public async restrictionSetup(message: KlasaMessage, path: ModerationSetupRestriction) {
+	public async restrictionSetup(message: Message, path: ModerationSetupRestriction) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[path], settings.getLanguage()]);
 		if (!isNullish(roleID) && this.guild.roles.cache.has(roleID)) {
 			throw t(LanguageKeys.Commands.Moderation.ActionSetupRestrictionExists);
@@ -664,7 +664,7 @@ export class ModerationActions {
 		return member?.voice.serverMute ?? false;
 	}
 
-	private async sharedRoleSetup(message: KlasaMessage, key: RoleDataKey, path: KeyOfType<GuildEntity, string | Nullish>) {
+	private async sharedRoleSetup(message: Message, key: RoleDataKey, path: KeyOfType<GuildEntity, string | Nullish>) {
 		const roleData = kRoleDataOptions.get(key)!;
 		const role = await this.guild.roles.create({
 			data: roleData,

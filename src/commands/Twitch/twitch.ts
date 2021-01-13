@@ -2,9 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { CdnUrls } from '#lib/types/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
@@ -13,7 +12,7 @@ import type { KlasaMessage } from 'klasa';
 	usage: '<name:string>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [name]: [string]) {
+	public async run(message: Message, [name]: [string]) {
 		const t = await message.fetchT();
 		const { data: channelData } = await this.fetchUsers(t, [name]);
 		if (channelData.length === 0) throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);

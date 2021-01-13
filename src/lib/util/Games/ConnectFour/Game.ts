@@ -4,15 +4,14 @@ import { ConnectFourConstants } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
+import { DiscordAPIError, Message, Permissions, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 import { Board } from './Board';
 import { Player, PlayerColor } from './Player';
 
 export class Game {
 	public readonly board: Board;
-	public message: KlasaMessage;
+	public message: Message;
 	public t: TFunction = null!;
 	public players: readonly [Player | null, Player | null];
 	public winner: Player | null;
@@ -22,7 +21,7 @@ export class Game {
 	private _content = '';
 	private _retries = 3;
 
-	public constructor(message: KlasaMessage) {
+	public constructor(message: Message) {
 		this.board = new Board();
 		this.message = message;
 		this.players = [null, null];

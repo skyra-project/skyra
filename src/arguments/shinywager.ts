@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, ArgumentOptions, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
 export default class ShinyWager extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<number> {
+	public async run(arg: string, possible: Possible, message: Message): Promise<number> {
 		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;

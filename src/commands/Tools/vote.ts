@@ -1,7 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -11,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 	usage: '<title:string>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		for (const reaction of ['👍', '👎', '🤷']) {
 			if (!message.reactions.cache.has(reaction)) await message.react(reaction);
 		}

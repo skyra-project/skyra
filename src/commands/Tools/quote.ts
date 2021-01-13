@@ -5,8 +5,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { GuildChannel, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
@@ -34,7 +33,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: GuildMessage, [, remoteMessage]: [never, KlasaMessage]) {
+	public async run(message: GuildMessage, [, remoteMessage]: [never, Message]) {
 		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(await DbSet.fetchColor(message))

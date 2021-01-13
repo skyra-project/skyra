@@ -1,8 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['choose', 'choise', 'pick'],
@@ -15,7 +15,7 @@ import { KlasaMessage } from 'klasa';
 	spam: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, options: string[]) {
+	public async run(message: Message, options: string[]) {
 		const t = await message.fetchT();
 		const words = await this.filterWords(t, options);
 		return message.send(

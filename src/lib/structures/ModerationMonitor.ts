@@ -6,9 +6,9 @@ import { AdderError } from '#utils/Adder';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
-import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
@@ -41,7 +41,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		}
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: Message) {
 		return (
 			this.enabled &&
 			message.guild !== null &&

@@ -1,17 +1,15 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 
+@ApplyOptions<SkyraCommandOptions>({
+	description: LanguageKeys.Commands.System.DonateDescription,
+	extendedHelp: LanguageKeys.Commands.System.DonateExtended,
+	guarded: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: LanguageKeys.Commands.System.DonateDescription,
-			extendedHelp: LanguageKeys.Commands.System.DonateExtended,
-			guarded: true
-		});
-	}
-
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		const t = await message.fetchT();
 		try {
 			const extended = t(this.extendedHelp).extendedHelp!;

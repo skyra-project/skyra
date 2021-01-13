@@ -4,8 +4,8 @@ import { Schedules } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage } from 'klasa';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
@@ -21,7 +21,7 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		const now = Date.now();
 
 		const t = await message.fetchT();
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async claimDaily(message: KlasaMessage, t: TFunction, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
+	private async claimDaily(message: Message, t: TFunction, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
 		const money = this.calculateDailies(message, await connection.clients.ensure(), settings);
 
 		settings.money += money;
@@ -78,7 +78,7 @@ export default class extends SkyraCommand {
 		return money;
 	}
 
-	private calculateDailies(message: KlasaMessage, client: ClientEntity, user: UserEntity) {
+	private calculateDailies(message: Message, client: ClientEntity, user: UserEntity) {
 		let money = 200;
 		if (client.userBoost.includes(user.id)) money *= 1.5;
 		if (message.guild && client.guildBoost.includes(message.guild.id)) money *= 1.5;

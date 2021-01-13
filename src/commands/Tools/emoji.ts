@@ -1,7 +1,8 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes, twemoji } from '#utils/util';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { CommandStore } from 'klasa';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
 const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
@@ -19,7 +20,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [emoji]: [string]) {
+	public async run(message: Message, [emoji]: [string]) {
 		const t = await message.fetchT();
 
 		if (REG_EMOJI.test(emoji)) {

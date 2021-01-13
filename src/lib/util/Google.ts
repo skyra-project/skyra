@@ -2,8 +2,7 @@ import { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
-import { Client } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Client, Message } from 'discord.js';
 import { fetch, FetchResultTypes } from './util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
@@ -25,7 +24,7 @@ export const enum GoogleResponseCodes {
 	Failed = 'FAILED'
 }
 
-export async function queryGoogleMapsAPI(message: KlasaMessage, location: string) {
+export async function queryGoogleMapsAPI(message: Message, location: string) {
 	const url = new URL(GOOGLE_MAPS_API_URL);
 	url.searchParams.append('address', location);
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
@@ -42,7 +41,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	};
 }
 
-export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: KlasaMessage, type: T, query: string) {
+export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: Message, type: T, query: string) {
 	try {
 		const nsfwAllowed = message.channel.type === 'text' ? message.channel.nsfw : true;
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);

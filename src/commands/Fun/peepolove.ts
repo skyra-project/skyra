@@ -5,7 +5,7 @@ import { radians } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 	private bodyImage: Image = null!;
 	private handsImage: Image = null!;
 
-	public async run(message: KlasaMessage, [imageBuffer]: [Image]) {
+	public async run(message: Message, [imageBuffer]: [Image]) {
 		const attachment = await new Canvas(512, 512)
 			.printImage(this.bodyImage, 0, 0, 512, 512)
 			.translate(135, 410)

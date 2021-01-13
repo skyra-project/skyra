@@ -1,9 +1,10 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { resolveEmoji } from '#utils/util';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<string> {
+	public async run(arg: string, possible: Possible, message: Message): Promise<string> {
 		const resolved = resolveEmoji(arg);
 		if (resolved === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidEmoji, { name: possible.name });
 		return resolved;

@@ -3,8 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
@@ -14,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 	spam: true
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: Message) {
 		const urls = await fetch<[string]>('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON);
 		return message.send(
 			new MessageEmbed()

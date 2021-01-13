@@ -1,11 +1,11 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, streamToBuffer } from '#utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Message, User } from 'discord.js';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
 
@@ -16,22 +16,19 @@ const COORDINATES: readonly [number, number][] = [
 	[-14, -10]
 ];
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: LanguageKeys.Commands.Misc.TriggeredDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
+	requiredPermissions: ['ATTACH_FILES'],
+	spam: true,
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: LanguageKeys.Commands.Misc.TriggeredDescription,
-			extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-			requiredPermissions: ['ATTACH_FILES'],
-			spam: true,
-			usage: '[user:username]'
-		});
-	}
-
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
+	public async run(message: Message, [user = message.author]: [User]) {
 		const attachment = await this.generate(user);
 		return message.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
 	}

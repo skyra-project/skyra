@@ -7,8 +7,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
-import { GuildMember, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { GuildMember, Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -47,7 +46,7 @@ export default class extends SkyraCommand {
 	private darkThemeTemplate: Image = null!;
 	private heartIcon: Image = null!;
 
-	public async run(message: KlasaMessage, [{ user: firstUser }, { user: secondUser }]: [GuildMember, GuildMember]) {
+	public async run(message: Message, [{ user: firstUser }, { user: secondUser }]: [GuildMember, GuildMember]) {
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([this.fetchAvatar(firstUser), this.fetchAvatar(secondUser)]);
 

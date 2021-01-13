@@ -1,6 +1,7 @@
-import { KlasaMessage, Monitor } from 'klasa';
+import { Message } from 'discord.js';
+import { Monitor } from 'klasa';
 
 export interface CommandHandler extends Monitor {
-	run(message: KlasaMessage): Promise<void>;
-	runCommand(message: KlasaMessage): Promise<void>;
+	run(message: Message): Promise<void>;
+	runCommand(message: Message): Promise<void>;
 }

@@ -2,8 +2,9 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { KlasaMessage, Piece, Stopwatch, Store } from 'klasa';
+import { Piece, Stopwatch, Store } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['r'],
@@ -14,7 +15,7 @@ import { KlasaMessage, Piece, Stopwatch, Store } from 'klasa';
 	usage: '<Store:store|Piece:piece|everything:default>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [piece]: [Piece | Store<string, any> | 'everything']) {
+	public async run(message: Message, [piece]: [Piece | Store<string, any> | 'everything']) {
 		const t = await message.fetchT();
 
 		if (piece === 'everything') return this.everything(message, t);
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async everything(message: KlasaMessage, t: TFunction) {
+	private async everything(message: Message, t: TFunction) {
 		const timer = new Stopwatch();
 		await Promise.all(
 			this.client.pieceStores.map(async (store) => {

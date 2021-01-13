@@ -1,8 +1,9 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import { Inhibitor, KlasaMessage } from 'klasa';
+import { Message } from 'discord.js';
+import { Inhibitor } from 'klasa';
 
 export default class extends Inhibitor {
-	public async run(message: KlasaMessage, command: SkyraCommand) {
+	public async run(message: Message, command: SkyraCommand) {
 		if (Reflect.has(command, 'inhibit') && (await command.inhibit(message))) throw true;
 	}
 }

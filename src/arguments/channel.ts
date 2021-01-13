@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { validateChannelAccess } from '#utils/util';
-import { GuildChannel } from 'discord.js';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { GuildChannel, Message } from 'discord.js';
+import { Argument, Possible } from 'klasa';
 
 const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+	public async run(arg: string, possible: Possible, message: Message) {
 		if (!message.guild) throw await message.resolveKey(LanguageKeys.Resolvers.ChannelNotInGuild);
 
 		const channelID = CHANNEL_REGEXP.exec(arg);
@@ -16,7 +16,7 @@ export default class extends Argument {
 		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannel, { name: possible.name });
 	}
 
-	private async validateAccess(channel: GuildChannel, message: KlasaMessage) {
+	private async validateAccess(channel: GuildChannel, message: Message) {
 		if (validateChannelAccess(channel, message.author) && validateChannelAccess(channel, this.client.user!)) {
 			return channel;
 		}

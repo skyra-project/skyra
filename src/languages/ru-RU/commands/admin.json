@@ -5,71 +5,71 @@
 	},
 	"blocklistResetSuccess": "",
 	"blocklistSaveSuccess": "",
-	"confNoKey": "",
-	"confNoValue": "",
-	"confGuarded": "",
-	"confUpdated": "",
-	"confKeyNotArray": "",
-	"confGetNoExt": "",
-	"confGet": "",
-	"confReset": "",
-	"confNochange": "",
-	"confServerDescription": "",
+	"confNoKey": "Вы должны предоставить ключ",
+	"confNoValue": "Вы должны указать значение",
+	"confGuarded": "{{name, toTitleCase}} не может быть отключен.",
+	"confUpdated": "Ключ **{{key}}**: `{{response}} ` успешно обновлен",
+	"confKeyNotArray": "Этот ключ не является типом массива. Используйте действие \"сбросить\" вместо этого.",
+	"confGetNoExt": "Кнопка **{{key}}** не существует.",
+	"confGet": "Значение ключа **{{key}}**: `{{value}}`",
+	"confReset": "Кнопка **{{key}}** была сброшена на: `{{value}}`",
+	"confNochange": "Значение **{{key}}** уже соответствует этому значению.",
+	"confServerDescription": "Определить параметры для сервера.",
 	"confServerExtended": {
 		"extendedHelp": ""
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
-	"confUser": "",
-	"confSettingNotSet": "",
+	"confServer": "**Настройки сервера {{key}}**\n{{list}}",
+	"confUserDescription": "Определить настройки для каждого пользователя.",
+	"confDashboardOnlyKey": "`{{key}}` можно настроить только через веб-панель инструментов (<https://skyra.pw>)",
+	"confUser": "**Пользовательские настройки {{key}}**\n{{list}}",
+	"confSettingNotSet": "Не задано",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Управление уникальными наборами ролей.",
 	"rolesetExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"добавить",
+				"Создать новый набор ролей или добавить роль к уже существующему."
 			],
 			[
-				"",
-				""
+				"удалить",
+				"Удалить роль из существующего набора ролей."
 			],
 			[
-				"",
-				""
+				"сброс",
+				"Удаляет все роли из набора ролей или, если не указано, все существующие наборы ролей."
 			],
 			[
-				"",
-				""
+				"список",
+				"Список все наборов ролей."
 			],
 			[
-				"",
-				""
+				"авто",
+				"Добавляет или удаляет набор ролей."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"добавить регионы Америки",
+			"добавить регионы Африка Азия Европа",
+			"удалять регионы Америка",
+			"сброс",
+			"сбросить регионы",
+			"список",
+			"регионы Америки",
+			"регионы Африка Америка Азия Европа"
 		],
-		"reminder": ""
+		"reminder": "Эта команда может добавлять и/или удалять несколько ролей одновременно."
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "",
+	"rolesetInvalidName": "Вы не можете удалить набор уникальных {{name}} ролей, так как он не существует.",
 	"rolesetRemoved": "",
-	"rolesetResetEmpty": "",
-	"rolesetResetAll": "",
+	"rolesetResetEmpty": "{{REDCROSS}} В этой группе отсутствуют роли.",
+	"rolesetResetAll": "{{GREENTICK}} успешно удалены все роли.",
 	"rolesetResetNotExists": "",
 	"rolesetResetGroup": "",
 	"rolesetUpdated": "",

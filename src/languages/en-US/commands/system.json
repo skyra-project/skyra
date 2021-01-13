@@ -49,7 +49,7 @@
 		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
 	},
 	"disable": "+ Successfully disabled {{type}}: {{name}}",
-	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",
+	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/event. Default state restored on reboot.",
 	"disableExtended": {
 		"extendedHelp": "Disable a piece that was previously enabled"
 	},
@@ -57,7 +57,7 @@
 	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
 	"dmSent": "I have sent you the message in DMs.",
 	"enable": "+ Successfully enabled {{type}}: {{name}}",
-	"enableDescription": "Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.",
+	"enableDescription": "Re-enables or temporarily enables a command/inhibitor/monitor. Default state restored on reboot.",
 	"enableExtended": {
 		"extendedHelp": "Enables a piece that was previously disabled"
 	},

@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { cast, floatPromise } from '#utils/util';
+import { cast } from '#utils/util';
 import { Message } from 'discord.js';
 import { Command, Event, Stopwatch } from 'klasa';
 
@@ -51,8 +51,7 @@ export default class extends Event {
 				const commandRun = tagCommand.show(message, [command]);
 				timer.stop();
 				const response = await commandRun;
-				floatPromise(this, this.client.finalizers.run(message, tagCommand, response, timer));
-				this.client.emit(Events.CommandSuccess, message, tagCommand, ['show', command], response);
+				this.client.emit(Events.CommandSuccess, message, tagCommand, response, timer);
 			} catch (error) {
 				this.client.emit(Events.CommandError, message, tagCommand, ['show', command], error);
 			}

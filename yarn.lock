@@ -3903,7 +3903,7 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
 
 klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/b47df2607588659a443c1669a04d56429ac10393"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/7e678e8f057367087bf4341083567a9a09fb1c40"
   dependencies:
     fs-nextra "^0.5.1"
 

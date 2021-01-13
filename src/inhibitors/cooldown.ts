@@ -1,7 +1,7 @@
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Message } from 'discord.js';
-import { Finalizer, Inhibitor, InhibitorStore } from 'klasa';
+import { Event, Inhibitor, InhibitorStore } from 'klasa';
 
 export default class extends Inhibitor {
 	public constructor(store: InhibitorStore, file: string[], directory: string) {
@@ -16,8 +16,8 @@ export default class extends Inhibitor {
 		let existing: Cooldown | undefined = undefined;
 
 		try {
-			const finalizer = this.client.finalizers.get('commandCooldown') as CommandCooldown;
-			existing = finalizer.getCooldown(message, command);
+			const event = this.client.events.get('commandSuccessCooldown') as CommandCooldown;
+			existing = event.getCooldown(message, command);
 		} catch (err) {
 			return;
 		}
@@ -29,7 +29,7 @@ export default class extends Inhibitor {
 	}
 }
 
-interface CommandCooldown extends Finalizer {
+interface CommandCooldown extends Event {
 	getCooldown(message: Message, command: SkyraCommand): Cooldown;
 }
 

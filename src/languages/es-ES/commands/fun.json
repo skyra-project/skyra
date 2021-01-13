@@ -43,8 +43,8 @@
 	"diceExtended": {
 		"extendedHelp": "Las mecánicas de este comando son fáciles. Tienes un dado, luego lo tiras __x__ veces, pero los dados también pueden configurarse para tener __y__ lados. Por defecto, este comando tira un dado con 6 lados una vez. Sin embargo, puedes cambiar la cantidad de tiradas para los dados, y este comando \"tirará\" (obtener un número aleatorio entre 1 y la cantidad de lados). Por ejemplo, tirar un dado con 6 lados 3 veces dejará una secuencia aleatoria de tres números aleatorios entre 1 y 6, por ejemplo: 3, 1, 6; lo cual hará que este comando devuelva 10 como salida.",
 		"examples": [
-			"",
-			"",
+			"370d24",
+			"100d6",
 			""
 		]
 	},
@@ -75,7 +75,7 @@
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
 	"markovDescription": "Genera una cadena de Markov desde el canal de texto.",
@@ -96,7 +96,7 @@
 			]
 		],
 		"examples": [
-			"",
+			"Skyra",
 			"yo"
 		]
 	},
@@ -114,7 +114,7 @@
 			]
 		],
 		"examples": [
-			"",
+			"1091",
 			"Curiosidad"
 		]
 	},
@@ -174,7 +174,7 @@
 		"",
 		"2 o 3 litros, no me recuerdo.",
 		"Infinito",
-		""
+		"1010."
 	],
 	"8ballWhy": [
 		"Tal vez la genética.",
@@ -235,7 +235,7 @@
 	"loveResult": "Resultado",
 	"markovTimer": "Procesado en {{timer}}.",
 	"markovNoMessages": "El canal o usuario no tiene mensajes.",
-	"norrisOutput": "",
+	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [
 		". Me amo un montón 😊",

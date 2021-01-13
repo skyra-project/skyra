@@ -5,8 +5,8 @@ import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
+import { ClientOptions } from 'discord.js';
 import i18next, { FormatFunction } from 'i18next';
-import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
@@ -289,7 +289,7 @@ export namespace Mime {
 	}
 }
 
-export const clientOptions: Partial<KlasaClientOptions> = {
+export const clientOptions: Partial<ClientOptions> = {
 	nms: {
 		everyone: 5,
 		role: 2

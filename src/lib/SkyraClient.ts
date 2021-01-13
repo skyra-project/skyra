@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
+import { ClientOptions, Message, Webhook } from 'discord.js';
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions } from 'klasa';
+import { KlasaClient } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
-import { Message, Webhook } from 'discord.js';
 
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
@@ -108,7 +108,7 @@ export class SkyraClient extends KlasaClient {
 
 	public constructor() {
 		// @ts-ignore Shut the fuck up TS
-		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
+		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as ClientOptions);
 		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
 			const guild = this.guilds.cache.get(guildID);
 			return Promise.resolve(guild?.shard.send(packet));

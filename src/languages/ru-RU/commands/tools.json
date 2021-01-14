@@ -73,18 +73,18 @@
 	},
 	"countryFields": {
 		"other": {
-			"area": "",
-			"currencies": "",
+			"area": "Площадь",
+			"currencies": "Валюты",
 			"demonym": ""
 		},
 		"overview": {
-			"capital": "",
+			"capital": "Столица",
 			"officialName": "",
-			"population": ""
+			"population": "Население"
 		}
 	},
 	"countryTitles": {
-		"LANGUAGES": "",
+		"LANGUAGES": "Языки",
 		"OTHER": "",
 		"OVERVIEW": ""
 	},
@@ -102,7 +102,7 @@
 		]
 	},
 	"defineNotfound": "",
-	"definePronounciation": "",
+	"definePronounciation": "Произношение",
 	"defineUnknown": "",
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
@@ -137,7 +137,7 @@
 		"explainedUsage": [
 			[
 				"",
-				""
+				"Название игры, которую вы ищете."
 			]
 		],
 		"examples": [
@@ -151,13 +151,13 @@
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
-		"categories": "",
+		"categories": "Категории",
 		"esrb": "",
 		"noCategories": "",
 		"nsuid": "",
-		"numberOfPlayers": "",
-		"platform": "",
-		"price": "",
+		"numberOfPlayers": "Количество игроков",
+		"platform": "Платформа",
+		"price": "Стоимость",
 		"releaseDate": ""
 	},
 	"horoscopeDescription": "",
@@ -206,7 +206,7 @@
 		"explainedUsage": [
 			[
 				"",
-				""
+				"Название игры"
 			]
 		],
 		"examples": [
@@ -272,7 +272,7 @@
 	},
 	"moviesTitles": {
 		"collection": "",
-		"genres": "",
+		"genres": "Жанры",
 		"homePage": "",
 		"imdbPage": "",
 		"releaseDate": "",
@@ -366,11 +366,11 @@
 	"systemTextTruncated": "",
 	"topInvitesDescription": "",
 	"topInvitesEmbedData": {
-		"channel": "",
-		"createdAt": "",
-		"createdAtUnknown": "",
+		"channel": "Канал",
+		"createdAt": "Дата создания",
+		"createdAtUnknown": "Дата создания неизвестна",
 		"expiresIn": "",
-		"link": "",
+		"link": "Ссылка",
 		"neverExpress": "",
 		"temporary": "",
 		"uses": ""
@@ -417,8 +417,8 @@
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "",
-	"whoisMemberRoles": "",
-	"whoisMemberRoles_plural": "",
+	"whoisMemberRoles": "Роль [1]",
+	"whoisMemberRoles_plural": "Роли [{{count}}]",
 	"whoisMemberTitles": {
 		"createdAt": "",
 		"joined": ""

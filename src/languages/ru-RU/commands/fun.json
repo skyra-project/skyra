@@ -126,7 +126,7 @@
 	"wakandaExtended": {
 		"extendedHelp": ""
 	},
-	"8ballOutput": "",
+	"8ballOutput": "🎱 Вопрос от {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
 		"When": "",
 		"What": "",

@@ -13,7 +13,7 @@ export const maximumExportQueueSize = 100;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
-	requiredGuildPermissions: ['ATTACH_FILES'],
+	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text']
 })
 export default class extends SkyraCommand {

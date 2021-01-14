@@ -741,12 +741,12 @@
   resolved "https://registry.yarnpkg.com/@sapphire/stopwatch/-/stopwatch-1.0.3.tgz#068b437da474d636ddba74a2d86506753d9480ae"
   integrity sha512-rrfv1u8zhEncC95Ronkvgeqaj7jBVptfOLOPWFmAOG4iPBuU6qCjpKxHj/hvNlxGCtjtSh8cUmo4BUZRBOtiPQ==
 
-"@sapphire/time-utilities@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.5.tgz#bc6e48abe7aebe888666a239240d44a39c7e3ac8"
-  integrity sha512-yr4le/fdT3sik9sqJ30MPke1ibIPSBFNv0+x+MczFQ/Mjsr6gTJ8qw7kxNbRj/pxX6G0lCjUtYCvEWp3qsbdbg==
+"@sapphire/time-utilities@^1.2.6":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.6.tgz#108c0fe67a7e279f0aa797c04fab52222913fbb5"
+  integrity sha512-HYFVzlEllRaQSpdEKUYpzUPvMUML3tlGNf5BF/Om2vvFxnf6y6Zi/OI86lc4dG6PJ1YcjHInre+yXuMIWnFs/w==
   dependencies:
-    "@sapphire/utilities" "^1.4.1"
+    "@sapphire/utilities" "^1.4.2"
 
 "@sapphire/ts-config@^2.0.0":
   version "2.0.0"
@@ -758,10 +758,15 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.3.tgz#14bd34461785fae5161c046689b65094b2caa44a"
   integrity sha512-gs5RlTjVpzfZQeX1T6b0O9lAuAMwNLLxMypeXPBNY9C1MHpF+bXc3raooat/bCcLhESsogKZZke0CC6gJxK59w==
 
-"@sapphire/utilities@^1.3.1", "@sapphire/utilities@^1.4.1":
+"@sapphire/utilities@^1.3.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.1.tgz#543b1e8065585f2914896a55ed97e8aba06769e9"
   integrity sha512-b4XAeLRuN8rLVESNkCd6R1fXD63IQAznGBZOtxZG2oOMQtdXAYIevVJ4gTI9zgPXs2/5LXRkJG4M3yrqg9DPmw==
+
+"@sapphire/utilities@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.2.tgz#b8c1cc1ef52adca36f2217f3995f185cf01f932b"
+  integrity sha512-OW3KIVu3lswXHZspyMhr0diI2fvE5xzrce+/XI9spUQ+zq2J/3oxxOy0Q3fA6JOERqDeNPwqrtgyWj/PCSL0Kw==
 
 "@sentry/core@5.30.0":
   version "5.30.0"

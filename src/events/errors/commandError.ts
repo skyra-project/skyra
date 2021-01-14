@@ -90,7 +90,7 @@ export default class extends Event {
 	 * @param error The error to format.
 	 */
 	private getPathLine(error: DiscordAPIError | HTTPError): string {
-		return `**Path**: ${error.path}`;
+		return `**Path**: ${error.method.toUpperCase()} ${error.path}`;
 	}
 
 	/**

@@ -80,7 +80,7 @@
 		"overview": {
 			"capital": "Столица",
 			"officialName": "",
-			"population": ""
+			"population": "Население"
 		}
 	},
 	"countryTitles": {
@@ -137,7 +137,7 @@
 		"explainedUsage": [
 			[
 				"",
-				""
+				"Название игры, которую вы ищете."
 			]
 		],
 		"examples": [
@@ -155,9 +155,9 @@
 		"esrb": "",
 		"noCategories": "",
 		"nsuid": "",
-		"numberOfPlayers": "",
+		"numberOfPlayers": "Количество игроков",
 		"platform": "Платформа",
-		"price": "",
+		"price": "Стоимость",
 		"releaseDate": ""
 	},
 	"horoscopeDescription": "",
@@ -206,7 +206,7 @@
 		"explainedUsage": [
 			[
 				"",
-				""
+				"Название игры"
 			]
 		],
 		"examples": [
@@ -366,11 +366,11 @@
 	"systemTextTruncated": "",
 	"topInvitesDescription": "",
 	"topInvitesEmbedData": {
-		"channel": "",
-		"createdAt": "",
-		"createdAtUnknown": "",
+		"channel": "Канал",
+		"createdAt": "Дата создания",
+		"createdAtUnknown": "Дата создания неизвестна",
 		"expiresIn": "",
-		"link": "",
+		"link": "Ссылка",
 		"neverExpress": "",
 		"temporary": "",
 		"uses": ""
@@ -417,8 +417,8 @@
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "",
-	"whoisMemberRoles": "",
-	"whoisMemberRoles_plural": "",
+	"whoisMemberRoles": "Роль [1]",
+	"whoisMemberRoles_plural": "Роли [{{count}}]",
 	"whoisMemberTitles": {
 		"createdAt": "",
 		"joined": ""

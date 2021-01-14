@@ -23,7 +23,7 @@ import { TFunction } from 'i18next';
 		'package',
 		async (arg, _, message) => {
 			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Developers.YarnNoPackage);
-			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
+			return encodeURIComponent(cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase());
 		}
 	]
 ])

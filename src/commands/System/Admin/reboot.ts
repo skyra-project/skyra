@@ -1,6 +1,6 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ENABLE_INFLUX } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';

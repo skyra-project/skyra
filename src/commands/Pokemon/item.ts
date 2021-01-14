@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CdnUrls } from '#lib/types/Constants';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

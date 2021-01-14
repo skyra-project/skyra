@@ -1,8 +1,8 @@
 import { DbSet, UserEntity } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';

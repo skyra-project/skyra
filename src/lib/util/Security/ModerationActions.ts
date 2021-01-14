@@ -5,9 +5,9 @@ import { ModerationManagerCreateData } from '#lib/structures/managers/Moderation
 import { KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
-import { isNullish, Nullish } from '@sapphire/utilities';
 import { Moderation } from '#utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '#utils/util';
+import { isNullish, Nullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	DiscordAPIError,

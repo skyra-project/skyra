@@ -1,6 +1,6 @@
+import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import { StatsGeneral, StatsUptime, StatsUsage } from '#root/commands/System/stats';
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 
 export const Disable = FT<{ type: string; name: string }, string>('commands/system:disable');
 export const DisableDescription = T<string>('commands/system:disableDescription');

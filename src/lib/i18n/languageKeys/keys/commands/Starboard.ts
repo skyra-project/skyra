@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const StarDescription = T<string>('commands/starboard:starDescription');
 export const StarExtended = T<LanguageHelpDisplayOptions>('commands/starboard:starExtended');

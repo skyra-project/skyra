@@ -1,7 +1,7 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Time } from '#utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { Time } from '#utils/constants';
 import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';

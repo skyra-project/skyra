@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';

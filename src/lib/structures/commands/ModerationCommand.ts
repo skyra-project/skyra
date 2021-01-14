@@ -1,7 +1,7 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CLIENT_ID } from '#root/config';
 import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, floatPromise } from '#utils/util';

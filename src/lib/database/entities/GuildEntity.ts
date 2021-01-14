@@ -1,7 +1,7 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraClient } from '#lib/SkyraClient';
 import { AnyObject } from '#lib/types';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';

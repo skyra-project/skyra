@@ -1,7 +1,7 @@
-import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
 import { canManage } from '#lib/api/utils';
+import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { authenticated, cast, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Guild } from 'discord.js';

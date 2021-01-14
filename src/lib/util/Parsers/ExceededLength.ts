@@ -1,5 +1,5 @@
-import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Events } from '#lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 import { fetch, FetchMethods, FetchResultTypes } from '../util';

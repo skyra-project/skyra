@@ -1,6 +1,6 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TOKENS } from '#root/config';
 import { Client, Message } from 'discord.js';
 import { fetch, FetchResultTypes } from '../util';

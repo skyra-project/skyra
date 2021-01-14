@@ -1,6 +1,6 @@
-import { DbSet } from '#lib/database';
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
+import { DbSet } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
 export const ChaseExtended = T<LanguageHelpDisplayOptions>('commands/misc:chaseExtended');

@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const HelpAllFlag = FT<{ prefix: string }, string>('commands/general:helpAllFlag');
 export const HelpCommandCount = FT<{ count: number }, string>('commands/general:helpCommandCount');

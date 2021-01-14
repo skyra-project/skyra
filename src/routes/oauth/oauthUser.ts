@@ -1,10 +1,10 @@
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
+import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
+import { canManage } from '#lib/api/utils';
 import { Events } from '#lib/types/Enums';
 import { REDIRECT_URI, SCOPE } from '#root/config';
-import { canManage } from '#lib/api/utils';
 import { Mime, Time } from '#utils/constants';
-import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';

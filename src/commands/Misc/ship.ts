@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CanvasColors } from '#lib/types/Constants';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { socialFolder } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';

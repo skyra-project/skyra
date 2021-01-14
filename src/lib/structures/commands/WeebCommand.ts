@@ -1,7 +1,7 @@
 import { FetchError } from '#lib/errors/FetchError';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';

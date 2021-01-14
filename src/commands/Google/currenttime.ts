@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { TOKENS } from '#root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { fetch, FetchResultTypes } from '#utils/util';

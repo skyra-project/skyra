@@ -1,5 +1,5 @@
-import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Events } from '#lib/types/Enums';
 import { ConnectFourConstants } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '#utils/util';

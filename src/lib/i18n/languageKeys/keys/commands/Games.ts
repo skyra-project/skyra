@@ -1,6 +1,6 @@
+import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import { HungerGamesGame } from '#root/commands/Games/hungergames';
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 
 export const BalanceDifference = FT<{ previous: string; next: string }, string>('commands/game:balanceDifference');
 export const GamesSkyra = T<string>('commands/game:gamesSkyra');

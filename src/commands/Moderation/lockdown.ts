@@ -1,7 +1,7 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { ApplyOptions } from '@skyra/decorators';
 import { Permissions, TextChannel } from 'discord.js';

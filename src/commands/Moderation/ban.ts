@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
 import { ArgumentTypes, isNumber } from '@sapphire/utilities';

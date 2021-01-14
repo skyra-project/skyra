@@ -1,6 +1,6 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Message } from 'discord.js';

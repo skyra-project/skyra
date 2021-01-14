@@ -1,6 +1,6 @@
 import type { ScheduleEntity } from '#lib/database';
-import { FT, T } from '#lib/types';
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 import type { Role, User } from 'discord.js';
 
 export interface LevelTitles {

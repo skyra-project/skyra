@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const AbilityDescription = T<string>('commands/pokemon:abilityDescription');
 export const AbilityExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:abilityExtended');

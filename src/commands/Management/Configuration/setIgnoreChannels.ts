@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isTextBasedChannel } from '#utils/util';
 import { TextChannel } from 'discord.js';
 import { CommandStore } from 'klasa';

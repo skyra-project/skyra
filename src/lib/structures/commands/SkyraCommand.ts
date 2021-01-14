@@ -1,5 +1,5 @@
-import { CustomGet } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { CustomGet } from '#lib/types';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 import { Command, CommandOptions, CommandStore } from 'klasa';
 

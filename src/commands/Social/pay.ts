@@ -1,8 +1,8 @@
 import { DbSet, UserEntity } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { User } from 'discord.js';
 import { TFunction } from 'i18next';
 import { CommandStore } from 'klasa';

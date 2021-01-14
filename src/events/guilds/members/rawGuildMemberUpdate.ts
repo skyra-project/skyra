@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
-import { CLIENT_ID } from '#root/config';
 import { api } from '#lib/discord/Api';
+import { CLIENT_ID } from '#root/config';
 import { floatPromise } from '#utils/util';
 import {
 	AuditLogEvent,

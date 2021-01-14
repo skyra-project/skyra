@@ -1,8 +1,8 @@
-import { Events } from '#lib/types/Enums';
+import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Events } from '#lib/types/Enums';
 import { ConnectFourConstants, Time } from '#utils/constants';
 import { LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
-import { api } from '#lib/discord/Api';
 import { resolveEmoji } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, User } from 'discord.js';

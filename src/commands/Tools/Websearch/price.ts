@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { NAME, TOKENS, VERSION } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';

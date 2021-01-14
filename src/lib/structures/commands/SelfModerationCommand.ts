@@ -1,7 +1,7 @@
 import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { KeyOfType } from '#lib/types/Utils';
 import { codeBlock } from '@sapphire/utilities';
 import { TFunction } from 'i18next';

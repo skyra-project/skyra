@@ -1,6 +1,6 @@
+import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import { Moderation } from '#utils/constants';
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { User } from 'discord.js';
 
 export interface ModerationAction {

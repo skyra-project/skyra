@@ -1,7 +1,7 @@
 import { ClientEntity, DbSet, UserEntity } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { Schedules } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
-import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Events } from '#lib/types/Enums';
 import { sleep } from '#utils/Promisified/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';

@@ -1,5 +1,5 @@
-import { WeebCommand, WeebCommandOptions } from '#lib/structures/commands/WeebCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { WeebCommand, WeebCommandOptions } from '#lib/structures/commands/WeebCommand';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({

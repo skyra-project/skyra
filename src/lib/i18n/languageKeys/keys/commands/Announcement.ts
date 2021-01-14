@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const AnnouncementHeader = FT<{ role: string }, string>('commands/announcement:announcementHeader');
 export const AnnouncementCancelled = T<string>('commands/announcement:announcementCancelled');

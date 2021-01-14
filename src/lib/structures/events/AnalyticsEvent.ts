@@ -1,5 +1,5 @@
-import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
 import { enumerable } from '#utils/util';
 import { Point } from '@influxdata/influxdb-client';
 import { Event } from 'klasa';

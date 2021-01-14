@@ -1,6 +1,6 @@
-import { DbSet } from '#lib/database';
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
+import { DbSet } from '#lib/database';
 import { TOKENS } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

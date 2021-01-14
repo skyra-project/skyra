@@ -1,6 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
-import { map } from '#utils/iterator';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { map } from '#utils/iterator';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {

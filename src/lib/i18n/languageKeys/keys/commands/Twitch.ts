@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const FollowageDescription = T<string>('commands/twitch:followageDescription');
 export const FollowageExtended = T<LanguageHelpDisplayOptions>('commands/twitch:followageExtended');

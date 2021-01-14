@@ -1,9 +1,9 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
-import { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';

@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';

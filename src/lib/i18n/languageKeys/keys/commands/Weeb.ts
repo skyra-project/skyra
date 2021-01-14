@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const Bang = FT<{ user: string }, string>('commands/weeb:wbang');
 export const BangDescription = T<string>('commands/weeb:wbangDescription');

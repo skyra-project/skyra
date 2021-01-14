@@ -1,8 +1,8 @@
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
+import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Mime } from '#utils/constants';
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { isObject } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

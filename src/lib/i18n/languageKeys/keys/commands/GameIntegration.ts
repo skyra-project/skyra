@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const BrawlStarsDescription = T<string>('commands/gameIntegration:brawlstarsDescription');
 export const BrawlStarsExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:brawlstarsExtended');

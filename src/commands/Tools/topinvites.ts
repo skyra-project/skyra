@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

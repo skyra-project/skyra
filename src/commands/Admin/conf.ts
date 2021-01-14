@@ -1,10 +1,10 @@
 import { configurableGroups, isSchemaGroup, isSchemaKey, remove, reset, SchemaKey, set } from '#lib/database';
-import { map } from '#utils/iterator';
-import { SettingsMenu } from '#lib/structures/SettingsMenu';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SettingsMenu } from '#lib/structures/SettingsMenu';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { map } from '#utils/iterator';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 

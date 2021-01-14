@@ -1,5 +1,5 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';

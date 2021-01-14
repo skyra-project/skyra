@@ -1,5 +1,5 @@
-import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
 
 export const AnimeDescription = T<string>('commands/anime:animeDescription');
 export const AnimeExtended = T<LanguageHelpDisplayOptions>('commands/anime:animeExtended');

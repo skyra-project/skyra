@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

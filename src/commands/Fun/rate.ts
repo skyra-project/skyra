@@ -1,5 +1,5 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CLIENT_ID } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';

@@ -1,6 +1,6 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Emojis, rootFolder } from '#utils/constants';
 import { exec } from '#utils/Promisified/exec';
 import { sleep } from '#utils/Promisified/sleep';

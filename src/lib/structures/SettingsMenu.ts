@@ -1,10 +1,10 @@
 import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '#lib/database';
+import { api } from '#lib/discord/Api';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { BrandingColors, Time, ZeroWidthSpace } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { api } from '#lib/discord/Api';
 import { floatPromise, pickRandom } from '#utils/util';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { CustomSearchType, GoogleResponseCodes, GooleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
+import { CustomSearchType, GoogleResponseCodes, GoogleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
 import { IMAGE_EXTENSION, pickRandom } from '#utils/util';
 import { parseURL } from '@sapphire/utilities';
@@ -42,24 +42,29 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: GuildMessage, items: GooleCSEItem[]) {
+	private async buildDisplay(message: GuildMessage, items: GoogleCSEItem[]) {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
 
-				const imageUrl = parseURL(
-					item.pagemap?.cse_image?.find((image) => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? ''
-				);
-				if (imageUrl) {
-					embed.setImage(imageUrl.href);
-				}
+				const imageUrl = this.getImageUrl(item);
+				if (imageUrl) embed.setImage(imageUrl);
 
 				return embed;
 			});
 		}
 
 		return display;
+	}
+
+	private getImageUrl(item: GoogleCSEItem): string | undefined {
+		for (const image of item.pagemap?.cse_image ?? []) {
+			const url = parseURL(image.src);
+			if (url && IMAGE_EXTENSION.test(url.pathname)) return url.href;
+		}
+
+		return undefined;
 	}
 }

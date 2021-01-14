@@ -116,7 +116,7 @@ export interface GoogleMapsOkLocation {
 export interface GoogleSearchResult<T extends CustomSearchType> {
 	kind: string;
 	context: { title: string };
-	items?: T extends CustomSearchType.Image ? GoogleCSEImageData[] : GooleCSEItem[];
+	items?: T extends CustomSearchType.Image ? GoogleCSEImageData[] : GoogleCSEItem[];
 }
 
 export interface GoogleCSEImageData {
@@ -131,7 +131,7 @@ export interface GoogleCSEImageData {
 	image: GoogleImage;
 }
 
-export interface GooleCSEItem {
+export interface GoogleCSEItem {
 	cacheId: string;
 	displayLink: string;
 	formattedUrl: string;

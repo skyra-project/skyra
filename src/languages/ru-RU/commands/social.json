@@ -6,7 +6,7 @@
 	"autoRoleRemove": "",
 	"autoRoleAdd": "",
 	"autoRoleListEmpty": "",
-	"autoRoleUnknownRole": "",
+	"autoRoleUnknownRole": "Неизвестная роль: {{role}}",
 	"balance": "",
 	"balanceSelf": "",
 	"balanceBots": "",
@@ -38,7 +38,7 @@
 	"dailyGraceDenied": "",
 	"dailyCollect": "",
 	"level": {
-		"level": "",
+		"level": "Уровень",
 		"experience": "",
 		"nextIn": ""
 	},
@@ -80,7 +80,7 @@
 		"credits": "",
 		"reputation": "",
 		"experience": "",
-		"level": ""
+		"level": "Уровень"
 	},
 	"profileMoney": "",
 	"remindmeCreate": "",

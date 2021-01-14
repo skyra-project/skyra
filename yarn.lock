@@ -876,10 +876,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.1.tgz#d1d88a9bde2b436f83fd4995b3f0926c1de6a7fa"
   integrity sha512-cDtbEuH30sWlPIDBpBrdhXd2tnawKZygaPdwec0bglhDCliBaJGtN1gNsiKewkvotRsRV38KtFnrQSEE5nmXsg==
 
-"@skyra/decorators@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-3.0.0.tgz#eaa4287c07dd4eaaa2ebd8ec590c538b5379a659"
-  integrity sha512-C0ooDOLzjtm4Iu0U4KxTIPEE2PNCN8rcTEpHphIFxxxQ5xZleu5ecX70KrPxXjmLKF/h3JUaDVt08KBeZwiC2Q==
+"@skyra/decorators@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-4.0.0.tgz#12db35b2c5d5c536b17e1758a1abe406ae8e4856"
+  integrity sha512-JkLXEpXya2D/SSl1IzzsOEMrO9wg2AApkLdOUyFaA1ZR14cN5N4WUpGDXttnY8lTBkuJImqVhfVV0oF4WpvlDA==
 
 "@skyra/editable-commands@^1.0.0":
   version "1.0.0"

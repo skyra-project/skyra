@@ -73,7 +73,7 @@
 		"@skyra/ai": "^1.0.2",
 		"@skyra/audio": "^1.0.2",
 		"@skyra/char": "^1.0.1",
-		"@skyra/decorators": "^3.0.0",
+		"@skyra/decorators": "^4.0.0",
 		"@skyra/editable-commands": "^1.0.0",
 		"async-rwlock": "^1.1.1",
 		"binarytf": "^2.0.0",

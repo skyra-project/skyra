@@ -66,6 +66,8 @@
 	},
 	"duckDuckGoLookalso": "Related to this topic:",
 	"duckDuckGoNotfound": "I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.",
+	"duckDuckGoUnknownError": "I am sorry, but DuckDuckGo API replied me with a message I can't understand...",
+	"duckDuckGoPoweredBy": "Powered by DuckDuckGo API",
 	"emojiCustom": "→ `Emoji ::` **{{emoji}}**\n→ `Type  ::` **Custom**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "Get info on an emoji.",
 	"emojiExtended": {

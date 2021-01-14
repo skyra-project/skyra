@@ -1,7 +1,7 @@
 /**
  * The FetchError class which is thrown in Utils.fetch
  */
-export class FetchError extends Error {
+export class QueryError extends Error {
 	/** The requested url. */
 	public readonly url: string;
 	/** The HTTP status code. */

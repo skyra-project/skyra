@@ -73,18 +73,18 @@
 	},
 	"countryFields": {
 		"other": {
-			"area": "",
-			"currencies": "",
+			"area": "Площадь",
+			"currencies": "Валюты",
 			"demonym": ""
 		},
 		"overview": {
-			"capital": "",
+			"capital": "Столица",
 			"officialName": "",
 			"population": ""
 		}
 	},
 	"countryTitles": {
-		"LANGUAGES": "",
+		"LANGUAGES": "Языки",
 		"OTHER": "",
 		"OVERVIEW": ""
 	},
@@ -102,7 +102,7 @@
 		]
 	},
 	"defineNotfound": "",
-	"definePronounciation": "",
+	"definePronounciation": "Произношение",
 	"defineUnknown": "",
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
@@ -151,12 +151,12 @@
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
-		"categories": "",
+		"categories": "Категории",
 		"esrb": "",
 		"noCategories": "",
 		"nsuid": "",
 		"numberOfPlayers": "",
-		"platform": "",
+		"platform": "Платформа",
 		"price": "",
 		"releaseDate": ""
 	},
@@ -272,7 +272,7 @@
 	},
 	"moviesTitles": {
 		"collection": "",
-		"genres": "",
+		"genres": "Жанры",
 		"homePage": "",
 		"imdbPage": "",
 		"releaseDate": "",

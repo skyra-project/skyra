@@ -10,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 	aliases: ['uw', 'unwarning'],
 	description: LanguageKeys.Commands.Moderation.UnwarnDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnwarnExtended,
-	usage: '<case:number> [reason:...string]'
+	usage: '<case:number{0,2147483647}> [reason:...string]'
 })
 export default class extends ModerationCommand {
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {

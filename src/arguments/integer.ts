@@ -14,6 +14,6 @@ export default class extends Argument {
 		const { min, max } = possible;
 
 		// @ts-expect-error 2341
-		return Argument.minOrMax(this.client, number, min, max, possible, message, '') ? number : null;
+		return (await Argument.minOrMax(this.client, number, min, max, possible, message, '')) ? number : null;
 	}
 }

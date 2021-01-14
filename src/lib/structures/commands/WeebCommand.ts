@@ -1,4 +1,4 @@
-import { FetchError } from '#lib/errors/FetchError';
+import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -65,7 +65,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		try {
 			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
 		} catch (unknownError: unknown) {
-			const error = unknownError as FetchError;
+			const error = unknownError as QueryError;
 
 			// If we received a 5XX code error, warn the user about the service's unavailability.
 			if (error.code >= 500) {

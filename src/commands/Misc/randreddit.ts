@@ -1,4 +1,4 @@
-import { FetchError } from '#lib/errors/FetchError';
+import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private handleError(error: FetchError, t: TFunction): never {
+	private handleError(error: QueryError, t: TFunction): never {
 		let parsed: RedditError | undefined = undefined;
 		try {
 			parsed = error.toJSON() as RedditError;

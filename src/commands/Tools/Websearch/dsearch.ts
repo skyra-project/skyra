@@ -1,36 +1,56 @@
+import { DbSet } from '#lib/database';
+import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['duckduckgo'],
+	cooldown: 15,
+	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
+	usage: '<query:string>',
+	usageDelim: ' ',
+	requiredPermissions: ['EMBED_LINKS']
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['duckduckgo'],
-			cooldown: 15,
-			description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
-			usage: '<query:string>',
-			usageDelim: ' ',
-			requiredPermissions: ['EMBED_LINKS']
-		});
-	}
-
 	public async run(message: Message, [query]: [string]) {
-		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
+		const url = new URL('https://api.duckduckgo.com');
+		url.searchParams.append('q', query);
+		url.searchParams.append('format', 'json');
+		url.searchParams.append('no_html', '1');
+		url.searchParams.append('t', 'skyra-project');
+
+		const t = await message.fetchT();
+		const body = await fetch<DuckDuckGoResultOk>(url, FetchResultTypes.JSON).catch((error) => {
+			throw t(this.handleFetchError(error));
+		});
 
 		if (body.Heading.length === 0) {
-			throw await message.resolveKey(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
+			throw t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
 		}
 
-		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);
+		const embed = new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message))
+			.setTitle(body.Heading)
+			.setURL(body.AbstractURL)
+			.setThumbnail(body.Image)
+			.setDescription(body.AbstractText)
+			.setFooter(t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy));
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(await message.resolveKey(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
+			embed.addField(t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
 		}
 
 		return message.send(embed);
+	}
+
+	private handleFetchError(error: Error) {
+		return error instanceof QueryError //
+			? LanguageKeys.Commands.Tools.DuckDuckGoNotFound
+			: LanguageKeys.Commands.Tools.DuckDuckGoUnknownError;
 	}
 }
 

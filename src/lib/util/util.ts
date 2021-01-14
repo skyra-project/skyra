@@ -1,7 +1,7 @@
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
 import { GuildSettings } from '#lib/database';
-import { FetchError } from '#lib/errors/FetchError';
+import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -261,7 +261,7 @@ export async function fetch(url: URL | string, options?: RequestInit | FetchResu
 	}
 
 	const result: Response = await nodeFetch(url, options);
-	if (!result.ok) throw new FetchError(url, result.status, await result.text());
+	if (!result.ok) throw new QueryError(url, result.status, await result.text());
 
 	switch (type) {
 		case FetchResultTypes.Result:

@@ -4,11 +4,13 @@ import { ClientOptions, Message, Webhook } from 'discord.js';
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 import { KlasaClient } from 'klasa';
+import { I18nextHandler } from '@sapphire/plugin-i18next';
 import { mergeDefault } from '@sapphire/utilities';
 
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
 import { ScheduleManager } from './structures/managers/ScheduleManager';
+import { InviteStore } from './structures/InviteStore';
 
 // Import all utils
 import { clientOptions } from './util/constants';
@@ -26,13 +28,11 @@ import './extensions';
 
 // Import setup files
 import './setup';
-import { InviteStore } from './structures/InviteStore';
-import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '#lib/structures/AnalyticsData';
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
+import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { I18nextHandler } from '@sapphire/plugin-i18next';
 
 export class SkyraClient extends KlasaClient {
 	/**

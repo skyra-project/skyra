@@ -6,13 +6,13 @@ import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation, Time } from '#utils/constants';
+import { kBigIntTransformer } from '#utils/util';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('moderation', { schema: 'public' })
-@Check(/* sql */ `("duration" >= 0) AND ("duration" <= 31536000000)`)
 @Check(/* sql */ `"reason"::text <> ''::text`)
 @Check(/* sql */ `"type" >= 0`)
 export class ModerationEntity extends BaseEntity {
@@ -28,7 +28,7 @@ export class ModerationEntity extends BaseEntity {
 	@Column('timestamp without time zone', { nullable: true, default: () => 'null' })
 	public createdAt: Date | null = null;
 
-	@Column('integer', { nullable: true, default: () => 'null' })
+	@Column('bigint', { nullable: true, default: () => 'null', transformer: kBigIntTransformer })
 	public duration: number | null = null;
 
 	@Column('json', { nullable: true, default: () => 'null' })

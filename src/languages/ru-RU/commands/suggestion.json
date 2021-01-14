@@ -9,7 +9,7 @@
 			]
 		],
 		"examples": [
-			""
+			"Давайте создадим музыкальный канал!"
 		],
 		"reminder": ""
 	},
@@ -20,7 +20,7 @@
 	"suggestChannelPrompt": "",
 	"suggestTitle": "Предложение #{{id}}",
 	"suggestSuccess": "",
-	"resolveSuggestionDescription": "",
+	"resolveSuggestionDescription": "Установите статус предложения.",
 	"resolveSuggestionExtended": {
 		"extendedHelp": "",
 		"examples": [

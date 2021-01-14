@@ -1,5 +1,5 @@
 {
-	"avatarDescription": "",
+	"avatarDescription": "Просмотрите чей-либо аватар в полном размере.",
 	"avatarExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -111,6 +111,8 @@
 	},
 	"duckDuckGoLookalso": "",
 	"duckDuckGoNotfound": "",
+	"duckDuckGoUnknownError": "",
+	"duckDuckGoPoweredBy": "",
 	"emojiCustom": "",
 	"emojiDescription": "",
 	"emojiExtended": {
@@ -158,7 +160,7 @@
 		"numberOfPlayers": "Количество игроков",
 		"platform": "Платформа",
 		"price": "Стоимость",
-		"releaseDate": ""
+		"releaseDate": "Дата выпуска"
 	},
 	"horoscopeDescription": "",
 	"horoscopeExtended": {
@@ -219,7 +221,7 @@
 		"developers": "",
 		"genres": "",
 		"platform": "",
-		"releaseDate": "",
+		"releaseDate": "Дата выпуска",
 		"userScore": ""
 	},
 	"itunesDescription": "",
@@ -359,7 +361,7 @@
 	"showsTitles": {
 		"episodeRuntime": "",
 		"firstAirDate": "",
-		"genres": "",
+		"genres": "Жанры",
 		"status": "",
 		"userScore": ""
 	},
@@ -371,7 +373,7 @@
 		"createdAtUnknown": "Дата создания неизвестна",
 		"expiresIn": "",
 		"link": "Ссылка",
-		"neverExpress": "",
+		"neverExpress": "Никогда",
 		"temporary": "",
 		"uses": ""
 	},
@@ -405,15 +407,15 @@
 			""
 		]
 	},
-	"whoisDescription": "",
+	"whoisDescription": "Кто вы?",
 	"whoisExtended": {
 		"extendedHelp": ""
 	},
 	"whoisMemberFields": {
-		"createdAt": "",
-		"footer": "",
+		"createdAt": "{{member.user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
+		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "",
-		"joinedWithTimestamp": ""
+		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} назад"
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "",
@@ -424,7 +426,7 @@
 		"joined": ""
 	},
 	"whoisUserFields": {
-		"createdAt": "",
+		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
 		"footer": ""
 	},
 	"whoisUserTitles": {

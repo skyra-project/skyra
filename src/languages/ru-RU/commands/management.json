@@ -21,11 +21,11 @@
 	"triggersAdd": "",
 	"triggersListEmpty": "",
 	"guildInfoTitles": {
-		"CHANNELS": "",
+		"CHANNELS": "Каналы",
 		"MEMBERS": "",
 		"OTHER": ""
 	},
-	"guildInfoRoles": "",
+	"guildInfoRoles": "**Роли**\n\n{{roles}}",
 	"guildInfoNoroles": "",
 	"guildInfoChannels": "",
 	"guildInfoChannelsAfkChannelText": "",
@@ -38,6 +38,7 @@
 	"roleInfoAll": "",
 	"roleInfoNoPermissions": "",
 	"filterUndefinedWord": "",
+	"filterTooLong": "",
 	"filterAlreadyFiltered": "",
 	"filterNotFiltered": "",
 	"filterAdded": "",

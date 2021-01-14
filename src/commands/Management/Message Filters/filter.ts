@@ -21,8 +21,9 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 		'word',
 		async (arg, _, message, [type]) => {
 			if (type === 'reset' || type === 'show') return undefined;
-			if (arg) return arg.toLowerCase();
-			throw await message.resolveKey(LanguageKeys.Commands.Management.FilterUndefinedWord);
+			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Management.FilterUndefinedWord);
+			if (arg.length > 32) throw await message.resolveKey(LanguageKeys.Commands.Management.FilterTooLong);
+			return arg.toLowerCase();
 		}
 	]
 ])

@@ -20,6 +20,7 @@ export const FilterReset = T<string>('commands/management:filterReset');
 export const FilterShow = FT<{ words: string }, string>('commands/management:filterShow');
 export const FilterShowEmpty = T<string>('commands/management:filterShowEmpty');
 export const FilterUndefinedWord = T<string>('commands/management:filterUndefinedWord');
+export const FilterTooLong = T<string>('commands/management:filterTooLong');
 export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string>(
 	'commands/management:guildInfoChannels'
 );

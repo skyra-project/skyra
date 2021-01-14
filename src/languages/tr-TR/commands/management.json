@@ -38,6 +38,7 @@
 	"roleInfoAll": "",
 	"roleInfoNoPermissions": "",
 	"filterUndefinedWord": "",
+	"filterTooLong": "",
 	"filterAlreadyFiltered": "",
 	"filterNotFiltered": "",
 	"filterAdded": "",

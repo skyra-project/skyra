@@ -1,5 +1,5 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID, CLIENT_SECRET } from '#root/config';
 import { Mime } from '#utils/constants';

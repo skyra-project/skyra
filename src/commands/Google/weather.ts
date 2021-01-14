@@ -1,8 +1,8 @@
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { TOKENS } from '#root/config';
+import { queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { assetsFolder } from '#utils/constants';
-import { queryGoogleMapsAPI } from '#utils/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { loadImage } from 'canvas';

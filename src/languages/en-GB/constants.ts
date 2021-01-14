@@ -1,4 +1,4 @@
-import { Handler } from '#lib/structures/i18n/Handler';
+import { Handler } from '#lib/i18n/structures/Handler';
 import { TimeTypes } from '@sapphire/time-utilities';
 
 export class ExtendedHandler extends Handler {

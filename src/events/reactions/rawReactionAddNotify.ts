@@ -1,10 +1,10 @@
 import { GuildSettings } from '#lib/database';
-import { Colors } from '#lib/types/constants/Constants';
+import { api } from '#lib/discord/Api';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { LLRCData } from '#utils/LongLivingReactionCollector';
-import { api } from '#utils/Models/Api';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { ApplyOptions } from '@skyra/decorators';

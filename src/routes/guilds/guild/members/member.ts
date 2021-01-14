@@ -1,7 +1,7 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
-import { canManage } from '#utils/API';
-import { flattenMember } from '#utils/Models/ApiTransform';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
+import { flattenMember } from '#lib/api/ApiTransformers';
+import { canManage } from '#lib/api/utils';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

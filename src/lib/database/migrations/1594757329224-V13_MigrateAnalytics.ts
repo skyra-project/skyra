@@ -1,5 +1,5 @@
+import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
-import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { readFile } from 'fs/promises';

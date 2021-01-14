@@ -1,8 +1,8 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
-import { canManage } from '#utils/API';
-import { api } from '#utils/Models/Api';
-import { flattenGuild } from '#utils/Models/ApiTransform';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
+import { flattenGuild } from '#lib/api/ApiTransformers';
+import { canManage } from '#lib/api/utils';
+import { api } from '#lib/discord/Api';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Guild, GuildMember, TextChannel, User } from 'discord.js';
 import { TFunction } from 'i18next';

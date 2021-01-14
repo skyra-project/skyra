@@ -1,7 +1,7 @@
-import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Role, User } from 'discord.js';

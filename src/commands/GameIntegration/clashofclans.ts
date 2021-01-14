@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { TOKENS } from '#root/config';
 import { BrandingColors } from '#utils/constants';
-import { ClashOfClans } from '#utils/GameIntegration/ClashOfClans';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

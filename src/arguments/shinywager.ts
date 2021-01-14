@@ -1,4 +1,4 @@
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
 import { Argument, ArgumentOptions, Possible } from 'klasa';

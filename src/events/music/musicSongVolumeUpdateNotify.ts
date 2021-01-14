@@ -1,6 +1,6 @@
-import { AudioEvent } from '#lib/structures/AudioEvent';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { AudioEvent } from '#lib/structures/events/AudioEvent';
 import { MessageAcknowledgeable } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { pickRandom } from '#utils/util';
 
 export default class extends AudioEvent {

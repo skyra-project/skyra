@@ -1,5 +1,5 @@
 import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
 import { Command } from 'klasa';

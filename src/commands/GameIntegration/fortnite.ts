@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Fortnite } from '#lib/types/definitions/Fortnite';
 import { TOKENS } from '#root/config';
 import { BrandingColors } from '#utils/constants';
-import { Fortnite } from '#utils/GameIntegration/Fortnite';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';

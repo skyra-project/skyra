@@ -1,5 +1,5 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveEmoji } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
 

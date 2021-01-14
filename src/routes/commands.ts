@@ -1,6 +1,6 @@
-import { ApiRequest } from '#lib/structures/api/ApiRequest';
-import { ApiResponse } from '#lib/structures/api/ApiResponse';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { ApiRequest } from '#lib/api/ApiRequest';
+import { ApiResponse } from '#lib/api/ApiResponse';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { TFunction } from 'i18next';

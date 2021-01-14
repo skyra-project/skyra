@@ -1,10 +1,10 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
-import { isNullish } from '#lib/misc';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraClient } from '#lib/SkyraClient';
 import type { AnyObject, CustomGet } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { isNullish } from '@sapphire/utilities';
 import { TFunction } from 'i18next';
 import { container } from 'tsyringe';
 import type { SchemaGroup } from './SchemaGroup';

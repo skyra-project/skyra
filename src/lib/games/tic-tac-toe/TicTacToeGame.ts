@@ -1,4 +1,4 @@
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Time } from '#utils/constants';
 import type { Message } from 'discord.js';
 import { BaseController } from '../base/BaseController';

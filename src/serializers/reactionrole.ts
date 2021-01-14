@@ -1,5 +1,5 @@
 import { ReactionRole, Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { displayEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
 

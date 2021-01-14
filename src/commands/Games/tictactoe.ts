@@ -1,9 +1,9 @@
 import { TicTacToeBotController } from '#lib/games/tic-tac-toe/TicTacToeBotController';
 import { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { TicTacToeHumanController } from '#lib/games/tic-tac-toe/TicTacToeHumanController';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { User } from 'discord.js';
 import { CommandStore, Usage } from 'klasa';

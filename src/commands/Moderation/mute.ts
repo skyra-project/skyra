@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

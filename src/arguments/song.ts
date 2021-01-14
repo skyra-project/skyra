@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
-import { count, filter, map, take } from '#lib/misc';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { count, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { parseURL } from '@sapphire/utilities';
 import { LoadType, Track } from '@skyra/audio';

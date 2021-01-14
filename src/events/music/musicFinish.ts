@@ -1,5 +1,5 @@
 import { Queue } from '#lib/audio';
-import { AudioEvent } from '#lib/structures/AudioEvent';
+import { AudioEvent } from '#lib/structures/events/AudioEvent';
 import { Events } from '#lib/types/Enums';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
 

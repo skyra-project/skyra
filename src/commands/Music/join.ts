@@ -1,8 +1,7 @@
-import { Queue } from '#lib/audio';
-import { MusicCommand } from '#lib/structures/MusicCommand';
+import { Queue, requireUserInVoiceChannel } from '#lib/audio';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { requireUserInVoiceChannel } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 import { Permissions, VoiceChannel } from 'discord.js';
 const { FLAGS } = Permissions;

@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
+import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
-import { api } from '#utils/Models/Api';
 import { resolveOnErrorCodes } from '#utils/util';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v6';

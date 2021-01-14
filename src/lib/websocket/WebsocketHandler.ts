@@ -1,6 +1,6 @@
+import { ApiRequest, UserAuthObject } from '#lib/api/ApiRequest';
+import { CookieStore } from '#lib/api/CookieStore';
 import { SkyraClient } from '#lib/SkyraClient';
-import { ApiRequest, UserAuthObject } from '#lib/structures/api/ApiRequest';
-import { CookieStore } from '#lib/structures/api/CookieStore';
 import { DEV, WSS_PORT } from '#root/config';
 import { enumerable } from '#utils/util';
 import Collection from '@discordjs/collection';

@@ -1,6 +1,6 @@
-import { Colors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { rootFolder } from '#utils/constants';
 import { cast } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';

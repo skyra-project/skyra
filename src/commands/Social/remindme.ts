@@ -1,8 +1,8 @@
 import { DbSet, ScheduleEntity } from '#lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { Schedules } from '#lib/types/Enums';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { chunk, cutText } from '@sapphire/utilities';

@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
-import { ChannelConfigurationCommand, ChannelConfigurationCommandOptions } from '#lib/structures/ChannelConfigurationCommand';
-import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ChannelConfigurationCommand, ChannelConfigurationCommandOptions } from '#lib/structures/commands/ChannelConfigurationCommand';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ChannelConfigurationCommandOptions>({

@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
-import { hasAtLeastOneKeyInMap } from '#lib/misc';
 import { PermissionLevels } from '#lib/types/Enums';
+import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Permissions } from 'discord.js';
 import { KlasaClient } from 'klasa';
 

@@ -49,9 +49,11 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
 
-				const imageUrl = item.pagemap?.cse_image?.find((image) => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? '';
+				const imageUrl = parseURL(
+					item.pagemap?.cse_image?.find((image) => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? ''
+				);
 				if (imageUrl) {
-					embed.setImage(imageUrl);
+					embed.setImage(imageUrl.href);
 				}
 
 				return embed;

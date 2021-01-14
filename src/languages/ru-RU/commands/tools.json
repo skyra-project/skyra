@@ -111,6 +111,8 @@
 	},
 	"duckDuckGoLookalso": "",
 	"duckDuckGoNotfound": "",
+	"duckDuckGoUnknownError": "",
+	"duckDuckGoPoweredBy": "",
 	"emojiCustom": "",
 	"emojiDescription": "",
 	"emojiExtended": {
@@ -158,7 +160,7 @@
 		"numberOfPlayers": "Количество игроков",
 		"platform": "Платформа",
 		"price": "Стоимость",
-		"releaseDate": ""
+		"releaseDate": "Дата выпуска"
 	},
 	"horoscopeDescription": "",
 	"horoscopeExtended": {
@@ -219,7 +221,7 @@
 		"developers": "",
 		"genres": "",
 		"platform": "",
-		"releaseDate": "",
+		"releaseDate": "Дата выпуска",
 		"userScore": ""
 	},
 	"itunesDescription": "",
@@ -371,7 +373,7 @@
 		"createdAtUnknown": "Дата создания неизвестна",
 		"expiresIn": "",
 		"link": "Ссылка",
-		"neverExpress": "",
+		"neverExpress": "Никогда",
 		"temporary": "",
 		"uses": ""
 	},

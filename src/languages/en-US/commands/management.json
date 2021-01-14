@@ -36,7 +36,7 @@
 	"roleInfoAll": "All Permissions granted.",
 	"roleInfoNoPermissions": "Permissions not granted.",
 	"filterUndefinedWord": "You must write what you want me to filter.",
-	"filterTooLong": "{{REDCROSS}} **The word you defined is too long**.\n\n**Tip**: if you want to filter links/URLs, use an identifier (for example with YouTube, to filter `https://www.youtube.com/watch?v=2bPYEk_FGr0`, it's more effective to filter `2bPYEk_FGr0`).\nIf you want to filter an entire domain (e.g. `youtube.com`) use the link filter system instead.",
+	"filterTooLong": "{{REDCROSS}} **The word you defined is too long**.\n\n**Tip**: if you want to filter links/URLs, use an identifier (for example with YouTube, to filter `https://www.youtube.com/watch?v=dQw4w9WgXcQ`, it's more effective to filter `dQw4w9WgXcQ`).\nIf you want to filter an entire domain (e.g. `youtube.com`) use the link filter system instead.",
 	"filterAlreadyFiltered": "This word is already filtered.",
 	"filterNotFiltered": "This word is not filtered.",
 	"filterAdded": "{{GREENTICK}} Success! Added the word {{word}} to the filter.",

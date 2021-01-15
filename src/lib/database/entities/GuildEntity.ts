@@ -283,7 +283,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.attachments.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodAttachmentsHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.attachments.thresholdMaximum', default: 10 })
 	public selfmodAttachmentsThresholdMaximum = 10;
 
@@ -323,7 +323,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.capitals.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodCapitalsHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 10 })
 	public selfmodCapitalsThresholdMaximum = 10;
 
@@ -359,7 +359,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.links.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodLinksHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 60 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.links.thresholdMaximum', default: 10 })
 	public selfmodLinksThresholdMaximum = 10;
 
@@ -399,7 +399,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.messages.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodMessagesHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 60 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.messages.thresholdMaximum', default: 10 })
 	public selfmodMessagesThresholdMaximum = 10;
 
@@ -435,7 +435,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.newlines.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodNewlinesHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.newlines.thresholdMaximum', default: 10 })
 	public selfmodNewlinesThresholdMaximum = 10;
 
@@ -475,7 +475,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.invites.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodInvitesHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.invites.thresholdMaximum', default: 10 })
 	public selfmodInvitesThresholdMaximum = 10;
 
@@ -511,7 +511,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.filter.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodFilterHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.filter.thresholdMaximum', default: 10 })
 	public selfmodFilterThresholdMaximum = 10;
 
@@ -555,7 +555,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('bigint', { name: 'selfmod.reactions.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodReactionsHardActionDuration: number | null = null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 60 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.reactions.thresholdMaximum', default: 10 })
 	public selfmodReactionsThresholdMaximum = 10;
 

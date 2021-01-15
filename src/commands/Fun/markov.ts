@@ -7,11 +7,11 @@ import { BrandingColors } from '#utils/constants';
 import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '#utils/util';
 import Collection from '@discordjs/collection';
+import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { TFunction } from 'i18next';
-import { Stopwatch } from 'klasa';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);

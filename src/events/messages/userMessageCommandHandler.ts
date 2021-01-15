@@ -3,9 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
+import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
-import { Event, EventOptions, Stopwatch } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.UserMessage })
 export default class extends Event {

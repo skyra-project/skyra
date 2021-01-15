@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setImage(urls[0])
+				.setImage(getImageUrl(urls[0]) ?? 'https://i.imgur.com/JJL4ErN.jpg')
 				.setTimestamp()
 		);
 	}

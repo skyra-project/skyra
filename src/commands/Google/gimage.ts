@@ -5,8 +5,7 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
-import { IMAGE_EXTENSION, pickRandom } from '#utils/util';
-import { parseURL } from '@sapphire/utilities';
+import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
@@ -50,9 +49,9 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed) => {
 				embed.setTitle(item.title).setURL(item.image.contextLink);
 
-				const imageUrl = IMAGE_EXTENSION.test(item.link) && parseURL(item.link);
+				const imageUrl = getImageUrl(item.link);
 				if (imageUrl) {
-					embed.setImage(imageUrl.toString());
+					embed.setImage(imageUrl);
 				}
 
 				return embed;

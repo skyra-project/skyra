@@ -460,9 +460,9 @@ export function parseRange(input: string): number[] {
  * Parses an URL and checks if the extension is valid.
  * @param url The url to check
  */
-export function isImageURL(url: string) {
+export function getImageUrl(url: string): string | undefined {
 	const parsed = parseURL(url);
-	return parsed ? IMAGE_EXTENSION.test(parsed.pathname) : false;
+	return parsed && IMAGE_EXTENSION.test(parsed.pathname) ? parsed.href : undefined;
 }
 
 /**

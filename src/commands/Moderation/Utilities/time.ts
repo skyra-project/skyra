@@ -14,7 +14,7 @@ import { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Moderation.TimeExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
-	usage: '[cancel] <case:integer> (timer:timer)',
+	usage: '[cancel] <case:integer> (timer:timer{1000,157680000000})',
 	usageDelim: ' '
 })
 @CreateResolvers([

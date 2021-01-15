@@ -1,6 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 				.setTitle('→')
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
-				.setImage(url)
+				.setImage(getImageUrl(url) ?? 'https://i.imgur.com/vKUeMoH.png')
 				.setFooter(await message.resolveKey(LanguageKeys.Commands.Anime.WaifuFooter))
 				.setTimestamp()
 		);

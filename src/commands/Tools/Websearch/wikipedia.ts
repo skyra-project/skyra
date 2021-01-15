@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { fetch, FetchResultTypes, isImageURL } from '#utils/util';
+import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -39,13 +39,14 @@ export default class extends SkyraCommand {
 			.setFooter('© Wikipedia');
 
 		// If there is an image and it is also a valid image URL then add it to the embed
-		if (
+		const imageUrl =
 			image &&
 			image.query.pageids[0] !== '-1' &&
 			image.query.pages[image.query.pageids[0]].thumbnail &&
-			isImageURL(image.query.pages[image.query.pageids[0]].thumbnail.source)
-		) {
-			embed.setImage(image.query.pages[image.query.pageids[0]].thumbnail.source);
+			getImageUrl(image.query.pages[image.query.pageids[0]].thumbnail.source);
+
+		if (imageUrl) {
+			embed.setImage(imageUrl);
 		}
 
 		return message.send(embed);

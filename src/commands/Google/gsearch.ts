@@ -3,10 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
-import { CustomSearchType, GoogleResponseCodes, GoogleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
+import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
-import { IMAGE_EXTENSION, pickRandom } from '#utils/util';
-import { parseURL } from '@sapphire/utilities';
+import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
@@ -61,8 +60,8 @@ export default class extends RichDisplayCommand {
 
 	private getImageUrl(item: GoogleCSEItem): string | undefined {
 		for (const image of item.pagemap?.cse_image ?? []) {
-			const url = parseURL(image.src);
-			if (url && IMAGE_EXTENSION.test(url.pathname)) return url.href;
+			const imageUrl = getImageUrl(image.src);
+			if (imageUrl) return imageUrl;
 		}
 
 		return undefined;

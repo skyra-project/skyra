@@ -10,7 +10,7 @@ export default class extends Event {
 		// If the message was sent by the system, return:
 		if (message.system) return;
 
-		// If the messaage was sent by the client, return:
+		// If the messaage was sent by a bot, return:
 		if (message.author.bot) return;
 
 		// Emit UserMessage

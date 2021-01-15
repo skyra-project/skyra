@@ -1,8 +1,9 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
@@ -11,26 +12,25 @@ const enum CodeType {
 	ThirdPart
 }
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationInvites;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationInvitesWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Invites.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationInvites,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationInvitesWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Invites.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Invites.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Invites.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Invites.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Invites.HardAction,
 		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,
 		adder: 'invites'
-	};
-
+	}
+})
+export default class extends ModerationMessageEvent {
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
 
-	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.content.length > 0;
-	}
-
 	protected async preProcess(message: GuildMessage) {
+		if (message.content.length === 0) return null;
+
 		let value: RegExpExecArray | null = null;
 		const promises: Promise<string | null>[] = [];
 		const scanned = new Set<string>();

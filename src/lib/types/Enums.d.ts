@@ -4,6 +4,7 @@ export const enum Events {
 	ArgumentError = 'argumentError',
 	CommandError = 'commandError',
 	CommandInhibited = 'commandInhibited',
+	CommandRun = 'commandRun',
 	CommandSuccess = 'commandSuccess',
 	CommandUnknown = 'commandUnknown',
 	CommandUsageAnalytics = 'commandUsageAnalytics',
@@ -25,6 +26,7 @@ export const enum Events {
 	GuildMessageUpdate = 'guildMessageUpdate',
 	GuildMessageDelete = 'guildMessageDelete',
 	GuildMemberUpdate = 'guildMemberUpdate',
+	GuildUserMessage = 'guildUserMessage',
 	KlasaReady = 'klasaReady',
 	LavalinkClose = 'lavalinkClose',
 	LavalinkEnd = 'lavalinkEnd',
@@ -89,6 +91,7 @@ export const enum Events {
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
+	UserMessage = 'userMessage',
 	Verbose = 'verbose',
 	Warn = 'warn',
 	Wtf = 'wtf'

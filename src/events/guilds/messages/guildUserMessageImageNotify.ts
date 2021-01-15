@@ -7,8 +7,9 @@ import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { isNumber } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
-import { Monitor } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
@@ -16,7 +17,8 @@ const MAXIMUM_SIZE = 300;
 // 1024 * 1024 = 1 megabyte
 const MAXIMUM_LENGTH = 1024 * 1024;
 
-export default class extends Monitor {
+@ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
+export default class extends Event {
 	public async run(message: GuildMessage) {
 		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
 		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;

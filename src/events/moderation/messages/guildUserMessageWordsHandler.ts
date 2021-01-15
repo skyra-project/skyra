@@ -1,32 +1,30 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise, getContent } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { remove as removeConfusables } from 'confusables';
 import { TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationWords;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationWordsWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Filter.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Filter.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Filter.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationWords,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationWordsWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Filter.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Filter.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Filter.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Filter.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Filter.HardAction,
 		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,
 		adder: 'words'
-	};
-
-	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message);
 	}
-
+})
+export default class extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
 		const content = getContent(message);
 		if (content === null) return null;

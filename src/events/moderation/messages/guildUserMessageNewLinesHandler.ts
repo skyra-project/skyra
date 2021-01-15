@@ -1,27 +1,29 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { getContent } from '#utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
 const NEW_LINE = '\n';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationNewLine;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationNewLineWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.NewLines.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.NewLines.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationNewLine,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationNewLineWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.NewLines.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.NewLines.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.NewLines.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.NewLines.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.NewLines.HardAction,
 		actionDuration: GuildSettings.Selfmod.NewLines.HardActionDuration,
 		adder: 'newlines'
-	};
-
+	}
+})
+export default class extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
 		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;

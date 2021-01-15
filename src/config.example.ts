@@ -135,7 +135,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	messageSweepInterval: 180,
 	pieceDefaults: {
 		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
-		monitors: { ignoreOthers: false },
 		serializers: { enabled: true, aliases: [] },
 		tasks: { enabled: true }
 	},

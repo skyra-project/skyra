@@ -1,10 +1,12 @@
 import { GuildSettings, TriggerIncludes } from '#lib/database';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Monitor } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
-export default class extends Monitor {
+@ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
+export default class extends Event {
 	public async run(message: GuildMessage): Promise<void> {
 		const triggers = await message.guild.readSettings(GuildSettings.Trigger.Includes);
 		if (triggers.length <= 0) return;

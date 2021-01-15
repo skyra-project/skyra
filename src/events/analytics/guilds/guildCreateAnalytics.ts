@@ -6,9 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Guild } from 'discord.js';
 import { EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({
-	event: Events.GuildCreate
-})
+@ApplyOptions<EventOptions>({ event: Events.GuildCreate })
 export default class extends AnalyticsEvent {
 	public run(guild: Guild) {
 		const guilds = new Point(AnalyticsSchema.Points.Guilds)

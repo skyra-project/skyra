@@ -30,7 +30,7 @@ export default class extends Event {
 	}
 
 	public runCommand(message: Message, command: Command) {
-		const commandHandler = cast<CommandHandler>(this.client.monitors.get('commandHandler'));
+		const commandHandler = cast<CommandHandler>(this.client.events.get('userMessageCommandHandler'));
 		message.command = command;
 		message.prompter = message.command.usage.createPrompt(message, {
 			flagSupport: message.command.flagSupport,

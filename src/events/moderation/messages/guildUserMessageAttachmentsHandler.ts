@@ -1,28 +1,26 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationAttachments;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Attachments.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Attachments.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Attachments.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Attachments.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationAttachments,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationAttachmentsWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Attachments.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Attachments.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Attachments.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Attachments.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Attachments.HardAction,
 		actionDuration: GuildSettings.Selfmod.Attachments.HardActionDuration,
 		adder: 'attachments'
-	};
-
-	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.attachments.size > 0;
 	}
-
+})
+export default class extends ModerationMessageEvent {
 	protected preProcess(message: GuildMessage) {
 		const attachments = message.attachments.size;
 		return attachments > 0 ? 1 : null;

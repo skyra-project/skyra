@@ -2,11 +2,13 @@ import { GuildSettings } from '#lib/database';
 import { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { isNullishOrZero } from '#utils/comparators';
-import { Monitor } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { Event, EventOptions } from 'klasa';
 
-export default class extends Monitor {
+@ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
+export default class extends Event {
 	public async run(message: GuildMessage) {
-		if (!message.guild || !isNullishOrZero(message.editedTimestamp)) return;
+		if (!isNullishOrZero(message.editedTimestamp)) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const [enabled, globalIgnore, alerts, ratelimits] = await message.guild.readSettings((settings) => [

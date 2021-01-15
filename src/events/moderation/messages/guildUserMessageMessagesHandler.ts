@@ -1,25 +1,27 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { getContent } from '#utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationMessages;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationMessagesWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Messages.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Messages.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Messages.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationMessages,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationMessagesWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Messages.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Messages.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Messages.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Messages.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Messages.HardAction,
 		actionDuration: GuildSettings.Selfmod.Messages.HardActionDuration,
 		adder: 'messages'
-	};
-
+	}
+})
+export default class extends ModerationMessageEvent {
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 
 	protected async preProcess(message: GuildMessage) {

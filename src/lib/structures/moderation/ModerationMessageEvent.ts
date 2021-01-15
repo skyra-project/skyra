@@ -6,12 +6,35 @@ import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
-import { GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
-import { Monitor } from 'klasa';
+import { Event, EventOptions, EventStore } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
-export abstract class ModerationMonitor<T = unknown> extends Monitor {
+export abstract class ModerationMessageEvent<T = unknown> extends Event {
+	private readonly keyEnabled: KeyOfType<GuildEntity, boolean>;
+	private readonly ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
+	private readonly ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
+	private readonly softPunishmentPath: KeyOfType<GuildEntity, number>;
+	private readonly hardPunishmentPath: HardPunishment;
+	private readonly reasonLanguageKey: CustomGet<string, string>;
+	private readonly reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
+
+	public constructor(store: EventStore, file: string[], directory: string, options: ModerationMessageEvent.Options) {
+		super(store, file, directory, {
+			...options,
+			event: Events.GuildUserMessage
+		});
+
+		this.keyEnabled = options.keyEnabled;
+		this.ignoredRolesPath = options.ignoredRolesPath;
+		this.ignoredChannelsPath = options.ignoredChannelsPath;
+		this.softPunishmentPath = options.softPunishmentPath;
+		this.hardPunishmentPath = options.hardPunishmentPath;
+		this.reasonLanguageKey = options.reasonLanguageKey;
+		this.reasonLanguageKeyWithMaximum = options.reasonLanguageKeyWithMaximum;
+	}
+
 	public async run(message: GuildMessage) {
 		const shouldRun = await this.checkPreRun(message);
 		if (!shouldRun) return;
@@ -39,18 +62,6 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		} catch (error) {
 			await this.processHardPunishment(message, language, (error as AdderError).amount, adder.maximum);
 		}
-	}
-
-	public shouldRun(message: Message) {
-		return (
-			this.enabled &&
-			message.guild !== null &&
-			message.author !== null &&
-			message.webhookID === null &&
-			message.type === 'DEFAULT' &&
-			!message.system &&
-			!message.author.bot
-		);
 	}
 
 	protected processSoftPunishment(message: GuildMessage, language: TFunction, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -157,15 +168,6 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, language, value));
 	}
 
-	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
-	protected abstract ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
-	protected abstract ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
-	protected abstract softPunishmentPath: KeyOfType<GuildEntity, number>;
-	protected abstract hardPunishmentPath: HardPunishment;
-	protected abstract reasonLanguageKey: CustomGet<string, string>;
-
-	protected abstract reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
-
 	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
 	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
@@ -205,4 +207,17 @@ export interface HardPunishment {
 	action: KeyOfType<GuildEntity, number>;
 	actionDuration: KeyOfType<GuildEntity, number | null>;
 	adder: AdderKey;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace ModerationMessageEvent {
+	export interface Options extends EventOptions {
+		keyEnabled: KeyOfType<GuildEntity, boolean>;
+		ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
+		ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
+		softPunishmentPath: KeyOfType<GuildEntity, number>;
+		hardPunishmentPath: HardPunishment;
+		reasonLanguageKey: CustomGet<string, string>;
+		reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
+	}
 }

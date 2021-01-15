@@ -98,7 +98,7 @@ export default class extends Argument {
 
 		// If the argument was run with an `--import` flag, download the data as a squeue.
 		if (Reflect.has(message.flagArgs, 'import')) {
-			const binary = await this.downloadAttachment(message, url);
+			const binary = await this.downloadAttachment(message, url.href);
 			const data = await this.parseAttachment(message, binary);
 			return this.filter(message, remaining, data);
 		}
@@ -107,7 +107,7 @@ export default class extends Argument {
 		// - https://www.youtube.com/watch?v=J9Q3i5w6-Ug
 		// - https://soundcloud.com/user-417823582/twrp-starlight-brigade-feat-1
 		// - https://www.twitch.tv/monstercat
-		return this.downloadResults(message, remaining, url);
+		return this.downloadResults(message, remaining, url.href);
 	}
 
 	/**

@@ -5,11 +5,11 @@ import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { sleep } from '#utils/Promisified/sleep';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
+import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
-import { Stopwatch } from 'klasa';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({

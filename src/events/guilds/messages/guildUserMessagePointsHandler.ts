@@ -3,15 +3,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, Permissions, Role } from 'discord.js';
-import { Monitor, RateLimitManager } from 'klasa';
+import { Event, EventOptions, RateLimitManager } from 'klasa';
 
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const {
 	FLAGS: { MANAGE_ROLES }
 } = Permissions;
 
-export default class extends Monitor {
+@ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
+export default class extends Event {
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: GuildMessage) {

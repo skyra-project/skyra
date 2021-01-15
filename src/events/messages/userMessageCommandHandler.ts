@@ -3,17 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
+import { Stopwatch } from '@sapphire/stopwatch';
+import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
-import { Monitor, MonitorStore, Stopwatch } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
-export default class extends Monitor {
-	public constructor(store: MonitorStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			ignoreOthers: false,
-			ignoreEdits: !store.client.options.commandEditing
-		});
-	}
-
+@ApplyOptions<EventOptions>({ event: Events.UserMessage })
+export default class extends Event {
 	public async run(message: Message) {
 		if (message.guild && message.guild.me === null) await message.guild.members.fetch(CLIENT_ID);
 		if (!message.channel.postable) return undefined;
@@ -21,8 +17,8 @@ export default class extends Monitor {
 		await message.parseCommand();
 		if (!message.commandText && message.prefix === this.client.mentionPrefix) return this.sendPrefixReminder(message);
 		if (!message.commandText) return undefined;
-		if (!message.command) return this.client.emit('commandUnknown', message, message.commandText, message.prefix, message.prefixLength);
-		this.client.emit('commandRun', message, message.command, message.args);
+		if (!message.command) return this.client.emit(Events.CommandUnknown, message, message.commandText, message.prefix, message.prefixLength);
+		this.client.emit(Events.CommandRun, message, message.command, message.args);
 
 		return this.runCommand(message);
 	}

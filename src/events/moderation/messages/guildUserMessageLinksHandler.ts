@@ -1,33 +1,33 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationLinks;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationLinksWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Links.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Links.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Links.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Links.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationLinks,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationLinksWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Links.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Links.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Links.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Links.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Links.HardAction,
 		actionDuration: GuildSettings.Selfmod.Links.HardActionDuration,
 		adder: 'links'
-	};
-
+	}
+})
+export default class extends ModerationMessageEvent {
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
-	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.content.length > 0;
-	}
-
 	protected async preProcess(message: GuildMessage) {
+		if (message.content.length === 0) return null;
+
 		let match: RegExpExecArray | null = null;
 
 		const whitelist = await message.guild.readSettings(GuildSettings.Selfmod.Links.Whitelist);

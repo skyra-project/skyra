@@ -3,8 +3,9 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { cast } from '#utils/util';
+import { Stopwatch } from '@sapphire/stopwatch';
 import { Message } from 'discord.js';
-import { Command, Event, Stopwatch } from 'klasa';
+import { Command, Event } from 'klasa';
 
 export default class extends Event {
 	public async run(message: Message, command: string) {
@@ -30,7 +31,7 @@ export default class extends Event {
 	}
 
 	public runCommand(message: Message, command: Command) {
-		const commandHandler = cast<CommandHandler>(this.client.monitors.get('commandHandler'));
+		const commandHandler = cast<CommandHandler>(this.client.events.get('userMessageCommandHandler'));
 		message.command = command;
 		message.prompter = message.command.usage.createPrompt(message, {
 			flagSupport: message.command.flagSupport,

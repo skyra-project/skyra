@@ -1,32 +1,32 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationMonitor } from '#lib/structures/moderation/ModerationMonitor';
+import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
 import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 
-export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationCapitals;
-	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationCapitalsWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Capitals.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Capitals.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Capitals.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Capitals.SoftAction;
-	protected readonly hardPunishmentPath: HardPunishment = {
+@ApplyOptions<ModerationMessageEvent.Options>({
+	reasonLanguageKey: LanguageKeys.Monitors.ModerationCapitals,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationCapitalsWithMaximum,
+	keyEnabled: GuildSettings.Selfmod.Capitals.Enabled,
+	ignoredChannelsPath: GuildSettings.Selfmod.Capitals.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.Selfmod.Capitals.IgnoredRoles,
+	softPunishmentPath: GuildSettings.Selfmod.Capitals.SoftAction,
+	hardPunishmentPath: {
 		action: GuildSettings.Selfmod.Capitals.HardAction,
 		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,
 		adder: 'capitals'
-	};
-
-	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.content.length > 0;
 	}
-
+})
+export default class extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
+		if (message.content.length === 0) return null;
+
 		const [minimumCapitals, maximumCapitals] = await message.guild.readSettings([
 			GuildSettings.Selfmod.Capitals.Minimum,
 			GuildSettings.Selfmod.Capitals.Maximum

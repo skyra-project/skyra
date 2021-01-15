@@ -13,6 +13,7 @@ import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('moderation', { schema: 'public' })
+@Check(/* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)`) // 5 years
 @Check(/* sql */ `"reason"::text <> ''::text`)
 @Check(/* sql */ `"type" >= 0`)
 export class ModerationEntity extends BaseEntity {

@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner, TableCheck } from 'typeorm';
 
 export class V34IncreasedModerationDurations1610659806881 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
+		// Modify guild schema:
 		const guilds = (await queryRunner.getTable('guilds'))!;
 		await queryRunner.dropCheckConstraints(guilds, guilds.checks);
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE bigint`);
@@ -13,13 +14,21 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.filter.hardActionDuration" TYPE bigint`);
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.reactions.hardActionDuration" TYPE bigint`);
 
+		// Modify moderation schema:
+		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE bigint`);
+
+		// Modify checks:
 		const moderation = (await queryRunner.getTable('moderation'))!;
 		const check = moderation.checks.find((check) => check.expression?.includes('duration'));
-		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE bigint`);
 		if (check) await queryRunner.dropCheckConstraint(moderation, check);
+		await queryRunner.createCheckConstraint(
+			'guilds',
+			new TableCheck({ expression: /* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)` })
+		);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
+		// Modify guild schema:
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE integer`);
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.capitals.hardActionDuration" TYPE integer`);
 		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.links.hardActionDuration" TYPE integer`);
@@ -78,7 +87,13 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 			new TableCheck({ expression: /* sql */ `"starboard.minimum" >= 1` })
 		]);
 
+		// Modify moderation schema:
 		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE integer`);
+
+		// Modify checks:
+		const moderation = (await queryRunner.getTable('moderation'))!;
+		const check = moderation.checks.find((check) => check.expression?.includes('duration'));
+		if (check) await queryRunner.dropCheckConstraint(moderation, check);
 		await queryRunner.createCheckConstraint(
 			'guilds',
 			new TableCheck({ expression: /* sql */ `("duration" >= 0) AND ("duration" <= 31536000000)` })

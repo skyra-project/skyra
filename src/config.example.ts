@@ -58,7 +58,7 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 	token: INFLUX_TOKEN
 };
 
-export const VERSION = '5.5.0 Nirom';
+export const VERSION = '5.6.0 [Paradise Edition]';
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: {

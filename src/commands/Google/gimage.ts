@@ -5,8 +5,7 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
-import { getImageUrl, IMAGE_EXTENSION, pickRandom } from '#utils/util';
-import { parseURL } from '@sapphire/utilities';
+import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 

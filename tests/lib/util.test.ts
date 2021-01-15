@@ -650,21 +650,23 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('isImageURL', () => {
-		test('GIVEN valid IMAGE URL THEN returns TRUE', () => {
-			expect(utils.isImageURL('https://example.com/image.png')).toBe(true);
+	describe('getImageUrl', () => {
+		test('GIVEN valid Image Url THEN returns Image Url', () => {
+			const url = 'https://example.com/image.png';
+			expect(utils.getImageUrl(url)).toBe(url);
 		});
 
-		test('GIVEN valid IMAGE URL WITH QUERYSTRING THEN returns TRUE', () => {
-			expect(utils.isImageURL('https://example.com/image.png?test=hehehehe')).toBe(true);
+		test('GIVEN valid Image Url WHEN with queryparameters THEN returns Image Url', () => {
+			const url = 'https://example.com/image.png?test=hehehehe';
+			expect(utils.getImageUrl(url)).toBe(url);
 		});
 
-		test('GIVEN invalid IMAGE URL THEN returns TRUE', () => {
-			expect(utils.isImageURL('https://example.com/image.mp4')).toBe(false);
+		test('GIVEN invalid Image Url THEN returns undefined', () => {
+			expect(utils.getImageUrl('https://example.com/image.mp4')).toBe(undefined);
 		});
 
-		test('GIVEN invalid URL THEN returns TRUE', () => {
-			expect(utils.isImageURL('something/image.mp4')).toBe(false);
+		test('GIVEN invalid Url THEN returns undefined', () => {
+			expect(utils.getImageUrl('something/image.mp4')).toBe(undefined);
 		});
 	});
 

@@ -3916,9 +3916,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.1"
 
-klasa@skyra-project/klasa#refactor/remove-monitors:
+klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/c701fe3f4a1a8e8ea1d993f864eaac4927f11f2e"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/0978400163357bc02375837fa023e68f09105a6a"
   dependencies:
     fs-nextra "^0.5.1"
 

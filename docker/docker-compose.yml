@@ -34,7 +34,7 @@ services:
       - '8284:8284'
   influx:
     container_name: influxdb
-    image: quay.io/influxdb/influxdb:2.0.0-rc
+    image: quay.io/influxdb/influxdb:v2.0.3
     restart: always
     volumes:
       - influx-data:/var/lib/influxdb2

@@ -1,1 +1,4 @@
-{}
+{
+	"ended": "Победитель: {{winners, andJoin}}",
+	"endedPlural": "Победители: {{winners, andJoin}}"
+}

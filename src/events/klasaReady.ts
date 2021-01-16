@@ -96,7 +96,7 @@ ${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}`
 			this.client.emit(
 				Events.AnalyticsSync,
 				this.client.guilds.cache.size,
-				this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
+				this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0)
 			);
 
 			await this.initSyncResourceAnalyticsTask().catch((error) => this.client.emit(Events.Wtf, error));

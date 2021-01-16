@@ -39,7 +39,7 @@ export default class UserCommand extends SkyraCommand {
 			channels: this.client.channels.cache.size,
 			guilds: this.client.guilds.cache.size,
 			nodeJs: process.version,
-			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0),
+			users: this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0),
 			version: `v${version}`
 		};
 	}

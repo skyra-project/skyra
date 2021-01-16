@@ -431,7 +431,7 @@
 	"hungerGamesResultHeaderBloodbath": "",
 	"hungerGamesResultHeaderMoon": "Ночь {{game.turn}}",
 	"hungerGamesResultHeaderSun": "День {{game.turn}}",
-	"hungerGamesResultProceed": "",
+	"hungerGamesResultProceed": "Продолжить?",
 	"hungerGamesStop": "",
 	"hungerGamesWinner": "",
 	"notEnoughMoney": "",
@@ -468,7 +468,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"категория",
 				""
 			],
 			[
@@ -476,7 +476,7 @@
 				""
 			],
 			[
-				"",
+				"сложность",
 				""
 			],
 			[

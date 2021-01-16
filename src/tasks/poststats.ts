@@ -21,7 +21,7 @@ export default class extends Task {
 		if (!this.client.ready) return { type: ResponseType.Delay, value: 30000 };
 
 		const rawGuilds = this.client.guilds.cache.size;
-		const rawUsers = this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0);
+		const rawUsers = this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);
 
 		this.processAnalytics(rawGuilds, rawUsers);
 		if (DEV) return { type: ResponseType.Finished };

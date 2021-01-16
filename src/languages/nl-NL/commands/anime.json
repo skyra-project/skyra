@@ -1,69 +1,69 @@
 {
-	"animeDescription": "",
+	"animeDescription": "Zoek je favoriete anime met dit commando.",
 	"animeExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de anime die je aanvraagt.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"zoekopdracht",
+				"De naam van de anime die je zoekt."
 			]
 		],
 		"examples": [
-			""
+			"One Piece"
 		]
 	},
-	"mangaDescription": "",
+	"mangaDescription": "Zoek je favoriete manga met dit commando.",
 	"mangaExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de manga die je aanvraagt.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"zoekopdracht",
+				"De naam van de manga die je zoekt."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Stone Ocean",
+			"One Piece"
 		]
 	},
-	"waifuDescription": "",
+	"waifuDescription": "Plaatst een willekeurig gegenereerde waifu afbeelding.",
 	"waifuExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Dit commando geeft een willekeurige waifu gegenereerd door <https://thiswaifudoesnotexist.net/>"
 	},
 	"animeTypes": {
-		"tv": "",
-		"movie": "",
-		"ova": "",
-		"special": ""
+		"tv": "📺 TV",
+		"movie": "🎥 Film",
+		"ova": "📼 Originele Video Animatie",
+		"special": "🎴 Special"
 	},
-	"animeInvalidChoice": "",
-	"animeOutputDescription": "",
-	"animeNoSynopsis": "",
+	"animeInvalidChoice": "Dat is een ongeldige keuze! Probeer een andere optie.",
+	"animeOutputDescription": "**Engelse titel:** {{englishTitle}}\n**Japanse titel:** {{japaneseTitle}}\n**Canonieke titel:** {{canonicalTitle}}\n{{synopsis}}",
+	"animeNoSynopsis": "Geen beschrijving beschikbaar voor deze anime.",
 	"animeEmbedData": {
-		"type": "",
-		"score": "",
-		"episodes": "",
-		"episodeLength": "",
-		"ageRating": "",
-		"firstAirDate": "",
-		"watchIt": "",
-		"stillAiring": ""
+		"type": "Type",
+		"score": "Score",
+		"episodes": "Aflevering(en)",
+		"episodeLength": "Aflevering lengte",
+		"ageRating": "Leeftijd beoordeling",
+		"firstAirDate": "Eerste uitzenddatum",
+		"watchIt": "Kijk het hier:",
+		"stillAiring": "Draait nog steeds"
 	},
-	"mangaOutputDescription": "",
+	"mangaOutputDescription": "**Engelse titel:** {{englishTitle}}\n**Japanse titel:** {{japaneseTitle}}\n**Canonieke titel:** {{canonicalTitle}}\n{{synopsis}}",
 	"mangaTypes": {
-		"manga": "",
-		"novel": "",
-		"manhwa": "",
-		"oneShot": "",
-		"special": ""
+		"manga": "📘 Manga",
+		"novel": "📕 Novel",
+		"manhwa": "🇰🇷 Manhwa",
+		"oneShot": "☄ One Shot",
+		"special": "🎴 Special"
 	},
 	"mangaEmbedData": {
-		"ageRating": "",
-		"firstPublishDate": "",
-		"readIt": "",
-		"score": "",
-		"type": "",
-		"none": ""
+		"ageRating": "Leeftijdsclassificatie",
+		"firstPublishDate": "Eerste gepubliceerd op",
+		"readIt": "Lees het hier:",
+		"score": "Score",
+		"type": "Subgenre",
+		"none": "Geen"
 	},
-	"waifuFooter": ""
+	"waifuFooter": "Mogelijk gemaakt door thiswaifudoesnotexist.net"
 }

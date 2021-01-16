@@ -1,18 +1,18 @@
 {
 	"actions": {
-		"addRole": "",
-		"ban": "",
-		"kick": "",
-		"mute": "",
-		"removeRole": "",
-		"restrictedAttachment": "",
+		"addRole": "Rol Agregado",
+		"ban": "Banear",
+		"kick": "Expulsar",
+		"mute": "Silenciar",
+		"removeRole": "Eliminar rol",
+		"restrictedAttachment": "Restricción del archivo adjunto",
 		"restrictedEmbed": "",
 		"restrictedReact": "",
-		"restrictedVoice": "",
-		"setNickname": "",
+		"restrictedVoice": "Restricción de voz",
+		"setNickname": "Establecer apodo",
 		"softban": "",
-		"vkick": "",
-		"vmute": ""
+		"vkick": "Expulsión de voz",
+		"vmute": "Silenciar voz"
 	},
 	"applyNoReason": "",
 	"applyReason": "",

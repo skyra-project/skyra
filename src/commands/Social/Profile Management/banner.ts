@@ -10,7 +10,6 @@ import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
-import { getManager } from 'typeorm';
 
 const CDN_URL = CdnUrls.BannersBasePath;
 
@@ -50,7 +49,7 @@ export default class extends SkyraCommand {
 		const accepted = await this.prompt(message, banner);
 		if (!accepted) throw t(LanguageKeys.Commands.Social.BannerPaymentCancelled);
 
-		await getManager().transaction(async (em) => {
+		await users.manager.transaction(async (em) => {
 			const existingBannerAuthor = await em.findOne(UserEntity, banner.author);
 			if (existingBannerAuthor) {
 				existingBannerAuthor.money += roundNumber(banner.price * 0.1);

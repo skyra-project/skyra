@@ -5,7 +5,6 @@ import { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { User } from 'discord.js';
 import { CommandStore } from 'klasa';
-import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -56,7 +55,7 @@ export default class extends SkyraCommand {
 		if (user.bot) throw t(LanguageKeys.Commands.Social.ReputationsBots);
 		if (user === message.author) throw t(LanguageKeys.Commands.Social.ReputationSelf);
 
-		await getManager().transaction(async (em) => {
+		await users.manager.transaction(async (em) => {
 			++extSettings!.reputations;
 			selfSettings.cooldowns.reputation = date;
 			await em.save([extSettings, selfSettings]);

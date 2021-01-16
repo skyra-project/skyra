@@ -2,7 +2,6 @@ import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { Event, EventOptions, RateLimitManager } from 'klasa';
@@ -24,30 +23,45 @@ export default class extends Event {
 		]);
 
 		if (!socialEnabled || ignoredChannels.includes(message.channel.id)) return;
+		if (this.isRatelimited(message.author.id)) return;
 
-		try {
-			this.ratelimits.acquire(message.author.id).drip();
-		} catch {
-			return;
-		}
+		// If boosted guild, increase rewards
+		const set = await DbSet.connect();
+		const { guildBoost } = await set.clients.ensure();
+		const add = (Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1);
 
-		try {
-			// If boosted guild, increase rewards
-			const set = await DbSet.connect();
-			const { guildBoost } = await set.clients.ensure();
-			const add = (Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1);
-
-			const [, points] = await Promise.all([
-				this.addUserPoints(set, message.author.id, Math.round(add)),
-				this.addMemberPoints(set, message.author.id, message.guild.id, Math.round(add * multiplier))
-			]);
-			await this.handleRoles(message, points);
-		} catch (err) {
-			this.client.emit(Events.Error, `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
-		}
+		const [, points] = await Promise.all([
+			this.addUserPoints(set, message.author.id, Math.round(add)),
+			this.addMemberPoints(set, message.author.id, message.guild.id, Math.round(add * multiplier))
+		]);
+		await this.handleRoles(message, points);
 	}
 
-	public async handleRoles(message: GuildMessage, points: number) {
+	private isRatelimited(userID: string) {
+		const rateLimit = this.ratelimits.acquire(userID);
+		if (rateLimit.limited) return true;
+
+		rateLimit.drip();
+		return false;
+	}
+
+	private addUserPoints({ users }: DbSet, userID: string, points: number) {
+		return users.lock([userID], async (id) => {
+			const user = await users.ensure(id);
+			user.points += points;
+			await user.save();
+			return user.points;
+		});
+	}
+
+	private async addMemberPoints({ members }: DbSet, userID: string, guildID: string, points: number) {
+		const member = await members.ensure(userID, guildID);
+		member.points += points;
+		await member.save();
+		return member.points;
+	}
+
+	private async handleRoles(message: GuildMessage, points: number) {
 		const autoRoles = await message.guild.readSettings(GuildSettings.Roles.Auto);
 		if (!autoRoles.length || !message.guild.me!.permissions.has(MANAGE_ROLES)) return;
 
@@ -56,7 +70,7 @@ export default class extends Event {
 
 		const role = message.guild.roles.cache.get(autoRole.id);
 		if (!role || role.position > message.guild.me!.roles.highest.position) {
-			message.guild
+			await message.guild
 				.writeSettings((settings) => {
 					const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((element) => element === autoRole);
 					settings[GuildSettings.Roles.Auto].splice(roleIndex, 1);
@@ -66,9 +80,9 @@ export default class extends Event {
 			return;
 		}
 
-		if (message.member!.roles.cache.has(role.id)) return;
+		if (message.member.roles.cache.has(role.id)) return;
 
-		await message.member!.roles.add(role);
+		await message.member.roles.add(role);
 
 		const [shouldAchieve, achievementMessage, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Social.Achieve],
@@ -82,7 +96,7 @@ export default class extends Event {
 		}
 	}
 
-	public getMessage(member: GuildMember, role: Role, content: string, points: number) {
+	private getMessage(member: GuildMember, role: Role, content: string, points: number) {
 		return content.replace(MESSAGE_REGEXP, (match) => {
 			switch (match) {
 				case '%ROLE%':
@@ -101,44 +115,12 @@ export default class extends Event {
 		});
 	}
 
-	public getLatestRole(autoRoles: readonly RolesAuto[], points: number) {
+	private getLatestRole(autoRoles: readonly RolesAuto[], points: number) {
 		let latest: RolesAuto | null = null;
 		for (const role of autoRoles) {
 			if (role.points > points) break;
 			latest = role;
 		}
 		return latest;
-	}
-
-	public shouldRun(message: GuildMessage) {
-		return (
-			this.enabled &&
-			message.guild !== null &&
-			message.author !== null &&
-			message.member !== null &&
-			!message.author.bot &&
-			message.webhookID === null &&
-			message.content.length > 0 &&
-			!message.system &&
-			message.author.id !== CLIENT_ID
-		);
-	}
-
-	private addUserPoints({ users }: DbSet, userID: string, points: number) {
-		return users.lock([userID], async (id) => {
-			const user = await users.ensure(id);
-
-			user.points += points;
-			await user.save();
-
-			return user.points;
-		});
-	}
-
-	private async addMemberPoints({ members }: DbSet, userID: string, guildID: string, points: number) {
-		const member = await members.ensure(userID, guildID);
-		member.points += points;
-		await member.save();
-		return member.points;
 	}
 }

@@ -2,7 +2,7 @@
 import { UserCooldownEntity } from '#lib/database/entities/UserCooldownEntity';
 import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
-import Ccollection from '@discordjs/collection';
+import Collection from '@discordjs/collection';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { TimerManager } from '@sapphire/time-utilities';
 import { User } from 'discord.js';
@@ -117,7 +117,7 @@ export class UserRepository extends Repository<UserEntity> {
 		}
 	}
 
-	private static queues = new Ccollection<string, AsyncQueue>();
+	private static queues = new Collection<string, AsyncQueue>();
 }
 
 TimerManager.setInterval(() => {

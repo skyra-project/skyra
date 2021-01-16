@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 const columnsToModify = ['roles.admin', 'roles.moderator', 'roles.dj'];
 

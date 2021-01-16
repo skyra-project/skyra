@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
-import { ArgumentTypes } from '@sapphire/utilities';
+import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({

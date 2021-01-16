@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { StarboardManager } from '#lib/structures/managers/StarboardManager';
-import { GuildMessage } from '#lib/types';
+import type { StarboardManager } from '#lib/structures/managers/StarboardManager';
+import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { fetchReactionUsers, getImage } from '#utils/util';
 import { cutText, debounce, isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [

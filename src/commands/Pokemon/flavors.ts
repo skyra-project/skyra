@@ -1,16 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { DexDetails } from '@favware/graphql-pokemon';
+import type { DexDetails } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],

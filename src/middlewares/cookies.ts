@@ -1,5 +1,5 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
+import type { ApiRequest } from '#lib/api/ApiRequest';
+import type { ApiResponse } from '#lib/api/ApiResponse';
 import { CookieStore } from '#lib/api/CookieStore';
 import { DEV } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';

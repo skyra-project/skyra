@@ -1,5 +1,5 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, context: SerializerUpdateContext) {

@@ -1,13 +1,13 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
-import { AdderError } from '#lib/database/utils/Adder';
-import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
+import type { AdderError } from '#lib/database/utils/Adder';
+import type { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
-import { Awaited } from '@sapphire/utilities';
-import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Awaited } from '@sapphire/utilities';
+import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
+import type { TFunction } from 'i18next';
 import { Event, EventOptions, EventStore } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 

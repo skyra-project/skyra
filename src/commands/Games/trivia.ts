@@ -6,7 +6,7 @@ import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,

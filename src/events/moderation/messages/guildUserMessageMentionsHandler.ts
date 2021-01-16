@@ -1,5 +1,5 @@
 import { GuildSettings } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { isNullishOrZero } from '#utils/comparators';
 import { ApplyOptions } from '@skyra/decorators';

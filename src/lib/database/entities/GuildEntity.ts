@@ -1,13 +1,13 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraClient } from '#lib/SkyraClient';
-import { AnyObject } from '#lib/types';
+import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { kBigIntTransformer } from '#utils/util';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { RateLimitManager } from 'klasa';
 import { container } from 'tsyringe';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';

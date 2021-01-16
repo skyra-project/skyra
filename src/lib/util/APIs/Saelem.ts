@@ -1,4 +1,4 @@
-import { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
+import type { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
 import { Mime } from '../constants';
 import { fetch, FetchMethods, FetchResultTypes, gql } from '../util';
 

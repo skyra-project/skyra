@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
-import { Guild, GuildChannel, Message, User } from 'discord.js';
+import type { Guild, GuildChannel, Message, User } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 const CHANNEL_REGEXP = Argument.regex.channel;

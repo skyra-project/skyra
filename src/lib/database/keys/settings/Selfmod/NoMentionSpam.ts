@@ -1,6 +1,4 @@
-export const enum NoMentionSpam {
-	Enabled = 'noMentionSpamEnabled',
-	Alerts = 'noMentionSpamAlerts',
-	MentionsAllowed = 'noMentionSpamMentionsAllowed',
-	TimePeriod = 'noMentionSpamTimePeriod'
-}
+export const Enabled = 'noMentionSpamEnabled';
+export const Alerts = 'noMentionSpamAlerts';
+export const MentionsAllowed = 'noMentionSpamMentionsAllowed';
+export const TimePeriod = 'noMentionSpamTimePeriod';

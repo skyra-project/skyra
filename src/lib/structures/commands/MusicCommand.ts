@@ -1,5 +1,5 @@
 import { ENABLE_LAVALINK } from '#root/config';
-import { CommandStore } from 'klasa';
+import type { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {

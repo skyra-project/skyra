@@ -1,12 +1,12 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
 	reasonLanguageKey: LanguageKeys.Monitors.ModerationMessages,

@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { IncomingEventWebSocketClosedPayload } from '@skyra/audio';
+import type { IncomingEventWebSocketClosedPayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { magenta } from 'colorette';
 import { VoiceCloseCodes } from 'discord-api-types/v6';

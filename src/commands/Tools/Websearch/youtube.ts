@@ -6,7 +6,7 @@ import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { Message, Permissions } from 'discord.js';
-import { CommandStore } from 'klasa';
+import type { CommandStore } from 'klasa';
 
 const kPermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]).freeze();
 

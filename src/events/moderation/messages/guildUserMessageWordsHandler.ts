@@ -2,14 +2,14 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise, getContent } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { remove as removeConfusables } from 'confusables';
-import { TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TextChannel } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
 	reasonLanguageKey: LanguageKeys.Monitors.ModerationWords,

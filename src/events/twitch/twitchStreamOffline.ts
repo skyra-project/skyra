@@ -1,11 +1,11 @@
-import { ApiResponse } from '#lib/api/ApiResponse';
+import type { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
+import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { Event } from 'klasa';
 
 export default class extends Event {

@@ -1,4 +1,4 @@
-import { Queue } from '#lib/audio';
+import type { Queue } from '#lib/audio';
 import { AudioEvent } from '#lib/structures/events/AudioEvent';
 import { Events } from '#lib/types/Enums';
 

@@ -1,5 +1,5 @@
 import { DbSet, GuildSettings, ModerationEntity } from '#lib/database';
-import { StrictRequired } from '#lib/types';
+import type { StrictRequired } from '#lib/types';
 import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';

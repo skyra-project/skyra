@@ -1,7 +1,7 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import { Moderation } from '#utils/constants';
-import { User } from 'discord.js';
+import type { User } from 'discord.js';
 
 export interface ModerationAction {
 	addRole: string;

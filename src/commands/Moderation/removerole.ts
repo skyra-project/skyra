@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Role, User } from 'discord.js';
+import type { Role, User } from 'discord.js';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['rro'],

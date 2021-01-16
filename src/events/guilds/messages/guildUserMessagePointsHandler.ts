@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, Permissions, Role } from 'discord.js';

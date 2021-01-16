@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import { Guild, Message, Role } from 'discord.js';
+import type { Guild, Message, Role } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 const ROLE_REGEXP = Argument.regex.role;

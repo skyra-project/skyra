@@ -17,7 +17,7 @@ import { clientOptions } from './util/constants';
 import { ConnectFourManager } from './structures/managers/ConnectFourManager';
 import { enumerable } from './util/util';
 import { Leaderboard } from './util/Leaderboard';
-import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
+import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
 
 // Import all configuration

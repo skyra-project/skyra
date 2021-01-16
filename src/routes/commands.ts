@@ -1,10 +1,10 @@
 import { ApiRequest } from '#lib/api/ApiRequest';
 import { ApiResponse } from '#lib/api/ApiResponse';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { TFunction } from 'i18next';
-import { Command } from 'klasa';
+import type { TFunction } from 'i18next';
+import type { Command } from 'klasa';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'commands' })

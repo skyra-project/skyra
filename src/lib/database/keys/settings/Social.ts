@@ -1,7 +1,5 @@
-export const enum Social {
-	Enabled = 'socialEnabled',
-	Achieve = 'socialAchieve',
-	AchieveMessage = 'socialAchieveMessage',
-	Multiplier = 'socialMultiplier',
-	IgnoreChannels = 'socialIgnoreChannels'
-}
+export const Enabled = 'socialEnabled';
+export const Achieve = 'socialAchieve';
+export const AchieveMessage = 'socialAchieveMessage';
+export const Multiplier = 'socialMultiplier';
+export const IgnoreChannels = 'socialIgnoreChannels';

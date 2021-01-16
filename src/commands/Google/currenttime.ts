@@ -5,8 +5,8 @@ import { TOKENS } from '#root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
-import { CommandStore } from 'klasa';
+import type { TFunction } from 'i18next';
+import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {

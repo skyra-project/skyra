@@ -1,1 +1,1 @@
-export * as Stream from './Twitch';
+export * from './Twitch';

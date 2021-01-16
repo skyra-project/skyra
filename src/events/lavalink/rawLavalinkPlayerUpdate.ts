@@ -1,4 +1,4 @@
-import { IncomingPlayerUpdatePayload } from '@skyra/audio';
+import type { IncomingPlayerUpdatePayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { Event, EventOptions } from 'klasa';
 

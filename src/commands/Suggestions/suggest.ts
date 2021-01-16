@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { WEBHOOK_FEEDBACK } from '#root/config';
 import { BrandingColors } from '#utils/constants';
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 			suggestionsChannel = this.client.webhookFeedback!;
 		} else {
 			const [suggestionsChannelID, t] = await guild.readSettings((settings) => [
-				settings[GuildSettings.Suggestions.SuggestionsChannel],
+				settings[GuildSettings.Suggestions.Channel],
 				settings.getLanguage()
 			]);
 
@@ -96,7 +96,7 @@ export default class extends SkyraCommand {
 	public async inhibit(message: GuildMessage): Promise<boolean> {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (!Object.is(message.command, this) || message.guild === null || Reflect.has(message.flagArgs, 'global')) return false;
-		const channelID = await message.guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
+		const channelID = await message.guild.readSettings(GuildSettings.Suggestions.Channel);
 		if (isNullish(channelID)) return this.setChannel(message);
 		return false;
 	}
@@ -144,7 +144,7 @@ export default class extends SkyraCommand {
 		}
 
 		// Update settings
-		await message.guild.writeSettings([[GuildSettings.Suggestions.SuggestionsChannel, channel.id]]);
+		await message.guild.writeSettings([[GuildSettings.Suggestions.Channel, channel.id]]);
 		await message.send(t(LanguageKeys.Commands.Admin.ConfMenuSaved));
 
 		return true;

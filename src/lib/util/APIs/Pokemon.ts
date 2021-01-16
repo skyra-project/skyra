@@ -1,5 +1,5 @@
 import { ENABLE_LOCAL_POKEDEX } from '#root/config';
-import {
+import type {
 	Query,
 	QueryGetAbilityDetailsByFuzzyArgs,
 	QueryGetItemDetailsByFuzzyArgs,

@@ -1,12 +1,12 @@
-import { QueueEntry } from '#lib/audio';
+import type { QueueEntry } from '#lib/audio';
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
-import { GuildMessage } from '#lib/types/Discord';
+import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { empty, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { Track } from '@skyra/audio';
+import type { Track } from '@skyra/audio';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';

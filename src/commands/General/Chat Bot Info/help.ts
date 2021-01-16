@@ -8,8 +8,8 @@ import { pickRandom } from '#utils/util';
 import { isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
-import { Command } from 'klasa';
+import type { TFunction } from 'i18next';
+import type { Command } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,

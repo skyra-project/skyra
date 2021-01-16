@@ -5,7 +5,7 @@ import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.UserMessage })

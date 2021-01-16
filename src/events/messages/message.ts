@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

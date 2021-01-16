@@ -1,15 +1,15 @@
-export * from './Channels';
-export * from './Events';
-export * from './Messages';
-export * from './Music';
-export * from './Notifications/All';
-export * from './Permissions';
-export * from './Roles';
-export * from './Selfmod';
-export * from './Social';
-export * from './Starboard';
-export * from './Suggestions';
-export * from './Trigger';
+export * as Channels from './Channels';
+export * as Events from './Events';
+export * as Messages from './Messages';
+export * as Music from './Music';
+export * as Notifications from './Notifications/All';
+export * as Permissions from './Permissions';
+export * as Roles from './Roles';
+export * as Selfmod from './Selfmod/All';
+export * as Social from './Social';
+export * as Starboard from './Starboard';
+export * as Suggestions from './Suggestions';
+export * as Trigger from './Trigger';
 
 export const Prefix = 'prefix';
 export const Language = 'language';

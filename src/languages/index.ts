@@ -1,4 +1,4 @@
-import { Handler } from '#lib/i18n/structures/Handler';
+import type { Handler } from '#lib/i18n/structures/Handler';
 import { ExtendedHandler as EnGbHandler } from './en-GB/constants';
 import { ExtendedHandler as EnUsHandler } from './en-US/constants';
 import { ExtendedHandler as EsEsHandler } from './es-ES/constants';

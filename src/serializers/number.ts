@@ -1,8 +1,8 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { AliasPieceOptions } from 'klasa';
+import type { AliasPieceOptions } from 'klasa';
 
 @ApplyOptions<AliasPieceOptions>({
 	aliases: ['integer', 'float']

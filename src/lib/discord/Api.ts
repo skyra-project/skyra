@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 
 export function api(client: Client) {
 	return Reflect.get(client, 'api') as Api;

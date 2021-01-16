@@ -1,6 +1,6 @@
 import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<CommandAutoDelete> {
 	public parse(value: string, { t, entry }: SerializerUpdateContext) {

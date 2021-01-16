@@ -6,7 +6,7 @@ import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } fro
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],

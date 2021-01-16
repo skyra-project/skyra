@@ -1,1 +1,1 @@
-export * as Notifications from './Stream';
+export * as Stream from './Stream';

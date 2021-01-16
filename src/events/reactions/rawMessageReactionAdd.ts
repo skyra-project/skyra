@@ -1,8 +1,8 @@
 import { Events } from '#lib/types/Enums';
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { isTextBasedChannel, resolveEmoji } from '#utils/util';
 import { GatewayDispatchEvents, GatewayMessageReactionAddDispatch } from 'discord-api-types/v6';
-import { TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

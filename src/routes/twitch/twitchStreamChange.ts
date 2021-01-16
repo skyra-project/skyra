@@ -1,5 +1,5 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
+import type { ApiRequest } from '#lib/api/ApiRequest';
+import type { ApiResponse } from '#lib/api/ApiResponse';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Mime } from '#utils/constants';

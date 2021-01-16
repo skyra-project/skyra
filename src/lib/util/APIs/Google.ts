@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CustomGet } from '#lib/types';
+import type { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
-import { Client, Message } from 'discord.js';
+import type { Client, Message } from 'discord.js';
 import { fetch, FetchResultTypes } from '../util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';

@@ -5,9 +5,9 @@ import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
 import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Days, Sunsigns } from '@skyra/saelem';
+import type { Days, Sunsigns } from '@skyra/saelem';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const kSunSigns = new Set([
 	'capricorn',

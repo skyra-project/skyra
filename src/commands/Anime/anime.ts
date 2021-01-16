@@ -2,15 +2,15 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
-import { Kitsu } from '#lib/types/definitions/Kitsu';
+import type { GuildMessage } from '#lib/types';
+import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;

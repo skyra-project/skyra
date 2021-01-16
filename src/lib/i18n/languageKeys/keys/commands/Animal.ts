@@ -1,4 +1,4 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { T } from '#lib/types';
 
 export const CatfactDescription = T<string>('commands/animal:catfactDescription');

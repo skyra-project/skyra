@@ -2,7 +2,7 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';

@@ -5,8 +5,8 @@ import { socialFolder } from '#utils/constants';
 import { roundNumber } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Message } from 'discord.js';
+import type { TFunction } from 'i18next';
 import { join } from 'path';
 
 const enum Arrows {

@@ -1,11 +1,9 @@
-export const enum Links {
-	Enabled = 'selfmodLinksEnabled',
-	Whitelist = 'selfmodLinksWhitelist',
-	IgnoredRoles = 'selfmodLinksIgnoredRoles',
-	IgnoredChannels = 'selfmodLinksIgnoredChannels',
-	SoftAction = 'selfmodLinksSoftAction',
-	HardAction = 'selfmodLinksHardAction',
-	HardActionDuration = 'selfmodLinksHardActionDuration',
-	ThresholdMaximum = 'selfmodLinksThresholdMaximum',
-	ThresholdDuration = 'selfmodLinksThresholdDuration'
-}
+export const Enabled = 'selfmodLinksEnabled';
+export const Whitelist = 'selfmodLinksWhitelist';
+export const IgnoredRoles = 'selfmodLinksIgnoredRoles';
+export const IgnoredChannels = 'selfmodLinksIgnoredChannels';
+export const SoftAction = 'selfmodLinksSoftAction';
+export const HardAction = 'selfmodLinksHardAction';
+export const HardActionDuration = 'selfmodLinksHardActionDuration';
+export const ThresholdMaximum = 'selfmodLinksThresholdMaximum';
+export const ThresholdDuration = 'selfmodLinksThresholdDuration';

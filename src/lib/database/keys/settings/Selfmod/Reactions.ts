@@ -1,13 +1,11 @@
-export const enum Reactions {
-	Enabled = 'selfmodReactionsEnabled',
-	IgnoredRoles = 'selfmodReactionsIgnoredRoles',
-	IgnoredChannels = 'selfmodReactionsIgnoredChannels',
-	Maximum = 'selfmodReactionsMaximum',
-	WhiteList = 'selfmodReactionsWhitelist',
-	BlackList = 'selfmodReactionsBlacklist',
-	SoftAction = 'selfmodReactionsSoftAction',
-	HardAction = 'selfmodReactionsHardAction',
-	HardActionDuration = 'selfmodReactionsHardActionDuration',
-	ThresholdMaximum = 'selfmodReactionsThresholdMaximum',
-	ThresholdDuration = 'selfmodReactionsThresholdDuration'
-}
+export const Enabled = 'selfmodReactionsEnabled';
+export const IgnoredRoles = 'selfmodReactionsIgnoredRoles';
+export const IgnoredChannels = 'selfmodReactionsIgnoredChannels';
+export const Maximum = 'selfmodReactionsMaximum';
+export const WhiteList = 'selfmodReactionsWhitelist';
+export const BlackList = 'selfmodReactionsBlacklist';
+export const SoftAction = 'selfmodReactionsSoftAction';
+export const HardAction = 'selfmodReactionsHardAction';
+export const HardActionDuration = 'selfmodReactionsHardActionDuration';
+export const ThresholdMaximum = 'selfmodReactionsThresholdMaximum';
+export const ThresholdDuration = 'selfmodReactionsThresholdDuration';

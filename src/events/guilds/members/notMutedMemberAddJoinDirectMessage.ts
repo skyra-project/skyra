@@ -4,8 +4,8 @@ import { Events } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Guild, GuildMember, User } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Guild, GuildMember, User } from 'discord.js';
+import type { TFunction } from 'i18next';
 import { Event, EventOptions } from 'klasa';
 
 const enum Matches {

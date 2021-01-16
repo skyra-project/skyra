@@ -1,8 +1,8 @@
 import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationManagerCreateData } from '#lib/structures/managers/ModerationManager';
-import { KeyOfType } from '#lib/types';
+import type { ModerationManagerCreateData } from '#lib/structures/managers/ModerationManager';
+import type { KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
@@ -22,7 +22,7 @@ import {
 	RoleData,
 	User
 } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 export const enum ModerationSetupRestriction {
 	Reaction = 'rolesRestrictedReaction',

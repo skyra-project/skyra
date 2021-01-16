@@ -1,7 +1,7 @@
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { cast, resolveEmoji } from '#utils/util';
 import { BaseController } from './BaseController';
-import { BaseReactionGame } from './BaseReactionGame';
+import type { BaseReactionGame } from './BaseReactionGame';
 
 export abstract class BaseReactionController<T> extends BaseController<T> {
 	public readonly userID: string;

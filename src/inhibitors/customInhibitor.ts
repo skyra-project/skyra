@@ -1,5 +1,5 @@
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { Message } from 'discord.js';
+import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { Message } from 'discord.js';
 import { Inhibitor } from 'klasa';
 
 export default class extends Inhibitor {

@@ -4,7 +4,7 @@ import { canManage } from '#lib/api/utils';
 import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { authenticated, cast, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Guild } from 'discord.js';
+import type { Guild } from 'discord.js';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })

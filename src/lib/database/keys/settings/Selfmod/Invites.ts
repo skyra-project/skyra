@@ -1,12 +1,10 @@
-export const enum Invites {
-	Enabled = 'selfmodInvitesEnabled',
-	IgnoredCodes = 'selfmodInvitesIgnoredCodes',
-	IgnoredGuilds = 'selfmodInvitesIgnoredGuilds',
-	IgnoredRoles = 'selfmodInvitesIgnoredRoles',
-	IgnoredChannels = 'selfmodInvitesIgnoredChannels',
-	SoftAction = 'selfmodInvitesSoftAction',
-	HardAction = 'selfmodInvitesHardAction',
-	HardActionDuration = 'selfmodInvitesHardActionDuration',
-	ThresholdMaximum = 'selfmodInvitesThresholdMaximum',
-	ThresholdDuration = 'selfmodInvitesThresholdDuration'
-}
+export const Enabled = 'selfmodInvitesEnabled';
+export const IgnoredCodes = 'selfmodInvitesIgnoredCodes';
+export const IgnoredGuilds = 'selfmodInvitesIgnoredGuilds';
+export const IgnoredRoles = 'selfmodInvitesIgnoredRoles';
+export const IgnoredChannels = 'selfmodInvitesIgnoredChannels';
+export const SoftAction = 'selfmodInvitesSoftAction';
+export const HardAction = 'selfmodInvitesHardAction';
+export const HardActionDuration = 'selfmodInvitesHardActionDuration';
+export const ThresholdMaximum = 'selfmodInvitesThresholdMaximum';
+export const ThresholdDuration = 'selfmodInvitesThresholdDuration';

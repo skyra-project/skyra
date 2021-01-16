@@ -6,7 +6,7 @@ import { exec } from '#utils/Promisified/exec';
 import { sleep } from '#utils/Promisified/sleep';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';
 

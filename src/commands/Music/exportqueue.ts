@@ -1,7 +1,7 @@
 import { QueueEntry, requireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types/Discord';
+import type { GuildMessage } from '#lib/types/Discord';
 import { map, prependIfNotNull, take } from '#utils/iterator';
 import { ApplyOptions } from '@skyra/decorators';
 import { serialize } from 'binarytf';

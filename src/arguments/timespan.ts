@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber } from '@sapphire/utilities';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {

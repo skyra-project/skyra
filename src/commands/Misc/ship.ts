@@ -7,7 +7,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
-import { GuildMember, Message, User } from 'discord.js';
+import type { GuildMember, Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({

@@ -2,7 +2,7 @@
 import { Events } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import WebSocket, { Data } from 'ws';
+import type WebSocket from 'ws';
 import {
 	CloseCodes,
 	IncomingWebsocketAction,
@@ -139,7 +139,7 @@ export default class DashboardWebsocketUser {
 		}
 	}
 
-	private async onMessage(rawMessage: Data) {
+	private async onMessage(rawMessage: WebSocket.Data) {
 		try {
 			const parsedMessage: IncomingWebsocketMessage = JSON.parse(rawMessage as string);
 			await this.handleMessage(parsedMessage);

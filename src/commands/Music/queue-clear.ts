@@ -1,7 +1,7 @@
 import { requireDj, requireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
-import { GuildMessage } from '#lib/types/Discord';
+import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({

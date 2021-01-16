@@ -1,12 +1,12 @@
-import { QueryError } from '#lib/errors/QueryError';
+import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
+import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { TFunction } from 'i18next';
-import { CommandStore } from 'klasa';
+import type { TFunction } from 'i18next';
+import type { CommandStore } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 

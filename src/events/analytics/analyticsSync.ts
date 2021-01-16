@@ -4,7 +4,7 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@skyra/decorators';
-import { EventOptions } from 'klasa';
+import type { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({
 	event: Events.AnalyticsSync

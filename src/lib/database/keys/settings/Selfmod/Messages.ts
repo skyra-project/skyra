@@ -1,12 +1,10 @@
-export const enum Messages {
-	Enabled = 'selfmodMessagesEnabled',
-	IgnoredRoles = 'selfmodMessagesIgnoredRoles',
-	IgnoredChannels = 'selfmodMessagesIgnoredChannels',
-	Maximum = 'selfmodMessagesMaximum',
-	QueueSize = 'selfmodMessagesQueueSize',
-	SoftAction = 'selfmodMessagesSoftAction',
-	HardAction = 'selfmodMessagesHardAction',
-	HardActionDuration = 'selfmodMessagesHardActionDuration',
-	ThresholdMaximum = 'selfmodMessagesThresholdMaximum',
-	ThresholdDuration = 'selfmodMessagesThresholdDuration'
-}
+export const Enabled = 'selfmodMessagesEnabled';
+export const IgnoredRoles = 'selfmodMessagesIgnoredRoles';
+export const IgnoredChannels = 'selfmodMessagesIgnoredChannels';
+export const Maximum = 'selfmodMessagesMaximum';
+export const QueueSize = 'selfmodMessagesQueueSize';
+export const SoftAction = 'selfmodMessagesSoftAction';
+export const HardAction = 'selfmodMessagesHardAction';
+export const HardActionDuration = 'selfmodMessagesHardActionDuration';
+export const ThresholdMaximum = 'selfmodMessagesThresholdMaximum';
+export const ThresholdDuration = 'selfmodMessagesThresholdDuration';

@@ -4,11 +4,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIUser } from 'discord-api-types/v6';
+import type { APIUser } from 'discord-api-types/v6';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

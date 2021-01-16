@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@skyra/decorators';
 import { Event, EventOptions } from 'klasa';
 

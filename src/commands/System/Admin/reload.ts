@@ -3,8 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { PermissionLevels } from '#lib/types/Enums';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Message } from 'discord.js';
+import type { TFunction } from 'i18next';
 import { Piece, Store } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({

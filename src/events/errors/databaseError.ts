@@ -3,7 +3,7 @@ import { rootFolder } from '#utils/constants';
 import { codeBlock, inlineCodeBlock } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command, Event } from 'klasa';
-import { QueryFailedError } from 'typeorm';
+import type { QueryFailedError } from 'typeorm';
 
 export default class extends Event {
 	public async run(message: Message, command: Command, error: QueryFailedError) {

@@ -2,14 +2,14 @@ import { DbSet, GuildSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const CDN_URL = CdnUrls.BannersBasePath;
 

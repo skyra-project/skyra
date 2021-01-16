@@ -1,6 +1,6 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import { Role, User } from 'discord.js';
+import type { Role, User } from 'discord.js';
 
 export const AttachmentsModeDescription = T<string>('commands/management:attachmentsModeDescription');
 export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:attachmentsModeExtended');

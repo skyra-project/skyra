@@ -3,16 +3,16 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HardPunishment, ModerationEvent } from '#lib/structures/moderation/ModerationEvent';
 import { SelfModeratorBitField } from '#lib/structures/moderation/SelfModeratorBitField';
-import { KeyOfType } from '#lib/types';
+import type { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { MessageLogsEnum } from '#utils/constants';
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import { EventOptions } from 'klasa';
+import type { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 

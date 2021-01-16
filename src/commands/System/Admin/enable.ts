@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
-import { Piece } from 'klasa';
+import type { Message } from 'discord.js';
+import type { Piece } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.EnableDescription,

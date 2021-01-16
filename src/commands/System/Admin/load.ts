@@ -3,9 +3,9 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { PermissionLevels } from '#lib/types/Enums';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { access } from 'fs/promises';
-import { Piece, Store } from 'klasa';
+import type { Piece, Store } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({

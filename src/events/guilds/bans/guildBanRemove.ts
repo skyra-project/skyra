@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
-import { Guild, User } from 'discord.js';
+import type { Guild, User } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

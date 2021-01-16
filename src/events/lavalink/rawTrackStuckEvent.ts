@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { IncomingEventTrackStuckPayload } from '@skyra/audio';
+import type { IncomingEventTrackStuckPayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { Event, EventOptions } from 'klasa';
 

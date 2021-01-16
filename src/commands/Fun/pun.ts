@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { Mime } from '#utils/constants';
 import { fetch } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,

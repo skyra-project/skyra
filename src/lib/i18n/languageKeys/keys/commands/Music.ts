@@ -1,6 +1,6 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import { Guild } from 'discord.js';
+import type { Guild } from 'discord.js';
 
 export const AddDescription = T<string>('commands/music:addDescription');
 export const AddExtended = T<LanguageHelpDisplayOptions>('commands/music:addExtended');

@@ -1,8 +1,8 @@
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
-import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
-import { Message, User } from 'discord.js';
+import type { GuildMessage } from '#lib/types';
+import type { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
+import type { Message, User } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;

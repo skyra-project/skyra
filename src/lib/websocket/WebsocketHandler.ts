@@ -1,4 +1,4 @@
-import { ApiRequest, UserAuthObject } from '#lib/api/ApiRequest';
+import type { ApiRequest, UserAuthObject } from '#lib/api/ApiRequest';
 import { CookieStore } from '#lib/api/CookieStore';
 import { SkyraClient } from '#lib/SkyraClient';
 import { DEV, WSS_PORT } from '#root/config';

@@ -1,15 +1,15 @@
-import { Queue } from '#lib/audio';
-import { GuildEntity, SettingsCollectionCallback } from '#lib/database';
+import type { Queue } from '#lib/audio';
+import type { GuildEntity, SettingsCollectionCallback } from '#lib/database';
 import { ModerationManager } from '#lib/structures/managers/ModerationManager';
 import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
-import { CustomFunctionGet, CustomGet } from '#lib/types';
+import type { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import { cast } from '#utils/util';
-import { Primitive } from '@sapphire/utilities';
+import type { Primitive } from '@sapphire/utilities';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Message, Structures } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);

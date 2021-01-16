@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types/Discord';
+import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 
 const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 

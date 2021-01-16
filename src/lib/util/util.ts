@@ -579,7 +579,10 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 	return results;
 }
 
-export const kBigIntTransformer: ValueTransformer = { from: Number, to: String };
+export const kBigIntTransformer: ValueTransformer = {
+	from: (value) => (value === null ? null : Number(value as string)),
+	to: (value) => (value === null ? null : String(value as number))
+};
 
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.

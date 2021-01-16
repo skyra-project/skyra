@@ -3,8 +3,8 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@skyra/decorators';
-import { Guild } from 'discord.js';
-import { EventOptions } from 'klasa';
+import type { Guild } from 'discord.js';
+import type { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildCreate })
 export default class extends AnalyticsEvent {

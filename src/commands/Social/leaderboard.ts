@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
-import { LeaderboardUser } from '#utils/Leaderboard';
+import type { GuildMessage } from '#lib/types';
+import type { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
-import Collection from '@discordjs/collection';
-import { CommandStore } from 'klasa';
+import type Collection from '@discordjs/collection';
+import type { CommandStore } from 'klasa';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',

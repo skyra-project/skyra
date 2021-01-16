@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
-import { VoiceState } from 'discord.js';
+import type { VoiceState } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

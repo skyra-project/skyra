@@ -1,10 +1,10 @@
 import { GuildSettings } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { CommandHandler } from '#lib/types/definitions/Internals';
+import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { cast } from '#utils/util';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Command, Event } from 'klasa';
 
 export default class extends Event {

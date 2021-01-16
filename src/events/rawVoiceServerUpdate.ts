@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
 import { ENABLE_LAVALINK } from '#root/config';
-import { VoiceServerUpdate } from '@skyra/audio';
+import type { VoiceServerUpdate } from '@skyra/audio';
 import { GatewayDispatchEvents } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 

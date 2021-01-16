@@ -1,14 +1,14 @@
 import { GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@skyra/decorators';
 import { diffWordsWithSpace } from 'diff';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })

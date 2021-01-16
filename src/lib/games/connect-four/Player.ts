@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Cell } from './Board';
-import { Game } from './Game';
+import type { Cell } from './Board';
+import type { Game } from './Game';
 
 export enum PlayerColor {
 	Blue,

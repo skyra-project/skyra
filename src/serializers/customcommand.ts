@@ -1,7 +1,7 @@
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<CustomCommand> {
 	public parse() {

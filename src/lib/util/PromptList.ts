@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { codeBlock } from '@sapphire/utilities';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };
 const kAttempts = 5;

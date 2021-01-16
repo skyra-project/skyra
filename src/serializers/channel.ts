@@ -2,8 +2,8 @@ import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isNullish } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Channel } from 'discord.js';
-import { AliasPieceOptions } from 'klasa';
+import type { Channel } from 'discord.js';
+import type { AliasPieceOptions } from 'klasa';
 
 @ApplyOptions<AliasPieceOptions>({
 	aliases: ['textchannel', 'voicechannel', 'categorychannel']

@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
 import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { toTitleCase } from '@sapphire/utilities';
-import { TFunction } from 'i18next';
-import { FFXIV } from '../../types/definitions/FFXIVTypings';
+import type { TFunction } from 'i18next';
 
 export const FFXIVServers = [
 	'adamantoise',

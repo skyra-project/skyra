@@ -6,7 +6,7 @@ import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { ContentExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message, TextChannel } from 'discord.js';
+import type { Message, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 

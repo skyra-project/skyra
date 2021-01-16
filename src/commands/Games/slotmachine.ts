@@ -3,7 +3,7 @@ import { Slotmachine } from '#lib/games/Slotmachine';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['slot', 'slots', 'slotmachines'],

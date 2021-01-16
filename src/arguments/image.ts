@@ -1,6 +1,6 @@
 import { fetchAvatar } from '#utils/util';
-import { Image } from 'canvas';
-import { Message } from 'discord.js';
+import type { Image } from 'canvas';
+import type { Message } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {

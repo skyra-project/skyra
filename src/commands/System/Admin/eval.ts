@@ -9,7 +9,7 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({

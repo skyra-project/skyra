@@ -1,4 +1,4 @@
-import { Role } from 'discord.js';
+import type { Role } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

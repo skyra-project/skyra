@@ -5,7 +5,7 @@ import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector'
 import { floatPromise, pickRandom } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, Message, Permissions, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { Board } from './Board';
 import { Player, PlayerColor } from './Player';
 

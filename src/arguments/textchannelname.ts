@@ -1,4 +1,4 @@
-import { GuildChannel, Message, TextChannel } from 'discord.js';
+import type { GuildChannel, Message, TextChannel } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {

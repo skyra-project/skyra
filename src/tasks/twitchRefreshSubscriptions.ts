@@ -2,7 +2,7 @@ import { DbSet, PartialResponseValue, ResponseType, Task, TwitchStreamSubscripti
 import { Events } from '#lib/types/Enums';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { blueBright } from 'colorette';
-import { Repository } from 'typeorm';
+import type { Repository } from 'typeorm';
 
 const header = blueBright('[TWITCH SUB-UPDATE]');
 

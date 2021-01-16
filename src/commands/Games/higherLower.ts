@@ -1,14 +1,14 @@
 import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',

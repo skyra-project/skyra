@@ -4,8 +4,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { Schedules } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Message } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;

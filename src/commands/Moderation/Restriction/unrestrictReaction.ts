@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
-import { GuildMessage } from '#lib/types';
-import { ArgumentTypes } from '@sapphire/utilities';
+import type { GuildMessage } from '#lib/types';
+import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({

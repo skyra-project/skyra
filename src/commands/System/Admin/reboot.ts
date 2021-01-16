@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { ENABLE_INFLUX } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.RebootDescription,

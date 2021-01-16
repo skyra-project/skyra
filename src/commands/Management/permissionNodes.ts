@@ -1,11 +1,11 @@
 import { GuildSettings, PermissionNodeAction } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Role } from 'discord.js';
-import { Command } from 'klasa';
+import type { Command } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pnodes', 'pnode'],

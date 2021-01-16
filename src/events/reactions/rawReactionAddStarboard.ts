@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { LLRCData } from '#utils/LongLivingReactionCollector';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@skyra/decorators';
-import { TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })

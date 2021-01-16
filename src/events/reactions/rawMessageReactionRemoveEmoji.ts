@@ -3,7 +3,7 @@ import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { compareEmoji } from '#utils/util';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
-import { DiscordAPIError } from 'discord.js';
+import type { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

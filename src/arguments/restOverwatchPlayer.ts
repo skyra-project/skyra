@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Argument, ArgumentOptions, Possible } from 'klasa';
 
 /** Identical implementation as restString from Klasa, but for overwatchplayer */

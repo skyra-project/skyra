@@ -1,7 +1,7 @@
-import { Queue } from '#lib/audio';
+import type { Queue } from '#lib/audio';
 import { AudioEvent } from '#lib/structures/events/AudioEvent';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
-import { VoiceChannel } from 'discord.js';
+import type { VoiceChannel } from 'discord.js';
 
 export default class extends AudioEvent {
 	public async run(queue: Queue, voiceChannel: VoiceChannel) {

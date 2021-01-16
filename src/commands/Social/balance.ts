@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message, User } from 'discord.js';
+import type { Message, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bal', 'credits'],

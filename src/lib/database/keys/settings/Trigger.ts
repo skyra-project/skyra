@@ -1,4 +1,2 @@
-export const enum Trigger {
-	Alias = 'triggerAlias',
-	Includes = 'triggerIncludes'
-}
+export const Alias = 'triggerAlias';
+export const Includes = 'triggerIncludes';

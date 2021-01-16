@@ -2,13 +2,13 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],

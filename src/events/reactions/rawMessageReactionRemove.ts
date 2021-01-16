@@ -1,7 +1,7 @@
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel } from '#utils/util';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
-import { TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

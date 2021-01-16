@@ -3,7 +3,7 @@ import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 
 export class InviteStore extends Collection<string, InviteCodeEntry> {
 	private readonly client: Client;

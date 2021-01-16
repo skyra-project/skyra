@@ -1,10 +1,10 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
+import type { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const AELIA_ID = '338249781594030090';

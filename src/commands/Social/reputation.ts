@@ -1,10 +1,10 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
-import { User } from 'discord.js';
-import { CommandStore } from 'klasa';
+import type { User } from 'discord.js';
+import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {

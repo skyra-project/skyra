@@ -1,4 +1,2 @@
-export const enum Permissions {
-	Users = 'permissionsUsers',
-	Roles = 'permissionsRoles'
-}
+export const Users = 'permissionsUsers';
+export const Roles = 'permissionsRoles';

@@ -1,9 +1,9 @@
 import { requireMusicPlaying } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
-import { GuildMessage } from '#lib/types/Discord';
+import type { GuildMessage } from '#lib/types/Discord';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
-import { TrackInfo } from '@skyra/audio';
+import type { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 

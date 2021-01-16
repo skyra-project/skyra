@@ -2,12 +2,12 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { ConnectFourConstants, Time } from '#utils/constants';
-import { LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
+import type { LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, User } from 'discord.js';
-import { Cell } from './Board';
-import { Game } from './Game';
+import type { Cell } from './Board';
+import type { Game } from './Game';
 import { Player, PlayerColor } from './Player';
 
 export class PlayerHuman extends Player {

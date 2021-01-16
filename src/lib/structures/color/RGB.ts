@@ -1,4 +1,4 @@
-import { ColorHandler } from './index';
+import type { ColorHandler } from './index';
 
 export class RGB implements ColorHandler {
 	public r: number;

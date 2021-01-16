@@ -5,7 +5,7 @@ import { radians } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({

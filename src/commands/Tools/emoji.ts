@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { fetch, FetchResultTypes, twemoji } from '#utils/util';
-import { Message } from 'discord.js';
-import { CommandStore } from 'klasa';
+import type { Message } from 'discord.js';
+import type { CommandStore } from 'klasa';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
 const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;

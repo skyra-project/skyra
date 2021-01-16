@@ -1,7 +1,7 @@
 import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -9,7 +9,7 @@ import { fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 
 @ApplyOptions<SkyraCommandOptions>({

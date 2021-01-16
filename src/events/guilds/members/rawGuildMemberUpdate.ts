@@ -9,7 +9,7 @@ import {
 	RESTGetAPIAuditLogQuery,
 	RESTGetAPIAuditLogResult
 } from 'discord-api-types/v6';
-import { Guild } from 'discord.js';
+import type { Guild } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

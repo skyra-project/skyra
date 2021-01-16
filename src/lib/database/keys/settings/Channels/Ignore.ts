@@ -1,6 +1,4 @@
-export const enum Ignore {
-	MessageDelete = 'channelsIgnoreMessageDeletes',
-	MessageEdit = 'channelsIgnoreMessageEdits',
-	ReactionAdd = 'channelsIgnoreReactionAdds',
-	All = 'channelsIgnoreAll'
-}
+export const MessageDelete = 'channelsIgnoreMessageDeletes';
+export const MessageEdit = 'channelsIgnoreMessageEdits';
+export const ReactionAdd = 'channelsIgnoreReactionAdds';
+export const All = 'channelsIgnoreAll';

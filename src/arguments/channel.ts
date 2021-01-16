@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { validateChannelAccess } from '#utils/util';
-import { GuildChannel, Message } from 'discord.js';
+import type { GuildChannel, Message } from 'discord.js';
 import { Argument, Possible } from 'klasa';
 
 const CHANNEL_REGEXP = Argument.regex.channel;

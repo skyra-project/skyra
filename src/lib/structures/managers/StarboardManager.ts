@@ -1,8 +1,8 @@
 import { GuildSettings, StarboardEntity } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import Collection from '@discordjs/collection';
 import { isNullish } from '@sapphire/utilities';
-import { Client, Guild, TextChannel } from 'discord.js';
+import type { Client, Guild, TextChannel } from 'discord.js';
 import { DbSet } from '../../database/utils/DbSet';
 
 /**

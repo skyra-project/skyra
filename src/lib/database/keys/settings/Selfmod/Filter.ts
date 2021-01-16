@@ -1,11 +1,9 @@
-export const enum Filter {
-	Raw = 'selfmodFilterRaw',
-	Enabled = 'selfmodFilterEnabled',
-	IgnoredRoles = 'selfmodFilterIgnoredRoles',
-	IgnoredChannels = 'selfmodFilterIgnoredChannels',
-	SoftAction = 'selfmodFilterSoftAction',
-	HardAction = 'selfmodFilterHardAction',
-	HardActionDuration = 'selfmodFilterHardActionDuration',
-	ThresholdMaximum = 'selfmodFilterThresholdMaximum',
-	ThresholdDuration = 'selfmodFilterThresholdDuration'
-}
+export const Raw = 'selfmodFilterRaw';
+export const Enabled = 'selfmodFilterEnabled';
+export const IgnoredRoles = 'selfmodFilterIgnoredRoles';
+export const IgnoredChannels = 'selfmodFilterIgnoredChannels';
+export const SoftAction = 'selfmodFilterSoftAction';
+export const HardAction = 'selfmodFilterHardAction';
+export const HardActionDuration = 'selfmodFilterHardActionDuration';
+export const ThresholdMaximum = 'selfmodFilterThresholdMaximum';
+export const ThresholdDuration = 'selfmodFilterThresholdDuration';

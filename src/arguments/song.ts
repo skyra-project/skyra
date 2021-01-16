@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { count, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { parseURL } from '@sapphire/utilities';

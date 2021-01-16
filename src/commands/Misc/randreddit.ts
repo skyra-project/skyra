@@ -1,12 +1,12 @@
-import { QueryError } from '#lib/errors/QueryError';
+import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
-import { Reddit } from '#lib/types/definitions/Reddit';
+import type { GuildMessage } from '#lib/types';
+import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
-import { CommandStore } from 'klasa';
+import type { TextChannel } from 'discord.js';
+import type { TFunction } from 'i18next';
+import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	private readonly kBlacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;

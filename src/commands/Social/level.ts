@@ -6,7 +6,7 @@ import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
-import { Message, User } from 'discord.js';
+import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');

@@ -1,11 +1,9 @@
-export const enum NewLines {
-	Enabled = 'selfmodNewlinesEnabled',
-	IgnoredRoles = 'selfmodNewlinesIgnoredRoles',
-	IgnoredChannels = 'selfmodNewlinesIgnoredChannels',
-	Maximum = 'selfmodNewlinesMaximum',
-	SoftAction = 'selfmodNewlinesSoftAction',
-	HardAction = 'selfmodNewlinesHardAction',
-	HardActionDuration = 'selfmodNewlinesHardActionDuration',
-	ThresholdMaximum = 'selfmodNewlinesThresholdMaximum',
-	ThresholdDuration = 'selfmodNewlinesThresholdDuration'
-}
+export const Enabled = 'selfmodNewlinesEnabled';
+export const IgnoredRoles = 'selfmodNewlinesIgnoredRoles';
+export const IgnoredChannels = 'selfmodNewlinesIgnoredChannels';
+export const Maximum = 'selfmodNewlinesMaximum';
+export const SoftAction = 'selfmodNewlinesSoftAction';
+export const HardAction = 'selfmodNewlinesHardAction';
+export const HardActionDuration = 'selfmodNewlinesHardActionDuration';
+export const ThresholdMaximum = 'selfmodNewlinesThresholdMaximum';
+export const ThresholdDuration = 'selfmodNewlinesThresholdDuration';

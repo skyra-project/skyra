@@ -1,6 +1,6 @@
 import { Mime } from '#utils/constants';
 import { ServerResponse, STATUS_CODES } from 'http';
-import { CookieStore } from './CookieStore';
+import type { CookieStore } from './CookieStore';
 
 export class ApiResponse extends ServerResponse {
 	public cookies!: CookieStore;

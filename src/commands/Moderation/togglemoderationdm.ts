@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({

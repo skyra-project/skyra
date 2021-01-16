@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { fetch, FetchMethods, FetchResultTypes } from '../util';
 
 export async function handleMessage<ED extends ExtraDataPartial>(

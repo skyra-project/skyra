@@ -1,6 +1,4 @@
-export const enum Music {
-	DefaultVolume = 'musicDefaultVolume',
-	MaximumDuration = 'musicMaximumDuration',
-	MaximumEntriesPerUser = 'musicMaximumEntriesPerUser',
-	AllowStreams = 'musicAllowStreams'
-}
+export const DefaultVolume = 'musicDefaultVolume';
+export const MaximumDuration = 'musicMaximumDuration';
+export const MaximumEntriesPerUser = 'musicMaximumEntriesPerUser';
+export const AllowStreams = 'musicAllowStreams';

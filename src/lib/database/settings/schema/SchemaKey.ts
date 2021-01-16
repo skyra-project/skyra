@@ -5,7 +5,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraClient } from '#lib/SkyraClient';
 import type { AnyObject, CustomGet } from '#lib/types';
 import { isNullish } from '@sapphire/utilities';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { container } from 'tsyringe';
 import type { SchemaGroup } from './SchemaGroup';
 

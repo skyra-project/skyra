@@ -5,7 +5,7 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })

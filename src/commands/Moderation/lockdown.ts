@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { ApplyOptions } from '@skyra/decorators';
 import { Permissions, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['lock', 'unlock'],

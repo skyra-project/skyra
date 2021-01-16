@@ -2,13 +2,13 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import { CdnUrls } from '#lib/types/Constants';
-import { YarnPkg } from '#lib/types/definitions/Yarnpkg';
+import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { BrandingColors } from '#utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],

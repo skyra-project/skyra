@@ -7,7 +7,7 @@ import { REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
+import type { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';

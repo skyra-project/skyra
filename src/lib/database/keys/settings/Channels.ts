@@ -1,20 +1,13 @@
-import { Ignore as InternalIgnore } from './Channels/Ignore';
+export * as Ignore from './Channels/Ignore';
 
-export enum Channels {
-	Announcements = 'channelsAnnouncements',
-	Greeting = 'channelsGreeting',
-	Farewell = 'channelsFarewell',
-	MemberLogs = 'channelsMemberLogs',
-	MessageLogs = 'channelsMessageLogs',
-	ModerationLogs = 'channelsModerationLogs',
-	NSFWMessageLogs = 'channelsNsfwMessageLogs',
-	ImageLogs = 'channelsImageLogs',
-	PruneLogs = 'channelsPruneLogs',
-	ReactionLogs = 'channelsReactionLogs',
-	Spam = 'channelsSpam'
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace Channels {
-	export declare const Ignore: typeof InternalIgnore;
-}
+export const Announcements = 'channelsAnnouncements';
+export const Greeting = 'channelsGreeting';
+export const Farewell = 'channelsFarewell';
+export const MemberLogs = 'channelsMemberLogs';
+export const MessageLogs = 'channelsMessageLogs';
+export const ModerationLogs = 'channelsModerationLogs';
+export const NSFWMessageLogs = 'channelsNsfwMessageLogs';
+export const ImageLogs = 'channelsImageLogs';
+export const PruneLogs = 'channelsPruneLogs';
+export const ReactionLogs = 'channelsReactionLogs';
+export const Spam = 'channelsSpam';

@@ -1,10 +1,10 @@
 import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { ArgumentTypes } from '@sapphire/utilities';
+import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bank'],

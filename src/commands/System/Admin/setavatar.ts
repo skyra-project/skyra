@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { PermissionLevels } from '#lib/types/Enums';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.SetAvatarDescription,

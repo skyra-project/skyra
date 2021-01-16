@@ -5,7 +5,7 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum, Moderation } from '#utils/constants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
+import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

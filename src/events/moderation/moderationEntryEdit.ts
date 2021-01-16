@@ -4,7 +4,7 @@ import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import type { Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

@@ -1,14 +1,14 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
+import type { ApiRequest } from '#lib/api/ApiRequest';
+import type { ApiResponse } from '#lib/api/ApiResponse';
 import { GuildSettings } from '#lib/database';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
-import { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
+import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
 	Client,
@@ -25,11 +25,11 @@ import {
 } from 'discord.js';
 import { RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { ValueTransformer } from 'typeorm';
+import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';
 import { Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
-import { LeaderboardUser } from './Leaderboard';
+import type { LeaderboardUser } from './Leaderboard';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;

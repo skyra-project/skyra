@@ -1,12 +1,12 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CustomGet } from '#lib/types';
+import type { CustomGet } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { filter, map } from '#utils/iterator';
 import { Guild, MessageEmbed, User } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { Event } from 'klasa';
 
 export default class extends Event {

@@ -1,6 +1,6 @@
 import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { KlasaClient } from 'klasa';
+import type { KlasaClient } from 'klasa';
 
 export class GiveawayManager {
 	public readonly client: KlasaClient;

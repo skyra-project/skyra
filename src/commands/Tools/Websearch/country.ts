@@ -6,7 +6,7 @@ import { BrandingColors } from '#utils/constants';
 import { fetch, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;

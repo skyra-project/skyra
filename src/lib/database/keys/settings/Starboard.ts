@@ -1,7 +1,5 @@
-export const enum Starboard {
-	Channel = 'starboardChannel',
-	Emoji = 'starboardEmoji',
-	IgnoreChannels = 'starboardIgnoreChannels',
-	Minimum = 'starboardMinimum',
-	SelfStar = 'starboardSelfStar'
-}
+export const Channel = 'starboardChannel';
+export const Emoji = 'starboardEmoji';
+export const IgnoreChannels = 'starboardIgnoreChannels';
+export const Minimum = 'starboardMinimum';
+export const SelfStar = 'starboardSelfStar';

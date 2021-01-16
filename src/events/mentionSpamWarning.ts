@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {

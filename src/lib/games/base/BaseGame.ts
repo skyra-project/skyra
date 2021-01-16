@@ -1,5 +1,5 @@
 import type { Client, Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import type { BaseController } from './BaseController';
 
 export const enum GameTurn {

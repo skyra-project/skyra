@@ -1,13 +1,13 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { BrawlStars } from '#lib/types/definitions/BrawlStars';
+import type { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 

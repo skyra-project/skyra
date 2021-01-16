@@ -4,7 +4,7 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { floatPromise, resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, User } from 'discord.js';
+import type { Message, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.Social.DivorceDescription,

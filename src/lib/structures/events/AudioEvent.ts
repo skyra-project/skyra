@@ -1,4 +1,4 @@
-import { OutgoingWebsocketMessage } from '#lib/websocket/types';
+import type { OutgoingWebsocketMessage } from '#lib/websocket/types';
 import { Event } from 'klasa';
 
 interface AudioBroadcastCallback {

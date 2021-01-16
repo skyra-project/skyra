@@ -2,8 +2,8 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
-import { DiscordAPIError, Guild } from 'discord.js';
+import type { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
+import type { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawMessageDeleteBulk })

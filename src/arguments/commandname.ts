@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Argument, Command, Possible } from 'klasa';
 
 export default class extends Argument {

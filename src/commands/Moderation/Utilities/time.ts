@@ -1,12 +1,12 @@
-import { ModerationEntity } from '#lib/database';
+import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Moderation } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Permissions, User } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,

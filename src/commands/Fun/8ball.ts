@@ -3,8 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/Skyr
 import { pickRandom } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { Message } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
 

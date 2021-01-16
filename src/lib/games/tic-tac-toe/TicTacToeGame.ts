@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Time } from '#utils/constants';
 import type { Message } from 'discord.js';
-import { BaseController } from '../base/BaseController';
+import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
 import { BaseReactionGame } from '../base/BaseReactionGame';
 

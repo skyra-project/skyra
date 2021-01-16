@@ -1,6 +1,6 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { CustomGet, FT, T } from '#lib/types';
-import { EightBallLanguage } from '#root/commands/Fun/8ball';
+import type { EightBallLanguage } from '#root/commands/Fun/8ball';
 
 export const ChangeMyMindDescription = T<string>('commands/fun:changemymindDescription');
 export const ChangeMyMindExtended = T<LanguageHelpDisplayOptions>('commands/fun:changemymindExtended');

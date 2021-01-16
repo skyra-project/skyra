@@ -5,7 +5,7 @@ import { CLIENT_ID, CLIENT_SECRET } from '#root/config';
 import { Mime } from '#utils/constants';
 import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
+import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { stringify } from 'querystring';

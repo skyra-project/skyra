@@ -2,7 +2,7 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
-import { DiscordAPIError } from 'discord.js';
+import type { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

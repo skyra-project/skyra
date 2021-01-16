@@ -4,7 +4,7 @@ import { Colors, LanguageFormatters } from '#lib/types/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import { ClientOptions } from 'discord.js';
+import type { ClientOptions } from 'discord.js';
 import i18next, { FormatFunction } from 'i18next';
 import { join } from 'path';
 

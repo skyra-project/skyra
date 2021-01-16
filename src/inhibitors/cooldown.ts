@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { Message } from 'discord.js';
+import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { Message } from 'discord.js';
 import { Event, Inhibitor, InhibitorStore } from 'klasa';
 
 export default class extends Inhibitor {

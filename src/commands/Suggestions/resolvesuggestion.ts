@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import type { SuggestionData } from '#lib/types/definitions/Suggestion';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -9,7 +9,7 @@ import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const enum SuggestionsColors {
 	Accepted = 0x4cb02c,
@@ -35,7 +35,7 @@ const enum SuggestionsColors {
 		async (arg, _, message): Promise<SuggestionData> => {
 			// Validate the suggestions channel ID
 			const [channelID, t] = await message.guild!.readSettings((settings) => [
-				settings[GuildSettings.Suggestions.SuggestionsChannel],
+				settings[GuildSettings.Suggestions.Channel],
 				settings.getLanguage()
 			]);
 			if (!channelID) throw t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
@@ -139,10 +139,7 @@ export default class extends SkyraCommand {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (!Object.is(message.command, this) || message.guild === null) return true;
 
-		const [channelID, t] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Suggestions.SuggestionsChannel],
-			settings.getLanguage()
-		]);
+		const [channelID, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Suggestions.Channel], settings.getLanguage()]);
 		if (channelID !== null) return false;
 
 		await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));

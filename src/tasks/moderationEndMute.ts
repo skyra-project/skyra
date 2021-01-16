@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationData, ModerationTask } from '#lib/structures/moderation/ModerationTask';
 import { CLIENT_ID } from '#root/config';
-import { Guild } from 'discord.js';
+import type { Guild } from 'discord.js';
 
 export default class extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {

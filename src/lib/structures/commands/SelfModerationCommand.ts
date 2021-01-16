@@ -1,10 +1,10 @@
 import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { KeyOfType } from '#lib/types/Utils';
 import { codeBlock } from '@sapphire/utilities';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { CommandStore, Duration } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../moderation/SelfModeratorBitField';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';

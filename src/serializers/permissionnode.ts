@@ -1,8 +1,8 @@
 import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isObject } from '@sapphire/utilities';
-import { GuildMember, Role } from 'discord.js';
-import { Command } from 'klasa';
+import type { GuildMember, Role } from 'discord.js';
+import type { Command } from 'klasa';
 
 export default class UserSerializer extends Serializer<PermissionsNode> {
 	public parse(_: string, context: SerializerUpdateContext) {

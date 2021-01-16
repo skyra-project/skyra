@@ -1,6 +1,6 @@
-import { GuildMessage } from '#lib/types';
-import { PermissionResolvable } from 'discord.js';
-import { CommandStore } from 'klasa';
+import type { GuildMessage } from '#lib/types';
+import type { PermissionResolvable } from 'discord.js';
+import type { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class RichDisplayCommand extends SkyraCommand {

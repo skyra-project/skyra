@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { IncomingEventTrackExceptionPayload } from '@skyra/audio';
+import type { IncomingEventTrackExceptionPayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { magenta } from 'colorette';
 import { Event, EventOptions } from 'klasa';

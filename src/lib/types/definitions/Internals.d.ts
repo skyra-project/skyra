@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Event } from 'klasa';
 
 export interface CommandHandler extends Event {

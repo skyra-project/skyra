@@ -1,17 +1,15 @@
-export const enum Roles {
-	Admin = 'rolesAdmin',
-	Auto = 'rolesAuto',
-	Initial = 'rolesInitial',
-	Moderator = 'rolesModerator',
-	Muted = 'rolesMuted',
-	RestrictedReaction = 'rolesRestrictedReaction',
-	RestrictedEmbed = 'rolesRestrictedEmbed',
-	RestrictedEmoji = 'rolesRestrictedEmoji',
-	RestrictedAttachment = 'rolesRestrictedAttachment',
-	RestrictedVoice = 'rolesRestrictedVoice',
-	Public = 'rolesPublic',
-	RemoveInitial = 'rolesRemoveInitial',
-	Dj = 'rolesDj',
-	Subscriber = 'rolesSubscriber',
-	UniqueRoleSets = 'rolesUniqueRoleSets'
-}
+export const Admin = 'rolesAdmin';
+export const Auto = 'rolesAuto';
+export const Initial = 'rolesInitial';
+export const Moderator = 'rolesModerator';
+export const Muted = 'rolesMuted';
+export const RestrictedReaction = 'rolesRestrictedReaction';
+export const RestrictedEmbed = 'rolesRestrictedEmbed';
+export const RestrictedEmoji = 'rolesRestrictedEmoji';
+export const RestrictedAttachment = 'rolesRestrictedAttachment';
+export const RestrictedVoice = 'rolesRestrictedVoice';
+export const Public = 'rolesPublic';
+export const RemoveInitial = 'rolesRemoveInitial';
+export const Dj = 'rolesDj';
+export const Subscriber = 'rolesSubscriber';
+export const UniqueRoleSets = 'rolesUniqueRoleSets';

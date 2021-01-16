@@ -1,6 +1,6 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import { Guild, GuildMember, User } from 'discord.js';
+import type { Guild, GuildMember, User } from 'discord.js';
 
 export const WikipediaNotFound = T<string>('commands/tools:wikipediaNotfound');
 export const YouTubeNotFound = T<string>('commands/tools:youtubeNotfound');

@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RGB } from '#lib/structures/color';
+import type { RGB } from '#lib/structures/color';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { hexConcat, luminance, parse } from '#utils/Color';
 import { Canvas, rgb } from 'canvas-constructor';
-import { Message } from 'discord.js';
-import { CommandStore } from 'klasa';
+import type { Message } from 'discord.js';
+import type { CommandStore } from 'klasa';
 
 /* Color limiter */
 const rL = (color: number) => color / 255;

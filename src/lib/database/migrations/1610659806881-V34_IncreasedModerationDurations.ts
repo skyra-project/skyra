@@ -22,7 +22,7 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 		const check = moderation.checks.find((check) => check.expression?.includes('duration'));
 		if (check) await queryRunner.dropCheckConstraint(moderation, check);
 		await queryRunner.createCheckConstraint(
-			'guilds',
+			'moderation',
 			new TableCheck({ expression: /* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)` })
 		);
 	}
@@ -95,7 +95,7 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 		const check = moderation.checks.find((check) => check.expression?.includes('duration'));
 		if (check) await queryRunner.dropCheckConstraint(moderation, check);
 		await queryRunner.createCheckConstraint(
-			'guilds',
+			'moderation',
 			new TableCheck({ expression: /* sql */ `("duration" >= 0) AND ("duration" <= 31536000000)` })
 		);
 	}

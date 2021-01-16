@@ -1,23 +1,23 @@
 {
 	"catfactDescription": "Laat ik jou een mysterieus kattenfeit vertellen.",
 	"catfactExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Je weet dat katten erg nieuwsgierig zijn, toch? Ze hebben zeker een heleboel leuke en rare feiten.\nMet dit command krijg je een willekeurig feit."
 	},
-	"catfactTitle": "",
-	"dogDescription": "",
+	"catfactTitle": "Kat Feit",
+	"dogDescription": "Schattige hondjes! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Weet **jij** hoe schattige hondjes zijn? Ze zijn zo cute!\nDit commando gebruikt [dog.ceo](https://dog.ceo) om foto's van de schattige honden te tonen!"
 	},
-	"foxDescription": "",
+	"foxDescription": "Laat me je een foto van een vos tonen!",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Deze opdracht geeft een willekeurige afbeelding van [randomfox.ca](https://randomfox.ca/)."
 	},
-	"kittyDescription": "",
+	"kittyDescription": "KITTENS!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Weet **jij** hoe schattige katten zijn? Ze zijn zo cute!\nDit commando gebruikt [cataas.com](https://cataas.com) om foto's van de schattige katten te tonen!"
 	},
-	"shibeDescription": "",
+	"shibeDescription": "Schattige shibas!",
 	"shibeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Iedereen houdt van shibas, dus ik ook! Ze zijn zo schattig ❤"
 	}
 }

@@ -75,7 +75,6 @@ export default class extends RichDisplayCommand {
 					.setImage(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
 					.setThumbnail(`https://image.tmdb.org/t/p/original${movie.poster_path}`)
 					.setDescription(cutText(movie.overview, 750))
-					// TODO: i18next formatters in ternaries?
 					.addField(
 						titles.runtime,
 						movie.runtime ? t(LanguageKeys.Globals.DurationValue, { value: movie.runtime * 60 * 1000 }) : fieldsData.movieInProduction,

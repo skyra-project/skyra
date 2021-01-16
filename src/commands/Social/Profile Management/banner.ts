@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private readonly banners: Map<string, BannerCache> = new Map();
-	private display: UserRichDisplay | null = null;
+	private display: UserPaginatedMessage = null!;
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, [banner]: [BannerCache]) {
@@ -125,7 +125,7 @@ export default class extends SkyraCommand {
 
 		const { banners } = await DbSet.connect();
 		const entries = await banners.find();
-		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
 		for (const banner of entries) {
 			this.banners.set(banner.id, {
 				author: banner.authorID,
@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 				title: banner.title
 			});
 
-			display.addPage((template: MessageEmbed) =>
+			display.addTemplatedEmbedPage((template: MessageEmbed) =>
 				template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
@@ -148,7 +148,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buyList(message: GuildMessage) {
-		return this.runDisplay(message, await message.fetchT(), this.display);
+		return this.runDisplay(message, await message.fetchT(), this.display.clone());
 	}
 
 	private async userList(message: GuildMessage) {
@@ -159,11 +159,11 @@ export default class extends SkyraCommand {
 		const banners = new Set(user.profile.banners);
 		if (!banners.size) throw t(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
-				display.addPage((template: MessageEmbed) =>
+				display.addTemplatedEmbedPage((template: MessageEmbed) =>
 					template
 						.setImage(`${CDN_URL}${banner.id}.png`)
 						.setTitle(banner.title)
@@ -175,11 +175,11 @@ export default class extends SkyraCommand {
 		return this.runDisplay(message, t, display);
 	}
 
-	private async runDisplay(message: GuildMessage, t: TFunction, display: UserRichDisplay | null) {
+	private async runDisplay(message: GuildMessage, t: TFunction, display: UserPaginatedMessage) {
 		if (display !== null) {
-			const response = await message.send(
+			const response = (await message.send(
 				new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-			);
+			)) as GuildMessage;
 			await display.start(response, message.author.id);
 			return response;
 		}

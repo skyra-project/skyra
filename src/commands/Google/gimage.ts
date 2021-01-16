@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
@@ -9,7 +9,7 @@ import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
@@ -26,11 +26,13 @@ import { MessageEmbed } from 'discord.js';
 				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const t = await message.fetchT();
 		const [response, { items }] = await Promise.all([
-			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
+			message.send(
+				new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			) as Promise<GuildMessage>,
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
@@ -43,10 +45,10 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, items: GoogleCSEImageData[]) {
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const item of items) {
-			display.addPage((embed) => {
+			display.addTemplatedEmbedPage((embed) => {
 				embed.setTitle(item.title).setURL(item.image.contextLink);
 
 				const imageUrl = getImageUrl(item.link);

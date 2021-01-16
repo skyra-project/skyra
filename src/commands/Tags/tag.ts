@@ -4,7 +4,7 @@
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
@@ -120,17 +120,17 @@ export default class extends SkyraCommand {
 		]);
 		if (!tags.length) throw t(LanguageKeys.Commands.Tags.TagListEmpty);
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
-		);
+		)) as GuildMessage;
 
 		// Get prefix and display all tags
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {
 			const description = `\`${page.map((command) => `${prefix}${command.id}`).join('`, `')}\``;
-			display.addPage((embed: MessageEmbed) => embed.setDescription(description));
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => embed.setDescription(description));
 		}
 
 		// Run the display

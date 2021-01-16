@@ -1,7 +1,9 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand } from '#lib/structures/commands/PaginatedMessageCommand';
+import { SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
+import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
@@ -17,12 +19,12 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended,
 	usage: '<country:str>'
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [countryName]: [string]) {
+export default class extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, [countryName]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const countries = await this.fetchAPI(t, countryName);
 		if (countries.length === 0) throw t(LanguageKeys.System.QueryFail);
@@ -43,10 +45,10 @@ export default class extends SkyraCommand {
 	private async buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const country of countries) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(mapNativeName(country))
 					.setThumbnail(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)

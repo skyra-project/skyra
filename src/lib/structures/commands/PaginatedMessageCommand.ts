@@ -3,7 +3,7 @@ import { PermissionResolvable } from 'discord.js';
 import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
-export abstract class RichDisplayCommand extends SkyraCommand {
+export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
 		super(store, file, directory, {
 			// Merge in all given options
@@ -31,4 +31,4 @@ export abstract class RichDisplayCommand extends SkyraCommand {
 	}
 }
 
-export type RichDisplayCommandOptions = SkyraCommandOptions;
+export type PaginatedMessageCommandOptions = SkyraCommandOptions;

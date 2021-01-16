@@ -2,7 +2,8 @@ import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
+import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { isNumber, noop } from '@sapphire/utilities';
@@ -11,7 +12,7 @@ import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'dis
 import { TFunction } from 'i18next';
 import { Command } from 'klasa';
 
-const PERMISSIONS_RICHDISPLAY = new Permissions([
+const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
 	Permissions.FLAGS.ADD_REACTIONS,
 	Permissions.FLAGS.EMBED_LINKS,
@@ -84,21 +85,22 @@ export default class extends SkyraCommand {
 		if (
 			!message.flagArgs.all &&
 			message.guild &&
-			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
+			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE)
 		) {
-			const response = await message.send(
+			const response = (await message.send(
 				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
 				new MessageEmbed({
 					description: pickRandom(t(LanguageKeys.System.Loading) as string[]),
 					color: BrandingColors.Secondary
 				})
-			);
+			)) as GuildMessage;
 			const display = await this.buildDisplay(message, t, prefix);
 
 			// Extract start page and sanitize it
 			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
 			const startPage = page === null || page < 0 || page >= display.pages.length ? null : page;
-			await display.start(response, message.author.id, startPage === null ? undefined : { startPage });
+			if (startPage !== null) display.setIndex(startPage);
+			await display.start(response, message.author.id);
 			return response;
 		}
 
@@ -124,9 +126,9 @@ export default class extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await this._fetchCommands(message);
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
-			display.addPage((template: MessageEmbed) =>
+			display.addTemplatedEmbedPage((template: MessageEmbed) =>
 				template
 					.setTitle(`${category} Commands`)
 					.setDescription(commands.map(this.formatCommand.bind(this, language, prefix, true)).join('\n'))

@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
@@ -10,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.UrbanDescription,
@@ -18,12 +18,12 @@ import { TFunction } from 'i18next';
 	nsfw: true,
 	usage: '<query:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const result = await fetch<UrbanDictionaryResultOk>(
 			`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`,
@@ -38,17 +38,18 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: TFunction, query: string) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
-		).setFooterSuffix(' - © Urban Dictionary');
+				.setFooter(' - © Urban Dictionary')
+		});
 
 		for (const result of results) {
 			const definition = this.parseDefinition(result.definition, result.permalink, language);
 			const example = result.example ? this.parseDefinition(result.example, result.permalink, language) : 'None';
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setURL(result.permalink)
 					.setDescription(definition)

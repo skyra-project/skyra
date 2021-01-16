@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
@@ -20,12 +20,12 @@ import { TFunction } from 'i18next';
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const pokemonData = await this.fetchAPI(t, pokemon.toLowerCase());
 
@@ -43,15 +43,15 @@ export default class extends RichDisplayCommand {
 	}
 
 	private buildDisplay(message: GuildMessage, pokemonData: DexDetails) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(message.flagArgs.shiny ? pokemonData.shinySprite : pokemonData.sprite)
-		);
+		});
 
 		for (const flavorText of pokemonData.flavorTexts) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
 		}
 
 		return display;

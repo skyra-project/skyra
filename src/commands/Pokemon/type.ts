@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
@@ -33,7 +33,7 @@ const kPokemonTypes = new Set([
 	'water'
 ]);
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.TypeDescription,
@@ -56,12 +56,12 @@ const kPokemonTypes = new Set([
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [types]: [Types[]]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 		const typeMatchups = await this.fetchAPI(types, t);
 
 		const display = await this.buildDisplay(message, types, typeMatchups, t);
@@ -109,12 +109,12 @@ export default class extends RichDisplayCommand {
 			`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
 		].join(' | ');
 
-		return new UserRichDisplay(
-			new MessageEmbed()
+		return new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message)) //
-				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
-		)
-			.addPage((embed: MessageEmbed) =>
+				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex)
+		})
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(
 						embedTranslations.offensive,
@@ -140,7 +140,7 @@ export default class extends RichDisplayCommand {
 					)
 					.addField(externalResources, externalSources)
 			)
-			.addPage((embed: MessageEmbed) =>
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(
 						embedTranslations.defensive,

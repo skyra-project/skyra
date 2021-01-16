@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['movie', 'tmdb'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.MoviesDescription,
@@ -20,12 +20,12 @@ import { TFunction } from 'i18next';
 	usage: '<movie:str> [year:str]',
 	usageDelim: 'y:'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const { results: entries } = await this.fetchAPI(t, movie, year);
 		if (!entries.length) throw t(LanguageKeys.System.NoResults);
@@ -63,12 +63,12 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, movies: Tmdb.TmdbMovieList['results']) {
 		const titles = t(LanguageKeys.Commands.Tools.MoviesTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.MoviesData);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(t, movie.id)));
 
 		for (const movie of movieData) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(movie.title)
 					.setURL(`https://www.themoviedb.org/movie/${movie.id}`)

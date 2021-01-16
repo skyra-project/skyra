@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
@@ -10,7 +10,7 @@ import { pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, Role } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,
@@ -45,7 +45,7 @@ import { MessageEmbed, Role } from 'discord.js';
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [roles]: [Role[]]) {
 		const [rolesPublic, prefix, allRoleSets, rolesRemoveInitial, rolesInitial, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Roles.Public],
@@ -149,19 +149,20 @@ export default class extends RichDisplayCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) throw t(LanguageKeys.Commands.Management.RolesListEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
-		);
+		});
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
+		for (let i = 0; i < pages; i++)
+			display.addTemplatedEmbedPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
-		);
+		)) as GuildMessage;
 		await display.start(response, message.author.id);
 		return response;
 	}

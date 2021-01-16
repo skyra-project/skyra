@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -9,19 +9,19 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
 	requiredGuildPermissions: ['MANAGE_GUILD']
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const invites = await message.guild.fetchInvites();
 		const topTen = invites
@@ -38,15 +38,15 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, invites: NonNullableInvite[]) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await DbSet.fetchColor(message))
-		);
+		});
 		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 
 		for (const invite of invites) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 					.setThumbnail(invite.inviter.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))

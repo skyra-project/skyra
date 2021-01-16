@@ -1,10 +1,11 @@
 import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji, resolveEmoji } from '#utils/util';
+import { Time } from '@sapphire/time-utilities';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -119,17 +120,17 @@ export default class extends SkyraCommand {
 		}
 		if (!output.length) throw t(LanguageKeys.Commands.Management.TriggersListEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await DbSet.fetchColor(message))
-		);
+		}).setIdle(Time.Minute * 2);
 
 		for (const page of chunk(output, 10)) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => embed.setDescription(page));
 		}
 
-		return display.start(message, undefined, { time: 120000 });
+		return display.start(message);
 	}
 
 	private format(type: string, input: string, output: string): TriggerIncludes | TriggerAlias {

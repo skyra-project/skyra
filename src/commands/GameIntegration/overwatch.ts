@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
@@ -13,7 +13,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['ow'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
@@ -21,13 +21,13 @@ import { TFunction } from 'i18next';
 	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
 	usageDelim: ' '
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const t = await message.fetchT();
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const overwatchData = await this.fetchAPI(t, player, platform);
 
@@ -53,7 +53,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	/** Builds a UserRichDisplay for presenting Overwatch data */
+	/** Builds a UserPaginatedMessage for presenting Overwatch data */
 	private async buildDisplay(message: GuildMessage, t: TFunction, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const ratings = Array.from(
 			this.ratingsToCollection(
@@ -76,15 +76,15 @@ export default class extends RichDisplayCommand {
 			totalGamesWon: overwatchData.gamesWon
 		});
 
-		return new UserRichDisplay(
-			new MessageEmbed()
+		return new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)
 				.setTitle(embedData.title)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)
-		)
-			.addPage((embed) =>
+		})
+			.addTemplatedEmbedPage((embed) =>
 				embed
 					.setDescription(
 						[
@@ -96,10 +96,10 @@ export default class extends RichDisplayCommand {
 					)
 					.addField(embedData.ratingsTitle, ratings || t(LanguageKeys.Globals.None))
 			)
-			.addPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'competitiveStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'competitiveStats', embedData)));
+			.addTemplatedEmbedPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'quickPlayStats', embedData)))
+			.addTemplatedEmbedPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'competitiveStats', embedData)))
+			.addTemplatedEmbedPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'quickPlayStats', embedData)))
+			.addTemplatedEmbedPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'competitiveStats', embedData)));
 	}
 
 	/**

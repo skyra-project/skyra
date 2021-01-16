@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings, ReactionRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
@@ -53,15 +53,15 @@ export default class extends SkyraCommand {
 			throw t(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const bulk of chunk(reactionRoles, 20)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
-			display.addPage((template: MessageEmbed) => template.setDescription(serialized));
+			display.addTemplatedEmbedPage((template: MessageEmbed) => template.setDescription(serialized));
 		}
 
 		await display.start(response, message.author.id);

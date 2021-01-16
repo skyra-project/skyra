@@ -1,7 +1,8 @@
 import { DbSet, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
+import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -117,15 +118,15 @@ export default class extends SkyraCommand {
 		message.sendTranslated(LanguageKeys.Resolvers.ChannelNotInGuildSubCommand, [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async list(message: Message) {
+	public async list(message: GuildMessage) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-		);
+		});
 
 		const t = await message.fetchT();
 		const pages = chunk(
@@ -138,14 +139,14 @@ export default class extends SkyraCommand {
 			),
 			10
 		);
-		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
+		for (const page of pages) display.addTemplatedEmbedPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed({
 				description: pickRandom(t(LanguageKeys.System.Loading)),
 				color: BrandingColors.Secondary
 			})
-		);
+		)) as GuildMessage;
 		await display.start(response, message.author.id);
 		return response;
 	}

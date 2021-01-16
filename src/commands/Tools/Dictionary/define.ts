@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
@@ -11,7 +11,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['definition', 'defination', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
@@ -19,12 +19,12 @@ import { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Tools.DefineExtended,
 	usage: '<input:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [input]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const result = await this.fetchApi(t, input);
 		const display = await this.buildDisplay(result, message, t);
@@ -34,15 +34,17 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: GuildMessage, t: TFunction) {
-		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(await DbSet.fetchColor(message));
-
+		const template = new MessageEmbed()
+			.setTitle(toTitleCase(results.word))
+			.setColor(await DbSet.fetchColor(message))
+			.setFooter(' - Powered by Owlbot');
 		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);
 
-		const display = new UserRichDisplay(template).setFooterSuffix(' - Powered by Owlbot');
+		const display = new UserPaginatedMessage({ template });
 
 		for (const result of results.definitions) {
 			const definition = this.content(result.definition);
-			display.addPage((embed: MessageEmbed) => {
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => {
 				embed
 					.addField('Type', result.type ? toTitleCase(result.type) : t(LanguageKeys.Commands.Tools.DefineUnknown), true)
 					.setDescription(definition);

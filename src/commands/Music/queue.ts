@@ -2,7 +2,7 @@ import { Queue, requireQueueNotEmpty } from '#lib/audio';
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types/Discord';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { pickRandom, showSeconds } from '#utils/util';
@@ -24,16 +24,16 @@ export default class extends MusicCommand {
 		const t = await message.fetchT();
 
 		// Send the loading message
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
-		);
+		)) as GuildMessage;
 
 		// Generate the pages with 5 songs each
-		const queueDisplay = new UserRichDisplay(
-			new MessageEmbed()
+		const queueDisplay = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setTitle(t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }))
-		);
+		});
 
 		const { audio } = message.guild;
 		const current = await audio.nowPlaying();
@@ -58,7 +58,7 @@ export default class extends MusicCommand {
 				);
 			}
 
-			queueDisplay.embedTemplate.addField(t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
+			queueDisplay.template.addField(t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
 		}
 
 		if (tracks.length) {
@@ -72,11 +72,11 @@ export default class extends MusicCommand {
 				remainingTime: showSeconds(totalDuration)
 			});
 
-			queueDisplay.embedTemplate.addField(t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
-			queueDisplay.embedTemplate.addField(ZeroWidthSpace, t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
+			queueDisplay.template.addField(t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
+			queueDisplay.template.addField(ZeroWidthSpace, t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
 
 			for (const page of chunk(songFields, 5)) {
-				queueDisplay.addPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));
+				queueDisplay.addTemplatedEmbedPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));
 			}
 		}
 

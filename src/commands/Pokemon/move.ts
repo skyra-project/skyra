@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
@@ -13,18 +13,18 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended,
 	usage: '<move:str>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [move]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 		const moveData = await this.fetchAPI(move.toLowerCase(), t);
 
 		const display = await this.buildDisplay(message, moveData, t);
@@ -52,13 +52,13 @@ export default class extends RichDisplayCommand {
 			`[Smogon](${moveData.smogonPage})`
 		].join(' | ');
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
-		)
-			.addPage((embed) => {
+		})
+			.addTemplatedEmbedPage((embed) => {
 				if (moveData.isFieldMove) {
 					embed.addField(embedTranslations.fieldMoveEffectTitle, moveData.isFieldMove, false);
 				}
@@ -70,7 +70,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedTranslations.accuracy, `${moveData.accuracy}%`, true)
 					.addField(externalResources, externalSources);
 			})
-			.addPage((embed) =>
+			.addTemplatedEmbedPage((embed) =>
 				embed
 					.addField(embedTranslations.category, moveData.category, true)
 					.addField(embedTranslations.priority, moveData.priority, true)
@@ -81,7 +81,7 @@ export default class extends RichDisplayCommand {
 
 		// If the move has zMovePower or maxMovePower then squeeze it in between as a page
 		if (moveData.zMovePower || moveData.maxMovePower) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => {
 				if (moveData.maxMovePower) embed.addField(embedTranslations.maxMovePower, moveData.maxMovePower);
 				if (moveData.zMovePower) embed.addField(embedTranslations.zMovePower, moveData.zMovePower);
 
@@ -90,7 +90,7 @@ export default class extends RichDisplayCommand {
 			});
 		}
 
-		return display.addPage((embed: MessageEmbed) =>
+		return display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 			embed
 				.addField(embedTranslations.zCrystal, moveData.isZ ?? embedTranslations.none, true)
 				.addField(embedTranslations.gmaxPokemon, moveData.isGMax ?? embedTranslations.none, true)

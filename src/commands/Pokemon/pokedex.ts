@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '#utils/APIs/Pokemon';
@@ -22,7 +22,7 @@ enum BaseStats {
 	speed = 'SPE'
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
@@ -31,12 +31,12 @@ enum BaseStats {
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), t);
 
 		await this.buildDisplay(message, pokeDetails, t) //
@@ -165,13 +165,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
-		return new UserRichDisplay(
-			new MessageEmbed()
+		return new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite)
-		)
-			.addPage((embed: MessageEmbed) =>
+		})
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
 					.addField(embedTranslations.abilities, abilities.join(', '), true)
@@ -182,7 +182,7 @@ export default class extends RichDisplayCommand {
 						`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
 					)
 			)
-			.addPage((embed: MessageEmbed) =>
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
 					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
@@ -199,13 +199,13 @@ export default class extends RichDisplayCommand {
 			`[Smogon](${pokeDetails.smogonPage})`
 		].join(' | ');
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite)
-		)
-			.addPage((embed: MessageEmbed) =>
+		})
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
 					.addField(embedTranslations.abilities, abilities.join(', '), true)
@@ -218,7 +218,7 @@ export default class extends RichDisplayCommand {
 
 					.addField(externalResources, externalResourceData)
 			)
-			.addPage((embed: MessageEmbed) => {
+			.addTemplatedEmbedPage((embed: MessageEmbed) => {
 				embed
 					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
 					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
@@ -226,7 +226,7 @@ export default class extends RichDisplayCommand {
 
 				return embed.addField(externalResources, externalResourceData);
 			})
-			.addPage((embed: MessageEmbed) =>
+			.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
 					.addField(embedTranslations.flavourText, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
@@ -237,7 +237,7 @@ export default class extends RichDisplayCommand {
 		// If there are any cosmetic formes or other formes then add a page for them
 		// If the pokémon doesn't have the formes then the API will default them to `null`
 		if (pokeDetails.cosmeticFormes || pokeDetails.otherFormes) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addTemplatedEmbedPage((embed: MessageEmbed) => {
 				// If the pokémon has other formes
 				if (pokeDetails.otherFormes) {
 					embed.addField(embedTranslations.otherFormesTitle, embedTranslations.otherFormesList);

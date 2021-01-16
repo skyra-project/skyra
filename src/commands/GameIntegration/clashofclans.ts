@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { TOKENS } from '#root/config';
@@ -20,7 +20,7 @@ const enum ClashOfClansFetchCategories {
 const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
 const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
@@ -46,13 +46,13 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async clan(message: GuildMessage, [clan]: [string]) {
 		const t = await message.fetchT();
 
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(t, clan, ClashOfClansFetchCategories.CLANS);
 
@@ -133,11 +133,11 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildClanDisplay(message: GuildMessage, t: TFunction, clans: ClashOfClans.Clan[]) {
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const clan of clans) {
 			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
 					.setTitle(`${clan.tag} - ${clan.name}`)

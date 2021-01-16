@@ -1,7 +1,7 @@
 import { DbSet, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors, Moderation } from '#utils/constants';
@@ -11,7 +11,7 @@ import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, User } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
@@ -21,24 +21,24 @@ import { MessageEmbed, User } from 'discord.js';
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
 
 		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
-		);
+		});
 
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
@@ -51,7 +51,7 @@ export default class extends RichDisplayCommand {
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPage((template: MessageEmbed) => {
+			display.addTemplatedEmbedPage((template: MessageEmbed) => {
 				for (const entry of page) {
 					const { name, value } = format(entry);
 					template.addField(name, value);

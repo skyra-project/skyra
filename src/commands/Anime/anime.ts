@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { PaginatedMessageCommand, PaginatedMessageCommandOptions } from '#lib/structures/commands/PaginatedMessageCommand';
+import { UserPaginatedMessage } from '#lib/structures/UserPaginatedMessage';
 import { GuildMessage } from '#lib/types';
 import { Kitsu } from '#lib/types/definitions/Kitsu';
 import { TOKENS } from '#root/config';
@@ -15,18 +15,18 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<PaginatedMessageCommandOptions>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Anime.AnimeDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.AnimeExtended,
 	usage: '<animeName:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [animeName]: [string]) {
 		const t = await message.fetchT();
-		const response = await message.send(
+		const response = (await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		)) as GuildMessage;
 
 		const { hits: entries } = await this.fetchAPI(t, animeName);
 		if (!entries.length) throw t(LanguageKeys.System.NoResults);
@@ -65,7 +65,9 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Anime.AnimeEmbedData);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed().setColor(await DbSet.fetchColor(message)).setFooter(' - © kitsu.io')
+		});
 
 		for (const entry of entries) {
 			const description =
@@ -93,7 +95,7 @@ export default class extends RichDisplayCommand {
 				entry.canonicalTitle
 			].map((title) => title || t(LanguageKeys.Globals.None));
 
-			display.addPage((embed: MessageEmbed) =>
+			display.addTemplatedEmbedPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(animeURL)

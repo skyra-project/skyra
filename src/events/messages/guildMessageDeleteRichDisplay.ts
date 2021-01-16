@@ -7,6 +7,6 @@ import { Event, EventOptions } from 'klasa';
 @ApplyOptions<EventOptions>({ event: Events.GuildMessageDelete })
 export default class extends Event {
 	public run(message: GuildMessage) {
-		UserPaginatedMessage.messages.get(message.id)?.collector.stop();
+		UserPaginatedMessage.messages.get(message.id)?.collector!.stop();
 	}
 }

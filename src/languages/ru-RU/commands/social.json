@@ -210,7 +210,7 @@
 		"reminder": ""
 	},
 	"leaderboardListifyPage": "",
-	"levelDescription": "",
+	"levelDescription": "Проверьте свой глобальный уровень.",
 	"levelExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -242,7 +242,7 @@
 	"marriedExtended": {
 		"extendedHelp": ""
 	},
-	"mylevelDescription": "",
+	"mylevelDescription": "Проверьте свой локальный уровень.",
 	"mylevelExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [

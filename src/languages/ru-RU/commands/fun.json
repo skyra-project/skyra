@@ -36,7 +36,7 @@
 			]
 		],
 		"examples": [
-			""
+			"Skyra - лучший бот на этом сервере"
 		]
 	},
 	"diceDescription": "",
@@ -104,7 +104,7 @@
 	"shindeiruExtended": {
 		"extendedHelp": ""
 	},
-	"xkcdDescription": "",
+	"xkcdDescription": "Читайте комиксы с XKCD.",
 	"xkcdExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -184,7 +184,7 @@
 		"Потому что я так сказала.",
 		"",
 		"Спросите владельца этого сервера.",
-		"",
+		"Спросите снова.",
 		"",
 		"Так сказано в Библии."
 	],

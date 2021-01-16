@@ -1,1 +1,20 @@
-{}
+{
+	"ADMINISTRATOR": "Администратор",
+	"VIEW_AUDIT_LOG": "Просматривать журнал аудита",
+	"MANAGE_GUILD": "Управлять сервером",
+	"MANAGE_ROLES": "Управлять ролями",
+	"MANAGE_CHANNELS": "Управлять каналами",
+	"KICK_MEMBERS": "Выгонять участников",
+	"BAN_MEMBERS": "Банить участников",
+	"CHANGE_NICKNAME": "Изменить никнейм",
+	"MANAGE_NICKNAMES": "Управлять никнеймами",
+	"MANAGE_EMOJIS": "Управлять эмодзи",
+	"SEND_MESSAGES": "Отправлять сообщения",
+	"SEND_TTS_MESSAGES": "Отправлять TTS сообщения",
+	"MANAGE_MESSAGES": "Управлять сообщениями",
+	"EMBED_LINKS": "Встраивать ссылки",
+	"ATTACH_FILES": "Прикреплять файлы",
+	"READ_MESSAGE_HISTORY": "Читать историю сообщений",
+	"USE_EXTERNAL_EMOJIS": "Использовать внешние эмодзи",
+	"ADD_REACTIONS": "Добавлять реакции"
+}

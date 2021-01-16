@@ -254,6 +254,14 @@
 			""
 		]
 	},
+	"rolesAbort": "",
+	"rolesAdded": "",
+	"rolesAuditlog": "",
+	"rolesListEmpty": "",
+	"rolesListTitle": "",
+	"rolesNotManageable": "",
+	"rolesNotPublic": "",
+	"rolesRemoved": "",
 	"setIgnoreChannelsDescription": "",
 	"setIgnoreChannelsExtended": {
 		"extendedHelp": "",

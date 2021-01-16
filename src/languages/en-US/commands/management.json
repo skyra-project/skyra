@@ -159,6 +159,14 @@
 		],
 		"examples": ["show", "add @role", "add @role #channel emoji", "remove @role 123456789012345678", "reset"]
 	},
+	"rolesAbort": "I looked far and wide, but I seem to not have found what you were looking for. Please run `{{prefix}}roles` for the full list!",
+	"rolesAdded": "The following roles have been added to your profile: `{{roles}}`",
+	"rolesAuditlog": "Authorized: Public Role Management | 'Roles' Command.",
+	"rolesListEmpty": "This server does not have a role listed as a public role.",
+	"rolesListTitle": "List of public roles",
+	"rolesNotManageable": "The following roles cannot be given by me due to their hierarchy role position: `{{roles}}`",
+	"rolesNotPublic": "The following roles are not public: `{{roles}}`",
+	"rolesRemoved": "The following roles have been removed from your profile: `{{roles}}`",
 	"setIgnoreChannelsDescription": "Set a channel to the ignore channel list.",
 	"setIgnoreChannelsExtended": {
 		"extendedHelp": "This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators can use Skyra's commands.\nUnlike removing the **{{SEND_MESSAGES, permissions}}** permission, Skyra is still able to send (and therefore execute commands) messages, which allows moderators to use moderation commands in the channel.\nUse this if you want to ban any command usage from the bot in a specific channel.",

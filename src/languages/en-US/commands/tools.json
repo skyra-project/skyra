@@ -212,14 +212,6 @@
 		]
 	},
 	"quoteMessage": "It is very weird, but said message does not have a content nor a image.",
-	"rolesAbort": "I looked far and wide, but I seem to not have found what you were looking for. Please run `{{prefix}}roles` for the full list!",
-	"rolesAdded": "The following roles have been added to your profile: `{{roles}}`",
-	"rolesAuditlog": "Authorized: Public Role Management | 'Roles' Command.",
-	"rolesListEmpty": "This server does not have a role listed as a public role.",
-	"rolesListTitle": "List of public roles",
-	"rolesNotManageable": "The following roles cannot be given by me due to their hierarchy role position: `{{roles}}`",
-	"rolesNotPublic": "The following roles are not public: `{{roles}}`",
-	"rolesRemoved": "The following roles have been removed from your profile: `{{roles}}`",
 	"showsData": {
 		"noGenres": "None on TheMovieDB",
 		"unknownUserScore": "No user score",

@@ -6,7 +6,6 @@ import { Events } from '#lib/types/Enums';
 import { User } from 'discord.js';
 import { TFunction } from 'i18next';
 import { CommandStore } from 'klasa';
-import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -44,7 +43,7 @@ export default class extends SkyraCommand {
 
 			if (!accepted) return this.denyPayment(t);
 
-			await getManager().transaction(async (em) => {
+			await users.manager.transaction(async (em) => {
 				settings.money -= money;
 				await em.save(settings);
 

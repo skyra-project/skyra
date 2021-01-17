@@ -90,7 +90,7 @@
 		"i18next": "^19.8.4",
 		"i18next-fs-backend": "^1.0.7",
 		"ioredis": "^4.19.4",
-		"klasa": "skyra-project/klasa#refactor/remove-message-delete-events",
+		"klasa": "skyra-project/klasa#settings",
 		"klasa-dashboard-hooks": "skyra-project/klasa-dashboard-hooks#master",
 		"node-fetch": "^2.6.1",
 		"pg": "^8.5.1",

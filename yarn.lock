@@ -3934,9 +3934,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.1"
 
-klasa@skyra-project/klasa#refactor/remove-message-delete-events:
+klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/258b6838cca795306c0db1c6065e7b2f2375396a"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/096df6b7db612d94cf262fbb04ad14665cf306ea"
   dependencies:
     fs-nextra "^0.5.1"
 

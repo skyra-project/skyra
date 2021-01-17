@@ -111,7 +111,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
-					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}

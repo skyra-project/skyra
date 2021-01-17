@@ -234,7 +234,7 @@ export default class extends SkyraCommand {
 	}
 
 	private formatTimestamp(t: TFunction, timestamp: number) {
-		return `[${t(LanguageKeys.Globals.TimeFullValue, { value: timestamp })}]`;
+		return `[${t(LanguageKeys.Globals.DateTimeValue, { value: timestamp })}]`;
 	}
 
 	private formatAuthor(author: User) {

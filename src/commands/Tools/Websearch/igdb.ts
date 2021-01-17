@@ -157,7 +157,7 @@ export default class extends RichDisplayCommand {
 
 	private resolveReleaseDate(t: TFunction, releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return t(LanguageKeys.Globals.TimeDateValue, { value: releaseDates[0].date * 1000 });
+		return t(LanguageKeys.Globals.DateValue, { value: releaseDates[0].date * 1000 });
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

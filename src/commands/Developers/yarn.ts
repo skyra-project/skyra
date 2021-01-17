@@ -61,10 +61,10 @@ export default class extends SkyraCommand {
 
 		const author = this.parseAuthor(result.author);
 		const dateCreated = result.time
-			? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(result.time.created).getTime() })
+			? t(LanguageKeys.Globals.DateValue, { value: new Date(result.time.created).getTime() })
 			: t(LanguageKeys.Globals.Unknown);
 		const dateModified = result.time
-			? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(result.time.modified).getTime() })
+			? t(LanguageKeys.Globals.DateValue, { value: new Date(result.time.modified).getTime() })
 			: t(LanguageKeys.Globals.Unknown);
 
 		const { deprecated } = latestVersion;

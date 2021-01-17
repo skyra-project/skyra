@@ -109,7 +109,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedData.type, t(LanguageKeys.Commands.Anime.MangaTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
-					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}

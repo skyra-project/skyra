@@ -77,7 +77,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private resolveCreationDate(t: TFunction, createdTimestamp: Invite['createdTimestamp'], fallback: string) {
-		if (createdTimestamp !== null) return t(LanguageKeys.Globals.TimeFullValue, { value: createdTimestamp });
+		if (createdTimestamp !== null) return t(LanguageKeys.Globals.DateTimeValue, { value: createdTimestamp });
 		return fallback;
 	}
 }

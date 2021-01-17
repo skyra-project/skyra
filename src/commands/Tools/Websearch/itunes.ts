@@ -61,7 +61,7 @@ export default class extends RichDisplayCommand {
 					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
-					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.TimeDateValue, { value: new Date(song.releaseDate).getTime() }), true)
+					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: new Date(song.releaseDate).getTime() }), true)
 					.addField(titles.numberOfTracksInCollection, song.trackCount, true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)

@@ -96,7 +96,7 @@ export default class extends RichDisplayCommand {
 						titles.releaseDate,
 						game.releaseDateMask === 'TBD'
 							? game.releaseDateMask
-							: t(LanguageKeys.Globals.TimeDateValue, { value: new Date(game.releaseDateMask).getTime() }),
+							: t(LanguageKeys.Globals.DateValue, { value: new Date(game.releaseDateMask).getTime() }),
 						true
 					)
 					.addField(titles.numberOfPlayers, toTitleCase(game.players), true)

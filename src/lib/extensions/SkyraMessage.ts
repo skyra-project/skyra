@@ -58,6 +58,7 @@ export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) 
 	}
 
 	public async nuke(time = 0): Promise<Message> {
+		if (this.deleted) return this;
 		if (time === 0) return this.nukeNow();
 
 		const lastEditedTimestamp = this.editedTimestamp;

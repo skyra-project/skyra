@@ -1,6 +1,6 @@
 import type { ApiRequest } from '#lib/api/ApiRequest';
 import type { ApiResponse } from '#lib/api/ApiResponse';
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';

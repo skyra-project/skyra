@@ -1,6 +1,6 @@
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -11,7 +11,7 @@ import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['tags', 'customcommand', 'copypasta'],
 	description: LanguageKeys.Commands.Tags.TagDescription,
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,

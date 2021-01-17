@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -24,7 +24,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 	return REGEXP_ACCEPT.test(response.content) ? YesNoAnswer.Yes : YesNoAnswer.ImplicitNo;
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.MarryDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MarryExtended,

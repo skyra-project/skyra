@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
@@ -12,7 +12,7 @@ import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['redditor'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.RedditUserDescription,

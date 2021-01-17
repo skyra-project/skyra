@@ -1,12 +1,12 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.XkcdDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.XkcdExtended,

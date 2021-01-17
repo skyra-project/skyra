@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['choose', 'choise', 'pick'],
 	bucket: 2,
 	cooldown: 10,

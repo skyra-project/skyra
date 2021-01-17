@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { sleep } from '#utils/Promisified/sleep';
@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import { inspect } from 'util';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ev'],
 	description: LanguageKeys.Commands.System.EvalDescription,
 	extendedHelp: LanguageKeys.Commands.System.EvalExtended,

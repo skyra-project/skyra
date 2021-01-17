@@ -10,11 +10,16 @@ import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { CommandStore } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
-import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand';
 
-export interface ModerationCommandOptions extends SkyraCommandOptions {
-	requiredMember?: boolean;
-	optionalDuration?: boolean;
+export namespace ModerationCommand {
+	/**
+	 * The ModerationCommand Options
+	 */
+	export type Options = SkyraCommand.Options & {
+		requiredMember?: boolean;
+		optionalDuration?: boolean;
+	};
 }
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -28,7 +33,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	 */
 	public optionalDuration: boolean;
 
-	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommand.Options) {
 		super(store, file, directory, {
 			flagSupport: true,
 			optionalDuration: false,

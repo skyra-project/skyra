@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
@@ -8,7 +8,7 @@ import { Canvas } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pray'],
 	bucket: 2,
 	cooldown: 30,

@@ -12,6 +12,12 @@
 			"rules": {
 				"@typescript-eslint/require-await": 0
 			}
+		},
+		{
+			"files": ["src/lib/structures/commands/*.ts"],
+			"rules": {
+				"@typescript-eslint/no-namespace": 0
+			}
 		}
 	]
 }

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
@@ -9,7 +9,7 @@ import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.GsearchDescription,

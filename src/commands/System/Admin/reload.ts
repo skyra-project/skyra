@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Piece, Store } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['r'],
 	description: LanguageKeys.Commands.System.ReloadDescription,
 	extendedHelp: LanguageKeys.Commands.System.ReloadExtended,

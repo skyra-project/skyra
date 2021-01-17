@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis } from '#utils/constants';
@@ -8,7 +8,7 @@ import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Permissions, Role } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 150,
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,

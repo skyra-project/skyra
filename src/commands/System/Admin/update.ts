@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis, rootFolder } from '#utils/constants';
 import { exec } from '#utils/Promisified/exec';
@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pull'],
 	description: LanguageKeys.Commands.Admin.UpdateDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.UpdateExtended,

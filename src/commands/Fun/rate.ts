@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CLIENT_ID } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.RateDescription,

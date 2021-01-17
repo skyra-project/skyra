@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { ENABLE_INFLUX } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.System.RebootDescription,
 	extendedHelp: LanguageKeys.Commands.System.RebootExtended,
 	guarded: true,

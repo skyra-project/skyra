@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -14,7 +14,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],
 	cooldown: 0,
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,

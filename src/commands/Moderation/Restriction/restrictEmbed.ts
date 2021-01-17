@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Role } from 'discord.js';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['restricted-embed', 're'],
 	description: LanguageKeys.Commands.Moderation.RestrictEmbedDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.RestrictEmbedExtended,

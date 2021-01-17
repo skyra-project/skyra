@@ -1,6 +1,6 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { Time } from '#utils/constants';
 import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -8,7 +8,7 @@ import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User }
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,

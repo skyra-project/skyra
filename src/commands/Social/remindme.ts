@@ -131,7 +131,7 @@ export default class extends SkyraCommand {
 		const pages = chunk(
 			tasks.map(
 				(task) =>
-					`\`${task.id}\` - \`${t(LanguageKeys.Globals.TimeFullValue, { value: task.time })}\` - ${cutText(
+					`\`${task.id}\` - \`${t(LanguageKeys.Globals.DateTimeValue, { value: task.time })}\` - ${cutText(
 						task.data.content as string,
 						40
 					)}`
@@ -168,6 +168,6 @@ export default class extends SkyraCommand {
 	public async delete(message: Message, [task]: [ReminderScheduledTask]) {
 		const { id } = task;
 		await task.delete();
-		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeDelete, [{ task, id }]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeDelete, [{ remainingDuration: task.time.getTime() - Date.now(), id }]);
 	}
 }

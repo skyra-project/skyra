@@ -4,7 +4,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"स्थान",
 				""
 			]
 		],
@@ -15,9 +15,9 @@
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
+		"currentTime": "वर्तमान समय",
+		"currentDate": "आज की तारीख",
+		"country": "देश",
 		"gmsOffset": "",
 		"dst": ""
 	},
@@ -28,7 +28,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"निर्देश",
 				""
 			]
 		],

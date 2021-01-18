@@ -1,6 +1,6 @@
 import { Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ZeroWidthSpace } from '#utils/constants';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { ContentExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
@@ -10,7 +10,7 @@ import type { Message, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['source', 'msg-source', 'message-source'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.ContentDescription,

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
@@ -11,7 +11,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,

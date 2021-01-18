@@ -7,7 +7,7 @@ import { codeBlock } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { CommandStore, Duration } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../moderation/SelfModeratorBitField';
-import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand';
 
 export enum AKeys {
 	Enable,
@@ -83,8 +83,15 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 	['ban', SelfModeratorHardActionFlags.Ban]
 ]);
 
+export namespace SelfModerationCommand {
+	/**
+	 * The SelfModerationCommand Options
+	 */
+	export type Options = SkyraCommand.Options;
+}
+
 export abstract class SelfModerationCommand extends SkyraCommand {
-	protected constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: SelfModerationCommand.Options) {
 		super(store, file, directory, {
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,

@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 
 const CDN_URL = CdnUrls.BannersBasePath;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	bucket: 2,
 	cooldown: 10,

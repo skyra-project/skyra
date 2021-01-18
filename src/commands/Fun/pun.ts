@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { Mime } from '#utils/constants';
 import { fetch } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.PunDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,

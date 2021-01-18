@@ -1,6 +1,6 @@
 import { GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { deepClone } from '@sapphire/utilities';
@@ -9,7 +9,7 @@ import type { Role } from 'discord.js';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['autoroles', 'levelrole', 'lvlrole'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.AutoRoleDescription,

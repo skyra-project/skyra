@@ -1,11 +1,11 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { announcementCheck } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 15,
 	description: LanguageKeys.Commands.Announcement.SubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.SubscribeExtended,

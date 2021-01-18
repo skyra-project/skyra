@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -32,7 +32,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	return 0;
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['commands', 'cmd', 'cmds'],
 	description: LanguageKeys.Commands.General.HelpDescription,
 	extendedHelp: LanguageKeys.Commands.General.HelpExtended,

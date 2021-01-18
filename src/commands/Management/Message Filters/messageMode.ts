@@ -1,11 +1,10 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SelfModerationCommand } from '#lib/structures/commands/SelfModerationCommand';
-import type { SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
 import type { KeyOfType } from '#lib/types';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['message-mode', 'msg-mode', 'm-mode'],
 	description: LanguageKeys.Commands.Management.MessageModeDescription,
 	extendedHelp: LanguageKeys.Commands.Management.MessageModeExtended

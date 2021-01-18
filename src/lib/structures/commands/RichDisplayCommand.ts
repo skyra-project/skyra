@@ -1,10 +1,17 @@
 import type { GuildMessage } from '#lib/types';
 import type { PermissionResolvable } from 'discord.js';
 import type { CommandStore } from 'klasa';
-import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand';
+
+export namespace RichDisplayCommand {
+	/**
+	 * The RichDisplayCommand Options
+	 */
+	export type Options = SkyraCommand.Options;
+}
 
 export abstract class RichDisplayCommand extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
+	public constructor(store: CommandStore, file: string[], directory: string, options: RichDisplayCommand.Options) {
 		super(store, file, directory, {
 			// Merge in all given options
 			...options,
@@ -30,5 +37,3 @@ export abstract class RichDisplayCommand extends SkyraCommand {
 		return false;
 	}
 }
-
-export type RichDisplayCommandOptions = SkyraCommandOptions;

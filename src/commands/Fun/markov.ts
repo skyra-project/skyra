@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { DEV } from '#root/config';
 import { BrandingColors } from '#utils/constants';
@@ -16,7 +16,7 @@ import type { TFunction } from 'i18next';
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.MarkovDescription,

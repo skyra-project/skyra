@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { TOKENS } from '#root/config';
 import { queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { assetsFolder } from '#utils/constants';
@@ -27,7 +27,7 @@ const enum TemperatureUnit {
 	Fahrenheit
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 120,
 	description: LanguageKeys.Commands.Google.WeatherDescription,

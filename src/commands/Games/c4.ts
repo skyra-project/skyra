@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import type { User } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
 	cooldown: 0,
 	description: LanguageKeys.Commands.Games.C4Description,

@@ -24,13 +24,13 @@
  */
 
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import { writeHeapSnapshot } from 'v8';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Admin.HeapSnapshotDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.HeapSnapshotExtended,
 	guarded: true,

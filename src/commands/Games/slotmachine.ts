@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['slot', 'slots', 'slotmachines'],
 	bucket: 2,
 	cooldown: 7,

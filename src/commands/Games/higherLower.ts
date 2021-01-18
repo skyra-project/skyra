@@ -1,6 +1,6 @@
 import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
@@ -18,7 +18,7 @@ const enum HigherLowerReactions {
 	Cashout = '%F0%9F%92%B0' // 💰
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hilo', 'higherlower', 'hl'],
 	bucket: 2,
 	cooldown: 7,

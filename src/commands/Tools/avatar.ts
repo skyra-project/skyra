@@ -1,12 +1,12 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { ImageSize, Message, MessageEmbed, User } from 'discord.js';
 
 const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['a', 'av', 'ava'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.AvatarDescription,

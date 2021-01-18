@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -10,7 +10,7 @@ import { remove as removeConfusables } from 'confusables';
 import type { GuildMember, Message, User } from 'discord.js';
 import { join } from 'path';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,

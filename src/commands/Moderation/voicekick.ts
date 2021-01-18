@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import { getImage } from '#utils/util';
 import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vk'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,

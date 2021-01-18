@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import type { SuggestionData } from '#lib/types/definitions/Suggestion';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -17,7 +17,7 @@ const enum SuggestionsColors {
 	Denied = 0xf90505
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['resu'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.ResolveSuggestionDescription,

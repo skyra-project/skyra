@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
@@ -22,7 +22,7 @@ enum BaseStats {
 	speed = 'SPE'
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,

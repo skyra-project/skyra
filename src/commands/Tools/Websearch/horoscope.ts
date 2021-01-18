@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
 import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
@@ -25,7 +25,7 @@ const kSunSigns = new Set([
 ]);
 const kRandomSunSign = createPick([...kSunSigns]);
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['saelem'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,

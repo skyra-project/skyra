@@ -1,10 +1,10 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['support-server', 'server'],
 	description: LanguageKeys.Commands.System.SupportDescription,
 	extendedHelp: LanguageKeys.Commands.System.SupportExtended,

@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { WEBHOOK_FEEDBACK } from '#root/config';
@@ -11,7 +11,7 @@ import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhoo
 
 const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,

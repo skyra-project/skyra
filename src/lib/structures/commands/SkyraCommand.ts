@@ -3,6 +3,18 @@ import type { CustomGet } from '#lib/types';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 import { Command, CommandOptions, CommandStore } from 'klasa';
 
+export namespace SkyraCommand {
+	/**
+	 * The SkyraCommand Options
+	 */
+	export type Options = CommandOptions & {
+		description: CustomGet<string, string>;
+		extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
+		spam?: boolean;
+		requiredGuildPermissions?: PermissionResolvable;
+	};
+}
+
 export abstract class SkyraCommand extends Command {
 	public description: CustomGet<string, string>;
 	public extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
@@ -10,7 +22,7 @@ export abstract class SkyraCommand extends Command {
 	public spam: boolean;
 	public requiredGuildPermissions: Permissions;
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
+	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommand.Options) {
 		super(store, file, directory, {
 			spam: false,
 			requiredGuildPermissions: 0,
@@ -33,11 +45,4 @@ export abstract class SkyraCommand extends Command {
 	public inhibit(_message: Message): Promise<boolean> | boolean {
 		return false;
 	}
-}
-
-export interface SkyraCommandOptions extends CommandOptions {
-	description: CustomGet<string, string>;
-	extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
-	spam?: boolean;
-	requiredGuildPermissions?: PermissionResolvable;
 }

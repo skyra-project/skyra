@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
@@ -22,7 +22,7 @@ function isIgdbCompany(company: unknown): company is Company {
 	return (company as Company).id !== undefined;
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,

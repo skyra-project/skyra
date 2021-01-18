@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
@@ -7,7 +7,7 @@ import type { TextChannel } from 'discord.js';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,

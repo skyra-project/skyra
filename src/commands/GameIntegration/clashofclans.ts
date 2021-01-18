@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
@@ -20,7 +20,7 @@ const enum ClashOfClansFetchCategories {
 const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
 const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['coc'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,

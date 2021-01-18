@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { exec } from '#utils/Promisified/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
@@ -7,7 +7,7 @@ import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageAttachment } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['execute'],
 	description: LanguageKeys.Commands.System.ExecDescription,
 	extendedHelp: LanguageKeys.Commands.System.ExecExtended,

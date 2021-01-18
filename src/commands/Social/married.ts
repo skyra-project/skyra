@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
@@ -9,7 +9,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.MarriedDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MarriedExtended

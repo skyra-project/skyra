@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,

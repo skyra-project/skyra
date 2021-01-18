@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { WeebCommand, WeebCommandOptions } from '#lib/structures/commands/WeebCommand';
+import { WeebCommand } from '#lib/structures/commands/WeebCommand';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<WeebCommandOptions>({
+@ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.PunchDescription,
 	extendedHelp: LanguageKeys.Commands.Weeb.PunchExtended,
 	queryType: 'punch',

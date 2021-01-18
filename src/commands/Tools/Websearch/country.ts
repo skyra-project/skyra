@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { BrandingColors } from '#utils/constants';
 import { fetch, pickRandom } from '#utils/util';
@@ -12,7 +12,7 @@ const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.CountryDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended,
 	usage: '<country:str>'

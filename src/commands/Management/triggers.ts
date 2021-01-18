@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.TriggersDescription,
 	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,

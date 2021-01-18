@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
  */
 const kMaximum = 100000;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Anime.WaifuDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.WaifuExtended,
 	requiredPermissions: ['EMBED_LINKS']

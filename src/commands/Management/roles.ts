@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -10,7 +10,7 @@ import { pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, Role } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,

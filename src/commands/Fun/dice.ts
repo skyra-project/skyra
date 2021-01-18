@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['roll'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,

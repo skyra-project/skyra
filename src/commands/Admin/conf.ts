@@ -1,6 +1,6 @@
 import { configurableGroups, isSchemaGroup, isSchemaKey, remove, reset, SchemaKey, set } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { SettingsMenu } from '#lib/structures/SettingsMenu';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -8,7 +8,7 @@ import { map } from '#utils/iterator';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
 	description: LanguageKeys.Commands.Admin.ConfDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.ConfExtended,

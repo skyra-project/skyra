@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -31,7 +31,7 @@ const enum Filter {
 	User
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['purge', 'nuke', 'sweep'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.PruneDescription,

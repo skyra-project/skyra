@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
@@ -15,7 +15,7 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Anime.AnimeDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.AnimeExtended,

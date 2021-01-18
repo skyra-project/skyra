@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.System.SetAvatarDescription,
 	extendedHelp: LanguageKeys.Commands.System.SetAvatarExtended,
 	guarded: true,

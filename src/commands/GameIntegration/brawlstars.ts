@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
@@ -47,7 +47,7 @@ export interface BrawlStarsGIData {
 	clubTag?: string;
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bs'],
 	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,

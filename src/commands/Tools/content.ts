@@ -5,7 +5,7 @@ import { ZeroWidthSpace } from '#utils/constants';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { ContentExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { getContent } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;

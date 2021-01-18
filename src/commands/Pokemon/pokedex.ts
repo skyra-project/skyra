@@ -9,7 +9,7 @@ import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

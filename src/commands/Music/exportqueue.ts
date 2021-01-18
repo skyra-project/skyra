@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types/Discord';
 import { map, prependIfNotNull, take } from '#utils/iterator';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { serialize } from 'binarytf';
 
 export const maximumExportQueueSize = 100;

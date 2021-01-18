@@ -2,7 +2,7 @@ import { requireDj, requireQueueNotEmpty, requireSameVoiceChannel, requireSkyraI
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import type { GuildMessage } from '#lib/types/Discord';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.PromoteDescription,

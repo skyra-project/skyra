@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CLIENT_ID } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

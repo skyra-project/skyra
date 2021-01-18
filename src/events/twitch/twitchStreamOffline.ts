@@ -45,9 +45,9 @@ export default class extends Event {
 					const message = this.transformText(subscription.message, data);
 
 					if (subscription.embed) {
-						floatPromise(this, channel.send(this.buildEmbed(message, t)));
+						floatPromise(channel.send(this.buildEmbed(message, t)));
 					} else {
-						floatPromise(this, channel.send(message));
+						floatPromise(channel.send(message));
 					}
 				}
 

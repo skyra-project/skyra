@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';

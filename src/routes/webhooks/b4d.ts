@@ -1,9 +1,7 @@
-import type { ApiRequest } from '#lib/api/ApiRequest';
-import type { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet } from '#lib/database';
 import { TOKENS } from '#root/config';
-import { ApplyOptions } from '@skyra/decorators';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/b4d', route: 'webhooks/b4d' })
 export default class extends Route {
@@ -23,7 +21,7 @@ export default class extends Route {
 
 			return response.noContent();
 		} catch (error) {
-			this.client.emit('error', error);
+			this.context.client.emit('error', error);
 			return response.error(error.message ?? 'Unknown error');
 		}
 	}

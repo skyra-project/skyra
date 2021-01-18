@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import type { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;

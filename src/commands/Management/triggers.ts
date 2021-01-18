@@ -6,7 +6,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji, resolveEmoji } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers, requiredPermissions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 
 const REG_TYPE = /^(alias|reaction)$/i;

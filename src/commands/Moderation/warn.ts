@@ -3,7 +3,7 @@ import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['w', 'warning'],

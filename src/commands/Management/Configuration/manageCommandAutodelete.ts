@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

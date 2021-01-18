@@ -4,7 +4,7 @@ import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
-import type { CommandStore } from 'klasa';
+import { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace ChannelConfigurationCommand {
@@ -21,8 +21,8 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	private readonly responseKey: CustomFunctionGet<string, { channel: string }, string>;
 	private readonly settingsKey: KeyOfType<GuildEntity, string | Nullish>;
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: ChannelConfigurationCommand.Options) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext, options: ChannelConfigurationCommand.Options) {
+		super(context, {
 			bucket: 2,
 			cooldown: 10,
 			permissionLevel: PermissionLevels.Administrator,

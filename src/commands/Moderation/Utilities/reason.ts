@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,

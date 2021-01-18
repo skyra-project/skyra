@@ -4,7 +4,7 @@ import { TOKENS } from '#root/config';
 import { queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { assetsFolder } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';

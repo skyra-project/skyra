@@ -704,6 +704,11 @@
   resolved "https://registry.yarnpkg.com/@sapphire/async-queue/-/async-queue-1.0.1.tgz#e5adbce9a3769324e45add2c9b8d73797eeb93f9"
   integrity sha512-d7NPwrqTkVuBRWYOUZo4k70qcL/s6+o7S2pNR3mDi4wXYqbKkAplrYW80Wshuy5SV8GB/6KVX/8RvTMPivOwww==
 
+"@sapphire/decorators@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/decorators/-/decorators-2.0.2.tgz#0f08e69863c99a9fbf7d78e921578249a92d1925"
+  integrity sha512-cofww4H8p8uwR8KqhYAbgOq5Qxq+IZNDC5tlQVXaq4phybPStd1+ttizGNHDKGxtFWocl9Q7o8TIU52fl1N+xg==
+
 "@sapphire/discord-utilities@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@sapphire/discord-utilities/-/discord-utilities-2.0.1.tgz#47b159b848bcc7d30647a127d88482d8e567795b"
@@ -729,6 +734,14 @@
   integrity sha512-/XmIkHGHi4ycit/+dvY5ZwWLY/z10k5aXxRT8WbHtqDpc5yyhG7zR1U6fqKD9VNU8Ii1hqB2eEzWNeAvlTnwyw==
   dependencies:
     "@discordjs/collection" "^0.1.6"
+
+"@sapphire/plugin-api@^1.2.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-1.3.0.tgz#9892962df17c8b2dc48668cfbaa10927d1c35d29"
+  integrity sha512-Z5jFfaxK285C9/qlsIcykTvrqwbaUJ2Fa1USdFXVFoQ0d4coD4nEaodgRkxjkmAxJO2kjPo0wDFobZK3yi96Og==
+  dependencies:
+    node-fetch "^2.6.1"
+    tslib "^2.1.0"
 
 "@sapphire/plugin-i18next@^1.2.0":
   version "1.2.0"
@@ -976,10 +989,10 @@
   dependencies:
     i18next "^19.7.0"
 
-"@types/ioredis@^4.17.11":
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.17.11.tgz#08ee0324ec0c0770b025a66a9fb6534ca1d87c8e"
-  integrity sha512-XAg9kOLyClyyP2BjfO9NWQmDDJFTNxvz2qkE+BMBfQoAN0/o6X53X2gefgfm4bn89A9462DyzNEL1q23oeCRSg==
+"@types/ioredis@^4.19.0":
+  version "4.19.0"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.19.0.tgz#4855bd477536c0e38df08c7e54d5bf6890d81ada"
+  integrity sha512-fi6Jy3eV4B27TRKxjL2vjLSIRo7qfKK7fweYKPMrRW3HXK/g8Jn3YTe2H+14qperWEEBC9S5KKc/FW2k22UIPg==
   dependencies:
     "@types/node" "*"
 
@@ -3928,16 +3941,11 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
-  version "0.0.1-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/5230fcf36362f8546a87fa66c354ee843db1f099"
-  dependencies:
-    node-fetch "^2.6.1"
-
-klasa@skyra-project/klasa#settings:
+klasa@skyra-project/klasa#chore/switch-to-sapphire:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/096df6b7db612d94cf262fbb04ad14665cf306ea"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/5a55884ea861cf89286c3fb6e22af5492981a804"
   dependencies:
+    "@sapphire/pieces" "^1.1.0"
     fs-nextra "^0.5.1"
 
 kleur@^3.0.3:

@@ -4,7 +4,7 @@ import type { GiveawayCreateData } from '#lib/structures/managers/GiveawayManage
 
 export default class extends Task {
 	public async run(data: GiveawayCreateData): Promise<PartialResponseValue> {
-		await this.client.giveaways.create({ ...data, endsAt: new Date(data.endsAt) });
+		await this.context.client.giveaways.create({ ...data, endsAt: new Date(data.endsAt) });
 		return { type: ResponseType.Finished };
 	}
 }

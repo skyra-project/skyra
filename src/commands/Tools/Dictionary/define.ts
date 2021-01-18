@@ -7,7 +7,7 @@ import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION, pickRandom } from '#utils/util';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

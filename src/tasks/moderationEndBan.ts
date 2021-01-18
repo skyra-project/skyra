@@ -15,7 +15,7 @@ export default class extends ModerationTask {
 				userID: data.userID,
 				reason: `[MODERATION] Ban released after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
 			},
-			await this.getTargetDM(guild, await this.client.users.fetch(data.userID))
+			await this.getTargetDM(guild, await this.context.client.users.fetch(data.userID))
 		);
 		return null;
 	}

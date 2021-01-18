@@ -2,7 +2,7 @@ import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SelfModerationCommand } from '#lib/structures/commands/SelfModerationCommand';
 import type { KeyOfType } from '#lib/types';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['capitals-mode', 'caps-mode'],

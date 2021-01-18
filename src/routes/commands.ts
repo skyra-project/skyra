@@ -1,19 +1,18 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ratelimit } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'commands' })
 export default class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public get(request: ApiRequest, response: ApiResponse) {
 		const { lang, category } = request.query;
-		const language = this.client.i18n.fetchT((lang as string) ?? 'en-US');
-		const commands = (category ? this.client.commands.filter((cmd) => cmd.category === category) : this.client.commands).filter(
+		const { client } = this.context;
+		const language = client.i18n.fetchT((lang as string) ?? 'en-US');
+		const commands = (category ? client.commands.filter((cmd) => cmd.category === category) : client.commands).filter(
 			(cmd) => cmd.permissionLevel < 9
 		);
 

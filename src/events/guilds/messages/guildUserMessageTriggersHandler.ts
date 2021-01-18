@@ -1,7 +1,7 @@
 import { GuildSettings, TriggerIncludes } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Event, EventOptions } from 'klasa';
 
@@ -47,7 +47,7 @@ export default class extends Event {
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);
 				});
 			} else {
-				this.client.emit(Events.ApiError, error);
+				this.context.client.emit(Events.ApiError, error);
 			}
 		}
 	}

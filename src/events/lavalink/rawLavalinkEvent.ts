@@ -1,5 +1,5 @@
 import type { IncomingEventPayload } from '@skyra/audio';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ emitter: 'audio', event: 'event' })

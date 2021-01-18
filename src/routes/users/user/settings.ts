@@ -1,10 +1,8 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { authenticated, ratelimit } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';
 
 interface BodyData {
@@ -18,7 +16,7 @@ export default class extends Route {
 	@ratelimit(5, 1000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const { users } = await DbSet.connect();
-		const user = await users.ensureProfile(request.auth!.user_id);
+		const user = await users.ensureProfile(request.auth!.id);
 
 		return response.json(user);
 	}
@@ -29,7 +27,7 @@ export default class extends Route {
 		const requestBody = request.body as { data: BodyData };
 
 		const { users } = await DbSet.connect();
-		const userID = request.auth!.user_id;
+		const userID = request.auth!.id;
 
 		try {
 			const newSettings = await users.lock([userID], async (id) => {
@@ -50,7 +48,7 @@ export default class extends Route {
 
 			return response.json({ newSettings });
 		} catch (errors) {
-			this.client.emit(Events.Error, `[${userID}] failed user settings update:\n${inspect(errors)}`);
+			this.context.client.emit(Events.Error, `[${userID}] failed user settings update:\n${inspect(errors)}`);
 
 			return response.error(500);
 		}

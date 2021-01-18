@@ -107,8 +107,8 @@ export class SettingsMenu {
 		}
 
 		const { parent } = this.schema;
-		if (parent) floatPromise(this.message, this._reactResponse(EMOJIS.BACK));
-		else floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
+		if (parent) floatPromise(this._reactResponse(EMOJIS.BACK));
+		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
@@ -141,7 +141,7 @@ export class SettingsMenu {
 			else this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
 
-		if (!this.errorMessage) floatPromise(this.message, message.nuke());
+		if (!this.errorMessage) floatPromise(message.nuke());
 		await this._renderResponse();
 	}
 
@@ -151,7 +151,7 @@ export class SettingsMenu {
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc?.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
+			floatPromise(this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
 			if (this.schema.parent) {
 				this.schema = this.schema.parent;
 				this.oldValue = undefined;

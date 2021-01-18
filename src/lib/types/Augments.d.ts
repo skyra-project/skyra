@@ -15,6 +15,7 @@ import type { LongLivingReactionCollector } from '#utils/LongLivingReactionColle
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
 import 'i18next';
+import { AliasPieceOptions, PieceOptions } from 'klasa';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
@@ -108,15 +109,6 @@ declare module 'klasa' {
 	interface Argument {
 		// @ts-expect-error 1070
 		run<T>(arg: string | undefined, possible: Possible, message: Message, filter?: (entry: T) => boolean): any;
-	}
-}
-
-declare module 'klasa-dashboard-hooks' {
-	interface AuthData {
-		token: string;
-		refresh: string;
-		user_id: string;
-		expires: number;
 	}
 }
 

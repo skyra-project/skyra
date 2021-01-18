@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { CLIENT_ID } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';

@@ -8,7 +8,7 @@ import { cast } from '#utils/util';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { inspect } from 'util';
 

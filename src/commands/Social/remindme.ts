@@ -6,7 +6,7 @@ import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { chunk, cutText } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {

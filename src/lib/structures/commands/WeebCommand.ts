@@ -6,7 +6,7 @@ import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
+import { PieceContext } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -35,8 +35,8 @@ export abstract class WeebCommand extends SkyraCommand {
 		'User-Agent': `Skyra/${VERSION}`
 	} as const;
 
-	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommand.Options) {
-		super(store, file, directory, {
+	protected constructor(context: PieceContext, options: WeebCommand.Options) {
+		super(context, {
 			bucket: 2,
 			cooldown: 30,
 			requiredPermissions: ['EMBED_LINKS'],
@@ -83,7 +83,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
-			this.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
+			this.context.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
 			throw t(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}

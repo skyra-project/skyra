@@ -2,6 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { CLIENT_ID } from '#root/config';
 import { floatPromise } from '#utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,
@@ -10,18 +11,15 @@ import {
 	RESTGetAPIAuditLogResult
 } from 'discord-api-types/v6';
 import type { Guild } from 'discord.js';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.GuildMemberUpdate, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
-		const guild = this.client.guilds.cache.get(data.guild_id);
+		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (typeof guild === 'undefined') return;
 
-		floatPromise(this, this.handleRoleSets(guild, data));
+		floatPromise(this.handleRoleSets(guild, data));
 	}
 
 	private async handleRoleSets(guild: Guild, data: Readonly<GatewayGuildMemberUpdateDispatch['d']>) {
@@ -53,7 +51,7 @@ export default class extends Event {
 			limit: 10,
 			action_type: AuditLogEvent.MEMBER_ROLE_UPDATE
 		};
-		const auditLogs = await api(this.client).guilds(guild.id)['audit-logs'].get<RESTGetAPIAuditLogResult>({
+		const auditLogs = await api(this.context.client).guilds(guild.id)['audit-logs'].get<RESTGetAPIAuditLogResult>({
 			query
 		});
 
@@ -65,7 +63,7 @@ export default class extends Event {
 			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleID);
 		}
 
-		await api(this.client)
+		await api(this.context.client)
 			.guilds(guild.id)
 			.members(data.user!.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });

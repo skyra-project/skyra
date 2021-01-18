@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 export default class UserSerializer extends Serializer<string> {
 	public async parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const id = Serializer.regex.userOrMember.exec(value);
-		const user = id ? await this.client.users.fetch(id[1]).catch(() => null) : null;
+		const user = id ? await this.context.client.users.fetch(id[1]).catch(() => null) : null;
 		if (user) return this.ok(user.id);
 		return this.error(t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name }));
 	}
@@ -15,7 +15,7 @@ export default class UserSerializer extends Serializer<string> {
 			if (!Serializer.regex.snowflake.test(value)) throw undefined;
 
 			// Fetch the value, if it exists, it'll resolve and return true
-			await this.client.users.fetch(value);
+			await this.context.client.users.fetch(value);
 			return true;
 		} catch {
 			throw t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name });
@@ -23,6 +23,6 @@ export default class UserSerializer extends Serializer<string> {
 	}
 
 	public stringify(value: string) {
-		return this.client.users.cache.get(value)?.tag ?? value;
+		return this.context.client.users.cache.get(value)?.tag ?? value;
 	}
 }

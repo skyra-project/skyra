@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
 import type { IncomingEventTrackEndPayload } from '@skyra/audio';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: 'TrackEndEvent' })

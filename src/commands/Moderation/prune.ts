@@ -7,8 +7,8 @@ import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { isNullish } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -130,7 +130,7 @@ export default class extends SkyraCommand {
 		});
 
 		// Send prune logs and reply to the channel
-		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
+		floatPromise(this.sendPruneLogs(message, filtered, filteredKeys));
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
 			: message.alert(

@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { announcementCheck, extractMentions } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';

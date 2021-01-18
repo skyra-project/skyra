@@ -9,8 +9,8 @@ import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sleep } from '#utils/Promisified/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -116,7 +116,7 @@ export default class extends SkyraCommand {
 					});
 
 					// Delete the previous message, and if stopped, send stop.
-					floatPromise(this, gameMessage.nuke());
+					floatPromise(gameMessage.nuke());
 					if (!verification) return message.channel.postable ? message.send(t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
 				}
 				if (game.bloodbath) game.bloodbath = false;

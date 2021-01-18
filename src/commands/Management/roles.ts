@@ -7,7 +7,7 @@ import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { pickRandom } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import { MessageEmbed, Role } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({

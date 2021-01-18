@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

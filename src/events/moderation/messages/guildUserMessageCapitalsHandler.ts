@@ -4,9 +4,9 @@ import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMes
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
-import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -48,7 +48,7 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
-		floatPromise(this, message.nuke());
+		floatPromise(message.nuke());
 		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(t(LanguageKeys.Monitors.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) }));
 		}

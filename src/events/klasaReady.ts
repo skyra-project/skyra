@@ -2,7 +2,7 @@ import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { blue, green, magenta, magentaBright, red, white } from 'colorette';
 import { Event, EventOptions } from 'klasa';
 

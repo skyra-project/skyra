@@ -1,8 +1,6 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import { authenticated } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: '' })
 export default class extends Route {

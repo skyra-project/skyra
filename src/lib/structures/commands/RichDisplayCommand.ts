@@ -1,6 +1,6 @@
 import type { GuildMessage } from '#lib/types';
 import type { PermissionResolvable } from 'discord.js';
-import type { CommandStore } from 'klasa';
+import { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace RichDisplayCommand {
@@ -11,8 +11,8 @@ export namespace RichDisplayCommand {
 }
 
 export abstract class RichDisplayCommand extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string, options: RichDisplayCommand.Options) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext, options: RichDisplayCommand.Options) {
+		super(context, {
 			// Merge in all given options
 			...options,
 			runIn: ['text'],

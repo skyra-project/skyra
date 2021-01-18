@@ -8,7 +8,7 @@ import { BrandingColors } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { displayEmoji, pickRandom, resolveEmoji } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

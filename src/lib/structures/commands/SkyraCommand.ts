@@ -1,7 +1,7 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import type { CustomGet } from '#lib/types';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
-import { Command, CommandOptions, CommandStore } from 'klasa';
+import { Command, CommandOptions, PieceContext } from 'klasa';
 
 export namespace SkyraCommand {
 	/**
@@ -22,8 +22,8 @@ export abstract class SkyraCommand extends Command {
 	public spam: boolean;
 	public requiredGuildPermissions: Permissions;
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommand.Options) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext, options: SkyraCommand.Options) {
+		super(context, {
 			spam: false,
 			requiredGuildPermissions: 0,
 			...options

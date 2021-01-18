@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID, PREFIX } from '#root/config';
 import { floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
@@ -39,7 +39,7 @@ export default class extends Event {
 
 	public async runCommand(message: Message) {
 		const timer = new Stopwatch();
-		if (this.client.options.typing) floatPromise(this, message.channel.startTyping());
+		if (this.client.options.typing) floatPromise(message.channel.startTyping());
 		try {
 			await this.client.inhibitors.run(message, message.command!);
 			try {

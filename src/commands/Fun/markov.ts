@@ -9,7 +9,7 @@ import { getAllContent, iteratorAt, pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

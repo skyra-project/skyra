@@ -2,7 +2,6 @@
 // Import all dependencies
 import { ClientOptions, Message, Webhook } from 'discord.js';
 import { container } from 'tsyringe';
-import { DashboardClient } from 'klasa-dashboard-hooks';
 import { KlasaClient } from 'klasa';
 import { I18nextHandler } from '@sapphire/plugin-i18next';
 import { mergeDefault } from '@sapphire/utilities';
@@ -141,5 +140,3 @@ export class SkyraClient extends KlasaClient {
 		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
 	}
 }
-
-SkyraClient.use(DashboardClient);

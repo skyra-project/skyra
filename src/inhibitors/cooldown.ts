@@ -1,22 +1,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
-import { Event, Inhibitor, InhibitorStore } from 'klasa';
+import { Event, Inhibitor, InhibitorOptions } from 'klasa';
 
+@ApplyOptions<InhibitorOptions>({ spamProtection: true })
 export default class extends Inhibitor {
-	public constructor(store: InhibitorStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			spamProtection: true
-		});
-	}
-
 	public async run(message: Message, command: SkyraCommand) {
-		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;
+		if (command.cooldown <= 0 || this.context.client.owners.has(message.author)) return;
 
 		let existing: Cooldown | undefined = undefined;
 
 		try {
-			const event = this.client.events.get('commandSuccessCooldown') as CommandCooldown;
+			const event = this.context.client.events.get('commandSuccessCooldown') as CommandCooldown;
 			existing = event.getCooldown(message, command);
 		} catch (err) {
 			return;

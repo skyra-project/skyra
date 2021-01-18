@@ -7,7 +7,7 @@ import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { APIUser } from 'discord-api-types/v6';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';

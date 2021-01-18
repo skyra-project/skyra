@@ -4,7 +4,7 @@ import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { getImage } from '#utils/util';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['um'],

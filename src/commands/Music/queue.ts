@@ -8,7 +8,7 @@ import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { pickRandom, showSeconds } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

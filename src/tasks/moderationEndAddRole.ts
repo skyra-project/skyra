@@ -16,7 +16,7 @@ export default class extends ModerationTask {
 				reason: `[MODERATION] Role removed after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
 			},
 			data.extraData.role,
-			await this.getTargetDM(guild, await this.client.users.fetch(data.userID))
+			await this.getTargetDM(guild, await this.context.client.users.fetch(data.userID))
 		);
 		return null;
 	}

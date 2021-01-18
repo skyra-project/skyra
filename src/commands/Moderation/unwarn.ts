@@ -4,7 +4,7 @@ import { HandledCommandContext, ModerationCommand } from '#lib/structures/comman
 import type { GuildMessage } from '#lib/types';
 import { Moderation } from '#utils/constants';
 import { floatPromise, getImage } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],
@@ -31,7 +31,7 @@ export default class extends ModerationCommand {
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (autoDelete) {
-			if (message.deletable) floatPromise(this, message.nuke());
+			if (message.deletable) floatPromise(message.nuke());
 		}
 
 		if (messageDisplay) {

@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import type { TextChannel } from 'discord.js';
 
 const MAXIMUM_TIME = (Time.Hour * 6) / 1000;

@@ -18,10 +18,11 @@ enum Lists {
 
 export default class extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
-		if (!this.client.ready) return { type: ResponseType.Delay, value: 30000 };
+		const { client } = this.context;
+		if (!client.ready) return { type: ResponseType.Delay, value: 30000 };
 
-		const rawGuilds = this.client.guilds.cache.size;
-		const rawUsers = this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);
+		const rawGuilds = client.guilds.cache.size;
+		const rawUsers = client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);
 
 		this.processAnalytics(rawGuilds, rawUsers);
 		if (DEV) return { type: ResponseType.Finished };
@@ -64,7 +65,7 @@ export default class extends Task {
 			])
 		).filter((value) => value !== null);
 
-		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
+		if (results.length) client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 		return null;
 	}
 
@@ -87,6 +88,6 @@ export default class extends Task {
 	}
 
 	private processAnalytics(guilds: number, users: number) {
-		if (ENABLE_INFLUX) this.client.emit(Events.AnalyticsSync, guilds, users);
+		if (ENABLE_INFLUX) this.context.client.emit(Events.AnalyticsSync, guilds, users);
 	}
 }

@@ -25,7 +25,7 @@ export default class extends Event {
 	private async scheduleDuration(entry: ModerationEntity) {
 		const taskName = entry.duration === null ? null : entry.appealTaskName;
 		if (taskName !== null) {
-			await this.client.schedules
+			await this.context.client.schedules
 				.add(taskName, entry.duration! + Date.now(), {
 					catchUp: true,
 					data: {
@@ -36,7 +36,7 @@ export default class extends Event {
 						[Moderation.SchemaKeys.ExtraData]: entry.extraData
 					}
 				})
-				.catch((error) => this.client.emit(Events.Wtf, error));
+				.catch((error) => this.context.client.emit(Events.Wtf, error));
 		}
 	}
 }

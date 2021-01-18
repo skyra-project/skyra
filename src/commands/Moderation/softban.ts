@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
 import { ArgumentTypes, isNumber } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sb'],

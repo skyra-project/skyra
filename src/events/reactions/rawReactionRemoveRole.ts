@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel, resolveEmoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import type { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';

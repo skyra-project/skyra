@@ -28,7 +28,7 @@ export default class extends Argument {
 	}
 
 	private async fetchMember(query: string, message: GuildMessage) {
-		const [result] = (await api(this.client)
+		const [result] = (await api(message.client)
 			.guilds(message.guild.id)
 			.members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
 		return result;

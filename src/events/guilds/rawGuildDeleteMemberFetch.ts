@@ -1,12 +1,10 @@
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayGuildDeleteDispatch } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildDelete, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.GuildDelete, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayGuildDeleteDispatch['d'], shardID: number) {
-		this.client.guildMemberFetchQueue.remove(shardID, data.id);
+		this.context.client.guildMemberFetchQueue.remove(shardID, data.id);
 	}
 }

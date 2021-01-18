@@ -137,7 +137,6 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		const lock = createReferPromise<void>();
 		this._locks.push(lock);
 		floatPromise(
-			this.guild,
 			lock.promise.finally(() => {
 				this._locks.splice(this._locks.indexOf(lock), 1);
 			})

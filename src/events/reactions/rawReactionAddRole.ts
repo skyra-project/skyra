@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })

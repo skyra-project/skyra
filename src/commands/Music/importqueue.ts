@@ -7,7 +7,7 @@ import { Events } from '#lib/types/Enums';
 import { empty, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { Track } from '@skyra/audio';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 

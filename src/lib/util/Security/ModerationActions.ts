@@ -707,7 +707,7 @@ export class ModerationActions {
 			try {
 				const target = await entry.fetchUser();
 				const embed = await this.buildEmbed(entry, sendOptions);
-				floatPromise({ client: this.guild.client }, target.send(embed));
+				floatPromise(target.send(embed));
 			} catch (error) {
 				if (error.code === RESTJSONErrorCodes.CannotSendMessagesToThisUser) return;
 				this.guild.client.emit(Events.Error, error);

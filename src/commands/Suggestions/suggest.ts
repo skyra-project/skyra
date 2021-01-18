@@ -6,7 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { WEBHOOK_FEEDBACK } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { isNullish } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhook } from 'discord.js';
 
 const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;

@@ -7,17 +7,17 @@ export default class UserSerializer extends Serializer<string> {
 	private possibles: readonly string[] = [];
 
 	public parse(value: string, { t, entry }: SerializerUpdateContext) {
-		const exists = this.client.i18n.languages.has(value);
+		const exists = this.context.client.i18n.languages.has(value);
 		if (exists) return this.ok(value);
 		return this.error(t(LanguageKeys.Resolvers.InvalidLanguage, { name: entry.name, possibles: this.possibles }));
 	}
 
 	public isValid(value: string): Awaited<boolean> {
-		return this.client.i18n.languages.has(value);
+		return this.context.client.i18n.languages.has(value);
 	}
 
 	public init() {
-		this.possibles = [...map(this.client.i18n.languages.keys(), (key) => `\`${key}\``)];
+		this.possibles = [...map(this.context.client.i18n.languages.keys(), (key) => `\`${key}\``)];
 		return Promise.resolve();
 	}
 }

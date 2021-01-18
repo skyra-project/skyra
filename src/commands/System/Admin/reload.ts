@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { ApplyOptions, CreateResolver } from '@skyra/decorators';
+import { ApplyOptions, CreateResolver } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import i18next, { TFunction } from 'i18next';
 import { Piece, Store } from 'klasa';

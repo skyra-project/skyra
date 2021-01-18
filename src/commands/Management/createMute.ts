@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis } from '#utils/constants';
 import { resolveEmoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

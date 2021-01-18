@@ -6,7 +6,7 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { isNumber, noop } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';

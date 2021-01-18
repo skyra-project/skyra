@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
@@ -13,7 +13,7 @@ export default class extends Event {
 		const [enabled, t] = await member.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberAdd], settings.getLanguage()]);
 		if (!enabled) return;
 
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

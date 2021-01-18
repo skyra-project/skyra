@@ -8,7 +8,7 @@ import { BrandingColors, Moderation } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { chunk, cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, User } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({

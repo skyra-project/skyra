@@ -2,7 +2,7 @@ import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Guild } from 'discord.js';
 import type { EventOptions } from 'klasa';
 
@@ -13,14 +13,14 @@ export default class extends AnalyticsEvent {
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			// TODO: Adjust for traditional sharding
-			.intField('value', this.client.guilds.cache.size);
+			.intField('value', guild.client.guilds.cache.size);
 		const users = new Point(AnalyticsSchema.Points.Users)
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			// TODO: Adjust for traditional sharding
 			.intField(
 				'value',
-				this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
+				guild.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 			);
 
 		return this.writePoints([guilds, users]);

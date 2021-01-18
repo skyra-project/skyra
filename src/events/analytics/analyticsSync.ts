@@ -3,7 +3,7 @@ import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({
@@ -24,7 +24,7 @@ export default class extends AnalyticsEvent {
 			this.syncMessageCount()
 		]);
 
-		return this.client.analytics!.writeApi.flush();
+		return this.context.client.analytics!.writeApi.flush();
 	}
 
 	private syncGuilds(value: number) {
@@ -50,7 +50,7 @@ export default class extends AnalyticsEvent {
 			new Point(AnalyticsSchema.Points.VoiceConnections)
 				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 				// TODO: Adjust for traditional sharding
-				.intField('value', this.client.audio.queues?.reduce((acc, queue) => (queue.player.playing ? acc + 1 : acc), 0) ?? 0)
+				.intField('value', this.context.client.audio.queues?.reduce((acc, queue) => (queue.player.playing ? acc + 1 : acc), 0) ?? 0)
 		);
 	}
 
@@ -68,8 +68,9 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncMessageCount() {
-		const value = this.client.analytics!.messageCount;
-		this.client.analytics!.messageCount = 0;
+		const { client } = this.context;
+		const value = client.analytics!.messageCount;
+		client.analytics!.messageCount = 0;
 
 		return new Point(AnalyticsSchema.Points.MessageCount) //
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)

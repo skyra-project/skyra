@@ -6,7 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({

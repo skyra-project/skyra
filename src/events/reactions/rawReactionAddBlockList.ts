@@ -10,7 +10,7 @@ import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 import type { EventOptions } from 'klasa';
 

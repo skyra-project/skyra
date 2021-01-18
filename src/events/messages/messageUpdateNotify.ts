@@ -6,7 +6,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { diffWordsWithSpace } from 'diff';
 import type { Message } from 'discord.js';
 import { Event, EventOptions } from 'klasa';

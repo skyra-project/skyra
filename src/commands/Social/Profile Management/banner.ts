@@ -7,7 +7,7 @@ import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { roundNumber } from '@sapphire/utilities';
-import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

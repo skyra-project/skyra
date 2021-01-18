@@ -9,7 +9,7 @@ import type { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero 
 import { BrandingColors, Time } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { toTitleCase } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

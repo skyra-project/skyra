@@ -16,7 +16,7 @@ export default class extends ModerationTask {
 				reason: `[MODERATION] Warning released after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
 			},
 			data.caseID,
-			await this.getTargetDM(guild, await this.client.users.fetch(data.userID))
+			await this.getTargetDM(guild, await this.context.client.users.fetch(data.userID))
 		);
 		return null;
 	}

@@ -5,7 +5,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import type { KeyOfType } from '#lib/types/Utils';
 import { codeBlock } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { CommandStore, Duration } from 'klasa';
+import { Duration, PieceContext } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../moderation/SelfModeratorBitField';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -91,8 +91,8 @@ export namespace SelfModerationCommand {
 }
 
 export abstract class SelfModerationCommand extends SkyraCommand {
-	protected constructor(store: CommandStore, file: string[], directory: string, options: SelfModerationCommand.Options) {
-		super(store, file, directory, {
+	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
+		super(context, {
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],

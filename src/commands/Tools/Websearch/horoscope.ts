@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
 import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import type { Days, Sunsigns } from '@skyra/saelem';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';

@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { ImageSize, Message, MessageEmbed, User } from 'discord.js';
 
 const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];

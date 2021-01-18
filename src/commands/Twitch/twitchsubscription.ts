@@ -16,7 +16,7 @@ import { BrandingColors, Time } from '#utils/constants';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { pickRandom } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers, requiredPermissions } from '@sapphire/decorators';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Any } from 'typeorm';

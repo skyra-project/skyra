@@ -8,7 +8,7 @@ import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

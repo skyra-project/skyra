@@ -2,7 +2,7 @@ import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({

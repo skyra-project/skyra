@@ -2,7 +2,7 @@ import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { Event, EventOptions, RateLimitManager } from 'klasa';
 
@@ -76,7 +76,7 @@ export default class extends Event {
 					settings[GuildSettings.Roles.Auto].splice(roleIndex, 1);
 				})
 				.then(() => this.handleRoles(message, points))
-				.catch((error) => this.client.emit(Events.Error, error));
+				.catch((error) => this.context.client.emit(Events.Error, error));
 			return;
 		}
 

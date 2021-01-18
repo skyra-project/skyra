@@ -5,8 +5,8 @@ import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMes
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise, getContent } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { remove as removeConfusables } from 'confusables';
 import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -34,7 +34,7 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
-		floatPromise(this, message.nuke());
+		floatPromise(message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(t(LanguageKeys.Monitors.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) }));
 		}

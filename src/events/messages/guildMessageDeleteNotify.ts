@@ -6,7 +6,7 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { getContent, getImage } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

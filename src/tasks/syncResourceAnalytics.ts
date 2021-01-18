@@ -3,7 +3,7 @@ import { Events } from '#lib/types/Enums';
 
 export default class extends Task {
 	public run() {
-		this.client.emit(Events.ResourceAnalyticsSync);
+		this.context.client.emit(Events.ResourceAnalyticsSync);
 		return null;
 	}
 }

@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
 import type { IncomingEventTrackExceptionPayload } from '@skyra/audio';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { magenta } from 'colorette';
 import { Event, EventOptions } from 'klasa';
 

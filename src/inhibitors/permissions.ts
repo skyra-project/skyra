@@ -14,7 +14,7 @@ export default class extends Inhibitor {
 			if (result === false) throw t(LanguageKeys.Inhibitors.Permissions);
 		}
 
-		const { broke, permission } = await this.client.permissionLevels.run(message, command.permissionLevel);
+		const { broke, permission } = await message.client.permissionLevels.run(message, command.permissionLevel);
 		if (permission) return;
 
 		throw broke ? await message.resolveKey(LanguageKeys.Inhibitors.Permissions) : true;

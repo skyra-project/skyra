@@ -12,7 +12,7 @@ const { FLAGS } = Permissions;
 export default class extends Event {
 	public async run(member: GuildMember) {
 		if (await this.handleStickyRoles(member)) return;
-		this.client.emit(Events.NotMutedMemberAdd, member);
+		this.context.client.emit(Events.NotMutedMemberAdd, member);
 	}
 
 	private async handleStickyRoles(member: GuildMember) {
@@ -26,10 +26,10 @@ export default class extends Event {
 		if (roleID && stickyRoles.includes(roleID)) {
 			// Handle mute
 			const role = member.guild.roles.cache.get(roleID);
-			floatPromise(this, role ? member.roles.add(role) : member.guild.writeSettings([[GuildSettings.Roles.Muted, null]]));
+			floatPromise(role ? member.roles.add(role) : member.guild.writeSettings([[GuildSettings.Roles.Muted, null]]));
 
 			// Handle log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
 				new MessageEmbed()
 					.setColor(Colors.Amber)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -46,7 +46,7 @@ export default class extends Event {
 			return true;
 		}
 
-		floatPromise(this, member.roles.add(stickyRoles));
+		floatPromise(member.roles.add(stickyRoles));
 
 		return false;
 	}

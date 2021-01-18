@@ -1,7 +1,7 @@
-import { MultiArgument } from 'klasa';
+import { Argument, MultiArgument } from 'klasa';
 
 export default class extends MultiArgument {
 	public get base() {
-		return this.store.get('rolename')!;
+		return this.store.get('rolename') as Argument;
 	}
 }

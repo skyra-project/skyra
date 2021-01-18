@@ -30,9 +30,10 @@ import type { TFunction } from 'i18next';
 	[
 		'timespan-seconds',
 		(arg, _, message) => {
+			if (!arg) return Time.Second * 30;
 			let duration = message.client.arguments.get('timespan')!.run(arg, _, message);
 			// In case of a duration of more than 1 minute then reset it to the default of 30 seconds
-			if (duration > Time.Minute) duration = Time.Minute * 0.5;
+			if (duration > Time.Minute) duration = Time.Second * 30;
 			return duration / 1000;
 		}
 	]

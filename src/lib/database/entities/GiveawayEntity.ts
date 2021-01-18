@@ -187,8 +187,8 @@ export class GiveawayEntity extends BaseEntity {
 		const t = await guild.fetchT();
 		if (state === States.Finished) {
 			this.#winners = await this.pickWinners();
+			this.#finished = true;
 			await this.announceWinners(t);
-			await this.finish();
 		} else {
 			this.#refreshAt = this.calculateNextRefresh();
 		}

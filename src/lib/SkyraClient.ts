@@ -1,39 +1,34 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { ClientOptions, Message, Webhook } from 'discord.js';
-import { container } from 'tsyringe';
-import { KlasaClient } from 'klasa';
+import { QueueClient } from '#lib/audio';
+import { GuildSettings, SettingsManager } from '#lib/database';
+import { AnalyticsData } from '#lib/structures/AnalyticsData';
+// Import all configuration
+import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
+import { Server } from '@sapphire/plugin-api';
 import { I18nextHandler } from '@sapphire/plugin-i18next';
 import { mergeDefault } from '@sapphire/utilities';
-
+import { ClientOptions, Message, Webhook } from 'discord.js';
+import { KlasaClient } from 'klasa';
+import { join } from 'path';
+import { container } from 'tsyringe';
+import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
+// Import all extensions and schemas
+import './extensions';
+// Import setup files
+import './setup';
+import { InviteStore } from './structures/InviteStore';
+import { ConnectFourManager } from './structures/managers/ConnectFourManager';
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
 import { ScheduleManager } from './structures/managers/ScheduleManager';
-import { InviteStore } from './structures/InviteStore';
-
 // Import all utils
-import { clientOptions } from './util/constants';
-import { ConnectFourManager } from './structures/managers/ConnectFourManager';
-import { enumerable } from './util/util';
+import { clientOptions, rootFolder } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
-
-// Import all configuration
-import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
-
-// Import all extensions and schemas
-import './extensions';
-
-// Import setup files
-import './setup';
-import { AnalyticsData } from '#lib/structures/AnalyticsData';
-import { QueueClient } from '#lib/audio';
-import { GuildSettings, SettingsManager } from '#lib/database';
+import { enumerable } from './util/util';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
-import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { Server } from '@sapphire/plugin-api';
-import { join } from 'path';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -126,6 +121,9 @@ export class SkyraClient extends KlasaClient {
 			.registerStore(this.server.mediaParsers)
 			.registerStore(this.server.middlewares);
 
+		for (const store of [this.server.routes, this.server.mediaParsers, this.server.middlewares]) {
+			store.registerPath(join(rootFolder, 'node_modules', '@sapphire', 'plugin-api', 'dist', store.name));
+		}
 		for (const store of this.stores) store.registerPath(join(this.userBaseDirectory, store.name));
 
 		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);

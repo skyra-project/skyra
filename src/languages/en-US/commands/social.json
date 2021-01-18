@@ -87,7 +87,7 @@
 	"remindmeCreateNoDuration": "You must tell me what you want me to remind you and when.",
 	"remindmeCreateNoDescription": "Something, you did not tell me what.",
 	"remindmeDeleteNoId": "You must give a valid ID, you can get them using the `list` sub-command.",
-	"remindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{task.time.getTime() - Date.now(), duration}}** has been successfully deleted.",
+	"remindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{remainingDuration, duration}}** has been successfully deleted.",
 	"remindmeListEmpty": "You do not have any active reminder",
 	"remindmeShowFooter": "ID: {{id}} | Ends at:",
 	"remindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",

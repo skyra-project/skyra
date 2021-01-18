@@ -12,8 +12,8 @@
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",
-	"timeDateValue": "{{value, timeDate}}",
-	"timeFullValue": "{{value, timeFull}}",
+	"dateValue": "{{value, date}}",
+	"dateTimeValue": "{{value, dateTime}}",
 	"andListValue": "{{value, andList}}",
 	"orListValue": "{{value, orList}}"
 }

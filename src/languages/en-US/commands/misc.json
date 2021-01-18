@@ -30,7 +30,7 @@
 		"overviewFor": "Overview for /u/{{user}}",
 		"permalink": "Permalink",
 		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
-		"joinedReddit": "Joined Reddit {{timestamp, timeFull}}"
+		"joinedReddit": "Joined Reddit {{timestamp, dateTime}}"
 	},
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",

@@ -82,6 +82,7 @@
 		"reminder": "Be careful with potentially duplicate names as you can easily trigger reloading all pieces!"
 	},
 	"reloadEverything": "{{GREENTICK}} Reloaded everything. (Took: {{time}})",
+	"reloadLanguage": "{{GREENTICK}} Reloaded language resource `{{language}}`. (Took: {{time}})",
 	"reloadFailed": "{{REDCROSS}} Failed to reload {{type}}: {{name}}. Please check your Console.",
 	"unload": "{{GREENTICK}} Unloaded {{type}}: {{name}}",
 	"unloadDescription": "Unloads the klasa piece.",

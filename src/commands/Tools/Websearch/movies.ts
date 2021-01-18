@@ -85,7 +85,7 @@ export default class extends RichDisplayCommand {
 					.addField(
 						titles.releaseDate,
 						movie.release_date
-							? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(movie.release_date).getTime() })
+							? t(LanguageKeys.Globals.DateValue, { value: new Date(movie.release_date).getTime() })
 							: t(LanguageKeys.Globals.Unknown),
 						true
 					)

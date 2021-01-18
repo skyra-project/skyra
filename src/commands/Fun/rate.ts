@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { CLIENT_ID } from '#root/config';
+import { CLIENT_ID, OWNERS } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -15,7 +15,7 @@ import type { Message } from 'discord.js';
 	usage: '<user:string>'
 })
 export default class extends SkyraCommand {
-	private devRegex = new RegExp(`^(kyra|favna|${[...this.context.client.owners].map((owner) => `<@!${owner.id}>`).join('|')})$`, 'i');
+	private devRegex = new RegExp(`^(kyra|favna|${OWNERS.map((owner) => `<@!${owner}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${CLIENT_ID}>)$`, 'i');
 
 	public async run(message: Message, [user]: [string]) {

@@ -14,6 +14,7 @@ export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
+export const OWNERS = [''];
 // #region secrets
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
@@ -129,11 +130,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,
-	pieceDefaults: {
-		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
-		serializers: { enabled: true, aliases: [] },
-		tasks: { enabled: true }
-	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	readyMessage: (client) =>

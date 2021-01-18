@@ -39,6 +39,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		super(context, {
 			bucket: 2,
 			cooldown: 30,
+			flagSupport: false,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			...options

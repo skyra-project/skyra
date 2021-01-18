@@ -102,6 +102,7 @@ export const enum PermissionLevels {
 	Moderator = 5,
 	Administrator = 6,
 	ServerOwner = 7,
+	PreBotOwner = 9,
 	BotOwner = 10
 }
 

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { CLIENT_ID } from '#root/config';
+import { CLIENT_ID, OWNERS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -29,10 +29,9 @@ export default class extends SkyraCommand {
 	public async generate(message: Message, user: User) {
 		let chased: User | undefined = undefined;
 		let chaser: User | undefined = undefined;
-		const { client } = this.context;
-		if (user.id === message.author.id && client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [chased, chaser] = [message.author, client.user!];
-		else if (client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
+		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
+		if (user === message.author) [chased, chaser] = [message.author, this.context.client.user!];
+		else if (OWNERS.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
 		else [chased, chaser] = [user, message.author];
 
 		const [chasedAvatar, chaserAvatar] = await Promise.all([fetchAvatar(chased, 128), fetchAvatar(chaser, 128)]);

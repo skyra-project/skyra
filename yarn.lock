@@ -3943,7 +3943,7 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa@skyra-project/klasa#chore/switch-to-sapphire:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/496af6edd0451ed6b5765dd34eb00950ff58a929"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/04a8328de174d1b7d08436999d8c1e92a8a9a873"
   dependencies:
     "@sapphire/pieces" "^1.1.0"
     fs-nextra "^0.5.1"

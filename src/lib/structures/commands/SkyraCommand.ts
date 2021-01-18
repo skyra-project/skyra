@@ -24,7 +24,7 @@ export abstract class SkyraCommand extends Command {
 
 	public constructor(context: PieceContext, options: SkyraCommand.Options) {
 		super(context, {
-			spam: false,
+			flagSupport: false,
 			requiredGuildPermissions: 0,
 			...options
 		});
@@ -32,7 +32,7 @@ export abstract class SkyraCommand extends Command {
 		this.description = options.description;
 		this.extendedHelp = options.extendedHelp;
 
-		this.spam = options.spam!;
+		this.spam = options.spam ?? false;
 		this.requiredGuildPermissions = new Permissions(options.requiredGuildPermissions);
 	}
 

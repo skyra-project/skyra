@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { CLIENT_ID } from '#root/config';
+import { CLIENT_ID, OWNERS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -29,10 +29,9 @@ export default class extends SkyraCommand {
 	public async generate(message: Message, user: User) {
 		let selectedUser: User | undefined = undefined;
 		let slapper: User | undefined = undefined;
-		const { client } = this.context;
-		if (user.id === message.author.id && client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [selectedUser, slapper] = [message.author, client.user!];
-		else if (client.options.owners.concat(CLIENT_ID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
+		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
+		if (user === message.author) [selectedUser, slapper] = [message.author, this.context.client.user!];
+		else if (OWNERS.concat(CLIENT_ID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
 		else [selectedUser, slapper] = [user, message.author];
 
 		const [robin, batman] = await Promise.all([fetchAvatar(selectedUser, 256), fetchAvatar(slapper, 256)]);

@@ -16,8 +16,9 @@ export default class extends Event {
 
 		await message.parseCommand();
 		const { client } = this.context;
-		if (!message.commandText && message.prefix === client.mentionPrefix) return this.sendPrefixReminder(message);
-		if (!message.commandText) return undefined;
+		if (!message.commandText) {
+			return message.prefix !== null && message.prefix === client.mentionPrefix ? this.sendPrefixReminder(message) : undefined;
+		}
 		if (!message.command) return client.emit(Events.CommandUnknown, message, message.commandText, message.prefix, message.prefixLength);
 		client.emit(Events.CommandRun, message, message.command, message.args);
 

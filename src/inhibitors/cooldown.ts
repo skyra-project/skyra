@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { OWNERS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { Event, Inhibitor, InhibitorOptions } from 'klasa';
@@ -7,7 +8,7 @@ import { Event, Inhibitor, InhibitorOptions } from 'klasa';
 @ApplyOptions<InhibitorOptions>({ spamProtection: true })
 export default class extends Inhibitor {
 	public async run(message: Message, command: SkyraCommand) {
-		if (command.cooldown <= 0 || this.context.client.owners.has(message.author)) return;
+		if (command.cooldown <= 0 || OWNERS.includes(message.author.id)) return;
 
 		let existing: Cooldown | undefined = undefined;
 

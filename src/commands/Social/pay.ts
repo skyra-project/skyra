@@ -3,13 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { PieceContext } from '@sapphire/pieces';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			bucket: 2,
 			cooldown: 10,
 			description: LanguageKeys.Commands.Social.PayDescription,
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 						id: targetID,
 						money
 					});
-					this.client.emit(Events.MoneyTransaction, user, money, 0);
+					this.context.client.emit(Events.MoneyTransaction, user, money, 0);
 				}
 			});
 
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 	}
 
 	private acceptPayment(message: GuildMessage, t: TFunction, user: User, money: number) {
-		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
+		this.context.client.emit(Events.MoneyPayment, message, message.author, user, money);
 		return t(LanguageKeys.Commands.Social.PayPromptAccept, { user: user.username, amount: money });
 	}
 

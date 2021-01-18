@@ -6,7 +6,8 @@ import type { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
 import { getImageUrl, pickRandom } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({
@@ -33,7 +34,7 @@ export default class extends RichDisplayCommand {
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
-		if (!items || !items.length) throw t(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw t(handleNotOK(GoogleResponseCodes.ZeroResults));
 
 		const display = await this.buildDisplay(message, items);
 

@@ -13,18 +13,19 @@ import type { Message } from 'discord.js';
 })
 export default class extends SkyraCommand {
 	public async run(message: Message) {
-		await message.sendTranslated(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
+		await message.sendTranslated(LanguageKeys.Commands.System.Reboot).catch((err) => this.context.client.emit(Events.ApiError, err));
 
 		if (ENABLE_INFLUX) {
+			const { client } = this.context;
 			try {
-				this.client.emit(
+				client.emit(
 					Events.AnalyticsSync,
-					this.client.guilds.cache.size,
-					this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
+					client.guilds.cache.size,
+					client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 				);
 
-				await this.client.analytics!.writeApi.flush();
-				await this.client.analytics!.writeApi.close();
+				await client.analytics!.writeApi.flush();
+				await client.analytics!.writeApi.close();
 			} catch {
 				// noop
 			}

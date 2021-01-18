@@ -15,6 +15,6 @@ export default class extends MusicCommand {
 	@requireMusicPlaying()
 	public async run(message: GuildMessage, [timespan]: [number]) {
 		await message.guild.audio.seek(timespan);
-		this.client.emit(Events.MusicSongSeekUpdateNotify, message, timespan);
+		this.context.client.emit(Events.MusicSongSeekUpdateNotify, message, timespan);
 	}
 }

@@ -1,21 +1,24 @@
 import { noop } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel, User } from 'discord.js';
+import { Store } from 'klasa';
 import { Time } from './constants';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
 export class LongLivingReactionCollector {
-	public client: Client;
 	public listener: LongLivingReactionCollectorListener | null;
 	public endListener: (() => void) | null;
 
 	private _timer: NodeJS.Timeout | null = null;
 
-	public constructor(client: Client, listener: LongLivingReactionCollectorListener | null = null, endListener: (() => void) | null = null) {
-		this.client = client;
+	public constructor(listener: LongLivingReactionCollectorListener | null = null, endListener: (() => void) | null = null) {
 		this.listener = listener;
 		this.endListener = endListener;
 		this.client.llrCollectors.add(this);
+	}
+
+	public get client(): Client {
+		return Store.injectedContext.client;
 	}
 
 	public setListener(listener: LongLivingReactionCollectorListener | null) {
@@ -57,10 +60,9 @@ export class LongLivingReactionCollector {
 		return this;
 	}
 
-	public static collectOne(client: Client, { filter = () => true, time = Time.Minute * 5 }: LLRCCollectOneOptions = {}) {
+	public static collectOne({ filter = () => true, time = Time.Minute * 5 }: LLRCCollectOneOptions = {}) {
 		return new Promise<LLRCData | null>((resolve) => {
 			const llrc = new LongLivingReactionCollector(
-				client,
 				(reaction) => {
 					if (filter(reaction)) {
 						resolve(reaction);

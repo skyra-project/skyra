@@ -35,6 +35,6 @@ export default class extends MusicCommand {
 
 		// Remove the song from the queue.
 		await audio.removeAt(index);
-		this.client.emit(Events.MusicRemoveNotify, message, entry);
+		this.context.client.emit(Events.MusicRemoveNotify, message, entry);
 	}
 }

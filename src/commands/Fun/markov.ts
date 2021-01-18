@@ -7,9 +7,9 @@ import { BrandingColors } from '#utils/constants';
 import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);
 		else this.kInternalCache.set(channel, markov);
-		this.client.setTimeout(
+		this.context.client.setTimeout(
 			() => (user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel)),
 			this.kInternalCacheTTL
 		);
@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 				messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
 			}
 			this.kInternalMessageCache.set(channel, messageBank);
-			this.client.setTimeout(() => this.kInternalMessageCache.delete(channel), this.kInternalMessageCacheTTL);
+			this.context.client.setTimeout(() => this.kInternalMessageCache.delete(channel), this.kInternalMessageCacheTTL);
 		} else {
 			messageBank = cachedMessageBank;
 		}

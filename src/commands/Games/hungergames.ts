@@ -56,7 +56,6 @@ export default class extends SkyraCommand {
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(
-				this.client,
 				async (reaction) => {
 					// Ignore if resolve is not ready
 					if (
@@ -153,7 +152,7 @@ export default class extends SkyraCommand {
 			const hasLevel = await Message.prototype.hasAtLeastPermissionLevel.call(
 				{
 					author: member.user,
-					client: this.client,
+					client: member.client,
 					guild: member.guild,
 					member
 				},

@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async generate(target: User, author: User) {
-		if (target === author) author = this.client.user!;
+		if (target === author) author = this.context.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const [theAliveOne, theDeadOne] = await Promise.all([fetchAvatar(author, 128), fetchAvatar(target, 256)]);

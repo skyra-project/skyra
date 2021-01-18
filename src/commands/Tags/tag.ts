@@ -7,8 +7,9 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions, requiresPermission } from '@sapphire/decorators';
+import { CreateResolvers, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

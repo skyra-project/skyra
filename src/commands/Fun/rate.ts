@@ -15,7 +15,7 @@ import type { Message } from 'discord.js';
 	usage: '<user:string>'
 })
 export default class extends SkyraCommand {
-	private devRegex = new RegExp(`^(kyra|favna|${[...this.client.owners].map((owner) => `<@!${owner.id}>`).join('|')})$`, 'i');
+	private devRegex = new RegExp(`^(kyra|favna|${[...this.context.client.owners].map((owner) => `<@!${owner.id}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${CLIENT_ID}>)$`, 'i');
 
 	public async run(message: Message, [user]: [string]) {

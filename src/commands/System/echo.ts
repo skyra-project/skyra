@@ -2,23 +2,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { MessageOptions, TextChannel } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['talk'],
+	description: LanguageKeys.Commands.System.EchoDescription,
+	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner,
+	runIn: ['text'],
+	usage: '[channel:channel] [message:...string]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['talk'],
-			description: LanguageKeys.Commands.System.EchoDescription,
-			extendedHelp: LanguageKeys.Commands.System.EchoExtended,
-			guarded: true,
-			permissionLevel: PermissionLevels.BotOwner,
-			runIn: ['text'],
-			usage: '[channel:channel] [message:...string]',
-			usageDelim: ' '
-		});
-	}
-
 	public async run(message: GuildMessage, [channel = message.channel as TextChannel, content]: [TextChannel, string]) {
 		if (message.deletable) message.nuke().catch(() => null);
 

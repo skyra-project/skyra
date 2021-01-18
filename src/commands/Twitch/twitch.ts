@@ -18,14 +18,14 @@ export default class extends SkyraCommand {
 		if (channelData.length === 0) throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		const channel = channelData[0];
 
-		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
+		const { total: followersTotal } = await this.context.client.twitch.fetchUserFollowage('', channel.id);
 
 		const titles = t(LanguageKeys.Commands.Twitch.TwitchTitles);
 		const affiliateStatus = this.parseAffiliateProgram(t, channel.broadcaster_type);
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(this.client.twitch.BRANDING_COLOUR)
+				.setColor(this.context.client.twitch.BRANDING_COLOUR)
 				.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
 				.setTitle(titles.clickToVisit)
 				.setURL(`https://twitch.tv/${channel.login}`)
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 
 	private async fetchUsers(t: TFunction, usernames: string[]) {
 		try {
-			return await this.client.twitch.fetchUsers([], usernames);
+			return await this.context.client.twitch.fetchUsers([], usernames);
 		} catch {
 			throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		}

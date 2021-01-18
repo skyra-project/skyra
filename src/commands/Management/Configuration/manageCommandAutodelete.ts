@@ -3,8 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -49,7 +50,7 @@ export default class extends SkyraCommand {
 
 		const list: string[] = [];
 		for (const entry of commandAutoDelete) {
-			const channel = this.client.channels.cache.get(entry[0]) as TextChannel;
+			const channel = this.context.client.channels.cache.get(entry[0]) as TextChannel;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${t(LanguageKeys.Globals.DurationValue, { value: entry[1] / 60000 })}`);
 		}
 		if (!list.length) throw t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);

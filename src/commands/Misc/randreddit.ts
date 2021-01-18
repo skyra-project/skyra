@@ -6,15 +6,15 @@ import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
+import type { PieceContext } from 'klasa';
 
 export default class extends SkyraCommand {
 	private readonly kBlacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 	private readonly kTitleBlacklist = /nsfl/i;
 	private readonly kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			aliases: ['rand', 'rand-reddit', 'reddit'],
 			cooldown: 3,
 			description: LanguageKeys.Commands.Misc.RandRedditDescription,

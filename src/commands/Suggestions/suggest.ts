@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { WEBHOOK_FEEDBACK } from '#root/config';
 import { BrandingColors } from '#utils/constants';
-import { isNullish } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNullish } from '@sapphire/utilities';
 import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhook } from 'discord.js';
 
 const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;
@@ -25,22 +25,23 @@ export default class extends SkyraCommand {
 	private kChannelPrompt = this.definePrompt('<channel:textChannel|here>');
 
 	public async run(message: GuildMessage, [suggestion]: [string]) {
+		const { client } = this.context;
 		// If including a flag of `--global` send suggestions to #feedbacks in Skyra Lounge
-		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && this.client.webhookFeedback;
+		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && client.webhookFeedback;
 
 		// ! NOTE: Once we start sharding we need to have a better solution for this
-		const guild = globalSuggestion ? this.client.guilds.cache.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild;
+		const guild = globalSuggestion ? client.guilds.cache.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild;
 		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
 
 		if (globalSuggestion) {
-			suggestionsChannel = this.client.webhookFeedback!;
+			suggestionsChannel = client.webhookFeedback!;
 		} else {
 			const [suggestionsChannelID, t] = await guild.readSettings((settings) => [
 				settings[GuildSettings.Suggestions.Channel],
 				settings.getLanguage()
 			]);
 
-			suggestionsChannel = this.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
+			suggestionsChannel = client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
 			if (!suggestionsChannel?.postable) {
 				throw t(LanguageKeys.Commands.Suggestions.SuggestNoPermissions, {
 					username: message.author.username,

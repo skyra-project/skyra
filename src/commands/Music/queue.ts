@@ -6,9 +6,9 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types/Discord';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { pickRandom, showSeconds } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
-import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -117,7 +117,7 @@ export default class extends MusicCommand {
 		} catch {}
 
 		try {
-			return (await this.client.users.fetch(userID)).username;
+			return (await this.context.client.users.fetch(userID)).username;
 		} catch {}
 
 		return t(LanguageKeys.Misc.UnknownUser);

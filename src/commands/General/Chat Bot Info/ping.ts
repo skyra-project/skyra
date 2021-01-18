@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 		return message.send(
 			t(LanguageKeys.Commands.General.PingPong, {
 				diff: (msg.editedTimestamp || msg.createdTimestamp) - (message.editedTimestamp || message.createdTimestamp),
-				ping: Math.round(this.client.ws.ping)
+				ping: Math.round(this.context.client.ws.ping)
 			})
 		);
 	}

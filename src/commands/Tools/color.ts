@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { RGB } from '#lib/structures/color';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { hexConcat, luminance, parse } from '#utils/Color';
+import { PieceContext } from '@sapphire/pieces';
 import { Canvas, rgb } from 'canvas-constructor';
 import type { Message } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
 /* Color limiter */
 const rL = (color: number) => color / 255;
@@ -12,8 +12,8 @@ const cL = (color: number) => Math.max(Math.min(color, 255), 0);
 const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			aliases: ['colour'],
 			cooldown: 15,
 			description: LanguageKeys.Commands.Tools.ColorDescription,

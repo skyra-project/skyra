@@ -8,8 +8,8 @@ import { CdnUrls } from '#lib/types/Constants';
 import type { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
 import { BrandingColors, Time } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

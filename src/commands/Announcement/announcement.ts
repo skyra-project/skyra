@@ -92,7 +92,7 @@ export default class extends SkyraCommand {
 							this.buildEmbed(announcement)
 					  )
 					: await previous.edit(`${header}:\n${announcement}`);
-				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
+				this.context.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
 					const resultMessage = embedEnabled
@@ -108,10 +108,10 @@ export default class extends SkyraCommand {
 								this.buildEmbed(announcement)
 						  )
 						: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
-					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
+					this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage as GuildMessage);
 				} else {
-					this.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
+					this.context.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
 					throw error;
 				}
 			}
@@ -129,7 +129,7 @@ export default class extends SkyraCommand {
 						this.buildEmbed(announcement)
 				  )
 				: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
-			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
+			this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage as GuildMessage);
 		}
 

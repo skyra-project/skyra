@@ -2,7 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
-import type { Client, Message } from 'discord.js';
+import type { Message } from 'discord.js';
+import { Store } from 'klasa';
 import { fetch, FetchResultTypes } from '../util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
@@ -30,7 +31,7 @@ export async function queryGoogleMapsAPI(message: Message, location: string) {
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
-	if (status !== GoogleResponseCodes.Ok) throw await message.resolveKey(handleNotOK(status, message.client));
+	if (status !== GoogleResponseCodes.Ok) throw await message.resolveKey(handleNotOK(status));
 	if (results.length === 0) throw await message.resolveKey(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
 
 	return {
@@ -54,11 +55,11 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch (err) {
 		const { error } = err.toJSON() as GoogleResultError;
-		throw await message.resolveKey(handleNotOK(error.status, message.client));
+		throw await message.resolveKey(handleNotOK(error.status));
 	}
 }
 
-export function handleNotOK(status: GoogleResponseCodes, client: Client): CustomGet<string, string> {
+export function handleNotOK(status: GoogleResponseCodes): CustomGet<string, string> {
 	switch (status) {
 		case GoogleResponseCodes.ZeroResults:
 			return LanguageKeys.Commands.Google.MessagesErrorZeroResults;
@@ -69,10 +70,10 @@ export function handleNotOK(status: GoogleResponseCodes, client: Client): Custom
 		case GoogleResponseCodes.OverQueryLimit:
 			return LanguageKeys.Commands.Google.MessagesErrorOverQueryLimit;
 		case GoogleResponseCodes.PermissionDenied:
-			client.emit(Events.Wtf, 'Google::handleNotOK | Permission Denied');
+			Store.injectedContext.client.emit(Events.Wtf, 'Google::handleNotOK | Permission Denied');
 			return LanguageKeys.Commands.Google.MessagesErrorPermissionDenied;
 		default:
-			client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
+			Store.injectedContext.client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
 			return LanguageKeys.Commands.Google.MessagesErrorUnknown;
 	}
 }

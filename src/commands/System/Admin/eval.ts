@@ -5,10 +5,10 @@ import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { sleep } from '#utils/Promisified/sleep';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
-import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { inspect } from 'util';
 
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
 		if (message.flagArgs.silent) {
-			if (!success && result && cast<Error>(result).stack) this.client.emit(Events.Wtf, cast<Error>(result).stack);
+			if (!success && result && cast<Error>(result).stack) this.context.client.emit(Events.Wtf, cast<Error>(result).stack);
 			return null;
 		}
 

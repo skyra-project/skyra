@@ -29,9 +29,10 @@ export default class extends SkyraCommand {
 	public async generate(message: Message, user: User) {
 		let chased: User | undefined = undefined;
 		let chaser: User | undefined = undefined;
-		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [chased, chaser] = [message.author, this.client.user!];
-		else if (this.client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
+		const { client } = this.context;
+		if (user.id === message.author.id && client.options.owners.includes(message.author.id)) throw '💥';
+		if (user === message.author) [chased, chaser] = [message.author, client.user!];
+		else if (client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
 		else [chased, chaser] = [user, message.author];
 
 		const [chasedAvatar, chaserAvatar] = await Promise.all([fetchAvatar(chased, 128), fetchAvatar(chaser, 128)]);

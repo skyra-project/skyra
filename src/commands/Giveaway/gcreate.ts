@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
 		if (winners > 25) winners = 25;
 		// This creates an single time task to start the giveaway
-		await this.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
+		await this.context.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
 				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,

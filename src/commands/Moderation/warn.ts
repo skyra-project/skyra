@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
-import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['w', 'warning'],

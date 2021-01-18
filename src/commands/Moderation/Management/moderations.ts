@@ -7,8 +7,8 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors, Moderation } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
-import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({
@@ -33,10 +33,11 @@ export default class extends RichDisplayCommand {
 
 		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
+		const user = this.context.client.user!;
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		);
 

@@ -7,8 +7,9 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { displayEmoji, pickRandom, resolveEmoji } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -92,7 +93,7 @@ export default class extends SkyraCommand {
 		const t = await message.fetchT();
 		await message.send(t(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt));
 
-		const reaction = await LongLivingReactionCollector.collectOne(this.client, {
+		const reaction = await LongLivingReactionCollector.collectOne({
 			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild.id
 		});
 		if (!reaction) throw t(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);

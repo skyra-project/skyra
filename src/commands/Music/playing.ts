@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand } from '#lib/structures/commands/MusicCommand';
 import type { GuildMessage } from '#lib/types/Discord';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
-import type { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { TrackInfo } from '@skyra/audio';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({

@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { codeBlock } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

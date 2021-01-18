@@ -16,6 +16,6 @@ export default class extends MusicCommand {
 	@requireMusicPaused()
 	public async run(message: GuildMessage) {
 		await message.guild.audio.resume();
-		this.client.emit(Events.MusicSongResumeNotify, message);
+		this.context.client.emit(Events.MusicSongResumeNotify, message);
 	}
 }

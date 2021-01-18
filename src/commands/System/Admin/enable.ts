@@ -14,12 +14,7 @@ import type { Piece } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: Message, [piece]: [Piece]) {
-		piece.enable();
-		if (this.client.shard) {
-			await this.client.shard.broadcastEval(`
-				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').enable();
-			`);
-		}
-		return message.sendTranslated(LanguageKeys.Commands.System.Enable, [{ type: piece.type, name: piece.name }], { code: 'diff' });
+		piece.enabled = true;
+		return message.sendTranslated(LanguageKeys.Commands.System.Enable, [{ type: piece.store.name, name: piece.name }], { code: 'diff' });
 	}
 }

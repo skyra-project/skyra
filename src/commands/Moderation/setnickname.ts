@@ -21,7 +21,7 @@ import type { User } from 'discord.js';
 export default class extends ModerationCommand {
 	public async init() {
 		this.createCustomResolver('nickname', (arg, possible, message) =>
-			arg ? this.client.arguments.get('string')!.run(arg, possible, message) : ''
+			arg ? this.context.client.arguments.get('string')!.run(arg, possible, message) : ''
 		);
 	}
 

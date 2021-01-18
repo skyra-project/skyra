@@ -24,23 +24,25 @@ export default class extends SkyraCommand {
 		if (user.id === CLIENT_ID) throw t(LanguageKeys.Commands.Games.GamesSkyra);
 		if (user.bot) throw t(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) throw t(LanguageKeys.Commands.Games.GamesSelf);
-		if (this.client.connectFour.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
-		this.client.connectFour.set(message.channel.id, null);
+
+		const { client } = this.context;
+		if (client.connectFour.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
+		client.connectFour.set(message.channel.id, null);
 
 		try {
 			const [response] = await this.prompt
 				.createPrompt(message, { target: user })
 				.run(t(LanguageKeys.Commands.Games.C4Prompt, { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
-				await this.client.connectFour.create(message, message.author, user)!.run();
+				await client.connectFour.create(message, message.author, user)!.run();
 			} else {
 				await message.alert(t(LanguageKeys.Commands.Games.GamesPromptDeny));
 			}
 		} catch (error) {
-			if (typeof error !== 'string') this.client.emit(Events.Wtf, error);
+			if (typeof error !== 'string') client.emit(Events.Wtf, error);
 			await message.alert(t(LanguageKeys.Commands.Games.GamesPromptTimeout));
 		} finally {
-			this.client.connectFour.delete(message.channel.id);
+			client.connectFour.delete(message.channel.id);
 		}
 	}
 }

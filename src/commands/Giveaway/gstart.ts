@@ -2,7 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
@@ -35,7 +36,7 @@ export default class extends SkyraCommand {
 		if (offset > Time.Year) throw await message.resolveKey(LanguageKeys.Giveaway.TimeTooLong);
 		if (winners > 25) winners = 25;
 
-		await this.client.giveaways.create({
+		await this.context.client.giveaways.create({
 			channelID: channel.id,
 			endsAt: new Date(time.getTime() + 500),
 			guildID: message.guild.id,

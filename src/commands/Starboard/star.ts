@@ -3,7 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
 
 const MEDALS = ['🥇', '🥈', '🥉'];

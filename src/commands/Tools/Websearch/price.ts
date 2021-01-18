@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { NAME, TOKENS, VERSION } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

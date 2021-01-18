@@ -5,8 +5,9 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji, resolveEmoji } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions } from '@sapphire/decorators';
+import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 const REG_TYPE = /^(alias|reaction)$/i;

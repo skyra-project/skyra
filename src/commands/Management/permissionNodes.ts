@@ -3,7 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Role } from 'discord.js';
 import type { Command } from 'klasa';
 

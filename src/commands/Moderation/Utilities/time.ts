@@ -4,7 +4,8 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Moderation } from '#utils/constants';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { Permissions, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, t, entry, user);
-		const task = this.client.schedules.queue.find(
+		const task = this.context.client.schedules.queue.find(
 			(tk) => tk.data && tk.data[Moderation.SchemaKeys.Case] === entry.caseID && tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id
 		)!;
 

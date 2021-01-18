@@ -4,8 +4,8 @@ import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
-import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ub'],

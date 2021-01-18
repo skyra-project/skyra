@@ -21,7 +21,6 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
-	private readonly skyraID = CLIENT_ID;
 
 	public async run(message: Message, [user]: [User]) {
 		const attachment = await this.generate(message, user);
@@ -31,9 +30,10 @@ export default class extends SkyraCommand {
 	public async generate(message: Message, user: User) {
 		let target: User | undefined = undefined;
 		let author: User | undefined = undefined;
-		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [target, author] = [message.author, this.client.user!];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [target, author] = [message.author, user];
+		const { client } = this.context;
+		if (user.id === message.author.id && client.options.owners.includes(message.author.id)) throw '💥';
+		if (user === message.author) [target, author] = [message.author, client.user!];
+		else if (client.options.owners.concat(CLIENT_ID).includes(user.id)) [target, author] = [message.author, user];
 		else [target, author] = [user, message.author];
 
 		const [hammered, hammerer] = await Promise.all([fetchAvatar(target, 256), fetchAvatar(author, 256)]);

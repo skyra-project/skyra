@@ -5,8 +5,9 @@ import { SettingsMenu } from '#lib/structures/SettingsMenu';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { map } from '#utils/iterator';
+import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions } from '@sapphire/decorators';
+import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],

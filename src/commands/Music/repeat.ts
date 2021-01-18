@@ -22,6 +22,6 @@ export default class extends MusicCommand {
 		const current = await message.guild.audio.getReplay();
 		await audio.setReplay(!current);
 
-		this.client.emit(Events.MusicReplayUpdateNotify, message, !current);
+		this.context.client.emit(Events.MusicReplayUpdateNotify, message, !current);
 	}
 }

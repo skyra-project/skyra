@@ -17,10 +17,10 @@ export default class extends SkyraCommand {
 		Reflect.set(message.flagArgs, 'global', 'global');
 
 		// Send the feedback as a suggestion
-		return this.client.commands.get('suggest')!.run(message, [feedback]);
+		return this.context.client.commands.get('suggest')!.run(message, [feedback]);
 	}
 
-	public async init() {
-		if (this.client.webhookFeedback === null) this.disable();
+	public async onLoad() {
+		if (this.context.client.webhookFeedback === null) await this.unload();
 	}
 }

@@ -51,7 +51,6 @@ export default class extends SkyraCommand {
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
-				this.client,
 				(reaction) => {
 					if (game.callback === null) return;
 
@@ -69,7 +68,7 @@ export default class extends SkyraCommand {
 					try {
 						await this.end(game, message, settings);
 					} catch (error) {
-						this.client.emit(Events.Wtf, error);
+						this.context.client.emit(Events.Wtf, error);
 					}
 				}
 			),

@@ -2,12 +2,12 @@ import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
+import { PieceContext } from '@sapphire/pieces';
 import type { User } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			bucket: 2,
 			cooldown: 15,
 			description: LanguageKeys.Commands.Social.MyLevelDescription,

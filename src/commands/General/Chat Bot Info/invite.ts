@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
@@ -23,10 +22,6 @@ export default class extends SkyraCommand {
 		}
 
 		return message.send(this.getEmbed(t, { permissions: true }));
-	}
-
-	public async init() {
-		if (this.client.application && !this.client.application.botPublic) this.permissionLevel = PermissionLevels.BotOwner;
 	}
 
 	private getEmbed(t: TFunction, { permissions }: { permissions: boolean }): MessageEmbed {

@@ -3,12 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
+import { PieceContext } from '@sapphire/pieces';
 import type { User } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('username', (arg, possible, msg, [check]) => {
 			if (!arg) return check ? msg.author : undefined;
-			return this.client.arguments.get('username')!.run(arg, possible, msg);
+			return this.context.client.arguments.get('username')!.run(arg, possible, msg);
 		});
 	}
 

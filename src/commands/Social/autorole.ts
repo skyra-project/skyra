@@ -3,8 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { deepClone } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { Role } from 'discord.js';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;

@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
-import type { CommandStore } from 'klasa';
+import { PieceContext } from '@sapphire/pieces';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',
@@ -12,8 +12,8 @@ const titles = {
 };
 
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
-		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
+		const list = await this.context.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(message, list, index - 1, position);
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 			retrievedPage.push(value);
 			if (!value.name) {
 				promises.push(
-					this.client.users.fetch(id).then((user) => {
+					this.context.client.users.fetch(id).then((user) => {
 						value.name = user.username || `Unknown: ${id}`;
 					})
 				);
@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 	}
 
 	public keyUser(str: string) {
-		const user = this.client.users.cache.get(str);
+		const user = this.context.client.users.cache.get(str);
 		if (user) str = user.username;
 		if (str.length < 25) return str;
 		return `${str.substring(0, 22)}...`;

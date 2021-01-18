@@ -5,8 +5,8 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNumber, noop } from '@sapphire/utilities';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg) return undefined;
-			return this.client.arguments.get('commandname')!.run(arg, possible, message);
+			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);
 		});
 		this.createCustomResolver('category', async (arg, _, msg) => {
 			if (!arg) return undefined;
@@ -79,12 +79,12 @@ export default class extends SkyraCommand {
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) return message.send(await this.buildCommandHelp(message, t, command));
 
-		const prefix = (await this.client.fetchPrefix(message)) as string;
+		const prefix = (await this.context.client.fetchPrefix(message)) as string;
 
 		if (
 			!message.flagArgs.all &&
 			message.guild &&
-			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
+			(message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.send(
 				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
@@ -154,9 +154,10 @@ export default class extends SkyraCommand {
 			usage: command.usage.fullUsage(message),
 			extendedHelp
 		});
+		const user = this.context.client.user!;
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
+			.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(data.footer)
 			.setTitle(data.title)
@@ -169,10 +170,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async _fetchCommands(message: Message) {
-		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
+		const { client } = this.context;
+		const run = client.inhibitors.run.bind(client.inhibitors, message);
 		const commands = new Collection<string, SkyraCommand[]>();
 		await Promise.all(
-			this.client.commands.map((command) =>
+			client.commands.map((command) =>
 				run(command, true)
 					.then(() => {
 						const category = commands.get(command.fullCategory.join(' → '));

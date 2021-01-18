@@ -5,8 +5,8 @@ import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { cutText, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

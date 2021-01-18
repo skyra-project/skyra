@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles);
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
-		const owner = await this.client.users.fetch(message.guild.ownerID);
+		const owner = await this.context.client.users.fetch(message.guild.ownerID);
 
 		return message.send(
 			new SkyraEmbed()

@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
-				this.store.client.emit(Events.ApiError, error);
+				this.context.client.emit(Events.ApiError, error);
 			}
 			return [];
 		}

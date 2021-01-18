@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
-import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { cutText } from '@sapphire/utilities';
 import { GuildChannel, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 		if (!extract) return null;
 
 		const [, _guild, _channel, _message] = extract;
-		const guild = this.client.guilds.cache.get(_guild);
+		const guild = this.context.client.guilds.cache.get(_guild);
 		if (guild !== message.guild) return null;
 
 		const channel = guild.channels.cache.get(_channel);

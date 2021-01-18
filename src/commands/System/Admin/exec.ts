@@ -3,8 +3,8 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { exec } from '#utils/Promisified/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
-import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { codeBlock } from '@sapphire/utilities';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

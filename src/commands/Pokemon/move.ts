@@ -8,8 +8,8 @@ import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type { MoveEntry } from '@favware/graphql-pokemon';
-import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

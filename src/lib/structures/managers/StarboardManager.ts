@@ -20,7 +20,14 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 */
 	public guild: Guild;
 
-	public syncMap = new Map<string, Promise<StarboardEntity>>();
+	/**
+	 * The synchronization map for [[StarboardManager.fetch]] calls.
+	 */
+	public syncMap = new Map<string, Promise<StarboardEntity | null>>();
+
+	/**
+	 * The synchronization map for [[StarboardEntity.updateStarMessage]] calls.
+	 */
 	public syncMessageMap = new WeakMap<StarboardEntity, Promise<void>>();
 
 	public constructor(guild: Guild) {
@@ -62,29 +69,38 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 * Fetch a StarboardMessage entry
 	 * @param channel The text channel the message was sent
 	 * @param messageID The message id
-	 * @param userID The user id
 	 */
-	public async fetch(channel: TextChannel, messageID: string) {
+	public async fetch(channel: TextChannel, messageID: string): Promise<StarboardEntity | null> {
+		// If a key already exists, return it:
 		const entry = super.get(messageID);
 		if (entry) return entry;
 
+		// If a key is already synchronising, return the pending promise:
+		const previousPending = this.syncMap.get(messageID);
+		if (previousPending) return previousPending;
+
+		// Start a new synchronization and return the promise:
+		const newPending = this.fetchEntry(channel, messageID).finally(() => this.syncMap.delete(messageID));
+		this.syncMap.set(messageID, newPending);
+		return newPending;
+	}
+
+	private async fetchEntry(channel: TextChannel, messageID: string): Promise<StarboardEntity | null> {
 		const message = (await channel.messages.fetch(messageID).catch(() => null)) as GuildMessage | null;
-		if (message) {
-			const { starboards } = await DbSet.connect();
-			const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });
-			if (previous) {
-				previous.setup(this, message);
-				await previous.downloadStarMessage();
-				if (!previous.hasId()) return null;
-			}
+		if (!message) return null;
 
-			const star = previous ?? new StarboardEntity().setup(this, message);
-			this.set(messageID, star);
-
-			await star.downloadUserList();
-			return star;
+		const { starboards } = await DbSet.connect();
+		const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });
+		if (previous) {
+			previous.setup(this, message);
+			await previous.downloadStarMessage();
+			if (!previous.hasId()) return null;
 		}
 
-		return null;
+		const star = previous ?? new StarboardEntity().setup(this, message);
+		this.set(messageID, star);
+
+		await star.downloadUserList();
+		return star;
 	}
 }

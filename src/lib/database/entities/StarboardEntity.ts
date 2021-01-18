@@ -167,6 +167,7 @@ export class StarboardEntity extends BaseEntity {
 	 * Destroy this instance
 	 */
 	public async destroy() {
+		this.enabled = false;
 		await this.remove();
 		this.#manager.delete(this.#message.id);
 	}

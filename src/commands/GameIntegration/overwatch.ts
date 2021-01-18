@@ -1,7 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
@@ -13,7 +13,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['ow'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,

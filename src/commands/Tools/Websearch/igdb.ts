@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
@@ -22,7 +22,7 @@ function isIgdbCompany(company: unknown): company is Company {
 	return (company as Company).id !== undefined;
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,
@@ -157,7 +157,7 @@ export default class extends RichDisplayCommand {
 
 	private resolveReleaseDate(t: TFunction, releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return t(LanguageKeys.Globals.TimeDateValue, { value: releaseDates[0].date * 1000 });
+		return t(LanguageKeys.Globals.DateValue, { value: releaseDates[0].date * 1000 });
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { TOKENS } from '#root/config';
@@ -15,7 +15,7 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EshopDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended,
@@ -96,7 +96,7 @@ export default class extends RichDisplayCommand {
 						titles.releaseDate,
 						game.releaseDateMask === 'TBD'
 							? game.releaseDateMask
-							: t(LanguageKeys.Globals.TimeDateValue, { value: new Date(game.releaseDateMask).getTime() }),
+							: t(LanguageKeys.Globals.DateValue, { value: new Date(game.releaseDateMask).getTime() }),
 						true
 					)
 					.addField(titles.numberOfPlayers, toTitleCase(game.players), true)

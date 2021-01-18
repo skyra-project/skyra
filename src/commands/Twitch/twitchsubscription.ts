@@ -7,7 +7,7 @@ import {
 	TwitchStreamSubscriptionEntity
 } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
@@ -34,7 +34,7 @@ type Status = NotificationsStreamsTwitchEventStatus;
 type Content = string | undefined;
 type Entry = NotificationsStreamsTwitchStreamer;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,

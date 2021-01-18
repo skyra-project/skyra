@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import { getImage } from '#utils/util';
 import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vm'],
 	description: LanguageKeys.Commands.Moderation.VmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,

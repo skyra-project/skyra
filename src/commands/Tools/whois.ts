@@ -1,6 +1,6 @@
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Emojis, Time } from '#utils/constants';
@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['userinfo', 'uinfo'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WhoisDescription,

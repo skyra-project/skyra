@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
@@ -15,7 +15,7 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Anime.MangaDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.MangaExtended,
@@ -109,7 +109,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedData.type, t(LanguageKeys.Commands.Anime.MangaTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
-					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}

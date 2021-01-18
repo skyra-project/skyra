@@ -38,6 +38,7 @@ export const ReloadAll = FT<{ type: string; time: string }, string>('commands/sy
 export const ReloadDescription = T<string>('commands/system:reloadDescription');
 export const ReloadExtended = T<LanguageHelpDisplayOptions>('commands/system:reloadExtended');
 export const ReloadEverything = FT<{ time: string }, string>('commands/system:reloadEverything');
+export const ReloadLanguage = FT<{ time: string; language: string }, string>('commands/system:reloadLanguage');
 export const ReloadFailed = FT<{ type: string; name: string }, string>('commands/system:reloadFailed');
 export const SetAvatarDescription = T<string>('commands/system:setAvatarDescription');
 export const SetAvatarExtended = T<LanguageHelpDisplayOptions>('commands/system:setAvatarExtended');

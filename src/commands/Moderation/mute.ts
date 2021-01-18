@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
@@ -8,7 +8,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Role } from 'discord.js';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['m'],
 	description: LanguageKeys.Commands.Moderation.MuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.MuteExtended,

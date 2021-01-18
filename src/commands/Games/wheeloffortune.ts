@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wof'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Games.WheelOfFortuneDescription,

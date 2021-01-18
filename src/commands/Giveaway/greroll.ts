@@ -1,6 +1,6 @@
 import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -12,7 +12,7 @@ import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,

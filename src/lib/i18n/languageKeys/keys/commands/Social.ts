@@ -1,4 +1,3 @@
-import type { ScheduleEntity } from '#lib/database';
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import type { Role, User } from 'discord.js';
@@ -109,7 +108,7 @@ export const ProfileExtended = T<LanguageHelpDisplayOptions>('commands/social:pr
 export const RemindMeCreate = FT<{ id: string }, string>('commands/social:remindmeCreate');
 export const RemindMeCreateNoDescription = T<string>('commands/social:remindmeCreateNoDescription');
 export const RemindMeCreateNoDuration = T<string>('commands/social:remindmeCreateNoDuration');
-export const RemindMeDelete = FT<{ task: ScheduleEntity; id: number }, string>('commands/social:remindmeDelete');
+export const RemindMeDelete = FT<{ remainingDuration: number; id: number }, string>('commands/social:remindmeDelete');
 export const RemindMeDeleteNoID = T<string>('commands/social:remindmeDeleteNoId');
 export const RemindMeDescription = T<string>('commands/social:remindmeDescription');
 export const RemindMeExtended = T<LanguageHelpDisplayOptions>('commands/social:remindmeExtended');

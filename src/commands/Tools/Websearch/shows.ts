@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
@@ -84,7 +84,7 @@ export default class extends RichDisplayCommand {
 					)
 					.addField(titles.userScore, show.vote_average ? show.vote_average : fieldsData.unknownUserScore, true)
 					.addField(titles.status, show.status, true)
-					.addField(titles.firstAirDate, t(LanguageKeys.Globals.TimeDateValue, { value: new Date(show.first_air_date).getTime() }), true)
+					.addField(titles.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: new Date(show.first_air_date).getTime() }), true)
 					.addField(titles.genres, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres)
 			);
 		}

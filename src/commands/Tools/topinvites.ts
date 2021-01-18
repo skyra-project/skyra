@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, Emojis } from '#utils/constants';
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['topinvs'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
@@ -77,7 +77,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private resolveCreationDate(t: TFunction, createdTimestamp: Invite['createdTimestamp'], fallback: string) {
-		if (createdTimestamp !== null) return t(LanguageKeys.Globals.TimeFullValue, { value: createdTimestamp });
+		if (createdTimestamp !== null) return t(LanguageKeys.Globals.DateTimeValue, { value: createdTimestamp });
 		return fallback;
 	}
 }

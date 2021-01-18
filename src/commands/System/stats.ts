@@ -1,12 +1,12 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['stats', 'sts'],
 	bucket: 2,
 	cooldown: 15,

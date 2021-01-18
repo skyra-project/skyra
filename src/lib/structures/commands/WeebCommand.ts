@@ -8,7 +8,17 @@ import { MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { CommandStore } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
-import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand';
+
+export namespace WeebCommand {
+	/**
+	 * The WeebCommand Options
+	 */
+	export type Options = SkyraCommand.Options & {
+		queryType: string;
+		responseName: SimpleKey | ComplexKey;
+	};
+}
 
 export abstract class WeebCommand extends SkyraCommand {
 	/**
@@ -25,7 +35,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		'User-Agent': `Skyra/${VERSION}`
 	} as const;
 
-	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommand.Options) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
@@ -77,11 +87,6 @@ export abstract class WeebCommand extends SkyraCommand {
 			throw t(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
-}
-
-export interface WeebCommandOptions extends SkyraCommandOptions {
-	queryType: string;
-	responseName: SimpleKey | ComplexKey;
 }
 
 interface WeebCommandResult {

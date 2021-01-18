@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, streamToBuffer } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
@@ -16,7 +16,7 @@ const COORDINATES: readonly [number, number][] = [
 	[-14, -10]
 ];
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,

@@ -1,6 +1,6 @@
 import { DbSet, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -11,7 +11,7 @@ import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, User } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,

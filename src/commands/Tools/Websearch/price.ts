@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { NAME, TOKENS, VERSION } from '#root/config';
 import { BrandingColors } from '#utils/constants';
@@ -10,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.PriceDescription,

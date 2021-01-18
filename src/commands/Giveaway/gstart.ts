@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -7,7 +7,7 @@ import type { TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,

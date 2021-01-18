@@ -1,12 +1,12 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { HandledCommandContext, ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { Moderation } from '#utils/constants';
 import { floatPromise, getImage } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],
 	description: LanguageKeys.Commands.Moderation.UnwarnDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnwarnExtended,

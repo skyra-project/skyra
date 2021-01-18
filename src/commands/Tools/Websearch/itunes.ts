@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<RichDisplayCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ITunesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ITunesExtended,
@@ -61,7 +61,7 @@ export default class extends RichDisplayCommand {
 					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
-					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.TimeDateValue, { value: new Date(song.releaseDate).getTime() }), true)
+					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: new Date(song.releaseDate).getTime() }), true)
 					.addField(titles.numberOfTracksInCollection, song.trackCount, true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)

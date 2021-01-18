@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/commands/ModerationCommand';
+import { CommandContext, HandledCommandContext, ModerationCommand } from '#lib/structures/commands/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import type { User } from 'discord.js';
 
-@ApplyOptions<ModerationCommandOptions>({
+@ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,

@@ -1,6 +1,6 @@
 import { DbSet, Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
@@ -10,7 +10,7 @@ import { GuildChannel, Message, MessageEmbed, Permissions, TextChannel } from 'd
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.QuoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,

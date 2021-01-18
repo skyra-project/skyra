@@ -382,11 +382,10 @@ export const clientOptions: Partial<ClientOptions> = {
 						case LanguageFormatters.Duration: {
 							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
 						}
-						case LanguageFormatters.TimeDate:
-							return getHandler(language!).timeDate.format(value as number);
-						case LanguageFormatters.TimeFull:
-						case LanguageFormatters.Timestamp: {
-							return getHandler(language!).timeFull.format(value as number);
+						case LanguageFormatters.Date:
+							return getHandler(language!).date.format(value as number);
+						case LanguageFormatters.DateTime: {
+							return getHandler(language!).dateTime.format(value as number);
 						}
 						default:
 							return value as string;

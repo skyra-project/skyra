@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { ApplyOptions } from '@skyra/decorators';
@@ -8,7 +8,7 @@ import { access } from 'fs/promises';
 import type { Piece, Store } from 'klasa';
 import { join } from 'path';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<SkyraCommand.Options>({
 	aliases: ['l'],
 	description: LanguageKeys.Commands.System.LoadDescription,
 	extendedHelp: LanguageKeys.Commands.System.LoadExtended,

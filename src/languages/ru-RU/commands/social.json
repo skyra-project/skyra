@@ -52,7 +52,7 @@
 	"marryNotTaken": "",
 	"marrySkyra": "",
 	"marryAelia": "",
-	"marryBots": "",
+	"marryBots": "О нет! Вам не следует вступать в брак с ботами! Они всё ещё не понимают, что такое настоящая любовь, и они не тёплые!",
 	"marrySelf": "",
 	"marryAuthorTaken": "",
 	"marryAuthorMultipleCancel": "",
@@ -215,7 +215,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пользователь",
 				""
 			]
 		]
@@ -224,12 +224,12 @@
 	"divorceExtended": {
 		"extendedHelp": ""
 	},
-	"marryDescription": "",
+	"marryDescription": "Вступите в брак с кем-нибудь!",
 	"marryExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пользователь",
 				""
 			]
 		],
@@ -247,7 +247,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пользователь",
 				""
 			]
 		]
@@ -261,7 +261,7 @@
 				""
 			],
 			[
-				"",
+				"пользователь",
 				""
 			]
 		],
@@ -274,7 +274,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пользователь",
 				""
 			]
 		]
@@ -284,7 +284,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"действие",
 				""
 			],
 			[
@@ -292,7 +292,7 @@
 				""
 			],
 			[
-				"",
+				"описание",
 				""
 			]
 		],
@@ -312,7 +312,7 @@
 				""
 			],
 			[
-				"",
+				"пользователь",
 				""
 			]
 		],
@@ -365,7 +365,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"действие",
 				""
 			],
 			[

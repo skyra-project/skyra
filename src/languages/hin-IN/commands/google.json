@@ -4,7 +4,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"स्थान",
 				""
 			]
 		],
@@ -15,9 +15,9 @@
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
+		"currentTime": "वर्तमान समय",
+		"currentDate": "आज की तारीख",
+		"country": "देश",
 		"gmsOffset": "",
 		"dst": ""
 	},
@@ -28,13 +28,13 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"निर्देश",
 				""
 			]
 		],
 		"examples": [
-			"",
-			""
+			"डिस्कोर्ड",
+			"स्कायरा"
 		]
 	},
 	"gimageDescription": "",
@@ -42,13 +42,13 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"निर्देश",
 				""
 			]
 		],
 		"examples": [
-			"",
-			""
+			"डिस्कोर्ड",
+			"स्कायरा"
 		],
 		"reminder": ""
 	},
@@ -61,13 +61,13 @@
 			]
 		]
 	},
-	"lmgtfyClick": "",
+	"lmgtfyClick": "खोजने के लिए मुजपर क्लिक करें",
 	"weatherDescription": "",
 	"weatherExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"शहर",
 				""
 			]
 		],
@@ -79,7 +79,7 @@
 	},
 	"errorZeroResults": "",
 	"errorRequestDenied": "",
-	"errorInvalidRequest": "",
+	"errorInvalidRequest": "अमान्य अनुरोध",
 	"errorOverQueryLimit": "",
 	"errorPermissionDenied": "",
 	"errorUnknown": ""

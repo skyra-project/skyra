@@ -32,6 +32,8 @@ import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
+import { Server } from '@sapphire/plugin-api';
+import { join } from 'path';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -79,6 +81,11 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
+	/**
+	 * The API server
+	 */
+	public server: Server;
+
 	@enumerable(false)
 	public readonly audio: QueueClient;
 
@@ -114,11 +121,22 @@ export class SkyraClient extends KlasaClient {
 		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
+		this.server = new Server(clientOptions.api);
+		this.registerStore(this.server.routes) //
+			.registerStore(this.server.mediaParsers)
+			.registerStore(this.server.middlewares);
+
+		this.events.registerPath(join(this.userBaseDirectory, 'events'));
+		this.server.routes.registerPath(join(this.userBaseDirectory, 'routes'));
+		this.server.middlewares.registerPath(join(this.userBaseDirectory, 'middlewares'));
+		this.server.mediaParsers.registerPath(join(this.userBaseDirectory, 'mediaParsers'));
+
 		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);
 	}
 
 	public async login(token?: string) {
 		await this.i18n.init();
+		await this.server.connect();
 		await this.schedules.init();
 		return super.login(token);
 	}

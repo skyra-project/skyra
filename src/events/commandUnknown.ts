@@ -24,14 +24,14 @@ export default class extends Event {
 		if (tag) return this.runTag(message, command);
 
 		const alias = aliases.find((entry) => entry.input === command);
-		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
+		const commandAlias = (alias && this.context.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 
 		return null;
 	}
 
 	public runCommand(message: Message, command: Command) {
-		const commandHandler = cast<CommandHandler>(this.client.events.get('userMessageCommandHandler'));
+		const commandHandler = cast<CommandHandler>(this.context.client.events.get('userMessageCommandHandler'));
 		message.command = command;
 		message.prompter = message.command.usage.createPrompt(message, {
 			flagSupport: message.command.flagSupport,
@@ -43,21 +43,22 @@ export default class extends Event {
 	}
 
 	public async runTag(message: Message, command: string) {
-		const tagCommand = this.client.commands.get('tag') as TagCommand;
+		const { client } = this.context;
+		const tagCommand = client.commands.get('tag') as TagCommand;
 		const timer = new Stopwatch();
 
 		try {
-			await this.client.inhibitors.run(message, tagCommand);
+			await client.inhibitors.run(message, tagCommand);
 			try {
 				const commandRun = tagCommand.show(message, [command]);
 				timer.stop();
 				const response = await commandRun;
-				this.client.emit(Events.CommandSuccess, message, tagCommand, response, timer);
+				client.emit(Events.CommandSuccess, message, tagCommand, response, timer);
 			} catch (error) {
-				this.client.emit(Events.CommandError, message, tagCommand, ['show', command], error);
+				client.emit(Events.CommandError, message, tagCommand, ['show', command], error);
 			}
 		} catch (response) {
-			this.client.emit(Events.CommandInhibited, message, tagCommand, response);
+			client.emit(Events.CommandInhibited, message, tagCommand, response);
 		}
 	}
 }

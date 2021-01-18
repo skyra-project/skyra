@@ -7,6 +7,6 @@ export default class extends Event {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public run() {
-		this.client.console.verbose(`${this.kHeader} Connected.`);
+		this.context.client.console.verbose(`${this.kHeader} Connected.`);
 	}
 }

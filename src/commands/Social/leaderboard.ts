@@ -4,28 +4,25 @@ import type { GuildMessage } from '#lib/types';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
-import { PieceContext } from '@sapphire/pieces';
+import { ApplyOptions } from '@sapphire/decorators';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',
 	local: '🏡 Local Score Scoreboard'
 };
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['top', 'scoreboard'],
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Social.LeaderboardDescription,
+	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
+	runIn: ['text'],
+	usage: '[global|local] [index:integer]',
+	usageDelim: ' ',
+	spam: true
+})
 export default class extends SkyraCommand {
-	public constructor(context: PieceContext) {
-		super(context, {
-			aliases: ['top', 'scoreboard'],
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Social.LeaderboardDescription,
-			extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
-			runIn: ['text'],
-			usage: '[global|local] [index:integer]',
-			usageDelim: ' ',
-			spam: true
-		});
-	}
-
 	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.context.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
 

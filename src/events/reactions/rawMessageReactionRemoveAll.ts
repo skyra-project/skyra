@@ -1,19 +1,17 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
 import type { DiscordAPIError } from 'discord.js';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageReactionRemoveAll, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.MessageReactionRemoveAll, emitter: store.client.ws });
-	}
-
 	public async run(data: GatewayMessageReactionRemoveAllDispatch['d']): Promise<void> {
 		if (!data.guild_id) return;
 
-		const guild = this.client.guilds.cache.get(data.guild_id);
+		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
@@ -37,14 +35,14 @@ export default class extends Event {
 			if (!channel) return;
 
 			if (result && result.star_message_id) {
-				await api(this.client)
+				await api(this.context.client)
 					.channels(channel)
 					.messages(result.star_message_id)
 					.delete({ reason: 'Starboard Management: Reactions Cleared' })
-					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
+					.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
 			}
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			this.context.client.emit(Events.Wtf, error);
 		}
 	}
 }

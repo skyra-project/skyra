@@ -15,7 +15,7 @@ import type { LongLivingReactionCollector } from '#utils/LongLivingReactionColle
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
 import 'i18next';
-import { AliasPieceOptions, PieceOptions } from 'klasa';
+import type { AliasPieceOptions, Client, PieceOptions } from 'klasa';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';

@@ -1,4 +1,3 @@
-import type { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
@@ -6,6 +5,7 @@ import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange'
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Event } from 'klasa';
@@ -24,11 +24,11 @@ export default class extends Event {
 
 		const {
 			data: [game]
-		} = await this.client.twitch.fetchGame([data.game_id]);
+		} = await this.context.client.twitch.fetchGame([data.game_id]);
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guildIds) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
-			const guild = this.client.guilds.cache.get(guildID);
+			const guild = this.context.client.guilds.cache.get(guildID);
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
@@ -51,7 +51,7 @@ export default class extends Event {
 					)
 						continue;
 				}
-				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
+				if (this.context.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
 				const channel = guild.channels.cache.get(subscription.channel) as TextChannel | undefined;
@@ -130,7 +130,7 @@ export default class extends Event {
 			)
 			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp(data.started_at)
-			.setColor(this.client.twitch.BRANDING_COLOUR)
+			.setColor(this.context.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');
 	}
 

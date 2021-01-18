@@ -112,7 +112,7 @@ export default class extends RichDisplayCommand {
 	 */
 	private getEvoChain(pokeDetails: DexDetails): string {
 		// Set evochain if there are no evolutions
-		let evoChain = `**${toTitleCase(pokeDetails.species)} ${pokeDetails.evolutionLevel ? `(${pokeDetails.evolutionLevel})` : ''}**`;
+		let evoChain = `**${toTitleCase(pokeDetails.species)} ${pokeDetails.evolutionLevel ? `(${pokeDetails.evolutionLevel})` : ''}**` as string;
 		if (!pokeDetails.evolutions?.length && !pokeDetails.preevolutions?.length) {
 			evoChain += ' (No Evolutions)';
 		}

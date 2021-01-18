@@ -63,8 +63,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
 		floatPromise(
-			this,
-			api(this.client)
+			api(this.context.client)
 				.channels(data.channel.id)
 				.messages(data.messageID)
 				.reactions(emoji, data.userID)
@@ -74,13 +73,12 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
-			this,
 			data.channel.sendTranslated(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
-		const user = await this.client.users.fetch(data.userID);
+		const user = await this.context.client.users.fetch(data.userID);
 		const t = await data.guild.fetchT();
 		return new MessageEmbed()
 			.setColor(Colors.Red)
@@ -96,7 +94,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	}
 
 	protected onLog(args: Readonly<ArgumentType>) {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
+		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
 	}
 
 	private async hasPermissions(member: GuildMember) {

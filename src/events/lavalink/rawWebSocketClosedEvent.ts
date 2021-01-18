@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
-import type { IncomingEventWebSocketClosedPayload } from '@skyra/audio';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { IncomingEventWebSocketClosedPayload } from '@skyra/audio';
 import { magenta } from 'colorette';
 import { VoiceCloseCodes } from 'discord-api-types/v6';
 import { Event, EventOptions } from 'klasa';
@@ -16,7 +16,7 @@ export default class extends Event {
 		// Ignore normal disconnection:
 		if (payload.code === VoiceCloseCodes.Disconnected) return;
 
-		this.client.emit(Events.Error, [
+		this.context.client.emit(Events.Error, [
 			`${this.kHeader} Websocket Close (${payload.guildId})`,
 			`           Code  : ${payload.code}`,
 			`           Reason: ${payload.reason}`

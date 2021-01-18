@@ -6,7 +6,7 @@ import { OutgoingWebsocketAction } from '#lib/websocket/types';
 export default class extends AudioEvent {
 	public async run(queue: Queue) {
 		const channel = await queue.getTextChannel();
-		if (channel) this.client.emit(Events.MusicFinishNotify, channel);
+		if (channel) this.context.client.emit(Events.MusicFinishNotify, channel);
 
 		await queue.leave();
 		await queue.clear();

@@ -178,7 +178,7 @@ export default class extends SkyraCommand {
 		const proceed = t(LanguageKeys.Commands.Games.HungerGamesResultProceed);
 		const panels = chunk(results, 5);
 
-		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);
+		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`) as string[];
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);
 		return texts;
 	}

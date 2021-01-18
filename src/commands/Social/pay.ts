@@ -3,24 +3,21 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { PieceContext } from '@sapphire/pieces';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+@ApplyOptions<SkyraCommand.Options>({
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Social.PayDescription,
+	extendedHelp: LanguageKeys.Commands.Social.PayExtended,
+	runIn: ['text'],
+	spam: true,
+	usage: '<amount:integer> <user:user>',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
-	public constructor(context: PieceContext) {
-		super(context, {
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Social.PayDescription,
-			extendedHelp: LanguageKeys.Commands.Social.PayExtended,
-			runIn: ['text'],
-			spam: true,
-			usage: '<amount:integer> <user:user>',
-			usageDelim: ' '
-		});
-	}
-
 	public async run(message: GuildMessage, [money, user]: [number, User]) {
 		const t = await message.fetchT();
 		if (message.author === user) throw t(LanguageKeys.Commands.Social.PaySelf);

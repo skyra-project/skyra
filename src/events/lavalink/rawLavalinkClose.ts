@@ -9,7 +9,7 @@ export default class extends Event {
 
 	public run(code: number, reason: string) {
 		if (code >= 4000) {
-			this.client.emit(Events.Error, [`${this.kHeader} Websocket Close\n           Code  : ${code}\n           Reason: ${reason}`]);
+			this.context.client.emit(Events.Error, [`${this.kHeader} Websocket Close\n           Code  : ${code}\n           Reason: ${reason}`]);
 		}
 	}
 }

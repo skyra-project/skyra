@@ -1,7 +1,7 @@
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { canManage } from '#lib/api/utils';
 import { Events } from '#lib/types/Enums';
-import { REDIRECT_URI, SCOPE } from '#root/config';
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -137,8 +137,8 @@ export default class extends Route {
 				{
 					method: 'POST',
 					body: stringify({
-						client_id: client.options.clientID,
-						client_secret: client.options.clientSecret,
+						client_id: CLIENT_ID,
+						client_secret: CLIENT_SECRET,
 						grant_type: 'refresh_token',
 						refresh_token: refreshToken,
 						redirect_uri: REDIRECT_URI,

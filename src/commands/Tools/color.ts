@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { RGB } from '#lib/structures/color';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { hexConcat, luminance, parse } from '#utils/Color';
-import { PieceContext } from '@sapphire/pieces';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, rgb } from 'canvas-constructor';
 import type { Message } from 'discord.js';
 
@@ -11,19 +11,16 @@ const rL = (color: number) => color / 255;
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);
 const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['colour'],
+	cooldown: 15,
+	description: LanguageKeys.Commands.Tools.ColorDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.ColorExtended,
+	requiredPermissions: ['ATTACH_FILES'],
+	usage: '<color:string> [separator:integer{0,255}]',
+	usageDelim: ' >'
+})
 export default class extends SkyraCommand {
-	public constructor(context: PieceContext) {
-		super(context, {
-			aliases: ['colour'],
-			cooldown: 15,
-			description: LanguageKeys.Commands.Tools.ColorDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.ColorExtended,
-			requiredPermissions: ['ATTACH_FILES'],
-			usage: '<color:string> [separator:integer{0,255}]',
-			usageDelim: ' >'
-		});
-	}
-
 	public async run(message: Message, [input, diff = 10]: [string, number]) {
 		const { hex, hsl, rgb } = parse(input);
 

@@ -5,8 +5,8 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { getContent, getImage } from '#utils/util';
-import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@sapphire/decorators';
+import { cutText } from '@sapphire/utilities';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
@@ -27,7 +27,7 @@ export default class extends Event {
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 
 		const channel = message.channel as TextChannel;
-		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(

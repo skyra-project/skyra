@@ -3,19 +3,17 @@ import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.ChannelDelete, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.ChannelDelete, emitter: store.client.ws });
-	}
-
 	public async run(data: GatewayChannelDeleteDispatch['d']) {
 		if (!data.guild_id) return;
 
-		const guild = this.client.guilds.cache.get(data.guild_id);
+		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.id)) return;
 		for (const [key, value] of guild.starboard.entries()) {
 			if (data.id === value.channelID) guild.starboard.delete(key);
@@ -61,20 +59,22 @@ export default class extends Event {
 			// If there are messages older than 14 days, delete them individually.
 			if (oldMessages.length !== 0) await Promise.all(oldMessages.map((message) => this.deleteMessage(channel, message)));
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			this.context.client.emit(Events.Wtf, error);
 		}
 	}
 
 	private deleteMessage(channel: string, message: string) {
 		return resolveOnErrorCodes(
-			api(this.client).channels(channel).messages(message).delete({ reason: 'Starboard Management: Message Deleted' }),
+			api(this.context.client).channels(channel).messages(message).delete({ reason: 'Starboard Management: Message Deleted' }),
 			RESTJSONErrorCodes.UnknownMessage
 		);
 	}
 
 	private deleteMessages(channel: string, messages: readonly string[]) {
 		return resolveOnErrorCodes(
-			api(this.client).channels(channel).messages['bulk-delete'].post({ data: { messages }, reason: 'Starboard Management: Message Deleted' }),
+			api(this.context.client)
+				.channels(channel)
+				.messages['bulk-delete'].post({ data: { messages }, reason: 'Starboard Management: Message Deleted' }),
 			RESTJSONErrorCodes.UnknownMessage
 		);
 	}

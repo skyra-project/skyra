@@ -86,7 +86,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (shouldAutoDelete) {
-			if (message.deletable) floatPromise(this.context, message.nuke());
+			if (message.deletable) floatPromise(message.nuke());
 		}
 
 		if (shouldDisplayMessage) {

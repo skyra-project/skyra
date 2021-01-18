@@ -36,7 +36,7 @@ export class Game {
 	public set content(value: string) {
 		this._content = value;
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		floatPromise(this.message, this.updateContent());
+		floatPromise(this.updateContent());
 	}
 
 	public get content() {
@@ -74,7 +74,7 @@ export class Game {
 				user: this.next!.name
 			}
 		);
-		this.llrc = new LongLivingReactionCollector(this.message.client);
+		this.llrc = new LongLivingReactionCollector();
 
 		let stop = false;
 		while (!stop) {

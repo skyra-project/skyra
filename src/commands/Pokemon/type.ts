@@ -83,7 +83,7 @@ export default class extends RichDisplayCommand {
 
 	private parseEffectiveMatchup(doubleEffectiveTypes: TypeEntry['doubleEffectiveTypes'], effectiveTypes: TypeEntry['effectiveTypes']) {
 		return doubleEffectiveTypes
-			.map((type) => `${type} (x4)`)
+			.map((type): string => `${type} (x4)`)
 			.concat(effectiveTypes.map((type) => `${type} (x2)`))
 			.map((type) => `\`${type}\``)
 			.join(', ');
@@ -91,7 +91,7 @@ export default class extends RichDisplayCommand {
 
 	private parseResistedMatchup(doubleResistedTypes: TypeEntry['doubleResistedTypes'], resistedTypes: TypeEntry['resistedTypes']) {
 		return doubleResistedTypes
-			.map((type) => `${type} (x0.25)`)
+			.map((type): string => `${type} (x0.25)`)
 			.concat(resistedTypes.map((type) => `${type} (x0.5)`))
 			.map((type) => `\`${type}\``)
 			.join(', ');

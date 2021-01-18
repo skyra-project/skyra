@@ -1,18 +1,16 @@
 import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageDeleteBulk, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.MessageDeleteBulk, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayMessageDeleteBulkDispatch['d']): void {
 		if (!data.guild_id) return;
 
-		const guild = this.client.guilds.cache.get(data.guild_id);
+		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
-		this.client.emit(Events.RawMessageDeleteBulk, guild, data);
+		this.context.client.emit(Events.RawMessageDeleteBulk, guild, data);
 	}
 }

@@ -5,6 +5,6 @@ export default class extends ShardEvent {
 	protected readonly title = yellow('Reconnecting');
 
 	public run(id: number) {
-		this.client.console.error(`${this.header(id)}: ${this.title}`);
+		this.context.client.console.error(`${this.header(id)}: ${this.title}`);
 	}
 }

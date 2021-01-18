@@ -15,10 +15,11 @@ export default class extends Event {
 		if (!message.channel.postable) return undefined;
 
 		await message.parseCommand();
-		if (!message.commandText && message.prefix === this.client.mentionPrefix) return this.sendPrefixReminder(message);
+		const { client } = this.context;
+		if (!message.commandText && message.prefix === client.mentionPrefix) return this.sendPrefixReminder(message);
 		if (!message.commandText) return undefined;
-		if (!message.command) return this.client.emit(Events.CommandUnknown, message, message.commandText, message.prefix, message.prefixLength);
-		this.client.emit(Events.CommandRun, message, message.command, message.args);
+		if (!message.command) return client.emit(Events.CommandUnknown, message, message.commandText, message.prefix, message.prefixLength);
+		client.emit(Events.CommandRun, message, message.command, message.args);
 
 		return this.runCommand(message);
 	}
@@ -29,7 +30,7 @@ export default class extends Event {
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) return;
 		}
 
-		const prefix = await this.client.fetchPrefix(message);
+		const prefix = await this.context.client.fetchPrefix(message);
 		if (!prefix) return;
 
 		return message.sendTranslated(LanguageKeys.Misc.PrefixReminder, [{ prefix: prefix.length ? prefix : PREFIX }], {
@@ -38,10 +39,11 @@ export default class extends Event {
 	}
 
 	public async runCommand(message: Message) {
+		const { client } = this.context;
 		const timer = new Stopwatch();
-		if (this.client.options.typing) floatPromise(message.channel.startTyping());
+		if (client.options.typing) floatPromise(message.channel.startTyping());
 		try {
-			await this.client.inhibitors.run(message, message.command!);
+			await client.inhibitors.run(message, message.command!);
 			try {
 				await message.prompter!.run();
 				try {
@@ -54,16 +56,16 @@ export default class extends Event {
 					/* eslint-enable prettier/prettier */
 					timer.stop();
 					const response = await commandRun;
-					this.client.emit(Events.CommandSuccess, message, message.command!, response, timer);
+					client.emit(Events.CommandSuccess, message, message.command!, response, timer);
 				} catch (error) {
-					this.client.emit(Events.CommandError, message, message.command, message.params, error);
+					client.emit(Events.CommandError, message, message.command, message.params, error);
 				}
 			} catch (argumentError) {
-				this.client.emit(Events.ArgumentError, message, message.command, message.params, argumentError);
+				client.emit(Events.ArgumentError, message, message.command, message.params, argumentError);
 			}
 		} catch (response) {
-			this.client.emit(Events.CommandInhibited, message, message.command, response);
+			client.emit(Events.CommandInhibited, message, message.command, response);
 		}
-		if (this.client.options.typing) message.channel.stopTyping();
+		if (client.options.typing) message.channel.stopTyping();
 	}
 }

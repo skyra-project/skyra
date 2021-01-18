@@ -12,9 +12,9 @@ export default class extends Event {
 			if (oldState.channelID === newState.channelID) return;
 
 			if (newState.channel === null) {
-				this.client.emit(Events.MusicVoiceChannelLeave, audio, oldState.channel);
+				this.context.client.emit(Events.MusicVoiceChannelLeave, audio, oldState.channel);
 			} else {
-				this.client.emit(Events.MusicVoiceChannelJoin, audio, newState.channel);
+				this.context.client.emit(Events.MusicVoiceChannelJoin, audio, newState.channel);
 			}
 		} else if (audio.voiceChannelID) {
 			if (audio.playing) {

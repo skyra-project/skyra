@@ -9,25 +9,26 @@ import { Event, EventOptions } from 'klasa';
 @ApplyOptions<EventOptions>({ once: true })
 export default class extends Event {
 	public async run() {
+		const { client } = this.context;
 		try {
 			await Promise.all([
 				// Initialize Slotmachine data
-				Slotmachine.init().catch((error) => this.client.emit(Events.Wtf, error)),
+				Slotmachine.init().catch((error) => client.emit(Events.Wtf, error)),
 				// Initialize WheelOfFortune data
-				WheelOfFortune.init().catch((error) => this.client.emit(Events.Wtf, error)),
+				WheelOfFortune.init().catch((error) => client.emit(Events.Wtf, error)),
 				// Initialize giveaways
-				this.client.giveaways.init().catch((error) => this.client.emit(Events.Wtf, error)),
+				client.giveaways.init().catch((error) => client.emit(Events.Wtf, error)),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()
 			]);
 
 			// Setup the stat updating task
-			await this.initPostStatsTask().catch((error) => this.client.emit(Events.Wtf, error));
+			await this.initPostStatsTask().catch((error) => client.emit(Events.Wtf, error));
 			// Setup the Twitch subscriptions refresh task
-			await this.initTwitchRefreshSubscriptionsTask().catch((error) => this.client.emit(Events.Wtf, error));
+			await this.initTwitchRefreshSubscriptionsTask().catch((error) => client.emit(Events.Wtf, error));
 		} catch (error) {
-			this.client.console.wtf(error);
+			client.console.wtf(error);
 		}
 
 		const success = green('+');
@@ -61,8 +62,8 @@ ${line06}  /" \   :) |: | \  \  /   /   |:  __   \  /   /  \\  \
 ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
 ${line08} ${blc(VERSION.padStart(55, ' '))}
 ${line09} [${success}] Gateway
-${line10} [${this.client.analytics ? success : failed}] Analytics
-${line11} [${this.client.audio.queues?.client.connected ? success : failed}] Audio
+${line10} [${client.analytics ? success : failed}] Analytics
+${line11} [${client.audio.queues?.client.connected ? success : failed}] Audio
 ${line12} [${success}] Moderation
 ${line13} [${success}] Social & Leaderboards
 ${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
@@ -71,42 +72,43 @@ ${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}`
 	}
 
 	private async initPostStatsTask() {
-		const { queue } = this.client.schedules;
+		const { queue } = this.context.client.schedules;
 		if (!queue.some((task) => task.taskID === Schedules.Poststats)) {
-			await this.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
+			await this.context.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
 		}
 	}
 
 	private async initTwitchRefreshSubscriptionsTask() {
-		const { queue } = this.client.schedules;
+		const { queue } = this.context.client.schedules;
 		if (!queue.some((task) => task.taskID === Schedules.TwitchRefreshSubscriptions)) {
-			await this.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '@daily');
+			await this.context.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '@daily');
 		}
 	}
 
 	private async initSyncResourceAnalyticsTask() {
-		const { queue } = this.client.schedules;
+		const { queue } = this.context.client.schedules;
 		if (!queue.some((task) => task.taskID === Schedules.SyncResourceAnalytics)) {
-			await this.client.schedules.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
+			await this.context.client.schedules.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
 		}
 	}
 
 	private async initAnalytics() {
 		if (ENABLE_INFLUX) {
-			this.client.emit(
+			const { client } = this.context;
+			client.emit(
 				Events.AnalyticsSync,
-				this.client.guilds.cache.size,
-				this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0)
+				client.guilds.cache.size,
+				client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0)
 			);
 
-			await this.initSyncResourceAnalyticsTask().catch((error) => this.client.emit(Events.Wtf, error));
+			await this.initSyncResourceAnalyticsTask().catch((error) => client.emit(Events.Wtf, error));
 		}
 	}
 
 	private async connectLavalink() {
 		if (ENABLE_LAVALINK) {
-			await this.client.audio.connect();
-			await this.client.audio.queues!.start();
+			await this.context.client.audio.connect();
+			await this.context.client.audio.queues!.start();
 		}
 	}
 }

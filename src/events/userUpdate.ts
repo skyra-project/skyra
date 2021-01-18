@@ -17,7 +17,7 @@ export default class extends Event {
 
 		const promises = [
 			...map(
-				filter(this.client.guilds.cache.values(), (guild) => guild.members.cache.has(user.id)),
+				filter(this.context.client.guilds.cache.values(), (guild) => guild.members.cache.has(user.id)),
 				(guild) => this.processGuild(guild, user, prevUsername, nextUserName)
 			)
 		];
@@ -32,7 +32,7 @@ export default class extends Event {
 
 		if (enabled) {
 			// Send the Username log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.UsernameUpdate)
 			);
 		}

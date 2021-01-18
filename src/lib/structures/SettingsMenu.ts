@@ -52,7 +52,7 @@ export class SettingsMenu {
 			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.t(LanguageKeys.System.Loading)))
 		)) as GuildMessage;
 		await this.response.react(EMOJIS.STOP);
-		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
+		this.llrc = new LongLivingReactionCollector().setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
 		this.llrc.setTime(TIMEOUT);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author!.id === this.message.author.id);
 		this.messageCollector.on('collect', (msg) => this.onMessage(msg));

@@ -36,7 +36,7 @@ export default class extends Event {
 			// Set all the roles at once.
 			await member.roles.set([...memberRoles]);
 		} catch (error) {
-			this.client.emit(Events.ApiError, error);
+			this.context.client.emit(Events.ApiError, error);
 		}
 	}
 }

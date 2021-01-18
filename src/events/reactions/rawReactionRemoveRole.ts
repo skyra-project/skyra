@@ -26,7 +26,7 @@ export default class extends Event {
 			const member = await channel.guild.members.fetch(data.user_id);
 			if (member.roles.cache.has(roleEntry.role)) await member.roles.remove(roleEntry.role);
 		} catch (error) {
-			this.client.emit(Events.ApiError, error);
+			this.context.client.emit(Events.ApiError, error);
 		}
 	}
 }

@@ -2,23 +2,19 @@ import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
-import { PieceContext } from '@sapphire/pieces';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
 
+@ApplyOptions<SkyraCommand.Options>({
+	bucket: 2,
+	cooldown: 15,
+	description: LanguageKeys.Commands.Social.MyLevelDescription,
+	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
+	runIn: ['text'],
+	usage: '[user:username]',
+	spam: true
+})
 export default class extends SkyraCommand {
-	public constructor(context: PieceContext) {
-		super(context, {
-			bucket: 2,
-			cooldown: 15,
-			description: LanguageKeys.Commands.Social.MyLevelDescription,
-			extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-
-		this.spam = true;
-	}
-
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });

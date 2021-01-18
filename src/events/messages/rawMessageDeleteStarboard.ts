@@ -30,14 +30,14 @@ export default class extends Event {
 			if (!channel) return;
 
 			if (result && result.star_message_id) {
-				await api(this.client)
+				await api(this.context.client)
 					.channels(channel)
 					.messages(result.star_message_id)
 					.delete({ reason: 'Starboard Management: Message Deleted' })
-					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
+					.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
 			}
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			this.context.client.emit(Events.Wtf, error);
 		}
 	}
 }

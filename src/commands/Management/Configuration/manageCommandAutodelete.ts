@@ -8,7 +8,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-  aliases: ['mcad'],
+	aliases: ['mcad'],
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,

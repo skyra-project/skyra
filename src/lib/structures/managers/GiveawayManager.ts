@@ -42,10 +42,11 @@ export class GiveawayManager {
 		return giveaway;
 	}
 
-	public create(data: GiveawayCreateData) {
-		return this.add({ ...data, messageID: null })
-			.insert()
-			.finally(() => this.check());
+	public async create(data: GiveawayCreateData) {
+		const giveaway = new GiveawayEntity({ ...data, messageID: null }).setup(this);
+		await giveaway.insert();
+		this.insert(giveaway);
+		this.check();
 	}
 
 	private async runEntry(giveaway: GiveawayEntity) {

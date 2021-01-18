@@ -7,7 +7,7 @@ import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Time } from '#utils/constants';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
-import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody } from 'discord-api-types/v6';
+import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
@@ -108,7 +108,7 @@ export class GiveawayEntity extends BaseEntity {
 		// Create the message
 		const message = (await api(this.#client)
 			.channels(this.channelID)
-			.messages.post({ data: await this.getData() })) as { id: string };
+			.messages.post({ data: await this.getData() })) as RESTPostAPIChannelMessageResult;
 		this.messageID = message.id;
 		this.resume();
 

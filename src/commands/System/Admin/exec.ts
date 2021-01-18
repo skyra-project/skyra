@@ -34,9 +34,9 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(result: string) {
-		const { key } = (await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON)) as {
+		const { key } = (await fetch(`https://hastebin.skyra.pw/documents`, { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON)) as {
 			key: string;
 		};
-		return `https://hasteb.in/${key}.js`;
+		return `https://hastebin.skyra.pw/${key}.js`;
 	}
 }

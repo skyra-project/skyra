@@ -112,8 +112,12 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, opti
 }
 
 async function getHaste(result: string, language = 'js') {
-	const { key } = await fetch<{ key: string }>('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON);
-	return `https://hasteb.in/${key}.${language}`;
+	const { key } = await fetch<{ key: string }>(
+		`https://hastebin.skyra.pw/documents`,
+		{ method: FetchMethods.Post, body: result },
+		FetchResultTypes.JSON
+	);
+	return `https://hastebin.skyra.pw/${key}.${language}`;
 }
 
 type HandleMessageData<ED extends ExtraDataPartial> = {

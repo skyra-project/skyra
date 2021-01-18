@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
 	}
 

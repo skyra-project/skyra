@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 }

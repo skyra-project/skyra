@@ -41,7 +41,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg) return undefined;
 			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);

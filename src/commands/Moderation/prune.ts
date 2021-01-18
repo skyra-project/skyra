@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 		you: Filter.Skyra
 	};
 
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('filter', async (argument, _possible, message) => {
 			if (!argument) return undefined;
 			const filter = this.kCommandPruneFilters[argument.toLowerCase()];

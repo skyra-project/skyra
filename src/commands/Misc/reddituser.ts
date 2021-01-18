@@ -22,7 +22,7 @@ import type { TFunction } from 'i18next';
 export default class extends RichDisplayCommand {
 	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('user', async (arg, _possible, message) => {
 			if (!this.usernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
 			arg = arg.replace(/^\/?u\//, '');

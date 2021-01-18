@@ -7,7 +7,7 @@ export default class extends Event {
 		if (this.context.client.ready && !kReg.test(message)) this.context.client.console.debug(message);
 	}
 
-	public async init() {
+	public async onLoad() {
 		if (!this.context.client.options.consoleEvents.debug) await this.unload();
 	}
 }

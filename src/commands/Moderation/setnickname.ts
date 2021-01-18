@@ -19,7 +19,7 @@ import type { User } from 'discord.js';
 	usageDelim: ' '
 })
 export default class extends ModerationCommand {
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('nickname', (arg, possible, message) =>
 			arg ? this.context.client.arguments.get('string')!.run(arg, possible, message) : ''
 		);

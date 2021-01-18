@@ -126,10 +126,7 @@ export class SkyraClient extends KlasaClient {
 			.registerStore(this.server.mediaParsers)
 			.registerStore(this.server.middlewares);
 
-		this.events.registerPath(join(this.userBaseDirectory, 'events'));
-		this.server.routes.registerPath(join(this.userBaseDirectory, 'routes'));
-		this.server.middlewares.registerPath(join(this.userBaseDirectory, 'middlewares'));
-		this.server.mediaParsers.registerPath(join(this.userBaseDirectory, 'mediaParsers'));
+		for (const store of this.stores) store.registerPath(join(this.userBaseDirectory, store.name));
 
 		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);
 	}

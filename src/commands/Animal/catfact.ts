@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async init() {
+	public async onLoad() {
 		const text = await readFile(join(assetsFolder, 'data', 'catfacts.json'), 'utf-8');
 		this.facts = JSON.parse(text);
 	}

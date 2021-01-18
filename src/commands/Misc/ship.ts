@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */
-	public async init() {
+	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
 			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
 			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),

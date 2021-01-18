@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 		return streamToBuffer(stream);
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/triggered.png'));
 	}
 }

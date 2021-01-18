@@ -16,7 +16,7 @@ export default class UserSerializer extends Serializer<string> {
 		return this.context.client.i18n.languages.has(value);
 	}
 
-	public init() {
+	public onLoad() {
 		this.possibles = [...map(this.context.client.i18n.languages.keys(), (key) => `\`${key}\``)];
 		return Promise.resolve();
 	}

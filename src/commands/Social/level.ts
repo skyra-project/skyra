@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async init() {
+	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate] = await Promise.all([
 			new Canvas(640, 174)
 				.setAntialiasing('subpixel')

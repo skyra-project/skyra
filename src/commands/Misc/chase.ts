@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
 	}
 }

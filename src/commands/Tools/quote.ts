@@ -19,7 +19,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
 			const messageUrl = await this.getFromUrl(message as GuildMessage, arg);

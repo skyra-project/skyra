@@ -113,7 +113,7 @@ export default class extends SkyraCommand {
 		return response === 'all' ? this.buyList(message) : this.userList(message);
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('banner', async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Social.BannerMissing, type);

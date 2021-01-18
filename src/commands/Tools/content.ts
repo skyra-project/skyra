@@ -20,7 +20,7 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const target = await channel.messages.fetch(arg).catch(() => null);

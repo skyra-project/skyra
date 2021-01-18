@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channnel ?? (message.channel as TextChannel))));
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
 		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}

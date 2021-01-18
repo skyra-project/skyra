@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'peepoLove.png' }] });
 	}
 
-	public async init() {
+	public async onLoad() {
 		[this.bodyImage, this.handsImage] = await Promise.all([
 			loadImage(join(assetsFolder, '/images/generation/peepoBody.png')),
 			loadImage(join(assetsFolder, '/images/generation/peepoHands.png'))

@@ -1,1 +1,18 @@
-{}
+{
+	"channelsFarewell": "El canal que usaré para enviar despedidas, debe habilitar los eventos y configurar los mensajes, en otras categorías.",
+	"channelsGreeting": "El canal que usaré para enviar saludos, debe habilitar los eventos y configurar los mensajes, en otras categorías.",
+	"channelsIgnoreAll": "Canales que debería ignorar para todos los tipos de registros.",
+	"channelsIgnoreMessageDelete": "Canales que debería ignorar para los registros de mensajes borrados.",
+	"channelsIgnoreMessageEdit": "Canales que debería ignorar para los registros de mensajes editados.",
+	"channelsIgnoreReactionAdd": "Canales que debería ignorar para los registros de reacciones añadidas.",
+	"channelsImageLogs": "El canal que usaré para volver a subir todas las imágenes que veo.",
+	"channelsMemberLogs": "El canal para los registros de miembros, debes habilitar los eventos (`events.memberAdd` para nuevos miembros, `events.memberRemove` para los miembros que se fueron).",
+	"channelsMessageLogs": "El canal para los registros de mensajes (no NSFW), debes habilitar los eventos (`events.messageDelete` para mensajes eliminados, `events.messageEdit` para mensajes editados).",
+	"channelsModerationLogs": "El canal para los registros de moderación, una vez habilitado, publicaré todos mis casos de moderación allí. Si `eventos.banRemove` y/o `events.banRemove` están habilitados, publicaré registros anónimos de forma automática.",
+	"channelsNsfwMessageLogs": "El canal para los registros de mensajes NSFW, el mismo requisito que los registros de mensajes normales, pero sólo enviará mensajes NSFW.",
+	"channelsPruneLogs": "El canal para los registros de podas de mensajes, el mismo requisito que los registros de mensajes normales, pero sólo enviará mensajes de podas de mensajes.",
+	"channelsReactionLogs": "El canal para los registros de reacciones, el mismo requisito que los registros de mensajes normales, pero sólo enviará reacciones de mensajes. Si no quieres que se registren twemojis puedes desactivar `events.twemoji-reactions`.",
+	"channelsRoles": "El canal para los roles de reacción.",
+	"channelsSpam": "El canal al cual redireccionar a los usuarios cuando utilizan comandos que considero no adecuados para conversaciones normales.",
+	"dashboardOnlyKey": "Esta clave sólo se puede configurar a través del [panel de control web](https://skyra.pw)"
+}

@@ -116,7 +116,7 @@ export class SkyraClient extends KlasaClient {
 		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
-		this.server = new Server(clientOptions.api);
+		this.server = new Server(CLIENT_OPTIONS.api);
 		this.registerStore(this.server.routes) //
 			.registerStore(this.server.mediaParsers)
 			.registerStore(this.server.middlewares);

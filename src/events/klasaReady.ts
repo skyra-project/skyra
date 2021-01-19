@@ -3,10 +3,10 @@ import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
-import { blue, gray, green, magenta, magentaBright, red, white } from 'colorette';
+import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 import { Event, EventOptions, Store } from 'klasa';
 
-const style = DEV ? magentaBright : blue;
+const style = DEV ? yellow : blue;
 
 @ApplyOptions<EventOptions>({ once: true })
 export default class extends Event {

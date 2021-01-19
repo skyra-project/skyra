@@ -60,7 +60,7 @@
 	"manageCommandChannelShowEmpty": "",
 	"manageCommandChannelAddAlreadyset": "",
 	"manageCommandChannelAdd": "",
-	"manageCommandChannelRemoveNotset": "",
+	"manageCommandChannelRemoveNotset": "Команда, которую вы пытаетесь включить, не была отключена для {{channel}}.",
 	"manageCommandChannelRemove": "",
 	"manageCommandChannelResetEmpty": "",
 	"manageCommandChannelReset": "",
@@ -398,7 +398,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"роль",
 				""
 			]
 		],
@@ -417,15 +417,15 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"действие",
 				""
 			],
 			[
-				"",
+				"пользователь",
 				""
 			],
 			[
-				"",
+				"роль",
 				""
 			]
 		],
@@ -870,7 +870,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"роли",
 				""
 			]
 		],

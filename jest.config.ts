@@ -21,6 +21,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		}
 	},
 	coveragePathIgnorePatterns: [
+		'<rootDir>/node_modules',
 		'<rootDir>/tests/mocks',
 		'<rootDir>/src/arguments',
 		'<rootDir>/src/commands',

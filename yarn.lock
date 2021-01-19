@@ -272,9 +272,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bcoe/v8-coverage@^0.2.3", "@bcoe/v8-coverage@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", apollo-codegen@0.10.13, "apollo-codegen@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", jest-environment-jsdom@^26.6.2, "jest-environment-jsdom@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", jest-jasmine2@^26.6.3, "jest-jasmine2@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", node-ipc@9.0.1, "node-ipc@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz#f8cae15d883ffc0abc663b5eaaa711fcc64bb5c2"
+"@bcoe/v8-coverage@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
+  integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -1298,6 +1299,10 @@ anymatch@^3.0.3:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+apollo-codegen@0.10.13, "apollo-codegen@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", jest-environment-jsdom@^26.6.2, "jest-environment-jsdom@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", jest-jasmine2@^26.6.3, "jest-jasmine2@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz", node-ipc@9.0.1, "node-ipc@https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz#f8cae15d883ffc0abc663b5eaaa711fcc64bb5c2"
 
 app-root-path@^3.0.0:
   version "3.0.0"

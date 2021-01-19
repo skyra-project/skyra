@@ -141,7 +141,6 @@
 		"typescript": "^4.2.0-dev.20210115"
 	},
 	"resolutions": {
-		"@bcoe/v8-coverage": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"acorn": "^8.0.4",
 		"apollo-codegen": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"chalk": "^4.1.0",

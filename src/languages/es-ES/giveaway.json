@@ -1,1 +1,12 @@
-{}
+{
+	"time": "El sorteo debe durar al menos 10 segundos.",
+	"timeTooLong": "¡Oye! ¡Eso es un tiempo increíblemente largo para seguir el rastro!",
+	"endsAt": "Termina el:",
+	"duration": "¡Este sorteo termina en **{{time, duration}}**! Reacciona a este mensaje con 🎉 para unirse.",
+	"title": "🎉 **SORTEO** 🎉",
+	"lastchance": "¡**ÚLTIMA OPORTUNIDAD**! Tiempo restante: **{{time, duration}}**. Reacciona a este mensaje con 🎉 para unirse.",
+	"lastchanceTitle": "🎉 **ÚLTIMA OPORTUNIDAD PARA EL SORTEO** 🎉",
+	"ended": "Ganador: {{winners, andJoin}}",
+	"endedPlural": "Ganadores: {{winners, andJoin}}",
+	"endedNoWinner": "No hay ganador..."
+}

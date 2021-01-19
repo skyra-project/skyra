@@ -1,12 +1,12 @@
 {
 	"catfactDescription": "Permítanme que les diga un hecho gatuno misterioso.",
 	"catfactExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Sabes que los gatos son muy curiosos, ¿verdad? Seguro que tienen mucha diversión y hechos extraños.\nCon este comando obtendrás un hecho aleatorio."
 	},
 	"catfactTitle": "Hecho Gatuno",
 	"dogDescription": "¡Perritos lindos! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "¿Sabes cuán lindos son los perros? ¡Son tan hermosos!\n¡Este comando usa [dog.ceo](https://dog.ceo) para mostrar imágenes de los cachorros más monos!"
 	},
 	"foxDescription": "¡Permítame mostrarte una imagen de un zorro!",
 	"foxExtended": {
@@ -14,7 +14,7 @@
 	},
 	"kittyDescription": "¡GATITOS!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "¿Sabes cuán lindos son los gatitos? ¡Son tan hermosos!\n¡Este comando usa [cataas.com](https://cataas.com/) para mostrar fotos de los gatitos más monos!"
 	},
 	"shibeDescription": "¡Shibas monos!",
 	"shibeExtended": {

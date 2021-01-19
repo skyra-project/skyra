@@ -1,11 +1,11 @@
 import { fetchAllLeaderboardEntries, iteratorRange, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'globalLeaderboard', route: 'users/leaderboard' })
 export default class extends Route {
 	@ratelimit(2, 2500)
-	public async get(request: ApiRequest, response: ApiResponse) {
+	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const limit = Reflect.has(request.query, 'limit') ? Number(request.query.limit) : 10;
 		if (!Number.isInteger(limit) || limit <= 0 || limit > 100) return response.error(400);
 

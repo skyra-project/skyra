@@ -5,7 +5,7 @@ import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { stringify } from 'querystring';
@@ -25,7 +25,7 @@ export default class extends Route {
 
 	@authenticated()
 	@ratelimit(2, Time.Minute * 5, true)
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (typeof requestBody.action !== 'string') {
 			return response.badRequest();

@@ -1,13 +1,13 @@
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
 	// Challenge
-	public get(request: ApiRequest, response: ApiResponse) {
+	public [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 		switch (request.query['hub.mode']) {
 			case 'denied':
@@ -21,7 +21,7 @@ export default class extends Route {
 	}
 
 	// Stream Changed
-	public post(request: ApiRequest, response: ApiResponse) {
+	public [methods.POST](request: ApiRequest, response: ApiResponse) {
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];

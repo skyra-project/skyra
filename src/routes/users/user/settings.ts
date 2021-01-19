@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';
 
 interface BodyData {
@@ -14,7 +14,7 @@ interface BodyData {
 export default class extends Route {
 	@authenticated()
 	@ratelimit(5, 1000, true)
-	public async get(request: ApiRequest, response: ApiResponse) {
+	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const { users } = await DbSet.connect();
 		const user = await users.ensureProfile(request.auth!.id);
 
@@ -23,7 +23,7 @@ export default class extends Route {
 
 	@authenticated()
 	@ratelimit(2, 1000, true)
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { data: BodyData };
 
 		const { users } = await DbSet.connect();

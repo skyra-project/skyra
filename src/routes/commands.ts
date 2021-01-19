@@ -1,14 +1,14 @@
 import type { SkyraCommand } from '#lib/structures';
 import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';
 
 @ApplyOptions<RouteOptions>({ route: 'commands' })
 export default class UserRoute extends Route {
 	@ratelimit(2, 2500)
-	public get(request: ApiRequest, response: ApiResponse) {
+	public [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const { lang, category } = request.query;
 		const { client } = this.context;
 		const language = client.i18n.fetchT((lang as string) ?? 'en-US');

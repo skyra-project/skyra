@@ -2,13 +2,13 @@ import { flattenMember } from '#lib/api/ApiTransformers';
 import { canManage } from '#lib/api/utils';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/members/:member' })
 export default class extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
-	public async get(request: ApiRequest, response: ApiResponse) {
+	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
 
 		const guild = this.context.client.guilds.cache.get(guildID);

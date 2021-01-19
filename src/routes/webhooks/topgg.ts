@@ -1,11 +1,11 @@
 import { DbSet } from '#lib/database';
 import { TOKENS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/topgg', route: 'webhooks/topgg' })
 export default class extends Route {
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.WEBHOOK_TOPGG) return response.forbidden();
 		if (!request.body) return response.badRequest();
 

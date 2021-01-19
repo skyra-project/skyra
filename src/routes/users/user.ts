@@ -1,13 +1,13 @@
 import { FlattenedGuild, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: 'users/@me' })
 export default class extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
-	public async get(request: ApiRequest, response: ApiResponse) {
+	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const { client } = this.context;
 		const user = await client.users.fetch(request.auth!.id).catch(() => null);
 		if (user === null) return response.error(500);

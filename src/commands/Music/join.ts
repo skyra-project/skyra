@@ -1,6 +1,6 @@
 import { Queue, requireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Permissions, VoiceChannel } from 'discord.js';

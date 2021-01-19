@@ -1,7 +1,6 @@
 import { DbSet, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';

@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { announcementCheck } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

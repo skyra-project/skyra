@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
-// Import all dependencies
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
-import { AnalyticsData } from '#lib/structures/AnalyticsData';
-// Import all configuration
+import { AnalyticsData, ConnectFourManager, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 import { Server } from '@sapphire/plugin-api';
 import { I18nextHandler } from '@sapphire/plugin-i18next';
@@ -11,18 +9,9 @@ import { mergeDefault } from '@sapphire/utilities';
 import { ClientOptions, Message, Webhook } from 'discord.js';
 import { KlasaClient } from 'klasa';
 import { join } from 'path';
-import { container } from 'tsyringe';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-// Import all extensions and schemas
 import './extensions';
-// Import setup files
 import './setup';
-import { InviteStore } from './structures/InviteStore';
-import { ConnectFourManager } from './structures/managers/ConnectFourManager';
-// Import all structures
-import { GiveawayManager } from './structures/managers/GiveawayManager';
-import { ScheduleManager } from './structures/managers/ScheduleManager';
-// Import all utils
 import { clientOptions, rootFolder } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
@@ -105,7 +94,7 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public i18n: I18nextHandler = new I18nextHandler(this.options.i18n);
 
-	public websocket = new WebsocketHandler(this);
+	public websocket = new WebsocketHandler();
 
 	public constructor() {
 		// @ts-ignore Shut the fuck up TS
@@ -125,8 +114,6 @@ export class SkyraClient extends KlasaClient {
 			store.registerPath(join(rootFolder, 'node_modules', '@sapphire', 'plugin-api', 'dist', store.name));
 		}
 		for (const store of this.stores) store.registerPath(join(this.userBaseDirectory, store.name));
-
-		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);
 	}
 
 	public async login(token?: string) {

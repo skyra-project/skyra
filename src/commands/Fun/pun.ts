@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Mime } from '#utils/constants';
 import { fetch } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

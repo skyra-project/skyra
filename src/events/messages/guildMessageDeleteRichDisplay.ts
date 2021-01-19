@@ -1,4 +1,4 @@
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';

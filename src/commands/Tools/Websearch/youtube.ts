@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
 import { Time } from '#utils/constants';

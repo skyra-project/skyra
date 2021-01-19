@@ -1,8 +1,7 @@
 import { GuildEntity, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationEvent } from '#lib/structures/moderation/ModerationEvent';
-import { SelfModeratorBitField } from '#lib/structures/moderation/SelfModeratorBitField';
+import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/structures';
 import type { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -17,10 +16,10 @@ import type { EventOptions } from 'klasa';
 type ArgumentType = [LLRCData, string];
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
-export default class extends ModerationEvent<ArgumentType, unknown, number> {
+export default class extends ModerationEvent<ArgumentType, unknown> {
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected hardPunishmentPath: HardPunishment<number> = {
+	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
 		adder: 'reactions'

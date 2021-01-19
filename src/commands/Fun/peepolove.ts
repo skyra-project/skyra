@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

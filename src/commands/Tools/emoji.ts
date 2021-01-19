@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { fetch, FetchResultTypes, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';

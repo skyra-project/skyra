@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationData, ModerationTask } from '#lib/structures/moderation/ModerationTask';
+import { ModerationData, ModerationTask } from '#lib/structures';
 import { CLIENT_ID } from '#root/config';
 import { Guild, Permissions, Role } from 'discord.js';
 

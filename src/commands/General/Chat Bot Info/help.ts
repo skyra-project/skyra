@@ -1,8 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

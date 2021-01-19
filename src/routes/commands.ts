@@ -1,4 +1,4 @@
-import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { SkyraCommand } from '#lib/structures';
 import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, Route, RouteOptions } from '@sapphire/plugin-api';

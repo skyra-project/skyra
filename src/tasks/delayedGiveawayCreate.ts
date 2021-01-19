@@ -1,6 +1,6 @@
 // This task will be created by the gschedule command when a user schedules a giveaway to be created.
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
-import type { GiveawayCreateData } from '#lib/structures/managers/GiveawayManager';
+import type { GiveawayCreateData } from '#lib/structures';
 
 export default class extends Task {
 	public async run(data: GiveawayCreateData): Promise<PartialResponseValue> {

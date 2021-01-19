@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { SkyraCommand } from '#lib/structures';
 import { OWNERS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';

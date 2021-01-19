@@ -1,6 +1,4 @@
-import { SkyraClient } from '#lib/SkyraClient';
 import { DEV, WSS_PORT } from '#root/config';
-import { enumerable } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { ApiRequest, CookieStore } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
@@ -13,11 +11,7 @@ export class WebsocketHandler {
 	public wss: Server;
 	public users = new Collection<string, WebsocketUser>();
 
-	@enumerable(false)
-	public client: SkyraClient;
-
-	public constructor(client: SkyraClient) {
-		this.client = client;
+	public constructor() {
 		this.wss = new Server({ port: WSS_PORT });
 
 		this.wss.on(WebsocketEvents.Connection, this.handleConnection.bind(this));

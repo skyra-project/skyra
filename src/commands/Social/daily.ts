@@ -1,6 +1,6 @@
 import { ClientEntity, DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';

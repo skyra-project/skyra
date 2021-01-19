@@ -1,5 +1,5 @@
 import type { Queue } from '#lib/audio';
-import { AudioEvent } from '#lib/structures/events/AudioEvent';
+import { AudioEvent } from '#lib/structures';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
 import type { VoiceChannel } from 'discord.js';
 

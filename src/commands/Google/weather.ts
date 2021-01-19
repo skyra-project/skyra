@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { TOKENS } from '#root/config';
 import { queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { assetsFolder } from '#utils/constants';

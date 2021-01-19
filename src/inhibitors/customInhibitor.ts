@@ -1,4 +1,4 @@
-import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { SkyraCommand } from '#lib/structures';
 import type { Message } from 'discord.js';
 import { Inhibitor } from 'klasa';
 

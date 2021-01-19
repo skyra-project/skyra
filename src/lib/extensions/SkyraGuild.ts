@@ -1,8 +1,6 @@
 import type { Queue } from '#lib/audio';
 import type { GuildEntity, SettingsCollectionCallback } from '#lib/database';
-import { ModerationManager } from '#lib/structures/managers/ModerationManager';
-import { StarboardManager } from '#lib/structures/managers/StarboardManager';
-import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
+import { ModerationManager, StarboardManager, StickyRoleManager } from '#lib/structures';
 import type { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import { cast } from '#utils/util';

@@ -1,8 +1,7 @@
 import { Queue, requireQueueNotEmpty } from '#lib/audio';
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { MusicCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { pickRandom, showSeconds } from '#utils/util';

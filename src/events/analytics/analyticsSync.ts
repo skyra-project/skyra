@@ -1,5 +1,5 @@
 import { DbSet } from '#lib/database';
-import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
+import { AnalyticsEvent } from '#lib/structures';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';

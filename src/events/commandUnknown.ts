@@ -1,5 +1,5 @@
 import { GuildSettings } from '#lib/database';
-import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import type { SkyraCommand } from '#lib/structures';
 import type { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { cast } from '#utils/util';

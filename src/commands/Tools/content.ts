@@ -1,6 +1,6 @@
 import { Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { ZeroWidthSpace } from '#utils/constants';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { ContentExtraData, handleMessage } from '#utils/Parsers/ExceededLength';

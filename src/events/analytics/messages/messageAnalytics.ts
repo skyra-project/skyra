@@ -1,4 +1,4 @@
-import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
+import { AnalyticsEvent } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from 'klasa';

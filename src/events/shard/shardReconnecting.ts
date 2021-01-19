@@ -1,4 +1,4 @@
-import { ShardEvent } from '#lib/structures/events/ShardEvent';
+import { ShardEvent } from '#lib/structures';
 import { yellow } from 'colorette';
 
 export default class extends ShardEvent {

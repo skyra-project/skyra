@@ -1,4 +1,4 @@
-import { ShardEvent } from '#lib/structures/events/ShardEvent';
+import { ShardEvent } from '#lib/structures';
 import { red } from 'colorette';
 import type { CloseEvent } from 'discord.js';
 

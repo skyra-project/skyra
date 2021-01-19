@@ -1,6 +1,5 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraClient } from '#lib/SkyraClient';
 import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
@@ -8,8 +7,7 @@ import { create } from '#utils/Security/RegexCreator';
 import { kBigIntTransformer } from '#utils/util';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { RateLimitManager } from 'klasa';
-import { container } from 'tsyringe';
+import { RateLimitManager, Store } from 'klasa';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
@@ -695,7 +693,7 @@ export class GuildEntity extends BaseEntity {
 	#words: readonly string[] = [];
 
 	public get client() {
-		return container.resolve(SkyraClient);
+		return Store.injectedContext.client;
 	}
 
 	public get guild() {

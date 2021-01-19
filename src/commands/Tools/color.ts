@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { RGB } from '#lib/structures/color';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { RGB, SkyraCommand } from '#lib/structures';
 import { hexConcat, luminance, parse } from '#utils/Color';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, rgb } from 'canvas-constructor';

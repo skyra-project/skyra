@@ -74,28 +74,6 @@ export default class extends SkyraCommand {
 		you: Filter.Skyra
 	};
 
-	public async onLoad() {
-		this.createCustomResolver('filter', async (argument, _possible, message) => {
-			if (!argument) return undefined;
-			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
-			return filter;
-		})
-			.createCustomResolver('position', async (argument, _possible, message) => {
-				if (!argument) return null;
-				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
-				return position;
-			})
-			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
-				if (position === null) return message;
-
-				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
-				return fetched;
-			});
-	}
-
 	public async run(
 		message: GuildMessage,
 		[limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, GuildMessage]
@@ -139,6 +117,28 @@ export default class extends SkyraCommand {
 						total: limit
 					})
 			  );
+	}
+
+	public async onLoad() {
+		this.createCustomResolver('filter', async (argument, _possible, message) => {
+			if (!argument) return undefined;
+			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
+			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
+			return filter;
+		})
+			.createCustomResolver('position', async (argument, _possible, message) => {
+				if (!argument) return null;
+				const position = this.kCommandPrunePositions[argument.toLowerCase()];
+				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
+				return position;
+			})
+			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
+				if (position === null) return message;
+
+				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
+				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
+				return fetched;
+			});
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {

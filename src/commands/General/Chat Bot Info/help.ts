@@ -41,23 +41,6 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async onLoad() {
-		this.createCustomResolver('command', (arg, possible, message) => {
-			if (!arg) return undefined;
-			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);
-		});
-		this.createCustomResolver('category', async (arg, _, msg) => {
-			if (!arg) return undefined;
-			arg = arg.toLowerCase();
-			const commandsByCategory = await this._fetchCommands(msg);
-			for (const [page, category] of commandsByCategory.keyArray().entries()) {
-				// Add 1, since 1 will be subtracted later
-				if (category.toLowerCase() === arg) return page + 1;
-			}
-			return undefined;
-		});
-	}
-
 	public async run(message: Message, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		const t = await message.fetchT();
 
@@ -108,6 +91,23 @@ export default class extends SkyraCommand {
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendTranslated(LanguageKeys.Commands.General.HelpNoDm);
 		}
+	}
+
+	public async onLoad() {
+		this.createCustomResolver('command', (arg, possible, message) => {
+			if (!arg) return undefined;
+			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);
+		});
+		this.createCustomResolver('category', async (arg, _, msg) => {
+			if (!arg) return undefined;
+			arg = arg.toLowerCase();
+			const commandsByCategory = await this._fetchCommands(msg);
+			for (const [page, category] of commandsByCategory.keyArray().entries()) {
+				// Add 1, since 1 will be subtracted later
+				if (category.toLowerCase() === arg) return page + 1;
+			}
+			return undefined;
+		});
 	}
 
 	private async buildHelp(message: Message, language: TFunction, prefix: string) {

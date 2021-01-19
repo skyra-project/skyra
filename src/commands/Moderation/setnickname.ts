@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolver } from '@skyra/decorators';
 import type { User } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
@@ -18,13 +19,8 @@ import type { User } from 'discord.js';
 	usage: '<users:...user{,10}> [nickname:nickname] [duration:timespan] [reason:...string]',
 	usageDelim: ' '
 })
+@CreateResolver('nickname', (arg, possible, message) => (arg ? message.client.arguments.get('string')!.run(arg, possible, message) : ''))
 export default class extends ModerationCommand {
-	public async onLoad() {
-		this.createCustomResolver('nickname', (arg, possible, message) =>
-			arg ? this.context.client.arguments.get('string')!.run(arg, possible, message) : ''
-		);
-	}
-
 	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { nickname: string } {
 		return {
 			targets: targets as User[],

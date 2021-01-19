@@ -8,6 +8,7 @@
 	"commandInvalidMissingAction": "{{REDCROSS}} La acción debe ser cualquieraa de las siguientes: `enable`, `disable`, `action`, `punish`, `punish-duration`, `threshold-maximum`, `threshold-duration` o `show`. Consulta `Skyra, help {{name}}` para más información.",
 	"commandInvalidMissingArguments": "{{REDCROSS}} La acción especificada requiere que se pase un argumento extra. Revisa `Skyra, help {{name}}` para más información.",
 	"commandInvalidSoftaction": "{{REDCROSS}} El valor debe ser cualquiera de los siguientes: `alert`, `log` o `delete`. Consulta `Skyra, help {{name}}` para más información.",
+	"commandShow": "Activado    : {{kEnabled}}\nAcción\n - Alerta   : {{kAlert}}\n - Registro : {{kLog}}\n - Eliminar : {{kDelete}}\nPuntuación\n - Escribir : {{kHardAction}}\n - Duración : {{hardActionDurationText}}\nUmbral\n - Máximo   : {{thresholdMaximumText}}\n - Duración : {{thresholdDurationText}}",
 	"commandShowDurationPermanent": "Permanente",
 	"commandShowUnset": "Sin definir",
 	"commandSoftAction": "{{GREENTICK}} Acciones deshabilitadas con éxito.",

@@ -1,11 +1,11 @@
 {
-	"announcementHeader": "",
+	"announcementHeader": "**Nuevo anuncio para** {{role}}",
 	"announcementCancelled": "El mensaje ha sido cancelado.",
 	"announcementDescription": "Envía nuevos anuncios, mencionando el rol de anuncio.",
 	"announcementEmbedMentions": "{{header}}:",
-	"announcementEmbedMentionsWithMentions": "",
+	"announcementEmbedMentionsWithMentions": "{{header}}, y mencionando: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando requiere un canal de anuncios (**channels.announcement** en el comando de configuración) que le diga a Skyra dónde debe publicar los mensajes de anuncio.\n\nPregunta es: ¿es necesario este comando? Bueno, nada te impide hacer tus anuncios por ti mismo, sin embargo, hay mucha gente que odia ser mencionada por todos o aquí.\n\nPara evitar esto, Skyra te da la opción de crear un rol de suscriptor, que no se puede mencionar (para evitar que la gente mencione el rol), y una vez que ejecutes este comando, Skyra establecerá el rol para ser mencionable, publicar el mensaje y volver a no mencionable.\n\nAdemás, puedes configurar Skyra para que envíe el anuncio como un mensaje incrustado configurando la opción **messages.announcement-embed** en el comando de configuración. Al enviar el mensaje como un incrustado puedes excluir las menciones de cualquier usuario, @aquí o @everyone proporcionando la bandera `--excludeMencions` al anuncio.",
 		"explainedUsage": [
 			[
 				"anuncio",

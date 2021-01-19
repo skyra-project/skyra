@@ -3,8 +3,10 @@ import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
-import { blue, green, magenta, magentaBright, red, white } from 'colorette';
-import { Event, EventOptions } from 'klasa';
+import { blue, gray, green, magenta, magentaBright, red, white } from 'colorette';
+import { Event, EventOptions, Store } from 'klasa';
+
+const style = DEV ? magentaBright : blue;
 
 @ApplyOptions<EventOptions>({ once: true })
 export default class extends Event {
@@ -31,44 +33,8 @@ export default class extends Event {
 			client.console.wtf(error);
 		}
 
-		const success = green('+');
-		const failed = red('-');
-		const llc = DEV ? magentaBright : white;
-		const blc = DEV ? magenta : blue;
-
-		const line01 = llc(String.raw`          /          `);
-		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
-		const line03 = llc(String.raw`     ${blc('/▓▓')}╢            `);
-		const line04 = llc(String.raw`   [${blc('▓▓')}▓╣/            `);
-		const line05 = llc(String.raw`   [╢╢╣▓             `);
-		const line06 = llc(String.raw`    %,╚╣╣@\          `);
-		const line07 = llc(String.raw`      #,╙▓▓▓\╙N      `);
-		const line08 = llc(String.raw`       '╙ \▓▓▓╖╙╦    `);
-		const line09 = llc(String.raw`            \@╣▓╗╢%  `);
-		const line10 = llc(String.raw`               ▓╣╢╢] `);
-		const line11 = llc(String.raw`              /╣▓${blc('▓▓')}] `);
-		const line12 = llc(String.raw`              ╢${blc('▓▓/')}   `);
-		const line13 = llc(String.raw`             ▓${blc('╬/')}     `);
-		const line14 = llc(String.raw`            /        `);
-
-		console.log(
-			String.raw`
-${line01}   ________  __   ___  ___  ___  _______        __
-${line02}  /"       )|/"| /  ")|"  \/"  |/"      \      /""\
-${line03} (:   \___/ (: |/   /  \   \  /|:        |    /    \
-${line04}  \___  \   |    __/    \\  \/ |_____/   )   /' /\  \
-${line05}   __/  \\  (// _  \    /   /   //      /   //  __'  \
-${line06}  /" \   :) |: | \  \  /   /   |:  __   \  /   /  \\  \
-${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
-${line08} ${blc(VERSION.padStart(55, ' '))}
-${line09} [${success}] Gateway
-${line10} [${client.analytics ? success : failed}] Analytics
-${line11} [${client.audio.queues?.client.connected ? success : failed}] Audio
-${line12} [${success}] Moderation
-${line13} [${success}] Social & Leaderboards
-${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
-		`.trim()
-		);
+		this.printBanner();
+		this.printStoreDebugInformation();
 	}
 
 	private async initPostStatsTask() {
@@ -110,5 +76,60 @@ ${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}`
 			await this.context.client.audio.connect();
 			await this.context.client.audio.queues!.start();
 		}
+	}
+
+	private printBanner() {
+		const { client } = this.context;
+		const success = green('+');
+		const failed = red('-');
+		const llc = DEV ? magentaBright : white;
+		const blc = DEV ? magenta : blue;
+
+		const line01 = llc(String.raw`          /          `);
+		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
+		const line03 = llc(String.raw`     ${blc('/▓▓')}╢            `);
+		const line04 = llc(String.raw`   [${blc('▓▓')}▓╣/            `);
+		const line05 = llc(String.raw`   [╢╢╣▓             `);
+		const line06 = llc(String.raw`    %,╚╣╣@\          `);
+		const line07 = llc(String.raw`      #,╙▓▓▓\╙N      `);
+		const line08 = llc(String.raw`       '╙ \▓▓▓╖╙╦    `);
+		const line09 = llc(String.raw`            \@╣▓╗╢%  `);
+		const line10 = llc(String.raw`               ▓╣╢╢] `);
+		const line11 = llc(String.raw`              /╣▓${blc('▓▓')}] `);
+		const line12 = llc(String.raw`              ╢${blc('▓▓/')}   `);
+		const line13 = llc(String.raw`             ▓${blc('╬/')}     `);
+		const line14 = llc(String.raw`            /        `);
+
+		console.log(
+			String.raw`
+${line01}   ________  __   ___  ___  ___  _______        __
+${line02}  /"       )|/"| /  ")|"  \/"  |/"      \      /""\
+${line03} (:   \___/ (: |/   /  \   \  /|:        |    /    \
+${line04}  \___  \   |    __/    \\  \/ |_____/   )   /' /\  \
+${line05}   __/  \\  (// _  \    /   /   //      /   //  __'  \
+${line06}  /" \   :) |: | \  \  /   /   |:  __   \  /   /  \\  \
+${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
+${line08} ${blc(VERSION.padStart(55, ' '))}
+${line09} [${success}] Gateway
+${line10} [${client.analytics ? success : failed}] Analytics
+${line11} [${client.audio.queues?.client.connected ? success : failed}] Audio
+${line12} [${success}] Moderation
+${line13} [${success}] Social & Leaderboards
+${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+		`.trim()
+		);
+	}
+
+	private printStoreDebugInformation() {
+		const { console } = this.context.client;
+		const stores = [...this.context.client.stores.values()];
+		const last = stores.pop()!;
+
+		for (const store of stores) console.debug(this.styleStore(store, false));
+		console.debug(this.styleStore(last, true));
+	}
+
+	private styleStore(store: Store<any>, last: boolean) {
+		return gray(` ${last ? '└─' : '├─'} Loaded ${style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
 	}
 }

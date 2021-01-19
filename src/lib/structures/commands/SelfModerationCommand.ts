@@ -3,9 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { KeyOfType } from '#lib/types/Utils';
+import { Duration } from '@sapphire/time-utilities';
 import { codeBlock } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { Duration, PieceContext } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../moderation/SelfModeratorBitField';
 import { SkyraCommand } from './SkyraCommand';
 

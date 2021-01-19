@@ -21,10 +21,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 		const previous = this.get(code);
 		if (typeof previous !== 'undefined') return previous;
 
-		const data = (await resolveOnErrorCodes(
-			api(this.client).invites(code).get(),
-			RESTJSONErrorCodes.UnknownInvite
-		)) as RESTGetAPIInviteResult | null;
+		const data = (await resolveOnErrorCodes(api().invites(code).get(), RESTJSONErrorCodes.UnknownInvite)) as RESTGetAPIInviteResult | null;
 		if (data === null) {
 			const resolved: InviteCodeEntry = { valid: false, fetchedAt: Date.now() };
 			this.set(code, resolved);

@@ -35,7 +35,7 @@ export default class extends Event {
 			if (!channel) return;
 
 			if (result && result.star_message_id) {
-				await api(this.context.client)
+				await api()
 					.channels(channel)
 					.messages(result.star_message_id)
 					.delete({ reason: 'Starboard Management: Reactions Cleared' })

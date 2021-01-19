@@ -63,7 +63,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
 		floatPromise(
-			api(this.context.client)
+			api()
 				.channels(data.channel.id)
 				.messages(data.messageID)
 				.reactions(emoji, data.userID)

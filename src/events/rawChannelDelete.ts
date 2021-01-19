@@ -65,16 +65,14 @@ export default class extends Event {
 
 	private deleteMessage(channel: string, message: string) {
 		return resolveOnErrorCodes(
-			api(this.context.client).channels(channel).messages(message).delete({ reason: 'Starboard Management: Message Deleted' }),
+			api().channels(channel).messages(message).delete({ reason: 'Starboard Management: Message Deleted' }),
 			RESTJSONErrorCodes.UnknownMessage
 		);
 	}
 
 	private deleteMessages(channel: string, messages: readonly string[]) {
 		return resolveOnErrorCodes(
-			api(this.context.client)
-				.channels(channel)
-				.messages['bulk-delete'].post({ data: { messages }, reason: 'Starboard Management: Message Deleted' }),
+			api().channels(channel).messages['bulk-delete'].post({ data: { messages }, reason: 'Starboard Management: Message Deleted' }),
 			RESTJSONErrorCodes.UnknownMessage
 		);
 	}

@@ -4,7 +4,7 @@ import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
-import { PieceContext } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace ChannelConfigurationCommand {

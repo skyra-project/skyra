@@ -163,7 +163,7 @@ export class SettingsMenu {
 	private async _removeReactionFromUser(reaction: string, userID: string) {
 		if (!this.response) return;
 		try {
-			return await api(this.message.client)
+			return await api()
 				.channels(this.message.channel.id)
 				.messages(this.response.id)
 				.reactions(encodeURIComponent(reaction), userID === this.message.client.user!.id ? '@me' : userID)

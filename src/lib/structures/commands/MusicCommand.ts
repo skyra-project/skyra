@@ -1,5 +1,5 @@
 import { ENABLE_LAVALINK } from '#root/config';
-import { PieceContext } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace MusicCommand {
@@ -11,7 +11,6 @@ export namespace MusicCommand {
 
 export abstract class MusicCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: MusicCommand.Options) {
-		super(context, { ...options, runIn: ['text'] });
-		this.enabled = ENABLE_LAVALINK;
+		super(context, { ...options, runIn: ['text'], enabled: ENABLE_LAVALINK });
 	}
 }

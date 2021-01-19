@@ -20,7 +20,7 @@ export default class extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(403);
 
-		const emojis = await api(this.context.client).guilds(guildID).emojis.get();
+		const emojis = await api().guilds(guildID).emojis.get();
 		return response.json({ ...flattenGuild(guild), emojis });
 	}
 }

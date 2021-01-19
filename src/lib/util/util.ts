@@ -285,13 +285,13 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Im
 	}
 }
 
-export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
+export async function fetchReactionUsers(channelID: string, messageID: string, reaction: string) {
 	const users: Set<string> = new Set();
 	let rawUsers: APIUser[] = [];
 
 	// Fetch loop, to get +100 users
 	do {
-		rawUsers = await api(client)
+		rawUsers = await api()
 			.channels(channelID)
 			.messages(messageID)
 			.reactions(reaction)

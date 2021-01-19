@@ -106,18 +106,14 @@ export class GiveawayEntity extends BaseEntity {
 		this.pause();
 
 		// Create the message
-		const message = (await api(this.#client)
+		const message = (await api()
 			.channels(this.channelID)
 			.messages.post({ data: await this.getData() })) as RESTPostAPIChannelMessageResult;
 		this.messageID = message.id;
 		this.resume();
 
 		// Add a reaction to the message and save to database
-		await api(this.#client)
-			.channels(this.channelID)
-			.messages(this.messageID)
-			.reactions(kEmoji, '@me')
-			.put();
+		await api().channels(this.channelID).messages(this.messageID).reactions(kEmoji, '@me').put();
 
 		return this.save();
 	}
@@ -142,10 +138,7 @@ export class GiveawayEntity extends BaseEntity {
 		await this.finish();
 		if (this.messageID) {
 			try {
-				await api(this.#client)
-					.channels(this.channelID)
-					.messages(this.messageID)
-					.delete();
+				await api().channels(this.channelID).messages(this.messageID).delete();
 			} catch (error) {
 				if (error instanceof DiscordAPIError && kGiveawayBlockListReactionErrors.includes(error.code)) {
 					return this;
@@ -165,10 +158,7 @@ export class GiveawayEntity extends BaseEntity {
 		if (data === null) return this.finish();
 
 		try {
-			await api(this.#client)
-				.channels(this.channelID)
-				.messages(this.messageID!)
-				.patch({ data });
+			await api().channels(this.channelID).messages(this.messageID!).patch({ data });
 		} catch (error) {
 			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
 				await this.finish();
@@ -202,7 +192,7 @@ export class GiveawayEntity extends BaseEntity {
 			? t(LanguageKeys.Giveaway.EndedMessage, { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
 			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: this.title });
 		try {
-			await api(this.#client)
+			await api()
 				.channels(this.channelID)
 				.messages.post({ data: { content, allowed_mentions: { users: this.#winners ?? [], roles: [] } } });
 		} catch (error) {
@@ -261,7 +251,7 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async fetchParticipants(): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(this.#client, this.channelID, this.messageID!, kEmoji);
+			const users = await fetchReactionUsers(this.channelID, this.messageID!, kEmoji);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {

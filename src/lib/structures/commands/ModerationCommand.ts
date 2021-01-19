@@ -8,7 +8,7 @@ import { cast, floatPromise } from '#utils/util';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { PieceContext } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 

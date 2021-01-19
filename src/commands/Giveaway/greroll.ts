@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 	private async fetchParticipants(message: GuildMessage): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, this.#kResolvedEmoji);
+			const users = await fetchReactionUsers(message.channel.id, message.id, this.#kResolvedEmoji);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {

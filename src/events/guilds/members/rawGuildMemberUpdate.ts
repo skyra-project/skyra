@@ -51,7 +51,7 @@ export default class extends Event {
 			limit: 10,
 			action_type: AuditLogEvent.MEMBER_ROLE_UPDATE
 		};
-		const auditLogs = await api(this.context.client).guilds(guild.id)['audit-logs'].get<RESTGetAPIAuditLogResult>({
+		const auditLogs = await api().guilds(guild.id)['audit-logs'].get<RESTGetAPIAuditLogResult>({
 			query
 		});
 
@@ -63,7 +63,7 @@ export default class extends Event {
 			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleID);
 		}
 
-		await api(this.context.client)
+		await api()
 			.guilds(guild.id)
 			.members(data.user!.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });

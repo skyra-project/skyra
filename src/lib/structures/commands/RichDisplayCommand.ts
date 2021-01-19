@@ -1,6 +1,6 @@
 import type { GuildMessage } from '#lib/types';
 import type { PermissionResolvable } from 'discord.js';
-import { PieceContext } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace RichDisplayCommand {

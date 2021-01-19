@@ -30,7 +30,7 @@ export default class extends Event {
 
 		if (filteredResults.length === 0) return;
 		if (filteredResults.length === 1) {
-			await api(this.context.client)
+			await api()
 				.channels(channel)
 				.messages(filteredResults[0])
 				.delete({ reason: 'Starboard Management: Message Deleted' })
@@ -38,7 +38,7 @@ export default class extends Event {
 			return;
 		}
 
-		await api(this.context.client)
+		await api()
 			.channels(channel)
 			.messages['bulk-delete'].post({ data: { messages: filteredResults }, reason: 'Starboard Management: Message Deleted' })
 			.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));

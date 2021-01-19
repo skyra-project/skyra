@@ -1,6 +1,5 @@
 import { GuildSettings } from '#lib/database';
 import { PermissionLevels } from '#lib/types/Enums';
-import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Permissions } from 'discord.js';
 import { KlasaClient } from 'klasa';
@@ -33,6 +32,4 @@ export default KlasaClient.defaultPermissionLevels
 				  })
 				: false,
 		{ fetch: true }
-	)
-	.add(PermissionLevels.PreBotOwner, (message) => OWNERS.includes(message.author.id), { break: true })
-	.add(PermissionLevels.BotOwner, (message) => OWNERS.includes(message.author.id));
+	);

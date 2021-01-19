@@ -96,7 +96,7 @@ export default class extends Event {
 	}
 
 	private async fetchCount(data: LLRCData, emoji: string, id: string) {
-		const users = (await api(this.context.client).channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUser[];
+		const users = (await api().channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUser[];
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);

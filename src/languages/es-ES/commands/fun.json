@@ -45,7 +45,7 @@
 		"examples": [
 			"370d24",
 			"100d6",
-			""
+			"6"
 		]
 	},
 	"escaperopeDescription": "Usa la Cuerda Huida de Pokemon.",
@@ -62,7 +62,7 @@
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
 	"loveDescription": "Medidor de amor, ¡en línea!",
@@ -100,9 +100,9 @@
 			"yo"
 		]
 	},
-	"shindeiruDescription": "",
+	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "\"Usted ya está muerto\" Japonés: お前はもう死んでいる; Omae Wa Mou Shindeiru, es una expresión de la serie de manga y anime Hokuto no Ken. Esto muestra una historieta del personaje pronunciando las palabras más importantes, lo que hace que el oponente responda con \"nani?\" (¿qué?)."
 	},
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {
@@ -120,7 +120,7 @@
 	},
 	"punDescription": "The muestra un chiste aleatorio.",
 	"punExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "👩 Ayer perdí 800 calorías en 1 minuto.\n🧑 ¿Y cómo lo hiciste?\n👩 Se me cayó la pizza al suelo. 🍕\n\nConsigue tu dosis diaria de chistes de padres desde icanhazdadjoke.com y ríete de sus ocurrencias ingeniosas."
 	},
 	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
 	"wakandaExtended": {
@@ -157,8 +157,8 @@
 		"Pregúntame mañana.",
 		"No lo sé, pregúntele a un físico.",
 		"Nada.",
-		"",
-		"",
+		"Entre 10 y 1000L.",
+		"10e1000L.",
 		"2 o 3 litros, no me recuerdo.",
 		"Infinito.",
 		"1010 litros."
@@ -170,8 +170,8 @@
 		"Pregúntame mañana.",
 		"No lo sé, pregúntele a un físico.",
 		"Nada.",
-		"",
-		"",
+		"Entre 10 y 1000.",
+		"10e1000.",
 		"2 o 3 litros, no me recuerdo.",
 		"Infinito",
 		"1010."
@@ -220,7 +220,7 @@
 		"Sí, sin duda alguna.",
 		"Puedes confiar en ello."
 	],
-	"choiceOutput": "",
+	"choiceOutput": "🕺 *Pito pito, gorgorito, ¿dónde vas tú tan bonito?...* {{user}}, yo elijo:{{word, codeBlock}}",
 	"choiceMissing": "Por favor, escriba al menos dos opciones separadas por coma.",
 	"choiceDuplicates": "¿Por qué aceptaría palabras duplicadas? \"{{words}}\".",
 	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",

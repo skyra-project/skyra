@@ -92,7 +92,7 @@
 		"i18next": "^19.8.4",
 		"i18next-fs-backend": "^1.0.8",
 		"ioredis": "^4.19.4",
-		"klasa": "skyra-project/klasa#chore/switch-to-sapphire",
+		"klasa": "skyra-project/klasa#settings",
 		"node-fetch": "^2.6.1",
 		"pg": "^8.5.1",
 		"tslib": "1.11.2",

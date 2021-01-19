@@ -3951,9 +3951,9 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-klasa@skyra-project/klasa#chore/switch-to-sapphire:
+klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/04a8328de174d1b7d08436999d8c1e92a8a9a873"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/6d8f4c14cd77c7f89d5c7ed6042caeda771b6061"
   dependencies:
     "@sapphire/pieces" "^1.1.0"
     fs-nextra "^0.5.1"

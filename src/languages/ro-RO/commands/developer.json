@@ -1,31 +1,31 @@
 {
-	"yarnDescription": "",
+	"yarnDescription": "Răspunde cu informații despre un pachet NodeJS folosind registrul Yarn",
 	"yarnExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Acesta este pentru dezvoltatorii NodeJS care doresc să găsească rapid informații despre un pachet publicat pe [npm](https://npmjs.com)",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"package",
+				"Numele pachetului de căutare trebuie să fie o potrivire exactă"
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
 		]
 	},
-	"yarnEmbedDescriptionAuthor": "",
-	"yarnEmbedDescriptionDateCreated": "",
-	"yarnEmbedDescriptionDateModified": "",
-	"yarnEmbedDescriptionDependenciesLabel": "",
-	"yarnEmbedDescriptionDependenciesNoDeps": "",
-	"yarnEmbedDescriptionDeprecated": "",
-	"yarnEmbedDescriptionLatestVersion": "",
-	"yarnEmbedDescriptionLicense": "",
-	"yarnEmbedDescriptionMainFile": "",
-	"yarnEmbedDescriptionMaintainers": "",
-	"yarnEmbedMoreText": "",
-	"yarnNoPackage": "",
-	"yarnPackageNotFound": "",
-	"yarnUnpublishedPackage": ""
+	"yarnEmbedDescriptionAuthor": "❯ Autor: {{author}}",
+	"yarnEmbedDescriptionDateCreated": "❯ Data creării: **{{dateCreated}}**",
+	"yarnEmbedDescriptionDateModified": "❯ Data modificării: **{{dateModified}}**",
+	"yarnEmbedDescriptionDependenciesLabel": "__*Dependențe:*__",
+	"yarnEmbedDescriptionDependenciesNoDeps": "Nu există dependențe {{GREENTICK}}!",
+	"yarnEmbedDescriptionDeprecated": "❯ Înștiințare depreciere: **{{deprecated}}**",
+	"yarnEmbedDescriptionLatestVersion": "❯ Ultima verziune: **{{latestVersionNumber}}**",
+	"yarnEmbedDescriptionLicense": "❯ Licență: **{{license}}**",
+	"yarnEmbedDescriptionMainFile": "❯ Fișier principal: **{{mainFile}}**",
+	"yarnEmbedDescriptionMaintainers": "❯ Întreținători: **{{maintainers, andList}}**",
+	"yarnEmbedMoreText": "mai mult...",
+	"yarnNoPackage": "{{REDCROSS}} Îmi pare rău, dar trebuie să-mi dai numele unui pachet pentru căutare.",
+	"yarnPackageNotFound": "Îmi pare rău, dar nu am putut găsi niciun pachet cu numele de `{{pkg}}` în registru.",
+	"yarnUnpublishedPackage": "Ce dezvoltator naiv a făcut {{pkg}}! L-a retras din registru!"
 }

@@ -1,16 +1,16 @@
 {
-	"commandMessageMissing": "",
-	"commandMessageMissingOptionals": "",
-	"commandMessageMissingRequired": "",
-	"commandMessageNoMatch": "",
-	"messagePromptTimeout": "",
-	"monitorCommandHandlerAborted": "",
-	"monitorCommandHandlerRepeatingReprompt": "",
-	"monitorCommandHandlerReprompt": "",
-	"reactionhandlerPrompt": "",
+	"commandMessageMissing": "Absența unuia sau mai multor argumente necesare după încheierea intrărilor.",
+	"commandMessageMissingOptionals": "Lipsește o opțiune necesară: ({{possibles}})",
+	"commandMessageMissingRequired": "{{name}} este un argument obligatoriu.",
+	"commandMessageNoMatch": "Opțiunea ta nu se potrivește cu niciuna dintre posibilități: ({{possibles}})",
+	"messagePromptTimeout": "Cererea a expirat.",
+	"monitorCommandHandlerAborted": "Anulat",
+	"monitorCommandHandlerRepeatingReprompt": "{{tag}} | **{{name}}** este un argument repetitiv. | Aveţi **{{time}}** secunde pentru a răspunde la această cerere cu argumente suplimentare valide. Tastați **{{cancelOptions}}** pentru a anula această cerere.",
+	"monitorCommandHandlerReprompt": "{{tag}} | **{{name}}** | Aveţi **{{time}}** secunde pentru a răspunde la această cerere cu un argument valid. Tastați **{{cancelOptions}}** pentru a anula această cerere.",
+	"reactionhandlerPrompt": "La ce pagină doriți să săriți?",
 	"textPromptAbortOptions": [
-		"",
-		"",
-		""
+		"abort",
+		"cancel",
+		"stop"
 	]
 }

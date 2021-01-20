@@ -118,16 +118,14 @@ export default class extends SkyraCommand {
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: Message) {
-		const tasks = this.context.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
+		const { client } = this.context;
+		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(
-					this.context.client.user!.username,
-					this.context.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-				)
+				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		);
 
 		const t = await message.fetchT();

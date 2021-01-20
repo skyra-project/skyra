@@ -1,1 +1,6 @@
-{}
+{
+	"aborted": "Cerere anulată cu succes.",
+	"attemptFailed": "Intrare invalidă. Încercarea **{{attempt}}** din **{{maxAttempts}}**\n{{list}}",
+	"multipleChoice_plural": "Există {{count}} rezultate. Te rugăm să alegi un număr între 1 și {{count}}, sau scrie **`CANCEL`** pentru a anula solicitarea.\n{{list}}",
+	"multipleChoice": "Există {{count}} rezultat. Te rugăm să alegi un număr între 1 și {{count}}, sau scrie **`CANCEL`** pentru a anula solicitarea.\n{{list}}"
+}

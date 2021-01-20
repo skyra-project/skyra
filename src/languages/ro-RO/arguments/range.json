@@ -1,1 +1,4 @@
-{}
+{
+	"invalid": "{{name}} trebuie să fie un număr sau un interval de numere.",
+	"max_plural": "{{name}} acceptă un interval de maximum {{maximum}} numere"
+}

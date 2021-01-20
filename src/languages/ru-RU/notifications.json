@@ -1,1 +1,4 @@
-{}
+{
+	"twitchEmbedDescription": "{{userName}} сейчас в эфире!",
+	"twitchEmbedDescriptionWithGame": "{{userName}} сейчас в эфире - Стримит {{gameName}}!"
+}

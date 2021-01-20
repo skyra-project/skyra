@@ -4,15 +4,15 @@
 		"extendedHelp": ""
 	},
 	"catfactTitle": "",
-	"dogDescription": "",
+	"dogDescription": "Câini drăguți! ❤",
 	"dogExtended": {
 		"extendedHelp": ""
 	},
 	"foxDescription": "",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Această comandă oferă o imagine aleatorie de pe [randomfox.ca](https://randomfox.ca/)."
 	},
-	"kittyDescription": "",
+	"kittyDescription": "PISICUȚE!",
 	"kittyExtended": {
 		"extendedHelp": ""
 	},

@@ -22,7 +22,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 		super(message, playerA, playerB, turn);
 		this.reactions = reactions;
 		this.reactionTime = reactionTime;
-		this.listener = new LongLivingReactionCollector(this.client);
+		this.listener = new LongLivingReactionCollector();
 	}
 
 	protected async onStart(): Promise<unknown> {

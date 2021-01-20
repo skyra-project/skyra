@@ -1,12 +1,12 @@
 import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 	private async fetchParticipants(message: GuildMessage): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, this.#kResolvedEmoji);
+			const users = await fetchReactionUsers(message.channel.id, message.id, this.#kResolvedEmoji);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {
@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
-				this.store.client.emit(Events.ApiError, error);
+				this.context.client.emit(Events.ApiError, error);
 			}
 			return [];
 		}

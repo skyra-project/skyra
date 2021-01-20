@@ -1,17 +1,15 @@
 import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { GatewayDispatchEvents, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberRemove, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.GuildMemberRemove, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayGuildMemberRemoveDispatch['d']) {
-		const guild = this.client.guilds.cache.get(data.guild_id);
+		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
 		const member = guild.members.cache.get(data.user.id) ?? null;
-		this.client.emit(Events.RawMemberRemove, guild, member, data);
+		this.context.client.emit(Events.RawMemberRemove, guild, member, data);
 	}
 }

@@ -2,11 +2,7 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
-import type { AnalyticsData } from '#lib/structures/AnalyticsData';
-import type { InviteStore } from '#lib/structures/InviteStore';
-import type { ConnectFourManager } from '#lib/structures/managers/ConnectFourManager';
-import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
-import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
+import type { AnalyticsData, ConnectFourManager, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
@@ -15,6 +11,7 @@ import type { LongLivingReactionCollector } from '#utils/LongLivingReactionColle
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
 import 'i18next';
+import type { AliasPieceOptions, PieceOptions } from 'klasa';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
@@ -108,15 +105,6 @@ declare module 'klasa' {
 	interface Argument {
 		// @ts-expect-error 1070
 		run<T>(arg: string | undefined, possible: Possible, message: Message, filter?: (entry: T) => boolean): any;
-	}
-}
-
-declare module 'klasa-dashboard-hooks' {
-	interface AuthData {
-		token: string;
-		refresh: string;
-		user_id: string;
-		expires: number;
 	}
 }
 

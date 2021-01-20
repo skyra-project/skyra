@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { Argument, ArgumentOptions, Possible } from 'klasa';
 
@@ -13,7 +13,6 @@ export default class extends Argument {
 
 		const { min, max } = possible;
 
-		// @ts-expect-error 2341
-		return (await Argument.minOrMax(this.client, number, min, max, possible, message, '')) ? number : null;
+		return (await Argument.minOrMax(number, min, max, possible, message, '')) ? number : null;
 	}
 }

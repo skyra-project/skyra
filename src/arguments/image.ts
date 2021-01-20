@@ -25,7 +25,7 @@ export default class extends Argument {
 			return fetchAvatar(message.author);
 		}
 
-		const user = await this.client.arguments.get('username')!.run(arg, possible, message);
+		const user = await message.client.arguments.get('username')!.run(arg, possible, message);
 		return fetchAvatar(user);
 	}
 }

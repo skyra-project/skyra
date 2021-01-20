@@ -34,7 +34,7 @@ export default class extends Argument {
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {
-		const clientUser = this.client.user!;
+		const clientUser = author.client.user!;
 		return typeof filter === 'undefined'
 			? (entry: GuildChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)
 			: (entry: GuildChannel) => filter(entry) && validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser);

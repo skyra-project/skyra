@@ -1,10 +1,11 @@
 import { GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { deepClone } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { Role } from 'discord.js';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
@@ -38,7 +39,7 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 	]
 ])
 export default class extends SkyraCommand {
-	public async init() {
+	public async onLoad() {
 		this.customizeResponse('role', (message) => message.resolveKey(LanguageKeys.Commands.Social.AutoRoleRequireRole)) //
 			.customizeResponse('points', (message) => message.resolveKey(LanguageKeys.Commands.Social.AutoRolePointsRequired));
 	}

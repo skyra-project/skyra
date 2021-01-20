@@ -1,8 +1,7 @@
 import { GuildEntity, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationEvent } from '#lib/structures/moderation/ModerationEvent';
-import { SelfModeratorBitField } from '#lib/structures/moderation/SelfModeratorBitField';
+import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/structures';
 import type { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -10,17 +9,17 @@ import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 import type { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
-export default class extends ModerationEvent<ArgumentType, unknown, number> {
+export default class extends ModerationEvent<ArgumentType, unknown> {
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected hardPunishmentPath: HardPunishment<number> = {
+	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
 		adder: 'reactions'
@@ -63,8 +62,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
 		floatPromise(
-			this,
-			api(this.client)
+			api()
 				.channels(data.channel.id)
 				.messages(data.messageID)
 				.reactions(emoji, data.userID)
@@ -74,13 +72,12 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
-			this,
 			data.channel.sendTranslated(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
-		const user = await this.client.users.fetch(data.userID);
+		const user = await this.context.client.users.fetch(data.userID);
 		const t = await data.guild.fetchT();
 		return new MessageEmbed()
 			.setColor(Colors.Red)
@@ -96,7 +93,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	}
 
 	protected onLog(args: Readonly<ArgumentType>) {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
+		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
 	}
 
 	private async hasPermissions(member: GuildMember) {

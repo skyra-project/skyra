@@ -1,25 +1,22 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { isTextBasedChannel } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { TextChannel } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	usage: '<here|channel:textchannelname>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
-			extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			usage: '<here|channel:textchannelname>'
-		});
-	}
-
 	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (!isTextBasedChannel(channel)) throw await message.resolveKey(LanguageKeys.Misc.ConfigurationTextChannelRequired);

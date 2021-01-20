@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import type { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
@@ -30,17 +30,17 @@ export default class extends Event {
 
 		if (filteredResults.length === 0) return;
 		if (filteredResults.length === 1) {
-			await api(this.client)
+			await api()
 				.channels(channel)
 				.messages(filteredResults[0])
 				.delete({ reason: 'Starboard Management: Message Deleted' })
-				.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
+				.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
 			return;
 		}
 
-		await api(this.client)
+		await api()
 			.channels(channel)
 			.messages['bulk-delete'].post({ data: { messages: filteredResults }, reason: 'Starboard Management: Message Deleted' })
-			.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
+			.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
 	}
 }

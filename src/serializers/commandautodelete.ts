@@ -23,7 +23,7 @@ export default class UserSerializer extends Serializer<CommandAutoDelete> {
 			value.length === 2 &&
 			typeof value[0] === 'string' &&
 			typeof value[1] === 'number' &&
-			this.client.commands.has(value[0])
+			this.context.client.commands.has(value[0])
 		);
 	}
 

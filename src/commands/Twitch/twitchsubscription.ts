@@ -7,16 +7,16 @@ import {
 	TwitchStreamSubscriptionEntity
 } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
+import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Any } from 'typeorm';
@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 				// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 				// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
 				if (await this.upsertSubscription(message.guild, streamer)) {
-					await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
+					await this.context.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
 				}
 			} else {
 				// Retrieve the subscription.
@@ -304,7 +304,7 @@ export default class extends SkyraCommand {
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map((subscriptions) => subscriptions[0]);
-		const profiles = await this.client.twitch.fetchUsers(ids, []);
+		const profiles = await this.context.client.twitch.fetchUsers(ids, []);
 		const names = new Map<string, string>();
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
@@ -349,7 +349,7 @@ export default class extends SkyraCommand {
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
 		if (subscription.guildIds.length === 1) {
 			await subscription.remove();
-			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
+			await this.context.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
 		} else {
 			subscription.guildIds.splice(index, 1);
 			await subscription.save();

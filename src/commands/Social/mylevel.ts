@@ -1,24 +1,20 @@
 import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	bucket: 2,
+	cooldown: 15,
+	description: LanguageKeys.Commands.Social.MyLevelDescription,
+	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
+	runIn: ['text'],
+	usage: '[user:username]',
+	spam: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 15,
-			description: LanguageKeys.Commands.Social.MyLevelDescription,
-			extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-
-		this.spam = true;
-	}
-
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });

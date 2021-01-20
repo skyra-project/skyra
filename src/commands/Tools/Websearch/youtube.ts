@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Message, Permissions } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
 const kPermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]).freeze();
 
@@ -16,17 +16,14 @@ const EMOJIS = {
 	next: '➡️'
 };
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['yt'],
+	cooldown: 15,
+	description: LanguageKeys.Commands.Tools.YouTubeDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended,
+	usage: '<query:string>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['yt'],
-			cooldown: 15,
-			description: LanguageKeys.Commands.Tools.YouTubeDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended,
-			usage: '<query:string>'
-		});
-	}
-
 	public async run(message: Message, [input]: [string]) {
 		const url = new URL('https://www.googleapis.com/youtube/v3/search');
 		url.searchParams.append('part', 'snippet');
@@ -47,7 +44,7 @@ export default class extends SkyraCommand {
 		for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
 
 		let index = 0;
-		const llrc = new LongLivingReactionCollector(this.client);
+		const llrc = new LongLivingReactionCollector();
 
 		llrc.setListener(async (reaction: LLRCData) => {
 			if (reaction.messageID !== sent.id || reaction.userID !== message.author.id) return;
@@ -110,7 +107,7 @@ export default class extends SkyraCommand {
 				output = `https://youtu.be/${result.id.videoId}`;
 				break;
 			default: {
-				this.client.emit(Events.Wtf, `YouTube -> Returned incompatible kind '${result.id.kind}'.`);
+				this.context.client.emit(Events.Wtf, `YouTube -> Returned incompatible kind '${result.id.kind}'.`);
 				throw 'I found an incompatible kind of result...';
 			}
 		}

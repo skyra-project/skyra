@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Message, Permissions, PermissionString, TextChannel } from 'discord.js';
 import { Command, Inhibitor } from 'klasa';
 

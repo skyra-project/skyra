@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
@@ -36,7 +36,7 @@ export default class extends Event {
 			// Set all the roles at once.
 			await member.roles.set([...memberRoles]);
 		} catch (error) {
-			this.client.emit(Events.ApiError, error);
+			this.context.client.emit(Events.ApiError, error);
 		}
 	}
 }

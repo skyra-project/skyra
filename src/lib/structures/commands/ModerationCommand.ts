@@ -8,7 +8,7 @@ import { cast, floatPromise } from '#utils/util';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
+import type { PieceContext } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -33,8 +33,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	 */
 	public optionalDuration: boolean;
 
-	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommand.Options) {
-		super(store, file, directory, {
+	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
+		super(context, {
 			flagSupport: true,
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
@@ -86,7 +86,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (shouldAutoDelete) {
-			if (message.deletable) floatPromise(this, message.nuke());
+			if (message.deletable) floatPromise(message.nuke());
 		}
 
 		if (shouldDisplayMessage) {

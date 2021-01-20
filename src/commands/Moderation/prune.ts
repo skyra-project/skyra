@@ -1,14 +1,14 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { isNullish } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -74,28 +74,6 @@ export default class extends SkyraCommand {
 		you: Filter.Skyra
 	};
 
-	public async init() {
-		this.createCustomResolver('filter', async (argument, _possible, message) => {
-			if (!argument) return undefined;
-			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
-			return filter;
-		})
-			.createCustomResolver('position', async (argument, _possible, message) => {
-				if (!argument) return null;
-				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
-				return position;
-			})
-			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
-				if (position === null) return message;
-
-				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
-				return fetched;
-			});
-	}
-
 	public async run(
 		message: GuildMessage,
 		[limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, GuildMessage]
@@ -130,7 +108,7 @@ export default class extends SkyraCommand {
 		});
 
 		// Send prune logs and reply to the channel
-		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
+		floatPromise(this.sendPruneLogs(message, filtered, filteredKeys));
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
 			: message.alert(
@@ -139,6 +117,28 @@ export default class extends SkyraCommand {
 						total: limit
 					})
 			  );
+	}
+
+	public async onLoad() {
+		this.createCustomResolver('filter', async (argument, _possible, message) => {
+			if (!argument) return undefined;
+			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
+			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
+			return filter;
+		})
+			.createCustomResolver('position', async (argument, _possible, message) => {
+				if (!argument) return null;
+				const position = this.kCommandPrunePositions[argument.toLowerCase()];
+				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
+				return position;
+			})
+			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
+				if (position === null) return message;
+
+				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
+				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
+				return fetched;
+			});
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {

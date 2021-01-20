@@ -1,23 +1,20 @@
 import { Events } from '#lib/types/Enums';
 import { ENABLE_LAVALINK } from '#root/config';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayVoiceState } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.VoiceStateUpdate, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.VoiceStateUpdate, emitter: store.client.ws });
-	}
-
 	public async run(data: GatewayVoiceState): Promise<void> {
 		try {
-			await this.client.audio.voiceStateUpdate(data);
+			await this.context.client.audio.voiceStateUpdate(data);
 		} catch (error) {
-			this.client.emit(Events.Error, error);
+			this.context.client.emit(Events.Error, error);
 		}
 	}
 
-	public init() {
-		if (!ENABLE_LAVALINK) this.disable();
-		return Promise.resolve();
+	public async onLoad() {
+		if (!ENABLE_LAVALINK) await this.unload();
 	}
 }

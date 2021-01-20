@@ -1,10 +1,10 @@
-import { ShardEvent } from '#lib/structures/events/ShardEvent';
+import { ShardEvent } from '#lib/structures';
 import { yellow } from 'colorette';
 
 export default class extends ShardEvent {
 	protected readonly title = yellow('Reconnecting');
 
 	public run(id: number) {
-		this.client.console.error(`${this.header(id)}: ${this.title}`);
+		this.context.client.console.error(`${this.header(id)}: ${this.title}`);
 	}
 }

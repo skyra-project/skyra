@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CommandContext, HandledCommandContext, ModerationCommand } from '#lib/structures/commands/ModerationCommand';
+import { CommandContext, HandledCommandContext, ModerationCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Role, User } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({

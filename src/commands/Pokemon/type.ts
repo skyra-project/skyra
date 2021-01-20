@@ -1,14 +1,14 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import type { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -82,7 +82,7 @@ export default class extends RichDisplayCommand {
 
 	private parseEffectiveMatchup(doubleEffectiveTypes: TypeEntry['doubleEffectiveTypes'], effectiveTypes: TypeEntry['effectiveTypes']) {
 		return doubleEffectiveTypes
-			.map((type) => `${type} (x4)`)
+			.map((type): string => `${type} (x4)`)
 			.concat(effectiveTypes.map((type) => `${type} (x2)`))
 			.map((type) => `\`${type}\``)
 			.join(', ');
@@ -90,7 +90,7 @@ export default class extends RichDisplayCommand {
 
 	private parseResistedMatchup(doubleResistedTypes: TypeEntry['doubleResistedTypes'], resistedTypes: TypeEntry['resistedTypes']) {
 		return doubleResistedTypes
-			.map((type) => `${type} (x0.25)`)
+			.map((type): string => `${type} (x0.25)`)
 			.concat(resistedTypes.map((type) => `${type} (x0.5)`))
 			.map((type) => `\`${type}\``)
 			.join(', ');

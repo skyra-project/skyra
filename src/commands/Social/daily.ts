@@ -1,9 +1,9 @@
 import { ClientEntity, DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 		await settings.save();
 
 		if (remind) {
-			await this.client.schedules.add(Schedules.Reminder, nextTime, {
+			await this.context.client.schedules.add(Schedules.Reminder, nextTime, {
 				data: {
 					content: t(LanguageKeys.Commands.Social.DailyCollect),
 					user: message.author.id

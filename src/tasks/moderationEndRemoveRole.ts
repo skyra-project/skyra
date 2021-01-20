@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationData, ModerationTask } from '#lib/structures/moderation/ModerationTask';
+import { ModerationData, ModerationTask } from '#lib/structures';
 import { CLIENT_ID } from '#root/config';
 import { Guild, Permissions, Role } from 'discord.js';
 
@@ -16,7 +16,7 @@ export default class extends ModerationTask {
 				reason: `[MODERATION] Role re-added after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
 			},
 			data.extraData.role,
-			await this.getTargetDM(guild, await this.client.users.fetch(data.userID))
+			await this.getTargetDM(guild, await this.context.client.users.fetch(data.userID))
 		);
 		return null;
 	}

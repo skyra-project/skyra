@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel, resolveEmoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import type { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
@@ -26,7 +26,7 @@ export default class extends Event {
 			const member = await channel.guild.members.fetch(data.user_id);
 			if (member.roles.cache.has(roleEntry.role)) await member.roles.remove(roleEntry.role);
 		} catch (error) {
-			this.client.emit(Events.ApiError, error);
+			this.context.client.emit(Events.ApiError, error);
 		}
 	}
 }

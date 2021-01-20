@@ -1,11 +1,9 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import { canManage } from '#lib/api/utils';
 import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { authenticated, cast, ratelimit } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { Guild } from 'discord.js';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
 export default class extends Route {
@@ -13,13 +11,13 @@ export default class extends Route {
 
 	@authenticated()
 	@ratelimit(2, 5000, true)
-	public async get(request: ApiRequest, response: ApiResponse) {
+	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
 
-		const guild = this.client.guilds.cache.get(guildID);
+		const guild = this.context.client.guilds.cache.get(guildID);
 		if (!guild) return response.error(400);
 
-		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
+		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
 		if (!member) return response.error(400);
 
 		if (!(await canManage(guild, member))) return response.error(403);
@@ -29,17 +27,17 @@ export default class extends Route {
 
 	@authenticated()
 	@ratelimit(2, 1000, true)
-	public async patch(request: ApiRequest, response: ApiResponse) {
+	public async [methods.PATCH](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { guild_id: string; data: [string, unknown][] | undefined };
 
 		if (!requestBody.guild_id || !Array.isArray(requestBody.data) || requestBody.guild_id !== request.params.guild) {
 			return response.status(400).json(['Invalid body.']);
 		}
 
-		const guild = this.client.guilds.cache.get(requestBody.guild_id);
+		const guild = this.context.client.guilds.cache.get(requestBody.guild_id);
 		if (!guild) return response.status(400).json(['Guild not found.']);
 
-		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
+		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
 		if (!member) return response.status(400).json(['Member not found.']);
 
 		if (!(await canManage(guild, member))) return response.error(403);

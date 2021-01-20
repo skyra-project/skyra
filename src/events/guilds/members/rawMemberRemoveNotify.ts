@@ -4,7 +4,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum, Moderation } from '#utils/constants';
 import { getDisplayAvatar } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
@@ -26,7 +26,7 @@ export default class extends Event {
 			: t(LanguageKeys.Events.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))

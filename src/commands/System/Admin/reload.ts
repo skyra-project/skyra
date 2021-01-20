@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { ApplyOptions, CreateResolver } from '@skyra/decorators';
+import { CreateResolver } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import i18next, { TFunction } from 'i18next';
 import { Piece, Store } from 'klasa';
@@ -20,7 +21,7 @@ import { Piece, Store } from 'klasa';
 	return 'everything';
 })
 export default class extends SkyraCommand {
-	public async run(message: Message, [piece]: [Piece | Store<string, any> | string | 'everything']) {
+	public async run(message: Message, [piece]: [Piece | Store<Piece> | string | 'everything']) {
 		const t = await message.fetchT();
 
 		if (piece === 'everything') return this.everything(message, t);
@@ -28,19 +29,17 @@ export default class extends SkyraCommand {
 		if (piece instanceof Store) {
 			const timer = new Stopwatch();
 			await piece.loadAll();
-			await piece.init();
 
 			return message.send(t(LanguageKeys.Commands.System.ReloadAll, { type: piece.name, time: timer.stop().toString() }));
 		}
 
 		try {
-			const itm = await piece.reload();
+			await piece.reload();
 			const timer = new Stopwatch();
 
-			return message.send(t(LanguageKeys.Commands.System.Reload, { type: itm.type, name: itm.name, time: timer.stop().toString() }));
+			return message.send(t(LanguageKeys.Commands.System.Reload, { type: piece.store.name, name: piece.name, time: timer.stop().toString() }));
 		} catch (err) {
-			piece.store.set(piece);
-			return message.send(t(LanguageKeys.Commands.System.ReloadFailed, { type: piece.type, name: piece.name }));
+			return message.send(t(LanguageKeys.Commands.System.ReloadFailed, { type: piece.store.name, name: piece.name }));
 		}
 	}
 
@@ -56,9 +55,8 @@ export default class extends SkyraCommand {
 
 		await Promise.all([
 			i18next.reloadResources([...message.client.i18n.languages.keys()]),
-			...this.client.pieceStores.map(async (store) => {
+			...[...this.context.client.stores].map(async (store) => {
 				await store.loadAll();
-				await store.init();
 			})
 		]);
 

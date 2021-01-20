@@ -18,10 +18,10 @@ export default class extends Event {
 		try {
 			await message.guild.members
 				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Monitors.NoMentionSpamFooter) })
-				.catch((error) => this.client.emit(Events.ApiError, error));
+				.catch((error) => this.context.client.emit(Events.ApiError, error));
 			await message.channel
 				.send(t(LanguageKeys.Monitors.NoMentionSpamMessage, { user: message.author }))
-				.catch((error) => this.client.emit(Events.ApiError, error));
+				.catch((error) => this.context.client.emit(Events.ApiError, error));
 			nms.delete(message.author.id);
 
 			const reason = t(LanguageKeys.Monitors.NoMentionSpamModerationLog, { threshold });

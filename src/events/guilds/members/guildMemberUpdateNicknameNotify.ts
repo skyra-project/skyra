@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Event, EventOptions } from 'klasa';
@@ -24,7 +24,7 @@ export default class extends Event {
 		const nextNickname = next.nickname;
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
 				new MessageEmbed()
 					.setColor(Colors.Yellow)
 					.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

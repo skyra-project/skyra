@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { ModerationManagerCreateData } from '#lib/structures/managers/ModerationManager';
+import type { ModerationManagerCreateData } from '#lib/structures';
 import type { KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -274,7 +274,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, Moderation.TypeCodes.SetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.patch({
@@ -301,7 +301,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnSetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.patch({ data: { nick: nickname }, reason: rawOptions.reason });
@@ -314,7 +314,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, Moderation.TypeCodes.AddRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
@@ -334,7 +334,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnAddRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client).guilds(this.guild.id).members(rawOptions.userID).roles(role.id).delete({ reason: rawOptions.reason! });
+		await api().guilds(this.guild.id).members(rawOptions.userID).roles(role.id).delete({ reason: rawOptions.reason! });
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -348,7 +348,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, Moderation.TypeCodes.RemoveRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
@@ -366,7 +366,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRemoveRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client).guilds(this.guild.id).members(rawOptions.userID).roles(role.id).put({ reason: rawOptions.reason });
+		await api().guilds(this.guild.id).members(rawOptions.userID).roles(role.id).put({ reason: rawOptions.reason });
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -411,7 +411,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Kick);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(options.userID)
 			.delete({
@@ -426,7 +426,7 @@ export class ModerationActions {
 		await this.sendDM(moderationLog, sendOptions);
 
 		const t = await this.guild.fetchT();
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.bans(options.userID)
 			.put({
@@ -435,7 +435,7 @@ export class ModerationActions {
 					? t(LanguageKeys.Commands.Moderation.ActionSoftBanReason, { reason: moderationLog.reason! })
 					: t(LanguageKeys.Commands.Moderation.ActionSoftBanNoReason)
 			});
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.bans(options.userID)
 			.delete({
@@ -450,7 +450,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Ban);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.bans(options.userID)
 			.put({
@@ -465,7 +465,7 @@ export class ModerationActions {
 	public async unBan(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnBan);
 		const moderationLog = this.guild.moderation.create(options);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.bans(options.userID)
 			.delete({ reason: await this.getReason('ban', moderationLog.reason, true) });
@@ -478,7 +478,7 @@ export class ModerationActions {
 	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(options.userID)
 			.patch({ data: { mute: true }, reason: await this.getReason('vmute', moderationLog.reason) });
@@ -491,7 +491,7 @@ export class ModerationActions {
 	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(options.userID)
 			.patch({ data: { mute: false }, reason: await this.getReason('vmute', moderationLog.reason, true) });
@@ -504,7 +504,7 @@ export class ModerationActions {
 	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
 		const moderationLog = this.guild.moderation.create(options);
-		await api(this.guild.client)
+		await api()
 			.guilds(this.guild.id)
 			.members(options.userID)
 			.patch({ data: { channel_id: null }, reason: await this.getReason('vkick', moderationLog.reason) });
@@ -644,7 +644,7 @@ export class ModerationActions {
 
 	public async userIsBanned(user: User) {
 		try {
-			await api(this.guild.client).guilds(this.guild.id).bans(user.id).get();
+			await api().guilds(this.guild.id).bans(user.id).get();
 			return true;
 		} catch (error) {
 			if (!(error instanceof DiscordAPIError)) throw await this.guild.resolveKey(LanguageKeys.System.FetchBansFail);
@@ -707,7 +707,7 @@ export class ModerationActions {
 			try {
 				const target = await entry.fetchUser();
 				const embed = await this.buildEmbed(entry, sendOptions);
-				floatPromise({ client: this.guild.client }, target.send(embed));
+				floatPromise(target.send(embed));
 			} catch (error) {
 				if (error.code === RESTJSONErrorCodes.CannotSendMessagesToThisUser) return;
 				this.guild.client.emit(Events.Error, error);
@@ -870,7 +870,7 @@ export class ModerationActions {
 	private async addRestrictionRole(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
-		await api(this.guild.client).guilds(this.guild.id).members(id).roles(roleID).put();
+		await api().guilds(this.guild.id).members(id).roles(roleID).put();
 	}
 
 	private async removeStickyRestriction(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
@@ -883,7 +883,7 @@ export class ModerationActions {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
 		try {
-			await api(this.guild.client).guilds(this.guild.id).members(id).roles(roleID).delete();
+			await api().guilds(this.guild.id).members(id).roles(roleID).delete();
 		} catch (error) {
 			if (error.code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}

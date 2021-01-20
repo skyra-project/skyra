@@ -1,22 +1,19 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { getContent, getImage } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['sniped'],
+	description: LanguageKeys.Commands.Misc.SnipeDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text']
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['sniped'],
-			description: LanguageKeys.Commands.Misc.SnipeDescription,
-			extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text']
-		});
-	}
-
 	public async run(message: GuildMessage) {
 		const { sniped } = message.channel as TextChannel;
 		if (sniped === null) throw await message.resolveKey(LanguageKeys.Commands.Misc.SnipeEmpty);

@@ -1,7 +1,7 @@
-import type { Client } from 'discord.js';
+import { Store } from 'klasa';
 
-export function api(client: Client) {
-	return Reflect.get(client, 'api') as Api;
+export function api() {
+	return Reflect.get(Store.injectedContext.client, 'api') as Api;
 }
 
 interface Api {

@@ -1,8 +1,8 @@
 import { requireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['p'],
@@ -18,7 +18,7 @@ export default class extends MusicCommand {
 
 		if (songs) {
 			// If there are songs or a queue, add them
-			await this.client.commands.get('add')!.run(message, [songs]);
+			await this.context.client.commands.get('add')!.run(message, [songs]);
 			if (audio.playing) return;
 		}
 
@@ -30,7 +30,7 @@ export default class extends MusicCommand {
 
 		// If Skyra is not in a voice channel, join
 		if (!audio.voiceChannelID) {
-			await this.client.commands.get('join')!.run(message, []);
+			await this.context.client.commands.get('join')!.run(message, []);
 		}
 
 		// If Skyra is already playing, send a message.

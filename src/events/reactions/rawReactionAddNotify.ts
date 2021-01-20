@@ -7,7 +7,7 @@ import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { APIUser } from 'discord-api-types/v6';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
@@ -39,7 +39,7 @@ export default class extends Event {
 
 		if (allowList.includes(emoji)) return;
 
-		this.client.emit(Events.ReactionBlacklist, data, emoji);
+		this.context.client.emit(Events.ReactionBlacklist, data, emoji);
 		if (!channel || (!twemojiEnabled && data.emoji.id === null)) return;
 
 		if (ignoreChannels.includes(data.channel.id)) return;
@@ -48,10 +48,10 @@ export default class extends Event {
 
 		if ((await this.retrieveCount(data, emoji)) > 1) return;
 
-		const user = await this.client.users.fetch(data.userID);
+		const user = await this.context.client.users.fetch(data.userID);
 		if (user.bot) return;
 
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -96,17 +96,17 @@ export default class extends Event {
 	}
 
 	private async fetchCount(data: LLRCData, emoji: string, id: string) {
-		const users = (await api(this.client).channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUser[];
+		const users = (await api().channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUser[];
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);
 
 		if (this.kTimerSweeper === null) {
-			this.kTimerSweeper = this.client.setInterval(() => {
+			this.kTimerSweeper = this.context.client.setInterval(() => {
 				const now = Date.now();
 				this.kCountCache.sweep((entry) => entry.sweepAt < now);
 				if (this.kTimerSweeper !== null && this.kCountCache.size === 0) {
-					this.client.clearInterval(this.kTimerSweeper);
+					this.context.client.clearInterval(this.kTimerSweeper);
 					this.kTimerSweeper = null;
 				}
 			}, 5000);

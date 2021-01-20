@@ -2,18 +2,18 @@ import { TicTacToeBotController } from '#lib/games/tic-tac-toe/TicTacToeBotContr
 import { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { TicTacToeHumanController } from '#lib/games/tic-tac-toe/TicTacToeHumanController';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import type { User } from 'discord.js';
-import type { CommandStore, Usage } from 'klasa';
+import { PieceContext, Usage } from 'klasa';
 
 export default class extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
 	private prompt: Usage;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(context: PieceContext) {
+		super(context, {
 			aliases: ['ttt'],
 			cooldown: 10,
 			description: LanguageKeys.Commands.Games.TicTacToeDescription,

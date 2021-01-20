@@ -17,7 +17,7 @@ export default class extends Argument {
 	}
 
 	private async validateAccess(channel: GuildChannel, message: Message) {
-		if (validateChannelAccess(channel, message.author) && validateChannelAccess(channel, this.client.user!)) {
+		if (validateChannelAccess(channel, message.author) && validateChannelAccess(channel, message.client.user!)) {
 			return channel;
 		}
 

@@ -1,12 +1,12 @@
 import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -51,7 +51,6 @@ export default class extends SkyraCommand {
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
-				this.client,
 				(reaction) => {
 					if (game.callback === null) return;
 
@@ -69,7 +68,7 @@ export default class extends SkyraCommand {
 					try {
 						await this.end(game, message, settings);
 					} catch (error) {
-						this.client.emit(Events.Wtf, error);
+						this.context.client.emit(Events.Wtf, error);
 					}
 				}
 			),

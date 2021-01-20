@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -28,7 +29,7 @@ import type { Message } from 'discord.js';
 ])
 export default class extends SkyraCommand {
 	public async run(message: Message, [avatar]: [string]) {
-		await this.client.user!.setAvatar(avatar);
+		await this.context.client.user!.setAvatar(avatar);
 		return message.send(`Dear ${message.author}, I have changed my avatar for you.`);
 	}
 }

@@ -55,7 +55,8 @@ export class GiveawayManager {
 			this.queue.splice(index, 1);
 
 			await giveaway.render();
-			if (!giveaway.finished) this.insert(giveaway);
+			if (giveaway.finished) await giveaway.remove();
+			else this.insert(giveaway);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}

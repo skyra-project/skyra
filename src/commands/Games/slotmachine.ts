@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
+import { SkyraCommand } from '#lib/structures';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

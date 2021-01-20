@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { radians } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'peepoLove.png' }] });
 	}
 
-	public async init() {
+	public async onLoad() {
 		[this.bodyImage, this.handsImage] = await Promise.all([
 			loadImage(join(assetsFolder, '/images/generation/peepoBody.png')),
 			loadImage(join(assetsFolder, '/images/generation/peepoHands.png'))

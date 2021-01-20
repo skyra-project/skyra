@@ -12,7 +12,7 @@ export class SettingsManager {
 	public constructor(client: Client) {
 		this.client = client;
 		this.guilds = new GuildSettingsCollection(client);
-		this.serializers = new SerializerStore(client);
-		this.tasks = new TaskStore(client);
+		this.serializers = new SerializerStore();
+		this.tasks = new TaskStore();
 	}
 }

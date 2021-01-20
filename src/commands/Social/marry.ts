@@ -1,9 +1,10 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
+import { RichDisplayCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import type { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
@@ -41,7 +42,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 ])
 export default class extends RichDisplayCommand {
 	public run(message: GuildMessage, [user]: [User | undefined]) {
-		return user ? this.marry(message, user) : this.client.commands.get('married')!.run(message, []);
+		return user ? this.marry(message, user) : this.context.client.commands.get('married')!.run(message, []);
 	}
 
 	private async marry(message: GuildMessage, user: User) {
@@ -90,7 +91,7 @@ export default class extends RichDisplayCommand {
 				if (answer !== YesNoAnswer.Yes)
 					return message.send(
 						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, {
-							user: await this.client.users.fetch(spouses[0]).then((user) => user.username)
+							user: await this.context.client.users.fetch(spouses[0]).then((user) => user.username)
 						})
 					);
 				// Check if the author's first potential spouse is already married.

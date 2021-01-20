@@ -202,7 +202,6 @@ export class StarboardEntity extends BaseEntity {
 	public async downloadUserList(): Promise<void> {
 		try {
 			this.#users = await fetchReactionUsers(
-				this.#client,
 				this.#message.channel.id,
 				this.#message.id,
 				await this.#message.guild.readSettings(GuildSettings.Starboard.Emoji)

@@ -1,12 +1,11 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({
@@ -30,7 +29,9 @@ export default class extends RichDisplayCommand {
 		if (spouses.length === 0) return message.send(t(LanguageKeys.Commands.Social.MarryNotTaken));
 
 		const usernames = chunk(
-			await Promise.all(spouses.map(async (user) => `${await this.client.users.fetch(user).then((user) => user.username)} (\`${user}\`)`)),
+			await Promise.all(
+				spouses.map(async (user) => `${await this.context.client.users.fetch(user).then((user) => user.username)} (\`${user}\`)`)
+			),
 			20
 		);
 

@@ -1,9 +1,9 @@
 import { DbSet } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles);
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
-		const owner = await this.client.users.fetch(message.guild.ownerID);
+		const owner = await this.context.client.users.fetch(message.guild.ownerID);
 
 		return message.send(
 			new SkyraEmbed()

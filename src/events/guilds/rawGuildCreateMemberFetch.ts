@@ -1,12 +1,10 @@
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayGuildCreateDispatch } from 'discord-api-types/v6';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildCreate, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.GuildCreate, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayGuildCreateDispatch['d'], shardID: number) {
-		this.client.guildMemberFetchQueue.add(shardID, data.id);
+		this.context.client.guildMemberFetchQueue.add(shardID, data.id);
 	}
 }

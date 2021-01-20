@@ -2,11 +2,10 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { SkyraClient } from '#lib/SkyraClient';
 import type { AnyObject, CustomGet } from '#lib/types';
 import { isNullish } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { container } from 'tsyringe';
+import { Store } from 'klasa';
 import type { SchemaGroup } from './SchemaGroup';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
@@ -84,8 +83,8 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.dashboardOnly = options.dashboardOnly ?? false;
 	}
 
-	public get client(): SkyraClient {
-		return container.resolve<SkyraClient>('SkyraClient');
+	public get client() {
+		return Store.injectedContext.client;
 	}
 
 	public get serializer(): Serializer<GuildEntity[K]> {

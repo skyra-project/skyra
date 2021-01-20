@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
+import { SkyraCommand } from '#lib/structures';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		const [user, channel] = await this.retrieveResults(t, userName, channelName);
 
 		// Check if the user follows that channel
-		const { data } = await this.client.twitch.fetchUserFollowage(user.id, channel.id);
+		const { data } = await this.context.client.twitch.fetchUserFollowage(user.id, channel.id);
 
 		// If the user doesn't follow then the data length will be 0
 		if (data.length === 0) throw t(LanguageKeys.Commands.Twitch.FollowageMissingEntries);
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(this.client.twitch.BRANDING_COLOUR)
+				.setColor(this.context.client.twitch.BRANDING_COLOUR)
 				.setAuthor(
 					t(LanguageKeys.Commands.Twitch.Followage, {
 						user: user.display_name,
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 
 	private async retrieveResults(t: TFunction, user: string, channel: string) {
 		try {
-			const { data } = await this.client.twitch.fetchUsers([], [user, channel]);
+			const { data } = await this.context.client.twitch.fetchUsers([], [user, channel]);
 			if (!data || data.length < 2) throw t(LanguageKeys.Commands.Twitch.FollowageMissingEntries);
 
 			return data;

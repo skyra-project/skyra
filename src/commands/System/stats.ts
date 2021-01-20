@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
+import { ApplyOptions } from '@sapphire/decorators';
 import { roundNumber } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
 
@@ -35,18 +35,19 @@ export default class UserCommand extends SkyraCommand {
 	}
 
 	private get generalStatistics(): StatsGeneral {
+		const { client } = this.context;
 		return {
-			channels: this.client.channels.cache.size,
-			guilds: this.client.guilds.cache.size,
+			channels: client.channels.cache.size,
+			guilds: client.guilds.cache.size,
 			nodeJs: process.version,
-			users: this.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0),
+			users: client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0),
 			version: `v${version}`
 		};
 	}
 
 	private get uptimeStatistics(): StatsUptime {
 		return {
-			client: this.client.uptime!,
+			client: this.context.client.uptime!,
 			host: uptime() * 1000,
 			total: process.uptime() * 1000
 		};

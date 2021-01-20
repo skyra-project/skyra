@@ -1,10 +1,10 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { SkyraClient } from '#lib/SkyraClient';
 import Collection from '@discordjs/collection';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
+import { Store } from 'klasa';
 import type { IBaseManager } from '../base/IBaseManager';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -26,8 +26,8 @@ export class PermissionNodeManager implements IBaseManager {
 		this.#settings = settings;
 	}
 
-	public get client(): SkyraClient {
-		return this.#settings.client;
+	public get client() {
+		return Store.injectedContext.client;
 	}
 
 	public run(member: GuildMember, command: string) {

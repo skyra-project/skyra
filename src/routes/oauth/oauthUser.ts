@@ -1,15 +1,13 @@
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { canManage } from '#lib/api/utils';
 import { Events } from '#lib/types/Enums';
-import { REDIRECT_URI, SCOPE } from '#root/config';
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
-import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
@@ -27,7 +25,7 @@ export default class extends Route {
 
 	@authenticated()
 	@ratelimit(2, Time.Minute * 5, true)
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (typeof requestBody.action !== 'string') {
 			return response.badRequest();
@@ -39,17 +37,14 @@ export default class extends Route {
 			// If the token expires in a day, refresh
 			let authToken = request.auth.token;
 			if (Date.now() + Time.Day > request.auth.expires) {
-				const body = await this.refreshToken(request.auth.user_id, request.auth.refresh);
+				const body = await this.refreshToken(request.auth.id, request.auth.refresh);
 				if (body !== null) {
-					const authentication = Util.encrypt(
-						{
-							user_id: request.auth!.user_id,
-							token: body.access_token,
-							refresh: body.refresh_token,
-							expires: body.expires_in
-						},
-						this.client.options.clientSecret
-					);
+					const authentication = this.context.server.auth!.encrypt({
+						id: request.auth.id,
+						token: body.access_token,
+						refresh: body.refresh_token,
+						expires: body.expires_in
+					});
 
 					response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
 					authToken = body.access_token;
@@ -57,11 +52,11 @@ export default class extends Route {
 			}
 
 			try {
-				const user = await this.fetchUser(request.auth.user_id, `Bearer ${authToken}`);
+				const user = await this.fetchUser(request.auth.id, `Bearer ${authToken}`);
 				if (user === null) return response.error(500);
 				return response.json({ user });
 			} catch (error) {
-				this.client.emit(Events.Wtf, error);
+				this.context.client.emit(Events.Wtf, error);
 				return response.error(500);
 			}
 		}
@@ -70,7 +65,8 @@ export default class extends Route {
 	}
 
 	private async fetchUser(id: string, token: string): Promise<OauthFlattenedUser | null> {
-		const user = await this.client.users.fetch(id).catch(() => null);
+		const { client } = this.context;
+		const user = await client.users.fetch(id).catch(() => null);
 		if (user === null) return null;
 
 		const guilds: OauthFlattenedGuild[] = [];
@@ -81,7 +77,7 @@ export default class extends Route {
 		);
 
 		for (const oauthGuild of oauthGuilds) {
-			const guild = this.client.guilds.cache.get(oauthGuild.id);
+			const guild = client.guilds.cache.get(oauthGuild.id);
 			const serialized: PartialOauthFlattenedGuild =
 				typeof guild === 'undefined'
 					? {
@@ -133,15 +129,16 @@ export default class extends Route {
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {
+		const { client } = this.context;
 		try {
-			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
+			client.emit(Events.Debug, `Refreshing Token for ${id}`);
 			return await fetch<RESTPostOAuth2AccessTokenResult>(
 				'https://discord.com/api/v6/oauth2/token',
 				{
 					method: 'POST',
 					body: stringify({
-						client_id: this.client.options.clientID,
-						client_secret: this.client.options.clientSecret,
+						client_id: CLIENT_ID,
+						client_secret: CLIENT_SECRET,
 						grant_type: 'refresh_token',
 						refresh_token: refreshToken,
 						redirect_uri: REDIRECT_URI,
@@ -154,7 +151,7 @@ export default class extends Route {
 				FetchResultTypes.JSON
 			);
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			client.emit(Events.Wtf, error);
 			return null;
 		}
 	}

@@ -1,25 +1,22 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { fetch, FetchResultTypes, twemoji } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
 const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
 const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['emote'],
+	cooldown: 10,
+	description: LanguageKeys.Commands.Tools.EmojiDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
+	requiredPermissions: ['ATTACH_FILES'],
+	usage: '<emoji:string>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['emote'],
-			cooldown: 10,
-			description: LanguageKeys.Commands.Tools.EmojiDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
-			requiredPermissions: ['ATTACH_FILES'],
-			usage: '<emoji:string>'
-		});
-	}
-
 	public async run(message: Message, [emoji]: [string]) {
 		const t = await message.fetchT();
 

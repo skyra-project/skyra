@@ -1,10 +1,9 @@
-import type { ApiRequest } from '#lib/api/ApiRequest';
-import type { ApiResponse } from '#lib/api/ApiResponse';
 import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { ApiRequest, ApiResponse } from '@sapphire/plugin-api';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
@@ -23,7 +22,7 @@ import {
 	User,
 	UserResolvable
 } from 'discord.js';
-import { RateLimitManager } from 'klasa';
+import { RateLimitManager, Store } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';
@@ -286,13 +285,13 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Im
 	}
 }
 
-export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
+export async function fetchReactionUsers(channelID: string, messageID: string, reaction: string) {
 	const users: Set<string> = new Set();
 	let rawUsers: APIUser[] = [];
 
 	// Fetch loop, to get +100 users
 	do {
-		rawUsers = await api(client)
+		rawUsers = await api()
 			.channels(channelID)
 			.messages(messageID)
 			.reactions(reaction)
@@ -528,8 +527,8 @@ export function pickRandom<T>(array: readonly T[]): T {
 	return array[Math.floor(Math.random() * length)];
 }
 
-export function floatPromise(ctx: { client: Client }, promise: Awaited<unknown>) {
-	if (isThenable(promise)) promise.catch((error: Error) => ctx.client.emit(Events.Wtf, error));
+export function floatPromise(promise: Awaited<unknown>) {
+	if (isThenable(promise)) promise.catch((error: Error) => Store.injectedContext.client.emit(Events.Wtf, error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
@@ -615,7 +614,7 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 	const xRateLimitLimit = bucket;
 	return createFunctionInhibitor(
 		(request: ApiRequest, response: ApiResponse) => {
-			const id = (auth ? request.auth!.user_id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
+			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
 			const bucket = manager.acquire(id);
 
 			response.setHeader('Date', new Date().toUTCString());

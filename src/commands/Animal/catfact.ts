@@ -1,8 +1,8 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async init() {
+	public async onLoad() {
 		const text = await readFile(join(assetsFolder, 'data', 'catfacts.json'), 'utf-8');
 		this.facts = JSON.parse(text);
 	}

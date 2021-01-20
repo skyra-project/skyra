@@ -11,7 +11,7 @@ export default class UserSerializer extends Serializer<string> {
 		}
 
 		const { code } = parsed.groups!;
-		const invite = await this.client.invites.fetch(code);
+		const invite = await this.context.client.invites.fetch(code);
 		if (invite === null || !Reflect.has(invite, 'guildID')) {
 			return this.error(t(LanguageKeys.Resolvers.InvalidInvite, { name: entry.name }));
 		}
@@ -20,7 +20,7 @@ export default class UserSerializer extends Serializer<string> {
 	}
 
 	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
-		const invite = await this.client.invites.fetch(value);
+		const invite = await this.context.client.invites.fetch(value);
 		if (invite === null || !Reflect.has(invite, 'guildID')) {
 			throw t(LanguageKeys.Resolvers.InvalidInvite, { name: entry.name });
 		}

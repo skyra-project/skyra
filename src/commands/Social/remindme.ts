@@ -1,12 +1,12 @@
 import { DbSet, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
-import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
+import { CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
@@ -102,7 +102,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 ])
 export default class extends SkyraCommand {
 	public async create(message: Message, [duration, description]: [number, string]) {
-		const task = await this.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
+		const task = await this.context.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
 			data: {
 				content: description,
@@ -118,13 +118,14 @@ export default class extends SkyraCommand {
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: Message) {
-		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
+		const { client } = this.context;
+		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		);
 
 		const t = await message.fetchT();

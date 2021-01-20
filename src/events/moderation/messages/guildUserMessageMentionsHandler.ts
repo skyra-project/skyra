@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { isNullishOrZero } from '#utils/comparators';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
@@ -22,8 +22,8 @@ export default class extends Event {
 
 		const mentions =
 			message.mentions.users.reduce((acc, user) => (user.bot || user === message.author ? acc : acc + 1), 0) +
-			message.mentions.roles.size * this.client.options.nms.role! +
-			Number(message.mentions.everyone) * this.client.options.nms.everyone!;
+			message.mentions.roles.size * message.client.options.nms.role! +
+			Number(message.mentions.everyone) * message.client.options.nms.everyone!;
 
 		if (mentions === 0) return;
 
@@ -35,10 +35,10 @@ export default class extends Event {
 			rateLimit.resetTime();
 			// eslint-disable-next-line @typescript-eslint/dot-notation
 			if (alerts && rateLimit['remaining'] / rateLimit.bucket <= 0.2) {
-				this.client.emit(Events.MentionSpamWarning, message);
+				message.client.emit(Events.MentionSpamWarning, message);
 			}
 		} catch (err) {
-			this.client.emit(Events.MentionSpamExceeded, message);
+			message.client.emit(Events.MentionSpamExceeded, message);
 		}
 	}
 }

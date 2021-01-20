@@ -7,7 +7,7 @@ const ROLE_REGEXP = Argument.regex.role;
 
 export default class extends Argument {
 	public get role() {
-		return this.store.get('role')!;
+		return this.store.get('role') as Argument;
 	}
 
 	public async run(arg: string, possible: Possible, message: Message, filter?: (entry: Role) => boolean): Promise<Role> {

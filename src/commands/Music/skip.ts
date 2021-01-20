@@ -1,9 +1,9 @@
 import { Queue, requireSameVoiceChannel, requireSongPresent } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({
@@ -26,7 +26,7 @@ export default class extends MusicCommand {
 
 		const track = await audio.getCurrentTrack();
 		await audio.next({ skipped: true });
-		this.client.emit(Events.MusicSongSkipNotify, message, track);
+		this.context.client.emit(Events.MusicSongSkipNotify, message, track);
 		return null;
 	}
 

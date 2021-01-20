@@ -2,6 +2,7 @@
 import { Events } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { Store } from 'klasa';
 import type WebSocket from 'ws';
 import {
 	CloseCodes,
@@ -35,7 +36,7 @@ export default class DashboardWebsocketUser {
 	}
 
 	public get client() {
-		return this.#handler.client;
+		return Store.injectedContext.client;
 	}
 
 	public send(message: OutgoingWebsocketMessage) {

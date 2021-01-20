@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackExceptionPayload } from '@skyra/audio';
-import { ApplyOptions } from '@skyra/decorators';
 import { magenta } from 'colorette';
 import { Event, EventOptions } from 'klasa';
 
@@ -12,14 +12,14 @@ export default class extends Event {
 		// Emit an error message if there is an error message to emit
 		// The if case is because exceptions without error messages are pretty useless
 		if (payload.exception) {
-			this.client.emit(Events.Error, [
+			this.context.client.emit(Events.Error, [
 				`${this.kHeader} Exception (${payload.guildId})`,
 				`           Track: ${payload.track}`,
 				`           Error: ${payload.exception.message} [${payload.exception.severity}]`
 			]);
 		}
 
-		const queue = this.client.audio.queues!.get(payload.guildId);
+		const queue = this.context.client.audio.queues!.get(payload.guildId);
 		await queue.next();
 	}
 }

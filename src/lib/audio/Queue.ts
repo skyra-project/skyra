@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { SkyraClient } from '#lib/SkyraClient';
 import { Events } from '#lib/types/Enums';
 import { map, reverse } from '#utils/iterator';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
-import { container } from 'tsyringe';
+import { Store } from 'klasa';
 import type { QueueStore } from './QueueStore';
 
 const kExpireTime = Time.Day * 2;
@@ -63,8 +62,8 @@ export class Queue {
 		};
 	}
 
-	public get client(): SkyraClient {
-		return container.resolve<SkyraClient>('SkyraClient');
+	public get client() {
+		return Store.injectedContext.client;
 	}
 
 	public get player(): Player {

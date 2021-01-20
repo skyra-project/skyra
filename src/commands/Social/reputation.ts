@@ -1,31 +1,28 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolver } from '@skyra/decorators';
 import type { User } from 'discord.js';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['rep'],
+	bucket: 2,
+	cooldown: 30,
+	description: LanguageKeys.Commands.Social.ReputationDescription,
+	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
+	runIn: ['text'],
+	spam: true,
+	usage: '[check] (user:username)',
+	usageDelim: ' '
+})
+@CreateResolver('username', (arg, possible, message, [check]) => {
+	if (!arg) return check ? message.author : undefined;
+	return message.client.arguments.get('username')!.run(arg, possible, message);
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['rep'],
-			bucket: 2,
-			cooldown: 30,
-			description: LanguageKeys.Commands.Social.ReputationDescription,
-			extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
-			runIn: ['text'],
-			spam: true,
-			usage: '[check] (user:username)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('username', (arg, possible, msg, [check]) => {
-			if (!arg) return check ? msg.author : undefined;
-			return this.client.arguments.get('username')!.run(arg, possible, msg);
-		});
-	}
-
 	public async run(message: GuildMessage, [check, user]: ['check', User]) {
 		const date = new Date();
 		const now = date.getTime();

@@ -1,7 +1,5 @@
 // Remove `.example` from the file extension to configure Skyra
 
-import { ApiRequest } from '#lib/api/ApiRequest';
-import { ApiResponse } from '#lib/api/ApiResponse';
 import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import type { APIWebhook } from 'discord-api-types/v6';
 import type { ClientOptions } from 'discord.js';
@@ -16,6 +14,7 @@ export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
+export const OWNERS = [''];
 // #region secrets
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
@@ -114,8 +113,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		utc: true
 	},
 	consoleEvents: { verbose: true, debug: true },
-	clientID: CLIENT_ID,
-	clientSecret: CLIENT_SECRET,
 	dev: DEV,
 	ws: {
 		intents: [
@@ -133,11 +130,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,
-	pieceDefaults: {
-		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
-		serializers: { enabled: true, aliases: [] },
-		tasks: { enabled: true }
-	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	readyMessage: (client) =>
@@ -150,13 +142,17 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	slowmode: 750,
 	slowmodeAggressive: true,
 	typing: false,
-	dashboardHooks: {
-		apiPrefix: '/',
-		port: 1234,
-		serverOptions: {
-			IncomingMessage: ApiRequest,
-			ServerResponse: ApiResponse
-		}
+	api: {
+		auth: {
+			id: CLIENT_ID,
+			secret: CLIENT_SECRET,
+			cookie: 'SKYRA_AUTH',
+			redirect: REDIRECT_URI,
+			scopes: ['identify', 'guilds']
+		},
+		prefix: '/',
+		origin: DOMAIN,
+		listenOptions: { port: 1234 }
 	}
 };
 

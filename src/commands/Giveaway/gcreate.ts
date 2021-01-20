@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { TextChannel } from 'discord.js';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
 		if (winners > 25) winners = 25;
 		// This creates an single time task to start the giveaway
-		await this.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
+		await this.context.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
 				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,

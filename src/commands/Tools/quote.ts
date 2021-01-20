@@ -1,10 +1,10 @@
 import { DbSet, Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { GuildChannel, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
@@ -19,7 +19,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
 			const messageUrl = await this.getFromUrl(message as GuildMessage, arg);
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 		if (!extract) return null;
 
 		const [, _guild, _channel, _message] = extract;
-		const guild = this.client.guilds.cache.get(_guild);
+		const guild = this.context.client.guilds.cache.get(_guild);
 		if (guild !== message.guild) return null;
 
 		const channel = guild.channels.cache.get(_channel);

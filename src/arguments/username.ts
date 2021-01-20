@@ -9,7 +9,7 @@ const USER_REGEXP = Argument.regex.userOrMember;
 
 export default class extends Argument {
 	public get user() {
-		return this.store.get('user')!;
+		return this.store.get('user') as Argument;
 	}
 
 	public async run(arg: string, possible: Possible, message: Message): Promise<User> {
@@ -28,16 +28,14 @@ export default class extends Argument {
 		if (result === null) return null;
 
 		try {
-			return await this.client.users.fetch(result[1]);
+			return await message.client.users.fetch(result[1]);
 		} catch {
 			throw await message.resolveKey(LanguageKeys.Misc.UserNotExistent);
 		}
 	}
 
 	private async fetchMember(message: GuildMessage, query: string) {
-		const [result] = (await api(this.client)
-			.guilds(message.guild.id)
-			.members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
+		const [result] = (await api().guilds(message.guild.id).members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
 		return result;
 	}
 }

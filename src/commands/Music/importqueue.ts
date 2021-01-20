@@ -1,13 +1,14 @@
 import type { QueueEntry } from '#lib/audio';
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { empty, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Track } from '@skyra/audio';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 
@@ -40,7 +41,7 @@ export default class extends MusicCommand {
 		const added = await audio.add(...tracks);
 		if (added === 0) throw await message.resolveKey(LanguageKeys.MusicManager.TooManySongs);
 
-		this.client.emit(Events.MusicAddNotify, message, tracks);
+		this.context.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
 	private async fetchRawData(message: GuildMessage, url: string) {

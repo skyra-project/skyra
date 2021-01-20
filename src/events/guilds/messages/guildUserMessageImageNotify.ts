@@ -7,7 +7,7 @@ import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { isNumber } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 import { extname } from 'path';
@@ -34,7 +34,7 @@ export default class extends Event {
 
 			// Fetch the image.
 			const result = await fetch(url, FetchResultTypes.Result).catch((error) => {
-				this.client.emit(Events.Error, `ImageLogs[${error}] ${url}`);
+				this.context.client.emit(Events.Error, `ImageLogs[${error}] ${url}`);
 				return null;
 			});
 			if (result === null) continue;
@@ -53,7 +53,7 @@ export default class extends Event {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
+				this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(
@@ -67,7 +67,7 @@ export default class extends Event {
 						.setTimestamp()
 				);
 			} catch (error) {
-				this.client.emit(Events.Wtf, `ImageLogs[${error}] ${url}`);
+				this.context.client.emit(Events.Wtf, `ImageLogs[${error}] ${url}`);
 			}
 		}
 	}

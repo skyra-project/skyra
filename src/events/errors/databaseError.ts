@@ -13,7 +13,7 @@ export default class extends Event {
 			`${inlineCodeBlock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 		].join('\n');
 
-		await this.client.webhookDatabase!.send(
+		await this.context.client.webhookDatabase!.send(
 			new MessageEmbed()
 				.setDescription(output)
 				.setColor(Colors.Red)

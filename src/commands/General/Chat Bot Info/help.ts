@@ -1,12 +1,11 @@
 import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { isNumber, noop } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';
@@ -41,23 +40,6 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	public async init() {
-		this.createCustomResolver('command', (arg, possible, message) => {
-			if (!arg) return undefined;
-			return this.client.arguments.get('commandname')!.run(arg, possible, message);
-		});
-		this.createCustomResolver('category', async (arg, _, msg) => {
-			if (!arg) return undefined;
-			arg = arg.toLowerCase();
-			const commandsByCategory = await this._fetchCommands(msg);
-			for (const [page, category] of commandsByCategory.keyArray().entries()) {
-				// Add 1, since 1 will be subtracted later
-				if (category.toLowerCase() === arg) return page + 1;
-			}
-			return undefined;
-		});
-	}
-
 	public async run(message: Message, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		const t = await message.fetchT();
 
@@ -79,12 +61,12 @@ export default class extends SkyraCommand {
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) return message.send(await this.buildCommandHelp(message, t, command));
 
-		const prefix = (await this.client.fetchPrefix(message)) as string;
+		const prefix = (await this.context.client.fetchPrefix(message)) as string;
 
 		if (
 			!message.flagArgs.all &&
 			message.guild &&
-			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
+			(message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.send(
 				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
@@ -108,6 +90,23 @@ export default class extends SkyraCommand {
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendTranslated(LanguageKeys.Commands.General.HelpNoDm);
 		}
+	}
+
+	public async onLoad() {
+		this.createCustomResolver('command', (arg, possible, message) => {
+			if (!arg) return undefined;
+			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);
+		});
+		this.createCustomResolver('category', async (arg, _, msg) => {
+			if (!arg) return undefined;
+			arg = arg.toLowerCase();
+			const commandsByCategory = await this._fetchCommands(msg);
+			for (const [page, category] of commandsByCategory.keyArray().entries()) {
+				// Add 1, since 1 will be subtracted later
+				if (category.toLowerCase() === arg) return page + 1;
+			}
+			return undefined;
+		});
 	}
 
 	private async buildHelp(message: Message, language: TFunction, prefix: string) {
@@ -154,9 +153,10 @@ export default class extends SkyraCommand {
 			usage: command.usage.fullUsage(message),
 			extendedHelp
 		});
+		const user = this.context.client.user!;
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
+			.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(data.footer)
 			.setTitle(data.title)
@@ -169,10 +169,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async _fetchCommands(message: Message) {
-		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
+		const { client } = this.context;
+		const run = client.inhibitors.run.bind(client.inhibitors, message);
 		const commands = new Collection<string, SkyraCommand[]>();
 		await Promise.all(
-			this.client.commands.map((command) =>
+			client.commands.map((command) =>
 				run(command, true)
 					.then(() => {
 						const category = commands.get(command.fullCategory.join(' → '));

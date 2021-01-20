@@ -8,7 +8,7 @@ import { floatPromise } from '#utils/util';
 import type { Awaited } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event, EventOptions, EventStore } from 'klasa';
+import { Event, EventOptions, PieceContext } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMessageEvent<T = unknown> extends Event {
@@ -20,11 +20,8 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 	private readonly reasonLanguageKey: CustomGet<string, string>;
 	private readonly reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 
-	public constructor(store: EventStore, file: string[], directory: string, options: ModerationMessageEvent.Options) {
-		super(store, file, directory, {
-			...options,
-			event: Events.GuildUserMessage
-		});
+	public constructor(context: PieceContext, options: ModerationMessageEvent.Options) {
+		super(context, { ...options, event: Events.GuildUserMessage });
 
 		this.keyEnabled = options.keyEnabled;
 		this.ignoredRolesPath = options.ignoredRolesPath;
@@ -66,15 +63,15 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 
 	protected processSoftPunishment(message: GuildMessage, language: TFunction, bitField: SelfModeratorBitField, preProcessed: T) {
 		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
-			floatPromise(this, this.onDelete(message, language, preProcessed) as any);
+			floatPromise(this.onDelete(message, language, preProcessed) as any);
 		}
 
 		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && message.channel.postable) {
-			floatPromise(this, this.onAlert(message, language, preProcessed) as any);
+			floatPromise(this.onAlert(message, language, preProcessed) as any);
 		}
 
 		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
-			floatPromise(this, this.onLog(message, language, preProcessed) as any);
+			floatPromise(this.onLog(message, language, preProcessed) as any);
 		}
 	}
 
@@ -165,7 +162,12 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 	}
 
 	protected onLog(message: GuildMessage, language: TFunction, value: T): Awaited<void> {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, language, value));
+		this.context.client.emit(
+			Events.GuildMessageLog,
+			MessageLogsEnum.Moderation,
+			message.guild,
+			this.onLogMessage.bind(this, message, language, value)
+		);
 	}
 
 	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;

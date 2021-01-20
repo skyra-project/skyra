@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { Argument, ArgumentOptions, Possible } from 'klasa';
 
@@ -9,7 +9,7 @@ import { Argument, ArgumentOptions, Possible } from 'klasa';
 })
 export default class extends Argument {
 	public get baseArg() {
-		return this.store.get('overwatchplayer')!;
+		return this.store.get('overwatchplayer') as Argument;
 	}
 
 	public async run(arg: string, possible: Possible, message: Message): Promise<string> {

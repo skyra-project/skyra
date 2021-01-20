@@ -1,9 +1,9 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures/moderation/ModerationMessageEvent';
+import { ModerationMessageEvent } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -82,7 +82,7 @@ export default class extends ModerationMessageEvent {
 		// Ignored codes take short-circuit.
 		if (ignoredCodes.includes(code)) return true;
 
-		const data = await this.client.invites.fetch(code);
+		const data = await message.client.invites.fetch(code);
 
 		// Invalid invites should not be deleted.
 		if (!data.valid) return true;

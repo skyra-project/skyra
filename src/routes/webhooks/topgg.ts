@@ -1,13 +1,11 @@
-import type { ApiRequest } from '#lib/api/ApiRequest';
-import type { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet } from '#lib/database';
 import { TOKENS } from '#root/config';
-import { ApplyOptions } from '@skyra/decorators';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/topgg', route: 'webhooks/topgg' })
 export default class extends Route {
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.WEBHOOK_TOPGG) return response.forbidden();
 		if (!request.body) return response.badRequest();
 
@@ -23,7 +21,7 @@ export default class extends Route {
 
 			return response.noContent();
 		} catch (error) {
-			this.client.emit('error', error);
+			this.context.client.emit('error', error);
 			return response.error(error.message || 'Unknown error');
 		}
 	}

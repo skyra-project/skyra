@@ -1,9 +1,9 @@
-import type { ApiResponse } from '#lib/api/ApiResponse';
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Event } from 'klasa';
@@ -18,7 +18,7 @@ export default class extends Event {
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guildIds) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
-			const guild = this.client.guilds.cache.get(guildID);
+			const guild = this.context.client.guilds.cache.get(guildID);
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
@@ -33,7 +33,7 @@ export default class extends Event {
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Offline) continue;
-				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
+				if (this.context.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
 				const channel = guild.channels.cache.get(subscription.channel) as TextChannel | undefined;
@@ -45,9 +45,9 @@ export default class extends Event {
 					const message = this.transformText(subscription.message, data);
 
 					if (subscription.embed) {
-						floatPromise(this, channel.send(this.buildEmbed(message, t)));
+						floatPromise(channel.send(this.buildEmbed(message, t)));
 					} else {
-						floatPromise(this, channel.send(message));
+						floatPromise(channel.send(message));
 					}
 				}
 
@@ -71,7 +71,7 @@ export default class extends Event {
 
 	private buildEmbed(message: string, t: TFunction) {
 		return new MessageEmbed()
-			.setColor(this.client.twitch.BRANDING_COLOUR)
+			.setColor(this.context.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
 			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp();

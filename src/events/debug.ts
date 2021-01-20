@@ -4,11 +4,10 @@ const kReg = /(Sending a heartbeat|Latency of|\[VOICE])/i;
 
 export default class extends Event {
 	public run(message: string) {
-		if (this.client.ready && !kReg.test(message)) this.client.console.debug(message);
+		if (this.context.client.ready && !kReg.test(message)) this.context.client.console.debug(message);
 	}
 
-	public init() {
-		if (!this.client.options.consoleEvents.debug) this.disable();
-		return Promise.resolve(null);
+	public async onLoad() {
+		if (!this.context.client.options.consoleEvents.debug) await this.unload();
 	}
 }

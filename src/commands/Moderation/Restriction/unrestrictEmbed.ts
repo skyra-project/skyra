@@ -1,9 +1,9 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand } from '#lib/structures/commands/ModerationCommand';
+import { ModerationCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['un-restricted-embed', 'ure'],

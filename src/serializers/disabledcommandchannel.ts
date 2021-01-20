@@ -17,7 +17,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 
 		const commands: string[] = [];
 		for (const command of commandIDs) {
-			if (!this.client.commands.has(command)) {
+			if (!guild.client.commands.has(command)) {
 				return this.error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 
@@ -38,7 +38,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 		}
 
 		for (const command of value.commands) {
-			if (!this.client.commands.has(command)) {
+			if (!guild.client.commands.has(command)) {
 				throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 		}

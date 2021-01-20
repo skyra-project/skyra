@@ -1,31 +1,28 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { TOKENS } from '#root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['ctime'],
+	cooldown: 10,
+	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
+	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<location:string>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['ctime'],
-			cooldown: 10,
-			description: LanguageKeys.Commands.Google.CurrentTimeDescription,
-			extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<location:string>'
-		});
-	}
-
 	public async run(message: Message, [location]: [string]) {
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
 		const t = await message.fetchT();
 		const { status, ...timeData } = await this.fetchAPI(t, lat, lng);
 
-		if (status !== GoogleResponseCodes.Ok) throw t(handleNotOK(status, this.client));
+		if (status !== GoogleResponseCodes.Ok) throw t(handleNotOK(status));
 
 		const dstEnabled = t(
 			Number(timeData.dst) === 0 ? LanguageKeys.Commands.Google.CurrentTimeDst : LanguageKeys.Commands.Google.CurrentTimeNoDst

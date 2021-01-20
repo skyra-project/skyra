@@ -1,10 +1,11 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Guild, Message, User } from 'discord.js';
 
@@ -42,14 +43,14 @@ export default class extends SkyraCommand {
 
 		const guilds = await Promise.all(
 			clientEntity.guildBlocklist.map(async (guildId) => {
-				const guild = await resolveOnErrorCodes(this.client.guilds.fetch(guildId), RESTJSONErrorCodes.UnknownGuild);
+				const guild = await resolveOnErrorCodes(this.context.client.guilds.fetch(guildId), RESTJSONErrorCodes.UnknownGuild);
 				if (guild) return `${guild.name} (\`${guildId}\`)`;
 				return `Unknown Guild (\`${guildId}\`)`;
 			})
 		);
 		const users = await Promise.all(
 			clientEntity.userBlocklist.map(async (userId) => {
-				const user = await resolveOnErrorCodes(this.client.users.fetch(userId), RESTJSONErrorCodes.UnknownUser);
+				const user = await resolveOnErrorCodes(this.context.client.users.fetch(userId), RESTJSONErrorCodes.UnknownUser);
 				if (user) return `${user.tag} (\`${userId}\`)`;
 				return `Unknown User (\`${userId}\`()`;
 			})

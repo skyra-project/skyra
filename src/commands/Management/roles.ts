@@ -1,13 +1,13 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { pickRandom } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, Role } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommand.Options>({
@@ -109,7 +109,9 @@ export default class extends RichDisplayCommand {
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(rolesInitial)) {
-				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.client.emit(Events.Wtf, error));
+				await message.guild
+					.writeSettings([[GuildSettings.Roles.Initial, null]])
+					.catch((error) => this.context.client.emit(Events.Wtf, error));
 			} else if (message.member!.roles.cache.has(rolesInitial)) {
 				memberRoles.delete(rolesInitial);
 			}
@@ -149,10 +151,11 @@ export default class extends RichDisplayCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) throw t(LanguageKeys.Commands.Management.RolesListEmpty);
 
+		const user = this.context.client.user!;
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		);
 

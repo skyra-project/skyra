@@ -1,9 +1,9 @@
 import { requireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.RemoveDescription,
@@ -35,6 +35,6 @@ export default class extends MusicCommand {
 
 		// Remove the song from the queue.
 		await audio.removeAt(index);
-		this.client.emit(Events.MusicRemoveNotify, message, entry);
+		this.context.client.emit(Events.MusicRemoveNotify, message, entry);
 	}
 }

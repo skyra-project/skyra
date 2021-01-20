@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis, rootFolder } from '#utils/constants';
 import { exec } from '#utils/Promisified/exec';
 import { sleep } from '#utils/Promisified/sleep';
+import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';

@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import type { Piece } from 'klasa';
 
@@ -14,16 +14,11 @@ import type { Piece } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: Message, [piece]: [Piece]) {
-		if ((piece.type === 'event' && piece.name === 'coreMessage') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
+		if ((piece.store.name === 'event' && piece.name === 'coreMessage') || (piece.store.name === 'monitor' && piece.name === 'commandHandler')) {
 			return message.sendTranslated(LanguageKeys.Commands.System.DisableWarn);
 		}
-		piece.disable();
-		if (this.client.shard) {
-			await this.client.shard.broadcastEval(`
-				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').disable();
-			`);
-		}
-		return message.sendTranslated(LanguageKeys.Commands.System.Disable, [{ type: piece.type, name: piece.name }], {
+		piece.enabled = false;
+		return message.sendTranslated(LanguageKeys.Commands.System.Disable, [{ type: piece.store.name, name: piece.name }], {
 			code: 'diff'
 		});
 	}

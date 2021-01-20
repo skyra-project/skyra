@@ -1,35 +1,32 @@
 import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolver } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { CommandStore } from 'klasa';
 
+const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
+const kTitleBlockList = /nsfl/i;
+const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
+
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['rand', 'rand-reddit', 'reddit'],
+	cooldown: 3,
+	description: LanguageKeys.Commands.Misc.RandRedditDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended,
+	usage: '<reddit:reddit>'
+})
+@CreateResolver('reddit', async (arg, _possible, message) => {
+	if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditRequiredReddit);
+	if (!kUsernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditInvalidArgument);
+	if (kBlockList.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
+	return arg.toLowerCase();
+})
 export default class extends SkyraCommand {
-	private readonly kBlacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
-	private readonly kTitleBlacklist = /nsfl/i;
-	private readonly kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['rand', 'rand-reddit', 'reddit'],
-			cooldown: 3,
-			description: LanguageKeys.Commands.Misc.RandRedditDescription,
-			extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended,
-			usage: '<reddit:reddit>'
-		});
-
-		this.createCustomResolver('reddit', async (arg, _possible, message) => {
-			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditRequiredReddit);
-			if (!this.kUsernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditInvalidArgument);
-			if (this.kBlacklist.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
-			return arg.toLowerCase();
-		});
-	}
-
 	public async run(message: GuildMessage, [reddit]: [string]) {
 		const t = await message.fetchT();
 		const { kind, data } = await this.fetchData(t, reddit);
@@ -40,8 +37,8 @@ export default class extends SkyraCommand {
 
 		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
 		const posts = nsfwEnabled
-			? data.children.filter((child) => !this.kTitleBlacklist.test(child.data.title))
-			: data.children.filter((child) => !child.data.over_18 && !this.kTitleBlacklist.test(child.data.title));
+			? data.children.filter((child) => !kTitleBlockList.test(child.data.title))
+			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));
 
 		if (posts.length === 0) {
 			throw t(nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw);

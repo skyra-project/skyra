@@ -1,12 +1,11 @@
-import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { DbSet, GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Moderation } from '#utils/constants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import type { Guild, User } from 'discord.js';
-import { DbSet } from '../../database/utils/DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
-		const guild = this.client.guilds.cache.get(data.guildID);
+		const guild = this.context.client.guilds.cache.get(data.guildID);
 		// If the guild is not available, cancel the task.
 		if (typeof guild === 'undefined') return { type: ResponseType.Ignore };
 

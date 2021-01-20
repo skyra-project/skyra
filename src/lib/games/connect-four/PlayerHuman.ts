@@ -51,7 +51,7 @@ export class PlayerHuman extends Player {
 	private async removeEmoji(emoji: LLRCDataEmoji, userID: string): Promise<void> {
 		try {
 			const { message } = this.game;
-			await api(message.client).channels(message.channel.id).messages(message.id).reactions(resolveEmoji(emoji)!)(userID).delete();
+			await api().channels(message.channel.id).messages(message.id).reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;

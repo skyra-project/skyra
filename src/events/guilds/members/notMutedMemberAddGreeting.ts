@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Guild, GuildMember, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Event, EventOptions } from 'klasa';

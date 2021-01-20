@@ -1,16 +1,18 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures/commands/RichDisplayCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { cutText, roundNumber } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { CreateResolver } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
+
+const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 @ApplyOptions<RichDisplayCommand.Options>({
 	aliases: ['redditor'],
@@ -19,17 +21,12 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Misc.RedditUserExtended,
 	usage: '<user:user>'
 })
+@CreateResolver('user', async (arg, _possible, message) => {
+	if (!kUserNameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
+	arg = arg.replace(/^\/?u\//, '');
+	return arg;
+})
 export default class extends RichDisplayCommand {
-	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
-
-	public async init() {
-		this.createCustomResolver('user', async (arg, _possible, message) => {
-			if (!this.usernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
-			arg = arg.replace(/^\/?u\//, '');
-			return arg;
-		});
-	}
-
 	public async run(message: GuildMessage, [user]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(

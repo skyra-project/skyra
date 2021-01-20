@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

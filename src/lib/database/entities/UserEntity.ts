@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { SkyraClient } from '#lib/SkyraClient';
 import { Events } from '#lib/types/Enums';
 import { kBigIntTransformer } from '#utils/util';
-import { container } from 'tsyringe';
+import { Store } from 'klasa';
 import {
 	AfterInsert,
 	AfterLoad,
@@ -71,7 +70,7 @@ export class UserEntity extends BaseEntity {
 	}
 
 	private get client() {
-		return container.resolve(SkyraClient);
+		return Store.injectedContext.client;
 	}
 
 	@AfterLoad()

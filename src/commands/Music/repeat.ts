@@ -1,9 +1,9 @@
 import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand } from '#lib/structures/commands/MusicCommand';
+import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['replay'],
@@ -22,6 +22,6 @@ export default class extends MusicCommand {
 		const current = await message.guild.audio.getReplay();
 		await audio.setReplay(!current);
 
-		this.client.emit(Events.MusicReplayUpdateNotify, message, !current);
+		this.context.client.emit(Events.MusicReplayUpdateNotify, message, !current);
 	}
 }

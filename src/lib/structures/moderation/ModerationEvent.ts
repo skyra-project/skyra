@@ -1,11 +1,12 @@
-import type { AdderKey, GuildEntity } from '#lib/database';
+import type { GuildEntity } from '#lib/database';
 import type { KeyOfType } from '#lib/types/Utils';
 import { CLIENT_ID } from '#root/config';
 import type { Guild, MessageEmbed } from 'discord.js';
 import { Event } from 'klasa';
+import type { HardPunishment } from './ModerationMessageEvent';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
-export abstract class ModerationEvent<V extends unknown[], T = unknown, A = string> extends Event {
+export abstract class ModerationEvent<V extends unknown[], T = unknown> extends Event {
 	public abstract run(...params: V): unknown;
 
 	protected processSoftPunishment(args: Readonly<V>, preProcessed: T, bitField: SelfModeratorBitField) {
@@ -107,16 +108,10 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown, A = stri
 
 	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
 	protected abstract softPunishmentPath: KeyOfType<GuildEntity, number>;
-	protected abstract hardPunishmentPath: HardPunishment<A>;
+	protected abstract hardPunishmentPath: HardPunishment;
 	protected abstract preProcess(args: Readonly<V>): Promise<T | null> | T | null;
 	protected abstract onLog(args: Readonly<V>, value: T): unknown;
 	protected abstract onDelete(args: Readonly<V>, value: T): unknown;
 	protected abstract onAlert(args: Readonly<V>, value: T): unknown;
 	protected abstract onLogMessage(args: Readonly<V>, value: T): Promise<MessageEmbed> | MessageEmbed;
-}
-
-export interface HardPunishment<A = string> {
-	action: KeyOfType<GuildEntity, A>;
-	actionDuration: KeyOfType<GuildEntity, number | null>;
-	adder: AdderKey;
 }

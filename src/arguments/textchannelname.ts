@@ -3,7 +3,7 @@ import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
 	public get channelname(): Argument {
-		return this.store.get('channelname')!;
+		return this.store.get('channelname') as Argument;
 	}
 
 	public run(arg: string, possible: Possible, message: Message): Promise<TextChannel> {

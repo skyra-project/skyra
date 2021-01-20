@@ -21,7 +21,7 @@ export default class UserSerializer extends Serializer<StickyRole> {
 	}
 
 	public stringify(value: StickyRole, { t, guild }: SerializerUpdateContext) {
-		const username = this.client.users.cache.get(value.user)?.username ?? t(LanguageKeys.Misc.UnknownUser);
+		const username = guild.client.users.cache.get(value.user)?.username ?? t(LanguageKeys.Misc.UnknownUser);
 		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? t(LanguageKeys.Misc.UnknownRole));
 		return `[${username} -> ${roles}]`;
 	}

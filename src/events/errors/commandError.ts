@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { OWNERS } from '#root/config';
 import { rootFolder } from '#utils/constants';
 import { cast } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
@@ -22,33 +23,32 @@ export default class extends Event {
 			});
 		}
 
+		const { client } = this.context;
 		// If the error was an AbortError, tell the user to re-try:
 		if (error.name === 'AbortError') {
-			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+			client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			return message.alert(await message.resolveKey(LanguageKeys.System.DiscordAbortError));
 		}
 
 		// Extract useful information about the DiscordAPIError
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			if (ignoredCodes.includes(error.code)) return;
-			this.client.emit(Events.ApiError, error);
+			client.emit(Events.ApiError, error);
 		} else {
-			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+			client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 		}
 
 		// Send a detailed message:
 		await this.sendErrorChannel(message, command, error);
 
 		// Emit where the error was emitted
-		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
+		client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
 			await message.alert(
-				this.client.options.owners.includes(message.author.id)
-					? codeBlock('js', error.stack!)
-					: await message.resolveKey(LanguageKeys.Events.ErrorWtf)
+				OWNERS.includes(message.author.id) ? codeBlock('js', error.stack!) : await message.resolveKey(LanguageKeys.Events.ErrorWtf)
 			);
 		} catch (err) {
-			this.client.emit(Events.ApiError, err);
+			client.emit(Events.ApiError, err);
 		}
 
 		return undefined;
@@ -63,9 +63,9 @@ export default class extends Event {
 		}
 
 		try {
-			await this.client.webhookError.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
+			await this.context.client.webhookError.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
 		} catch (err) {
-			this.client.emit(Events.ApiError, err);
+			this.context.client.emit(Events.ApiError, err);
 		}
 	}
 

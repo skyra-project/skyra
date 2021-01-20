@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 import { Argument, ArgumentOptions, Possible } from 'klasa';
 
@@ -21,7 +21,7 @@ export default class ShinyWager extends Argument {
 	}
 
 	private get integerArg() {
-		return this.store.get('integer')!;
+		return this.store.get('integer') as Argument;
 	}
 
 	public static readonly kValidBetAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 25_000, 50_000, 100_000, 500_000] as const;

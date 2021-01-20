@@ -2,29 +2,29 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
 import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';
-import { Event } from 'klasa';
+import { Event, EventOptions, PieceContext } from 'klasa';
 
 export abstract class AnalyticsEvent extends Event {
 	@enumerable(false)
 	public tags: [AnalyticsSchema.Tags, string][] = [];
 
-	// eslint-disable-next-line @typescript-eslint/require-await
-	public async init() {
-		if (!ENABLE_INFLUX) {
-			this.disable();
-			return;
-		}
+	public constructor(context: PieceContext, options?: EventOptions) {
+		super(context, options);
+		this.enabled = ENABLE_INFLUX;
+	}
 
+	// eslint-disable-next-line @typescript-eslint/require-await
+	public async onLoad() {
 		this.initTags();
 	}
 
 	public writePoint(point: Point) {
-		return this.client.analytics!.writeApi.writePoint(this.injectTags(point));
+		return this.context.client.analytics!.writeApi.writePoint(this.injectTags(point));
 	}
 
 	public writePoints(points: Point[]) {
 		points = points.map((point) => this.injectTags(point));
-		return this.client.analytics!.writeApi.writePoints(points);
+		return this.context.client.analytics!.writeApi.writePoints(points);
 	}
 
 	protected injectTags(point: Point) {

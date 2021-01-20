@@ -44,7 +44,7 @@ export default class UserSerializer extends Serializer<PermissionsNode> {
 		for (const allowed of value.allow) {
 			if (commands.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
 
-			const command = this.client.commands.get(allowed);
+			const command = guild.client.commands.get(allowed);
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
 			commands.set(allowed, command);
@@ -53,7 +53,7 @@ export default class UserSerializer extends Serializer<PermissionsNode> {
 		for (const denied of value.deny) {
 			if (commands.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
 
-			const command = this.client.commands.get(denied);
+			const command = guild.client.commands.get(denied);
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.guarded) throw t(LanguageKeys.Serializers.PermissionNodeSecurityGuarded, { command: denied });

@@ -17,6 +17,6 @@ export default class extends Event {
 		if (message.author.bot) return;
 
 		// Emit UserMessage
-		this.client.emit(Events.UserMessage, message);
+		this.context.client.emit(Events.UserMessage, message);
 	}
 }

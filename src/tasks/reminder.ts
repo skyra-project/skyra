@@ -8,7 +8,7 @@ export default class extends Task {
 
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
 		// Fetch the user to send the message to
-		const user = await resolveOnErrorCodes(this.client.users.fetch(data.user), RESTJSONErrorCodes.UnknownUser);
+		const user = await resolveOnErrorCodes(this.context.client.users.fetch(data.user), RESTJSONErrorCodes.UnknownUser);
 
 		if (user) {
 			await resolveOnErrorCodes(

@@ -1,11 +1,11 @@
-import { AnalyticsEvent } from '#lib/structures/events/AnalyticsEvent';
+import { AnalyticsEvent } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.Message })
 export default class extends AnalyticsEvent {
 	public run(): void {
-		this.client.analytics!.messageCount++;
+		this.context.client.analytics!.messageCount++;
 	}
 }

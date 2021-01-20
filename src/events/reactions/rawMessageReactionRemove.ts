@@ -1,17 +1,15 @@
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import type { TextChannel } from 'discord.js';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageReactionRemove, emitter: 'ws' })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: GatewayDispatchEvents.MessageReactionRemove, emitter: store.client.ws });
-	}
-
 	public run(data: GatewayMessageReactionRemoveDispatch['d']) {
-		const channel = this.client.channels.cache.get(data.channel_id) as TextChannel;
+		const channel = this.context.client.channels.cache.get(data.channel_id) as TextChannel;
 		if (!channel || !channel.readable || !isTextBasedChannel(channel)) return;
-		this.client.emit(Events.RawReactionRemove, channel, data);
+		this.context.client.emit(Events.RawReactionRemove, channel, data);
 	}
 }

@@ -1,10 +1,11 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CreateResolvers } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason).setImageURL(imageURL);
-			this.client.emit(Events.ModerationEntryEdit, clone, entry);
+			this.context.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
 		return message.alert(

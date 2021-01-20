@@ -1,13 +1,13 @@
 import { DbSet, GuildSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { SkyraCommand, UserRichDisplay } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { roundNumber } from '@sapphire/utilities';
-import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
+import { requiredPermissions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -112,7 +112,7 @@ export default class extends SkyraCommand {
 		return response === 'all' ? this.buyList(message) : this.userList(message);
 	}
 
-	public async init() {
+	public async onLoad() {
 		this.createCustomResolver('banner', async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Social.BannerMissing, type);

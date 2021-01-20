@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
@@ -9,8 +9,8 @@ import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sleep } from '#utils/Promisified/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
 import { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -56,7 +56,6 @@ export default class extends SkyraCommand {
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(
-				this.client,
 				async (reaction) => {
 					// Ignore if resolve is not ready
 					if (
@@ -116,7 +115,7 @@ export default class extends SkyraCommand {
 					});
 
 					// Delete the previous message, and if stopped, send stop.
-					floatPromise(this, gameMessage.nuke());
+					floatPromise(gameMessage.nuke());
 					if (!verification) return message.channel.postable ? message.send(t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
 				}
 				if (game.bloodbath) game.bloodbath = false;
@@ -153,7 +152,7 @@ export default class extends SkyraCommand {
 			const hasLevel = await Message.prototype.hasAtLeastPermissionLevel.call(
 				{
 					author: member.user,
-					client: this.client,
+					client: member.client,
 					guild: member.guild,
 					member
 				},
@@ -179,7 +178,7 @@ export default class extends SkyraCommand {
 		const proceed = t(LanguageKeys.Commands.Games.HungerGamesResultProceed);
 		const panels = chunk(results, 5);
 
-		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);
+		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`) as string[];
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);
 		return texts;
 	}

@@ -1,33 +1,30 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
-import type { CommandStore } from 'klasa';
+import { ApplyOptions } from '@sapphire/decorators';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',
 	local: '🏡 Local Score Scoreboard'
 };
 
+@ApplyOptions<SkyraCommand.Options>({
+	aliases: ['top', 'scoreboard'],
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Social.LeaderboardDescription,
+	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
+	runIn: ['text'],
+	usage: '[global|local] [index:integer]',
+	usageDelim: ' ',
+	spam: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['top', 'scoreboard'],
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Social.LeaderboardDescription,
-			extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
-			runIn: ['text'],
-			usage: '[global|local] [index:integer]',
-			usageDelim: ' ',
-			spam: true
-		});
-	}
-
 	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
-		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
+		const list = await this.context.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(message, list, index - 1, position);
@@ -49,7 +46,7 @@ export default class extends SkyraCommand {
 			retrievedPage.push(value);
 			if (!value.name) {
 				promises.push(
-					this.client.users.fetch(id).then((user) => {
+					this.context.client.users.fetch(id).then((user) => {
 						value.name = user.username || `Unknown: ${id}`;
 					})
 				);
@@ -73,7 +70,7 @@ export default class extends SkyraCommand {
 	}
 
 	public keyUser(str: string) {
-		const user = this.client.users.cache.get(str);
+		const user = this.context.client.users.cache.get(str);
 		if (user) str = user.username;
 		if (str.length < 25) return str;
 		return `${str.substring(0, 22)}...`;

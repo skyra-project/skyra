@@ -58,6 +58,9 @@ Klasa.
 
 _Who knows, I might write a book someday for Skyra's lore._
 
+## Translating Skyra
+We use **Crowdin** to translate Skyra's messages into different languages. If you'd like to help by contributing new translations (or improving existing ones), [**click here.**](https://translation.skyra.pw) Thanks for any contributions!
+
 ## Links
 
 **Skyra links**

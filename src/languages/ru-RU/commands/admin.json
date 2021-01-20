@@ -62,18 +62,18 @@
 			"регионы Америки",
 			"регионы Африка Америка Азия Европа"
 		],
-		"reminder": "Эта команда может добавлять и/или удалять несколько ролей одновременно."
+		"reminder": "Эта команда может добавить и/или удалить несколько ролей одновременно."
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
 	"rolesetInvalidName": "Вы не можете удалить набор уникальных {{name}} ролей, так как он не существует.",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} В этой группе отсутствуют роли.",
-	"rolesetResetAll": "{{GREENTICK}} успешно удалены все роли.",
-	"rolesetResetNotExists": "",
-	"rolesetResetGroup": "",
+	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
+	"rolesetResetNotExists": "{{REDCROSS}} На этом сервере не существует набора ролей `{{name}}`.",
+	"rolesetResetGroup": "{{GREENTICK}} Набор ролей `{{name}}` успешно удалён с этого сервера.",
 	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
+	"rolesetNoRolesets": "У вас нет наборов ролей.",
 	"confMenuNopermissions": "",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",
@@ -84,12 +84,12 @@
 	"confMenuRenderRemove": "",
 	"confMenuRenderReset": "",
 	"confMenuRenderUndo": "",
-	"confMenuRenderCvalue": "",
+	"confMenuRenderCvalue": "Текущее значение: **``{{value}}``**",
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
+	"confMenuSaved": "Все изменения успешно сохранены.",
+	"updateDescription": "Обновите бота",
 	"updateExtended": {
 		"extendedHelp": ""
 	}

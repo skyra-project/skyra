@@ -1,1 +1,3 @@
-{}
+{
+	"channelNotReadable": "Извините, но мне нужны разрешения **{{VIEW_CHANNEL, permissions}}** и **{{READ_MESSAGE_HISTORY, permissions}}**"
+}

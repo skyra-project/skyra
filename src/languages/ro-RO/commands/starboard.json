@@ -1,20 +1,20 @@
 {
-	"starDescription": "",
+	"starDescription": "Obține un mesaj aleatoriu cu steluțe din baza de date sau din clasamentul stelelor.",
 	"starExtended": {
 		"extendedHelp": ""
 	},
-	"starMessages_plural": "",
-	"starMessages": "",
-	"starNoChannel": "",
-	"starNostars": "",
-	"stars_plural": "",
-	"stars": "",
-	"starStats": "",
-	"starStatsDescription": "",
-	"starTopreceivers": "",
-	"starTopreceiversDescription_plural": "",
-	"starTopreceiversDescription": "",
-	"starTopstarred": "",
-	"starTopstarredDescription_plural": "",
-	"starTopstarredDescription": ""
+	"starMessages_plural": "{{count}} mesaje",
+	"starMessages": "{{count}} mesaj",
+	"starNoChannel": "Îmi pare rău, dar un canal starboard nu a fost încă configurat.",
+	"starNostars": "Nu există nici un mesaj cu stele.",
+	"stars_plural": "{{count}} stele",
+	"stars": "{{count}} stea",
+	"starStats": "Statistici starboard",
+	"starStatsDescription": "{{messages}} mesaje cu un total de {{stars}} stele",
+	"starTopreceivers": "Receptori de top de stele",
+	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} stele)",
+	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} stea)",
+	"starTopstarred": "Mesaje stelate în top",
+	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stele)",
+	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} stea)"
 }

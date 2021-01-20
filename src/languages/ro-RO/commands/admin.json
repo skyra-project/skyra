@@ -18,11 +18,11 @@
 	"confServerExtended": {
 		"extendedHelp": ""
 	},
-	"confServer": "",
+	"confServer": "**Setarea {{key}} a server-ului**\n{{list}}",
 	"confUserDescription": "",
 	"confDashboardOnlyKey": "",
-	"confUser": "",
-	"confSettingNotSet": "",
+	"confUser": "**Setarea {{key}} a utilizatorului**\n{{list}}",
+	"confSettingNotSet": "Nu este setat",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
@@ -32,35 +32,35 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"add",
 				""
 			],
 			[
-				"",
+				"remove",
 				""
 			],
 			[
-				"",
+				"reset",
 				""
 			],
 			[
-				"",
+				"list",
 				""
 			],
 			[
-				"",
+				"auto",
 				""
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add regions America",
+			"add regions Africa America Asia Europa",
+			"remove regions America",
+			"reset",
+			"reset regions",
+			"list",
+			"regions America",
+			"regions Africa America Asia Europa"
 		],
 		"reminder": ""
 	},

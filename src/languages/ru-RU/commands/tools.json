@@ -113,7 +113,7 @@
 	"duckDuckGoNotfound": "",
 	"duckDuckGoUnknownError": "",
 	"duckDuckGoPoweredBy": "",
-	"emojiCustom": "",
+	"emojiCustom": "→ `Эмодзи ::` **{{emoji}}**\n→ `Тип  ::` **Пользовательский**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "",
 	"emojiExtended": {
 		"extendedHelp": "",
@@ -128,7 +128,7 @@
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
 	"emojiTwemoji": "",
-	"emotesDescription": "",
+	"emotesDescription": "Показывает все пользовательские эмодзи, доступные на этом сервере",
 	"emotesExtended": {
 		"extendedHelp": ""
 	},
@@ -230,7 +230,7 @@
 		"explainedUsage": [
 			[
 				"запрос",
-				""
+				"Название песни"
 			]
 		],
 		"examples": [
@@ -239,7 +239,7 @@
 		]
 	},
 	"itunesTitles": {
-		"artist": "",
+		"artist": "Исполнитель",
 		"collection": "",
 		"collectionPrice": "",
 		"numberOfTracksInCollection": "",
@@ -410,7 +410,7 @@
 		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} назад"
 	},
 	"whoisMemberPermissions": "",
-	"whoisMemberPermissionsAll": "",
+	"whoisMemberPermissionsAll": "Все разрешения",
 	"whoisMemberRoles": "Роль [1]",
 	"whoisMemberRoles_plural": "Роли [{{count}}]",
 	"whoisMemberTitles": {

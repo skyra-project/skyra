@@ -83,7 +83,7 @@
 	"confMenuRenderUpdate": "",
 	"confMenuRenderRemove": "",
 	"confMenuRenderReset": "",
-	"confMenuRenderUndo": "• अद्यतन पूर्ववत करें → `पूर्ववत् करें`",
+	"confMenuRenderUndo": "",
 	"confMenuRenderCvalue": "वर्तमान मूल्य: **``{{value}}``**",
 	"confMenuRenderBack": "पिछे जाने के लिए ◀ दबाए।",
 	"confMenuInvalidKey": "अवैध की, कृपया दिए गए पर्याय से पुन: प्रयास करें।",
@@ -91,6 +91,6 @@
 	"confMenuSaved": "सफलतापूर्वक सभी बदलाव किए जा चुके है।",
 	"updateDescription": "अद्यतन बॉट",
 	"updateExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "यहाँ कुछ पॉलिश, कुछ सफाई, और व्हाटकोन, मैं अचानक एक नया एंड्रॉइड हूँ!"
 	}
 }

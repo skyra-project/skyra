@@ -1,5 +1,5 @@
 {
-	"avatarDescription": "",
+	"avatarDescription": "किसी का अवतार पूरे आकार में देखें।",
 	"avatarExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -17,7 +17,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"रंग",
 				""
 			]
 		],
@@ -49,11 +49,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"चैनल",
 				""
 			],
 			[
-				"",
+				"संदेश",
 				""
 			]
 		]
@@ -63,7 +63,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"देश",
 				""
 			]
 		],
@@ -78,8 +78,8 @@
 			"demonym": ""
 		},
 		"overview": {
-			"capital": "",
-			"officialName": "",
+			"capital": "राजधानी",
+			"officialName": "आधिकारिक नाम",
 			"population": ""
 		}
 	},
@@ -93,7 +93,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"शब्द",
 				""
 			]
 		],

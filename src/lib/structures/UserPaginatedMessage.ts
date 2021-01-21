@@ -1,6 +1,7 @@
 import { GuildMessage } from '#lib/types';
 import { MessageBuilder, PaginatedMessage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
-import { APIMessage, MessageEmbed, MessageEmbedOptions, MessageOptions, NewsChannel, TextChannel } from 'discord.js';
+import { RESTPostAPIChannelMessageJSONBody } from 'discord-api-types/v6';
+import { APIMessage, MessageEmbed, MessageEmbedOptions, MessageOptions, MessageReaction, NewsChannel, TextChannel, User } from 'discord.js';
 
 export class UserPaginatedMessage extends PaginatedMessage {
 	public template: MessageOptions;
@@ -10,15 +11,47 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		this.template = UserPaginatedMessage.resolveTemplate(options.template);
 	}
 
+	// TODO: Remove this once the fix has landed upstream
+	/**
+	 * This executes the [[PaginatedMessage]] and sends the pages corresponding with [[PaginatedMessage.index]].
+	 * The handler will start collecting reactions and running actions once all actions have been reacted to the message.
+	 * @param author The author to validate.
+	 * @param channel The channel to use.
+	 */
+	public async run(author: User, channel: TextChannel | NewsChannel) {
+		await this.resolvePagesOnRun(channel);
+
+		if (!this.messages.length) throw new Error('There are no messages.');
+		if (!this.actions.size) throw new Error('There are no messages.');
+
+		const firstPage = this.messages[this.index]!;
+
+		if (this.response) await this.response.edit(firstPage);
+		else this.response = (await channel.send(firstPage)) as GuildMessage;
+
+		for (const id of this.actions.keys()) await this.response.react(id);
+
+		this.collector ??= this.response
+			.createReactionCollector(
+				(reaction: MessageReaction, user: User) =>
+					(this.actions.has(reaction.emoji.identifier) || this.actions.has(reaction.emoji.name)) && user.id === author.id,
+				{ idle: this.idle }
+			)
+			.on('collect', this.handleCollect.bind(this, author, channel))
+			.on('end', this.handleEnd.bind(this));
+
+		return this;
+	}
+
 	public async start(message: GuildMessage, target = message.author): Promise<this> {
 		// Stop the previous display and cache the new one
 		const display = UserPaginatedMessage.handlers.get(target.id);
 		if (display) display.collector!.stop();
 
 		// If the message was sent by Skyra, set the response as this one
-		// if (message.author.bot) this.response = message;
+		if (message.author.bot) this.response = message;
 
-		const handler = await super.run(target, message.channel);
+		const handler = await this.run(target, message.channel);
 		const messageID = handler.response!.id;
 
 		this.collector!.once('end', () => {
@@ -30,6 +63,17 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		UserPaginatedMessage.handlers.set(target.id, handler);
 
 		return handler;
+	}
+
+	/**
+	 * This clones the current handler into a new instance.
+	 */
+	public clone() {
+		const clone = new UserPaginatedMessage({ pages: this.pages, actions: [], template: this.template }).setIndex(this.index).setIdle(this.idle);
+		clone.actions = this.actions;
+		clone.response = this.response;
+		clone.collector = this.collector;
+		return clone;
 	}
 
 	public addPageBuilder(cb: (builder: MessageBuilder) => MessageBuilder): this {
@@ -51,9 +95,21 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		const page = this.pages[index];
 		const options = typeof page === 'function' ? await page(index, this.pages, this) : page;
 		const resolved = options instanceof APIMessage ? options : new APIMessage(channel, this.applyTemplate(options));
-		this.messages[index] = resolved;
+		const transformed = this.applyFooter(resolved.resolveData(), index);
+		this.messages[index] = transformed;
 
-		return resolved;
+		return transformed;
+	}
+
+	private applyFooter(message: APIMessage, index: number): APIMessage {
+		const templateSuffix = this.template.embed?.footer?.text ?? '';
+
+		const data = message.data as RESTPostAPIChannelMessageJSONBody;
+		if (!data.embed) return message;
+
+		data.embed.footer ??= { text: '' };
+		data.embed.footer.text = `${index + 1} / ${this.pages.length}${data.embed.footer.text}${templateSuffix}`;
+		return message;
 	}
 
 	private applyTemplate(options: MessageOptions): MessageOptions {

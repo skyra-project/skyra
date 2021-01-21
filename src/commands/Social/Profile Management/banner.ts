@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private readonly banners: Map<string, BannerCache> = new Map();
-	private display: UserPaginatedMessage | null = null;
+	private display: UserPaginatedMessage = null!;
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, [banner]: [BannerCache]) {
@@ -148,7 +148,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buyList(message: GuildMessage) {
-		return this.runDisplay(message, await message.fetchT(), this.display);
+		return this.runDisplay(message, await message.fetchT(), this.display.clone());
 	}
 
 	private async userList(message: GuildMessage) {
@@ -175,16 +175,12 @@ export default class extends SkyraCommand {
 		return this.runDisplay(message, t, display);
 	}
 
-	private async runDisplay(message: GuildMessage, t: TFunction, display: UserPaginatedMessage | null) {
-		if (display !== null) {
-			const response = await message.send(
-				new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-			);
-			await display.start(response as GuildMessage, message.author);
-			return response;
-		}
-
-		return undefined;
+	private async runDisplay(message: GuildMessage, t: TFunction, display: UserPaginatedMessage) {
+		const response = await message.send(
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+		);
+		await display.start(response as GuildMessage, message.author);
+		return response;
 	}
 
 	private async prompt(message: GuildMessage, banner: BannerCache) {

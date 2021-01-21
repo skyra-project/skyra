@@ -129,7 +129,6 @@ export default class extends SkyraCommand {
 			display.addPageEmbed((embed) => embed.setDescription(page));
 		}
 
-		display.setIdle(120000);
 		return display.start(message);
 	}
 

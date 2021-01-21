@@ -1,46 +1,16 @@
 import { GuildMessage } from '#lib/types';
-import { MessageBuilder, PaginatedMessage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
+import { MessageBuilder, MessagePage, PaginatedMessage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
+import { Time } from '@sapphire/time-utilities';
 import { RESTPostAPIChannelMessageJSONBody } from 'discord-api-types/v6';
-import { APIMessage, MessageEmbed, MessageEmbedOptions, MessageOptions, MessageReaction, NewsChannel, TextChannel, User } from 'discord.js';
+import { APIMessage, MessageEmbed, MessageEmbedOptions, MessageOptions, NewsChannel, TextChannel, User } from 'discord.js';
 
 export class UserPaginatedMessage extends PaginatedMessage {
 	public template: MessageOptions;
 
 	public constructor(options: UserPaginatedMessage.Options = {}) {
 		super(options);
+		this.setIdle(Time.Minute * 5);
 		this.template = UserPaginatedMessage.resolveTemplate(options.template);
-	}
-
-	// TODO: Remove this once the fix has landed upstream
-	/**
-	 * This executes the [[PaginatedMessage]] and sends the pages corresponding with [[PaginatedMessage.index]].
-	 * The handler will start collecting reactions and running actions once all actions have been reacted to the message.
-	 * @param author The author to validate.
-	 * @param channel The channel to use.
-	 */
-	public async run(author: User, channel: TextChannel | NewsChannel) {
-		await this.resolvePagesOnRun(channel);
-
-		if (!this.messages.length) throw new Error('There are no messages.');
-		if (!this.actions.size) throw new Error('There are no messages.');
-
-		const firstPage = this.messages[this.index]!;
-
-		if (this.response) await this.response.edit(firstPage);
-		else this.response = (await channel.send(firstPage)) as GuildMessage;
-
-		for (const id of this.actions.keys()) await this.response.react(id);
-
-		this.collector ??= this.response
-			.createReactionCollector(
-				(reaction: MessageReaction, user: User) =>
-					(this.actions.has(reaction.emoji.identifier) || this.actions.has(reaction.emoji.name)) && user.id === author.id,
-				{ idle: this.idle }
-			)
-			.on('collect', this.handleCollect.bind(this, author, channel))
-			.on('end', this.handleEnd.bind(this));
-
-		return this;
 	}
 
 	public async start(message: GuildMessage, target = message.author): Promise<this> {
@@ -54,13 +24,15 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		const handler = await this.run(target, message.channel);
 		const messageID = handler.response!.id;
 
-		this.collector!.once('end', () => {
-			UserPaginatedMessage.messages.delete(messageID);
-			UserPaginatedMessage.handlers.delete(target.id);
-		});
+		if (this.collector) {
+			this.collector!.once('end', () => {
+				UserPaginatedMessage.messages.delete(messageID);
+				UserPaginatedMessage.handlers.delete(target.id);
+			});
 
-		UserPaginatedMessage.messages.set(messageID, handler);
-		UserPaginatedMessage.handlers.set(target.id, handler);
+			UserPaginatedMessage.messages.set(messageID, handler);
+			UserPaginatedMessage.handlers.set(target.id, handler);
+		}
 
 		return handler;
 	}
@@ -68,11 +40,9 @@ export class UserPaginatedMessage extends PaginatedMessage {
 	/**
 	 * This clones the current handler into a new instance.
 	 */
-	public clone() {
-		const clone = new UserPaginatedMessage({ pages: this.pages, actions: [], template: this.template }).setIndex(this.index).setIdle(this.idle);
-		clone.actions = this.actions;
-		clone.response = this.response;
-		clone.collector = this.collector;
+	public clone(): UserPaginatedMessage {
+		const clone = super.clone() as UserPaginatedMessage;
+		clone.template = this.template;
 		return clone;
 	}
 
@@ -85,30 +55,32 @@ export class UserPaginatedMessage extends PaginatedMessage {
 	}
 
 	/**
-	 * This function is executed whenever an action is triggered and resolved.
-	 * @param index The index to resolve.
+	 * Sets up the message's reactions and the collector.
+	 * @param channel The channel the handler is running at.
+	 * @param author The author the handler is for.
 	 */
-	public async resolvePage(channel: TextChannel | NewsChannel, index: number): Promise<APIMessage> {
-		const message = this.messages[index];
-		if (message !== null) return message;
+	protected async setUpReactions(channel: TextChannel | NewsChannel, author: User): Promise<void> {
+		if (this.pages.length > 1) await super.setUpReactions(channel, author);
+	}
 
-		const page = this.pages[index];
+	/**
+	 * Handles the load of a page.
+	 * @param page The page to be loaded.
+	 * @param channel The channel the paginated message runs at.
+	 * @param index The index of the current page.
+	 */
+	protected async handlePageLoad(page: MessagePage, channel: TextChannel | NewsChannel, index: number): Promise<APIMessage> {
 		const options = typeof page === 'function' ? await page(index, this.pages, this) : page;
 		const resolved = options instanceof APIMessage ? options : new APIMessage(channel, this.applyTemplate(options));
-		const transformed = this.applyFooter(resolved.resolveData(), index);
-		this.messages[index] = transformed;
-
-		return transformed;
+		return this.applyFooter(resolved.resolveData(), index);
 	}
 
 	private applyFooter(message: APIMessage, index: number): APIMessage {
-		const templateSuffix = this.template.embed?.footer?.text ?? '';
-
 		const data = message.data as RESTPostAPIChannelMessageJSONBody;
 		if (!data.embed) return message;
 
-		data.embed.footer ??= { text: '' };
-		data.embed.footer.text = `${index + 1} / ${this.pages.length}${data.embed.footer.text}${templateSuffix}`;
+		data.embed.footer ??= { text: this.template.embed?.footer?.text ?? '' };
+		data.embed.footer.text = `${index + 1} / ${this.pages.length}${data.embed.footer.text}`;
 		return message;
 	}
 

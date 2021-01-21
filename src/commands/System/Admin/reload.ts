@@ -14,10 +14,25 @@ import { Piece, Store } from 'klasa';
 	extendedHelp: LanguageKeys.Commands.System.ReloadExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<Store:store|Piece:piece|language:language|everything:default>'
+	usage: '<target:reloadable>'
 })
-@CreateResolver('language', (arg, _, message) => {
+@CreateResolver('reloadable', async (arg, _, message) => {
 	if (message.client.i18n.languages.has(arg)) return arg;
+
+	const reloadableStore = await message.client.arguments
+		.get('store')!
+		.run(arg, _, message)
+		.catch(() => undefined);
+
+	if (reloadableStore) return reloadableStore;
+
+	const reloadablePiece = await message.client.arguments
+		.get('piece')!
+		.run(arg, _, message)
+		.catch(() => undefined);
+
+	if (reloadablePiece) return reloadablePiece;
+
 	return 'everything';
 })
 export default class extends SkyraCommand {

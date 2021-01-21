@@ -107,6 +107,12 @@
 		"cosmeticFormesList": "{{cosmeticFormes, andList}}"
 	},
 	"pokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"spriteDescription": "Gives you the sprite of a Pokémon.",
+	"spriteExtended": {
+		"extendedHelp": "Useful if you want to check if the name of a Pokémon that you're remembering is actually that Pokémon.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"explainedUsage": [["pokemon", "The Pokémon for which you want to get the sprite"]],
+		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
+	},
 	"typeDescription": "Gives the type matchups for one or two Pokémon types",
 	"typeExtended": {
 		"extendedHelp": "Types have to be exact matches to pokemon types (upper/lowercase can be ignored)",

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -8,14 +8,14 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['topinvs'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
 	requiredGuildPermissions: ['MANAGE_GUILD']
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -32,20 +32,20 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildDisplay(message, t, topTen);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, invites: NonNullableInvite[]) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await DbSet.fetchColor(message))
-		);
+		});
 		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 
 		for (const invite of invites) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed: MessageEmbed) =>
 				embed
 					.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 					.setThumbnail(invite.inviter.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))

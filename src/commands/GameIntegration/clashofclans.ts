@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { TOKENS } from '#root/config';
@@ -20,7 +20,7 @@ const enum ClashOfClansFetchCategories {
 const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
 const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['coc'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
@@ -46,7 +46,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async clan(message: GuildMessage, [clan]: [string]) {
 		const t = await message.fetchT();
 
@@ -60,7 +60,7 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildClanDisplay(message, t, clanData);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -133,12 +133,12 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildClanDisplay(message: GuildMessage, t: TFunction, clans: ClashOfClans.Clan[]) {
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const clan of clans) {
 			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);
-			display.addPage((embed: MessageEmbed) =>
-				embed
+			display.addPageEmbed((builder) =>
+				builder
 					.setThumbnail(clan.badgeUrls.large)
 					.setTitle(`${clan.tag} - ${clan.name}`)
 					.setURL(

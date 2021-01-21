@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
@@ -14,13 +14,13 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EshopDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended,
 	usage: '<gameName:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [gameName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -31,7 +31,7 @@ export default class extends RichDisplayCommand {
 		if (!entries.length) throw t(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, t, entries[0].hits);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -70,7 +70,7 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: EShopHit[]) {
 		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
@@ -83,7 +83,7 @@ export default class extends RichDisplayCommand {
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
 				: t(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)

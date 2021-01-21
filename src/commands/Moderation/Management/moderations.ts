@@ -1,6 +1,6 @@
 import { DbSet, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors, Moderation } from '#utils/constants';
@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
@@ -20,7 +20,7 @@ import { MessageEmbed, User } from 'discord.js';
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -33,12 +33,12 @@ export default class extends RichDisplayCommand {
 		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const user = this.context.client.user!;
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
-		);
+		});
 
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
@@ -51,7 +51,7 @@ export default class extends RichDisplayCommand {
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPage((template: MessageEmbed) => {
+			display.addPageEmbed((template) => {
 				for (const entry of page) {
 					const { name, value } = format(entry);
 					template.addField(name, value);
@@ -61,7 +61,7 @@ export default class extends RichDisplayCommand {
 			});
 		}
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 

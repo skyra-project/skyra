@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.GsearchDescription,
@@ -25,7 +25,7 @@ import { MessageEmbed } from 'discord.js';
 				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const t = await message.fetchT();
 		const [response, { items }] = await Promise.all([
@@ -37,15 +37,15 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildDisplay(message, items);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
 	private async buildDisplay(message: GuildMessage, items: GoogleCSEItem[]) {
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const item of items) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPageEmbed((embed: MessageEmbed) => {
 				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
 
 				const imageUrl = this.getImageUrl(item);

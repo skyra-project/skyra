@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
@@ -20,7 +20,7 @@ import type { TFunction } from 'i18next';
 	usage: '<item|character:default> <search:...string>',
 	usageDelim: ' '
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async character(message: GuildMessage, [name]: [string]) {
 		const t = await message.fetchT();
 
@@ -31,7 +31,7 @@ export default class extends RichDisplayCommand {
 		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -45,7 +45,7 @@ export default class extends RichDisplayCommand {
 		const itemDetails = await this.fetchItems(t, item);
 		const display = await this.buildItemDisplay(message, t, itemDetails);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 
 		return response;
 	}
@@ -79,11 +79,11 @@ export default class extends RichDisplayCommand {
 
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
-		).addPage((embed) =>
+		}).addPageEmbed((embed) =>
 			embed
 				.setThumbnail(character.Avatar)
 				.setImage(character.Portrait)
@@ -105,7 +105,7 @@ export default class extends RichDisplayCommand {
 			phRangedDPSClassValues.length ||
 			magRangedDPSClassValues.length
 		) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				embed.setTitle(titles.dowDomClasses);
 
 				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${titles.tank}`, tankClassValues.join('\n'), true);
@@ -120,7 +120,7 @@ export default class extends RichDisplayCommand {
 		}
 
 		if (discipleOfTheHandJobs.length) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				embed.fields = discipleOfTheHandJobs;
 				embed.setTitle(titles.dohClasses).addField(ZeroWidthSpace, ZeroWidthSpace, true);
 				return embed;
@@ -128,7 +128,7 @@ export default class extends RichDisplayCommand {
 		}
 
 		if (discipleOfTheLandJobs.length) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				embed.fields = discipleOfTheLandJobs;
 				embed.setTitle(titles.dolClasses);
 				return embed;
@@ -140,10 +140,10 @@ export default class extends RichDisplayCommand {
 
 	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: FFXIV.ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const item of items) {
-			display.addPage((embed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setDescription(item.Description.split('\n')[0])
 					.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
 import { TOKENS } from '#root/config';
@@ -10,14 +10,14 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended,
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
 	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
@@ -29,7 +29,7 @@ export default class extends RichDisplayCommand {
 		const fortniteUser = await this.fetchAPI(t, user, platform);
 		const display = await this.buildDisplay(message, t, fortniteUser);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -55,15 +55,15 @@ export default class extends RichDisplayCommand {
 		t: TFunction,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
-		);
+		});
 		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
-		display.addPage((embed) => {
+		display.addPageEmbed((embed) => {
 			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
 			const ltsData = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 				winCount: lts.find((el) => el.key === 'wins')!.value,
@@ -96,7 +96,7 @@ export default class extends RichDisplayCommand {
 		});
 
 		if (p2) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				const p2Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p2.top1.value,
 					killCount: p2.kills.value,
@@ -130,7 +130,7 @@ export default class extends RichDisplayCommand {
 		}
 
 		if (p10) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				const p10Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p10.top1.value,
 					killCount: p10.kills.value,
@@ -164,7 +164,7 @@ export default class extends RichDisplayCommand {
 		}
 
 		if (p9) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				const p9Data = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p9.top1.value,
 					killCount: p9.kills.value,

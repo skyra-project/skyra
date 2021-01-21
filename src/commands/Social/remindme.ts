@@ -1,6 +1,7 @@
 import { DbSet, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -117,16 +118,16 @@ export default class extends SkyraCommand {
 		message.sendTranslated(LanguageKeys.Resolvers.ChannelNotInGuildSubCommand, [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async list(message: Message) {
+	public async list(message: GuildMessage) {
 		const { client } = this.context;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-		);
+		});
 
 		const t = await message.fetchT();
 		const pages = chunk(
@@ -139,7 +140,7 @@ export default class extends SkyraCommand {
 			),
 			10
 		);
-		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
+		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 
 		const response = await message.send(
 			new MessageEmbed({
@@ -147,7 +148,7 @@ export default class extends SkyraCommand {
 				color: BrandingColors.Secondary
 			})
 		);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 

@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
@@ -11,7 +11,7 @@ import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	usage: '<show:str> [year:str]',
 	usageDelim: 'y:'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [show, year]: [string, string?]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -30,7 +30,7 @@ export default class extends RichDisplayCommand {
 		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, t, entries);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -62,12 +62,12 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, shows: Tmdb.TmdbSeriesList['results']) {
 		const titles = t(LanguageKeys.Commands.Tools.ShowsTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.ShowsData);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		const showData = await Promise.all(shows.map((show) => this.fetchShowData(t, show.id)));
 
 		for (const show of showData) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(show.name)
 					.setURL(`https://www.themoviedb.org/tv/${show.id}`)

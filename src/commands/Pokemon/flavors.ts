@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
@@ -11,7 +11,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -28,7 +28,7 @@ export default class extends RichDisplayCommand {
 
 		const pokemonData = await this.fetchAPI(t, pokemon.toLowerCase());
 
-		await this.buildDisplay(message, pokemonData).start(response, message.author.id);
+		await this.buildDisplay(message, pokemonData).start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -42,15 +42,15 @@ export default class extends RichDisplayCommand {
 	}
 
 	private buildDisplay(message: GuildMessage, pokemonData: DexDetails) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(message.flagArgs.shiny ? pokemonData.shinySprite : pokemonData.sprite)
-		);
+		});
 
 		for (const flavorText of pokemonData.flavorTexts) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
+			display.addPageEmbed((embed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
 		}
 
 		return display;

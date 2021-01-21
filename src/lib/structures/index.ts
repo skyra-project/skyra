@@ -6,4 +6,4 @@ export * from './InviteStore';
 export * from './managers';
 export * from './moderation';
 export * from './SettingsMenu';
-export * from './UserRichDisplay';
+export * from './UserPaginatedMessage';

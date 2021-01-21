@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
@@ -8,13 +8,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ITunesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ITunesExtended,
 	usage: '<song:str>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [song]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -25,7 +25,7 @@ export default class extends RichDisplayCommand {
 		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, t, entries);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -48,10 +48,10 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
 		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const song of entries) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setThumbnail(song.artworkUrl100)
 					.setTitle(song.trackName)

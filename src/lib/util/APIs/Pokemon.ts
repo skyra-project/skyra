@@ -264,6 +264,15 @@ export const getTypeMatchup = gql`
 	}
 `;
 
+export const getPokemonSprite = gql`
+	query getPokemonSprites($pokemon: String!) {
+		getPokemonDetailsByFuzzy(pokemon: $pokemon) {
+			sprite
+			shinySprite
+		}
+	}
+`;
+
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
 
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {

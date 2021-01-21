@@ -63,6 +63,8 @@ export const PokedexEmbedData = FT<{ otherFormes: readonly string[]; cosmeticFor
 	'commands/pokemon:pokedexEmbedData'
 );
 export const PokedexQueryFail = FT<{ pokemon: string }, string>('commands/pokemon:pokedexQueryFail');
+export const SpriteDescription = T<string>('commands/pokemon:spriteDescription');
+export const SpriteExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:spriteExtended');
 export const TypeDescription = T<string>('commands/pokemon:typeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:typeExtended');
 export const TypeEmbedData = FT<

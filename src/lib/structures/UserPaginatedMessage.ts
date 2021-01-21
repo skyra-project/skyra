@@ -60,14 +60,33 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		return { ...this.template, ...options, embed: this.applyTemplateEmbed(options.embed) };
 	}
 
-	private applyTemplateEmbed(embed: MessageOptions['embed']): MessageEmbedOptions | undefined {
-		if (!embed) return this.resolveMessageEmbed(this.template.embed);
-		if (!this.template.embed) return this.resolveMessageEmbed(embed);
-		return { ...this.resolveMessageEmbed(this.template.embed), ...this.resolveMessageEmbed(embed) };
+	private applyTemplateEmbed(embed: MessageOptions['embed']): MessageEmbed | MessageEmbedOptions | undefined {
+		if (!embed) return this.template.embed;
+		if (!this.template.embed) return embed;
+		return this.mergeEmbeds(this.template.embed, embed);
 	}
 
-	private resolveMessageEmbed(embed?: MessageEmbed | MessageEmbedOptions): MessageEmbedOptions | undefined {
-		return embed && embed instanceof MessageEmbed ? embed.toJSON() : embed;
+	private mergeEmbeds(template: MessageEmbed | MessageEmbedOptions, embed: MessageEmbed | MessageEmbedOptions): MessageEmbedOptions {
+		return {
+			title: embed.title ?? template.title ?? undefined,
+			description: embed.description ?? template.description ?? undefined,
+			url: embed.url ?? template.url ?? undefined,
+			timestamp: embed.timestamp ?? template.timestamp ?? undefined,
+			color: embed.color ?? template.color ?? undefined,
+			fields: this.mergeArrays(template.fields, embed.fields),
+			files: this.mergeArrays(template.files, embed.files),
+			author: embed.author ?? template.author ?? undefined,
+			thumbnail: embed.thumbnail ?? template.thumbnail ?? undefined,
+			image: embed.image ?? template.image ?? undefined,
+			video: embed.video ?? template.video ?? undefined,
+			footer: embed.footer ?? template.footer ?? undefined
+		};
+	}
+
+	private mergeArrays<T>(template?: T[], array?: T[]): undefined | T[] {
+		if (!array) return template;
+		if (!template) return array;
+		return [...template, ...array];
 	}
 
 	public static readonly messages = new Map<string, UserPaginatedMessage>();

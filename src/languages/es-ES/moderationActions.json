@@ -7,10 +7,10 @@
 		"removeRole": "Eliminar rol",
 		"restrictedAttachment": "Restricción del archivo adjunto",
 		"restrictedEmbed": "",
-		"restrictedReact": "",
+		"restrictedReact": "Restricción de Reacciones",
 		"restrictedVoice": "Restricción de voz",
 		"setNickname": "Establecer apodo",
-		"softban": "",
+		"softban": "Baneo Suave",
 		"vkick": "Expulsión de voz",
 		"vmute": "Silenciar voz"
 	},

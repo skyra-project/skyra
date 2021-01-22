@@ -1,34 +1,34 @@
 {
-	"announcementHeader": "",
-	"announcementCancelled": "",
-	"announcementDescription": "",
-	"announcementEmbedMentions": "",
-	"announcementEmbedMentionsWithMentions": "",
+	"announcementHeader": "**Anunț nou pentru** {{role}}",
+	"announcementCancelled": "Mesajul a fost anulat.",
+	"announcementDescription": "Trimiteți anunțuri noi, menționați rolul pentru anunțuri.",
+	"announcementEmbedMentions": "{{header}}:",
+	"announcementEmbedMentionsWithMentions": "{{header}}, și menționează: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Această comandă necesită un canal de anunţuri (**channels.announcement** în comanda de configurare) care îi spune lui Skyra unde ar trebui să publice mesajele de anunţ.\n\nÎntrebarea este, este această comandă necesară? Ei bine, nimic nu vă împiedică să vă faceți singur anunțurile, totuși, sunt mulți oameni care urăsc să fie menționați prin everyone/here.\n\nPentru a evita acest lucru, Skyra vă oferă opţiunea de a crea un rol de abonat, care nu poate fi menţionat (pentru a evita ca oamenii să menţioneze acest rol), și odată ce rulezi această comandă, Skyra va seta rolul de a fi menționabil, postează mesajul și setează rolul să nu mai fie menționabil.\n\nÎn plus, poți configura Skyra pentru a trimite anunțul ca mesaj embed prin setarea opțiunii **mesaje.announcement-embed** în comanda de configurare. Când trimiteți mesajul ca un embed, puteți exclude menționările oricăror utilizatori, @here sau @everyone prin furnizarea steagului `--excludeMentions` la anunț.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"announcement",
+				"Textul anunţului de postat."
 			]
 		],
 		"examples": [
-			""
+			"Mă bucur să vă anunț că avem un bot capabil să trimită anunțuri în siguranță pentru abonații noștri!"
 		],
-		"reminder": ""
+		"reminder": "Dacă vrei să editezi mesajul pe care îl trimiți într-un anunț, doar editează mesajul pe care îl foloseai pentru a trimite acel anunț. Skyra va edita apoi mesajul pe care l-a trimis anterior. Ea poate face acest lucru până la 15 minute după anunțul inițial, așa că nu așteptați foarte mult!"
 	},
-	"announcementPrompt": "",
-	"announcementSuccess": "",
-	"subscribeDescription": "",
+	"announcementPrompt": "Acesta va fi mesajul trimis în canalul de anunţuri. Sunteţi de acord cu el?",
+	"announcementSuccess": "S-a postat cu succes un anunț nou.",
+	"subscribeDescription": "Abonează-te la anunțurile acestui server.",
 	"subscribeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Această comandă are scopul de a-ți **da** rolul de abonat, care trebuie să fie configurat de administratorii serverului. Când un moderator sau administrator folosește comanda **announcement**, veți fi menționat. Această caracteristică este menită să înlocuiască etichetele tuturor de aici și să menționeze doar utilizatorii interesați."
 	},
-	"subscribeNoChannel": "",
-	"subscribeNoRole": "",
-	"subscribeSuccess": "",
-	"unsubscribeDescription": "",
+	"subscribeNoChannel": "Acest server nu are un canal de anunţuri configurat.",
+	"subscribeNoRole": "Acest server nu are un rol de anunţuri configurat.",
+	"subscribeSuccess": "S-a dat cu succes rolul **{{role}}**",
+	"unsubscribeDescription": "Dezabonează-te de la anunțurile acestui server.",
 	"unsubscribeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Această comandă are scopul de a-ți **scoate** rolul de abonat, care trebuie să fie configurat de administratorii serverului. Când un moderator sau administrator folosește comanda **announcement**, nu o să mai fiți menționat. Această caracteristică este menită să înlocuiască etichetele tuturor de aici și să menționeze doar utilizatorii interesați."
 	},
-	"unsubscribeSuccess": ""
+	"unsubscribeSuccess": "S-a scos cu succes rolul **{{role}}**"
 }

@@ -1,23 +1,23 @@
 {
-	"catfactDescription": "",
+	"catfactDescription": "Lasa-mă să îți spun un fapt misterios despre pisici.",
 	"catfactExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Ştiai că pisicile sunt foarte curioase, nu? Cu siguranţă au o mulţime de fapte distractive şi ciudate.\nCu această comandă vei primi un fapt aleatoriu."
 	},
-	"catfactTitle": "",
-	"dogDescription": "",
+	"catfactTitle": "Fapte despre pisici",
+	"dogDescription": "Câini drăguți! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Știi** cât de drăguţi sunt câinii? Sunt atât de frumoşi!\nAceastă comandă foloseşte [dog.ceo](https://dog.ceo) pentru a-ți arăta imagini cu cei mai drăguți câini!"
 	},
-	"foxDescription": "",
+	"foxDescription": "Lasă-mă să îți arăt o imagine cu o vulpe!",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Această comandă oferă o imagine aleatorie de pe [randomfox.ca](https://randomfox.ca/)."
 	},
-	"kittyDescription": "",
+	"kittyDescription": "PISICUȚE!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Știi** cât de drăguțe sunt pisicuțele? Sunt atât de frumoase!\nAceastă comandă folosește [cataas.com](https://cataas.com) pentru a-ți arăta imagini cu cele mai drăguțe pisici!"
 	},
-	"shibeDescription": "",
+	"shibeDescription": "Shiba-uri drăguți!",
 	"shibeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Toată lumea iubește shiba-uri, și eu o să îi iubesc! Sunt atât de adorabili ❤"
 	}
 }

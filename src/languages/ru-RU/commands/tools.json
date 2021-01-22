@@ -4,7 +4,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пользователь",
 				""
 			]
 		],
@@ -17,25 +17,25 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"цвет",
 				""
 			]
 		],
 		"examples": [
 			"",
-			""
+			"rgb(200, 130, 75)"
 		],
 		"possibleFormats": [
 			[
-				"",
-				""
+				"HEX",
+				"#dfdfdf"
 			],
 			[
-				"",
-				""
+				"RGB",
+				"rgb(200, 200, 200)"
 			],
 			[
-				"",
+				"HSL",
 				""
 			],
 			[
@@ -49,21 +49,21 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"канал",
 				""
 			],
 			[
-				"",
+				"сообщение",
 				""
 			]
 		]
 	},
-	"countryDescription": "",
+	"countryDescription": "Показывает информацию о стране.",
 	"countryExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"страна",
 				""
 			]
 		],
@@ -113,13 +113,13 @@
 	"duckDuckGoNotfound": "",
 	"duckDuckGoUnknownError": "",
 	"duckDuckGoPoweredBy": "",
-	"emojiCustom": "",
+	"emojiCustom": "→ `Эмодзи ::` **{{emoji}}**\n→ `Тип  ::` **Пользовательский**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "",
 	"emojiExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"эмодзи",
 				""
 			]
 		],
@@ -128,7 +128,7 @@
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
 	"emojiTwemoji": "",
-	"emotesDescription": "",
+	"emotesDescription": "Показывает все пользовательские эмодзи, доступные на этом сервере",
 	"emotesExtended": {
 		"extendedHelp": ""
 	},
@@ -138,7 +138,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				"Название игры, которую вы ищете."
 			]
 		],
@@ -207,7 +207,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				"Название игры"
 			]
 		],
@@ -229,8 +229,8 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"запрос",
+				"Название песни"
 			]
 		],
 		"examples": [
@@ -239,18 +239,18 @@
 		]
 	},
 	"itunesTitles": {
-		"artist": "",
+		"artist": "Исполнитель",
 		"collection": "",
 		"collectionPrice": "",
 		"numberOfTracksInCollection": "",
 		"preview": "",
-		"previewLabel": "",
+		"previewLabel": "Нажмите здесь",
 		"primaryGenre": "",
 		"trackPrice": "",
 		"trackReleaseDate": ""
 	},
 	"moviesData": {
-		"linkClickHere": "",
+		"linkClickHere": "Нажмите здесь",
 		"movieInProduction": "",
 		"noGenres": "",
 		"none": "",
@@ -262,8 +262,8 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"запрос",
+				"Название фильма"
 			]
 		],
 		"examples": [
@@ -320,11 +320,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"канал",
 				""
 			],
 			[
-				"",
+				"сообщение",
 				""
 			]
 		]
@@ -340,7 +340,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				""
 			]
 		],
@@ -366,7 +366,7 @@
 		"expiresIn": "",
 		"link": "Ссылка",
 		"neverExpress": "Никогда",
-		"temporary": "",
+		"temporary": "Временное приглашение",
 		"uses": ""
 	},
 	"topInvitesExtended": {
@@ -379,11 +379,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Слово",
 				""
 			],
 			[
-				"",
+				"Страница",
 				""
 			]
 		],
@@ -410,7 +410,7 @@
 		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} назад"
 	},
 	"whoisMemberPermissions": "",
-	"whoisMemberPermissionsAll": "",
+	"whoisMemberPermissionsAll": "Все разрешения",
 	"whoisMemberRoles": "Роль [1]",
 	"whoisMemberRoles_plural": "Роли [{{count}}]",
 	"whoisMemberTitles": {
@@ -419,7 +419,7 @@
 	},
 	"whoisUserFields": {
 		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
-		"footer": ""
+		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {
 		"createdAt": ""

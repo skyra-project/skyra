@@ -1,1 +1,6 @@
-{}
+{
+	"twitchEmbedDescription": "{{userName}} e acum în direct!",
+	"twitchEmbedDescriptionWithGame": "{{userName}} este acum în direct - Transmite {{gameName}}!",
+	"twitchNoGameName": "*Numele jocului nu este încă setat*",
+	"twitchEmbedFooter": "Notificări Twitch Skyra"
+}

@@ -1,10 +1,10 @@
 {
-	"blocklistDescription": "",
+	"blocklistDescription": "Blochează sau permite utilizatori și servere să îmi folosească funcționalitățile.",
 	"blocklistExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Blochează utilizatorii care-mi abuzează funcțiile de a mă folosi în viitor, oameni obraznici!"
 	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
+	"blocklistResetSuccess": "{{GREENTICK}} Am resetat cu succes utilizatorii și serverele blocate",
+	"blocklistSaveSuccess": "{{GREENTICK}} Am actualizat cu succes utilizatorii și/sau serverele blocate",
 	"confNoKey": "Trebuie să furnizați o cheie",
 	"confNoValue": "Trebuie să furnizați o valoare",
 	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
@@ -14,83 +14,83 @@
 	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
 	"confReset": "Cheia **{{key}}** a fost resetată la: `{{value}}`",
 	"confNochange": "Cheia **{{key}}** are deja această valoare.",
-	"confServerDescription": "",
+	"confServerDescription": "Definiți setările per-server.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Vă permite să configurați Skyra din Discord, ca o alternativă rapidă a portalului web (<https://skyra.pw>)."
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
-	"confUser": "",
-	"confSettingNotSet": "",
-	"heapSnapshotDescription": "",
+	"confServer": "**Setarea {{key}} a server-ului**\n{{list}}",
+	"confUserDescription": "Definiți setări per utilizator.",
+	"confDashboardOnlyKey": "`{{key}}` poate fi configurat doar prin intermediul panoului web (<https://skyra.pw>)",
+	"confUser": "**Setarea {{key}} a utilizatorului**\n{{list}}",
+	"confSettingNotSet": "Nu este setat",
+	"heapSnapshotDescription": "Creează un heapdump pentru a găsi scurgeri de memorie.",
 	"heapSnapshotExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Comanda heapsnapshot este foarte folositoare pentru boții care au probleme cu memoria, folosește librăria cu heapdump care îngheață întregul proces pentru o clipă pentru a analiza toate elementele din processul HEAP, NICIODATĂ să nu partajați fișierele heapsnapshot cu oricine, pentru că tot ce conține bot-ul este inclus în acel fișier.\n\nPentru a deschide heapsnapshot-uri, deschide Google Chrome, deschide Unelte de Dezvoltare, mergi la tab-ul Memorie, și în Profiluri, apasă pe butonul \"load\" de jos. În cele din urmă, deschideți profilul și veți primi o masă cu toate obiectele din procesul dvs., distrați-vă!\n\n\n\nP.S: Fișierele heapsnapshot sunt la fel de mari ca și cantitatea de RAM pe care o folosești, în roboți mari, imaginile pot îngheța botul mult mai mult și fișierele pot fi mult mai grele."
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Gestionați seturi de roluri unice.",
 	"rolesetExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Un set de roluri este un grup de roluri pe care Skyra le identifică ca fiind unice pentru toți membrii din server, ca de exemplu un roleset numit `regiune` ar putea avea rolurile `Africa`, `America`, `Asia` şi `Europa`, iar membrii vor putea avea doar unul dintre ele. Este ca un fel de \"regulă\" care se aplică în următoarele trei situaţii:\n\n- Când cineva revendică un rol prin comanda `roles`.\n- Când cineva revendică un rol prin roluri de reacție.\n- Când cineva primește un rol fie manual, fie de la un alt bot.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"add",
+				"Creați un nou roleset sau adăugați un rol la unul existent."
 			],
 			[
-				"",
-				""
+				"remove",
+				"Elimină un rol dintr-un roleset existent."
 			],
 			[
-				"",
-				""
+				"reset",
+				"Elimină toate rolurile dintr-un roleset sau, dacă nu este specificat, toate roleset-urile existente."
 			],
 			[
-				"",
-				""
+				"list",
+				"Listează toate seturile de role-uri."
 			],
 			[
-				"",
-				""
+				"auto",
+				"Adaugă sau elimină un set de roluri."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add regions America",
+			"add regions Africa America Asia Europa",
+			"remove regions America",
+			"reset",
+			"reset regions",
+			"list",
+			"regions America",
+			"regions Africa America Asia Europa"
 		],
-		"reminder": ""
+		"reminder": "Această comandă poate adăuga și/sau elimina mai multe roluri în același timp."
 	},
-	"rolesetCreated": "",
-	"rolesetAdded": "",
-	"rolesetInvalidName": "",
-	"rolesetRemoved": "",
-	"rolesetResetEmpty": "",
-	"rolesetResetAll": "",
-	"rolesetResetNotExists": "",
-	"rolesetResetGroup": "",
-	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
-	"confMenuNopermissions": "",
-	"confMenuRenderAtFolder": "",
-	"confMenuRenderAtPiece": "",
-	"confMenuRenderNokeys": "",
-	"confMenuRenderSelect": "",
+	"rolesetCreated": "Roleset-ul unic {{name}} a fost creat cu următoarele roluri: {{roles, andList}}",
+	"rolesetAdded": "Roleset-ul unic {{name}} acum conține și următoarele roluri: {{roles, andList}}.",
+	"rolesetInvalidName": "Nu puteți elimina roleset-ul unic {{name}} deoarece nu există.",
+	"rolesetRemoved": "Roleset-ul unic {{name}} nu o să mai includă următoarele roluri: {{roles, andList}}",
+	"rolesetResetEmpty": "{{REDCROSS}} Nu există rolurset-uri configurate în acest grup.",
+	"rolesetResetAll": "{{GREENTICK}} Toate roleset-urile au fost eliminate cu succes.",
+	"rolesetResetNotExists": "{{REDCROSS}} Roleset-ul `{{name}}` nu există pe acest server.",
+	"rolesetResetGroup": "{{GREENTICK}} Roleset-ul `{{name}}` a fost eliminat cu success de pe acest server.",
+	"rolesetUpdated": "Roleset-ul {{name}} a fost actualizat.",
+	"rolesetNoRolesets": "Nu aveți nici un roleset.",
+	"confMenuNopermissions": "Am nevoie de permisiunile {{ADD_REACTIONS, permissions}} și {{MANAGE_MESSAGES, permissions}} pentru a putea rula meniul.",
+	"confMenuRenderAtFolder": "Momentan la: 📁 {{path}}",
+	"confMenuRenderAtPiece": "Momentan la: ⚙️ {{path}}",
+	"confMenuRenderNokeys": "Nu există chei configurabile pentru acest dosar",
+	"confMenuRenderSelect": "Vă rugăm să introduceți oricare dintre următoarele intrări",
 	"confMenuRenderTctitle": "",
-	"confMenuRenderUpdate": "",
-	"confMenuRenderRemove": "",
-	"confMenuRenderReset": "",
-	"confMenuRenderUndo": "",
-	"confMenuRenderCvalue": "",
-	"confMenuRenderBack": "",
-	"confMenuInvalidKey": "",
-	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
+	"confMenuRenderUpdate": "• Actualizează Valoarea → `set <value>`",
+	"confMenuRenderRemove": "• Elimină Valoarea → `remove <value>`",
+	"confMenuRenderReset": "• Resetează Valoarea → `reset`",
+	"confMenuRenderUndo": "• Anulează Actualizarea → `undo`",
+	"confMenuRenderCvalue": "Valoarea actuală: **``{{value}}``**",
+	"confMenuRenderBack": "Apăsați ◀ pentru a merge înapoi",
+	"confMenuInvalidKey": "Cheie invalidă, te rugăm să încerci din nou cu oricare dintre următoarele opțiuni.",
+	"confMenuInvalidAction": "Acțiune invalidă, vă rugăm să încercați din nou cu oricare dintre următoarele opțiuni.",
+	"confMenuSaved": "Salvare reuşită a tuturor modificărilor.",
+	"updateDescription": "Actualizează botul",
 	"updateExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Niste lustruire aici, niște curățare pe-acolo, și ce să știu, brusc sunt un android cu totul nou!"
 	}
 }

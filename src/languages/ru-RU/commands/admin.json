@@ -40,12 +40,12 @@
 				"Удалить роль из существующего набора ролей."
 			],
 			[
-				"сброс",
+				"сбросить",
 				"Удаляет все роли из набора ролей или, если не указано, все существующие наборы ролей."
 			],
 			[
 				"список",
-				"Список все наборов ролей."
+				""
 			],
 			[
 				"авто",
@@ -53,43 +53,43 @@
 			]
 		],
 		"examples": [
-			"добавить регионы Америки",
-			"добавить регионы Африка Азия Европа",
-			"удалять регионы Америка",
+			"добавить регионы Америка",
+			"добавить регионы Африка Америка Азия Европа",
+			"удалить регионы Америка",
 			"сброс",
 			"сбросить регионы",
 			"список",
-			"регионы Америки",
+			"регионы Америка",
 			"регионы Африка Америка Азия Европа"
 		],
-		"reminder": "Эта команда может добавлять и/или удалять несколько ролей одновременно."
+		"reminder": "Эта команда может добавить и/или удалить несколько ролей одновременно."
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
 	"rolesetInvalidName": "Вы не можете удалить набор уникальных {{name}} ролей, так как он не существует.",
 	"rolesetRemoved": "",
-	"rolesetResetEmpty": "{{REDCROSS}} В этой группе отсутствуют роли.",
-	"rolesetResetAll": "{{GREENTICK}} успешно удалены все роли.",
-	"rolesetResetNotExists": "",
-	"rolesetResetGroup": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
+	"rolesetResetNotExists": "{{REDCROSS}} На этом сервере не существует набора ролей `{{name}}`.",
+	"rolesetResetGroup": "{{GREENTICK}} Набор ролей `{{name}}` успешно удалён с этого сервера.",
 	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
-	"confMenuNopermissions": "",
+	"rolesetNoRolesets": "У вас нет наборов ролей.",
+	"confMenuNopermissions": "Мне нужны разрешения {{ADD_REACTIONS, permissions}} и {{MANAGE_MESSAGES, permissions}}, чтобы иметь возможность запустить меню.",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",
 	"confMenuRenderSelect": "",
 	"confMenuRenderTctitle": "",
-	"confMenuRenderUpdate": "",
-	"confMenuRenderRemove": "",
-	"confMenuRenderReset": "",
-	"confMenuRenderUndo": "",
-	"confMenuRenderCvalue": "",
+	"confMenuRenderUpdate": "• Обновить значение → `set <value>`",
+	"confMenuRenderRemove": "• Удалить значение → `remove <value>`",
+	"confMenuRenderReset": "• Сбросить значение → `reset`",
+	"confMenuRenderUndo": "• Отменить обновление → `undo`",
+	"confMenuRenderCvalue": "Текущее значение: **``{{value}}``**",
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
+	"confMenuSaved": "Все изменения успешно сохранены.",
+	"updateDescription": "Обновите бота",
 	"updateExtended": {
 		"extendedHelp": ""
 	}

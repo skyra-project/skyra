@@ -4,11 +4,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"категория",
 				""
 			],
 			[
-				"",
+				"запрос",
 				""
 			]
 		],
@@ -18,9 +18,9 @@
 		]
 	},
 	"brawlstarsPlayerEmbedTitles": {
-		"trophies": "",
+		"trophies": "Трофеи",
 		"events": "",
-		"exp": "",
+		"exp": "Опыт",
 		"gamesModes": "",
 		"other": ""
 	},
@@ -54,11 +54,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"категория",
 				""
 			],
 			[
-				"",
+				"запрос",
 				""
 			]
 		],
@@ -83,7 +83,7 @@
 		"versusBattleWins": "",
 		"clanRole": "",
 		"clanName": "",
-		"leagueName": "",
+		"leagueName": "Название лиги",
 		"noTownhallWeaponLevel": "",
 		"noRole": "",
 		"noClan": "",
@@ -126,7 +126,7 @@
 				""
 			],
 			[
-				"",
+				"запрос",
 				""
 			]
 		],

@@ -3,17 +3,17 @@
 	"contentRequired": "",
 	"description": "",
 	"edited": "",
-	"exists": "",
+	"exists": "Тег '{{tag}}' уже существует.",
 	"extended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"действие",
 				""
 			],
 			[
-				"",
-				""
+				"тег",
+				"Название тега."
 			],
 			[
 				"",
@@ -30,8 +30,8 @@
 			""
 		]
 	},
-	"listEmpty": "",
-	"nameNotAllowed": "",
+	"listEmpty": "Список тегов для этого сервера пуст.",
+	"nameNotAllowed": "Название тега не может содержать гравис или невидимые символы.",
 	"nameTooLong": "",
 	"notexists": "",
 	"permissionlevel": "",

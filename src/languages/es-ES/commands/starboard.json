@@ -3,18 +3,18 @@
 	"starExtended": {
 		"extendedHelp": ""
 	},
-	"starMessages_plural": "",
-	"starMessages": "",
+	"starMessages_plural": "{{count}} mensajes",
+	"starMessages": "{{count}} mensaje",
 	"starNoChannel": "",
 	"starNostars": "",
-	"stars_plural": "",
-	"stars": "",
+	"stars_plural": "{{count}} estrellas",
+	"stars": "{{count}} estrella",
 	"starStats": "",
 	"starStatsDescription": "",
 	"starTopreceivers": "",
-	"starTopreceiversDescription_plural": "",
-	"starTopreceiversDescription": "",
+	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} estrellas)",
+	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} estrella)",
 	"starTopstarred": "",
-	"starTopstarredDescription_plural": "",
-	"starTopstarredDescription": ""
+	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} estrellas)",
+	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} estrella)"
 }

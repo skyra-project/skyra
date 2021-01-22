@@ -164,6 +164,21 @@
 		"cosmeticFormesList": ""
 	},
 	"pokedexQueryFail": "",
+	"spriteDescription": "",
+	"spriteExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
 	"typeDescription": "",
 	"typeExtended": {
 		"extendedHelp": "",

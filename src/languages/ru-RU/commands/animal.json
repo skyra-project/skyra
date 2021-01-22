@@ -6,7 +6,7 @@
 	"catfactTitle": "Факт о кошках",
 	"dogDescription": "Милые собачки! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Вы** знаете, насколько собаки милые? Они такие красивые!\nЭта команда использует [dog.ceo](https://dog.ceo), чтобы показать изображения самых милых собачек!"
 	},
 	"foxDescription": "Позвольте мне показать вам изображение лисицы!",
 	"foxExtended": {
@@ -14,10 +14,10 @@
 	},
 	"kittyDescription": "КОТЯТА!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Вы** знаете, насколько котята милые? Они такие красивые!\nЭта команда использует [cataas.com](https://cataas.com/), чтобы показать изображения самых милых кошек!"
 	},
-	"shibeDescription": "",
+	"shibeDescription": "Милые сибы!",
 	"shibeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Все любят сиба-ину, я тоже буду их любить! Они такие очаровательные ❤"
 	}
 }

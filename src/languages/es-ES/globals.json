@@ -7,5 +7,13 @@
 	"none": "Ninguno",
 	"or": "o",
 	"unknown": "desconocido",
-	"yes": "Sí"
+	"yes": "Sí",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"dateValue": "{{value, date}}",
+	"dateTimeValue": "{{value, dateTime}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
 }

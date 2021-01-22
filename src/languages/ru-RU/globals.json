@@ -1,3 +1,15 @@
 {
-	"defaultLanguage": "Язык по умолчанию"
+	"and": "и",
+	"defaultLanguage": "Язык по умолчанию",
+	"no": "Нет",
+	"or": "или",
+	"yes": "Да",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"dateValue": "{{value, date}}",
+	"dateTimeValue": "{{value, dateTime}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
 }

@@ -1,10 +1,10 @@
 {
-	"blocklistDescription": "",
+	"blocklistDescription": "Bloquea o permite el uso de mis funciones a usuarios o servidores.",
 	"blocklistExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Bloquea a los usuarios que abusan de mis funciones para que no me utilicen en el futuro, ¡gente ingenua e ingenua!"
 	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
+	"blocklistResetSuccess": "{{GREENTICK}} Se han restablecido los usuarios y servidores bloqueados correctamente",
+	"blocklistSaveSuccess": "{{GREENTICK}} Se han actualizado los usuarios y/o servidores bloqueados",
 	"confNoKey": "Debes proporcionar el nombre de una clave de configuración",
 	"confNoValue": "Debes proporcionar un valor",
 	"confGuarded": "{{name, toTitleCase}} no puede ser deshabilitado.",
@@ -16,81 +16,81 @@
 	"confNochange": "El valor de **{{key}}** ya era de ese valor.",
 	"confServerDescription": "Define los ajustes por servidor.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Te permite configurar Skyra desde Discord, como una alternativa rápida al panel de control web (<https://skyra.pw>)."
 	},
 	"confServer": "**Configuración del servidor {{key}}**\n{{list}}",
 	"confUserDescription": "Define los ajustes del usuario.",
 	"confDashboardOnlyKey": "`{{key}}` sólo puede configurarse a través del panel web (<https://skyra.pw>)",
-	"confUser": "",
-	"confSettingNotSet": "",
-	"heapSnapshotDescription": "",
+	"confUser": "**Configuración del usuario {{key}}**\n{{list}}",
+	"confSettingNotSet": "No Establecido",
+	"heapSnapshotDescription": "Crea un montón para encontrar fugas de memorias.",
 	"heapSnapshotExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "El comando de captura de pila es muy útil para bots que tienen problemas de memoria. utiliza la librería heapdump que congela todo el proceso por un momento para analizar todos los elementos del HEAP del proceso, NUNCA compartas archivos de estas instantáneas con nadie, ya que todo lo que tu bot tiene está incluido en ese archivo.\n\nPara abrir las instantáneas, abra Google Chrome, y en Herramientas de desarrollador, vaya a la pestaña Memoria y en Perfiles, haga clic en el botón \"cargar\" en la parte inferior. Finalmente, abra el perfil y se le dará una tabla de todos los objetos en su proceso, ¡diviértete!\n\n\n\nP.S: los archivos de captura de pila son tan grandes como la cantidad de RAM que usas, en bots grandes, las instantáneas pueden congelar el bot mucho más tiempo y los archivos pueden ser mucho más pesados."
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Administrar los conjuntos de roles únicos.",
 	"rolesetExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Un conjunto de roles es un grupo de roles que Skyra identifica como único para todos los miembros del servidor, por ejemplo. un conjunto de roles llamado `region` podría tener los roles `África`, `America`, `Asia` y `Europa`, y los miembros solo podrán tener uno de ellos. Esto es como una especie de \"regla\" que se aplica en las tres siguientes situaciones:\n\n- Cuando alguien reclama un rol a través del comando `roles`.\n- Cuando alguien reclama un rol a través de roles de reacción.\n- Cuando alguien recibe un rol de forma manual o de otro bot.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"añadir",
+				"Crea un nuevo conjunto de roles o añade un rol a un conjunto ya existente."
 			],
 			[
-				"",
-				""
+				"eliminar",
+				"Eliminar un rol de un conjunto existente."
 			],
 			[
-				"",
-				""
+				"resetear",
+				"Elimina todos los roles de un rol o, si no se especifica, todos los roles existentes."
 			],
 			[
-				"",
-				""
+				"lista",
+				"Enumera todos los conjuntos de roles."
 			],
 			[
-				"",
-				""
+				"automático",
+				"Añade o elimina un conjunto de roles."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add regiones América",
+			"add regiones África América Asia Europa",
+			"remove regiones América",
+			"reset",
+			"reset regiones",
+			"list",
+			"regiones América",
+			"regiones África América Asia Europa"
 		],
-		"reminder": ""
+		"reminder": "Este comando puede agregar y/o eliminar múltiples roles al mismo tiempo."
 	},
-	"rolesetCreated": "",
-	"rolesetAdded": "",
-	"rolesetInvalidName": "",
-	"rolesetRemoved": "",
-	"rolesetResetEmpty": "",
-	"rolesetResetAll": "",
-	"rolesetResetNotExists": "",
-	"rolesetResetGroup": "",
-	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
-	"confMenuNopermissions": "",
-	"confMenuRenderAtFolder": "",
-	"confMenuRenderAtPiece": "",
-	"confMenuRenderNokeys": "",
-	"confMenuRenderSelect": "",
+	"rolesetCreated": "El conjunto de roles únicos {{name}} ha sido creado con los siguientes roles: {{roles, andList}}",
+	"rolesetAdded": "El conjunto de roles único {{name}} ahora también tiene los siguientes roles: {{roles, andList}}.",
+	"rolesetInvalidName": "No puedes eliminar el conjunto de roles único {{name}} porque no existe.",
+	"rolesetRemoved": "El conjunto de roles únicos de {{name}} ya no incluirá los siguientes roles: {{roles, andList}}",
+	"rolesetResetEmpty": "{{REDCROSS}} No existen conjuntos de roles configurados en este servidor.",
+	"rolesetResetAll": "{{GREENTICK}} Se han eliminado todos los conjuntos de roles con éxito.",
+	"rolesetResetNotExists": "{{REDCROSS}} The conjunto de roles `{{name}}` no existe en este servidor.",
+	"rolesetResetGroup": "{{GREENTICK}} Se eliminó correctamente el conjunto de roles `{{name}}` de este servidor.",
+	"rolesetUpdated": "El conjunto de roles único {{name}} ha sido actualizado.",
+	"rolesetNoRolesets": "No hay conjuntos de roles.",
+	"confMenuNopermissions": "Necesito los permisos {{ADD_REACTIONS, permissions}} y {{MANAGE_MESSAGES, permissions}} para poder mostrar el menú.",
+	"confMenuRenderAtFolder": "Actualmente en: 📁 {{path}}",
+	"confMenuRenderAtPiece": "Actualmente en: ⚙️ {{path}}",
+	"confMenuRenderNokeys": "No hay claves configurables para este grupo",
+	"confMenuRenderSelect": "Por favor ingrese cualquiera de los nombres de las siguientes entradas",
 	"confMenuRenderTctitle": "",
-	"confMenuRenderUpdate": "",
-	"confMenuRenderRemove": "",
-	"confMenuRenderReset": "",
-	"confMenuRenderUndo": "",
-	"confMenuRenderCvalue": "",
-	"confMenuRenderBack": "",
-	"confMenuInvalidKey": "",
-	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
+	"confMenuRenderUpdate": "• Actualizar Valor → `set <value>`",
+	"confMenuRenderRemove": "• Eliminar valor → `remove <value>`",
+	"confMenuRenderReset": "• Restablecer valor → `reset`",
+	"confMenuRenderUndo": "• Deshacer actualización → `undo`",
+	"confMenuRenderCvalue": "Valor actual: **``{{value}}``**",
+	"confMenuRenderBack": "Pulsa ◀ para volver atrás",
+	"confMenuInvalidKey": "Clave no válida, por favor inténtalo de nuevo con cualquiera de las siguientes opciones.",
+	"confMenuInvalidAction": "Acción no válida, por favor inténtalo de nuevo con cualquiera de las siguientes opciones.",
+	"confMenuSaved": "Guardado todos los cambios con éxito.",
+	"updateDescription": "Actualiza el código",
 	"updateExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Algún pulido aquí, algo de limpieza por allí, y lo que quieras, ¡de repente soy una nueva androide!"
 	}
 }

@@ -23,19 +23,19 @@
 		],
 		"examples": [
 			"",
-			""
+			"rgb(200, 130, 75)"
 		],
 		"possibleFormats": [
 			[
-				"",
-				""
+				"HEX",
+				"#dfdfdf"
 			],
 			[
-				"",
-				""
+				"RGB",
+				"rgb(200, 200, 200)"
 			],
 			[
-				"",
+				"HSL",
 				""
 			],
 			[
@@ -379,11 +379,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Слово",
 				""
 			],
 			[
-				"",
+				"Страница",
 				""
 			]
 		],
@@ -419,7 +419,7 @@
 	},
 	"whoisUserFields": {
 		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
-		"footer": ""
+		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {
 		"createdAt": ""

@@ -115,7 +115,7 @@
 		"@types/diff": "^5.0.0",
 		"@types/he": "^1.1.1",
 		"@types/i18next-fs-backend": "^1.0.0",
-		"@types/ioredis": "^4.19.1",
+		"@types/ioredis": "^4.19.2",
 		"@types/jest": "^26.0.20",
 		"@types/node": "^14.14.22",
 		"@types/node-fetch": "^2.5.8",
@@ -138,7 +138,7 @@
 		"pretty-quick": "^3.1.0",
 		"ts-jest": "^26.4.4",
 		"ts-node": "^9.1.1",
-		"typescript": "^4.2.0-dev.20210121"
+		"typescript": "^4.2.0-dev.20210122"
 	},
 	"resolutions": {
 		"acorn": "^8.0.4",

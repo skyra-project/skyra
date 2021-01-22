@@ -8,7 +8,7 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 			// Merge in all given options
 			...options,
 			runIn: ['text'],
-			// Add all requiredPermissions set in the command, along with the permissions required for UserRichDisplay
+			// Add all requiredPermissions set in the command, along with the permissions required for PaginatedMessage
 			requiredPermissions: [
 				...((options.requiredPermissions as PermissionResolvable[] | undefined) ?? []),
 				'ADD_REACTIONS',
@@ -22,7 +22,7 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 
 export namespace PaginatedMessageCommand {
 	/**
-	 * The RichDisplayCommand Options
+	 * The PaginatedMessageCommand Options
 	 */
 	export type Options = SkyraCommand.Options;
 }

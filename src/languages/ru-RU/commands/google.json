@@ -15,9 +15,9 @@
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
+		"currentTime": "Текущее время",
+		"currentDate": "Текущая дата",
+		"country": "Страна",
 		"gmsOffset": "",
 		"dst": ""
 	},

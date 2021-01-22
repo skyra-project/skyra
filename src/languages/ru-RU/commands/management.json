@@ -32,11 +32,11 @@
 	"guildInfoMembers": "",
 	"guildInfoOther": "",
 	"roleInfoTitles": {
-		"PERMISSIONS": ""
+		"PERMISSIONS": "Разрешения"
 	},
 	"roleInfoData": "",
-	"roleInfoAll": "",
-	"roleInfoNoPermissions": "",
+	"roleInfoAll": "Все разрешения предоставлены.",
+	"roleInfoNoPermissions": "Разрешения не предоставлены.",
 	"filterUndefinedWord": "",
 	"filterTooLong": "",
 	"filterAlreadyFiltered": "Это слово уже фильтруется.",
@@ -384,7 +384,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"эмодзи",
 				""
 			]
 		],

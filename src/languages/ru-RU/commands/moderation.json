@@ -155,7 +155,7 @@
 		],
 		"reminder": ""
 	},
-	"banDescription": "",
+	"banDescription": "Ударьте кого-нибудь банхаммером.",
 	"banExtended": {
 		"extendedHelp": "",
 		"examples": [
@@ -195,7 +195,7 @@
 			""
 		]
 	},
-	"setNicknameDescription": "",
+	"setNicknameDescription": "Измените никнейм пользователя.",
 	"setNicknameExtended": {
 		"extendedHelp": "",
 		"examples": [
@@ -224,7 +224,11 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Сообщения",
+				""
+			],
+			[
+				"Фильтр",
 				""
 			],
 			[
@@ -245,15 +249,11 @@
 			],
 			[
 				"",
-				""
+				"Фильтрует ваши сообщения."
 			],
 			[
 				"",
-				""
-			],
-			[
-				"",
-				""
+				"Фильтрует сообщения с вложениями."
 			],
 			[
 				"",

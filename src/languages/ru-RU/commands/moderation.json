@@ -1,6 +1,6 @@
 {
-	"permissions": "",
-	"permissionsAll": "",
+	"permissions": "Разрешения для {{username}} ({{id}})",
+	"permissionsAll": "Все разрешения",
 	"flow": "",
 	"timeTimed": "",
 	"timeUndefinedTime": "",

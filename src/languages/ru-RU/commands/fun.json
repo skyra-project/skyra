@@ -23,7 +23,7 @@
 		],
 		"examples": [
 			"",
-			""
+			"Кошка, Собака"
 		]
 	},
 	"changemymindDescription": "",
@@ -32,7 +32,7 @@
 		"explainedUsage": [
 			[
 				"текст",
-				""
+				"Желаемая фраза."
 			]
 		],
 		"examples": [
@@ -109,7 +109,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				""
 			]
 		],
@@ -128,7 +128,7 @@
 	},
 	"8ballOutput": "🎱 Вопрос от {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
-		"When": "",
+		"When": "когда",
 		"What": "",
 		"HowMuch": "",
 		"HowMany": "",

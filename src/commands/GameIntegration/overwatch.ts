@@ -52,7 +52,7 @@ export default class extends PaginatedMessageCommand {
 		}
 	}
 
-	/** Builds a UserRichDisplay for presenting Overwatch data */
+	/** Builds a PaginatedMessage for presenting Overwatch data */
 	private async buildDisplay(message: GuildMessage, t: TFunction, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const ratings = Array.from(
 			this.ratingsToCollection(

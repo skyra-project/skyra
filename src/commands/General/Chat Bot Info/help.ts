@@ -11,7 +11,7 @@ import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'dis
 import type { TFunction } from 'i18next';
 import type { Command } from 'klasa';
 
-const PERMISSIONS_RICHDISPLAY = new Permissions([
+const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
 	Permissions.FLAGS.ADD_REACTIONS,
 	Permissions.FLAGS.EMBED_LINKS,
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 		if (
 			!message.flagArgs.all &&
 			message.guild &&
-			(message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
+			(message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE)
 		) {
 			const response = await message.send(
 				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
@@ -165,9 +165,9 @@ export default class extends SkyraCommand {
 			.setDescription([data.usage, data.extended].join('\n'));
 	}
 
-	private formatCommand(t: TFunction, prefix: string, richDisplay: boolean, command: SkyraCommand) {
+	private formatCommand(t: TFunction, prefix: string, paginatedMessage: boolean, command: SkyraCommand) {
 		const description = t(command.description);
-		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
+		return paginatedMessage ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
 	private async _fetchCommands(message: Message) {

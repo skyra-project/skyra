@@ -461,7 +461,7 @@
 	"triviaActiveGame": "",
 	"triviaDescription": "",
 	"triviaEmbedTitles": {
-		"difficulty": "",
+		"difficulty": "Сложность",
 		"trivia": ""
 	},
 	"triviaExtended": {

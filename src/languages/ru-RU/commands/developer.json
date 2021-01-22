@@ -4,14 +4,14 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"пакет",
 				""
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
 		]
 	},
 	"yarnEmbedDescriptionAuthor": "❯ Автор: {{author}}",

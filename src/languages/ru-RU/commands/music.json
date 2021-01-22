@@ -42,21 +42,21 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"joinDescription": "",
+	"joinDescription": "Присоединяется к голосовому каналу автора сообщения.",
 	"joinExtended": {
 		"extendedHelp": "",
 		"reminder": ""
 	},
 	"joinNoMember": "",
 	"joinNoVoicechannel": "",
-	"joinSuccess": "",
+	"joinSuccess": "{{GREENTICK}} Успешно присоединилась к голосовому каналу {{channel}}",
 	"joinVoiceDifferent": "",
 	"joinVoiceFull": "",
 	"joinVoiceNoConnect": "",
 	"joinVoiceNoSpeak": "",
 	"joinVoiceSame": "",
 	"joinFailed": "",
-	"leaveDescription": "",
+	"leaveDescription": "Покидает голосовой канал.",
 	"leaveExtended": {
 		"extendedHelp": "",
 		"examples": [
@@ -66,7 +66,7 @@
 			""
 		]
 	},
-	"leaveSuccess": "",
+	"leaveSuccess": "{{GREENTICK}} Успешно покинула голосовой канал {{channel}}",
 	"pauseDescription": "",
 	"pauseExtended": {
 		"extendedHelp": "",
@@ -169,7 +169,7 @@
 		"reminder": ""
 	},
 	"skipPermissions": "",
-	"skipVotesVoted": "",
+	"skipVotesVoted": "{{REDCROSS}} Вы уже проголосовали.",
 	"skipVotesTotal": "",
 	"skipSuccess": "",
 	"playingTimeDescription": "",
@@ -197,7 +197,7 @@
 			""
 		]
 	},
-	"volumeSuccess": "",
+	"volumeSuccess": "📢 Громкость: {{volume}}%",
 	"volumeChanged": "",
 	"volumeChangedExtreme": "",
 	"volumeChangedTexts": [

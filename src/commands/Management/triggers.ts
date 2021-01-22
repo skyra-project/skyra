@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji, resolveEmoji } from '#utils/util';
@@ -119,17 +119,17 @@ export default class extends SkyraCommand {
 		}
 		if (!output.length) throw t(LanguageKeys.Commands.Management.TriggersListEmpty);
 
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await DbSet.fetchColor(message))
-		);
+		});
 
 		for (const page of chunk(output, 10)) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
+			display.addPageEmbed((embed) => embed.setDescription(page));
 		}
 
-		return display.start(message, undefined, { time: 120000 });
+		return display.start(message);
 	}
 
 	private format(type: string, input: string, output: string): TriggerIncludes | TriggerAlias {

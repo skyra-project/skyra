@@ -1,23 +1,24 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Tools.CountryDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended,
 	usage: '<country:str>'
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [countryName]: [string]) {
+export default class extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, [countryName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -27,7 +28,7 @@ export default class extends SkyraCommand {
 		if (countries.length === 0) throw t(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, t, countries);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -39,17 +40,17 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
+	private async buildDisplay(message: GuildMessage, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const country of countries) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(mapNativeName(country))
 					.setThumbnail(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)
-					.setFooter(`Timezone: ${country.timezone}`)
+					.setFooter(` Timezone: ${country.timezone[0]}`)
 					.addField(
 						titles.OVERVIEW,
 						[

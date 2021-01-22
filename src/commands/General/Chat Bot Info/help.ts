@@ -1,7 +1,8 @@
 import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -80,7 +81,8 @@ export default class extends SkyraCommand {
 			// Extract start page and sanitize it
 			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
 			const startPage = page === null || page < 0 || page >= display.pages.length ? null : page;
-			await display.start(response, message.author.id, startPage === null ? undefined : { startPage });
+			if (startPage) display.setIndex(startPage);
+			await display.start(response as GuildMessage, message.author);
 			return response;
 		}
 
@@ -123,9 +125,9 @@ export default class extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await this._fetchCommands(message);
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
-			display.addPage((template: MessageEmbed) =>
+			display.addPageEmbed((template: MessageEmbed) =>
 				template
 					.setTitle(`${category} Commands`)
 					.setDescription(commands.map(this.formatCommand.bind(this, language, prefix, true)).join('\n'))

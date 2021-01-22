@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { TOKENS } from '#root/config';
@@ -14,13 +14,13 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Anime.MangaDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.MangaExtended,
 	usage: '<mangaName:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [mangaName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -32,7 +32,7 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildDisplay(entries, t, message);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -64,7 +64,9 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Anime.MangaEmbedData);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed().setColor(await DbSet.fetchColor(message)).setFooter(' - © kitsu.io')
+		});
 
 		for (const entry of entries) {
 			const description =
@@ -92,7 +94,7 @@ export default class extends RichDisplayCommand {
 				entry.canonicalTitle
 			].map((title) => title || t(LanguageKeys.Globals.None));
 
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(title)
 					.setURL(mangaURL)

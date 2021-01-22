@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
 import { TOKENS } from '#root/config';
@@ -21,13 +21,13 @@ function isIgdbCompany(company: unknown): company is Company {
 	return (company as Company).id !== undefined;
 }
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,
 	usage: '<game:str>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
 		'Content-Type': Mime.Types.TextPlain,
@@ -64,7 +64,7 @@ export default class extends RichDisplayCommand {
 		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, t, entries);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -90,13 +90,13 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
 		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);
 			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.noRating;
 
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(game.name)
 					.setURL(game.url || '')

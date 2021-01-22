@@ -106,7 +106,7 @@
 	},
 	"queueLast": "There are no more songs! After the one playing is over, the session will end!",
 	"queueTitle": "Music queue for {{guildname}}",
-	"queueLine": "**[\"{{position}\"]** │ \"{{duration}\" │ [{{title}}]({{url}}) │ Requester: **{{requester}}**.",
+	"queueLine": "**[`{{position}}`]** │ \"{{duration}}\" │ [{{title}}]({{url}}) │ Requester: **{{requester}}**.",
 	"queueNowplaying": "[{{title}}]({{url}})\nRequester: **{{requester}}**",
 	"queueNowplayingLiveStream": "Live Stream",
 	"queueNowplayingTimeRemaining": "🕰 Time remaining: {{timeRemaining}}.",
@@ -141,7 +141,7 @@
 		"extendedHelp": "If you want to be in for a surprise you should *not* use the queue command after this so you'll be surprised about what plays next ;)",
 		"reminder": "Before you can use this command you need to be a moderator or DJ, and there has to be a queue of songs to shuffle!"
 	},
-	"shuffleSuccess": "{{GREENTICK} Successfully randomized {{amount}} songs.",
+	"shuffleSuccess": "{{GREENTICK}} Successfully randomized {{amount}} songs.",
 	"skipDescription": "Skip the current song.",
 	"skipExtended": {
 		"extendedHelp": "Someone put a crappy song in the queue? Yeet it from the existance with this command. If there are more than 4 listeners in the channel (excluding Skyra) then a vote will be started before the song is skipped.",
@@ -150,7 +150,7 @@
 	},
 	"skipPermissions": "{{REDCROSS}} You can't execute this command, you must be a DJ or a Moderator.",
 	"skipVotesVoted": "{{REDCROSS}} You have already voted.",
-	"skipVotesTotal": "🔸 | Votes: {{amount} of {{needed}}",
+	"skipVotesTotal": "🔸 | Votes: {{amount}} of {{needed}}",
 	"skipSuccess": "⏭ Skipped **{{title}}**.",
 	"playingTimeDescription": "Check how much time is left for the song to end.",
 	"playingTimeQueueEmpty": "Are you speaking to me? Because my deck is empty...",
@@ -160,14 +160,14 @@
 		"examples": ["5"],
 		"reminder": "This command requires that you are a DJ or a Moderator to use it"
 	},
-	"promoteSuccess": "{{GREENTICK} Successfully promoted **{{title}}** (<{{url}}>) to the top of the queue",
+	"promoteSuccess": "{{GREENTICK}} Successfully promoted **{{title}}** (<{{url}}>) to the top of the queue",
 	"volumeDescription": "Manage the volume for the music queue.",
 	"volumeExtended": {
 		"extendedHelp": "Should be enough self explanatory",
 		"examples": ["85", "100", "125"]
 	},
 	"volumeSuccess": "📢 Volume: {{volume}}%",
-	"volumeChanged": "{{emoji} Volume set to: {{volume}}%",
-	"volumeChangedExtreme": "{{emoji} {{text}} set to: {{volume}}%",
+	"volumeChanged": "{{emoji}} Volume set to: {{volume}}%",
+	"volumeChangedExtreme": "{{emoji}} {{text}} set to: {{volume}}%",
 	"volumeChangedTexts": ["**EXTREME VOLUME**", "**AIRPLANE NACELLE-LIKE VOLUME**", "**FALCON HEAVY LAUNCH-LIKE VOLUME**"]
 }

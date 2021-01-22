@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand } from '#lib/structures';
+import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -25,7 +25,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 	return REGEXP_ACCEPT.test(response.content) ? YesNoAnswer.Yes : YesNoAnswer.ImplicitNo;
 }
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.MarryDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MarryExtended,
@@ -40,7 +40,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public run(message: GuildMessage, [user]: [User | undefined]) {
 		return user ? this.marry(message, user) : this.context.client.commands.get('married')!.run(message, []);
 	}

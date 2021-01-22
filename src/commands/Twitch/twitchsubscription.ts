@@ -7,7 +7,7 @@ import {
 	TwitchStreamSubscriptionEntity
 } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -271,15 +271,15 @@ export default class extends SkyraCommand {
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await DbSet.fetchColor(message))
-		);
-		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
+		});
+		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 
 		// Start the display and return the message.
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 

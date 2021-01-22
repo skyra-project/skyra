@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { BrandingColors } from '#utils/constants';
@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 
 const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['redditor'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.RedditUserDescription,
@@ -26,7 +26,7 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	arg = arg.replace(/^\/?u\//, '');
 	return arg;
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [user]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -38,7 +38,7 @@ export default class extends RichDisplayCommand {
 		comments.sort((a, b) => b.score - a.score);
 
 		const display = await this.buildDisplay(message, about, comments, posts, t);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -59,14 +59,15 @@ export default class extends RichDisplayCommand {
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
 		const complexityLevels = t(LanguageKeys.Commands.Misc.RedditUserComplexityLevels);
 
-		return new UserRichDisplay(
-			new MessageEmbed()
+		return new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(fieldsData.overviewFor)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
-		)
-			.addPage((embed: MessageEmbed) =>
+				.setFooter(` • ${fieldsData.dataAvailableFor}`)
+		})
+			.addPageEmbed((embed) =>
 				embed
 					.setDescription(fieldsData.joinedReddit)
 					.addField(titles.linkKarma, about.link_karma, true)
@@ -76,12 +77,12 @@ export default class extends RichDisplayCommand {
 					.addField(titles.commentControversiality, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
 					.addField(titles.textComplexity, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
 			)
-			.addPage((embed: MessageEmbed) =>
+			.addPageEmbed((embed) =>
 				embed
 					.addField(`${titles.top5Subreddits} (${titles.bySubmissions})`, this.calculateTopContribution(posts), true)
 					.addField(`${titles.top5Subreddits} (${titles.byComments})`, this.calculateTopContribution(comments), true)
 			)
-			.addPage((embed: MessageEmbed) =>
+			.addPageEmbed((embed) =>
 				embed
 					.addField(
 						`__${titles.bestComment}__`,
@@ -107,8 +108,7 @@ export default class extends RichDisplayCommand {
 							1020
 						)
 					)
-			)
-			.setFooterSuffix(` • ${fieldsData.dataAvailableFor}`);
+			);
 	}
 
 	private async fetchData(user: string, t: TFunction) {

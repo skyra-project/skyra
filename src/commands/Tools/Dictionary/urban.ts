@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
@@ -9,7 +9,7 @@ import { cutText, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.UrbanDescription,
@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	nsfw: true,
 	usage: '<query:string>'
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -32,22 +32,23 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildDisplay(list, message, t, query);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
 	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: TFunction, query: string) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
-		).setFooterSuffix(' - © Urban Dictionary');
+				.setFooter('© Urban Dictionary')
+		});
 
 		for (const result of results) {
 			const definition = this.parseDefinition(result.definition, result.permalink, language);
 			const example = result.example ? this.parseDefinition(result.example, result.permalink, language) : 'None';
-			display.addPage((embed: MessageEmbed) =>
+			display.addPageEmbed((embed: MessageEmbed) =>
 				embed
 					.setURL(result.permalink)
 					.setDescription(definition)

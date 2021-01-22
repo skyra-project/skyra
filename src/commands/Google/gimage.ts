@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
 import { BrandingColors } from '#utils/constants';
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
@@ -26,7 +26,7 @@ import { MessageEmbed } from 'discord.js';
 				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const t = await message.fetchT();
 		const [response, { items }] = await Promise.all([
@@ -38,15 +38,15 @@ export default class extends RichDisplayCommand {
 
 		const display = await this.buildDisplay(message, items);
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
 	private async buildDisplay(message: GuildMessage, items: GoogleCSEImageData[]) {
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const item of items) {
-			display.addPage((embed) => {
+			display.addPageEmbed((embed) => {
 				embed.setTitle(item.title).setURL(item.image.contextLink);
 
 				const imageUrl = getImageUrl(item.link);

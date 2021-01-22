@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, Role } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,
@@ -45,7 +45,7 @@ import { MessageEmbed, Role } from 'discord.js';
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [roles]: [Role[]]) {
 		const [rolesPublic, prefix, allRoleSets, rolesRemoveInitial, rolesInitial, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Roles.Public],
@@ -152,20 +152,20 @@ export default class extends RichDisplayCommand {
 		if (!roles.length) throw t(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		const user = this.context.client.user!;
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
-		);
+		});
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
+		for (let i = 0; i < pages; i++) display.addPageEmbed((template) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await message.send(
 			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 }

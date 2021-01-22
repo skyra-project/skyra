@@ -1,6 +1,6 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
@@ -8,12 +8,12 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.MarriedDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MarriedExtended
 })
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public run(message: GuildMessage) {
 		return this.display(message);
 	}
@@ -35,13 +35,13 @@ export default class extends RichDisplayCommand {
 			20
 		);
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		for (const usernameChunk of usernames) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription(t(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk })));
+			display.addPageEmbed((embed) => embed.setDescription(t(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk })));
 		}
 
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 }

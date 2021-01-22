@@ -1,6 +1,6 @@
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserRichDisplay } from '#lib/structures';
+import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
@@ -122,16 +122,16 @@ export default class extends SkyraCommand {
 		);
 
 		// Get prefix and display all tags
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {
 			const description = `\`${page.map((command) => `${prefix}${command.id}`).join('`, `')}\``;
-			display.addPage((embed: MessageEmbed) => embed.setDescription(description));
+			display.addPageEmbed((embed) => embed.setDescription(description));
 		}
 
 		// Run the display
-		await display.start(response, message.author.id);
+		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 

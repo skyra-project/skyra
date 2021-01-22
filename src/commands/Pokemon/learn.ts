@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { LearnMethodTypesReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
-import { RichDisplayCommand, UserRichDisplay } from '#lib/structures';
+import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 
 const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 
-@ApplyOptions<RichDisplayCommand.Options>({
+@ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['learnset', 'learnall'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.LearnDescription,
@@ -33,7 +33,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		const learnsetData = await this.fetchAPI(pokemon, movesList, generation, t);
 
 		await this.buildDisplay(message, learnsetData, generation, movesList, t) //
-			.start(response, message.author.id);
+			.start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -65,20 +65,20 @@ export default class extends RichDisplayCommand {
 	}
 
 	private buildDisplay(message: GuildMessage, learnsetData: LearnsetEntry, generation: number, moves: string[], t: TFunction) {
-		const display = new UserRichDisplay(
-			new MessageEmbed()
+		const display = new UserPaginatedMessage({
+			template: new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))
 				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
 				.setTitle(t(LanguageKeys.Commands.Pokemon.LearnTitle, { pokemon: learnsetData.species, generation }))
 				.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite)
-		);
+		});
 
 		const learnableMethods = Object.entries(learnsetData).filter(
 			([key, value]) => key.endsWith('Moves') && (value as LearnsetLevelUpMove[]).length
 		) as [keyof LearnMethodTypesReturn, LearnsetLevelUpMove[]][];
 
 		if (learnableMethods.length === 0) {
-			return display.addPage((embed: MessageEmbed) =>
+			return display.addPageEmbed((embed) =>
 				embed.setDescription(
 					t(LanguageKeys.Commands.Pokemon.LearnCannotLearn, {
 						pokemon: learnsetData.species,
@@ -94,7 +94,7 @@ export default class extends RichDisplayCommand {
 				return this.parseMove(t, learnsetData.species, move.generation!, move.name!, methodTypes[methodName]);
 			});
 
-			display.addPage((embed) => embed.setDescription(method));
+			display.addPageEmbed((embed) => embed.setDescription(method));
 		}
 
 		return display;

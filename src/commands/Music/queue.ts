@@ -1,7 +1,7 @@
 import { Queue, requireQueueNotEmpty } from '#lib/audio';
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { MusicCommand, UserRichDisplay } from '#lib/structures';
+import { MusicCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { pickRandom, showSeconds } from '#utils/util';
@@ -28,11 +28,10 @@ export default class extends MusicCommand {
 		);
 
 		// Generate the pages with 5 songs each
-		const queueDisplay = new UserRichDisplay(
-			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
-				.setTitle(t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }))
-		);
+		const template = new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message))
+			.setTitle(t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
+		const queueDisplay = new UserPaginatedMessage({ template });
 
 		const { audio } = message.guild;
 		const current = await audio.nowPlaying();
@@ -57,7 +56,7 @@ export default class extends MusicCommand {
 				);
 			}
 
-			queueDisplay.embedTemplate.addField(t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
+			template.addField(t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
 		}
 
 		if (tracks.length) {
@@ -71,17 +70,17 @@ export default class extends MusicCommand {
 				remainingTime: showSeconds(totalDuration)
 			});
 
-			queueDisplay.embedTemplate.addField(t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
-			queueDisplay.embedTemplate.addField(ZeroWidthSpace, t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
+			template.addField(t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
+			template.addField(ZeroWidthSpace, t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
 
 			for (const page of chunk(songFields, 5)) {
-				queueDisplay.addPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));
+				queueDisplay.addPageEmbed((embed) => embed.setDescription(page.join('\n\n')));
 			}
 		}
 
 		if (queueDisplay.pages.length) {
 			// Run the display
-			await queueDisplay.start(response, message.author.id);
+			await queueDisplay.start(response as GuildMessage, message.author);
 			return response;
 		}
 

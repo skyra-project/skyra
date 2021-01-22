@@ -24,7 +24,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "",
+	"coinFlipInvalidCoinname": "Простите, но {{arg}} не является стороной монеты!",
 	"coinFlipLoseDescription": "",
 	"coinFlipLoseDescriptionWithWager": "",
 	"coinFlipLoseTitle": "Вы проиграли.",

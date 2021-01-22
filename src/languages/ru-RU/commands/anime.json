@@ -1,29 +1,29 @@
 {
-	"animeDescription": "",
+	"animeDescription": "Ищите своё любимое аниме по названию с помощью этой команды.",
 	"animeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				"Название аниме, которое вы ищете."
 			]
 		],
 		"examples": [
-			""
+			"One Piece"
 		]
 	},
-	"mangaDescription": "",
+	"mangaDescription": "Ищите свою любимую мангу по названию с помощью этой команды.",
 	"mangaExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"запрос",
 				"Название манги, которую вы ищете."
 			]
 		],
 		"examples": [
 			"",
-			""
+			"One Piece"
 		]
 	},
 	"waifuDescription": "",
@@ -40,7 +40,7 @@
 	"animeOutputDescription": "",
 	"animeNoSynopsis": "",
 	"animeEmbedData": {
-		"type": "",
+		"type": "Тип",
 		"score": "",
 		"episodes": "",
 		"episodeLength": "",
@@ -51,10 +51,10 @@
 	},
 	"mangaOutputDescription": "",
 	"mangaTypes": {
-		"manga": "",
+		"manga": "📘 Манга",
 		"novel": "",
-		"manhwa": "",
-		"oneShot": "",
+		"manhwa": "🇰🇷 Манхва",
+		"oneShot": "☄ Ваншот",
 		"special": ""
 	},
 	"mangaEmbedData": {
@@ -62,7 +62,7 @@
 		"firstPublishDate": "",
 		"readIt": "",
 		"score": "",
-		"type": "",
+		"type": "Подтип",
 		"none": ""
 	},
 	"waifuFooter": ""

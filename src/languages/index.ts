@@ -3,12 +3,14 @@ import { ExtendedHandler as EnGbHandler } from './en-GB/constants';
 import { ExtendedHandler as EnUsHandler } from './en-US/constants';
 import { ExtendedHandler as EsEsHandler } from './es-ES/constants';
 import { ExtendedHandler as NlNlHandler } from './nl-NL/constants';
+import { ExtendedHandler as DeDeHandler } from './de-DE/constants';
 
 export const handlers = new Map<string, Handler>([
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
 	['es-ES', new EsEsHandler()],
-	['nl-NL', new NlNlHandler()]
+	['nl-NL', new NlNlHandler()],
+    ['de-DE', new DeDeHandler()]
 ]);
 
 export function getHandler(name: string): Handler {

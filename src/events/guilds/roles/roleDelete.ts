@@ -5,8 +5,6 @@ export default class extends Event {
 	public run(role: Role) {
 		if (!role.guild.available) return;
 
-		
-
 		return role.guild.writeSettings((settings) => {
 			for (const stickyRole of settings.stickyRoles) {
 				stickyRole.roles = stickyRole.roles.filter((srr) => srr !== role.id);

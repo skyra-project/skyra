@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
@@ -107,7 +106,7 @@ export default class extends SkyraCommand {
 				output = `https://youtu.be/${result.id.videoId}`;
 				break;
 			default: {
-				this.context.client.emit(Events.Wtf, `YouTube -> Returned incompatible kind '${result.id.kind}'.`);
+				this.context.client.logger.fatal(`YouTube -> Returned incompatible kind '${result.id.kind}'.`);
 				throw 'I found an incompatible kind of result...';
 			}
 		}

@@ -76,7 +76,7 @@ export default class extends Event {
 					settings[GuildSettings.Roles.Auto].splice(roleIndex, 1);
 				})
 				.then(() => this.handleRoles(message, points))
-				.catch((error) => this.context.client.emit(Events.Error, error));
+				.catch((error) => this.context.client.logger.error(error));
 			return;
 		}
 

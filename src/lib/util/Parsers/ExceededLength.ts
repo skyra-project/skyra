@@ -1,5 +1,4 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { fetch, FetchMethods, FetchResultTypes } from '../util';
@@ -50,7 +49,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'console':
 		case 'log': {
 			if (options.canLogToConsole) {
-				message.client.emit(Events.Log, options.result);
+				message.client.logger.info(options.result);
 				return message.sendTranslated(
 					options.time !== undefined && options.footer !== undefined
 						? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime

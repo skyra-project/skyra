@@ -2,7 +2,6 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { ApiRequest, ApiResponse } from '@sapphire/plugin-api';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
@@ -528,7 +527,7 @@ export function pickRandom<T>(array: readonly T[]): T {
 }
 
 export function floatPromise(promise: Awaited<unknown>) {
-	if (isThenable(promise)) promise.catch((error: Error) => Store.injectedContext.client.emit(Events.Wtf, error));
+	if (isThenable(promise)) promise.catch((error: Error) => Store.injectedContext.client.logger.fatal(error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {

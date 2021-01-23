@@ -21,7 +21,7 @@ export default class extends Route {
 
 			return response.noContent();
 		} catch (error) {
-			this.context.client.emit('error', error);
+			this.context.client.logger.error(error);
 			return response.error(error.message ?? 'Unknown error');
 		}
 	}

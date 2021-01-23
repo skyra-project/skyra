@@ -99,7 +99,7 @@ export class GuildMemberFetchQueue {
 
 			guild.members
 				.fetch()
-				.catch((error) => this.client.console.error(error))
+				.catch((error) => this.client.logger.error(error))
 				.finally(() => --entry.fetching);
 
 			entry.fetching++;

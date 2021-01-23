@@ -7,6 +7,6 @@ export default class extends Event {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public run(error: Error) {
-		this.context.client.console.error(`${this.kHeader} ${error.stack}`);
+		this.context.client.logger.error(`${this.kHeader} ${error.stack}`);
 	}
 }

@@ -1,5 +1,4 @@
 import { DbSet } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -48,7 +47,7 @@ export default class extends Route {
 
 			return response.json({ newSettings });
 		} catch (errors) {
-			this.context.client.emit(Events.Error, `[${userID}] failed user settings update:\n${inspect(errors)}`);
+			this.context.client.logger.error(`[${userID}] failed user settings update:\n${inspect(errors)}`);
 
 			return response.error(500);
 		}

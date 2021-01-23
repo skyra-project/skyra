@@ -1,5 +1,4 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -36,7 +35,7 @@ export default class extends Event {
 						[Moderation.SchemaKeys.ExtraData]: entry.extraData
 					}
 				})
-				.catch((error) => this.context.client.emit(Events.Wtf, error));
+				.catch((error) => this.context.client.logger.fatal(error));
 		}
 	}
 }

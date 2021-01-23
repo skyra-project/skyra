@@ -101,7 +101,7 @@ export class Game {
 				if (error.code !== RESTJSONErrorCodes.UnknownChannel) await this.message.alert(this.t(LanguageKeys.Commands.Games.C4GameDraw));
 				this.stop();
 			} else {
-				this.message.client.emit(Events.Wtf, error);
+				this.message.client.logger.fatal(error);
 				if (--this._retries === 0) return this.stop();
 			}
 		}

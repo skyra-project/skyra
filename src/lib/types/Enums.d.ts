@@ -11,9 +11,7 @@ export const enum Events {
 	CoreSettingsDelete = 'coreSettingsDelete',
 	CoreSettingsUpdate = 'coreSettingsUpdate',
 	DatabaseError = 'databaseError',
-	Debug = 'debug',
 	Disconnect = 'disconnect',
-	Error = 'error',
 	EventError = 'eventError',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',
 	GuildAnnouncementError = 'guildAnnouncementError',
@@ -22,10 +20,10 @@ export const enum Events {
 	GuildBanRemove = 'guildBanRemove',
 	GuildCreate = 'guildCreate',
 	GuildDelete = 'guildDelete',
+	GuildMemberUpdate = 'guildMemberUpdate',
+	GuildMessageDelete = 'guildMessageDelete',
 	GuildMessageLog = 'guildMessageLog',
 	GuildMessageUpdate = 'guildMessageUpdate',
-	GuildMessageDelete = 'guildMessageDelete',
-	GuildMemberUpdate = 'guildMemberUpdate',
 	GuildUserMessage = 'guildUserMessage',
 	KlasaReady = 'klasaReady',
 	LavalinkClose = 'lavalinkClose',
@@ -35,7 +33,6 @@ export const enum Events {
 	LavalinkStart = 'lavalinkStart',
 	LavalinkStuck = 'lavalinkStuck',
 	LavalinkWebsocketClosed = 'lavalinkWebsocketClosed',
-	Log = 'log',
 	MentionSpamExceeded = 'mentionSpamExceeded',
 	MentionSpamWarning = 'mentionSpamWarning',
 	Message = 'message',
@@ -91,10 +88,7 @@ export const enum Events {
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
-	UserMessage = 'userMessage',
-	Verbose = 'verbose',
-	Warn = 'warn',
-	Wtf = 'wtf'
+	UserMessage = 'userMessage'
 }
 
 export const enum PermissionLevels {

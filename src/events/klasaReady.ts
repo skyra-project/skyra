@@ -15,22 +15,22 @@ export default class extends Event {
 		try {
 			await Promise.all([
 				// Initialize Slotmachine data
-				Slotmachine.init().catch((error) => client.emit(Events.Wtf, error)),
+				Slotmachine.init().catch((error) => client.logger.fatal(error)),
 				// Initialize WheelOfFortune data
-				WheelOfFortune.init().catch((error) => client.emit(Events.Wtf, error)),
+				WheelOfFortune.init().catch((error) => client.logger.fatal(error)),
 				// Initialize giveaways
-				client.giveaways.init().catch((error) => client.emit(Events.Wtf, error)),
+				client.giveaways.init().catch((error) => client.logger.fatal(error)),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()
 			]);
 
 			// Setup the stat updating task
-			await this.initPostStatsTask().catch((error) => client.emit(Events.Wtf, error));
+			await this.initPostStatsTask().catch((error) => client.logger.fatal(error));
 			// Setup the Twitch subscriptions refresh task
-			await this.initTwitchRefreshSubscriptionsTask().catch((error) => client.emit(Events.Wtf, error));
+			await this.initTwitchRefreshSubscriptionsTask().catch((error) => client.logger.fatal(error));
 		} catch (error) {
-			client.console.wtf(error);
+			client.logger.fatal(error);
 		}
 
 		this.printBanner();
@@ -67,7 +67,7 @@ export default class extends Event {
 				client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0)
 			);
 
-			await this.initSyncResourceAnalyticsTask().catch((error) => client.emit(Events.Wtf, error));
+			await this.initSyncResourceAnalyticsTask().catch((error) => client.logger.fatal(error));
 		}
 	}
 
@@ -121,12 +121,12 @@ ${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}`
 	}
 
 	private printStoreDebugInformation() {
-		const { console } = this.context.client;
+		const { logger } = this.context.client;
 		const stores = [...this.context.client.stores.values()];
 		const last = stores.pop()!;
 
-		for (const store of stores) console.debug(this.styleStore(store, false));
-		console.debug(this.styleStore(last, true));
+		for (const store of stores) logger.debug(this.styleStore(store, false));
+		logger.debug(this.styleStore(last, true));
 	}
 
 	private styleStore(store: Store<any>, last: boolean) {

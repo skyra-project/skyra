@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Events, PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types/Enums';
 import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { sleep } from '#utils/Promisified/sleep';
 import { clean } from '#utils/Sanitizer/clean';
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
 		if (message.flagArgs.silent) {
-			if (!success && result && cast<Error>(result).stack) this.context.client.emit(Events.Wtf, cast<Error>(result).stack);
+			if (!success && result && cast<Error>(result).stack) this.context.client.logger.fatal(cast<Error>(result).stack);
 			return null;
 		}
 

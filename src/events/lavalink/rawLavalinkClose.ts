@@ -1,4 +1,3 @@
-import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { magenta } from 'colorette';
 import { Event, EventOptions } from 'klasa';
@@ -9,7 +8,7 @@ export default class extends Event {
 
 	public run(code: number, reason: string) {
 		if (code >= 4000) {
-			this.context.client.emit(Events.Error, [`${this.kHeader} Websocket Close\n           Code  : ${code}\n           Reason: ${reason}`]);
+			this.context.client.logger.error([`${this.kHeader} Websocket Close\n           Code  : ${code}\n           Reason: ${reason}`]);
 		}
 	}
 }

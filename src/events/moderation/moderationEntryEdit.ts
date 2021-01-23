@@ -1,5 +1,4 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
@@ -109,7 +108,7 @@ export default class extends Event {
 						[Moderation.SchemaKeys.Duration]: entry.duration
 					}
 				})
-				.catch((error) => this.context.client.emit(Events.Wtf, error));
+				.catch((error) => this.context.client.logger.fatal(error));
 		}
 	}
 

@@ -5,6 +5,6 @@ export default class extends ShardEvent {
 	protected readonly title = yellow('Resumed');
 
 	public run(id: number, replayedEvents: number) {
-		this.context.client.console.error(`${this.header(id)}: ${replayedEvents} events replayed.`);
+		this.context.client.logger.error(`${this.header(id)}: ${replayedEvents} events replayed.`);
 	}
 }

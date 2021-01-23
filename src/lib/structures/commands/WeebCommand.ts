@@ -1,7 +1,6 @@
 import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
@@ -84,7 +83,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
-			this.context.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
+			this.context.client.logger.error(`Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
 			throw t(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}

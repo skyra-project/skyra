@@ -3,7 +3,6 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/structures';
 import type { KeyOfType } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '#utils/util';
@@ -710,7 +709,7 @@ export class ModerationActions {
 				floatPromise(target.send(embed));
 			} catch (error) {
 				if (error.code === RESTJSONErrorCodes.CannotSendMessagesToThisUser) return;
-				this.guild.client.emit(Events.Error, error);
+				this.guild.client.logger.error(error);
 			}
 		}
 	}

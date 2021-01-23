@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Events } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Store } from 'klasa';
@@ -131,7 +130,7 @@ export default class DashboardWebsocketUser {
 				try {
 					return this.handleMusicMessage(message);
 				} catch (err) {
-					return this.client.emit(Events.Wtf, err);
+					return this.client.logger.fatal(err);
 				}
 			}
 			case IncomingWebsocketAction.SubscriptionUpdate: {

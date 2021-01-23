@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
@@ -39,7 +38,7 @@ export default class extends SkyraCommand {
 				await message.alert(t(LanguageKeys.Commands.Games.GamesPromptDeny));
 			}
 		} catch (error) {
-			if (typeof error !== 'string') client.emit(Events.Wtf, error);
+			if (typeof error !== 'string') client.logger.fatal(error);
 			await message.alert(t(LanguageKeys.Commands.Games.GamesPromptTimeout));
 		} finally {
 			client.connectFour.delete(message.channel.id);

@@ -1,264 +1,264 @@
 {
-	"brawlstarsDescription": "",
+	"brawlstarsDescription": "Obtén datos sobre un jugador o club del juego más nuevo de Supercell, Brawl Stars.",
 	"brawlstarsExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Utilice este comando con --save para guardar la etiqueta de jugador o club.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"categoría",
+				"La categoría de datos a obtener: **club** para obtener datos en un club, o **player** para obtener datos en un jugador (por defecto)."
 			],
 			[
-				"",
-				""
+				"consulta",
+				"La etiqueta del jugador o club, dependiendo de la categoría que usted haya elegido."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"player #RJQLQ999",
+			"club #228JVRQC9"
 		]
 	},
 	"brawlstarsPlayerEmbedTitles": {
-		"trophies": "",
-		"events": "",
-		"exp": "",
-		"gamesModes": "",
-		"other": ""
+		"trophies": "Trofeos",
+		"events": "Eventos",
+		"exp": "Experiencia",
+		"gamesModes": "Modo de Juego",
+		"other": "Otros"
 	},
 	"brawlstarsPlayerEmbedFields": {
-		"total": "",
-		"personalBest": "",
-		"events": "",
-		"roboRumble": "",
-		"qualifiedForChamps": "",
-		"experienceLevel": "",
-		"victories3v3": "",
-		"victoriesSolo": "",
-		"victoriesDuo": "",
-		"club": "",
-		"brawlersUnlocked": ""
+		"total": "Total",
+		"personalBest": "Récord Personal",
+		"events": "Eventos",
+		"roboRumble": "Mejor Rango de Robo Rumble",
+		"qualifiedForChamps": "Clasificado para el Campeonato",
+		"experienceLevel": "Nivel de Experiencia",
+		"victories3v3": "Victorias 3c3",
+		"victoriesSolo": "Victorias en Solitario",
+		"victoriesDuo": "Victorias en Dúos",
+		"club": "Club",
+		"brawlersUnlocked": "Brawlers Desbloqueados"
 	},
 	"brawlstarsClubEmbedTitles": {
-		"totalTrophies": "",
-		"averageTrophies": "",
-		"requiredTrophies": "",
-		"members": "",
-		"type": "",
-		"top5Members": "",
-		"president": ""
+		"totalTrophies": "Trofeos Totales",
+		"averageTrophies": "Promedio de Trofeos",
+		"requiredTrophies": "Trofeos Necesarios",
+		"members": "Miembros",
+		"type": "Tipo",
+		"top5Members": "Top 5 Miembros",
+		"president": "Presidente"
 	},
 	"brawlstarsClubEmbedFields": {
-		"noPresident": ""
+		"noPresident": "No Presidente"
 	},
-	"clashofclansDescription": "",
+	"clashofclansDescription": "Obtén datos de un jugador o clan en el popular juego de móviles Clash of Clans",
 	"clashofclansExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "La solicitud de clanes intentará devolver múltiples respuestas posibles.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"categoría",
+				"La categoría de datos a obtener: **clan** para obtener datos sobre un clan o **player** para obtener datos sobre un jugador."
 			],
 			[
-				"",
-				""
+				"consulta",
+				"O bien un nombre de clan o una etiqueta de jugador dependiendo de la categoría que hayas elegido."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"player #8GQPJG2CL",
+			"clan Hog Raiders Swe"
 		]
 	},
 	"clashofclansPlayerEmbedTitles": {
-		"xpLevel": "",
-		"builderHallLevel": "",
-		"townhallLevel": "",
-		"townhallWeaponLevel": "",
-		"trophies": "",
-		"bestTrophies": "",
-		"warStars": "",
-		"attackWins": "",
-		"defenseWins": "",
-		"amountOfAchievements": "",
+		"xpLevel": "Nivel de Experiencia",
+		"builderHallLevel": "Nivel de Constructor",
+		"townhallLevel": "Nivel del Ayuntamiento",
+		"townhallWeaponLevel": "Nivel de Arma de Ayuntamiento",
+		"trophies": "Trofeos actuales",
+		"bestTrophies": "Mejores trofeos",
+		"warStars": "Estrellas de guerra",
+		"attackWins": "Victorias atacando",
+		"defenseWins": "Victorias defendiendo",
+		"amountOfAchievements": "Cantidad de logros",
 		"versusTrophies": "",
 		"bestVersusTrophies": "",
 		"versusBattleWins": "",
-		"clanRole": "",
-		"clanName": "",
-		"leagueName": "",
-		"noTownhallWeaponLevel": "",
-		"noRole": "",
-		"noClan": "",
-		"noLeague": ""
+		"clanRole": "Rol del Clan",
+		"clanName": "Nombre del Clan",
+		"leagueName": "Nombre de la liga",
+		"noTownhallWeaponLevel": "El Ayuntamiento no tiene nivel de arma",
+		"noRole": "Este jugador no tiene rol de clan",
+		"noClan": "Este jugador no está en un clan",
+		"noLeague": "Este usuario no está en ninguna liga"
 	},
 	"clashofclansClanEmbedTitles": {
-		"clanLevel": "",
-		"clanPoints": "",
+		"clanLevel": "Nivel del Clan",
+		"clanPoints": "Puntos del Clan",
 		"clanVersusPoints": "",
-		"amountOfMembers": "",
-		"description": "",
-		"locationName": "",
-		"warFrequency": "",
-		"warWinStreak": "",
-		"warWins": "",
-		"warTies": "",
-		"warLosses": "",
-		"warLogPublic": "",
-		"unknown": "",
+		"amountOfMembers": "Cantidad de miembros",
+		"description": "Descripción",
+		"locationName": "Nombre de la ubicación",
+		"warFrequency": "Frecuencia de guerra",
+		"warWinStreak": "Racha de victorias",
+		"warWins": "Total de guerras ganadas",
+		"warTies": "Total de guerras empatadas",
+		"warLosses": "Total de guerras perdidas",
+		"warLogPublic": "¿El registro de guerra es público?",
+		"unknown": "Desconocido",
 		"warFrequencyDescr": {
-			"moreThanOncePerWeek": "",
-			"always": "",
-			"lessThanOncePerWeek": "",
-			"oncePerWeek": "",
-			"unknown": ""
+			"moreThanOncePerWeek": "Más de una vez por semana",
+			"always": "Siempre",
+			"lessThanOncePerWeek": "Menos de una vez por semana",
+			"oncePerWeek": "Una vez por semana",
+			"unknown": "Desconocido"
 		}
 	},
-	"brawlStarsInvalidPlayerTag": "",
-	"brawlStarsClansQueryFail": "",
-	"brawlStarsPlayersQueryFail": "",
-	"clashofclansInvalidPlayerTag": "",
-	"clashOfClansClansQueryFail": "",
-	"clashofclansPlayersQueryFail": "",
-	"FFXIVDescription": "",
+	"brawlStarsInvalidPlayerTag": "Lo siento, \"{{playertag}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
+	"brawlStarsClansQueryFail": "Lo siento, pero no he podido obtener datos sobre el clan \"{{clan}}\".",
+	"brawlStarsPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{playertag}}\".",
+	"clashofclansInvalidPlayerTag": "Lo siento, \"{{playertag}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
+	"clashOfClansClansQueryFail": "Lo siento, pero no he podido obtener datos sobre el clan \"{{clan}}\".",
+	"clashofclansPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{playertag}}\".",
+	"FFXIVDescription": "Consulta la API de Final Fantasy 14 para datos del juego",
 	"FFXIVExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando le permite buscar el personaje y datos de objetos de FFXIV.\nPara el objeto se realiza una búsqueda con comodín, así que si tu término es incluida en alguna parte del nombre, podrá aún encontrar lo que buscaba.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"tipo de búsqueda",
+				"(opcional, el valor por defecto es \"character\") \"character\" o \"item\""
 			],
 			[
-				"",
-				""
+				"consulta",
+				"El jugador u objeto a buscar."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"character Laytlan Ardevon",
+			"Laytlan Ardevon",
+			"poción"
 		]
 	},
 	"FFXIVCharacterFields": {
-		"serverAndDc": "",
-		"tribe": "",
-		"characterGender": "",
-		"nameday": "",
-		"guardian": "",
-		"cityState": "",
-		"grandCompany": "",
-		"rank": "",
-		"none": "",
-		"male": "",
-		"female": "",
-		"dowDomClasses": "",
-		"tank": "",
-		"healer": "",
-		"meleeDps": "",
-		"physicalRangedDps": "",
-		"magicalRangedDps": "",
-		"dohClasses": "",
-		"dolClasses": ""
+		"serverAndDc": "Servidor - Centro de Datos",
+		"tribe": "Tribu",
+		"characterGender": "Género del personaje",
+		"nameday": "Nombrado",
+		"guardian": "Guardián",
+		"cityState": "Ciudad-Estado",
+		"grandCompany": "Gran Compañía",
+		"rank": "Rango",
+		"none": "Ninguno",
+		"male": "Masculino",
+		"female": "Femenino",
+		"dowDomClasses": "***__Clases Mágicas y de Discípulo de Guerra__***:",
+		"tank": "Tanque",
+		"healer": "Curandero",
+		"meleeDps": "DPS Cuerpo a Cuerpo",
+		"physicalRangedDps": "DPS Físico de Alcance",
+		"magicalRangedDps": "DPS Mágico de Alcance",
+		"dohClasses": "***__Trabajos del Discípulo de la Mano__***:",
+		"dolClasses": "***__Trabajos del Discípulo de la Tierra__***:"
 	},
 	"FFXIVItemFields": {
-		"kind": "",
-		"category": "",
-		"levelEquip": "",
-		"none": ""
+		"kind": "Tipo",
+		"category": "Categoría",
+		"levelEquip": "Nivel equipable",
+		"none": "Ninguno"
 	},
-	"FFXIVNoCharacterFound": "",
-	"FFXIVInvalidServer": "",
-	"FFXIVNoItemFound": "",
-	"fortniteDescription": "",
+	"FFXIVNoCharacterFound": "{{REDCROSS}} Lo siento, pero no pude encontrar un personaje con ese nombre.",
+	"FFXIVInvalidServer": "{{REDCROSS}} Lo siento, pero me diste un nombre de servidor incorrecto.",
+	"FFXIVNoItemFound": "{{REDCROSS}} Lo siento, pero no pude encontrar un objeto con ese nombre.",
+	"fortniteDescription": "Obtiene estadísticas de juego de un jugador de Fortnite",
 	"fortniteExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando recupera las estadísticas de cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"plataforma",
+				"(opcional, por defecto \"pc\") Plataforma en la que el jugador juega, debe ser \"pc\", \"xbox\" o \"psn\"."
 			],
 			[
-				"",
-				""
+				"jugador",
+				"El nombre de usuario de Epic Games del jugador."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			""
+			"ninja",
+			"pc ninja",
+			"xbox TTV R1xbox",
+			"psn TTV IllusionOG"
 		]
 	},
-	"fortniteNoUser": "",
-	"fortniteEmbedTitle": "",
+	"fortniteNoUser": "Lo siento, pero no he podido encontrar un usuario con ese nombre.\n¿Estás seguro de que juegan en la plataforma proporcionada? (PC [default], Xbox o PSN)",
+	"fortniteEmbedTitle": "Estadísticas de juego para {{epicUserHandle}}",
 	"fortniteEmbedSectionTitles": {
-		"lifetimeStats": "",
-		"solos": "",
-		"duos": "",
-		"squads": ""
+		"lifetimeStats": "**_Estadísticas de por Vida_**",
+		"solos": "**_Solitarios_**",
+		"duos": "**_Dúos_**",
+		"squads": "**_Escuadrones_**"
 	},
 	"fortniteEmbedStats": {
-		"wins": "",
-		"kills": "",
-		"kdr": "",
-		"matchesPlayed": "",
-		"top1s": "",
-		"top3s": "",
-		"top5s": "",
-		"top6s": "",
-		"top10s": "",
-		"top12s": "",
-		"top25s": ""
+		"wins": "Victorias: **\"{{winCount}}\"**",
+		"kills": "Bajas: **\"{{killCount}}\"**",
+		"kdr": "B/M: **\"{{kdrCount}}%\"**",
+		"matchesPlayed": "Partidas jugadas: **\"{{matchesPlayedCount}}\"**",
+		"top1s": "Top 1s: **\"{{top1Count}}\"**",
+		"top3s": "Top 3s: **\"{{top3Count}}\"**",
+		"top5s": "Top 5s: **\"{{top5Count}}\"**",
+		"top6s": "Top 6s: **\"{{top6Count}}\"**",
+		"top10s": "Top 10s: **\"{{top10Count}}\"**",
+		"top12s": "Top 12s: **\"{{top12Count}}\"**",
+		"top25s": "Top 25s: **\"{{top25Count}}\"**"
 	},
-	"overwatchDescription": "",
+	"overwatchDescription": "Obtiene estadísticas de juego de un jugador de Overwatch",
 	"overwatchExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.\n\nPor defecto buscaré a jugadores de PC, si desea comprobar los jugadores de Xbox o Playstation, escriba la plataforma correspondiente (\"xbl\" o \"psn\").",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"plataforma",
+				"(opcional, por defecto \"pc\") Plataforma en la que el jugador juega, debe ser \"pc\", \"xbl\" o \"psn\""
 			],
 			[
-				"",
+				"jugador",
 				""
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"bame#1784",
+			"xbl Dorus NL gamer",
+			"psn decoda_24"
 		],
-		"reminder": ""
+		"reminder": "**¡Los nombres de jugadores distinguen mayúsculas!**"
 	},
-	"overwatchInvalidPlayerName": "",
-	"overwatchQueryFail": "",
-	"overwatchNoStats": "",
-	"overwatchNoAverage": "",
+	"overwatchInvalidPlayerName": "\"{{playerTag}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
+	"overwatchQueryFail": "Error al obtener los datos de \"{{player}}\", ¿estás seguro de que juegan en \"{{platform}}\"?\nTambién asegúrese de escribir las mayúsculas correctas, los nombres distinguen mayúsculas.",
+	"overwatchNoStats": "He encontrado un jugador con la etiqueta \"{{player}}\" pero no había estadísticas disponibles para ellos.",
+	"overwatchNoAverage": "No hay suficientes datos para determinar el promedio.",
 	"overwatchEmbedDataStats": {
-		"finalBlows": "",
-		"deaths": "",
-		"damageDealt": "",
-		"healing": "",
-		"objectiveKills": "",
-		"soloKills": "",
-		"playTime": "",
-		"gamesWon": "",
-		"goldenMedals": "",
-		"silverMedals": "",
-		"bronzeMedals": ""
+		"finalBlows": "**Explosiones Finales:** {{finalBlows, number}}",
+		"deaths": "**Muertes:** {{deaths, number}}",
+		"damageDealt": "**Daño infligido:** {{damageDone, number}}",
+		"healing": "**Curación:** {{healing, number}}",
+		"objectiveKills": "**Muertes en el Objetivo:** {{objectiveKills, number}}",
+		"soloKills": "**Muertes en Solitario:** {{soloKills, number}}",
+		"playTime": "**Tiempo de Juego:** {{playTime, duration}}",
+		"gamesWon": "**Partidas ganadas:** {{gamesWon, number}}",
+		"goldenMedals": "**Medallas de Oro obtenidas:** {{goldenMedals, number}}",
+		"silverMedals": "**Medallas de Plata obtenidas:** {{silverMedals, number}}",
+		"bronzeMedals": "**Medallas de Bronce obtenidas:** {{bronzeMedals, number}}"
 	},
-	"overwatchEmbedDataTopHero": "",
+	"overwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime, duration}})",
 	"overwatchEmbedData": {
-		"title": "",
-		"ratingsTitle": "",
-		"author": "",
-		"playerLevel": "",
-		"prestigeLevel": "",
-		"totalGamesWon": "",
-		"noGamesWon": "",
+		"title": "Haz clic aquí para más detalles en overwatchtracker.com",
+		"ratingsTitle": "Puntuaciones",
+		"author": "Estadísticas de juego para {{authorName}}",
+		"playerLevel": "**Nivel de Jugador:** {{playerLevel, number}}",
+		"prestigeLevel": "**Nivel de Prestigio ** {{prestigeLevel, number}}",
+		"totalGamesWon": "**Total de Partidas Ganadas:** {{totalGamesWon, number}}",
+		"noGamesWon": "**Total de partidas ganadas:** $t(global:none)",
 		"headers": {
-			"account": "",
-			"quickplay": "",
-			"competitive": "",
-			"topHeroesQuickplay": "",
-			"topHeroesCompetitive": ""
+			"account": "__Estadísticas de la Cuenta__",
+			"quickplay": "__Estadísticas de Partida Rápida__",
+			"competitive": "__Estadísticas de Partidas Competitivas__",
+			"topHeroesQuickplay": "__Top Héroes en Partida Rápida__",
+			"topHeroesCompetitive": "__Top Héroes en Partida Competitiva__"
 		}
 	}
 }

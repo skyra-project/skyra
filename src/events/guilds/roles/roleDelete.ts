@@ -5,6 +5,8 @@ export default class extends Event {
 	public run(role: Role) {
 		if (!role.guild.available) return;
 
+		
+
 		return role.guild.writeSettings((settings) => {
 			for (const stickyRole of settings.stickyRoles) {
 				stickyRole.roles = stickyRole.roles.filter((srr) => srr !== role.id);
@@ -46,7 +48,7 @@ export default class extends Event {
 			if (settings.rolesRestrictedVoice === role.id) settings.rolesRestrictedVoice = null;
 			if (settings.rolesSubscriber === role.id) settings.rolesSubscriber = null;
 
-			if (role.client.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
+			if (this.context.client.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
 				settings.permissionNodes.refresh();
 			}
 		});

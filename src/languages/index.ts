@@ -10,7 +10,7 @@ export const handlers = new Map<string, Handler>([
 	['en-GB', new EnGbHandler()],
 	['es-ES', new EsEsHandler()],
 	['nl-NL', new NlNlHandler()],
-    ['de-DE', new DeDeHandler()]
+	['de-DE', new DeDeHandler()]
 ]);
 
 export function getHandler(name: string): Handler {

@@ -6,11 +6,11 @@ import { ExtendedHandler as NlNlHandler } from './nl-NL/constants';
 import { ExtendedHandler as DeDeHandler } from './de-DE/constants';
 
 export const handlers = new Map<string, Handler>([
+	['de-DE', new DeDeHandler()],
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
 	['es-ES', new EsEsHandler()],
-	['nl-NL', new NlNlHandler()],
-	['de-DE', new DeDeHandler()]
+	['nl-NL', new NlNlHandler()]
 ]);
 
 export function getHandler(name: string): Handler {

@@ -1,11 +1,16 @@
 import type { OutgoingWebsocketMessage } from '#lib/websocket/types';
-import { Event } from 'klasa';
+import { ENABLE_LAVALINK } from '#root/config';
+import { Event, EventOptions, PieceContext } from 'klasa';
 
 interface AudioBroadcastCallback {
 	(): OutgoingWebsocketMessage | Promise<OutgoingWebsocketMessage>;
 }
 
 export abstract class AudioEvent extends Event {
+	public constructor(context: PieceContext, options: AudioEvent.Options = {}) {
+		super(context, { ...options, enabled: ENABLE_LAVALINK });
+	}
+
 	public *getWebSocketListenersFor(guildID: string) {
 		for (const user of this.context.client.websocket.users.values()) {
 			if (user.musicSubscriptions.subscribed(guildID)) yield user;
@@ -30,4 +35,9 @@ export abstract class AudioEvent extends Event {
 
 		return true;
 	}
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace AudioEvent {
+	export type Options = EventOptions;
 }

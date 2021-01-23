@@ -1,10 +1,10 @@
+import { AudioEvent } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackExceptionPayload } from '@skyra/audio';
 import { magenta } from 'colorette';
-import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ event: 'TrackExceptionEvent' })
-export default class extends Event {
+@ApplyOptions<AudioEvent.Options>({ event: 'TrackExceptionEvent' })
+export default class extends AudioEvent {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public async run(payload: IncomingEventTrackExceptionPayload) {

@@ -1,9 +1,9 @@
+import { AudioEvent } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { magenta } from 'colorette';
-import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ emitter: 'audio', event: 'error' })
-export default class extends Event {
+@ApplyOptions<AudioEvent.Options>({ emitter: 'audio', event: 'error' })
+export default class extends AudioEvent {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public run(error: Error) {

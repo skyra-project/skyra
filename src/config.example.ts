@@ -78,41 +78,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	shards: 'auto',
 	commandEditing: true,
 	commandLogging: false,
-	console: {
-		colors: {
-			debug: {
-				message: { background: null, text: null, style: null },
-				time: { background: null, text: 'magenta', style: null }
-			},
-			error: {
-				message: { background: null, text: null, style: null },
-				time: { background: 'red', text: 'white', style: null }
-			},
-			info: {
-				message: { background: null, text: 'gray', style: null },
-				time: { background: null, text: 'lightyellow', style: null }
-			},
-			log: {
-				message: { background: null, text: null, style: null },
-				time: { background: null, text: 'lightblue', style: null }
-			},
-			verbose: {
-				message: { background: null, text: 'gray', style: null },
-				time: { background: null, text: 'gray', style: null }
-			},
-			warn: {
-				message: { background: null, text: 'lightyellow', style: null },
-				time: { background: null, text: 'lightyellow', style: null }
-			},
-			wtf: {
-				message: { background: null, text: 'red', style: null },
-				time: { background: 'red', text: 'white', style: null }
-			}
-		},
-		useColor: true,
-		utc: true
-	},
-	consoleEvents: { verbose: true, debug: true },
 	dev: DEV,
 	ws: {
 		intents: [

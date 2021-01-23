@@ -3,7 +3,6 @@
 
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { DbSet, ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
 import type { KlasaClient } from 'klasa';
 
@@ -141,7 +140,7 @@ export class ScheduleManager {
 				entry.resume();
 			}
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			this.client.logger.fatal(error);
 
 			// Rollback transaction
 			await queryRunner.rollbackTransaction();

@@ -1,5 +1,4 @@
 import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import type { KlasaClient } from 'klasa';
 
 export class GiveawayManager {
@@ -58,7 +57,7 @@ export class GiveawayManager {
 			if (giveaway.finished) await giveaway.remove();
 			else this.insert(giveaway);
 		} catch (error) {
-			this.client.emit(Events.Wtf, error);
+			this.client.logger.fatal(error);
 		}
 	}
 

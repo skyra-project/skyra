@@ -2,7 +2,6 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { pickRandom } from '#utils/util';
@@ -109,9 +108,7 @@ export default class extends PaginatedMessageCommand {
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(rolesInitial)) {
-				await message.guild
-					.writeSettings([[GuildSettings.Roles.Initial, null]])
-					.catch((error) => this.context.client.emit(Events.Wtf, error));
+				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.context.client.logger.fatal(error));
 			} else if (message.member!.roles.cache.has(rolesInitial)) {
 				memberRoles.delete(rolesInitial);
 			}

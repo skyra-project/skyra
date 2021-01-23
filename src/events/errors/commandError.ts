@@ -26,7 +26,7 @@ export default class extends Event {
 		const { client } = this.context;
 		// If the error was an AbortError, tell the user to re-try:
 		if (error.name === 'AbortError') {
-			client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+			client.logger.warn(`${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			return message.alert(await message.resolveKey(LanguageKeys.System.DiscordAbortError));
 		}
 
@@ -35,14 +35,14 @@ export default class extends Event {
 			if (ignoredCodes.includes(error.code)) return;
 			client.emit(Events.ApiError, error);
 		} else {
-			client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+			client.logger.warn(`${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 		}
 
 		// Send a detailed message:
 		await this.sendErrorChannel(message, command, error);
 
 		// Emit where the error was emitted
-		client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
+		client.logger.fatal(`[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
 			await message.alert(
 				OWNERS.includes(message.author.id) ? codeBlock('js', error.stack!) : await message.resolveKey(LanguageKeys.Events.ErrorWtf)

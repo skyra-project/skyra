@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { TOKENS } from '#root/config';
 import type { Message } from 'discord.js';
 import { Store } from 'klasa';
@@ -70,10 +69,10 @@ export function handleNotOK(status: GoogleResponseCodes): CustomGet<string, stri
 		case GoogleResponseCodes.OverQueryLimit:
 			return LanguageKeys.Commands.Google.MessagesErrorOverQueryLimit;
 		case GoogleResponseCodes.PermissionDenied:
-			Store.injectedContext.client.emit(Events.Wtf, 'Google::handleNotOK | Permission Denied');
+			Store.injectedContext.client.logger.fatal('Google::handleNotOK | Permission Denied');
 			return LanguageKeys.Commands.Google.MessagesErrorPermissionDenied;
 		default:
-			Store.injectedContext.client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
+			Store.injectedContext.client.logger.fatal(`Google::handleNotOK | Unknown Error: ${status}`);
 			return LanguageKeys.Commands.Google.MessagesErrorUnknown;
 	}
 }

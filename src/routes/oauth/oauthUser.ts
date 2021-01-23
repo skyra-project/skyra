@@ -1,6 +1,5 @@
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { canManage } from '#lib/api/utils';
-import { Events } from '#lib/types/Enums';
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
@@ -56,7 +55,7 @@ export default class extends Route {
 				if (user === null) return response.error(500);
 				return response.json({ user });
 			} catch (error) {
-				this.context.client.emit(Events.Wtf, error);
+				this.context.client.logger.fatal(error);
 				return response.error(500);
 			}
 		}
@@ -131,7 +130,7 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		const { client } = this.context;
 		try {
-			client.emit(Events.Debug, `Refreshing Token for ${id}`);
+			client.logger.debug(`Refreshing Token for ${id}`);
 			return await fetch<RESTPostOAuth2AccessTokenResult>(
 				'https://discord.com/api/v6/oauth2/token',
 				{
@@ -151,7 +150,7 @@ export default class extends Route {
 				FetchResultTypes.JSON
 			);
 		} catch (error) {
-			client.emit(Events.Wtf, error);
+			client.logger.fatal(error);
 			return null;
 		}
 	}

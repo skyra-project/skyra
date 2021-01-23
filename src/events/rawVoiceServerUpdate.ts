@@ -1,4 +1,3 @@
-import { Events } from '#lib/types/Enums';
 import { ENABLE_LAVALINK } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceServerUpdate } from '@skyra/audio';
@@ -11,7 +10,7 @@ export default class extends Event {
 		try {
 			await this.context.client.audio.voiceServerUpdate(data);
 		} catch (error) {
-			this.context.client.emit(Events.Error, error);
+			this.context.client.logger.error(error);
 		}
 	}
 

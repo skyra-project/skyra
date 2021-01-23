@@ -1,6 +1,5 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
-import { Events } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -59,7 +58,7 @@ export default class extends Event {
 			// If there are messages older than 14 days, delete them individually.
 			if (oldMessages.length !== 0) await Promise.all(oldMessages.map((message) => this.deleteMessage(channel, message)));
 		} catch (error) {
-			this.context.client.emit(Events.Wtf, error);
+			this.context.client.logger.fatal(error);
 		}
 	}
 

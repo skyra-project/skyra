@@ -34,10 +34,10 @@ async function main() {
 		await DbSet.connect();
 		await client.login(TOKENS.BOT_TOKEN);
 	} catch (error) {
-		client.console.error(error);
+		client.logger.error(error);
 		client.destroy();
 		process.exit(1);
 	}
 }
 
-main().catch(client.console.error);
+main().catch(client.logger.error);

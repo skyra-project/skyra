@@ -3,7 +3,6 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
 import { fetchReactionUsers, getImage } from '#utils/util';
 import { cutText, debounce, isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -289,7 +288,7 @@ export class StarboardEntity extends BaseEntity {
 
 				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
 				// Emit to console
-				this.#client.emit(Events.Wtf, error);
+				this.#client.logger.fatal(error);
 			})
 			.finally(() => this.#manager.syncMessageMap.delete(this));
 

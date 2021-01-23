@@ -42,7 +42,7 @@ export default class extends Event {
 					.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
 			}
 		} catch (error) {
-			this.context.client.emit(Events.Wtf, error);
+			this.context.client.logger.fatal(error);
 		}
 	}
 }

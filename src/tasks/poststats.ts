@@ -65,7 +65,7 @@ export default class extends Task {
 			])
 		).filter((value) => value !== null);
 
-		if (results.length) client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
+		if (results.length) client.logger.trace(`${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 		return null;
 	}
 

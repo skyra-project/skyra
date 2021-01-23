@@ -1,5 +1,4 @@
 import { DbSet, PartialResponseValue, ResponseType, Task, TwitchStreamSubscriptionEntity } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { blueBright } from 'colorette';
 import type { Repository } from 'typeorm';
@@ -37,11 +36,7 @@ export default class extends Task {
 				updatedSubscriptionIds.push(subscription.id);
 
 				// Queue the updating by pushing the promise into the promises array
-				promises.push(
-					client.twitch
-						.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe)
-						.catch((error) => client.emit(Events.Wtf, error))
-				);
+				promises.push(client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(client.logger.fatal));
 			}
 		}
 
@@ -50,7 +45,7 @@ export default class extends Task {
 		await this.updateEntries(updatedSubscriptionIds, twitchStreamSubscriptions);
 
 		// ST = Subscriptions Total; SU = Subscriptions Updated
-		client.emit(Events.Verbose, `${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubscriptionIds.length} [SU] ]`);
+		client.logger.trace(`${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubscriptionIds.length} [SU] ]`);
 
 		return null;
 	}

@@ -39,22 +39,6 @@ export class ExtendedHandler extends Handler {
 	}
 
 	public ordinal(cardinal: number): string {
-		const cent = cardinal % 100;
-		const dec = cardinal % 10;
-
-		if (cent >= 10 && cent <= 20) {
-			return `${cardinal}er`;
-		}
-
-		switch (dec) {
-			case 1:
-				return `${cardinal}er`;
-			case 2:
-				return `${cardinal}er`;
-			case 3:
-				return `${cardinal}er`;
-			default:
-				return `${cardinal}er`;
-		}
+		return `${cardinal}er`;
 	}
 }

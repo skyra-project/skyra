@@ -3943,7 +3943,7 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa@skyra-project/klasa#build:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/fd8ef9a48714c4cf42ce9c50c41856e06bc87918"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/bee7cc5b69bfd953db4d435751893acb294ba079"
   dependencies:
     "@sapphire/pieces" "^1.1.0"
     colorette "^1.2.1"

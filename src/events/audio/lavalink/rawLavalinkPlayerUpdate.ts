@@ -1,9 +1,9 @@
+import { AudioEvent } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingPlayerUpdatePayload } from '@skyra/audio';
-import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ emitter: 'audio', event: 'playerUpdate' })
-export default class extends Event {
+@ApplyOptions<AudioEvent.Options>({ emitter: 'audio', event: 'playerUpdate' })
+export default class extends AudioEvent {
 	public async run(payload: IncomingPlayerUpdatePayload) {
 		const queue = this.context.client.audio.queues!.get(payload.guildId);
 		if (payload.state.position === 0) {

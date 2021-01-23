@@ -50,7 +50,7 @@
 		"reminder": "This command can add and/or remove multiple roles at the same time."
 	},
 	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
-	"rolesetAdded": "The {{name}} unique role set now has the following roles as well: {{roles, andList}}.",
+	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, andList}}.",
 	"rolesetInvalidName": "You can not remove the {{name}} unique role set because it does not exist.",
 	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this group.",

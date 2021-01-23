@@ -2,7 +2,7 @@ import { Event, LogLevel } from 'klasa';
 
 export default class extends Event {
 	public run(message: string) {
-		if (this.context.client.ready) this.context.client.logger.error(message);
+		this.context.client.logger.error(message);
 	}
 
 	public async onLoad() {

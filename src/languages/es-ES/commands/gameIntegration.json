@@ -221,44 +221,44 @@
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"bame#1784",
+			"xbl Dorus NL gamer",
+			"psn decoda_24"
 		],
-		"reminder": ""
+		"reminder": "**¡Los nombres de jugadores distinguen mayúsculas!**"
 	},
-	"overwatchInvalidPlayerName": "",
-	"overwatchQueryFail": "",
-	"overwatchNoStats": "",
-	"overwatchNoAverage": "",
+	"overwatchInvalidPlayerName": "\"{{playerTag}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
+	"overwatchQueryFail": "Error al obtener los datos de \"{{player}}\", ¿estás seguro de que juegan en \"{{platform}}\"?\nTambién asegúrese de escribir las mayúsculas correctas, los nombres distinguen mayúsculas.",
+	"overwatchNoStats": "He encontrado un jugador con la etiqueta \"{{player}}\" pero no había estadísticas disponibles para ellos.",
+	"overwatchNoAverage": "No hay suficientes datos para determinar el promedio.",
 	"overwatchEmbedDataStats": {
-		"finalBlows": "",
-		"deaths": "",
-		"damageDealt": "",
-		"healing": "",
-		"objectiveKills": "",
-		"soloKills": "",
-		"playTime": "",
-		"gamesWon": "",
-		"goldenMedals": "",
-		"silverMedals": "",
-		"bronzeMedals": ""
+		"finalBlows": "**Explosiones Finales:** {{finalBlows, number}}",
+		"deaths": "**Muertes:** {{deaths, number}}",
+		"damageDealt": "**Daño infligido:** {{damageDone, number}}",
+		"healing": "**Curación:** {{healing, number}}",
+		"objectiveKills": "**Muertes en el Objetivo:** {{objectiveKills, number}}",
+		"soloKills": "**Muertes en Solitario:** {{soloKills, number}}",
+		"playTime": "**Tiempo de Juego:** {{playTime, duration}}",
+		"gamesWon": "**Partidas ganadas:** {{gamesWon, number}}",
+		"goldenMedals": "**Medallas de Oro obtenidas:** {{goldenMedals, number}}",
+		"silverMedals": "**Medallas de Plata obtenidas:** {{silverMedals, number}}",
+		"bronzeMedals": "**Medallas de Bronce obtenidas:** {{bronzeMedals, number}}"
 	},
-	"overwatchEmbedDataTopHero": "",
+	"overwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime, duration}})",
 	"overwatchEmbedData": {
-		"title": "",
-		"ratingsTitle": "",
-		"author": "",
-		"playerLevel": "",
-		"prestigeLevel": "",
-		"totalGamesWon": "",
-		"noGamesWon": "",
+		"title": "Haz clic aquí para más detalles en overwatchtracker.com",
+		"ratingsTitle": "Puntuaciones",
+		"author": "Estadísticas de juego para {{authorName}}",
+		"playerLevel": "**Nivel de Jugador:** {{playerLevel, number}}",
+		"prestigeLevel": "**Nivel de Prestigio ** {{prestigeLevel, number}}",
+		"totalGamesWon": "**Total de Partidas Ganadas:** {{totalGamesWon, number}}",
+		"noGamesWon": "**Total de partidas ganadas:** $t(global:none)",
 		"headers": {
-			"account": "",
-			"quickplay": "",
-			"competitive": "",
-			"topHeroesQuickplay": "",
-			"topHeroesCompetitive": ""
+			"account": "__Estadísticas de la Cuenta__",
+			"quickplay": "__Estadísticas de Partida Rápida__",
+			"competitive": "__Estadísticas de Partidas Competitivas__",
+			"topHeroesQuickplay": "__Top Héroes en Partida Rápida__",
+			"topHeroesCompetitive": "__Top Héroes en Partida Competitiva__"
 		}
 	}
 }

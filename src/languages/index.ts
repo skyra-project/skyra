@@ -1,9 +1,9 @@
 import type { Handler } from '#lib/i18n/structures/Handler';
+import { ExtendedHandler as DeDeHandler } from './de-DE/constants';
 import { ExtendedHandler as EnGbHandler } from './en-GB/constants';
 import { ExtendedHandler as EnUsHandler } from './en-US/constants';
 import { ExtendedHandler as EsEsHandler } from './es-ES/constants';
 import { ExtendedHandler as NlNlHandler } from './nl-NL/constants';
-import { ExtendedHandler as DeDeHandler } from './de-DE/constants';
 
 export const handlers = new Map<string, Handler>([
 	['de-DE', new DeDeHandler()],

@@ -1,12 +1,12 @@
 {
 	"helpAllFlag": "",
-	"helpCommandCount": "",
-	"helpCommandCount_plural": "",
+	"helpCommandCount": "{{count}} comando",
+	"helpCommandCount_plural": "{{count}} comandos",
 	"helpData": {
-		"extended": "",
-		"footer": "",
-		"title": "",
-		"usage": ""
+		"extended": "🔍 | ***Descripción Ampliada***\n{{extendedHelp}}",
+		"footer": "Descripción de ayuda para {{footerName}}",
+		"title": "{{titleDescription}}",
+		"usage": "📝 | ***Uso del Comando***\n`{{usage}}`\n"
 	},
 	"helpDescription": "",
 	"helpExtended": {
@@ -19,25 +19,25 @@
 	"infoBody": "",
 	"infoDescription": "",
 	"infoExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Simplemente... eso :P"
 	},
-	"inviteDescription": "",
+	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
 	"inviteExtended": {
 		"extendedHelp": "",
 		"examples": [
 			"",
-			"",
-			"",
-			""
+			"noperms",
+			"--noperms",
+			"--nopermissions"
 		]
 	},
-	"invitePermissionInviteText": "",
-	"invitePermissionsDescription": "",
-	"invitePermissionSupportServerText": "",
-	"ping": "",
-	"pingDescription": "",
+	"invitePermissionInviteText": "Invítame a tu servidor",
+	"invitePermissionsDescription": "No tengas miedo de desmarcar algunos permisos, te informaré si estás intentando ejecutar un comando sin permisos.",
+	"invitePermissionSupportServerText": "Unirse al Servidor de Soporte",
+	"ping": "{{LOADING}} Eco...",
+	"pingDescription": "Ejecuta una prueba de conexión con Discord.",
 	"pingExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "¡Eco!"
 	},
-	"pingPong": ""
+	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)"
 }

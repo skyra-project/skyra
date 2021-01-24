@@ -1,5 +1,5 @@
 {
-	"dmDescription": "",
+	"dmDescription": "Отправляет личное сообщение.",
 	"dmExtended": {
 		"extendedHelp": "",
 		"reminder": ""
@@ -15,7 +15,7 @@
 	},
 	"execDescription": "",
 	"execExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Вам лучше не знать об этом."
 	},
 	"setAvatarDescription": "",
 	"setAvatarExtended": {
@@ -40,14 +40,14 @@
 		"extendedHelp": ""
 	},
 	"evalTimeout": "",
-	"evalError": "",
+	"evalError": "**Ошибка**:{{output}}\n**Тип**:{{type}}\n{{time}}",
 	"statsTitles": {
 		"stats": "",
 		"uptime": "",
 		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": "",
+		"stats": "• **Пользователи**: {{stats.users, number}}\n• **Гильдии**: {{stats.guilds, number}}\n• **Каналы**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
 		"uptime": "",
 		"serverUsage": ""
 	},

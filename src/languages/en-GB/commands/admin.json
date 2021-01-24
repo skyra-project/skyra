@@ -64,8 +64,8 @@
 		],
 		"reminder": ""
 	},
-	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
-	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, andList}}.",
+	"rolesetCreated": "",
+	"rolesetAdded": "",
 	"rolesetInvalidName": "",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "",

@@ -279,7 +279,7 @@
 			]
 		]
 	},
-	"remindmeDescription": "",
+	"remindmeDescription": "Управляйте своими напоминаниями.",
 	"remindmeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -330,22 +330,22 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"цвет",
 				""
 			]
 		],
 		"possibleFormats": [
 			[
-				"",
-				""
+				"HEX",
+				"#dfdfdf"
 			],
 			[
-				"",
-				""
+				"RGB",
+				"rgb(200, 200, 200)"
 			],
 			[
-				"",
-				""
+				"HSL",
+				"hsl(350, 100, 100)"
 			],
 			[
 				"",

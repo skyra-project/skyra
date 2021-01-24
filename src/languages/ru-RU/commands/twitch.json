@@ -1,12 +1,12 @@
 {
 	"followage": "",
 	"followageMissingEntries": "",
-	"followageNotFollowing": "",
+	"followageNotFollowing": "Этот пользователь не подписан на указанный канал.",
 	"twitchNoEntries": "",
 	"twitchTitles": {
 		"followers": "",
-		"views": "",
-		"clickToVisit": "",
+		"views": "Просмотры",
+		"clickToVisit": "Нажмите, чтобы перейти в канал стримера",
 		"partner": ""
 	},
 	"twitchPartnershipWithoutAffiliate": "",
@@ -15,7 +15,7 @@
 		"partnered": ""
 	},
 	"twitchCreatedAt": "",
-	"twitchSubscriptionRequiredStreamer": "",
+	"twitchSubscriptionRequiredStreamer": "{{REDCROSS}} Вы должны указать, на какого стримера вы хотите подписаться.",
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionRequiredChannel": "",
 	"twitchSubscriptionRequiredStatus": "",
@@ -28,7 +28,7 @@
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
-	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
+	"twitchSubscriptionRemoveStreamerNotSubscribed": "{{REDCROSS}} Извините, вы не можете отписаться от канала, на который вы не подписаны. Пожалуйста, подпишитесь, чтобы иметь возможность отписаться.",
 	"twitchSubscriptionRemoveEntryNotExists": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",

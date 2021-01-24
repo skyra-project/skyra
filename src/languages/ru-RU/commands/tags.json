@@ -1,7 +1,7 @@
 {
 	"added": "",
 	"contentRequired": "",
-	"description": "",
+	"description": "Управляйте тегами этой гильдии.",
 	"edited": "",
 	"exists": "Тег '{{tag}}' уже существует.",
 	"extended": {
@@ -35,6 +35,6 @@
 	"nameTooLong": "",
 	"notexists": "",
 	"permissionlevel": "",
-	"removed": "",
-	"reset": ""
+	"removed": "Тег **{{name}}** успешно удалён.",
+	"reset": "Все теги были успешно удалены с этого сервера."
 }

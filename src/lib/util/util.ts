@@ -3,7 +3,7 @@ import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { ApiRequest, ApiResponse } from '@sapphire/plugin-api';
-import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
+import { Awaited, isNullish, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -578,8 +578,8 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 }
 
 export const kBigIntTransformer: ValueTransformer = {
-	from: (value) => (value === null ? null : Number(value as string)),
-	to: (value) => (value === null ? null : String(value as number))
+	from: (value) => (isNullish(value) ? value : Number(value as string)),
+	to: (value) => (isNullish(value) ? value : String(value as number))
 };
 
 /**

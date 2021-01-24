@@ -1,0 +1,22 @@
+name: 'Update Crowdin Pull Request Name'
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  update_pr:
+    name: Update Pull Request Name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          base-branch-regex: 'main'
+          head-branch-regex: 'i18n\/crowdin'
+          title-template: 'fix(i18n): new crowdin updates [skip ci]'
+          body-template: Updating Crowdin translations in '%basebranch%'
+          body-update-action: replace
+          title-update-action: replace
+          body-uppercase-base-match: false

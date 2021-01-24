@@ -5,7 +5,7 @@ import type { ModerationManagerCreateData } from '#lib/structures';
 import type { KeyOfType } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
-import { floatPromise, resolveOnErrorCodes } from '#utils/util';
+import { resolveOnErrorCodes } from '#utils/util';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
@@ -706,9 +706,8 @@ export class ModerationActions {
 			try {
 				const target = await entry.fetchUser();
 				const embed = await this.buildEmbed(entry, sendOptions);
-				floatPromise(target.send(embed));
+				await resolveOnErrorCodes(target.send(embed), RESTJSONErrorCodes.CannotSendMessagesToThisUser);
 			} catch (error) {
-				if (error.code === RESTJSONErrorCodes.CannotSendMessagesToThisUser) return;
 				this.guild.client.logger.error(error);
 			}
 		}

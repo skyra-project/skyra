@@ -19,3 +19,4 @@ jobs:
           body-template: Updating Crowdin translations in '%basebranch%'
           body-update-action: replace
           title-update-action: replace
+          body-uppercase-base-match: false

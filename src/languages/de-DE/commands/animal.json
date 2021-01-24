@@ -1,7 +1,7 @@
 {
-	"catfactDescription": "",
+	"catfactDescription": "Lass mich dir einen mysteriösen Katzenfakt erzählen.",
 	"catfactExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Du weißt, dass Katzen sehr neugierig sind, richtig? Sie haben sicherlich viel Spaß und es gibt viele seltsame Fakten über sie.\nMit diesem Command wirst du einen zufälligen Fakt lesen können."
 	},
 	"catfactTitle": "",
 	"dogDescription": "",

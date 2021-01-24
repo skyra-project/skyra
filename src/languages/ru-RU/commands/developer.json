@@ -26,6 +26,6 @@
 	"yarnEmbedDescriptionMaintainers": "",
 	"yarnEmbedMoreText": "",
 	"yarnNoPackage": "",
-	"yarnPackageNotFound": "",
+	"yarnPackageNotFound": "Простите, но мне не удалось найти в реестре пакет с названием `{{pkg}}`.",
 	"yarnUnpublishedPackage": ""
 }

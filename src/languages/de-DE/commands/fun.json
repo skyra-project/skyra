@@ -1,84 +1,84 @@
 {
-	"8ballDescription": "",
+	"8ballDescription": "Skyra wird die heilige Bibel lesen, um die richtige Antwort für deine Frage zu finden.",
 	"8ballExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Dieser Command gibt die eine zufällige Frage basierend auf einem Fragentyp. Sei vorsichtig, sie könnte zu schlau sein.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Frage",
+				"Die Heilige Frage"
 			]
 		],
 		"examples": [
-			""
+			"Warum ging das Huhn über die Straße?"
 		]
 	},
-	"choiceDescription": "",
+	"choiceDescription": "Ene, mene, miste, deine Mutter rappelt in der Kiste...",
 	"choiceExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Ich habe eine Existenzkrise... soll ich das Geschirr waschen oder aus dem Fenster werfen? Die Suche geht weiter. Liste mir kommagetrennte Sachen auf und ich werde eine aussuchen. Nebenbei, Ich bin nicht verantwortlich für was danach passiert.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Wörter",
+				"Eine durch Komma getrennte Liste von Wörtern."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Sollte Geschirr waschen, wirft das Geschirr aus dem Fenster",
+			"Katze, Hund"
 		]
 	},
-	"changemymindDescription": "",
+	"changemymindDescription": "Skyre ist die beste, change my mind.",
 	"changemymindExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Ich denke trotzdem dass ich die beste bin, change my mind. Ich mache ein Bild mit deinem Avatar und etwas Text auf einem Papier.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Text",
+				"Der Satz den du willst."
 			]
 		],
 		"examples": [
-			""
+			"Skyra ist der beste Bot auf diesem Server"
 		]
 	},
-	"diceDescription": "",
+	"diceDescription": "Würfel mit dem d20-Syntax.",
 	"diceExtended": {
 		"extendedHelp": "",
 		"examples": [
-			"",
-			"",
-			""
+			"370d24",
+			"100d6",
+			"6"
 		]
 	},
-	"escaperopeDescription": "",
+	"escaperopeDescription": "Benutze das Fluchtseil aus Pokémon.",
 	"escaperopeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Skyra** benutzte **Fluchtseil**."
 	},
-	"howToFlirtDescription": "",
+	"howToFlirtDescription": "Captain America, du weißt nicht wie man flirtet.",
 	"howToFlirtExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Lass mich dir zeigen wie man effektiv mit jemandem flirtet mit der Technik die Tony Stark bei Captain America verwendet. Ich garantiere dir dass du ihn kriegst.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Benutzer",
+				"Der Nutzer den du anflirten möchtest."
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
-	"loveDescription": "",
+	"loveDescription": "Liebesmeter, online!",
 	"loveExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Hey! Wilst du das Liebesmeter überprüfen? Es ist ein komisches Gerät, aber viele Menschen lieben es! Sei nicht schüchtern und probier es!",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Benutzer",
+				"Der zu bewertende Benutzer."
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
-	"markovDescription": "",
+	"markovDescription": "Erzeugt eine Markov-Kette aus dem Textchannel.",
 	"markovExtended": {
 		"extendedHelp": ""
 	},
@@ -165,7 +165,7 @@
 	],
 	"8ballHowMany": [
 		"Viel.",
-		"",
+		"Ein bisschen.",
 		"",
 		"",
 		"",

@@ -7,5 +7,6 @@ export default class extends Event {
 
 	public async onLoad() {
 		if (this.context.client.logger.level > LogLevel.Error) await this.unload();
+		return super.onLoad();
 	}
 }

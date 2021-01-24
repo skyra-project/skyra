@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { AudioEvent } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackStuckPayload } from '@skyra/audio';
-import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ event: 'TrackStuckEvent' })
-export default class extends Event {
+@ApplyOptions<AudioEvent.Options>({ event: 'TrackStuckEvent' })
+export default class extends AudioEvent {
 	public async run(payload: IncomingEventTrackStuckPayload) {
 		// If the threshold is small, send nothing.
 		if (payload.thresholdMs < 1000) return;

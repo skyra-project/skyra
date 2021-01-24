@@ -736,22 +736,22 @@
   dependencies:
     "@discordjs/collection" "^0.1.6"
 
-"@sapphire/plugin-api@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-1.3.0.tgz#9892962df17c8b2dc48668cfbaa10927d1c35d29"
-  integrity sha512-Z5jFfaxK285C9/qlsIcykTvrqwbaUJ2Fa1USdFXVFoQ0d4coD4nEaodgRkxjkmAxJO2kjPo0wDFobZK3yi96Og==
+"@sapphire/plugin-api@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-1.3.1.tgz#c942b356f54efa26842f3e654002c096f3db70e8"
+  integrity sha512-QcKA5N+ewkLWrDzWvQvUIyX/AZXS9IWGrnrPChIbGFP48aBT2UBJG2gaDfezWQvtJWizW3JSlJ+WUKYhHLm5nw==
   dependencies:
     node-fetch "^2.6.1"
     tslib "^2.1.0"
 
-"@sapphire/plugin-i18next@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-i18next/-/plugin-i18next-1.2.0.tgz#a6d43d080e6dfa9aeed9d064c3daf6937db5467f"
-  integrity sha512-4FwU4kAkZvLnnWzL7k00rKUQ2SsWcNuoZ2YhFhx0qp6mFjo1Pa0gogFFSS7eP2cqIZyQ3wBP0QFgehezxKo39Q==
+"@sapphire/plugin-i18next@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-i18next/-/plugin-i18next-1.2.1.tgz#f51e0e1d4939601e28692bfe75299fff23b6d266"
+  integrity sha512-XMIhLmowfNgdxRF1Nig/TzDyVSGfZLzfK5sIBR+LX/x4K3eLXeCpe6c8GtKZCqkKWkXxzp6uTSg07UnUPau0fg==
   dependencies:
-    "@sapphire/utilities" "^1.3.1"
+    "@sapphire/utilities" "^1.4.3"
     i18next "^19.8.4"
-    i18next-fs-backend "^1.0.7"
+    i18next-fs-backend "^1.0.8"
     tslib "^2.1.0"
 
 "@sapphire/prettier-config@^1.0.6":
@@ -786,7 +786,7 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.4.tgz#a3bd721c4b1f00fba2bb7d2504842c7a70ff6c99"
   integrity sha512-TvH+QyCYIzcwbwnLsqI03ZXu8f8nqR9avibEatY8C90MFUcPdB3KKPafdftKQkLj8lryHoLXwIQSschDR9y1jg==
 
-"@sapphire/utilities@^1.3.1", "@sapphire/utilities@^1.4.3":
+"@sapphire/utilities@^1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.3.tgz#cf5540ee79fdb63c9af64754c9db6d533f58c812"
   integrity sha512-OS4Tvimwqa2iKusNeP3rPd3RnoRazbKHh1ANEzwbE6zawSTPstcehmIYJ1G02eDae/45H1nrOg37O67eAY8uOw==
@@ -3076,7 +3076,7 @@ husky@^4.3.8:
     slash "^3.0.0"
     which-pm-runs "^1.0.0"
 
-i18next-fs-backend@^1.0.7, i18next-fs-backend@^1.0.8:
+i18next-fs-backend@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-1.0.8.tgz#f03d911cac31d76bd6b0aa73fa9c7fc45a199e1d"
   integrity sha512-1TyOJEGBvwqdIu0vZo/pcAxPXe/0vqOX6/hgsgTnNpcGe0PyHJ/87ABDdwdwfKJSxbtM0j6Pue0NKFcx6rOeJg==
@@ -5992,10 +5992,10 @@ typeorm@0.2.28:
     yargonaut "^1.1.2"
     yargs "^16.0.3"
 
-typescript@^4.2.0-dev.20210122:
-  version "4.2.0-dev.20210122"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.0-dev.20210122.tgz#4b2c37ca6935e14bb5d3d3b31d4a64bee2f2cd02"
-  integrity sha512-ntyM+PfgaO2E68I0TIv/KiyLZYep7K1evATVo165OQxOXqLHl46QZeEqC05yK6Lb1EPh89/Sk2mv+hsIjznuqA==
+typescript@^4.2.0-dev.20210123:
+  version "4.2.0-dev.20210123"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.0-dev.20210123.tgz#ef408135332441dd0d62b7554c31eb49dd392ea4"
+  integrity sha512-Yu5Xp8Hvuvo+1Rqy+EOfkeZEXmA1bSKfm33L8V4fSYlELsRy9MpLJEmSZM+OqxaIsT6MJ7t9kpw0YDMlLWYLPg==
 
 union-value@^1.0.0:
   version "1.0.1"

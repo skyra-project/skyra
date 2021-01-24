@@ -39,14 +39,14 @@ export default class extends SkyraCommand {
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const [created, roleSets, t] = await message.guild.writeSettings((settings) => {
+		const [created, t] = await message.guild.writeSettings((settings) => {
 			const allRoleSets = settings[GuildSettings.Roles.UniqueRoleSets];
 			const roleSet = allRoleSets.some((set) => set.name === name);
 
 			// If it does not exist we need to create a brand new set
 			if (!roleSet) {
 				allRoleSets.push({ name, roles: roles.map((role) => role.id) });
-				return [true, allRoleSets, settings.getLanguage()];
+				return [true, settings.getLanguage()];
 			}
 
 			// The set does exist so we want to only ADD new roles in
@@ -60,13 +60,13 @@ export default class extends SkyraCommand {
 			});
 			settings[GuildSettings.Roles.UniqueRoleSets] = sets;
 
-			return [false, sets, settings.getLanguage()];
+			return [false, settings.getLanguage()];
 		});
 
 		return message.send(
 			t(created ? LanguageKeys.Commands.Admin.RoleSetCreated : LanguageKeys.Commands.Admin.RoleSetAdded, {
 				name,
-				roles: roleSets.map((role) => role.name)
+				roles: roles.map((role) => role.name)
 			})
 		);
 	}
@@ -146,7 +146,7 @@ export default class extends SkyraCommand {
 	public async list(message: GuildMessage) {
 		// Get all rolesets from settings
 		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
-		if (!allRolesets.length) throw message.resolveKey(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
+		if (!allRolesets.length) throw await message.resolveKey(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild.roles.cache.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}

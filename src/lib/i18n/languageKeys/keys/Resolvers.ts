@@ -7,6 +7,7 @@ export const BoolDisabled = T<string>('resolvers:boolDisabled');
 export const MultiTooFew = FT<{ name: string; min?: number; conjunctionWord: string }, string>('resolvers:multiTooFew');
 export const InvalidBool = FT<{ name: string }, string>('resolvers:invalidBool');
 export const InvalidChannel = FT<{ name: string }, string>('resolvers:invalidChannel');
+export const InvalidCommand = FT<{ name: string }, string>('resolvers:invalidCommand');
 export const InvalidCustom = FT<{ name: string; type: string }, string>('resolvers:invalidCustom');
 export const InvalidDate = FT<{ name: string }, string>('resolvers:invalidDate');
 export const InvalidDuration = FT<{ name: string }, string>('resolvers:invalidDuration');

@@ -37,6 +37,7 @@ export const CountryFields = T<{
 		currencies: string;
 	};
 }>('commands/tools:countryFields');
+export const CountryTimezone = T<{ timezone: string[]; count: number }>('commands/tools:countryTimezone');
 export const EshopDescription = T<string>('commands/tools:eshopDescription');
 export const EshopExtended = T<LanguageHelpDisplayOptions>('commands/tools:eshopExtended');
 export const EshopNotInDatabase = T<string>('commands/tools:eshopNotInDatabase');

@@ -8,6 +8,7 @@
 	"dateSuffix": " seconds",
 	"invalidBool": "{{name}} must be true or false.",
 	"invalidChannel": "{{name}} must be a channel tag or valid channel id.",
+	"invalidCommand": "{{name}} must be a valid command",
 	"invalidChannelName": "{{name}} must be a valid channel name, id, or tag.",
 	"invalidCustom": "{{name}} must be a valid {{type}}.",
 	"invalidDate": "{{name}} must be a valid date.",

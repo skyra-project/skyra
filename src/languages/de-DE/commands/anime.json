@@ -34,7 +34,7 @@
 		"tv": "📺 TV",
 		"movie": "🎥 Film",
 		"ova": "📼Originale Video Animation",
-		"special": ""
+		"special": "🎴 Speziell"
 	},
 	"animeInvalidChoice": "Das ist eine ungültige Auswahl! Bitte versuche es mit einer anderen Option.",
 	"animeOutputDescription": "**Englischer Titel:** {{englishTitle}}\n**Japanischer Titel:** {{japaneseTitle}}\n**Kanonischer Titel:** {{canonicalTitle}}\n{{synopsis}}",

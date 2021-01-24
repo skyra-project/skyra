@@ -50,7 +50,9 @@ export default class extends PaginatedMessageCommand {
 				embed
 					.setTitle(mapNativeName(country))
 					.setThumbnail(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)
-					.setFooter(` Timezone: ${country.timezone[0]}`)
+					.setFooter(
+						` - ${t(LanguageKeys.Commands.Tools.CountryTimezone, { timezone: country.timezones, count: country.timezones.length })}`
+					)
 					.addField(
 						titles.OVERVIEW,
 						[
@@ -88,7 +90,7 @@ export interface CountryData {
 	capital: string;
 	nativeName: string;
 	demonym: string;
-	timezone: string;
+	timezones: string[];
 	population: number;
 	area: number | null;
 	languages: CountryLanguage[];

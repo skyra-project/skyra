@@ -1,34 +1,34 @@
 {
-	"announcementHeader": "",
-	"announcementCancelled": "",
-	"announcementDescription": "",
-	"announcementEmbedMentions": "",
-	"announcementEmbedMentionsWithMentions": "",
+	"announcementHeader": "**Neue Ankündigung für** {{role}}",
+	"announcementCancelled": "Nachricht abgebrochen.",
+	"announcementDescription": "Sende neue Ankündigungen und erwähne die Ankündigungsrolle.",
+	"announcementEmbedMentions": "{{header}}:",
+	"announcementEmbedMentionsWithMentions": "{{header}}, und erwähnt: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Dieser Command erfordert einen Ankündigungschannel (**channels.announcement** im Konfigurationscommand), der Skyra zeigt, wohin sie die Ankündigung hinschicken soll.\n\nIst dieser Command notwendig? Nun, nichts dich daran, deine Ankündigungen selbst zu machen, aber es gibt viele Menschen, die es hassen, von at everyone/here erwähnt zu werden.\n\nUm dies zu vermeiden, gibt dir Skyra die Möglichkeit, eine Abonennten zu erstellen, die nicht erwähnbar ist (um zu verhindern, dass andere die Rollenerwähnung spammen) und wenn Sie diesen Command ausführen, wird Skyra die Rolle als erwähnbar festlegen, die Nachricht posten und zurück auf unerwähnbar stellen.\n\nDarüber hinaus kannst du Skyra so konfigurieren, dass die Ankündigung als Nachricht eingebettet wird, indem du die Option **messages.announcement-embed** im Konfigurationscommand einstellest. Beim Senden der Nachricht als Einbettung können Sie die Erwähnungen von Benutzern, @here oder @everyone verhindern, indem du die `--excludeMentions` Flagge der Ankündigung hinzufügst.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Ankündigung",
+				"Der Ankündigungstext zum Posten."
 			]
 		],
 		"examples": [
-			""
+			"Ich freue mich mitteilen zu können, dass wir einen Bot haben, um sicher Ankündigungen an unsere Abonnenten zu senden!"
 		],
-		"reminder": ""
+		"reminder": "Wenn du die Nachricht bearbeiten möchtest, die du in einer Ankündigung gesendet hast, bearbeite einfach die Nachricht, mit der du Skyra diese Ankündigung hast senden lassen. Skyra wird dann die Nachricht bearbeiten, die sie vorher gesendet hat. Sie kann das maximal bis zu 15 Minuten nach der Ankündigung, also besser nicht lange warten!"
 	},
-	"announcementPrompt": "",
-	"announcementSuccess": "",
-	"subscribeDescription": "",
+	"announcementPrompt": "Dies wird die Nachricht im Ankündigungskanal sein. Bist du damit zufrieden?",
+	"announcementSuccess": "Erfolgreich eine neue Ankündigung veröffentlicht.",
+	"subscribeDescription": "Abonniere die Ankündigungen dieses Servers.",
 	"subscribeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Dieser Command dient dem Zweck, dir die Abonnentenrolle **zu geben** die von den Administratoren des Servers konfiguriert werden muss. Wenn ein Moderator oder Administrator den Befehl **Ankündigung** verwendet, wirst du erwähnt. Diese Funktion soll everyone/here Tags ersetzen und nur die Benutzer erwähnen die interessiert sind."
 	},
-	"subscribeNoChannel": "",
-	"subscribeNoRole": "",
-	"subscribeSuccess": "",
-	"unsubscribeDescription": "",
+	"subscribeNoChannel": "Dieser Server hat keinen konfigurierten Ankündigungskanal.",
+	"subscribeNoRole": "Dieser Server hat keine konfigurierte Ankündigungsrolle.",
+	"subscribeSuccess": "Die Rolle: **{{role}}** wurde erfolgreich vergeben",
+	"unsubscribeDescription": "Deabonniere die Ankündigungen dieses Servers.",
 	"unsubscribeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Dieser Command dient dem Zweck, dir die Abonnentenrolle **zu entfernen** die von den Administratoren des Servers konfiguriert werden muss. Wenn ein Moderator oder Administrator den Befehl **Ankündigung** verwendet, wirst du nun **nicht länger** erwähnt. Diese Funktion soll everyone/here Tags ersetzen und nur die Benutzer erwähnen die interessiert sind."
 	},
-	"unsubscribeSuccess": ""
+	"unsubscribeSuccess": "Die Rolle: **{{role}}** wurde erfolgreich entfernt"
 }

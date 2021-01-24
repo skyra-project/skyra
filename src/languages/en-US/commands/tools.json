@@ -45,6 +45,8 @@
 			"population": "Population"
 		}
 	},
+	"countryTimezone": "Timezone: {{timezone.0}}",
+	"countryTimezone_plural": "Timezones: {{timezone, andList}}",
 	"countryTitles": {
 		"LANGUAGES": "Languages",
 		"OTHER": "Other",

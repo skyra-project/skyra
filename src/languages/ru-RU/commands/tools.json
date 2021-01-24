@@ -404,10 +404,10 @@
 		"extendedHelp": ""
 	},
 	"whoisMemberFields": {
-		"createdAt": "{{member.user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
+		"createdAt": "",
 		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "",
-		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} назад"
+		"joinedWithTimestamp": ""
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "Все разрешения",
@@ -418,7 +418,7 @@
 		"joined": ""
 	},
 	"whoisUserFields": {
-		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} назад",
+		"createdAt": "",
 		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {

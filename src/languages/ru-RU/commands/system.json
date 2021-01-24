@@ -58,7 +58,7 @@
 	},
 	"disableWarn": "",
 	"dmNotSent": "",
-	"dmSent": "",
+	"dmSent": "Я отправила вам личное сообщение.",
 	"enable": "",
 	"enableDescription": "",
 	"enableExtended": {
@@ -69,13 +69,13 @@
 	"loadExtended": {
 		"extendedHelp": ""
 	},
-	"loadError": "",
+	"loadError": "{{REDCROSS}} Не удалось загрузить {{type}}: {{name}}. Причина: {{error, jsCodeBlock}}",
 	"loadFail": "",
 	"reboot": "",
-	"rebootDescription": "",
+	"rebootDescription": "Перезагружает бота.",
 	"rebootExtended": {
 		"extendedHelp": "",
-		"reminder": ""
+		"reminder": "Только владельцы могут использовать эту команду"
 	},
 	"reload": "",
 	"reloadAll": "",

@@ -172,13 +172,14 @@ export abstract class SettingsCollection<T extends BaseEntity> extends Collectio
 	public write<R>(key: string, cb: SettingsCollectionCallback<T, R>): Promise<R>;
 	public async write<R>(key: string, cb: readonly [keyof T, T[keyof T]][] | SettingsCollectionCallback<T, R>): Promise<any> {
 		const lock = this.acquireLock(key);
+
+		// Acquire a write lock:
+		await lock.writeLock();
+
+		// Fetch the entry:
+		const settings = this.get(key) ?? (await this.unlockOnThrow(this.processFetch(key), lock));
+
 		try {
-			// Acquire a write lock:
-			await lock.writeLock();
-
-			// Fetch the entry:
-			const settings = this.get(key) ?? (await this.processFetch(key));
-
 			// If a callback was given, call it, receive its return, save the settings, and return:
 			if (typeof cb === 'function') {
 				const result = await cb(settings);
@@ -194,12 +195,24 @@ export abstract class SettingsCollection<T extends BaseEntity> extends Collectio
 			// Now we save, and return undefined:
 			await settings.save();
 			return undefined;
+		} catch (error) {
+			await settings.reload();
+			throw error;
 		} finally {
 			lock.unlock();
 		}
 	}
 
 	public abstract fetch(key: string): Promise<T>;
+
+	private async unlockOnThrow(promise: Promise<T>, lock: RWLock) {
+		try {
+			return await promise;
+		} catch (error) {
+			lock.unlock();
+			throw error;
+		}
+	}
 
 	private async processFetch(key: string): Promise<T> {
 		const previous = this.queue.get(key);

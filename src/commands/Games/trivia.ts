@@ -30,9 +30,9 @@ import type { TFunction } from 'i18next';
 	],
 	[
 		'timespan-seconds',
-		(arg, _, message) => {
+		async (arg, _, message) => {
 			if (!arg) return Time.Second * 30;
-			let duration = message.client.arguments.get('timespan')!.run(arg, _, message);
+			let duration = await message.client.arguments.get('timespan')!.run(arg, _, message);
 			// In case of a duration of more than 1 minute then reset it to the default of 30 seconds
 			if (duration > Time.Minute) duration = Time.Second * 30;
 			return duration / 1000;
@@ -52,6 +52,9 @@ export default class extends SkyraCommand {
 			number?
 		]
 	) {
+		// If a question was a true/false, set it as boolean:
+		if (questionType === QuestionType.TrueFalse) questionType = QuestionType.Boolean;
+
 		const t = await message.fetchT();
 		if (this.#channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.TriviaActiveGame);
 
@@ -61,7 +64,7 @@ export default class extends SkyraCommand {
 			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
-				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
+				questionType === QuestionType.Boolean
 					? ['True', 'False']
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
@@ -93,8 +96,9 @@ export default class extends SkyraCommand {
 					if (!winner) return message.channel.send(t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
 					return message.channel.send(t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
-		} catch {
+		} catch (error) {
 			this.#channels.delete(message.channel.id);
+			this.context.client.logger.fatal(error);
 			throw t(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}

@@ -83,8 +83,8 @@
 			"population": "Население"
 		}
 	},
-	"countryTimezone": "",
-	"countryTimezone_plural": "",
+	"countryTimezone": "Часовой пояс: {{timezone.0}}",
+	"countryTimezone_plural": "Часовые пояса: {{timezone, andList}}",
 	"countryTitles": {
 		"LANGUAGES": "Языки",
 		"OTHER": "",

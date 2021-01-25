@@ -1,1 +1,5 @@
-{}
+{
+	"invalid": "{{name}} muss eine Zahl oder ein Zahlenbereich sein.",
+	"max_plural": "{{name}} akzeptiert maximal {{maximum}} Zahlen",
+	"max": "{{name}} akzeptiert maximal {{maximum}} Zahlen"
+}

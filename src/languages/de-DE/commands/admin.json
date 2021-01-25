@@ -1,96 +1,96 @@
 {
-	"blocklistDescription": "",
+	"blocklistDescription": "Sperre oder erlaube Benutzer und Gilden davon meine Funktionen zu nutzen.",
 	"blocklistExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Blockiere Benutzer die Funktionen missbrauchen von zukünftiger Benutzung, böse böse Menschen!"
 	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
-	"confNoKey": "",
-	"confNoValue": "",
-	"confGuarded": "",
-	"confUpdated": "",
-	"confKeyNotArray": "",
-	"confGetNoExt": "",
-	"confGet": "",
-	"confReset": "",
-	"confNochange": "",
-	"confServerDescription": "",
+	"blocklistResetSuccess": "{{GREENTICK}} Gesperrte Benutzer und Gilden erfolgreich zurückgesetzt",
+	"blocklistSaveSuccess": "{{GREENTICK}} Gesperrte Benutzer und/oder Gilden wurden erfolgreich aktualisiert",
+	"confNoKey": "Ein Schlüssel muss angegeben werden",
+	"confNoValue": "Ein Wert muss angegeben werden",
+	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",
+	"confUpdated": "Schlüssel **{{key}}**: `{{response}} ` wurde erfolgreich aktualisiert",
+	"confKeyNotArray": "Dieser Schlüssel ist nicht vom Typ Array. Verwende stattdessen die Aktion 'Zurücksetzen'.",
+	"confGetNoExt": "Der Schlüssel **{{key}}** scheint nicht zu existieren.",
+	"confGet": "Der Wert für den Schlüssel **{{key}}** ist: `{{value}}`",
+	"confReset": "Der Schlüssel **{{key}}** wurde zurückgesetzt auf: `{{value}}`",
+	"confNochange": "Der Wert für **{{key}}** war bereits dieser Wert.",
+	"confServerDescription": "Einstellungen für jeden Server definieren.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Erlaubt dir, Skyra von Discord als schnelle Alternative zum Web-Dashboard (<https://skyra.pw>) zu konfigurieren."
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
-	"confUser": "",
-	"confSettingNotSet": "",
-	"heapSnapshotDescription": "",
+	"confServer": "**Servereinstellung {{key}}**\n{{list}}",
+	"confUserDescription": "Benutzerdefinierte Einstellungen.",
+	"confDashboardOnlyKey": "`{{key}}` kann nur über das Web-Dashboard konfiguriert werden (<https://skyra.pw>)",
+	"confUser": "**Benutzereinstellung {{key}}**\n{{list}}",
+	"confSettingNotSet": "Nicht festgelegt",
+	"heapSnapshotDescription": "Erzeugt einen Heapdump um Speicherleaks zu finden.",
 	"heapSnapshotExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Der Heapsnapshot-Command ist sehr nützlich für Bots mit Speicherproblemen. Er verwendet er das heapdump-modul, das den gesamten Prozess für einen Moment einfriert, um alle Elemente aus dem HEAP des Prozesses zu analysieren, Teile NIEMALS die Heapsnapshot-Dateien mit irgendjemandem, da alle Botdateien im Dump enthalten ist.\n\nUm Heapsnapshot-Dateien zu öffnen, öffne Google Chrome, dann die Entwickler-Tools, wähle die Registerkarte Speicher, und in Profilen, klicke auf die untere Schaltfläche \"Laden\". Danach öffnet sich das Profil und du erhälst eine Tabelle aller Objekte des Prozesses, viel Spaß!\n\n\n\nP.S: Heapsnapshot-Dateien sind so groß wie die Menge an Arbeitsspeicher die der Prozess verwendet, große Bots können daher bei Snapshots viel länger einfrieren und die Dateien können viel größer sein."
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Einzigartige Rollensets verwalten.",
 	"rolesetExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Ein Rollenset ist eine Gruppe von Rollen, die Skyra als einzigartig für alle Mitglieder des Servers identifiziert, d.h. ein Rollenset namens `Region` könnte die Rollen `Afrika`, `Amerika`, `Asien` und `Europa` beinhalten, und Mitglieder können nur eine von ihnen haben. Dies ist wie eine Art \"Regel\", die in den folgenden drei Situationen angewendet wird:\n\n- Wenn jemand eine Rolle über den \"Rollen\"-Command beansprucht.\n- Wenn jemand eine Rolle als Reaktionsrolle beansprucht.\n- Wenn jemand eine Rolle entweder manuell oder von einem anderen Bot erhält.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Hinzufügen",
+				"Erstelle ein neues Rollenset oder füge eine Rolle zu einem existierenden Set hinzu."
 			],
 			[
-				"",
-				""
+				"Entfernen",
+				"Entferne eine Rolle aus einem existierenden Rollenset."
 			],
 			[
-				"",
-				""
+				"Zurücksetzen",
+				"Entfernt alle Rollen aus einem Rollenset oder, wenn nicht spezifiziert, aus allen vorhandenen Rollensets."
 			],
 			[
-				"",
-				""
+				"Liste",
+				"Listet alle Rollensets auf."
 			],
 			[
-				"",
-				""
+				"Automatisch",
+				"Fügt ein Rollenset hinzu oder entfernt es."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"füge Region Amerika hinzu",
+			"füge Regionen Afrika Amerika Asien Europa hinzu",
+			"entferne Region Amerika",
+			"Zurücksetzen",
+			"Regionen zurücksetzen",
+			"Liste",
+			"Region Amerika",
+			"Regionen Afrika Amerika Asien Europa"
 		],
-		"reminder": ""
+		"reminder": "Dieser Command kann mehrere Rollen gleichzeitig hinzufügen und/oder entfernen."
 	},
-	"rolesetCreated": "",
-	"rolesetAdded": "",
-	"rolesetInvalidName": "",
-	"rolesetRemoved": "",
-	"rolesetResetEmpty": "",
-	"rolesetResetAll": "",
-	"rolesetResetNotExists": "",
-	"rolesetResetGroup": "",
-	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
-	"confMenuNopermissions": "",
-	"confMenuRenderAtFolder": "",
-	"confMenuRenderAtPiece": "",
-	"confMenuRenderNokeys": "",
-	"confMenuRenderSelect": "",
+	"rolesetCreated": "Das einzigartige Rollenset {{name}} wurde mit folgenden Rollen erstellt: {{roles, andList}}",
+	"rolesetAdded": "Die einzigartige Rollenset {{name}} wurde aktualisiert und enthält nun auch die folgenden Rollen: {{roles, andList}}.",
+	"rolesetInvalidName": "Du kannst das einzigartige Rollenset {{name}} nicht entfernen, da es nicht existiert.",
+	"rolesetRemoved": "Das einzigartige Rollenset {{name}} wird folgende Rollen nicht mehr enthalten: {{roles, andList}}",
+	"rolesetResetEmpty": "{{REDCROSS}} In dieser Gruppe sind keine Rollensets konfiguriert.",
+	"rolesetResetAll": "{{GREENTICK}} Erfolgreich alle Rollensets entfernt.",
+	"rolesetResetNotExists": "{{REDCROSS}} Das Rollenset `{{name}}` existiert nicht auf diesem Server.",
+	"rolesetResetGroup": "{{GREENTICK}} Erfolgreich das Rollenset `{{name}}` vom Server entfernt.",
+	"rolesetUpdated": "Das einzigartige Rollenset {{name}} wurde aktualisiert.",
+	"rolesetNoRolesets": "Du hast keine Rollensets.",
+	"confMenuNopermissions": "Ich brauche die {{ADD_REACTIONS, permissions}} und {{MANAGE_MESSAGES, permissions}} Berechtigungen um das Menü zeigen zu können.",
+	"confMenuRenderAtFolder": "Momentan bei: 📁 {{path}}",
+	"confMenuRenderAtPiece": "Momentan bei: ⚙️ {{path}}",
+	"confMenuRenderNokeys": "Es gibt keine konfigurierbaren Schlüssel für diesen Ordner",
+	"confMenuRenderSelect": "Bitte gebe einen der Namen der folgenden Einträge ein",
 	"confMenuRenderTctitle": "",
-	"confMenuRenderUpdate": "",
-	"confMenuRenderRemove": "",
-	"confMenuRenderReset": "",
-	"confMenuRenderUndo": "",
-	"confMenuRenderCvalue": "",
-	"confMenuRenderBack": "",
-	"confMenuInvalidKey": "",
-	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
+	"confMenuRenderUpdate": "• Aktualisiere Wert → `set <value>`",
+	"confMenuRenderRemove": "• Entferne Wert → `remove <value>`",
+	"confMenuRenderReset": "• Wert zurücksetzen → `reset`",
+	"confMenuRenderUndo": "• Update rückgängig → `undo`",
+	"confMenuRenderCvalue": "Aktueller Wert: **``{{value}}``**",
+	"confMenuRenderBack": "Drücke ◀ um zurückzugehen",
+	"confMenuInvalidKey": "Ungültiger Schlüssel, bitte versuche es erneut mit einer der folgenden Optionen.",
+	"confMenuInvalidAction": "Ungültige Aktion, bitte versuche es erneut mit einer der folgenden Optionen.",
+	"confMenuSaved": "Alle Änderungen erfolgreich gespeichert.",
+	"updateDescription": "Bot aktualisieren",
 	"updateExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Ein bisschen polieren und ein wenig Aufräumen und wer hätte es gedacht, schon bin ich ein nagelneuer Android!"
 	}
 }

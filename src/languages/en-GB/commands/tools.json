@@ -83,6 +83,8 @@
 			"population": ""
 		}
 	},
+	"countryTimezone": "",
+	"countryTimezone_plural": "",
 	"countryTitles": {
 		"LANGUAGES": "",
 		"OTHER": "",

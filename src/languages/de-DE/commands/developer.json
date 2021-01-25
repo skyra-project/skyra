@@ -1,31 +1,31 @@
 {
-	"yarnDescription": "",
+	"yarnDescription": "Antwortet mit Informationen zu einem NodeJS-Paket mit Hilfe der Registry des Yarn-Pakets",
 	"yarnExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Dies ist für NodeJS-Entwickler, die schnell Informationen über ein Paket finden möchten, das auf [npm]veröffentlicht wurde (https://npmjs.com)",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Paket",
+				"Der Name des zu suchenden Pakets, muss exakt übereinstimmen"
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
 		]
 	},
-	"yarnEmbedDescriptionAuthor": "",
-	"yarnEmbedDescriptionDateCreated": "",
-	"yarnEmbedDescriptionDateModified": "",
-	"yarnEmbedDescriptionDependenciesLabel": "",
-	"yarnEmbedDescriptionDependenciesNoDeps": "",
-	"yarnEmbedDescriptionDeprecated": "",
-	"yarnEmbedDescriptionLatestVersion": "",
-	"yarnEmbedDescriptionLicense": "",
-	"yarnEmbedDescriptionMainFile": "",
-	"yarnEmbedDescriptionMaintainers": "",
-	"yarnEmbedMoreText": "",
-	"yarnNoPackage": "",
-	"yarnPackageNotFound": "",
-	"yarnUnpublishedPackage": ""
+	"yarnEmbedDescriptionAuthor": "Autor: {{author}}",
+	"yarnEmbedDescriptionDateCreated": "❯ Erstellungsdatum: **{{dateCreated}}**",
+	"yarnEmbedDescriptionDateModified": "❯ Bearbeitungsdatum: **{{dateModified}}**",
+	"yarnEmbedDescriptionDependenciesLabel": "__*Abhängigkeiten:*__",
+	"yarnEmbedDescriptionDependenciesNoDeps": "Keine Abhängigkeiten {{GREENTICK}}!",
+	"yarnEmbedDescriptionDeprecated": "❯ Veraltungsnotiz: **{{deprecated}}**",
+	"yarnEmbedDescriptionLatestVersion": "❯ Neueste Version: **{{latestVersionNumber}}**",
+	"yarnEmbedDescriptionLicense": "❯ Lizenz: **{{license}}**",
+	"yarnEmbedDescriptionMainFile": "❯ Hauptdatei: **{{mainFile}}**",
+	"yarnEmbedDescriptionMaintainers": "❯ Verwalter: **{{maintainers, andList}}**",
+	"yarnEmbedMoreText": "mehr...",
+	"yarnNoPackage": "{{REDCROSS}} Es tut mir leid, aber du musst mir den Namen eines Pakets geben, um suchen zu können.",
+	"yarnPackageNotFound": "Es tut mir leid, aber ich konnte kein Paket mit dem Namen `{{pkg}}` in der Registry finden.",
+	"yarnUnpublishedPackage": "Was für ein dummer Entwickler, der {{pkg}} gemacht hat! Er hat es wieder entfernt!"
 }

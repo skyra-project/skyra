@@ -1,171 +1,171 @@
 {
-	"8ballDescription": "",
+	"8ballDescription": "Skyra wird die heilige Bibel lesen, um die richtige Antwort für deine Frage zu finden.",
 	"8ballExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Dieser Command gibt die eine zufällige Frage basierend auf einem Fragentyp. Sei vorsichtig, sie könnte zu schlau sein.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Frage",
+				"Die Heilige Frage"
 			]
 		],
 		"examples": [
-			""
+			"Warum ging das Huhn über die Straße?"
 		]
 	},
-	"choiceDescription": "",
+	"choiceDescription": "Ene, mene, miste, deine Mutter rappelt in der Kiste...",
 	"choiceExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Ich habe eine Existenzkrise... soll ich das Geschirr waschen oder aus dem Fenster werfen? Die Suche geht weiter. Liste mir kommagetrennte Sachen auf und ich werde eine aussuchen. Nebenbei, Ich bin nicht verantwortlich für was danach passiert.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Wörter",
+				"Eine durch Komma getrennte Liste von Wörtern."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Sollte Geschirr waschen, wirft das Geschirr aus dem Fenster",
+			"Katze, Hund"
 		]
 	},
-	"changemymindDescription": "",
+	"changemymindDescription": "Skyre ist die beste, change my mind.",
 	"changemymindExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Ich denke trotzdem dass ich die beste bin, change my mind. Ich mache ein Bild mit deinem Avatar und etwas Text auf einem Papier.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Text",
+				"Der Satz den du willst."
 			]
 		],
 		"examples": [
-			""
+			"Skyra ist der beste Bot auf diesem Server"
 		]
 	},
-	"diceDescription": "",
+	"diceDescription": "Würfel mit dem d20-Syntax.",
 	"diceExtended": {
 		"extendedHelp": "",
 		"examples": [
-			"",
-			"",
-			""
+			"370d24",
+			"100d6",
+			"6"
 		]
 	},
-	"escaperopeDescription": "",
+	"escaperopeDescription": "Benutze das Fluchtseil aus Pokémon.",
 	"escaperopeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Skyra** benutzte **Fluchtseil**."
 	},
-	"howToFlirtDescription": "",
+	"howToFlirtDescription": "Captain America, du weißt nicht wie man flirtet.",
 	"howToFlirtExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Lass mich dir zeigen wie man effektiv mit jemandem flirtet mit der Technik die Tony Stark bei Captain America verwendet. Ich garantiere dir dass du ihn kriegst.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Benutzer",
+				"Der Nutzer den du anflirten möchtest."
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
-	"loveDescription": "",
+	"loveDescription": "Liebesmeter, online!",
 	"loveExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Hey! Wilst du das Liebesmeter überprüfen? Es ist ein komisches Gerät, aber viele Menschen lieben es! Sei nicht schüchtern und probier es!",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Benutzer",
+				"Der zu bewertende Benutzer."
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
-	"markovDescription": "",
+	"markovDescription": "Erzeugt eine Markov-Kette aus dem Textchannel.",
 	"markovExtended": {
 		"extendedHelp": ""
 	},
-	"norrisDescription": "",
+	"norrisDescription": "Viel Spaß beim Lesen von Chuck Norris Witzen.",
 	"norrisExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Wusstest du, dass Chuck norris **nicht** die falsche Nummer anruft, sondern du den falschen Anruf **beantwortest**? Woah, mindblow. Er warf auch einen Karton Milch und schuf die Milchstraße. Dieser Befehl ruft chucknorris.io ab und sucht sich einen Fakt aus (gehe nicht davon aus, dass sie falsch sind), so dass du ihn lesen kannst"
 	},
-	"rateDescription": "",
+	"rateDescription": "Lass Bots Meinungen haben und jemanden bewerten.",
 	"rateExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Nur weil ich ein Bot bin bedeutet das nicht, dass ich dich nicht richtig bewerten kann. Ich kann dich mit einem Zufallszahlengenerator bewerten, um den Prozess zu vereinfachen. Okay okay, es ist nicht fair, aber ich meine... Ich kann dir auch eine 💯 geben.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Benutzer",
+				"Der zu bewertende Benutzer."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Skyra",
+			"Ich"
 		]
 	},
-	"shindeiruDescription": "",
+	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "\"Du bist schon tot\" Japanisch: お前はもう死んでいる; Omae Wa Mou Shindeiru, ist ein Ausdruck aus der Manga und Anime Serie Fist of the North Star. Diese zeigt einen Comicstrip des Charakters, der die vorgenannten Worte ausspricht, woraufhin der Gegner mit \"nani?\" (was?) antwortet."
 	},
-	"xkcdDescription": "",
+	"xkcdDescription": "Lese Comics von XKCD.",
 	"xkcdExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "**xkcd** ist ein Archiv für Nerd-Comics voller Mathematik, Wissenschaft, Sarkasmus und Sprachen. Wenn du kein Argument angibst, werde ich einen zufälligen Comic von xkcd auswählen. Wenn du eine Nummer angibst werde ich den Comic mit dieser Nummer abrufen. Aber wenn du einen Titel/Text/Thema angibst, werde ich einen Comic suchen, der mit dieser Eingabe übereinstimmt und ihn anzeigen. Zum Beispiel wird `Skyra, xkcd Curiosity` die Comicnummer 1091 anzeigen.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Suchanfrage",
+				"Entweder die Nummer des Comics, oder der zu suchende Titel."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"1091",
+			"Neugierde"
 		]
 	},
-	"punDescription": "",
+	"punDescription": "Zeigt dir einen zufälligen Wortwitz.",
 	"punExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Ein Steak Wortwitz ist selten gut durch.\nHol dir deine tägliche Dosis dad jokes von icanhazdadjoke.com und lache über witzige Sprüche."
 	},
-	"wakandaDescription": "",
+	"wakandaDescription": "Hilfreiche Beschreibungen? Das machen wir hier nicht",
 	"wakandaExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Erstellt ein Bild-Makro mit dem [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) unter Verwendung des angegebenen Benutzers."
 	},
-	"8ballOutput": "",
+	"8ballOutput": "🎱 Frage von {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
-		"When": "",
-		"What": "",
-		"HowMuch": "",
-		"HowMany": "",
-		"Why": "",
-		"Who": ""
+		"When": "wann",
+		"What": "Was",
+		"HowMuch": "Wieviel",
+		"HowMany": "wie viele",
+		"Why": "Warum",
+		"Who": "Wer"
 	},
 	"8ballWhen": [
-		"",
-		"",
-		"",
-		"",
-		""
+		"Bald™",
+		"Vielleicht morgen.",
+		"Vielleicht nächstes Jahr...",
+		"Jetzt.",
+		"In ein paar Monaten."
 	],
 	"8ballWhat": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Ein Flugzeug.",
+		"Was? Frage erneut.",
+		"Ein Geschenk.",
+		"Nichts.",
+		"Ein Ring.",
+		"Ich weiß nicht, vielleicht etwas."
 	],
 	"8ballHowMuch": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Viel.",
+		"Ein bisschen.",
+		"Wenige.",
+		"Frag mich morgen.",
+		"Weiß ich nicht, frag einen Physiker.",
+		"Nichts.",
+		"Innerhalb von 10 und 1000L.",
+		"10e1000L.",
+		"2 oder 3 Liter, ich erinnere mich nicht.",
+		"Unendlichkeit.",
+		"1010 Liter."
 	],
 	"8ballHowMany": [
-		"",
-		"",
+		"Viel.",
+		"Ein bisschen.",
 		"",
 		"",
 		"",
@@ -222,30 +222,30 @@
 	],
 	"choiceOutput": "",
 	"choiceMissing": "",
-	"choiceDuplicates": "",
-	"diceOutput": "",
-	"diceRollsError": "",
-	"diceSidesError": "",
-	"escaperopeOutput": "",
-	"loveLess45": "",
-	"loveLess75": "",
-	"loveLess100": "",
-	"love100": "",
-	"loveItself": "",
-	"loveResult": "",
-	"markovTimer": "",
-	"markovNoMessages": "",
-	"norrisOutput": "",
-	"rateOutput": "",
+	"choiceDuplicates": "Warum sollte ich doppelte Wörter akzeptieren? \"{{words}}\".",
+	"diceOutput": "Du hast den Würfel gerollt! Du hast eine: **{{result}}**",
+	"diceRollsError": "Die Anzahl der Würfelvorgänge muss eine Zahl zwischen 1 und 1024 sein.",
+	"diceSidesError": "Die Anzahl der Seiten muss eine Zahl zwischen 3 und 1024 sein.",
+	"escaperopeOutput": "**{{user}}** benutzte **Fluchtseil**",
+	"loveLess45": "Versuch es beim nächstes mal erneut...",
+	"loveLess75": "Gut genug!",
+	"loveLess100": "Guter Treffer!",
+	"love100": "Perfekte Übereinstimmung!",
+	"loveItself": "Du bist ein spezielles Wesen und solltest dich mehr als alle anderen Lieben <3",
+	"loveResult": "Ergebnis",
+	"markovTimer": "In {{timer}} verarbeitet.",
+	"markovNoMessages": "Der Channel oder Benutzer hat keine Nachrichten.",
+	"norrisOutput": "Chuck Norris",
+	"rateOutput": "**{{author}}**, ich würde **{{userToRate}}** eine **{{rate}}**/100 {{emoji}} geben",
 	"rateMyself": [
-		"",
-		""
+		". Ich liebe mich sehr 😊",
+		"Mich Selbst"
 	],
 	"rateOwners": [
-		"",
-		""
+		". Ich liebe meine Entwickler sehr 🥰",
+		"meine Entwickler"
 	],
-	"punError": "",
-	"xkcdComics": "",
-	"xkcdNotfound": ""
+	"punError": "Hoppla, leider ist etwas schiefgegangen. Versuch es später nochmal.",
+	"xkcdComics": "Es gibt nur {{amount}} Comics.",
+	"xkcdNotfound": "Ich habe weit und breit gesucht, aber ich hatte kein Glück diesen Comic zu finden, versuche es später noch einmal oder versuche einen anderen!"
 }

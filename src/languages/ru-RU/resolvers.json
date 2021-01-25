@@ -28,6 +28,7 @@
 	"dateSuffix": "",
 	"invalidBool": "",
 	"invalidChannel": "",
+	"invalidCommand": "",
 	"invalidChannelName": "",
 	"invalidCustom": "",
 	"invalidDate": "",
@@ -65,7 +66,7 @@
 	"multiTooFew": "",
 	"positiveAmount": "",
 	"stringSuffix": "",
-	"unknownChannel": "",
-	"unknownRole": "",
-	"unknownUser": ""
+	"unknownChannel": "Неизвестный канал",
+	"unknownRole": "Неизвестная роль",
+	"unknownUser": "Неизвестный пользователь"
 }

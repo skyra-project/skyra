@@ -28,6 +28,7 @@
 	"dateSuffix": " seconden",
 	"invalidBool": "{{name}} moet waar of onwaar zijn.",
 	"invalidChannel": "{{name}} moet een kanaal tag of een geldig kanaal id zijn.",
+	"invalidCommand": "",
 	"invalidChannelName": "{{name}} moet een geldige kanaalnaam, -id of -tag zijn.",
 	"invalidCustom": "{{name}} moet een geldige {{type}} zijn.",
 	"invalidDate": "{{name}} moet een geldige datum zijn.",

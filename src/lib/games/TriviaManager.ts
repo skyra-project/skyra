@@ -1,7 +1,15 @@
 import { fetch, FetchResultTypes } from '#utils/util';
 
+export const enum TriviaResponseCode {
+	Success,
+	NoResults,
+	InvalidParameter,
+	TokenNotFound,
+	TokenEmpty
+}
+
 export interface TriviaResultOk {
-	response_code: number;
+	response_code: TriviaResponseCode;
 	results: QuestionData[];
 }
 
@@ -63,7 +71,8 @@ export async function getQuestion(category: number, difficulty = QuestionDifficu
 	url.searchParams.append('difficulty', difficulty);
 	url.searchParams.append('type', questionType);
 
-	const { response_code, results } = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
+	const data = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
+	const { response_code, results } = data;
 	if (response_code === 0 && results.length) return results[0];
 	throw new Error('Invalid request');
 }

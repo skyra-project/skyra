@@ -308,7 +308,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 
 	private static async parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = Number(input);
-		if (parsed < 0) {
+		if (!Number.isInteger(input) || parsed < 0) {
 			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name });
 		}
 
@@ -324,7 +324,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 
 	private static async parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = new Duration(input);
-		if (parsed.offset < 0) {
+		if (!Number.isInteger(input) || parsed.offset < 0) {
 			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name });
 		}
 

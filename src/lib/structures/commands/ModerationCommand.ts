@@ -42,7 +42,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			runIn: ['text'],
 			usage:
 				options.usage ?? options.optionalDuration
-					? '<users:...user{,10}> [duration:timespan] [reason:...string]'
+					? '<users:...user{,10}> [duration:timespan{0,157680000000}] [reason:...string]'
 					: '<users:...user{,10}> [reason:...string]',
 			usageDelim: ' ',
 			...options

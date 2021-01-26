@@ -16,7 +16,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '<emoji:string>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [emoji]: [string]) {
 		const t = await message.fetchT();
 

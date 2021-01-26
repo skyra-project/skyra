@@ -8,7 +8,7 @@ import type { Message } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.System.DonateExtended,
 	guarded: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const t = await message.fetchT();
 		try {

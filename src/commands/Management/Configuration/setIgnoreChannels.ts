@@ -16,7 +16,7 @@ import type { TextChannel } from 'discord.js';
 	runIn: ['text'],
 	usage: '<here|channel:textchannelname>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (!isTextBasedChannel(channel)) throw await message.resolveKey(LanguageKeys.Misc.ConfigurationTextChannelRequired);

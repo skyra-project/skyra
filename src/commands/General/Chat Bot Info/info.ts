@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.General.InfoExtended,
 	guarded: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		return message.send(await message.resolveKey(LanguageKeys.Commands.General.InfoBody));
 	}

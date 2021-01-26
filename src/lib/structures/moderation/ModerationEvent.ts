@@ -1,8 +1,8 @@
 import type { GuildEntity } from '#lib/database';
 import type { KeyOfType } from '#lib/types/Utils';
 import { CLIENT_ID } from '#root/config';
+import { Event } from '@sapphire/framework';
 import type { Guild, MessageEmbed } from 'discord.js';
-import { Event } from 'klasa';
 import type { HardPunishment } from './ModerationMessageEvent';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 

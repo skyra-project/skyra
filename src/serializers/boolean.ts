@@ -2,16 +2,14 @@ import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Awaited } from '@sapphire/utilities';
-import type { AliasPieceOptions } from 'klasa';
 
-@ApplyOptions<AliasPieceOptions>({
+@ApplyOptions<Serializer.Options>({
 	aliases: ['bool']
 })
-export default class UserSerializer extends Serializer<boolean> {
-	public parse(value: string, { t, entry }: SerializerUpdateContext) {
-		const boolean = value.toLowerCase();
-		if (t(LanguageKeys.Resolvers.BoolTrueOptions).includes(boolean)) return this.ok(true);
-		if (t(LanguageKeys.Resolvers.BoolFalseOptions).includes(boolean)) return this.ok(false);
+export class UserSerializer extends Serializer<boolean> {
+	public async parse(args: Serializer.Args, { t, entry }: SerializerUpdateContext) {
+		const boolean = await args.pickResult('boolean');
+		if (boolean.success) return this.ok(boolean.value);
 		return this.error(t(LanguageKeys.Resolvers.InvalidBool, { name: entry.name }));
 	}
 

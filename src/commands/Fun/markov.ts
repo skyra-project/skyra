@@ -22,10 +22,10 @@ const kCodeZ = 'Z'.charCodeAt(0);
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
 	runIn: ['text'],
-	requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
 	usage: '[channel:textchannelname{2}] [user:username]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
 	private readonly kInternalMessageCache = new WeakMap<TextChannel, Collection<string, Message>>();

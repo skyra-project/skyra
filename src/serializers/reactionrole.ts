@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { displayEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<ReactionRole> {
-	public parse(_: string, { t }: SerializerUpdateContext) {
+export class UserSerializer extends Serializer<ReactionRole> {
+	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 

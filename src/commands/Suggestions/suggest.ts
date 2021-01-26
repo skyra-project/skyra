@@ -20,7 +20,7 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 	usage: '<suggestion:string>',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private kChannelPrompt = this.definePrompt('<channel:textChannel|here>');
 

@@ -21,7 +21,7 @@ import { inspect } from 'util';
 	usage: '<expression:str>',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
 
 	public async run(message: Message, [code]: [string]) {

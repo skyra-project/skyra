@@ -1,8 +1,8 @@
 import { Colors } from '#lib/types/Constants';
 import { rootFolder } from '#utils/constants';
+import { Command, Event } from '@sapphire/framework';
 import { codeBlock, inlineCodeBlock } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
-import { Command, Event } from 'klasa';
 import type { QueryFailedError } from 'typeorm';
 
 export default class extends Event {

@@ -46,7 +46,7 @@ import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 			type === 'add' && channel ? message.client.arguments.get('emoji')!.run(arg, possible, message) : undefined
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage) {
 		const [reactionRoles, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.ReactionRoles], settings.getLanguage()]);
 		if (reactionRoles.length === 0) {

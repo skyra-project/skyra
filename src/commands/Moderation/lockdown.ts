@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public auto(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
 		return message.guild.security.lockdowns.has(channel.id) ? this.unlock(message, [channel]) : this.lock(message, [channel, duration]);
 	}

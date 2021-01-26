@@ -36,7 +36,7 @@ import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async menu(message: GuildMessage) {
 		return new SettingsMenu(message, await message.fetchT()).init();

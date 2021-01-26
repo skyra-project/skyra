@@ -6,9 +6,9 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMessageDelete })
 export default class extends Event {

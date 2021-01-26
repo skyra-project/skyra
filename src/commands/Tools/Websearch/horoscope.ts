@@ -46,7 +46,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [sign, day]: [Sunsigns, Days]) {
 		const t = await message.fetchT();
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(t, sign, day);

@@ -22,7 +22,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	usage: '[local|global] [user:username]',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 

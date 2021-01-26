@@ -8,7 +8,7 @@ import { CLIENT_ID } from '#root/config';
 import type { User } from 'discord.js';
 import { PieceContext, Usage } from 'klasa';
 
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
 	private prompt: Usage;
 

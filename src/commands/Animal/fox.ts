@@ -12,10 +12,10 @@ const url = new URL('https://randomfox.ca/floof');
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.FoxDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.FoxExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const { image } = await fetch<FoxResultOk>(url, FetchResultTypes.JSON);
 		return message.send(

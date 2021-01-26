@@ -14,14 +14,14 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '<text:string{1,50}>'
+	permissions: ['ATTACH_FILES'],
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, [text]: [string]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const text = await args.rest('string', { maximum: 50 });
 		const attachment = await this.generate(message.author, text);
 		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}

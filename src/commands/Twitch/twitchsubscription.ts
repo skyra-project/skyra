@@ -39,7 +39,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
@@ -105,7 +105,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kSettingsKey = GuildSettings.Notifications.Stream.Twitch.Streamers;
 

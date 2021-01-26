@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Events } from '#lib/types/Enums';
 import { kBigIntTransformer } from '#utils/util';
-import { Store } from 'klasa';
+import { Store } from '@sapphire/framework';
 import {
 	AfterInsert,
 	AfterLoad,

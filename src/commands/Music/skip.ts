@@ -6,21 +6,28 @@ import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceChannel } from 'discord.js';
 
+const flags = ['force'];
+
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.SkipDescription,
 	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
-	usage: '[force]'
+	strategyOptions: { flags }
 })
 export default class extends MusicCommand {
 	@requireSongPresent()
 	@requireSameVoiceChannel()
-	public async run(message: GuildMessage, [force = false]: [boolean]) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 		const { voiceChannel } = audio;
 
 		const listeners = voiceChannel?.listeners.length ?? 0;
+		const arg = args.nextMaybe();
+		const shouldForce = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 		if (listeners >= 4) {
-			const response = force ? await this.canSkipWithForce(message, voiceChannel!) : await this.canSkipWithoutForce(message, audio, listeners);
+			const response = shouldForce
+				? await this.canSkipWithForce(message, voiceChannel!)
+				: await this.canSkipWithoutForce(message, audio, listeners);
+
 			if (response !== null) return message.send(response);
 		}
 

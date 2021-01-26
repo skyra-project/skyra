@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
 export default class extends MusicCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;

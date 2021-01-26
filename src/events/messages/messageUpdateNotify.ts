@@ -7,9 +7,9 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { diffWordsWithSpace } from 'diff';
 import type { Message } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })
 export default class extends Event {

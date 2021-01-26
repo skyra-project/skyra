@@ -2,10 +2,10 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import type { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import type { Guild, GuildMember, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event, EventOptions } from 'klasa';
 
 const enum Matches {
 	Guild = '%GUILD%',

@@ -2,8 +2,8 @@ import { Serializer, SerializerUpdateContext, StickyRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<StickyRole> {
-	public parse(_: string, { t }: SerializerUpdateContext) {
+export class UserSerializer extends Serializer<StickyRole> {
+	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 

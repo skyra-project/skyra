@@ -12,7 +12,7 @@ import type { Piece } from 'klasa';
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<Piece:piece>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [piece]: [Piece]) {
 		piece.enabled = true;
 		return message.sendTranslated(LanguageKeys.Commands.System.Enable, [{ type: piece.store.name, name: piece.name }], { code: 'diff' });

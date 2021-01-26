@@ -29,7 +29,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async random(message: GuildMessage, [member]: [GuildMember?]): Promise<Message | Message[]> {
 		const [minimum, starboardChannelID, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Starboard.Minimum],

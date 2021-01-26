@@ -15,7 +15,7 @@ import { join } from 'path';
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '[user:username]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, [user = message.author]: [User]) {

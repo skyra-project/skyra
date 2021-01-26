@@ -30,7 +30,7 @@ import type { TFunction } from 'i18next';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
 		if (caseID === 'latest') caseID = await message.guild.moderation.count();
 

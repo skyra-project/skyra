@@ -16,6 +16,6 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 		const count = await audio.count();
 		await audio.clearTracks();
-		return message.sendTranslated(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
+		return message.channel.sendTranslated(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
 	}
 }

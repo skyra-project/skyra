@@ -13,13 +13,13 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<location:string>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [location]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const location = await args.rest('string');
+		const { t } = args;
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
-		const t = await message.fetchT();
 		const { status, ...timeData } = await this.fetchAPI(t, lat, lng);
 
 		if (status !== GoogleResponseCodes.Ok) throw t(handleNotOK(status));

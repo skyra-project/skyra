@@ -19,7 +19,7 @@ const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 	usage: '<color:string> [separator:integer{0,255}]',
 	usageDelim: ' >'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [input, diff = 10]: [string, number]) {
 		const { hex, hsl, rgb } = parse(input);
 

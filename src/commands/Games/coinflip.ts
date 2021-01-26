@@ -41,7 +41,7 @@ const enum CoinType {
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
 	public async run(message: Message, [guess, wager]: [CoinType | null, number | 'cashless']) {

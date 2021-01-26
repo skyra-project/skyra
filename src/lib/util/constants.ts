@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { Logger } from '#lib/logger/Logger';
 import { Colors, LanguageFormatters } from '#lib/types/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
+import { LogLevel } from '@sapphire/framework';
 import { ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { ClientOptions } from 'discord.js';
 import i18next, { FormatFunction } from 'i18next';
-import { LogLevel } from 'klasa';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
@@ -298,7 +297,7 @@ export const clientOptions: Partial<ClientOptions> = {
 		role: 2
 	},
 	logger: {
-		instance: new Logger({ level: DEV ? LogLevel.Debug : LogLevel.Info })
+		level: DEV ? LogLevel.Debug : LogLevel.Info
 	},
 	api: {
 		auth: ({

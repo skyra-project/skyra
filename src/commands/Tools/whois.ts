@@ -24,7 +24,7 @@ const { FLAGS } = Permissions;
 @CreateResolvers([
 	['username', (arg, possible, message) => (arg ? message.client.arguments.get('username')!.run(arg, possible, message) : message.author)]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, number][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],

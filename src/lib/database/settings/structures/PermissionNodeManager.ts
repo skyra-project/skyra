@@ -2,9 +2,9 @@ import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildE
 import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import Collection from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
-import { Store } from 'klasa';
 import type { IBaseManager } from '../base/IBaseManager';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;

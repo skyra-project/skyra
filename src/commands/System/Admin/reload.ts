@@ -35,7 +35,7 @@ import { Piece, Store } from 'klasa';
 
 	return 'everything';
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [piece]: [Piece | Store<Piece> | string | 'everything']) {
 		const t = await message.fetchT();
 

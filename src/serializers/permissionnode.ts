@@ -1,11 +1,11 @@
 import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures';
 import { isObject } from '@sapphire/utilities';
 import type { GuildMember, Role } from 'discord.js';
-import type { Command } from 'klasa';
 
-export default class UserSerializer extends Serializer<PermissionsNode> {
-	public parse(_: string, context: SerializerUpdateContext) {
+export class UserSerializer extends Serializer<PermissionsNode> {
+	public parse(_: Serializer.Args, context: SerializerUpdateContext) {
 		return this.error(context.t(LanguageKeys.Serializers.Unsupported));
 	}
 
@@ -40,11 +40,11 @@ export default class UserSerializer extends Serializer<PermissionsNode> {
 		}
 
 		// Check all commands
-		const commands = new Map<string, Command>();
+		const commands = new Map<string, SkyraCommand>();
 		for (const allowed of value.allow) {
 			if (commands.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
 
-			const command = guild.client.commands.get(allowed);
+			const command = guild.client.commands.get(allowed) as SkyraCommand | undefined;
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
 			commands.set(allowed, command);
@@ -53,7 +53,7 @@ export default class UserSerializer extends Serializer<PermissionsNode> {
 		for (const denied of value.deny) {
 			if (commands.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
 
-			const command = guild.client.commands.get(denied);
+			const command = guild.client.commands.get(denied) as SkyraCommand | undefined;
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.guarded) throw t(LanguageKeys.Serializers.PermissionNodeSecurityGuarded, { command: denied });

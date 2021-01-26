@@ -3,9 +3,9 @@ import { api } from '#lib/discord/Api';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.ChannelDelete, emitter: 'ws' })
 export default class extends Event {

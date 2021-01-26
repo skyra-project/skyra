@@ -37,7 +37,7 @@ import type { Command } from 'klasa';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
 		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
 

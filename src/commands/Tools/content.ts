@@ -26,7 +26,7 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 	if (target) return target;
 	throw await message.resolveKey(LanguageKeys.System.MessageNotFound);
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [, target]: [TextChannel, Message]) {
 		const attachments = target.attachments.size ? target.attachments.map((att) => `📁 <${att.url}>`).join('\n') : '';
 		const content = escapeCodeBlock(getContent(target) || ZeroWidthSpace);

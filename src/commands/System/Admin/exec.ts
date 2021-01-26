@@ -16,7 +16,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	usage: '<expression:string>',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [input]: [string]) {
 		const result = await exec(input, { timeout: Reflect.has(message.flagArgs, 'timeout') ? Number(message.flagArgs.timeout) : 60000 }).catch(
 			(error) => ({

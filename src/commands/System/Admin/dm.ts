@@ -12,7 +12,7 @@ import type { Message, MessageOptions, User } from 'discord.js';
 	usage: '<user:user> <message:...string>',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [user, content]: [User, string]) {
 		const attachment = message.attachments.size > 0 ? message.attachments.first()!.url : null;
 		const options: MessageOptions = {};

@@ -13,17 +13,19 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<item:str>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [item]: [string]) {
-		const t = await message.fetchT();
-		const itemDetails = await this.fetchAPI(t, item.toLowerCase());
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const item = (await args.rest('string')).toLowerCase();
+		const { t } = args;
+
+		const itemDetails = await this.fetchAPI(t, item);
 
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
 			availableInGen8: t(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
+
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

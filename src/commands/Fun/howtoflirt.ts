@@ -29,7 +29,7 @@ const imageCoordinates = [
 	cooldown: 30,
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })

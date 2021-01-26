@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { MessageLogsEnum } from '#utils/constants';
+import { Event } from '@sapphire/framework';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
 
 const TYPES = {
 	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,

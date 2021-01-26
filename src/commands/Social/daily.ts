@@ -20,7 +20,7 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	spam: true,
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const now = Date.now();
 

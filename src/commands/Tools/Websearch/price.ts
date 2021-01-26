@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		const t = await message.fetchT();
 		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));

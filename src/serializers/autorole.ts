@@ -2,19 +2,19 @@ import { RolesAuto, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<RolesAuto> {
-	public parse(value: string, { t, guild }: SerializerUpdateContext) {
-		const [id, rawPoints] = value.split(' ');
-		if (!id || !guild.roles.cache.has(id)) {
-			return this.error(t(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
+export class UserSerializer extends Serializer<RolesAuto> {
+	public async parse(args: Serializer.Args) {
+		const role = await args.pickResult('role');
+		if (!role.success) {
+			return this.error(args.t(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
 		}
 
-		const points = Number(rawPoints);
-		if (!Number.isSafeInteger(points)) {
-			return this.error(t(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
+		const points = await args.pickResult('integer');
+		if (!points.success) {
+			return this.error(args.t(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
 		}
 
-		return this.ok({ id, points });
+		return this.ok({ id: role.value.id, points: points.value });
 	}
 
 	public isValid(value: RolesAuto): Awaited<boolean> {

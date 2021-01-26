@@ -17,7 +17,7 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 	usageDelim: ',',
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, options: string[]) {
 		const t = await message.fetchT();
 

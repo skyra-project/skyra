@@ -3,7 +3,7 @@ import { resolveOnErrorCodes } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 
-export default class extends Task {
+export class UserTask extends Task {
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {

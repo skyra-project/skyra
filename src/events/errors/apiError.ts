@@ -1,5 +1,5 @@
+import { Event } from '@sapphire/framework';
 import { DiscordAPIError, HTTPError } from 'discord.js';
-import { Event } from 'klasa';
 
 const NEWLINE = '\n';
 

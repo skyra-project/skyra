@@ -43,7 +43,7 @@ const enum Filter {
 	usage: '<limit:integer{1,100}> [filter:filter|user:user] (position:position) (message:message)',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
 	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;

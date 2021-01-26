@@ -14,7 +14,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	runIn: ['text'],
 	usage: '<emoji:emoji>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [emoji]: [string]) {
 		const t = await message.guild.writeSettings((settings) => {
 			const t = settings.getLanguage();

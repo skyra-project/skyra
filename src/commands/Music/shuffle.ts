@@ -16,6 +16,6 @@ export default class extends MusicCommand {
 		await audio.shuffleTracks();
 
 		const amount = await audio.count();
-		await message.sendTranslated(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
+		await message.channel.sendTranslated(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
 	}
 }

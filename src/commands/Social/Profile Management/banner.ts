@@ -25,7 +25,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	usage: '<buy|reset|set|show:default> (banner:banner)',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private readonly banners: Map<string, BannerCache> = new Map();

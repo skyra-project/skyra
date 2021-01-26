@@ -6,8 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.PromoteDescription,
-	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended,
-	usage: '<number:integer>'
+	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended
 })
 export default class extends MusicCommand {
 	@requireDj()
@@ -15,7 +14,9 @@ export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
-	public async run(message: GuildMessage, [index]: [number]) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
+		let index = await args.pick('integer');
+
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 

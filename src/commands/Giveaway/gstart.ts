@@ -28,7 +28,7 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
 		const offset = time.getTime() - Date.now();
 

@@ -2,18 +2,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { sleep } from '#utils/Promisified/sleep';
+import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
+const kReactablePermissions = new Permissions(['VIEW_CHANNEL', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY']);
 
-export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) {
-	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(this);
-		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
+export class SkyraMessage extends Structures.get('Message') {
+	public get reactable() {
+		return isGuildBasedChannel(this.channel) ? this.channel.permissionsFor(this.guild!.me!)!.has(kReactablePermissions, false) : true;
 	}
 
 	public async prompt(content: string, time = 30000) {
@@ -100,8 +100,8 @@ declare module 'discord.js' {
 		max?: number;
 	}
 
-	interface Message extends TextBasedExtensions {
-		fetchLanguage(): Promise<string>;
+	interface Message {
+		reactable: boolean;
 		prompt(content: string, time?: number): Promise<Message>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;

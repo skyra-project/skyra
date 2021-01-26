@@ -1,5 +1,5 @@
+import { Event } from '@sapphire/framework';
 import type { Role } from 'discord.js';
-import { Event } from 'klasa';
 
 export default class extends Event {
 	public run(role: Role) {

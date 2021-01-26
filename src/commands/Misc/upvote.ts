@@ -8,8 +8,8 @@ import type { Message } from 'discord.js';
 	description: LanguageKeys.Commands.Misc.UpvoteDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpvoteExtended
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public run(message: Message) {
-		return message.sendTranslated(LanguageKeys.Commands.Misc.UpvoteMessage);
+		return message.channel.sendTranslated(LanguageKeys.Commands.Misc.UpvoteMessage);
 	}
 }

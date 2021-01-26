@@ -11,7 +11,7 @@ import type { Message } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		try {
 			const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {

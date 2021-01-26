@@ -35,10 +35,10 @@ export default class extends MusicCommand {
 			// Connect to Lavalink and join the voice channel
 			await audio.connect(channel.id);
 		} catch {
-			return message.sendTranslated(LanguageKeys.Commands.Music.JoinFailed);
+			return message.channel.sendTranslated(LanguageKeys.Commands.Music.JoinFailed);
 		}
 
-		return message.sendTranslated(LanguageKeys.Commands.Music.JoinSuccess, [{ channel: `<#${channel.id}>` }]);
+		return message.channel.sendTranslated(LanguageKeys.Commands.Music.JoinSuccess, [{ channel: `<#${channel.id}>` }]);
 	}
 
 	private async resolvePermissions(message: GuildMessage, voiceChannel: VoiceChannel): Promise<void> {

@@ -5,10 +5,11 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, floatPromise } from '#utils/util';
+import type { Args, PieceContext } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { PieceContext } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -20,6 +21,8 @@ export namespace ModerationCommand {
 		requiredMember?: boolean;
 		optionalDuration?: boolean;
 	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -35,16 +38,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
-			flagSupport: true,
+			strategyOptions: { flags: ['no-author', 'authored'] },
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
 			runIn: ['text'],
-			usage:
-				options.usage ?? options.optionalDuration
-					? '<users:...user{,10}> [duration:timespan{0,157680000000}] [reason:...string]'
-					: '<users:...user{,10}> [reason:...string]',
-			usageDelim: ' ',
 			...options
 		});
 
@@ -52,8 +50,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public async run(message: GuildMessage, args: readonly unknown[]) {
-		const resolved = this.resolveOverloads(args);
+	public async run(message: GuildMessage, args: Args) {
+		const resolved: CommandContext = {
+			targets: await args.repeat('user', { times: 10 }),
+			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
+			reason: await args.rest('string').catch(() => null)
+		};
 
 		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
@@ -160,18 +162,14 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	protected async getTargetDM(message: GuildMessage, target: User): Promise<ModerationActionsSendOptions> {
+	protected async getTargetDM(message: GuildMessage, args: Args, target: User): Promise<ModerationActionsSendOptions> {
 		const [nameDisplay, enabledDM] = await message.guild.readSettings([
 			GuildSettings.Messages.ModeratorNameDisplay,
 			GuildSettings.Messages.ModerationDM
 		]);
 
 		return {
-			moderator: Reflect.has(message.flagArgs, 'no-author')
-				? null
-				: Reflect.has(message.flagArgs, 'authored') || nameDisplay
-				? message.author
-				: null,
+			moderator: args.getFlags('no-author') ? null : args.getFlags('no-authored') || nameDisplay ? message.author : null,
 			send: enabledDM && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}

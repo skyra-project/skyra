@@ -15,7 +15,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	usageDelim: ' ',
 	requiredPermissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [query]: [string]) {
 		const url = new URL('https://api.duckduckgo.com');
 		url.searchParams.append('q', query);

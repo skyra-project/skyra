@@ -13,7 +13,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	runIn: ['text'],
 	usage: '<latest|case:integer{0,2147483647}>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [index]: [number | 'latest']) {
 		const modlog = index === 'latest' ? (await message.guild.moderation.fetch()).last() : await message.guild.moderation.fetch(index);
 		if (modlog) return message.send(await modlog.prepareEmbed());

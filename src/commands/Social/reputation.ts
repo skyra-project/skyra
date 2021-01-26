@@ -22,7 +22,7 @@ import type { User } from 'discord.js';
 	if (!arg) return check ? message.author : undefined;
 	return message.client.arguments.get('username')!.run(arg, possible, message);
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [check, user]: ['check', User]) {
 		const date = new Date();
 		const now = date.getTime();

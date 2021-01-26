@@ -2,9 +2,15 @@ import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '#lib/databas
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<UniqueRoleSet> {
-	public parse(_: string, { t }: SerializerUpdateContext) {
-		return this.error(t(LanguageKeys.Serializers.Unsupported));
+export class UserSerializer extends Serializer<UniqueRoleSet> {
+	public async parse(args: Serializer.Args) {
+		const name = await args.pickResult('string');
+		if (!name.success) return name;
+
+		const roles = await args.repeatResult('role');
+		if (!roles.success) return roles;
+
+		return this.ok({ name: name.value, roles: roles.value.map((role) => role.id) });
 	}
 
 	public isValid(value: UniqueRoleSet, { t, guild }: SerializerUpdateContext): Awaited<boolean> {

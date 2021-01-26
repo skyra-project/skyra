@@ -2,10 +2,11 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraArgs } from '#lib/structures';
 import type { AnyObject, CustomGet } from '#lib/types';
+import { Store } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { Store } from 'klasa';
 import type { SchemaGroup } from './SchemaGroup';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
@@ -93,11 +94,11 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		return value as Serializer<GuildEntity[K]>;
 	}
 
-	public async parse(settings: GuildEntity, t: TFunction, value: string): Promise<GuildEntity[K]> {
+	public async parse(settings: GuildEntity, args: SkyraArgs): Promise<GuildEntity[K]> {
 		const { serializer } = this;
-		const context = this.getContext(settings, t);
+		const context = this.getContext(settings, args.t);
 
-		const result = await serializer.parse(value, context);
+		const result = await serializer.parse(args, context);
 		if (result.success) return result.value;
 		throw result.error.message;
 	}

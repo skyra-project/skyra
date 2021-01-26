@@ -14,11 +14,11 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<image:image>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private bodyImage: Image = null!;
 	private handsImage: Image = null!;
 

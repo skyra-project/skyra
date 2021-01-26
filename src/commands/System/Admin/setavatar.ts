@@ -27,7 +27,7 @@ import type { Message } from 'discord.js';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [avatar]: [string]) {
 		await this.context.client.user!.setAvatar(avatar);
 		return message.send(`Dear ${message.author}, I have changed my avatar for you.`);

@@ -26,7 +26,7 @@ import { CreateResolvers } from '@skyra/decorators';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild.moderation.fetch(cases);
 		if (!entries.size) {

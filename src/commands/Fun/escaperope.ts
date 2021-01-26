@@ -12,7 +12,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.Fun.EscapeRopeDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		if (message.deletable) await message.nuke().catch(() => null);
 

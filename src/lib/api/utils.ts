@@ -5,7 +5,7 @@ import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-
 import { createFunctionInhibitor } from '@skyra/decorators';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
-import { RateLimitManager } from 'klasa';
+import { RateLimitManager } from '#lib/structures';
 import { flattenGuild } from './ApiTransformers';
 import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginData } from './types';
 
@@ -20,7 +20,7 @@ export const authenticated = () =>
 	);
 
 export function ratelimit(bucket: number, cooldown: number, auth = false) {
-	const manager = new RateLimitManager(bucket, cooldown);
+	const manager = new RateLimitManager(cooldown, bucket);
 	const xRateLimitLimit = bucket;
 	return createFunctionInhibitor(
 		(request: ApiRequest, response: ApiResponse) => {
@@ -34,11 +34,11 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 			}
 
 			try {
-				bucket.drip();
+				bucket.consume();
 			} catch {}
 
 			response.setHeader('X-RateLimit-Limit', xRateLimitLimit);
-			response.setHeader('X-RateLimit-Remaining', bucket.bucket.toString());
+			response.setHeader('X-RateLimit-Remaining', bucket.remaining.toString());
 			response.setHeader('X-RateLimit-Reset', bucket.remainingTime.toString());
 
 			return true;

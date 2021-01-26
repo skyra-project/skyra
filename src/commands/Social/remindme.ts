@@ -101,7 +101,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async create(message: Message, [duration, description]: [number, string]) {
 		const task = await this.context.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,

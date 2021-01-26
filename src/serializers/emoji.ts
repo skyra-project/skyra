@@ -3,14 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveEmoji } from '#utils/util';
 import type { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, { t, entry }: SerializerUpdateContext) {
-		const resolved = resolveEmoji(value);
-		if (resolved === null) {
-			return this.error(t(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.name }));
-		}
-
-		return this.ok(resolved);
+export class UserSerializer extends Serializer<string> {
+	public parse(args: Serializer.Args) {
+		return args.pickResult('emoji');
 	}
 
 	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {

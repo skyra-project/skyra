@@ -13,11 +13,11 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.HugDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.HugExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })
-export default class extends SkyraCommand {
+export class HugCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, [user]: [User]) {

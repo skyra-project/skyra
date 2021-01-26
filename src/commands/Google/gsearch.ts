@@ -6,28 +6,18 @@ import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, quer
 import { BrandingColors } from '#utils/constants';
 import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.GsearchDescription,
-	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended,
-	usage: '<query:query>'
+	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended
 })
-@CreateResolvers([
-	[
-		'query',
-		(arg, possible, message) =>
-			message.client.arguments
-				.get('string')!
-				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
-	]
-])
 export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [query]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const query = (await args.rest('string')).replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+');
+		const { t } = args;
 		const [response, { items }] = await Promise.all([
 			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)

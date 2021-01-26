@@ -17,20 +17,19 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Anime.AnimeDescription,
-	extendedHelp: LanguageKeys.Commands.Anime.AnimeExtended,
-	usage: '<animeName:string>'
+	extendedHelp: LanguageKeys.Commands.Anime.AnimeExtended
 })
 export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [animeName]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const animeName = await args.rest('string');
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(args.t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { hits: entries } = await this.fetchAPI(t, animeName);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
+		const { hits: entries } = await this.fetchAPI(args.t, animeName);
+		if (!entries.length) throw args.t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, t, message);
+		const display = await this.buildDisplay(entries, args.t, message);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;

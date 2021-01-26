@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { CreateResolver } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -26,7 +27,7 @@ const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	if (kBlockList.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
 	return arg.toLowerCase();
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [reddit]: [string]) {
 		const t = await message.fetchT();
 		const { kind, data } = await this.fetchData(t, reddit);
@@ -88,6 +89,13 @@ export default class extends SkyraCommand {
 
 		throw error;
 	}
+
+	private static redditResolver = Args.make(async (argument, context) => {
+		if (!argument) return err(LanguageKeys.Commands.Misc.RandRedditRequiredReddit);
+		if (!kUsernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditInvalidArgument);
+		if (kBlockList.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
+		return arg.toLowerCase();
+	});
 }
 
 type RedditError = RedditNotFound | RedditBanned | RedditForbidden | RedditQuarantined | RedditServerError;

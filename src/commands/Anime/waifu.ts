@@ -16,9 +16,9 @@ const kMaximum = 100000;
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Anime.WaifuDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.WaifuExtended,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;
 		return message.send(

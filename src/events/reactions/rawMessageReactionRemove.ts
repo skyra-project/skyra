@@ -1,9 +1,9 @@
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import type { TextChannel } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageReactionRemove, emitter: 'ws' })
 export default class extends Event {

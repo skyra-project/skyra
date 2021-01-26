@@ -16,7 +16,7 @@ const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.p
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage) {
 		let tChannels = 0;
 		let vChannels = 0;

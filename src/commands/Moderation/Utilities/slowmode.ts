@@ -24,7 +24,7 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 @CreateResolvers([
 	['cooldown', async (arg, possible, message) => (await message.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [cooldown]: ['reset' | 'off' | number]) {
 		const t = await message.fetchT();
 

@@ -3,8 +3,8 @@ import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
-import { Event, EventOptions, Store } from 'klasa';
 
 const style = DEV ? yellow : blue;
 

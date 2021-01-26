@@ -15,7 +15,7 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 	usage: '[user:username]',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [user = message.author]: [User]) {
 		if (!user.avatar) throw await message.resolveKey(LanguageKeys.Commands.Tools.AvatarNone);
 

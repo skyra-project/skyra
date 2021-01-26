@@ -14,7 +14,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	runIn: ['text'],
 	usage: '[nick:string{,32}]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [nickname = '']: [string?]) {
 		await message.guild.me!.setNickname(nickname);
 		return nickname

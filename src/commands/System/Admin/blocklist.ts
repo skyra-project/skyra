@@ -36,7 +36,7 @@ import { Guild, Message, User } from 'discord.js';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async show(message: Message) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.findOneOrFail({ id: CLIENT_ID });

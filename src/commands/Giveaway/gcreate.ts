@@ -18,7 +18,7 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 	usageDelim: ' ',
 	promptLimit: Infinity
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(
 		message: GuildMessage,
 		[channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]

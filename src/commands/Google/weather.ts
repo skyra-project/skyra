@@ -27,17 +27,19 @@ const enum TemperatureUnit {
 	Fahrenheit
 }
 
+const flags = ['fahrenheit', 'imperial'];
+
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 120,
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '<city:string>',
-	flagSupport: true
+	permissions: ['ATTACH_FILES']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [query]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const useImperial = args.getFlags(...flags);
+		const query = await args.rest('string');
 		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, query);
 
 		const params = `${lat},${lng}`;
@@ -45,8 +47,6 @@ export default class extends SkyraCommand {
 		let governing = '';
 		let country = '';
 		let continent = '';
-
-		const useImperial = Reflect.has(message.flagArgs, 'fahrenheit') || Reflect.has(message.flagArgs, 'imperial');
 
 		for (const component of addressComponents) {
 			if (!locality.length && component.types.includes('locality')) locality = component.long_name;

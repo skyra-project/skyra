@@ -13,7 +13,7 @@ import type { Message } from 'discord.js';
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '<wager:wager>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [wager]: [number]) {
 		const t = await message.fetchT();
 		const { users } = await DbSet.connect();

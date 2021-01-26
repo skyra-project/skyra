@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
 import { GuildEntity, GuildSettings } from '#lib/database';
+import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import type { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
@@ -40,6 +41,10 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 
 	public isAdmin() {
 		return this.guild.readSettings((settings) => this.checkAdministrator(settings));
+	}
+
+	public isOwner() {
+		return OWNERS.includes(this.id);
 	}
 
 	public async canManage(channel: VoiceChannel) {
@@ -83,6 +88,7 @@ declare module 'discord.js' {
 		isDJ(): Promise<boolean>;
 		isModerator(): Promise<boolean>;
 		isAdmin(): Promise<boolean>;
+		isOwner(): boolean;
 		canManage(channel: VoiceChannel): Promise<boolean>;
 
 		_patch(data: GatewayGuildMemberUpdateDispatch['d']): void;

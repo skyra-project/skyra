@@ -7,17 +7,17 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.RemoveDescription,
-	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended,
-	usage: '<number:integer>'
+	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
-	public async run(message: GuildMessage, [index]: [number]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
+		let index = await args.pick('integer');
 
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
+		const { t } = args;
 		if (index < 0) throw t(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;

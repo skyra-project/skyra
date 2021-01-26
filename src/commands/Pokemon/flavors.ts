@@ -16,19 +16,20 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.FlavorsExtended,
-	usage: '<pokemon:str>',
-	flagSupport: true
+	strategyOptions: { flags: ['shiny'] }
 })
 export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [pokemon]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const pokemon = (await args.rest('string')).toLowerCase();
+		const { t } = args;
+
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const pokemonData = await this.fetchAPI(t, pokemon.toLowerCase());
+		const pokemonData = await this.fetchAPI(t, pokemon);
 
-		await this.buildDisplay(message, pokemonData).start(response as GuildMessage, message.author);
+		await this.buildDisplay(pokemonData, args).start(response as GuildMessage, message.author);
 		return response;
 	}
 
@@ -41,12 +42,12 @@ export default class extends PaginatedMessageCommand {
 		}
 	}
 
-	private buildDisplay(message: GuildMessage, pokemonData: DexDetails) {
+	private buildDisplay(pokemonData: DexDetails, args: PaginatedMessageCommand.Args) {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(message.flagArgs.shiny ? pokemonData.shinySprite : pokemonData.sprite)
+				.setThumbnail(args.getFlags('shiny') ? pokemonData.shinySprite : pokemonData.sprite)
 		});
 
 		for (const flavorText of pokemonData.flavorTexts) {

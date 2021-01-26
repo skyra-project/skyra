@@ -22,7 +22,7 @@ const EMOJIS = {
 	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended,
 	usage: '<query:string>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [input]: [string]) {
 		const url = new URL('https://www.googleapis.com/youtube/v3/search');
 		url.searchParams.append('part', 'snippet');

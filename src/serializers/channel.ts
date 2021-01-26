@@ -1,26 +1,15 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Awaited, isNullish } from '@sapphire/utilities';
 import type { Channel } from 'discord.js';
-import type { AliasPieceOptions } from 'klasa';
 
-@ApplyOptions<AliasPieceOptions>({
-	aliases: ['textchannel', 'voicechannel', 'categorychannel']
+@ApplyOptions<Serializer.Options>({
+	aliases: ['textChannel', 'voiceChannel', 'categoryChannel']
 })
-export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, { t, entry, guild }: SerializerUpdateContext) {
-		const id = UserSerializer.regex.channel.exec(value);
-		const channel = id ? guild.channels.cache.get(id[1]) : guild.channels.cache.find((r) => r.name === value);
-		if (!channel) {
-			return this.error(t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name }));
-		}
-
-		if (this.isValidChannel(channel, entry.type)) {
-			return this.ok(channel.id);
-		}
-
-		return this.error(t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name }));
+export class UserSerializer extends Serializer<string> {
+	public async parse(args: Serializer.Args, { entry }: SerializerUpdateContext) {
+		const result = await args.pickResult(entry.type as 'textChannel' | 'voiceChannel' | 'categoryChannel');
+		return result.success ? this.ok(result.value.id) : result;
 	}
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
@@ -40,11 +29,11 @@ export default class UserSerializer extends Serializer<string> {
 	private isValidChannel(channel: Channel, type: string): boolean {
 		if (isNullish(Reflect.get(channel, 'guild'))) return false;
 		switch (type) {
-			case 'textchannel':
+			case 'textChannel':
 				return channel.type === 'text' || channel.type === 'news';
-			case 'voicechannel':
+			case 'voiceChannel':
 				return channel.type === 'voice';
-			case 'categorychannel':
+			case 'categoryChannel':
 				return channel.type === 'category';
 		}
 

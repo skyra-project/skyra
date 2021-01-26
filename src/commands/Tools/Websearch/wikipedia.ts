@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<query:string>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [input]: [string]) {
 		const t = await message.fetchT();
 		const text = await this.fetchText(input, t);

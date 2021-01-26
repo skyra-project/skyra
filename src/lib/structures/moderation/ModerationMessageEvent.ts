@@ -1,14 +1,14 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
-import { Events, PermissionLevels } from '#lib/types/Enums';
+import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
+import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event, EventOptions, PieceContext } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMessageEvent<T = unknown> extends Event {
@@ -36,7 +36,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		const shouldRun = await this.checkPreRun(message);
 		if (!shouldRun) return;
 
-		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
+		if (await message.member.isModerator()) return;
 
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;

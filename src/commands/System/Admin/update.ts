@@ -19,7 +19,7 @@ import { resolve } from 'path';
 	usage: '[branch:string]',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [branch = 'main']: [string?]) {
 		// Fetch repository and pull if possible
 		await this.fetch(message, branch);

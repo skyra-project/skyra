@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<name:string>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [name]: [string]) {
 		const t = await message.fetchT();
 		const { data: channelData } = await this.fetchUsers(t, [name]);

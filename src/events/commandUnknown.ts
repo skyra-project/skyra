@@ -3,9 +3,9 @@ import type { SkyraCommand } from '#lib/structures';
 import type { CommandHandler } from '#lib/types/definitions/Internals';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { cast } from '#utils/util';
+import { Command, Event } from '@sapphire/framework';
 import { Stopwatch } from '@sapphire/stopwatch';
 import type { Message } from 'discord.js';
-import { Command, Event } from 'klasa';
 
 export default class extends Event {
 	public async run(message: Message, command: string) {

@@ -5,9 +5,9 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { filter, map } from '#utils/iterator';
+import { Event } from '@sapphire/framework';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(previous: User, user: User) {

@@ -23,7 +23,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 	usage: '[local|global] [user:username]',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 	private lightThemeDock: Image = null!;

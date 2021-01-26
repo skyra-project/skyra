@@ -35,7 +35,7 @@ import type { Role, User } from 'discord.js';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async reset(message: GuildMessage, [user]: [User]) {
 		const roles = await message.guild.stickyRoles.fetch(user.id);
 		if (!roles.length) throw await message.resolveKey(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });

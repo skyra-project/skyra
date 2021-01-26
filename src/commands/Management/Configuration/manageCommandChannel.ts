@@ -40,7 +40,7 @@ import type { TextChannel } from 'discord.js';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, [channel]: [TextChannel]) {
 		const [disabledCommandsChannels, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.DisabledCommandChannels],

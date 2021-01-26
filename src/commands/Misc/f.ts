@@ -14,11 +14,11 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.FDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'
 })
-export default class extends SkyraCommand {
+export class FCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, [user = message.author]: [User]) {

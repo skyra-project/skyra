@@ -11,7 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage) {
 		const role = await announcementCheck(message);
 		await message.member.roles.remove(role);

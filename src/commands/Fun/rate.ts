@@ -11,36 +11,37 @@ import type { Message } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.RateDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.RateExtended,
-	spam: true,
-	usage: '<user:string>'
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private devRegex = new RegExp(`^(kyra|favna|${OWNERS.map((owner) => `<@!${owner}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${CLIENT_ID}>)$`, 'i');
 
-	public async run(message: Message, [user]: [string]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
 		// Escape all markdown
-		user = escapeMarkdown(user);
-		const t = await message.fetchT();
+		let rateableThing = escapeMarkdown(await args.rest('string'));
 
 		let ratewaifu: string | undefined = undefined;
 		let rate: number | undefined = undefined;
 
-		if (this.botRegex.test(user)) {
+		if (this.botRegex.test(rateableThing)) {
 			rate = 100;
-			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyself);
-		} else if (this.devRegex.test(user)) {
+			[ratewaifu, rateableThing] = args.t(LanguageKeys.Commands.Fun.RateMyself);
+		} else if (this.devRegex.test(rateableThing)) {
 			rate = 101;
-			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyOwners);
+			[ratewaifu, rateableThing] = args.t(LanguageKeys.Commands.Fun.RateMyOwners);
 		} else {
-			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
+			rateableThing = /^(myself|me)$/i.test(rateableThing) ? message.author.username : rateableThing.replace(/\bmy\b/g, 'your');
 
 			const rng = Math.round(Math.random() * 100);
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.send(t(LanguageKeys.Commands.Fun.RateOutput, { author: message.author.username, userToRate: user, rate, emoji: ratewaifu }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		return message.send(
+			t(LanguageKeys.Commands.Fun.RateOutput, { author: message.author.username, userToRate: rateableThing, rate, emoji: ratewaifu }),
+			{
+				allowedMentions: { users: [], roles: [] }
+			}
+		);
 	}
 }

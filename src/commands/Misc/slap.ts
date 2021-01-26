@@ -18,7 +18,7 @@ import { join } from 'path';
 	spam: true,
 	usage: '<user:username>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, [user]: [User]) {

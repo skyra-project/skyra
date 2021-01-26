@@ -25,7 +25,6 @@ export const enum Events {
 	GuildMessageLog = 'guildMessageLog',
 	GuildMessageUpdate = 'guildMessageUpdate',
 	GuildUserMessage = 'guildUserMessage',
-	KlasaReady = 'klasaReady',
 	LavalinkClose = 'lavalinkClose',
 	LavalinkEnd = 'lavalinkEnd',
 	LavalinkException = 'lavalinkException',

@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
+import { Event } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { Event } from 'klasa';
 
 export default class extends Event {
 	public run(old: Message, message: Message) {

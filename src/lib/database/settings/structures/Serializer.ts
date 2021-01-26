@@ -1,10 +1,11 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { SkyraArgs } from '#lib/structures';
+import { AliasPiece, AliasPieceOptions } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { AliasPiece, constants, MentionRegex } from 'klasa';
 
 export interface Ok<T> {
 	success: true;
@@ -27,7 +28,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param value The value to parsed.
 	 * @param context The context for the key.
 	 */
-	public abstract parse(value: string, context: SerializerUpdateContext): SerializerResult<T> | AsyncSerializerResult<T>;
+	public abstract parse(args: Serializer.Args, context: SerializerUpdateContext): SerializerResult<T> | AsyncSerializerResult<T>;
 
 	/**
 	 * Check whether or not the value is valid.
@@ -128,11 +129,12 @@ export abstract class Serializer<T> extends AliasPiece {
 
 		return this.ok(value);
 	}
+}
 
-	/**
-	 * Standard regular expressions for matching mentions and snowflake ids
-	 */
-	public static regex: MentionRegex = constants.MENTION_REGEX;
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Serializer {
+	export type Options = AliasPieceOptions;
+	export type Args = SkyraArgs;
 }
 
 export interface SerializerUpdateContext {

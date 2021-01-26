@@ -10,10 +10,10 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.KittyDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.KittyExtended,
-	requiredPermissions: ['ATTACH_FILES', 'EMBED_LINKS'],
+	permissions: ['ATTACH_FILES', 'EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTimestamp();
 

@@ -15,7 +15,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	usage: '<prefix:string{1,10}>',
 	aliases: ['prefix']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [prefix]: [string]) {
 		const t = await message.guild.writeSettings((settings) => {
 			const t = settings.getLanguage();

@@ -3,9 +3,9 @@ import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { compareEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
 import type { DiscordAPIError } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageReactionRemoveEmoji, emitter: 'ws' })
 export default class extends Event {

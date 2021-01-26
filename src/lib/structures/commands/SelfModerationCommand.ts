@@ -1,12 +1,11 @@
-import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '#lib/database';
+import { AdderKey, configurableKeys, GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { KeyOfType } from '#lib/types/Utils';
-import { Duration } from '@sapphire/time-utilities';
+import { PieceContext } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import type { PieceContext } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../moderation/SelfModeratorBitField';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -89,6 +88,8 @@ export namespace SelfModerationCommand {
 	 * The SelfModerationCommand Options
 	 */
 	export type Options = SkyraCommand.Options;
+
+	export type Args = SkyraCommand.Args;
 }
 
 export abstract class SelfModerationCommand extends SkyraCommand {
@@ -97,76 +98,28 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
-			usage: '(action:action) (value:value)',
-			usageDelim: ' ',
 			...options
-		});
-
-		this.createCustomResolver('action', async (arg, _possible, message) => {
-			if (typeof arg === 'undefined') return AKeys.Show;
-			const action = kActions.get(arg.toLowerCase());
-			if (typeof action === 'undefined') {
-				throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
-			}
-
-			return action;
-		}).createCustomResolver('value', async (arg, _possible, message, [type]: AKeys[]) => {
-			if (type === AKeys.Enable) return true;
-			if (type === AKeys.Disable) return false;
-			if (type === AKeys.Show) return null;
-			if (!arg) {
-				throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
-			}
-
-			if (type === AKeys.SoftAction) {
-				const softAction = kSoftActions.get(arg.toLowerCase());
-				if (typeof softAction === 'undefined') {
-					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
-				}
-
-				const previousSoftAction = await message.guild!.readSettings(this.keySoftAction);
-				return SelfModerationCommand.toggle(previousSoftAction, softAction);
-			}
-
-			if (type === AKeys.HardAction) {
-				const hardAction = kHardActions.get(arg.toLowerCase());
-				if (typeof hardAction === 'undefined') {
-					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name });
-				}
-
-				return hardAction;
-			}
-
-			if (type === AKeys.HardActionDuration) {
-				if (/^(?:reset|0\w?)$/i.test(arg)) return null;
-				const key = configurableKeys.get(this.keyHardActionDuration)!;
-				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Hard Action Duration');
-			}
-
-			if (type === AKeys.ThresholdMaximum) {
-				const key = configurableKeys.get(this.keyThresholdMaximum)!;
-				return SelfModerationCommand.parseMaximum(message as GuildMessage, key, arg, 'Threshold Maximum');
-			}
-
-			if (type === AKeys.ThresholdDuration) {
-				const key = configurableKeys.get(this.keyThresholdDuration)!;
-				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Threshold Duration');
-			}
-
-			throw new Error('Unreachable.');
 		});
 	}
 
-	public async run(message: GuildMessage, [action, value]: [AKeys, unknown]) {
-		if (action === AKeys.Show) return this.show(message);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const typeResult = this.getAction(args);
+		if (!typeResult.success) return typeResult;
 
-		const key = this.getProperty(action)!;
+		const type = typeResult.value;
+		if (type === AKeys.Show) return this.show(message);
+
+		const valueResult = await this.getValue(args, type);
+		if (!valueResult.success) return valueResult;
+
+		const key = this.getProperty(type)!;
 		const t = await message.guild.writeSettings((settings) => {
-			Reflect.set(settings, key, value);
+			Reflect.set(settings, key, valueResult.value);
 			return settings.getLanguage();
 		});
 
-		switch (action) {
+		let value = valueResult.value as unknown;
+		switch (type) {
 			case AKeys.SoftAction: {
 				value = SelfModerationCommand.displaySoftAction(t, value as number).join('`, `');
 				break;
@@ -183,7 +136,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 				break;
 		}
 
-		return message.send(SelfModerationCommand.getLanguageKey(t, action, value));
+		return message.send(SelfModerationCommand.getLanguageKey(t, type, value));
 	}
 
 	protected async show(message: GuildMessage) {
@@ -218,6 +171,60 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 				})
 			)
 		);
+	}
+
+	private getAction(args: SkyraCommand.Args) {
+		if (args.finished) return this.ok(AKeys.Show);
+
+		const action = kActions.get(args.next().toLowerCase());
+		if (typeof action === 'undefined') {
+			return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name }));
+		}
+
+		return this.ok(action);
+	}
+
+	private async getValue(args: SkyraCommand.Args, type: AKeys) {
+		if (type === AKeys.Enable) return this.ok(true);
+		if (type === AKeys.Disable) return this.ok(false);
+		if (type === AKeys.Show) return this.ok(null);
+		if (args.finished) return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name }));
+
+		if (type === AKeys.SoftAction) {
+			const softAction = kSoftActions.get(args.next().toLowerCase());
+			if (typeof softAction === 'undefined') {
+				return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name }));
+			}
+
+			const previousSoftAction = await args.message.guild!.readSettings(this.keySoftAction);
+			return this.ok(SelfModerationCommand.toggle(previousSoftAction, softAction));
+		}
+
+		if (type === AKeys.HardAction) {
+			const hardAction = kHardActions.get(args.next().toLowerCase());
+			if (typeof hardAction === 'undefined') {
+				return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name }));
+			}
+
+			return this.ok(hardAction);
+		}
+
+		if (type === AKeys.HardActionDuration) {
+			const key = configurableKeys.get(this.keyHardActionDuration)!;
+			return args.pickResult('duration', { minimum: key.minimum, maximum: key.maximum });
+		}
+
+		if (type === AKeys.ThresholdMaximum) {
+			const key = configurableKeys.get(this.keyThresholdMaximum)!;
+			return args.pickResult('integer', { minimum: key.minimum, maximum: key.maximum });
+		}
+
+		if (type === AKeys.ThresholdDuration) {
+			const key = configurableKeys.get(this.keyThresholdDuration)!;
+			return args.pickResult('duration', { minimum: key.minimum, maximum: key.maximum });
+		}
+
+		throw new Error('Unreachable');
 	}
 
 	private getProperty(action: AKeys) {
@@ -304,45 +311,6 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 
 	private static toggle(bitfields: number, bitfield: number) {
 		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
-	}
-
-	private static async parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
-		const parsed = Number(input);
-		if (!Number.isInteger(input) || parsed < 0) {
-			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name });
-		}
-
-		if (key.minimum !== null && parsed < key.minimum) {
-			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
-		}
-
-		if (key.maximum !== null && parsed > key.maximum) {
-			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
-		}
-		return parsed;
-	}
-
-	private static async parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
-		const parsed = new Duration(input);
-		if (!Number.isInteger(input) || parsed.offset < 0) {
-			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name });
-		}
-
-		if (key.minimum !== null && parsed.offset < key.minimum) {
-			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
-				minimum: key.minimum,
-				value: parsed.offset
-			});
-		}
-
-		if (key.maximum !== null && parsed.offset > key.maximum) {
-			throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
-				maximum: key.maximum,
-				value: parsed.offset
-			});
-		}
-
-		return parsed.offset;
 	}
 
 	protected abstract $adder: AdderKey;

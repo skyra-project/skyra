@@ -65,7 +65,7 @@ const REG_TYPE = /^(alias|reaction)$/i;
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async remove(message: GuildMessage, [type, input]: [string, string]) {
 		const t = await message.guild.writeSettings((settings) => {
 			const t = settings.getLanguage();

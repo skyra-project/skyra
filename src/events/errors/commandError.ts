@@ -4,10 +4,10 @@ import { Events } from '#lib/types/Enums';
 import { OWNERS } from '#root/config';
 import { rootFolder } from '#utils/constants';
 import { cast } from '#utils/util';
+import { Command, Event } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
-import { Command, Event } from 'klasa';
 
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 

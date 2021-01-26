@@ -19,7 +19,7 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 	runIn: ['text'],
 	usage: '[member:username]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const t = await message.fetchT();
 

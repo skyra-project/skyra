@@ -16,8 +16,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Developers.YarnDescription,
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<package:package>'
+	permissions: ['EMBED_LINKS']
 })
 @CreateResolvers([
 	[
@@ -28,11 +27,11 @@ import type { TFunction } from 'i18next';
 		}
 	]
 ])
-export default class extends SkyraCommand {
-	public async run(message: Message, [pkg]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const pkg = await args.rest('string');
+
 		const t = await message.fetchT();
-		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
-		// since we repeat this over and over, but was out of #1301's scope.
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);

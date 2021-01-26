@@ -2,12 +2,10 @@ import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, { t, entry, guild }: SerializerUpdateContext) {
-		const id = UserSerializer.regex.role.exec(value);
-		const role = id ? guild.roles.cache.get(id[1]) : guild.roles.cache.find((r) => r.name === value);
-		if (role) return this.ok(role.id);
-		return this.error(t(LanguageKeys.Resolvers.InvalidRole, { name: entry.name }));
+export class UserSerializer extends Serializer<string> {
+	public async parse(args: Serializer.Args) {
+		const role = await args.pickResult('role');
+		return role.success ? this.ok(role.value.id) : role;
 	}
 
 	public isValid(value: string, { t, entry, guild }: SerializerUpdateContext): Awaited<boolean> {

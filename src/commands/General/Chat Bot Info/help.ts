@@ -40,7 +40,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		const t = await message.fetchT();
 

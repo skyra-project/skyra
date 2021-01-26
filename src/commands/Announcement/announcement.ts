@@ -23,7 +23,7 @@ import type { TFunction } from 'i18next';
 	usage: '<announcement:string{,1900}>',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly messages: WeakMap<GuildMessage, GuildMessage> = new WeakMap();
 
 	public async run(message: GuildMessage, [announcement]: [string]) {

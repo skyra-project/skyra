@@ -25,7 +25,7 @@ import type { TFunction } from 'i18next';
 	usageDelim: ',',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 

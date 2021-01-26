@@ -12,7 +12,7 @@ import type { Message, User } from 'discord.js';
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	usage: '<user:user>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [user]: [User]) {
 		const t = await message.fetchT();
 		if (user === message.author) throw t(LanguageKeys.Commands.Social.DivorceSelf);

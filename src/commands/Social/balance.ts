@@ -13,7 +13,7 @@ import type { Message, User } from 'discord.js';
 	usage: '[user:username]',
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [user = message.author]: [User]) {
 		const t = await message.fetchT();
 		if (user.bot) throw t(LanguageKeys.Commands.Social.BalanceBots);

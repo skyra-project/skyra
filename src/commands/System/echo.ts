@@ -15,7 +15,7 @@ import type { MessageOptions, TextChannel } from 'discord.js';
 	usage: '[channel:channel] [message:...string]',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [channel = message.channel as TextChannel, content]: [TextChannel, string]) {
 		if (message.deletable) message.nuke().catch(() => null);
 

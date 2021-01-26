@@ -28,7 +28,7 @@ import { CreateResolvers } from '@skyra/decorators';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, [word]: [string]) {
 		const t = await message.guild.writeSettings((settings) => {
 			const t = settings.getLanguage();

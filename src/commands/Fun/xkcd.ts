@@ -10,19 +10,18 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.XkcdDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.XkcdExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	spam: true,
-	usage: '[query:string]'
+	permissions: ['EMBED_LINKS'],
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const query = await args.pick('integer').catch(() => args.pick('string').catch(() => null));
 
-		const comicNumber = await this.getNumber(query, t);
+		const comicNumber = await this.getNumber(query, args.t);
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
-			throw t(LanguageKeys.Commands.Fun.XkcdNotFound);
+			throw args.t(LanguageKeys.Commands.Fun.XkcdNotFound);
 		});
+
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

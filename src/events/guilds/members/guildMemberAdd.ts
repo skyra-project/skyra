@@ -4,8 +4,8 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import { Event } from 'klasa';
 
 const { FLAGS } = Permissions;
 

@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	usage: '<title:string>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		for (const reaction of ['👍', '👎', '🤷']) {
 			if (!message.reactions.cache.has(reaction)) await message.react(reaction);

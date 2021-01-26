@@ -13,10 +13,10 @@ export const maximumExportQueueSize = 100;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage) {
 		const { audio, name } = message.guild;

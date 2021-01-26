@@ -1,4 +1,4 @@
-import { Event, LogLevel } from 'klasa';
+import { Event, Logger, LogLevel } from '@sapphire/framework';
 
 export default class extends Event {
 	public run(message: string) {
@@ -6,7 +6,7 @@ export default class extends Event {
 	}
 
 	public async onLoad() {
-		if (this.context.client.logger.level > LogLevel.Error) await this.unload();
+		if ((this.context.client.logger as Logger).level > LogLevel.Error) await this.unload();
 		return super.onLoad();
 	}
 }

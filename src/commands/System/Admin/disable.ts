@@ -12,7 +12,7 @@ import type { Piece } from 'klasa';
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<Piece:piece>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [piece]: [Piece]) {
 		if ((piece.store.name === 'event' && piece.name === 'coreMessage') || (piece.store.name === 'monitor' && piece.name === 'commandHandler')) {
 			return message.sendTranslated(LanguageKeys.Commands.System.DisableWarn);

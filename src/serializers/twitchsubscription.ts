@@ -1,8 +1,8 @@
 import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 
-export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
-	public parse(_: string, { t }: SerializerUpdateContext) {
+export class UserSerializer extends Serializer<NotificationsStreamTwitch> {
+	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 

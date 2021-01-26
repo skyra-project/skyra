@@ -1,8 +1,8 @@
 import { DEV, WSS_PORT } from '#root/config';
 import Collection from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
 import { ApiRequest, CookieStore } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
-import { Store } from 'klasa';
 import WebSocket, { Server } from 'ws';
 import { CloseCodes, WebsocketEvents } from './types';
 import WebsocketUser from './WebsocketUser';

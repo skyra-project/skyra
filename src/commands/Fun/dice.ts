@@ -10,10 +10,9 @@ import type { TFunction } from 'i18next';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.DiceExtended,
-	usage: '[amount:integer|dice:string]',
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	/**
 	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
 	 * Examples:
@@ -32,8 +31,9 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public async run(message: Message, [amountOrDice = 1]: [number | string | undefined]) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { t } = args;
+		const amountOrDice = await args.pick('integer').catch(() => args.pick('string'));
 		return message.send(
 			t(LanguageKeys.Commands.Fun.DiceOutput, {
 				result: await this.roll(t, amountOrDice)

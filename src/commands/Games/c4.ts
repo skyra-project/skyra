@@ -14,7 +14,7 @@ import type { User } from 'discord.js';
 	runIn: ['text'],
 	usage: '<user:username>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private prompt = this.definePrompt('<response:boolean>');
 
 	public async run(message: GuildMessage, [user]: [User]) {

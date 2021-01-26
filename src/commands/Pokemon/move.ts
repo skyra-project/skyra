@@ -15,16 +15,17 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended,
-	usage: '<move:str>'
+	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended
 })
 export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [move]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const move = (await args.rest('string')).toLowerCase();
+		const { t } = args;
+
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const moveData = await this.fetchAPI(move.toLowerCase(), t);
+		const moveData = await this.fetchAPI(move, t);
 
 		const display = await this.buildDisplay(message, moveData, t);
 		await display.start(response as GuildMessage, message.author);

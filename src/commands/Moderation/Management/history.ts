@@ -25,7 +25,7 @@ type DurationDisplay = (time: number) => string;
 	usageDelim: ' ',
 	subcommands: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async overview(message: GuildMessage, [target = message.author]: [User]) {
 		const logs = await message.guild.moderation.fetch(target.id);
 		let warnings = 0;

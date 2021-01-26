@@ -5,10 +5,10 @@ import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange'
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
 export default class extends Event {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;

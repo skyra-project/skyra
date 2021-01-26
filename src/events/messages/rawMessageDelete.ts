@@ -1,7 +1,7 @@
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.MessageDelete, emitter: 'ws' })
 export default class extends Event {

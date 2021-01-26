@@ -4,15 +4,16 @@ import { MusicCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
 
+const flags = ['removeall', 'ra'];
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.LeaveDescription,
 	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,
-	flagSupport: true
+	strategyOptions: { flags }
 })
 export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireDj()
-	public async run(message: GuildMessage) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 		const channelID = audio.voiceChannelID!;
 
@@ -20,10 +21,8 @@ export default class extends MusicCommand {
 		await audio.leave();
 
 		// If --removeall or --ra was provided then also clear the queue
-		if (Reflect.has(message.flagArgs, 'removeall') || Reflect.has(message.flagArgs, 'ra')) {
-			await audio.clear();
-		}
+		if (args.getFlags(...flags)) await audio.clear();
 
-		return message.sendTranslated(LanguageKeys.Commands.Music.LeaveSuccess, [{ channel: `<#${channelID}>` }]);
+		return message.channel.sendTranslated(LanguageKeys.Commands.Music.LeaveSuccess, [{ channel: `<#${channelID}>` }]);
 	}
 }

@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
-import { Event } from 'klasa';
+import { Event } from '@sapphire/framework';
 
 export default class extends Event {
 	public async run(message: GuildMessage) {

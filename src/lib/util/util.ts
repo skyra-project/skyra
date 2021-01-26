@@ -2,6 +2,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { Store } from '@sapphire/framework';
 import { Awaited, isNullish, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -19,7 +20,6 @@ import {
 	User,
 	UserResolvable
 } from 'discord.js';
-import { Store } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';

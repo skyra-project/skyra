@@ -11,7 +11,7 @@ import type { Message } from 'discord.js';
 	guarded: true,
 	usage: '<message:string{8,1900}>'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [feedback]: [string]) {
 		// Set the global flag
 		Reflect.set(message.flagArgs, 'global', 'global');

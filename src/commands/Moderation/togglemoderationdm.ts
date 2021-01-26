@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Moderation.ToggleModerationDmDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {

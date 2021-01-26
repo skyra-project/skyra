@@ -1,17 +1,12 @@
-import { cast } from '#utils/util';
 import { Message, Permissions, Structures, TextChannel } from 'discord.js';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
+const READ_PERMISSIONS = new Permissions(['VIEW_CHANNEL']);
+const SEND_PERMISSIONS = new Permissions([READ_PERMISSIONS, 'SEND_MESSAGES']);
+const ATTACH_PERMISSIONS = new Permissions([SEND_PERMISSIONS, 'ATTACH_FILES']);
+const EMBED_PERMISSIONS = new Permissions([SEND_PERMISSIONS, 'EMBED_LINKS']);
 
-export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextChannel')) {
-	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(
-			cast<Message>({ channel: this, guild: this.guild })
-		);
-		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
-	}
-
+export class SkyraTextChannel extends Structures.get('TextChannel') {
 	public set sniped(value: Message | null) {
 		const previous = snipes.get(this);
 		if (typeof previous !== 'undefined') this.client.clearTimeout(previous.timeout);
@@ -33,19 +28,19 @@ export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextCha
 	}
 
 	public get attachable() {
-		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ATTACH_FILES, false);
+		return this.permissionsFor(this.guild.me!)!.has(ATTACH_PERMISSIONS, false);
 	}
 
 	public get embedable() {
-		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.EMBED_LINKS, false);
+		return this.permissionsFor(this.guild.me!)!.has(EMBED_PERMISSIONS, false);
 	}
 
 	public get postable() {
-		return this.permissionsFor(this.guild.me!)!.has([Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES], false);
+		return this.permissionsFor(this.guild.me!)!.has(SEND_PERMISSIONS, false);
 	}
 
 	public get readable() {
-		return this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.VIEW_CHANNEL, false);
+		return this.permissionsFor(this.guild.me!)!.has(READ_PERMISSIONS, false);
 	}
 }
 
@@ -55,14 +50,12 @@ export interface SnipedMessage {
 }
 
 declare module 'discord.js' {
-	export interface TextChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<string>;
+	export interface TextChannel {
 		sniped: Message | null;
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;
 		readonly readable: boolean;
-		toString(): string;
 	}
 }
 

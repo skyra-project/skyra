@@ -14,11 +14,11 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.ChaseDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ChaseExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })
-export default class extends SkyraCommand {
+export class ChaseCommand extends SkyraCommand {
 	private KTemplate: Image = null!;
 
 	public async run(message: Message, [user]: [User]) {

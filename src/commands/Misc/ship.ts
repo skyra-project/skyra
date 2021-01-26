@@ -41,7 +41,7 @@ import { join } from 'path';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;

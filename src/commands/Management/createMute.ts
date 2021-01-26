@@ -16,7 +16,7 @@ import { Permissions, Role } from 'discord.js';
 	requiredGuildPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private rolePrompt = this.definePrompt('<role:rolename>');
 

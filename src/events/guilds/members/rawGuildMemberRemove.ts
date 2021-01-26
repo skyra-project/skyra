@@ -1,7 +1,7 @@
 import { Events } from '#lib/types/Enums';
+import { Event, EventOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@skyra/decorators';
 import { GatewayDispatchEvents, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberRemove, emitter: 'ws' })
 export default class extends Event {

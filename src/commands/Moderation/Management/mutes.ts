@@ -17,7 +17,7 @@ import type Moderations from './moderations';
 	runIn: ['text'],
 	usage: '[user:username]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public run(message: GuildMessage, [target]: [User?]) {
 		const moderations = cast<Moderations | undefined>(this.store.get('moderations'));
 		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');

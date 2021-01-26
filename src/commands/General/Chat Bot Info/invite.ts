@@ -5,37 +5,36 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+const flags = ['noperms', 'nopermissions'];
+
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.General.InviteDescription,
 	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
-	usage: '[noperms]',
-	flagSupport: true,
 	guarded: true,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS'],
+	strategyOptions: { flags }
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [noperms]: ['noperms' | undefined]) {
-		const t = await message.fetchT();
-		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.send(this.getEmbed(t, { permissions: false }));
-		}
+export class InviteCommand extends SkyraCommand {
+	public run(message: Message, args: SkyraCommand.Args) {
+		const arg = args.nextMaybe();
+		const shouldNotAddPermissions = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 
-		return message.send(this.getEmbed(t, { permissions: true }));
+		return message.send(this.getEmbed(args.t, shouldNotAddPermissions));
 	}
 
-	private getEmbed(t: TFunction, { permissions }: { permissions: boolean }): MessageEmbed {
+	private getEmbed(t: TFunction, shouldNotAddPermissions: boolean): MessageEmbed {
 		return new MessageEmbed() //
 			.setColor(BrandingColors.Primary)
 			.setDescription(
 				[
 					[
 						`[${t(LanguageKeys.Commands.General.InvitePermissionInviteText)}](https://invite.skyra.pw${
-							permissions ? '' : '/no-permissions'
+							shouldNotAddPermissions ? '/no-permissions' : ''
 						})`,
 						`[${t(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://join.skyra.pw)`
 					].join(' | '),
-					permissions ? t(LanguageKeys.Commands.General.InvitePermissionsDescription) : undefined
+					shouldNotAddPermissions ? undefined : t(LanguageKeys.Commands.General.InvitePermissionsDescription)
 				]
 					.filter(Boolean)
 					.join('\n')

@@ -22,7 +22,7 @@ const titles = {
 	usageDelim: ' ',
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.context.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
 

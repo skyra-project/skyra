@@ -10,8 +10,8 @@ import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { EventOptions } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import type { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 

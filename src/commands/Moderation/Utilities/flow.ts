@@ -14,7 +14,7 @@ import type { TextChannel } from 'discord.js';
 	runIn: ['text'],
 	usage: '[channel:textchannelname]'
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel?]) {
 		const t = await message.fetchT();
 

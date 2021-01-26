@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	usage: '<amount:integer> <user:user>',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, [money, user]: [number, User]) {
 		const t = await message.fetchT();
 		if (message.author === user) throw t(LanguageKeys.Commands.Social.PaySelf);

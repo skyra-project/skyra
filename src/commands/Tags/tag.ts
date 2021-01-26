@@ -32,7 +32,7 @@ import { MessageEmbed } from 'discord.js';
 		}
 	]
 ])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// Based on HEX regex from #utils/Color
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;

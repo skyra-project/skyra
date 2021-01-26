@@ -11,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	guarded: true,
 	requiredPermissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const t = await message.fetchT();
 		return message.send(

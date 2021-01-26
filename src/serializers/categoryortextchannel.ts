@@ -2,15 +2,15 @@ import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, { t, entry, guild }: SerializerUpdateContext) {
-		const channel = guild.channels.cache.get(value);
-		if (!channel) {
+export class UserSerializer extends Serializer<string> {
+	public async parse(args: Serializer.Args, { t, entry }: SerializerUpdateContext) {
+		const result = await args.pickResult('guildChannel');
+		if (!result.success) {
 			return this.error(t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name }));
 		}
 
-		if (channel.type === 'text' || channel.type === 'category') {
-			return this.ok(channel.id);
+		if (result.value.type === 'text' || result.value.type === 'category') {
+			return this.ok(result.value.id);
 		}
 
 		return this.error(t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name }));

@@ -14,11 +14,11 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.GoofyTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.GoofyTimeExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })
-export default class extends SkyraCommand {
+export class GoofyTimeCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, [user]: [User]) {

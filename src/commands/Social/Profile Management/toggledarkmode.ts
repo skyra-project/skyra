@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	description: LanguageKeys.Commands.Social.ToggleDarkModeDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ToggleDarkModeExtended
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {

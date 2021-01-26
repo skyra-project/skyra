@@ -1,13 +1,14 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RateLimitManager } from '#lib/structures';
 import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { kBigIntTransformer } from '#utils/util';
+import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { RateLimitManager, Store } from 'klasa';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
@@ -718,7 +719,7 @@ export class GuildEntity extends BaseEntity {
 	protected entityLoad() {
 		this.adders.refresh();
 		this.permissionNodes.refresh();
-		this.nms = new RateLimitManager(this.noMentionSpamMentionsAllowed, this.noMentionSpamTimePeriod * 1000);
+		this.nms = new RateLimitManager(this.noMentionSpamTimePeriod * 1000, this.noMentionSpamMentionsAllowed);
 		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
 		this.#words = this.selfmodFilterRaw.slice();
 	}

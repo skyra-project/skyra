@@ -11,7 +11,7 @@
 		"reminder": ""
 	},
 	"avatarNone": "",
-	"color": "",
+	"color": "HEX: **{{hex}}**\nRGB: **{{rgb}}**\nHSL: **{{hsl}}**",
 	"colorDescription": "",
 	"colorExtended": {
 		"extendedHelp": "",
@@ -36,7 +36,7 @@
 			],
 			[
 				"HSL",
-				""
+				"hsl(350, 100, 100)"
 			],
 			[
 				"",
@@ -64,7 +64,7 @@
 		"explainedUsage": [
 			[
 				"страна",
-				""
+				"Название страны."
 			]
 		],
 		"examples": [

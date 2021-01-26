@@ -3,8 +3,8 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
-import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { pickRandom, showSeconds } from '#utils/util';
+import { ZeroWidthSpace } from '#utils/constants';
+import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
@@ -15,22 +15,17 @@ import type { TFunction } from 'i18next';
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
-	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	permissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireQueueNotEmpty()
-	public async run(message: GuildMessage) {
-		const t = await message.fetchT();
-
-		// Send the loading message
-		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
-		);
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
+		const response = await sendLoadingMessage(message, args.t);
 
 		// Generate the pages with 5 songs each
 		const template = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setTitle(t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
+			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
 		const queueDisplay = new UserPaginatedMessage({ template });
 
 		const { audio } = message.guild;
@@ -40,38 +35,36 @@ export default class extends MusicCommand {
 		if (current) {
 			const track = current.entry.info;
 			const nowPlayingDescription = [
-				track.isStream ? t(LanguageKeys.Commands.Music.QueueNowPlayingLiveStream) : showSeconds(track.length),
-				t(LanguageKeys.Commands.Music.QueueNowPlaying, {
+				track.isStream ? args.t(LanguageKeys.Commands.Music.QueueNowPlayingLiveStream) : showSeconds(track.length),
+				args.t(LanguageKeys.Commands.Music.QueueNowPlaying, {
 					title: track.title,
 					url: track.uri,
-					requester: await this.fetchRequesterName(message, t, current.entry.author)
+					requester: await this.fetchRequesterName(message, args.t, current.entry.author)
 				})
 			];
 
 			if (!track.isStream) {
 				nowPlayingDescription.push(
-					t(LanguageKeys.Commands.Music.QueueNowPlayingTimeRemaining, {
+					args.t(LanguageKeys.Commands.Music.QueueNowPlayingTimeRemaining, {
 						timeRemaining: showSeconds(track.length - current.position)
 					})
 				);
 			}
 
-			template.addField(t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
+			template.addField(args.t(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
 		}
 
 		if (tracks.length) {
 			// Format the song entries
-			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, t, position, track)));
+			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, args.t, position, track)));
 			const totalDuration = this.calculateTotalDuration(tracks);
-			const totalDescription = t(LanguageKeys.Commands.Music.QueueTotal, {
-				songs: t(LanguageKeys.Commands.Music.AddPlaylistSongs, {
-					count: tracks.length
-				}),
+			const totalDescription = args.t(LanguageKeys.Commands.Music.QueueTotal, {
+				songs: args.t(LanguageKeys.Commands.Music.AddPlaylistSongs, { count: tracks.length }),
 				remainingTime: showSeconds(totalDuration)
 			});
 
-			template.addField(t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
-			template.addField(ZeroWidthSpace, t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
+			template.addField(args.t(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
+			template.addField(ZeroWidthSpace, args.t(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild }));
 
 			for (const page of chunk(songFields, 5)) {
 				queueDisplay.addPageEmbed((embed) => embed.setDescription(page.join('\n\n')));
@@ -118,7 +111,7 @@ export default class extends MusicCommand {
 			return (await this.context.client.users.fetch(userID)).username;
 		} catch {}
 
-		return t(LanguageKeys.Misc.UnknownUser);
+		return t(LanguageKeys.Serializers.UnknownUser);
 	}
 
 	private async getTrackInformation(audio: Queue): Promise<readonly DecodedQueueEntry[]> {

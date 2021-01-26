@@ -1,25 +1,22 @@
-/* eslint-disable @typescript-eslint/no-invalid-this */
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, ConnectFourManager, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
-import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
-import { Server } from '@sapphire/plugin-api';
-import { I18nextHandler } from '@sapphire/plugin-i18next';
+import { CLIENT_OPTIONS, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
+import { SapphireClient } from '@sapphire/framework';
+import { I18nContext } from '@sapphire/plugin-i18next';
 import { mergeDefault } from '@sapphire/utilities';
 import { ClientOptions, Message, Webhook } from 'discord.js';
-import { KlasaClient } from 'klasa';
-import { join } from 'path';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import './extensions';
 import './setup';
-import { clientOptions, rootFolder } from './util/constants';
+import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
 import { enumerable } from './util/util';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 
-export class SkyraClient extends KlasaClient {
+export class SkyraClient extends SapphireClient {
 	/**
 	 * The version of Skyra
 	 */
@@ -65,11 +62,6 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
-	/**
-	 * The API server
-	 */
-	public server: Server;
-
 	@enumerable(false)
 	public readonly audio: QueueClient;
 
@@ -91,9 +83,6 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
-	@enumerable(false)
-	public i18n: I18nextHandler = new I18nextHandler(this.options.i18n);
-
 	public websocket = new WebsocketHandler();
 
 	public constructor() {
@@ -104,21 +93,9 @@ export class SkyraClient extends KlasaClient {
 			return Promise.resolve(guild?.shard.send(packet));
 		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
-
-		this.server = new Server(CLIENT_OPTIONS.api);
-		this.registerStore(this.server.routes) //
-			.registerStore(this.server.mediaParsers)
-			.registerStore(this.server.middlewares);
-
-		for (const store of [this.server.routes, this.server.mediaParsers, this.server.middlewares]) {
-			store.registerPath(join(rootFolder, 'node_modules', '@sapphire', 'plugin-api', 'dist', store.name));
-		}
-		for (const store of this.stores) store.registerPath(join(this.userBaseDirectory, store.name));
 	}
 
 	public async login(token?: string) {
-		await this.i18n.init();
-		await this.server.connect();
 		await this.schedules.init();
 		return super.login(token);
 	}
@@ -127,16 +104,16 @@ export class SkyraClient extends KlasaClient {
 	 * Retrieves the prefix for the guild.
 	 * @param message The message that gives context.
 	 */
-	public fetchPrefix(message: Message) {
-		if (!message.guild) return this.options.prefix;
-		return message.guild.readSettings(GuildSettings.Prefix);
-	}
+	public fetchPrefix = async (message: Message) => {
+		if (!message.guild) return [PREFIX, ''] as readonly string[];
+		return (await message.guild?.readSettings(GuildSettings.Prefix)) ?? PREFIX;
+	};
 
 	/**
 	 * Retrieves the language key for the message.
 	 * @param message The message that gives context.
 	 */
-	public async fetchLanguage(message: Message) {
+	public fetchLanguage = (message: I18nContext) => {
 		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
-	}
+	};
 }

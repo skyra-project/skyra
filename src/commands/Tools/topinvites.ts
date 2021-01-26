@@ -2,8 +2,8 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors, Emojis } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { Emojis } from '#utils/constants';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -13,14 +13,11 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
-	requiredGuildPermissions: ['MANAGE_GUILD']
+	permissions: ['MANAGE_GUILD']
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const response = await sendLoadingMessage(message, args.t);
 
 		const invites = await message.guild.fetchInvites();
 		const topTen = invites
@@ -28,10 +25,9 @@ export default class extends PaginatedMessageCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw t(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
+		if (topTen.length === 0) return this.error(args.t(LanguageKeys.Commands.Tools.TopInvitesNoInvites));
 
-		const display = await this.buildDisplay(message, t, topTen);
-
+		const display = await this.buildDisplay(message, args.t, topTen);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

@@ -5,11 +5,11 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { filter, map } from '#utils/iterator';
+import { Event } from '@sapphire/framework';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(previous: User, user: User) {
 		const prevUsername = previous.username;
 		const nextUserName = user.username;
@@ -33,14 +33,18 @@ export default class extends Event {
 		if (enabled) {
 			// Send the Username log
 			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.UsernameUpdate)
+				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
 			);
 		}
 	}
 
 	private getNameDescription(t: TFunction, previousName: string | null, nextName: string | null) {
-		const previous = previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet;
-		const next = nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet;
+		const previous =
+			previousName === null
+				? LanguageKeys.Events.Guilds.Members.NameUpdatePreviousWasNotSet
+				: LanguageKeys.Events.Guilds.Members.NameUpdatePreviousWasSet;
+		const next =
+			nextName === null ? LanguageKeys.Events.Guilds.Members.NameUpdateNextWasNotSet : LanguageKeys.Events.Guilds.Members.NameUpdateNextWasSet;
 		return [t(previous, { previousName }), t(next, { nextName })].join('\n');
 	}
 

@@ -4,9 +4,8 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import { GuildMember, Role } from 'discord.js';
-import type { Command } from 'klasa';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pnodes', 'pnode'],
@@ -15,88 +14,78 @@ import type { Command } from 'klasa';
 	permissionLevel: PermissionLevels.Administrator,
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
-	subcommands: true,
-	runIn: ['text'],
-	usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
-	usageDelim: ' '
+	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
+	runIn: ['text']
 })
-@CreateResolvers([
-	[
-		'command',
-		(arg, possible, message, [action]) => {
-			if (action === 'reset' || action === 'show') return undefined;
-			return message.client.arguments.get('command')!.run(arg, possible, message);
-		}
-	],
-	[
-		'type',
-		async (arg, _possible, message, [action]) => {
-			if (action === 'reset' || action === 'show') return undefined;
-			if (/allow|deny/i.test(arg)) return arg.toLowerCase();
-			throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesInvalidType);
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async add(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
-		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
+export class UserCommand extends SkyraCommand {
+	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = await args.pick('roleName').catch(() => args.pick('member'));
+		const action = await args.pick(UserCommand.type);
+		const command = await args.pick('command');
 
-		const t = await message.guild.writeSettings((settings) => {
+		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+
+		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.add(target, command.name, action);
-			return settings.getLanguage();
 		});
 
-		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesAdd));
+		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesAdd));
 	}
 
-	public async remove(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
-		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
+	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = await args.pick('roleName').catch(() => args.pick('member'));
+		const action = await args.pick(UserCommand.type);
+		const command = await args.pick('command');
 
-		const t = await message.guild.writeSettings((settings) => {
+		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+
+		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.remove(target, command.name, action);
-			return settings.getLanguage();
 		});
 
-		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesRemove));
+		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesRemove));
 	}
 
-	public async reset(message: GuildMessage, [target]: [Role | GuildMember]) {
-		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
+	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = await args.pick('roleName').catch(() => args.pick('member'));
 
-		const t = await message.guild.writeSettings((settings) => {
+		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+
+		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.reset(target);
-			return settings.getLanguage();
 		});
 
-		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesReset));
+		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesReset));
 	}
 
-	public async show(message: GuildMessage, [target]: [Role | GuildMember]) {
-		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
+	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = await args.pick('roleName').catch(() => args.pick('member'));
+
+		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const [nodes, t] = await message.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		const nodes = await message.guild.readSettings(key);
 		const node = nodes.find((n) => n.id === target.id);
-		if (typeof node === 'undefined') throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+		if (typeof node === 'undefined') throw args.t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		return message.send([
-			t(LanguageKeys.Commands.Management.PermissionNodesShowName, {
+			args.t(LanguageKeys.Commands.Management.PermissionNodesShowName, {
 				name: isRole ? (target as Role).name : (target as GuildMember).displayName
 			}),
-			t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
+			args.t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
 				allow: node.allow.length
-					? t(LanguageKeys.Globals.AndListValue, {
+					? args.t(LanguageKeys.Globals.AndListValue, {
 							value: node.allow.map((command) => `\`${command}\``)
 					  })
-					: t(LanguageKeys.Globals.None)
+					: args.t(LanguageKeys.Globals.None)
 			}),
-			t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
+			args.t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
 				deny: node.deny.length
-					? t(LanguageKeys.Globals.AndListValue, {
+					? args.t(LanguageKeys.Globals.AndListValue, {
 							value: node.deny.map((command) => `\`${command}\``)
 					  })
-					: t(LanguageKeys.Globals.None)
+					: args.t(LanguageKeys.Globals.None)
 			})
 		]);
 	}
@@ -116,4 +105,11 @@ export default class extends SkyraCommand {
 		const authorPosition = message.member!.roles.highest?.position ?? 0;
 		return authorPosition > targetPosition;
 	}
+
+	private static type = Args.make<PermissionNodeAction>((parameter, { argument }) => {
+		const lowerCasedParameter = parameter.toLowerCase();
+		if (lowerCasedParameter === 'allow') return Args.ok(PermissionNodeAction.Allow);
+		if (lowerCasedParameter === 'deny') return Args.ok(PermissionNodeAction.Deny);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Management.PermissionNodesInvalidType });
+	});
 }

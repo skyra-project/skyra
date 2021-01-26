@@ -1,12 +1,13 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RateLimitManager } from '#lib/structures';
 import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
+import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { RateLimitManager, Store } from 'klasa';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
@@ -369,7 +370,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'selfmod.messages.enabled', default: false })
 	public selfmodMessagesEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.messages.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredRoles: string[] = [];
 
@@ -561,12 +562,6 @@ export class GuildEntity extends BaseEntity {
 	@Column('integer', { name: 'selfmod.reactions.thresholdDuration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
 
-	@Column('boolean', { name: 'selfmod.raid', default: false })
-	public selfmodRaid = false;
-
-	@Column('smallint', { name: 'selfmod.raidthreshold', default: 10 })
-	public selfmodRaidthreshold = 10;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodIgnoreChannels: string[] = [];
@@ -718,7 +713,7 @@ export class GuildEntity extends BaseEntity {
 	protected entityLoad() {
 		this.adders.refresh();
 		this.permissionNodes.refresh();
-		this.nms = new RateLimitManager(this.noMentionSpamMentionsAllowed, this.noMentionSpamTimePeriod * 1000);
+		this.nms = new RateLimitManager(this.noMentionSpamTimePeriod * 1000, this.noMentionSpamMentionsAllowed);
 		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
 		this.#words = this.selfmodFilterRaw.slice();
 	}

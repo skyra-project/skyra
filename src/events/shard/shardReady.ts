@@ -1,7 +1,7 @@
 import { ShardEvent } from '#lib/structures';
 import { green } from 'colorette';
 
-export default class extends ShardEvent {
+export class UserShardEvent extends ShardEvent {
 	protected readonly title = green('Ready');
 
 	public run(id: number, unavailableGuilds: Set<string> | null) {

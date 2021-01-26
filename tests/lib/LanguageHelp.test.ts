@@ -2,13 +2,16 @@ import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 
 describe('LanguageHelp builder', () => {
 	const builder = new LanguageHelp()
-		.setExplainedUsage('⚙ | ***Explained usage***')
-		.setPossibleFormats('🔢 | ***Possible formats***')
-		.setExamples('🔗 | ***Examples***')
-		.setReminder('⏰ | ***Reminder***');
+		.setAliases('🖇️ | **Aliases**')
+		.setUsages('📝 | **Command Usage**')
+		.setExtendedHelp('🔍 | **Extended Help**')
+		.setExplainedUsage('⚙ | **Explained usage**')
+		.setPossibleFormats('🔢 | **Possible formats**')
+		.setExamples('🔗 | **Examples**')
+		.setReminder('⏰ | **Reminder**');
 
 	test('GIVEN basic command display THEN parses correctly', () => {
-		const commandHelp = builder.display('add', {
+		const commandHelp = builder.display('add', null, {
 			extendedHelp: [
 				'Add songs to the playing queue and prepare for musical enjoyment!\nI can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.',
 				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
@@ -28,17 +31,18 @@ describe('LanguageHelp builder', () => {
 			]
 		});
 
-		const expectedOutput = `Add songs to the playing queue and prepare for musical enjoyment!
+		const expectedOutput = `🔍 | **Extended Help**
+Add songs to the playing queue and prepare for musical enjoyment!
 I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 - To play from YouTube either give me something to search, a video link, or a playlist link.
 - To play from SoundCloud give me a SoundCloud link, or if you want me to search include either \`--sc\` or \`--soundcloud\` in your message.
 - To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.
 - To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.
 
-⚙ | ***Explained usage***
+⚙ | **Explained usage**
 → **song**: The song to queue. Can be either a URL or a video/song title.
 
-🔗 | ***Examples***
+🔗 | **Examples**
 → Skyra, add *The Pokémon Theme song*
 → Skyra, add *https://youtu.be/fJ9rUzIMcZQ*
 → Skyra, add *--sc Imagine Dragons Believer*
@@ -52,14 +56,14 @@ I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 	});
 
 	test('GIVEN extended help w/o extendedHelp THEN parses correctly', () => {
-		const commandHelp = builder.display('sample', {
+		const commandHelp = builder.display('sample', null, {
 			reminder: ['This goes to 9000', 'Actually 9001'].join('\n')
 		});
 
-		const expectedOutput = `🔗 | ***Examples***
+		const expectedOutput = `🔗 | **Examples**
 → Skyra, sample
 
-⏰ | ***Reminder***
+⏰ | **Reminder**
 This goes to 9000
 Actually 9001`;
 

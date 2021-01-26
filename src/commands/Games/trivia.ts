@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import { Time } from '#utils/constants';
 import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
@@ -13,55 +13,23 @@ import type { TFunction } from 'i18next';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
-	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
-	usageDelim: ' ',
-	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
-@CreateResolvers([
-	[
-		'category',
-		async (arg, _, message) => {
-			if (!arg) return CATEGORIES.general;
-			arg = arg.toLowerCase();
-			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw await message.resolveKey(LanguageKeys.Commands.Games.TriviaInvalidCategory);
-			return category;
-		}
-	],
-	[
-		'timespan-seconds',
-		async (arg, _, message) => {
-			if (!arg) return Time.Second * 30;
-			let duration = await message.client.arguments.get('timespan')!.run(arg, _, message);
-			// In case of a duration of more than 1 minute then reset it to the default of 30 seconds
-			if (duration > Time.Minute) duration = Time.Second * 30;
-			return duration / 1000;
-		}
-	]
-])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 
-	public async run(
-		message: Message,
-		[category = CATEGORIES.general, questionType = QuestionType.Multiple, difficulty = QuestionDifficulty.Easy, duration = 30]: [
-			number,
-			QuestionType?,
-			QuestionDifficulty?,
-			number?
-		]
-	) {
-		// If a question was a true/false, set it as boolean:
-		if (questionType === QuestionType.TrueFalse) questionType = QuestionType.Boolean;
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const category = args.finished ? CATEGORIES.general : await args.pick(UserCommand.category);
+		const questionType = args.finished ? QuestionType.Multiple : await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
+		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
+		const duration = args.finished ? 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
 
-		const t = await message.fetchT();
-		if (this.#channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.TriviaActiveGame);
-
+		if (this.#channels.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.TriviaActiveGame);
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
+			await message.send(pickRandom(args.t(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean
@@ -69,7 +37,7 @@ export default class extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.send(this.buildQuestionEmbed(t, data, possibleAnswers));
+			await message.send(this.buildQuestionEmbed(args.t, data, possibleAnswers));
 			const filter = (msg: Message) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
@@ -89,17 +57,17 @@ export default class extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.send(t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
+					return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.send(t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
-					return message.channel.send(t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
+					if (!winner) return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
+					return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
 		} catch (error) {
 			this.#channels.delete(message.channel.id);
 			this.context.client.logger.fatal(error);
-			throw t(LanguageKeys.Misc.UnexpectedIssue);
+			throw args.t(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}
 
@@ -113,4 +81,26 @@ export default class extends SkyraCommand {
 			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
 			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
 	}
+
+	private static category = Args.make<number>((parameter, { argument }) => {
+		const lowerCasedParameter = parameter.toLowerCase();
+		const category = Reflect.get(CATEGORIES, lowerCasedParameter);
+		if (typeof category === 'number') return Args.ok(category);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Games.TriviaInvalidCategory });
+	});
+
+	private static questionType = Args.make<QuestionType>((parameter, { argument }) => {
+		const lowerCasedParameter = parameter.toLowerCase();
+		if (lowerCasedParameter === 'boolean' || lowerCasedParameter === 'truefalse') return Args.ok(QuestionType.Boolean);
+		if (lowerCasedParameter === 'multiple') return Args.ok(QuestionType.Multiple);
+		return Args.error({ argument, parameter });
+	});
+
+	private static questionDifficulty = Args.make<QuestionDifficulty>((parameter, { argument }) => {
+		const lowerCasedParameter = parameter.toLowerCase();
+		if (lowerCasedParameter === 'easy') return Args.ok(QuestionDifficulty.Easy);
+		if (lowerCasedParameter === 'medium') return Args.ok(QuestionDifficulty.Medium);
+		if (lowerCasedParameter === 'hard') return Args.ok(QuestionDifficulty.Hard);
+		return Args.error({ argument, parameter });
+	});
 }

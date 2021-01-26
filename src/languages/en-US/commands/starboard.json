@@ -1,6 +1,7 @@
 {
 	"starDescription": "Get a random starred message from the database or the star leaderboard.",
 	"starExtended": {
+		"usages": ["top User? Timespan?", "random? User?"],
 		"extendedHelp": "This command shows a random starred message or the starboard usage and leaderboard for this server."
 	},
 	"starMessages_plural": "{{count}} messages",

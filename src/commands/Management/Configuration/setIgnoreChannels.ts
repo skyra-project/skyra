@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { isTextBasedChannel } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { TextChannel } from 'discord.js';
+import { Args, IArgument, Store } from '@sapphire/framework';
+import type { NewsChannel, TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -13,15 +13,13 @@ import type { TextChannel } from 'discord.js';
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
-	usage: '<here|channel:textchannelname>'
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
-		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (!isTextBasedChannel(channel)) throw await message.resolveKey(LanguageKeys.Misc.ConfigurationTextChannelRequired);
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
-		const [t, oldLength, newLength] = await message.guild.writeSettings((settings) => {
+		const [oldLength, newLength] = await message.guild.writeSettings((settings) => {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];
 			const oldLength = ignoredChannels.length;
 
@@ -33,11 +31,11 @@ export default class extends SkyraCommand {
 				ignoredChannels.splice(index, 1);
 			}
 
-			return [settings.getLanguage(), oldLength, ignoredChannels.length];
+			return [oldLength, ignoredChannels.length];
 		});
 
 		return message.send(
-			t(
+			args.t(
 				oldLength < newLength
 					? LanguageKeys.Commands.Management.SetIgnoreChannelsSet
 					: LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved,
@@ -48,4 +46,12 @@ export default class extends SkyraCommand {
 			)
 		);
 	}
+
+	private static hereOrTextChannelResolver = Args.make<TextChannel | NewsChannel>((argument, context) => {
+		if (argument === 'here') return Args.ok(context.message.channel as TextChannel);
+		return (Store.injectedContext.stores.get('arguments').get('textOrNewsChannelName') as IArgument<TextChannel | NewsChannel>).run(
+			argument,
+			context
+		);
+	});
 }

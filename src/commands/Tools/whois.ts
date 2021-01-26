@@ -5,7 +5,6 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Emojis, Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -17,14 +16,10 @@ const { FLAGS } = Permissions;
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
-	usage: '(user:username)'
+	permissions: ['EMBED_LINKS'],
+	runIn: ['text']
 })
-@CreateResolvers([
-	['username', (arg, possible, message) => (arg ? message.client.arguments.get('username')!.run(arg, possible, message) : message.author)]
-])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, number][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
@@ -39,11 +34,10 @@ export default class extends SkyraCommand {
 		['MENTION_EVERYONE', FLAGS.MENTION_EVERYONE]
 	];
 
-	public async run(message: GuildMessage, [user]: [User]) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = args.finished ? message.author : await args.pick('userName');
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
-		const t = await message.fetchT();
-
-		return message.send(member ? this.member(t, member) : this.user(t, user));
+		return message.send(member ? this.member(args.t, member) : this.user(args.t, user));
 	}
 
 	private user(t: TFunction, user: User) {

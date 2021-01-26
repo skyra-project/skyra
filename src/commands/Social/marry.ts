@@ -4,50 +4,25 @@ import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
-import type { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
+import { CommandContext } from '@sapphire/framework';
+import type { User } from 'discord.js';
+import { TFunction } from 'i18next';
 
-const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const AELIA_ID = '338249781594030090';
-
-enum YesNoAnswer {
-	Timeout,
-	ImplicitNo,
-	Yes
-}
-
-async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: User, question: string): Promise<YesNoAnswer> {
-	await channel.send(question);
-	const messages = await channel.awaitMessages((msg) => msg.author.id === user.id, { time: 60000, max: 1 });
-	if (!messages.size) return YesNoAnswer.Timeout;
-
-	const response = messages.first()!;
-	return REGEXP_ACCEPT.test(response.content) ? YesNoAnswer.Yes : YesNoAnswer.ImplicitNo;
-}
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.MarryDescription,
-	extendedHelp: LanguageKeys.Commands.Social.MarryExtended,
-	usage: '(user:username)'
+	extendedHelp: LanguageKeys.Commands.Social.MarryExtended
 })
-@CreateResolvers([
-	[
-		'username',
-		(arg, possible, msg) => {
-			if (!arg) return undefined;
-			return msg.client.arguments.get('username')!.run(arg, possible, msg);
-		}
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public run(message: GuildMessage, [user]: [User | undefined]) {
-		return user ? this.marry(message, user) : this.context.client.commands.get('married')!.run(message, []);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: CommandContext) {
+		const user = args.finished ? null : await args.peek('userName');
+		return user ? this.marry(message, args.t, user) : this.context.stores.get('commands').get('married')!.run(message, args, context);
 	}
 
-	private async marry(message: GuildMessage, user: User) {
-		const { author, channel } = message;
-		const t = await message.fetchT();
+	private async marry(message: GuildMessage, t: TFunction, user: User) {
+		const { author } = message;
 
 		switch (user.id) {
 			case CLIENT_ID:
@@ -87,8 +62,8 @@ export default class extends PaginatedMessageCommand {
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await askYesNo(channel, author, t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
-				if (answer !== YesNoAnswer.Yes)
+				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
+				if (answer)
 					return message.send(
 						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, {
 							user: await this.context.client.users.fetch(spouses[0]).then((user) => user.username)
@@ -96,21 +71,13 @@ export default class extends PaginatedMessageCommand {
 					);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await askYesNo(channel, author, t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
-				if (answer !== YesNoAnswer.Yes) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
+				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
+				if (answer) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
 			}
 
-			const answer = await askYesNo(channel, user, t(LanguageKeys.Commands.Social.MarryPetition, { author, user }));
-			switch (answer) {
-				case YesNoAnswer.Timeout:
-					return message.send(t(LanguageKeys.Commands.Social.MarryNoReply));
-				case YesNoAnswer.ImplicitNo:
-					return message.send(t(LanguageKeys.Commands.Social.MarryDenied));
-				case YesNoAnswer.Yes:
-					break;
-				default:
-					throw new Error('unreachable');
-			}
+			const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryPetition, { author, user }), undefined, { target: user });
+			if (answer === null) return message.send(t(LanguageKeys.Commands.Social.MarryNoReply));
+			if (!answer) return message.send(t(LanguageKeys.Commands.Social.MarryDenied));
 
 			const settings = await users.ensure(authorID, { relations: ['spouses'] });
 			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));

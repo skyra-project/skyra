@@ -14,15 +14,15 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '<image:image>'
+	permissions: ['ATTACH_FILES'],
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private bodyImage: Image = null!;
 	private handsImage: Image = null!;
 
-	public async run(message: Message, [imageBuffer]: [Image]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const imageBuffer = await args.pick('image');
 		const attachment = await new Canvas(512, 512)
 			.printImage(this.bodyImage, 0, 0, 512, 512)
 			.translate(135, 410)

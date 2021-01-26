@@ -11,8 +11,6 @@ export const DatabaseError = T<string>('system:databaseError');
 export const DiscordAbortError = T<string>('system:discordAbortError');
 export const QueryFail = T<string>('system:queryFail');
 export const NoResults = T<string>('system:noResults');
-export const MessageNotFound = T<string>('system:messageNotFound');
-export const NotEnoughParameters = T<string>('system:notEnoughParameters');
 export const CannotAccessChannel = T<string>('system:cannotAccessChannel');
 export const ExceededLengthOutput = FT<{ output: string; time?: string; type?: string }, string>('system:exceededLengthOutput');
 export const ExceededLengthOutputWithTypeAndTime = FT<{ output: string; time?: string; type?: string }, string>(
@@ -32,6 +30,9 @@ export const ExceededLengthChooseOutput = FT<{ output: string[] }, string>('syst
 export const ExternalServerError = T<string>('system:externalServerError');
 export const PokedexExternalResource = T<string>('system:pokedexExternalResource');
 export const HelpTitles = T<{
+	aliases: string;
+	usages: string;
+	extendedHelp: string;
 	explainedUsage: string;
 	possibleFormats: string;
 	examples: string;

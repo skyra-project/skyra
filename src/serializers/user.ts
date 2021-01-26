@@ -1,24 +1,24 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SnowflakeRegex } from '@sapphire/discord.js-utilities';
 
-export default class UserSerializer extends Serializer<string> {
-	public async parse(value: string, { t, entry }: SerializerUpdateContext) {
-		const id = Serializer.regex.userOrMember.exec(value);
-		const user = id ? await this.context.client.users.fetch(id[1]).catch(() => null) : null;
-		if (user) return this.ok(user.id);
-		return this.error(t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name }));
+export class UserSerializer extends Serializer<string> {
+	public async parse(args: Serializer.Args) {
+		const result = await args.pickResult('user');
+		if (result.success) return this.ok(result.value.id);
+		return result;
 	}
 
 	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
 		try {
 			// If it's not a valid snowflake, throw
-			if (!Serializer.regex.snowflake.test(value)) throw undefined;
+			if (!SnowflakeRegex.test(value)) throw undefined;
 
 			// Fetch the value, if it exists, it'll resolve and return true
 			await this.context.client.users.fetch(value);
 			return true;
 		} catch {
-			throw t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name });
+			throw t(LanguageKeys.Serializers.InvalidUser, { name: entry.name });
 		}
 	}
 

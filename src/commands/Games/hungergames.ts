@@ -3,7 +3,6 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
@@ -11,7 +10,6 @@ import { sleep } from '#utils/Promisified/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -19,19 +17,20 @@ import type { TFunction } from 'i18next';
 	cooldown: 0,
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
-	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '[user:string{,50}] [...]',
-	usageDelim: ',',
-	flagSupport: true
+	strategyOptions: {
+		flags: ['autofill', 'autoskip']
+	}
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async run(message: GuildMessage, tributes: string[] = []) {
-		const autoFilled = message.flagArgs.autofill;
-		const autoSkip = message.flagArgs.autoskip;
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const autoFilled = args.getFlags('autofill');
+		const tributes = args.finished && autoFilled ? [] : await args.rest('string').then((raw) => raw.split(',').slice(50));
+		const autoSkip = args.getFlags('autoskip');
 
 		if (autoFilled) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });
@@ -40,15 +39,14 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			const [prefix, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
-			throw t(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
+			const prefix = await message.guild.readSettings(GuildSettings.Prefix);
+			throw args.t(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
 		}
 
 		const filtered = new Set(tributes);
-		const t = await message.fetchT();
-		if (filtered.size !== tributes.length) throw t(LanguageKeys.Commands.Games.GamesRepeat);
-		if (this.playing.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
-		if (filtered.size < 4 || filtered.size > 48) throw t(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
+		if (filtered.size !== tributes.length) throw args.t(LanguageKeys.Commands.Games.GamesRepeat);
+		if (this.playing.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.GamesProgress);
+		if (filtered.size < 4 || filtered.size > 48) throw args.t(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value: boolean) => void) | null = null;
@@ -88,8 +86,8 @@ export default class extends SkyraCommand {
 					: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, t(events).map(HungerGamesUsage.create));
-				const texts = this.buildTexts(t, game, results, deaths);
+				const { results, deaths } = this.makeResultEvents(game, args.t(events).map(HungerGamesUsage.create));
+				const texts = this.buildTexts(args.t, game, results, deaths);
 
 				// Ask for the user to proceed:
 				for (const text of texts) {
@@ -116,14 +114,16 @@ export default class extends SkyraCommand {
 
 					// Delete the previous message, and if stopped, send stop.
 					floatPromise(gameMessage.nuke());
-					if (!verification) return message.channel.postable ? message.send(t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+					if (!verification) {
+						return message.channel.postable ? message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+					}
 				}
 				if (game.bloodbath) game.bloodbath = false;
 				else game.sun = !game.sun;
 			}
 
 			// The match finished with one remaining player
-			return message.send(t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
+			return message.send(args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
 		} finally {
 			game.llrc.end();
 		}
@@ -149,16 +149,7 @@ export default class extends SkyraCommand {
 			// Fetch the member for level measuring purposes
 			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
-			const hasLevel = await Message.prototype.hasAtLeastPermissionLevel.call(
-				{
-					author: member.user,
-					client: member.client,
-					guild: member.guild,
-					member
-				},
-				PermissionLevels.Moderator
-			);
-			return !hasLevel;
+			return !(await member.isModerator());
 		} catch {
 			return true;
 		}

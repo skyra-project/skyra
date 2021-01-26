@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '#utils/APIs/Pokemon';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -26,19 +25,17 @@ enum BaseStats {
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<pokemon:str>',
-	flagSupport: true
+	permissions: ['EMBED_LINKS'],
+	strategyOptions: { flags: ['shiny'] }
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [pokemon]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const pokemon = (await args.rest('string')).toLowerCase();
+		const { t } = args;
+		const response = await sendLoadingMessage(message, t);
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), t);
 
-		await this.buildDisplay(message, pokeDetails, t) //
+		await this.buildDisplay(pokeDetails, t, args) //
 			.start(response as GuildMessage, message.author);
 		return response;
 	}
@@ -150,7 +147,7 @@ export default class extends PaginatedMessageCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(message: GuildMessage, pokeDetails: DexDetails, t: TFunction) {
+	private buildDisplay(pokeDetails: DexDetails, t: TFunction, args: PaginatedMessageCommand.Args) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
@@ -159,16 +156,16 @@ export default class extends PaginatedMessageCommand {
 			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
-		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
-		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }, t);
+		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }, t);
 	}
 
-	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
+	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite)
+				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
 		})
 			.addPageEmbed((embed) =>
 				embed
@@ -190,7 +187,7 @@ export default class extends PaginatedMessageCommand {
 			);
 	}
 
-	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs, t: TFunction) {
+	private parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs, t: TFunction) {
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
@@ -202,7 +199,7 @@ export default class extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite)
+				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
 		})
 			.addPageEmbed((embed) =>
 				embed
@@ -256,10 +253,10 @@ export default class extends PaginatedMessageCommand {
 }
 
 interface PokemonToDisplayArgs {
-	message: GuildMessage;
 	pokeDetails: DexDetails;
 	abilities: string[];
 	baseStats: string[];
 	evoChain: string;
 	embedTranslations: PokedexEmbedDataReturn;
+	args: PaginatedMessageCommand.Args;
 }

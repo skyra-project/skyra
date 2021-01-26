@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "Sperre oder erlaube Benutzer und Gilden davon meine Funktionen zu nutzen.",
-	"blocklistExtended": {
-		"extendedHelp": "Blockiere Benutzer die Funktionen missbrauchen von zukünftiger Benutzung, böse böse Menschen!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Gesperrte Benutzer und Gilden erfolgreich zurückgesetzt",
-	"blocklistSaveSuccess": "{{GREENTICK}} Gesperrte Benutzer und/oder Gilden wurden erfolgreich aktualisiert",
 	"confNoKey": "Ein Schlüssel muss angegeben werden",
 	"confNoValue": "Ein Wert muss angegeben werden",
 	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",

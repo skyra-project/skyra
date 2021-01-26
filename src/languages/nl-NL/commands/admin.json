@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "Blokkeer of sta gebruikers toe om mijn functionaliteiten te gebruiken.",
-	"blocklistExtended": {
-		"extendedHelp": "Blokkeer gebruikers die mij misbruiken om in de toekomst mij verder te misbruiken, stoute, stoute mensen!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol gereset",
-	"blocklistSaveSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol geüpdate",
 	"confNoKey": "Je moet een key opgeven",
 	"confNoValue": "Een waarde is vereist",
 	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",

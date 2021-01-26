@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { ModerationManagerCreateData } from '#lib/structures';
+import type { ModerationManagerCreateData } from '#lib/moderation';
 import type { KeyOfType } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
@@ -24,6 +24,7 @@ import {
 import type { TFunction } from 'i18next';
 
 export const enum ModerationSetupRestriction {
+	All = 'rolesMuted',
 	Reaction = 'rolesRestrictedReaction',
 	Embed = 'rolesRestrictedEmbed',
 	Emoji = 'rolesRestrictedEmoji',
@@ -950,6 +951,8 @@ export class ModerationActions {
 
 	private static getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {
 		switch (key) {
+			case ModerationSetupRestriction.All:
+				return RoleDataKey.Muted;
 			case ModerationSetupRestriction.Attachment:
 				return RoleDataKey.Attachment;
 			case ModerationSetupRestriction.Embed:

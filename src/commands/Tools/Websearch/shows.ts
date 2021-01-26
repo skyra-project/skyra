@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -15,33 +14,29 @@ import type { TFunction } from 'i18next';
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended,
-	usage: '<show:str> [year:str]',
-	usageDelim: 'y:'
+	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [show, year]: [string, string?]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const show = await args.pick('string');
+		const year = args.finished ? await args.pick('string') : null;
 
-		const { results: entries } = await this.fetchAPI(t, show, year);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
+		const response = await sendLoadingMessage(message, args.t);
+		const { results: entries } = await this.fetchAPI(args.t, show, year);
+		if (!entries.length) return this.error(args.t(LanguageKeys.System.NoResults));
 
-		const display = await this.buildDisplay(message, t, entries);
+		const display = await this.buildDisplay(message, args.t, entries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, show: string, year?: string) {
+	private async fetchAPI(t: TFunction, show: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/tv');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 			url.searchParams.append('query', show);
 
-			if (year) url.searchParams.append('first_air_date_year', year);
-
+			if (year !== null) url.searchParams.append('first_air_date_year', year);
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
 			throw t(LanguageKeys.System.QueryFail);

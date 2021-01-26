@@ -1,10 +1,10 @@
 import { Events } from '#lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberRemove, emitter: 'ws' })
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(data: GatewayGuildMemberRemoveDispatch['d']) {
 		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;

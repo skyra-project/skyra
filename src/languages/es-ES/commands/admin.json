@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "Bloquea o permite el uso de mis funciones a usuarios o servidores.",
-	"blocklistExtended": {
-		"extendedHelp": "Bloquea a los usuarios que abusan de mis funciones para que no me utilicen en el futuro, ¡gente ingenua e ingenua!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Se han restablecido los usuarios y servidores bloqueados correctamente",
-	"blocklistSaveSuccess": "{{GREENTICK}} Se han actualizado los usuarios y/o servidores bloqueados",
 	"confNoKey": "Debes proporcionar el nombre de una clave de configuración",
 	"confNoValue": "Debes proporcionar un valor",
 	"confGuarded": "{{name, toTitleCase}} no puede ser deshabilitado.",

@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CommandContext, HandledCommandContext, ModerationCommand } from '#lib/structures';
+import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Role, User } from 'discord.js';
+import { Time } from '@sapphire/time-utilities';
+import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ar'],
@@ -13,18 +14,16 @@ import type { Role, User } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.AddRoleExtended,
 	requiredMember: true,
 	optionalDuration: true,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
-	permissionLevel: PermissionLevels.Administrator,
-	usage: '<users:...user{,10}> <role:rolename> [duration:timespan] [reason:...string]',
-	usageDelim: ' '
+	permissions: ['MANAGE_ROLES'],
+	permissionLevel: PermissionLevels.Administrator
 })
-export default class extends ModerationCommand {
-	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { role: Role } {
+export class UserModerationCommand extends ModerationCommand {
+	protected async resolveOverloads(args: ModerationCommand.Args) {
 		return {
-			targets: targets as User[],
-			duration: args[1] as number | null,
-			reason: args[2] as string | null,
-			role: args[0] as Role
+			targets: await args.repeat('user', { times: 10 }),
+			role: await args.pick('roleName'),
+			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
+			reason: args.finished ? null : await args.rest('string')
 		};
 	}
 
@@ -38,7 +37,7 @@ export default class extends ModerationCommand {
 				duration: context.duration
 			},
 			context.role,
-			await this.getTargetDM(message, context.target)
+			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
 }

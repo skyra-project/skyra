@@ -1,14 +1,14 @@
 {
 	"animeDescription": "Search your favourite anime by title with this command.",
 	"animeExtended": {
+		"usages": ["Name of Anime"],
 		"extendedHelp": "This command queries Kitsu.io to show data for the anime you request.",
-		"explainedUsage": [["query", "The anime's name you are looking for."]],
 		"examples": ["One Piece"]
 	},
 	"mangaDescription": "Search your favourite manga by title with this command.",
 	"mangaExtended": {
+		"usages": ["Name of Manga"],
 		"extendedHelp": "This command queries Kitsu.io to show data for the manga you request.",
-		"explainedUsage": [["query", "The manga's name you are looking for."]],
 		"examples": ["Stone Ocean", "One Piece"]
 	},
 	"waifuDescription": "Posts a randomly generated waifu image.",

@@ -1,4 +1,4 @@
-import { Store } from 'klasa';
+import { Store } from '@sapphire/framework';
 
 export function api() {
 	return Reflect.get(Store.injectedContext.client, 'api') as Api;

@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { AudioEvent } from '#lib/structures';
 import type { MessageAcknowledgeable } from '#lib/types';
 
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]) {
 		await channel.send(tracks.length === 1 ? await this.getSingleTrackContent(channel, tracks) : await this.getPlayListContent(channel, tracks), {
 			allowedMentions: { users: [], roles: [] }

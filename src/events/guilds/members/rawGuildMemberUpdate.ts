@@ -2,7 +2,8 @@ import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { CLIENT_ID } from '#root/config';
 import { floatPromise } from '#utils/util';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,
@@ -11,10 +12,9 @@ import {
 	RESTGetAPIAuditLogResult
 } from 'discord-api-types/v6';
 import type { Guild } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
 		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (typeof guild === 'undefined') return;

@@ -1,6 +1,7 @@
 {
 	"yarnDescription": "Responds with information on a NodeJS package using the Yarn package registry",
 	"yarnExtended": {
+		"usages": ["Package Name"],
 		"extendedHelp": "This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)",
 		"explainedUsage": [["package", "The name of the package to search for, has to be an exact match"]],
 		"examples": ["@skyra/char", "@skyra/saelem", "@skyra/eslint-config"]

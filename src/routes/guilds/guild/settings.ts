@@ -6,7 +6,7 @@ import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from
 import type { Guild } from 'discord.js';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
-export default class extends Route {
+export class UserRoute extends Route {
 	private readonly kBlockList: string[] = ['commandUses'];
 
 	@authenticated()

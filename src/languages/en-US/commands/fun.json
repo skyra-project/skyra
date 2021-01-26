@@ -1,24 +1,28 @@
 {
 	"8ballDescription": "Skyra will read the Holy Bible to find the correct answer for your question.",
 	"8ballExtended": {
+		"usages": ["Question"],
 		"extendedHelp": "This command provides you a random question based on your questions' type. Be careful, it may be too smart.",
 		"explainedUsage": [["question", "The Holy Question"]],
 		"examples": ["Why did the chicken cross the road?"]
 	},
-	"choiceDescription": "Eeny, meeny, miny, moe, catch a tiger by the toe...",
-	"choiceExtended": {
-		"extendedHelp": "I have an existencial doubt... should I wash the dishes or throw them through the window? The search continues. List me items separated by comma and I will choose one them. On a side note, I am not responsible of what happens next.",
-		"explainedUsage": [["words", "A list of words separated by comma."]],
-		"examples": ["Should Wash the dishes, Throw the dishes out the window", "Cat, Dog"]
-	},
 	"changemymindDescription": "Skyra is the best, change my mind.",
 	"changemymindExtended": {
+		"usages": ["Content"],
 		"extendedHelp": "I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.",
 		"explainedUsage": [["text", "The phrase you want."]],
 		"examples": ["Skyra is the best bot in this server"]
 	},
+	"choiceDescription": "Eeny, meeny, miny, moe, catch a tiger by the toe...",
+	"choiceExtended": {
+		"usages": ["Choice1, Choice2, Choice3..."],
+		"extendedHelp": "I have an existencial doubt... should I wash the dishes or throw them through the window? The search continues. List me items separated by comma and I will choose one them. On a side note, I am not responsible of what happens next.",
+		"explainedUsage": [["words", "A list of words separated by comma."]],
+		"examples": ["Should Wash the dishes, Throw the dishes out the window", "Cat, Dog"]
+	},
 	"diceDescription": "Roll the dice using d20 syntax.",
 	"diceExtended": {
+		"usages": ["Roll"],
 		"extendedHelp": "The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once. However, you can change the amount of rolls for the dice, and this command will \"roll\" (get a random number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will return 10 as output.",
 		"examples": ["370d24", "100d6", "6"]
 	},
@@ -28,47 +32,62 @@
 	},
 	"howToFlirtDescription": "Captain America, you do not know how to flirt.",
 	"howToFlirtExtended": {
+		"usages": ["User"],
 		"extendedHelp": "Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain America, I can guarantee that you'll get him.",
 		"explainedUsage": [["user", "The user to flirt with."]],
 		"examples": ["Skyra"]
 	},
 	"loveDescription": "Lovemeter, online!",
 	"loveExtended": {
+		"usages": ["User"],
 		"extendedHelp": "Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it! Don't be shy and try it!",
 		"explainedUsage": [["user", "The user to rate."]],
 		"examples": ["Skyra"]
 	},
 	"markovDescription": "Generate a Markov Chain from the text channel.",
 	"markovExtended": {
+		"usages": ["TextChannel? User?"],
 		"extendedHelp": "A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel."
 	},
 	"norrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
 	"norrisExtended": {
 		"extendedHelp": "Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
 	},
+	"peepoloveDescription": "Generates a peepoLove image from a users' avatar.",
+	"peepoloveExtended": {
+		"usages": ["User"],
+		"extendedHelp": "Allows you to generate a peepoLove image from a user's avatar.",
+		"explainedUsage": [["User", "The user that peepo should hug."]],
+		"examples": ["Joe"],
+		"reminder": "Custom image support has been temporarily disabled"
+	},
+	"punDescription": "Shows you a random pun.",
+	"punExtended": {
+		"extendedHelp": "A steak pun is a rare medium well done.\nGet your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
+	},
 	"rateDescription": "Let bots have opinions and rate somebody.",
 	"rateExtended": {
+		"usages": ["Content"],
 		"extendedHelp": "Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.",
 		"explainedUsage": [["user", "The user to rate."]],
 		"examples": ["Skyra", "me"]
 	},
 	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
-		"extendedHelp": "\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?)."
-	},
-	"xkcdDescription": "Read comics from XKCD.",
-	"xkcdExtended": {
-		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
-		"explainedUsage": [["query", "Either the number of the comic, or a title to search for."]],
-		"examples": ["1091", "Curiosity"]
-	},
-	"punDescription": "Shows you a random pun.",
-	"punExtended": {
-		"extendedHelp": "A steak pun is a rare medium well done.\nGet your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
+		"usages": ["User"],
+		"extendedHelp": "\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?).",
+		"examples": ["Skyra"]
 	},
 	"wakandaDescription": "Helpful descriptions? We don't do that here",
 	"wakandaExtended": {
 		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
+	},
+	"xkcdDescription": "Read comics from XKCD.",
+	"xkcdExtended": {
+		"usages": ["ComicNumber", "Comic Name"],
+		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
+		"explainedUsage": [["query", "Either the number of the comic, or a title to search for."]],
+		"examples": ["1091", "Curiosity"]
 	},
 	"8ballOutput": "🎱 Question by {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {

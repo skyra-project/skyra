@@ -9,13 +9,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.ClearDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
-	public async run(message: GuildMessage) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 		const count = await audio.count();
 		await audio.clearTracks();
-		return message.sendTranslated(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
+		return message.channel.send(args.t(LanguageKeys.Commands.Music.ClearSuccess, { count }));
 	}
 }

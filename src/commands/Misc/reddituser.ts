@@ -3,11 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { cutText, roundNumber } from '@sapphire/utilities';
-import { CreateResolver } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
@@ -18,20 +17,13 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	aliases: ['redditor'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.RedditUserDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.RedditUserExtended,
-	usage: '<user:user>'
+	extendedHelp: LanguageKeys.Commands.Misc.RedditUserExtended
 })
-@CreateResolver('user', async (arg, _possible, message) => {
-	if (!kUserNameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
-	arg = arg.replace(/^\/?u\//, '');
-	return arg;
-})
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [user]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const user = await args.pick(UserPaginatedMessageCommand.redditUser);
+		const { t } = args;
+		const response = await sendLoadingMessage(message, t);
 
 		const [about, comments, posts] = await this.fetchData(user, t);
 		if (!about || !comments || !posts || !comments.length || !posts.length) throw t(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
@@ -262,4 +254,12 @@ export default class extends PaginatedMessageCommand {
 			.map((subreddit, index) => `**${index + 1}:** [/r/${subreddit.name}](https://wwww.reddit.com/r/${subreddit.name}) (${subreddit.count})`)
 			.join('\n');
 	}
+
+	private static redditUser = Args.make<string>((parameter, { argument }) => {
+		if (!kUserNameRegex.test(parameter)) {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RedditUserInvalidUser, context: { user: parameter } });
+		}
+
+		return Args.ok(parameter.replace(/^\/?u\//, ''));
+	});
 }

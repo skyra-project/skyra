@@ -121,6 +121,7 @@ export const FFXIVInvalidServer = T<string>('commands/gameIntegration:FFXIVInval
 export const FFXIVNoItemFound = T<string>('commands/gameIntegration:FFXIVNoItemFound');
 export const FortniteDescription = T<string>('commands/gameIntegration:fortniteDescription');
 export const FortniteExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:fortniteExtended');
+export const FortniteInvalidPlatform = T<string>('commands/gameIntegration:fortniteInvalidPlatform');
 export const FortniteNoUser = T<string>('commands/gameIntegration:fortniteNoUser');
 export const FortniteEmbedTitle = FT<{ epicUserHandle: string }, string>('commands/gameIntegration:fortniteEmbedTitle');
 export const FortniteEmbedSectionTitles = T<{
@@ -157,9 +158,10 @@ export const FortniteEmbedStats = FT<
 		top25s: string;
 	}
 >('commands/gameIntegration:fortniteEmbedStats');
+export const OverwatchInvalidPlatform = T<string>('commands/gameIntegration:overwatchInvalidPlatform');
 export const OverwatchDescription = T<string>('commands/gameIntegration:overwatchDescription');
 export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:overwatchExtended');
-export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');
+export const OverwatchInvalidPlayerName = FT<{ value: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');
 export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commands/gameIntegration:overwatchQueryFail');
 export const OverwatchNoStats = FT<{ player: string }, string>('commands/gameIntegration:overwatchNoStats');
 export const OverwatchNoAverage = T<string>('commands/gameIntegration:overwatchNoAverage');

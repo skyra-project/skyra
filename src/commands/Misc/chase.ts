@@ -14,14 +14,14 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.ChaseDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ChaseExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '<user:username>'
+	permissions: ['ATTACH_FILES'],
+	spam: true
 })
-export default class extends SkyraCommand {
+export class ChaseCommand extends SkyraCommand {
 	private KTemplate: Image = null!;
 
-	public async run(message: Message, [user]: [User]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'chase.png' }] });
 	}

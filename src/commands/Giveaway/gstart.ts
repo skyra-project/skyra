@@ -3,38 +3,31 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import type { TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
+const options = ['winners'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '[channel:textchannelname{2}] <time:time> [winners:winners] <title:...string{,256}>',
-	flagSupport: true,
-	usageDelim: ' '
+	strategyOptions: { options }
 })
-@CreateResolvers([
-	[
-		'winners',
-		(arg) => {
-			const match = kWinnersArgRegex.exec(arg);
-			if (match) return parseInt(match[1], 10);
-			throw 'Invalid winners value.';
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
-		const offset = time.getTime() - Date.now();
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
 
-		if (offset < 9500) throw await message.resolveKey(LanguageKeys.Giveaway.Time);
-		if (offset > Time.Year) throw await message.resolveKey(LanguageKeys.Giveaway.TimeTooLong);
-		if (winners > 25) winners = 25;
+		const time = await args.pick('time');
+		const offset = time.getTime() - Date.now();
+		if (offset < 9500) throw args.t(LanguageKeys.Giveaway.Time);
+		if (offset > Time.Year) throw args.t(LanguageKeys.Giveaway.TimeTooLong);
+
+		const winners = Math.min(await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10)), 25);
+		const title = await args.rest('string', { maximum: 256 });
 
 		await this.context.client.giveaways.create({
 			channelID: channel.id,
@@ -45,4 +38,12 @@ export default class extends SkyraCommand {
 			title
 		});
 	}
+
+	private static winners = Args.make<number>((parameter, { argument }) => {
+		const match = kWinnersArgRegex.exec(parameter);
+
+		if (match) return Args.ok(parseInt(match[1], 10));
+		// TODO: (sapphire migration) i18n identifier
+		return Args.error({ parameter, argument, identifier: 'Invalid winners value' });
+	});
 }

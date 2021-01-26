@@ -3,7 +3,7 @@ import { AudioEvent } from '#lib/structures';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
 import type { VoiceChannel } from 'discord.js';
 
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(queue: Queue, voiceChannel: VoiceChannel) {
 		if (await queue.getSystemPaused()) {
 			if (voiceChannel.listeners.length > 0) await queue.resume();

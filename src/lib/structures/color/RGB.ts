@@ -62,7 +62,6 @@ export class RGB implements ColorHandler {
 					h = (r - g) / d + 4;
 				// no default
 			}
-			// TODO(kyranet): This feel more wrong than eating cactus.
 			h! /= 6;
 		}
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define

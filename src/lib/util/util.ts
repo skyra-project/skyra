@@ -2,6 +2,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { Store } from '@sapphire/framework';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -14,15 +15,16 @@ import {
 	ImageSize,
 	ImageURLOptions,
 	Message,
+	MessageEmbed,
 	Permissions,
 	Role,
 	User,
 	UserResolvable
 } from 'discord.js';
-import { Store } from 'klasa';
+import type { TFunction } from 'i18next';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { api } from '../discord/Api';
-import { Time, ZeroWidthSpace } from './constants';
+import { BrandingColors, Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import type { LeaderboardUser } from './Leaderboard';
 
@@ -633,6 +635,9 @@ export const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const random = (num: number) => Math.round(Math.random() * num);
+
+export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
+	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 export interface UtilOneToTenEntry {
 	emoji: string;

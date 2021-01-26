@@ -3,7 +3,6 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -11,18 +10,17 @@ import type { TextChannel } from 'discord.js';
 	description: LanguageKeys.Commands.Moderation.FlowDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.FlowExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text'],
-	usage: '[channel:textchannelname]'
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel?]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = args.finished ? message.channel : await args.pick('textChannelName');
+		if (!channel.readable) throw args.t(LanguageKeys.Misc.ChannelNotReadable);
 
-		if (!channel.readable) throw t(LanguageKeys.Misc.ChannelNotReadable);
 		const messages = await channel.messages.fetch({ limit: 100, before: message.id });
 		const minimum = message.createdTimestamp - 60000;
 		const amount = messages.reduce((prev, curr) => (curr.createdTimestamp > minimum ? prev + 1 : prev), 0);
 
-		return message.send(t(LanguageKeys.Commands.Moderation.Flow, { amount }));
+		return message.send(args.t(LanguageKeys.Commands.Moderation.Flow, { amount }));
 	}
 }

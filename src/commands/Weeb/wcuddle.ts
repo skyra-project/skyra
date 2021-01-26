@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Weeb.CuddleExtended,
 	queryType: 'cuddle',
 	responseName: LanguageKeys.Commands.Weeb.Cuddle,
-	usage: '<user:username>'
+	requireUser: true
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

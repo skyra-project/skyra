@@ -10,19 +10,15 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChoiceExtended,
-	usage: '<words:string> [...]',
-	usageDelim: ',',
 	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, options: string[]) {
-		const t = await message.fetchT();
-		const words = await this.filterWords(t, options);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const options = (await args.rest('string')).split(',');
+
+		const words = await this.filterWords(args.t, options);
 		return message.send(
-			t(LanguageKeys.Commands.Fun.ChoiceOutput, {
-				user: message.author.toString(),
-				word: words[Math.floor(Math.random() * words.length)]
-			})
+			args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word: words[Math.floor(Math.random() * words.length)] })
 		);
 	}
 

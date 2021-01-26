@@ -9,7 +9,7 @@
 	"c4GameNextTurn0": "Turn for: {{user}} (blue).",
 	"c4GameWin": "{{user}} (red) won!",
 	"c4GameWinTurn0": "{{user}} (blue) won!",
-	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect Four match. Reply with **yes** to accept!",
+	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect Four match. Click the 🇾 reaction to accept!",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "",
 	"coinFlipCoinnames": [
@@ -455,7 +455,7 @@
 	"ticTacToeExtended": {
 		"extendedHelp": ""
 	},
-	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a noughts and crosses match. Reply with **yes** to accept!",
+	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a noughts and crosses match. Click the 🇾 reaction to accept!",
 	"ticTacToeTurn": "",
 	"ticTacToeWinner": "",
 	"triviaActiveGame": "",

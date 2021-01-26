@@ -1,11 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { User } from 'discord.js';
-import type Moderations from './moderations';
+import type { UserPaginatedMessageCommand as Moderations } from './moderations';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -13,14 +11,12 @@ import type Moderations from './moderations';
 	description: LanguageKeys.Commands.Moderation.WarningsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.WarningsExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
-	runIn: ['text'],
-	usage: '[user:username]'
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public run(message: GuildMessage, [target]: [User?]) {
-		const moderations = cast<Moderations | undefined>(this.store.get('moderations'));
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const moderations = this.store.get('moderations') as Moderations | undefined;
 		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');
-		return moderations.run(message, ['warnings', target]);
+		return moderations.mutes(message, args);
 	}
 }

@@ -3,15 +3,15 @@
 	"helpCommandCount": "{{count}} command",
 	"helpCommandCount_plural": "{{count}} commands",
 	"helpData": {
-		"extended": "🔍 | ***Extended Help***\n{{extendedHelp}}",
 		"footer": "Command help for {{footerName}}",
-		"title": "{{titleDescription}}",
-		"usage": "📝 | ***Command Usage***\n`{{usage}}`\n"
+		"title": "{{titleDescription}}"
 	},
 	"helpDescription": "Displays all commands or the description of one.",
 	"helpExtended": {
+		"usages": ["--cat/--categories", "--all", "CategoryName", "Page", "CommandName"],
 		"extendedHelp": "The help command shows a paginated list of all commands by their categories, or the extended information of a command if specified.\n\nIf you use `--categories` or `--cat`, you can get the list of all categories and the amount of commands each one of them have.",
-		"reminder": "The help command **only** shows the commands you can use. For the full list, please visit <https://skyra.pw/commands>."
+		"reminder": "The help command **only** shows the commands you can use. For the full list, please visit <https://skyra.pw/commands>.",
+		"examples": ["--cat", "--all", "Moderation", "12", "help"]
 	},
 	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
@@ -23,8 +23,9 @@
 	},
 	"inviteDescription": "Shows the invite link to add Skyra to your server.",
 	"inviteExtended": {
+		"usages": ["--noperms/--nopermissions"],
 		"extendedHelp": "If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms`, or `--nopermissions` to the command.",
-		"examples": ["", "noperms", "--noperms", "--nopermissions"]
+		"examples": [null, "noperms", "--noperms", "--nopermissions"]
 	},
 	"invitePermissionInviteText": "Invite Skyra to your server",
 	"invitePermissionsDescription": "Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",

@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackEndPayload } from '@skyra/audio';
 
 @ApplyOptions<AudioEvent.Options>({ event: 'TrackEndEvent' })
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(payload: IncomingEventTrackEndPayload) {
 		const queue = this.context.client.audio.queues!.get(payload.guildId);
 		this.store.context.client.emit(Events.MusicQueueSync, queue);

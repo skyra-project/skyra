@@ -11,18 +11,16 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.SetColorDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	spam: true,
-	usage: '<color:string>'
+	permissions: ['EMBED_LINKS'],
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const { hex, b10 } = parse(input);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { hex, b10 } = parse(await args.rest('string'));
 
 		const { users } = await DbSet.connect();
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-
 			user.profile.color = b10.value;
 			return user.save();
 		});
@@ -31,7 +29,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(b10.value)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(await message.resolveKey(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
+				.setDescription(args.t(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
 		);
 	}
 }

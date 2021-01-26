@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { MessageEmbed, User } from 'discord.js';
+import type { PieceContext } from '@sapphire/framework';
+import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { PieceContext } from 'klasa';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -16,7 +16,10 @@ export namespace WeebCommand {
 	export type Options = SkyraCommand.Options & {
 		queryType: string;
 		responseName: SimpleKey | ComplexKey;
+		requireUser?: boolean;
 	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 export abstract class WeebCommand extends SkyraCommand {
@@ -29,6 +32,8 @@ export abstract class WeebCommand extends SkyraCommand {
 	 */
 	public responseName: SimpleKey | ComplexKey;
 
+	public requireUser: boolean;
+
 	private readonly kHeaders = {
 		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
 		'User-Agent': `Skyra/${VERSION}`
@@ -38,37 +43,33 @@ export abstract class WeebCommand extends SkyraCommand {
 		super(context, {
 			bucket: 2,
 			cooldown: 30,
-			flagSupport: false,
-			requiredPermissions: ['EMBED_LINKS'],
+			permissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			...options
 		});
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
+		this.requireUser = options.requireUser ?? false;
 	}
 
-	public async run(message: GuildMessage, params?: User[]) {
+	public async run(message: GuildMessage, args: WeebCommand.Args) {
+		const user = this.requireUser ? await args.pick('userName') : null;
 		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const t = await message.guild.fetchT();
+		const { t } = args;
 		const { url } = await this.fetch(t, query);
 
-		return message.send(
-			Boolean(this.usage.parsedUsage.length)
-				? t(this.responseName as ComplexKey, { user: params![0].username })
-				: t(this.responseName as SimpleKey),
-			{
-				embed: new MessageEmbed()
-					.setTitle('→')
-					.setURL(url)
-					.setColor(await DbSet.fetchColor(message))
-					.setImage(url)
-					.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
-			}
-		);
+		return message.send(user ? t(this.responseName as ComplexKey, { user: user.username }) : t(this.responseName as SimpleKey), {
+			embed: new MessageEmbed()
+				.setTitle('→')
+				.setURL(url)
+				.setColor(await DbSet.fetchColor(message))
+				.setImage(url)
+				.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
+		});
 	}
 
 	private async fetch(t: TFunction, url: URL): Promise<WeebCommandResult> {

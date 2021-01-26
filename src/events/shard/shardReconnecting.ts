@@ -1,7 +1,7 @@
 import { ShardEvent } from '#lib/structures';
 import { yellow } from 'colorette';
 
-export default class extends ShardEvent {
+export class UserShardEvent extends ShardEvent {
 	protected readonly title = yellow('Reconnecting');
 
 	public run(id: number) {

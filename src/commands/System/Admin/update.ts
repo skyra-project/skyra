@@ -11,16 +11,17 @@ import { rm } from 'fs/promises';
 import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
+	strategyOptions: { flags: ['clean'] },
 	aliases: ['pull'],
 	description: LanguageKeys.Commands.Admin.UpdateDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.UpdateExtended,
 	guarded: true,
-	permissionLevel: PermissionLevels.BotOwner,
-	usage: '[branch:string]',
-	flagSupport: true
+	permissionLevel: PermissionLevels.BotOwner
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [branch = 'main']: [string?]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const branch = args.finished ? 'main' : await args.pick('string');
+
 		// Fetch repository and pull if possible
 		await this.fetch(message, branch);
 
@@ -28,7 +29,7 @@ export default class extends SkyraCommand {
 		await this.updateDependencies(message);
 
 		// If there is --clean in the update then remove the dist
-		if (Reflect.has(message.flagArgs, 'clean')) await this.cleanDist(message);
+		if (args.getFlags('clean')) await this.cleanDist(message);
 
 		// Compile TypeScript to JavaScript
 		await this.compile(message);

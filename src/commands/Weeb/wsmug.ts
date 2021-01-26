@@ -8,4 +8,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	queryType: 'smug',
 	responseName: LanguageKeys.Commands.Weeb.Smug
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

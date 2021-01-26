@@ -1,12 +1,14 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { Scope } from '#lib/types';
 import { cdnFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
+import type { TFunction } from 'i18next';
 import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -17,24 +19,25 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '[local|global] [user:username]',
-	usageDelim: ' '
+	permissions: ['ATTACH_FILES'],
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 
-	public async run(message: Message, [scope = 'local', user = message.author]: ['local' | 'global', User]) {
-		const output = await this.showProfile(message, scope, user);
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const scope = args.finished ? Scope.Local : await args.pick('scope').catch(() => Scope.Local);
+		const user = args.finished ? message.author : await args.pick('userName');
+
+		const output = await this.showProfile(message, scope, user, args.t);
 		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
-	public async showProfile(message: Message, scope: 'local' | 'global', user: User) {
+	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {
 		const { members, users } = await DbSet.connect();
 		const settings = await users.ensureProfile(user.id);
-		const { level, points } = scope === 'local' && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
+		const { level, points } = scope === Scope.Local && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -46,7 +49,6 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const t = await message.fetchT();
 		const title = t(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)

@@ -13,12 +13,13 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<ability:str>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [ability]: [string]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const ability = await args.rest('string');
+		const { t } = args;
+
 		const abilityDetails = await this.fetchAPI(t, ability.toLowerCase());
 		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 

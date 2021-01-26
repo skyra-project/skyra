@@ -6,35 +6,36 @@ import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TrackInfo } from '@skyra/audio';
 import { MessageEmbed } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
 	@requireMusicPlaying()
-	public async run(message: GuildMessage) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 
 		const entry = await audio.getCurrentTrack();
-		if (!entry) throw await message.resolveKey(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		if (!entry) throw args.t(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
-		const embed = await this.getMessageEmbed(message, track);
+		const embed = await this.getMessageEmbed(args.t, track);
 		return message.send(embed);
 	}
 
-	private async getMessageEmbed(message: GuildMessage, track: TrackInfo): Promise<MessageEmbed> {
+	private async getMessageEmbed(t: TFunction, track: TrackInfo): Promise<MessageEmbed> {
 		const embed = new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(track.title)
 			.setURL(track.uri)
 			.setAuthor(track.author)
-			.setDescription(await message.resolveKey(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
+			.setDescription(t(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(track.uri, track.identifier);

@@ -16,10 +16,13 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
-		"explainedUsage": "",
-		"possibleFormats": "",
-		"examples": "",
-		"reminders": ""
+		"aliases": "🖇️ | **Aliases**",
+		"usages": "📝 | **Command Usage**",
+		"extendedHelp": "🔍 | **Extended Help**",
+		"explainedUsage": "⚙ | **Explained usage**",
+		"possibleFormats": "🔢 | **Possible formats**",
+		"examples": "🔗 | **Examples**",
+		"reminders": "⏰ | **Reminder**"
 	},
 	"highestRole": "",
 	"jumpTo": "",
@@ -33,9 +36,7 @@
 		"",
 		""
 	],
-	"messageNotFound": "",
 	"noResults": "",
-	"notEnoughParameters": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
 	"poweredByWeebSh": "",

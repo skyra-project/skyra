@@ -2,9 +2,9 @@ import type { GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { Args, IArgument, PieceContext, Store } from '@sapphire/framework';
 import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
-import type { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace ChannelConfigurationCommand {
@@ -15,6 +15,8 @@ export namespace ChannelConfigurationCommand {
 		responseKey: CustomFunctionGet<string, { channel: string }, string>;
 		settingsKey: KeyOfType<GuildEntity, string | Nullish>;
 	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 export abstract class ChannelConfigurationCommand extends SkyraCommand {
@@ -27,7 +29,6 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 			cooldown: 10,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
-			usage: '<here|channel:textchannelname>',
 			...options
 		});
 
@@ -35,24 +36,24 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 		this.settingsKey = options.settingsKey;
 	}
 
-	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
-		if (channel === 'here') channel = message.channel as TextChannel;
-		const channelID = channel.id;
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick(ChannelConfigurationCommand.hereOrTextChannelResolver);
 
-		const t = await message.guild.writeSettings((settings) => {
-			const t = settings.getLanguage();
-
+		await message.guild.writeSettings((settings) => {
 			// If it's the same value, throw:
-			if (settings[this.settingsKey] === channelID) {
-				throw t(LanguageKeys.Misc.ConfigurationEquals);
+			if (settings[this.settingsKey] === channel.id) {
+				throw args.t(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
-			settings[this.settingsKey] = channelID;
-
-			return t;
+			settings[this.settingsKey] = channel.id;
 		});
 
-		return message.send(t(this.responseKey, { channel: channel.toString() }));
+		return message.send(args.t(this.responseKey, { channel: channel.toString() }));
 	}
+
+	private static hereOrTextChannelResolver = Args.make<TextChannel>((argument, context) => {
+		if (argument === 'here') return Args.ok(context.message.channel as TextChannel);
+		return (Store.injectedContext.stores.get('arguments').get('textchannelname') as IArgument<TextChannel>).run(argument, context);
+	});
 }

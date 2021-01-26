@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
+import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -15,34 +15,31 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PermissionsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
-	usage: '[member:username]'
+	permissions: ['EMBED_LINKS'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [user = message.author]: [User]) {
-		const t = await message.fetchT();
-
-		if (!user) throw t(LanguageKeys.Misc.UserNotExistent);
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = args.finished ? message.author : await args.pick('userName');
 		const member = await message.guild.members.fetch(user.id).catch(() => {
-			throw t(LanguageKeys.Misc.UserNotInGuild);
+			throw args.t(LanguageKeys.Misc.UserNotInGuild);
 		});
 
 		const { permissions } = member;
 		const list = [ZeroWidthSpace];
 
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-			list.push(t(LanguageKeys.Commands.Moderation.PermissionsAll));
+			list.push(args.t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
-				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${t(`permissions:${flag}`, flag)}`);
+				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${args.t(`permissions:${flag}`, flag)}`);
 			}
 		}
 
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
+				.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
 				.setDescription(list.join('\n'))
 		);
 	}

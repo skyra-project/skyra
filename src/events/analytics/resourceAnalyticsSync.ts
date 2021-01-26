@@ -3,13 +3,13 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { EventOptions } from 'klasa';
+import type { EventOptions } from '@sapphire/framework';
 import { cpus } from 'os';
 
 @ApplyOptions<EventOptions>({
 	event: Events.ResourceAnalyticsSync
 })
-export default class extends AnalyticsEvent {
+export class UserAnalyticsEvent extends AnalyticsEvent {
 	public run() {
 		this.writePoints([this.syncPerCoreLoad(), this.syncMem()]);
 

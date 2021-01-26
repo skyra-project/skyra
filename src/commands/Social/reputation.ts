@@ -4,8 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolver } from '@skyra/decorators';
-import type { User } from 'discord.js';
+import { Args } from '@sapphire/framework';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rep'],
@@ -14,43 +13,39 @@ import type { User } from 'discord.js';
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
 	runIn: ['text'],
-	spam: true,
-	usage: '[check] (user:username)',
-	usageDelim: ' '
+	spam: true
 })
-@CreateResolver('username', (arg, possible, message, [check]) => {
-	if (!arg) return check ? message.author : undefined;
-	return message.client.arguments.get('username')!.run(arg, possible, message);
-})
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [check, user]: ['check', User]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const check = args.finished ? false : await args.pick(UserCommand.check).catch(() => false);
+		const user = args.finished ? message.author : await args.pick('userName');
+
 		const date = new Date();
 		const now = date.getTime();
 
 		const { users } = await DbSet.connect();
 		const selfSettings = await users.ensureProfileAndCooldowns(message.author.id);
 		const extSettings = user ? await users.ensureProfile(user.id) : null;
-		const t = await message.fetchT();
 
 		if (check) {
-			if (user.bot) throw t(LanguageKeys.Commands.Social.ReputationsBots);
-			const reputationPoints = t(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations });
+			if (user.bot) throw args.t(LanguageKeys.Commands.Social.ReputationsBots);
+			const reputationPoints = args.t(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations });
 			return message.send(
 				message.author === user
-					? t(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
-					: t(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })
+					? args.t(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
+					: args.t(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })
 			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
 
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.sendTranslated(LanguageKeys.Commands.Social.ReputationTime, [{ remaining: timeReputation + Time.Day - now }]);
+			return message.send(args.t(LanguageKeys.Commands.Social.ReputationTime, { remaining: timeReputation + Time.Day - now }));
 		}
 
-		if (!user) return message.sendTranslated(LanguageKeys.Commands.Social.ReputationUsable);
-		if (user.bot) throw t(LanguageKeys.Commands.Social.ReputationsBots);
-		if (user === message.author) throw t(LanguageKeys.Commands.Social.ReputationSelf);
+		if (!user) return message.send(args.t(LanguageKeys.Commands.Social.ReputationUsable));
+		if (user.bot) throw args.t(LanguageKeys.Commands.Social.ReputationsBots);
+		if (user === message.author) throw args.t(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await users.manager.transaction(async (em) => {
 			++extSettings!.reputations;
@@ -58,6 +53,11 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendTranslated(LanguageKeys.Commands.Social.ReputationGive, [{ user: user.toString() }]);
+		return message.send(args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() }));
 	}
+
+	private static check = Args.make<boolean>((parameter, { argument }) => {
+		if (parameter.toLowerCase() === 'check') return Args.ok(true);
+		return Args.error({ argument, parameter });
+	});
 }

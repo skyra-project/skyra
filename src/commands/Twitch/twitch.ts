@@ -8,12 +8,13 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<name:string>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [name]: [string]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const name = await args.pick('string');
+		const { t } = args;
+
 		const { data: channelData } = await this.fetchUsers(t, [name]);
 		if (channelData.length === 0) throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		const channel = channelData[0];

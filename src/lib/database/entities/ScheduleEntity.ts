@@ -1,11 +1,8 @@
-// Copyright (c) 2017-2019 Dirigeants. All rights reserved. MIT license.
-// Source: https://github.com/dirigeants/klasa
-
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
 import { Events } from '#lib/types/Enums';
+import { Store } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
-import type { KlasaClient } from 'klasa';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
 
 const cronTransformer: ValueTransformer = {
@@ -33,7 +30,6 @@ export type ResponseValue = PartialResponseValue & { entry: ScheduleEntity };
 
 @Entity('schedule', { schema: 'public' })
 export class ScheduleEntity extends BaseEntity {
-	#client: KlasaClient = null!;
 	#manager: ScheduleManager = null!;
 
 	/**
@@ -83,13 +79,12 @@ export class ScheduleEntity extends BaseEntity {
 	#paused = true;
 
 	public setup(manager: ScheduleManager) {
-		this.#client = manager.client;
 		this.#manager = manager;
 		return this;
 	}
 
 	public get task() {
-		return this.#client.settings.tasks.get(this.taskID) ?? null;
+		return Store.injectedContext.client.settings.tasks.get(this.taskID) ?? null;
 	}
 
 	public get running() {
@@ -105,7 +100,7 @@ export class ScheduleEntity extends BaseEntity {
 		try {
 			response = (await task.run({ ...(this.data ?? {}), id: this.id })) as PartialResponseValue | null;
 		} catch (error) {
-			this.#client.emit(Events.TaskError, this, task, error);
+			Store.injectedContext.client.emit(Events.TaskError, this, task, error);
 		}
 
 		this.#running = false;

@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "Запретите или разрешите пользователям и гильдиям использовать мои функции.",
-	"blocklistExtended": {
-		"extendedHelp": ""
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
 	"confNoKey": "Вы должны предоставить ключ",
 	"confNoValue": "Вы должны указать значение",
 	"confGuarded": "{{name, toTitleCase}} не может быть отключен.",

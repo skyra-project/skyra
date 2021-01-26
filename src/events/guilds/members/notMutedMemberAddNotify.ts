@@ -4,11 +4,11 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(member: GuildMember) {
 		const [enabled, t] = await member.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberAdd], settings.getLanguage()]);
 		if (!enabled) return;
@@ -18,12 +18,12 @@ export default class extends Event {
 				.setColor(Colors.Green)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					t(LanguageKeys.Events.GuildMemberAddDescription, {
+					t(LanguageKeys.Events.Guilds.Members.GuildMemberAddDescription, {
 						mention: member.toString(),
 						time: Date.now() - member.user.createdTimestamp
 					})
 				)
-				.setFooter(t(LanguageKeys.Events.GuildMemberAdd))
+				.setFooter(t(LanguageKeys.Events.Guilds.Members.GuildMemberAdd))
 				.setTimestamp()
 		);
 	}

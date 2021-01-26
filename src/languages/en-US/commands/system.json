@@ -14,11 +14,6 @@
 	"execExtended": {
 		"extendedHelp": "You better not know about this."
 	},
-	"setAvatarDescription": "Set Skyra's avatar.",
-	"setAvatarExtended": {
-		"extendedHelp": "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.",
-		"reminder": "Reserved for bot owners."
-	},
 	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
 	"donateExtended": {
 		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
@@ -49,7 +44,7 @@
 		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
 	},
 	"disable": "+ Successfully disabled {{type}}: {{name}}",
-	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/event. Default state restored on reboot.",
+	"disableDescription": "Re-disables or temporarily disables a command/preconditions/event. Default state restored on reboot.",
 	"disableExtended": {
 		"extendedHelp": "Disable a piece that was previously enabled"
 	},
@@ -57,7 +52,7 @@
 	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
 	"dmSent": "I have sent you the message in DMs.",
 	"enable": "+ Successfully enabled {{type}}: {{name}}",
-	"enableDescription": "Re-enables or temporarily enables a command/inhibitor/monitor. Default state restored on reboot.",
+	"enableDescription": "Re-enables or temporarily enables a command/preconditions. Default state restored on reboot.",
 	"enableExtended": {
 		"extendedHelp": "Enables a piece that was previously disabled"
 	},

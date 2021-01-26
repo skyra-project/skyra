@@ -3,13 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors, Moderation } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { Moderation } from '#utils/constants';
+import { requiresPermissions } from '#utils/decorators';
+import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
-import { requiredPermissions } from '@skyra/decorators';
-import { MessageEmbed, User } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 type DurationDisplay = (time: number) => string;
@@ -21,12 +21,11 @@ type DurationDisplay = (time: number) => string;
 	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
-	usage: '<details|overview:default> [user:username]',
-	usageDelim: ' ',
-	subcommands: true
+	subCommands: ['details', { input: 'overview', default: true }]
 })
-export default class extends SkyraCommand {
-	public async overview(message: GuildMessage, [target = message.author]: [User]) {
+export class UserCommand extends SkyraCommand {
+	public async overview(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = args.finished ? message.author : await args.pick('userName');
 		const logs = await message.guild.moderation.fetch(target.id);
 		let warnings = 0;
 		let mutes = 0;
@@ -52,50 +51,46 @@ export default class extends SkyraCommand {
 		}
 
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
-		const t = await message.fetchT();
-
 		return message.send(
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setFooter(
-					t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
+					args.t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
 						warnings,
 						mutes,
 						kicks,
 						bans,
-						warningsText: t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
-						mutesText: t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
-						kicksText: t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
-						bansText: t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
+						warningsText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
+						mutesText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
+						kicksText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
+						bansText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
 					})
 				)
 		);
 	}
 
-	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async details(message: GuildMessage, [target = message.author]: [User]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	public async details(message: GuildMessage, args: SkyraCommand.Args) {
+		const target = args.finished ? message.author : await args.pick('userName');
+		const response = await sendLoadingMessage(message, args.t);
 
 		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
-		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		if (!entries.size) throw args.t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const user = this.context.client.user!;
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
+				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
 
 		// Fetch usernames
 		const usernames = await this.fetchAllModerators(entries);
 
 		// Set up the formatter
-		const durationDisplay = (value: number) => t(LanguageKeys.Globals.DurationValue, { value });
+		const durationDisplay = (value: number) => args.t(LanguageKeys.Globals.DurationValue, { value });
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPageEmbed((template) => {

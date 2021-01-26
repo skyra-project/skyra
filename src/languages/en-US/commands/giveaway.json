@@ -1,31 +1,36 @@
 {
 	"giveawayDescription": "Start a new giveaway.",
 	"giveawayExtended": {
+		"usages": ["TextChannel? Time --winners/Winners? Title"],
 		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
-			["channel", "(Optional) The channel in which to start the giveaway"],
-			["time", "The time the giveaway should last."],
-			["title", "The title of the giveaway."]
+			["TextChannel", "The channel in which to start the giveaway, defaults to the channel the command was run at."],
+			["Time", "The time the giveaway should last."],
+			["Winners", "The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."],
+			["Title", "The title of the giveaway."]
 		],
 		"examples": ["6h A hug from Skyra.", "60m 5w A mysterious Steam game", "1d Free Discord Nitro! --winners=2w"]
 	},
 	"giveawayRerollDescription": "Re-roll the winners from a giveaway.",
 	"giveawayRerollExtended": {
+		"usages": ["Winners? Message?"],
 		"extendedHelp": "This command is designed to re-roll finished giveaways. Please check `Skyra, help gstart` for more information about creating one.",
 		"explainedUsage": [
-			["winners", "The amount of winners to pick."],
-			["message", "The message to target. Defaults to last giveaway message."]
+			["Winners", "The amount of winners to pick."],
+			["Message", "The message to target. Defaults to last giveaway message."]
 		],
-		"examples": ["", "633939404745998346", "5", "5 633939404745998346"]
+		"examples": [null, "633939404745998346", "5", "5 633939404745998346"]
 	},
 	"giveawayScheduleDescription": "Schedule a giveaway to start at a certain time.",
 	"giveawayScheduleExtended": {
+		"usages": ["TextChannel? Schedule Time --winners/Winners? Title"],
 		"extendedHelp": "This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.\nYou can pass a flag of `--winners=X`, wherein X is a number, to allow multiple people to win this giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
-			["channel", "(Optional) The channel in which to start the giveaway"],
-			["schedule", "The time to wait before starting the giveaway."],
-			["time", "The time the giveaway should last."],
-			["title", "The title of the giveaway."]
+			["TextChannel", "The channel in which to start the giveaway, defaults to the channel the command was run at."],
+			["Schedule", "The time to wait before starting the giveaway."],
+			["Time", "The time the giveaway should last."],
+			["Winners", "The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."],
+			["Title", "The title of the giveaway."]
 		],
 		"examples": ["30m 6h A hug from Skyra."]
 	},

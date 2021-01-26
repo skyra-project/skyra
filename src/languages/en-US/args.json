@@ -1,0 +1,4 @@
+{
+	"unavailable": "Whoops! It seems I couldn't find a parser for a parameter, please contact my developers about it!",
+	"missing": "You need to write another parameter!\n\n> **Tip**: You can do `Skyra, help NameOfCommand` to find out how to use this command."
+}

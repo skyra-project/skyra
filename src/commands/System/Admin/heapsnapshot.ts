@@ -36,7 +36,7 @@ import { writeHeapSnapshot } from 'v8';
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		await message.send('Capturing HEAP Snapshot. This may take a while...');
 

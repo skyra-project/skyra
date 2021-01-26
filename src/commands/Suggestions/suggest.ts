@@ -2,64 +2,34 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
-import { WEBHOOK_FEEDBACK } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isNullish } from '@sapphire/utilities';
-import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhook } from 'discord.js';
-
-const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;
+import { MessageEmbed, TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
-	usage: '<suggestion:string>',
-	flagSupport: true
+	permissions: ['EMBED_LINKS'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	private kChannelPrompt = this.definePrompt('<channel:textChannel|here>');
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const suggestion = await args.pick('string');
 
-	public async run(message: GuildMessage, [suggestion]: [string]) {
-		const { client } = this.context;
-		// If including a flag of `--global` send suggestions to #feedbacks in Skyra Lounge
-		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && client.webhookFeedback;
+		const suggestionsChannelID = await message.guild.readSettings(GuildSettings.Suggestions.Channel);
 
-		// ! NOTE: Once we start sharding we need to have a better solution for this
-		const guild = globalSuggestion ? client.guilds.cache.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild;
-		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
-
-		if (globalSuggestion) {
-			suggestionsChannel = client.webhookFeedback!;
-		} else {
-			const [suggestionsChannelID, t] = await guild.readSettings((settings) => [
-				settings[GuildSettings.Suggestions.Channel],
-				settings.getLanguage()
-			]);
-
-			suggestionsChannel = client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
-			if (!suggestionsChannel?.postable) {
-				throw t(LanguageKeys.Commands.Suggestions.SuggestNoPermissions, {
-					username: message.author.username,
-					channel: (message.channel as TextChannel).toString()
-				});
-			}
+		const suggestionsChannel = this.context.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
+		if (!suggestionsChannel?.postable) {
+			throw args.t(LanguageKeys.Commands.Suggestions.SuggestNoPermissions, {
+				username: message.author.username,
+				channel: (message.channel as TextChannel).toString()
+			});
 		}
 
-		const [[upvoteEmoji, downvoteEmoji, t], [suggestions, currentSuggestionId]] = await Promise.all([
-			guild.readSettings(
-				(settings) =>
-					[
-						settings[GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji],
-						settings[GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji],
-						settings.getLanguage()
-					] as const
-			),
-			this.getCurrentSuggestionID(guild.id)
+		const [[upvoteEmoji, downvoteEmoji], [suggestions, currentSuggestionId]] = await Promise.all([
+			message.guild.readSettings([GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji]),
+			this.getCurrentSuggestionID(message.guild.id)
 		]);
 
 		// Post the suggestion
@@ -70,7 +40,7 @@ export default class extends SkyraCommand {
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
 				)
-				.setTitle(t(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
+				.setTitle(args.t(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
 				.setDescription(suggestion)
 		);
 
@@ -78,7 +48,7 @@ export default class extends SkyraCommand {
 		await suggestions.insert({
 			id: currentSuggestionId + 1,
 			authorID: message.author.id,
-			guildID: guild.id,
+			guildID: message.guild.id,
 			messageID: suggestionsMessage.id
 		});
 
@@ -88,76 +58,10 @@ export default class extends SkyraCommand {
 		}
 
 		return message.send(
-			t(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
-				channel: globalSuggestion ? 'Skyra Lounge' : suggestionsChannel.toString()
+			args.t(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
+				channel: suggestionsChannel.toString()
 			})
 		);
-	}
-
-	public async inhibit(message: GuildMessage): Promise<boolean> {
-		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
-		if (!Object.is(message.command, this) || message.guild === null || Reflect.has(message.flagArgs, 'global')) return false;
-		const channelID = await message.guild.readSettings(GuildSettings.Suggestions.Channel);
-		if (isNullish(channelID)) return this.setChannel(message);
-		return false;
-	}
-
-	private async setChannel(message: GuildMessage) {
-		// If the user doesn't have the rights to change guild configuration, do not proceed
-		const t = await message.fetchT();
-		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
-		if (!manageable) {
-			await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));
-			return true;
-		}
-
-		// Ask the user if they want to setup a channel
-		const setup = await message.ask({
-			content: t(LanguageKeys.Commands.Suggestions.SuggestNoSetupAsk, { username: message.author.username })
-		});
-		if (!setup) {
-			await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetupAbort));
-			return true;
-		}
-
-		// Get the channel
-		let [channel] = await this.kChannelPrompt
-			.createPrompt(message, {
-				target: message.author,
-				limit: 1,
-				time: 30000
-			})
-			.run<TextChannel[] | string[]>(t(LanguageKeys.Commands.Suggestions.SuggestChannelPrompt));
-
-		channel = (typeof channel === 'string' ? message.channel : channel) as TextChannel;
-
-		if (!channel || channel.guild.id !== message.guild.id) {
-			await message.send(t(LanguageKeys.Resolvers.InvalidChannelName, { name: channel.name }));
-			return true;
-		}
-
-		const missingPermissions = await this.missingBotPermissions(message);
-
-		if (missingPermissions.length) {
-			throw t(LanguageKeys.Inhibitors.MissingBotPerms, {
-				missing: missingPermissions.map((permission) => t(`permissions:${permission}`))
-			});
-		}
-
-		// Update settings
-		await message.guild.writeSettings([[GuildSettings.Suggestions.Channel, channel.id]]);
-		await message.send(t(LanguageKeys.Commands.Admin.ConfMenuSaved));
-
-		return true;
-	}
-
-	private async missingBotPermissions(message: GuildMessage) {
-		const textChannel = message.channel as TextChannel;
-		const permissions = textChannel.permissionsFor(message.guild.me!);
-		if (!permissions) throw 'Failed to fetch permissions.';
-		const missing = permissions.missing(requiredChannelPermissions, false);
-
-		return missing;
 	}
 
 	private async getCurrentSuggestionID(guildID: string) {

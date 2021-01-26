@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolver } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -17,18 +17,12 @@ const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	aliases: ['rand', 'rand-reddit', 'reddit'],
 	cooldown: 3,
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended,
-	usage: '<reddit:reddit>'
+	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
 })
-@CreateResolver('reddit', async (arg, _possible, message) => {
-	if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditRequiredReddit);
-	if (!kUsernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditInvalidArgument);
-	if (kBlockList.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
-	return arg.toLowerCase();
-})
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [reddit]: [string]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const reddit = await args.pick(UserCommand.reddit);
+		const { t } = args;
 		const { kind, data } = await this.fetchData(t, reddit);
 
 		if (!kind || !data || data.children.length === 0) {
@@ -88,6 +82,16 @@ export default class extends SkyraCommand {
 
 		throw error;
 	}
+
+	private static reddit = Args.make<string>((parameter, { argument }) => {
+		if (!kUsernameRegex.test(parameter)) {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditInvalidArgument });
+		}
+
+		if (kBlockList.test(parameter)) return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditBanned });
+
+		return Args.ok(parameter.toLowerCase());
+	});
 }
 
 type RedditError = RedditNotFound | RedditBanned | RedditForbidden | RedditQuarantined | RedditServerError;

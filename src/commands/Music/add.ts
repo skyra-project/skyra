@@ -8,13 +8,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.AddDescription,
 	extendedHelp: LanguageKeys.Commands.Music.AddExtended,
-	usage: '<song:song>',
-	flagSupport: true
+	strategyOptions: { flags: ['import', 'sc', 'soundcloud'] }
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireUserInVoiceChannel()
-	public async run(message: GuildMessage, [songs]: [string[]]) {
-		if (!songs || !songs.length) throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
+		const songs = await args.pick('song');
+		if (!songs || !songs.length) throw args.t(LanguageKeys.MusicManager.FetchNoMatches);
 
 		const tracks = songs.map((track) => ({ author: message.author.id, track }));
 		await message.guild.audio.add(...tracks);

@@ -1,6 +1,6 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise } from '#utils/util';
@@ -11,8 +11,8 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationCapitals,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationCapitalsWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationCapitals,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationCapitalsWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.Capitals.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.Capitals.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.Capitals.IgnoredRoles,
@@ -23,7 +23,7 @@ import type { TFunction } from 'i18next';
 		adder: 'capitals'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
 		if (message.content.length === 0) return null;
 
@@ -50,12 +50,14 @@ export default class extends ModerationMessageEvent {
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
 		floatPromise(message.nuke());
 		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			await message.author.send(t(LanguageKeys.Monitors.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) }));
+			await message.author.send(
+				t(LanguageKeys.Events.Moderation.Messages.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) })
+			);
 		}
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.CapsFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
@@ -63,7 +65,7 @@ export default class extends ModerationMessageEvent {
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.CapsFilterFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.CapsFilterFooter)}`)
 			.setTimestamp();
 	}
 }

@@ -1,14 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
+import { GuildMessage, Scope } from '#lib/types';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { TFunction } from 'i18next';
 
 const titles = {
-	global: '🌐 Global Score Scoreboard',
-	local: '🏡 Local Score Scoreboard'
+	[Scope.Global]: '🌐 Global Score Scoreboard',
+	[Scope.Local]: '🏡 Local Score Scoreboard'
 };
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -18,20 +19,21 @@ const titles = {
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
 	runIn: ['text'],
-	usage: '[global|local] [index:integer]',
-	usageDelim: ' ',
 	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
-		const list = await this.context.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const scope = args.finished ? Scope.Local : await args.pick('scope').catch(() => Scope.Local);
+		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1 });
+
+		const list = await this.context.client.leaderboard.fetch(scope === Scope.Local ? message.guild.id : undefined);
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
-		const page = await this.generatePage(message, list, index - 1, position);
-		return message.send(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
+		const page = await this.generatePage(message, args.t, list, index - 1, position);
+		return message.send(`${titles[scope]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
-	public async generatePage(message: GuildMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
+	public async generatePage(message: GuildMessage, t: TFunction, list: Collection<string, LeaderboardUser>, index: number, position: number) {
 		if (index > list.size / 10 || index < 0) index = 0;
 		const retrievedPage: LeaderboardUser[] = [];
 		const promises: Promise<void>[] = [];
@@ -53,7 +55,6 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const t = await message.fetchT();
 		if (promises.length) {
 			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 			await Promise.all(promises);

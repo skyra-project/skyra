@@ -10,6 +10,8 @@ import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+const flags = ['excludeMentions', 'em'];
+
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['announce'],
 	bucket: 6,
@@ -17,37 +19,36 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Announcement.AnnouncementDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
-	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+	permissions: ['ADD_REACTIONS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
 	runIn: ['text'],
-	usage: '<announcement:string{,1900}>',
-	flagSupport: true
+	strategyOptions: { flags }
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly messages: WeakMap<GuildMessage, GuildMessage> = new WeakMap();
 
-	public async run(message: GuildMessage, [announcement]: [string]) {
-		const [channelID, embedEnabled, t] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Channels.Announcements],
-			settings[GuildSettings.Messages.AnnouncementEmbed],
-			settings.getLanguage()
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const announcement = await args.rest('string', { max: 1900 });
+
+		const [channelID, embedEnabled] = await message.guild.readSettings([
+			GuildSettings.Channels.Announcements,
+			GuildSettings.Messages.AnnouncementEmbed
 		]);
-		if (!channelID) throw t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channelID) throw args.t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
 		const channel = message.guild.channels.cache.get(channelID) as TextChannel;
-		if (!channel) throw t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channel) throw args.t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		if (!channel.postable) throw t(LanguageKeys.System.ChannelNotPostable);
+		if (!channel.postable) throw args.t(LanguageKeys.System.ChannelNotPostable);
 
 		const role = await announcementCheck(message);
-		const header = t(LanguageKeys.Commands.Announcement.AnnouncementHeader, { role: role.toString() });
+		const header = args.t(LanguageKeys.Commands.Announcement.AnnouncementHeader, { role: role.toString() });
 
-		if (await this.ask(message, t, header, announcement)) {
-			await this.send(message, t, embedEnabled, channel, role, header, announcement);
-			return message.send(t(LanguageKeys.Commands.Announcement.AnnouncementSuccess));
+		if (await this.ask(message, args.t, header, announcement)) {
+			await this.send(message, embedEnabled, channel, role, header, announcement, args);
+			return message.send(args.t(LanguageKeys.Commands.Announcement.AnnouncementSuccess));
 		}
 
-		return message.send(t(LanguageKeys.Commands.Announcement.AnnouncementCancelled));
+		return message.send(args.t(LanguageKeys.Commands.Announcement.AnnouncementCancelled));
 	}
 
 	private async ask(message: GuildMessage, t: TFunction, header: string, announcement: string) {
@@ -62,21 +63,22 @@ export default class extends SkyraCommand {
 
 	private async send(
 		message: GuildMessage,
-		t: TFunction,
 		embedEnabled: boolean,
 		channel: TextChannel,
 		role: Role,
 		header: string,
-		announcement: string
+		announcement: string,
+		args: SkyraCommand.Args
 	) {
 		// If it's not mentionable, set, send/edit, and unset mentionable
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
-		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? [] : [...new Set(extractMentions(announcement))];
+		const mentions = args.getFlags(...flags) ? [] : [...new Set(extractMentions(announcement))];
 
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
+		const { t } = args;
 		if (previous) {
 			try {
 				const resultMessage = embedEnabled

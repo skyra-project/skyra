@@ -8,30 +8,20 @@ import { empty, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Track } from '@skyra/audio';
-import { CreateResolvers } from '@skyra/decorators';
 import { deserialize } from 'binarytf';
+import type { TFunction } from 'i18next';
 import { maximumExportQueueSize } from './exportqueue';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['iq'],
 	cooldown: 30,
 	description: LanguageKeys.Commands.Music.ImportQueueDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended,
-	usage: '<queue:squeue>',
-	flagSupport: true
+	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended
 })
-@CreateResolvers([
-	[
-		'squeue',
-		async (arg, possible, message) => {
-			if (!arg && message.attachments.size === 0) throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueNotFound);
-			return message.attachments.first()?.url ?? message.client.arguments.get('url')!.run(arg, possible, message);
-		}
-	]
-])
-export default class extends MusicCommand {
-	public async run(message: GuildMessage, [url]: [string]) {
-		const raw = await this.fetchRawData(message, url);
+export class UserMusicCommand extends MusicCommand {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
+		const url = message.attachments.first()?.url ?? (await args.pick('hyperlink')).href;
+		const raw = await this.fetchRawData(args.t, url);
 
 		const { audio } = message.guild;
 		const decodedTracks = await audio.player.node.decode(raw);
@@ -39,17 +29,17 @@ export default class extends MusicCommand {
 
 		// Add the tracks
 		const added = await audio.add(...tracks);
-		if (added === 0) throw await message.resolveKey(LanguageKeys.MusicManager.TooManySongs);
+		if (added === 0) throw args.t(LanguageKeys.MusicManager.TooManySongs);
 
 		this.context.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
-	private async fetchRawData(message: GuildMessage, url: string) {
+	private async fetchRawData(t: TFunction, url: string) {
 		try {
 			const raw = await fetch(url, FetchResultTypes.Buffer);
 			return deserialize<string[]>(raw);
 		} catch {
-			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueError);
+			throw t(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 

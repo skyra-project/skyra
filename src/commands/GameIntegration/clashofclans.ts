@@ -4,11 +4,10 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, IArgument } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -25,34 +24,13 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.ClashOfClansExtended,
-	subcommands: true,
-	usage: '<player|clan:default> <query:tagOrName>',
-	usageDelim: ' '
+	subCommands: ['player', { input: 'clan', default: true }]
 })
-@CreateResolvers([
-	[
-		'tagOrName',
-		async (arg, possible, message, [action]) => {
-			if (action === 'clan') {
-				return message.client.arguments.get('...string')!.run(arg, possible, message);
-			}
-
-			if (action === 'player') {
-				if (kPlayerTagRegex.test(arg)) return arg;
-				throw await message.resolveKey(LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag, { playertag: arg });
-			}
-
-			throw await message.resolveKey(LanguageKeys.System.QueryFail);
-		}
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public async clan(message: GuildMessage, [clan]: [string]) {
-		const t = await message.fetchT();
-
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async clan(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const { t } = args;
+		const clan = await args.pick('string');
+		const response = await sendLoadingMessage(message, t);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(t, clan, ClashOfClansFetchCategories.CLANS);
 
@@ -64,10 +42,11 @@ export default class extends PaginatedMessageCommand {
 		return response;
 	}
 
-	public async player(message: GuildMessage, [player]: [string]) {
-		const language = await message.fetchT();
-		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(language, player, ClashOfClansFetchCategories.PLAYERS);
-		return message.send(await this.buildPlayerEmbed(message, language, playerData));
+	public async player(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const { t } = args;
+		const player = await args.pick(UserPaginatedMessageCommand.playerTagResolver);
+		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(t, player, ClashOfClansFetchCategories.PLAYERS);
+		return message.send(await this.buildPlayerEmbed(message, t, playerData));
 	}
 
 	private async fetchAPI<C extends ClashOfClansFetchCategories>(t: TFunction, query: string, category: ClashOfClansFetchCategories) {
@@ -174,4 +153,9 @@ export default class extends PaginatedMessageCommand {
 
 		return display;
 	}
+
+	public static playerTagResolver: IArgument<string> = Args.make((parameter, { argument }) => {
+		if (kPlayerTagRegex.test(parameter)) return Args.ok(parameter);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag });
+	});
 }

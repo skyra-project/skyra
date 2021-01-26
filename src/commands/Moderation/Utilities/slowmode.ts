@@ -4,36 +4,34 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
 import type { TextChannel } from 'discord.js';
 
-const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
+const MAXIMUM_DURATION = Time.Hour * 6;
+const MAXIMUM_SECONDS = MAXIMUM_DURATION / Time.Second;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sm'],
 	bucket: 2,
 	cooldown: 5,
-	cooldownLevel: 'channel',
 	description: LanguageKeys.Commands.Moderation.SlowmodeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_CHANNELS'],
-	runIn: ['text'],
-	usage: '<reset|off|seconds:integer|cooldown:cooldown>'
+	permissions: ['MANAGE_CHANNELS'],
+	runIn: ['text']
 })
-@CreateResolvers([
-	['cooldown', async (arg, possible, message) => (await message.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000]
-])
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [cooldown]: ['reset' | 'off' | number]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const cooldown = await args
+			.pick('reset')
+			.then(() => 0)
+			.catch(() => args.pick('integer', { minimum: 1, maximum: MAXIMUM_SECONDS }))
+			.catch(() => args.rest('timespan', { minimum: 1, maximum: MAXIMUM_DURATION }))
+			.then((value) => Math.trunc(value / 1000));
 
-		if (cooldown === 'reset' || cooldown === 'off' || cooldown < 0) cooldown = 0;
-		else if (cooldown > MAXIMUM_TIME) throw t(LanguageKeys.Commands.Moderation.SlowmodeTooLong);
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
 		return cooldown === 0
-			? message.send(t(LanguageKeys.Commands.Moderation.SlowmodeReset))
-			: message.send(t(LanguageKeys.Commands.Moderation.SlowmodeSet, { cooldown: cooldown * 1000 }));
+			? message.send(args.t(LanguageKeys.Commands.Moderation.SlowmodeReset))
+			: message.send(args.t(LanguageKeys.Commands.Moderation.SlowmodeSet, { cooldown: cooldown * 1000 }));
 	}
 }

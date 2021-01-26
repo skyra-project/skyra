@@ -1,40 +1,34 @@
-import { cast } from '#utils/util';
-import { Message, Permissions, Structures } from 'discord.js';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
+import { Permissions, Structures } from 'discord.js';
 
-export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsChannel')) {
-	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(
-			cast<Message>({ channel: this, guild: this.guild })
-		);
-		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
-	}
+const READ_PERMISSIONS = new Permissions(['VIEW_CHANNEL']);
+const SEND_PERMISSIONS = new Permissions([READ_PERMISSIONS, 'SEND_MESSAGES']);
+const ATTACH_PERMISSIONS = new Permissions([SEND_PERMISSIONS, 'ATTACH_FILES']);
+const EMBED_PERMISSIONS = new Permissions([SEND_PERMISSIONS, 'EMBED_LINKS']);
 
+export class SkyraNewsChannel extends Structures.get('NewsChannel') {
 	public get attachable() {
-		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ATTACH_FILES, false);
+		return this.permissionsFor(this.guild.me!)!.has(ATTACH_PERMISSIONS, false);
 	}
 
 	public get embedable() {
-		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.EMBED_LINKS, false);
+		return this.permissionsFor(this.guild.me!)!.has(EMBED_PERMISSIONS, false);
 	}
 
 	public get postable() {
-		return this.permissionsFor(this.guild.me!)!.has([Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES], false);
+		return this.permissionsFor(this.guild.me!)!.has(SEND_PERMISSIONS, false);
 	}
 
 	public get readable() {
-		return this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.VIEW_CHANNEL, false);
+		return this.permissionsFor(this.guild.me!)!.has(READ_PERMISSIONS, false);
 	}
 }
 
 declare module 'discord.js' {
-	export interface NewsChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<string>;
+	export interface NewsChannel {
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;
 		readonly readable: boolean;
-		toString(): string;
 	}
 }
 

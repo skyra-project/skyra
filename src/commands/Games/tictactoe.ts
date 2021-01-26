@@ -5,12 +5,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
+import { PieceContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
-import { PieceContext, Usage } from 'klasa';
+import type { TFunction } from 'i18next';
 
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
-	private prompt: Usage;
 
 	public constructor(context: PieceContext) {
 		super(context, {
@@ -18,18 +18,18 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: LanguageKeys.Commands.Games.TicTacToeDescription,
 			extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '<user:username>'
+			permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+			runIn: ['text']
 		});
-
-		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
-	public async run(message: GuildMessage, [user]: [User]) {
-		if (this.channels.has(message.channel.id)) throw await message.resolveKey(LanguageKeys.Commands.Games.GamesProgress);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const { t } = args;
+		if (this.channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
+
+		const user = await args.pick('userName');
 		const player1 = this.getAuthorController(message);
-		const player2 = await this.getTargetController(message, user);
+		const player2 = await this.getTargetController(message, args.t, user);
 
 		this.channels.add(message.channel.id);
 		const game = new TicTacToeGame(message, player1, player2);
@@ -45,18 +45,18 @@ export default class extends SkyraCommand {
 		return new TicTacToeHumanController(message.author.username, message.author.id);
 	}
 
-	private async getTargetController(message: GuildMessage, user: User) {
+	private async getTargetController(message: GuildMessage, t: TFunction, user: User) {
 		if (user.id === CLIENT_ID) return new TicTacToeBotController();
-
-		const t = await message.fetchT();
 		if (user.bot) throw t(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) throw t(LanguageKeys.Commands.Games.GamesSelf);
 
-		const [response] = await this.prompt.createPrompt(message, { target: user }).run(
+		const response = await message.ask(
 			t(LanguageKeys.Commands.Games.TicTacToePrompt, {
 				challenger: message.author.toString(),
 				challengee: user.toString()
-			})
+			}),
+			undefined,
+			{ target: user }
 		);
 
 		if (response) return new TicTacToeHumanController(user.username, user.id);

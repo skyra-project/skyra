@@ -6,10 +6,10 @@ import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isNumber, noop } from '@sapphire/utilities';
+import { Args, Store } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { Command } from 'klasa';
 
 const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
@@ -26,7 +26,7 @@ const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
  * @param firstCategory Key of the first element for comparison
  * @param secondCategory Key of the second element for comparison
  */
-function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: string, secondCategory: string): 1 | -1 | 0 {
+function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], firstCategory: string, secondCategory: string): 1 | -1 | 0 {
 	if (firstCategory > secondCategory) return 1;
 	if (secondCategory > firstCategory) return -1;
 	return 0;
@@ -37,82 +37,75 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	description: LanguageKeys.Commands.General.HelpDescription,
 	extendedHelp: LanguageKeys.Commands.General.HelpExtended,
 	guarded: true,
-	usage: '(Command:command|page:integer|category:category)',
-	flagSupport: true
+	strategyOptions: { flags: ['cat', 'categories', 'all'] }
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [commandOrPage]: [SkyraCommand | number | undefined]) {
-		const t = await message.fetchT();
-
-		if (message.flagArgs.categories || message.flagArgs.cat) {
-			const commandsByCategory = await this._fetchCommands(message);
-			let i = 0;
-			const commandCategories: string[] = [];
-			for (const [category, commands] of commandsByCategory) {
-				const line = String(++i).padStart(2, '0');
-				commandCategories.push(
-					`\`${line}.\` **${category}** → ${t(LanguageKeys.Commands.General.HelpCommandCount, { count: commands.length })}`
-				);
-			}
-
-			return message.send(commandCategories);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		if (args.finished) {
+			if (args.getFlags('cat', 'categories')) return this.categories(message, args);
+			if (args.getFlags('all')) return this.all(message, args);
 		}
+
+		const category = await args.pickResult(UserCommand.categories);
+		if (category.success) return this.display(message, args, category.value - 1);
+
+		const page = await args.pickResult('integer', { minimum: 0 });
+		if (page.success) return this.display(message, args, page.value - 1);
 
 		// Handle case for a single command
-		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
-		if (command) return message.send(await this.buildCommandHelp(message, t, command));
+		const command = await args.pickResult('commandName');
+		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value));
 
-		const prefix = (await this.context.client.fetchPrefix(message)) as string;
+		return this.canRunPaginatedMessage(message) ? this.display(message, args, null) : this.all(message, args);
+	}
 
-		if (
-			!message.flagArgs.all &&
-			message.guild &&
-			(message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE)
-		) {
-			const response = await message.send(
-				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
-				new MessageEmbed({
-					description: pickRandom(t(LanguageKeys.System.Loading) as string[]),
-					color: BrandingColors.Secondary
-				})
+	private canRunPaginatedMessage(message: Message) {
+		return (
+			message.guild !== null && (message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE)
+		);
+	}
+
+	private async categories(message: Message, args: SkyraCommand.Args) {
+		const commandsByCategory = await UserCommand.fetchCommands(message);
+		let i = 0;
+		const commandCategories: string[] = [];
+		for (const [category, commands] of commandsByCategory) {
+			const line = String(++i).padStart(2, '0');
+			commandCategories.push(
+				`\`${line}.\` **${category}** → ${args.t(LanguageKeys.Commands.General.HelpCommandCount, { count: commands.length })}`
 			);
-			const display = await this.buildDisplay(message, t, prefix);
-
-			// Extract start page and sanitize it
-			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
-			const startPage = page === null || page < 0 || page >= display.pages.length ? null : page;
-			if (startPage) display.setIndex(startPage);
-			await display.start(response as GuildMessage, message.author);
-			return response;
 		}
 
+		return message.send(commandCategories);
+	}
+
+	private async all(message: Message, args: SkyraCommand.Args) {
+		const content = await this.buildHelp(message, args.t, args.commandContext.commandPrefix);
 		try {
-			const response = await message.author.send(await this.buildHelp(message, t, prefix), { split: { char: '\n' } });
-			return message.channel.type === 'dm' ? response : await message.sendTranslated(LanguageKeys.Commands.General.HelpDm);
+			const response = await message.author.send(content, { split: { char: '\n' } });
+			return message.channel.type === 'dm' ? response : await message.send(args.t(LanguageKeys.Commands.General.HelpDm));
 		} catch {
-			return message.channel.type === 'dm' ? null : message.sendTranslated(LanguageKeys.Commands.General.HelpNoDm);
+			return message.channel.type === 'dm' ? null : message.send(args.t(LanguageKeys.Commands.General.HelpNoDm));
 		}
 	}
 
-	public async onLoad() {
-		this.createCustomResolver('command', (arg, possible, message) => {
-			if (!arg) return undefined;
-			return this.context.client.arguments.get('commandname')!.run(arg, possible, message);
-		});
-		this.createCustomResolver('category', async (arg, _, msg) => {
-			if (!arg) return undefined;
-			arg = arg.toLowerCase();
-			const commandsByCategory = await this._fetchCommands(msg);
-			for (const [page, category] of commandsByCategory.keyArray().entries()) {
-				// Add 1, since 1 will be subtracted later
-				if (category.toLowerCase() === arg) return page + 1;
-			}
-			return undefined;
-		});
+	private async display(message: Message, args: SkyraCommand.Args, index: number | null) {
+		const { commandPrefix: prefix } = args.commandContext;
+
+		const response = await message.send(
+			args.t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
+			new MessageEmbed().setDescription(pickRandom(args.t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+		);
+
+		const display = await this.buildDisplay(message, args.t, prefix);
+		if (index !== null) display.setIndex(index);
+
+		await display.start(response as GuildMessage, message.author);
+		return response;
 	}
 
 	private async buildHelp(message: Message, language: TFunction, prefix: string) {
-		const commands = await this._fetchCommands(message);
+		const commands = await UserCommand.fetchCommands(message);
 
 		const helpMessage: string[] = [];
 		for (const [category, list] of commands) {
@@ -123,7 +116,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
-		const commandsByCategory = await this._fetchCommands(message);
+		const commandsByCategory = await UserCommand.fetchCommands(message);
 
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
@@ -134,26 +127,27 @@ export default class extends SkyraCommand {
 			);
 		}
 
-		return display;
+		return display.setIdle(Time.Minute * 10);
 	}
 
 	private async buildCommandHelp(message: Message, t: TFunction, command: SkyraCommand) {
 		const builderData = t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
+			.setUsages(builderData.usages)
+			.setAliases(builderData.aliases)
+			.setExtendedHelp(builderData.extendedHelp)
 			.setExplainedUsage(builderData.explainedUsage)
 			.setExamples(builderData.examples)
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
 		const extendedHelpData = t(command.extendedHelp);
-		const extendedHelp = builder.display(command.name, extendedHelpData);
+		const extendedHelp = builder.display(command.name, this.formatAliases(t, command.aliases), extendedHelpData);
 
 		const data = t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
-			titleDescription: t(command.description),
-			usage: command.usage.fullUsage(message),
-			extendedHelp
+			titleDescription: t(command.description)
 		});
 		const user = this.context.client.user!;
 		return new MessageEmbed()
@@ -162,7 +156,12 @@ export default class extends SkyraCommand {
 			.setTimestamp()
 			.setFooter(data.footer)
 			.setTitle(data.title)
-			.setDescription([data.usage, data.extended].join('\n'));
+			.setDescription(extendedHelp);
+	}
+
+	private formatAliases(t: TFunction, aliases: readonly string[]): string | null {
+		if (aliases.length === 0) return null;
+		return t(LanguageKeys.Globals.AndListValue, { value: aliases.map((alias) => `\`${alias}\``) });
 	}
 
 	private formatCommand(t: TFunction, prefix: string, paginatedMessage: boolean, command: SkyraCommand) {
@@ -170,23 +169,32 @@ export default class extends SkyraCommand {
 		return paginatedMessage ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
-	private async _fetchCommands(message: Message) {
-		const { client } = this.context;
-		const run = client.inhibitors.run.bind(client.inhibitors, message);
-		const commands = new Collection<string, SkyraCommand[]>();
+	private static categories = Args.make<number>(async (parameter, { argument, message }) => {
+		const lowerCasedParameter = parameter.toLowerCase();
+		const commandsByCategory = await this.fetchCommands(message);
+		for (const [page, category] of commandsByCategory.keyArray().entries()) {
+			// Add 1, since 1 will be subtracted later
+			if (category.toLowerCase() === lowerCasedParameter) return Args.ok(page + 1);
+		}
+
+		return Args.error({ argument, parameter });
+	});
+
+	private static async fetchCommands(message: Message) {
+		const commands = Store.injectedContext.stores.get('commands');
+		const filtered = new Collection<string, SkyraCommand[]>();
 		await Promise.all(
-			client.commands.map((command) =>
-				run(command, true)
-					.then(() => {
-						const category = commands.get(command.fullCategory.join(' → '));
-						if (category) category.push(command as SkyraCommand);
-						else commands.set(command.fullCategory.join(' → '), [command as SkyraCommand]);
-						return null;
-					})
-					.catch(noop)
-			)
+			commands.map(async (cmd) => {
+				const result = await cmd.preconditions.run(message, cmd, { command: null! });
+				if (!result.success) return;
+
+				const command = cmd as SkyraCommand;
+				const category = filtered.get(command.fullCategory.join(' → '));
+				if (category) category.push(command as SkyraCommand);
+				else filtered.set(command.fullCategory.join(' → '), [command as SkyraCommand]);
+			})
 		);
 
-		return commands.sort(sortCommandsAlphabetically);
+		return filtered.sort(sortCommandsAlphabetically);
 	}
 }

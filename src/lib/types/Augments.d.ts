@@ -2,16 +2,40 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
-import type { AnalyticsData, ConnectFourManager, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
+import type {
+	AnalyticsData,
+	ConnectFourManager,
+	GiveawayManager,
+	InviteCodeValidEntry,
+	InviteStore,
+	ScheduleManager,
+	SkyraCommand
+} from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
-import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
-import 'i18next';
-import type { AliasPieceOptions, PieceOptions } from 'klasa';
+import type { Piece, Store } from '@sapphire/framework';
+import type { Image } from 'canvas';
+import type {
+	APIMessage,
+	APIMessageContentResolvable,
+	GuildChannel,
+	Message,
+	MessageAdditions,
+	MessageExtendablesAskOptions,
+	MessageOptions,
+	NewsChannel,
+	Role,
+	Snowflake,
+	SplitOptions,
+	StringResolvable,
+	TextChannel,
+	User
+} from 'discord.js';
+import type { Scope } from './definitions/ArgumentTypes';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
@@ -29,14 +53,11 @@ declare module 'discord.js' {
 		readonly schedules: ScheduleManager;
 		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
-		readonly i18n: I18nextHandler;
 		readonly version: string;
 		readonly webhookDatabase: Webhook | null;
 		readonly webhookError: Webhook;
 		readonly webhookFeedback: Webhook | null;
 		readonly websocket: WebsocketHandler;
-
-		fetchLanguage(message: Message): Promise<string>;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
@@ -92,19 +113,36 @@ declare module 'discord.js' {
 		schedule?: {
 			interval: number;
 		};
-		i18n?: I18nOptions;
 	}
 }
 
-declare module 'klasa' {
-	interface PieceDefaults {
-		serializers?: AliasPieceOptions;
-		tasks?: PieceOptions;
-	}
-
-	interface Argument {
-		// @ts-expect-error 1070
-		run<T>(arg: string | undefined, possible: Possible, message: Message, filter?: (entry: T) => boolean): any;
+declare module '@sapphire/framework' {
+	interface ArgType {
+		case: number;
+		channelName: GuildChannel;
+		cleanString: string;
+		command: SkyraCommand;
+		commandName: SkyraCommand;
+		duration: Date;
+		emoji: string;
+		image: Image;
+		invite: InviteCodeValidEntry;
+		language: string;
+		overwatchPlayer: string;
+		piece: Piece;
+		range: number[];
+		reset: true;
+		roleName: Role;
+		scope: Scope;
+		shinyWager: number;
+		snowflake: Snowflake;
+		song: string[];
+		store: Store<Piece>;
+		textOrNewsChannelName: TextChannel | NewsChannel;
+		textChannelName: TextChannel;
+		time: Date;
+		timespan: number;
+		userName: User;
 	}
 }
 
@@ -121,5 +159,48 @@ declare module 'i18next' {
 			defaultValue: TReturn,
 			options?: TOptions<TArgs>
 		): TReturn;
+	}
+}
+
+declare module '@sapphire/plugin-i18next' {
+	export interface I18nextMessageImplementation {
+		reactable: boolean;
+		fetchLanguage(): Promise<string>;
+		prompt(content: string, time?: number): Promise<Message>;
+		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean | null>;
+		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean | null>;
+		alert(content: string, timer?: number): Promise<Message>;
+		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
+		nuke(time?: number): Promise<Message>;
+		readonly responses: readonly Message[];
+		send(
+			content:
+				| APIMessageContentResolvable
+				| (MessageOptions & {
+						split?: false;
+				  })
+				| MessageAdditions
+		): Promise<Message>;
+		send(
+			options: MessageOptions & {
+				split: true | SplitOptions;
+			}
+		): Promise<Message[]>;
+		send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
+		send(
+			content: StringResolvable,
+			options:
+				| (MessageOptions & {
+						split?: false;
+				  })
+				| MessageAdditions
+		): Promise<Message>;
+		send(
+			content: StringResolvable,
+			options: MessageOptions & {
+				split: true | SplitOptions;
+			}
+		): Promise<Message[]>;
+		send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
 	}
 }

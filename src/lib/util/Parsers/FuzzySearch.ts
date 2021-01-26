@@ -18,7 +18,7 @@ export class FuzzySearch<K extends string, V> {
 		this.kFilter = filter;
 	}
 
-	public run(message: Message, query: string, threshold = 5) {
+	public run(message: Message, query: string, threshold = 2) {
 		const lowerCaseQuery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 

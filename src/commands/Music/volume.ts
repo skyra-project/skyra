@@ -8,30 +8,30 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['vol'],
 	description: LanguageKeys.Commands.Music.VolumeDescription,
-	extendedHelp: LanguageKeys.Commands.Music.VolumeExtended,
-	usage: '[volume:number]'
+	extendedHelp: LanguageKeys.Commands.Music.VolumeExtended
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	@requireMusicPlaying()
-	public async run(message: GuildMessage, [volume]: [number]) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
-		const previous = await audio.getVolume();
+		const newVolume = args.finished ? null : await args.pick('integer', { minimum: 0, maximum: 300 });
+		const previousVolume = await audio.getVolume();
 
 		// If no argument was given
-		if (typeof volume === 'undefined' || volume === previous) {
-			return message.sendTranslated(LanguageKeys.Commands.Music.VolumeSuccess, [{ volume: previous }]);
+		if (newVolume === null || newVolume === previousVolume) {
+			return message.channel.send(args.t(LanguageKeys.Commands.Music.VolumeSuccess, { volume: previousVolume }));
 		}
 
 		const channel = audio.voiceChannel!;
 		if (channel.listeners.length >= 4 && !(await message.member.canManage(channel))) {
-			throw await message.resolveKey(LanguageKeys.Inhibitors.MusicDjMember);
+			throw args.t(LanguageKeys.Preconditions.MusicDjMember);
 		}
 
 		// Set the volume
-		await audio.setVolume(volume);
-		return this.context.client.emit(Events.MusicSongVolumeUpdateNotify, message, previous, volume);
+		await audio.setVolume(newVolume);
+		return this.context.client.emit(Events.MusicSongVolumeUpdateNotify, message, previousVolume, newVolume);
 	}
 }

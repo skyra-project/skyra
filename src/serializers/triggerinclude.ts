@@ -1,20 +1,20 @@
 import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { resolveEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<TriggerIncludes> {
-	public parse(value: string, { t, entry }: SerializerUpdateContext) {
-		const values = value.split(' ');
-		if (values.length !== 3) return this.error(t(LanguageKeys.Serializers.TriggerIncludeInvalid));
+export class UserSerializer extends Serializer<TriggerIncludes> {
+	public async parse(args: Serializer.Args, { t }: SerializerUpdateContext) {
+		const action = await args.pickResult('string');
+		if (!action.success) return action;
+		if (action.value !== 'react') return this.error(t(LanguageKeys.Serializers.TriggerIncludeInvalidAction));
 
-		const [action, input, output] = values;
-		if (action !== 'react') return this.error(t(LanguageKeys.Serializers.TriggerIncludeInvalidAction));
+		const input = await args.pickResult('string');
+		if (!input.success) return input;
 
-		const resolved = resolveEmoji(output);
-		if (resolved === null) return this.error(t(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.name }));
+		const output = await args.pickResult('emoji');
+		if (!output.success) return output;
 
-		return this.ok({ action: action as 'react', input, output: resolved });
+		return this.ok({ action: action.value as 'react', input: input.value, output: output.value });
 	}
 
 	public isValid(data: TriggerIncludes, { t }: SerializerUpdateContext): Awaited<boolean> {

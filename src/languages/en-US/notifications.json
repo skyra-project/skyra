@@ -1,6 +1,0 @@
-{
-	"twitchEmbedDescription": "{{userName}} is now live!",
-	"twitchEmbedDescriptionWithGame": "{{userName}} is now live - Streaming {{gameName}}!",
-	"twitchNoGameName": "*Game name not set*",
-	"twitchEmbedFooter": "Skyra Twitch Notifications"
-}

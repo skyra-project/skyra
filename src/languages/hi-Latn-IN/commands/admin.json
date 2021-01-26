@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "ब्लॉक और मेरी कार्यक्षमता का उपयोग करने से उपयोगकर्ताओं और गिल्ड की अनुमति दें",
-	"blocklistExtended": {
-		"extendedHelp": "उपयोगकर्ताओं को ब्लॉक करें जो भविष्य में मेरे उपयोग से मेरे कार्यों का दुरुपयोग करते हैं, शरारती शरारती लोग"
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
 	"confNoKey": "Ek key provide karo",
 	"confNoValue": "Tumhe a value deni hai",
 	"confGuarded": "{{name, toTitleCase}} band nahi hona chahiye.",

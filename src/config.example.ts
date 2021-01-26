@@ -57,7 +57,7 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 	token: INFLUX_TOKEN
 };
 
-export const VERSION = '5.6.0 [Paradise Edition]';
+export const VERSION = '6.0.0 [Sapphire Edition]';
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: {
@@ -76,8 +76,6 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		}
 	},
 	shards: 'auto',
-	commandEditing: true,
-	commandLogging: false,
 	dev: DEV,
 	ws: {
 		intents: [
@@ -95,18 +93,11 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,
-	prefix: PREFIX,
+	defaultPrefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
-	readyMessage: (client) =>
-		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.cache.size} [G]] [ ${client.guilds.cache
-			.reduce((a, b) => a + b.memberCount, 0)
-			.toLocaleString()} [U]].`,
 	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
-	slowmode: 750,
-	slowmodeAggressive: true,
-	typing: false,
 	api: {
 		auth: {
 			id: CLIENT_ID,

@@ -15,6 +15,9 @@ colorette.options.enabled = true;
 
 const client = new SkyraClient();
 
+// TODO: (sapphire migration) i18n check for unused keys
+// TODO: (sapphire migration) cleanup unused and non-referenced keys from JSON files
+
 async function main() {
 	if (TOKENS.SENTRY_URL) {
 		Sentry.init({

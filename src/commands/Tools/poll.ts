@@ -1,11 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 const NUMBER_OPTS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
-
 const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹'];
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -13,23 +12,21 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 	cooldown: 5,
 	description: LanguageKeys.Commands.Tools.PollDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PollExtended,
-	usage: '<options:string> [...]',
-	usageDelim: ',',
-	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
+	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, options: string[]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const options = await args.repeat('string', { times: 20 });
 
 		// since klasa usage is trash
-		if (options.length < 2 || options.length > 20) throw t(LanguageKeys.Resolvers.MinmaxBothInclusive, { name: 'options', min: 2, max: 20 });
+		if (options.length < 2) throw args.t(LanguageKeys.Serializers.MinMaxBothInclusive, { name: 'options', min: 2, max: 20 });
 
 		const emojis = (options.length > 10 ? ALPHABET_OPTS : NUMBER_OPTS).slice(0, options.length);
-		const loadingMsg = await message.send(pickRandom(t(LanguageKeys.System.Loading)));
+		const response = await sendLoadingMessage(message, args.t);
 
 		for (const emoji of emojis) {
-			if (loadingMsg.reactions.cache.size === 20) throw t(LanguageKeys.Commands.Tools.PollReactionLimit);
-			await loadingMsg.react(emoji);
+			if (response.reactions.cache.size === 20) throw args.t(LanguageKeys.Commands.Tools.PollReactionLimit);
+			await response.react(emoji);
 		}
 
 		await message.send(options.map((option, i) => `${emojis[i]} → *${option.trim()}*`).join('\n'));

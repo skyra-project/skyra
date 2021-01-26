@@ -1,3 +1,4 @@
+import { RateLimitManager } from '#lib/structures';
 import type {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
@@ -9,7 +10,6 @@ import { TOKENS, TWITCH_CALLBACK } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { createHmac } from 'crypto';
-import { RateLimitManager } from 'klasa';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',
@@ -24,7 +24,7 @@ export interface OauthResponse {
 }
 
 export class Twitch {
-	public readonly ratelimitsStreams = new RateLimitManager(1, Time.Minute * 3 * 1000);
+	public readonly ratelimitsStreams = new RateLimitManager(Time.Minute * 3000, 1);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
 	public readonly BRANDING_COLOUR = 0x6441a4;
 
@@ -53,7 +53,7 @@ export class Twitch {
 
 	public streamNotificationDrip(id: string) {
 		try {
-			this.ratelimitsStreams.acquire(id).drip();
+			this.ratelimitsStreams.acquire(id).consume();
 			return false;
 		} catch {
 			return true;

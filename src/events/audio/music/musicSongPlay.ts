@@ -3,7 +3,7 @@ import { AudioEvent } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
 
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(queue: Queue, status: NP) {
 		const channel = await queue.getTextChannel();
 		if (channel) this.context.client.emit(Events.MusicSongPlayNotify, channel, status.entry);

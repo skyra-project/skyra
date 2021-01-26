@@ -9,7 +9,7 @@
 	"c4GameNextTurn0": "Turno para: {{user}} (azul).",
 	"c4GameWin": "¡{{user}} (rojo) ganó!",
 	"c4GameWinTurn0": "¡{{user}} (azul) ganó!",
-	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Responde con **sí** para aceptar!",
+	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
 	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
 	"coinFlipCoinnames": [

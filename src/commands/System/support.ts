@@ -9,15 +9,14 @@ import { Message, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.System.SupportDescription,
 	extendedHelp: LanguageKeys.Commands.System.SupportExtended,
 	guarded: true,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
 		return message.send(
 			new MessageEmbed()
-				.setTitle(t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
-				.setDescription(t(LanguageKeys.Commands.System.SupportEmbedDescription))
+				.setTitle(args.t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
+				.setDescription(args.t(LanguageKeys.Commands.System.SupportEmbedDescription))
 				.setColor(await DbSet.fetchColor(message))
 		);
 	}

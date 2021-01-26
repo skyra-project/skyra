@@ -1,11 +1,29 @@
 export class LanguageHelp {
-	private explainedUsage: string | null = null;
-	private possibleFormats: string | null = null;
-	private examples: string | null = null;
-	private reminder: string | null = null;
+	private aliases: string = null!;
+	private usages: string = null!;
+	private extendedHelp: string = null!;
+	private explainedUsage: string = null!;
+	private possibleFormats: string = null!;
+	private examples: string = null!;
+	private reminder: string = null!;
+
+	public setAliases(text: string) {
+		this.aliases = text;
+		return this;
+	}
+
+	public setUsages(text: string) {
+		this.usages = text;
+		return this;
+	}
 
 	public setExplainedUsage(text: string) {
 		this.explainedUsage = text;
+		return this;
+	}
+
+	public setExtendedHelp(text: string) {
+		this.extendedHelp = text;
 		return this;
 	}
 
@@ -24,35 +42,44 @@ export class LanguageHelp {
 		return this;
 	}
 
-	public display(name: string, options: LanguageHelpDisplayOptions) {
-		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
+	public display(name: string, aliases: string | null, options: LanguageHelpDisplayOptions) {
+		const { usages = [], extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output: string[] = [];
+
+		// Usages
+		if (usages.length) {
+			output.push(this.usages, ...usages.map((usage) => `→ Skyra, ${name}${usage.length === 0 ? '' : ` *${usage}*`}`), '');
+		}
+
+		if (aliases !== null) {
+			output.push(`${this.aliases}: ${aliases}`, '');
+		}
 
 		// Extended help
 		if (extendedHelp) {
-			output.push(extendedHelp, '');
+			output.push(this.extendedHelp, extendedHelp, '');
 		}
 
 		// Explained usage
 		if (explainedUsage.length) {
-			output.push(this.explainedUsage!, ...explainedUsage.map(([arg, desc]) => `→ **${arg}**: ${desc}`), '');
+			output.push(this.explainedUsage, ...explainedUsage.map(([arg, desc]) => `→ **${arg}**: ${desc}`), '');
 		}
 
 		// Possible formats
 		if (possibleFormats.length) {
-			output.push(this.possibleFormats!, ...possibleFormats.map(([type, example]) => `→ **${type}**: ${example}`), '');
+			output.push(this.possibleFormats, ...possibleFormats.map(([type, example]) => `→ **${type}**: ${example}`), '');
 		}
 
 		// Examples
 		if (examples.length) {
-			output.push(this.examples!, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+			output.push(this.examples, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
 		} else {
-			output.push(this.examples!, `→ Skyra, ${name}`, '');
+			output.push(this.examples, `→ Skyra, ${name}`, '');
 		}
 
 		// Reminder
 		if (reminder) {
-			output.push(this.reminder!, reminder);
+			output.push(this.reminder, reminder);
 		}
 
 		return output.join('\n');
@@ -60,9 +87,10 @@ export class LanguageHelp {
 }
 
 export interface LanguageHelpDisplayOptions {
+	usages?: string[];
 	extendedHelp?: string;
 	explainedUsage?: [string, string][];
 	possibleFormats?: [string, string][];
-	examples?: string[];
+	examples?: (null | string)[];
 	reminder?: string;
 }

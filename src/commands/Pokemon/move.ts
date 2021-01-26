@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import type { MoveEntry } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -15,18 +14,15 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended,
-	usage: '<move:str>'
+	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [move]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
-		const moveData = await this.fetchAPI(move.toLowerCase(), t);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const move = (await args.rest('string')).toLowerCase();
+		const response = await sendLoadingMessage(message, args.t);
+		const moveData = await this.fetchAPI(move, args.t);
 
-		const display = await this.buildDisplay(message, moveData, t);
+		const display = await this.buildDisplay(message, moveData, args.t);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

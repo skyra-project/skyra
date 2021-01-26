@@ -12,18 +12,18 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.CatfactDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.CatfactExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private facts: readonly string[] = [];
 
-	public async run(message: Message) {
+	public async run(message: Message, args: SkyraCommand.Args) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(await message.resolveKey(LanguageKeys.Commands.Animal.CatfactTitle))
+				.setTitle(args.t(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);
 	}

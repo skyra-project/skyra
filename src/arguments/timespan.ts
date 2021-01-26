@@ -1,19 +1,28 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Argument, ArgumentContext, Identifiers } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message) {
-		const duration = new Duration(arg);
+export class UserArgument extends Argument<number> {
+	public run(parameter: string, context: ArgumentContext) {
+		const duration = new Duration(parameter);
 
 		if (duration.offset <= 0 || !isNumber(duration.fromNow.getTime())) {
-			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name: possible.name });
+			return this.error({ parameter, identifier: LanguageKeys.Arguments.Duration, context });
 		}
 
-		const { min, max } = possible;
+		if (!Number.isInteger(duration.offset)) {
+			return this.error({ parameter, identifier: Identifiers.ArgumentInteger, context });
+		}
 
-		return (await Argument.minOrMax(duration.offset, min, max, possible, message, '')) ? duration.offset : null;
+		if (typeof context.minimum === 'number' && duration.offset < context.minimum) {
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooSmall, context });
+		}
+
+		if (typeof context.maximum === 'number' && duration.offset > context.maximum) {
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooBig, context });
+		}
+
+		return this.ok(duration.offset);
 	}
 }

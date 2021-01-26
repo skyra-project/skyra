@@ -1,17 +1,14 @@
-// Copyright (c) 2017-2019 Dirigeants. All rights reserved. MIT license.
-// Source: https://github.com/dirigeants/klasa
-
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { DbSet, ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
-import type { KlasaClient } from 'klasa';
+import type { Client } from 'discord.js';
 
 export class ScheduleManager {
-	public readonly client: KlasaClient;
+	public readonly client: Client;
 	public queue: ScheduleEntity[] = [];
 	#interval: NodeJS.Timer | null = null;
 
-	public constructor(client: KlasaClient) {
+	public constructor(client: Client) {
 		this.client = client;
 	}
 
@@ -168,7 +165,7 @@ export class ScheduleManager {
 	 */
 	private _checkInterval(): void {
 		if (!this.queue.length) this._clearInterval();
-		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule.interval);
+		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule?.interval ?? 5000);
 	}
 
 	/**

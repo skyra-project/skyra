@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "",
-	"blocklistExtended": {
-		"extendedHelp": ""
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
 	"confNoKey": "You must provide a key",
 	"confNoValue": "You must provide a value",
 	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
@@ -16,7 +10,24 @@
 	"confNochange": "The value for **{{key}}** was already that value.",
 	"confServerDescription": "Define per-server settings.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"set NameOfKey ...ValueForKey",
+			"show",
+			"show NameOfKey",
+			"remove NameOfKey ...ValueForKey",
+			"reset NameOfKey",
+			"menu"
+		],
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the web dashboard (<https://skyra.pw>).",
+		"examples": [
+			"set language en-GB",
+			"set channels.moderation-logs #moderation-logs",
+			"show",
+			"show channels",
+			"remove roles.moderator Moderator",
+			"reset roles.moderator",
+			"menu"
+		]
 	},
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
 	"confUserDescription": "Define per-user settings.",
@@ -29,40 +40,33 @@
 	},
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
-		"extendedHelp": "",
+		"usages": [
+			"set RoleSetName Role1 Role2 Role3...",
+			"remove RoleSetName Role1 Role2 Role3...",
+			"reset",
+			"reset RoleSetName",
+			"list",
+			"RoleSetName Role1 Role2 Role3"
+		],
+		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
 		"explainedUsage": [
-			[
-				"add",
-				"Create a new roleset or add a role to an existing one."
-			],
-			[
-				"remove",
-				"Remove a role from an existing roleset."
-			],
-			[
-				"reset",
-				"Removes all roles from a roleset or, if not specified, all existing rolesets."
-			],
-			[
-				"list",
-				"Lists all rolesets."
-			],
-			[
-				"",
-				""
-			]
+			["add", "Create a new roleset or add a role to an existing one."],
+			["remove", "Remove a role from an existing roleset."],
+			["reset", "Removes all roles from a roleset or, if not specified, all existing rolesets."],
+			["list", "Lists all rolesets."],
+			["auto", "Adds or removes a roleset."]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add regions America",
+			"add regions Africa America Asia Europe",
+			"remove regions America",
+			"reset",
+			"reset regions",
+			"list",
+			"regions America",
+			"regions Africa America Asia Europe"
 		],
-		"reminder": ""
+		"reminder": "This command can add and/or remove multiple roles at the same time."
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",

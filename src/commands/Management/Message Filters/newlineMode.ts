@@ -1,6 +1,6 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SelfModerationCommand } from '#lib/structures';
+import { SelfModerationCommand } from '#lib/moderation';
 import type { KeyOfType } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.NewlineModeDescription,
 	extendedHelp: LanguageKeys.Commands.Management.NewlineModeExtended
 })
-export default class extends SelfModerationCommand {
+export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'newlines';
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.NewLines.Enabled;
 	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.NewLines.SoftAction;

@@ -5,20 +5,7 @@ export const HelpAllFlag = FT<{ prefix: string }, string>('commands/general:help
 export const HelpCommandCount = FT<{ count: number }, string>('commands/general:helpCommandCount');
 export const HelpDescription = T<string>('commands/general:helpDescription');
 export const HelpExtended = T<LanguageHelpDisplayOptions>('commands/general:helpExtended');
-export const HelpData = FT<
-	{
-		titleDescription: string;
-		usage: string;
-		extendedHelp: string;
-		footerName: string;
-	},
-	{
-		title: string;
-		usage: string;
-		extended: string;
-		footer: string;
-	}
->('commands/general:helpData');
+export const HelpData = FT<{ titleDescription: string; footerName: string }, { title: string; footer: string }>('commands/general:helpData');
 export const HelpDm = T<string>('commands/general:helpDm');
 export const HelpNoDm = T<string>('commands/general:helpNodm');
 export const HelpNoExtended = T<LanguageHelpDisplayOptions>('commands/general:helpNoExtended');

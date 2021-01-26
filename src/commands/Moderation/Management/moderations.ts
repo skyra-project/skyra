@@ -3,12 +3,18 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors, Moderation } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { Moderation } from '#utils/constants';
+import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
+
+const enum Type {
+	Mute,
+	Warning,
+	All
+}
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['moderation'],
@@ -17,35 +23,53 @@ import { MessageEmbed, User } from 'discord.js';
 	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_MESSAGES'],
-	usage: '<mutes|warnings|warns|all:default> [user:username]'
+	subCommands: [
+		'mute',
+		{ input: 'mutes', output: 'mute' },
+		'warning',
+		{ input: 'warnings', output: 'warning' },
+		{ input: 'warn', output: 'warning' },
+		{ input: 'warns', output: 'warning' },
+		{ input: 'all', default: true }
+	]
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public mutes(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		return this.handle(message, args, Type.Mute);
+	}
+
+	public warnings(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		return this.handle(message, args, Type.Warning);
+	}
+
+	public all(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		return this.handle(message, args, Type.All);
+	}
+
+	private async handle(message: GuildMessage, args: PaginatedMessageCommand.Args, action: Type) {
+		const target = args.finished ? null : await args.pick('userName');
+
+		const response = await sendLoadingMessage(message, args.t);
 		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
 
-		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		if (!entries.size) throw args.t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const user = this.context.client.user!;
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
+				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
 
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
 
 		// Set up the formatter
-		const durationDisplay = (value: number) => t(LanguageKeys.Globals.DurationValue, { value });
-		const displayName = action === 'all';
+		const durationDisplay = (value: number) => args.t(LanguageKeys.Globals.DurationValue, { value });
+		const displayName = action === Type.All;
 		const format = target
 			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
@@ -115,21 +139,19 @@ export default class extends PaginatedMessageCommand {
 		return moderators;
 	}
 
-	private getFilter(type: 'mutes' | 'warnings' | 'warns' | 'all', target: User | undefined) {
+	private getFilter(type: Type, target: User | null) {
 		switch (type) {
-			case 'mutes':
+			case Type.Mute:
 				return target
 					? (entry: ModerationEntity) =>
 							entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
-			case 'warns':
-			case 'warnings':
+			case Type.Warning:
 				return target
 					? (entry: ModerationEntity) =>
 							entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
-			case 'all':
-			default:
+			case Type.All:
 				return target
 					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType;

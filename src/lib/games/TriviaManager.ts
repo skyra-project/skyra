@@ -27,7 +27,6 @@ export interface QuestionData {
 
 export const enum QuestionType {
 	Boolean = 'boolean',
-	TrueFalse = 'truefalse',
 	Multiple = 'multiple'
 }
 

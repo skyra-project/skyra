@@ -16,10 +16,13 @@
 	"externalServerError": "The external service we use could not process our message. Please try again later.",
 	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
 	"helpTitles": {
-		"explainedUsage": "⚙ | ***Explained usage***",
-		"possibleFormats": "🔢 | ***Possible formats***",
-		"examples": "🔗 | ***Examples***",
-		"reminders": "⏰ | ***Reminder***"
+		"aliases": "🖇️ | **Aliases**",
+		"usages": "📝 | **Command Usage**",
+		"extendedHelp": "🔍 | **Extended Help**",
+		"explainedUsage": "⚙ | **Explained usage**",
+		"possibleFormats": "🔢 | **Possible formats**",
+		"examples": "🔗 | **Examples**",
+		"reminders": "⏰ | **Reminder**"
 	},
 	"highestRole": "This role's hierarchy position is higher or equal than me, I am not able to grant it to anyone.",
 	"jumpTo": "Jump to Message ►",
@@ -33,12 +36,12 @@
 		"{{LOADING}} Tuning in to the right frequencies...",
 		"{{LOADING}} Reticulating splines..."
 	],
-	"messageNotFound": "I am sorry, but either you wrote the message ID incorrectly, or it got deleted.",
+	"messagePromptTimeout": "The prompt has timed out.",
 	"noResults": "I wasn't able to find any results for that query",
-	"notEnoughParameters": "I am sorry, but you did not provide enough parameters...",
 	"parseError": "{{REDCROSS}} I failed to process the data I was given, sorry~!",
 	"pokedexExternalResource": "External Resources",
 	"poweredByWeebSh": "Powered by weeb.sh",
 	"prefixReminder": "The prefix in this guild is set to: `{{prefix}}`",
-	"queryFail": "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?"
+	"queryFail": "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",
+	"textPromptAbortOptions": ["abort", "cancel", "stop"]
 }

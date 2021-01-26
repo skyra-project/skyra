@@ -1,10 +1,4 @@
 {
-	"blocklistDescription": "",
-	"blocklistExtended": {
-		"extendedHelp": ""
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
 	"confNoKey": "Bir anahtar sağlamanız gerekir",
 	"confNoValue": "Bir değer sağlamanız gerekir",
 	"confGuarded": "{{name, toTitleCase}} devre dışı bırakılamaz.",

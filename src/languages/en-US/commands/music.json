@@ -1,8 +1,9 @@
 {
 	"addDescription": "Adds a song the the queue.",
 	"addExtended": {
+		"usages": ["Song", "--import"],
 		"extendedHelp": "Add songs to the playing queue and prepare for musical enjoyment!\nI can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.\n\n- To play from YouTube either give me something to search for, a video link, or a playlist link.\n- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.\n- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.\n- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it.",
-		"explainedUsage": [["song", "The song to queue. Can be either a URL or a video/song title."]],
+		"explainedUsage": [["Song", "The song to queue. Can be either a URL or a video/song title."]],
 		"examples": [
 			"The Pokémon Theme song",
 			"https://youtu.be/fJ9rUzIMcZQ",
@@ -34,6 +35,7 @@
 	"exportQueueSuccess": "{{GREENTICK}} Here's the current queue for {{guildName}}!",
 	"importQueueDescription": "Imports a queue saved as a `.squeue` file.",
 	"importQueueExtended": {
+		"usages": ["Hyperlink?"],
 		"extendedHelp": "Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?\nWith `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!",
 		"reminder": "You can either give me a link to the `.squeue` file, or attach it to your message!"
 	},
@@ -117,8 +119,10 @@
 	"queueDashboardInfo": "Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/{{guild.id}})",
 	"removeDescription": "Remove a song from the queue list.",
 	"removeExtended": {
+		"usages": ["Integer"],
 		"extendedHelp": "Removes a song from the queue using the index of the queue. You can find the index of a song using the `queue` command.",
-		"reminder": "Before you can use this command there has to be a queue to remove a song from!"
+		"reminder": "Before you can use this command there has to be a queue to remove a song from!",
+		"examples": ["1"]
 	},
 	"removeIndexInvalid": "I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.",
 	"removeIndexOutOfBounds": "maybe time happened too fast for you, there are {{songs}} in the queue!",
@@ -126,8 +130,10 @@
 	"removeSuccess": "{{GREENTICK}} Removed the song **{{title}}** requested by <@{{requester}}>.",
 	"seekDescription": "Change the player time for the current song.",
 	"seekExtended": {
+		"usages": ["Duration"],
 		"extendedHelp": "With this command you can jump to a specific position in the song.",
-		"reminder": "Before you can use this command you need to be a moderator or DJ, and some music needs to be playing!"
+		"reminder": "Before you can use this command you need to be a moderator or DJ, and some music needs to be playing!",
+		"examples": ["35s", "2m 10s"]
 	},
 	"seekSuccess": "{{GREENTICK}} Successfully changed the time! Now at {{time, duration}}!",
 	"resumeDescription": "Resumes the current song.",
@@ -156,6 +162,7 @@
 	"playingTimeQueueEmpty": "Are you speaking to me? Because my deck is empty...",
 	"promoteDescription": "Promote a song to the front of the queue",
 	"promoteExtended": {
+		"usages": ["Integer"],
 		"explainedUsage": [["number", "The index in the queue to promote to the front. Use `Skyra, queue` to find the index of a song"]],
 		"examples": ["5"],
 		"reminder": "This command requires that you are a DJ or a Moderator to use it"
@@ -163,6 +170,7 @@
 	"promoteSuccess": "{{GREENTICK}} Successfully promoted **{{title}}** (<{{url}}>) to the top of the queue",
 	"volumeDescription": "Manage the volume for the music queue.",
 	"volumeExtended": {
+		"usages": ["Integer"],
 		"extendedHelp": "Should be enough self explanatory",
 		"examples": ["85", "100", "125"]
 	},

@@ -5,12 +5,12 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum, Moderation } from '#utils/constants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const [enabled, t] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
 		if (!enabled) return;
@@ -18,12 +18,12 @@ export default class extends Event {
 		const isModerationAction = await this.isModerationAction(guild, user);
 
 		const footer = isModerationAction.kicked
-			? t(LanguageKeys.Events.GuildMemberKicked)
+			? t(LanguageKeys.Events.Guilds.Members.GuildMemberKicked)
 			: isModerationAction.banned
-			? t(LanguageKeys.Events.GuildMemberBanned)
+			? t(LanguageKeys.Events.Guilds.Members.GuildMemberBanned)
 			: isModerationAction.softbanned
-			? t(LanguageKeys.Events.GuildMemberSoftBanned)
-			: t(LanguageKeys.Events.GuildMemberRemove);
+			? t(LanguageKeys.Events.Guilds.Members.GuildMemberSoftBanned)
+			: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
 		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
@@ -31,10 +31,15 @@ export default class extends Event {
 				.setColor(Colors.Red)
 				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))
 				.setDescription(
-					t(time === -1 ? LanguageKeys.Events.GuildMemberRemoveDescription : LanguageKeys.Events.GuildMemberRemoveDescriptionWithJoinedAt, {
-						mention: `<@${user.id}>`,
-						time
-					})
+					t(
+						time === -1
+							? LanguageKeys.Events.Guilds.Members.GuildMemberRemoveDescription
+							: LanguageKeys.Events.Guilds.Members.GuildMemberRemoveDescriptionWithJoinedAt,
+						{
+							mention: `<@${user.id}>`,
+							time
+						}
+					)
 				)
 				.setFooter(footer)
 				.setTimestamp()

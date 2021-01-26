@@ -10,10 +10,9 @@ import type { TFunction } from 'i18next';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.DiceExtended,
-	usage: '[amount:integer|dice:string]',
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	/**
 	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
 	 * Examples:
@@ -32,13 +31,9 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public async run(message: Message, [amountOrDice = 1]: [number | string | undefined]) {
-		const t = await message.fetchT();
-		return message.send(
-			t(LanguageKeys.Commands.Fun.DiceOutput, {
-				result: await this.roll(t, amountOrDice)
-			})
-		);
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const amountOrDice = await args.pick('integer').catch(() => args.pick('string'));
+		return message.send(args.t(LanguageKeys.Commands.Fun.DiceOutput, { result: await this.roll(args.t, amountOrDice) }));
 	}
 
 	private async roll(t: TFunction, pattern: string | number) {
@@ -46,7 +41,7 @@ export default class extends SkyraCommand {
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) throw t(LanguageKeys.Resolvers.InvalidInt, { name: 'dice' });
+			if (!isNumber(pattern) || pattern <= 0) throw t(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
 			amount = pattern;
 			dice = 6;
 		} else {

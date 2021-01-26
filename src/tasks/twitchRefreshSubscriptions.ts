@@ -5,7 +5,7 @@ import type { Repository } from 'typeorm';
 
 const header = blueBright('[TWITCH SUB-UPDATE]');
 
-export default class extends Task {
+export class UserTask extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
 		const { client } = this.context;
 		// If we're running in developer mode then just exit early

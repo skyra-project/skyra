@@ -12,14 +12,14 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.TheSearchDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TheSearchExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '<text:string>'
+	permissions: ['ATTACH_FILES'],
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, [text]: [string]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const text = await args.rest('string');
 		const attachment = await this.generate(text);
 		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}

@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
-import { fetchReactionUsers, resolveEmoji } from '#utils/util';
+import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
@@ -16,26 +16,22 @@ import { FetchError } from 'node-fetch';
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	requiredPermissions: ['READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
-	usage: '[winners:number{1,100}] [message:message]',
-	usageDelim: ' '
+	permissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
-	public async run(message: GuildMessage, [winnerAmount = 1, rawTarget]: [number, GuildMessage | undefined]) {
-		const t = await message.fetchT();
-		const target = await this.resolveMessage(message, rawTarget, t);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const winnerAmount = args.finished ? 1 : await args.pick('integer').catch(() => 1);
+		const rawTarget = args.finished ? undefined : cast<GuildMessage>(await args.pick('message'));
+		const target = await this.resolveMessage(message, rawTarget, args.t);
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? t(LanguageKeys.Giveaway.EndedMessage, {
-					winners: winners.map((winner) => `<@${winner}>`),
-					title: title!
-			  })
-			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
+			? args.t(LanguageKeys.Giveaway.EndedMessage, { winners: winners.map((winner) => `<@${winner}>`), title: title! })
+			: args.t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 

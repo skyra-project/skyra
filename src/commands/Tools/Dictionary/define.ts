@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { TOKENS } from '#root/config';
-import { BrandingColors, Mime } from '#utils/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION, pickRandom } from '#utils/util';
+import { Mime } from '#utils/constants';
+import { fetch, FetchResultTypes, IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -15,18 +15,15 @@ import type { TFunction } from 'i18next';
 	bucket: 2,
 	cooldown: 20,
 	description: LanguageKeys.Commands.Tools.DefineDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.DefineExtended,
-	usage: '<input:string>'
+	extendedHelp: LanguageKeys.Commands.Tools.DefineExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [input]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const input = await args.rest('string');
+		const response = await sendLoadingMessage(message, args.t);
 
-		const result = await this.fetchApi(t, input);
-		const display = await this.buildDisplay(result, message, t);
+		const result = await this.fetchApi(args.t, input);
+		const display = await this.buildDisplay(result, message, args.t);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;

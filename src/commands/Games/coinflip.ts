@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args, IArgument } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -17,35 +17,15 @@ const enum CoinType {
 	cooldown: 7,
 	description: LanguageKeys.Commands.Games.CoinFlipDescription,
 	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '(coin:cointype) (wager:coinwager)',
-	usageDelim: ' '
+	permissions: ['EMBED_LINKS']
 })
-@CreateResolvers([
-	[
-		'cointype',
-		async (arg, _possible, message) => {
-			if (!arg) return null;
-			const t = await message.fetchT();
-			const lArg = arg.toLowerCase();
-			const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw t(LanguageKeys.Commands.Games.CoinFlipInvalidCoinName, { arg });
-			return face;
-		}
-	],
-	[
-		'coinwager',
-		(arg, possible, message) => {
-			if (!arg) return 'cashless';
-			return message.client.arguments.get('shinywager')!.run(arg, possible, message);
-		}
-	]
-])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
-	public async run(message: Message, [guess, wager]: [CoinType | null, number | 'cashless']) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { t } = args;
+		const guess = args.finished ? null : await args.pick(UserCommand.coinTypeResolver);
+		const wager = args.finished ? 'cashless' : await args.pick('shinyWager');
 
 		if (guess === null) return this.noGuess(message, t);
 		if (wager === 'cashless') return this.cashless(message, t, guess);
@@ -118,4 +98,14 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`);
 	}
+
+	private static coinTypeResolver: IArgument<CoinType | null> = Args.make((parameter, { argument, args }) => {
+		const { t } = args;
+		const lParam = parameter.toLowerCase();
+
+		const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lParam);
+		return face === -1
+			? Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Games.CoinFlipInvalidCoinName, context: { arg: parameter } })
+			: Args.ok(face);
+	});
 }

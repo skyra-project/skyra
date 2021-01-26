@@ -1,10 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const BlocklistDescription = T<string>('commands/admin:blocklistDescription');
-export const BlocklistExtended = T<LanguageHelpDisplayOptions>('commands/admin:blocklistExtended');
-export const BlocklistResetSuccess = T<string>('commands/admin:blocklistResetSuccess');
-export const BlocklistSaveSuccess = T<string>('commands/admin:blocklistSaveSuccess');
 export const ConfGet = FT<{ key: string; value: string }, string>('commands/admin:confGet');
 export const ConfGetNoExt = FT<{ key: string }, string>('commands/admin:confGetNoExt');
 export const ConfGuarded = FT<{ name: string }, string>('commands/admin:confGuarded');
@@ -30,7 +26,7 @@ export const ConfNoValue = T<string>('commands/admin:confNoValue');
 export const ConfReset = FT<{ key: string; value: string }, string>('commands/admin:confReset');
 export const Conf = FT<{ key: string; list: string }, string>('commands/admin:confServer');
 export const ConfDescription = T<string>('commands/admin:confServerDescription');
-export const ConfExtended = T<LanguageHelpDisplayOptions>('commands/admin:confServerExtendedHelp');
+export const ConfExtended = T<LanguageHelpDisplayOptions>('commands/admin:confServerExtended');
 export const ConfSettingNotSet = T<string>('commands/admin:confSettingNotSet');
 export const ConfUpdated = FT<{ key: string; response: string }, string>('commands/admin:confUpdated');
 export const ConfUser = FT<{ key: string; list: string }, string>('commands/admin:confUser');

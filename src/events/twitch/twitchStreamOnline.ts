@@ -5,12 +5,12 @@ import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange'
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
@@ -87,7 +87,7 @@ export default class extends Event {
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
 					return notification.viewer_count.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					return game?.name ?? t(LanguageKeys.Notifications.TwitchNoGameName);
+					return game?.name ?? t(LanguageKeys.Events.Twitch.NoGameName);
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
 					return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
@@ -125,10 +125,10 @@ export default class extends Event {
 			.setURL(`https://twitch.tv/${data.user_name}`)
 			.setDescription(
 				data.game_name
-					? t(LanguageKeys.Notifications.TwitchEmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
-					: t(LanguageKeys.Notifications.TwitchEmbedDescription, { userName: data.user_name })
+					? t(LanguageKeys.Events.Twitch.EmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
+					: t(LanguageKeys.Events.Twitch.EmbedDescription, { userName: data.user_name })
 			)
-			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
+			.setFooter(t(LanguageKeys.Events.Twitch.EmbedFooter))
 			.setTimestamp(data.started_at)
 			.setColor(this.context.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');

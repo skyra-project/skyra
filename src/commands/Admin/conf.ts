@@ -3,10 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { requiresPermissions } from '#utils/decorators';
 import { map } from '#utils/iterator';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
-import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
@@ -15,100 +15,82 @@ import { CreateResolvers, requiredPermissions } from '@skyra/decorators';
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
-	subcommands: true,
-	usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
-	usageDelim: ' '
+	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
 })
-@CreateResolvers([
-	[
-		'key',
-		async (arg, _possible, message, [action]: string[]) => {
-			if (['show', 'menu'].includes(action) || arg) return arg || '';
-			throw await message.resolveKey(LanguageKeys.Commands.Admin.ConfNoKey);
-		}
-	],
-	[
-		'value',
-		async (arg, possible, message, [action]: string[]) => {
-			if (!['set', 'remove'].includes(action)) return null;
-			if (arg) return message.client.arguments.get('...string')!.run(arg, possible, message);
-			throw await message.resolveKey(LanguageKeys.Commands.Admin.ConfNoValue);
-		}
-	]
-])
-export default class extends SkyraCommand {
-	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async menu(message: GuildMessage) {
-		return new SettingsMenu(message, await message.fetchT()).init();
+export class UserCommand extends SkyraCommand {
+	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	public menu(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+		return new SettingsMenu(message, args.t).init(context);
 	}
 
-	public async show(message: GuildMessage, [key]: [string]) {
+	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+		const key = await args.pick('string');
 		const schemaValue = configurableGroups.getPathString(key);
-		if (schemaValue === null) throw await message.resolveKey(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (schemaValue === null) throw args.t(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
-		const [output, t] = await message.guild.readSettings((settings) => {
-			const language = settings.getLanguage();
-			return [schemaValue.display(settings, language), language];
+		const output = await message.guild.readSettings((settings) => {
+			return schemaValue.display(settings, args.t);
 		});
 
 		if (isSchemaKey(schemaValue)) {
-			return message.send(t(LanguageKeys.Commands.Admin.ConfGet, { key, value: output }), {
+			return message.send(args.t(LanguageKeys.Commands.Admin.ConfGet, { key, value: output }), {
 				allowedMentions: { users: [], roles: [] }
 			});
 		}
 
 		const title = key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '';
-		return message.send(t(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }), {
+		return message.send(args.t(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
-	public async set(message: GuildMessage, [key, valueToSet]: string[]) {
-		const schemaKey = await this.fetchKey(message, key);
-		const [response, t] = await message.guild.writeSettings(async (settings) => {
-			const language = await set(settings, schemaKey, valueToSet);
-			return [schemaKey.display(settings, language), language];
+	public async set(message: GuildMessage, args: SkyraCommand.Args) {
+		const [key, schemaKey] = await this.fetchKey(args);
+		const response = await message.guild.writeSettings(async (settings) => {
+			await set(settings, schemaKey, args);
+			return schemaKey.display(settings, args.t);
 		});
 
-		return message.send(t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+		return message.send(args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
-	public async remove(message: GuildMessage, [key, valueToRemove]: string[]) {
-		const schemaKey = await this.fetchKey(message, key);
-		const [response, t] = await message.guild.writeSettings(async (settings) => {
-			const language = await remove(settings, schemaKey, valueToRemove);
-			return [schemaKey.display(settings, language), language];
+	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+		const [key, schemaKey] = await this.fetchKey(args);
+		const response = await message.guild.writeSettings(async (settings) => {
+			await remove(settings, schemaKey, args);
+			return schemaKey.display(settings, args.t);
 		});
 
-		return message.send(t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+		return message.send(args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
-	public async reset(message: GuildMessage, [key]: string[]) {
-		const schemaKey = await this.fetchKey(message, key);
-		const [response, t] = await message.guild.writeSettings(async (settings) => {
-			const language = reset(settings, schemaKey);
-			return [schemaKey.display(settings, language), language];
+	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+		const [key, schemaKey] = await this.fetchKey(args);
+		const response = await message.guild.writeSettings(async (settings) => {
+			reset(settings, schemaKey);
+			schemaKey.display(settings, args.t);
 		});
 
-		return message.send(t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }), {
+		return message.send(args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
-	private async fetchKey(message: GuildMessage, key: string): Promise<SchemaKey> {
+	private async fetchKey(args: SkyraCommand.Args) {
+		const key = await args.pick('string');
 		const value = configurableGroups.getPathString(key);
-		if (value === null) throw await message.resolveKey(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
-		if (value.dashboardOnly) throw await message.resolveKey(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
+		if (value === null) throw args.t(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (value.dashboardOnly) throw args.t(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
 		if (isSchemaGroup(value)) {
-			throw await message.resolveKey(LanguageKeys.Settings.Gateway.ChooseKey, {
+			throw args.t(LanguageKeys.Settings.Gateway.ChooseKey, {
 				keys: [...map(value.childKeys(), (value) => `\`${value}\``)].join(', ')
 			});
 		}
 
-		return value as SchemaKey;
+		return [key, value as SchemaKey] as const;
 	}
 }

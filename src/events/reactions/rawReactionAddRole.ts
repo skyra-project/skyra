@@ -2,10 +2,10 @@ import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Event, EventOptions } from 'klasa';
+import { Event, EventOptions } from '@sapphire/framework';
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(parsed: LLRCData, emoji: string) {
 		const [roleEntry, allRoleSets] = await parsed.guild.readSettings((settings) => [
 			settings[GuildSettings.ReactionRoles].find(

@@ -4,8 +4,8 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
-import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { ZeroWidthSpace } from '#utils/constants';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -15,32 +15,28 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
-	flagSupport: true,
-	subcommands: true,
-	usage: '<item|character:default> <search:...string>',
-	usageDelim: ' '
+	strategyOptions: {
+		options: ['server']
+	},
+	subCommands: ['item', { input: 'character', default: true }]
 })
-export default class extends PaginatedMessageCommand {
-	public async character(message: GuildMessage, [name]: [string]) {
-		const t = await message.fetchT();
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async character(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const name = await args.rest('string');
+		const { t } = args;
+		const response = await sendLoadingMessage(message, t);
 
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
-
-		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
+		const characterDetails = await this.fetchCharacter(t, name, args.getOption('server') ?? undefined);
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	public async item(message: GuildMessage, [item]: [string]) {
-		const t = await message.fetchT();
-
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+	public async item(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const item = await args.rest('string');
+		const { t } = args;
+		const response = await sendLoadingMessage(message, t);
 
 		const itemDetails = await this.fetchItems(t, item);
 		const display = await this.buildItemDisplay(message, t, itemDetails);

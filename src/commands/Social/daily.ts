@@ -18,24 +18,22 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	description: LanguageKeys.Commands.Social.DailyDescription,
 	extendedHelp: LanguageKeys.Commands.Social.DailyExtended,
 	spam: true,
-	flagSupport: true
+	strategyOptions: { flags: REMINDER_FLAGS }
 })
-export default class extends SkyraCommand {
-	public async run(message: Message) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const toRemind = args.getFlags(...REMINDER_FLAGS);
 		const now = Date.now();
 
-		const t = await message.fetchT();
 		const connection = await DbSet.connect();
 		return connection.users.lock([message.author.id], async (id) => {
 			const settings = await connection.users.ensureCooldowns(id);
 
-			const toRemind = REMINDER_FLAGS.some((flag) => Reflect.has(message.flagArgs, flag));
-
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
 				return message.send(
-					t(LanguageKeys.Commands.Social.DailyTimeSuccess, {
-						amount: await this.claimDaily(message, t, connection, settings, now + DAILY_PERIOD, toRemind)
+					args.t(LanguageKeys.Commands.Social.DailyTimeSuccess, {
+						amount: await this.claimDaily(message, args.t, connection, settings, now + DAILY_PERIOD, toRemind)
 					})
 				);
 			}
@@ -43,16 +41,16 @@ export default class extends SkyraCommand {
 			const remaining = settings.cooldowns.daily.getTime() - now;
 
 			// If it's not under the grace period (1 hour), tell them the time
-			if (remaining > GRACE_PERIOD) return message.send(t(LanguageKeys.Commands.Social.DailyTime, { time: remaining }));
+			if (remaining > GRACE_PERIOD) return message.send(args.t(LanguageKeys.Commands.Social.DailyTime, { time: remaining }));
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(t(LanguageKeys.Commands.Social.DailyGrace, { remaining }));
-			if (!accepted) return message.send(t(LanguageKeys.Commands.Social.DailyGraceDenied));
+			const accepted = await message.ask(args.t(LanguageKeys.Commands.Social.DailyGrace, { remaining }));
+			if (!accepted) return message.send(args.t(LanguageKeys.Commands.Social.DailyGraceDenied));
 
 			// The user accepted the grace period
 			return message.send(
-				t(LanguageKeys.Commands.Social.DailyGraceAccepted, {
-					amount: await this.claimDaily(message, t, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
+				args.t(LanguageKeys.Commands.Social.DailyGraceAccepted, {
+					amount: await this.claimDaily(message, args.t, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
 					remaining: remaining + DAILY_PERIOD
 				})
 			);

@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -15,47 +14,42 @@ import type { TFunction } from 'i18next';
 	aliases: ['movie', 'tmdb'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.MoviesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.MoviesExtended,
-	usage: '<movie:str> [year:str]',
-	usageDelim: 'y:'
+	extendedHelp: LanguageKeys.Commands.Tools.MoviesExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const [movie, year = null] = (await args.rest('string')).split('y:');
 
-		const { results: entries } = await this.fetchAPI(t, movie, year);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
+		const response = await sendLoadingMessage(message, args.t);
+		const { results: entries } = await this.fetchAPI(movie.trim(), year);
+		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, t, entries);
+		const display = await this.buildDisplay(message, args.t, entries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, movie: string, year?: string) {
+	private async fetchAPI(movie: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/movie');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 			url.searchParams.append('query', movie);
-
-			if (year) url.searchParams.append('year', year);
+			if (year !== null) url.searchParams.append('year', year.trim());
 
 			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async fetchMovieData(t: TFunction, movieId: number) {
+	private async fetchMovieData(movieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
 			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -64,7 +58,7 @@ export default class extends PaginatedMessageCommand {
 		const fieldsData = t(LanguageKeys.Commands.Tools.MoviesData);
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 
-		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(t, movie.id)));
+		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(movie.id)));
 
 		for (const movie of movieData) {
 			display.addPageEmbed((embed) =>

@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand } from '#lib/structures';
+import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
@@ -12,9 +12,9 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
 	requiredMember: false,
-	requiredPermissions: ['BAN_MEMBERS']
+	permissions: ['BAN_MEMBERS']
 })
-export default class extends ModerationCommand {
+export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {
 		const bans = await message.guild
 			.fetchBans()
@@ -46,7 +46,7 @@ export default class extends ModerationCommand {
 				imageURL: getImage(message),
 				duration: context.duration
 			},
-			await this.getTargetDM(message, context.target)
+			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
 
@@ -54,12 +54,8 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public checkModeratable(
-		...[message, t, { preHandled, target, ...context }]: ArgumentTypes<
-			ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']
-		>
-	) {
-		if (!preHandled.bans.includes(target.id)) throw t(LanguageKeys.Commands.Moderation.GuildBansNotFound);
-		return super.checkModeratable(message, t, { preHandled, target, ...context });
+	public checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']>) {
+		if (!context.preHandled.bans.includes(context.target.id)) throw context.args.t(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+		return super.checkModeratable(message, context);
 	}
 }

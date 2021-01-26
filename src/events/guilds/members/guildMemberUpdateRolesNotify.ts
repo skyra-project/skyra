@@ -4,12 +4,12 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const [enabled, t] = await next.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRoleUpdate], settings.getLanguage()]);
 
@@ -41,8 +41,8 @@ export default class extends Event {
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(this.getRoleDescription(t, addedRoles, removedRoles) || t(LanguageKeys.Events.GuildMemberNoUpdate))
-				.setFooter(t(LanguageKeys.Events.RoleUpdate))
+				.setDescription(this.getRoleDescription(t, addedRoles, removedRoles) || t(LanguageKeys.Events.Guilds.Members.GuildMemberNoUpdate))
+				.setFooter(t(LanguageKeys.Events.Guilds.Members.RoleUpdate))
 				.setTimestamp()
 		);
 	}
@@ -51,7 +51,7 @@ export default class extends Event {
 		const description = [];
 		if (addedRoles.length) {
 			description.push(
-				t(LanguageKeys.Events.GuildMemberAddedRoles, {
+				t(LanguageKeys.Events.Guilds.Members.GuildMemberAddedRoles, {
 					addedRoles,
 					count: addedRoles.length
 				})
@@ -59,7 +59,7 @@ export default class extends Event {
 		}
 
 		if (removedRoles.length) {
-			description.push(t(LanguageKeys.Events.GuildMemberRemovedRoles, { removedRoles, count: removedRoles.length }));
+			description.push(t(LanguageKeys.Events.Guilds.Members.GuildMemberRemovedRoles, { removedRoles, count: removedRoles.length }));
 		}
 
 		return description.join('\n');

@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Argument, ArgumentContext } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
-import { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
 
-export class UserArgument extends Argument {
-	public async run(arg: string, possible: Possible, message: Message): Promise<Date> {
-		const date = new Duration(arg).fromNow;
-		if (!isNaN(date.getTime()) && date.getTime() > Date.now()) return date;
-		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name: possible.name });
+export class UserArgument extends Argument<Date> {
+	public async run(parameter: string, context: ArgumentContext) {
+		const date = new Duration(parameter).fromNow;
+		if (!isNaN(date.getTime()) && date.getTime() > Date.now()) return this.ok(date);
+		return this.error({ parameter, identifier: LanguageKeys.Arguments.Duration, context });
 	}
 }

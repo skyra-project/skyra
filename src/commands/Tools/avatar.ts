@@ -2,24 +2,24 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ImageSize, Message, MessageEmbed, User } from 'discord.js';
+import { ImageSize, Message, MessageEmbed } from 'discord.js';
 
 const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 
 @ApplyOptions<SkyraCommand.Options>({
+	strategyOptions: { options: ['size'] },
 	aliases: ['a', 'av', 'ava'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.AvatarDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.AvatarExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[user:username]',
-	flagSupport: true
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [user = message.author]: [User]) {
-		if (!user.avatar) throw await message.resolveKey(LanguageKeys.Commands.Tools.AvatarNone);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const user = args.finished ? message.author : await args.pick('userName');
+		if (!user.avatar) this.error(LanguageKeys.Commands.Tools.AvatarNone);
 
-		const sizeFlag = Reflect.get(message.flagArgs, 'size');
+		const sizeFlag = args.getOption('size');
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;
 
 		return message.send(

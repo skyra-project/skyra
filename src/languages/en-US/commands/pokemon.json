@@ -1,8 +1,9 @@
 {
 	"abilityDescription": "Gets data for any given Pokémon ability using my Pokémon dataset.",
 	"abilityExtended": {
+		"usages": ["Ability"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
-		"explainedUsage": [["ability", "The ability for which you want to find data"]],
+		"explainedUsage": [["Ability", "The ability for which you want to find data"]],
 		"examples": ["multiscale", "pressure"]
 	},
 	"abilityEmbedTitles": {
@@ -12,15 +13,20 @@
 	"abilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
 	"flavorsDescription": "Gets the dex entries across various games for a Pokémon.",
 	"flavorsExtended": {
+		"usages": ["Pokémon", "Pokémon --shiny"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
-		"explainedUsage": [["pokemon", "The Pokémon for which you want to get flavour texts"]],
+		"explainedUsage": [
+			["Pokémon", "The Pokémon for which you want to get flavour texts"],
+			["--shiny", "Whether the data should show the shiny sprite of the Pokémon or not"]
+		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
 	"flavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
 	"itemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
 	"itemExtended": {
+		"usages": ["Item"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
-		"explainedUsage": [["item", "The item for which you want to find data"]],
+		"explainedUsage": [["Item", "The item for which you want to find data"]],
 		"examples": ["life orb", "choice specs"]
 	},
 	"itemEmbedData": {
@@ -32,11 +38,13 @@
 	"itemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?",
 	"learnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
 	"learnExtended": {
-		"extendedHelp": "Uses a fuzzy search to also match against near-matches. Moves split on every `;` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"usages": ["Pokémon Move", "Pokémon Move1 Move2 Move3 ...MoveX", "Generation Pokémon Move", "Generation Pokémon Move --shiny"],
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches. Moves split on every `, ` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
 		"explainedUsage": [
-			["generation", "(Optional), The generation for which to check the data"],
-			["pokemon", "The Pokémon whose learnset you want to check"],
-			["move", "The move(s) you want to check for"]
+			["Generation", "The generation for which to check the data"],
+			["Pokémon", "The Pokémon whose learnset you want to check"],
+			["Move1 Move2 MoveX", "The moves you want to check for, separated by commas"],
+			["--shiny", "Whether the data should show the shiny sprite of the Pokémon or not"]
 		],
 		"examples": ["7 dragonite dragon dance", "pikachu thunder bolt", "pikachu thunder bolt --shiny", "pikachu thunder bolt, thunder"]
 	},
@@ -56,8 +64,9 @@
 	"learnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
 	"moveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
 	"moveExtended": {
+		"usages": ["Move"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
-		"explainedUsage": [["move", "The move for which you want to find data"]],
+		"explainedUsage": [["Move", "The move for which you want to find data"]],
 		"examples": ["dragon dance", "GMax Wildfire", "Genesis Supernova"],
 		"reminder": "Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.\nIf Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands\nZ-Moves are **NOT** in Generation 8."
 	},
@@ -83,8 +92,12 @@
 	"moveQueryFail": "I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?",
 	"pokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
 	"pokedexExtended": {
+		"usages": ["Pokémon", "Pokémon --shiny"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
-		"explainedUsage": [["pokemon", "The Pokémon for which you want to find data"]],
+		"explainedUsage": [
+			["Pokémon", "The Pokémon for which you want to find data"],
+			["--shiny", "Whether the data should show the shiny sprite of the Pokémon or not"]
+		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
 		"reminder": "If there are any \"Other forme(s)\" on the optional fourth page, those can be requested as well.\nCosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex."
 	},
@@ -109,14 +122,19 @@
 	"pokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
 	"spriteDescription": "Gives you the sprite of a Pokémon.",
 	"spriteExtended": {
+		"usages": ["Pokémon", "Pokémon --shiny"],
 		"extendedHelp": "Useful if you want to check if the name of a Pokémon that you're remembering is actually that Pokémon.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
-		"explainedUsage": [["pokemon", "The Pokémon for which you want to get the sprite"]],
+		"explainedUsage": [
+			["Pokémon", "The Pokémon for which you want to get the sprite"],
+			["--shiny", "Whether the data should show the shiny sprite of the Pokémon or not"]
+		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
 	"typeDescription": "Gives the type matchups for one or two Pokémon types",
 	"typeExtended": {
+		"usages": ["Type", "Type1 Type2"],
 		"extendedHelp": "Types have to be exact matches to pokemon types (upper/lowercase can be ignored)",
-		"explainedUsage": [["type", "The type(s) to look up"]],
+		"explainedUsage": [["Type/Type1/Type2", "The type(s) to look up"]],
 		"examples": ["dragon", "fire flying"]
 	},
 	"typeEmbedData": {

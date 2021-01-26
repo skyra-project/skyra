@@ -40,7 +40,7 @@ export const HistoryFooterKicks = FT<{ count: number }, string>('commands/modera
 export const HistoryFooterBans = FT<{ count: number }, string>('commands/moderation:historyFooterBans');
 export const ModerationsDescription = T<string>('commands/moderation:moderationsDescription');
 export const ModerationsExtended = T<LanguageHelpDisplayOptions>('commands/moderation:moderationsExtended');
-export const ModerationsEmpty = T<string>('commands/moderation:moderationsEmpty');
+export const ModerationsEmpty = FT<{ prefix: string }, string>('commands/moderation:moderationsEmpty');
 export const ModerationsAmount = FT<{ count: number }, string>('commands/moderation:moderationsAmount');
 export const MutesDescription = T<string>('commands/moderation:mutesDescription');
 export const MutesExtended = T<LanguageHelpDisplayOptions>('commands/moderation:mutesExtended');
@@ -98,26 +98,19 @@ export const WarnDescription = T<string>('commands/moderation:warnDescription');
 export const WarnExtended = T<LanguageHelpDisplayOptions>('commands/moderation:warnExtended');
 export const Flow = FT<{ amount: number }, string>('commands/moderation:flow');
 export const TimeTimed = T<string>('commands/moderation:timeTimed');
-export const TimeUndefinedTime = T<string>('commands/moderation:timeUndefinedTime');
 export const TimeUnsupportedType = T<string>('commands/moderation:timeUnsupportedType');
 export const TimeNotScheduled = T<string>('commands/moderation:timeNotScheduled');
 export const TimeAborted = FT<{ title: string }, string>('commands/moderation:timeAborted');
 export const TimeScheduled = FT<{ title: string; user: User; time: number }, string>('commands/moderation:timeScheduled');
 export const SlowmodeSet = FT<{ cooldown: number }, string>('commands/moderation:slowmodeSet');
 export const SlowmodeReset = T<string>('commands/moderation:slowmodeReset');
-export const SlowmodeTooLong = T<string>('commands/moderation:slowmodeTooLong');
 export const TimeDescription = T<string>('commands/moderation:timeDescription');
 export const TimeExtended = T<LanguageHelpDisplayOptions>('commands/moderation:timeExtended');
 export const BanNotBannable = T<string>('commands/moderation:banNotBannable');
 export const DehoistStarting = FT<{ count: number }, string>('commands/moderation:dehoistStarting');
 export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commands/moderation:dehoistProgress');
 export const DehoistEmbed = FT<
-	{
-		users: number;
-		dehoistedMemberCount: number;
-		dehoistedWithErrorsCount: number;
-		errored: number;
-	},
+	{ users: number; dehoistedMemberCount: number; dehoistedWithErrorsCount: number; errored: number },
 	{
 		title: string;
 		descriptionNoone: string;
@@ -134,23 +127,15 @@ export const LockdownLocking = FT<{ channel: string }, string>('commands/moderat
 export const LockdownLocked = FT<{ channel: string }, string>('commands/moderation:lockdownLocked');
 export const LockdownUnlocked = FT<{ channel: string }, string>('commands/moderation:lockdownUnlocked');
 export const LockdownOpen = FT<{ channel: string }, string>('commands/moderation:lockdownOpen');
-export const MuteLowlevel = T<string>('commands/moderation:muteLowlevel');
-export const MuteConfigureCancelled = T<string>('commands/moderation:muteConfigureCancelled');
-export const MuteConfigure = T<string>('commands/moderation:muteConfigure');
-export const MuteConfigureToomanyRoles = T<string>('commands/moderation:muteConfigureToomanyRoles');
 export const MuteMuted = T<string>('commands/moderation:muteMuted');
 export const MuteUserNotMuted = T<string>('commands/moderation:muteUserNotMuted');
-export const MuteUnconfigured = T<string>('commands/moderation:muteUnconfigured');
-export const MutecreateMissingPermission = T<string>('commands/moderation:mutecreateMissingPermission');
 export const RestrictLowlevel = T<string>('commands/moderation:restrictLowlevel');
-export const PruneInvalid = T<string>('commands/moderation:pruneInvalid');
 export const PruneAlert = FT<{ count: number; total: number }, string>('commands/moderation:pruneAlert');
 export const PruneInvalidPosition = T<string>('commands/moderation:pruneInvalidPosition');
 export const PruneInvalidFilter = T<string>('commands/moderation:pruneInvalidFilter');
 export const PruneNoDeletes = T<string>('commands/moderation:pruneNoDeletes');
 export const PruneLogHeader = T<string>('commands/moderation:pruneLogHeader');
 export const PruneLogMessage = FT<{ channel: string; author: string; count: number }, string>('commands/moderation:pruneLogMessage');
-export const ReasonMissingCase = T<string>('commands/moderation:reasonMissingCase');
 export const ReasonNotExists = T<string>('commands/moderation:reasonNotExists');
 export const ReasonUpdated = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commands/moderation:reasonUpdated');
 export const ToggleModerationDmToggledEnabled = T<string>('commands/moderation:toggleModerationDmToggledEnabled');
@@ -159,8 +144,6 @@ export const UnbanMissingPermission = T<string>('commands/moderation:unbanMissin
 export const UnmuteMissingPermission = T<string>('commands/moderation:unmuteMissingPermission');
 export const VmuteMissingPermission = T<string>('commands/moderation:vmuteMissingPermission');
 export const VmuteUserNotMuted = T<string>('commands/moderation:vmuteUserNotMuted');
-export const WarnDm = FT<{ moderator: string; guild: string; reason: string }, string>('commands/moderation:warnDm');
-export const WarnMessage = FT<{ user: User; log: number }, string>('commands/moderation:warnMessage');
 export const ModerationOutput = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commands/moderation:moderationOutput'
 );
@@ -181,8 +164,6 @@ export const ModerationLogDescriptionWithoutReason = FT<{ data: Moderation.Moder
 export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
 export const GuildBansNotFound = T<string>('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T<string>('errors:guildMemberNotVoicechannel');
-export const GuildSettingsChannelsMod = T<string>('settings:guildChannelsMod');
-export const GuildSettingsRolesRestricted = FT<{ prefix: string; path: string }, string>('settings:guildRolesRestricted');
 export const GuildWarnNotFound = T<string>('errors:guildWarnNotFound');
 export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderation:logExpiresIn');
 export const ModerationLogFooter = FT<{ caseID: number }, string>('moderation:logFooter');
@@ -202,7 +183,6 @@ export const ModerationDmDescriptionWithReasonWithDuration = FT<
 	{ guild: string; title: string; reason: string | null; duration: number | null },
 	string
 >('commands/moderation:moderationDmDescriptionWithReasonWithDuration');
-export const ModerationDays = T<string>('commands/moderation:moderationDays');
 export const Permissions = FT<{ username: string; id: string }, string>('commands/moderation:permissions');
 export const PermissionsAll = T<string>('commands/moderation:permissionsAll');
 export const SlowmodeDescription = T<string>('commands/moderation:slowmodeDescription');
@@ -265,12 +245,6 @@ export const AutomaticValueHardActionMute = T<string>('selfModeration:hardAction
 export const AutomaticValueHardActionSoftBan = T<string>('selfModeration:hardActionSoftban');
 export const AutomaticValueHardActionWarning = T<string>('selfModeration:hardActionWarning');
 export const AutomaticValueHardActionNone = T<string>('selfModeration:hardActionNone');
-export const AutomaticValueEnabled = T<string>('selfModeration:enabled');
-export const AutomaticValueDisabled = T<string>('selfModeration:disabled');
-export const AutomaticValueMaximumTooShort = FT<{ minimum: number; value: number }, string>('selfModeration:maximumTooShort');
-export const AutomaticValueMaximumTooLong = FT<{ maximum: number; value: number }, string>('selfModeration:maximumTooLong');
-export const AutomaticValueDurationTooShort = FT<{ minimum: number; value: number }, string>('selfModeration:durationTooShort');
-export const AutomaticValueDurationTooLong = FT<{ maximum: number; value: number }, string>('selfModeration:durationTooLong');
 export const Actions = T<ModerationAction>('moderationActions:actions');
 export const ActionApplyReason = FT<{ action: string; reason: string }, string>('moderationActions:applyReason');
 export const ActionApplyNoReason = FT<{ action: string }, string>('moderationActions:applyNoReason');
@@ -291,15 +265,7 @@ export const ActionSharedRoleSetupExisting = T<string>('moderationActions:shared
 export const ActionSharedRoleSetupExistingName = T<string>('moderationActions:sharedRoleSetupExistingName');
 export const ActionSharedRoleSetupNew = T<string>('moderationActions:sharedRoleSetupNew');
 export const ActionSharedRoleSetupAsk = FT<{ role: string; channels: number; permissions: string }, string>('moderationActions:sharedRoleSetupAsk');
-export const ActionSharedRoleSetupAskMultipleChannels = FT<{ role: string; channels: number; permissions: string }, string>(
-	'moderationActions:sharedRoleSetupAskMultipleChannels'
-);
-export const ActionSharedRoleSetupAskMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
-	'moderationActions:sharedRoleSetupAskMultiplePermissions'
-);
-export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
-	'moderationActions:sharedRoleSetupAskMultipleChannelsMultiplePermissions'
-);
+export const ActionSharedRoleSetupNoMessage = T<string>('moderationActions:sharedRoleSetupNoMessage');
 export const ActionRequiredMember = T<string>('moderationActions:requiredMember');
 export const RoleHigher = T<string>('moderation:roleHigher');
 export const RoleHigherSkyra = T<string>('moderation:roleHigherSkyra');

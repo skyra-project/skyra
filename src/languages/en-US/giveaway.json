@@ -6,12 +6,12 @@
 	"title": "🎉 **GIVEAWAY** 🎉",
 	"lastchance": "**LAST CHANCE**! Remaining time: **{{time, duration}}**. React to this message with 🎉 to join.",
 	"lastchanceTitle": "🎉 **LAST CHANCE GIVEAWAY** 🎉",
-	"ended": "Winner: {{winners, andJoin}}",
-	"endedPlural": "Winners: {{winners, andJoin}}",
+	"ended": "Winner: {{winners, andList}}",
+	"endedPlural": "Winners: {{winners, andList}}",
 	"endedNoWinner": "No winner...",
 	"endedAt": "Ended at:",
 	"endedTitle": "🎉 **GIVEAWAY ENDED** 🎉",
-	"endedMessage": "Congratulations {{winners, andJoin}}! You won the giveaway **{{title}}**",
+	"endedMessage": "Congratulations {{winners, andList}}! You won the giveaway **{{title}}**",
 	"endedMessageNoWinner": "The giveaway **{{title}}** ended without enough participants.",
 	"scheduled": "The giveaway will start in {{scheduledTime, duration}}."
 }

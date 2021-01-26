@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "Запретите или разрешите пользователям и гильдиям использовать мои функции.",
-	"blocklistExtended": {
-		"extendedHelp": ""
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
-	"confNoKey": "Вы должны предоставить ключ",
-	"confNoValue": "Вы должны указать значение",
 	"confGuarded": "{{name, toTitleCase}} не может быть отключен.",
 	"confUpdated": "Ключ **{{key}}** успешно обновлён: `{{response}} `",
-	"confKeyNotArray": "Этот ключ не является типом массива. Используйте действие \"сбросить\" вместо этого.",
 	"confGetNoExt": "Кажется, ключа **{{key}}** не существует.",
 	"confGet": "Значение ключа **{{key}}**: `{{value}}`",
 	"confReset": "Кнопка **{{key}}** была сброшена на: `{{value}}`",
@@ -19,9 +10,7 @@
 		"extendedHelp": ""
 	},
 	"confServer": "**Настройки сервера {{key}}**\n{{list}}",
-	"confUserDescription": "Определить настройки для каждого пользователя.",
 	"confDashboardOnlyKey": "`{{key}}` можно настроить только через веб-панель инструментов (<https://skyra.pw>)",
-	"confUser": "**Пользовательские настройки {{key}}**\n{{list}}",
 	"confSettingNotSet": "Не задано",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "Вы не можете удалить набор уникальных {{name}} ролей, так как он не существует.",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "",
 	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} Набор ролей `{{name}}` успешно удалён с этого сервера.",
 	"rolesetUpdated": "",
 	"rolesetNoRolesets": "У вас нет наборов ролей.",
-	"confMenuNopermissions": "Мне нужны разрешения {{ADD_REACTIONS, permissions}} и {{MANAGE_MESSAGES, permissions}}, чтобы иметь возможность запустить меню.",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",

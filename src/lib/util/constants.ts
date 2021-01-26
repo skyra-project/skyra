@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { Logger } from '#lib/logger/Logger';
 import { Colors, LanguageFormatters } from '#lib/types/Constants';
-import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
+import { DEV, PREFIX, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
+import { LogLevel } from '@sapphire/framework';
 import { ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { ClientOptions } from 'discord.js';
-import i18next, { FormatFunction } from 'i18next';
-import { LogLevel } from 'klasa';
+import i18next, { FormatFunction, PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
@@ -292,13 +291,27 @@ export namespace Mime {
 	}
 }
 
+export const helpUsagePostProcessor: PostProcessorModule = {
+	type: 'postProcessor',
+	name: 'helpUsagePostProcessor',
+	process(value, [key]) {
+		// If the value is equal to the key then it is an empty usage, so return an empty string
+		if (value === key) return '';
+		// Otherwise just return the value
+		return value;
+	}
+};
+
 export const clientOptions: Partial<ClientOptions> = {
+	caseInsensitiveCommands: true,
+	caseInsensitivePrefixes: true,
+	loadDefaultErrorEvents: false,
 	nms: {
 		everyone: 5,
 		role: 2
 	},
 	logger: {
-		instance: new Logger({ level: DEV ? LogLevel.Debug : LogLevel.Info })
+		level: DEV ? LogLevel.Debug : LogLevel.Info
 	},
 	api: {
 		auth: ({
@@ -329,6 +342,7 @@ export const clientOptions: Partial<ClientOptions> = {
 					SHINY: Emojis.Shiny,
 					GREENTICK: Emojis.GreenTick,
 					REDCROSS: Emojis.RedCross,
+					DEFAULT_PREFIX: PREFIX,
 					/* Permissions */
 					ADMINISTRATOR: 'ADMINISTRATOR',
 					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
@@ -373,11 +387,19 @@ export const clientOptions: Partial<ClientOptions> = {
 						case LanguageFormatters.Permissions: {
 							return i18next.t(`permissions:${value}`, { ...options, lng: language });
 						}
+						case LanguageFormatters.PermissionsAndList: {
+							return getHandler(language!).listAnd.format(
+								(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
+							);
+						}
 						case LanguageFormatters.HumanLevels: {
 							return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
 						}
 						case LanguageFormatters.ToTitleCase: {
 							return toTitleCase(value);
+						}
+						case LanguageFormatters.CodeBlock: {
+							return codeBlock('', value);
 						}
 						case LanguageFormatters.JsCodeBlock: {
 							return codeBlock('js', value);

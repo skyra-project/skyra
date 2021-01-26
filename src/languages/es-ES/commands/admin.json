@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "Bloquea o permite el uso de mis funciones a usuarios o servidores.",
-	"blocklistExtended": {
-		"extendedHelp": "Bloquea a los usuarios que abusan de mis funciones para que no me utilicen en el futuro, ¡gente ingenua e ingenua!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Se han restablecido los usuarios y servidores bloqueados correctamente",
-	"blocklistSaveSuccess": "{{GREENTICK}} Se han actualizado los usuarios y/o servidores bloqueados",
-	"confNoKey": "Debes proporcionar el nombre de una clave de configuración",
-	"confNoValue": "Debes proporcionar un valor",
 	"confGuarded": "{{name, toTitleCase}} no puede ser deshabilitado.",
 	"confUpdated": "Se actualizó correctamente la clave **{{key}}**: `{{response}}`",
-	"confKeyNotArray": "Esta clave no acepta múltiples valores. Usa la acción 'reset' en su lugar.",
 	"confGetNoExt": "La clave **{{key}}** parece no existir.",
 	"confGet": "El valor para la clave **{{key}}** es: `{{value}}`",
 	"confReset": "La clave **{{key}}** ha sido restablecida a: `{{value}}`",
@@ -19,9 +10,7 @@
 		"extendedHelp": "Te permite configurar Skyra desde Discord, como una alternativa rápida al panel de control web (<https://skyra.pw>)."
 	},
 	"confServer": "**Configuración del servidor {{key}}**\n{{list}}",
-	"confUserDescription": "Define los ajustes del usuario.",
 	"confDashboardOnlyKey": "`{{key}}` sólo puede configurarse a través del panel web (<https://skyra.pw>)",
-	"confUser": "**Configuración del usuario {{key}}**\n{{list}}",
 	"confSettingNotSet": "No Establecido",
 	"heapSnapshotDescription": "Crea un montón para encontrar fugas de memorias.",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "El conjunto de roles únicos {{name}} ha sido creado con los siguientes roles: {{roles, andList}}",
 	"rolesetAdded": "Actualizado conjunto de roles únicos {{name}}, ahora también tiene los siguientes roles: {{roles, andList}}.",
-	"rolesetInvalidName": "No puedes eliminar el conjunto de roles único {{name}} porque no existe.",
 	"rolesetRemoved": "El conjunto de roles únicos de {{name}} ya no incluirá los siguientes roles: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} No existen conjuntos de roles configurados en este servidor.",
 	"rolesetResetAll": "{{GREENTICK}} Se han eliminado todos los conjuntos de roles con éxito.",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} Se eliminó correctamente el conjunto de roles `{{name}}` de este servidor.",
 	"rolesetUpdated": "El conjunto de roles único {{name}} ha sido actualizado.",
 	"rolesetNoRolesets": "No hay conjuntos de roles.",
-	"confMenuNopermissions": "Necesito los permisos {{ADD_REACTIONS, permissions}} y {{MANAGE_MESSAGES, permissions}} para poder mostrar el menú.",
 	"confMenuRenderAtFolder": "Actualmente en: 📁 {{path}}",
 	"confMenuRenderAtPiece": "Actualmente en: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "No hay claves configurables para este grupo",

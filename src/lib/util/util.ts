@@ -2,6 +2,8 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { TwemojiRegex } from '@sapphire/discord.js-utilities';
+import { Store } from '@sapphire/framework';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -14,22 +16,24 @@ import {
 	ImageSize,
 	ImageURLOptions,
 	Message,
+	MessageEmbed,
 	Permissions,
 	Role,
 	User,
 	UserResolvable
 } from 'discord.js';
-import { Store } from 'klasa';
+import type { TFunction } from 'i18next';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { api } from '../discord/Api';
-import { Time, ZeroWidthSpace } from './constants';
-import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
+import { BrandingColors, Time, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
 
-const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
-const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
-const REGEX_PARSED_FCUSTOM_EMOJI = /^a?:[^:]+:\d{17,19}$/;
-const REGEX_CUSTOM_EMOJI_PARTS = /^(a?):([^:]+):(\d{17,19})$/;
+export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
+export const kRegExpFormattedCustomEmoji = /<a?:\w{2,32}:\d{17,18}>/;
+export const kRegExpParsedCustomEmoji = /a?:\w{2,32}:\d{17,18}/;
+export const kRegExpParsedFormattedCustomEmoji = /^a?:[^:]+:\d{17,19}$/;
+export const kRegExpCustomEmojiParts = /^(a?):([^:]+):(\d{17,19})$/;
+export const kRegExpTwemoji = new RegExp(TwemojiRegex, '');
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -110,10 +114,10 @@ export interface EmojiObjectPartial {
  */
 export function resolveEmoji(emoji: string | EmojiObject): string | null {
 	if (typeof emoji === 'string') {
-		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
-		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
-		if (REGEX_UNICODE_BOXNM.test(emoji)) return encodeURIComponent(emoji);
-		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
+		if (kRegExpFormattedCustomEmoji.test(emoji)) return emoji.slice(1, -1);
+		if (kRegExpParsedCustomEmoji.test(emoji)) return emoji;
+		if (kRegExpUnicodeBoxNumber.test(emoji)) return encodeURIComponent(emoji);
+		if (kRegExpTwemoji.test(emoji)) return encodeURIComponent(emoji);
 		return null;
 	}
 
@@ -126,17 +130,17 @@ export function resolveEmoji(emoji: string | EmojiObject): string | null {
 }
 
 export function displayEmoji(emoji: string): string {
-	return REGEX_PARSED_FCUSTOM_EMOJI.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
+	return kRegExpParsedFormattedCustomEmoji.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
 }
 
 export function compareEmoji(emoji: string, matching: string | EmojiObjectPartial): boolean {
-	const emojiExecResult = REGEX_CUSTOM_EMOJI_PARTS.exec(emoji);
+	const emojiExecResult = kRegExpCustomEmojiParts.exec(emoji);
 	// emojiExecResult is only `null` when it's not a custom emoji, thus we'll compare with resolveEmoji
 	if (emojiExecResult === null) return emoji === resolveEmoji(typeof matching === 'string' ? matching : { animated: false, ...matching });
 
 	// Compare custom emoji
 	if (typeof matching === 'string') {
-		const matchingExecResult = REGEX_CUSTOM_EMOJI_PARTS.exec(matching);
+		const matchingExecResult = kRegExpCustomEmojiParts.exec(matching);
 		// matchingExecResult is only `null` when it's not a custom emoji, and we're comparing against one, thus return false
 		if (matchingExecResult === null) return false;
 
@@ -633,6 +637,9 @@ export const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const random = (num: number) => Math.round(Math.random() * num);
+
+export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
+	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 export interface UtilOneToTenEntry {
 	emoji: string;

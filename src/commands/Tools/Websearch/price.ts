@@ -15,21 +15,23 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.PriceDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[amount:number] <from:string> <to:string> [...]',
-	usageDelim: ' '
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const amount = await args.pick('number').catch(() => 1);
+		const fromCurrency = await args.pick('string');
+		const toCurrencies = await args.repeat('string');
+
+		const { t } = args;
 		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
-		const result = await this.fetchAPI(t, fromCurrency, toCurrencies);
+		const result = await this.fetchAPI(fromCurrency, toCurrencies);
 
 		return message.send(await this.buildEmbed(message, t, result, fromCurrency, amount));
 	}
 
-	private async fetchAPI(t: TFunction, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
+	private async fetchAPI(fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
 		try {
 			const url = new URL('https://min-api.cryptocompare.com/data/price');
 			url.searchParams.append('fsym', fromCurrency.toUpperCase());
@@ -47,7 +49,7 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw t(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
+			this.error(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
 		}
 	}
 

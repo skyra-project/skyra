@@ -29,7 +29,6 @@ export const RandRedditExtended = T<LanguageHelpDisplayOptions>('commands/misc:r
 export const RandRedditFail = T<string>('commands/misc:randRedditFail');
 export const RandRedditInvalidArgument = T<string>('commands/misc:randRedditInvalidArgument');
 export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commands/misc:randRedditMessage');
-export const RandRedditRequiredReddit = T<string>('commands/misc:randRedditRequiredReddit');
 export const RedditUserComplexityLevels = T<string[]>('commands/misc:redditUserComplexityLevels');
 export const RedditUserData = FT<
 	{ user: string; timestamp: number },

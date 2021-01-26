@@ -36,7 +36,6 @@
 		"ova": "📼Originale Video Animation",
 		"special": "🎴 Speziell"
 	},
-	"animeInvalidChoice": "Das ist eine ungültige Auswahl! Bitte versuche es mit einer anderen Option.",
 	"animeOutputDescription": "**Englischer Titel:** {{englishTitle}}\n**Japanischer Titel:** {{japaneseTitle}}\n**Kanonischer Titel:** {{canonicalTitle}}\n{{synopsis}}",
 	"animeNoSynopsis": "Keine Zusammenfassung für diesen Titel verfügbar.",
 	"animeEmbedData": {

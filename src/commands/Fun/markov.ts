@@ -3,9 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { DEV } from '#root/config';
-import { BrandingColors } from '#utils/constants';
 import { Markov, WordBank } from '#utils/External/markov';
-import { getAllContent, iteratorAt, pickRandom } from '#utils/util';
+import { getAllContent, iteratorAt, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
@@ -22,10 +21,9 @@ const kCodeZ = 'Z'.charCodeAt(0);
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
 	runIn: ['text'],
-	requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
-	usage: '[channel:textchannelname{2}] [user:username]'
+	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
 	private readonly kInternalMessageCache = new WeakMap<TextChannel, Collection<string, Message>>();
@@ -35,14 +33,15 @@ export default class extends SkyraCommand {
 	private kBoundUseUpperCase!: (wordBank: WordBank) => string;
 	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
-	public async run(message: GuildMessage, [channnel, username]: [TextChannel?, User?]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const username = args.finished ? message.author : await args.pick('userName');
 
 		// Send loading message
-		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+		const response = await sendLoadingMessage(message, args.t);
 
 		// Process the chain
-		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channnel ?? (message.channel as TextChannel))));
+		return response.edit(await this.kProcess(message, args.t, await this.retrieveMarkov(username, channel)));
 	}
 
 	public async onLoad() {
@@ -65,12 +64,12 @@ export default class extends SkyraCommand {
 			.setFooter(t(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
-	private async retrieveMarkov(t: TFunction, user: User | undefined, channel: TextChannel) {
+	private async retrieveMarkov(user: User | undefined, channel: TextChannel) {
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
-		if (messageBank.size === 0) throw t(LanguageKeys.Commands.Fun.MarkovNoMessages);
+		if (messageBank.size === 0) this.error(LanguageKeys.Commands.Fun.MarkovNoMessages);
 
 		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);

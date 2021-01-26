@@ -1,6 +1,4 @@
 {
-	"autoRoleInvalid": "Los datos del rol automático no son inválidos.",
-	"commandAutoDeleteInvalid": "Los datos de la eliminación automática de comandos no son válidos.",
 	"customCommandInvalidArgs": "La propiedad \"args\" debe ser un conjunto de textos.",
 	"customCommandInvalidColor": "La propiedad \"color\" debe ser un número.",
 	"customCommandInvalidContent": "La propiedad \"contenido\" debe ser un texto.",

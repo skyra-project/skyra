@@ -1,27 +1,34 @@
 {
-	"blocklistDescription": "Block or allow users and guilds from using my functionalities.",
-	"blocklistExtended": {
-		"extendedHelp": "Block users that abuse my functions from using me in the future, naughty naughty people!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Successfully reset blocked users and guilds",
-	"blocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
-	"confNoKey": "You must provide a key",
-	"confNoValue": "You must provide a value",
 	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
 	"confUpdated": "Successfully updated the key **{{key}}**: `{{response}}`",
-	"confKeyNotArray": "This key is not array type. Use the action 'reset' instead.",
 	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
 	"confGet": "The value for the key **{{key}}** is: `{{value}}`",
 	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
 	"confNochange": "The value for **{{key}}** was already that value.",
 	"confServerDescription": "Define per-server settings.",
 	"confServerExtended": {
-		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the web dashboard (<https://skyra.pw>)."
+		"usages": [
+			"set NameOfKey Value for Key",
+			"show",
+			"show NameOfKey",
+			"remove NameOfKey Value for Key",
+			"reset NameOfKey",
+			"menu"
+		],
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the [web dashboard](https://skyra.pw).",
+		"examples": [
+			"set language en-GB",
+			"set channels.moderation-logs #moderation-logs",
+			"show",
+			"show channels",
+			"remove roles.moderator Moderator",
+			"reset roles.moderator",
+			"menu"
+		],
+		"reminder": "There are keys and groups, keys that are within a group are named by `GroupName.KeyName`."
 	},
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
-	"confUserDescription": "Define per-user settings.",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
-	"confUser": "**User Setting {{key}}**\n{{list}}",
 	"confSettingNotSet": "Not Set",
 	"heapSnapshotDescription": "Creates a heapdump for finding memory leaks.",
 	"heapSnapshotExtended": {
@@ -29,13 +36,44 @@
 	},
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
+		"usages": [
+			"set RoleSetName Role1 Role2 Role3...",
+			"remove RoleSetName Role1 Role2 Role3...",
+			"reset",
+			"reset RoleSetName",
+			"list",
+			"RoleSetName Role1 Role2 Role3"
+		],
 		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
 		"explainedUsage": [
-			["add", "Create a new roleset or add a role to an existing one."],
-			["remove", "Remove a role from an existing roleset."],
-			["reset", "Removes all roles from a roleset or, if not specified, all existing rolesets."],
-			["list", "Lists all rolesets."],
-			["auto", "Adds or removes a roleset."]
+			[
+				"add",
+				"Create a new roleset or add a role to an existing one."
+			],
+			[
+				"remove",
+				"Remove a role from an existing roleset."
+			],
+			[
+				"reset",
+				"Removes all roles from a roleset or, if not specified, all existing rolesets."
+			],
+			[
+				"list",
+				"Lists all rolesets."
+			],
+			[
+				"auto",
+				"Adds or removes a roleset."
+			],
+			[
+				"RoleSetName",
+				"The name of the roleset"
+			],
+			[
+				"Role1 Role2 Role3",
+				"The roles to add to the roleset"
+			]
 		],
 		"examples": [
 			"add regions America",
@@ -51,7 +89,6 @@
 	},
 	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
 	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, andList}}.",
-	"rolesetInvalidName": "You can not remove the {{name}} unique role set because it does not exist.",
 	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this group.",
 	"rolesetResetAll": "{{GREENTICK}} Successfully removed all rolesets.",
@@ -59,12 +96,10 @@
 	"rolesetResetGroup": "{{GREENTICK}} Successfully removed the roleset `{{name}}` from this server.",
 	"rolesetUpdated": "The {{name}} unique role set has been updated.",
 	"rolesetNoRolesets": "You have no rolesets.",
-	"confMenuNopermissions": "I need the {{ADD_REACTIONS, permissions}} and {{MANAGE_MESSAGES, permissions}} permissions to be able to run the menu.",
 	"confMenuRenderAtFolder": "Currently at: 📁 {{path}}",
 	"confMenuRenderAtPiece": "Currently at: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "There are no configurable keys for this folder",
 	"confMenuRenderSelect": "Please type in any of the following entries' names",
-	"confMenuRenderTctitle": "Text s:",
 	"confMenuRenderUpdate": "• Update Value → `set <value>`",
 	"confMenuRenderRemove": "• Remove Value → `remove <value>`",
 	"confMenuRenderReset": "• Reset Value → `reset`",
@@ -76,6 +111,21 @@
 	"confMenuSaved": "Successfully saved all changes.",
 	"updateDescription": "Update the bot",
 	"updateExtended": {
-		"extendedHelp": "Some polish here, some cleanup there, and whatyaknow, I'm suddenly a whole new android!"
+		"usages": [
+			"Branch",
+			"--clean",
+			"Branch --clean"
+		],
+		"extendedHelp": "Some polish here, some cleanup there, and whatyaknow, I'm suddenly a whole new android!",
+		"explainedUsage": [
+			[
+				"Branch",
+				"The branch to pull from git"
+			],
+			[
+				"--clean",
+				"Whether to clean the entire \"dist\" folder before building"
+			]
+		]
 	}
 }

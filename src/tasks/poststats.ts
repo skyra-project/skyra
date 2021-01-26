@@ -4,6 +4,7 @@ import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { blueBright, green, red } from 'colorette';
+import { Constants } from 'discord.js';
 
 const header = blueBright('[POST STATS   ]');
 
@@ -16,10 +17,14 @@ enum Lists {
 	BotsOnDiscord = 'bots.ondiscord.xyz'
 }
 
-export default class extends Task {
+export class UserTask extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
 		const { client } = this.context;
-		if (!client.ready) return { type: ResponseType.Delay, value: 30000 };
+
+		// If the websocket isn't ready, delay the execution by 30 seconds:
+		if (client.ws.status !== Constants.Status.READY) {
+			return { type: ResponseType.Delay, value: 30000 };
+		}
 
 		const rawGuilds = client.guilds.cache.size;
 		const rawUsers = client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);

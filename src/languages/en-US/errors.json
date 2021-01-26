@@ -6,6 +6,5 @@
 	"guildWarnNotFound": "I failed to fetch that warning. Either it does not exist, is not of type warning, or it has been appealed.",
 	"modlogTimed": "This moderation log is already timed. Expires in {{remaining, duration}}",
 	"unexpectedIssue": "An unexpected error popped up! Safely aborting this command...",
-	"userNotExistent": "This user does not exist. Are you sure you used a valid user ID?",
 	"userNotInGuild": "This user is not in this server."
 }

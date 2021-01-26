@@ -14,6 +14,5 @@ export const YarnEmbedDescriptionMainFile = FT<{ mainFile: string }, string>('co
 export const YarnEmbedDescriptionMaintainers = FT<{ maintainers: string[] }, string>('commands/developer:yarnEmbedDescriptionMaintainers');
 export const YarnEmbedMoreText = T<string>('commands/developer:yarnEmbedMoreText');
 export const YarnExtended = T<LanguageHelpDisplayOptions>('commands/developer:yarnExtended');
-export const YarnNoPackage = T<string>('commands/developer:yarnNoPackage');
 export const YarnPackageNotFound = FT<{ pkg: string }, string>('commands/developer:yarnPackageNotFound');
 export const YarnUnpublishedPackage = FT<{ pkg: string }, string>('commands/developer:yarnUnpublishedPackage');

@@ -74,7 +74,6 @@
 	"manageReactionRolesResetEmpty": "",
 	"manageReactionRolesReset": "",
 	"setStarboardEmojiSet": "",
-	"configurationTextChannelRequired": "",
 	"configurationEquals": "",
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
@@ -254,7 +253,6 @@
 			""
 		]
 	},
-	"rolesAbort": "",
 	"rolesAdded": "",
 	"rolesAuditlog": "",
 	"rolesListEmpty": "",

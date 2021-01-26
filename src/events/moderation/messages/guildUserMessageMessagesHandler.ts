@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { getContent } from '#utils/util';
@@ -9,8 +9,8 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationMessages,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationMessagesWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationMessages,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationMessagesWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.Messages.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.Messages.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.Messages.IgnoredRoles,
@@ -21,7 +21,7 @@ import type { TFunction } from 'i18next';
 		adder: 'messages'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 
 	protected async preProcess(message: GuildMessage) {
@@ -41,7 +41,7 @@ export default class extends ModerationMessageEvent {
 		const count = this.updateContents(contents, content.toLowerCase(), queueSize);
 
 		// If count is bigger than threshold
-		// - return `count` (runs the rest of the monitor),
+		// - return `count`
 		// - else return `null` (stops)
 		return count > threshold ? 1 : null;
 	}
@@ -51,7 +51,7 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.MessageFilter, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.MessageFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
@@ -59,7 +59,7 @@ export default class extends ModerationMessageEvent {
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.MessageFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.MessageFooter)}`)
 			.setTimestamp();
 	}
 

@@ -3,36 +3,37 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import type { TextChannel } from 'discord.js';
 
-const YEAR = 1000 * 60 * 60 * 24 * 365;
+const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
+const options = ['winners'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
-	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '[channel:textchannelname{2}] <schedule:time> <duration:time> <title:...string{,256}>',
-	flagSupport: true,
-	usageDelim: ' ',
-	promptLimit: Infinity
+	strategyOptions: { options }
 })
-export default class extends SkyraCommand {
-	public async run(
-		message: GuildMessage,
-		[channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]
-	) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const schedule = await args.pick('time');
+		const duration = await args.pick('time');
+		let winners = await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10));
+		const title = await args.rest('string', { maximum: 256 });
+
 		// First do the checks for the giveaway itself
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
-		if (durationOffset < 9500 || scheduleOffset < 9500) throw await message.resolveKey(LanguageKeys.Giveaway.Time);
-		if (durationOffset > YEAR || scheduleOffset > YEAR) throw await message.resolveKey(LanguageKeys.Giveaway.TimeTooLong);
-
-		// Resolve the amount of winners the giveaway will have
-		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
+		if (durationOffset < 9500 || scheduleOffset < 9500) this.error(LanguageKeys.Giveaway.Time);
+		if (durationOffset > Time.Year || scheduleOffset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 		if (winners > 25) winners = 25;
+
 		// This creates an single time task to start the giveaway
 		await this.context.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
@@ -46,6 +47,11 @@ export default class extends SkyraCommand {
 			catchUp: true
 		});
 
-		return message.sendTranslated(LanguageKeys.Giveaway.Scheduled, [{ scheduledTime: scheduleOffset }]);
+		return message.send(args.t(LanguageKeys.Giveaway.Scheduled, { scheduledTime: scheduleOffset }));
 	}
+
+	private static winners = Args.make<number>((parameter, { argument }) => {
+		const match = kWinnersArgRegex.exec(parameter);
+		return match ? Args.ok(Number(match[1])) : Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
+	});
 }

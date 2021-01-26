@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "Blokkeer of sta gebruikers toe om mijn functionaliteiten te gebruiken.",
-	"blocklistExtended": {
-		"extendedHelp": "Blokkeer gebruikers die mij misbruiken om in de toekomst mij verder te misbruiken, stoute, stoute mensen!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol gereset",
-	"blocklistSaveSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol geüpdate",
-	"confNoKey": "Je moet een key opgeven",
-	"confNoValue": "Een waarde is vereist",
 	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",
 	"confUpdated": "**{{key}}** is succesvol bijgewerkt: `{{response}}`",
-	"confKeyNotArray": "De waarde is niet van type lijst. Gebruik in plaats daarvan de 'reset' actie.",
 	"confGetNoExt": "De sleutel **{{key}}** lijkt niet te bestaan.",
 	"confGet": "De waarde voor **{{key}}** is: `{{value}}`",
 	"confReset": "**{{key}}** is gereset naar: `{{value}}`",
@@ -19,9 +10,7 @@
 		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>)."
 	},
 	"confServer": "**Server Instelling {{key}}**\n{{list}}",
-	"confUserDescription": "Definieer instellingen per gebruiker.",
 	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
-	"confUser": "**Gebruiker Instelling {{key}}**\n{{list}}",
 	"confSettingNotSet": "Niet ingesteld",
 	"heapSnapshotDescription": "Maakt een heapdump voor het vinden van geheugenlekken.",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "De {{name}} unieke set van rollen is aangemaakt met de volgende rollen: {{roles, andList}}",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "Je kunt de rollen set met de naam {{name}} niet verwijderen omdat deze niet bestaat.",
 	"rolesetRemoved": "De rollen set met de naam {{name}} zal niet bevat niet langer de volgende rollen: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} Er zijn geen rollen geconfigureerd in deze set.",
 	"rolesetResetAll": "{{GREENTICK}} Alle rollen sets zijn verwijderd.",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} De set van rollen met de naam `{{name}}` is succesvol verwijderd van de server.",
 	"rolesetUpdated": "De set van rollen met de naam {{name}} is bijgewerkt.",
 	"rolesetNoRolesets": "Je hebt geen rolesets.",
-	"confMenuNopermissions": "Ik heb de {{ADD_REACTIONS, permissions}} en {{MANAGE_MESSAGES, permissions}} rechten nodig om dit uit te kunnen voeren.",
 	"confMenuRenderAtFolder": "Momenteel in: 📁 {{path}}",
 	"confMenuRenderAtPiece": "Momenteel bij: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Er zijn geen configureerbare opties in deze map",

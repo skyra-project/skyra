@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
+import { LockdownEntry } from '#utils/Security/GuildSecurity';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Permissions, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -10,49 +11,52 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lock', 'unlock'],
 	cooldown: 5,
-	subcommands: true,
+	subCommands: ['lock', 'unlock', { input: 'auto', default: true }],
 	description: LanguageKeys.Commands.Moderation.LockdownDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.LockdownExtended,
 	runIn: ['text'],
-	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
-	usageDelim: ' ',
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
+	permissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })
-export default class extends SkyraCommand {
-	public auto(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
-		return message.guild.security.lockdowns.has(channel.id) ? this.unlock(message, [channel]) : this.lock(message, [channel, duration]);
+export class UserCommand extends SkyraCommand {
+	public async auto(message: GuildMessage, args: SkyraCommand.Args) {
+		if (args.commandContext.commandName === 'lock') return this.lock(message, args);
+		if (args.commandContext.commandName === 'unlock') return this.unlock(message, args);
+
+		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
+		if (this.hasLock(channel)) return this.handleUnlock(message, args, channel);
+
+		const duration = args.finished ? null : await args.pick('timespan');
+		return this.handleLock(message, args, channel, duration);
 	}
 
-	public async unlock(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
-		const t = await message.fetchT();
-		const entry = message.guild.security.lockdowns.get(channel.id);
-
-		if (typeof entry === 'undefined') {
-			throw t(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
-		}
-
-		return entry.timeout ? entry.timeout.stop() : this._unlock(message, t, channel);
+	public async unlock(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
+		return this.handleUnlock(message, args, channel);
 	}
 
-	public async lock(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
-		const t = await message.fetchT();
+	public async lock(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
+		const duration = args.finished ? null : await args.pick('timespan');
+		return this.handleLock(message, args, channel, duration);
+	}
 
+	private async handleLock(message: GuildMessage, args: SkyraCommand.Args, channel: TextChannel, duration: number | null) {
 		// If there was a lockdown, abort lock
-		if (message.guild.security.lockdowns.has(channel.id)) {
-			throw t(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (this.hasLock(channel)) {
+			this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 		}
 
 		// Get the role, then check if the user could send messages
 		const role = message.guild.roles.cache.get(message.guild.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
-		if (!couldSend) throw t(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (!couldSend) this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 
 		// If they can send, begin locking
-		const response = await message.send(t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
+		const response = await message.send(args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
 		if (message.channel.postable) {
-			await response.edit(t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
+			await response.edit(args.t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
 		}
 
 		// Create the timeout
@@ -62,13 +66,34 @@ export default class extends SkyraCommand {
 		// Perform cleanup later
 		if (timeout) {
 			await timeout.run();
-			await this._unlock(message, t, channel);
+			await this._unlock(message, args.t, channel);
 		}
+	}
+
+	private async handleUnlock(message: GuildMessage, args: SkyraCommand.Args, channel: TextChannel) {
+		const entry = this.getLock(channel);
+		if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
+		return entry.timeout ? entry.timeout.stop() : this._unlock(message, args.t, channel);
 	}
 
 	private async _unlock(message: GuildMessage, t: TFunction, channel: TextChannel) {
 		channel.guild.security.lockdowns.delete(channel.id);
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
 		return message.send(t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
+	}
+
+	private hasLock(channel: TextChannel): boolean {
+		return (
+			channel.guild.security.lockdowns.has(channel.id) ||
+			!channel.permissionsFor(channel.guild.roles.everyone)!.has(Permissions.FLAGS.SEND_MESSAGES)
+		);
+	}
+
+	private getLock(channel: TextChannel): LockdownEntry | null {
+		const entry = channel.guild.security.lockdowns.get(channel.id);
+		if (entry) return entry;
+
+		const permissions = channel.permissionsFor(channel.guild.roles.everyone)!;
+		return permissions.has(Permissions.FLAGS.SEND_MESSAGES) ? null : { timeout: null };
 	}
 }

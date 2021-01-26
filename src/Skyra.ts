@@ -1,21 +1,19 @@
-import '#utils/Sanitizer/initClean';
-import 'reflect-metadata';
-
+import '#lib/setup';
 import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
 import { TOKENS } from '#root/config';
-import { rootFolder } from '#utils/constants';
+import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
-import * as colorette from 'colorette';
-import { inspect } from 'util';
-
-inspect.defaultOptions.depth = 1;
-colorette.options.enabled = true;
+import i18next from 'i18next';
 
 const client = new SkyraClient();
 
 async function main() {
+	// Load in i18next post processor
+	i18next.use(helpUsagePostProcessor);
+
+	// Load in Sentry for error logging
 	if (TOKENS.SENTRY_URL) {
 		Sentry.init({
 			dsn: TOKENS.SENTRY_URL,
@@ -31,7 +29,10 @@ async function main() {
 	}
 
 	try {
+		// Connect to the Database
 		await DbSet.connect();
+
+		// Login to the Discord gateway
 		await client.login(TOKENS.BOT_TOKEN);
 	} catch (error) {
 		client.logger.error(error);

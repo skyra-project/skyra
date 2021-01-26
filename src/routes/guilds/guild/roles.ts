@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/roles' })
-export default class extends Route {
+export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {

@@ -1,3 +1,3 @@
-import { Client } from 'klasa';
+import { SapphireClient } from '@sapphire/framework';
 
-export const client = new Client();
+export const client = new SapphireClient();

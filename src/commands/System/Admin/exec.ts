@@ -13,17 +13,17 @@ import { Message, MessageAttachment } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.System.ExecExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<expression:string>',
-	flagSupport: true
+	strategyOptions: { options: ['timeout'] }
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const result = await exec(input, { timeout: Reflect.has(message.flagArgs, 'timeout') ? Number(message.flagArgs.timeout) : 60000 }).catch(
-			(error) => ({
-				stdout: null,
-				stderr: error
-			})
-		);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const input = await args.rest('string');
+		const timeout = args.getOption('timeout');
+
+		const result = await exec(input, { timeout: timeout ? Number(timeout) : 60000 }).catch((error) => ({
+			stdout: null,
+			stderr: error
+		}));
 		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
 		const joined = [output, outerr].join('\n') || 'No output';

@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'globalLeaderboard', route: 'users/leaderboard' })
-export default class extends Route {
+export class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const limit = Reflect.has(request.query, 'limit') ? Number(request.query.limit) : 10;

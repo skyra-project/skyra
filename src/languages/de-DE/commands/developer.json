@@ -25,7 +25,6 @@
 	"yarnEmbedDescriptionMainFile": "❯ Hauptdatei: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Verwalter: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "mehr...",
-	"yarnNoPackage": "{{REDCROSS}} Es tut mir leid, aber du musst mir den Namen eines Pakets geben, um suchen zu können.",
 	"yarnPackageNotFound": "Es tut mir leid, aber ich konnte kein Paket mit dem Namen `{{pkg}}` in der Registry finden.",
 	"yarnUnpublishedPackage": "Was für ein dummer Entwickler, der {{pkg}} gemacht hat! Er hat es wieder entfernt!"
 }

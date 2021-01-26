@@ -6,11 +6,15 @@ import { Events } from '#lib/types/Enums';
 import { BrandingColors, Time, ZeroWidthSpace } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '#utils/util';
+import { Store } from '@sapphire/framework';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+import * as Lexure from 'lexure';
 import { DbSet } from '../database/utils/DbSet';
+import { SkyraArgs } from './commands/parsers/SkyraArgs';
+import { SkyraCommand } from './commands/SkyraCommand';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -47,7 +51,7 @@ export class SettingsMenu {
 		return this.oldValue !== undefined;
 	}
 
-	public async init(): Promise<void> {
+	public async init(context: SkyraCommand.Context): Promise<void> {
 		this.response = (await this.message.send(
 			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.t(LanguageKeys.System.Loading)))
 		)) as GuildMessage;
@@ -55,7 +59,7 @@ export class SettingsMenu {
 		this.llrc = new LongLivingReactionCollector().setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
 		this.llrc.setTime(TIMEOUT);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author!.id === this.message.author.id);
-		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
+		this.messageCollector.on('collect', (msg) => this.onMessage(msg, context));
 		await this._renderResponse();
 	}
 
@@ -91,19 +95,11 @@ export class SettingsMenu {
 				return [settings[key.property], key.display(settings, language), language];
 			});
 			this.t = language;
-			description.push(
-				t(this.schema.description),
-				'',
-				t(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
-				t(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
-				this.schema.array && (value as unknown[]).length ? t(LanguageKeys.Commands.Admin.ConfMenuRenderRemove) : '',
-				this.updatedValue ? t(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
-				this.updatedValue ? t(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
-				'',
-				t(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
-					value: serialized
-				})
-			);
+			description.push(t(this.schema.description), '', t(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate));
+			if (this.schema.array && (value as unknown[]).length) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderRemove));
+			if (this.updatedValue) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderReset));
+			if (this.updatedValue) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderUndo));
+			description.push('', t(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, { value: serialized }));
 		}
 
 		const { parent } = this.schema;
@@ -117,7 +113,7 @@ export class SettingsMenu {
 			.setTimestamp();
 	}
 
-	private async onMessage(message: GuildMessage) {
+	private async onMessage(message: GuildMessage, context: SkyraCommand.Context) {
 		// In case of messages that do not have a content, like attachments, ignore
 		if (!message.content) return;
 
@@ -132,11 +128,17 @@ export class SettingsMenu {
 				this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
 			}
 		} else {
-			const [command, ...params] = message.content.split(' ');
-			const commandLowerCase = command.toLowerCase();
-			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), UpdateType.Set);
-			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), UpdateType.Remove);
-			else if (commandLowerCase === 'reset') await this.tryUpdate(null, UpdateType.Reset);
+			//                                                                                                            parser context
+			const conf = Store.injectedContext.stores.get('commands').get('conf') as SkyraCommand;
+			// eslint-disable-next-line @typescript-eslint/dot-notation
+			const lexureParser = new Lexure.Parser(conf['lexer'].setInput(message.content).lex());
+			const lexureArgs = new Lexure.Args(lexureParser.parse());
+			const args = new SkyraArgs(this.message, conf, lexureArgs, context, this.t);
+
+			const commandLowerCase = args.next().toLowerCase();
+			if (commandLowerCase === 'set') await this.tryUpdate(UpdateType.Set, args);
+			else if (commandLowerCase === 'remove') await this.tryUpdate(UpdateType.Remove, args);
+			else if (commandLowerCase === 'reset') await this.tryUpdate(UpdateType.Reset);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
 			else this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
@@ -214,7 +216,7 @@ export class SettingsMenu {
 		}
 	}
 
-	private async tryUpdate(value: unknown, action: UpdateType) {
+	private async tryUpdate(action: UpdateType, args: SkyraArgs | null = null, value: unknown = null) {
 		try {
 			const key = this.schema as SchemaKey;
 			const [oldValue, skipped] = await this.message.guild.writeSettings(async (settings) => {
@@ -222,11 +224,11 @@ export class SettingsMenu {
 
 				switch (action) {
 					case UpdateType.Set: {
-						this.t = await set(settings, key, value as string);
+						this.t = await set(settings, key, args!);
 						break;
 					}
 					case UpdateType.Remove: {
-						this.t = await remove(settings, key, value as string);
+						this.t = await remove(settings, key, args!);
 						break;
 					}
 					case UpdateType.Reset: {
@@ -256,7 +258,7 @@ export class SettingsMenu {
 
 	private async tryUndo() {
 		if (this.updatedValue) {
-			await this.tryUpdate(this.oldValue, UpdateType.Replace);
+			await this.tryUpdate(UpdateType.Replace, null, this.oldValue);
 		} else {
 			const key = this.schema as SchemaKey;
 			this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });

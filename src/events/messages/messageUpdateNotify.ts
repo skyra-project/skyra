@@ -7,12 +7,12 @@ import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { diffWordsWithSpace } from 'diff';
 import type { Message } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(old: Message, message: GuildMessage) {
 		if (!message.guild || old.content === message.content || message.author.bot) return;
 
@@ -46,7 +46,7 @@ export default class extends Event {
 							.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
 							.join(' ')
 					)
-					.setFooter(t(LanguageKeys.Events.MessageUpdate, { message }))
+					.setFooter(t(LanguageKeys.Events.Messages.MessageUpdate, { message }))
 					.setTimestamp()
 		);
 	}

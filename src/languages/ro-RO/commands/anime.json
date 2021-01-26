@@ -36,7 +36,6 @@
 		"ova": "📼 Original Video Animation",
 		"special": "🎴 Special"
 	},
-	"animeInvalidChoice": "Aceasta este o alegere invalidă! Vă rugăm să încercaţi cu o altă opţiune.",
 	"animeOutputDescription": "**Titlu englez:** ** {{englishTitle}}\n**Titlu japonez:** {{japaneseTitle}}\n**Titlu canonic:** {{canonicalTitle}}\n{{synopsis}}",
 	"animeNoSynopsis": "Nu exista rezumat disponibil pentru acest titlu.",
 	"animeEmbedData": {

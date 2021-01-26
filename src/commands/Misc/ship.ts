@@ -1,53 +1,33 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
-import type { GuildMember, Message, User } from 'discord.js';
+import type { User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '(firstUser:user) (secondUser:user)',
-	usageDelim: ' '
+	permissions: ['ATTACH_FILES'],
+	runIn: ['news', 'text']
 })
-@CreateResolvers([
-	[
-		'user',
-		(arg, possible, message, [firstUser]: GuildMember[]) => {
-			if (!arg) {
-				// Prefer self if there is already a firstUser, that is not self
-				if (firstUser !== undefined && firstUser.id !== message.author.id) return { user: message.author };
-
-				// Fetch 2 random IDs
-				const users = message.guild!.members.cache.random(2);
-
-				// If firstUser is already determined and the IDs match, then grab the second random ID
-				if (firstUser !== undefined && firstUser.id === users[0].id) return { user: users[1] };
-
-				// Else return the first random ID
-				return { user: users[0] };
-			}
-
-			return message.client.arguments.get('membername')!.run(arg, possible, message);
-		}
-	]
-])
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 	private heartIcon: Image = null!;
 
-	public async run(message: Message, [{ user: firstUser }, { user: secondUser }]: [GuildMember, GuildMember]) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const firstUser = args.finished ? this.randomUser(message) : await args.pick('userName');
+		const secondUser = args.finished ? this.randomUser(message, firstUser) : await args.pick('userName');
+
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([this.fetchAvatar(firstUser), this.fetchAvatar(secondUser)]);
 
@@ -67,8 +47,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const t = await message.fetchT();
-		const data = t(LanguageKeys.Commands.Misc.ShipData, {
+		const data = args.t(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
@@ -91,6 +70,7 @@ export default class extends SkyraCommand {
 		const randomizedSecondName = secondUsername.slice(-Math.min(secondUsername.length, secondUsername.length * Math.random() * 0.8 + 2));
 		// Remove any confusables from the name to make a cleaner ship name
 		const deconfusedName = removeConfusables(randomizedFirstName.concat(randomizedSecondName).join(''));
+
 		// Remove all symbols from the ship name
 		const alphabeticalCharactersOnlyName = deconfusedName.replace(this.kRemoveSymbolsRegex, '');
 
@@ -99,8 +79,8 @@ export default class extends SkyraCommand {
 
 	/**
 	 * Fetches avatar as Buffer for a user
-	 * @details Losely based on fetchAvatar from utils, but customized for ship to account for not having a User object.
-	 * @param args The args to pass to getDisplayAvatar util function. Argument types match exactly.
+	 * @details Loosely based on fetchAvatar from utils, but customized for ship to account for not having a User object.
+	 * @param user The user to fetch the avatar for
 	 */
 	private async fetchAvatar(user: User): Promise<Image> {
 		try {
@@ -108,5 +88,19 @@ export default class extends SkyraCommand {
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error.response}`;
 		}
+	}
+
+	private randomUser(message: GuildMessage, firstUser?: User): User {
+		// Prefer self if there is already a firstUser, that is not self
+		if (firstUser !== undefined && firstUser.id !== message.author.id) return message.author;
+
+		// Fetch 2 random IDs
+		const users = message.guild!.members.cache.random(2);
+
+		// If firstUser is already determined and the IDs match, then grab the second random ID
+		if (firstUser !== undefined && firstUser.id === users[0].id) return users[1].user;
+
+		// Else return the first random ID
+		return users[0].user;
 	}
 }

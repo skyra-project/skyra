@@ -6,7 +6,7 @@ import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -14,6 +14,8 @@ const kTagRegex = /#[A-Z0-9]{3,}/;
 
 const kTotalBrawlers = 43; // this will need updating
 const kMaxMembers = 100;
+
+const flags = ['s', 'save'];
 
 const kRoboRumbleLevels = [
 	'Normal',
@@ -52,63 +54,40 @@ export interface BrawlStarsGIData {
 	aliases: ['bs'],
 	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
-	subcommands: true,
-	flagSupport: true,
-	usage: '<club|player:default> [tag:tag]',
-	usageDelim: ' '
+	strategyOptions: { flags },
+	subCommands: [{ input: 'player', default: true }, 'club']
 })
-@CreateResolvers([
-	[
-		'tag',
-		async (arg, _possible, message) => {
-			if (kTagRegex.test(arg)) return arg;
-			throw await message.resolveKey(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async player(message: Message, [tag]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async player(message: Message, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
-		const t = await message.fetchT();
 
-		if (!tag && bsData.extraData?.playerTag) {
-			tag = bsData.extraData.playerTag!;
-		} else if (!tag) {
-			throw t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
-		}
-
-		const playerData = await this.fetchAPI<BrawlStarsFetchCategories.PLAYERS>(t, tag, BrawlStarsFetchCategories.PLAYERS);
-		const saveFlag = Reflect.get(message.flagArgs, 'save');
+		const tag = (args.finished && bsData.extraData?.playerTag) || (await args.pick(UserCommand.tagResolver));
+		const playerData = await this.fetchAPI<BrawlStarsFetchCategories.PLAYERS>(args.t, tag, BrawlStarsFetchCategories.PLAYERS);
+		const saveFlag = args.getFlags(...flags);
 
 		if (saveFlag) {
 			bsData.extraData = { ...bsData.extraData, playerTag: playerData.tag };
 			await bsData.save();
 		}
 
-		return message.send(await this.buildPlayerEmbed(message, t, playerData));
+		return message.send(await this.buildPlayerEmbed(message, args.t, playerData));
 	}
 
-	public async club(message: Message, [tag]: [string]) {
+	public async club(message: Message, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
-		const t = await message.fetchT();
 
-		if (!tag && bsData.extraData?.clubTag) {
-			tag = bsData.extraData.clubTag!;
-		} else if (!tag) {
-			throw t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
-		}
-
-		const clubData = await this.fetchAPI<BrawlStarsFetchCategories.CLUB>(t, tag, BrawlStarsFetchCategories.CLUB);
-		const saveFlag = Reflect.get(message.flagArgs, 'save');
+		const tag = (args.finished && bsData.extraData?.playerTag) || (await args.pick(UserCommand.tagResolver));
+		const clubData = await this.fetchAPI<BrawlStarsFetchCategories.CLUB>(args.t, tag, BrawlStarsFetchCategories.CLUB);
+		const saveFlag = args.getFlags(...flags);
 
 		if (saveFlag) {
 			bsData.extraData = { ...bsData.extraData, clubTag: clubData.tag };
 			await bsData.save();
 		}
 
-		return message.send(await this.buildClubEmbed(message, t, clubData));
+		return message.send(await this.buildClubEmbed(message, args.t, clubData));
 	}
 
 	private async buildPlayerEmbed(message: Message, t: TFunction, player: BrawlStars.Player) {
@@ -212,4 +191,9 @@ export default class extends SkyraCommand {
 				: t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
+
+	private static tagResolver = Args.make<string>((parameter, { argument }) => {
+		if (kTagRegex.test(parameter)) return Args.ok(parameter);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag });
+	});
 }

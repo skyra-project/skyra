@@ -1,6 +1,22 @@
+import type { CommandContext, PieceContext } from '@sapphire/framework';
 import type { PermissionResolvable } from 'discord.js';
-import type { PieceContext } from 'klasa';
 import { SkyraCommand } from './SkyraCommand';
+
+export namespace PaginatedMessageCommand {
+	/**
+	 * The PaginatedMessageCommand Options
+	 */
+	export type Options = SkyraCommand.Options;
+	/**
+	 * The PaginatedMessageCommand Args
+	 */
+	export type Args = SkyraCommand.Args;
+
+	/**
+	 * The PaginatedMessageCommand CommandContext
+	 */
+	export type Context = CommandContext;
+}
 
 export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: PaginatedMessageCommand.Options) {
@@ -9,8 +25,8 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 			...options,
 			runIn: ['text'],
 			// Add all requiredPermissions set in the command, along with the permissions required for PaginatedMessage
-			requiredPermissions: [
-				...((options.requiredPermissions as PermissionResolvable[] | undefined) ?? []),
+			permissions: [
+				...((options.permissions as PermissionResolvable[] | undefined) ?? []),
 				'ADD_REACTIONS',
 				'MANAGE_MESSAGES',
 				'EMBED_LINKS',
@@ -18,11 +34,4 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 			]
 		});
 	}
-}
-
-export namespace PaginatedMessageCommand {
-	/**
-	 * The PaginatedMessageCommand Options
-	 */
-	export type Options = SkyraCommand.Options;
 }

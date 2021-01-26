@@ -2,7 +2,6 @@ import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
 export const TagAdded = FT<{ name: string; content: string }, string>('commands/tags:added');
-export const TagContentRequired = T<string>('commands/tags:contentRequired');
 export const TagDescription = T<string>('commands/tags:description');
 export const TagEdited = FT<{ name: string; content: string }, string>('commands/tags:edited');
 export const TagExists = FT<{ tag: string }, string>('commands/tags:exists');

@@ -10,7 +10,7 @@ interface BodyData {
 }
 
 @ApplyOptions<RouteOptions>({ name: 'userSettings', route: 'users/@me/settings' })
-export default class extends Route {
+export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(5, 1000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {

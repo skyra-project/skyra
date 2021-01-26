@@ -4,12 +4,12 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { EventOptions } from 'klasa';
+import type { EventOptions } from '@sapphire/framework';
 
 @ApplyOptions<EventOptions>({
 	event: Events.AnalyticsSync
 })
-export default class extends AnalyticsEvent {
+export class UserAnalyticsEvent extends AnalyticsEvent {
 	public async run(guilds: number, users: number) {
 		const dbSet = await DbSet.connect();
 		const [economyHealth, twitchSubscriptionCount] = await Promise.all([this.fetchEconomyHealth(dbSet), dbSet.twitchStreamSubscriptions.count()]);

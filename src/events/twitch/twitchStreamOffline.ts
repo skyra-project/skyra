@@ -1,14 +1,13 @@
 import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
-import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
 		const { twitchStreamSubscriptions } = await DbSet.connect();
@@ -40,15 +39,8 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.
-				if (subscription.message !== null) {
-					// Transform the message
-					const message = this.transformText(subscription.message, data);
-
-					if (subscription.embed) {
-						floatPromise(channel.send(this.buildEmbed(message, t)));
-					} else {
-						floatPromise(channel.send(message));
-					}
+				if (subscription.message) {
+					floatPromise(channel.send(this.buildEmbed(subscription.message, t)));
 				}
 
 				break;
@@ -58,22 +50,11 @@ export default class extends Event {
 		return response.ok();
 	}
 
-	private transformText(str: string, notification: PostStreamBodyData) {
-		return str.replace(TWITCH_REPLACEABLES_REGEX, (match) => {
-			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.ID:
-					return notification.id;
-				default:
-					return match;
-			}
-		});
-	}
-
 	private buildEmbed(message: string, t: TFunction) {
 		return new MessageEmbed()
 			.setColor(this.context.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
-			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
+			.setFooter(t(LanguageKeys.Events.Twitch.EmbedFooter))
 			.setTimestamp();
 	}
 }

@@ -10,10 +10,10 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.DogDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.DogExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const [color, image] = await Promise.all([DbSet.fetchColor(message), this.fetchImage()]);
 

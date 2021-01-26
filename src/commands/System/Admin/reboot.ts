@@ -11,9 +11,9 @@ import type { Message } from 'discord.js';
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })
-export default class extends SkyraCommand {
-	public async run(message: Message) {
-		await message.sendTranslated(LanguageKeys.Commands.System.Reboot).catch((err) => this.context.client.emit(Events.ApiError, err));
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		await message.send(args.t(LanguageKeys.Commands.System.Reboot)).catch((err) => this.context.client.emit(Events.ApiError, err));
 
 		if (ENABLE_INFLUX) {
 			const { client } = this.context;

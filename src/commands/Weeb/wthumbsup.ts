@@ -8,4 +8,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	queryType: 'thumbsup',
 	responseName: LanguageKeys.Commands.Weeb.ThumbsUp
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

@@ -3,11 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
-import { BrandingColors } from '#utils/constants';
-import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -16,44 +14,31 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Developers.YarnDescription,
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<package:package>'
+	permissions: ['EMBED_LINKS']
 })
-@CreateResolvers([
-	[
-		'package',
-		async (arg, _, message) => {
-			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Developers.YarnNoPackage);
-			return encodeURIComponent(cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase());
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async run(message: Message, [pkg]: [string]) {
-		const t = await message.fetchT();
-		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
-		// since we repeat this over and over, but was out of #1301's scope.
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+		const pkg = encodeURIComponent((await args.rest('cleanString')).replaceAll(' ', '-').toLowerCase());
+		const { t } = args;
+		const response = await sendLoadingMessage(message, t);
 
-		const result = await this.fetchApi(t, pkg);
+		const result = await this.fetchApi(pkg);
 
-		if (result.time && Reflect.has(result.time, 'unpublished')) throw t(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
+		if (result.time && Reflect.has(result.time, 'unpublished')) this.error(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
 
-		const dataEmbed = await this.buildEmbed(result, message, t);
+		const dataEmbed = await this.buildEmbed(result, message, t, context);
 		return response.edit(undefined, dataEmbed);
 	}
 
-	private async fetchApi(t: TFunction, pkg: string) {
+	private async fetchApi(pkg: string) {
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {
-			throw t(LanguageKeys.Commands.Developers.YarnPackageNotFound, { pkg });
+			this.error(LanguageKeys.Commands.Developers.YarnPackageNotFound, { pkg });
 		}
 	}
 
-	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction) {
+	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction, context: SkyraCommand.Context) {
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies
@@ -77,7 +62,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setTitle(result.name)
 			.setURL(
-				message.commandText!.includes('yarn')
+				context.commandName.includes('yarn')
 					? `https://yarnpkg.com/en/package/${result.name}`
 					: `https://www.npmjs.com/package/${result.name}`
 			)

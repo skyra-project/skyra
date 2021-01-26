@@ -5,7 +5,7 @@ import { ApiRequest, ApiResponse, methods, MimeTypes, Route, RouteOptions } from
 import { isObject } from '@sapphire/utilities';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
-export default class extends Route {
+export class UserRoute extends Route {
 	// Challenge
 	public [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;

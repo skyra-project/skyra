@@ -1,7 +1,7 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise, getContent } from '#utils/util';
@@ -12,8 +12,8 @@ import type { TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationWords,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationWordsWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationWords,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationWordsWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.Filter.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.Filter.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.Filter.IgnoredRoles,
@@ -24,7 +24,7 @@ import type { TFunction } from 'i18next';
 		adder: 'words'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
 		const content = getContent(message);
 		if (content === null) return null;
@@ -36,12 +36,14 @@ export default class extends ModerationMessageEvent {
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
 		floatPromise(message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			await message.author.send(t(LanguageKeys.Monitors.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) }));
+			await message.author.send(
+				t(LanguageKeys.Events.Moderation.Messages.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) })
+			);
 		}
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.WordFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, results: FilterResults) {
@@ -49,7 +51,7 @@ export default class extends ModerationMessageEvent {
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.WordFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.WordFooter)}`)
 			.setTimestamp();
 	}
 

@@ -11,15 +11,8 @@ export const FlavorsQueryFail = FT<{ pokemon: string }, string>('commands/pokemo
 export const ItemDescription = T<string>('commands/pokemon:itemDescription');
 export const ItemExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:itemExtended');
 export const ItemEmbedData = FT<
-	{
-		availableInGen8: string;
-	},
-	{
-		ITEM: string;
-		generationIntroduced: string;
-		availableInGeneration8Title: string;
-		availableInGeneration8Data: string;
-	}
+	{ availableInGen8: string },
+	{ ITEM: string; generationIntroduced: string; availableInGeneration8Title: string; availableInGeneration8Data: string }
 >('commands/pokemon:itemEmbedData');
 export const ItemQueryFail = FT<{ item: string }, string>('commands/pokemon:itemQueryFail');
 export const LearnDescription = T<string>('commands/pokemon:learnDescription');
@@ -33,9 +26,7 @@ export const LearnTitle = FT<{ pokemon: string; generation: number }, string>('c
 export const MoveDescription = T<string>('commands/pokemon:moveDescription');
 export const MoveExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:moveExtended');
 export const MoveEmbedData = FT<
-	{
-		availableInGen8: string;
-	},
+	{ availableInGen8: string },
 	{
 		move: string;
 		types: string;
@@ -68,9 +59,7 @@ export const SpriteExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:sp
 export const TypeDescription = T<string>('commands/pokemon:typeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:typeExtended');
 export const TypeEmbedData = FT<
-	{
-		types: string[];
-	},
+	{ types: string[] },
 	{
 		offensive: string;
 		defensive: string;

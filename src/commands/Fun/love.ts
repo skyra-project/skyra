@@ -3,34 +3,32 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Message, MessageEmbed, User } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	spam: true,
-	usage: '<user:username>'
+	permissions: ['EMBED_LINKS'],
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [user]: [User]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);
 
 		let result: string | undefined = undefined;
-		const t = await message.fetchT();
-
 		if (estimatedPercentage < 45) {
-			result = t(LanguageKeys.Commands.Fun.LoveLess45);
+			result = args.t(LanguageKeys.Commands.Fun.LoveLess45);
 		} else if (estimatedPercentage < 75) {
-			result = t(LanguageKeys.Commands.Fun.LoveLess75);
+			result = args.t(LanguageKeys.Commands.Fun.LoveLess75);
 		} else if (estimatedPercentage < 100) {
-			result = t(LanguageKeys.Commands.Fun.LoveLess100);
+			result = args.t(LanguageKeys.Commands.Fun.LoveLess100);
 		} else {
-			result = t(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
+			result = args.t(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
 		}
 
 		return message.send(
@@ -43,7 +41,7 @@ export default class extends SkyraCommand {
 						`💗 **${user.tag}**`,
 						`💗 **${message.author.tag}**\n`,
 						`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
-						`**${t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
+						`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 					].join('\n')
 				)
 		);

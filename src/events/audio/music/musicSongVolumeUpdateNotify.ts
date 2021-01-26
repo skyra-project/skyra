@@ -3,7 +3,7 @@ import { AudioEvent } from '#lib/structures';
 import type { MessageAcknowledgeable } from '#lib/types';
 import { pickRandom } from '#utils/util';
 
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {
 		await channel.send(next > 200 ? await this.getExtremeVolume(channel, next) : await this.getRegularVolume(channel, previous, next));
 	}

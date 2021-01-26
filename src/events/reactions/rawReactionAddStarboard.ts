@@ -2,11 +2,11 @@ import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import type { TextChannel } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(data: LLRCData, emojiID: string) {
 		if (data.channel.nsfw) return;
 

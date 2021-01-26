@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
@@ -9,8 +9,8 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationLinks,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationLinksWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationLinks,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationLinksWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.Links.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.Links.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.Links.IgnoredRoles,
@@ -21,7 +21,7 @@ import type { TFunction } from 'i18next';
 		adder: 'links'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
@@ -46,14 +46,14 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.LinkMissing, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.LinkMissing, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.LinkFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.LinkFooter)}`)
 			.setTimestamp();
 	}
 }

@@ -10,17 +10,16 @@ import type { Message } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Games.WheelOfFortuneDescription,
 	extendedHelp: LanguageKeys.Commands.Games.WheelOfFortuneExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '<wager:wager>'
+	permissions: ['ATTACH_FILES']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [wager]: [number]) {
-		const t = await message.fetchT();
-		const { users } = await DbSet.connect();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const [{ users }, wager] = await Promise.all([DbSet.connect(), args.pick('shinyWager')]);
+		const { t } = args;
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw t(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+			this.error(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();

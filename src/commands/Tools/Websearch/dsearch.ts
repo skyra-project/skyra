@@ -11,25 +11,24 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
-	usage: '<query:string>',
-	usageDelim: ' ',
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [query]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const query = await args.rest('string');
+
 		const url = new URL('https://api.duckduckgo.com');
 		url.searchParams.append('q', query);
 		url.searchParams.append('format', 'json');
 		url.searchParams.append('no_html', '1');
 		url.searchParams.append('t', 'skyra-project');
 
-		const t = await message.fetchT();
 		const body = await fetch<DuckDuckGoResultOk>(url, FetchResultTypes.JSON).catch((error) => {
-			throw t(this.handleFetchError(error));
+			this.error(this.handleFetchError(error));
 		});
 
 		if (body.Heading.length === 0) {
-			throw t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
+			this.error(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
 		}
 
 		const embed = new MessageEmbed()
@@ -38,10 +37,10 @@ export default class extends SkyraCommand {
 			.setURL(body.AbstractURL)
 			.setThumbnail(body.Image)
 			.setDescription(body.AbstractText)
-			.setFooter(t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy));
+			.setFooter(args.t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy));
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
+			embed.addField(args.t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
 		}
 
 		return message.send(embed);

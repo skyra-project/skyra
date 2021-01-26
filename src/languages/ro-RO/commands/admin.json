@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "Blochează sau permite utilizatori și servere să îmi folosească funcționalitățile.",
-	"blocklistExtended": {
-		"extendedHelp": "Blochează utilizatorii care-mi abuzează funcțiile de a mă folosi în viitor, oameni obraznici!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Am resetat cu succes utilizatorii și serverele blocate",
-	"blocklistSaveSuccess": "{{GREENTICK}} Am actualizat cu succes utilizatorii și/sau serverele blocate",
-	"confNoKey": "Trebuie să furnizați o cheie",
-	"confNoValue": "Trebuie să furnizați o valoare",
 	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
 	"confUpdated": "S-a actualizat cu succes cheia **{{key}}**: `{{response}}`",
-	"confKeyNotArray": "Această cheie nu este o listă. Utilizați în schimb acțiunea \"reset\".",
 	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
 	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
 	"confReset": "Cheia **{{key}}** a fost resetată la: `{{value}}`",
@@ -19,9 +10,7 @@
 		"extendedHelp": "Vă permite să configurați Skyra din Discord, ca o alternativă rapidă a portalului web (<https://skyra.pw>)."
 	},
 	"confServer": "**Setarea {{key}} a server-ului**\n{{list}}",
-	"confUserDescription": "Definiți setări per utilizator.",
 	"confDashboardOnlyKey": "`{{key}}` poate fi configurat doar prin intermediul panoului web (<https://skyra.pw>)",
-	"confUser": "**Setarea {{key}} a utilizatorului**\n{{list}}",
 	"confSettingNotSet": "Nu este setat",
 	"heapSnapshotDescription": "Creează un heapdump pentru a găsi scurgeri de memorie.",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "Roleset-ul unic {{name}} a fost creat cu următoarele roluri: {{roles, andList}}",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "Nu puteți elimina roleset-ul unic {{name}} deoarece nu există.",
 	"rolesetRemoved": "Roleset-ul unic {{name}} nu o să mai includă următoarele roluri: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} Nu există rolurset-uri configurate în acest grup.",
 	"rolesetResetAll": "{{GREENTICK}} Toate roleset-urile au fost eliminate cu succes.",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} Roleset-ul `{{name}}` a fost eliminat cu success de pe acest server.",
 	"rolesetUpdated": "Roleset-ul {{name}} a fost actualizat.",
 	"rolesetNoRolesets": "Nu aveți nici un roleset.",
-	"confMenuNopermissions": "Am nevoie de permisiunile {{ADD_REACTIONS, permissions}} și {{MANAGE_MESSAGES, permissions}} pentru a putea rula meniul.",
 	"confMenuRenderAtFolder": "Momentan la: 📁 {{path}}",
 	"confMenuRenderAtPiece": "Momentan la: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Nu există chei configurabile pentru acest dosar",

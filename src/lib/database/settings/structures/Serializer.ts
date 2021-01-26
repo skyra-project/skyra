@@ -1,10 +1,13 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { translate } from '#lib/i18n/translate';
+import type { SkyraArgs } from '#lib/structures';
+import { O } from '#utils/constants';
+import { AliasPiece, AliasPieceOptions, ArgumentError, UserError } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { AliasPiece, constants, MentionRegex } from 'klasa';
 
 export interface Ok<T> {
 	success: true;
@@ -27,7 +30,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param value The value to parsed.
 	 * @param context The context for the key.
 	 */
-	public abstract parse(value: string, context: SerializerUpdateContext): SerializerResult<T> | AsyncSerializerResult<T>;
+	public abstract parse(args: Serializer.Args, context: SerializerUpdateContext): SerializerResult<T> | AsyncSerializerResult<T>;
 
 	/**
 	 * Check whether or not the value is valid.
@@ -55,6 +58,15 @@ export abstract class Serializer<T> extends AliasPiece {
 	}
 
 	/**
+	 * Returns a SerializerResult<T> from a Result<T, UserError>.
+	 * @param args The Args parser.
+	 * @param value The result to handle.
+	 */
+	protected result(args: Serializer.Args, value: Result<T, UserError>): SerializerResult<T> {
+		return value.success ? value : this.errorFromArgument(args, value.error);
+	}
+
+	/**
 	 * Returns a successful result.
 	 * @param value The value to return.
 	 */
@@ -68,6 +80,19 @@ export abstract class Serializer<T> extends AliasPiece {
 	 */
 	protected error(error: string): SerializerResult<T> {
 		return { success: false, error: new Error(error) };
+	}
+
+	protected errorFromArgument(args: Serializer.Args, error: UserError): SerializerResult<T>;
+	/**
+	 * Returns an erroneous result given an ArgumentError.
+	 * @param args The Args parser.
+	 * @param error The error returned by the Argument.
+	 */
+	protected errorFromArgument<E>(args: Serializer.Args, error: ArgumentError<E>): SerializerResult<T>;
+	protected errorFromArgument<E>(args: Serializer.Args, error: ArgumentError<E>): SerializerResult<T> {
+		const argument = error.argument.name;
+		const identifier = translate(error.identifier);
+		return this.error(args.t(identifier, { ...error, ...(error.context as O), argument }));
 	}
 
 	/**
@@ -84,7 +109,7 @@ export abstract class Serializer<T> extends AliasPiece {
 
 			if (minimum === maximum) {
 				return this.error(
-					t(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
+					t(inclusive ? LanguageKeys.Serializers.MinMaxExactlyInclusive : LanguageKeys.Serializers.MinMaxExactlyExclusive, {
 						name,
 						min: minimum
 					})
@@ -92,7 +117,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				t(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
+				t(inclusive ? LanguageKeys.Serializers.MinMaxBothInclusive : LanguageKeys.Serializers.MinMaxBothExclusive, {
 					name,
 					min: minimum,
 					max: maximum
@@ -106,7 +131,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				t(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
+				t(inclusive ? LanguageKeys.Serializers.MinMaxMinInclusive : LanguageKeys.Serializers.MinMaxMinExclusive, {
 					name,
 					min: minimum
 				})
@@ -119,7 +144,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				t(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
+				t(inclusive ? LanguageKeys.Serializers.MinMaxMaxInclusive : LanguageKeys.Serializers.MinMaxMaxExclusive, {
 					name,
 					max: maximum
 				})
@@ -128,11 +153,12 @@ export abstract class Serializer<T> extends AliasPiece {
 
 		return this.ok(value);
 	}
+}
 
-	/**
-	 * Standard regular expressions for matching mentions and snowflake ids
-	 */
-	public static regex: MentionRegex = constants.MENTION_REGEX;
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Serializer {
+	export type Options = AliasPieceOptions;
+	export type Args = SkyraArgs;
 }
 
 export interface SerializerUpdateContext {

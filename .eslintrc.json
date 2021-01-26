@@ -19,6 +19,12 @@
 			"rules": {
 				"@typescript-eslint/no-namespace": 0
 			}
+		},
+		{
+			"files": ["src/lib/types/definitions/*.ts"],
+			"rules": {
+				"@typescript-eslint/no-namespace": 0
+			}
 		}
 	]
 }

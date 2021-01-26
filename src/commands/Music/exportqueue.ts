@@ -13,17 +13,17 @@ export const maximumExportQueueSize = 100;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	@requireQueueNotEmpty()
-	public async run(message: GuildMessage) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { audio, name } = message.guild;
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.channel.send(await message.resolveKey(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
+		return message.channel.send(args.t(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
 			files: [{ attachment: Buffer.from(data), name: `${name}-${Date.now()}.squeue` }]
 		});
 	}

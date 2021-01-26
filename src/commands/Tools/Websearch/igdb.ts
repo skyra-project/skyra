@@ -4,8 +4,8 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
 import { TOKENS } from '#root/config';
-import { BrandingColors, Mime } from '#utils/constants';
-import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
+import { Mime } from '#utils/constants';
+import { fetch, FetchMethods, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -24,10 +24,9 @@ function isIgdbCompany(company: unknown): company is Company {
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,
-	usage: '<game:str>'
+	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
 		'Content-Type': Mime.Types.TextPlain,
@@ -54,21 +53,19 @@ export default class extends PaginatedMessageCommand {
 		'offset 0'
 	].join('; ');
 
-	public async run(message: GuildMessage, [game]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const game = await args.rest('string');
 
-		const entries = await this.fetchAPI(t, game);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
+		const response = await sendLoadingMessage(message, args.t);
+		const entries = await this.fetchAPI(game);
+		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, t, entries);
+		const display = await this.buildDisplay(message, args.t, entries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, game: string) {
+	private async fetchAPI(game: string) {
 		try {
 			return await fetch<Game[]>(
 				API_URL,
@@ -83,7 +80,7 @@ export default class extends PaginatedMessageCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 

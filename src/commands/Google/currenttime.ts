@@ -6,23 +6,22 @@ import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/API
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ctime'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<location:string>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [location]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const location = await args.rest('string');
+		const { t } = args;
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
-		const t = await message.fetchT();
-		const { status, ...timeData } = await this.fetchAPI(t, lat, lng);
+		const { status, ...timeData } = await this.fetchAPI(lat, lng);
 
-		if (status !== GoogleResponseCodes.Ok) throw t(handleNotOK(status));
+		if (status !== GoogleResponseCodes.Ok) this.error(handleNotOK(status));
 
 		const dstEnabled = t(
 			Number(timeData.dst) === 0 ? LanguageKeys.Commands.Google.CurrentTimeDst : LanguageKeys.Commands.Google.CurrentTimeNoDst
@@ -45,7 +44,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(t: TFunction, lat: number, lng: number) {
+	private async fetchAPI(lat: number, lng: number) {
 		const url = new URL('http://api.timezonedb.com/v2.1/get-time-zone');
 		url.searchParams.append('by', 'position');
 		url.searchParams.append('format', 'json');
@@ -54,7 +53,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
-			throw t(LanguageKeys.Commands.Google.CurrentTimeLocationNotFound);
+			this.error(LanguageKeys.Commands.Google.CurrentTimeLocationNotFound);
 		});
 	}
 }

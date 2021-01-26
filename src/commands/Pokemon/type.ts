@@ -4,11 +4,10 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import type { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -37,44 +36,26 @@ const kPokemonTypes = new Set([
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.TypeDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended,
-	usage: '<types:type{2}>'
+	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended
 })
-@CreateResolvers([
-	[
-		'type',
-		async (arg: string | string[], _, message) => {
-			arg = (arg as string).toLowerCase().split(' ');
-
-			if (arg.length > 2) throw await message.resolveKey(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
-
-			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw await message.resolveKey(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
-			}
-
-			return arg;
-		}
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [types]: [Types[]]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
-		const typeMatchups = await this.fetchAPI(types, t);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const { t } = args;
+		const types = await args.rest(UserPaginatedMessageCommand.type);
+		const response = await sendLoadingMessage(message, t);
+		const typeMatchups = await this.fetchAPI(types);
 
 		const display = await this.buildDisplay(message, types, typeMatchups, t);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(types: Types[], t: TFunction) {
+	private async fetchAPI(types: Types[]) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw t(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
+			this.error(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
 				types: types.map((val) => `\`${val}\``)
 			});
 		}
@@ -167,4 +148,18 @@ export default class extends PaginatedMessageCommand {
 					.addField(externalResources, externalSources)
 			);
 	}
+
+	private static type = Args.make<Types[]>((parameter, { argument }) => {
+		const lowerCasedSplitArguments = parameter.toLowerCase().split(' ') as Types[];
+
+		if (lowerCasedSplitArguments.length > 2)
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Pokemon.TypeTooManyTypes });
+
+		for (const type of lowerCasedSplitArguments) {
+			if (!kPokemonTypes.has(type))
+				return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Pokemon.TypeNotAType, context: { type } });
+		}
+
+		return Args.ok(lowerCasedSplitArguments);
+	});
 }

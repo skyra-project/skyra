@@ -8,14 +8,15 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<name:string>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [name]: [string]) {
-		const t = await message.fetchT();
-		const { data: channelData } = await this.fetchUsers(t, [name]);
-		if (channelData.length === 0) throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const name = await args.pick('string');
+		const { t } = args;
+
+		const { data: channelData } = await this.fetchUsers([name]);
+		if (channelData.length === 0) this.error(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		const channel = channelData[0];
 
 		const { total: followersTotal } = await this.context.client.twitch.fetchUserFollowage('', channel.id);
@@ -50,11 +51,11 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async fetchUsers(t: TFunction, usernames: string[]) {
+	private async fetchUsers(usernames: string[]) {
 		try {
 			return await this.context.client.twitch.fetchUsers([], usernames);
 		} catch {
-			throw t(LanguageKeys.Commands.Twitch.TwitchNoEntries);
+			this.error(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		}
 	}
 }

@@ -5,22 +5,30 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceChannel } from 'discord.js';
+import type { TFunction } from 'i18next';
+
+const flags = ['force'];
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.SkipDescription,
 	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
-	usage: '[force]'
+	strategyOptions: { flags }
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireSongPresent()
 	@requireSameVoiceChannel()
-	public async run(message: GuildMessage, [force = false]: [boolean]) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 		const { voiceChannel } = audio;
 
 		const listeners = voiceChannel?.listeners.length ?? 0;
+		const arg = args.nextMaybe();
+		const shouldForce = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 		if (listeners >= 4) {
-			const response = force ? await this.canSkipWithForce(message, voiceChannel!) : await this.canSkipWithoutForce(message, audio, listeners);
+			const response = shouldForce
+				? await this.canSkipWithForce(message, voiceChannel!)
+				: await this.canSkipWithoutForce(message, args.t, audio, listeners);
+
 			if (response !== null) return message.send(response);
 		}
 
@@ -34,9 +42,9 @@ export default class extends MusicCommand {
 		return (await message.member.canManage(voiceChannel)) ? null : message.resolveKey(LanguageKeys.Commands.Music.SkipPermissions);
 	}
 
-	private async canSkipWithoutForce(message: GuildMessage, audio: Queue, listeners: number): Promise<string | null> {
+	private async canSkipWithoutForce(message: GuildMessage, t: TFunction, audio: Queue, listeners: number): Promise<string | null> {
 		const added = await audio.addSkipVote(message.author.id);
-		if (!added) return message.resolveKey(LanguageKeys.Commands.Music.SkipVotesVoted);
+		if (!added) return t(LanguageKeys.Commands.Music.SkipVotesVoted);
 
 		const amount = await audio.countSkipVotes();
 		if (amount <= 3) return null;
@@ -44,6 +52,6 @@ export default class extends MusicCommand {
 		const needed = Math.ceil(listeners * 0.4);
 		if (needed <= amount) return null;
 
-		return message.resolveKey(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
+		return t(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
 	}
 }

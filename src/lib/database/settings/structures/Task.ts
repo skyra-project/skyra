@@ -1,6 +1,6 @@
 import type { PartialResponseValue } from '#lib/database';
+import { Piece, PieceOptions } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
-import { Piece } from 'klasa';
 
 export abstract class Task extends Piece {
 	/**
@@ -8,4 +8,9 @@ export abstract class Task extends Piece {
 	 * @param data The data
 	 */
 	public abstract run(data: unknown): Awaited<PartialResponseValue | null>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Task {
+	export type Options = PieceOptions;
 }

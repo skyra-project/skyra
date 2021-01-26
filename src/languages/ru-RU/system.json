@@ -16,6 +16,7 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
+		"usages": "",
 		"explainedUsage": "",
 		"possibleFormats": "",
 		"examples": "",
@@ -33,9 +34,7 @@
 		"",
 		""
 	],
-	"messageNotFound": "",
 	"noResults": "",
-	"notEnoughParameters": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
 	"poweredByWeebSh": "",

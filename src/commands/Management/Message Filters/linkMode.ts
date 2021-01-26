@@ -1,6 +1,6 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SelfModerationCommand } from '#lib/structures';
+import { SelfModerationCommand } from '#lib/moderation';
 import type { KeyOfType } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 
@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.LinkModeDescription,
 	extendedHelp: LanguageKeys.Commands.Management.LinkModeExtended
 })
-export default class extends SelfModerationCommand {
+export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'links';
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Links.Enabled;
 	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Links.SoftAction;

@@ -1,0 +1,23 @@
+{
+	"guildMemberAdd": "User Joined",
+	"guildMemberAddDescription": "{{mention}} | **Joined Discord**: {{time, duration}} ago.",
+	"guildMemberAddedRoles_plural": "**Added roles**: {{addedRoles, andList}}",
+	"guildMemberAddedRoles": "**Added role**: {{addedRoles}}",
+	"guildMemberAddMute": "Muted User joined",
+	"guildMemberBanned": "User Banned",
+	"guildMemberKicked": "User Kicked",
+	"guildMemberNoUpdate": "No update detected",
+	"guildMemberRemove": "User Left",
+	"guildMemberRemoveDescription": "{{mention}} | **Joined Server**: Unknown.",
+	"guildMemberRemoveDescriptionWithJoinedAt": "{{mention}} | **Joined Server**: {{time, duration}} ago.",
+	"guildMemberRemovedRoles_plural": "**Removed roles**: {{removedRoles, andList}}",
+	"guildMemberRemovedRoles": "**Removed role**: {{removedRoles}}",
+	"guildMemberSoftBanned": "User Softbanned",
+	"nameUpdateNextWasNotSet": "**Next**: Unset",
+	"nameUpdateNextWasSet": "**Next**: `{{nextName}}`",
+	"nameUpdatePreviousWasNotSet": "**Previous**: Unset",
+	"nameUpdatePreviousWasSet": "**Previous**: `{{previousName}}`",
+	"nicknameUpdate": "Nickname Edited",
+	"roleUpdate": "Roles Edited",
+	"usernameUpdate": "Username Edited"
+}

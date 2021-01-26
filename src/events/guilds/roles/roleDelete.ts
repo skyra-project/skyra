@@ -1,7 +1,7 @@
+import { Event } from '@sapphire/framework';
 import type { Role } from 'discord.js';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(role: Role) {
 		if (!role.guild.available) return;
 

@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { MessageLogsEnum } from '#utils/constants';
+import { Event } from '@sapphire/framework';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
 
 const TYPES = {
 	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
@@ -12,7 +12,7 @@ const TYPES = {
 	[MessageLogsEnum.Reaction]: GuildSettings.Channels.ReactionLogs
 } as const;
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
 		const key = TYPES[type];
 		if (!key) {

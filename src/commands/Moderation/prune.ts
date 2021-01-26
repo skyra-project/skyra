@@ -8,11 +8,11 @@ import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { constants } from 'klasa';
 
 const enum Position {
 	Before,
@@ -37,54 +37,16 @@ const enum Filter {
 	description: LanguageKeys.Commands.Moderation.PruneDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	flagSupport: true,
-	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-	runIn: ['text'],
-	usage: '<limit:integer{1,100}> [filter:filter|user:user] (position:position) (message:message)',
-	usageDelim: ' '
+	strategyOptions: { flags: ['silent'] },
+	permissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
-	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
-	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
-	private readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
-	private readonly kCommandPrunePositions: Record<string, Position> = {
-		before: Position.Before,
-		b: Position.Before,
-		after: Position.After,
-		a: Position.After
-	};
-
-	private readonly kCommandPruneFilters: Record<string, Filter> = {
-		file: Filter.Attachments,
-		files: Filter.Attachments,
-		upload: Filter.Attachments,
-		uploads: Filter.Attachments,
-		author: Filter.Author,
-		me: Filter.Author,
-		bot: Filter.Bots,
-		bots: Filter.Bots,
-		human: Filter.Humans,
-		humans: Filter.Humans,
-		invite: Filter.Invites,
-		invites: Filter.Invites,
-		link: Filter.Links,
-		links: Filter.Links,
-		skyra: Filter.Skyra,
-		you: Filter.Skyra
-	};
-
-	public async run(
-		message: GuildMessage,
-		[limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, GuildMessage]
-	) {
-		// This can happen for a large variety of situations:
-		// - Invalid limit (less than 1 or more than 100).
-		// - Invalid filter
-		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
-		// are invalid command usages and therefore, for the sake of protection, Skyra should
-		// not execute an erroneous command.
-		if (message.args.length > 4) throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalid);
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const limit = await args.pick('integer', { minimum: 1, maximum: 100 });
+		const rawFilter = args.finished ? null : await args.pick(UserCommand.filter).catch(() => args.pick('user'));
+		const rawPosition = args.finished ? null : await args.pick(UserCommand.position);
+		const targetMessage = args.finished && rawPosition === null ? message : await args.pick('message');
 
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
@@ -99,7 +61,7 @@ export default class extends SkyraCommand {
 		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
-		if (filtered.size === 0) throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneNoDeletes);
+		if (filtered.size === 0) this.error(LanguageKeys.Commands.Moderation.PruneNoDeletes);
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -108,37 +70,10 @@ export default class extends SkyraCommand {
 		});
 
 		// Send prune logs and reply to the channel
-		floatPromise(this.sendPruneLogs(message, filtered, filteredKeys));
-		return Reflect.has(message.flagArgs, 'silent')
+		floatPromise(this.sendPruneLogs(message, args.t, filtered, filteredKeys));
+		return args.getFlags('silent')
 			? null
-			: message.alert(
-					await message.resolveKey(LanguageKeys.Commands.Moderation.PruneAlert, {
-						count: filteredKeys.length,
-						total: limit
-					})
-			  );
-	}
-
-	public async onLoad() {
-		this.createCustomResolver('filter', async (argument, _possible, message) => {
-			if (!argument) return undefined;
-			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
-			return filter;
-		})
-			.createCustomResolver('position', async (argument, _possible, message) => {
-				if (!argument) return null;
-				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
-				return position;
-			})
-			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
-				if (position === null) return message;
-
-				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
-				return fetched;
-			});
+			: message.alert(args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit }));
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
@@ -156,9 +91,9 @@ export default class extends SkyraCommand {
 			case Filter.Humans:
 				return (mes: GuildMessage) => mes.author.id === message.author.id;
 			case Filter.Invites:
-				return (mes: GuildMessage) => this.kInviteRegExp.test(mes.content);
+				return (mes: GuildMessage) => UserCommand.kInviteRegExp.test(mes.content);
 			case Filter.Links:
-				return (mes: GuildMessage) => this.kLinkRegExp.test(mes.content);
+				return (mes: GuildMessage) => UserCommand.kLinkRegExp.test(mes.content);
 			case Filter.Skyra:
 				return (mes: GuildMessage) => mes.author.id === CLIENT_ID;
 			case Filter.User:
@@ -168,15 +103,15 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private resolveFilter(filter: Filter | User | undefined) {
-		return typeof filter === 'undefined' ? Filter.None : filter instanceof User ? Filter.User : filter;
+	private resolveFilter(filter: Filter | User | null) {
+		return filter === null ? Filter.None : filter instanceof User ? Filter.User : filter;
 	}
 
 	private resolvePosition(position: Position | null) {
 		return position === Position.After ? 'after' : 'before';
 	}
 
-	private async sendPruneLogs(message: GuildMessage, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
+	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
 		const channelID = await message.guild.readSettings(GuildSettings.Channels.PruneLogs);
 		if (isNullish(channelID)) return;
 
@@ -189,8 +124,6 @@ export default class extends SkyraCommand {
 		if (channel.attachable) {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
-
-			const t = await message.fetchT();
 
 			// Send the message to the prune logs channel.
 			await channel.send('', {
@@ -206,7 +139,7 @@ export default class extends SkyraCommand {
 							count: messages.size
 						})
 					)
-					.setColor(this.kColor)
+					.setColor(UserCommand.kColor)
 					.setTimestamp(),
 				files: [this.generateAttachment(t, messages)]
 			});
@@ -322,4 +255,51 @@ export default class extends SkyraCommand {
 	private formatEmbedRichProvider(embed: MessageEmbed) {
 		return `🔖 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
+
+	private static filter = Args.make<Filter>((parameter, { argument }) => {
+		const filter = this.kCommandPruneFilters[parameter.toLowerCase()];
+		if (typeof filter === 'undefined') {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Moderation.PruneInvalidFilter });
+		}
+
+		return Args.ok(filter);
+	});
+
+	private static position = Args.make<Position>((parameter, { argument }) => {
+		const position = this.kCommandPrunePositions[parameter.toLowerCase()];
+		if (typeof position === 'undefined') {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Moderation.PruneInvalidPosition });
+		}
+
+		return Args.ok(position);
+	});
+
+	private static readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
+	private static readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
+	private static readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
+	private static readonly kCommandPrunePositions: Record<string, Position> = {
+		before: Position.Before,
+		b: Position.Before,
+		after: Position.After,
+		a: Position.After
+	};
+
+	private static readonly kCommandPruneFilters: Record<string, Filter> = {
+		file: Filter.Attachments,
+		files: Filter.Attachments,
+		upload: Filter.Attachments,
+		uploads: Filter.Attachments,
+		author: Filter.Author,
+		me: Filter.Author,
+		bot: Filter.Bots,
+		bots: Filter.Bots,
+		human: Filter.Humans,
+		humans: Filter.Humans,
+		invite: Filter.Invites,
+		invites: Filter.Invites,
+		link: Filter.Links,
+		links: Filter.Links,
+		skyra: Filter.Skyra,
+		you: Filter.Skyra
+	};
 }

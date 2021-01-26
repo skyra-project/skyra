@@ -1,7 +1,6 @@
 {
 	"followage": "{{user}} has been following {{channel}} for {{time, duration}}.",
 	"followageMissingEntries": "Either the user or the channel do not exist. Make sure you wrote their names correctly.",
-	"followageNotFollowing": "That user is not following the specified channel.",
 	"twitchNoEntries": "There are no entries. Are you sure you wrote the user name correctly?",
 	"twitchTitles": {
 		"followers": "Followers",
@@ -14,14 +13,12 @@
 		"affiliated": "This is an affiliated channel.",
 		"partnered": "This is a partnered channel."
 	},
-	"twitchCreatedAt": "Created At:",
-	"twitchSubscriptionRequiredStreamer": "{{REDCROSS}} You must specify which streamer you want to subscribe to.",
 	"twitchSubscriptionStreamerNotFound": "{{REDCROSS}} Sorry, I could not find the streamer. Are you sure you wrote their name correctly?",
-	"twitchSubscriptionRequiredChannel": "{{REDCROSS}} You must tell me where do you want the messages to be sent.",
-	"twitchSubscriptionRequiredStatus": "{{REDCROSS}} You must tell me which type of notification do you want, the options are \"online\" and \"offline\".",
-	"twitchSubscriptionStatusValues": ["online", "offline"],
+	"twitchSubscriptionStatusValues": [
+		"online",
+		"offline"
+	],
 	"twitchSubscriptionInvalidStatus": "{{REDCROSS}} Woah there! I expected \"online\" or \"offline\", but I cannot understand what you gave me instead.",
-	"twitchSubscriptionRequiredContent": "{{REDCROSS}} Mhmm, I wonder what you want me to send when the user goes live or something. Can you give me a hint please?",
 	"twitchSubscriptionAddDuplicated": "{{REDCROSS}} You're already subscribed to that streamer in this channel for that status.",
 	"twitchSubscriptionAddSuccessOffline": "{{GREENTICK}} Success! Whenever {{name}} goes offline, I will post a new message in {{channel}}.",
 	"twitchSubscriptionAddSuccessLive": "{{GREENTICK}} Success! Whenever {{name}} goes live, I will post a new message in {{channel}}.",
@@ -36,31 +33,86 @@
 	"twitchSubscriptionResetChannelSuccess": "{{GREENTICK}} Success! Removed {{count}} subscription from the streamer {{name}}.",
 	"twitchSubscriptionResetChannelSuccess_plural": "{{GREENTICK}} Success! Removed {{count}} subscriptions from the streamer {{name}}.",
 	"twitchSubscriptionShowStreamerNotSubscribed": "{{REDCROSS}} You wanted to see all subscriptions from this streamer, but there are none!",
-	"twitchSubscriptionShowStatus": ["Online", "Offline"],
+	"twitchSubscriptionShowStatus": [
+		"Online",
+		"Offline"
+	],
 	"twitchSubscriptionShowEmpty": "{{REDCROSS}} There are no subscriptions, who will be the first?",
 	"twitchSubscriptionShowUnknownUser": "Unknown",
 	"followageDescription": "Check how long a Twitch user has been following a channel.",
 	"followageExtended": {
-		"extendedHelp": "Just... that.",
-		"examples": ["dallas cohhcarnage"]
+		"usages": [
+			"Username",
+			"Channelname"
+		],
+		"extendedHelp": "Useful if you want to flex how long you've been a fan of your favorite Twitch streamer",
+		"explainedUsage": [
+			[
+				"Username",
+				"The name of the Twitch user to check."
+			],
+			[
+				"Channelname",
+				"The name of the Twitch channel to check."
+			]
+		],
+		"examples": [
+			"dallas cohhcarnage"
+		]
 	},
 	"twitchDescription": "Check the information about a Twitch profile.",
 	"twitchExtended": {
-		"extendedHelp": "Really, just that.",
-		"examples": ["riotgames"]
+		"usages": [
+			"Username"
+		],
+		"extendedHelp": "Shows you how many followers and views a channel has had as well as if they are partnered or not.",
+		"explainedUsage": [
+			[
+				"Username",
+				"The Twitch user to get info about"
+			]
+		],
+		"examples": [
+			"riotgames"
+		]
 	},
 	"twitchSubscriptionDescription": "Manage the subscriptions for your server.",
 	"twitchSubscriptionExtended": {
-		"extendedHelp": "Manage the subscriptions for this server.\n__Online Notifications__\nFor content, the best way is writing `--embed`, the notifications will then show up in MessageEmbeds with all available data.\nAlternatively you can set your own content and it will post as a regular message.\nThis content can contain some parameters that will be replaced with Twitch data:\n- `%TITLE%` for the stream's title\n- `%VIEWER_COUNT%` for the amount of current viewers,\n- `%GAME_NAME%` for the title being streamed\n- `%GAME_ID%` for the game's ID as seen by Twitch\n- `%LANGUAGE%` for the language the stream is in\n- `%USER_ID%` for the streamer's ID as seen by Twitch\n- and `%USER_NAME%` for the Streamer's twitch username.\n\n__Offline Notifications__\nFor offline events none of the variables above are available and you'll have to write your own content.\nYou can still use the `--embed` flag for the notification to show in a nice Twitch-purple MessageEmbed.",
+		"usages": [
+			"add Streamer Channel Status",
+			"add Streamer Channel Status",
+			"remove Streamer Channel Status",
+			"reset Streamer",
+			"reset",
+			"show",
+			""
+		],
+		"extendedHelp": "Manage the subscriptions for this server.\n__Online Notifications__\nAll available data will show up in a very nice embed telling you exactly what the streamer is up to.\n\n__Offline Notifications__\nYou need to write your own message that will be posted when the streamer goes offline. It will be displayed in a nice Twitch-purple MessageEmbed.",
 		"explainedUsage": [
-			["streamer", "The Twitch username of the streamer to get notifications for."],
-			["channel", "A Discord channel where to post the notifications in."],
-			["status", "The status that the Twitch streamer should get for an notification, one of online or offline."],
-			["content", "The message to send in Discord chat. Refer to extended help above for more information."]
+			[
+				"add/remove/reset/show",
+				"Whether to\n　- Add a new Twitch subscription.\n　- Remove an existing Twitch subscription\n　- Reset all twitch subscription, or those for a specific streamer\n　- Show all current Twitch subscriptions"
+			],
+			[
+				"Streamer",
+				"The Twitch username of the streamer to get notifications for."
+			],
+			[
+				"Channel",
+				"A Discord channel where to post the notifications in."
+			],
+			[
+				"Status",
+				"The status that the Twitch streamer should get for an notification, one of online or offline."
+			],
+			[
+				"Content",
+				"The message to send in Discord chat. Only needed for offline notifications."
+			]
 		],
 		"examples": [
-			"add favna #twitch online --embed",
-			"add favna #twitch online %USER_NAME% went live | %TITLE%",
+			"add favna #twitch online",
+			"add favna #twitch offline Favna is now offline. Say goodbye 👋!",
 			"remove kyranet #twitch online",
 			"reset kyranet",
 			"reset",

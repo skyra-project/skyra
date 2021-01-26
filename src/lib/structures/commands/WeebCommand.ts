@@ -3,9 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { MessageEmbed, User } from 'discord.js';
-import type { TFunction } from 'i18next';
-import type { PieceContext } from 'klasa';
+import type { PieceContext } from '@sapphire/framework';
+import { MessageEmbed } from 'discord.js';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -16,7 +15,10 @@ export namespace WeebCommand {
 	export type Options = SkyraCommand.Options & {
 		queryType: string;
 		responseName: SimpleKey | ComplexKey;
+		requireUser?: boolean;
 	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 export abstract class WeebCommand extends SkyraCommand {
@@ -29,6 +31,8 @@ export abstract class WeebCommand extends SkyraCommand {
 	 */
 	public responseName: SimpleKey | ComplexKey;
 
+	public requireUser: boolean;
+
 	private readonly kHeaders = {
 		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
 		'User-Agent': `Skyra/${VERSION}`
@@ -38,40 +42,36 @@ export abstract class WeebCommand extends SkyraCommand {
 		super(context, {
 			bucket: 2,
 			cooldown: 30,
-			flagSupport: false,
-			requiredPermissions: ['EMBED_LINKS'],
+			permissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			...options
 		});
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
+		this.requireUser = options.requireUser ?? false;
 	}
 
-	public async run(message: GuildMessage, params?: User[]) {
+	public async run(message: GuildMessage, args: WeebCommand.Args) {
+		const user = this.requireUser ? await args.pick('userName') : null;
 		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const t = await message.guild.fetchT();
-		const { url } = await this.fetch(t, query);
+		const { t } = args;
+		const { url } = await this.fetch(query);
 
-		return message.send(
-			Boolean(this.usage.parsedUsage.length)
-				? t(this.responseName as ComplexKey, { user: params![0].username })
-				: t(this.responseName as SimpleKey),
-			{
-				embed: new MessageEmbed()
-					.setTitle('→')
-					.setURL(url)
-					.setColor(await DbSet.fetchColor(message))
-					.setImage(url)
-					.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
-			}
-		);
+		return message.send(user ? t(this.responseName as ComplexKey, { user: user.username }) : t(this.responseName as SimpleKey), {
+			embed: new MessageEmbed()
+				.setTitle('→')
+				.setURL(url)
+				.setColor(await DbSet.fetchColor(message))
+				.setImage(url)
+				.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
+		});
 	}
 
-	private async fetch(t: TFunction, url: URL): Promise<WeebCommandResult> {
+	private async fetch(url: URL): Promise<WeebCommandResult> {
 		try {
 			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
 		} catch (unknownError: unknown) {
@@ -79,12 +79,12 @@ export abstract class WeebCommand extends SkyraCommand {
 
 			// If we received a 5XX code error, warn the user about the service's unavailability.
 			if (error.code >= 500) {
-				throw t(LanguageKeys.Commands.Weeb.UnavailableError);
+				this.error(LanguageKeys.Commands.Weeb.UnavailableError);
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
 			this.context.client.logger.error(`Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
-			throw t(LanguageKeys.Commands.Weeb.UnexpectedError);
+			this.error(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
 }

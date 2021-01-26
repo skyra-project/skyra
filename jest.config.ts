@@ -1,6 +1,8 @@
 import type { Config } from '@jest/types';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// Make ts-jest shut up about "unsupported TS version"
+process.env.TS_JEST_DISABLE_VER_CHECKER = 'true';
+
 export default async (): Promise<Config.InitialOptions> => ({
 	coverageProvider: 'v8',
 	displayName: 'unit test',
@@ -26,13 +28,8 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/arguments',
 		'<rootDir>/src/commands',
 		'<rootDir>/src/events',
-		'<rootDir>/src/extendables',
-		'<rootDir>/src/inhibitors',
-		'<rootDir>/src/ipcMonitors',
 		'<rootDir>/src/languages',
-		'<rootDir>/src/middlewares',
-		'<rootDir>/src/monitors',
-		'<rootDir>/src/providers',
+		'<rootDir>/src/preconditions',
 		'<rootDir>/src/routes',
 		'<rootDir>/src/serializers',
 		'<rootDir>/src/tasks',

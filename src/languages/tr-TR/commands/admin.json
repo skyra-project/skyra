@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "",
-	"blocklistExtended": {
-		"extendedHelp": ""
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
-	"confNoKey": "Bir anahtar sağlamanız gerekir",
-	"confNoValue": "Bir değer sağlamanız gerekir",
 	"confGuarded": "{{name, toTitleCase}} devre dışı bırakılamaz.",
 	"confUpdated": "Anahtar başarıyla güncellendi **{{key}}**: `{{response}}`",
-	"confKeyNotArray": "Bu anahtarın türü bir dizi değildir. Bunun yerine 'reset' eylemini kullanın.",
 	"confGetNoExt": "**{{key}}** anahtarı mevcut görünmüyor.",
 	"confGet": "**{{key}}** anahtarının değeri: `{{value}}`",
 	"confReset": "**{{key}}** anahtarı şuna sıfırlandı: `{{value}}`",
@@ -19,9 +10,7 @@
 		"extendedHelp": ""
 	},
 	"confServer": "**Sunucu Ayarı {{key}}**\n {{list}}",
-	"confUserDescription": "Kullanıcıların ayarlarını düzenleyin.",
 	"confDashboardOnlyKey": "`{{key}}` yalnızca web kontrol paneli (<https://skyra.pw>) üzerinden yapılandırılabilir",
-	"confUser": "**Kullanıcı Ayarı {{key}}**\n {{list}}",
 	"confSettingNotSet": "Ayarlanmamış",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "",
 	"rolesetResetAll": "",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "",
 	"rolesetUpdated": "",
 	"rolesetNoRolesets": "",
-	"confMenuNopermissions": "",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",

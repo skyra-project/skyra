@@ -20,10 +20,7 @@ export const AutoRoleAdd = FT<{ role: Role; points: number }, string>('commands/
 export const AutoRoleDescription = T<string>('commands/social:autoRoleDescription');
 export const AutoRoleExtended = T<LanguageHelpDisplayOptions>('commands/social:autoRoleExtended');
 export const AutoRoleListEmpty = T<string>('commands/social:autoRoleListEmpty');
-export const AutoRolePointsRequired = T<string>('commands/social:autoRolePointsRequired');
 export const AutoRoleRemove = FT<{ role: Role; before: number }, string>('commands/social:autoRoleRemove');
-export const AutoRoleRequireRole = T<string>('commands/social:autoRoleRequireRole');
-export const AutoRoleUnknownRole = FT<{ role: string }, string>('commands/social:autoRoleUnknownRole');
 export const AutoRoleUpdate = FT<{ role: Role; points: number; before: number }, string>('commands/social:autoRoleUpdate');
 export const AutoRoleUpdateConfigured = T<string>('commands/social:autoRoleUpdateConfigured');
 export const AutoRoleUpdateUnconfigured = T<string>('commands/social:autoRoleUpdateUnconfigured');
@@ -40,7 +37,7 @@ export const BannerMissing = FT<{ type: string }, string>('commands/social:banne
 export const BannerMoney = FT<{ money: number; cost: number }, string>('commands/social:bannerMoney');
 export const BannerNotExists = FT<{ prefix: string }, string>('commands/social:bannerNotexists');
 export const BannerPaymentCancelled = T<string>('commands/social:bannerPaymentCancelled');
-export const BannerPrompt = T<string>('commands/social:bannerPrompt');
+export const BannerAllOrUser = T<string>('commands/social:bannerAllOrUser');
 export const BannerReset = T<string>('commands/social:bannerReset');
 export const BannerResetDefault = T<string>('commands/social:bannerResetDefault');
 export const BannerSet = FT<{ banner: string }, string>('commands/social:bannerSet');
@@ -69,7 +66,7 @@ export const Level = T<LevelTitles>('commands/social:level');
 export const LevelDescription = T<string>('commands/social:levelDescription');
 export const LevelExtended = T<LanguageHelpDisplayOptions>('commands/social:levelExtended');
 export const MarryAccepted = FT<{ author: string; user: string }, string>('commands/social:marryAccepted');
-export const MarryAlreadyMarried = FT<{ user: User }, string>('commands/social:marryAlreadyMarried');
+export const MarryAlreadyMarried = FT<{ user: string }, string>('commands/social:marryAlreadyMarried');
 export const MarryAuthorMultipleCancel = FT<{ user: string }, string>('commands/social:marryAuthorMultipleCancel');
 export const MarryAuthorTaken = FT<{ author: User }, string>('commands/social:marryAuthorTaken');
 export const MarryAuthorTooMany = FT<{ limit: number }, string>('commands/social:marryAuthorTooMany');
@@ -107,9 +104,7 @@ export const ProfileDescription = T<string>('commands/social:profileDescription'
 export const ProfileExtended = T<LanguageHelpDisplayOptions>('commands/social:profileExtended');
 export const RemindMeCreate = FT<{ id: string }, string>('commands/social:remindmeCreate');
 export const RemindMeCreateNoDescription = T<string>('commands/social:remindmeCreateNoDescription');
-export const RemindMeCreateNoDuration = T<string>('commands/social:remindmeCreateNoDuration');
 export const RemindMeDelete = FT<{ remainingDuration: number; id: number }, string>('commands/social:remindmeDelete');
-export const RemindMeDeleteNoID = T<string>('commands/social:remindmeDeleteNoId');
 export const RemindMeDescription = T<string>('commands/social:remindmeDescription');
 export const RemindMeExtended = T<LanguageHelpDisplayOptions>('commands/social:remindmeExtended');
 export const RemindMeInvalidId = T<string>('commands/social:remindmeInvalidId');
@@ -117,7 +112,6 @@ export const RemindMeListEmpty = T<string>('commands/social:remindmeListEmpty');
 export const RemindMeNotFound = T<string>('commands/social:remindmeNotfound');
 export const RemindMeShowFooter = FT<{ id: number }, string>('commands/social:remindmeShowFooter');
 export const Reputation = FT<{ count: number }, string>('commands/social:reputation');
-export const ReputationBots = T<string>('commands/social:reputationBots');
 export const ReputationDescription = T<string>('commands/social:reputationDescription');
 export const ReputationExtended = T<LanguageHelpDisplayOptions>('commands/social:reputationExtended');
 export const ReputationGive = FT<{ user: string }, string>('commands/social:reputationGive');
@@ -127,7 +121,6 @@ export const ReputationSelf = T<string>('commands/social:reputationSelf');
 export const ReputationsSelf = FT<{ points: number }, string>('commands/social:reputationsSelf');
 export const ReputationTime = FT<{ remaining: number }, string>('commands/social:reputationTime');
 export const ReputationUsable = T<string>('commands/social:reputationUsable');
-export const ReputationUserNotFound = T<string>('commands/social:reputationUserNotfound');
 export const SetColor = FT<{ color: string }, string>('commands/social:setColor');
 export const SetColorDescription = T<string>('commands/social:setColorDescription');
 export const SetColorExtended = T<LanguageHelpDisplayOptions>('commands/social:setColorExtended');
@@ -146,18 +139,10 @@ export const ToggleDarkModeEnabled = T<string>('commands/social:toggleDarkModeEn
 export const ToggleDarkModeExtended = T<LanguageHelpDisplayOptions>('commands/social:toggleDarkModeExtended');
 export const VaultDescription = T<string>('commands/social:vaultDescription');
 export const VaultEmbedData = FT<
-	{
-		coins?: number;
-	},
-	{
-		depositedDescription: string;
-		withdrewDescription: string;
-		showDescription: string;
-		accountMoney: string;
-		accountVault: string;
-	}
+	{ coins?: number },
+	{ depositedDescription: string; withdrewDescription: string; showDescription: string; accountMoney: string; accountVault: string }
 >('commands/social:vaultEmbedData');
 export const VaultExtended = T<LanguageHelpDisplayOptions>('commands/social:vaultExtended');
-export const VaultInvalidCoins = T<string>('commands/social:vaultInvalidCoins');
 export const VaultNotEnoughInVault = FT<{ vault: number }, string>('commands/social:vaultNotEnoughInVault');
 export const VaultNotEnoughMoney = FT<{ money: number }, string>('commands/social:vaultNotEnoughMoney');
+export const VaultInvalidAll = FT<{ parameter: string; possibles: readonly string[] }, string>('commands/social:vaultInvalidAll');

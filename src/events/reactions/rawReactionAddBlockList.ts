@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/structures';
+import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/moderation';
 import type { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -10,13 +10,13 @@ import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { EventOptions } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import type { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
-export default class extends ModerationEvent<ArgumentType, unknown> {
+export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> {
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
@@ -72,7 +72,7 @@ export default class extends ModerationEvent<ArgumentType, unknown> {
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
-			data.channel.sendTranslated(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
+			data.channel.sendTranslated(LanguageKeys.Events.Reactions.Filter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
@@ -88,7 +88,7 @@ export default class extends ModerationEvent<ArgumentType, unknown> {
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
-			.setFooter(`${data.channel.name} | ${t(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
+			.setFooter(`${data.channel.name} | ${t(LanguageKeys.Events.Reactions.FilterFooter)}`)
 			.setTimestamp();
 	}
 

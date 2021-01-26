@@ -6,24 +6,25 @@ import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokeitem', 'bag'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<item:str>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [item]: [string]) {
-		const t = await message.fetchT();
-		const itemDetails = await this.fetchAPI(t, item.toLowerCase());
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const item = (await args.rest('string')).toLowerCase();
+		const { t } = args;
+
+		const itemDetails = await this.fetchAPI(item);
 
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
 			availableInGen8: t(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
+
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -43,12 +44,12 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(t: TFunction, item: string) {
+	private async fetchAPI(item: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw t(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
+			this.error(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}
 	}
 }

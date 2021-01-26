@@ -3,17 +3,15 @@ import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNumber } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['roll'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.DiceExtended,
-	usage: '[amount:integer|dice:string]',
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	/**
 	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
 	 * Examples:
@@ -32,31 +30,27 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public async run(message: Message, [amountOrDice = 1]: [number | string | undefined]) {
-		const t = await message.fetchT();
-		return message.send(
-			t(LanguageKeys.Commands.Fun.DiceOutput, {
-				result: await this.roll(t, amountOrDice)
-			})
-		);
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const amountOrDice = await args.pick('integer', { minimum: 1, maximum: 1024 }).catch(() => args.rest('string'));
+		return message.send(args.t(LanguageKeys.Commands.Fun.DiceOutput, { result: await this.roll(amountOrDice) }));
 	}
 
-	private async roll(t: TFunction, pattern: string | number) {
+	private async roll(pattern: string | number) {
 		let amount: number | undefined = undefined;
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) throw t(LanguageKeys.Resolvers.InvalidInt, { name: 'dice' });
+			if (!isNumber(pattern) || pattern <= 0) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
 			amount = pattern;
 			dice = 6;
 		} else {
 			const results = this.kDice20RegExp.exec(pattern);
-			if (results === null) throw t(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (results === null) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
 			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
 			dice = Number(results[2]);
 
-			if (amount <= 0 || amount > 1024) throw t(LanguageKeys.Commands.Fun.DiceRollsError);
-			if (dice < 3 || dice > 1024) throw t(LanguageKeys.Commands.Fun.DiceSidesError);
+			if (amount <= 1 || amount > 1024) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (dice < 3 || dice > 1024) this.error(LanguageKeys.Commands.Fun.DiceSidesError);
 
 			if (results[3].length > 0) {
 				let modifierResults: RegExpExecArray | null = null;

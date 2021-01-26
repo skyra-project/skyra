@@ -12,26 +12,22 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Management.SetPrefixExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
-	usage: '<prefix:string{1,10}>',
 	aliases: ['prefix']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [prefix]: [string]) {
-		const t = await message.guild.writeSettings((settings) => {
-			const t = settings.getLanguage();
-
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const prefix = await args.pick('string', { minimum: 1, maximum: 10 });
+		await message.guild.writeSettings((settings) => {
 			// If it's the same value, throw:
 			if (settings[GuildSettings.Prefix] === prefix) {
-				throw t(LanguageKeys.Misc.ConfigurationEquals);
+				this.error(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
 			settings[GuildSettings.Prefix] = prefix;
-
-			return t;
 		});
 
-		return message.send(t(LanguageKeys.Commands.Management.SetPrefixSet, { prefix }), {
+		return message.send(args.t(LanguageKeys.Commands.Management.SetPrefixSet, { prefix }), {
 			allowedMentions: { users: [message.author.id], roles: [] }
 		});
 	}

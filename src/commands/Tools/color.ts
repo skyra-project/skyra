@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RGB, SkyraCommand } from '#lib/structures';
-import { hexConcat, luminance, parse } from '#utils/Color';
+import { hexConcat, luminance } from '#utils/Color';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, rgb } from 'canvas-constructor';
 import type { Message } from 'discord.js';
@@ -15,26 +15,17 @@ const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.ColorDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ColorExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '<color:string> [separator:integer{0,255}]',
-	usageDelim: ' >'
+	permissions: ['ATTACH_FILES']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input, diff = 10]: [string, number]) {
-		const { hex, hsl, rgb } = parse(input);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { hex, hsl, rgb } = await args.rest('color');
 
+		const diff = await args.pick('integer', { minimum: 0, maximum: 255 }).catch(() => 10);
 		const attachment = await this.showColor(rgb, diff);
-		const t = await message.fetchT();
-		return message.send(
-			t(LanguageKeys.Commands.Tools.Color, {
-				hex: hex.toString(),
-				rgb: rgb.toString(),
-				hsl: hsl.toString()
-			}),
-			{
-				files: [{ attachment, name: 'color.png' }]
-			}
-		);
+		return message.send(args.t(LanguageKeys.Commands.Tools.Color, { hex: hex.toString(), rgb: rgb.toString(), hsl: hsl.toString() }), {
+			files: [{ attachment, name: 'color.png' }]
+		});
 	}
 
 	public showColor(color: RGB, diff: number) {

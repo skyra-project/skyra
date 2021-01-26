@@ -1,10 +1,12 @@
 import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RateLimitManager } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { GuildMember, Permissions, Role } from 'discord.js';
-import { Event, EventOptions, RateLimitManager } from 'klasa';
 
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const {
@@ -12,8 +14,8 @@ const {
 } = Permissions;
 
 @ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
-export default class extends Event {
-	private readonly ratelimits = new RateLimitManager(1, 60000);
+export class UserEvent extends Event {
+	private readonly ratelimits = new RateLimitManager(Time.Minute, 1);
 
 	public async run(message: GuildMessage) {
 		const [socialEnabled, ignoredChannels, multiplier] = await message.guild.readSettings((settings) => [
@@ -41,7 +43,7 @@ export default class extends Event {
 		const rateLimit = this.ratelimits.acquire(userID);
 		if (rateLimit.limited) return true;
 
-		rateLimit.drip();
+		rateLimit.consume();
 		return false;
 	}
 
@@ -91,7 +93,7 @@ export default class extends Event {
 		]);
 		if (shouldAchieve && message.channel.postable) {
 			await message.channel.send(
-				this.getMessage(message.member!, role, achievementMessage || t(LanguageKeys.Monitors.SocialAchievement), points)
+				this.getMessage(message.member!, role, achievementMessage || t(LanguageKeys.Events.Guilds.Messages.SocialAchievement), points)
 			);
 		}
 	}

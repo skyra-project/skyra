@@ -1,7 +1,7 @@
 import * as Resolver from '#lib/structures/color';
 
 const REGEXP = {
-	B10: /^\d{1,8}$/,
+	B10: /^(?:\d{1,8}|0o[0-7]{1,8}|0x[0-9a-fA-F]{1,6}|0b[01]{1,24})$/,
 	HEX: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i,
 	HEX_EXEC: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i,
 	HSL: /^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/i,
@@ -11,11 +11,10 @@ const REGEXP = {
 	RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/i
 };
 
-export function parse(input: string): Resolver.ColorHandler {
+export function parse(input: string): Resolver.ColorHandler | null {
 	if (REGEXP.RANDOM.test(input)) return _generateRandom();
 	const output = _HEX(input) || _B10(input) || _RGB(input) || _HSL(input);
 
-	if (output === null) throw `${input} is not a supported type.`;
 	return output;
 }
 

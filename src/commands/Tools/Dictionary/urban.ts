@@ -2,8 +2,7 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -14,15 +13,12 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.UrbanDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.UrbanExtended,
-	nsfw: true,
-	usage: '<query:string>'
+	nsfw: true
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [query]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const query = await args.rest('string');
+		const response = await sendLoadingMessage(message, args.t);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
 			`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`,
@@ -30,7 +26,7 @@ export default class extends PaginatedMessageCommand {
 		);
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = await this.buildDisplay(list, message, t, query);
+		const display = await this.buildDisplay(list, message, args.t, query);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;

@@ -1,6 +1,6 @@
 import type { OutgoingWebsocketMessage } from '#lib/websocket/types';
 import { ENABLE_LAVALINK } from '#root/config';
-import { Event, EventOptions, PieceContext } from 'klasa';
+import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 
 interface AudioBroadcastCallback {
 	(): OutgoingWebsocketMessage | Promise<OutgoingWebsocketMessage>;

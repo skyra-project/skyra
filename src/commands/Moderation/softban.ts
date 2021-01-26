@@ -1,20 +1,20 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
+import { ModerationCommand } from '#lib/moderation';
 import { Moderation } from '#utils/constants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ArgumentTypes, isNumber } from '@sapphire/utilities';
+import { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sb'],
 	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	requiredMember: false,
-	requiredPermissions: ['BAN_MEMBERS']
+	permissions: ['BAN_MEMBERS'],
+	strategyOptions: { options: ['d', 'day', 'days'] }
 })
-export default class extends ModerationCommand {
+export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
 		const [banAdd, banRemove] = await message.guild.readSettings([GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
 		return banAdd || banRemove ? { unlock: message.guild.moderation.createLock() } : null;
@@ -29,8 +29,8 @@ export default class extends ModerationCommand {
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
-			await this.getDays(message),
-			await this.getTargetDM(message, context.target)
+			await this.getDays(context.args),
+			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
 
@@ -38,20 +38,18 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, t, context);
-		if (member && !member.bannable) throw t(LanguageKeys.Commands.Moderation.BanNotBannable);
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, context);
+		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 
-	private async getDays(message: GuildMessage) {
-		const regex = new RegExp(await message.resolveKey(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
-		for (const [key, value] of Object.entries(message.flagArgs)) {
-			if (regex.test(key)) {
-				const parsed = Number(value);
-				if (isNumber(parsed) && parsed >= 0 && parsed <= 7) return parsed;
-			}
-		}
+	private async getDays(args: ModerationCommand.Args) {
+		const value = args.getOption('d', 'day', 'days');
+		if (value === null) return 0;
+
+		const parsed = Number(value);
+		if (Number.isInteger(parsed) && parsed >= 0 && parsed <= 7) return parsed;
 		return 0;
 	}
 }

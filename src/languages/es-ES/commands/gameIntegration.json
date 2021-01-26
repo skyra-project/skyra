@@ -230,7 +230,6 @@
 	"overwatchInvalidPlayerName": "\"{{playerTag}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
 	"overwatchQueryFail": "Error al obtener los datos de \"{{player}}\", ¿estás seguro de que juegan en \"{{platform}}\"?\nTambién asegúrese de escribir las mayúsculas correctas, los nombres distinguen mayúsculas.",
 	"overwatchNoStats": "He encontrado un jugador con la etiqueta \"{{player}}\" pero no había estadísticas disponibles para ellos.",
-	"overwatchNoAverage": "No hay suficientes datos para determinar el promedio.",
 	"overwatchEmbedDataStats": {
 		"finalBlows": "**Explosiones Finales:** {{finalBlows, number}}",
 		"deaths": "**Muertes:** {{deaths, number}}",

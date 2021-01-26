@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { TOKENS } from '#root/config';
+import { Store } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { Store } from 'klasa';
 import { fetch, FetchResultTypes } from '../util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';

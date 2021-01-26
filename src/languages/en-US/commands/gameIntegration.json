@@ -1,12 +1,26 @@
 {
 	"brawlstarsDescription": "Get data on a player or club from Supercell's newest game, Brawl Stars.",
 	"brawlstarsExtended": {
+		"usages": [
+			"player #PlayerTag",
+			"player #PlayerTag --save",
+			"club #ClubTag"
+		],
 		"extendedHelp": "Use this command with --save to save your player/club tag.",
 		"explainedUsage": [
-			["category", "The category of data to get: **club** to get data on a club, or **player** to get data on a player (default)."],
-			["query", "The tag of the player or club, depending on which category you choose."]
+			[
+				"category",
+				"The category of data to get: **club** to get data on a club, or **player** to get data on a player (default)."
+			],
+			[
+				"query",
+				"The tag of the player or club, depending on which category you choose."
+			]
 		],
-		"examples": ["player #RJQLQ999", "club #228JVRQC9"]
+		"examples": [
+			"player #RJQLQ999",
+			"club #228JVRQC9"
+		]
 	},
 	"brawlstarsPlayerEmbedTitles": {
 		"trophies": "Trophies",
@@ -42,12 +56,25 @@
 	},
 	"clashofclansDescription": "Get data on a player or clan in the popular mobile game Clash of Clans",
 	"clashofclansExtended": {
+		"usages": [
+			"player #PlayerTag",
+			"club ClubName"
+		],
 		"extendedHelp": "The request for clans will try to return multiple possible responses.",
 		"explainedUsage": [
-			["category", "The category of data to get: **clan** to get data on a clan or **player** to get data on a player."],
-			["query", "Either a clan name or player tag depending on the category you chose."]
+			[
+				"category",
+				"The category of data to get: **clan** to get data on a clan or **player** to get data on a player."
+			],
+			[
+				"query",
+				"Either a clan name or player tag depending on the category you chose."
+			]
 		],
-		"examples": ["player #8GQPJG2CL", "clan Hog Raiders Swe"]
+		"examples": [
+			"player #8GQPJG2CL",
+			"clan Hog Raiders Swe"
+		]
 	},
 	"clashofclansPlayerEmbedTitles": {
 		"xpLevel": "XP level",
@@ -101,12 +128,26 @@
 	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
 	"FFXIVDescription": "Queries the Final Fantasy 14 API for game data",
 	"FFXIVExtended": {
+		"usages": [
+			"item Item",
+			"character Character"
+		],
 		"extendedHelp": "This command allows you to character and item data for FFXIV.\nFor item a wildcard search is performed so if your term is in the middle of the name it can still match.",
 		"explainedUsage": [
-			["search type", "(optional, defaults to \"character\") \"character\" or \"item\""],
-			["query", "The player or thing to search."]
+			[
+				"item/character",
+				"(optional, defaults to \"character\") Whether you want to search for a character or an item."
+			],
+			[
+				"Item/Character",
+				"The player character or item to search."
+			]
 		],
-		"examples": ["character Laytlan Ardevon", "Laytlan Ardevon", "item potion"]
+		"examples": [
+			"item potion",
+			"character Laytlan Ardevon",
+			"Laytlan Ardevon"
+		]
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "Server - Datacenter",
@@ -140,13 +181,31 @@
 	"FFXIVNoItemFound": "{{REDCROSS}} I am sorry, but I was unable to find an item with that query.",
 	"fortniteDescription": "Gets player statistics for a Fortnite player",
 	"fortniteExtended": {
+		"usages": [
+			"Player Name",
+			"psn Player Name",
+			"xbox Player Name",
+			"pc Player Name"
+		],
 		"extendedHelp": "This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation",
 		"explainedUsage": [
-			["platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbox\", or \"psn\"."],
-			["player", "The Epic Games username of the player."]
+			[
+				"xbox/psn/pc",
+				"(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbox\", or \"psn\"."
+			],
+			[
+				"Player Name",
+				"The Epic Games username of the player."
+			]
 		],
-		"examples": ["ninja", "pc ninja", "xbox TTV R1xbox", "psn TTV IllusionOG"]
+		"examples": [
+			"ninja",
+			"pc ninja",
+			"xbox TTV R1xbox",
+			"psn TTV IllusionOG"
+		]
 	},
+	"fortniteInvalidPlatform": "{{REDCROSS}} I am sorry, but that is an invalid platform for Fortnite. The valid platforms are: `xbox`, `psn`, and `pc`",
 	"fortniteNoUser": "I am sorry, but I was unable to find a user with that name.\nAre you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)",
 	"fortniteEmbedTitle": "Fortnite player statistics for {{epicUserHandle}}",
 	"fortniteEmbedSectionTitles": {
@@ -170,18 +229,33 @@
 	},
 	"overwatchDescription": "Gets player statistics for an Overwatch player",
 	"overwatchExtended": {
+		"usages": [
+			"pc BattleTag#00000",
+			"xbl Player Tag",
+			"psn Player Tag"
+		],
 		"extendedHelp": "This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.\nBy default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform to \"xbl\" or \"psn\" respectively.",
 		"explainedUsage": [
-			["platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbl\", or \"psn\""],
-			["player", "For PC the full blizzard tag, for console the username. Case sensitive!"]
+			[
+				"pc/xbl/psn",
+				"(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbl\", or \"psn\""
+			],
+			[
+				"BattleTag#00000/Player Tag",
+				"For PC the full blizzard tag, for console the username. Case sensitive!"
+			]
 		],
-		"examples": ["bame#1784", "xbl Dorus NL gamer", "psn decoda_24"],
+		"examples": [
+			"bame#1784",
+			"xbl Dorus NL gamer",
+			"psn decoda_24"
+		],
 		"reminder": "**Player names are case sensitive!**"
 	},
+	"overwatchInvalidPlatform": "{{REDCROSS}} I am sorry, but that is an invalid platform for Overwatch. The valid platforms are: `xbl`, `psn`, and `pc`",
 	"overwatchInvalidPlayerName": "\"{{playerTag}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
 	"overwatchQueryFail": "Failed to get data for \"{{player}}\", are you sure they play on \"{{platform}}\"?\nAlso make sure to get the casing right, names are case sensitive.",
 	"overwatchNoStats": "I found a player with the tag \"{{player}}\" but no stats were available for them.",
-	"overwatchNoAverage": "Not enough data to determine average.",
 	"overwatchEmbedDataStats": {
 		"finalBlows": "**Final blows:** {{finalBlows, number}}",
 		"deaths": "**Deaths:** {{deaths, number}}",

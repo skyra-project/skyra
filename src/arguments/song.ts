@@ -3,28 +3,27 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { count, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '#utils/util';
+import { Args, Argument, ArgumentContext } from '@sapphire/framework';
 import { parseURL } from '@sapphire/utilities';
 import { LoadType, Track } from '@skyra/audio';
 import { deserialize } from 'binarytf';
-import { Argument, Possible } from 'klasa';
 
-export default class extends Argument {
-	public async run(arg: string, _: Possible, message: GuildMessage): Promise<string[]> {
+export class UserArgument extends Argument<string[]> {
+	public async run(parameter: string, context: ArgumentContext) {
+		const message = context.message as GuildMessage;
 		const remaining = await this.getUserRemainingEntries(message);
-		if (remaining === 0) throw await message.resolveKey(LanguageKeys.MusicManager.TooManySongs);
+		if (remaining === 0) return this.error({ parameter, identifier: LanguageKeys.MusicManager.TooManySongs, context });
 
-		const tracks = arg
-			? (await this.handleURL(message, remaining, arg)) ??
-			  (await this.handleSoundCloud(message, remaining, arg)) ??
-			  (await this.handleYouTube(message, remaining, arg))
-			: // Handle arg-less (attachment).
-			  await this.handleAttachments(message, remaining);
+		const tracks =
+			(await this.handleURL(message, remaining, parameter, context.args)) ??
+			(await this.handleSoundCloud(message, remaining, parameter, context.args)) ??
+			(await this.handleYouTube(message, remaining, parameter));
 
 		if (tracks === null || tracks.length === 0) {
-			throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
+			return this.error({ parameter, identifier: LanguageKeys.MusicManager.FetchNoMatches, context });
 		}
 
-		return tracks;
+		return this.ok(tracks);
 	}
 
 	/**
@@ -37,22 +36,6 @@ export default class extends Argument {
 		const entries = count(tracks.values(), (track) => track.author === id);
 		const maximum = await message.guild.readSettings(GuildSettings.Music.MaximumEntriesPerUser);
 		return Math.max(0, maximum - entries);
-	}
-
-	/**
-	 * Handle attachment arguments (arg-less).
-	 * @param message The message that ran the argument.
-	 * @param remaining The amount of entries the user can add.
-	 */
-	private async handleAttachments(message: GuildMessage, remaining: number) {
-		if (message.attachments.size === 0) {
-			throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoArguments);
-		}
-
-		const { url } = message.attachments.first()!;
-		const binary = await this.downloadAttachment(message, url);
-		const data = await this.parseAttachment(message, binary);
-		return this.filter(message, remaining, data);
 	}
 
 	/**
@@ -86,18 +69,18 @@ export default class extends Argument {
 	 * Parses a possible URL argument.
 	 * @param message The message that ran the argument.
 	 * @param remaining The amount of entries the user can add.
-	 * @param arg The argument to parse.
+	 * @param argument The argument to parse.
 	 * @returns
 	 * - `null` when the argument is not a valid URL.
 	 * - `string[]` otherwise.
 	 */
-	private async handleURL(message: GuildMessage, remaining: number, arg: string): Promise<string[] | null> {
+	private async handleURL(message: GuildMessage, remaining: number, argument: string, args: Args): Promise<string[] | null> {
 		// Remove `<...>` escape characters.
-		const url = parseURL(arg.replace(/^<(.+)>$/g, '$1'));
+		const url = parseURL(argument.replace(/^<(.+)>$/g, '$1'));
 		if (url === null) return null;
 
 		// If the argument was run with an `--import` flag, download the data as a squeue.
-		if (Reflect.has(message.flagArgs, 'import')) {
+		if (args.getFlags('import')) {
 			const binary = await this.downloadAttachment(message, url.href);
 			const data = await this.parseAttachment(message, binary);
 			return this.filter(message, remaining, data);
@@ -114,14 +97,14 @@ export default class extends Argument {
 	 * Parses a possible track or playlist of tracks from SoundCloud.
 	 * @param message The message that ran the argument.
 	 * @param remaining The amount of entries the user can add.
-	 * @param arg The argument to parse.
+	 * @param argument The argument to parse.
 	 * @returns
 	 * - `null` if neither `--sc` nor `--soundcloud` flags were provided.
 	 * - `string[]` otherwise.
 	 */
-	private handleSoundCloud(message: GuildMessage, remaining: number, arg: string): Promise<string[] | null> {
-		if (Reflect.has(message.flagArgs, 'sc') || Reflect.has(message.flagArgs, 'soundcloud')) {
-			return this.downloadResults(message, remaining, `scsearch: ${arg}`);
+	private handleSoundCloud(message: GuildMessage, remaining: number, argument: string, args: Args): Promise<string[] | null> {
+		if (args.getFlags('sc', 'soundcloud')) {
+			return this.downloadResults(message, remaining, `scsearch: ${argument}`);
 		}
 
 		return Promise.resolve(null);

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { resolveOnErrorCodes } from '#utils/util';
+import { Store } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Store } from 'klasa';
 import type WebSocket from 'ws';
 import {
 	CloseCodes,
@@ -17,7 +17,7 @@ import {
 import type { WebsocketHandler } from './WebsocketHandler';
 import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore';
 
-export default class DashboardWebsocketUser {
+export class WebsocketUser {
 	public musicSubscriptions = new WebsocketSubscriptionStore();
 	public connection: WebSocket;
 

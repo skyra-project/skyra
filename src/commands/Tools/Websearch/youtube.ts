@@ -19,11 +19,11 @@ const EMOJIS = {
 	aliases: ['yt'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.YouTubeDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended,
-	usage: '<query:string>'
+	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const input = await args.rest('string');
 		const url = new URL('https://www.googleapis.com/youtube/v3/search');
 		url.searchParams.append('part', 'snippet');
 		url.searchParams.append('safeSearch', 'strict');
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const results = data.items.slice(0, 5);
 
-		if (!results.length) throw await message.resolveKey(LanguageKeys.Commands.Tools.YouTubeNotFound);
+		if (!results.length) this.error(LanguageKeys.Commands.Tools.YouTubeNotFound);
 
 		const sent = await message.send(this.getLink(results[0]));
 

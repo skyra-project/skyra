@@ -9,6 +9,7 @@ jobs:
   update_pr:
     name: Update Pull Request Name
     runs-on: ubuntu-latest
+    if: "(github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref == 'i18n/crowdin')"
     steps:
       - uses: tzkhan/pr-update-action@v2
         with:

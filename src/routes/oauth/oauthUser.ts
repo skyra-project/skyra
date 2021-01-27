@@ -5,27 +5,16 @@ import { Mime, Time } from '#utils/constants';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
-import type { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
-import { Guild, GuildFeatures, Permissions } from 'discord.js';
+import type { RESTAPIPartialCurrentUserGuild, RESTGetAPICurrentUserGuildsResult, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
+import { Guild, Permissions } from 'discord.js';
 import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export default class extends Route {
-	public async api(token: string) {
-		const oauthUser = await fetch<APIUser>(
-			'https://discord.com/api/users/@me',
-			{
-				headers: { Authorization: `Bearer ${token}` }
-			},
-			FetchResultTypes.JSON
-		);
-		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
-	}
-
 	@authenticated()
 	@ratelimit(2, Time.Minute * 5, true)
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as Record<string, string>;
+		const requestBody = request.body as RequestBody;
 		if (typeof requestBody.action !== 'string') {
 			return response.badRequest();
 		}
@@ -34,7 +23,6 @@ export default class extends Route {
 			if (!request.auth) return response.error(401);
 
 			// If the token expires in a day, refresh
-			let authToken = request.auth.token;
 			if (Date.now() + Time.Day > request.auth.expires) {
 				const body = await this.refreshToken(request.auth.id, request.auth.refresh);
 				if (body !== null) {
@@ -46,12 +34,11 @@ export default class extends Route {
 					});
 
 					response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
-					authToken = body.access_token;
 				}
 			}
 
 			try {
-				const user = await this.fetchUser(request.auth.id, `Bearer ${authToken}`);
+				const user = await this.fetchUser(request.auth.id, requestBody.oauthGuilds);
 				if (user === null) return response.error(500);
 				return response.json(user);
 			} catch (error) {
@@ -63,17 +50,12 @@ export default class extends Route {
 		return response.error(400);
 	}
 
-	private async fetchUser(id: string, token: string): Promise<OauthFlattenedUser | null> {
+	private async fetchUser(id: string, oauthGuilds: RESTGetAPICurrentUserGuildsResult): Promise<OauthFlattenedUser | null> {
 		const { client } = this.context;
 		const user = await client.users.fetch(id).catch(() => null);
 		if (user === null) return null;
 
 		const guilds: OauthFlattenedGuild[] = [];
-		const oauthGuilds = await fetch<RawOauthGuild[]>(
-			'https://discord.com/api/users/@me/guilds',
-			{ headers: { Authorization: token } },
-			FetchResultTypes.JSON
-		);
 
 		for (const oauthGuild of oauthGuilds) {
 			const guild = client.guilds.cache.get(oauthGuild.id);
@@ -155,7 +137,7 @@ export default class extends Route {
 		}
 	}
 
-	private async getManageable(id: string, oauthGuild: RawOauthGuild, guild: Guild | undefined) {
+	private async getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined) {
 		if (oauthGuild.owner) return true;
 		if (typeof guild === 'undefined') return new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD);
 
@@ -166,13 +148,9 @@ export default class extends Route {
 	}
 }
 
-interface RawOauthGuild {
-	id: string;
-	name: string;
-	icon: null | string;
-	owner: boolean;
-	permissions: number;
-	features: GuildFeatures[];
+interface RequestBody {
+	action: 'SYNC_USER';
+	oauthGuilds: RESTGetAPICurrentUserGuildsResult;
 }
 
 interface PartialOauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimestamp' | 'ownerID' | 'region'> {

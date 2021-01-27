@@ -53,7 +53,7 @@ export default class extends Route {
 			try {
 				const user = await this.fetchUser(request.auth.id, `Bearer ${authToken}`);
 				if (user === null) return response.error(500);
-				return response.json({ user });
+				return response.json(user);
 			} catch (error) {
 				this.context.client.logger.fatal(error);
 				return response.error(500);
@@ -122,7 +122,7 @@ export default class extends Route {
 		}
 
 		return {
-			...flattenUser(user),
+			user: flattenUser(user),
 			guilds
 		};
 	}
@@ -187,6 +187,7 @@ interface OauthFlattenedGuild extends PartialOauthFlattenedGuild {
 	skyraIsIn: boolean;
 }
 
-interface OauthFlattenedUser extends FlattenedUser {
+interface OauthFlattenedUser {
+	user: FlattenedUser;
 	guilds: OauthFlattenedGuild[];
 }

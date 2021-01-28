@@ -8,4 +8,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	queryType: 'neko',
 	responseName: LanguageKeys.Commands.Weeb.Neko
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

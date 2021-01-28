@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.NickDescription,
 	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['CHANGE_NICKNAME'],
+	permissions: ['CHANGE_NICKNAME'],
 	runIn: ['text'],
 	usage: '[nick:string{,32}]'
 })

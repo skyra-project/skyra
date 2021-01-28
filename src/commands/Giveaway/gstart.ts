@@ -12,7 +12,7 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <time:time> [winners:winners] <title:...string{,256}>',
 	flagSupport: true,

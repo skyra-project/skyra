@@ -13,7 +13,7 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ShindeiruDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ShindeiruExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })

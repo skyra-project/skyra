@@ -14,8 +14,7 @@ import { MessageEmbed, Role } from 'discord.js';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RolesExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
-	requiredPermissions: ['MANAGE_MESSAGES'],
+	permissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES'],
 	usage: '(roles:rolenames)'
 })
 @CreateResolvers([

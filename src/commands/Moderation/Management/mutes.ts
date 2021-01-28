@@ -13,7 +13,7 @@ import type Moderations from './moderations';
 	description: LanguageKeys.Commands.Moderation.MutesDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.MutesExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
+	permissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 	runIn: ['text'],
 	usage: '[user:username]'
 })

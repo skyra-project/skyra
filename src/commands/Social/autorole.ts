@@ -16,7 +16,7 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 	description: LanguageKeys.Commands.Social.AutoRoleDescription,
 	extendedHelp: LanguageKeys.Commands.Social.AutoRoleExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
+	permissions: ['MANAGE_ROLES'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<add|remove|update|show:default> (role:rolename) (points:points{0,1000000})',

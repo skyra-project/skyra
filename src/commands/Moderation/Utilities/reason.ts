@@ -12,7 +12,7 @@ import { CreateResolvers } from '@skyra/decorators';
 	description: LanguageKeys.Commands.Moderation.ReasonDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<range:range{,50}> <reason:...string>',
 	usageDelim: ' '

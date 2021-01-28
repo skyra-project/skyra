@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
-	requiredGuildPermissions: ['MANAGE_GUILD']
+	permissions: ['MANAGE_GUILD']
 })
 export default class extends PaginatedMessageCommand {
 	public async run(message: GuildMessage) {

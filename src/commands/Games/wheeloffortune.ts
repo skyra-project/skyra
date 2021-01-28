@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Games.WheelOfFortuneDescription,
 	extendedHelp: LanguageKeys.Commands.Games.WheelOfFortuneExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	usage: '<wager:wager>'
 })
 export class UserCommand extends SkyraCommand {

@@ -12,7 +12,6 @@ import type { Role } from 'discord.js';
 	description: LanguageKeys.Commands.Admin.RoleSetDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredPermissions: [],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<add|remove|reset|list|auto:default> (name:name) (role:rolenames)',

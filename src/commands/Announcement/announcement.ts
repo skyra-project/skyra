@@ -17,8 +17,7 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Announcement.AnnouncementDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
-	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+	permissions: ['ADD_REACTIONS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<announcement:string{,1900}>',
 	flagSupport: true

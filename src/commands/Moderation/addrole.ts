@@ -13,7 +13,7 @@ import type { Role, User } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.AddRoleExtended,
 	requiredMember: true,
 	optionalDuration: true,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
+	permissions: ['MANAGE_ROLES'],
 	permissionLevel: PermissionLevels.Administrator,
 	usage: '<users:...user{,10}> <role:rolename> [duration:timespan] [reason:...string]',
 	usageDelim: ' '

@@ -19,7 +19,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
-	requiredPermissions: ['MANAGE_MESSAGES'],
+	permissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<buy|reset|set|show:default> (banner:banner)',

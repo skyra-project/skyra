@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedEmoji;

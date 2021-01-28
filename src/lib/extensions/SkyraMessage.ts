@@ -1,17 +1,51 @@
-/* eslint-disable @typescript-eslint/class-literal-property-style */
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { sleep } from '#utils/Promisified/sleep';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
+import { I18nextChannelImplementation, I18nextImplemented, I18nextMessageImplementation } from '@sapphire/plugin-i18next';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
+import {
+	Message,
+	MessageAdditions,
+	MessageExtendablesAskOptions,
+	MessageOptions,
+	Permissions,
+	SplitOptions,
+	Structures,
+	TextChannel
+} from 'discord.js';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 const kReactablePermissions = new Permissions(['VIEW_CHANNEL', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY']);
 
-export class SkyraMessage extends Structures.get('Message') {
+export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) {
+	public async fetchLanguage(): Promise<string> {
+		return this._fetchLanguage(this.guild, this.channel, this.author);
+	}
+
+	public sendTranslated(
+		key: string,
+		values?: readonly unknown[],
+		options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
+	): Promise<Message>;
+
+	public sendTranslated(key: string, values?: readonly unknown[], options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+	public sendTranslated(key: string, options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
+	public sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+	public async sendTranslated(
+		key: string,
+		valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
+		rawOptions?: MessageOptions
+	): Promise<Message | Message[]> {
+		const [values, options]: [readonly unknown[], MessageOptions] =
+			valuesOrOptions === undefined || Array.isArray(valuesOrOptions)
+				? [valuesOrOptions ?? [], rawOptions ?? {}]
+				: [[], valuesOrOptions as MessageOptions];
+		return this.send(await this.resolveKey(key, ...values), options);
+	}
+
 	public get reactable() {
 		return isGuildBasedChannel(this.channel) ? this.channel.permissionsFor(this.guild!.me!)!.has(kReactablePermissions, false) : true;
 	}
@@ -95,13 +129,14 @@ async function awaitMessage(message: Message, promptOptions: MessageExtendablesA
 }
 
 declare module 'discord.js' {
-	interface MessageExtendablesAskOptions {
+	export interface MessageExtendablesAskOptions {
 		time?: number;
 		max?: number;
 	}
 
-	interface Message {
+	export interface Message extends I18nextMessageImplementation, I18nextChannelImplementation {
 		reactable: boolean;
+		fetchLanguage(): Promise<string>;
 		prompt(content: string, time?: number): Promise<Message>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;

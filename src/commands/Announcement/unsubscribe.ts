@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Announcement.UnsubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.UnsubscribeExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
+	permissions: ['MANAGE_ROLES'],
 	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {

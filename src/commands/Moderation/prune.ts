@@ -38,7 +38,7 @@ const enum Filter {
 	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	flagSupport: true,
-	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
+	permissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<limit:integer{1,100}> [filter:filter|user:user] (position:position) (message:message)',
 	usageDelim: ' '

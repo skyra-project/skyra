@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 			cooldown: 10,
 			description: LanguageKeys.Commands.Games.TicTacToeDescription,
 			extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+			permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

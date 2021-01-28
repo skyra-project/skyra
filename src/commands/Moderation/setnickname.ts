@@ -14,7 +14,7 @@ import type { User } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	requiredMember: true,
 	optionalDuration: true,
-	requiredGuildPermissions: ['MANAGE_NICKNAMES'],
+	permissions: ['MANAGE_NICKNAMES'],
 	permissionLevel: PermissionLevels.Moderator,
 	usage: '<users:...user{,10}> [nickname:nickname] [duration:timespan] [reason:...string]',
 	usageDelim: ' '

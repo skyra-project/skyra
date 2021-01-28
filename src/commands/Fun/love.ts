@@ -10,7 +10,7 @@ import { Message, MessageEmbed, User } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true,
 	usage: '<user:username>'
 })

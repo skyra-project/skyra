@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restricted-reaction', 'urr'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictReactionDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictReactionExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedReaction;

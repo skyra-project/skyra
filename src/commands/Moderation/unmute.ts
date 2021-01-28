@@ -10,7 +10,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['um'],
 	description: LanguageKeys.Commands.Moderation.UnmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnmuteExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.Muted;

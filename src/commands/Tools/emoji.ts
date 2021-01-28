@@ -13,7 +13,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	usage: '<emoji:string>'
 })
 export class UserCommand extends SkyraCommand {

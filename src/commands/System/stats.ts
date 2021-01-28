@@ -12,7 +12,7 @@ import { CpuInfo, cpus, uptime } from 'os';
 	cooldown: 15,
 	description: LanguageKeys.Commands.System.StatsDescription,
 	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
 export default class UserCommand extends SkyraCommand {
 	public async run(message: Message) {

@@ -11,7 +11,7 @@ import type { Message } from 'discord.js';
 	cooldown: 7,
 	description: LanguageKeys.Commands.Games.SlotMachineDescription,
 	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	usage: '<wager:wager>'
 })
 export class UserCommand extends SkyraCommand {

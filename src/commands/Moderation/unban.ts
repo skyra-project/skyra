@@ -12,7 +12,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
 	requiredMember: false,
-	requiredPermissions: ['BAN_MEMBERS']
+	permissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {

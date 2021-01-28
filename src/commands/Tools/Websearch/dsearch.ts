@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
 	usage: '<query:string>',
 	usageDelim: ' ',
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, [query]: [string]) {

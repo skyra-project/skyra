@@ -18,7 +18,7 @@ import { MessageEmbed } from 'discord.js';
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
-	requiredPermissions: ['MANAGE_MESSAGES'],
+	permissions: ['MANAGE_MESSAGES'],
 	usage: '<add|remove|edit|source|list|reset|show:default> (tag:tagname) [content:...string]',
 	usageDelim: ' '
 })
@@ -152,25 +152,28 @@ export class UserCommand extends SkyraCommand {
 		return tag ? message.send(codeBlock('md', tag.content)) : null;
 	}
 
-	private createTag(message: GuildMessage, id: string, content: string): CustomCommand {
+	private createTag(args: SkyraCommand.Args, id: string, content: string): CustomCommand {
+		const embed = args.getFlags('embed');
 		return {
 			id,
 			content,
-			embed: Reflect.has(message.flagArgs, 'embed'),
-			color: Reflect.has(message.flagArgs, 'embed') ? this.parseColour(message) : 0,
+			embed,
+			color: embed ? this.parseColour(args) : 0,
 			args: []
 		};
 	}
 
-	private parseColour(message: GuildMessage) {
-		let colour = message.flagArgs.color ?? message.flagArgs.colour;
+	private parseColour(args: SkyraCommand.Args) {
+		let color = args.getOption('color', 'colour');
 
-		if (typeof colour === 'undefined') return 0;
-		if (Number(colour)) return Math.floor(Number(colour));
-		if (typeof colour === 'string' && this.#kHexlessRegex.test(colour)) colour = `#${colour}`;
+		if (color === null) return 0;
+
+		const number = Number(color);
+		if (Number.isSafeInteger(number)) return Math.max(Math.min(number, 0xffffff), 0x000000);
+		if (this.#kHexlessRegex.test(color)) color = `#${color}`;
 
 		try {
-			return parseColour(colour).b10.value;
+			return parseColour(color).b10.value;
 		} catch (err) {
 			return 0;
 		}

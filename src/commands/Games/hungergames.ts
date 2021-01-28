@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 0,
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
-	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[user:string{,50}] [...]',
 	usageDelim: ',',

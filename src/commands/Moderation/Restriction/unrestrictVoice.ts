@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restricted-voice', 'urv'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictVoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictVoiceExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedVoice;

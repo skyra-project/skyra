@@ -11,7 +11,7 @@ import { MessageEmbed, Permissions, Role } from 'discord.js';
 	description: LanguageKeys.Commands.Management.RoleInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RoleInfoExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '[role:rolename]'
 })

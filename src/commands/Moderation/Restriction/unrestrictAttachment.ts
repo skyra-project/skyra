@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restricted-attachment', 'ura'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictAttachmentDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictAttachmentExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedAttachment;

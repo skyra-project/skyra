@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Tools.VoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.VoteExtended,
-	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	usage: '<title:string>'
 })
 export class UserCommand extends SkyraCommand {

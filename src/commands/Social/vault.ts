@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['bank'],
 	description: LanguageKeys.Commands.Social.VaultDescription,
 	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	subcommands: true,
 	usage: '<deposit|dep|withdraw|with|show:default> (coins:coins)',
 	usageDelim: ' '

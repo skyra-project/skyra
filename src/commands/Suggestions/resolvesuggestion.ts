@@ -25,7 +25,7 @@ const enum SuggestionsColors {
 	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
 	flagSupport: true,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:comment]',
 	usageDelim: ' '

@@ -13,7 +13,7 @@ const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.p
 	cooldown: 15,
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {

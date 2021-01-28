@@ -16,7 +16,7 @@ import { FetchError } from 'node-fetch';
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	requiredPermissions: ['READ_MESSAGE_HISTORY'],
+	permissions: ['READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[winners:number{1,100}] [message:message]',
 	usageDelim: ' '

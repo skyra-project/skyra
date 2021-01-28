@@ -15,7 +15,7 @@ import type { Role } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.RestrictVoiceExtended,
 	optionalDuration: true,
 	requiredMember: true,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this

@@ -17,7 +17,7 @@ const enum CoinType {
 	cooldown: 7,
 	description: LanguageKeys.Commands.Games.CoinFlipDescription,
 	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	usage: '(coin:cointype) (wager:coinwager)',
 	usageDelim: ' '
 })

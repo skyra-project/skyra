@@ -2,8 +2,8 @@ import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { CLIENT_ID } from '#root/config';
 import { floatPromise } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
-import { ApplyOptions } from '@skyra/decorators';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,

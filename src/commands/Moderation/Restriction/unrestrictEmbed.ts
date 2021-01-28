@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restricted-embed', 'ure'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmbedDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmbedExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES']
+	permissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedEmbed;

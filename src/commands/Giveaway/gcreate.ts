@@ -11,7 +11,7 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
-	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <schedule:time> <duration:time> <title:...string{,256}>',
 	flagSupport: true,

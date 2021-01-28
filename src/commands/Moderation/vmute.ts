@@ -10,7 +10,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,
 	optionalDuration: true,
 	requiredMember: true,
-	requiredGuildPermissions: ['MUTE_MEMBERS']
+	permissions: ['MUTE_MEMBERS']
 })
 export default class extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

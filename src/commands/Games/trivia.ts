@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
 	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
 	usageDelim: ' ',
-	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 @CreateResolvers([
 	[

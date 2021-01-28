@@ -12,7 +12,7 @@ import type { Role, User } from 'discord.js';
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
+	permissions: ['MANAGE_ROLES'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<show|add|remove|reset> (user:username) (role:rolename)',

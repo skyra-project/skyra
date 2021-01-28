@@ -14,7 +14,7 @@ import { join } from 'path';
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.SlapDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SlapExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'
 })

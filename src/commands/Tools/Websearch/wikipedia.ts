@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	usage: '<query:string>'
 })
 export class UserCommand extends SkyraCommand {

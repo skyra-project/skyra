@@ -13,7 +13,7 @@ import { Permissions, Role } from 'discord.js';
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
+	permissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
 	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {

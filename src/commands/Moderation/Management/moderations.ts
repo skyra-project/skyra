@@ -17,7 +17,7 @@ import { MessageEmbed, User } from 'discord.js';
 	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_MESSAGES'],
+	permissions: ['MANAGE_MESSAGES'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends PaginatedMessageCommand {

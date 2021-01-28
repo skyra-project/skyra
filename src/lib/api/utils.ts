@@ -1,11 +1,11 @@
 import { GuildSettings } from '#lib/database';
+import { RateLimitManager } from '#lib/structures';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
+import { createFunctionInhibitor } from '#utils/decorators';
 import { Store } from '@sapphire/pieces';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
-import { createFunctionInhibitor } from '@skyra/decorators';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
-import { RateLimitManager } from '#lib/structures';
 import { flattenGuild } from './ApiTransformers';
 import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginData } from './types';
 

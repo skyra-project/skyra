@@ -13,7 +13,7 @@ import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Moderation.BanExtended,
 	optionalDuration: true,
 	requiredMember: false,
-	requiredGuildPermissions: ['BAN_MEMBERS']
+	permissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {

@@ -15,7 +15,7 @@ import { join } from 'path';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	usage: '(firstUser:user) (secondUser:user)',
 	usageDelim: ' '
 })

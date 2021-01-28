@@ -31,7 +31,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
-	requiredGuildPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
 })

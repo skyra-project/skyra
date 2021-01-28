@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.VunmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VunmuteExtended,
 	requiredMember: true,
-	requiredPermissions: ['MUTE_MEMBERS']
+	permissions: ['MUTE_MEMBERS']
 })
 export default class extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

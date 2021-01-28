@@ -19,7 +19,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
+	permissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);

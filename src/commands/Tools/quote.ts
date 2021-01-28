@@ -14,7 +14,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.QuoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	usage: '[channel:textchannelname] (message:message)',
 	usageDelim: ' '
 })

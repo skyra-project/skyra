@@ -11,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.SetColorDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true,
 	usage: '<color:string>'
 })

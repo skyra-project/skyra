@@ -927,11 +927,6 @@
   resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.1.tgz#d1d88a9bde2b436f83fd4995b3f0926c1de6a7fa"
   integrity sha512-cDtbEuH30sWlPIDBpBrdhXd2tnawKZygaPdwec0bglhDCliBaJGtN1gNsiKewkvotRsRV38KtFnrQSEE5nmXsg==
 
-"@skyra/decorators@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-4.0.0.tgz#12db35b2c5d5c536b17e1758a1abe406ae8e4856"
-  integrity sha512-JkLXEpXya2D/SSl1IzzsOEMrO9wg2AApkLdOUyFaA1ZR14cN5N4WUpGDXttnY8lTBkuJImqVhfVV0oF4WpvlDA==
-
 "@skyra/editable-commands@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@skyra/editable-commands/-/editable-commands-1.0.0.tgz#3aab646cbd5cfc1f676eea95222e1db50b119409"
@@ -1005,13 +1000,6 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/he/-/he-1.1.1.tgz#19e14033c4ee8f1a702c74dcc6182664839ac2b7"
   integrity sha512-jpzrsR1ns0n3kyWt92QfOUQhIuJGQ9+QGa7M62rO6toe98woQjnsnzjdMtsQXCdvjjmqjS2ZBCC7xKw0cdzU+Q==
-
-"@types/i18next-fs-backend@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.0.0.tgz#3fb0374f4d376375b7cc1d3729bca663d104fa64"
-  integrity sha512-PotQ0NE17NavxXCsdyq9qIKZQOB7+A5O/2nDdvfbfm6/IgvvC1YUO6hxK3nIHASu+QGjO1QV5J8PJw4OL12LMQ==
-  dependencies:
-    i18next "^19.7.0"
 
 "@types/ioredis@^4.19.2":
   version "4.19.2"
@@ -3104,7 +3092,7 @@ i18next-fs-backend@^1.0.8:
   resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-1.0.8.tgz#f03d911cac31d76bd6b0aa73fa9c7fc45a199e1d"
   integrity sha512-1TyOJEGBvwqdIu0vZo/pcAxPXe/0vqOX6/hgsgTnNpcGe0PyHJ/87ABDdwdwfKJSxbtM0j6Pue0NKFcx6rOeJg==
 
-i18next@^19.7.0, i18next@^19.8.4:
+i18next@^19.8.4:
   version "19.8.4"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.4.tgz#447718f2a26319b8debdbcc6fbc1a9761be7316b"
   integrity sha512-FfVPNWv+felJObeZ6DSXZkj9QM1Ivvh7NcFCgA8XPtJWHz0iXVa9BUy+QY8EPrCLE+vWgDfV/sc96BgXVo6HAA==

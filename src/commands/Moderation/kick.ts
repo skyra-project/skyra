@@ -10,7 +10,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['k'],
 	description: LanguageKeys.Commands.Moderation.KickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.KickExtended,
-	requiredGuildPermissions: ['KICK_MEMBERS'],
+	permissions: ['KICK_MEMBERS'],
 	requiredMember: true
 })
 export default class extends ModerationCommand {

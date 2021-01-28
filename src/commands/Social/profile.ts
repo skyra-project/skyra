@@ -18,7 +18,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.ProfileDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[local|global] [user:username]',
 	usageDelim: ' '

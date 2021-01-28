@@ -17,7 +17,7 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 	description: LanguageKeys.Commands.Moderation.SlowmodeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_CHANNELS'],
+	permissions: ['MANAGE_CHANNELS'],
 	runIn: ['text'],
 	usage: '<reset|off|seconds:integer|cooldown:cooldown>'
 })

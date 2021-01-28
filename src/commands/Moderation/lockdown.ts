@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
 	usageDelim: ' ',
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
+	permissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })
 export class UserCommand extends SkyraCommand {
 	public auto(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {

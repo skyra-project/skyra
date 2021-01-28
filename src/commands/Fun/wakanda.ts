@@ -12,7 +12,7 @@ import { join } from 'path';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	usage: '[user:username]'
 })
 export class UserCommand extends SkyraCommand {

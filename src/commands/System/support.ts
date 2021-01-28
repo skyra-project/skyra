@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.System.SupportDescription,
 	extendedHelp: LanguageKeys.Commands.System.SupportExtended,
 	guarded: true,
-	requiredPermissions: ['EMBED_LINKS']
+	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {

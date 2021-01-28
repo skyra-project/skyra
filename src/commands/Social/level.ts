@@ -17,7 +17,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	requiredPermissions: ['ATTACH_FILES'],
+	permissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[local|global] [user:username]',
 	usageDelim: ' '

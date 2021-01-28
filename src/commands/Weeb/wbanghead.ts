@@ -8,4 +8,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	queryType: 'banghead',
 	responseName: LanguageKeys.Commands.Weeb.BangHead
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

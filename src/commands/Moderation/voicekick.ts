@@ -9,7 +9,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
 	requiredMember: true,
-	requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
+	permissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
 })
 export default class extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

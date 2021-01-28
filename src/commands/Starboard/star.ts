@@ -14,7 +14,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 	cooldown: 10,
 	description: LanguageKeys.Commands.Starboard.StarDescription,
 	extendedHelp: LanguageKeys.Commands.Starboard.StarExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '(top|random:default) [user:membername{2}] (duration:timespan)',

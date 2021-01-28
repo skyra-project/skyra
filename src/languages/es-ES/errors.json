@@ -1,1 +1,11 @@
-{}
+{
+	"channelNotReadable": "Lo siento, pero necesito los permisos **{{VIEW_CHANNEL, permissions}}** y **{{READ_MESSAGE_HISTORY, permissions}}**",
+	"guildBansEmpty": "No hay baneos registrados en este servidor.",
+	"guildBansNotFound": "Lo he intentado y no he podido encontrar a este usuario de la lista de baneos. ¿Estás seguro de que este usuario está baneado?",
+	"guildMemberNotVoicechannel": "No puedo ejecutar esta acción en un miembro que no está conectado a un canal de voz.",
+	"guildWarnNotFound": "No pude obtener esa advertencia. O bien no existe, o bien no era un aviso, o bien ha sido apelada.",
+	"modlogTimed": "Este registro de moderación ya está temporizado. Expira en {{remaining, duration}}",
+	"unexpectedIssue": "¡Se ha producido un error inesperado! Abortando este comando de forma segura...",
+	"userNotExistent": "Este usuario no existe. ¿Está seguro/a de que ha utilizado un identificador de usuario válido?",
+	"userNotInGuild": "Este usuario no está en este servidor."
+}

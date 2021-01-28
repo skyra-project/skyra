@@ -46,7 +46,7 @@
 		"episodeLength": "",
 		"ageRating": "",
 		"firstAirDate": "",
-		"watchIt": "",
+		"watchIt": "Смотрите здесь:",
 		"stillAiring": ""
 	},
 	"mangaOutputDescription": "",
@@ -60,10 +60,10 @@
 	"mangaEmbedData": {
 		"ageRating": "",
 		"firstPublishDate": "",
-		"readIt": "",
+		"readIt": "Читайте здесь:",
 		"score": "",
 		"type": "Подтип",
 		"none": ""
 	},
-	"waifuFooter": ""
+	"waifuFooter": "При поддержке thiswaifudoesnotexist.net"
 }

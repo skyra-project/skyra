@@ -1,4 +1,4 @@
-import { ratelimit } from '#utils/util';
+import { ratelimit } from '#lib/api/utils';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 

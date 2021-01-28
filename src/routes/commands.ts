@@ -1,5 +1,5 @@
+import { ratelimit } from '#lib/api/utils';
 import type { SkyraCommand } from '#lib/structures';
-import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { TFunction } from 'i18next';

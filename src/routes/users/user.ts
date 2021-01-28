@@ -1,5 +1,5 @@
 import { FlattenedGuild, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
-import { authenticated, ratelimit } from '#utils/util';
+import { authenticated, ratelimit } from '#lib/api/utils';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 

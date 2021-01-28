@@ -1,4 +1,5 @@
-import { fetchAllLeaderboardEntries, iteratorRange, ratelimit } from '#utils/util';
+import { ratelimit } from '#lib/api/utils';
+import { fetchAllLeaderboardEntries, iteratorRange } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 

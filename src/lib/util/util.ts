@@ -2,9 +2,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { ApiRequest, ApiResponse } from '@sapphire/plugin-api';
 import { Awaited, isNullish, isNumber, isThenable, parseURL } from '@sapphire/utilities';
-import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
@@ -21,7 +19,7 @@ import {
 	User,
 	UserResolvable
 } from 'discord.js';
-import { RateLimitManager, Store } from 'klasa';
+import { Store } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';
@@ -600,42 +598,6 @@ export function enumerable(value: boolean) {
 			}
 		});
 	};
-}
-
-export const authenticated = () =>
-	createFunctionInhibitor(
-		(request: ApiRequest) => Boolean(request.auth?.token),
-		(_request: ApiRequest, response: ApiResponse) => response.error(403)
-	);
-
-export function ratelimit(bucket: number, cooldown: number, auth = false) {
-	const manager = new RateLimitManager(bucket, cooldown);
-	const xRateLimitLimit = bucket;
-	return createFunctionInhibitor(
-		(request: ApiRequest, response: ApiResponse) => {
-			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
-			const bucket = manager.acquire(id);
-
-			response.setHeader('Date', new Date().toUTCString());
-			if (bucket.limited) {
-				response.setHeader('Retry-After', bucket.remainingTime.toString());
-				return false;
-			}
-
-			try {
-				bucket.drip();
-			} catch {}
-
-			response.setHeader('X-RateLimit-Limit', xRateLimitLimit);
-			response.setHeader('X-RateLimit-Remaining', bucket.bucket.toString());
-			response.setHeader('X-RateLimit-Reset', bucket.remainingTime.toString());
-
-			return true;
-		},
-		(_request: ApiRequest, response: ApiResponse) => {
-			response.error(429);
-		}
-	);
 }
 
 /**

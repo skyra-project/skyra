@@ -1,7 +1,6 @@
 import { flattenGuild } from '#lib/api/ApiTransformers';
-import { canManage } from '#lib/api/utils';
+import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { api } from '#lib/discord/Api';
-import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 

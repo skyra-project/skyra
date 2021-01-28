@@ -1,6 +1,5 @@
 import { flattenMember } from '#lib/api/ApiTransformers';
-import { canManage } from '#lib/api/utils';
-import { authenticated, ratelimit } from '#utils/util';
+import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 

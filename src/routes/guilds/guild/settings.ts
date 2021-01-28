@@ -1,6 +1,6 @@
-import { canManage } from '#lib/api/utils';
+import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
-import { authenticated, cast, ratelimit } from '#utils/util';
+import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { Guild } from 'discord.js';

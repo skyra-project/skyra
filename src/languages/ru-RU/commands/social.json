@@ -82,7 +82,7 @@
 		"experience": "Опыт",
 		"level": "Уровень"
 	},
-	"profileMoney": "",
+	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
 	"remindmeCreate": "",
 	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",
@@ -134,7 +134,7 @@
 			""
 		]
 	},
-	"bannerDescription": "",
+	"bannerDescription": "Настройте баннер для своего профиля.",
 	"bannerExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [

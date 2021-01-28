@@ -13,9 +13,9 @@ export abstract class AnalyticsEvent extends Event {
 		this.enabled = ENABLE_INFLUX;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/require-await
-	public async onLoad() {
+	public onLoad() {
 		this.initTags();
+		return super.onLoad();
 	}
 
 	public writePoint(point: Point) {

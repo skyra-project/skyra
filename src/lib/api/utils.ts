@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Store } from '@sapphire/pieces';
-import type { ApiRequest, ApiResponse, LoginData } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
@@ -16,7 +16,7 @@ function isAdmin(member: GuildMember, roles: readonly string[]): boolean {
 export const authenticated = () =>
 	createFunctionInhibitor(
 		(request: ApiRequest) => Boolean(request.auth?.token),
-		(_request: ApiRequest, response: ApiResponse) => response.error(403)
+		(_request: ApiRequest, response: ApiResponse) => response.error(HttpCodes.Unauthorized)
 	);
 
 export function ratelimit(bucket: number, cooldown: number, auth = false) {
@@ -44,18 +44,17 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 			return true;
 		},
 		(_request: ApiRequest, response: ApiResponse) => {
-			response.error(429);
+			response.error(HttpCodes.TooManyRequests);
 		}
 	);
 }
 
 export async function canManage(guild: Guild, member: GuildMember): Promise<boolean> {
 	if (guild.ownerID === member.id) return true;
-	if (member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return true;
 
 	const [roles, pnodes] = await guild.readSettings((settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
 
-	return isAdmin(member, roles) && (pnodes.run(member, 'conf') ?? false);
+	return isAdmin(member, roles) && (pnodes.run(member, 'conf') ?? true);
 }
 
 export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {

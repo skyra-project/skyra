@@ -1,7 +1,7 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
 import { DbSet } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';
 
 interface BodyData {
@@ -49,7 +49,7 @@ export default class extends Route {
 		} catch (errors) {
 			this.context.client.logger.error(`[${userID}] failed user settings update:\n${inspect(errors)}`);
 
-			return response.error(500);
+			return response.error(HttpCodes.InternalServerError);
 		}
 	}
 }

@@ -2,6 +2,7 @@ import { client } from '#mocks/MockInstances';
 import { Mime, Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
+import { HttpCodes } from '@sapphire/plugin-api';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import {
@@ -351,7 +352,7 @@ describe('Utils', () => {
 				} catch (error) {
 					expect(error.message).toBe(`Failed to request '${url}' with code 404.`);
 					expect(error.response).toBe('{"success":false}');
-					expect(error.code).toBe(404);
+					expect(error.code).toBe(HttpCodes.NotFound);
 					expect(error.url).toBe(url);
 					expect(error.toJSON()).toStrictEqual({ success: false });
 				}

@@ -3,7 +3,7 @@ import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
 import { stringify } from 'querystring';
 
@@ -18,7 +18,7 @@ export default class extends Route {
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
-			if (!request.auth) return response.error(401);
+			if (!request.auth) return response.error(HttpCodes.Unauthorized);
 
 			const auth = this.context.server.auth!;
 
@@ -43,11 +43,11 @@ export default class extends Route {
 				return response.json(await auth.fetchData(authToken));
 			} catch (error) {
 				this.context.client.logger.fatal(error);
-				return response.error(500);
+				return response.error(HttpCodes.InternalServerError);
 			}
 		}
 
-		return response.error(400);
+		return response.error(HttpCodes.BadRequest);
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {

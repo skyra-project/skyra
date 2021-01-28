@@ -2,7 +2,7 @@ import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { Guild } from 'discord.js';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
@@ -15,12 +15,12 @@ export default class extends Route {
 		const guildID = request.params.guild;
 
 		const guild = this.context.client.guilds.cache.get(guildID);
-		if (!guild) return response.error(400);
+		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
-		if (!member) return response.error(400);
+		if (!member) return response.error(HttpCodes.BadRequest);
 
-		if (!(await canManage(guild, member))) return response.error(403);
+		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
 		return guild.readSettings((settings) => response.json(settings));
 	}
@@ -31,19 +31,19 @@ export default class extends Route {
 		const requestBody = request.body as { guild_id: string; data: [string, unknown][] | undefined };
 
 		if (!requestBody.guild_id || !Array.isArray(requestBody.data) || requestBody.guild_id !== request.params.guild) {
-			return response.status(400).json(['Invalid body.']);
+			return response.status(HttpCodes.BadRequest).json(['Invalid body.']);
 		}
 
 		const guild = this.context.client.guilds.cache.get(requestBody.guild_id);
-		if (!guild) return response.status(400).json(['Guild not found.']);
+		if (!guild) return response.status(HttpCodes.BadRequest).json(['Guild not found.']);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
-		if (!member) return response.status(400).json(['Member not found.']);
+		if (!member) return response.status(HttpCodes.BadRequest).json(['Member not found.']);
 
-		if (!(await canManage(guild, member))) return response.error(403);
+		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
 		const entries = requestBody.data;
-		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(400);
+		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(HttpCodes.BadRequest);
 
 		try {
 			const settings = await guild.writeSettings(async (settings) => {
@@ -56,9 +56,9 @@ export default class extends Route {
 				return settings.toJSON();
 			});
 
-			return response.status(200).json(settings);
+			return response.status(HttpCodes.OK).json(settings);
 		} catch (errors) {
-			return response.status(400).json(errors);
+			return response.status(HttpCodes.BadRequest).json(errors);
 		}
 	}
 

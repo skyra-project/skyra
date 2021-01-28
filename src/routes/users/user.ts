@@ -1,7 +1,7 @@
 import { FlattenedGuild, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
 import { authenticated, ratelimit } from '#lib/api/utils';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: 'users/@me' })
 export default class extends Route {
@@ -10,7 +10,7 @@ export default class extends Route {
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const { client } = this.context;
 		const user = await client.users.fetch(request.auth!.id).catch(() => null);
-		if (user === null) return response.error(500);
+		if (user === null) return response.error(HttpCodes.InternalServerError);
 
 		const guilds: FlattenedGuild[] = [];
 		for (const guild of client.guilds.cache.values()) {

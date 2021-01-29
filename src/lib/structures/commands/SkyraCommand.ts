@@ -151,7 +151,7 @@ export namespace SkyraCommand {
 		permissions?: PermissionResolvable;
 		runIn?: RunInOption[];
 		spam?: boolean;
-		subCommands?: readonly SubCommandManager.Entry[];
+		subCommands?: SubCommandManager.RawEntries;
 	};
 
 	export type Args = SkyraArgs;

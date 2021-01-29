@@ -16,23 +16,14 @@ import { requiredPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, err, ok, Store } from '@sapphire/framework';
 import { chunk } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
-import { Guild, MessageEmbed, TextChannel } from 'discord.js';
+import { Guild, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { Any } from 'typeorm';
 
-const enum Type {
-	Add = 'add',
-	Remove = 'remove',
-	Reset = 'reset',
-	Show = 'show'
-}
-
 type Streamer = TwitchHelixUsersSearchResult;
-type Channel = TextChannel;
 type Status = NotificationsStreamsTwitchEventStatus;
-type Content = string | undefined;
 type Entry = NotificationsStreamsTwitchStreamer;
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -42,83 +33,27 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	permissionLevel: PermissionLevels.Administrator,
 	permissions: ['EMBED_LINKS'],
 	runIn: ['text'],
-	subcommands: true,
-	usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
-	usageDelim: ' ',
-	flagSupport: true
+	strategyOptions: { flags: ['embed'] },
+	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
-@CreateResolvers([
-	[
-		'streamer',
-		async (argument, _, message, [type]) => {
-			const t = await message.fetchT();
-
-			if (!argument) {
-				if (type === Type.Show || type === Type.Reset) return undefined;
-				throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredStreamer);
-			}
-
-			try {
-				const { data } = await message.client.twitch.fetchUsers([], [argument]);
-				if (data.length === 0) throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound);
-				return data[0];
-			} catch {
-				throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound);
-			}
-		}
-	],
-	[
-		'channel',
-		async (argument, possible, message, [type]) => {
-			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw await message.resolveKey(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredChannel);
-
-			return message.client.arguments.get('textchannelname')!.run(argument, possible, message);
-		}
-	],
-	[
-		'status',
-		async (argument, _, message, [type]) => {
-			if (type === Type.Show || type === Type.Reset) return undefined;
-
-			const t = await message.fetchT();
-			if (!argument) throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredStatus);
-
-			const index = t(LanguageKeys.Commands.Twitch.TwitchSubscriptionStatusValues).indexOf(argument.toLowerCase());
-			if (index === -1) throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionInvalidStatus);
-			return index;
-		}
-	],
-	[
-		'content',
-		async (argument, possible, message, [type, , , status]) => {
-			// If the subcommand is Show, Reset, or Remove
-			if (
-				type === Type.Show ||
-				type === Type.Reset ||
-				type === Type.Remove ||
-				// or if the command is Add, the flagArgs include --embed and the status is online then allow no content
-				(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
-			)
-				return undefined;
-			if (!argument) throw await message.resolveKey(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredContent);
-			return message.client.arguments.get('...string')!.run(argument, possible, message);
-		}
-	]
-])
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kSettingsKey = GuildSettings.Notifications.Stream.Twitch.Streamers;
 
-	public async add(message: GuildMessage, [streamer, channel, status, content]: [Streamer, Channel, Status, Content]) {
+	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+		const streamer = await args.pick(UserCommand.streamer);
+		const channel = await args.pick('channelName');
+		const status = await args.pick(UserCommand.status);
+		const content = await args.rest('string');
+		const embed = args.getFlags('embed');
 		const entry: Entry = {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
-			embed: Reflect.has(message.flagArgs, 'embed'),
+			embed,
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content ? content : Reflect.has(message.flagArgs, 'embed') ? '' : null,
+			message: content ?? (embed ? '' : null),
 			status
 		};
 
@@ -161,8 +96,11 @@ export class UserCommand extends SkyraCommand {
 		);
 	}
 
-	public async remove(message: GuildMessage, [streamer, channel, status]: [Streamer, Channel, Status]) {
-		const t = await message.fetchT();
+	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+		const streamer = await args.pick(UserCommand.streamer);
+		const channel = await args.pick('channelName');
+		const status = await args.pick(UserCommand.status);
+		const { t } = args;
 
 		await message.guild.writeSettings(async (settings) => {
 			// then retrieve the index of the entry if the guild already subscribed to them.
@@ -200,11 +138,12 @@ export class UserCommand extends SkyraCommand {
 		);
 	}
 
-	public async reset(message: GuildMessage, [streamer]: [Streamer?]) {
-		const t = await message.fetchT();
+	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+		const streamer = args.finished ? null : await args.pick(UserCommand.streamer);
+		const { t } = args;
 
 		// If the streamer was not defined, reset all entries and purge all entries.
-		if (typeof streamer === 'undefined') {
+		if (streamer === null) {
 			const [entries] = await message.guild.writeSettings((settings) => {
 				const entries = settings[this.#kSettingsKey].reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
 				if (entries === 0) throw t(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetEmpty);
@@ -258,8 +197,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async show(message: GuildMessage, [streamer]: [Streamer?]) {
-		const [guildSubscriptions, t] = await message.guild.readSettings((settings) => [settings[this.#kSettingsKey], settings.getLanguage()]);
+	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+		const streamer = args.finished ? null : await args.pick(UserCommand.streamer);
+		const { t } = args;
+
+		const guildSubscriptions = await message.guild.readSettings(this.#kSettingsKey);
 
 		// Create the response message.
 		const response = await message.send(
@@ -267,8 +209,7 @@ export class UserCommand extends SkyraCommand {
 		);
 
 		// Fetch the content.
-		const content =
-			typeof streamer === 'undefined' ? await this.showAll(guildSubscriptions, t) : await this.showSingle(guildSubscriptions, streamer, t);
+		const content = streamer === null ? await this.showAll(guildSubscriptions, t) : await this.showSingle(guildSubscriptions, streamer, t);
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
@@ -356,4 +297,20 @@ export class UserCommand extends SkyraCommand {
 			await subscription.save();
 		}
 	}
+
+	private static streamer = Args.make<Streamer>(async (parameter, { argument }) => {
+		try {
+			const { data } = await Store.injectedContext.client.twitch.fetchUsers([], [parameter]);
+			if (data.length > 0) return ok(data[0]);
+			return err(Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound }));
+		} catch {
+			return err(Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound }));
+		}
+	});
+
+	private static status = Args.make<Status>((parameter, { args, argument }) => {
+		const index = args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionStatusValues).indexOf(parameter.toLowerCase());
+		if (index === -1) return err(Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionInvalidStatus }));
+		return ok(index);
+	});
 }

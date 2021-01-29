@@ -7,13 +7,14 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.FollowageExtended,
-	permissions: ['EMBED_LINKS'],
-	usage: '<user:string{1,20}> <channel:string{1,20}>',
-	usageDelim: ' '
+	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [userName, channelName]: [string, string]) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const userName = await args.pick('string', { maximum: 20 });
+		const channelName = await args.pick('string', { maximum: 20 });
+		const { t } = args;
+
 		// Get the User objects for the user and channel names
 		const [user, channel] = await this.retrieveResults(t, userName, channelName);
 

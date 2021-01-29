@@ -7,14 +7,15 @@ export class SubCommandManager {
 	private readonly entries: SubCommandEntry[] = [];
 	private readonly default: SubCommandEntry | null = null;
 
-	public constructor(entries: readonly SubCommandManager.Entry[]) {
+	public constructor(entries: SubCommandManager.RawEntries) {
 		for (const data of entries) {
-			const Ctor = SubCommandManager.handlers.get(data.type);
-			if (!Ctor) throw new ReferenceError(`There is no sub command handler named '${data.type}' in 'SubCommandManager.handlers'.`);
+			const value = this.resolve(data);
+			const Ctor = SubCommandManager.handlers.get(value.type ?? 'method');
+			if (!Ctor) throw new ReferenceError(`There is no sub command handler named '${value.type}' in 'SubCommandManager.handlers'.`);
 
-			const entry = new Ctor(data);
-			if (data.default) {
-				if (this.default) throw new Error(`There was already a default of '${this.default.input}', cannot add '${data.input}'.`);
+			const entry = new Ctor(value);
+			if (value.default) {
+				if (this.default) throw new Error(`There was already a default of '${this.default.input}', cannot add '${value.input}'.`);
 				this.default = entry;
 			}
 
@@ -41,6 +42,11 @@ export class SubCommandManager {
 		return err(new UserError({ identifier: 'SubCommandNoMatch', context }));
 	}
 
+	protected resolve(value: string | SubCommandManager.Entry): SubCommandManager.Entry {
+		if (typeof value !== 'string') return value;
+		return { input: value, output: value, type: 'method' };
+	}
+
 	public static readonly handlers = new Map([
 		['command', SubCommandEntryCommand],
 		['method', SubCommandEntryMethod]
@@ -51,7 +57,9 @@ export class SubCommandManager {
 export namespace SubCommandManager {
 	export type Type = 'command' | 'method';
 	export interface Entry extends SubCommandEntry.Options {
-		type: Type;
+		type?: Type;
 		default?: boolean;
 	}
+
+	export type RawEntries = readonly (string | Entry)[];
 }

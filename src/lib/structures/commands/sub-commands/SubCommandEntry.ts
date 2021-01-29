@@ -1,7 +1,7 @@
-import { CommandContext } from '@sapphire/framework';
+import type { CommandContext } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 import type { SkyraArgs } from '../parsers';
-import { SkyraCommand } from '../SkyraCommand';
+import type { SkyraCommand } from '../SkyraCommand';
 
 export abstract class SubCommandEntry {
 	public readonly input: string;
@@ -9,7 +9,7 @@ export abstract class SubCommandEntry {
 
 	public constructor(options: SubCommandEntry.Options) {
 		this.input = options.input;
-		this.output = options.output;
+		this.output = options.output ?? options.input;
 	}
 
 	public match(value: string): boolean {
@@ -23,7 +23,7 @@ export abstract class SubCommandEntry {
 export namespace SubCommandEntry {
 	export interface Options {
 		input: string;
-		output: string;
+		output?: string;
 	}
 
 	export interface RunContext {

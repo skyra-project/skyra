@@ -2,7 +2,9 @@ import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import type { CustomGet } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import {
+	Awaited,
 	Command,
+	CommandContext,
 	CommandOptions,
 	err,
 	Err,
@@ -16,29 +18,7 @@ import {
 import { Message, PermissionResolvable } from 'discord.js';
 import { sep } from 'path';
 import { SkyraArgs } from './parsers/SkyraArgs';
-
-export namespace SkyraCommand {
-	export type RunInOption = 'text' | 'news' | 'dm';
-
-	/**
-	 * The SkyraCommand Options
-	 */
-	export type Options = CommandOptions & {
-		bucket?: number;
-		cooldown?: number;
-		description: CustomGet<string, string>;
-		extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
-		guarded?: boolean;
-		hidden?: boolean;
-		nsfw?: boolean;
-		permissionLevel?: number;
-		permissions?: PermissionResolvable;
-		runIn?: RunInOption[];
-		spam?: boolean;
-	};
-
-	export type Args = SkyraArgs;
-}
+import { SubCommandManager } from './sub-commands/SubCommandManager';
 
 export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 	public readonly guarded: boolean;
@@ -46,6 +26,7 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 	public readonly permissionLevel: PermissionLevels;
 	public readonly description: CustomGet<string, string>;
 	public readonly extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
+	public readonly subCommands: SubCommandManager | null;
 
 	/**
 	 * The full category for the command
@@ -62,6 +43,7 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 		this.permissionLevel = options.permissionLevel ?? PermissionLevels.Everyone;
 		this.description = options.description;
 		this.extendedHelp = options.extendedHelp;
+		this.subCommands = options.subCommands ? new SubCommandManager(options.subCommands) : null;
 
 		// Hack that works for Skyra as the commands are always in **/commands/**/*
 		const paths = context.path.split(sep);
@@ -82,6 +64,11 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 		return this.fullCategory.length > 1 ? this.fullCategory[1] : 'General';
 	}
 
+	public run(message: Message, args: SkyraCommand.Args, context: CommandContext): Awaited<unknown> {
+		if (!this.subCommands) throw new Error(`The command ${this.name} does not have a 'run' method and does not support sub-commands.`);
+		return this.subCommands.run({ message, args, context, command: this });
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	public inhibit(_message: Message): Promise<boolean> | boolean {
 		return false;
@@ -95,7 +82,7 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 	protected error(value: string | UserError): Err<UserError>;
 	protected error(value: null | string | UserError): Err<UserError | null>;
 	protected error(value: null | string | UserError): Err<UserError | null> {
-		return err(typeof value === 'string' ? new UserError('CommandError', value) : value);
+		return err(typeof value === 'string' ? new UserError({ identifier: 'CommandError', message: value }) : value);
 	}
 
 	protected static resolvePreConditions(context: PieceContext, options: SkyraCommand.Options): SkyraCommand.Options {
@@ -144,4 +131,28 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 
 		return array;
 	}
+}
+
+export namespace SkyraCommand {
+	export type RunInOption = 'text' | 'news' | 'dm';
+
+	/**
+	 * The SkyraCommand Options
+	 */
+	export type Options = CommandOptions & {
+		bucket?: number;
+		cooldown?: number;
+		description: CustomGet<string, string>;
+		extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
+		guarded?: boolean;
+		hidden?: boolean;
+		nsfw?: boolean;
+		permissionLevel?: number;
+		permissions?: PermissionResolvable;
+		runIn?: RunInOption[];
+		spam?: boolean;
+		subCommands?: readonly SubCommandManager.Entry[];
+	};
+
+	export type Args = SkyraArgs;
 }

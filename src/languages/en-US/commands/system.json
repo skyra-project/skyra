@@ -14,11 +14,6 @@
 	"execExtended": {
 		"extendedHelp": "You better not know about this."
 	},
-	"setAvatarDescription": "Set Skyra's avatar.",
-	"setAvatarExtended": {
-		"extendedHelp": "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.",
-		"reminder": "Reserved for bot owners."
-	},
 	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
 	"donateExtended": {
 		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"

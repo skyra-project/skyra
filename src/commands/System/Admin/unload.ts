@@ -3,23 +3,22 @@ import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
-import type { Piece } from 'klasa';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['u'],
 	description: LanguageKeys.Commands.System.UnloadDescription,
 	extendedHelp: LanguageKeys.Commands.System.UnloadExtended,
 	guarded: true,
-	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<Piece:piece>'
+	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [piece]: [Piece]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const piece = await args.pick('piece');
 		if ((piece.store.name === 'event' && piece.name === 'message') || (piece.store.name === 'monitor' && piece.name === 'commandHandler')) {
-			return message.sendTranslated(LanguageKeys.Commands.System.UnloadWarn);
+			return message.send(args.t(LanguageKeys.Commands.System.UnloadWarn));
 		}
 
 		await piece.unload();
-		return message.sendTranslated(LanguageKeys.Commands.System.Unload, [{ type: piece.store.name, name: piece.name }]);
+		return message.send(args.t(LanguageKeys.Commands.System.Unload, { type: piece.store.name, name: piece.name }));
 	}
 }

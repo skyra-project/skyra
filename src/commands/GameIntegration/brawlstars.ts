@@ -6,7 +6,7 @@ import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args, err, ok } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -52,34 +52,22 @@ export interface BrawlStarsGIData {
 	aliases: ['bs'],
 	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
-	subcommands: true,
-	flagSupport: true,
-	usage: '<club|player:default> [tag:tag]',
-	usageDelim: ' '
+	strategyOptions: {
+		flags: ['s', 'save']
+	},
+	subCommands: [{ input: 'player', default: true }, 'club']
 })
-@CreateResolvers([
-	[
-		'tag',
-		async (arg, _possible, message) => {
-			if (kTagRegex.test(arg)) return arg;
-			throw await message.resolveKey(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
-		}
-	]
-])
 export class UserCommand extends SkyraCommand {
-	public async player(message: Message, [tag]: [string]) {
+	public async player(message: Message, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
-		const t = await message.fetchT();
 
-		if (!tag && bsData.extraData?.playerTag) {
-			tag = bsData.extraData.playerTag!;
-		} else if (!tag) {
-			throw t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
-		}
+		const { t } = args;
+		const tag = args.finished ? bsData.extraData?.playerTag : await args.pick(UserCommand.tagResolver);
+		if (!tag) return this.error(t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' }));
 
 		const playerData = await this.fetchAPI<BrawlStarsFetchCategories.PLAYERS>(t, tag, BrawlStarsFetchCategories.PLAYERS);
-		const saveFlag = Reflect.get(message.flagArgs, 'save');
+		const saveFlag = args.getFlags('save', 's');
 
 		if (saveFlag) {
 			bsData.extraData = { ...bsData.extraData, playerTag: playerData.tag };
@@ -89,19 +77,16 @@ export class UserCommand extends SkyraCommand {
 		return message.send(await this.buildPlayerEmbed(message, t, playerData));
 	}
 
-	public async club(message: Message, [tag]: [string]) {
+	public async club(message: Message, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
-		const t = await message.fetchT();
 
-		if (!tag && bsData.extraData?.clubTag) {
-			tag = bsData.extraData.clubTag!;
-		} else if (!tag) {
-			throw t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
-		}
+		const { t } = args;
+		const tag = args.finished ? bsData.extraData?.clubTag : await args.pick(UserCommand.tagResolver);
+		if (!tag) return this.error(t(LanguageKeys.Resolvers.InvalidString, { name: 'tag' }));
 
 		const clubData = await this.fetchAPI<BrawlStarsFetchCategories.CLUB>(t, tag, BrawlStarsFetchCategories.CLUB);
-		const saveFlag = Reflect.get(message.flagArgs, 'save');
+		const saveFlag = args.getFlags('save', 's');
 
 		if (saveFlag) {
 			bsData.extraData = { ...bsData.extraData, clubTag: clubData.tag };
@@ -212,4 +197,9 @@ export class UserCommand extends SkyraCommand {
 				: t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
+
+	private static tagResolver = Args.make<string>((parameter, { argument }) => {
+		if (kTagRegex.test(parameter)) return ok(parameter);
+		return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag }));
+	});
 }

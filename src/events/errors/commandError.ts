@@ -1,21 +1,19 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { SkyraCommand } from '#lib/structures';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { OWNERS } from '#root/config';
 import { rootFolder } from '#utils/constants';
-import { cast } from '#utils/util';
-import { Command, Event } from '@sapphire/framework';
+import { Command, CommandErrorPayload, Event } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
 
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 
-export default class extends Event {
-	public async run(message: Message, command: Command, _: string[], error: string | Error) {
-		// Re-assign it to the Error or string for TS as the promise has now been awaited
-		error = cast<Error | string>(error);
-
+export default class extends Event<Events.CommandError> {
+	// TODO(kyranet): Make CommandError emit more metadata
+	public async run(error: Error, { message, piece }: CommandErrorPayload) {
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
 			return message.alert(await message.resolveKey(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }), {
@@ -39,6 +37,7 @@ export default class extends Event {
 		}
 
 		// Send a detailed message:
+		const command = piece as SkyraCommand;
 		await this.sendErrorChannel(message, command, error);
 
 		// Emit where the error was emitted
@@ -55,7 +54,12 @@ export default class extends Event {
 	}
 
 	private async sendErrorChannel(message: Message, command: Command, error: Error) {
-		const lines = [this.getLinkLine(message.url), this.getCommandLine(command), this.getArgumentsLine(message.args), this.getErrorLine(error)];
+		const lines = [
+			this.getLinkLine(message.url),
+			this.getCommandLine(command),
+			// this.getArgumentsLine(message.args),
+			this.getErrorLine(error)
+		];
 
 		// If it's a DiscordAPIError or a HTTPError, add the HTTP path and code lines after the second one.
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
@@ -105,10 +109,10 @@ export default class extends Event {
 	 * Formats an arguments line.
 	 * @param args The arguments the user used when running the command.
 	 */
-	private getArgumentsLine(args: readonly string[]): string {
-		if (args.length === 0) return '**Arguments**: Not Supplied';
-		return `**Arguments**: [\`${args.map((arg) => arg?.trim() || '\u200B').join('`, `')}\`]`;
-	}
+	// private getArgumentsLine(args: readonly string[]): string {
+	// 	if (args.length === 0) return '**Arguments**: Not Supplied';
+	// 	return `**Arguments**: [\`${args.map((arg) => arg?.trim() || '\u200B').join('`, `')}\`]`;
+	// }
 
 	/**
 	 * Formats an error codeblock.

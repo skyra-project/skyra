@@ -155,4 +155,5 @@ export namespace SkyraCommand {
 	};
 
 	export type Args = SkyraArgs;
+	export type Context = CommandContext;
 }

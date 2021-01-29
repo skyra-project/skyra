@@ -9,7 +9,7 @@ export default class extends Event {
 	public async run(message: Message, command: Command, error: QueryFailedError) {
 		const output = [
 			`${inlineCodeBlock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
-			`${inlineCodeBlock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
+			// `${inlineCodeBlock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
 			`${inlineCodeBlock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 		].join('\n');
 

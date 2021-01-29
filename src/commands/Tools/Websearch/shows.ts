@@ -15,13 +15,14 @@ import type { TFunction } from 'i18next';
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended,
-	usage: '<show:str> [year:str]',
-	usageDelim: 'y:'
+	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended
 })
 export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [show, year]: [string, string?]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const show = await args.pick('string');
+		const year = args.finished ? await args.pick('string') : null;
+
+		const { t } = args;
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
@@ -34,14 +35,13 @@ export default class extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, show: string, year?: string) {
+	private async fetchAPI(t: TFunction, show: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/tv');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 			url.searchParams.append('query', show);
 
-			if (year) url.searchParams.append('first_air_date_year', year);
-
+			if (year !== null) url.searchParams.append('first_air_date_year', year);
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
 			throw t(LanguageKeys.System.QueryFail);

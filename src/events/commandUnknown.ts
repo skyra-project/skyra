@@ -1,14 +1,9 @@
 import { GuildSettings } from '#lib/database';
-import type { SkyraCommand } from '#lib/structures';
-import type { CommandHandler } from '#lib/types/definitions/Internals';
-import { Events, PermissionLevels } from '#lib/types/Enums';
-import { cast } from '#utils/util';
-import { Command, Event } from '@sapphire/framework';
-import { Stopwatch } from '@sapphire/stopwatch';
-import type { Message } from 'discord.js';
+import { GuildMessage } from '#lib/types';
+import { Event, Events } from '@sapphire/framework';
 
 export default class extends Event {
-	public async run(message: Message, command: string) {
+	public async run(message: GuildMessage, name: string, prefix: string) {
 		if (!message.guild) return null;
 
 		const [disabledChannels, tags, aliases] = await message.guild.readSettings([
@@ -16,58 +11,31 @@ export default class extends Event {
 			GuildSettings.CustomCommands,
 			GuildSettings.Trigger.Alias
 		]);
-		if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) return null;
 
-		command = command.toLowerCase();
+		if (disabledChannels.includes(message.channel.id) && !(await message.member.isModerator())) return null;
 
-		const tag = tags.some((t) => t.id === command);
-		if (tag) return this.runTag(message, command);
+		name = name.toLowerCase();
 
-		const alias = aliases.find((entry) => entry.input === command);
-		const commandAlias = (alias && this.context.client.commands.get(alias.output)) || null;
-		if (commandAlias) return this.runCommand(message, commandAlias);
+		const tag = tags.some((t) => t.id === name);
+		if (tag) return this.runCommand(message, prefix, 'tag', name);
+
+		const alias = aliases.find((entry) => entry.input === name);
+		if (alias) return this.runCommand(message, prefix, alias.output, '');
 
 		return null;
 	}
 
-	public runCommand(message: Message, command: Command) {
-		const commandHandler = cast<CommandHandler>(this.context.client.events.get('userMessageCommandHandler'));
-		message.command = command;
-		message.prompter = message.command.usage.createPrompt(message, {
-			flagSupport: message.command.flagSupport,
-			quotedStringSupport: message.command.quotedStringSupport,
-			time: message.command.promptTime,
-			limit: message.command.promptLimit
-		});
-		return commandHandler.runCommand(message);
+	private runCommand(message: GuildMessage, prefix: string, name: string, suffix: string) {
+		// Retrieve the command and validate:
+		const command = this.context.stores.get('commands').get(name);
+		if (!command) return;
+
+		const prefixLess = message.content.slice(prefix.length).trim();
+		const spaceIndex = prefixLess.indexOf(' ');
+
+		// Run the last stage before running the command:
+		const rawParameters = spaceIndex === -1 ? '' : prefixLess.substr(spaceIndex + 1).trim();
+		const parameters = rawParameters.length === 0 ? suffix : suffix.length === 0 ? rawParameters : `${suffix} ${rawParameters}`;
+		message.client.emit(Events.PreCommandRun, { message, command, parameters, context: { commandName: name, prefix } });
 	}
-
-	public async runTag(message: Message, command: string) {
-		const { client } = this.context;
-		const tagCommand = client.commands.get('tag') as TagCommand;
-		const timer = new Stopwatch();
-
-		try {
-			await client.inhibitors.run(message, tagCommand);
-			try {
-				const commandRun = tagCommand.show(message, [command]);
-				timer.stop();
-				const response = await commandRun;
-				client.emit(Events.CommandSuccess, message, tagCommand, response, timer);
-			} catch (error) {
-				client.emit(Events.CommandError, message, tagCommand, ['show', command], error);
-			}
-		} catch (response) {
-			client.emit(Events.CommandInhibited, message, tagCommand, response);
-		}
-	}
-}
-
-interface TagCommand extends SkyraCommand {
-	add(message: Message, args: [string, string]): Promise<Message>;
-	remove(message: Message, args: [string]): Promise<Message>;
-	edit(message: Message, args: [string, string]): Promise<Message>;
-	list(message: Message): Promise<Message>;
-	show(message: Message, args: [string]): Promise<Message>;
-	source(message: Message, args: [string]): Promise<Message>;
 }

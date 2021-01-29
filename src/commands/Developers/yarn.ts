@@ -4,10 +4,9 @@ import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { BrandingColors } from '#utils/constants';
-import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,20 +17,11 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
 	permissions: ['EMBED_LINKS']
 })
-@CreateResolvers([
-	[
-		'package',
-		async (arg, _, message) => {
-			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Developers.YarnNoPackage);
-			return encodeURIComponent(cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase());
-		}
-	]
-])
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
-		const pkg = await args.rest('string');
+	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+		const pkg = encodeURIComponent((await args.rest('cleanString')).replaceAll(' ', '-').toLowerCase());
+		const { t } = args;
 
-		const t = await message.fetchT();
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
@@ -40,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (result.time && Reflect.has(result.time, 'unpublished')) throw t(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
 
-		const dataEmbed = await this.buildEmbed(result, message, t);
+		const dataEmbed = await this.buildEmbed(result, message, t, context);
 		return response.edit(undefined, dataEmbed);
 	}
 
@@ -52,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction) {
+	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction, context: SkyraCommand.Context) {
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies
@@ -76,7 +66,7 @@ export class UserCommand extends SkyraCommand {
 		return new MessageEmbed()
 			.setTitle(result.name)
 			.setURL(
-				message.commandText!.includes('yarn')
+				context.commandName.includes('yarn')
 					? `https://yarnpkg.com/en/package/${result.name}`
 					: `https://www.npmjs.com/package/${result.name}`
 			)

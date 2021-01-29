@@ -4,7 +4,7 @@ import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	public parse(args: Serializer.Args) {
-		return args.pickResult('guild');
+		return args.pickResult('snowflake');
 	}
 
 	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {

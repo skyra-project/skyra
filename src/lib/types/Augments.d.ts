@@ -9,11 +9,10 @@ import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
-import type { Command } from '@sapphire/framework';
+import type { Command, Piece, Store } from '@sapphire/framework';
 import type {
 	APIMessage,
 	APIMessageContentResolvable,
-	CategoryChannel,
 	GuildChannel,
 	Message,
 	MessageAdditions,
@@ -107,23 +106,24 @@ declare module 'discord.js' {
 
 declare module '@sapphire/framework' {
 	interface ArgType {
-		categoryChannel: CategoryChannel;
 		channelName: GuildChannel;
+		cleanString: string;
 		command: Command;
 		commandName: Command;
 		duration: Date;
 		emoji: string;
-		guild: Snowflake;
 		image: string;
 		invite: InviteCodeValidEntry;
-		overwatchPlayer: string;
 		language: string;
+		overwatchPlayer: string;
+		piece: Piece;
 		range: number[];
 		roleName: Role;
+		shinyWager: number;
 		snowflake: Snowflake;
 		song: string[];
+		store: Store<Piece>;
 		textChannelName: string;
-		time: Date;
 		timespan: number;
 		userName: User;
 	}

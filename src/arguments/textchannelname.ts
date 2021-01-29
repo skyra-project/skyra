@@ -1,12 +1,12 @@
-import type { GuildChannel, Message, TextChannel } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import { Argument, ArgumentContext } from '@sapphire/framework';
+import type { GuildChannel, TextChannel } from 'discord.js';
 
-export default class extends Argument {
-	public get channelname(): Argument {
-		return this.store.get('channelname') as Argument;
+export class UserArgument extends Argument<TextChannel> {
+	public get channelName(): Argument<TextChannel> {
+		return this.store.get('channelName') as Argument<TextChannel>;
 	}
 
-	public run(arg: string, possible: Possible, message: Message): Promise<TextChannel> {
-		return this.channelname.run(arg, possible, message, (entry: GuildChannel) => entry.type === 'text');
+	public run(argument: string, context: ArgumentContext) {
+		return this.channelName.run(argument, { ...context, filter: (entry: GuildChannel) => entry.type === 'text' });
 	}
 }

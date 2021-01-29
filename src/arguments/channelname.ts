@@ -1,36 +1,26 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
-import type { Guild, GuildChannel, Message, User } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
+import { Argument, ArgumentContext } from '@sapphire/framework';
+import type { Guild, GuildChannel, User } from 'discord.js';
 
-const CHANNEL_REGEXP = Argument.regex.channel;
-
-export default class extends Argument {
-	public get channel() {
-		return this.store.get('channel')!;
-	}
-
+export class UserArgument extends Argument<GuildChannel> {
 	public resolveChannel(query: string, guild: Guild) {
-		const channelID = CHANNEL_REGEXP.exec(query);
+		const channelID = ChannelMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
 		return (channelID !== null && guild.channels.cache.get(channelID[1])) ?? null;
 	}
 
-	public async run(arg: string, possible: Possible, message: Message, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
-		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
-		if (!message.guild) throw await message.resolveKey(LanguageKeys.Resolvers.ChannelNotInGuild);
+	public async run(argument: string, { message, minimum, filter }: ChannelArgumentContext) {
+		if (!message.guild) return this.error(argument, LanguageKeys.Resolvers.ChannelNotInGuild);
 		filter = this.getFilter(message.author, filter);
 
-		const resChannel = this.resolveChannel(arg, message.guild);
-		if (resChannel && filter(resChannel)) return resChannel;
+		const resChannel = this.resolveChannel(argument, message.guild);
+		if (resChannel && filter(resChannel)) return this.ok(resChannel);
 
-		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(
-			message,
-			arg,
-			possible.min || undefined
-		);
-		if (result) return result[1];
-		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
+		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(message, argument, minimum);
+		if (result) return this.ok(result[1]);
+		return this.error(argument, LanguageKeys.Resolvers.InvalidChannelName);
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {
@@ -39,4 +29,8 @@ export default class extends Argument {
 			? (entry: GuildChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)
 			: (entry: GuildChannel) => filter(entry) && validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser);
 	}
+}
+
+interface ChannelArgumentContext extends ArgumentContext {
+	filter?: (entry: GuildChannel) => boolean;
 }

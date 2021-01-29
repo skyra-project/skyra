@@ -1,23 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import type { Message } from 'discord.js';
-import { Argument, Command, Possible } from 'klasa';
+import { Argument, ArgumentContext, Command } from '@sapphire/framework';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message) {
-		const found = message.client.commands.get(arg.toLowerCase());
-		if (found) return found;
+export class UserArgument extends Argument<Command> {
+	public async run(argument: string, { message, minimum }: ArgumentContext) {
+		const { commands } = this.context.client;
+		const found = commands.get(argument.toLowerCase());
+		if (found) return this.ok(found);
 
-		const usableCommands = await message.usableCommands();
-		const filter = (command: Command) => usableCommands.has(command.name);
+		const command = await new FuzzySearch(message.client.commands, (command) => command.name).run(message, argument, minimum);
+		if (command) return this.ok(command[1]);
 
-		const command = await new FuzzySearch(message.client.commands, (command) => command.name, filter).run(
-			message,
-			arg,
-			possible.min || undefined
-		);
-		if (command) return command[1];
-
-		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidPiece, { name: possible.name, piece: 'command' });
+		return this.error(argument, LanguageKeys.Resolvers.InvalidCommand);
 	}
 }

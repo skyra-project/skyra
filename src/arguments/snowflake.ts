@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { Argument } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import type { Snowflake } from 'discord.js';
 
-export default class extends Argument {
+export class UserArgument extends Argument<Snowflake> {
 	/**
 	 * The validator, requiring all numbers and 17 to 19 digits (future-proof).
 	 */
@@ -15,14 +15,12 @@ export default class extends Argument {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public async run(arg: string, possible: Possible, message: Message) {
-		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
-
-		if (this.kRegExp.test(arg)) {
-			const snowflake = DiscordSnowflake.deconstruct(arg);
+	public run(argument: string) {
+		if (this.kRegExp.test(argument)) {
+			const snowflake = DiscordSnowflake.deconstruct(argument);
 			const timestamp = Number(snowflake.timestamp);
-			if (timestamp >= this.kMinimum && timestamp < Date.now()) return arg;
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return this.ok(argument);
 		}
-		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
+		return this.error(argument, LanguageKeys.Resolvers.InvalidSnowflake);
 	}
 }

@@ -1,30 +1,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Message } from 'discord.js';
-import { Argument, ArgumentOptions, Possible } from 'klasa';
+import { ExtendedArgument, ExtendedArgumentOptions } from '@sapphire/framework';
 
-@ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
-export default class ShinyWager extends Argument {
-	public async run(arg: string, possible: Possible, message: Message): Promise<number> {
-		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
-
-		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
-		if (!Number.isInteger(number)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
-		if (!ShinyWager.kValidBetAmounts.includes(number)) {
-			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidWager, {
-				bet: number,
-				validAmounts: ShinyWager.kValidBetAmounts.map((a) => a.toString())
-			});
+@ApplyOptions<ExtendedArgumentOptions<'integer'>>({ aliases: ['wager'], baseArgument: 'integer' })
+export default class ShinyWager extends ExtendedArgument<'integer', number> {
+	public handle(value: number) {
+		if (ShinyWager.kValidAmounts.includes(value)) {
+			return this.ok(value);
 		}
 
-		return this.integerArg.run(arg, possible, message);
+		return this.error(value.toString(), LanguageKeys.Resolvers.InvalidWager, {
+			possibles: ShinyWager.kValidAmounts.map((a) => a.toString())
+		});
 	}
 
-	private get integerArg() {
-		return this.store.get('integer') as Argument;
-	}
-
-	public static readonly kValidBetAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 25_000, 50_000, 100_000, 500_000] as const;
+	public static readonly kValidAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 25_000, 50_000, 100_000, 500_000];
 }
-
-type ArrayValues<T extends readonly unknown[] = readonly unknown[]> = T[number];

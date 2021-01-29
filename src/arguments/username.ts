@@ -1,41 +1,46 @@
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { SnowflakeRegex, UserOrMemberMentionRegex } from '@sapphire/discord.js-utilities';
+import { Argument, ArgumentContext } from '@sapphire/framework';
 import type { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
-import type { Message, User } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import type { User } from 'discord.js';
 
-const USER_REGEXP = Argument.regex.userOrMember;
-
-export default class extends Argument {
-	public get user() {
-		return this.store.get('user') as Argument;
+export class UserArgument extends Argument<User> {
+	private get user(): Argument<User> {
+		return this.store.get('user') as Argument<User>;
 	}
 
-	public async run(arg: string, possible: Possible, message: Message): Promise<User> {
-		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
-		if (!message.guild) return this.user.run(arg, possible, message);
-		const resUser = await this.resolveUser(message as GuildMessage, arg);
-		if (resUser) return resUser;
+	public async run(argument: string, context: ArgumentContext) {
+		const message = context.message as GuildMessage;
+		if (!message.guild) return this.user.run(argument, context);
 
-		const result = await this.fetchMember(message as GuildMessage, arg);
-		if (result) return message.guild.members.add(result).user;
-		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		const user = await this.resolveUser(message, argument);
+		if (user) return this.ok(user);
+		if (user === null) return this.error(argument, LanguageKeys.Misc.UserNotExistent);
+
+		const result = await this.fetchMember(message, argument);
+		if (result) return this.ok(message.guild.members.add(result).user);
+		return this.error(argument, LanguageKeys.Resolvers.InvalidUsername);
 	}
 
-	private async resolveUser(message: GuildMessage, query: string) {
-		const result = USER_REGEXP.exec(query);
-		if (result === null) return null;
+	private async resolveUser(message: GuildMessage, argument: string) {
+		const result = UserOrMemberMentionRegex.exec(argument) ?? SnowflakeRegex.exec(argument);
+		if (result === null) return undefined;
 
 		try {
 			return await message.client.users.fetch(result[1]);
 		} catch {
-			throw await message.resolveKey(LanguageKeys.Misc.UserNotExistent);
+			return null;
 		}
 	}
 
 	private async fetchMember(message: GuildMessage, query: string) {
-		const [result] = (await api().guilds(message.guild.id).members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
-		return result;
+		try {
+			const [result] = (await api().guilds(message.guild.id).members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
+			return result;
+		} catch {
+			return null;
+		}
 	}
 }

@@ -1,23 +1,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { parseRange } from '#utils/util';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import { Argument, ArgumentContext } from '@sapphire/framework';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message) {
-		if (!arg) throw await message.resolveKey(LanguageKeys.Arguments.RangeInvalid, { name: possible.name });
+export class UserArgument extends Argument<number[]> {
+	public run(argument: string, { maximum }: ArgumentContext) {
+		const number = Number(argument);
+		if (Number.isSafeInteger(number)) return this.ok([number]);
 
-		const number = Number(arg);
-		if (Number.isSafeInteger(number)) return [number];
+		const range = parseRange(argument);
+		if (range.length === 0) return this.error(argument, LanguageKeys.Arguments.RangeInvalid);
+		if (typeof maximum === 'number' && range.length > maximum) {
+			return this.error(LanguageKeys.Arguments.RangeMax, { name: argument, maximum, count: maximum });
+		}
 
-		const range = parseRange(arg);
-		if (range.length === 0) throw await message.resolveKey(LanguageKeys.Arguments.RangeInvalid, { name: possible.name });
-		if (typeof possible.max === 'number' && range.length > possible.max)
-			throw await message.resolveKey(LanguageKeys.Arguments.RangeMax, {
-				name: possible.name,
-				maximum: possible.max,
-				count: possible.max
-			});
-		return range;
+		return this.ok(range);
 	}
 }

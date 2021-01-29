@@ -22,8 +22,8 @@ export default class extends Event {
 
 		const mentions =
 			message.mentions.users.reduce((acc, user) => (user.bot || user === message.author ? acc : acc + 1), 0) +
-			message.mentions.roles.size * message.client.options.nms.role! +
-			Number(message.mentions.everyone) * message.client.options.nms.everyone!;
+			message.mentions.roles.size * message.client.options.nms!.role! +
+			Number(message.mentions.everyone) * message.client.options.nms!.everyone!;
 
 		if (mentions === 0) return;
 

@@ -710,13 +710,6 @@
   resolved "https://registry.yarnpkg.com/@sapphire/decorators/-/decorators-2.0.3.tgz#903d04fafd6fc15ac49d11f8d677e605d7916ca2"
   integrity sha512-mRzzjf+tu0p/WbJdzqTodiLpxcQqM5MeaW1sZS5geUVnjXPgRZnAnevPACqOMmM+OFP8meHL7uCwK0noOapRMw==
 
-"@sapphire/discord-utilities@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@sapphire/discord-utilities/-/discord-utilities-1.0.3.tgz#13fc14ede70a65015c9f3f3aa36d8d51ab088fd8"
-  integrity sha512-FttIeqa6UqFj5hE8VARNZ1GZRC7xaRQDCJc+QuSf1+pf5s3sCToWCC1lliKTgJwMofQJet3K/JaI61aGbo8cyQ==
-  dependencies:
-    twemoji-parser "^13.0.0"
-
 "@sapphire/discord-utilities@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@sapphire/discord-utilities/-/discord-utilities-2.0.1.tgz#47b159b848bcc7d30647a127d88482d8e567795b"
@@ -736,18 +729,19 @@
   resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-2.1.1.tgz#c18217d00b4a0a8b62da24ebb9875d856d474510"
   integrity sha512-OoM2KYco1+HF+z/WjaAPhPhvEPGA8ddrn8ATLWvOvs4JiACRYbUGIMQrxRgb5afvEKIacLlGUKi/emZa8G9s+Q==
 
-"@sapphire/framework@1.0.0-alpha.3":
-  version "1.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@sapphire/framework/-/framework-1.0.0-alpha.3.tgz#5aa45504ef095f60d265611b758f4f8dbf55422c"
-  integrity sha512-tsZ6ypagApA/+YA3MgXZq1iQNvFFqZ9DMQciA/TxSVD/cbOqakqA6z7E1fO7rhZOZmZBqmus4zfKxiw+FOrdoA==
+"@sapphire/framework@1.0.0-alpha.4":
+  version "1.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@sapphire/framework/-/framework-1.0.0-alpha.4.tgz#a683f36a3901e2242bc266c589d607afd762cec9"
+  integrity sha512-aIixI2ACKLZ0tn3kFQcdmYt4VMVW5ABLOUUT2NBZENq/8PUM14DY5dbKoBVHvgkddUrDlbAI96fbPhNByNQPrg==
   dependencies:
-    "@sapphire/discord-utilities" "^1.0.3"
-    "@sapphire/pieces" "^1.0.1"
-    "@sapphire/ratelimits" "^1.1.2"
-    "@sapphire/utilities" "^1.3.0"
+    "@sapphire/discord-utilities" "^2.0.1"
+    "@sapphire/discord.js-utilities" "^1.3.1"
+    "@sapphire/pieces" "^1.2.0"
+    "@sapphire/ratelimits" "^1.1.4"
+    "@sapphire/utilities" "^1.4.3"
     lexure "^0.17.0"
 
-"@sapphire/pieces@^1.0.1":
+"@sapphire/pieces@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@sapphire/pieces/-/pieces-1.2.0.tgz#a77f0ece618b6693ac90a4254b4e8b18ee79afbe"
   integrity sha512-cwlk+iLkRLdrpXHvT3Jdn0wVHY4fQzYdomkjgUvIbIvJ8yKVWQldbWnucjzQ0q9r7KvUnjOKM/3Rp3joy1P3RQ==
@@ -777,7 +771,7 @@
   resolved "https://registry.yarnpkg.com/@sapphire/prettier-config/-/prettier-config-1.0.6.tgz#b561377518f4781626605197bb5651034596d4e4"
   integrity sha512-wI5qf/rk0EJGoyBg/PPT4EutH79JpnEtXWRSnGWopk8e4s9vHKHjOvgSAUgQJm5eD7bcU2NdAFRvQtPrTcCIcw==
 
-"@sapphire/ratelimits@^1.1.2":
+"@sapphire/ratelimits@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@sapphire/ratelimits/-/ratelimits-1.1.4.tgz#965ff1f5961d8ba391d864148ce311fab274e9d9"
   integrity sha512-oEde4xbkwL+KyPvfpQrE7cad4iMqHzadnBOPIjDRC3ZC4pMfaI6WpcNU1qekpadxTTgFSDecrrR3wt46I4E7CQ==
@@ -809,7 +803,7 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.4.tgz#a3bd721c4b1f00fba2bb7d2504842c7a70ff6c99"
   integrity sha512-TvH+QyCYIzcwbwnLsqI03ZXu8f8nqR9avibEatY8C90MFUcPdB3KKPafdftKQkLj8lryHoLXwIQSschDR9y1jg==
 
-"@sapphire/utilities@^1.3.0", "@sapphire/utilities@^1.4.3", "@sapphire/utilities@^1.4.4":
+"@sapphire/utilities@^1.4.3", "@sapphire/utilities@^1.4.4":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.4.tgz#3774c79b573d8af68c838b52813b55cd24c2a0b6"
   integrity sha512-RMEEOlykuYRde4hdH2T03or24EsjtTU1OdN+gw6aJdf+1GEcL6VqyN9B56tyU6CGF5PXLUOYZJiEgM6TiYcp1Q==
@@ -1001,10 +995,10 @@
   resolved "https://registry.yarnpkg.com/@types/he/-/he-1.1.1.tgz#19e14033c4ee8f1a702c74dcc6182664839ac2b7"
   integrity sha512-jpzrsR1ns0n3kyWt92QfOUQhIuJGQ9+QGa7M62rO6toe98woQjnsnzjdMtsQXCdvjjmqjS2ZBCC7xKw0cdzU+Q==
 
-"@types/ioredis@^4.19.2":
-  version "4.19.2"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.19.2.tgz#68215d2fab93dd4f5d1d1225938389c32e7b98a2"
-  integrity sha512-fejSsJ4pYvA8zVLvAgQFI9T2uvxhUW7Ph95KodnNxMZvnUhQrn4ohxjH7fuU+jUw7Q4JCDcaba7JxDmszFmrCA==
+"@types/ioredis@^4.19.3":
+  version "4.19.3"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.19.3.tgz#577548fbd03200ef92a81fd745899316c6f28917"
+  integrity sha512-r9rXLYeZVmvTf0nKDmFYrpBeVzK5B6jgE2ncfkzPOAuRM5RTzKnYdW2wVn+ZONMnFxV6H4R3NrCdRdC3CL4nFA==
   dependencies:
     "@types/node" "*"
 

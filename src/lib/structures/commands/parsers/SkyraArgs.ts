@@ -16,3 +16,9 @@ export class SkyraArgs extends Args {
 export interface SkyraArgs {
 	command: SkyraCommand;
 }
+
+declare module '@sapphire/framework' {
+	export interface Args {
+		t: TFunction;
+	}
+}

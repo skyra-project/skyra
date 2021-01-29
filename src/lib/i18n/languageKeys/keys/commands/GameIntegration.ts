@@ -159,7 +159,7 @@ export const FortniteEmbedStats = FT<
 >('commands/gameIntegration:fortniteEmbedStats');
 export const OverwatchDescription = T<string>('commands/gameIntegration:overwatchDescription');
 export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:overwatchExtended');
-export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');
+export const OverwatchInvalidPlayerName = FT<{ value: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');
 export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commands/gameIntegration:overwatchQueryFail');
 export const OverwatchNoStats = FT<{ player: string }, string>('commands/gameIntegration:overwatchNoStats');
 export const OverwatchNoAverage = T<string>('commands/gameIntegration:overwatchNoAverage');

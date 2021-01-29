@@ -1,31 +1,42 @@
 import { fetchAvatar } from '#utils/util';
+import { Argument, ArgumentContext } from '@sapphire/framework';
 import type { Image } from 'canvas';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import { User } from 'discord.js';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message): Promise<Image> {
-		// If theres nothing provided, search the channel for an image.
-		if (!arg) {
-			// ! TODO: Re-enable after moving to sapphire!!
-			/*
-			// Configurable minimum of messages
-			const minimum = possible.min || 20;
+export class UserArgument extends Argument<Image> {
+	private get userName(): Argument<User> {
+		return this.store.get('userName') as Argument<User>;
+	}
 
-			// Fetch messages if there are not enough in the channel
-			if (message.channel.messages.size < minimum) await message.channel.messages.fetch({ limit: minimum });
+	public async run(argument: string, context: ArgumentContext) {
+		// // If theres nothing provided, search the channel for an image.
+		// if (!arg) {
+		// 	// ! TODO: Re-enable after moving to sapphire!!
+		// 	/*
+		// 	// Configurable minimum of messages
+		// 	const minimum = possible.min || 20;
 
-			const messages = [...message.channel.messages.values()];
-			for (let i = messages.length - 1; i >= 0; --i) {
-				const imageSrc = getImage(messages[i]);
-				if (imageSrc) return loadImage(imageSrc);
-			}
-			*/
+		// 	// Fetch messages if there are not enough in the channel
+		// 	if (message.channel.messages.size < minimum) await message.channel.messages.fetch({ limit: minimum });
 
-			return fetchAvatar(message.author);
+		// 	const messages = [...message.channel.messages.values()];
+		// 	for (let i = messages.length - 1; i >= 0; --i) {
+		// 		const imageSrc = getImage(messages[i]);
+		// 		if (imageSrc) return loadImage(imageSrc);
+		// 	}
+		// 	*/
+
+		// 	return fetchAvatar(message.author);
+		// }
+
+		const user = await this.userName.run(argument, context);
+		if (!user.success) return user;
+
+		try {
+			return this.ok(await fetchAvatar(user.value));
+		} catch {
+			// TODO: Add language key
+			return this.error(argument, 'TBD');
 		}
-
-		const user = await message.client.arguments.get('username')!.run(arg, possible, message);
-		return fetchAvatar(user);
 	}
 }

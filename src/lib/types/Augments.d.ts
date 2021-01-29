@@ -10,7 +10,21 @@ import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Command } from '@sapphire/framework';
-import type { CategoryChannel, GuildChannel, Role, Snowflake, User } from 'discord.js';
+import type {
+	APIMessage,
+	APIMessageContentResolvable,
+	CategoryChannel,
+	GuildChannel,
+	Message,
+	MessageAdditions,
+	MessageExtendablesAskOptions,
+	MessageOptions,
+	Role,
+	Snowflake,
+	SplitOptions,
+	StringResolvable,
+	User
+} from 'discord.js';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
@@ -128,5 +142,48 @@ declare module 'i18next' {
 			defaultValue: TReturn,
 			options?: TOptions<TArgs>
 		): TReturn;
+	}
+}
+
+declare module '@sapphire/plugin-i18next' {
+	export interface I18nextMessageImplementation {
+		reactable: boolean;
+		fetchLanguage(): Promise<string>;
+		prompt(content: string, time?: number): Promise<Message>;
+		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+		alert(content: string, timer?: number): Promise<Message>;
+		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
+		nuke(time?: number): Promise<Message>;
+		readonly responses: readonly Message[];
+		send(
+			content:
+				| APIMessageContentResolvable
+				| (MessageOptions & {
+						split?: false;
+				  })
+				| MessageAdditions
+		): Promise<Message>;
+		send(
+			options: MessageOptions & {
+				split: true | SplitOptions;
+			}
+		): Promise<Message[]>;
+		send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
+		send(
+			content: StringResolvable,
+			options:
+				| (MessageOptions & {
+						split?: false;
+				  })
+				| MessageAdditions
+		): Promise<Message>;
+		send(
+			content: StringResolvable,
+			options: MessageOptions & {
+				split: true | SplitOptions;
+			}
+		): Promise<Message[]>;
+		send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
 	}
 }

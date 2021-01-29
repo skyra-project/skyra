@@ -13,15 +13,15 @@
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
 	"coinFlipCoinnames": [
-		"",
-		""
+		"Орёл",
+		"Решка"
 	],
 	"coinFlipDescription": "Подбросьте монетку!",
 	"coinFlipExtended": {
 		"extendedHelp": "",
 		"examples": [
-			"",
-			""
+			"орёл 50",
+			"решка 200"
 		]
 	},
 	"coinFlipInvalidCoinname": "Простите, но {{arg}} не является стороной монеты!",

@@ -9,18 +9,18 @@ import { LoadType, Track } from '@skyra/audio';
 import { deserialize } from 'binarytf';
 
 export class UserArgument extends Argument<string[]> {
-	public async run(argument: string, context: ArgumentContext) {
+	public async run(parameter: string, context: ArgumentContext) {
 		const message = context.message as GuildMessage;
 		const remaining = await this.getUserRemainingEntries(message);
-		if (remaining === 0) return this.error(argument, LanguageKeys.MusicManager.TooManySongs);
+		if (remaining === 0) return this.error({ parameter, identifier: LanguageKeys.MusicManager.TooManySongs });
 
 		const tracks =
-			(await this.handleURL(message, remaining, argument, context.args)) ??
-			(await this.handleSoundCloud(message, remaining, argument, context.args)) ??
-			(await this.handleYouTube(message, remaining, argument));
+			(await this.handleURL(message, remaining, parameter, context.args)) ??
+			(await this.handleSoundCloud(message, remaining, parameter, context.args)) ??
+			(await this.handleYouTube(message, remaining, parameter));
 
 		if (tracks === null || tracks.length === 0) {
-			return this.error(argument, LanguageKeys.MusicManager.FetchNoMatches);
+			return this.error({ parameter, identifier: LanguageKeys.MusicManager.FetchNoMatches });
 		}
 
 		return this.ok(tracks);

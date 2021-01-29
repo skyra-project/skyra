@@ -11,12 +11,13 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	permissions: ['EMBED_LINKS'],
-	usage: '<query:string>'
+	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const input = await args.rest('string');
+
+		const { t } = args;
 		const text = await this.fetchText(input, t);
 
 		// Only fetch images if the channel is NSFW permitted

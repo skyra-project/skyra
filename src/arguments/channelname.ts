@@ -11,16 +11,16 @@ export class UserArgument extends Argument<GuildChannel> {
 		return (channelID !== null && guild.channels.cache.get(channelID[1])) ?? null;
 	}
 
-	public async run(argument: string, { message, minimum, filter }: ChannelArgumentContext) {
-		if (!message.guild) return this.error(argument, LanguageKeys.Resolvers.ChannelNotInGuild);
+	public async run(parameter: string, { message, minimum, filter }: ChannelArgumentContext) {
+		if (!message.guild) return this.error({ parameter, identifier: LanguageKeys.Resolvers.ChannelNotInGuild });
 		filter = this.getFilter(message.author, filter);
 
-		const resChannel = this.resolveChannel(argument, message.guild);
+		const resChannel = this.resolveChannel(parameter, message.guild);
 		if (resChannel && filter(resChannel)) return this.ok(resChannel);
 
-		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(message, argument, minimum);
+		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(message, parameter, minimum);
 		if (result) return this.ok(result[1]);
-		return this.error(argument, LanguageKeys.Resolvers.InvalidChannelName);
+		return this.error({ parameter, identifier: LanguageKeys.Resolvers.InvalidChannelName });
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {

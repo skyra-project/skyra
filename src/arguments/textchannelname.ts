@@ -6,7 +6,7 @@ export class UserArgument extends Argument<TextChannel> {
 		return this.store.get('channelName') as Argument<TextChannel>;
 	}
 
-	public run(argument: string, context: ArgumentContext) {
+	public run(argument: string, context: ArgumentContext<TextChannel>) {
 		return this.channelName.run(argument, { ...context, filter: (entry: GuildChannel) => entry.type === 'text' });
 	}
 }

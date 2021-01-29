@@ -21,7 +21,7 @@ export class UserPrecondition extends Precondition {
 		}
 
 		const ratelimit = this.ratelimit.acquire(message.channel.id);
-		if (ratelimit.limited) return this.error(this.name, 'You should not run commands here.');
+		if (ratelimit.limited) return this.error({});
 
 		ratelimit.consume();
 		return this.ok();

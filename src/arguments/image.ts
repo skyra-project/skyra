@@ -1,4 +1,4 @@
-import { fetchAvatar } from '#utils/util';
+import { cast, fetchAvatar } from '#utils/util';
 import { Argument, ArgumentContext } from '@sapphire/framework';
 import type { Image } from 'canvas';
 import { User } from 'discord.js';
@@ -8,7 +8,7 @@ export class UserArgument extends Argument<Image> {
 		return this.store.get('userName') as Argument<User>;
 	}
 
-	public async run(argument: string, context: ArgumentContext) {
+	public async run(parameter: string, context: ArgumentContext<Image>) {
 		// // If theres nothing provided, search the channel for an image.
 		// if (!arg) {
 		// 	// ! TODO: Re-enable after moving to sapphire!!
@@ -29,14 +29,14 @@ export class UserArgument extends Argument<Image> {
 		// 	return fetchAvatar(message.author);
 		// }
 
-		const user = await this.userName.run(argument, context);
+		const user = await this.userName.run(parameter, cast<ArgumentContext<User>>(context));
 		if (!user.success) return user;
 
 		try {
 			return this.ok(await fetchAvatar(user.value));
 		} catch {
 			// TODO: Add language key
-			return this.error(argument, 'TBD');
+			return this.error({ parameter, identifier: 'TBD' });
 		}
 	}
 }

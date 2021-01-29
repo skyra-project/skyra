@@ -3,9 +3,9 @@ import { resolveEmoji } from '#utils/util';
 import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<string> {
-	public run(argument: string) {
-		const resolved = resolveEmoji(argument);
-		if (resolved === null) return this.error(argument, LanguageKeys.Resolvers.InvalidEmoji);
+	public run(parameter: string) {
+		const resolved = resolveEmoji(parameter);
+		if (resolved === null) return this.error({ parameter, identifier: LanguageKeys.Resolvers.InvalidEmoji });
 		return this.ok(resolved);
 	}
 }

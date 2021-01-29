@@ -11,17 +11,17 @@ export class UserArgument extends Argument<User> {
 		return this.store.get('user') as Argument<User>;
 	}
 
-	public async run(argument: string, context: ArgumentContext) {
+	public async run(parameter: string, context: ArgumentContext<User>) {
 		const message = context.message as GuildMessage;
-		if (!message.guild) return this.user.run(argument, context);
+		if (!message.guild) return this.user.run(parameter, context);
 
-		const user = await this.resolveUser(message, argument);
+		const user = await this.resolveUser(message, parameter);
 		if (user) return this.ok(user);
-		if (user === null) return this.error(argument, LanguageKeys.Misc.UserNotExistent);
+		if (user === null) return this.error({ parameter, identifier: LanguageKeys.Misc.UserNotExistent });
 
-		const result = await this.fetchMember(message, argument);
+		const result = await this.fetchMember(message, parameter);
 		if (result) return this.ok(message.guild.members.add(result).user);
-		return this.error(argument, LanguageKeys.Resolvers.InvalidUsername);
+		return this.error({ parameter, identifier: LanguageKeys.Resolvers.InvalidUsername });
 	}
 
 	private async resolveUser(message: GuildMessage, argument: string) {

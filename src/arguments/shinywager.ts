@@ -1,16 +1,17 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ExtendedArgument, ExtendedArgumentOptions } from '@sapphire/framework';
+import { ExtendedArgument, ExtendedArgumentContext, ExtendedArgumentOptions } from '@sapphire/framework';
 
 @ApplyOptions<ExtendedArgumentOptions<'integer'>>({ aliases: ['wager'], baseArgument: 'integer' })
 export default class ShinyWager extends ExtendedArgument<'integer', number> {
-	public handle(value: number) {
-		if (ShinyWager.kValidAmounts.includes(value)) {
-			return this.ok(value);
-		}
-
-		return this.error(value.toString(), LanguageKeys.Resolvers.InvalidWager, {
-			possibles: ShinyWager.kValidAmounts.map((a) => a.toString())
+	public handle(value: number, context: ExtendedArgumentContext) {
+		if (ShinyWager.kValidAmounts.includes(value)) return this.ok(value);
+		return this.error({
+			parameter: context.parameter,
+			identifier: LanguageKeys.Resolvers.InvalidWager,
+			context: {
+				possibles: ShinyWager.kValidAmounts.map((a) => a.toString())
+			}
 		});
 	}
 

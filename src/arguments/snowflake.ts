@@ -15,12 +15,12 @@ export class UserArgument extends Argument<Snowflake> {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public run(argument: string) {
-		if (this.kRegExp.test(argument)) {
-			const snowflake = DiscordSnowflake.deconstruct(argument);
+	public run(parameter: string) {
+		if (this.kRegExp.test(parameter)) {
+			const snowflake = DiscordSnowflake.deconstruct(parameter);
 			const timestamp = Number(snowflake.timestamp);
-			if (timestamp >= this.kMinimum && timestamp < Date.now()) return this.ok(argument);
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return this.ok(parameter);
 		}
-		return this.error(argument, LanguageKeys.Resolvers.InvalidSnowflake);
+		return this.error({ parameter, identifier: LanguageKeys.Resolvers.InvalidSnowflake });
 	}
 }

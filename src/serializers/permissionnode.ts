@@ -40,24 +40,25 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 		}
 
 		// Check all commands
-		const commands = new Map<string, SkyraCommand>();
+		const commands = this.context.stores.get('commands');
+		const checked = new Map<string, SkyraCommand>();
 		for (const allowed of value.allow) {
-			if (commands.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
+			if (checked.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
 
-			const command = guild.client.commands.get(allowed) as SkyraCommand | undefined;
+			const command = commands.get(allowed) as SkyraCommand | undefined;
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
-			commands.set(allowed, command);
+			checked.set(allowed, command);
 		}
 
 		for (const denied of value.deny) {
-			if (commands.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
+			if (checked.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
 
-			const command = guild.client.commands.get(denied) as SkyraCommand | undefined;
+			const command = commands.get(denied) as SkyraCommand | undefined;
 			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
 			if (command.guarded) throw t(LanguageKeys.Serializers.PermissionNodeSecurityGuarded, { command: denied });
-			commands.set(denied, command);
+			checked.set(denied, command);
 		}
 
 		return true;

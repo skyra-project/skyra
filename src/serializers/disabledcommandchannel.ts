@@ -24,7 +24,7 @@ export class UserSerializer extends Serializer<DisabledCommandChannel> {
 		}
 
 		for (const command of value.commands) {
-			if (!guild.client.commands.has(command)) {
+			if (!this.context.stores.get('commands').has(command)) {
 				throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 		}

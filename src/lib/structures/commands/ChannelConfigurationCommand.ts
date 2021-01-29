@@ -2,7 +2,7 @@ import type { GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Args, IArgument, ok, PieceContext } from '@sapphire/framework';
+import { Args, IArgument, ok, PieceContext, Store } from '@sapphire/framework';
 import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
@@ -56,8 +56,8 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 		return message.send(t(this.responseKey, { channel: channel.toString() }));
 	}
 
-	private static hereOrTextChannelResolver = Args.make((argument, context) => {
+	private static hereOrTextChannelResolver = Args.make<TextChannel>((argument, context) => {
 		if (argument === 'here') return ok(context.message.channel as TextChannel);
-		return (context.message.client.arguments.get('textchannelname') as IArgument<TextChannel>).run(argument, context);
+		return (Store.injectedContext.stores.get('arguments').get('textchannelname') as IArgument<TextChannel>).run(argument, context);
 	});
 }

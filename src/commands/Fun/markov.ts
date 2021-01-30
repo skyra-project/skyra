@@ -22,8 +22,7 @@ const kCodeZ = 'Z'.charCodeAt(0);
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
 	runIn: ['text'],
-	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
-	usage: '[channel:textchannelname{2}] [user:username]'
+	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;
@@ -37,6 +36,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const username = await args.pick('userName').catch(() => message.author);
 		const t = await message.fetchT();
 
 		// Send loading message

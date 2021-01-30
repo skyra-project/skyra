@@ -1,3 +1,6 @@
+# TODO: Remove this when switching away from branch
+!@sapphire/framework/**/*
+
 # Self Added Entries
 ## TypeScript Extra Files
 *.lcl

@@ -3,7 +3,6 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
@@ -11,14 +10,14 @@ import type { User } from 'discord.js';
 	description: LanguageKeys.Commands.Games.C4Description,
 	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
 	permissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
-	usage: '<user:username>'
+	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {
 	private prompt = this.definePrompt('<response:boolean>');
 
-	public async run(message: GuildMessage, [user]: [User]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const { t } = args;
+		const user = await args.pick('userName');
 
 		if (user.id === CLIENT_ID) throw t(LanguageKeys.Commands.Games.GamesSkyra);
 		if (user.bot) throw t(LanguageKeys.Commands.Games.GamesBot);

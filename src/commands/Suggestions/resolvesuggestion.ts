@@ -7,10 +7,9 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args, err, ok } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const enum SuggestionsColors {
 	Accepted = 0x4cb02c,
@@ -18,81 +17,39 @@ const enum SuggestionsColors {
 	Denied = 0xf90505
 }
 
+type Actions = 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c';
+const kActions: readonly Actions[] = ['accept', 'a', 'deny', 'd', 'consider', 'c'];
+
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['resu'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.ResolveSuggestionDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
-	flagSupport: true,
+	strategyOptions: { flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'] },
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text'],
-	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:comment]',
-	usageDelim: ' '
+	runIn: ['text']
 })
-@CreateResolvers([
-	[
-		'suggestion',
-		async (arg, _, message): Promise<SuggestionData> => {
-			// Validate the suggestions channel ID
-			const [channelID, t] = await message.guild!.readSettings((settings) => [
-				settings[GuildSettings.Suggestions.Channel],
-				settings.getLanguage()
-			]);
-			if (!channelID) throw t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
-
-			// Validate the suggestion number
-			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID);
-
-			// Retrieve the suggestion data
-			const { suggestions } = await DbSet.connect();
-			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
-			if (!suggestionData) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound);
-
-			const channel = message.client.channels.cache.get(channelID) as TextChannel;
-			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
-			if (suggestionMessage === null) {
-				await suggestionData.remove();
-				throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionMessageNotFound);
-			}
-
-			const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
-			return {
-				message: suggestionMessage,
-				author: suggestionAuthor,
-				id
-			};
-		}
-	],
-	[
-		'comment',
-		(arg, possible, message) => {
-			if (typeof arg === 'undefined') return message.resolveKey(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment);
-			return message.client.arguments.get('...string')!.run(arg, possible, message);
-		}
-	]
-])
 export class UserCommand extends SkyraCommand {
-	public async run(
-		message: GuildMessage,
-		[suggestionData, action, comment]: [SuggestionData, 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c', string | undefined]
-	) {
-		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion, t] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Suggestions.OnAction.DM],
-			settings[GuildSettings.Suggestions.OnAction.HideAuthor],
-			settings[GuildSettings.Suggestions.OnAction.RepostMessage],
-			settings.getLanguage()
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const suggestionData = await args.pick(UserCommand.suggestion);
+		const action = await args.pick(UserCommand.action);
+		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.pick('string');
+
+		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = await message.guild.readSettings([
+			GuildSettings.Suggestions.OnAction.DM,
+			GuildSettings.Suggestions.OnAction.HideAuthor,
+			GuildSettings.Suggestions.OnAction.RepostMessage
 		]);
 		const [suggestion] = suggestionData.message.embeds;
 
 		let newEmbed = new MessageEmbed();
 		let messageContent = '';
 
-		const author = await this.getAuthor(message, shouldHideAuthor, t);
+		const author = await this.getAuthor(message, shouldHideAuthor, args);
 
-		const actions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
-		const DMActions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild.name });
+		const actions = args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
+		const DMActions = args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild.name });
 
 		switch (action) {
 			case 'a':
@@ -116,7 +73,7 @@ export class UserCommand extends SkyraCommand {
 			try {
 				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
-				await message.channel.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
+				await message.channel.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
 			}
 		}
 
@@ -128,32 +85,69 @@ export class UserCommand extends SkyraCommand {
 
 		const actionText =
 			action === 'a' || action === 'accept'
-				? t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessAcceptedText)
+				? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessAcceptedText)
 				: action === 'd' || action === 'deny'
-				? t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
-				: t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
+				? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
+				: args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
 
-		return message.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, { id: suggestionData.id, actionText }));
+		return message.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, { id: suggestionData.id, actionText }));
 	}
 
-	public async inhibit(message: GuildMessage) {
-		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
-		if (!Object.is(message.command, this) || message.guild === null) return true;
-
-		const [channelID, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Suggestions.Channel], settings.getLanguage()]);
-		if (channelID !== null) return false;
-
-		await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));
-		return true;
-	}
-
-	private async getAuthor(message: GuildMessage, hideAuthor: boolean, t: TFunction) {
-		if (Reflect.has(message.flagArgs, 'show-author') || Reflect.has(message.flagArgs, 'showAuthor')) return message.author.tag;
-		if (Reflect.has(message.flagArgs, 'hide-author') || Reflect.has(message.flagArgs, 'hideAuthor') || hideAuthor) {
-			return (await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))
-				? t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorAdmin)
-				: t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorModerator);
+	private async getAuthor(message: GuildMessage, hideAuthor: boolean, args: SkyraCommand.Args) {
+		if (args.getFlags('show-author', 'showAuthor')) return message.author.tag;
+		if (args.getFlags('hide-author', 'hideAuthor') || hideAuthor) {
+			return (await message.member.isAdmin())
+				? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorAdmin)
+				: args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorModerator);
 		}
 		return message.author.tag;
 	}
+
+	private static suggestion = Args.make<SuggestionData>(async (parameter, { message, argument }) => {
+		// Validate the suggestions channel ID
+		const channelID = await message.guild!.readSettings(GuildSettings.Suggestions.Channel);
+		if (!channelID) {
+			return err(
+				Args.error({
+					argument,
+					parameter,
+					identifier: LanguageKeys.Commands.Suggestions.SuggestNoSetup,
+					context: { username: message.author.username }
+				})
+			);
+		}
+
+		// Validate the suggestion number
+		const id = Number(parameter);
+		if (!Number.isInteger(id) || id < 1) {
+			return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID }));
+		}
+
+		// Retrieve the suggestion data
+		const { suggestions } = await DbSet.connect();
+		const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
+		if (!suggestionData) {
+			return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound }));
+		}
+
+		const channel = message.client.channels.cache.get(channelID) as TextChannel;
+		const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
+		if (suggestionMessage === null) {
+			await suggestionData.remove();
+			return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionMessageNotFound }));
+		}
+
+		const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
+		return ok({
+			message: suggestionMessage,
+			author: suggestionAuthor,
+			id
+		});
+	});
+
+	private static action = Args.make<Actions>(async (parameter, { argument }) => {
+		const lowerCase = parameter.toLowerCase() as Actions;
+		if (kActions.includes(lowerCase)) return ok(lowerCase);
+		return err(Args.error({ argument, parameter, identifier: 'TODO' }));
+	});
 }

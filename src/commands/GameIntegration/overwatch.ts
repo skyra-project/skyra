@@ -8,21 +8,23 @@ import type { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero 
 import { Time } from '#utils/constants';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, err, IArgument, ok } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ow'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended,
-	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
-	usageDelim: ' '
+	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const { t } = args;
+		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver);
+		const player = await args.rest('overwatchPlayer');
 		const response = await sendLoadingMessage(message, t);
 
 		const overwatchData = await this.fetchAPI(t, player, platform);
@@ -196,4 +198,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private decodePlayerName(name: string) {
 		return decodeURIComponent(name.replace('-', '#'));
 	}
+
+	private static platformResolver: IArgument<PlatformUnion> = Args.make((parameter, { argument }) => {
+		if (!parameter) return ok('pc');
+		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return ok(parameter.toLowerCase() as PlatformUnion);
+		return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlatform }));
+	});
 }

@@ -15,25 +15,27 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
-	flagSupport: true,
-	subcommands: true,
-	usage: '<item|character:default> <search:...string>',
-	usageDelim: ' '
+	strategyOptions: {
+		options: ['server']
+	},
+	subCommands: ['item', { input: 'character', default: true }]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async character(message: GuildMessage, [name]: [string]) {
-		const t = await message.fetchT();
+	public async character(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const name = await args.rest('string');
+		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
-		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
+		const characterDetails = await this.fetchCharacter(t, name, args.getOption('server') ?? undefined);
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	public async item(message: GuildMessage, [item]: [string]) {
-		const t = await message.fetchT();
+	public async item(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const item = await args.rest('string');
+		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
 		const itemDetails = await this.fetchItems(t, item);

@@ -15,8 +15,10 @@ import type { Message } from 'discord.js';
 	usage: '<wager:wager>'
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [wager]: [number]) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { t } = args;
+		const wager = await args.pick('shinyWager');
+
 		const { users } = await DbSet.connect();
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;

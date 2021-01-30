@@ -6,21 +6,24 @@ import type { Fortnite } from '#lib/types/definitions/Fortnite';
 import { TOKENS } from '#root/config';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, err, IArgument, ok } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+
+const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended,
-	usage: '<xbox|psn|pc:default> <user:...string>',
-	usageDelim: ' '
+	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
-	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver);
+		const user = await args.rest('string');
+		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
 		const fortniteUser = await this.fetchAPI(t, user, platform);
@@ -30,7 +33,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, user: string, platform: platform) {
+	private async fetchAPI(t: TFunction, user: string, platform: PlatformUnion) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -196,6 +199,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return display;
 	}
+
+	private static platformResolver: IArgument<PlatformUnion> = Args.make((parameter, { argument }) => {
+		if (!parameter) return ok('pc');
+		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return ok(parameter.toLowerCase() as PlatformUnion);
+		return err(Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlatform }));
+	});
 }
 
-type platform = 'xbox' | 'psn' | 'pc';
+type PlatformUnion = 'xbox' | 'psn' | 'pc';

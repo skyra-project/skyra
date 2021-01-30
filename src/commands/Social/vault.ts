@@ -2,49 +2,35 @@ import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args, err, ok } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+
+type All = 'all' | 'max' | 'maximum';
+const kAll: readonly All[] = ['all', 'max', 'maximum'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bank'],
 	description: LanguageKeys.Commands.Social.VaultDescription,
 	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
 	permissions: ['EMBED_LINKS'],
-	subcommands: true,
-	usage: '<deposit|dep|withdraw|with|show:default> (coins:coins)',
-	usageDelim: ' '
+	subCommands: ['deposit', { input: 'dep', output: 'deposit' }, 'withdraw', { input: 'with', output: 'withdraw' }, { input: 'show', default: true }]
 })
-@CreateResolvers([
-	[
-		'coins',
-		async (arg, possible, message, [action]) => {
-			if (action === 'show') return undefined;
+export class UserCommand extends SkyraCommand {
+	public async deposit(message: Message, args: SkyraCommand.Args) {
+		const all = await args.pick(UserCommand.all).catch(() => null);
+		let coins = all === null ? await args.pick('integer') : null;
 
-			if (arg === 'all' || arg === 'max') {
-				const { users } = await DbSet.connect();
-				const user = await users.ensureProfile(message.author.id);
-				return action === 'deposit' || action === 'dep' ? user.money : user.profile.vault;
-			}
-			const coins = Number(arg);
-			if (coins && coins >= 0) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw await message.resolveKey(LanguageKeys.Commands.Social.VaultInvalidCoins);
-		}
-	]
-])
-export default class Vault extends SkyraCommand {
-	public async deposit(message: Message, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
 			const { money } = settings;
 			const { vault } = settings.profile;
 
-			if (coins !== undefined && money < coins) {
-				throw t(LanguageKeys.Commands.Social.VaultNotEnoughMoney, { money });
+			coins ??= money;
+			if (money < coins) {
+				throw args.t(LanguageKeys.Commands.Social.VaultNotEnoughMoney, { money });
 			}
 
 			const newMoney = money - coins;
@@ -54,24 +40,23 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, t, money, vault, coins, true));
+		return message.send(await this.buildEmbed(message, args.t, money, vault, coins!, true));
 	}
 
-	public async dep(...args: ArgumentTypes<Vault['deposit']>) {
-		return this.deposit(...args);
-	}
+	public async withdraw(message: Message, args: SkyraCommand.Args) {
+		const all = await args.pick(UserCommand.all).catch(() => null);
+		let coins = all === null ? await args.pick('integer') : null;
 
-	public async withdraw(message: Message, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		const t = await message.fetchT();
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
 			const { money } = settings;
 			const { vault } = settings.profile;
 
-			if (coins !== undefined && vault < coins) {
-				throw t(LanguageKeys.Commands.Social.VaultNotEnoughInVault, { vault });
+			coins ??= vault;
+			if (vault < coins) {
+				throw args.t(LanguageKeys.Commands.Social.VaultNotEnoughInVault, { vault });
 			}
 
 			const newMoney = money + coins;
@@ -81,18 +66,13 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, t, money, vault, coins));
+		return message.send(await this.buildEmbed(message, args.t, money, vault, coins!));
 	}
 
-	public async with(...args: ArgumentTypes<Vault['withdraw']>) {
-		return this.withdraw(...args);
-	}
-
-	public async show(message: Message) {
+	public async show(message: Message, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
-		const t = await message.fetchT();
 		const settings = await users.ensureProfile(message.author.id);
-		return message.send(await this.buildEmbed(message, t, settings.money, settings.profile.vault));
+		return message.send(await this.buildEmbed(message, args.t, settings.money, settings.profile.vault));
 	}
 
 	private updateBalance(money: number, vault: number, settings: UserEntity) {
@@ -115,4 +95,9 @@ export default class Vault extends SkyraCommand {
 			.addField(accountMoney, money, true)
 			.addField(accountVault, vault, true);
 	}
+
+	private static all = Args.make<boolean>((parameter, { argument }) => {
+		if (kAll.includes(parameter.toLowerCase() as All)) return ok(true);
+		return err(Args.error({ argument, parameter, identifier: 'TODO' }));
+	});
 }

@@ -19,15 +19,15 @@ export class UserCommand extends SkyraCommand {
 			description: LanguageKeys.Commands.Games.TicTacToeDescription,
 			extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
 			permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '<user:username>'
+			runIn: ['text']
 		});
 
 		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
-	public async run(message: GuildMessage, [user]: [User]) {
-		if (this.channels.has(message.channel.id)) throw await message.resolveKey(LanguageKeys.Commands.Games.GamesProgress);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const { t } = args;
+		if (this.channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
 		const player1 = this.getAuthorController(message);
 		const player2 = await this.getTargetController(message, user);
 

@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Message, MessageEmbed, User } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -14,7 +14,7 @@ import { Message, MessageEmbed, User } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommmand.Args) {
+	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();

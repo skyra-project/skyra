@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
-import { BrandingColors, Time } from '#utils/constants';
+import { Time } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';

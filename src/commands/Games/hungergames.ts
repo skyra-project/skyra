@@ -21,17 +21,18 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
 	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '[user:string{,50}] [...]',
-	usageDelim: ',',
-	flagSupport: true
+	strategyOptions: {
+		flags: ['autofill', 'autoskip']
+	}
 })
 export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async run(message: GuildMessage, tributes: string[] = []) {
-		const autoFilled = message.flagArgs.autofill;
-		const autoSkip = message.flagArgs.autoskip;
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const tributes = await args.rest('string').then((raw) => raw.split(',').slice(50));
+		const autoFilled = args.getFlags('autofill');
+		const autoSkip = args.getFlags('autoskip');
 
 		if (autoFilled) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });

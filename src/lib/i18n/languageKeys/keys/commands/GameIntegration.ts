@@ -157,6 +157,8 @@ export const FortniteEmbedStats = FT<
 		top25s: string;
 	}
 >('commands/gameIntegration:fortniteEmbedStats');
+// TODO(stitch): add this
+export const OverwatchInvalidPlatform = T<string>('commands/gameIntegration:overwatchInvalidPlatform');
 export const OverwatchDescription = T<string>('commands/gameIntegration:overwatchDescription');
 export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:overwatchExtended');
 export const OverwatchInvalidPlayerName = FT<{ value: string }, string>('commands/gameIntegration:overwatchInvalidPlayerName');

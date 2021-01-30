@@ -94,6 +94,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
+	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
 	api: {

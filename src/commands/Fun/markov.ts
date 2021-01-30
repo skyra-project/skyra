@@ -36,14 +36,14 @@ export class UserCommand extends SkyraCommand {
 	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const channel = await args.pick('textChannelName').catch(() => message.channel.id);
+		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
 		const t = await message.fetchT();
 
 		// Send loading message
 		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channnel ?? (message.channel as TextChannel))));
+		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channel ?? (message.channel as TextChannel))));
 	}
 
 	public async onLoad() {

@@ -22,6 +22,7 @@ import type {
 	Snowflake,
 	SplitOptions,
 	StringResolvable,
+	TextChannel,
 	User
 } from 'discord.js';
 import type { MessageAcknowledgeable } from './Discord';
@@ -123,7 +124,7 @@ declare module '@sapphire/framework' {
 		snowflake: Snowflake;
 		song: string[];
 		store: Store<Piece>;
-		textChannelName: string;
+		textChannelName: TextChannel;
 		timespan: number;
 		userName: User;
 	}

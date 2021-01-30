@@ -134,7 +134,7 @@ export class UserCommand extends SkyraCommand {
 		const starredMessageChannel = message.guild.channels.cache.get(starboardData.channelID) as TextChannel;
 		if (!starredMessageChannel) {
 			await starboardData.remove();
-			return this.random(message, user, t);
+			return this.handleRandom(message, user, t);
 		}
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
@@ -142,7 +142,7 @@ export class UserCommand extends SkyraCommand {
 		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
 		if (!starredMessage) {
 			await starboardData.remove();
-			return this.random(message, user, t);
+			return this.handleRandom(message, user, t);
 		}
 
 		return message.send(starredMessage.content, starredMessage.embeds[0]);

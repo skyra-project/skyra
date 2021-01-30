@@ -3,9 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { displayEmoji, pickRandom, resolveEmoji } from '#utils/util';
+import { displayEmoji, sendLoadingMessage, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import { CreateResolvers } from '@skyra/decorators';
@@ -53,9 +52,7 @@ export class UserCommand extends SkyraCommand {
 			throw t(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}
 
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, t);
 
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
 

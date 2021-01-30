@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -17,20 +16,16 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const show = await args.pick('string');
 		const year = args.finished ? await args.pick('string') : null;
 
-		const { t } = args;
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, args.t);
+		const { results: entries } = await this.fetchAPI(args.t, show, year);
+		if (!entries.length) return this.error(args.t(LanguageKeys.System.NoResults));
 
-		const { results: entries } = await this.fetchAPI(t, show, year);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
-
-		const display = await this.buildDisplay(message, t, entries);
+		const display = await this.buildDisplay(message, args.t, entries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

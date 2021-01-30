@@ -35,7 +35,8 @@ export class UserCommand extends SkyraCommand {
 	private kBoundUseUpperCase!: (wordBank: WordBank) => string;
 	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
-	public async run(message: GuildMessage, [channnel, username]: [TextChannel?, User?]) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const channel = await args.pick('textChannelName').catch(() => message.channel.id);
 		const t = await message.fetchT();
 
 		// Send loading message

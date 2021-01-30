@@ -4,7 +4,7 @@ import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { BrandingColors, Time } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
 import { CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
@@ -122,6 +122,8 @@ export class UserCommand extends SkyraCommand {
 		const { client } = this.context;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
+		const t = await message.fetchT();
+		const response = await sendLoadingMessage(message, t);
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
@@ -129,7 +131,6 @@ export class UserCommand extends SkyraCommand {
 				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		});
 
-		const t = await message.fetchT();
 		const pages = chunk(
 			tasks.map(
 				(task) =>
@@ -142,12 +143,6 @@ export class UserCommand extends SkyraCommand {
 		);
 		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 
-		const response = await message.send(
-			new MessageEmbed({
-				description: pickRandom(t(LanguageKeys.System.Loading)),
-				color: BrandingColors.Secondary
-			})
-		);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

@@ -18,14 +18,16 @@ import {
 	Permissions,
 	Role,
 	User,
-	UserResolvable
+	UserResolvable,
+	MessageEmbed
 } from 'discord.js';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';
-import { Time, ZeroWidthSpace } from './constants';
+import { BrandingColors, Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import type { LeaderboardUser } from './Leaderboard';
+import type { TFunction } from 'i18next';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -639,6 +641,9 @@ export const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const random = (num: number) => Math.round(Math.random() * num);
+
+export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
+	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 export interface UtilOneToTenEntry {
 	emoji: string;

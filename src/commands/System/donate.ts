@@ -9,14 +9,13 @@ import type { Message } from 'discord.js';
 	guarded: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
 		try {
-			const extended = t(this.extendedHelp).extendedHelp!;
+			const extended = args.t(this.extendedHelp).extendedHelp!;
 			const response = await message.author.send(extended);
-			return message.channel.type === 'text' ? await message.alert(t(LanguageKeys.Commands.System.DmSent)) : response;
+			return message.channel.type === 'text' ? await message.alert(args.t(LanguageKeys.Commands.System.DmSent)) : response;
 		} catch {
-			return message.channel.type === 'text' ? null : message.alert(t(LanguageKeys.Commands.System.DmNotSent));
+			return message.channel.type === 'text' ? null : message.alert(args.t(LanguageKeys.Commands.System.DmNotSent));
 		}
 	}
 }

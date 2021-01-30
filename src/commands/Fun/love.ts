@@ -11,11 +11,11 @@ import { Message, MessageEmbed, User } from 'discord.js';
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
 	permissions: ['EMBED_LINKS'],
-	spam: true,
-	usage: '<user:username>'
+	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [user]: [User]) {
+	public async run(message: Message, args: SkyraCommmand.Args) {
+		const user = await args.pick('userName');
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);

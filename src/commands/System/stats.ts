@@ -15,14 +15,13 @@ import { CpuInfo, cpus, uptime } from 'os';
 	permissions: ['EMBED_LINKS']
 })
 export default class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
-		return message.send(await this.buildEmbed(message));
+	public async run(message: Message, args: SkyraCommand.Args) {
+		return message.send(await this.buildEmbed(message, args));
 	}
 
-	private async buildEmbed(message: Message) {
-		const t = await message.fetchT();
-		const titles = t(LanguageKeys.Commands.System.StatsTitles);
-		const fields = t(LanguageKeys.Commands.System.StatsFields, {
+	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
+		const titles = args.t(LanguageKeys.Commands.System.StatsTitles);
+		const fields = args.t(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
 			usage: this.usageStatistics

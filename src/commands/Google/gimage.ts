@@ -15,7 +15,7 @@ import { MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.Google.GimageDescription,
 	extendedHelp: LanguageKeys.Commands.Google.GimageExtended
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const query = (await args.rest('string')).replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+');
 		const { t } = args;

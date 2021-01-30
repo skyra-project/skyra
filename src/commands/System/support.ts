@@ -12,12 +12,11 @@ import { Message, MessageEmbed } from 'discord.js';
 	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
 		return message.send(
 			new MessageEmbed()
-				.setTitle(t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
-				.setDescription(t(LanguageKeys.Commands.System.SupportEmbedDescription))
+				.setTitle(args.t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
+				.setDescription(args.t(LanguageKeys.Commands.System.SupportEmbedDescription))
 				.setColor(await DbSet.fetchColor(message))
 		);
 	}

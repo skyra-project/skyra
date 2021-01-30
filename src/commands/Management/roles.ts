@@ -2,9 +2,8 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors } from '#utils/constants';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, Role } from 'discord.js';
@@ -43,7 +42,7 @@ import { MessageEmbed, Role } from 'discord.js';
 		}
 	]
 ])
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, [roles]: [Role[]]) {
 		const [rolesPublic, prefix, allRoleSets, rolesRemoveInitial, rolesInitial, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Roles.Public],
@@ -158,9 +157,7 @@ export default class extends PaginatedMessageCommand {
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPageEmbed((template) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
-		const response = await message.send(
-			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
-		);
+		const response = await sendLoadingMessage(message, t);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

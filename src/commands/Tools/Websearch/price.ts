@@ -15,13 +15,15 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.PriceDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
-	permissions: ['EMBED_LINKS'],
-	usage: '[amount:number] <from:string> <to:string> [...]',
-	usageDelim: ' '
+	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const amount = await args.pick('number').catch(() => 1);
+		const fromCurrency = await args.pick('string');
+		const toCurrencies = await args.repeat('string');
+
+		const { t } = args;
 		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 		const result = await this.fetchAPI(t, fromCurrency, toCurrencies);

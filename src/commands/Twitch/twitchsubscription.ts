@@ -11,10 +11,10 @@ import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors, Time } from '#utils/constants';
-import { requiredPermissions } from '#utils/decorators';
+import { Time } from '#utils/constants';
+import { requiresPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, err, ok, Store } from '@sapphire/framework';
 import { chunk } from '@sapphire/utilities';
@@ -196,7 +196,7 @@ export class UserCommand extends SkyraCommand {
 		]);
 	}
 
-	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const streamer = args.finished ? null : await args.pick(UserCommand.streamer);
 		const { t } = args;
@@ -204,9 +204,7 @@ export class UserCommand extends SkyraCommand {
 		const guildSubscriptions = await message.guild.readSettings(this.#kSettingsKey);
 
 		// Create the response message.
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, t);
 
 		// Fetch the content.
 		const content = streamer === null ? await this.showAll(guildSubscriptions, t) : await this.showSingle(guildSubscriptions, streamer, t);

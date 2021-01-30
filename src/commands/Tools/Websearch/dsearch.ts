@@ -11,12 +11,12 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
-	usage: '<query:string>',
-	usageDelim: ' ',
 	permissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [query]: [string]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const query = await args.rest('string');
+
 		const url = new URL('https://api.duckduckgo.com');
 		url.searchParams.append('q', query);
 		url.searchParams.append('format', 'json');
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		if (body.Heading.length === 0) {
-			throw t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
+			return this.error(t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound));
 		}
 
 		const embed = new MessageEmbed()

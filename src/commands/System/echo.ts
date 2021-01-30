@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { MessageOptions, TextChannel } from 'discord.js';
+import type { MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['talk'],
@@ -11,13 +11,14 @@ import type { MessageOptions, TextChannel } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	runIn: ['text'],
-	usage: '[channel:channel] [message:...string]',
-	usageDelim: ' '
+	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, [channel = message.channel as TextChannel, content]: [TextChannel, string]) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.deletable) message.nuke().catch(() => null);
+
+		const channel = await args.pick('textChannel').catch(() => message.channel);
+		const content = await args.rest('string').catch(() => '');
 
 		const attachment = message.attachments.size ? message.attachments.first()!.url : null;
 

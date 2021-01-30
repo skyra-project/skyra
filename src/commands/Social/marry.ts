@@ -40,7 +40,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 		}
 	]
 ])
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public run(message: GuildMessage, [user]: [User | undefined]) {
 		return user ? this.marry(message, user) : this.context.client.commands.get('married')!.run(message, []);
 	}

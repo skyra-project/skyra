@@ -1,4 +1,5 @@
 import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 
@@ -63,7 +64,31 @@ export function createFunctionInhibitor(inhibitor: Inhibitor, fallback: Fallback
  * @remark This decorator makes the decorated function asynchronous.
  * @param permissionsResolvable Permissions that the method should have.
  */
-export const requiredPermissions = (permissionsResolvable: PermissionResolvable): MethodDecorator => {
+export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): MethodDecorator => {
+	return createFunctionInhibitor((message: GuildMessage) => {
+		if (message.member.isOwner()) return true;
+
+		switch (level) {
+			case PermissionLevels.BotOwner:
+				return false;
+			case PermissionLevels.ServerOwner:
+				return message.author.id === message.guild.ownerID;
+			case PermissionLevels.Administrator:
+				return message.member.isAdmin();
+			case PermissionLevels.Moderator:
+				return message.member.isModerator();
+			case PermissionLevels.Everyone:
+				return true;
+		}
+	}, fallback);
+};
+
+/**
+ * Allows you to set permissions required for individual methods.
+ * @remark This decorator makes the decorated function asynchronous.
+ * @param permissionsResolvable Permissions that the method should have.
+ */
+export const requiresPermissions = (permissionsResolvable: PermissionResolvable): MethodDecorator => {
 	const resolved = new Permissions(permissionsResolvable);
 	return createFunctionInhibitor(async (message: GuildMessage) => {
 		const missingPermissions = message.channel.permissionsFor(message.guild.me!)!.missing(resolved);

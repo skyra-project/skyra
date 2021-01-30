@@ -18,26 +18,29 @@ import { inspect } from 'util';
 	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<expression:str>',
-	flagSupport: true
+	strategyOptions: {
+		flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden'],
+		options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth']
+	}
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
 
-	public async run(message: Message, [code]: [string]) {
-		const flagTime =
-			'no-timeout' in message.flagArgs ? (Reflect.has(message.flagArgs, 'wait') ? Number(message.flagArgs.wait) : this.kTimeout) : Infinity;
-		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
-		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const code = await args.rest('string');
 
-		if (message.flagArgs.silent) {
+		const wait = args.getOption('wait');
+		const flagTime = args.getFlags('no-timeout') ? (wait === null ? this.kTimeout : Number(wait)) : Infinity;
+		const language = args.getOption('lang', 'language') ?? (args.getFlags('json') ? 'json' : 'js');
+		const { success, result, time, type } = await this.timedEval(message, args, code, flagTime);
+
+		if (args.getFlags('silent')) {
 			if (!success && result && cast<Error>(result).stack) this.context.client.logger.fatal(cast<Error>(result).stack);
 			return null;
 		}
 
 		const footer = codeBlock('ts', type);
-		const sendAs =
-			(Reflect.get(message.flagArgs, 'output') || Reflect.get(message.flagArgs, 'output-to') || Reflect.get(message.flagArgs, 'log')) ?? null;
+		const sendAs = args.getOption('output', 'output-to') ?? (args.getFlags('log') ? 'log' : null);
 
 		return handleMessage<Partial<EvalExtraData>>(message, {
 			sendAs,
@@ -52,8 +55,8 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	private async timedEval(message: Message, code: string, flagTime: number) {
-		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
+	private async timedEval(message: Message, args: SkyraCommand.Args, code: string, flagTime: number) {
+		if (flagTime === Infinity || flagTime === 0) return this.eval(message, args, code);
 		const t = await message.fetchT();
 		return Promise.race([
 			sleep(flagTime).then(() => ({
@@ -62,12 +65,12 @@ export class UserCommand extends SkyraCommand {
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'
 			})),
-			this.eval(message, code)
+			this.eval(message, args, code)
 		]);
 	}
 
 	// Eval the input
-	private async eval(message: Message, code: string) {
+	private async eval(message: Message, args: SkyraCommand.Args, code: string) {
 		const stopwatch = new Stopwatch();
 		let success: boolean | undefined = undefined;
 		let syncTime: string | undefined = undefined;
@@ -76,7 +79,7 @@ export class UserCommand extends SkyraCommand {
 		let thenable = false;
 		let type: Type | undefined = undefined;
 		try {
-			if (message.flagArgs.async) code = `(async () => {\n${code}\n})();`;
+			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
 
 			// @ts-expect-error 6133
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -105,11 +108,11 @@ export class UserCommand extends SkyraCommand {
 			result =
 				result instanceof Error
 					? result.stack
-					: message.flagArgs.json
+					: args.getFlags('json')
 					? JSON.stringify(result, null, 4)
 					: inspect(result, {
-							depth: message.flagArgs.depth ? parseInt(message.flagArgs.depth, 10) || 0 : 0,
-							showHidden: Boolean(message.flagArgs.showHidden)
+							depth: Number(args.getOption('depth') ?? 0) || 0,
+							showHidden: args.getFlags('showHidden', 'hidden')
 					  });
 		}
 		return { success, type: type!, time: this.formatTime(syncTime, asyncTime ?? ''), result: clean(result as string) };

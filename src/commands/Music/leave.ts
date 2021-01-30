@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
 
 const flags = ['removeall', 'ra'];
+
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.LeaveDescription,
 	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,

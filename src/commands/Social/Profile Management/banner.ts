@@ -4,7 +4,7 @@ import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { roundNumber } from '@sapphire/utilities';
 import { requiredPermissions } from '@skyra/decorators';
@@ -176,9 +176,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async runDisplay(message: GuildMessage, t: TFunction, display: UserPaginatedMessage) {
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, t);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

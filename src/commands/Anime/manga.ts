@@ -4,8 +4,8 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { TOKENS } from '#root/config';
-import { BrandingColors, Mime } from '#utils/constants';
-import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
+import { Mime } from '#utils/constants';
+import { fetch, FetchMethods, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -19,12 +19,10 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 	description: LanguageKeys.Commands.Anime.MangaDescription,
 	extendedHelp: LanguageKeys.Commands.Anime.MangaExtended
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const mangaName = await args.rest('string');
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(args.t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, args.t);
 
 		const { hits: entries } = await this.fetchAPI(args.t, mangaName);
 		if (!entries.length) throw args.t(LanguageKeys.System.NoResults);

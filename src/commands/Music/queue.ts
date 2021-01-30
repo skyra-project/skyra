@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { MusicCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { pickRandom, showSeconds } from '#utils/util';
+import { pickRandom, sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
@@ -21,11 +21,7 @@ export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage) {
 		const t = await message.fetchT();
-
-		// Send the loading message
-		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
-		);
+		const response = await sendLoadingMessage(message, t);
 
 		// Generate the pages with 5 songs each
 		const template = new MessageEmbed()

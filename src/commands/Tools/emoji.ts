@@ -13,12 +13,12 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
-	permissions: ['ATTACH_FILES'],
-	usage: '<emoji:string>'
+	permissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, [emoji]: [string]) {
-		const t = await message.fetchT();
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const emoji = await args.pick('string');
+		const { t } = args;
 
 		if (REG_EMOJI.test(emoji)) {
 			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji)!;

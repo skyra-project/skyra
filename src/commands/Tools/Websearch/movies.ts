@@ -4,8 +4,7 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -15,32 +14,28 @@ import type { TFunction } from 'i18next';
 	aliases: ['movie', 'tmdb'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.MoviesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.MoviesExtended,
-	usage: '<movie:str> [year:str]',
-	usageDelim: 'y:'
+	extendedHelp: LanguageKeys.Commands.Tools.MoviesExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const movie = await args.pick('string');
+		const year = args.finished ? null : await args.pick('string');
 
-		const { results: entries } = await this.fetchAPI(t, movie, year);
-		if (!entries.length) throw t(LanguageKeys.System.NoResults);
+		const response = await sendLoadingMessage(message, args.t);
+		const { results: entries } = await this.fetchAPI(args.t, movie, year);
+		if (!entries.length) return this.error(args.t(LanguageKeys.System.NoResults));
 
-		const display = await this.buildDisplay(message, t, entries);
+		const display = await this.buildDisplay(message, args.t, entries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, movie: string, year?: string) {
+	private async fetchAPI(t: TFunction, movie: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/movie');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 			url.searchParams.append('query', movie);
-
-			if (year) url.searchParams.append('year', year);
+			if (year !== null) url.searchParams.append('year', year);
 
 			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
 		} catch {

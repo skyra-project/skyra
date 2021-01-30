@@ -30,13 +30,13 @@ const imageCoordinates = [
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
 	permissions: ['ATTACH_FILES'],
-	spam: true,
-	usage: '<user:username>'
+	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, [user]: [User]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}

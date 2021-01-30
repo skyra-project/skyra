@@ -4,8 +4,8 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
-import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { ZeroWidthSpace } from '#utils/constants';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -20,13 +20,10 @@ import type { TFunction } from 'i18next';
 	usage: '<item|character:default> <search:...string>',
 	usageDelim: ' '
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async character(message: GuildMessage, [name]: [string]) {
 		const t = await message.fetchT();
-
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, t);
 
 		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
@@ -37,10 +34,7 @@ export default class extends PaginatedMessageCommand {
 
 	public async item(message: GuildMessage, [item]: [string]) {
 		const t = await message.fetchT();
-
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const response = await sendLoadingMessage(message, t);
 
 		const itemDetails = await this.fetchItems(t, item);
 		const display = await this.buildItemDisplay(message, t, itemDetails);

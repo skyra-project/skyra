@@ -103,7 +103,7 @@ export const requiresPermissions = (permissionsResolvable: PermissionResolvable)
 };
 
 /**
- * Requires the message to be run in a guild context, this decorator requires the first argument to be a `KlasaMessage` instance
+ * Requires the message to be run in a guild context, this decorator requires the first argument to be a `Message` instance
  * @since 1.0.0
  * @param fallback The fallback value passed to `createFunctionInhibitor`
  */
@@ -112,7 +112,7 @@ export function requiresGuildContext(fallback: Fallback = (): void => undefined)
 }
 
 /**
- * Requires the message to be run in a dm context, this decorator requires the first argument to be a `KlasaMessage` instance
+ * Requires the message to be run in a dm context, this decorator requires the first argument to be a `Message` instance
  * @since 1.0.0
  * @param fallback The fallback value passed to `createFunctionInhibitor`
  */

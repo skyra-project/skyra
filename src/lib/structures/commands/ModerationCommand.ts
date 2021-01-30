@@ -9,7 +9,6 @@ import type { Args, PieceContext } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import type { User } from 'discord.js';
-import type { TFunction } from 'i18next';
 import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -50,7 +49,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public async run(message: GuildMessage, args: Args) {
+	public async run(message: GuildMessage, args: ModerationCommand.Args) {
 		const resolved: CommandContext = {
 			targets: await args.repeat('user', { times: 10 }),
 			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
@@ -61,18 +60,17 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
-		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, t] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Messages.ModerationAutoDelete],
-			settings[GuildSettings.Messages.ModerationMessageDisplay],
-			settings[GuildSettings.Messages.ModerationReasonDisplay],
-			settings.getLanguage()
+		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason] = await message.guild.readSettings([
+			GuildSettings.Messages.ModerationAutoDelete,
+			GuildSettings.Messages.ModerationMessageDisplay,
+			GuildSettings.Messages.ModerationReasonDisplay
 		]);
 
 		const { targets, ...handledRaw } = resolved;
 		for (const target of new Set(targets)) {
 			try {
-				const handled = { ...handledRaw, target, preHandled };
-				await this.checkModeratable(message, t, handled);
+				const handled = { ...handledRaw, args, target, preHandled };
+				await this.checkModeratable(message, handled);
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
@@ -102,24 +100,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const langKey = logReason
 					? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
 					: LanguageKeys.Commands.Moderation.ModerationOutput;
-				output.push(
-					t(langKey, {
-						count: cases.length,
-						range,
-						users,
-						reason: logReason
-					})
-				);
+				output.push(args.t(langKey, { count: cases.length, range, users, reason: logReason }));
 			}
 
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
-				output.push(
-					t(LanguageKeys.Commands.Moderation.ModerationFailed, {
-						users,
-						count: users.length
-					})
-				);
+				output.push(args.t(LanguageKeys.Commands.Moderation.ModerationFailed, { users, count: users.length }));
 			}
 
 			// Else send the message as usual.
@@ -139,24 +125,25 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, t: TFunction, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw t(LanguageKeys.Commands.Moderation.UserSelf);
+			throw context.args.t(LanguageKeys.Commands.Moderation.UserSelf);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw t(LanguageKeys.Commands.Moderation.ToSkyra);
+			throw context.args.t(LanguageKeys.Commands.Moderation.ToSkyra);
 		}
 
 		const member = await message.guild.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw t(LanguageKeys.Misc.UserNotInGuild);
+			if (this.requiredMember) throw context.args.t(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
-			if (targetHighestRolePosition >= message.member.roles.highest.position) throw t(LanguageKeys.Commands.Moderation.RoleHigher);
+			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position)
+				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member.roles.highest.position) throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
 		}
 
 		return member;
@@ -208,6 +195,7 @@ export interface CommandContext {
 }
 
 export interface HandledCommandContext<T = unknown> extends Pick<CommandContext, 'duration' | 'reason'> {
+	args: ModerationCommand.Args;
 	target: User;
 	preHandled: T;
 }

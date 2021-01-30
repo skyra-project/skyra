@@ -30,7 +30,7 @@ export default class extends ModerationCommand {
 				reason: context.reason
 			},
 			await this.getDays(message),
-			await this.getTargetDM(message, context.target)
+			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
 
@@ -38,9 +38,9 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
-		const member = await super.checkModeratable(message, t, context);
-		if (member && !member.bannable) throw t(LanguageKeys.Commands.Moderation.BanNotBannable);
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
+		const member = await super.checkModeratable(message, context);
+		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 

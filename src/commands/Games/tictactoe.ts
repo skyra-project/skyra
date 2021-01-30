@@ -5,12 +5,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
+import { PieceContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
-import { PieceContext, Usage } from 'klasa';
 
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
-	private prompt: Usage;
 
 	public constructor(context: PieceContext) {
 		super(context, {
@@ -21,13 +20,13 @@ export class UserCommand extends SkyraCommand {
 			permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text']
 		});
-
-		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { t } = args;
 		if (this.channels.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
+
+		const user = await args.pick('userName');
 		const player1 = this.getAuthorController(message);
 		const player2 = await this.getTargetController(message, user);
 

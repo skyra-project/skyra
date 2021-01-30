@@ -26,7 +26,7 @@ export default class extends ModerationCommand {
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
-			await this.getTargetDM(message, context.target)
+			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
 
@@ -34,9 +34,9 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, t, context);
-		if (member && !member.kickable) throw t(LanguageKeys.Commands.Moderation.KickNotKickable);
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, context);
+		if (member && !member.kickable) throw context.args.t(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}
 }

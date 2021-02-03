@@ -31,7 +31,7 @@
 		"extendedHelp": ""
 	},
 	"animeTypes": {
-		"tv": "",
+		"tv": "📺 ТВ",
 		"movie": "",
 		"ova": "",
 		"special": ""
@@ -42,7 +42,7 @@
 	"animeEmbedData": {
 		"type": "Тип",
 		"score": "",
-		"episodes": "",
+		"episodes": "Эпизод(ы)",
 		"episodeLength": "",
 		"ageRating": "",
 		"firstAirDate": "",

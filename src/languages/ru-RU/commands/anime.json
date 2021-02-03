@@ -1,7 +1,7 @@
 {
 	"animeDescription": "Ищите своё любимое аниме по названию с помощью этой команды.",
 	"animeExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенном вами аниме.",
 		"explainedUsage": [
 			[
 				"запрос",
@@ -14,7 +14,7 @@
 	},
 	"mangaDescription": "Ищите свою любимую мангу по названию с помощью этой команды.",
 	"mangaExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенной вами манге.",
 		"explainedUsage": [
 			[
 				"запрос",
@@ -22,7 +22,7 @@
 			]
 		],
 		"examples": [
-			"",
+			"Stone Ocean",
 			"One Piece"
 		]
 	},

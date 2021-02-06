@@ -1,7 +1,7 @@
 {
 	"animeDescription": "Ищите своё любимое аниме по названию с помощью этой команды.",
 	"animeExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенном вами аниме.",
 		"explainedUsage": [
 			[
 				"запрос",
@@ -14,7 +14,7 @@
 	},
 	"mangaDescription": "Ищите свою любимую мангу по названию с помощью этой команды.",
 	"mangaExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенной вами манге.",
 		"explainedUsage": [
 			[
 				"запрос",
@@ -22,7 +22,7 @@
 			]
 		],
 		"examples": [
-			"",
+			"Stone Ocean",
 			"One Piece"
 		]
 	},
@@ -31,7 +31,7 @@
 		"extendedHelp": ""
 	},
 	"animeTypes": {
-		"tv": "",
+		"tv": "📺 ТВ",
 		"movie": "",
 		"ova": "",
 		"special": ""
@@ -42,11 +42,11 @@
 	"animeEmbedData": {
 		"type": "Тип",
 		"score": "",
-		"episodes": "",
+		"episodes": "Эпизод(ы)",
 		"episodeLength": "",
 		"ageRating": "",
 		"firstAirDate": "",
-		"watchIt": "",
+		"watchIt": "Смотрите здесь:",
 		"stillAiring": ""
 	},
 	"mangaOutputDescription": "",
@@ -60,10 +60,10 @@
 	"mangaEmbedData": {
 		"ageRating": "",
 		"firstPublishDate": "",
-		"readIt": "",
+		"readIt": "Читайте здесь:",
 		"score": "",
 		"type": "Подтип",
 		"none": ""
 	},
-	"waifuFooter": ""
+	"waifuFooter": "При поддержке thiswaifudoesnotexist.net"
 }

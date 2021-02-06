@@ -1,10 +1,10 @@
 {
-	"cannotAccessChannel": "",
+	"cannotAccessChannel": "Извините, но у вас нет разрешения на просмотр этого канала.",
 	"channelNotPostable": "",
 	"databaseError": "",
 	"discordAbortError": "",
 	"error": "",
-	"exceededLengthChooseOutput": "",
+	"exceededLengthChooseOutput": "Выберите один из следующих вариантов: {{output, orList}}",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "",
 	"exceededLengthOutputConsoleWithTypeAndTime": "",

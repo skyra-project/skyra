@@ -1,86 +1,86 @@
 {
-	"currentTimeDescription": "",
+	"currentTimeDescription": "Obtiene la hora actual en cualquier lugar del mundo",
 	"currentTimeExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando tiene las coordenadas, consulta TimezoneDB para obtener los datos de tiempo.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"ubicación",
+				"La localidad, gobernación, país o continente para comprobar su tiempo."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Antártida",
+			"Arizona"
 		]
 	},
-	"currentTimeLocationNotFound": "",
+	"currentTimeLocationNotFound": "Lo siento, pero no pude encontrar los datos de tiempo para esa ubicación.",
 	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
-		"gmsOffset": "",
-		"dst": ""
+		"currentTime": "Hora actual",
+		"currentDate": "Fecha Actual",
+		"country": "País",
+		"gmsOffset": "Desplazamiento GMT",
+		"dst": "**Horario de Verano**: {{dst}}"
 	},
-	"currentTimeDst": "",
-	"currentTimeNoDst": "",
-	"gsearchDescription": "",
+	"currentTimeDst": "No están en horario de verano",
+	"currentTimeNoDst": "Están en horario de verano",
+	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
 	"gsearchExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"consulta",
+				"Lo que desea encontrar en Google"
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Discord",
+			"Skyra"
 		]
 	},
-	"gimageDescription": "",
+	"gimageDescription": "Encuentra tus imágenes favoritas en Google",
 	"gimageExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar imágenes para tu consulta. Para resultados web regulares, por favor usa el comando `gsearch`.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"consulta",
+				"La imagen que desea encontrar en Google"
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Discord",
+			"Skyra"
 		],
-		"reminder": ""
+		"reminder": "Este comando ha sido marcado como NSFW porque es inevitable que cuando usted consulta contenido explícito, obtenga resultados explícitos."
 	},
-	"lmgtfyDescription": "",
+	"lmgtfyDescription": "Molesta a otra persona enviándoles un enlace LMGTFY (Let Me Google That For You, \"Déjame Googlear Por Tí\").",
 	"lmgtfyExtended": {
 		"explainedUsage": [
 			[
-				"",
-				""
+				"consulta",
+				"La consulta a Google"
 			]
 		]
 	},
-	"lmgtfyClick": "",
-	"weatherDescription": "",
+	"lmgtfyClick": "Pulsa aquí para buscar",
+	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando obtuvo las coordenadas, consulta a DarkSky para obtener información sobre el clima.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"ciudad",
+				"La localidad, gobernación, país o continente para comprobar su tiempo."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Antártida",
+			"Arizona"
 		],
-		"reminder": ""
+		"reminder": "La temperatura está en **Celsius** por defecto. Usa el modificador --imperial o --fahrenheit para verla en **Fahrenheit**."
 	},
-	"errorZeroResults": "",
-	"errorRequestDenied": "",
-	"errorInvalidRequest": "",
-	"errorOverQueryLimit": "",
-	"errorPermissionDenied": "",
-	"errorUnknown": ""
+	"errorZeroResults": "Tu búsqueda no ha devuelto ningún resultado.",
+	"errorRequestDenied": "La solicitud de API de GeoCode ha sido denegada.",
+	"errorInvalidRequest": "Petición inválida.",
+	"errorOverQueryLimit": "Límite de consulta excedido. Inténtalo de nuevo mañana.",
+	"errorPermissionDenied": "Google denegó mi permiso para este recurso, por favor contacte a los desarrolladores acerca de esto en el servidor de soporte oficial en <https://join.skyra.pw>",
+	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google."
 }

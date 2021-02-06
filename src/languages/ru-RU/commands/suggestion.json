@@ -1,5 +1,5 @@
 {
-	"suggestDescription": "",
+	"suggestDescription": "Публикует предложение для сервера.",
 	"suggestExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -19,7 +19,7 @@
 	"suggestNopermissions": "",
 	"suggestChannelPrompt": "",
 	"suggestTitle": "Предложение #{{id}}",
-	"suggestSuccess": "",
+	"suggestSuccess": "Спасибо за ваше предложение! Оно было успешно опубликовано в {{channel}}!",
 	"resolveSuggestionDescription": "Установите статус предложения.",
 	"resolveSuggestionExtended": {
 		"extendedHelp": "",

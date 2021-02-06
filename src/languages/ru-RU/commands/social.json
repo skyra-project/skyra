@@ -82,7 +82,7 @@
 		"experience": "Опыт",
 		"level": "Уровень"
 	},
-	"profileMoney": "",
+	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
 	"remindmeCreate": "",
 	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",
@@ -134,7 +134,7 @@
 			""
 		]
 	},
-	"bannerDescription": "",
+	"bannerDescription": "Настройте баннер для своего профиля.",
 	"bannerExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -195,7 +195,7 @@
 			""
 		]
 	},
-	"balanceDescription": "",
+	"balanceDescription": "Проверьте свой текущий баланс.",
 	"balanceExtended": {
 		"extendedHelp": ""
 	},
@@ -212,7 +212,7 @@
 	"leaderboardListifyPage": "",
 	"levelDescription": "Проверьте свой глобальный уровень.",
 	"levelExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Сколько до следующего уровня?",
 		"explainedUsage": [
 			[
 				"пользователь",
@@ -240,7 +240,7 @@
 	},
 	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
 	"marriedExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Эта команда сообщит вам, с кем вы состоите в браке."
 	},
 	"mylevelDescription": "Проверьте свой локальный уровень.",
 	"mylevelExtended": {
@@ -266,7 +266,7 @@
 			]
 		],
 		"examples": [
-			""
+			"200 @kyra"
 		]
 	},
 	"profileDescription": "",
@@ -320,7 +320,7 @@
 		"examples": [
 			"",
 			"",
-			"",
+			"@kyra",
 			"",
 			""
 		]

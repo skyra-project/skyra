@@ -6,11 +6,11 @@ import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation, Time } from '#utils/constants';
-import { kBigIntTransformer } from '#utils/util';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
 @Check(/* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)`) // 5 years

@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import * as GuildSettings from '#lib/database/keys/settings/All';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Store } from '@sapphire/pieces';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';

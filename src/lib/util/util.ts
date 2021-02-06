@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { Awaited, isNullish, isNumber, isThenable, parseURL } from '@sapphire/utilities';
+import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
@@ -21,7 +21,6 @@ import {
 } from 'discord.js';
 import { Store } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import type { ValueTransformer } from 'typeorm';
 import { api } from '../discord/Api';
 import { Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
@@ -551,11 +550,6 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 export function cast<T>(value: unknown): T {
 	return value as T;
 }
-
-export const kBigIntTransformer: ValueTransformer = {
-	from: (value) => (isNullish(value) ? value : Number(value as string)),
-	to: (value) => (isNullish(value) ? value : String(value as number))
-};
 
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.

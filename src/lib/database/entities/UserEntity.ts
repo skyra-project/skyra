@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Events } from '#lib/types/Enums';
-import { kBigIntTransformer } from '#utils/util';
 import { Store } from 'klasa';
 import {
 	AfterInsert,
@@ -17,6 +16,7 @@ import {
 	OneToOne,
 	PrimaryColumn
 } from 'typeorm';
+import { kBigIntTransformer } from '../utils/Transformers';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserGameIntegrationEntity } from './UserGameIntegrationEntity';

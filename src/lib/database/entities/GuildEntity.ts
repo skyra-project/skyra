@@ -4,13 +4,13 @@ import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
-import { kBigIntTransformer } from '#utils/util';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { RateLimitManager, Store } from 'klasa';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
+import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity {

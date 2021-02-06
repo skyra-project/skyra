@@ -4,7 +4,7 @@
 		"extendedHelp": ""
 	},
 	"c4GameColumnFull": "",
-	"c4GameDraw": "",
+	"c4GameDraw": "Этот матч завершился **ничьей**!",
 	"c4GameNext": "",
 	"c4GameNextTurn0": "",
 	"c4GameWin": "",
@@ -64,7 +64,7 @@
 		"",
 		"",
 		"",
-		"",
+		"{1} хватает рюкзак, не понимая, что он пуст.",
 		"{1} ломает {2} нос за корзину хлеба.",
 		"",
 		"",
@@ -451,7 +451,7 @@
 	"slotmachinesLoss": "",
 	"slotmachinesWin": "",
 	"ticTacToeDescription": "",
-	"ticTacToeDraw": "",
+	"ticTacToeDraw": "Этот матч завершился **ничьей**!\n{{board}}",
 	"ticTacToeExtended": {
 		"extendedHelp": ""
 	},

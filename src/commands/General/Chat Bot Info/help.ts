@@ -40,7 +40,7 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 	strategyOptions: { flags: ['cat', 'categories', 'all'] }
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (args.finished) {
 			if (args.getFlags('cat', 'categories')) return this.categories(message, args);
 			if (args.getFlags('all')) return this.all(message, args);
@@ -54,7 +54,7 @@ export class UserCommand extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
-		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value));
+		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, context.commandPrefix));
 
 		return this.canRunPaginatedMessage(message) ? this.display(message, args, null) : this.all(message, args);
 	}
@@ -130,7 +130,7 @@ export class UserCommand extends SkyraCommand {
 		return display.setIdle(Time.Minute * 10);
 	}
 
-	private async buildCommandHelp(message: Message, t: TFunction, command: SkyraCommand) {
+	private async buildCommandHelp(message: Message, t: TFunction, command: SkyraCommand, prefixUsed: string) {
 		const builderData = t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
@@ -142,8 +142,8 @@ export class UserCommand extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = t(command.extendedHelp);
-		const extendedHelp = builder.display(command.name, this.formatAliases(t, command.aliases), extendedHelpData);
+		const extendedHelpData = t(command.extendedHelp, { postProcess: 'helpUsagePostProcessor' });
+		const extendedHelp = builder.display(command.name, this.formatAliases(t, command.aliases), extendedHelpData, prefixUsed);
 
 		const data = t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,

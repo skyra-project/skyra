@@ -42,13 +42,13 @@ export class LanguageHelp {
 		return this;
 	}
 
-	public display(name: string, aliases: string | null, options: LanguageHelpDisplayOptions) {
+	public display(name: string, aliases: string | null, options: LanguageHelpDisplayOptions, prefixUsed: string) {
 		const { usages = [], extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output: string[] = [];
 
 		// Usages
 		if (usages.length) {
-			output.push(this.usages, ...usages.map((usage) => `→ Skyra, ${name}${usage.length === 0 ? '' : ` *${usage}*`}`), '');
+			output.push(this.usages, ...usages.map((usage) => `→ ${prefixUsed} ${name}${usage.length === 0 ? '' : ` *${usage}*`}`), '');
 		}
 
 		if (aliases !== null) {
@@ -72,9 +72,9 @@ export class LanguageHelp {
 
 		// Examples
 		if (examples.length) {
-			output.push(this.examples, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+			output.push(this.examples, ...examples.map((example) => `→ ${prefixUsed} ${name}${example ? ` *${example}*` : ''}`), '');
 		} else {
-			output.push(this.examples, `→ Skyra, ${name}`, '');
+			output.push(this.examples, `→ ${prefixUsed} ${name}`, '');
 		}
 
 		// Reminder

@@ -8,7 +8,7 @@ import { LogLevel } from '@sapphire/framework';
 import { ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { ClientOptions } from 'discord.js';
-import i18next, { FormatFunction } from 'i18next';
+import i18next, { FormatFunction, PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
@@ -290,6 +290,17 @@ export namespace Mime {
 		TextPlain = 'text/plain'
 	}
 }
+
+export const helpUsagePostProcessor: PostProcessorModule = {
+	type: 'postProcessor',
+	name: 'helpUsagePostProcessor',
+	process(value, [key]) {
+		// If the value is equal to the key then it is an empty usage, so return an empty string
+		if (value === key) return '';
+		// Otherwise just return the value
+		return value;
+	}
+};
 
 export const clientOptions: Partial<ClientOptions> = {
 	caseInsensitiveCommands: true,

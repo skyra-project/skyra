@@ -13,7 +13,7 @@
 	"abilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
 	"flavorsDescription": "Gets the dex entries across various games for a Pokémon.",
 	"flavorsExtended": {
-		"usages": ["Pokémon --shiny?"],
+		"usages": ["Pokémon", "Pokémon --shiny"],
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
 		"explainedUsage": [["Pokémon", "The Pokémon for which you want to get flavour texts"]],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]

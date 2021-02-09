@@ -46,7 +46,7 @@
 	},
 	"markovDescription": "Generate a Markov Chain from the text channel.",
 	"markovExtended": {
-		"usages": ["TextChannel? User?"],
+		"usages": ["", "TextChannel", "TextChannel User"],
 		"extendedHelp": "A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel."
 	},
 	"norrisDescription": "Enjoy your day reading Chuck Norris's jokes.",

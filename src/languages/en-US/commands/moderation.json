@@ -86,7 +86,7 @@
 	"historyExtended": {
 		"usages": ["details User", "overview? User"],
 		"extendedHelp": "This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been appealed.",
-		"examples": [null, "@Pete"]
+		"examples": ["", "@Pete"]
 	},
 	"historyFooterNew": "This user has {{warnings}} {{warningsText}}, {{mutes}} {{mutesText}}, {{kicks}} {{kicksText}}, and {{bans}} {{bansText}}",
 	"historyFooterWarning": "warning",
@@ -101,7 +101,7 @@
 	"moderationsExtended": {
 		"usages": ["mute/warn/all? User?"],
 		"extendedHelp": "This command shows you all the temporary moderation actions that are still running. This command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
-		"examples": [null, "@Pete", "mutes @Pete", "warnings"]
+		"examples": ["", "@Pete", "mutes @Pete", "warnings"]
 	},
 	"moderationsEmpty": "Nobody has behaved badly yet, who will be the first user to be listed here?",
 	"moderationsAmount": "There is 1 entry.",
@@ -110,13 +110,13 @@
 	"mutesExtended": {
 		"usages": ["User?"],
 		"extendedHelp": "This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
-		"examples": [null, "@Pete"]
+		"examples": ["", "@Pete"]
 	},
 	"warningsDescription": "List all warnings from this guild or from a user.",
 	"warningsExtended": {
 		"usages": ["User?"],
 		"extendedHelp": "This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
-		"examples": [null, "@Pete"]
+		"examples": ["", "@Pete"]
 	},
 	"slowmodeDescription": "Set the channel's slowmode value in seconds.",
 	"slowmodeExtended": {
@@ -146,7 +146,7 @@
 	"lockdownExtended": {
 		"usages": ["lock TextChannel? Duration?", "unlock TextChannel?", "auto? TextChannel? Duration?"],
 		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** in order to be able to manage the permissions for a channel.\nThis command removes the permission **{{SEND_MESSAGES, permissions}}** to the `@everyone` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.\nOptionally, you can pass time as second argument.",
-		"examples": [null, "#general", "lock #general 5m", "unlock #general"]
+		"examples": ["", "#general", "lock #general 5m", "unlock #general"]
 	},
 	"muteDescription": "Mute a user in all text and voice channels.",
 	"muteExtended": {

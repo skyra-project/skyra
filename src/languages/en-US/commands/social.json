@@ -108,12 +108,7 @@
 	"setColor": "Color changed to {{color}}",
 	"socialDescription": "Configure this guild's member points.",
 	"socialExtended": {
-		"usages": [
-			"add User Integer",
-			"remove User Integer",
-			"set User Integer",
-			"reset User"
-		],
+		"usages": ["add User Integer", "remove User Integer", "set User Integer", "reset User"],
 		"extendedHelp": "This command allows for updating other members' points.",
 		"explainedUsage": [
 			["set <user> <amount>", "Sets an amount of points to the user."],
@@ -125,12 +120,7 @@
 	},
 	"bannerDescription": "Configure the banner for your profile.",
 	"bannerExtended": {
-		"usages": [
-			"buy Banner",
-			"set Banner",
-			"reset",
-			"show? all/user?"
-		],
+		"usages": ["buy Banner", "set Banner", "reset", "show? all/user?"],
 		"extendedHelp": "Banners are vertical in Skyra, they decorate your profile card.",
 		"explainedUsage": [
 			["buy", "Buy a banner, must be an ID."],
@@ -138,7 +128,7 @@
 			["reset", "Set your displayed banner to default."],
 			["show", "Lists all available banners."]
 		],
-		"examples": ["buy 0w1p06", "set 0w1p06", "reset", "show", null]
+		"examples": ["buy 0w1p06", "set 0w1p06", "reset", "show", ""]
 	},
 	"toggleDarkModeDescription": "Toggle between light and dark templates for your profile and rank cards.",
 	"toggleDarkModeExtended": {
@@ -146,12 +136,7 @@
 	},
 	"autoRoleDescription": "List or configure the autoroles for a guild.",
 	"autoRoleExtended": {
-		"usages": [
-			"add Role Integer",
-			"remove Role",
-			"update Role Integer",
-			"show?"
-		],
+		"usages": ["add Role Integer", "remove Role", "update Role Integer", "show?"],
 		"extendedHelp": "Autoroles are roles that are available for everyone, and automatically given when they reach a configured amount of (local) points, an administrator must configure them through a setting command.\nNote that if the role name has spaces in the name you need to put `'quotes'` around the name!",
 		"explainedUsage": [
 			["add", "Add a new autorole."],
@@ -160,7 +145,7 @@
 			["show", "Lists all the current autoroles."]
 		],
 		"reminder": "The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.",
-		"examples": ["add \"Trusted Member\" 20000", "update \"Trusted Member\" 15000", "remove \"Trusted Member\"", "show", null]
+		"examples": ["add \"Trusted Member\" 20000", "update \"Trusted Member\" 15000", "remove \"Trusted Member\"", "show", ""]
 	},
 	"balanceDescription": "Check your current balance.",
 	"balanceExtended": {
@@ -200,7 +185,7 @@
 		"usages": ["User"],
 		"extendedHelp": "Marry your waifu!",
 		"explainedUsage": [["user", "(Optional) The user to marry with. If not given, the command will tell you who are you married with."]],
-		"examples": [null, "@love"]
+		"examples": ["", "@love"]
 	},
 	"mylevelDescription": "Check your local level.",
 	"mylevelExtended": {
@@ -223,16 +208,11 @@
 		"usages": ["local/global? User?"],
 		"extendedHelp": "This command sends a card image with some of your user profile such as your global rank, experience...\nAdditionally, you are able to customize your colours with the 'setColor' command.",
 		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]],
-		"examples": ["@kyra", "local @kyra", null]
+		"examples": ["@kyra", "local @kyra", ""]
 	},
 	"remindmeDescription": "Manage your reminders.",
 	"remindmeExtended": {
-		"usages": [
-			"create? Timespan Content?",
-			"remove/delete Identifier",
-			"show Identifier",
-			"list"
-		],
+		"usages": ["create? Timespan Content?", "remove/delete Identifier", "show Identifier", "list"],
 		"extendedHelp": "This command allows you to set, delete and list reminders.",
 		"explainedUsage": [
 			["create", "Creates a new reminder given a content."],
@@ -274,18 +254,14 @@
 		"withdrewDescription": "Withdrew {{coins}} {{SHINY}} from your vault."
 	},
 	"vaultExtended": {
-		"usages": [
-			"deposit all/Amount",
-			"withdraw all/Amount",
-			"show?"
-		],
+		"usages": ["deposit all/Amount", "withdraw all/Amount", "show?"],
 		"extendedHelp": "This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.\nYou need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling.",
 		"explainedUsage": [
 			["deposit", "Deposit all or a specified amount of {{SHINY}} into your vault."],
 			["withdraw", "Withdraw all or a specified amount of {{SHINY}} from your vault."],
 			["show", "Shows the amount of {{SHINY}} in both your wallet and your vault."]
 		],
-		"examples": ["deposit 10000", "withdraw 10000", "show", null]
+		"examples": ["deposit 10000", "withdraw 10000", "show", ""]
 	},
 	"vaultInvalidCoins": "I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!",
 	"vaultNotEnoughInVault": "I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is {{vault}} {{SHINY}}",

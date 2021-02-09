@@ -25,7 +25,7 @@
 	"inviteExtended": {
 		"usages": ["--noperms/--nopermissions"],
 		"extendedHelp": "If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms`, or `--nopermissions` to the command.",
-		"examples": [null, "noperms", "--noperms", "--nopermissions"]
+		"examples": ["", "noperms", "--noperms", "--nopermissions"]
 	},
 	"invitePermissionInviteText": "Invite Skyra to your server",
 	"invitePermissionsDescription": "Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",

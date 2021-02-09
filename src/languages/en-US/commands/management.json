@@ -110,16 +110,11 @@
 		"extendedHelp": "This command allows you to change Skyra's nickname easily for the server.",
 		"reminder": "This command requires the **{{CHANGE_NICKNAME, permissions}}** permission. Make sure Skyra has it.",
 		"explainedUsage": [["Nick", "The new nickname. If you don't put any, it'll reset it instead."]],
-		"examples": ["SkyNET", "Assistant", null]
+		"examples": ["SkyNET", "Assistant", ""]
 	},
 	"permissionNodesDescription": "Configure the permission nodes for this server.",
 	"permissionNodesExtended": {
-		"usages": [
-			"add Role/Member allow/deny Command",
-			"remove Role/Member allow/deny Command",
-			"reset Role/Member",
-			"show? Role/Member"
-		],
+		"usages": ["add Role/Member allow/deny Command", "remove Role/Member allow/deny Command", "reset Role/Member", "show? Role/Member"],
 		"extendedHelp": "Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.\nFor example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command for the staff role now.",
 		"explainedUsage": [
 			["Action", "Either `add`, `remove`, `reset`, or `show`. Defaults to `show`."],
@@ -132,12 +127,7 @@
 	},
 	"triggersDescription": "Set custom triggers for your guild!.",
 	"triggersExtended": {
-		"usages": [
-			"add alias Input Command",
-			"add reaction Input Emoji",
-			"remove alias/reaction Input",
-			"show?"
-		],
+		"usages": ["add alias Input Command", "add reaction Input Emoji", "remove alias/reaction Input", "show?"],
 		"extendedHelp": "This command allows administrators to go further with the personalization of Skyra in the guild!.\nA trigger is a piece that can active other functions.\nFor example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.\nWhen this happens, the alias system executes and tries to find an entry that matches with the input.",
 		"explainedUsage": [
 			["add alias", "Adds a new alias for a command."],
@@ -146,16 +136,11 @@
 			["show", "Shows all aliases and reaction triggers."]
 		],
 		"reminder": "This command requires the **{{ADD_REACTIONS, permissions}}** permission so it can test reactions. Make sure Skyra has it.",
-		"examples": ["add alias pong ping", "add reaction \"good night\" 🌛", "remove reaction \"good night\"", "list", null]
+		"examples": ["add alias pong ping", "add reaction \"good night\" 🌛", "remove reaction \"good night\"", "list", ""]
 	},
 	"managecommandautodeleteDescription": "Manage per-channel autodelete timer.",
 	"managecommandautodeleteExtended": {
-		"usages": [
-			"add TextChannel Seconds",
-			"remove TextChannel",
-			"reset",
-			"show?"
-		],
+		"usages": ["add TextChannel Seconds", "remove TextChannel", "reset", "show?"],
 		"extendedHelp": "This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.",
 		"explainedUsage": [
 			["add", "Add an autodelete timer for the specified channel."],
@@ -168,12 +153,7 @@
 	},
 	"manageCommandChannelDescription": "Manage per-channel command blacklist.",
 	"manageCommandChannelExtended": {
-		"usages": [
-			"add TextChannel Command",
-			"remove TextChannel Command",
-			"reset TextChannel",
-			"show TextChannel"
-		],
+		"usages": ["add TextChannel Command", "remove TextChannel Command", "reset TextChannel", "show TextChannel"],
 		"extendedHelp": "This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
 		"explainedUsage": [
 			["show [channel]", "Show the command blacklist for the selected channel."],
@@ -186,13 +166,7 @@
 	},
 	"manageReactionRolesDescription": "Manage the reaction roles for this server.",
 	"manageReactionRolesExtended": {
-		"usages": [
-			"add Role",
-			"add Role TextChannel Emoji",
-			"remove Role Message",
-			"reset",
-			"show"
-		],
+		"usages": ["add Role", "add Role TextChannel Emoji", "remove Role Message", "reset", "show"],
 		"extendedHelp": "Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind the first reaction from you alongside the channel and the message, with the specified role.\nOtherwise, if a channel is specified, a prompt will not be created, and the reaction role will be bound to all of the channel's messages.\n\nThe best way to add new reaction roles is by using `add @role`. If you prefer not binding the reaction to a specific message then use `add @role #channel emoji`",
 		"explainedUsage": [
 			["show", "Retrieve the list of all reaction roles."],
@@ -297,16 +271,11 @@
 		"usages": ["Role?"],
 		"extendedHelp": "The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted (displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said role, and its permissions.\nIt sends an embedded message with the color of the role.",
 		"explainedUsage": [["Role", "The role name, name, mention or id."]],
-		"examples": ["Administrator", "Moderator", null]
+		"examples": ["Administrator", "Moderator", ""]
 	},
 	"stickyRolesDescription": "Manage sticky roles for users.",
 	"stickyRolesExtended": {
-		"usages": [
-			"add User Role",
-			"remove User Role",
-			"reset User",
-			"show? User"
-		],
+		"usages": ["add User Role", "remove User Role", "reset User", "show? User"],
 		"extendedHelp": "The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when you leave, and are applied back as soon as they join.",
 		"explainedUsage": [
 			["Action", "Either you want to check the sticky roles, add one, remove one, or remove all of them."],
@@ -390,14 +359,9 @@
 	},
 	"filterDescription": "Manage this guild's word blacklist.",
 	"filterExtended": {
-		"usages": [
-			"add Word",
-			"remove Word",
-			"reset",
-			"show?"
-		],
+		"usages": ["add Word", "remove Word", "reset", "show?"],
 		"extendedHelp": "The filter command manages the word blacklist for this server and must have a filter mode set up, check `Skyra, help filterMode`.\n\nSkyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters duplicated characters for enhanced filtering.",
-		"examples": ["add darn", "remove darn", "reset", "show", null]
+		"examples": ["add darn", "remove darn", "reset", "show", ""]
 	},
 	"filterModeDescription": "Manage this server's word filter modes.",
 	"filterModeExtended": {
@@ -621,6 +585,6 @@
 		"extendedHelp": "Public roles are roles that are available for everyone.\nAn administrator must configure them with the configuration command.",
 		"explainedUsage": [["roles", "The list of roles to claim or unclaim. Leave this empty to get a list of available roles."]],
 		"reminder": "When claiming or unclaiming roles you can provide a single or multiple role(s).\nTo claim multiple roles, you must separate them by a comma, for example `red,green`.\nYou can specify which roles you want by providing the role ID, name, or a sub-section of the name.\n\nAdministrators can add public roles using `Skyra, conf set roles.public ExamplePublicRole`.",
-		"examples": [null, "Designer, Programmer", "Designer"]
+		"examples": ["", "Designer, Programmer", "Designer"]
 	}
 }

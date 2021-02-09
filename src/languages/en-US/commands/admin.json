@@ -10,14 +10,7 @@
 	"confNochange": "The value for **{{key}}** was already that value.",
 	"confServerDescription": "Define per-server settings.",
 	"confServerExtended": {
-		"usages": [
-			"set NameOfKey Value for Key",
-			"show",
-			"show NameOfKey",
-			"remove NameOfKey Value for Key",
-			"reset NameOfKey",
-			"menu"
-		],
+		"usages": ["set NameOfKey Value for Key", "show", "show NameOfKey", "remove NameOfKey Value for Key", "reset NameOfKey", "menu"],
 		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the [web dashboard](https://skyra.pw).",
 		"examples": [
 			"set language en-GB",

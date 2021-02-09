@@ -1,11 +1,7 @@
 {
 	"brawlstarsDescription": "Get data on a player or club from Supercell's newest game, Brawl Stars.",
 	"brawlstarsExtended": {
-		"usages": [
-			"player #PlayerTag",
-			"player #PlayerTag --save",
-			"club #ClubTag"
-		],
+		"usages": ["player #PlayerTag", "player #PlayerTag --save", "club #ClubTag"],
 		"extendedHelp": "Use this command with --save to save your player/club tag.",
 		"explainedUsage": [
 			["category", "The category of data to get: **club** to get data on a club, or **player** to get data on a player (default)."],

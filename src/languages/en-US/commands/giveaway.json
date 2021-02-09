@@ -19,7 +19,7 @@
 			["Winners", "The amount of winners to pick."],
 			["Message", "The message to target. Defaults to last giveaway message."]
 		],
-		"examples": [null, "633939404745998346", "5", "5 633939404745998346"]
+		"examples": ["", "633939404745998346", "5", "5 633939404745998346"]
 	},
 	"giveawayScheduleDescription": "Schedule a giveaway to start at a certain time.",
 	"giveawayScheduleExtended": {

@@ -1,1 +1,2 @@
 src/languages/**/*.json
+!src/languages/en-US/**/*.json

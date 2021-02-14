@@ -1,9 +1,6 @@
 {
-	"cannotAccessChannel": "",
 	"channelNotPostable": "",
-	"databaseError": "",
 	"discordAbortError": "",
-	"error": "",
 	"exceededLengthChooseOutput": "",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "Poslala rezultat v konzolo.",
@@ -16,11 +13,13 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
+		"aliases": "",
 		"usages": "",
-		"explainedUsage": "⚙ | ***Razložena uporaba***",
-		"possibleFormats": "🔢 | ***Možni formati***",
-		"examples": "🔗 | ***Primeri***",
-		"reminders": "⏰ | ***Opomnik***"
+		"extendedHelp": "",
+		"explainedUsage": "",
+		"possibleFormats": "",
+		"examples": "",
+		"reminders": ""
 	},
 	"highestRole": "",
 	"jumpTo": "Skoči do Sporočila ►",
@@ -34,10 +33,16 @@
 		"",
 		""
 	],
+	"messagePromptTimeout": "",
 	"noResults": "",
 	"parseError": "",
 	"pokedexExternalResource": "Zunanji Viri",
 	"poweredByWeebSh": "",
 	"prefixReminder": "",
-	"queryFail": ""
+	"queryFail": "",
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
 }

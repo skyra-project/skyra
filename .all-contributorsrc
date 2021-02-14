@@ -195,6 +195,13 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/29275227?v=4",
 			"profile": "https://github.com/Stitch07",
 			"contributions": ["code"]
+		},
+		{
+			"login": "adrifcastr",
+			"name": "Adrian Castro",
+			"avatar_url": "https://avatars.githubusercontent.com/u/22133246?v=4",
+			"profile": "https://gideonbot.com/",
+			"contributions": ["code"]
 		}
 	],
 	"contributorsPerLine": 7,

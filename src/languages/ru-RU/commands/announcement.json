@@ -5,13 +5,10 @@
 	"announcementEmbedMentions": "{{header}}:",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"объявление",
-				"Текст объявления для публикации."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "",
 		"examples": [
 			""
 		],

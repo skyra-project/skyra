@@ -59,6 +59,7 @@ Klasa.
 _Who knows, I might write a book someday for Skyra's lore._
 
 ## Translating Skyra <a href="https://translation.skyra.pw" target="_blank"><img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%"></a>
+
 We use **Crowdin** to translate Skyra's messages into different languages. If you'd like to help by contributing new translations (or improving existing ones), [**click here.**](https://translation.skyra.pw) Thanks for any contributions!
 
 ## Links
@@ -118,13 +119,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://skyra.pw/"><img src="https://avatars0.githubusercontent.com/u/61647701?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Skyra</b></sub></a><br /><a href="#infra-NM-EEA-Y" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#translation-NM-EEA-Y" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/gc"><img src="https://avatars2.githubusercontent.com/u/30398469?v=4?s=100" width="100px;" alt=""/><br /><sub><b>GC</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=gc" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Rexogamer"><img src="https://avatars0.githubusercontent.com/u/42586271?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed L</b></sub></a><br /><a href="#translation-Rexogamer" title="Translation">🌍</a></td>
-    <td align="center"><a href="https://github.com/Soumil07"><img src="https://avatars0.githubusercontent.com/u/29275227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Soumil07</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=Soumil07" title="Code">💻</a> <a href="#translation-Soumil07" title="Translation">🌍</a> <a href="https://github.com/skyra-project/skyra/pulls?q=is%3Apr+reviewed-by%3ASoumil07" title="Reviewed Pull Requests">👀</a> <a href="#platform-Soumil07" title="Packaging/porting to new platform">📦</a> <a href="#maintenance-Soumil07" title="Maintenance">🚧</a> <a href="https://github.com/skyra-project/skyra/issues?q=author%3ASoumil07" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://www.adityatd.me/"><img src="https://avatars0.githubusercontent.com/u/9266227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aditya N. Tripathi</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=AdityaTD" title="Code">💻</a> <a href="https://github.com/skyra-project/skyra/issues?q=author%3AAdityaTD" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/apps/dependabot-preview"><img src="https://avatars3.githubusercontent.com/in/2141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dependabot-preview[bot]</b></sub></a><br /><a href="#maintenance-dependabot-preview[bot]" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/apps/dependabot"><img src="https://avatars0.githubusercontent.com/in/29110?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dependabot[bot]</b></sub></a><br /><a href="#maintenance-dependabot[bot]" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/apps/depfu"><img src="https://avatars3.githubusercontent.com/in/715?v=4?s=100" width="100px;" alt=""/><br /><sub><b>depfu[bot]</b></sub></a><br /><a href="#maintenance-depfu[bot]" title="Maintenance">🚧</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/apps/depfu"><img src="https://avatars3.githubusercontent.com/in/715?v=4?s=100" width="100px;" alt=""/><br /><sub><b>depfu[bot]</b></sub></a><br /><a href="#maintenance-depfu[bot]" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/Stitch07"><img src="https://avatars.githubusercontent.com/u/29275227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stitch07</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=Stitch07" title="Code">💻</a></td>
   </tr>
 </table>
 

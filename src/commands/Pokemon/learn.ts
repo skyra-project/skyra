@@ -4,56 +4,43 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import type { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
+const kPokemonGenerations = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['learnset', 'learnall'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.LearnDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.LearnExtended,
-	usage: '[generation:generation] <pokemon:string> <moves:...string> ',
-	usageDelim: ' ',
-	flagSupport: true
+	strategyOptions: { flags: ['shiny'] }
 })
-@CreateResolvers([
-	[
-		'generation',
-		async (arg, possible, message) => {
-			if (kPokemonGenerations.has(arg)) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw await message.resolveKey(LanguageKeys.Commands.Pokemon.LearnInvalidGeneration, { generation: arg });
-		}
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const generation = await args.pick(UserPaginatedMessageCommand.generation).catch(() => 8);
+		const pokemon = await args.pick('string');
+		const response = await sendLoadingMessage(message, args.t);
 
-		const movesList = moves.split(', ');
-		const learnsetData = await this.fetchAPI(pokemon, movesList, generation, t);
+		const movesList = args.nextSplit();
+		const learnsetData = await this.fetchAPI(pokemon, movesList, generation);
 
-		await this.buildDisplay(message, learnsetData, generation, movesList, t) //
+		await this.buildDisplay(learnsetData, generation, movesList, args) //
 			.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(pokemon: string, moves: string[], generation: number, t: TFunction) {
+	private async fetchAPI(pokemon: string, moves: string[], generation: number) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy, { pokemon, moves, generation });
 			return data.getPokemonLearnsetByFuzzy;
 		} catch {
-			throw t(LanguageKeys.Commands.Pokemon.LearnQueryFailed, {
+			this.error(LanguageKeys.Commands.Pokemon.LearnQueryFailed, {
 				pokemon,
 				moves
 			});
@@ -64,13 +51,14 @@ export default class extends PaginatedMessageCommand {
 		return t(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
 	}
 
-	private buildDisplay(message: GuildMessage, learnsetData: LearnsetEntry, generation: number, moves: string[], t: TFunction) {
+	private buildDisplay(learnsetData: LearnsetEntry, generation: number, moves: string[], args: PaginatedMessageCommand.Args) {
+		const { t } = args;
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))
 				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
 				.setTitle(t(LanguageKeys.Commands.Pokemon.LearnTitle, { pokemon: learnsetData.species, generation }))
-				.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite)
+				.setThumbnail(args.getFlags('shiny') ? learnsetData.shinySprite : learnsetData.sprite)
 		});
 
 		const learnableMethods = Object.entries(learnsetData).filter(
@@ -99,4 +87,15 @@ export default class extends PaginatedMessageCommand {
 
 		return display;
 	}
+
+	private static generation = Args.make<number>((parameter, { argument }) => {
+		const numberParameter = Number(parameter);
+		if (numberParameter && kPokemonGenerations.has(numberParameter)) return Args.ok(numberParameter);
+		return Args.error({
+			parameter,
+			argument,
+			identifier: LanguageKeys.Commands.Pokemon.LearnInvalidGeneration,
+			context: { generation: parameter }
+		});
+	});
 }

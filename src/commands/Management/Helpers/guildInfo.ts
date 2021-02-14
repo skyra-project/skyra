@@ -13,11 +13,11 @@ const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.p
 	cooldown: 15,
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		let tChannels = 0;
 		let vChannels = 0;
 		let cChannels = 0;
@@ -27,9 +27,9 @@ export default class extends SkyraCommand {
 			else if (channel.type === 'category') cChannels++;
 		}
 
-		const t = await message.fetchT();
-		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles);
+		const serverInfoTitles = args.t(LanguageKeys.Commands.Management.GuildInfoTitles);
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
+		// Pop off the @everyone role
 		roles.pop();
 		const owner = await this.context.client.users.fetch(message.guild.ownerID);
 
@@ -38,10 +38,10 @@ export default class extends SkyraCommand {
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(message.guild.iconURL()!)
 				.setTitle(`${message.guild.name} [${message.guild.id}]`)
-				.splitFields(t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roles.length }), roles.join(' '))
+				.splitFields(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roles.length }), roles.join(' '))
 				.addField(
 					serverInfoTitles.MEMBERS,
-					t(LanguageKeys.Commands.Management.GuildInfoMembers, {
+					args.t(LanguageKeys.Commands.Management.GuildInfoMembers, {
 						memberCount: message.guild.memberCount,
 						owner
 					}),
@@ -49,22 +49,22 @@ export default class extends SkyraCommand {
 				)
 				.addField(
 					serverInfoTitles.CHANNELS,
-					t(LanguageKeys.Commands.Management.GuildInfoChannels, {
+					args.t(LanguageKeys.Commands.Management.GuildInfoChannels, {
 						text: tChannels,
 						voice: vChannels,
 						categories: cChannels,
 						afkChannelText: message.guild.afkChannelID
-							? t(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
+							? args.t(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
 									afkChannel: message.guild.afkChannelID,
 									afkTime: message.guild.afkTimeout / 60
 							  })
-							: `**${t(LanguageKeys.Globals.None)}**`
+							: `**${args.t(LanguageKeys.Globals.None)}**`
 					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.OTHER,
-					t(LanguageKeys.Commands.Management.GuildInfoOther, {
+					args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 						size: message.guild.roles.cache.size,
 						region: message.guild.region,
 						createdAt: message.guild.createdTimestamp,

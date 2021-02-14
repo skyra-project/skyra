@@ -11,19 +11,20 @@ import type { TFunction } from 'i18next';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<query:string>'
+	permissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const t = await message.fetchT();
-		const text = await this.fetchText(input, t);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const input = await args.rest('string');
+
+		const { t } = args;
+		const text = await this.fetchText(input);
 
 		// Only fetch images if the channel is NSFW permitted
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw t(LanguageKeys.Commands.Tools.WikipediaNotFound);
+			this.error(LanguageKeys.Commands.Tools.WikipediaNotFound);
 		}
 
 		const pageInformation = text.query.pages[text.query.pageids[0]];
@@ -52,7 +53,7 @@ export default class extends SkyraCommand {
 		return message.send(embed);
 	}
 
-	private async fetchText(input: string, t: TFunction) {
+	private async fetchText(input: string) {
 		try {
 			const url = this.getBaseUrl(input);
 			url.searchParams.append('prop', 'extracts');
@@ -62,7 +63,7 @@ export default class extends SkyraCommand {
 
 			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 

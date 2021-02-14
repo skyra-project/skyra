@@ -4,12 +4,12 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import { Event } from 'klasa';
 
 const { FLAGS } = Permissions;
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(member: GuildMember) {
 		if (await this.handleStickyRoles(member)) return;
 		this.context.client.emit(Events.NotMutedMemberAdd, member);
@@ -34,12 +34,12 @@ export default class extends Event {
 					.setColor(Colors.Amber)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 					.setDescription(
-						t(LanguageKeys.Events.GuildMemberAddDescription, {
+						t(LanguageKeys.Events.Guilds.Members.GuildMemberAddDescription, {
 							mention: member.toString(),
 							time: Date.now() - member.user.createdTimestamp
 						})
 					)
-					.setFooter(t(LanguageKeys.Events.GuildMemberAddMute))
+					.setFooter(t(LanguageKeys.Events.Guilds.Members.GuildMemberAddMute))
 					.setTimestamp()
 			);
 

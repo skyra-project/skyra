@@ -1,12 +1,17 @@
 import { ENABLE_LAVALINK } from '#root/config';
-import type { PieceContext } from 'klasa';
+import type { PieceContext } from '@sapphire/framework';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace MusicCommand {
 	/**
-	 * The music command options
+	 * The MusicCommand Options
 	 */
 	export type Options = SkyraCommand.Options;
+	/**
+	 * The MusicCommand Args
+	 */
+	export type Args = SkyraCommand.Args;
+	export type Context = SkyraCommand.Context;
 }
 
 export abstract class MusicCommand extends SkyraCommand {

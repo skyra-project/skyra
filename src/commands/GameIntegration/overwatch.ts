@@ -5,47 +5,46 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import type { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
-import { BrandingColors, Time } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { Time } from '#utils/constants';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, IArgument } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+
+const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ow'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended,
-	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
-	usageDelim: ' '
+	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
-		const t = await message.fetchT();
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
+		const player = await args.rest('overwatchPlayer');
+		const response = await sendLoadingMessage(message, args.t);
 
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const overwatchData = await this.fetchAPI(player, platform);
 
-		const overwatchData = await this.fetchAPI(t, player, platform);
-
-		if (overwatchData.error) throw t(LanguageKeys.System.QueryFail);
+		if (overwatchData.error) this.error(LanguageKeys.System.QueryFail);
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
-			throw t(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
+			this.error(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
 		}
 
-		const display = await this.buildDisplay(message, t, overwatchData, player, platform);
+		const display = await this.buildDisplay(message, args.t, overwatchData, player, platform);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	private async fetchAPI(t: TFunction, player: string, platform: PlatformUnion) {
+	private async fetchAPI(player: string, platform: PlatformUnion) {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw t(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
+			this.error(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
 				player: this.decodePlayerName(player),
 				platform
 			});
@@ -199,4 +198,9 @@ export default class extends PaginatedMessageCommand {
 	private decodePlayerName(name: string) {
 		return decodeURIComponent(name.replace('-', '#'));
 	}
+
+	private static platformResolver: IArgument<PlatformUnion> = Args.make((parameter, { argument }) => {
+		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return Args.ok(parameter.toLowerCase() as PlatformUnion);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlatform });
+	});
 }

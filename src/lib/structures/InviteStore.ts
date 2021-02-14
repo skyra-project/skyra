@@ -30,6 +30,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 
 		const resolved: InviteCodeEntry = {
 			valid: true,
+			code,
 			guildID: Reflect.get(data, 'guild')?.id ?? null,
 			fetchedAt: Date.now()
 		};
@@ -48,5 +49,6 @@ export interface InviteCodeInvalidEntry {
 
 export interface InviteCodeValidEntry {
 	valid: true;
+	code: string;
 	guildID: string | null;
 }

@@ -9,10 +9,10 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.ShibeDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.ShibeExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
 		const urls = await fetch<[string]>('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON);
 		return message.send(

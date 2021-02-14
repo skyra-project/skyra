@@ -1,15 +1,5 @@
 {
-	"blocklistDescription": "Sperre oder erlaube Benutzer und Gilden davon meine Funktionen zu nutzen.",
-	"blocklistExtended": {
-		"extendedHelp": "Blockiere Benutzer die Funktionen missbrauchen von zukünftiger Benutzung, böse böse Menschen!"
-	},
-	"blocklistResetSuccess": "{{GREENTICK}} Gesperrte Benutzer und Gilden erfolgreich zurückgesetzt",
-	"blocklistSaveSuccess": "{{GREENTICK}} Gesperrte Benutzer und/oder Gilden wurden erfolgreich aktualisiert",
-	"confNoKey": "Ein Schlüssel muss angegeben werden",
-	"confNoValue": "Ein Wert muss angegeben werden",
-	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",
 	"confUpdated": "Schlüssel **{{key}}**: `{{response}} ` wurde erfolgreich aktualisiert",
-	"confKeyNotArray": "Dieser Schlüssel ist nicht vom Typ Array. Verwende stattdessen die Aktion 'Zurücksetzen'.",
 	"confGetNoExt": "Der Schlüssel **{{key}}** scheint nicht zu existieren.",
 	"confGet": "Der Wert für den Schlüssel **{{key}}** ist: `{{value}}`",
 	"confReset": "Der Schlüssel **{{key}}** wurde zurückgesetzt auf: `{{value}}`",
@@ -19,9 +9,7 @@
 		"extendedHelp": "Erlaubt dir, Skyra von Discord als schnelle Alternative zum Web-Dashboard (<https://skyra.pw>) zu konfigurieren."
 	},
 	"confServer": "**Servereinstellung {{key}}**\n{{list}}",
-	"confUserDescription": "Benutzerdefinierte Einstellungen.",
 	"confDashboardOnlyKey": "`{{key}}` kann nur über das Web-Dashboard konfiguriert werden (<https://skyra.pw>)",
-	"confUser": "**Benutzereinstellung {{key}}**\n{{list}}",
 	"confSettingNotSet": "Nicht festgelegt",
 	"heapSnapshotDescription": "Erzeugt einen Heapdump um Speicherleaks zu finden.",
 	"heapSnapshotExtended": {
@@ -66,7 +54,6 @@
 	},
 	"rolesetCreated": "Das einzigartige Rollenset {{name}} wurde mit folgenden Rollen erstellt: {{roles, andList}}",
 	"rolesetAdded": "Die einzigartige Rollenset {{name}} wurde aktualisiert und enthält nun auch die folgenden Rollen: {{roles, andList}}.",
-	"rolesetInvalidName": "Du kannst das einzigartige Rollenset {{name}} nicht entfernen, da es nicht existiert.",
 	"rolesetRemoved": "Das einzigartige Rollenset {{name}} wird folgende Rollen nicht mehr enthalten: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} In dieser Gruppe sind keine Rollensets konfiguriert.",
 	"rolesetResetAll": "{{GREENTICK}} Erfolgreich alle Rollensets entfernt.",
@@ -74,7 +61,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} Erfolgreich das Rollenset `{{name}}` vom Server entfernt.",
 	"rolesetUpdated": "Das einzigartige Rollenset {{name}} wurde aktualisiert.",
 	"rolesetNoRolesets": "Du hast keine Rollensets.",
-	"confMenuNopermissions": "Ich brauche die {{ADD_REACTIONS, permissions}} und {{MANAGE_MESSAGES, permissions}} Berechtigungen um das Menü zeigen zu können.",
 	"confMenuRenderAtFolder": "Momentan bei: 📁 {{path}}",
 	"confMenuRenderAtPiece": "Momentan bei: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Es gibt keine konfigurierbaren Schlüssel für diesen Ordner",

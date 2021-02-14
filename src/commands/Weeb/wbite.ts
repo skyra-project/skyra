@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Weeb.BiteExtended,
 	queryType: 'bite',
 	responseName: LanguageKeys.Commands.Weeb.Bite,
-	usage: '<user:username>'
+	requireUser: true
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

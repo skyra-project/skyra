@@ -19,16 +19,14 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
+	permissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
-	public async run(message: GuildMessage) {
-		const t = await message.fetchT();
-
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
-			await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+			await message.send(new MessageEmbed().setDescription(pickRandom(args.t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 			await message.guild.members.fetch();
 		}
 
@@ -39,7 +37,7 @@ export default class extends SkyraCommand {
 			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
-		const response = await message.send(t(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
+		const response = await message.send(args.t(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
 			const member = hoistedMembers[i];
@@ -61,13 +59,15 @@ export default class extends SkyraCommand {
 			// update the counter every 10 dehoists
 			if ((i + 1) % 10 === 0) {
 				const dehoistPercentage = (i / hoistedMembers.length) * 100;
-				await message.send(t(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(dehoistPercentage) }));
+				await message.send(
+					args.t(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(dehoistPercentage) })
+				);
 			}
 		}
 
 		// We're done!
 		return response.edit({
-			embed: await this.prepareFinalEmbed(message, t, counter, errored),
+			embed: await this.prepareFinalEmbed(message, args.t, counter, errored),
 			content: null
 		});
 	}

@@ -7,13 +7,14 @@ import type { Message } from 'discord.js';
 	cooldown: 5,
 	description: LanguageKeys.Commands.Misc.VaporwaveDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.VaporwaveExtended,
-	spam: true,
-	usage: '<input:string>'
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const input = await args.rest('string');
+
 		let output = '';
 		for (let i = 0; i < input.length; i++) output += input[i] === ' ' ? ' ' : String.fromCharCode(input.charCodeAt(i) + 0xfee0);
-		return message.sendTranslated(LanguageKeys.Commands.Misc.VaporwaveOutput, [{ str: output }]);
+		return message.channel.send(args.t(LanguageKeys.Commands.Misc.VaporwaveOutput, { str: output }));
 	}
 }

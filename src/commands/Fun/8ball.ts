@@ -13,17 +13,17 @@ const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What'
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.EightballDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.EightballExtended,
-	spam: true,
-	usage: '<question:string>'
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [input]: [string]) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const question = await args.rest('string');
+
 		return message.send(
-			t(LanguageKeys.Commands.Fun.EightballOutput, {
+			args.t(LanguageKeys.Commands.Fun.EightballOutput, {
 				author: message.author.toString(),
-				question: input,
-				response: codeBlock('', this.generator(input.toLowerCase(), t))
+				question,
+				response: codeBlock('', this.generator(question.toLowerCase(), args.t))
 			}),
 			{ allowedMentions: { users: [], roles: [] } }
 		);

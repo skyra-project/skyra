@@ -5,9 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolver } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import type { TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const kTitleBlockList = /nsfl/i;
@@ -17,22 +16,15 @@ const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	aliases: ['rand', 'rand-reddit', 'reddit'],
 	cooldown: 3,
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended,
-	usage: '<reddit:reddit>'
+	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
 })
-@CreateResolver('reddit', async (arg, _possible, message) => {
-	if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditRequiredReddit);
-	if (!kUsernameRegex.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditInvalidArgument);
-	if (kBlockList.test(arg)) throw await message.resolveKey(LanguageKeys.Commands.Misc.RandRedditBanned);
-	return arg.toLowerCase();
-})
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [reddit]: [string]) {
-		const t = await message.fetchT();
-		const { kind, data } = await this.fetchData(t, reddit);
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const reddit = await args.pick(UserCommand.reddit);
+		const { kind, data } = await this.fetchData(reddit);
 
 		if (!kind || !data || data.children.length === 0) {
-			throw t(LanguageKeys.Commands.Misc.RandRedditFail);
+			this.error(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
 		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
@@ -41,53 +33,64 @@ export default class extends SkyraCommand {
 			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));
 
 		if (posts.length === 0) {
-			throw t(nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw);
+			this.error(nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw);
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
 		return message.send(
-			t(LanguageKeys.Commands.Misc.RandRedditMessage, {
+			args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
 				title: post.title,
 				author: post.author,
 				url: post.spoiler ? `||${post.url}||` : post.url
-			})
+			}),
+			{ allowedMentions: { users: [], roles: [] } }
 		);
 	}
 
-	private async fetchData(t: TFunction, reddit: string) {
+	private async fetchData(reddit: string) {
 		try {
 			return await fetch<Reddit.Response<'posts'>>(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON);
 		} catch (error) {
-			this.handleError(error, t);
+			this.handleError(error);
 		}
 	}
 
-	private handleError(error: QueryError, t: TFunction): never {
+	private handleError(error: QueryError): never {
 		let parsed: RedditError | undefined = undefined;
 		try {
 			parsed = error.toJSON() as RedditError;
 		} catch {
-			throw t(LanguageKeys.System.ParseError);
+			this.error(LanguageKeys.System.ParseError);
 		}
 
 		switch (parsed.error) {
 			case 403: {
-				if (parsed.reason === 'private') throw t(LanguageKeys.Commands.Misc.RandRedditErrorPrivate);
-				if (parsed.reason === 'quarantined') throw t(LanguageKeys.Commands.Misc.RandRedditErrorQuarantined);
+				if (parsed.reason === 'private') this.error(LanguageKeys.Commands.Misc.RandRedditErrorPrivate);
+				if (parsed.reason === 'quarantined') this.error(LanguageKeys.Commands.Misc.RandRedditErrorQuarantined);
 				break;
 			}
 			case 404: {
-				if (!Reflect.has(parsed, 'reason')) throw t(LanguageKeys.Commands.Misc.RandRedditErrorNotFound);
-				if (Reflect.get(parsed, 'reason') === 'banned') throw t(LanguageKeys.Commands.Misc.RandRedditErrorBanned);
+				if (!Reflect.has(parsed, 'reason')) this.error(LanguageKeys.Commands.Misc.RandRedditErrorNotFound);
+				if (Reflect.get(parsed, 'reason') === 'banned') this.error(LanguageKeys.Commands.Misc.RandRedditErrorBanned);
 				break;
 			}
 			case 500: {
-				throw t(LanguageKeys.System.ExternalServerError);
+				this.error(LanguageKeys.System.ExternalServerError);
 			}
 		}
 
 		throw error;
 	}
+
+	private static reddit = Args.make<string>((parameter, { argument }) => {
+		if (!kUsernameRegex.test(parameter)) {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditInvalidArgument });
+		}
+
+		if (kBlockList.test(parameter)) return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditBanned });
+
+		return Args.ok(parameter.toLowerCase());
+	});
 }
 
 type RedditError = RedditNotFound | RedditBanned | RedditForbidden | RedditQuarantined | RedditServerError;

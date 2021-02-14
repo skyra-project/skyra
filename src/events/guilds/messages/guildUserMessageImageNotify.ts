@@ -3,13 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import { isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
@@ -18,8 +17,14 @@ const MAXIMUM_SIZE = 300;
 const MAXIMUM_LENGTH = 1024 * 1024;
 
 @ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(message: GuildMessage) {
+		// If there are no attachments, do not post:
+		if (message.attachments.size === 0) return;
+
+		// If the message was edited, do not repost:
+		if (message.editedTimestamp) return;
+
 		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
 		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
 
@@ -70,18 +75,6 @@ export default class extends Event {
 				this.context.client.logger.fatal(`ImageLogs[${error}] ${url}`);
 			}
 		}
-	}
-
-	public shouldRun(message: GuildMessage) {
-		return (
-			this.enabled &&
-			message.attachments.size !== 0 &&
-			message.guild !== null &&
-			message.author !== null &&
-			message.webhookID === null &&
-			!message.system &&
-			message.author.id !== CLIENT_ID
-		);
 	}
 
 	private *getAttachments(message: GuildMessage) {

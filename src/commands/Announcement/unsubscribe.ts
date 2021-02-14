@@ -8,13 +8,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Announcement.UnsubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.UnsubscribeExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
+	permissions: ['MANAGE_ROLES'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await announcementCheck(message);
 		await message.member.roles.remove(role);
-		return message.sendTranslated(LanguageKeys.Commands.Announcement.UnsubscribeSuccess, [{ role: role.name }]);
+		return message.send(args.t(LanguageKeys.Commands.Announcement.UnsubscribeSuccess, { role: role.name }));
 	}
 }

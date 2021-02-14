@@ -11,25 +11,23 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
-	usage: '<emoji:emoji>'
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [emoji]: [string]) {
-		const t = await message.guild.writeSettings((settings) => {
-			const t = settings.getLanguage();
-
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const emoji = await args.pick('emoji');
+		await message.guild.writeSettings((settings) => {
 			// If it's the same value, throw:
 			if (settings[GuildSettings.Starboard.Emoji] === emoji) {
-				throw t(LanguageKeys.Misc.ConfigurationEquals);
+				this.error(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
 			settings[GuildSettings.Starboard.Emoji] = emoji;
-
-			return t;
 		});
 
-		return message.send(t(LanguageKeys.Commands.Management.SetStarboardEmojiSet, { emoji: emoji.includes(':') ? `<${emoji}>` : emoji }));
+		return message.send(
+			args.t(LanguageKeys.Commands.Management.SetStarboardEmojiSet, { emoji: emoji.startsWith('%') ? decodeURIComponent(emoji) : `<${emoji}>` })
+		);
 	}
 }

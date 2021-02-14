@@ -2,7 +2,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['choose', 'choise', 'pick'],
@@ -10,24 +9,19 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChoiceExtended,
-	usage: '<words:string> [...]',
-	usageDelim: ',',
 	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, options: string[]) {
-		const t = await message.fetchT();
-		const words = await this.filterWords(t, options);
-		return message.send(
-			t(LanguageKeys.Commands.Fun.ChoiceOutput, {
-				user: message.author.toString(),
-				word: words[Math.floor(Math.random() * words.length)]
-			})
-		);
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const options = args.nextSplit();
+
+		const words = await this.filterWords(options);
+		const word = words[Math.floor(Math.random() * words.length)];
+		return message.send(args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word }));
 	}
 
-	private async filterWords(t: TFunction, words: string[]) {
-		if (words.length < 2) throw t(LanguageKeys.Commands.Fun.ChoiceMissing);
+	private async filterWords(words: string[]) {
+		if (words.length < 2) this.error(LanguageKeys.Commands.Fun.ChoiceMissing);
 
 		const output = new Set<string>();
 		const filtered = new Set<string>();
@@ -39,6 +33,6 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw t(LanguageKeys.Commands.Fun.ChoiceDuplicates, { words: [...filtered].join("', '") });
+		this.error(LanguageKeys.Commands.Fun.ChoiceDuplicates, { words: [...filtered].join("', '") });
 	}
 }

@@ -1,12 +1,11 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Message } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
+import { CommandSuccessPayload, Event, EventOptions } from '@sapphire/framework';
 
 @ApplyOptions<EventOptions>({ event: Events.CommandSuccess })
-export default class extends Event {
-	public async run(message: Message) {
+export class UserEvent extends Event<Events.CommandSuccess> {
+	public async run({ message }: CommandSuccessPayload) {
 		if (!message.guild) return;
 
 		const commandAutodelete = await message.guild.readSettings(GuildSettings.CommandAutoDelete);

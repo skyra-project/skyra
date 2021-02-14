@@ -10,16 +10,16 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { sniped } = message.channel as TextChannel;
-		if (sniped === null) throw await message.resolveKey(LanguageKeys.Commands.Misc.SnipeEmpty);
+		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
-			.setTitle(await message.resolveKey(LanguageKeys.Commands.Misc.SnipeTitle))
+			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(await DbSet.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);

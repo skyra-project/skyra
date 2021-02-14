@@ -2,7 +2,7 @@ import { ShardEvent } from '#lib/structures';
 import { red } from 'colorette';
 import type { CloseEvent } from 'discord.js';
 
-export default class extends ShardEvent {
+export class UserShardEvent extends ShardEvent {
 	protected readonly title = red('Disconnected');
 
 	public run(event: CloseEvent, id: number) {

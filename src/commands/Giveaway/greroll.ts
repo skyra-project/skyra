@@ -5,41 +5,36 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
-import { fetchReactionUsers, resolveEmoji } from '#utils/util';
+import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	requiredPermissions: ['READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
-	usage: '[winners:number{1,100}] [message:message]',
-	usageDelim: ' '
+	permissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
-	public async run(message: GuildMessage, [winnerAmount = 1, rawTarget]: [number, GuildMessage | undefined]) {
-		const t = await message.fetchT();
-		const target = await this.resolveMessage(message, rawTarget, t);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const winnerAmount = await args.pick('integer').catch(() => 1);
+		const rawTarget = args.finished ? undefined : cast<GuildMessage>(await args.pick('message'));
+		const target = await this.resolveMessage(message, rawTarget);
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? t(LanguageKeys.Giveaway.EndedMessage, {
-					winners: winners.map((winner) => `<@${winner}>`),
-					title: title!
-			  })
-			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
+			? args.t(LanguageKeys.Giveaway.EndedMessage, { winners: winners.map((winner) => `<@!${winner}>`), title: title! })
+			: args.t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
-	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined, t: TFunction) {
+	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined) {
 		const target = rawTarget
 			? // If rawMessage is defined then we check everything sans the colour
 			  this.validateMessage(rawTarget)
@@ -48,7 +43,7 @@ export default class extends SkyraCommand {
 			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
 			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as GuildMessage;
-		throw t(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
+		this.error(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
 	}
 
 	private async pickWinners(message: GuildMessage, winnerAmount: number) {

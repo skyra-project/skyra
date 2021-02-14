@@ -16,6 +16,7 @@
 	"externalServerError": "El servicio externo que utilizamos no ha podido procesar nuestro mensaje. Inténtalo de nuevo más tarde.",
 	"fetchBansFail": "Error al obtener la información de los baneos. ¿Tengo el permiso **{{ADMINISTRATOR, permissions}}**?",
 	"helpTitles": {
+		"usages": "",
 		"explainedUsage": "⚙ | ***Uso explicado***",
 		"possibleFormats": "🔢 | ***Formatos posibles***",
 		"examples": "🔗 | ***Ejemplos***",
@@ -33,12 +34,16 @@
 		"{{LOADING}} Ajustando a las frecuencias correctas...",
 		"{{LOADING}} Reticulando curvas..."
 	],
-	"messageNotFound": "Lo siento, pero o bien escribiste la ID de mensaje incorrectamente o se eliminó.",
+	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
 	"noResults": "No pude encontrar resultados para esa consulta",
-	"notEnoughParameters": "Lo siento, pero no has proporcionado suficientes parámetros...",
 	"parseError": "{{REDCROSS}} No he podido procesar los datos que me has proporcionado, ¡lo siento~!",
 	"pokedexExternalResource": "Recursos Externos",
 	"poweredByWeebSh": "Hecho posible gracias a weeb.sh",
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
-	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?"
+	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?",
+	"textPromptAbortOptions": [
+		"abortar",
+		"cancelar",
+		"parar"
+	]
 }

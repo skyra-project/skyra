@@ -10,8 +10,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Moderation.ToggleModerationDmDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensure(id);
@@ -20,10 +20,12 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendTranslated(
-			updated.moderationDM
-				? LanguageKeys.Commands.Moderation.ToggleModerationDmToggledEnabled
-				: LanguageKeys.Commands.Moderation.ToggleModerationDmToggledDisabled
+		return message.send(
+			args.t(
+				updated.moderationDM
+					? LanguageKeys.Commands.Moderation.ToggleModerationDmToggledEnabled
+					: LanguageKeys.Commands.Moderation.ToggleModerationDmToggledDisabled
+			)
 		);
 	}
 }

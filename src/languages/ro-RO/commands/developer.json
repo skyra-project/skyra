@@ -25,7 +25,6 @@
 	"yarnEmbedDescriptionMainFile": "❯ Fișier principal: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Întreținători: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "mai mult...",
-	"yarnNoPackage": "{{REDCROSS}} Îmi pare rău, dar trebuie să-mi dai numele unui pachet pentru căutare.",
 	"yarnPackageNotFound": "Îmi pare rău, dar nu am putut găsi niciun pachet cu numele de `{{pkg}}` în registru.",
 	"yarnUnpublishedPackage": "Ce dezvoltator naiv a făcut {{pkg}}! L-a retras din registru!"
 }

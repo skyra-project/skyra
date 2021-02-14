@@ -2,29 +2,15 @@ import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '#li
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<DisabledCommandChannel> {
-	public parse(value: string, { t, entry, guild }: SerializerUpdateContext) {
-		const [channelID, ...commandIDs] = value.split(' ');
+export class UserSerializer extends Serializer<DisabledCommandChannel> {
+	public async parse(args: Serializer.Args) {
+		const channel = await args.pickResult('textChannel');
+		if (!channel.success) return this.errorFromArgument(args, channel.error);
 
-		const channel = guild.channels.cache.get(channelID);
-		if (!channel) {
-			return this.error(t(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
-		}
+		const commands = await args.repeatResult('command');
+		if (!commands.success) return this.errorFromArgument(args, commands.error);
 
-		if (channel.type !== 'text') {
-			return this.error(t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name }));
-		}
-
-		const commands: string[] = [];
-		for (const command of commandIDs) {
-			if (!guild.client.commands.has(command)) {
-				return this.error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
-			}
-
-			commands.push(command);
-		}
-
-		return this.ok({ channel: channel.id, commands });
+		return this.ok({ channel: channel.value.id, commands: commands.value.map((command) => command.name) });
 	}
 
 	public isValid(value: DisabledCommandChannel, { t, entry, guild }: SerializerUpdateContext): Awaited<boolean> {
@@ -34,11 +20,11 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 		}
 
 		if (channel.type !== 'text') {
-			throw t(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name });
+			throw t(LanguageKeys.Serializers.InvalidChannel, { name: entry.name });
 		}
 
 		for (const command of value.commands) {
-			if (!guild.client.commands.has(command)) {
+			if (!this.context.stores.get('commands').has(command)) {
 				throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 		}
@@ -47,7 +33,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 	}
 
 	public stringify(value: DisabledCommandChannel, { t, guild }: SerializerUpdateContext): string {
-		const name = guild.channels.cache.get(value.channel)?.name ?? t(LanguageKeys.Misc.UnknownChannel);
+		const name = guild.channels.cache.get(value.channel)?.name ?? t(LanguageKeys.Serializers.UnknownChannel);
 		return `[${name} -> ${value.commands.join(' | ')}]`;
 	}
 

@@ -3,13 +3,13 @@
 	"c4Extended": {
 		"extendedHelp": "Este juego se juega mejor en el ordenador.\n\nEl objetivo de Conecta 4 es alinear cuatro fichas sobre un tablero formado por seis filas y siete columnas. Cada jugador dispone de 21 fichas de un color.​ Por turnos, los jugadores deben introducir una ficha en la columna que prefieran (siempre que no esté completa) y ésta caerá a la posición más baja. Gana la partida el primero que consiga alinear cuatro fichas consecutivas de un mismo color en horizontal, vertical o diagonal.​ Si todas las columnas están llenas pero nadie ha hecho una fila válida, hay empate."
 	},
-	"c4GameColumnFull": "Esta columna está llena. Por favor intente otra. ",
+	"c4GameColumnFull": "Esta columna está llena. Por favor intente otra.",
 	"c4GameDraw": "¡Esta partida concluyó en un **empate**!",
 	"c4GameNext": "Turno para: {{user}} (rojo).",
 	"c4GameNextTurn0": "Turno para: {{user}} (azul).",
 	"c4GameWin": "¡{{user}} (rojo) ganó!",
 	"c4GameWinTurn0": "¡{{user}} (azul) ganó!",
-	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Responde con **sí** para aceptar!",
+	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
 	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
 	"coinFlipCoinnames": [

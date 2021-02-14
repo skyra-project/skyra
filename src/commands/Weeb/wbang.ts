@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Weeb.BangExtended,
 	queryType: 'bang',
 	responseName: LanguageKeys.Commands.Weeb.Bang,
-	usage: '<user:username>'
+	requireUser: true
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

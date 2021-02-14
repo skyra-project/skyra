@@ -4,7 +4,6 @@ import type { Guild, GuildMember, User } from 'discord.js';
 
 export const WikipediaNotFound = T<string>('commands/tools:wikipediaNotfound');
 export const YouTubeNotFound = T<string>('commands/tools:youtubeNotfound');
-export const YouTubeIndexNotFound = T<string>('commands/tools:youtubeIndexNotfound');
 export const DefineDescription = T<string>('commands/tools:defineDescription');
 export const DefineExtended = T<LanguageHelpDisplayOptions>('commands/tools:defineExtended');
 export const DefineNotFound = T<string>('commands/tools:defineNotfound');
@@ -20,22 +19,10 @@ export const EmojiDescription = T<string>('commands/tools:emojiDescription');
 export const EmojiExtended = T<LanguageHelpDisplayOptions>('commands/tools:emojiExtended');
 export const CountryDescription = T<string>('commands/tools:countryDescription');
 export const CountryExtended = T<LanguageHelpDisplayOptions>('commands/tools:countryExtended');
-export const CountryTitles = T<{
-	OVERVIEW: string;
-	LANGUAGES: string;
-	OTHER: string;
-}>('commands/tools:countryTitles');
+export const CountryTitles = T<{ OVERVIEW: string; LANGUAGES: string; OTHER: string }>('commands/tools:countryTitles');
 export const CountryFields = T<{
-	overview: {
-		officialName: string;
-		capital: string;
-		population: string;
-	};
-	other: {
-		demonym: string;
-		area: string;
-		currencies: string;
-	};
+	overview: { officialName: string; capital: string; population: string };
+	other: { demonym: string; area: string; currencies: string };
 }>('commands/tools:countryFields');
 export const CountryTimezone = T<{ timezone: string[]; count: number }>('commands/tools:countryTimezone');
 export const EshopDescription = T<string>('commands/tools:eshopDescription');
@@ -56,20 +43,10 @@ export const EshopPricePaid = FT<{ price: number }, string>('commands/tools:esho
 export const EshopPriceFree = T<string>('commands/tools:eshopPriceFree');
 export const HoroscopeDescription = T<string>('commands/tools:horoscopeDescription');
 export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commands/tools:horoscopeExtended');
-export const HoroscopeInvalidSunsign = FT<{ sign: string; maybe: string }, string>('commands/tools:horoscopeInvalidSunsign');
+export const HoroscopeInvalidSunsign = FT<{ parameter: string; maybe: string }, string>('commands/tools:horoscopeInvalidSunsign');
 export const HoroscopeTitles = FT<
-	{
-		sign: string;
-		intensity: string;
-		keywords: readonly string[];
-		mood: string;
-		rating: string;
-	},
-	{
-		dailyHoroscope: string;
-		metadataTitle: string;
-		metadata: readonly string[];
-	}
+	{ sign: string; intensity: string; keywords: readonly string[]; mood: string; rating: string },
+	{ dailyHoroscope: string; metadataTitle: string; metadata: readonly string[] }
 >('commands/tools:horoscopeTitles');
 export const IgdbDescription = T<string>('commands/tools:igdbDescription');
 export const IgdbExtended = T<LanguageHelpDisplayOptions>('commands/tools:igdbExtended');
@@ -132,11 +109,7 @@ export const ShowsTitles = T<{
 	firstAirDate: string;
 	genres: string;
 }>('commands/tools:showsTitles');
-export const ShowsData = T<{
-	variableRuntime: string;
-	unknownUserScore: string;
-	noGenres: string;
-}>('commands/tools:showsData');
+export const ShowsData = T<{ variableRuntime: string; unknownUserScore: string; noGenres: string }>('commands/tools:showsData');
 export const DuckDuckGoDescription = T<string>('commands/tools:duckDuckGoDescription');
 export const DuckDuckGoExtended = T<LanguageHelpDisplayOptions>('commands/tools:duckDuckGoExtended');
 export const PriceDescription = T<string>('commands/tools:priceDescription');
@@ -177,29 +150,14 @@ export const EmotesExtended = T<LanguageHelpDisplayOptions>('commands/tools:emot
 export const EmotesTitle = T<string>('commands/tools:emotesTitle');
 export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
 export const PriceCurrencyNotFound = T<string>('commands/tools:priceCurrencyNotFound');
-export const QuoteMessage = T<string>('commands/tools:quoteMessage');
 export const DuckDuckGoNotFound = T<string>('commands/tools:duckDuckGoNotfound');
 export const DuckDuckGoUnknownError = T<string>('commands/tools:duckDuckGoUnknownError');
 export const DuckDuckGoLookAlso = T<string>('commands/tools:duckDuckGoLookalso');
 export const DuckDuckGoPoweredBy = T<string>('commands/tools:duckDuckGoPoweredBy');
-export const UrbanNotFound = T<string>('commands/tools:urbanNotFound');
-export const UrbanIndexNotFound = T<string>('commands/tools:urbanIndexNotfound');
-export const WhoisMemberTitles = T<{
-	joined: string;
-	createdAt: string;
-}>('commands/tools:whoisMemberTitles');
+export const WhoisMemberTitles = T<{ joined: string; createdAt: string }>('commands/tools:whoisMemberTitles');
 export const WhoisMemberFields = FT<
-	{
-		member: GuildMember;
-		createdTimestampOffset: number;
-		joinedTimestampOffset: number;
-	},
-	{
-		joinedUnknown: string;
-		joinedWithTimestamp: string;
-		createdAt: string;
-		footer: string;
-	}
+	{ member: GuildMember; createdTimestampOffset: number; joinedTimestampOffset: number },
+	{ joinedUnknown: string; joinedWithTimestamp: string; createdAt: string; footer: string }
 >('commands/tools:whoisMemberFields');
 export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
 export const WhoisMemberPermissions = T<string>('commands/tools:whoisMemberPermissions');
@@ -207,16 +165,9 @@ export const WhoisMemberPermissionsAll = T<string>('commands/tools:whoisMemberPe
 export const WhoisUserTitles = T<{
 	createdAt: string;
 }>('commands/tools:whoisUserTitles');
-export const WhoisUserFields = FT<
-	{
-		user: User;
-		createdTimestampOffset: number;
-	},
-	{
-		createdAt: string;
-		footer: string;
-	}
->('commands/tools:whoisUserFields');
+export const WhoisUserFields = FT<{ user: User; createdTimestampOffset: number }, { createdAt: string; footer: string }>(
+	'commands/tools:whoisUserFields'
+);
 export const WikipediaDescription = T<string>('commands/tools:wikipediaDescription');
 export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commands/tools:wikipediaExtended');
 export const YouTubeDescription = T<string>('commands/tools:youtubeDescription');

@@ -3,11 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
-import { BrandingColors, Time } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { Time } from '#utils/constants';
+import { requiresGuildContext, requiresPermissions } from '#utils/decorators';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';
-import { CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
@@ -27,82 +28,22 @@ interface ReminderScheduledTask extends ScheduleEntity {
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['remind', 'reminder', 'reminders'],
 	bucket: 2,
-	subcommands: true,
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.RemindMeDescription,
-	extendedHelp: LanguageKeys.Commands.Social.RemindMeExtended,
-	usage: '<action:action> (value:idOrDuration) (description:description)',
-	usageDelim: ' '
+	extendedHelp: LanguageKeys.Commands.Social.RemindMeExtended
 })
-@CreateResolvers([
-	[
-		'action',
-		(arg, _possible, message) => {
-			if (!arg) return Actions.List;
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const action = args.finished ? Actions.List : await args.pick(UserCommand.action).catch(() => Actions.Create);
+		return this[action](message, args);
+	}
 
-			switch (arg.toLowerCase()) {
-				case 'a':
-				case 'all':
-				case 'l':
-				case 'list':
-					return Actions.List;
-				case 'r':
-				case 'rm':
-				case 'remove':
-				case 'd':
-				case 'del':
-				case 'delete':
-					return Actions.Delete;
-				case 's':
-				case 'show':
-					return Actions.Show;
-				case 'c':
-				case 'create':
-				case 'me':
-					return Actions.Create;
-				default: {
-					message.args.splice(message.params.length, 0, undefined!);
-					return Actions.Create;
-				}
-			}
-		}
-	],
-	[
-		'idOrDuration',
-		async (arg, possible, message, [action]: Actions[]) => {
-			const t = await message.fetchT();
-			switch (action) {
-				case Actions.List:
-					return undefined;
-				case Actions.Show:
-				case Actions.Delete: {
-					if (!arg) throw t(LanguageKeys.Commands.Social.RemindMeDeleteNoID);
-					const id: number = await message.client.arguments.get('integer')!.run(arg, possible, message);
-					for (const task of message.client.schedules.queue) {
-						if (task.id !== id) continue;
-						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
-						return task;
-					}
-					throw t(LanguageKeys.Commands.Social.RemindMeNotFound);
-				}
-				case Actions.Create: {
-					if (!arg) throw t(LanguageKeys.Commands.Social.RemindMeCreateNoDuration);
-					return message.client.arguments.get('timespan')!.run(arg, { ...possible, min: Time.Minute }, message);
-				}
-			}
-		}
-	],
-	[
-		'description',
-		(arg, possible, message, [action]: Actions[]) => {
-			if (action !== Actions.Create) return undefined;
-			if (!arg) return message.resolveKey(LanguageKeys.Commands.Social.RemindMeCreateNoDescription);
-			return message.client.arguments.get('...string')!.run(arg, { ...possible, max: 1024 }, message);
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async create(message: Message, [duration, description]: [number, string]) {
+	public async create(message: Message, args: SkyraCommand.Args) {
+		const duration = await args.pick('timespan', { minimum: Time.Minute });
+		const description = args.finished
+			? args.t(LanguageKeys.Commands.Social.RemindMeCreateNoDescription)
+			: await args.rest('string', { maximum: 1024 });
+
 		const task = await this.context.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
 			data: {
@@ -111,17 +52,16 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeCreate, [{ id: task.id.toString() }]);
+		return message.send(args.t(LanguageKeys.Commands.Social.RemindMeCreate, { id: task.id.toString() }));
 	}
 
-	@requiresGuildContext((message: Message) =>
-		message.sendTranslated(LanguageKeys.Resolvers.ChannelNotInGuildSubCommand, [{ command: message.command!.name, subcommand: 'list' }])
-	)
-	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async list(message: GuildMessage) {
+	@requiresGuildContext((message: Message, args: SkyraCommand.Args) => message.send(args.t(LanguageKeys.Preconditions.GuildOnly)))
+	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	public async list(message: Message, args: SkyraCommand.Args) {
 		const { client } = this.context;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
-		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
+		if (!tasks.length) return message.send(args.t(LanguageKeys.Commands.Social.RemindMeListEmpty));
+		const response = await sendLoadingMessage(message, args.t);
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
@@ -129,31 +69,34 @@ export default class extends SkyraCommand {
 				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		});
 
-		const t = await message.fetchT();
 		const pages = chunk(
 			tasks.map(
 				(task) =>
-					`\`${task.id}\` - \`${t(LanguageKeys.Globals.DateTimeValue, { value: task.time })}\` - ${cutText(
+					`\`${task.id}\` - \`${args.t(LanguageKeys.Globals.DateTimeValue, { value: task.time })}\` - ${cutText(
 						task.data.content as string,
 						40
 					)}`
 			),
 			10
 		);
-		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 
-		const response = await message.send(
-			new MessageEmbed({
-				description: pickRandom(t(LanguageKeys.System.Loading)),
-				color: BrandingColors.Secondary
-			})
-		);
+		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	@requiredPermissions(['EMBED_LINKS'])
-	public async show(message: Message, [task]: [ReminderScheduledTask]) {
+	public async delete(message: Message, args: SkyraCommand.Args) {
+		const task = await args.pick(UserCommand.task);
+		const { id } = task;
+		await task.delete();
+
+		return message.send(args.t(LanguageKeys.Commands.Social.RemindMeDelete, { remainingDuration: task.time.getTime() - Date.now(), id }));
+	}
+
+	@requiresPermissions(['EMBED_LINKS'])
+	public async show(message: Message, args: SkyraCommand.Args) {
+		const task = await args.pick(UserCommand.task);
+
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -162,14 +105,59 @@ export default class extends SkyraCommand {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(task.data.content)
-				.setFooter(await message.resolveKey(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
+				.setFooter(args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
 				.setTimestamp(task.time)
 		);
 	}
 
-	public async delete(message: Message, [task]: [ReminderScheduledTask]) {
-		const { id } = task;
-		await task.delete();
-		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeDelete, [{ remainingDuration: task.time.getTime() - Date.now(), id }]);
-	}
+	private static action = Args.make<Actions>((parameter, { argument }) => {
+		switch (parameter.toLowerCase()) {
+			case 'a':
+			case 'all':
+			case 'l':
+			case 'list':
+				return Args.ok(Actions.List);
+			case 'r':
+			case 'rm':
+			case 'remove':
+			case 'd':
+			case 'del':
+			case 'delete':
+				return Args.ok(Actions.Delete);
+			case 's':
+			case 'show':
+				return Args.ok(Actions.Show);
+			case 'c':
+			case 'create':
+			case 'me':
+				return Args.ok(Actions.Create);
+			default: {
+				return Args.error({ argument, parameter });
+			}
+		}
+	});
+
+	private static task = Args.make<ReminderScheduledTask>((parameter, { message, argument }) => {
+		const id = Number(parameter);
+		if (Number.isInteger(id) || id < 0) {
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.RemindMeInvalidId });
+		}
+
+		for (const task of message.client.schedules.queue) {
+			// If it is not the task we are looking for, skip:
+			if (task.id !== id) continue;
+
+			// If the specified task is:
+			// - Not a reminder.
+			// - Does not belong to the user.
+			//
+			// Then it should break the loop and return err.
+			if (task.taskID !== Schedules.Reminder || task.data.user !== message.author.id) break;
+
+			// But if the task is a valid one, is a reminder, and is owned by the author, then emit ok():
+			return Args.ok(task as ReminderScheduledTask);
+		}
+
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.RemindMeNotFound });
+	});
 }

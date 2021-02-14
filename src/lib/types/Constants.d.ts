@@ -15,6 +15,7 @@ export const enum LanguageFormatters {
 	NumberCompact = 'numberCompact',
 	HumanLevels = 'humanLevels',
 	InlineCodeblock = 'inlineCodeBlock',
+	CodeBlock = 'codeBlock',
 	JsCodeBlock = 'jsCodeBlock',
 	Ordinal = 'ordinal',
 	OrList = 'orList',
@@ -22,7 +23,8 @@ export const enum LanguageFormatters {
 	Random = 'random',
 	Date = 'date',
 	DateTime = 'dateTime',
-	ToTitleCase = 'toTitleCase'
+	ToTitleCase = 'toTitleCase',
+	PermissionsAndList = 'permissionsAndList'
 }
 
 export const enum Databases {

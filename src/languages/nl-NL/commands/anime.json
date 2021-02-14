@@ -36,7 +36,6 @@
 		"ova": "📼 Originele Video Animatie",
 		"special": "🎴 Special"
 	},
-	"animeInvalidChoice": "Dat is een ongeldige keuze! Probeer een andere optie.",
 	"animeOutputDescription": "**Engelse titel:** {{englishTitle}}\n**Japanse titel:** {{japaneseTitle}}\n**Canonieke titel:** {{canonicalTitle}}\n{{synopsis}}",
 	"animeNoSynopsis": "Geen beschrijving beschikbaar voor deze anime.",
 	"animeEmbedData": {

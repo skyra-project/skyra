@@ -23,13 +23,6 @@ export const EvalExtended = T<LanguageHelpDisplayOptions>('commands/system:evalE
 export const EvalTimeout = FT<{ seconds: number }, string>('commands/system:evalTimeout');
 export const ExecDescription = T<string>('commands/system:execDescription');
 export const ExecExtended = T<LanguageHelpDisplayOptions>('commands/system:execExtended');
-export const FeedbackDescription = T<string>('commands/system:feedbackDescription');
-export const FeedbackExtended = T<LanguageHelpDisplayOptions>('commands/system:feedbackExtended');
-export const Load = FT<{ time: string; type: string; name: string }, string>('commands/system:load');
-export const LoadDescription = T<string>('commands/system:loadDescription');
-export const LoadExtended = T<LanguageHelpDisplayOptions>('commands/system:loadExtended');
-export const LoadError = FT<{ type: string; name: string; error: string }, string>('commands/system:loadError');
-export const LoadFail = T<string>('commands/system:loadFail');
 export const Reboot = T<string>('commands/system:reboot');
 export const RebootDescription = T<string>('commands/system:rebootDescription');
 export const RebootExtended = T<LanguageHelpDisplayOptions>('commands/system:rebootExtended');
@@ -38,38 +31,16 @@ export const ReloadAll = FT<{ type: string; time: string }, string>('commands/sy
 export const ReloadDescription = T<string>('commands/system:reloadDescription');
 export const ReloadExtended = T<LanguageHelpDisplayOptions>('commands/system:reloadExtended');
 export const ReloadEverything = FT<{ time: string }, string>('commands/system:reloadEverything');
+export const ReloadInvalidEverything = FT<{ parameter: string }, string>('commands/system:reloadInvalidEverything');
 export const ReloadLanguage = FT<{ time: string; language: string }, string>('commands/system:reloadLanguage');
-export const ReloadFailed = FT<{ type: string; name: string }, string>('commands/system:reloadFailed');
-export const SetAvatarDescription = T<string>('commands/system:setAvatarDescription');
-export const SetAvatarExtended = T<LanguageHelpDisplayOptions>('commands/system:setAvatarExtended');
 export const StatsDescription = T<string>('commands/system:statsDescription');
 export const StatsExtended = T<LanguageHelpDisplayOptions>('commands/system:statsExtended');
-export const StatsTitles = T<{
-	stats: string;
-	uptime: string;
-	serverUsage: string;
-}>('commands/system:statsTitles');
+export const StatsTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/system:statsTitles');
 export const StatsFields = FT<
-	{
-		stats: StatsGeneral;
-		uptime: StatsUptime;
-		usage: StatsUsage;
-	},
-	{
-		stats: string;
-		uptime: string;
-		serverUsage: string;
-	}
+	{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage },
+	{ stats: string; uptime: string; serverUsage: string }
 >('commands/system:statsFields');
 export const SupportDescription = T<string>('commands/system:supportDescription');
 export const SupportEmbedDescription = T<string>('commands/system:supportEmbedDescription');
 export const SupportEmbedTitle = FT<{ username: string }, string>('commands/system:supportEmbedTitle');
 export const SupportExtended = T<LanguageHelpDisplayOptions>('commands/system:supportExtended');
-export const TransferDescription = T<string>('commands/system:transferDescription');
-export const TransferError = T<string>('commands/system:transferError');
-export const TransferFailed = FT<{ type: string; name: string }, string>('commands/system:transferFailed');
-export const TransferSuccess = FT<{ type: string; name: string }, string>('commands/system:transferSuccess');
-export const Unload = FT<{ type: string; name: string }, string>('commands/system:unload');
-export const UnloadDescription = T<string>('commands/system:unloadDescription');
-export const UnloadExtended = T<LanguageHelpDisplayOptions>('commands/system:unloadExtended');
-export const UnloadWarn = T<string>('commands/system:unloadWarn');

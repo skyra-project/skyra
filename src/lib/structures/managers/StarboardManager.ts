@@ -101,6 +101,6 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		this.set(messageID, star);
 
 		await star.downloadUserList();
-		return star;
+		return star.enabled ? star : null;
 	}
 }

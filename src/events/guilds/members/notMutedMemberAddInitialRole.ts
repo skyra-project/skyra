@@ -1,11 +1,11 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Event, EventOptions } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
-import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
-export default class extends Event {
+export class UserEvent extends Event {
 	public async run(member: GuildMember) {
 		const roleID = await member.guild.readSettings(GuildSettings.Roles.Initial);
 		if (!roleID) return;

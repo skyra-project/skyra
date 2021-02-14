@@ -46,6 +46,12 @@ export class SchemaGroup extends Collection<string, ISchemaValue> implements ISc
 		}
 	}
 
+	public *childValues() {
+		for (const entry of this.values()) {
+			if (entry.type !== 'Group') yield entry;
+		}
+	}
+
 	public getPathArray([key, ...tail]: NonEmptyArray<string>): ISchemaValue | null {
 		if (tail.length === 0) {
 			return key === '' || key === '.' ? this : this.get(key) ?? null;

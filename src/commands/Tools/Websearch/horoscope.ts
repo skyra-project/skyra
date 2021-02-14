@@ -5,51 +5,28 @@ import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
 import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
-import type { Days, Sunsigns } from '@skyra/saelem';
+import { Args } from '@sapphire/framework';
+import { Days, Sunsigns } from '@skyra/saelem';
 import { Message, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
 
-const kSunSigns = new Set([
-	'capricorn',
-	'aquarius',
-	'pisces',
-	'aries',
-	'taurus',
-	'gemini',
-	'cancer',
-	'leo',
-	'virgo',
-	'libra',
-	'scorpio',
-	'sagittarius'
-]);
-const kRandomSunSign = createPick([...kSunSigns]);
+const kSunSigns = ['capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius'];
+const kRandomSunSign = createPick(kSunSigns);
+const kDays = ['yesterday', 'tomorrow', 'today'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['saelem'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
-	requiredGuildPermissions: ['EMBED_LINKS'],
-	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
-	usageDelim: ' '
+	permissions: ['EMBED_LINKS']
 })
-@CreateResolvers([
-	[
-		'sunsign',
-		async (arg, _, message) => {
-			const lowerCasedArgument = arg.toLowerCase();
-			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const sign = await args.pick(UserCommand.sunsign);
+		const day = args.finished ? Days.Today : await args.pick(UserCommand.day);
 
-			throw await message.resolveKey(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async run(message: Message, [sign, day]: [Sunsigns, Days]) {
-		const t = await message.fetchT();
-		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(t, sign, day);
+		const { t } = args;
+		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(sign, day);
 
 		const titles = t(LanguageKeys.Commands.Tools.HoroscopeTitles, {
 			sign,
@@ -68,12 +45,34 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(t: TFunction, sunsign: Sunsigns, day: Days) {
+	private async fetchAPI(sunsign: Sunsigns, day: Days) {
 		try {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw t(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
+			this.error(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { parameter: sunsign, maybe: kRandomSunSign() });
 		}
 	}
+
+	private static sunsign = Args.make<Sunsigns>((parameter, { argument }) => {
+		const lowerCasedArgument = parameter.toLowerCase();
+		if (kSunSigns.includes(lowerCasedArgument)) return Args.ok(lowerCasedArgument as Sunsigns);
+		return Args.error({
+			parameter,
+			argument,
+			identifier: LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign,
+			context: { maybe: kRandomSunSign() }
+		});
+	});
+
+	private static day = Args.make<Days>((parameter, { argument }) => {
+		const lowerCasedArgument = parameter.toLowerCase();
+		if (kDays.includes(lowerCasedArgument)) return Args.ok(lowerCasedArgument as Days);
+		return Args.error({
+			parameter,
+			argument,
+			identifier: LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign,
+			context: { maybe: kRandomSunSign() }
+		});
+	});
 }

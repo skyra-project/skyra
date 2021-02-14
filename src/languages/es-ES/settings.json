@@ -13,7 +13,6 @@
 	"channelsNsfwMessageLogs": "El canal para los registros de mensajes NSFW, el mismo requisito que los registros de mensajes normales, pero sólo enviará mensajes NSFW.",
 	"channelsPruneLogs": "El canal para los registros de podas de mensajes, el mismo requisito que los registros de mensajes normales, pero sólo enviará mensajes de podas de mensajes.",
 	"channelsReactionLogs": "El canal para los registros de reacciones, el mismo requisito que los registros de mensajes normales, pero sólo enviará reacciones de mensajes. Si no quieres que se registren twemojis puedes desactivar `events.twemoji-reactions`.",
-	"channelsRoles": "El canal para los roles de reacción.",
 	"channelsSpam": "El canal al cual redireccionar a los usuarios cuando utilizan comandos que considero no adecuados para conversaciones normales.",
 	"dashboardOnlyKey": "Esta clave sólo se puede configurar a través del [panel de control web](https://skyra.pw)"
 }

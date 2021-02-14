@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
 import type { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<CustomCommand> {
-	public parse() {
-		return this.error('Adding or.');
+export class UserSerializer extends Serializer<CustomCommand> {
+	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
+		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
 	public isValid(value: CustomCommand, { t }: SerializerUpdateContext): Awaited<boolean> {

@@ -13,32 +13,26 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Social.PayDescription,
 	extendedHelp: LanguageKeys.Commands.Social.PayExtended,
 	runIn: ['text'],
-	spam: true,
-	usage: '<amount:integer> <user:user>',
-	usageDelim: ' '
+	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [money, user]: [number, User]) {
-		const t = await message.fetchT();
-		if (message.author === user) throw t(LanguageKeys.Commands.Social.PaySelf);
-		if (user.bot) return message.send(t(LanguageKeys.Commands.Social.SocialPayBot));
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const { money, user } = await this.resolveArguments(args);
 
-		if (money <= 0) throw t(LanguageKeys.Resolvers.PositiveAmount);
+		if (message.author === user) this.error(LanguageKeys.Commands.Social.PaySelf);
+		if (user.bot) return message.send(args.t(LanguageKeys.Commands.Social.SocialPayBot));
 
 		const { users } = await DbSet.connect();
 		const response = await users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			const settings = await users.ensure(authorID);
 
 			const currencyBeforePrompt = settings.money;
-			if (currencyBeforePrompt < money) throw t(LanguageKeys.Commands.Social.PayMissingMoney, { needed: money, has: currencyBeforePrompt });
+			if (currencyBeforePrompt < money) {
+				this.error(LanguageKeys.Commands.Social.PayMissingMoney, { needed: money, has: currencyBeforePrompt });
+			}
 
-			const accepted = await message.ask(t(LanguageKeys.Commands.Social.PayPrompt, { user: user.username, amount: money }));
-
-			await settings.reload();
-			const currencyAfterPrompt = settings.money;
-			if (currencyAfterPrompt < money) throw t(LanguageKeys.Commands.Social.PayMissingMoney, { needed: money, has: currencyBeforePrompt });
-
-			if (!accepted) return this.denyPayment(t);
+			const accepted = await message.ask(args.t(LanguageKeys.Commands.Social.PayPrompt, { user: user.username, amount: money }));
+			if (!accepted) return this.denyPayment(args.t);
 
 			await users.manager.transaction(async (em) => {
 				settings.money -= money;
@@ -57,10 +51,19 @@ export default class extends SkyraCommand {
 				}
 			});
 
-			return this.acceptPayment(message, t, user, money);
+			return this.acceptPayment(message, args.t, user, money);
 		});
 
 		return message.send(response);
+	}
+
+	private async resolveArguments(args: SkyraCommand.Args) {
+		const user = await args.pickResult('userName');
+		if (user.success) {
+			return { money: await args.pick('integer'), user: user.value } as const;
+		}
+
+		return { money: await args.pick('integer'), user: await args.pick('userName') } as const;
 	}
 
 	private acceptPayment(message: GuildMessage, t: TFunction, user: User, money: number) {

@@ -1,15 +1,6 @@
 {
-	"blocklistDescription": "ब्लॉक और मेरी कार्यक्षमता का उपयोग करने से उपयोगकर्ताओं और गिल्ड की अनुमति दें",
-	"blocklistExtended": {
-		"extendedHelp": "उपयोगकर्ताओं को ब्लॉक करें जो भविष्य में मेरे उपयोग से मेरे कार्यों का दुरुपयोग करते हैं, शरारती शरारती लोग"
-	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
-	"confNoKey": "Ek key provide karo",
-	"confNoValue": "Tumhe a value deni hai",
 	"confGuarded": "{{name, toTitleCase}} band nahi hona chahiye.",
 	"confUpdated": "{{key}} की सफलता पूर्वक अपडेट हो चुकी है।{{response}}",
-	"confKeyNotArray": "यह कुंजी अथवा की किसी भी सरणी का प्रकार नहीं है। इसके बजाय 'reset' कार्य का उपयोग करे।",
 	"confGetNoExt": "{{key}} यह कुंजी मौजूद नहीं है।",
 	"confGet": "{{key}} इस कुंजी का मूल्य {{value}} के बराबर है।",
 	"confReset": "{{key}} कुंजी का मूल्य {{value}} के बराबर स्थापित किया गया है।",
@@ -19,9 +10,7 @@
 		"extendedHelp": ""
 	},
 	"confServer": "**सर्वर सेटिंग्स {{key}}**\n{{list}}",
-	"confUserDescription": "यूजर सेटिंग्स के अनुसार निश्चित करे।",
 	"confDashboardOnlyKey": "{{key}} केवल वेब डैशबोर्ड (<https://skyra.pw>) माध्यम से ही इसे रूप दिया जा सकता हैं।",
-	"confUser": "**यूजर सेटिंग्स {{key}}**\n{{list}}",
 	"confSettingNotSet": "निर्धारित नहीं है",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
@@ -66,7 +55,6 @@
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
-	"rolesetInvalidName": "आप {{name}} विशिष्ट संच को नहीं निकाल सकते क्योंकि यह संच मौजूद नहीं है।",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} इस समूह में कोई किरदार संच परिभाषित नहीं है।",
 	"rolesetResetAll": "{{GREENTICK}} सभी किरदार सफलापूर्वक हटाएं गए है।",
@@ -74,7 +62,6 @@
 	"rolesetResetGroup": "{{GREENTICK}} सफला पूर्वक {{name}} किरदार संच हटाया गया है।",
 	"rolesetUpdated": "{{name}} इस किरदार को सफलता पूर्वक अद्यतन किया गया है।",
 	"rolesetNoRolesets": "आपके पास कोई भी किरदार संच नहीं है।",
-	"confMenuNopermissions": "इस मेनू को चलाने के लिए मुझे {{ADD_REACTIONS, permissions}} और {{MANAGE_MESSAGES, permissions}} अनुमति कि जरूरत है।",
 	"confMenuRenderAtFolder": "अभी फिलाल {{path}} में है।",
 	"confMenuRenderAtPiece": "अभी फिलाल ⚙️ {{path}} में है।",
 	"confMenuRenderNokeys": "इस फोल्डर के लिए कोई भी परिभाषित की नहीं है।",

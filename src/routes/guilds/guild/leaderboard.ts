@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' })
-export default class extends Route {
+export class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;

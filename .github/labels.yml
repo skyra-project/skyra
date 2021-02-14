@@ -4,10 +4,10 @@
 - name: 'Bug: Cannot Reproduce'
   description: Issues that report bugs that cannot be reproduced.
   color: f9d0c4
-- name: 'Bug: Cannot Fix (D.JS)'
+- name: 'Bug: Cannot Fix (Discord.JS)'
   description: Bugs that exist in Discord.JS and are out of our control to fix.
   color: f9d0c4
-- name: 'Bug: Cannot Fix (H&C)'
+- name: 'Bug: Cannot Fix (Discord)'
   description: Bugs that exist in Discord itself and are out of our control to fix.
   color: f9d0c4
 - name: 'Bug: Confirmed'
@@ -169,9 +169,6 @@
   description: Issues that do not belong to the Issue Tracker and should be asked
     in the official Discord Server.
   color: cc317c
-- name: 'Type: Ribbon Migration'
-  description: These are issues related to migrating features from Ribbon to Skyra.
-  color: 1d76db
 - name: 'Type: Security'
   description: Pull requests that address a security vulnerability
   color: ee0701

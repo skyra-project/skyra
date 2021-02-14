@@ -1,17 +1,25 @@
 {
 	"avatarDescription": "View somebody's avatar in full size.",
 	"avatarExtended": {
+		"usages": ["", "User"],
 		"extendedHelp": "As this command's name says, it shows somebody's avatar.",
-		"explainedUsage": [["user", "(Optional) A user mention. Defaults to the author if the input is invalid or not given."]],
+		"explainedUsage": [["User", "The user to get the avatar for. Defaults to you yourself."]],
 		"reminder": "Use the --size flag to change the avatar's size."
 	},
 	"avatarNone": "The user does not have an avatar set.",
 	"color": "HEX: **{{hex}}**\nRGB: **{{rgb}}**\nHSL: **{{hsl}}**",
 	"colorDescription": "Display some awesome colours.",
 	"colorExtended": {
+		"usages": ["Color", "Color Difference"],
 		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255.",
-		"explainedUsage": [["color", "A color resolvable."]],
-		"examples": ["#dfdfdf >25", "rgb(200, 130, 75)"],
+		"explainedUsage": [
+			["Color", "The color to check. Can be in the RGB, HSL, B10 (Base 10) or HEX format."],
+			[
+				"Difference",
+				"A numeric difference between each shade of the color. Defaults to 10. If you don't know what this is, then you probably don't need it."
+			]
+		],
+		"examples": ["#dfdfdf 25", "rgb(200, 130, 75)"],
 		"possibleFormats": [
 			["HEX", "#dfdfdf"],
 			["RGB", "rgb(200, 200, 200)"],
@@ -21,16 +29,19 @@
 	},
 	"contentDescription": "Get messages' raw content.",
 	"contentExtended": {
+		"usages": ["Message", "Channel Message"],
 		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting.",
 		"explainedUsage": [
-			["channel", "(optional) The channel in which the message is to get the content from."],
-			["message", "ID of the message to get the raw content for."]
-		]
+			["channel", "The channel in which the message is to get the content from. Defaults to the current channel"],
+			["message", "ID of the message to get the content from."]
+		],
+		"examples": ["810103450544767026", "#announcement 810103450544767026"]
 	},
 	"countryDescription": "Shows information about a country.",
 	"countryExtended": {
+		"usages": ["Country"],
 		"extendedHelp": "This command uses https://restcountries.eu to get information on the provided country.",
-		"explainedUsage": [["country", "The name of the country."]],
+		"explainedUsage": [["Country", "The name of the country."]],
 		"examples": ["United Kingdom"]
 	},
 	"countryFields": {
@@ -54,6 +65,7 @@
 	},
 	"defineDescription": "Check the definition of a word.",
 	"defineExtended": {
+		"usages": ["Word"],
 		"extendedHelp": "What does \"heel\" mean?",
 		"explainedUsage": [["Word", "The word or phrase you want to get the definition from."]],
 		"examples": ["heel"]
@@ -63,6 +75,8 @@
 	"defineUnknown": "Unknown",
 	"duckDuckGoDescription": "Search the Internet with DuckDuckGo.",
 	"duckDuckGoExtended": {
+		"usages": ["Query"],
+		"explainedUsage": [["Query", "The query to ask DuckDuckGo"]],
 		"extendedHelp": "This uses the alternative search enginge DuckDuckGo to search the web",
 		"reminder": "If you want to search google use `Skyra, google`"
 	},
@@ -73,8 +87,9 @@
 	"emojiCustom": "→ `Emoji ::` **{{emoji}}**\n→ `Type  ::` **Custom**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "Get info on an emoji.",
 	"emojiExtended": {
+		"usages": ["Emoji"],
 		"extendedHelp": "I'll give you the emoji name, whether it is a custom emoji or not, the emoji ID and a large image preview of the emoji.",
-		"explainedUsage": [["emoji", "The emoji to get information about"]],
+		"explainedUsage": [["Emoji", "The emoji to get information about"]],
 		"reminder": "It doesn't matter whether I share a server with a custom emoji or not!"
 	},
 	"emojiInvalid": "The argument you provided is not a valid emoji.",
@@ -82,13 +97,15 @@
 	"emojiTwemoji": "→ `Emoji ::` `{{emoji}}`\n→ `Type  ::` **Twemoji**\n→ `ID    ::` **{{id}}**",
 	"emotesDescription": "Shows all custom emotes available on this server",
 	"emotesExtended": {
-		"extendedHelp": "The list of emotes is split per 50 emotes"
+		"extendedHelp": "This will first list all the non-animated emojis, and after that all the animated emojis.",
+		"reminder": "The list of emotes is split per 50 emotes"
 	},
 	"emotesTitle": "Emotes in",
 	"eshopDescription": "Request information for any American Nintendo Digital Store",
 	"eshopExtended": {
+		"usages": ["Query"],
 		"extendedHelp": "This command queries Nintendo of America to show data for the game you request.",
-		"explainedUsage": [["query", "The name of the game you're looking for."]],
+		"explainedUsage": [["Query", "The name of the game you're looking for."]],
 		"examples": ["Breath of the Wild", "Pokemon", "Splatoon"]
 	},
 	"eshopNotInDatabase": "None available",
@@ -107,17 +124,15 @@
 	},
 	"horoscopeDescription": "Get your latest horoscope",
 	"horoscopeExtended": {
+		"usages": ["Sunsign", "Sunsign today/tomorrow/yesterday"],
 		"extendedHelp": "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
 		"explainedUsage": [
-			["sunsign", "The sun sign you want to get the horoscope for"],
-			[
-				"today|tomorrow|yesterday",
-				"(Optional, defaults to \"today\") If you want to get the horoscope of yesterday or tomorrow you can specify that."
-			]
+			["Sunsign", "The sun sign you want to get the horoscope for"],
+			["today/tomorrow/yesterday", "If you want to get the horoscope of another day you can specify that Defaults to \"today\"."]
 		],
 		"examples": ["pisces", "virgo tomorrow", "gemini yesterday", "aries today"]
 	},
-	"horoscopeInvalidSunsign": "{{sign}} is an invalid sun sign, maybe try {{maybe}}",
+	"horoscopeInvalidSunsign": "I was not able to resolve `{{parameter}}` to a valid sign, maybe try `{{maybe}}`?",
 	"horoscopeTitles": {
 		"dailyHoroscope": "Daily horoscope for {{sign}}",
 		"metadata": ["**Intensity:** {{intensity}}", "**Keywords:** {{keywords, andList}}", "**Mood:** {{mood}}", "**Rating:** {{rating}}"],
@@ -134,8 +149,9 @@
 	},
 	"igdbDescription": "Searches IGDB (Internet Game Database) for your favourite games",
 	"igdbExtended": {
+		"usages": ["Query"],
 		"extendedHelp": "This command queries the IGDB API to show data on your favourite games.",
-		"explainedUsage": [["query", "The name of the game"]],
+		"explainedUsage": [["Query", "The name of the game to look up"]],
 		"examples": ["Breath of the Wild", "Borderlands 3"]
 	},
 	"igdbTitles": {
@@ -148,8 +164,9 @@
 	},
 	"itunesDescription": "Searches iTunes API for music tracks",
 	"itunesExtended": {
+		"usages": ["Query"],
 		"extendedHelp": "This command queries the Apple iTunes API to show data on a music you request.",
-		"explainedUsage": [["query", "The name of the song"]],
+		"explainedUsage": [["Query", "The name of the song to look up"]],
 		"examples": ["Apocalyptica feat. Brent Smith", "You're Gonna Go Far, Kid"]
 	},
 	"itunesTitles": {
@@ -173,8 +190,9 @@
 	},
 	"moviesDescription": "Searches TheMovieDatabase for any movie",
 	"moviesExtended": {
+		"usages": ["Query"],
 		"extendedHelp": "This command queries TheMovieDatabase API for data on your favourite movies.\nTip: You can use the 'y:' filter to narrow your results by year. Example: \"star wars y:1977\".",
-		"explainedUsage": [["query", "The name of the movie"]],
+		"explainedUsage": [["Query", "The name of the movie to look up"]],
 		"examples": ["Ocean's Eleven y:2001", "Star Wars Revenge of the Sith", "Spirited Away"]
 	},
 	"moviesTitles": {
@@ -189,7 +207,9 @@
 	},
 	"pollDescription": "Simplifies reaction-based polls.",
 	"pollExtended": {
+		"usages": ["Option1 Option2", "Option1 Option2 Option3...Option20"],
 		"extendedHelp": "Separate your options using commas.",
+		"explainedUsage": [["Option1/Option2/Option3/Option20", "The options to poll. Minimum of 2, maximum of 20"]],
 		"examples": ["Make an anime channel, Make a gaming channel, Make a serious-discussion channel"]
 	},
 	"pollReactionLimit": "Please don't add emojis while I am reacting!",
@@ -197,23 +217,24 @@
 	"priceCurrencyNotFound": "There was an error, please make sure you specified an appropriate coin and currency.",
 	"priceDescription": "Convert between currencies with this command.",
 	"priceExtended": {
+		"usages": ["Amount FromCurrency ToCurrency", "Amount FromCurrency ToCurrency1 ToCurrency2 ToCurrency3...ToCurrencyX"],
 		"extendedHelp": "Convert between any two currencies, even if they are cryptocurrencies.",
 		"explainedUsage": [
-			["from", "The currency to convert from"],
-			["to", "The currency to convert to"],
-			["amount", "The amount to convert, will default to 1"]
+			["Amount", "The amount to convert. Default is 1."],
+			["FromCurrency", "The currency to convert from"],
+			["ToCurrency", "The currency to convert to, you can give multiple currencies to get results in each."]
 		],
-		"examples": ["EUR USD", "USD EUR 5", "USD BAT 10"]
+		"examples": ["EUR USD", "5 USD EUR", "10 USD BAT"]
 	},
 	"quoteDescription": "Quote another person's message.",
 	"quoteExtended": {
+		"usages": ["Message", "Channel Message"],
 		"extendedHelp": "Quotes also include the message's image, if any",
 		"explainedUsage": [
-			["channel", "(optional) The channel in which the message is to quote"],
-			["message", "ID of the message to quote"]
+			["channel", "The channel in which the message is to quote. Defaults to the current channel"],
+			["message", "ID of the message to quote."]
 		]
 	},
-	"quoteMessage": "It is very weird, but said message does not have a content nor a image.",
 	"showsData": {
 		"noGenres": "None on TheMovieDB",
 		"unknownUserScore": "No user score",
@@ -221,8 +242,9 @@
 	},
 	"showsDescription": "Searches The Movie Database for any show",
 	"showsExtended": {
+		"usages": ["Query"],
 		"extendedHelp": "This command queries TheMovieDatabase for data on your favorite shows",
-		"explainedUsage": [["query", "The name of the show"]],
+		"explainedUsage": [["Query", "The name of the show to search"]],
 		"examples": ["Final Space", "Gravity Falls", "Rick and Morty"]
 	},
 	"showsTitles": {
@@ -251,22 +273,25 @@
 	"topInvitesTop10InvitesFor": "Top 10 invites for {{guild}}",
 	"urbanDescription": "Check the definition of a word on UrbanDictionary.",
 	"urbanExtended": {
+		"usages": ["Word", "Word Page"],
 		"extendedHelp": "What does \"spam\" mean?",
 		"explainedUsage": [
-			["Word", "The word or phrase you want to get the definition from."],
-			["Page", "Defaults to 1, the page you wish to read."]
+			["Word", "The word or phrase you want to get the definition for."],
+			["Page", "The page you wish to read. Defaults to 1."]
 		],
 		"examples": ["spam"]
 	},
-	"urbanIndexNotfound": "You may want to try a lower page number.",
-	"urbanNotFound": "I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?",
 	"voteDescription": "Simplified reaction-based vote.",
 	"voteExtended": {
-		"examples": ["Should I implement the #anime channel?"]
+		"usages": ["Question"],
+		"examples": ["Should I implement the #anime channel?"],
+		"explainedUsage": [["Question", "The question to vote on."]]
 	},
 	"whoisDescription": "Who are you?",
 	"whoisExtended": {
-		"extendedHelp": "Gets information on any server member. Also known as `userinfo` in many other bots."
+		"usages": ["", "User"],
+		"extendedHelp": "Gets information on any server member. Also known as `userinfo` in many other bots.",
+		"explainedUsage": [["User", "The user to get information about. Defaults to you yourself."]]
 	},
 	"whoisMemberFields": {
 		"createdAt": "{{member.user.createdTimestamp, dateTime}}\n{{createdTimestampOffset, duration}} ago",
@@ -291,14 +316,17 @@
 	},
 	"wikipediaDescription": "Search something through Wikipedia.",
 	"wikipediaExtended": {
-		"extendedHelp": "In NSFW channels I will also add the page image. This restriction is in place because Wikipedia has NSFW images for NSFW pages as they have to be accurate (i.e. diseases or human body parts).",
-		"reminder": "Most Wikipedia page titles are case sensitive. Some celeberties will have lowercase redirects, but not many."
+		"usages": ["Page"],
+		"extendedHelp": "In NSFW channels I will also add the page image, if available. This restriction is in place because Wikipedia has NSFW images for NSFW pages as they have to be accurate (i.e. diseases or human body parts).",
+		"explainedUsage": [["Page", "The Wikipedia page to view"]],
+		"reminder": "Most Wikipedia page titles are case sensitive. Some celebrities will have lowercase redirects, but not many."
 	},
 	"wikipediaNotfound": "I am sorry, I could not find something that could match your input in Wikipedia.",
 	"youtubeDescription": "Search something through YouTube.",
 	"youtubeExtended": {
-		"extendedHelp": "If I have the {{PERMISSIONS.MANAGE_MESSAGES}} {{PERMISSIONS.ADD_REACTIONS}} permissions then I will provide the option to navigate through the top 10 results."
+		"usages": ["Query"],
+		"extendedHelp": "If I have the {{MANAGE_MESSAGES, permissions}} {{ADD_REACTIONS, permissions}} permissions then I will provide the option to navigate through the top 10 results.",
+		"explainedUsage": [["Query", "The video(s) to look up through YouTube"]]
 	},
-	"youtubeIndexNotfound": "You may want to try a lower page number, because I am unable to find something at this index.",
 	"youtubeNotfound": "I am sorry, I could not find something that could match your input in YouTube."
 }

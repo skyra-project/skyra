@@ -3,13 +3,13 @@
 	"c4Extended": {
 		"extendedHelp": "Dieses Spiel wird am besten auf dem PC gespielt.\nConnect Four ist ein Zwei-Spieler-Verbindungsspiel, bei dem die Spieler zuerst eine Farbe auswählen und dann farbige Scheiben von oben in ein raster aus Sieben Spalten und Sechs Reihen fallen lassen."
 	},
-	"c4GameColumnFull": "Diese Spalte ist voll. Bitte wähle eine andere. ",
+	"c4GameColumnFull": "Diese Spalte ist voll. Bitte wähle eine andere.",
 	"c4GameDraw": "Dieses Spiel wurde mit einem **Unentschieden** beendet!",
 	"c4GameNext": "Runde von: {{user}} (rot).",
 	"c4GameNextTurn0": "Runde von: {{user}} (blau).",
 	"c4GameWin": "{{user}} (rot) hat gewonnen!",
 	"c4GameWinTurn0": "{{user}} (blau) hat gewonnen!",
-	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Antworte mit **Ja** um zu akzeptieren!",
+	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
 	"c4Start": "Lass uns spielen! Runde für: **{{player}}**.",
 	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
 	"coinFlipCoinnames": [

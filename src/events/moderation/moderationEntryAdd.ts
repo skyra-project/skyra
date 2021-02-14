@@ -1,10 +1,10 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(entry: ModerationEntity) {
 		return Promise.all([this.sendMessage(entry), this.scheduleDuration(entry)]);
 	}

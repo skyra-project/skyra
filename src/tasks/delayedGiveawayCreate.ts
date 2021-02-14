@@ -2,7 +2,7 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import type { GiveawayCreateData } from '#lib/structures';
 
-export default class extends Task {
+export class UserTask extends Task {
 	public async run(data: GiveawayCreateData): Promise<PartialResponseValue> {
 		await this.context.client.giveaways.create({ ...data, endsAt: new Date(data.endsAt) });
 		return { type: ResponseType.Finished };

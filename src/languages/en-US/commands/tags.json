@@ -1,18 +1,35 @@
 {
 	"added": "Successfully added a new tag: **{{name}}** with a content of:\n{{content}}",
-	"contentRequired": "You must provide a content for this tag.",
 	"description": "Manage this guilds' tags.",
 	"edited": "Successfully edited the tag **{{name}}** with a content of:\n{{content}}",
 	"exists": "The tag '{{tag}}' already exists.",
 	"extended": {
-		"extendedHelp": "Tags, also known as custom commands, can give you a chunk of text stored under a specific name.\nFor example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`\nWhen adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!):\n❯ Add `--embed` to have Skyra send the tag embedded.\nThe content will be in the description, so you can use all the markdown you wish. for example, adding [masked links](https://skyra.pw).\n❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying `--embed`.\nColours can be RGB, HSL, HEX or Decimal.",
+		"usages": [
+			"add/remove/edit/source/list/reset/show Tag Content",
+			"add Tag Content --embed --color=Color"
+		],
+		"extendedHelp": "Tags, also known as custom commands, can give you a chunk of text stored under a specific name.\nFor example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`\nWhen adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!), see Explained usage below.",
 		"explainedUsage": [
 			[
-				"action",
-				"The action to perform: `add` to add new tags, `remove` to delete a tag, `edit` to edit a tag, `source` to get the source of a tag, `list` to list all known tags, or `show` to show a tag."
+				"add/remove/edit/source/list/reset/show",
+				"Whether to\n　- Add a new tag.\n　- Remove an existing tag\n　- Edit an existing tag\n　- View the source of an existing tag\n　- List all available tags\n　- Reset all tags\n　- Show an existing tag, same as calling that tag directly."
 			],
-			["tag", "The tag's name."],
-			["contents", "Required for the actions `add` and `edit`, specifies the content for the tag."]
+			[
+				"Tag",
+				"The name of the tag. Not needed for \"reset\" and \"list\"."
+			],
+			[
+				"Content",
+				"The content for the tag. Only needed for \"add\" and \"edit\"."
+			],
+			[
+				"--embed",
+				"If adding the --embed flag to \"add\" or \"edit\" then the message of the tag will be sent in an embed. Useful if you want to [embed links](https://skyra.pw) or other markdown."
+			],
+			[
+				"--color=Color, --colour=Color",
+				"The color of the embed. Has no use without the --embed flag. Defaults to blue. Colours can be RGB, HSL, HEX or Decimal."
+			]
 		],
 		"examples": [
 			"add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.",

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { Events } from '#lib/types/Enums';
 import { map, reverse } from '#utils/iterator';
+import { Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
-import { Store } from 'klasa';
 import type { QueueStore } from './QueueStore';
 
 const kExpireTime = Time.Day * 2;

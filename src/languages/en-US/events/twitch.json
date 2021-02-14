@@ -1,0 +1,5 @@
+{
+	"embedDescription": "{{userName}} is now live!",
+	"embedDescriptionWithGame": "{{userName}} is now live - Streaming {{gameName}}!",
+	"embedFooter": "Skyra Twitch Notifications"
+}

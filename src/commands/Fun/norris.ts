@@ -10,17 +10,16 @@ import { Message, MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.NorrisDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.NorrisExtended,
-	requiredPermissions: ['EMBED_LINKS'],
+	permissions: ['EMBED_LINKS'],
 	spam: true
 })
-export default class extends SkyraCommand {
-	public async run(message: Message) {
-		const t = await message.fetchT();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
 		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(t(LanguageKeys.Commands.Fun.NorrisOutput))
+				.setTitle(args.t(LanguageKeys.Commands.Fun.NorrisOutput))
 				.setURL(data.url)
 				.setThumbnail(data.icon_url)
 				.setDescription(data.value)

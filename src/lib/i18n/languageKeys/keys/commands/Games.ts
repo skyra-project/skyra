@@ -41,48 +41,16 @@ export const HigherLowerDescription = T<string>('commands/game:higherLowerDescri
 export const HigherLowerExtended = T<LanguageHelpDisplayOptions>('commands/game:higherLowerExtended');
 export const HigherLowerLoading = T<string>('commands/game:higherLowerLoading');
 export const HigherLowerNewRound = T<string>('commands/game:higherLowerNewround');
-export const HigherLowerEmbed = FT<
-	{
-		turn: number;
-		number: number;
-	},
-	{
-		title: string;
-		description: string;
-		footer: string;
-	}
->('commands/game:higherLowerEmbed');
-export const HigherLowerLose = FT<
-	{
-		number: number;
-		losses: number;
-	},
-	{
-		title: string;
-		description: string;
-		footer: string;
-	}
->('commands/game:higherLowerLose');
-export const HigherLowerWin = FT<
-	{
-		potentials: number;
-		number: number;
-	},
-	{
-		title: string;
-		description: string;
-		footer: string;
-	}
->('commands/game:higherLowerWin');
-export const HigherLowerCancel = FT<
-	{
-		username: string;
-	},
-	{
-		title: string;
-		description: string;
-	}
->('commands/game:higherLowerCancel');
+export const HigherLowerEmbed = FT<{ turn: number; number: number }, { title: string; description: string; footer: string }>(
+	'commands/game:higherLowerEmbed'
+);
+export const HigherLowerLose = FT<{ number: number; losses: number }, { title: string; description: string; footer: string }>(
+	'commands/game:higherLowerLose'
+);
+export const HigherLowerWin = FT<{ potentials: number; number: number }, { title: string; description: string; footer: string }>(
+	'commands/game:higherLowerWin'
+);
+export const HigherLowerCancel = FT<{ username: string }, { title: string; description: string }>('commands/game:higherLowerCancel');
 export const HigherLowerCashout = FT<{ amount: number }, string>('commands/game:higherLowerCashout');
 export const HungerGamesDescription = T<string>('commands/game:hungerGamesDescription');
 export const HungerGamesExtended = T<LanguageHelpDisplayOptions>('commands/game:hungerGamesExtended');
@@ -118,8 +86,5 @@ export const TriviaInvalidCategory = T<string>('commands/game:triviaInvalidCateg
 export const TriviaActiveGame = T<string>('commands/game:triviaActiveGame');
 export const TriviaIncorrect = FT<{ attempt: string }, string>('commands/game:triviaIncorrect');
 export const TriviaNoAnswer = FT<{ correctAnswer: string }, string>('commands/game:triviaNoAnswer');
-export const TriviaEmbedTitles = T<{
-	trivia: string;
-	difficulty: string;
-}>('commands/game:triviaEmbedTitles');
+export const TriviaEmbedTitles = T<{ trivia: string; difficulty: string }>('commands/game:triviaEmbedTitles');
 export const TriviaWinner = FT<{ winner: string; correctAnswer: string }, string>('commands/game:triviaWinner');

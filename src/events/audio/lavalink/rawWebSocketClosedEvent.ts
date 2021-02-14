@@ -5,7 +5,7 @@ import { magenta } from 'colorette';
 import { VoiceCloseCodes } from 'discord-api-types/v6';
 
 @ApplyOptions<AudioEvent.Options>({ event: 'WebSocketClosedEvent' })
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public run(payload: IncomingEventWebSocketClosedPayload) {

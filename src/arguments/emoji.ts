@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveEmoji } from '#utils/util';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import { Argument, ArgumentContext } from '@sapphire/framework';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message): Promise<string> {
-		const resolved = resolveEmoji(arg);
-		if (resolved === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidEmoji, { name: possible.name });
-		return resolved;
+export class UserArgument extends Argument<string> {
+	public run(parameter: string, context: ArgumentContext) {
+		const resolved = resolveEmoji(parameter);
+		if (resolved === null) return this.error({ parameter, identifier: LanguageKeys.Arguments.Emoji, context });
+		return this.ok(resolved);
 	}
 }

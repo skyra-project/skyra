@@ -2,60 +2,42 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args } from '@sapphire/framework';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { CreateResolver } from '@skyra/decorators';
 import type { Message } from 'discord.js';
 import i18next, { TFunction } from 'i18next';
-import { Piece, Store } from 'klasa';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['r'],
 	description: LanguageKeys.Commands.System.ReloadDescription,
 	extendedHelp: LanguageKeys.Commands.System.ReloadExtended,
 	guarded: true,
-	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<target:reloadable>'
+	permissionLevel: PermissionLevels.BotOwner
 })
-@CreateResolver('reloadable', async (arg, _, message) => {
-	if (message.client.i18n.languages.has(arg)) return arg;
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { t } = args;
 
-	const reloadableStore = await message.client.arguments
-		.get('store')!
-		.run(arg, _, message)
-		.catch(() => undefined);
+		const everything = await args.pickResult(UserCommand.everything);
+		if (everything.success) return this.everything(message, t);
 
-	if (reloadableStore) return reloadableStore;
+		const language = await args.pickResult('language');
+		if (language.success) return this.language(message, t, language.value);
 
-	const reloadablePiece = await message.client.arguments
-		.get('piece')!
-		.run(arg, _, message)
-		.catch(() => undefined);
-
-	if (reloadablePiece) return reloadablePiece;
-
-	return 'everything';
-})
-export default class extends SkyraCommand {
-	public async run(message: Message, [piece]: [Piece | Store<Piece> | string | 'everything']) {
-		const t = await message.fetchT();
-
-		if (piece === 'everything') return this.everything(message, t);
-		if (typeof piece === 'string') return this.language(message, t, piece);
-		if (piece instanceof Store) {
+		const store = await args.pickResult('store');
+		if (store.success) {
 			const timer = new Stopwatch();
-			await piece.loadAll();
+			await store.value.loadAll();
 
-			return message.send(t(LanguageKeys.Commands.System.ReloadAll, { type: piece.name, time: timer.stop().toString() }));
+			return message.send(t(LanguageKeys.Commands.System.ReloadAll, { type: store.value.name, time: timer.stop().toString() }));
 		}
 
-		try {
-			await piece.reload();
-			const timer = new Stopwatch();
+		const piece = await args.pick('piece');
+		await piece.reload();
+		const timer = new Stopwatch();
+		const type = piece.store.name.slice(0, -1);
 
-			return message.send(t(LanguageKeys.Commands.System.Reload, { type: piece.store.name, name: piece.name, time: timer.stop().toString() }));
-		} catch (err) {
-			return message.send(t(LanguageKeys.Commands.System.ReloadFailed, { type: piece.store.name, name: piece.name }));
-		}
+		return message.send(t(LanguageKeys.Commands.System.Reload, { type, name: piece.name, time: timer.stop().toString() }));
 	}
 
 	private async language(message: Message, t: TFunction, language: string) {
@@ -70,11 +52,16 @@ export default class extends SkyraCommand {
 
 		await Promise.all([
 			i18next.reloadResources([...message.client.i18n.languages.keys()]),
-			...[...this.context.client.stores].map(async (store) => {
+			...[...this.context.client.stores.values()].map(async (store) => {
 				await store.loadAll();
 			})
 		]);
 
 		return message.send(t(LanguageKeys.Commands.System.ReloadEverything, { time: timer.stop().toString() }));
 	}
+
+	private static everything = Args.make((parameter, { argument }) => {
+		if (parameter.toLowerCase() === 'everything') return Args.ok('everything');
+		return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.System.ReloadInvalidEverything });
+	});
 }

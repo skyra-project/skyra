@@ -1,13 +1,10 @@
 import type { Queue } from '#lib/audio';
 import type { GuildEntity, SettingsCollectionCallback } from '#lib/database';
-import { ModerationManager, StarboardManager, StickyRoleManager } from '#lib/structures';
-import type { CustomFunctionGet, CustomGet } from '#lib/types';
+import { ModerationManager, StickyRoleManager } from '#lib/moderation';
+import { StarboardManager } from '#lib/structures';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
-import { cast } from '#utils/util';
-import type { Primitive } from '@sapphire/utilities';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
-import { Message, Structures } from 'discord.js';
-import type { TFunction } from 'i18next';
+import { Structures } from 'discord.js';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
@@ -17,21 +14,6 @@ export class SkyraGuild extends Structures.get('Guild') {
 
 	public get audio(): Queue {
 		return this.client.audio.queues!.get(this.id);
-	}
-
-	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(
-			cast<Message>({ guild: this, channel: null })
-		);
-		return lang ?? this.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
-	}
-
-	public async fetchT(): Promise<TFunction> {
-		return this.client.i18n.fetchT(await this.fetchLanguage());
-	}
-
-	public async resolveKey(key: string, ...values: readonly any[]): Promise<string> {
-		return this.client.i18n.fetchLocale(await this.fetchLanguage(), key, ...values);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -52,14 +34,6 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly stickyRoles: StickyRoleManager;
-
-		fetchLanguage(): Promise<string>;
-		fetchT(): Promise<TFunction>;
-		resolveKey<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-		resolveKey<K extends string, TArgs, TReturn>(
-			value: CustomFunctionGet<K, TArgs, TReturn>,
-			args: TArgs
-		): Promise<TReturn extends Primitive | any[] ? TReturn : never>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;

@@ -1,9 +1,9 @@
+import { Event } from '@sapphire/framework';
 import { DiscordAPIError, HTTPError } from 'discord.js';
-import { Event } from 'klasa';
 
 const NEWLINE = '\n';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(error: Error) {
 		const { client } = this.context;
 		if (error instanceof DiscordAPIError) {

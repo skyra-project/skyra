@@ -1,21 +1,46 @@
 {
 	"suggestDescription": "Posts a suggestion for the server.",
 	"suggestExtended": {
+		"usages": [
+			"Suggestion"
+		],
 		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
-		"explainedUsage": [["suggestion", "Your suggestion"]],
-		"examples": ["Let's make a music channel!"],
+		"explainedUsage": [
+			[
+				"Suggestion",
+				"Your suggestion"
+			]
+		],
+		"examples": [
+			"Let's make a music channel!"
+		],
 		"reminder": "You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command."
 	},
 	"suggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
-	"suggestNoSetupAsk": "I'm sorry {{username}}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?",
-	"suggestNoSetupAbort": "Alright then. Aborted creating a new suggestion.",
 	"suggestNopermissions": "I'm sorry {{username}}, but the administrators didn't give me permission to send messages in {{channel}}!",
-	"suggestChannelPrompt": "Please mention the channel you want to set as the suggestions channel.",
 	"suggestTitle": "Suggestion #{{id}}",
 	"suggestSuccess": "Thank you for your suggestion! It has been successfully posted to {{channel}}!",
 	"resolveSuggestionDescription": "Set the suggestion's status.",
 	"resolveSuggestionExtended": {
+		"usages": [
+			"Suggestion accept/a/deny/d/consider/c",
+			"Suggestion accept/a/deny/d/consider/c Comment"
+		],
 		"extendedHelp": "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",
+		"explainedUsage": [
+			[
+				"Suggestion",
+				"The suggestion to resolve"
+			],
+			[
+				"accept/a/deny/d/consider/c",
+				"Whether to change the status of the suggestion to accepted, denied or considering."
+			],
+			[
+				"Comment",
+				"An optional comment that you want to give back to the person who made this suggestion."
+			]
+		],
 		"examples": [
 			"1 accept Thank you for your suggestion!",
 			"1 a Thank you for your suggestion!",
@@ -27,6 +52,7 @@
 		"reminder": "Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.\nFurthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
 	},
 	"resolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
+	"resolveSuggestionInvalidAction": "I am sorry, but I was not able to resolve `{{parameter}}` into a valid action.\n**Hint**: The possible values are: {{possibles, orList}}.",
 	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
 	"resolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
 	"resolveSuggestionDefaultComment": "No comment was provided.",

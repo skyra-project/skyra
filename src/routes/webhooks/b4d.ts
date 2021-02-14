@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/b4d', route: 'webhooks/b4d' })
-export default class extends Route {
+export class UserRoute extends Route {
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.WEBHOOK_B4D) return response.forbidden();
 		if (!request.body) return response.badRequest();

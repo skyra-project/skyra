@@ -1,6 +1,12 @@
 {
 	"starDescription": "Get a random starred message from the database or the star leaderboard.",
 	"starExtended": {
+		"usages": ["", "top", "random", "User", "User Timespan", "top User Timespan", "random User Timespan"],
+		"explainedUsage": [
+			["top/random", "Whether to show a random starred message, or the most starred message."],
+			["User", "Only get starred message from the specified user. Defaults to any user."],
+			["Timespan", "Only get starred message in the past given amount of time. Defaults to any time. For example 5d for the past 5 days."]
+		],
 		"extendedHelp": "This command shows a random starred message or the starboard usage and leaderboard for this server."
 	},
 	"starMessages_plural": "{{count}} messages",

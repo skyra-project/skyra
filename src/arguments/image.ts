@@ -1,31 +1,17 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetchAvatar } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
+import { ExtendedArgument, ExtendedArgumentContext, ExtendedArgumentOptions } from '@sapphire/framework';
 import type { Image } from 'canvas';
-import type { Message } from 'discord.js';
-import { Argument, Possible } from 'klasa';
+import type { User } from 'discord.js';
 
-export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: Message): Promise<Image> {
-		// If theres nothing provided, search the channel for an image.
-		if (!arg) {
-			// ! TODO: Re-enable after moving to sapphire!!
-			/*
-			// Configurable minimum of messages
-			const minimum = possible.min || 20;
-
-			// Fetch messages if there are not enough in the channel
-			if (message.channel.messages.size < minimum) await message.channel.messages.fetch({ limit: minimum });
-
-			const messages = [...message.channel.messages.values()];
-			for (let i = messages.length - 1; i >= 0; --i) {
-				const imageSrc = getImage(messages[i]);
-				if (imageSrc) return loadImage(imageSrc);
-			}
-			*/
-
-			return fetchAvatar(message.author);
+@ApplyOptions<ExtendedArgumentOptions<'userName'>>({ baseArgument: 'userName' })
+export class UserExtendedArgument extends ExtendedArgument<'userName', Image> {
+	public async handle(user: User, context: ExtendedArgumentContext) {
+		try {
+			return this.ok(await fetchAvatar(user));
+		} catch {
+			return this.error({ parameter: context.parameter, identifier: LanguageKeys.Arguments.ImageNotFound, context });
 		}
-
-		const user = await message.client.arguments.get('username')!.run(arg, possible, message);
-		return fetchAvatar(user);
 	}
 }

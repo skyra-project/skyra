@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -13,8 +13,8 @@ const enum CodeType {
 }
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationInvites,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationInvitesWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationInvites,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationInvitesWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.Invites.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.Invites.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.Invites.IgnoredRoles,
@@ -25,7 +25,7 @@ const enum CodeType {
 		adder: 'invites'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
 
 	protected async preProcess(message: GuildMessage) {
@@ -57,15 +57,15 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.InviteFilterAlert, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(t(LanguageKeys.Monitors.InviteFilterLog, { links, count: links.length }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.InviteFooter)}`)
+			.setDescription(t(LanguageKeys.Events.Moderation.Messages.InviteFilterLog, { links, count: links.length }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.InviteFooter)}`)
 			.setTimestamp();
 	}
 

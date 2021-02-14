@@ -1,12 +1,12 @@
 import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
-import type { KlasaClient } from 'klasa';
+import type { Client } from 'discord.js';
 
 export class GiveawayManager {
-	public readonly client: KlasaClient;
+	public readonly client: Client;
 	public readonly queue: Array<GiveawayEntity> = [];
 	private interval: NodeJS.Timer | null = null;
 
-	public constructor(client: KlasaClient) {
+	public constructor(client: Client) {
 		this.client = client;
 	}
 

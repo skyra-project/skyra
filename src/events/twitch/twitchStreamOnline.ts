@@ -3,14 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
-import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
+import { Event } from '@sapphire/framework';
 import { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
@@ -59,15 +58,10 @@ export default class extends Event {
 
 				// If the message could not be retrieved then skip this notification.
 				if (subscription.message !== null) {
-					if (subscription.embed) {
-						const embedData = this.transformTextToObject(data, game);
+					const embedData = this.transformTextToObject(data, game);
 
-						// Construct a message embed and send it.
-						floatPromise(channel.send(this.buildEmbed(embedData, t)));
-					} else {
-						const message = this.transformTextToString(subscription.message, data, t, game);
-						floatPromise(channel.send(message));
-					}
+					// Construct a message embed and send it.
+					floatPromise(channel.send(this.buildEmbed(embedData, t)));
 				}
 
 				break;
@@ -75,31 +69,6 @@ export default class extends Event {
 		}
 
 		return response.ok();
-	}
-
-	private transformTextToString(source: string, notification: PostStreamBodyData, t: TFunction, game?: TwitchHelixGameSearchResult) {
-		return source.replace(TWITCH_REPLACEABLES_REGEX, (match) => {
-			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.ID:
-					return notification.id;
-				case TWITCH_REPLACEABLES_MATCHES.TITLE:
-					return this.escapeText(notification.title);
-				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
-					return notification.viewer_count.toString();
-				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					return game?.name ?? t(LanguageKeys.Notifications.TwitchNoGameName);
-				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
-					return notification.language;
-				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
-					return notification.game_id;
-				case TWITCH_REPLACEABLES_MATCHES.USER_ID:
-					return notification.user_id;
-				case TWITCH_REPLACEABLES_MATCHES.USER_NAME:
-					return this.escapeText(notification.user_name);
-				default:
-					return match;
-			}
-		});
 	}
 
 	private transformTextToObject(notification: PostStreamBodyData, game?: TwitchHelixGameSearchResult): TwitchOnlineEmbedData {
@@ -125,10 +94,10 @@ export default class extends Event {
 			.setURL(`https://twitch.tv/${data.user_name}`)
 			.setDescription(
 				data.game_name
-					? t(LanguageKeys.Notifications.TwitchEmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
-					: t(LanguageKeys.Notifications.TwitchEmbedDescription, { userName: data.user_name })
+					? t(LanguageKeys.Events.Twitch.EmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
+					: t(LanguageKeys.Events.Twitch.EmbedDescription, { userName: data.user_name })
 			)
-			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
+			.setFooter(t(LanguageKeys.Events.Twitch.EmbedFooter))
 			.setTimestamp(data.started_at)
 			.setColor(this.context.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');

@@ -4,7 +4,7 @@ import type { IncomingEventTrackExceptionPayload } from '@skyra/audio';
 import { magenta } from 'colorette';
 
 @ApplyOptions<AudioEvent.Options>({ event: 'TrackExceptionEvent' })
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public async run(payload: IncomingEventTrackExceptionPayload) {

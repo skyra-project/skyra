@@ -2,65 +2,38 @@ import { DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors } from '#utils/constants';
-import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
+import { Args } from '@sapphire/framework';
 import { MessageEmbed, Role } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RolesExtended,
-	requiredGuildPermissions: ['MANAGE_ROLES'],
-	requiredPermissions: ['MANAGE_MESSAGES'],
-	usage: '(roles:rolenames)'
+	permissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES']
 })
-@CreateResolvers([
-	[
-		'rolenames',
-		async (arg, _, message) => {
-			const rolesPublic = await message.guild!.readSettings(GuildSettings.Roles.Public);
-			if (!rolesPublic.length) return null;
-			if (!arg) return [];
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const roles = args.finished ? null : await args.pick(UserPaginatedMessageCommand.rolenames);
 
-			const search = new FuzzySearch(
-				message.guild!.roles.cache,
-				(role) => role.name,
-				(role) => rolesPublic.includes(role.id)
-			);
-			const roles = arg
-				.split(',')
-				.map((role) => role.trim())
-				.filter((role) => role.length);
-			const output: Role[] = [];
-			for (const role of roles) {
-				const result = await search.run(message, role);
-				if (result) output.push(result[1]);
-			}
-			return output.length ? [...new Set(output)] : output;
-		}
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [roles]: [Role[]]) {
-		const [rolesPublic, prefix, allRoleSets, rolesRemoveInitial, rolesInitial, t] = await message.guild.readSettings((settings) => [
+		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Roles.Public],
-			settings[GuildSettings.Prefix],
 			settings[GuildSettings.Roles.UniqueRoleSets],
 			settings[GuildSettings.Roles.RemoveInitial],
-			settings[GuildSettings.Roles.Initial],
-			settings.getLanguage()
+			settings[GuildSettings.Roles.Initial]
 		]);
 
-		if (!roles) throw t(LanguageKeys.Commands.Management.RolesListEmpty);
-		if (!roles.length) {
-			if (message.args.some((v) => v.length !== 0)) throw t(LanguageKeys.Commands.Management.RolesAbort, { prefix });
-			return this.list(message, rolesPublic);
+		// If no argument was provided then show the list of available roles
+		if (!roles) {
+			return this.list(message, args.t, rolesPublic);
 		}
+
+		// Otherwise start process of claiming a role
 		const memberRoles = new Set(message.member!.roles.cache.keys());
+
 		// Remove the everyone role
 		memberRoles.delete(message.guild.id);
 
@@ -114,6 +87,8 @@ export default class extends PaginatedMessageCommand {
 			}
 		}
 
+		const { t } = args;
+
 		// Apply the roles
 		if (removedRoles.length || addedRoles.length)
 			await message.member!.roles.set([...memberRoles], t(LanguageKeys.Commands.Management.RolesAuditLog));
@@ -126,7 +101,7 @@ export default class extends PaginatedMessageCommand {
 		return message.send(output.join('\n'));
 	}
 
-	private async list(message: GuildMessage, publicRoles: readonly string[]) {
+	private async list(message: GuildMessage, t: TFunction, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {
@@ -142,11 +117,9 @@ export default class extends PaginatedMessageCommand {
 			await message.guild.writeSettings([[GuildSettings.Roles.Public, [...allRoles]]]);
 		}
 
-		const t = await message.fetchT();
-
 		// There's the possibility all roles could be inexistent, therefore the system
 		// would filter and remove them all, causing this to be empty.
-		if (!roles.length) throw t(LanguageKeys.Commands.Management.RolesListEmpty);
+		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		const user = this.context.client.user!;
 		const display = new UserPaginatedMessage({
@@ -159,10 +132,20 @@ export default class extends PaginatedMessageCommand {
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPageEmbed((template) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
-		const response = await message.send(
-			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
-		);
+		const response = await sendLoadingMessage(message, t);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
+
+	private static rolenames = Args.make<Role[]>(async (parameter, { argument, message, args }) => {
+		const rolesPublic = await message.guild!.readSettings(GuildSettings.Roles.Public);
+		if (!rolesPublic.length) {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Management.RolesListEmpty });
+		}
+
+		const roles = await args.repeat('roleName');
+		const output = roles.filter((role) => rolesPublic.includes(role.id));
+
+		return output.length ? Args.ok([...new Set(output)]) : Args.ok(output);
+	});
 }

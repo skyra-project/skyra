@@ -6,7 +6,6 @@ import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK,
 import { BrandingColors } from '#utils/constants';
 import { getImageUrl, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -14,27 +13,18 @@ import { MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
 	description: LanguageKeys.Commands.Google.GimageDescription,
-	extendedHelp: LanguageKeys.Commands.Google.GimageExtended,
-	usage: '<query:query>'
+	extendedHelp: LanguageKeys.Commands.Google.GimageExtended
 })
-@CreateResolvers([
-	[
-		'query',
-		(arg, possible, message) =>
-			message.client.arguments
-				.get('string')!
-				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
-	]
-])
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [query]: [string]) {
-		const t = await message.fetchT();
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const query = (await args.rest('string')).replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+');
+		const { t } = args;
 		const [response, { items }] = await Promise.all([
 			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
-		if (!items || !items.length) throw t(handleNotOK(GoogleResponseCodes.ZeroResults));
+		if (!items || !items.length) this.error(handleNotOK(GoogleResponseCodes.ZeroResults));
 
 		const display = await this.buildDisplay(message, items);
 

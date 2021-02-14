@@ -4,8 +4,6 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CreateResolvers } from '@skyra/decorators';
-import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -14,21 +12,13 @@ import type { User } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
-	subcommands: true,
-	usage: '<add|remove|set|reset> <user:username> (amount:money{0,1000000})',
-	usageDelim: ' '
+	subCommands: ['add', 'remove', 'set', 'reset']
 })
-@CreateResolvers([
-	[
-		'money',
-		(arg, possible, message, [type]) => {
-			if (type === 'reset') return null;
-			return message.client.arguments.get('integer')!.run(arg, possible, message);
-		}
-	]
-])
-export default class extends SkyraCommand {
-	public async add(message: GuildMessage, [user, amount]: [User, number]) {
+export class UserCommand extends SkyraCommand {
+	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
+		const amount = await args.pick('integer', { minimum: 1, maximum: 1000000 });
+
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		if (settings) {
@@ -36,7 +26,7 @@ export default class extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.sendTranslated(LanguageKeys.Commands.Social.SocialAdd, [{ user: user.username, amount: newAmount, count: amount }]);
+			return message.send(args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount: newAmount, count: amount }));
 		}
 
 		const created = new MemberEntity();
@@ -45,24 +35,27 @@ export default class extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.sendTranslated(LanguageKeys.Commands.Social.SocialAdd, [{ user: user.username, amount, count: amount }]);
+		return message.send(args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount, count: amount }));
 	}
 
-	public async remove(message: GuildMessage, [user, amount]: [User, number]) {
+	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
+		const amount = await args.pick('integer', { minimum: 1, maximum: 100000000 });
+
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
-		if (!settings) throw await message.resolveKey(LanguageKeys.Commands.Social.SocialMemberNotExists);
+		if (!settings) this.error(LanguageKeys.Commands.Social.SocialMemberNotExists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.sendTranslated(LanguageKeys.Commands.Social.SocialRemove, [{ user: user.username, amount: newAmount, count: amount }]);
+		return message.send(args.t(LanguageKeys.Commands.Social.SocialRemove, { user: user.username, amount: newAmount, count: amount }));
 	}
 
-	public async set(message: GuildMessage, [user, amount]: [User, number]) {
-		// If sets to zero, it shall reset
-		if (amount === 0) return this.reset(message, [user]);
+	public async set(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
+		const amount = await args.pick('integer', { minimum: 0, maximum: 1000000 });
 
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
@@ -80,17 +73,16 @@ export default class extends SkyraCommand {
 		}
 
 		const variation = amount - oldValue;
-		const t = await message.fetchT();
-		if (variation === 0) return t(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
+		if (variation === 0) return args.t(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
 
 		return message.send(
 			variation > 0
-				? t(LanguageKeys.Commands.Social.SocialAdd, {
+				? args.t(LanguageKeys.Commands.Social.SocialAdd, {
 						user: user.username,
 						amount,
 						count: variation
 				  })
-				: t(LanguageKeys.Commands.Social.SocialRemove, {
+				: args.t(LanguageKeys.Commands.Social.SocialRemove, {
 						user: user.username,
 						amount,
 						count: -variation
@@ -98,9 +90,10 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async reset(message: GuildMessage, [user]: [User]) {
+	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = await args.pick('userName');
 		const { members } = await DbSet.connect();
 		await members.delete({ userID: user.id, guildID: message.guild.id });
-		return message.sendTranslated(LanguageKeys.Commands.Social.SocialReset, [{ user: user.username }]);
+		return message.send(args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username }));
 	}
 }

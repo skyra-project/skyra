@@ -2,8 +2,7 @@ import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
-import { BrandingColors } from '#utils/constants';
-import { fetch, pickRandom } from '#utils/util';
+import { fetch, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -14,29 +13,26 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Tools.CountryDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended,
-	usage: '<country:str>'
+	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [countryName]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const countryName = await args.rest('string');
+		const response = await sendLoadingMessage(message, args.t);
 
-		const countries = await this.fetchAPI(t, countryName);
-		if (countries.length === 0) throw t(LanguageKeys.System.QueryFail);
+		const countries = await this.fetchAPI(countryName);
+		if (countries.length === 0) this.error(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, t, countries);
+		const display = await this.buildDisplay(message, args.t, countries);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, countryName: string) {
+	private async fetchAPI(countryName: string) {
 		try {
 			return await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 

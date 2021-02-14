@@ -9,4 +9,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	responseKey: LanguageKeys.Commands.Management.SetImageLogsSet,
 	settingsKey: GuildSettings.Channels.ImageLogs
 })
-export default class extends ChannelConfigurationCommand {}
+export class UserChannelConfigurationCommand extends ChannelConfigurationCommand {}

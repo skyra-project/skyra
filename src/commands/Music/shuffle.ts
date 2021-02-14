@@ -8,14 +8,14 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.ShuffleDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
 })
-export default class extends MusicCommand {
+export class UserMusicCommand extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
-	public async run(message: GuildMessage) {
+	public async run(message: GuildMessage, args: MusicCommand.Args) {
 		const { audio } = message.guild;
 		await audio.shuffleTracks();
 
 		const amount = await audio.count();
-		await message.sendTranslated(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
+		await message.channel.send(args.t(LanguageKeys.Commands.Music.ShuffleSuccess, { amount }));
 	}
 }

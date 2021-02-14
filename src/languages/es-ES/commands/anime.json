@@ -36,7 +36,6 @@
 		"ova": "📼 Animación original de vídeo",
 		"special": "🎴 Especial"
 	},
-	"animeInvalidChoice": "¡Esa es una opción no válida! Por favor, inténtalo con otra opción.",
 	"animeOutputDescription": "**Título en inglés:** {{englishTitle}}\n**Título japonés:** {{japaneseTitle}}\n**Título canónico:** {{canonicalTitle}}\n{{synopsis}}",
 	"animeNoSynopsis": "No hay ninguna aplicación disponible para este título.",
 	"animeEmbedData": {

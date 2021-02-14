@@ -163,12 +163,12 @@ export class StarboardEntity extends BaseEntity {
 	}
 
 	/**
-	 * Destroy this instance
+	 * Removes current entity from the database.
 	 */
-	public async destroy() {
+	public remove() {
 		this.enabled = false;
-		await this.remove();
 		this.#manager.delete(this.#message.id);
+		return super.remove();
 	}
 
 	/**
@@ -190,7 +190,7 @@ export class StarboardEntity extends BaseEntity {
 			this.#starMessage = (await channel.messages.fetch(this.starMessageID)) as GuildMessage;
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.destroy();
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.remove();
 			}
 		}
 	}
@@ -200,23 +200,21 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public async downloadUserList(): Promise<void> {
 		try {
-			this.#users = await fetchReactionUsers(
-				this.#message.channel.id,
-				this.#message.id,
-				await this.#message.guild.readSettings(GuildSettings.Starboard.Emoji)
-			);
+			const [emoji, selfStar] = await this.#message.guild.readSettings([GuildSettings.Starboard.Emoji, GuildSettings.Starboard.SelfStar]);
+			this.#users = await fetchReactionUsers(this.#message.channel.id, this.#message.id, emoji);
 
-			this.#users.delete(this.#message.author.id);
+			// Remove the author's star if self star is disabled:
+			if (!selfStar) this.#users.delete(this.#message.author.id);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
-				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.destroy();
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.remove();
 				return;
 			}
 		}
 
 		if (!this.#users.size) {
-			await this.destroy();
+			await this.remove();
 			return;
 		}
 

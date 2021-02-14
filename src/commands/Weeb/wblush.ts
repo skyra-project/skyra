@@ -8,4 +8,4 @@ import { ApplyOptions } from '@sapphire/decorators';
 	queryType: 'blush',
 	responseName: LanguageKeys.Commands.Weeb.Blush
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

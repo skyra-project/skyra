@@ -23,24 +23,24 @@ const enum HigherLowerReactions {
 	cooldown: 7,
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
-	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-	runIn: ['text'],
-	usage: '<wager:wager>'
+	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
+	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
 	private readonly kReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
 	private readonly kTimer = Time.Minute * 3;
 
-	public async run(message: GuildMessage, [wager]: [number]) {
-		const t = await message.fetchT();
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const { t } = args;
+		const wager = await args.pick('shinyWager');
 
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw t(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+			this.error(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		settings.money -= wager;

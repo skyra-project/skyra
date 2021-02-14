@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationMessageEvent } from '#lib/structures';
+import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { getContent } from '#utils/util';
@@ -11,8 +11,8 @@ import type { TFunction } from 'i18next';
 const NEW_LINE = '\n';
 
 @ApplyOptions<ModerationMessageEvent.Options>({
-	reasonLanguageKey: LanguageKeys.Monitors.ModerationNewLine,
-	reasonLanguageKeyWithMaximum: LanguageKeys.Monitors.ModerationNewLineWithMaximum,
+	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationNewLine,
+	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationNewLineWithMaximum,
 	keyEnabled: GuildSettings.Selfmod.NewLines.Enabled,
 	ignoredChannelsPath: GuildSettings.Selfmod.NewLines.IgnoredChannels,
 	ignoredRolesPath: GuildSettings.Selfmod.NewLines.IgnoredRoles,
@@ -23,7 +23,7 @@ const NEW_LINE = '\n';
 		adder: 'newlines'
 	}
 })
-export default class extends ModerationMessageEvent {
+export class UserModerationMessageEvent extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage) {
 		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
@@ -42,7 +42,7 @@ export default class extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() }));
+		return message.alert(t(LanguageKeys.Events.Moderation.Messages.NewLineFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
@@ -50,7 +50,7 @@ export default class extends ModerationMessageEvent {
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.NewLineFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.NewLineFooter)}`)
 			.setTimestamp();
 	}
 }

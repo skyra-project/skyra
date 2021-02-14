@@ -4,36 +4,35 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
 import { TOKENS } from '#root/config';
-import { BrandingColors } from '#utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, IArgument } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+
+const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended,
-	usage: '<xbox|psn|pc:default> <user:...string>',
-	usageDelim: ' '
+	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended
 })
-export default class extends PaginatedMessageCommand {
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
-	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
+		const user = await args.rest('string');
+		const response = await sendLoadingMessage(message, args.t);
 
-		const fortniteUser = await this.fetchAPI(t, user, platform);
-		const display = await this.buildDisplay(message, t, fortniteUser);
+		const fortniteUser = await this.fetchAPI(user, platform);
+		const display = await this.buildDisplay(message, args.t, fortniteUser);
 
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, user: string, platform: platform) {
+	private async fetchAPI(user: string, platform: PlatformUnion) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -46,7 +45,7 @@ export default class extends PaginatedMessageCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw t(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
+			this.error(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 	}
 
@@ -199,6 +198,11 @@ export default class extends PaginatedMessageCommand {
 
 		return display;
 	}
+
+	private static platformResolver: IArgument<PlatformUnion> = Args.make((parameter, { argument }) => {
+		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return Args.ok(parameter.toLowerCase() as PlatformUnion);
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.FortniteInvalidPlatform });
+	});
 }
 
-type platform = 'xbox' | 'psn' | 'pc';
+type PlatformUnion = 'xbox' | 'psn' | 'pc';

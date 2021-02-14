@@ -16,6 +16,7 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
+		"usages": "",
 		"explainedUsage": "",
 		"possibleFormats": "",
 		"examples": "",
@@ -33,12 +34,16 @@
 		"",
 		""
 	],
-	"messageNotFound": "",
+	"messagePromptTimeout": "Cererea a expirat.",
 	"noResults": "",
-	"notEnoughParameters": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
 	"poweredByWeebSh": "",
 	"prefixReminder": "",
-	"queryFail": ""
+	"queryFail": "",
+	"textPromptAbortOptions": [
+		"abort",
+		"cancel",
+		"stop"
+	]
 }

@@ -1,12 +1,13 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { RateLimitManager } from '#lib/structures';
 import type { AnyObject } from '#lib/types';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
+import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { RateLimitManager, Store } from 'klasa';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
@@ -277,7 +278,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.attachments.hardAction', default: 0 })
 	public selfmodAttachmentsHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.attachments.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodAttachmentsHardActionDuration: number | null = null;
 
@@ -317,7 +324,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.capitals.hardAction', default: 0 })
 	public selfmodCapitalsHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.capitals.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodCapitalsHardActionDuration: number | null = null;
 
@@ -353,7 +366,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.links.hardAction', default: 0 })
 	public selfmodLinksHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.links.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodLinksHardActionDuration: number | null = null;
 
@@ -369,7 +388,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'selfmod.messages.enabled', default: false })
 	public selfmodMessagesEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.messages.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredRoles: string[] = [];
 
@@ -393,7 +412,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.messages.hardAction', default: 0 })
 	public selfmodMessagesHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.messages.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodMessagesHardActionDuration: number | null = null;
 
@@ -429,7 +454,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.newlines.hardAction', default: 0 })
 	public selfmodNewlinesHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.newlines.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodNewlinesHardActionDuration: number | null = null;
 
@@ -469,7 +500,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.invites.hardAction', default: 0 })
 	public selfmodInvitesHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.invites.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodInvitesHardActionDuration: number | null = null;
 
@@ -505,7 +542,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.filter.hardAction', default: 0 })
 	public selfmodFilterHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.filter.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodFilterHardActionDuration: number | null = null;
 
@@ -549,7 +592,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.reactions.hardAction', default: 0 })
 	public selfmodReactionsHardAction = 0;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: Time.Second, maximum: Time.Year * 5 })
+	@ConfigurableKey({
+		dashboardOnly: true,
+		type: 'timespan',
+		description: LanguageKeys.Settings.DashboardOnlyKey,
+		minimum: Time.Second,
+		maximum: Time.Year * 5
+	})
 	@Column('bigint', { name: 'selfmod.reactions.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodReactionsHardActionDuration: number | null = null;
 
@@ -560,12 +609,6 @@ export class GuildEntity extends BaseEntity {
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
 	@Column('integer', { name: 'selfmod.reactions.thresholdDuration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
-
-	@Column('boolean', { name: 'selfmod.raid', default: false })
-	public selfmodRaid = false;
-
-	@Column('smallint', { name: 'selfmod.raidthreshold', default: 10 })
-	public selfmodRaidthreshold = 10;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -718,7 +761,7 @@ export class GuildEntity extends BaseEntity {
 	protected entityLoad() {
 		this.adders.refresh();
 		this.permissionNodes.refresh();
-		this.nms = new RateLimitManager(this.noMentionSpamMentionsAllowed, this.noMentionSpamTimePeriod * 1000);
+		this.nms = new RateLimitManager(this.noMentionSpamTimePeriod * 1000, this.noMentionSpamMentionsAllowed);
 		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
 		this.#words = this.selfmodFilterRaw.slice();
 	}
@@ -805,7 +848,6 @@ export interface NotificationsStreamsTwitchStreamer {
 	channel: string;
 	author: string;
 	message: string | null;
-	embed: boolean;
 	status: NotificationsStreamsTwitchEventStatus;
 	gamesBlacklist: readonly string[];
 	gamesWhitelist: readonly string[];

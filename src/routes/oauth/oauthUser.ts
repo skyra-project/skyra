@@ -8,7 +8,7 @@ import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
 import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
-export default class extends Route {
+export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, Time.Minute * 5, true)
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
@@ -31,7 +31,7 @@ export default class extends Route {
 						id: request.auth.id,
 						token: body.access_token,
 						refresh: body.refresh_token,
-						expires: body.expires_in
+						expires: Date.now() + body.expires_in * 1000
 					});
 
 					response.cookies.add(auth.cookie, authentication, { maxAge: body.expires_in });

@@ -5,20 +5,20 @@ import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import type { Message, User } from 'discord.js';
+import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 15,
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '[user:username]'
+	permissions: ['ATTACH_FILES']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, [user = message.author]: [User]) {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const user = await args.pick('userName').catch(() => message.author);
 		const userAvatar = await fetchAvatar(user);
 		const attachment = await this.generateImage(userAvatar);
 

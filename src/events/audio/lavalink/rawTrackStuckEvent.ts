@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackStuckPayload } from '@skyra/audio';
 
 @ApplyOptions<AudioEvent.Options>({ event: 'TrackStuckEvent' })
-export default class extends AudioEvent {
+export class UserAudioEvent extends AudioEvent {
 	public async run(payload: IncomingEventTrackStuckPayload) {
 		// If the threshold is small, send nothing.
 		if (payload.thresholdMs < 1000) return;

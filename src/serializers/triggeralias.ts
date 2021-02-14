@@ -2,11 +2,15 @@ import { Serializer, SerializerUpdateContext, TriggerAlias } from '#lib/database
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer<TriggerAlias> {
-	public parse(value: string, { t }: SerializerUpdateContext) {
-		const values = value.split(' ');
-		if (values.length === 2) return this.ok({ input: values[0], output: values[1] });
-		return this.error(t(LanguageKeys.Serializers.TriggerAliasInvalid));
+export class UserSerializer extends Serializer<TriggerAlias> {
+	public async parse(args: Serializer.Args) {
+		const input = await args.pickResult('string');
+		if (!input.success) return this.errorFromArgument(args, input.error);
+
+		const output = await args.pickResult('command');
+		if (!output.success) return this.errorFromArgument(args, output.error);
+
+		return this.ok({ input: input.value, output: output.value.name });
 	}
 
 	public isValid(value: TriggerAlias, { t }: SerializerUpdateContext): Awaited<boolean> {

@@ -1,8 +1,8 @@
 import { Events } from '#lib/types/Enums';
+import { Event } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { Event } from 'klasa';
 
-export default class extends Event {
+export class UserEvent extends Event {
 	public run(message: Message) {
 		// If the message was sent by a webhook, return:
 		if (message.webhookID !== null) return;

@@ -11,17 +11,17 @@ import type { Message } from 'discord.js';
 	cooldown: 7,
 	description: LanguageKeys.Commands.Games.SlotMachineDescription,
 	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
-	requiredPermissions: ['ATTACH_FILES'],
-	usage: '<wager:wager>'
+	permissions: ['ATTACH_FILES']
 })
-export default class extends SkyraCommand {
-	public async run(message: Message, [wager]: [number]) {
-		const t = await message.fetchT();
-		const { users } = await DbSet.connect();
+export class UserCommand extends SkyraCommand {
+	public async run(message: Message, args: SkyraCommand.Args) {
+		const { t } = args;
+
+		const [{ users }, wager] = await Promise.all([DbSet.connect(), args.pick('shinyWager')]);
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw t(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+			this.error(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const [attachment, amount] = await new Slotmachine(message, wager, settings).run();

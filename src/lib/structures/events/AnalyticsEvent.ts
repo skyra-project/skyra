@@ -2,7 +2,7 @@ import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
 import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';
-import { Event, EventOptions, PieceContext } from 'klasa';
+import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 
 export abstract class AnalyticsEvent extends Event {
 	@enumerable(false)

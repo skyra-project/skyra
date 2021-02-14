@@ -13,7 +13,6 @@
 	"channelsNsfwMessageLogs": "Le canal pour les logs des messages NSFW; cette option est la même que `channelsMessageLogs` sauf pour les messages NSFW.",
 	"channelsPruneLogs": "Le canal pour les logs des messages élagués ; cette option est la même que `channelsMessageLogs` sauf pour les annonces des messages élagués.",
 	"channelsReactionLogs": "Le canal pour les logs des réactions ; cette option est la même que `channelsMessageLogs` sauf pour les réactions ajoutées aux messages. Si vous voulez que j'ignore les Twemoji (les émojis par défauts), vous pouvez désactiver `events.twemoji-reactions`.",
-	"channelsRoles": "Le canal pour les rôles de réaction ; ajouter une réaction vous donnera un rôle configuré.",
 	"channelsSpam": "Le canal vers lequel je devrais rediriger les utilisateurs quand ils utilisent des commandes que je considère comme spammy.",
 	"dashboardOnlyKey": "Cette clé ne peut être configurée que via [le tableau de bord web](https://skyra.pw)",
 	"disabledChannels": "La liste des canaux où les commandes sont désactivées ; par exemple, ajouter le canal general va interdire l'utilisation des commandes là. Les modérateurs ne sont pas soumis à cette restriction.",

@@ -1,3 +1,4 @@
+import { RateLimitManager } from '#lib/structures';
 import type {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
@@ -9,7 +10,6 @@ import { TOKENS, TWITCH_CALLBACK } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { createHmac } from 'crypto';
-import { RateLimitManager } from 'klasa';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',
@@ -24,7 +24,7 @@ export interface OauthResponse {
 }
 
 export class Twitch {
-	public readonly ratelimitsStreams = new RateLimitManager(1, Time.Minute * 3 * 1000);
+	public readonly ratelimitsStreams = new RateLimitManager(Time.Minute * 3000, 1);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
 	public readonly BRANDING_COLOUR = 0x6441a4;
 
@@ -53,7 +53,7 @@ export class Twitch {
 
 	public streamNotificationDrip(id: string) {
 		try {
-			this.ratelimitsStreams.acquire(id).drip();
+			this.ratelimitsStreams.acquire(id).consume();
 			return false;
 		} catch {
 			return true;
@@ -137,17 +137,4 @@ export class Twitch {
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;
 	}
-}
-
-export const TWITCH_REPLACEABLES_REGEX = /%ID%|%TITLE%|%VIEWER_COUNT%|%GAME_NAME%|%GAME_ID%|%LANGUAGE%|%USER_ID%|%USER_NAME%/g;
-
-export const enum TWITCH_REPLACEABLES_MATCHES {
-	ID = '%ID%',
-	TITLE = '%TITLE%',
-	VIEWER_COUNT = '%VIEWER_COUNT%',
-	GAME_NAME = '%GAME_NAME%',
-	GAME_ID = '%GAME_ID%',
-	LANGUAGE = '%LANGUAGE%',
-	USER_ID = '%USER_ID%',
-	USER_NAME = '%USER_NAME%'
 }

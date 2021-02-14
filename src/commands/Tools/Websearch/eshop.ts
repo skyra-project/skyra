@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { TOKENS } from '#root/config';
-import { BrandingColors, Mime } from '#utils/constants';
-import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
+import { Mime } from '#utils/constants';
+import { fetch, FetchMethods, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -17,25 +17,23 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EshopDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended,
-	usage: '<gameName:string>'
+	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended
 })
-export default class extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, [gameName]: [string]) {
-		const t = await message.fetchT();
-		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+		const gameName = await args.rest('string');
 
-		const { results: entries } = await this.fetchAPI(t, gameName);
-		if (!entries.length) throw t(LanguageKeys.System.QueryFail);
+		const response = await sendLoadingMessage(message, args.t);
 
-		const display = await this.buildDisplay(message, t, entries[0].hits);
+		const { results: entries } = await this.fetchAPI(gameName);
+		if (!entries.length) this.error(LanguageKeys.System.QueryFail);
+
+		const display = await this.buildDisplay(message, args.t, entries[0].hits);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(t: TFunction, gameName: string) {
+	private async fetchAPI(gameName: string) {
 		try {
 			return fetch<EshopResult>(
 				API_URL,
@@ -64,7 +62,7 @@ export default class extends PaginatedMessageCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw t(LanguageKeys.System.QueryFail);
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 

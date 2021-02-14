@@ -17,11 +17,6 @@
 	"execExtended": {
 		"extendedHelp": ""
 	},
-	"setAvatarDescription": "",
-	"setAvatarExtended": {
-		"extendedHelp": "",
-		"reminder": ""
-	},
 	"donateDescription": "",
 	"donateExtended": {
 		"extendedHelp": ""
@@ -30,10 +25,6 @@
 	"echoExtended": {
 		"extendedHelp": "",
 		"reminder": ""
-	},
-	"feedbackDescription": "",
-	"feedbackExtended": {
-		"extendedHelp": ""
 	},
 	"statsDescription": "",
 	"statsExtended": {

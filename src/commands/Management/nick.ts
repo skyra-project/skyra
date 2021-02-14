@@ -10,15 +10,15 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.NickDescription,
 	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredPermissions: ['CHANGE_NICKNAME'],
-	runIn: ['text'],
-	usage: '[nick:string{,32}]'
+	permissions: ['CHANGE_NICKNAME'],
+	runIn: ['text', 'news']
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [nickname = '']: [string?]) {
+export class UserCommand extends SkyraCommand {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const nickname = await args.pick('string', { maximum: 32 }).catch(() => '');
 		await message.guild.me!.setNickname(nickname);
-		return nickname
-			? message.alert(await message.resolveKey(LanguageKeys.Commands.Management.NickSet, { nickname }))
-			: message.alert(await message.resolveKey(LanguageKeys.Commands.Management.NickCleared));
+		return message.alert(
+			nickname ? args.t(LanguageKeys.Commands.Management.NickSet, { nickname }) : args.t(LanguageKeys.Commands.Management.NickCleared)
+		);
 	}
 }

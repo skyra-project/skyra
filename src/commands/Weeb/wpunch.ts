@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Weeb.PunchExtended,
 	queryType: 'punch',
 	responseName: LanguageKeys.Commands.Weeb.Punch,
-	usage: '<user:username>'
+	requireUser: true
 })
-export default class extends WeebCommand {}
+export class UserWeebCommand extends WeebCommand {}

@@ -31,7 +31,7 @@ export interface Fallback {
  * ```ts
  *	// No fallback (returns undefined)
  *	function requiresPermission(value: number) {
- *		return createFunctionInhibitor((message: KlasaMessage) =>
+ *		return createFunctionInhibitor((message: Message) =>
  *			message.hasAtLeastPermissionLevel(value));
  *	}
  *
@@ -40,7 +40,7 @@ export interface Fallback {
  *		value: number,
  *		fallback: () => unknown = () => undefined
  *	) {
- *		return createFunctionInhibitor((message: KlasaMessage) =>
+ *		return createFunctionInhibitor((message: Message) =>
  *			message.hasAtLeastPermissionLevel(value), fallback);
  *	}
  * ```

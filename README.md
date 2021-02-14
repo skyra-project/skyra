@@ -52,9 +52,10 @@ name from the lore) however I decided "Skyra" would be a better name.
 Skyra does not only feature almost every feature that is needed in the majority of guilds (discord servers) while being
 completely configurable, she also has a backstory, inherited from the lore I have been creating since I was a child.
 
-There have been over 13 rewrites with an active development of over two years, I have met many developers and friends in
+There have been over 14 rewrites with an active development of over two years, I have met many developers and friends in
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for
-Klasa.
+Klasa. And later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire Project][],
+which is what Skyra is currently using, specifically [Sapphire Framework][]
 
 _Who knows, I might write a book someday for Skyra's lore._
 
@@ -66,13 +67,13 @@ We use **Crowdin** to translate Skyra's messages into different languages. If yo
 
 **Skyra links**
 
--   [Skyra Invite Link]
--   [Support Server]
+-   [Skyra Invite Link][]
+-   [Support Server][]
 -   [Patreon]
 
 **Framework links**
 
--   [Klasa's Website]
+-   [Sapphire's Website][]
 
 ## Buy us some doughnuts
 
@@ -155,7 +156,9 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [skyra invite link]: https://invite.skyra.pw
 [support server]: https://join.skyra.pw
 [patreon]: https://donate.skyra.pw/patreon
-[klasa's website]: https://klasa.js.org
+[sapphire project]: https://github.com/sapphire-project
+[sapphire framework]: https://github.com/sapphire-project/framework
+[sapphire's website]: https://website.sapphire-project.vercel.app
 [patreonimage]: https://cdn.skyra.pw/gh-assets/patreon.png
 [paypalimage]: https://cdn.skyra.pw/gh-assets/paypal.png
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png

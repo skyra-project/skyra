@@ -27,7 +27,7 @@
 	},
 	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
-	"infoBody": "Skyra {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.\nShe is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.\n\nSkyra features:\n• Advanced Moderation with temporary actions included\n• Announcement management\n• Fully configurable\n• Message logs, member logs, and mod logs\n• Multilingual\n• Profiles and levels, with leaderboards and social management\n• Role management\n• Weeb commands (+10)!\n• A full PokéDex with all data you will need\nAnd more!",
+	"infoBody": "Skyra {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.\nShe is built on top of Sapphire Framework, a 'plug-and-play' framework built on top of the Discord.js library.\n\nSkyra features:\n• Advanced Moderation with temporary actions included\n• Announcement management\n• Fully configurable\n• Message logs, member logs, and mod logs\n• Multilingual\n• Profiles and levels, with leaderboards and social management\n• Role management\n• Weeb commands (+10)!\n• A full PokéDex with all data you will need\nAnd more!",
 	"infoDescription": "Provides some information about me.",
 	"infoExtended": {
 		"extendedHelp": "Just... that :P"

@@ -127,6 +127,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/Stitch07"><img src="https://avatars.githubusercontent.com/u/29275227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stitch07</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=Stitch07" title="Code">💻</a></td>
     <td align="center"><a href="https://gideonbot.com/"><img src="https://avatars.githubusercontent.com/u/22133246?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Adrian Castro</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=adrifcastr" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/apps/allcontributors"><img src="https://avatars.githubusercontent.com/in/23186?v=4?s=100" width="100px;" alt=""/><br /><sub><b>allcontributors[bot]</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=allcontributors[bot]" title="Documentation">📖</a></td>
   </tr>
 </table>
 

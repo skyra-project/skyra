@@ -1,6 +1,9 @@
 {
 	"8ballDescription": "",
 	"8ballExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -12,8 +15,27 @@
 			""
 		]
 	},
+	"changemymindDescription": "",
+	"changemymindExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"текст",
+				"Желаемая фраза."
+			]
+		],
+		"examples": [
+			"Skyra - лучший бот на этом сервере"
+		]
+	},
 	"choiceDescription": "",
 	"choiceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -26,21 +48,11 @@
 			"Кошка, Собака"
 		]
 	},
-	"changemymindDescription": "",
-	"changemymindExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"текст",
-				"Желаемая фраза."
-			]
-		],
-		"examples": [
-			"Skyra - лучший бот на этом сервере"
-		]
-	},
 	"diceDescription": "",
 	"diceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"",
@@ -54,6 +66,9 @@
 	},
 	"howToFlirtDescription": "",
 	"howToFlirtExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -67,6 +82,9 @@
 	},
 	"loveDescription": "",
 	"loveExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -80,14 +98,42 @@
 	},
 	"markovDescription": "",
 	"markovExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": ""
 	},
 	"norrisDescription": "",
 	"norrisExtended": {
 		"extendedHelp": ""
 	},
+	"peepoloveDescription": "",
+	"peepoloveExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"punDescription": "Показывает вам случайный каламбур.",
+	"punExtended": {
+		"extendedHelp": ""
+	},
 	"rateDescription": "",
 	"rateExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -102,10 +148,24 @@
 	},
 	"shindeiruDescription": "",
 	"shindeiruExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"wakandaDescription": "",
+	"wakandaExtended": {
 		"extendedHelp": ""
 	},
 	"xkcdDescription": "Читайте комиксы с XKCD.",
 	"xkcdExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -117,14 +177,6 @@
 			"1091",
 			""
 		]
-	},
-	"punDescription": "Показывает вам случайный каламбур.",
-	"punExtended": {
-		"extendedHelp": ""
-	},
-	"wakandaDescription": "",
-	"wakandaExtended": {
-		"extendedHelp": ""
 	},
 	"8ballOutput": "🎱 Вопрос от {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {

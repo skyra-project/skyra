@@ -5,13 +5,10 @@
 	"announcementEmbedMentions": "{{header}}:",
 	"announcementEmbedMentionsWithMentions": "{{header}}, și menționează: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "Această comandă necesită un canal de anunţuri (**channels.announcement** în comanda de configurare) care îi spune lui Skyra unde ar trebui să publice mesajele de anunţ.\n\nÎntrebarea este, este această comandă necesară? Ei bine, nimic nu vă împiedică să vă faceți singur anunțurile, totuși, sunt mulți oameni care urăsc să fie menționați prin everyone/here.\n\nPentru a evita acest lucru, Skyra vă oferă opţiunea de a crea un rol de abonat, care nu poate fi menţionat (pentru a evita ca oamenii să menţioneze acest rol), și odată ce rulezi această comandă, Skyra va seta rolul de a fi menționabil, postează mesajul și setează rolul să nu mai fie menționabil.\n\nÎn plus, poți configura Skyra pentru a trimite anunțul ca mesaj embed prin setarea opțiunii **mesaje.announcement-embed** în comanda de configurare. Când trimiteți mesajul ca un embed, puteți exclude menționările oricăror utilizatori, @here sau @everyone prin furnizarea steagului `--excludeMentions` la anunț.",
-		"explainedUsage": [
-			[
-				"announcement",
-				"Textul anunţului de postat."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Această comandă necesită un canal de anunţuri (**channels.announcement** în comanda de configurare) care îi spune lui Skyra unde ar trebui să publice mesajele de anunţ.\n\nÎntrebarea este, este această comandă necesară? Ei bine, nimic nu vă împiedică să vă faceți singur anunțurile, totuși, sunt mulți oameni care urăsc să fie menționați prin everyone/here.\n\nPentru a evita acest lucru, Skyra vă oferă opţiunea de a crea un rol de abonat, care nu poate fi menţionat (pentru a evita ca oamenii să menţioneze acest rol), și odată ce rulezi această comandă, Skyra va seta rolul de a fi menționabil, postează mesajul și setează rolul să nu mai fie menționabil.\n\nÎn plus, poți configura Skyra pentru a trimite anunțul ca mesaj embed prin setarea opțiunii **mesaje.announcement-embed** în comanda de configurare. Când trimiteți mesajul ca un embed, puteți exclude menționările oricăror utilizatori, @here sau @everyone prin furnizarea steagului `--excludeMentions` la anunț.",
 		"examples": [
 			"Mă bucur să vă anunț că avem un bot capabil să trimită anunțuri în siguranță pentru abonații noștri!"
 		],

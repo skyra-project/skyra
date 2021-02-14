@@ -7,7 +7,25 @@
 	"confNochange": "",
 	"confServerDescription": "",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "",
 	"confDashboardOnlyKey": "",
@@ -18,8 +36,24 @@
 	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",
 	"confMenuRenderSelect": "",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "",
 	"confMenuRenderRemove": "",
 	"confMenuRenderReset": "",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "",
 	"updateDescription": "",
 	"updateExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

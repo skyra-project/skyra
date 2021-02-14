@@ -1,26 +1,20 @@
 {
 	"animeDescription": "Zoek je favoriete anime met dit commando.",
 	"animeExtended": {
-		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de anime die je aanvraagt.",
-		"explainedUsage": [
-			[
-				"zoekopdracht",
-				"De naam van de anime die je zoekt."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de anime die je aanvraagt.",
 		"examples": [
 			"One Piece"
 		]
 	},
 	"mangaDescription": "Zoek je favoriete manga met dit commando.",
 	"mangaExtended": {
-		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de manga die je aanvraagt.",
-		"explainedUsage": [
-			[
-				"zoekopdracht",
-				"De naam van de manga die je zoekt."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Deze commando bevraagt Kitsu.io om gegevens te tonen voor de manga die je aanvraagt.",
 		"examples": [
 			"Stone Ocean",
 			"One Piece"

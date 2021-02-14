@@ -35,9 +35,9 @@ export function translate(identifier: string): string {
 		case Identifiers.ArgumentVoiceChannel:
 			return `arguments:${identifier}`;
 		case Identifiers.ArgsUnavailable:
-			return LanguageKeys.Args.Unavailable;
+			return LanguageKeys.Arguments.Unavailable;
 		case Identifiers.ArgsMissing:
-			return LanguageKeys.Args.Missing;
+			return LanguageKeys.Arguments.Missing;
 		case Identifiers.CommandDisabled:
 			return LanguageKeys.Preconditions.DisabledGlobal;
 		case Identifiers.PreconditionCooldown:

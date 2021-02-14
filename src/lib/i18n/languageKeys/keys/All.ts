@@ -1,4 +1,3 @@
-export * as Args from './Args';
 export * as Arguments from './Arguments';
 export * as Commands from './Commands';
 export * as Events from './events/All';

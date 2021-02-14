@@ -54,5 +54,7 @@
 	"user": "I could not resolve `{{parameter}}` to a user, please make sure you typed their ID correctly!\n\n> **Tip**: You can also use mentions!",
 	"voiceChannel": "I could not resolve `{{parameter}}` to a voice channel, please make sure you typed its name or ID correctly!",
 	"wager": "I am sorry, but {{parameter}} {{SHINY}} is an invalid amount to bet. You can bet one of {{possibles, orList}}",
-	"winners": "I could not resolve `{{parameter}}` to a valid winner amount!\n**Hint**: the following format is supported: `Nw`, being `N` any integer, e.g. `3w` or `12w`."
+	"winners": "I could not resolve `{{parameter}}` to a valid winner amount!\n**Hint**: the following format is supported: `Nw`, being `N` any integer, e.g. `3w` or `12w`.",
+	"unavailable": "Whoops! It seems I couldn't find a parser for a parameter, please contact my developers about it!",
+	"missing": "You need to write another parameter!\n\n> **Tip**: You can do `{{commandContext.commandPrefix}}help {{command.name}}` to find out how to use this command."
 }

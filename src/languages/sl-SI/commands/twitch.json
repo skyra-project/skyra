@@ -1,7 +1,6 @@
 {
 	"followage": "",
 	"followageMissingEntries": "",
-	"followageNotFollowing": "",
 	"twitchNoEntries": "",
 	"twitchTitles": {
 		"followers": "",
@@ -14,17 +13,12 @@
 		"affiliated": "",
 		"partnered": ""
 	},
-	"twitchCreatedAt": "Ustvarjeno ob:",
-	"twitchSubscriptionRequiredStreamer": "",
 	"twitchSubscriptionStreamerNotFound": "",
-	"twitchSubscriptionRequiredChannel": "",
-	"twitchSubscriptionRequiredStatus": "",
 	"twitchSubscriptionStatusValues": [
 		"",
 		""
 	],
 	"twitchSubscriptionInvalidStatus": "",
-	"twitchSubscriptionRequiredContent": "",
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
@@ -47,22 +41,58 @@
 	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			""
 		]
 	},
 	"twitchDescription": "",
 	"twitchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			"riotgames"
 		]
 	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -81,8 +111,8 @@
 			]
 		],
 		"examples": [
-			"add favna #twitch online --embed",
-			"add favna #twitch online %USER_NAME% je šel v živo | %TITLE%",
+			"",
+			"",
 			"remove kyranet #twitch online",
 			"reset kyranet",
 			"reset",

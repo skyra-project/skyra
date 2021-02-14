@@ -1,9 +1,6 @@
 {
-	"cannotAccessChannel": "",
 	"channelNotPostable": "",
-	"databaseError": "",
 	"discordAbortError": "",
-	"error": "",
 	"exceededLengthChooseOutput": "",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "",
@@ -16,7 +13,9 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
+		"aliases": "",
 		"usages": "",
+		"extendedHelp": "",
 		"explainedUsage": "",
 		"possibleFormats": "",
 		"examples": "",
@@ -34,7 +33,7 @@
 		"",
 		""
 	],
-	"messagePromptTimeout": "Cererea a expirat.",
+	"messagePromptTimeout": "",
 	"noResults": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
@@ -42,8 +41,8 @@
 	"prefixReminder": "",
 	"queryFail": "",
 	"textPromptAbortOptions": [
-		"abort",
-		"cancel",
-		"stop"
+		"",
+		"",
+		""
 	]
 }

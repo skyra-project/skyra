@@ -1,8 +1,6 @@
 {
-	"and": "и",
 	"defaultLanguage": "Язык по умолчанию",
 	"no": "Нет",
-	"or": "или",
 	"yes": "Да",
 	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",

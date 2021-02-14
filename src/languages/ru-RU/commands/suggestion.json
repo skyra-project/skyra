@@ -1,10 +1,13 @@
 {
 	"suggestDescription": "Публикует предложение для сервера.",
 	"suggestExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"предложение",
+				"",
 				"Ваше предложение"
 			]
 		],
@@ -14,15 +17,30 @@
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
-	"suggestNoSetupAsk": "",
-	"suggestNoSetupAbort": "",
 	"suggestNopermissions": "",
-	"suggestChannelPrompt": "",
 	"suggestTitle": "Предложение #{{id}}",
 	"suggestSuccess": "Спасибо за ваше предложение! Оно было успешно опубликовано в {{channel}}!",
 	"resolveSuggestionDescription": "Установите статус предложения.",
 	"resolveSuggestionExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			"",
 			"",
@@ -34,6 +52,7 @@
 		"reminder": ""
 	},
 	"resolveSuggestionInvalidId": "",
+	"resolveSuggestionInvalidAction": "",
 	"resolveSuggestionMessageNotFound": "",
 	"resolveSuggestionIdNotFound": "",
 	"resolveSuggestionDefaultComment": "",

@@ -1,9 +1,6 @@
 {
-	"cannotAccessChannel": "",
 	"channelNotPostable": "",
-	"databaseError": "",
 	"discordAbortError": "",
-	"error": "",
 	"exceededLengthChooseOutput": "",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "",
@@ -16,13 +13,13 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
-		"aliases": "🖇️ | **Aliases**",
-		"usages": "📝 | **Command Usage**",
-		"extendedHelp": "🔍 | **Extended Help**",
-		"explainedUsage": "⚙ | **Explained usage**",
-		"possibleFormats": "🔢 | **Possible formats**",
-		"examples": "🔗 | **Examples**",
-		"reminders": "⏰ | **Reminder**"
+		"aliases": "",
+		"usages": "",
+		"extendedHelp": "",
+		"explainedUsage": "",
+		"possibleFormats": "",
+		"examples": "",
+		"reminders": ""
 	},
 	"highestRole": "",
 	"jumpTo": "",
@@ -36,10 +33,16 @@
 		"",
 		""
 	],
+	"messagePromptTimeout": "",
 	"noResults": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
 	"poweredByWeebSh": "",
 	"prefixReminder": "",
-	"queryFail": ""
+	"queryFail": "",
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
 }

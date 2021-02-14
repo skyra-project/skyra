@@ -1,6 +1,9 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -23,22 +26,11 @@
 	},
 	"currentTimeDst": "",
 	"currentTimeNoDst": "",
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"gimageDescription": "",
 	"gimageExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -52,18 +44,29 @@
 		],
 		"reminder": ""
 	},
-	"lmgtfyDescription": "",
-	"lmgtfyExtended": {
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"",
 				""
 			]
+		],
+		"examples": [
+			"",
+			""
 		]
 	},
-	"lmgtfyClick": "",
 	"weatherDescription": "",
 	"weatherExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[

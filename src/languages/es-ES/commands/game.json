@@ -1,15 +1,21 @@
 {
 	"c4Description": "Juega al Conecta Cuatro con alguien.",
 	"c4Extended": {
-		"extendedHelp": "Este juego se juega mejor en el ordenador.\n\nEl objetivo de Conecta 4 es alinear cuatro fichas sobre un tablero formado por seis filas y siete columnas. Cada jugador dispone de 21 fichas de un color.​ Por turnos, los jugadores deben introducir una ficha en la columna que prefieran (siempre que no esté completa) y ésta caerá a la posición más baja. Gana la partida el primero que consiga alinear cuatro fichas consecutivas de un mismo color en horizontal, vertical o diagonal.​ Si todas las columnas están llenas pero nadie ha hecho una fila válida, hay empate."
+		"usages": [
+			""
+		],
+		"extendedHelp": "Este juego se juega mejor en el ordenador.\n\nEl objetivo de Conecta 4 es alinear cuatro fichas sobre un tablero formado por seis filas y siete columnas. Cada jugador dispone de 21 fichas de un color.​ Por turnos, los jugadores deben introducir una ficha en la columna que prefieran (siempre que no esté completa) y ésta caerá a la posición más baja. Gana la partida el primero que consiga alinear cuatro fichas consecutivas de un mismo color en horizontal, vertical o diagonal.​ Si todas las columnas están llenas pero nadie ha hecho una fila válida, hay empate.",
+		"examples": [
+			""
+		]
 	},
-	"c4GameColumnFull": "Esta columna está llena. Por favor intente otra.",
+	"c4GameColumnFull": "",
 	"c4GameDraw": "¡Esta partida concluyó en un **empate**!",
 	"c4GameNext": "Turno para: {{user}} (rojo).",
 	"c4GameNextTurn0": "Turno para: {{user}} (azul).",
 	"c4GameWin": "¡{{user}} (rojo) ganó!",
 	"c4GameWinTurn0": "¡{{user}} (azul) ganó!",
-	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
+	"c4Prompt": "",
 	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
 	"coinFlipCoinnames": [
@@ -18,10 +24,27 @@
 	],
 	"coinFlipDescription": "¡Lanza una moneda al aire!",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Lanza una moneda al aire. Si adivinas el lado que aparece, recuperarás el doble de apuesta, si no, perderás tu apuesta.\nTambién puedes hacer un lanzamiento sin apostar, pero no tendrías una recompensa por ello.\n\nAhora... ¡hora de lanzar monedas!",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
-			"cara 50",
-			"cruz 200"
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"coinFlipInvalidCoinname": "Disculpe, ¡pero {{arg}} no es una cara de moneda!",
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,7 +491,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -465,6 +509,13 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": "**Antes**: {{previous, number}} {{SHINY}}\n**Después**: {{next, number}} {{SHINY}}"
 }

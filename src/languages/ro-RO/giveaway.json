@@ -6,12 +6,9 @@
 	"title": "🎉 **GIVEAWAY** 🎉",
 	"lastchance": "**ULTIMA ȘANȘĂ**! Timp rămas: **{{time, duration}}**. Reacţionaţi la acest mesaj cu 🎉 pentru a vă alătura.",
 	"lastchanceTitle": "🎉 **ULTIMA ȘANȘĂ LA GIVEAWAY** 🎉",
-	"ended": "Câștigător: {{winners, andList}}",
-	"endedPlural": "Câștigători: {{winners, andList}}",
 	"endedNoWinner": "Niciun câștigător...",
 	"endedAt": "S-a încheiat la:",
 	"endedTitle": "🎉 **GIVEAWAY FINALIZAT** 🎉",
-	"endedMessage": "Felicitări {{winners, andList}}! Ai câștigat giveaway-ul **{{title}}**",
 	"endedMessageNoWinner": "Giveaway-ul **{{title}}** s-a încheiat fără suficienți participanți.",
 	"scheduled": "Giveaway-ul va începe în {{scheduledTime, duration}}."
 }

@@ -1,6 +1,9 @@
 {
 	"yarnDescription": "Antwortet mit Informationen zu einem NodeJS-Paket mit Hilfe der Registry des Yarn-Pakets",
 	"yarnExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Dies ist für NodeJS-Entwickler, die schnell Informationen über ein Paket finden möchten, das auf [npm]veröffentlicht wurde (https://npmjs.com)",
 		"explainedUsage": [
 			[

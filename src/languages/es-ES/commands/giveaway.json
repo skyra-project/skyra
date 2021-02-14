@@ -1,19 +1,28 @@
 {
 	"giveawayDescription": "Comienza un nuevo sorteo.",
 	"giveawayExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Este comando está diseñado para gestionar los sorteos. Puedes iniciarlos con este comando dándole la hora y el título.\n\nCuando se ha creado un sorteo, enviaré un mensaje y reaccionaré a éste con 🎉 para que los miembros del servidor puedan participar en él.\n\nTambién puedes pasar el modificador `--winners=Xw`, donde X es un número (por ejemplo 2w para 2 ganadores) para cambiar el número de ganadores que un sorteo tendrá.\n\nEl máximo de ganadores posible es de 25.",
 		"explainedUsage": [
 			[
-				"canal",
-				"(Opcional) El canal en el que iniciar el sorteo"
+				"",
+				""
 			],
 			[
-				"tiempo",
+				"",
 				"El tiempo que el sorteo debe durar."
 			],
 			[
-				"título",
-				"El título del sorteo."
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -24,43 +33,56 @@
 	},
 	"giveawayRerollDescription": "Re-elige los ganadores de un sorteo.",
 	"giveawayRerollExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Este comando está diseñado para volver a elegir los ganadores de sorteos terminados. Por favor revisa `Skyra, help gstart` para más información sobre cómo crear uno.",
 		"explainedUsage": [
 			[
-				"ganador(es)",
+				"",
 				"La cantidad de ganadores a escoger."
 			],
 			[
-				"mensaje",
-				"El mensaje a re-sortear. Por defecto es el último mensaje de sorteo."
+				"",
+				""
 			]
 		],
 		"examples": [
 			"",
-			"633939404745998346",
-			"5",
-			"5 633939404745998346"
+			"",
+			""
 		]
 	},
 	"giveawayScheduleDescription": "Programe un sorteo para que comience en un determinado momento.",
 	"giveawayScheduleExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Este comando prepara un sorteo para comenzar en un determinado momento si no desea iniciarlo inmediatamente.\n\nPuedes pasarle el modificador `--winners=X`, donde X es un número, para permitir que varias personas ganen en el sorteo.\n\nTenga en cuenta que hay un máximo de 25 ganadores.",
 		"explainedUsage": [
 			[
-				"canal",
-				"(Opcional) El canal en el que iniciar el sorteo"
+				"",
+				""
 			],
 			[
-				"horario",
+				"",
 				"El tiempo para esperar antes de comenzar el sorteo."
 			],
 			[
-				"tiempo",
+				"",
 				"El tiempo que el sorteo debe durar."
 			],
 			[
-				"título",
-				"El título del sorteo."
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [

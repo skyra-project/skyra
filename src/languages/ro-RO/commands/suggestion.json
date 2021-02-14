@@ -1,6 +1,9 @@
 {
 	"suggestDescription": "",
 	"suggestExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -14,15 +17,30 @@
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
-	"suggestNoSetupAsk": "",
-	"suggestNoSetupAbort": "",
 	"suggestNopermissions": "",
-	"suggestChannelPrompt": "",
 	"suggestTitle": "",
 	"suggestSuccess": "",
 	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			"",
 			"",
@@ -34,6 +52,7 @@
 		"reminder": ""
 	},
 	"resolveSuggestionInvalidId": "",
+	"resolveSuggestionInvalidAction": "",
 	"resolveSuggestionMessageNotFound": "",
 	"resolveSuggestionIdNotFound": "",
 	"resolveSuggestionDefaultComment": "",

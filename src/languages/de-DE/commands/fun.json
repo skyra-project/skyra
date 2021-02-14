@@ -1,6 +1,9 @@
 {
 	"8ballDescription": "Skyra wird die heilige Bibel lesen, um die richtige Antwort für deine Frage zu finden.",
 	"8ballExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Dieser Command gibt die eine zufällige Frage basierend auf einem Fragentyp. Sei vorsichtig, sie könnte zu schlau sein.",
 		"explainedUsage": [
 			[
@@ -12,8 +15,27 @@
 			"Warum ging das Huhn über die Straße?"
 		]
 	},
+	"changemymindDescription": "Skyre ist die beste, change my mind.",
+	"changemymindExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "Ich denke trotzdem dass ich die beste bin, change my mind. Ich mache ein Bild mit deinem Avatar und etwas Text auf einem Papier.",
+		"explainedUsage": [
+			[
+				"Text",
+				"Der Satz den du willst."
+			]
+		],
+		"examples": [
+			"Skyra ist der beste Bot auf diesem Server"
+		]
+	},
 	"choiceDescription": "Ene, mene, miste, deine Mutter rappelt in der Kiste...",
 	"choiceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Ich habe eine Existenzkrise... soll ich das Geschirr waschen oder aus dem Fenster werfen? Die Suche geht weiter. Liste mir kommagetrennte Sachen auf und ich werde eine aussuchen. Nebenbei, Ich bin nicht verantwortlich für was danach passiert.",
 		"explainedUsage": [
 			[
@@ -26,21 +48,11 @@
 			"Katze, Hund"
 		]
 	},
-	"changemymindDescription": "Skyre ist die beste, change my mind.",
-	"changemymindExtended": {
-		"extendedHelp": "Ich denke trotzdem dass ich die beste bin, change my mind. Ich mache ein Bild mit deinem Avatar und etwas Text auf einem Papier.",
-		"explainedUsage": [
-			[
-				"Text",
-				"Der Satz den du willst."
-			]
-		],
-		"examples": [
-			"Skyra ist der beste Bot auf diesem Server"
-		]
-	},
 	"diceDescription": "Würfel mit dem d20-Syntax.",
 	"diceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"370d24",
@@ -54,6 +66,9 @@
 	},
 	"howToFlirtDescription": "Captain America, du weißt nicht wie man flirtet.",
 	"howToFlirtExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Lass mich dir zeigen wie man effektiv mit jemandem flirtet mit der Technik die Tony Stark bei Captain America verwendet. Ich garantiere dir dass du ihn kriegst.",
 		"explainedUsage": [
 			[
@@ -67,6 +82,9 @@
 	},
 	"loveDescription": "Liebesmeter, online!",
 	"loveExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Hey! Wilst du das Liebesmeter überprüfen? Es ist ein komisches Gerät, aber viele Menschen lieben es! Sei nicht schüchtern und probier es!",
 		"explainedUsage": [
 			[
@@ -80,14 +98,42 @@
 	},
 	"markovDescription": "Erzeugt eine Markov-Kette aus dem Textchannel.",
 	"markovExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Eine Markov-Kette ist eine... was? Okay irgendwas, irgendwas eine Probabilitätstheorie eines Russischen Mathematikers, schau aif Wikipedia für mehr Infos. **Kurzform:** Ich werde eine zufällige Nachricht generieren die auf dem Kontext der Nachrichten in diesem Channel basiert."
 	},
 	"norrisDescription": "Viel Spaß beim Lesen von Chuck Norris Witzen.",
 	"norrisExtended": {
 		"extendedHelp": "Wusstest du, dass Chuck norris **nicht** die falsche Nummer anruft, sondern du den falschen Anruf **beantwortest**? Woah, mindblow. Er warf auch einen Karton Milch und schuf die Milchstraße. Dieser Befehl ruft chucknorris.io ab und sucht sich einen Fakt aus (gehe nicht davon aus, dass sie falsch sind), so dass du ihn lesen kannst"
 	},
+	"peepoloveDescription": "",
+	"peepoloveExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"punDescription": "Zeigt dir einen zufälligen Wortwitz.",
+	"punExtended": {
+		"extendedHelp": "Ein Steak Wortwitz ist selten gut durch.\nHol dir deine tägliche Dosis dad jokes von icanhazdadjoke.com und lache über witzige Sprüche."
+	},
 	"rateDescription": "Lass Bots Meinungen haben und jemanden bewerten.",
 	"rateExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Nur weil ich ein Bot bin bedeutet das nicht, dass ich dich nicht richtig bewerten kann. Ich kann dich mit einem Zufallszahlengenerator bewerten, um den Prozess zu vereinfachen. Okay okay, es ist nicht fair, aber ich meine... Ich kann dir auch eine 💯 geben.",
 		"explainedUsage": [
 			[
@@ -102,10 +148,24 @@
 	},
 	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
-		"extendedHelp": "\"Du bist schon tot\" Japanisch: お前はもう死んでいる; Omae Wa Mou Shindeiru, ist ein Ausdruck aus der Manga und Anime Serie Fist of the North Star. Diese zeigt einen Comicstrip des Charakters, der die vorgenannten Worte ausspricht, woraufhin der Gegner mit \"nani?\" (was?) antwortet."
+		"usages": [
+			""
+		],
+		"extendedHelp": "\"Du bist schon tot\" Japanisch: お前はもう死んでいる; Omae Wa Mou Shindeiru, ist ein Ausdruck aus der Manga und Anime Serie Fist of the North Star. Diese zeigt einen Comicstrip des Charakters, der die vorgenannten Worte ausspricht, woraufhin der Gegner mit \"nani?\" (was?) antwortet.",
+		"examples": [
+			""
+		]
+	},
+	"wakandaDescription": "Hilfreiche Beschreibungen? Das machen wir hier nicht",
+	"wakandaExtended": {
+		"extendedHelp": "Erstellt ein Bild-Makro mit dem [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) unter Verwendung des angegebenen Benutzers."
 	},
 	"xkcdDescription": "Lese Comics von XKCD.",
 	"xkcdExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "**xkcd** ist ein Archiv für Nerd-Comics voller Mathematik, Wissenschaft, Sarkasmus und Sprachen. Wenn du kein Argument angibst, werde ich einen zufälligen Comic von xkcd auswählen. Wenn du eine Nummer angibst werde ich den Comic mit dieser Nummer abrufen. Aber wenn du einen Titel/Text/Thema angibst, werde ich einen Comic suchen, der mit dieser Eingabe übereinstimmt und ihn anzeigen. Zum Beispiel wird `Skyra, xkcd Curiosity` die Comicnummer 1091 anzeigen.",
 		"explainedUsage": [
 			[
@@ -117,14 +177,6 @@
 			"1091",
 			"Neugierde"
 		]
-	},
-	"punDescription": "Zeigt dir einen zufälligen Wortwitz.",
-	"punExtended": {
-		"extendedHelp": "Ein Steak Wortwitz ist selten gut durch.\nHol dir deine tägliche Dosis dad jokes von icanhazdadjoke.com und lache über witzige Sprüche."
-	},
-	"wakandaDescription": "Hilfreiche Beschreibungen? Das machen wir hier nicht",
-	"wakandaExtended": {
-		"extendedHelp": "Erstellt ein Bild-Makro mit dem [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) unter Verwendung des angegebenen Benutzers."
 	},
 	"8ballOutput": "🎱 Frage von {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
@@ -220,7 +272,7 @@
 		"Ja - auf jeden Fall.",
 		"Du kannst dich darauf verlassen."
 	],
-	"choiceOutput": "🕺 *Ene, mene, miste, deine Muddah rappelt in der Kiste...* {{user}}, Ich wähle: {{word, codeBlock}}",
+	"choiceOutput": "",
 	"choiceMissing": "Bitte gebe mindestens zwei durch ein Komma getrennte Optionen an.",
 	"choiceDuplicates": "Warum sollte ich doppelte Wörter akzeptieren? \"{{words}}\".",
 	"diceOutput": "Du hast den Würfel gerollt! Du hast eine: **{{result}}**",

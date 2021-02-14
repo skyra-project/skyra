@@ -1,10 +1,13 @@
 {
 	"currentTimeDescription": "Obtiene la hora actual en cualquier lugar del mundo",
 	"currentTimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando tiene las coordenadas, consulta TimezoneDB para obtener los datos de tiempo.",
 		"explainedUsage": [
 			[
-				"ubicación",
+				"",
 				"La localidad, gobernación, país o continente para comprobar su tiempo."
 			]
 		],
@@ -23,26 +26,15 @@
 	},
 	"currentTimeDst": "No están en horario de verano",
 	"currentTimeNoDst": "Están en horario de verano",
-	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
-	"gsearchExtended": {
-		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
-		"explainedUsage": [
-			[
-				"consulta",
-				"Lo que desea encontrar en Google"
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
-	},
 	"gimageDescription": "Encuentra tus imágenes favoritas en Google",
 	"gimageExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar imágenes para tu consulta. Para resultados web regulares, por favor usa el comando `gsearch`.",
 		"explainedUsage": [
 			[
-				"consulta",
+				"",
 				"La imagen que desea encontrar en Google"
 			]
 		],
@@ -52,23 +44,34 @@
 		],
 		"reminder": "Este comando ha sido marcado como NSFW porque es inevitable que cuando usted consulta contenido explícito, obtenga resultados explícitos."
 	},
-	"lmgtfyDescription": "Molesta a otra persona enviándoles un enlace LMGTFY (Let Me Google That For You, \"Déjame Googlear Por Tí\").",
-	"lmgtfyExtended": {
+	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
+	"gsearchExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
 		"explainedUsage": [
 			[
-				"consulta",
-				"La consulta a Google"
+				"",
+				"Lo que desea encontrar en Google"
 			]
+		],
+		"examples": [
+			"Discord",
+			"Skyra"
 		]
 	},
-	"lmgtfyClick": "Pulsa aquí para buscar",
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando obtuvo las coordenadas, consulta a DarkSky para obtener información sobre el clima.",
 		"explainedUsage": [
 			[
-				"ciudad",
-				"La localidad, gobernación, país o continente para comprobar su tiempo."
+				"",
+				""
 			]
 		],
 		"examples": [

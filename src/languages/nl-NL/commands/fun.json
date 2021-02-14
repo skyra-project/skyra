@@ -1,6 +1,25 @@
 {
 	"8ballDescription": "",
 	"8ballExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"changemymindDescription": "",
+	"changemymindExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -14,6 +33,9 @@
 	},
 	"choiceDescription": "",
 	"choiceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -26,21 +48,11 @@
 			""
 		]
 	},
-	"changemymindDescription": "",
-	"changemymindExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
 	"diceDescription": "",
 	"diceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"",
@@ -54,6 +66,9 @@
 	},
 	"howToFlirtDescription": "",
 	"howToFlirtExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -67,6 +82,9 @@
 	},
 	"loveDescription": "",
 	"loveExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -80,14 +98,42 @@
 	},
 	"markovDescription": "",
 	"markovExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": ""
 	},
 	"norrisDescription": "",
 	"norrisExtended": {
 		"extendedHelp": ""
 	},
+	"peepoloveDescription": "",
+	"peepoloveExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"punDescription": "",
+	"punExtended": {
+		"extendedHelp": ""
+	},
 	"rateDescription": "",
 	"rateExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -102,10 +148,24 @@
 	},
 	"shindeiruDescription": "",
 	"shindeiruExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"wakandaDescription": "",
+	"wakandaExtended": {
 		"extendedHelp": ""
 	},
 	"xkcdDescription": "",
 	"xkcdExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -117,14 +177,6 @@
 			"",
 			""
 		]
-	},
-	"punDescription": "",
-	"punExtended": {
-		"extendedHelp": ""
-	},
-	"wakandaDescription": "",
-	"wakandaExtended": {
-		"extendedHelp": ""
 	},
 	"8ballOutput": "",
 	"8ballQuestions": {

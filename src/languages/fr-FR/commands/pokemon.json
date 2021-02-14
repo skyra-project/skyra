@@ -1,6 +1,9 @@
 {
 	"abilityDescription": "",
 	"abilityExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -20,8 +23,16 @@
 	"abilityQueryFail": "",
 	"flavorsDescription": "",
 	"flavorsExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -36,6 +47,9 @@
 	"flavorsQueryFail": "",
 	"itemDescription": "",
 	"itemExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -57,8 +71,18 @@
 	"itemQueryFail": "",
 	"learnDescription": "",
 	"learnExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -95,6 +119,9 @@
 	"learnTitle": "",
 	"moveDescription": "",
 	"moveExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -131,8 +158,16 @@
 	"moveQueryFail": "",
 	"pokedexDescription": "",
 	"pokedexExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -166,8 +201,16 @@
 	"pokedexQueryFail": "",
 	"spriteDescription": "",
 	"spriteExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -181,6 +224,10 @@
 	},
 	"typeDescription": "",
 	"typeExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[

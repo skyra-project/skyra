@@ -42,8 +42,27 @@
 	"snipeTitle": "",
 	"upvoteMessage": "",
 	"vaporwaveOutput": "",
+	"chaseDescription": "",
+	"chaseExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
 	"cuddleDescription": "",
 	"cuddleExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -57,6 +76,9 @@
 	},
 	"deletthisDescription": "",
 	"deletthisExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -70,6 +92,9 @@
 	},
 	"fDescription": "",
 	"fExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -84,6 +109,9 @@
 	},
 	"goodnightDescription": "",
 	"goodnightExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -98,6 +126,9 @@
 	},
 	"goofytimeDescription": "",
 	"goofytimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -111,6 +142,9 @@
 	},
 	"hugDescription": "",
 	"hugExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -124,6 +158,9 @@
 	},
 	"ineedhealingDescription": "",
 	"ineedhealingExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -137,6 +174,9 @@
 	},
 	"randRedditDescription": "",
 	"randRedditExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -150,6 +190,9 @@
 	},
 	"redditUserDescription": "",
 	"redditUserExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -163,12 +206,13 @@
 	},
 	"shipDescription": "",
 	"shipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
 			[
 				"",
 				""
@@ -183,21 +227,11 @@
 		"title": "",
 		"description": ""
 	},
-	"chaseDescription": "",
-	"chaseExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
 	"shindeiruDescription": "",
 	"shindeiruExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -208,23 +242,12 @@
 		"examples": [
 			""
 		]
-	},
-	"peepoloveDescription": "",
-	"peepoloveExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
-		"reminder": ""
 	},
 	"slapDescription": "",
 	"slapExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -243,6 +266,9 @@
 	},
 	"thesearchDescription": "",
 	"thesearchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -256,6 +282,9 @@
 	},
 	"triggeredDescription": "",
 	"triggeredExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -273,6 +302,9 @@
 	},
 	"vaporwaveDescription": "",
 	"vaporwaveExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[

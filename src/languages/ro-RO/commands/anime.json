@@ -1,26 +1,20 @@
 {
 	"animeDescription": "Caută anime-ul tău preferat după titlu cu această comandă.",
 	"animeExtended": {
-		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru anime-ul pe care îl solicitați.",
-		"explainedUsage": [
-			[
-				"query",
-				"Numele anime-ului pe care îl cauţi."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru anime-ul pe care îl solicitați.",
 		"examples": [
 			"One Piece"
 		]
 	},
 	"mangaDescription": "Caută manga-ul tău preferat după titlu cu această comandă.",
 	"mangaExtended": {
-		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru manga-ul pe care îl solicitați.",
-		"explainedUsage": [
-			[
-				"query",
-				"Numele manga-ului pe care îl cauţi."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru manga-ul pe care îl solicitați.",
 		"examples": [
 			"Stone Ocean",
 			"One Piece"

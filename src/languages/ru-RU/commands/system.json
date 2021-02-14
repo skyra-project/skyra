@@ -1,12 +1,34 @@
 {
 	"dmDescription": "Отправляет личное сообщение.",
 	"dmExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"evalDescription": "",
 	"evalExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			"",
 			""
@@ -15,12 +37,16 @@
 	},
 	"execDescription": "",
 	"execExtended": {
-		"extendedHelp": "Вам лучше не знать об этом."
-	},
-	"setAvatarDescription": "",
-	"setAvatarExtended": {
-		"extendedHelp": "",
-		"reminder": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "Вам лучше не знать об этом.",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"donateDescription": "",
 	"donateExtended": {
@@ -28,7 +54,21 @@
 	},
 	"echoDescription": "",
 	"echoExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"statsDescription": "",
@@ -50,7 +90,17 @@
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
 	},
 	"disableWarn": "",
 	"dmNotSent": "",
@@ -58,37 +108,43 @@
 	"enable": "",
 	"enableDescription": "",
 	"enableExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
 	},
-	"load": "",
-	"loadDescription": "",
-	"loadExtended": {
-		"extendedHelp": ""
-	},
-	"loadError": "{{REDCROSS}} Не удалось загрузить {{type}}: {{name}}. Причина: {{error, jsCodeBlock}}",
-	"loadFail": "",
 	"reboot": "",
 	"rebootDescription": "Перезагружает бота.",
 	"rebootExtended": {
 		"extendedHelp": "",
-		"reminder": "Только владельцы могут использовать эту команду"
+		"reminder": ""
 	},
 	"reload": "",
 	"reloadAll": "",
 	"reloadDescription": "",
 	"reloadExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"reloadEverything": "",
+	"reloadInvalidEverything": "",
 	"reloadLanguage": "",
-	"reloadFailed": "",
-	"unload": "",
-	"unloadDescription": "",
-	"unloadExtended": {
-		"extendedHelp": ""
-	},
-	"unloadWarn": "",
 	"supportDescription": "",
 	"supportEmbedDescription": "",
 	"supportEmbedTitle": "",

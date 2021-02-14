@@ -5,13 +5,10 @@
 	"announcementEmbedMentions": "{{header}}:",
 	"announcementEmbedMentionsWithMentions": "{{header}}, en vermeldingen: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "Dit commando vereist een aankondigingskanaal (**channels.announcement** in het configuratiecommando) dat Skyra vertelt waar ze de aankondigingsberichten moet plaatsen.\n\nis dit commando nodig? Nou, niets weerhoudt je er van om zelf je mededelingen te doen, maar er zijn veel mensen die moeilijk doen over everyone/here vernoemingen.\n\nOm dit te voorkomen, geeft Skyra je de mogelijkheid om een rol voor abonnees te maken, die niet te vermeldbaar is (om te voorkomen dat mensen de rol vermelding spammen). Dan wanneer je dit commando uitvoert, zal Skyra de rol vermeldbaar maken, het bericht sturen en de rol weer onvermeldbaar maken.\n\nBovendien kun je Skyra configureren om de aankondiging als een embed bericht te sturen door de optie **messages.announcement-embed** in te stellen in het configuratiecommando. Bij het verzenden van het bericht als een embed kunt u de vermeldingen van gebruikers, @here en/of @everyone uitsluiten door de `--excludeMentions` vlag mee te geven aan in je aankondiging.",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Dit commando vereist een aankondigingskanaal (**channels.announcement** in het configuratiecommando) dat Skyra vertelt waar ze de aankondigingsberichten moet plaatsen.\n\nis dit commando nodig? Nou, niets weerhoudt je er van om zelf je mededelingen te doen, maar er zijn veel mensen die moeilijk doen over everyone/here vernoemingen.\n\nOm dit te voorkomen, geeft Skyra je de mogelijkheid om een rol voor abonnees te maken, die niet te vermeldbaar is (om te voorkomen dat mensen de rol vermelding spammen). Dan wanneer je dit commando uitvoert, zal Skyra de rol vermeldbaar maken, het bericht sturen en de rol weer onvermeldbaar maken.\n\nBovendien kun je Skyra configureren om de aankondiging als een embed bericht te sturen door de optie **messages.announcement-embed** in te stellen in het configuratiecommando. Bij het verzenden van het bericht als een embed kunt u de vermeldingen van gebruikers, @here en/of @everyone uitsluiten door de `--excludeMentions` vlag mee te geven aan in je aankondiging.",
 		"examples": [
 			""
 		],

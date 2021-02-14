@@ -1,6 +1,10 @@
 {
 	"avatarDescription": "",
 	"avatarExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -14,8 +18,16 @@
 	"color": "",
 	"colorDescription": "",
 	"colorExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -46,6 +58,10 @@
 	},
 	"contentDescription": "",
 	"contentExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -56,10 +72,17 @@
 				"",
 				""
 			]
+		],
+		"examples": [
+			"",
+			""
 		]
 	},
 	"countryDescription": "",
 	"countryExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -92,6 +115,9 @@
 	},
 	"defineDescription": "",
 	"defineExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -108,6 +134,15 @@
 	"defineUnknown": "",
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -118,6 +153,9 @@
 	"emojiCustom": "",
 	"emojiDescription": "",
 	"emojiExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -132,11 +170,15 @@
 	"emojiTwemoji": "",
 	"emotesDescription": "",
 	"emotesExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "",
+		"reminder": ""
 	},
 	"emotesTitle": "",
 	"eshopDescription": "",
 	"eshopExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -166,6 +208,10 @@
 	},
 	"horoscopeDescription": "",
 	"horoscopeExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -206,6 +252,9 @@
 	},
 	"igdbDescription": "",
 	"igdbExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -228,6 +277,9 @@
 	},
 	"itunesDescription": "",
 	"itunesExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -261,6 +313,9 @@
 	},
 	"moviesDescription": "",
 	"moviesExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -286,7 +341,17 @@
 	},
 	"pollDescription": "",
 	"pollExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			""
 		]
@@ -296,6 +361,10 @@
 	"priceCurrencyNotFound": "",
 	"priceDescription": "",
 	"priceExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -319,6 +388,10 @@
 	},
 	"quoteDescription": "",
 	"quoteExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -331,7 +404,6 @@
 			]
 		]
 	},
-	"quoteMessage": "",
 	"showsData": {
 		"noGenres": "",
 		"unknownUserScore": "",
@@ -339,6 +411,9 @@
 	},
 	"showsDescription": "",
 	"showsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -378,6 +453,10 @@
 	"topInvitesTop10InvitesFor": "",
 	"urbanDescription": "",
 	"urbanExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -393,17 +472,34 @@
 			""
 		]
 	},
-	"urbanIndexNotfound": "",
-	"urbanNotFound": "",
 	"voteDescription": "",
 	"voteExtended": {
+		"usages": [
+			""
+		],
 		"examples": [
 			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
 		]
 	},
 	"whoisDescription": "",
 	"whoisExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"whoisMemberFields": {
 		"createdAt": "",
@@ -428,14 +524,31 @@
 	},
 	"wikipediaDescription": "",
 	"wikipediaExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"wikipediaNotfound": "",
 	"youtubeDescription": "",
 	"youtubeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
-	"youtubeIndexNotfound": "",
 	"youtubeNotfound": ""
 }

@@ -1,4 +1,15 @@
 {
+	"commandModeEnable": "",
+	"commandModeDisable": "",
+	"commandModeActionAlert": "",
+	"commandModeActionLog": "",
+	"commandModeActionDelete": "",
+	"commandModePunishment": "",
+	"commandModePunishmentDuration": "",
+	"commandModeThreshold": "",
+	"commandModeThresholdDuration": "",
+	"commandModeReminder": "",
+	"commandHandlerAborted": "",
 	"nickSet": "",
 	"nickCleared": "",
 	"permissionNodesHigher": "",
@@ -11,10 +22,6 @@
 	"permissionNodesShowName": "",
 	"permissionNodesShowAllow": "**अनुमति**:{{allow}}",
 	"permissionNodesShowDeny": "**मना**:{{deny, andList}}",
-	"triggersNotype": "",
-	"triggersNooutput": "",
-	"triggersInvalidreaction": "",
-	"triggersInvalidalias": "",
 	"triggersRemoveNottaken": "",
 	"triggersRemove": "",
 	"triggersAddTaken": "",
@@ -25,8 +32,6 @@
 		"MEMBERS": "सदस्यों",
 		"OTHER": "अन्य"
 	},
-	"guildInfoRoles": "",
-	"guildInfoNoroles": "",
 	"guildInfoChannels": "",
 	"guildInfoChannelsAfkChannelText": "",
 	"guildInfoMembers": "",
@@ -46,16 +51,12 @@
 	"filterReset": "",
 	"filterShowEmpty": "",
 	"filterShow": "",
-	"manageCommandAutoDeleteTextChannel": "",
-	"manageCommandAutoDeleteRequiredDuration": "",
 	"manageCommandAutoDeleteShowEmpty": "",
 	"manageCommandAutoDeleteShow": "",
 	"manageCommandAutoDeleteAdd": "",
 	"manageCommandAutoDeleteRemove": "",
 	"manageCommandAutoDeleteRemoveNotset": "",
 	"manageCommandAutoDeleteReset": "",
-	"manageCommandChannelTextChannel": "",
-	"manageCommandChannelRequiredCommand": "",
 	"manageCommandChannelShow": "",
 	"manageCommandChannelShowEmpty": "",
 	"manageCommandChannelAddAlreadyset": "",
@@ -82,12 +83,9 @@
 	"setMessageLogsSet": "",
 	"setModLogsSet": "",
 	"setPrefixSet": "",
-	"stickyRolesRequiredUser": "",
-	"stickyRolesRequiredRole": "",
 	"stickyRolesNotExists": "",
 	"stickyRolesReset": "",
 	"stickyRolesRemove": "",
-	"stickyRolesAddExists": "",
 	"stickyRolesAdd": "",
 	"stickyRolesShowEmpty": "",
 	"stickyRolesShowSingle": "",
@@ -97,6 +95,10 @@
 	},
 	"nickDescription": "",
 	"nickExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"reminder": "",
 		"explainedUsage": [
@@ -113,6 +115,13 @@
 	},
 	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -143,9 +152,19 @@
 	},
 	"triggersDescription": "",
 	"triggersExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"reminder": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -159,7 +178,9 @@
 				""
 			]
 		],
+		"reminder": "",
 		"examples": [
+			"",
 			"",
 			"",
 			"",
@@ -168,6 +189,13 @@
 	},
 	"managecommandautodeleteDescription": "",
 	"managecommandautodeleteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -197,6 +225,12 @@
 	},
 	"manageCommandChannelDescription": "",
 	"manageCommandChannelExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -226,6 +260,13 @@
 	},
 	"manageReactionRolesDescription": "",
 	"manageReactionRolesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -262,6 +303,9 @@
 	"rolesRemoved": "",
 	"setIgnoreChannelsDescription": "",
 	"setIgnoreChannelsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -277,6 +321,9 @@
 	},
 	"setImageLogsDescription": "",
 	"setImageLogsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -291,6 +338,9 @@
 	},
 	"setMemberLogsDescription": "",
 	"setMemberLogsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -305,6 +355,9 @@
 	},
 	"setMessageLogsDescription": "",
 	"setMessageLogsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -320,6 +373,9 @@
 	},
 	"setmodlogsDescription": "",
 	"setmodlogsExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -335,6 +391,9 @@
 	},
 	"setprefixDescription": "",
 	"setprefixExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -345,40 +404,14 @@
 		"reminder": "",
 		"examples": [
 			"",
-			""
-		]
-	},
-	"setrolechannelDescription": "",
-	"setrolechannelExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"setrolemessageDescription": "",
-	"setrolemessageExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
 			""
 		]
 	},
 	"setStarboardEmojiDescription": "",
 	"setStarboardEmojiExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -388,21 +421,6 @@
 		],
 		"reminder": "",
 		"examples": [
-			""
-		]
-	},
-	"roleInfoDescription": "",
-	"roleInfoExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
 			""
 		]
 	},
@@ -410,8 +428,34 @@
 	"guildInfoExtended": {
 		"extendedHelp": ""
 	},
+	"roleInfoDescription": "",
+	"roleInfoExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
 	"stickyRolesDescription": "",
 	"stickyRolesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -437,6 +481,17 @@
 	},
 	"attachmentsModeDescription": "",
 	"attachmentsModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -490,6 +545,17 @@
 	},
 	"capitalsModeDescription": "",
 	"capitalsModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -543,10 +609,35 @@
 	},
 	"filterDescription": "",
 	"filterExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"filterModeDescription": "",
 	"filterModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -600,6 +691,17 @@
 	},
 	"inviteModeDescription": "",
 	"inviteModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -653,6 +755,17 @@
 	},
 	"linkModeDescription": "",
 	"linkModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -706,6 +819,17 @@
 	},
 	"messageModeDescription": "",
 	"messageModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -759,6 +883,17 @@
 	},
 	"newlineModeDescription": "",
 	"newlineModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -812,6 +947,17 @@
 	},
 	"reactionModeDescription": "",
 	"reactionModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -865,6 +1011,10 @@
 	},
 	"rolesDescription": "",
 	"rolesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -874,7 +1024,6 @@
 		],
 		"reminder": "",
 		"examples": [
-			"",
 			"",
 			""
 		]

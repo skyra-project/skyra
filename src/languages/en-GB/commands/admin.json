@@ -8,23 +8,24 @@
 	"confServerDescription": "Define per-server settings.",
 	"confServerExtended": {
 		"usages": [
-			"set NameOfKey ...ValueForKey",
-			"show",
-			"show NameOfKey",
-			"remove NameOfKey ...ValueForKey",
-			"reset NameOfKey",
-			"menu"
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the web dashboard (<https://skyra.pw>).",
+		"extendedHelp": "",
 		"examples": [
-			"set language en-GB",
-			"set channels.moderation-logs #moderation-logs",
-			"show",
-			"show channels",
-			"remove roles.moderator Moderator",
-			"reset roles.moderator",
-			"menu"
-		]
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
@@ -36,14 +37,14 @@
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
 		"usages": [
-			"set RoleSetName Role1 Role2 Role3...",
-			"remove RoleSetName Role1 Role2 Role3...",
-			"reset",
-			"reset RoleSetName",
-			"list",
-			"RoleSetName Role1 Role2 Role3"
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"add",
@@ -62,21 +63,29 @@
 				"Lists all rolesets."
 			],
 			[
-				"auto",
-				"Adds or removes a roleset."
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
-			"add regions America",
-			"add regions Africa America Asia Europe",
-			"remove regions America",
-			"reset",
-			"reset regions",
-			"list",
-			"regions America",
-			"regions Africa America Asia Europe"
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"reminder": "This command can add and/or remove multiple roles at the same time."
+		"reminder": ""
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",
@@ -91,7 +100,6 @@
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",
 	"confMenuRenderSelect": "",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "",
 	"confMenuRenderRemove": "",
 	"confMenuRenderReset": "",
@@ -103,6 +111,21 @@
 	"confMenuSaved": "",
 	"updateDescription": "",
 	"updateExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

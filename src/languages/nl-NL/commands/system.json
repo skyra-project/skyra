@@ -1,12 +1,34 @@
 {
 	"dmDescription": "",
 	"dmExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"evalDescription": "",
 	"evalExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			"",
 			""
@@ -15,12 +37,16 @@
 	},
 	"execDescription": "",
 	"execExtended": {
-		"extendedHelp": ""
-	},
-	"setAvatarDescription": "",
-	"setAvatarExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"reminder": ""
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"donateDescription": "",
 	"donateExtended": {
@@ -28,7 +54,21 @@
 	},
 	"echoDescription": "",
 	"echoExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"statsDescription": "",
@@ -50,7 +90,17 @@
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
 	},
 	"disableWarn": "",
 	"dmNotSent": "",
@@ -58,15 +108,18 @@
 	"enable": "",
 	"enableDescription": "",
 	"enableExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
 	},
-	"load": "",
-	"loadDescription": "",
-	"loadExtended": {
-		"extendedHelp": ""
-	},
-	"loadError": "",
-	"loadFail": "",
 	"reboot": "",
 	"rebootDescription": "",
 	"rebootExtended": {
@@ -77,18 +130,21 @@
 	"reloadAll": "",
 	"reloadDescription": "",
 	"reloadExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"reloadEverything": "",
+	"reloadInvalidEverything": "",
 	"reloadLanguage": "",
-	"reloadFailed": "",
-	"unload": "",
-	"unloadDescription": "",
-	"unloadExtended": {
-		"extendedHelp": ""
-	},
-	"unloadWarn": "",
 	"supportDescription": "",
 	"supportEmbedDescription": "",
 	"supportEmbedTitle": "",

@@ -1,12 +1,10 @@
 {
-	"autoRolePointsRequired": "",
 	"autoRoleUpdateConfigured": "",
 	"autoRoleUpdateUnconfigured": "",
 	"autoRoleUpdate": "",
 	"autoRoleRemove": "",
 	"autoRoleAdd": "",
 	"autoRoleListEmpty": "",
-	"autoRoleUnknownRole": "",
 	"balance": "",
 	"balanceSelf": "",
 	"balanceBots": "",
@@ -27,8 +25,8 @@
 	"bannerBought": "",
 	"bannerMoney": "",
 	"bannerPaymentCancelled": "",
-	"bannerAllOrUser": "{{REDCROSS}} You need to choose to show either `all` banners or the `user` banners (those available to you).",
 	"bannerBuy": "",
+	"bannerAllOrUser": "",
 	"toggleDarkModeEnabled": "",
 	"toggleDarkModeDisabled": "",
 	"dailyTime": "",
@@ -84,9 +82,7 @@
 	},
 	"profileMoney": "",
 	"remindmeCreate": "",
-	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",
-	"remindmeDeleteNoId": "",
 	"remindmeDelete": "",
 	"remindmeListEmpty": "",
 	"remindmeShowFooter": "",
@@ -94,20 +90,23 @@
 	"remindmeNotfound": "",
 	"reputationTime": "",
 	"reputationUsable": "",
-	"reputationUserNotfound": "",
 	"reputationSelf": "",
-	"reputationBots": "",
 	"reputationGive": "",
 	"reputationsBots": "",
 	"reputationsSelf": "",
 	"reputation": "",
 	"reputation_plural": "",
 	"reputations": "",
-	"autoRoleRequireRole": "",
 	"scoreboardPosition": "",
 	"setColor": "",
 	"socialDescription": "",
 	"socialExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -136,6 +135,14 @@
 	},
 	"bannerDescription": "",
 	"bannerExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -159,6 +166,7 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
@@ -168,6 +176,13 @@
 	},
 	"autoRoleDescription": "",
 	"autoRoleExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -192,40 +207,81 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
 	"balanceDescription": "",
 	"balanceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": ""
 	},
 	"dailyDescription": "",
 	"dailyExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
+	"divorceDescription": "",
+	"divorceExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": ""
+	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"leaderboardListifyPage": "",
 	"levelDescription": "",
 	"levelExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
 			]
 		]
 	},
-	"divorceDescription": "",
-	"divorceExtended": {
+	"marriedDescription": "",
+	"marriedExtended": {
 		"extendedHelp": ""
 	},
 	"marryDescription": "",
 	"marryExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -238,12 +294,12 @@
 			""
 		]
 	},
-	"marriedDescription": "",
-	"marriedExtended": {
-		"extendedHelp": ""
-	},
 	"mylevelDescription": "",
 	"mylevelExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -254,6 +310,10 @@
 	},
 	"payDescription": "",
 	"payExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -266,21 +326,44 @@
 			]
 		],
 		"examples": [
+			"",
 			""
 		]
 	},
 	"profileDescription": "",
 	"profileExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"",
 				""
+			],
+			[
+				"",
+				""
 			]
+		],
+		"examples": [
+			"",
+			"",
+			""
 		]
 	},
 	"remindmeDescription": "",
 	"remindmeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -305,6 +388,11 @@
 	},
 	"reputationDescription": "",
 	"reputationExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -327,6 +415,9 @@
 	},
 	"setColorDescription": "",
 	"setColorExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -362,6 +453,12 @@
 		"withdrewDescription": ""
 	},
 	"vaultExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -375,10 +472,12 @@
 		],
 		"examples": [
 			"",
+			"",
+			"",
 			""
 		]
 	},
-	"vaultInvalidCoins": "",
 	"vaultNotEnoughInVault": "",
-	"vaultNotEnoughMoney": ""
+	"vaultNotEnoughMoney": "",
+	"vaultInvalidAll": ""
 }

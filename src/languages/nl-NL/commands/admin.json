@@ -7,7 +7,25 @@
 	"confNochange": "De waarde voor **{{key}}** is hetzelfde gebleven.",
 	"confServerDescription": "Definieer instellingen per server.",
 	"confServerExtended": {
-		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>)."
+		"usages": [
+			"set NameOfKey ValueForKey",
+			"show",
+			"show NameOfKey",
+			"remove NameOfKey ValueForKey",
+			"reset NameOfKey",
+			"menu"
+		],
+		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>).",
+		"examples": [
+			"set language en-GB",
+			"set channel.moderation-logs #moderation-logs",
+			"show",
+			"show channels",
+			"remove roles.moderator Moderator",
+			"reset roles.moderator",
+			"menu"
+		],
+		"reminder": "Er zijn groepen en sleutels en sleutels die onderdeel zijn van een groep worden gerefereerd als `GroepNaam.SleutelNaam`."
 	},
 	"confServer": "**Server Instelling {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
@@ -18,6 +36,14 @@
 	},
 	"rolesetDescription": "Beheer unieke rolesets.",
 	"rolesetExtended": {
+		"usages": [
+			"set RoleSetNaam Role1 Role2 Role3...",
+			"set RoleSetNaam Role1 Role2 Role3...",
+			"reset",
+			"reset RoleSetNaam",
+			"list",
+			"RoleSetNaam Role1 Role2 Role3"
+		],
 		"extendedHelp": "Een set van rollen beschouw die ik als uniek voor alle leden op de server, dat wil zeggen, een roleset genaamd `region` zou de rollen `Afrika`, `America`, `Azië`, en `Europe` kunnen hebben, en leden kunnen zullen dan altijd maar één deze rollen kunnen hebben. Dit is als een soort \"regel\" dat wordt toegepast in de drie volgende situaties:\n\n- Wanneer iemand een rol claimt via het commando `rollen`.\n- Wanneer iemand een rol opeist via reactie rollen.\n- Wanneer iemand een rol handmatig of van een andere bot ontvangt.",
 		"explainedUsage": [
 			[
@@ -39,6 +65,14 @@
 			[
 				"automatisch",
 				"Voeg rol groep to of verwijder een rol groep."
+			],
+			[
+				"RoleSetNaam",
+				"De naam van de roleset"
+			],
+			[
+				"Role1 Role2 Role3",
+				"De rollen om toe te voegen aan de roleset"
 			]
 		],
 		"examples": [
@@ -54,7 +88,7 @@
 		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen."
 	},
 	"rolesetCreated": "De {{name}} unieke set van rollen is aangemaakt met de volgende rollen: {{roles, andList}}",
-	"rolesetAdded": "",
+	"rolesetAdded": "De set van rol met de naam {{name}} heeft nu ook de volgende rollen: {{roles, andList}}.",
 	"rolesetRemoved": "De rollen set met de naam {{name}} zal niet bevat niet langer de volgende rollen: {{roles, andList}}",
 	"rolesetResetEmpty": "{{REDCROSS}} Er zijn geen rollen geconfigureerd in deze set.",
 	"rolesetResetAll": "{{GREENTICK}} Alle rollen sets zijn verwijderd.",
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "Momenteel bij: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Er zijn geen configureerbare opties in deze map",
 	"confMenuRenderSelect": "Typ een van de volgende invoernamen in",
-	"confMenuRenderTctitle": "Tekst s:",
 	"confMenuRenderUpdate": "• Update Waarde → `set <value>`",
 	"confMenuRenderRemove": "• Verwijder Waarde → `remove <value>`",
 	"confMenuRenderReset": "• Reset Waarde → `reset`",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "Wijzigingen zijn succesvol opgeslagen.",
 	"updateDescription": "Werk de bot bij",
 	"updateExtended": {
-		"extendedHelp": "Een beetje sop daar hier, wat opruimen, en voor je het weet ben ik plots een hele nieuwe android!"
+		"usages": [
+			"Branch",
+			"--clean",
+			"Branch --clean"
+		],
+		"extendedHelp": "Een beetje sop daar hier, wat opruimen, en voor je het weet ben ik plots een hele nieuwe android!",
+		"explainedUsage": [
+			[
+				"Branch",
+				"De git branch om te pullen"
+			],
+			[
+				"--clean",
+				"Opschonen van de gehele \"dist\" map voor het bouwen of niet"
+			]
+		]
 	}
 }

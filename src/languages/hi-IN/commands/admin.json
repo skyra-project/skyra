@@ -7,7 +7,25 @@
 	"confNochange": "{{key}} कुंजी का मूल्य पहले से दिए गए मूल्य के अनुसार है।",
 	"confServerDescription": "सर्वर सेटिंग्स के अनुसार निश्चित करे।",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**सर्वर सेटिंग्स {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "{{key}} केवल वेब डैशबोर्ड (<https://skyra.pw>) माध्यम से ही इसे रूप दिया जा सकता हैं।",
@@ -18,6 +36,14 @@
 	},
 	"rolesetDescription": "विविध किरदार संच का प्रबंध करे।",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -39,6 +65,14 @@
 			[
 				"स्वत:",
 				"किसी एक किरदार संच को जोड़ता या फिर हटता है।"
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "अभी फिलाल ⚙️ {{path}} में है।",
 	"confMenuRenderNokeys": "इस फोल्डर के लिए कोई भी परिभाषित की नहीं है।",
 	"confMenuRenderSelect": "कृपया कोई भी प्रविष्टियो का नाम लिखे।",
-	"confMenuRenderTctitle": "टेक्स्ट s:",
 	"confMenuRenderUpdate": "",
 	"confMenuRenderRemove": "",
 	"confMenuRenderReset": "",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "सफलतापूर्वक सभी बदलाव किए जा चुके है।",
 	"updateDescription": "अद्यतन बॉट",
 	"updateExtended": {
-		"extendedHelp": "यहाँ कुछ पॉलिश, कुछ सफाई, और व्हाटकोन, मैं अचानक एक नया एंड्रॉइड हूँ!"
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "यहाँ कुछ पॉलिश, कुछ सफाई, और व्हाटकोन, मैं अचानक एक नया एंड्रॉइड हूँ!",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

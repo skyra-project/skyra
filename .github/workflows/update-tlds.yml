@@ -52,7 +52,7 @@ jobs:
             git config --local user.email "${GITHUB_EMAIL}";
             git config --local user.name "${GITHUB_USER}";
             git checkout -b NM-EEA-Y/update-tlds/$(date +%F-%H-%M);
-            git commit -sam "refactor: update TLDs";
+            git commit -sam "chore: update TLDs";
             git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
             ./gh pr create -t "refactor: update TLDs" -b "*bleep bloop* I updated the TLDs file" -l "Meta: Refactor" -r "Favna" -r "Kyranet" -B main;
           fi

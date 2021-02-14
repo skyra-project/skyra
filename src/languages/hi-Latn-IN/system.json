@@ -1,10 +1,7 @@
 {
-	"cannotAccessChannel": "",
-	"channelNotPostable": "",
-	"databaseError": "",
-	"discordAbortError": "",
-	"error": "",
-	"exceededLengthChooseOutput": "",
+	"channelNotPostable": "मुझे इस चैनल पर संदेश भेजने की अनुमति नहीं है |",
+	"discordAbortError": "डिस्कोर्ड को मैसेज करते समय मेरे पास एक छोटी सी नेटवर्क त्रुटि थी, कृपया इस कमांड को फिर से चलाएं |",
+	"exceededLengthChooseOutput": "निम्न में से कोई एक विकल्प चुनें |: {{output, orList}}",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "",
 	"exceededLengthOutputConsoleWithTypeAndTime": "",
@@ -16,7 +13,9 @@
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
+		"aliases": "",
 		"usages": "",
+		"extendedHelp": "",
 		"explainedUsage": "",
 		"possibleFormats": "",
 		"examples": "",
@@ -34,10 +33,16 @@
 		"",
 		""
 	],
+	"messagePromptTimeout": "",
 	"noResults": "",
 	"parseError": "",
 	"pokedexExternalResource": "",
 	"poweredByWeebSh": "",
 	"prefixReminder": "",
-	"queryFail": ""
+	"queryFail": "",
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
 }

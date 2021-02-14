@@ -1,7 +1,6 @@
 {
 	"followage": "",
 	"followageMissingEntries": "",
-	"followageNotFollowing": "Этот пользователь не подписан на указанный канал.",
 	"twitchNoEntries": "",
 	"twitchTitles": {
 		"followers": "",
@@ -14,17 +13,12 @@
 		"affiliated": "",
 		"partnered": ""
 	},
-	"twitchCreatedAt": "",
-	"twitchSubscriptionRequiredStreamer": "{{REDCROSS}} Вы должны указать, на какого стримера вы хотите подписаться.",
 	"twitchSubscriptionStreamerNotFound": "",
-	"twitchSubscriptionRequiredChannel": "",
-	"twitchSubscriptionRequiredStatus": "",
 	"twitchSubscriptionStatusValues": [
 		"",
 		""
 	],
 	"twitchSubscriptionInvalidStatus": "",
-	"twitchSubscriptionRequiredContent": "",
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
@@ -47,20 +41,10 @@
 	"twitchSubscriptionShowUnknownUser": "",
 	"followageDescription": "",
 	"followageExtended": {
-		"extendedHelp": "",
-		"examples": [
+		"usages": [
+			"",
 			""
-		]
-	},
-	"twitchDescription": "",
-	"twitchExtended": {
-		"extendedHelp": "",
-		"examples": [
-			""
-		]
-	},
-	"twitchSubscriptionDescription": "",
-	"twitchSubscriptionExtended": {
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -68,7 +52,53 @@
 				""
 			],
 			[
-				"канал",
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"twitchDescription": "",
+	"twitchExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"twitchSubscriptionDescription": "",
+	"twitchSubscriptionExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
 				""
 			],
 			[

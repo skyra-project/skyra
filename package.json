@@ -1,7 +1,7 @@
 {
 	"name": "skyra",
 	"version": "6.0.0",
-	"description": "Multipurpose Discord Bot built on Klasa",
+	"description": "Multipurpose Discord Bot built on Sapphire Framework",
 	"main": "dist/Skyra.js",
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
@@ -43,7 +43,7 @@
 	},
 	"keywords": [
 		"discord.js",
-		"klasa",
+		"sapphire",
 		"bot",
 		"standalone"
 	],

@@ -128,7 +128,7 @@
 	},
 	"reload": "{{GREENTICK}} Reloaded {{type}}: {{name}}. (Took: {{time}})",
 	"reloadAll": "{{GREENTICK}} Reloaded all {{type}}. (Took: {{time}})",
-	"reloadDescription": "Reloads a klasa piece, or all pieces of a klasa store.",
+	"reloadDescription": "Reloads a Sapphire piece, or all pieces of a Sapphire store.",
 	"reloadExtended": {
 		"usages": [
 			"Piece/language/everything"

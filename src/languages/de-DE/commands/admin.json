@@ -1,4 +1,5 @@
 {
+	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",
 	"confUpdated": "Schlüssel **{{key}}**: `{{response}} ` wurde erfolgreich aktualisiert",
 	"confGetNoExt": "Der Schlüssel **{{key}}** scheint nicht zu existieren.",
 	"confGet": "Der Wert für den Schlüssel **{{key}}** ist: `{{value}}`",
@@ -6,7 +7,25 @@
 	"confNochange": "Der Wert für **{{key}}** war bereits dieser Wert.",
 	"confServerDescription": "Einstellungen für jeden Server definieren.",
 	"confServerExtended": {
-		"extendedHelp": "Erlaubt dir, Skyra von Discord als schnelle Alternative zum Web-Dashboard (<https://skyra.pw>) zu konfigurieren."
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**Servereinstellung {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` kann nur über das Web-Dashboard konfiguriert werden (<https://skyra.pw>)",
@@ -17,6 +36,14 @@
 	},
 	"rolesetDescription": "Einzigartige Rollensets verwalten.",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Ein Rollenset ist eine Gruppe von Rollen, die Skyra als einzigartig für alle Mitglieder des Servers identifiziert, d.h. ein Rollenset namens `Region` könnte die Rollen `Afrika`, `Amerika`, `Asien` und `Europa` beinhalten, und Mitglieder können nur eine von ihnen haben. Dies ist wie eine Art \"Regel\", die in den folgenden drei Situationen angewendet wird:\n\n- Wenn jemand eine Rolle über den \"Rollen\"-Command beansprucht.\n- Wenn jemand eine Rolle als Reaktionsrolle beansprucht.\n- Wenn jemand eine Rolle entweder manuell oder von einem anderen Bot erhält.",
 		"explainedUsage": [
 			[
@@ -38,6 +65,14 @@
 			[
 				"Automatisch",
 				"Fügt ein Rollenset hinzu oder entfernt es."
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -65,7 +100,6 @@
 	"confMenuRenderAtPiece": "Momentan bei: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Es gibt keine konfigurierbaren Schlüssel für diesen Ordner",
 	"confMenuRenderSelect": "Bitte gebe einen der Namen der folgenden Einträge ein",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "• Aktualisiere Wert → `set <value>`",
 	"confMenuRenderRemove": "• Entferne Wert → `remove <value>`",
 	"confMenuRenderReset": "• Wert zurücksetzen → `reset`",
@@ -77,6 +111,21 @@
 	"confMenuSaved": "Alle Änderungen erfolgreich gespeichert.",
 	"updateDescription": "Bot aktualisieren",
 	"updateExtended": {
-		"extendedHelp": "Ein bisschen polieren und ein wenig Aufräumen und wer hätte es gedacht, schon bin ich ein nagelneuer Android!"
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "Ein bisschen polieren und ein wenig Aufräumen und wer hätte es gedacht, schon bin ich ein nagelneuer Android!",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

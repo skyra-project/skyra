@@ -3,15 +3,27 @@
 	"helpCommandCount": "",
 	"helpCommandCount_plural": "",
 	"helpData": {
-		"extended": "",
 		"footer": "",
-		"title": "",
-		"usage": ""
+		"title": ""
 	},
 	"helpDescription": "",
 	"helpExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"reminder": ""
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"helpDm": "",
 	"helpNodm": "",
@@ -22,6 +34,9 @@
 	},
 	"inviteDescription": "",
 	"inviteExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"",

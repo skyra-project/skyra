@@ -1,6 +1,9 @@
 {
 	"yarnDescription": "Răspunde cu informații despre un pachet NodeJS folosind registrul Yarn",
 	"yarnExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Acesta este pentru dezvoltatorii NodeJS care doresc să găsească rapid informații despre un pachet publicat pe [npm](https://npmjs.com)",
 		"explainedUsage": [
 			[

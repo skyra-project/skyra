@@ -1,6 +1,9 @@
 {
 	"yarnDescription": "",
 	"yarnExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[

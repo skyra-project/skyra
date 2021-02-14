@@ -1,7 +1,6 @@
 {
 	"followage": "",
 	"followageMissingEntries": "",
-	"followageNotFollowing": "",
 	"twitchNoEntries": "",
 	"twitchTitles": {
 		"followers": "",
@@ -14,17 +13,12 @@
 		"affiliated": "",
 		"partnered": ""
 	},
-	"twitchCreatedAt": "",
-	"twitchSubscriptionRequiredStreamer": "",
 	"twitchSubscriptionStreamerNotFound": "",
-	"twitchSubscriptionRequiredChannel": "",
-	"twitchSubscriptionRequiredStatus": "",
 	"twitchSubscriptionStatusValues": [
 		"",
 		""
 	],
 	"twitchSubscriptionInvalidStatus": "",
-	"twitchSubscriptionRequiredContent": "",
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
@@ -47,22 +41,58 @@
 	"twitchSubscriptionShowUnknownUser": "",
 	"followageDescription": "",
 	"followageExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			""
 		]
 	},
 	"twitchDescription": "",
 	"twitchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
 			""
 		]
 	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""

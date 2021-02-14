@@ -1,15 +1,21 @@
 {
 	"c4Description": "Play Connect Four with somebody.",
 	"c4Extended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
-	"c4GameColumnFull": "This column is full. Please try another.",
+	"c4GameColumnFull": "",
 	"c4GameDraw": "This match concluded in a **draw**!",
 	"c4GameNext": "Turn for: {{user}} (red).",
 	"c4GameNextTurn0": "Turn for: {{user}} (blue).",
 	"c4GameWin": "{{user}} (red) won!",
 	"c4GameWinTurn0": "{{user}} (blue) won!",
-	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect Four match. Click the 🇾 reaction to accept!",
+	"c4Prompt": "",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "",
 	"coinFlipCoinnames": [
@@ -18,10 +24,27 @@
 	],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
-			"heads 50",
-			"tails 200"
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,9 +491,15 @@
 	"ticTacToeDescription": "Play noughts and crosses with somebody.",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
-	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a noughts and crosses match. Click the 🇾 reaction to accept!",
+	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
 	"ticTacToeWinner": "",
 	"triviaActiveGame": "",
@@ -465,6 +509,13 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

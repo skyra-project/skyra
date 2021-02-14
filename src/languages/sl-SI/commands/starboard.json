@@ -1,6 +1,29 @@
 {
 	"starDescription": "",
 	"starExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": ""
 	},
 	"starMessages_plural": "",

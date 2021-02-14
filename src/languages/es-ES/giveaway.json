@@ -6,12 +6,9 @@
 	"title": "🎉 **SORTEO** 🎉",
 	"lastchance": "¡**ÚLTIMA OPORTUNIDAD**! Tiempo restante: **{{time, duration}}**. Reacciona a este mensaje con 🎉 para unirse.",
 	"lastchanceTitle": "🎉 **ÚLTIMA OPORTUNIDAD PARA EL SORTEO** 🎉",
-	"ended": "Ganador: {{winners, andList}}",
-	"endedPlural": "Ganadores: {{winners, andList}}",
 	"endedNoWinner": "No hay ganador...",
 	"endedAt": "Finalizado en:",
 	"endedTitle": "🎉 **SORTEO TERMINADO** 🎉",
-	"endedMessage": "¡Felicidades {{winners, andList}}! Habéis ganado el sorteo **{{title}}**",
 	"endedMessageNoWinner": "El sorteo **{{title}}** terminó sin suficientes participantes.",
 	"scheduled": "El sorteo comenzará en {{scheduledTime, duration}}."
 }

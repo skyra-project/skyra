@@ -7,7 +7,25 @@
 	"confNochange": "El valor de **{{key}}** ya era de ese valor.",
 	"confServerDescription": "Define los ajustes por servidor.",
 	"confServerExtended": {
-		"extendedHelp": "Te permite configurar Skyra desde Discord, como una alternativa rápida al panel de control web (<https://skyra.pw>)."
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**Configuración del servidor {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` sólo puede configurarse a través del panel web (<https://skyra.pw>)",
@@ -18,6 +36,14 @@
 	},
 	"rolesetDescription": "Administrar los conjuntos de roles únicos.",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Un conjunto de roles es un grupo de roles que Skyra identifica como único para todos los miembros del servidor, por ejemplo. un conjunto de roles llamado `region` podría tener los roles `África`, `America`, `Asia` y `Europa`, y los miembros solo podrán tener uno de ellos. Esto es como una especie de \"regla\" que se aplica en las tres siguientes situaciones:\n\n- Cuando alguien reclama un rol a través del comando `roles`.\n- Cuando alguien reclama un rol a través de roles de reacción.\n- Cuando alguien recibe un rol de forma manual o de otro bot.",
 		"explainedUsage": [
 			[
@@ -39,6 +65,14 @@
 			[
 				"automático",
 				"Añade o elimina un conjunto de roles."
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "Actualmente en: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "No hay claves configurables para este grupo",
 	"confMenuRenderSelect": "Por favor ingrese cualquiera de los nombres de las siguientes entradas",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "• Actualizar Valor → `set <value>`",
 	"confMenuRenderRemove": "• Eliminar valor → `remove <value>`",
 	"confMenuRenderReset": "• Restablecer valor → `reset`",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "Guardado todos los cambios con éxito.",
 	"updateDescription": "Actualiza el código",
 	"updateExtended": {
-		"extendedHelp": "Algún pulido aquí, algo de limpieza por allí, y lo que quieras, ¡de repente soy una nueva androide!"
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "Algún pulido aquí, algo de limpieza por allí, y lo que quieras, ¡de repente soy una nueva androide!",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

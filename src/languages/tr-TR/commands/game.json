@@ -1,7 +1,13 @@
 {
 	"c4Description": "",
 	"c4Extended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"c4GameColumnFull": "",
 	"c4GameDraw": "",
@@ -18,8 +24,25 @@
 	],
 	"coinFlipDescription": "",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
+			"",
+			"",
 			"",
 			""
 		]
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,7 +491,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -465,6 +509,13 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

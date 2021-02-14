@@ -1,6 +1,29 @@
 {
 	"starDescription": "Obține un mesaj aleatoriu cu steluțe din baza de date sau din clasamentul stelelor.",
 	"starExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": ""
 	},
 	"starMessages_plural": "{{count}} mesaje",

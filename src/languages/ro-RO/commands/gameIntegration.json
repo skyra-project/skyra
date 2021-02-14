@@ -1,6 +1,11 @@
 {
 	"brawlstarsDescription": "",
 	"brawlstarsExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -51,6 +56,10 @@
 	},
 	"clashofclansDescription": "",
 	"clashofclansExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -119,6 +128,10 @@
 	"clashofclansPlayersQueryFail": "",
 	"FFXIVDescription": "",
 	"FFXIVExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -168,6 +181,12 @@
 	"FFXIVNoItemFound": "",
 	"fortniteDescription": "",
 	"fortniteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -186,6 +205,7 @@
 			""
 		]
 	},
+	"fortniteInvalidPlatform": "",
 	"fortniteNoUser": "",
 	"fortniteEmbedTitle": "",
 	"fortniteEmbedSectionTitles": {
@@ -209,6 +229,11 @@
 	},
 	"overwatchDescription": "",
 	"overwatchExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -227,6 +252,7 @@
 		],
 		"reminder": ""
 	},
+	"overwatchInvalidPlatform": "",
 	"overwatchInvalidPlayerName": "",
 	"overwatchQueryFail": "",
 	"overwatchNoStats": "",

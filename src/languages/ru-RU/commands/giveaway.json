@@ -1,10 +1,19 @@
 {
 	"giveawayDescription": "",
 	"giveawayExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
+				""
+			],
+			[
+				"",
 				""
 			],
 			[
@@ -24,19 +33,23 @@
 	},
 	"giveawayRerollDescription": "",
 	"giveawayRerollExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"победители",
+				"",
 				""
 			],
 			[
-				"сообщение",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"",
 			"",
 			"",
 			""
@@ -44,10 +57,19 @@
 	},
 	"giveawayScheduleDescription": "",
 	"giveawayScheduleExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
+				""
+			],
+			[
+				"",
 				""
 			],
 			[

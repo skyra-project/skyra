@@ -5,13 +5,10 @@
 	"announcementEmbedMentions": "",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "",
 		"examples": [
 			""
 		],

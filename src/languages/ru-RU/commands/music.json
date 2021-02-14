@@ -1,6 +1,10 @@
 {
 	"addDescription": "",
 	"addExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -28,7 +32,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"clearDenied": "",
 	"clearSuccess": "",
 	"clearSuccessPlural": "",
 	"exportQueueDescription": "",
@@ -39,6 +42,10 @@
 	"exportQueueSuccess": "",
 	"importQueueDescription": "",
 	"importQueueExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -47,7 +54,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"joinNoMember": "",
 	"joinNoVoicechannel": "",
 	"joinSuccess": "{{GREENTICK}} Успешно присоединилась к голосовому каналу {{channel}}",
 	"joinVoiceDifferent": "",
@@ -106,7 +112,6 @@
 	},
 	"playingDuration": "",
 	"playingQueueEmpty": "",
-	"playingQueueNotPlaying": "",
 	"repeatDescription": "",
 	"repeatExtended": {
 		"extendedHelp": "",
@@ -119,7 +124,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"queueLast": "",
 	"queueTitle": "",
 	"queueLine": "",
 	"queueNowplaying": "",
@@ -128,21 +132,31 @@
 	"queueNowplayingTitle": "",
 	"queueTotalTitle": "",
 	"queueTotal": "",
-	"queueEmpty": "",
 	"queueDashboardInfo": "",
 	"removeDescription": "",
 	"removeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"reminder": ""
+		"reminder": "",
+		"examples": [
+			""
+		]
 	},
-	"removeIndexInvalid": "",
 	"removeIndexOutOfBounds": "",
-	"removeDenied": "",
 	"removeSuccess": "",
 	"seekDescription": "",
 	"seekExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"reminder": ""
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"seekSuccess": "",
 	"resumeDescription": "",
@@ -172,10 +186,11 @@
 	"skipVotesVoted": "{{REDCROSS}} Вы уже проголосовали.",
 	"skipVotesTotal": "",
 	"skipSuccess": "",
-	"playingTimeDescription": "",
-	"playingTimeQueueEmpty": "",
 	"promoteDescription": "",
 	"promoteExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -190,6 +205,9 @@
 	"promoteSuccess": "",
 	"volumeDescription": "",
 	"volumeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"",

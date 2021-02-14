@@ -1,9 +1,15 @@
 {
 	"c4Description": "किसी के साथ कनेक्ट-फोर खेलें |",
 	"c4Extended": {
-		"extendedHelp": "यह खेल PC पर सबसे अच्छे से खेला जाता है |\nकनेक्ट-फोर एक खेल है जिसे दो लोग एक समय पर खेल सकते हैं | खिलाड़ी सबसे पहले एक रंग चुनते हैं और बारी बारी से रंगीन गोले एक सात कॉलम और छह पंक्तियों वाली ग्रिड पर रखते हैं |"
+		"usages": [
+			""
+		],
+		"extendedHelp": "यह खेल PC पर सबसे अच्छे से खेला जाता है |\nकनेक्ट-फोर एक खेल है जिसे दो लोग एक समय पर खेल सकते हैं | खिलाड़ी सबसे पहले एक रंग चुनते हैं और बारी बारी से रंगीन गोले एक सात कॉलम और छह पंक्तियों वाली ग्रिड पर रखते हैं |",
+		"examples": [
+			""
+		]
 	},
-	"c4GameColumnFull": "यह कॉलम भर चुका है | कृपया फिर से प्रयास करें | ",
+	"c4GameColumnFull": "",
 	"c4GameDraw": "यह मुकाबला **बराबरी** का था |",
 	"c4GameNext": "बारी है: {{user}} (लाल) |",
 	"c4GameNextTurn0": "बारी है: {{user}} (नीला) |",
@@ -18,10 +24,27 @@
 	],
 	"coinFlipDescription": "सिक्का उछालें !",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "सिक्का उछालें | यदि आपका अनुमान सही हुआ, तो बाजी की रक़म दुगनी हो कर आपको वापस मिलेगी |\nयदि आपका अनुमान गलत हुआ तो आप बाजी हार जायेंगे |\nआप बिना किसी रक़म के भी सिक्का उछाल सकते हैं, जिसमे पैसे नहीं लगते, परन्तु आपको इनाम भी नहीं मिलेगा |\nअब सिक्के उछालना शुरू कीजिये |",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
-			"चित्त ५०",
-			"पट्ट २००"
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"coinFlipInvalidCoinname": "सुनिए, {{arg}} सिक्के का चेहरा नहीं है!",
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,7 +491,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -465,6 +509,13 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

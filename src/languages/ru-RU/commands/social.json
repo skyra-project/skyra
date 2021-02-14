@@ -1,12 +1,10 @@
 {
-	"autoRolePointsRequired": "",
 	"autoRoleUpdateConfigured": "",
 	"autoRoleUpdateUnconfigured": "",
 	"autoRoleUpdate": "",
 	"autoRoleRemove": "",
 	"autoRoleAdd": "",
 	"autoRoleListEmpty": "",
-	"autoRoleUnknownRole": "Неизвестная роль: {{role}}",
 	"balance": "",
 	"balanceSelf": "",
 	"balanceBots": "",
@@ -28,6 +26,7 @@
 	"bannerMoney": "",
 	"bannerPaymentCancelled": "",
 	"bannerBuy": "",
+	"bannerAllOrUser": "",
 	"toggleDarkModeEnabled": "",
 	"toggleDarkModeDisabled": "",
 	"dailyTime": "",
@@ -83,9 +82,7 @@
 	},
 	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
 	"remindmeCreate": "",
-	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",
-	"remindmeDeleteNoId": "",
 	"remindmeDelete": "",
 	"remindmeListEmpty": "",
 	"remindmeShowFooter": "",
@@ -93,20 +90,23 @@
 	"remindmeNotfound": "",
 	"reputationTime": "",
 	"reputationUsable": "",
-	"reputationUserNotfound": "",
 	"reputationSelf": "",
-	"reputationBots": "",
 	"reputationGive": "",
 	"reputationsBots": "",
 	"reputationsSelf": "",
 	"reputation": "",
 	"reputation_plural": "",
 	"reputations": "",
-	"autoRoleRequireRole": "",
 	"scoreboardPosition": "",
 	"setColor": "Цвет изменён на {{color}}",
 	"socialDescription": "",
 	"socialExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -135,6 +135,14 @@
 	},
 	"bannerDescription": "Настройте баннер для своего профиля.",
 	"bannerExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -158,6 +166,7 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
@@ -167,6 +176,13 @@
 	},
 	"autoRoleDescription": "",
 	"autoRoleExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -191,40 +207,81 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
 	"balanceDescription": "Проверьте свой текущий баланс.",
 	"balanceExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": ""
 	},
 	"dailyDescription": "",
 	"dailyExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
+	"divorceDescription": "",
+	"divorceExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": ""
+	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"leaderboardListifyPage": "",
 	"levelDescription": "Проверьте свой глобальный уровень.",
 	"levelExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Сколько до следующего уровня?",
 		"explainedUsage": [
 			[
-				"пользователь",
+				"",
+				""
+			],
+			[
+				"",
 				""
 			]
 		]
 	},
-	"divorceDescription": "",
-	"divorceExtended": {
-		"extendedHelp": ""
+	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
+	"marriedExtended": {
+		"extendedHelp": "Эта команда сообщит вам, с кем вы состоите в браке."
 	},
 	"marryDescription": "Вступите в брак с кем-нибудь!",
 	"marryExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -237,12 +294,12 @@
 			""
 		]
 	},
-	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
-	"marriedExtended": {
-		"extendedHelp": "Эта команда сообщит вам, с кем вы состоите в браке."
-	},
 	"mylevelDescription": "Проверьте свой локальный уровень.",
 	"mylevelExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -253,6 +310,10 @@
 	},
 	"payDescription": "",
 	"payExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -265,25 +326,48 @@
 			]
 		],
 		"examples": [
-			"200 @kyra"
+			"200 @kyra",
+			""
 		]
 	},
 	"profileDescription": "",
 	"profileExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"пользователь",
+				"",
+				""
+			],
+			[
+				"",
 				""
 			]
+		],
+		"examples": [
+			"",
+			"",
+			""
 		]
 	},
 	"remindmeDescription": "Управляйте своими напоминаниями.",
 	"remindmeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"действие",
+				"",
 				""
 			],
 			[
@@ -291,7 +375,7 @@
 				""
 			],
 			[
-				"описание",
+				"",
 				""
 			]
 		],
@@ -304,6 +388,11 @@
 	},
 	"reputationDescription": "",
 	"reputationExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -311,7 +400,7 @@
 				""
 			],
 			[
-				"пользователь",
+				"",
 				""
 			]
 		],
@@ -326,10 +415,13 @@
 	},
 	"setColorDescription": "",
 	"setColorExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"цвет",
+				"",
 				""
 			]
 		],
@@ -361,10 +453,16 @@
 		"withdrewDescription": ""
 	},
 	"vaultExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"действие",
+				"",
 				""
 			],
 			[
@@ -374,10 +472,12 @@
 		],
 		"examples": [
 			"",
+			"",
+			"",
 			""
 		]
 	},
-	"vaultInvalidCoins": "",
 	"vaultNotEnoughInVault": "",
-	"vaultNotEnoughMoney": ""
+	"vaultNotEnoughMoney": "",
+	"vaultInvalidAll": ""
 }

@@ -1,12 +1,23 @@
 {
 	"added": "",
-	"contentRequired": "",
 	"description": "",
 	"edited": "",
 	"exists": "",
 	"extended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""

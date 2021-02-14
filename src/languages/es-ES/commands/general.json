@@ -3,15 +3,27 @@
 	"helpCommandCount": "{{count}} comando",
 	"helpCommandCount_plural": "{{count}} comandos",
 	"helpData": {
-		"extended": "🔍 | ***Descripción Ampliada***\n{{extendedHelp}}",
 		"footer": "Descripción de ayuda para {{footerName}}",
-		"title": "{{titleDescription}}",
-		"usage": "📝 | ***Uso del Comando***\n`{{usage}}`\n"
+		"title": "{{titleDescription}}"
 	},
 	"helpDescription": "",
 	"helpExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"reminder": ""
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"helpDm": "",
 	"helpNodm": "",
@@ -22,6 +34,9 @@
 	},
 	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
 	"inviteExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			"",

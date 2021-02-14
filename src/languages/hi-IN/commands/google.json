@@ -1,10 +1,13 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"स्थान",
+				"",
 				""
 			]
 		],
@@ -23,26 +26,15 @@
 	},
 	"currentTimeDst": "",
 	"currentTimeNoDst": "",
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"निर्देश",
-				""
-			]
-		],
-		"examples": [
-			"डिस्कोर्ड",
-			"स्कायरा"
-		]
-	},
 	"gimageDescription": "",
 	"gimageExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"निर्देश",
+				"",
 				""
 			]
 		],
@@ -52,22 +44,33 @@
 		],
 		"reminder": ""
 	},
-	"lmgtfyDescription": "",
-	"lmgtfyExtended": {
-		"explainedUsage": [
-			[
-				"निर्देश",
-				""
-			]
-		]
-	},
-	"lmgtfyClick": "खोजने के लिए मुजपर क्लिक करें",
-	"weatherDescription": "",
-	"weatherExtended": {
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"शहर",
+				"",
+				""
+			]
+		],
+		"examples": [
+			"डिस्कोर्ड",
+			"स्कायरा"
+		]
+	},
+	"weatherDescription": "",
+	"weatherExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
 				""
 			]
 		],

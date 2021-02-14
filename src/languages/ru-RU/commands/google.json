@@ -1,6 +1,9 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -23,26 +26,15 @@
 	},
 	"currentTimeDst": "",
 	"currentTimeNoDst": "",
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"запрос",
-				"То, что вы хотите найти в Google"
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"gimageDescription": "",
 	"gimageExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"запрос",
+				"",
 				"Изображение, которое вы хотите найти в Google"
 			]
 		],
@@ -52,22 +44,33 @@
 		],
 		"reminder": ""
 	},
-	"lmgtfyDescription": "",
-	"lmgtfyExtended": {
-		"explainedUsage": [
-			[
-				"запрос",
-				""
-			]
-		]
-	},
-	"lmgtfyClick": "",
-	"weatherDescription": "",
-	"weatherExtended": {
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"город",
+				"",
+				"То, что вы хотите найти в Google"
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"weatherDescription": "",
+	"weatherExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
 				""
 			]
 		],

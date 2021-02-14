@@ -1,10 +1,13 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"location",
+				"",
 				""
 			]
 		],
@@ -23,22 +26,11 @@
 	},
 	"currentTimeDst": "",
 	"currentTimeNoDst": "",
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
-	},
 	"gimageDescription": "",
 	"gimageExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -52,22 +44,33 @@
 		],
 		"reminder": ""
 	},
-	"lmgtfyDescription": "",
-	"lmgtfyExtended": {
-		"explainedUsage": [
-			[
-				"query",
-				""
-			]
-		]
-	},
-	"lmgtfyClick": "",
-	"weatherDescription": "",
-	"weatherExtended": {
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"city",
+				"",
+				""
+			]
+		],
+		"examples": [
+			"Discord",
+			"Skyra"
+		]
+	},
+	"weatherDescription": "",
+	"weatherExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
 				""
 			]
 		],

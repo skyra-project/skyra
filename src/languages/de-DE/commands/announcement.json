@@ -5,13 +5,10 @@
 	"announcementEmbedMentions": "{{header}}:",
 	"announcementEmbedMentionsWithMentions": "{{header}}, und erwähnt: {{mentions, andList}}:",
 	"announcementExtended": {
-		"extendedHelp": "Dieser Command erfordert einen Ankündigungschannel (**channels.announcement** im Konfigurationscommand), der Skyra zeigt, wohin sie die Ankündigung hinschicken soll.\n\nIst dieser Command notwendig? Nun, nichts dich daran, deine Ankündigungen selbst zu machen, aber es gibt viele Menschen, die es hassen, von at everyone/here erwähnt zu werden.\n\nUm dies zu vermeiden, gibt dir Skyra die Möglichkeit, eine Abonennten zu erstellen, die nicht erwähnbar ist (um zu verhindern, dass andere die Rollenerwähnung spammen) und wenn Sie diesen Command ausführen, wird Skyra die Rolle als erwähnbar festlegen, die Nachricht posten und zurück auf unerwähnbar stellen.\n\nDarüber hinaus kannst du Skyra so konfigurieren, dass die Ankündigung als Nachricht eingebettet wird, indem du die Option **messages.announcement-embed** im Konfigurationscommand einstellest. Beim Senden der Nachricht als Einbettung können Sie die Erwähnungen von Benutzern, @here oder @everyone verhindern, indem du die `--excludeMentions` Flagge der Ankündigung hinzufügst.",
-		"explainedUsage": [
-			[
-				"Ankündigung",
-				"Der Ankündigungstext zum Posten."
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "Dieser Command erfordert einen Ankündigungschannel (**channels.announcement** im Konfigurationscommand), der Skyra zeigt, wohin sie die Ankündigung hinschicken soll.\n\nIst dieser Command notwendig? Nun, nichts dich daran, deine Ankündigungen selbst zu machen, aber es gibt viele Menschen, die es hassen, von at everyone/here erwähnt zu werden.\n\nUm dies zu vermeiden, gibt dir Skyra die Möglichkeit, eine Abonennten zu erstellen, die nicht erwähnbar ist (um zu verhindern, dass andere die Rollenerwähnung spammen) und wenn Sie diesen Command ausführen, wird Skyra die Rolle als erwähnbar festlegen, die Nachricht posten und zurück auf unerwähnbar stellen.\n\nDarüber hinaus kannst du Skyra so konfigurieren, dass die Ankündigung als Nachricht eingebettet wird, indem du die Option **messages.announcement-embed** im Konfigurationscommand einstellest. Beim Senden der Nachricht als Einbettung können Sie die Erwähnungen von Benutzern, @here oder @everyone verhindern, indem du die `--excludeMentions` Flagge der Ankündigung hinzufügst.",
 		"examples": [
 			"Ich freue mich mitteilen zu können, dass wir einen Bot haben, um sicher Ankündigungen an unsere Abonnenten zu senden!"
 		],

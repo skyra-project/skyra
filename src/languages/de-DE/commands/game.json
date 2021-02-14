@@ -1,15 +1,21 @@
 {
 	"c4Description": "Spiele Connect-Four mit jemandem.",
 	"c4Extended": {
-		"extendedHelp": "Dieses Spiel wird am besten auf dem PC gespielt.\nConnect Four ist ein Zwei-Spieler-Verbindungsspiel, bei dem die Spieler zuerst eine Farbe auswählen und dann farbige Scheiben von oben in ein raster aus Sieben Spalten und Sechs Reihen fallen lassen."
+		"usages": [
+			""
+		],
+		"extendedHelp": "Dieses Spiel wird am besten auf dem PC gespielt.\nConnect Four ist ein Zwei-Spieler-Verbindungsspiel, bei dem die Spieler zuerst eine Farbe auswählen und dann farbige Scheiben von oben in ein raster aus Sieben Spalten und Sechs Reihen fallen lassen.",
+		"examples": [
+			""
+		]
 	},
-	"c4GameColumnFull": "Diese Spalte ist voll. Bitte wähle eine andere.",
+	"c4GameColumnFull": "",
 	"c4GameDraw": "Dieses Spiel wurde mit einem **Unentschieden** beendet!",
 	"c4GameNext": "Runde von: {{user}} (rot).",
 	"c4GameNextTurn0": "Runde von: {{user}} (blau).",
 	"c4GameWin": "{{user}} (rot) hat gewonnen!",
 	"c4GameWinTurn0": "{{user}} (blau) hat gewonnen!",
-	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
+	"c4Prompt": "",
 	"c4Start": "Lass uns spielen! Runde für: **{{player}}**.",
 	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
 	"coinFlipCoinnames": [
@@ -18,10 +24,27 @@
 	],
 	"coinFlipDescription": "Wirf eine Münze!",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Wirf eine Münze. Wenn du die Seite errätst die erscheint, erhälst du deinen Wetteinsatz zurück, verdoppelt.\nWenn nicht, dann verlierst du deinen Einsatz.\nDu kannst auch einen bargeldlosen Wurf durchführen, der nichts kostet, aber dich auch nicht belohnt.\nJetzt lass die Münzen fliegen.",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
-			"Kopf 50",
-			"Zahl 200"
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"coinFlipInvalidCoinname": "Entschuldigung, aber {{arg}} ist keine Münzseite!",
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,7 +491,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -465,6 +509,13 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

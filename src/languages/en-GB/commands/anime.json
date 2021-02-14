@@ -1,26 +1,20 @@
 {
 	"animeDescription": "",
 	"animeExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "",
 		"examples": [
 			""
 		]
 	},
 	"mangaDescription": "",
 	"mangaExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
+		"usages": [
+			""
 		],
+		"extendedHelp": "",
 		"examples": [
 			"",
 			""

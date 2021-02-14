@@ -1,8 +1,17 @@
 {
 	"giveawayDescription": "",
 	"giveawayExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""
@@ -24,6 +33,11 @@
 	},
 	"giveawayRerollDescription": "",
 	"giveawayRerollExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -38,14 +52,22 @@
 		"examples": [
 			"",
 			"",
-			"",
 			""
 		]
 	},
 	"giveawayScheduleDescription": "",
 	"giveawayScheduleExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
+			[
+				"",
+				""
+			],
 			[
 				"",
 				""

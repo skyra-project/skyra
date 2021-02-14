@@ -7,7 +7,25 @@
 	"confNochange": "Cheia **{{key}}** are deja această valoare.",
 	"confServerDescription": "Definiți setările per-server.",
 	"confServerExtended": {
-		"extendedHelp": "Vă permite să configurați Skyra din Discord, ca o alternativă rapidă a portalului web (<https://skyra.pw>)."
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**Setarea {{key}} a server-ului**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` poate fi configurat doar prin intermediul panoului web (<https://skyra.pw>)",
@@ -18,6 +36,14 @@
 	},
 	"rolesetDescription": "Gestionați seturi de roluri unice.",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Un set de roluri este un grup de roluri pe care Skyra le identifică ca fiind unice pentru toți membrii din server, ca de exemplu un roleset numit `regiune` ar putea avea rolurile `Africa`, `America`, `Asia` şi `Europa`, iar membrii vor putea avea doar unul dintre ele. Este ca un fel de \"regulă\" care se aplică în următoarele trei situaţii:\n\n- Când cineva revendică un rol prin comanda `roles`.\n- Când cineva revendică un rol prin roluri de reacție.\n- Când cineva primește un rol fie manual, fie de la un alt bot.",
 		"explainedUsage": [
 			[
@@ -39,6 +65,14 @@
 			[
 				"auto",
 				"Adaugă sau elimină un set de roluri."
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "Momentan la: ⚙️ {{path}}",
 	"confMenuRenderNokeys": "Nu există chei configurabile pentru acest dosar",
 	"confMenuRenderSelect": "Vă rugăm să introduceți oricare dintre următoarele intrări",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "• Actualizează Valoarea → `set <value>`",
 	"confMenuRenderRemove": "• Elimină Valoarea → `remove <value>`",
 	"confMenuRenderReset": "• Resetează Valoarea → `reset`",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "Salvare reuşită a tuturor modificărilor.",
 	"updateDescription": "Actualizează botul",
 	"updateExtended": {
-		"extendedHelp": "Niste lustruire aici, niște curățare pe-acolo, și ce să știu, brusc sunt un android cu totul nou!"
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "Niste lustruire aici, niște curățare pe-acolo, și ce să știu, brusc sunt un android cu totul nou!",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

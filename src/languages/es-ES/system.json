@@ -1,9 +1,6 @@
 {
-	"cannotAccessChannel": "Lo siento, pero usted no tiene permiso para ver ese canal.",
 	"channelNotPostable": "No estoy autorizado a enviar mensajes a este canal.",
-	"databaseError": "¡No pude obtenerlo en mi base de datos! Por favor, inténtelo de nuevo, o si el problema sigue ocurriendo, únase al servidor de soporte (pista: use `Skyra, support`)",
 	"discordAbortError": "Tuve un pequeño error de red al enviar el mensaje a Discord, ¡por favor ejecuta este comando de nuevo!",
-	"error": "¡Algo malo ha sucedido! Por favor, inténtalo de nuevo, o si el problema sigue ocurriendo, únase al servidor de soporte (pista: usa `Skyra, support`)",
 	"exceededLengthChooseOutput": "Elija una de las siguientes opciones: {{output, orList}}",
 	"exceededLengthOutput": "**Salida**:{{output}}",
 	"exceededLengthOutputConsole": "Se envió el resultado a la consola.",
@@ -16,11 +13,13 @@
 	"externalServerError": "El servicio externo que utilizamos no ha podido procesar nuestro mensaje. Inténtalo de nuevo más tarde.",
 	"fetchBansFail": "Error al obtener la información de los baneos. ¿Tengo el permiso **{{ADMINISTRATOR, permissions}}**?",
 	"helpTitles": {
+		"aliases": "",
 		"usages": "",
-		"explainedUsage": "⚙ | ***Uso explicado***",
-		"possibleFormats": "🔢 | ***Formatos posibles***",
-		"examples": "🔗 | ***Ejemplos***",
-		"reminders": "⏰ | ***Recordatorio***"
+		"extendedHelp": "",
+		"explainedUsage": "",
+		"possibleFormats": "",
+		"examples": "",
+		"reminders": ""
 	},
 	"highestRole": "La posición jerárquica de este rol es mayor o igual que yo, no puedo concederla a nadie.",
 	"jumpTo": "Saltar al Mensaje ►",
@@ -34,7 +33,7 @@
 		"{{LOADING}} Ajustando a las frecuencias correctas...",
 		"{{LOADING}} Reticulando curvas..."
 	],
-	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
+	"messagePromptTimeout": "",
 	"noResults": "No pude encontrar resultados para esa consulta",
 	"parseError": "{{REDCROSS}} No he podido procesar los datos que me has proporcionado, ¡lo siento~!",
 	"pokedexExternalResource": "Recursos Externos",
@@ -42,8 +41,8 @@
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
 	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?",
 	"textPromptAbortOptions": [
-		"abortar",
-		"cancelar",
-		"parar"
+		"",
+		"",
+		""
 	]
 }

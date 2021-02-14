@@ -7,7 +7,25 @@
 	"confNochange": "Значение **{{key}}** уже соответствует этому значению.",
 	"confServerDescription": "Определить параметры для сервера.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"confServer": "**Настройки сервера {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` можно настроить только через веб-панель инструментов (<https://skyra.pw>)",
@@ -18,6 +36,14 @@
 	},
 	"rolesetDescription": "Управление уникальными наборами ролей.",
 	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
@@ -39,6 +65,14 @@
 			[
 				"авто",
 				"Добавляет или удаляет набор ролей."
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -66,7 +100,6 @@
 	"confMenuRenderAtPiece": "",
 	"confMenuRenderNokeys": "",
 	"confMenuRenderSelect": "",
-	"confMenuRenderTctitle": "",
 	"confMenuRenderUpdate": "• Обновить значение → `set <value>`",
 	"confMenuRenderRemove": "• Удалить значение → `remove <value>`",
 	"confMenuRenderReset": "• Сбросить значение → `reset`",
@@ -78,6 +111,21 @@
 	"confMenuSaved": "Все изменения успешно сохранены.",
 	"updateDescription": "Обновите бота",
 	"updateExtended": {
-		"extendedHelp": ""
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
 	}
 }

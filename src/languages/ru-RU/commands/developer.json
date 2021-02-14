@@ -1,6 +1,9 @@
 {
 	"yarnDescription": "",
 	"yarnExtended": {
+		"usages": [
+			""
+		],
 		"extendedHelp": "Это для NodeJS-разработчиков, которые хотят быстро найти информацию о пакете, опубликованном в [npm](https://npmjs.com)",
 		"explainedUsage": [
 			[

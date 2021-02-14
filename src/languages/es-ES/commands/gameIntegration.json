@@ -1,6 +1,11 @@
 {
 	"brawlstarsDescription": "Obtén datos sobre un jugador o club del juego más nuevo de Supercell, Brawl Stars.",
 	"brawlstarsExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Utilice este comando con --save para guardar la etiqueta de jugador o club.",
 		"explainedUsage": [
 			[
@@ -51,6 +56,10 @@
 	},
 	"clashofclansDescription": "Obtén datos de un jugador o clan en el popular juego de móviles Clash of Clans",
 	"clashofclansExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "La solicitud de clanes intentará devolver múltiples respuestas posibles.",
 		"explainedUsage": [
 			[
@@ -119,21 +128,25 @@
 	"clashofclansPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{playertag}}\".",
 	"FFXIVDescription": "Consulta la API de Final Fantasy 14 para datos del juego",
 	"FFXIVExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "Este comando le permite buscar el personaje y datos de objetos de FFXIV.\nPara el objeto se realiza una búsqueda con comodín, así que si tu término es incluida en alguna parte del nombre, podrá aún encontrar lo que buscaba.",
 		"explainedUsage": [
 			[
-				"tipo de búsqueda",
-				"(opcional, el valor por defecto es \"character\") \"character\" o \"item\""
+				"",
+				""
 			],
 			[
-				"consulta",
-				"El jugador u objeto a buscar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"character Laytlan Ardevon",
-			"Laytlan Ardevon",
-			"poción"
+			"",
+			"",
+			""
 		]
 	},
 	"FFXIVCharacterFields": {
@@ -168,14 +181,20 @@
 	"FFXIVNoItemFound": "{{REDCROSS}} Lo siento, pero no pude encontrar un objeto con ese nombre.",
 	"fortniteDescription": "Obtiene estadísticas de juego de un jugador de Fortnite",
 	"fortniteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Este comando recupera las estadísticas de cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation",
 		"explainedUsage": [
 			[
-				"plataforma",
+				"",
 				"(opcional, por defecto \"pc\") Plataforma en la que el jugador juega, debe ser \"pc\", \"xbox\" o \"psn\"."
 			],
 			[
-				"jugador",
+				"",
 				"El nombre de usuario de Epic Games del jugador."
 			]
 		],
@@ -186,6 +205,7 @@
 			"psn TTV IllusionOG"
 		]
 	},
+	"fortniteInvalidPlatform": "",
 	"fortniteNoUser": "Lo siento, pero no he podido encontrar un usuario con ese nombre.\n¿Estás seguro de que juegan en la plataforma proporcionada? (PC [default], Xbox o PSN)",
 	"fortniteEmbedTitle": "Estadísticas de juego para {{epicUserHandle}}",
 	"fortniteEmbedSectionTitles": {
@@ -209,14 +229,19 @@
 	},
 	"overwatchDescription": "Obtiene estadísticas de juego de un jugador de Overwatch",
 	"overwatchExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.\n\nPor defecto buscaré a jugadores de PC, si desea comprobar los jugadores de Xbox o Playstation, escriba la plataforma correspondiente (\"xbl\" o \"psn\").",
 		"explainedUsage": [
 			[
-				"plataforma",
+				"",
 				"(opcional, por defecto \"pc\") Plataforma en la que el jugador juega, debe ser \"pc\", \"xbl\" o \"psn\""
 			],
 			[
-				"jugador",
+				"",
 				""
 			]
 		],
@@ -227,6 +252,7 @@
 		],
 		"reminder": "**¡Los nombres de jugadores distinguen mayúsculas!**"
 	},
+	"overwatchInvalidPlatform": "",
 	"overwatchInvalidPlayerName": "\"{{playerTag}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
 	"overwatchQueryFail": "Error al obtener los datos de \"{{player}}\", ¿estás seguro de que juegan en \"{{platform}}\"?\nTambién asegúrese de escribir las mayúsculas correctas, los nombres distinguen mayúsculas.",
 	"overwatchNoStats": "He encontrado un jugador con la etiqueta \"{{player}}\" pero no había estadísticas disponibles para ellos.",

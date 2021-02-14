@@ -1,7 +1,13 @@
 {
 	"c4Description": "",
 	"c4Extended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"c4GameColumnFull": "",
 	"c4GameDraw": "Этот матч завершился **ничьей**!",
@@ -18,10 +24,27 @@
 	],
 	"coinFlipDescription": "Подбросьте монетку!",
 	"coinFlipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
 		"examples": [
-			"орёл 50",
-			"решка 200"
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"coinFlipInvalidCoinname": "Простите, но {{arg}} не является стороной монеты!",
@@ -405,7 +428,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -421,10 +451,15 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"examples": [
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -439,6 +474,9 @@
 	"slotmachineCanvasTextWon": "Вы выиграли",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
+		"usages": [
+			""
+		],
 		"explainedUsage": [
 			[
 				"",
@@ -453,7 +491,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "Этот матч завершился **ничьей**!\n{{board}}",
 	"ticTacToeExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -465,18 +509,25 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"категория",
+				"",
 				""
 			],
 			[
-				"тип",
+				"",
 				""
 			],
 			[
-				"сложность",
+				"",
 				"Уровень сложности задаваемых вопросов."
 			],
 			[
@@ -498,7 +549,14 @@
 	"wheelOfFortuneCanvasTextWon": "Вы выиграли",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"extendedHelp": ""
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

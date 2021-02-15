@@ -120,12 +120,12 @@
 			"unknown": "Desconocido"
 		}
 	},
-	"brawlStarsInvalidPlayerTag": "Lo siento, \"{{playertag}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
+	"brawlStarsInvalidPlayerTag": "Lo siento, \"{{parameter}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
 	"brawlStarsClansQueryFail": "Lo siento, pero no he podido obtener datos sobre el clan \"{{clan}}\".",
-	"brawlStarsPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{playertag}}\".",
-	"clashofclansInvalidPlayerTag": "Lo siento, \"{{playertag}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
+	"brawlStarsPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{parameter}}\".",
+	"clashofclansInvalidPlayerTag": "Lo siento, \"{{parameter}}\" no es una etiqueta válida de Clash of Clans. Las etiquetas de los jugadores tienen que comenzar con un \"#\" seguido por su identificador.",
 	"clashOfClansClansQueryFail": "Lo siento, pero no he podido obtener datos sobre el clan \"{{clan}}\".",
-	"clashofclansPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{playertag}}\".",
+	"clashofclansPlayersQueryFail": "Lo siento, pero no pude obtener datos del jugador con la etiqueta de jugador \"{{parameter}}\".",
 	"FFXIVDescription": "Consulta la API de Final Fantasy 14 para datos del juego",
 	"FFXIVExtended": {
 		"usages": [
@@ -253,7 +253,7 @@
 		"reminder": "**¡Los nombres de jugadores distinguen mayúsculas!**"
 	},
 	"overwatchInvalidPlatform": "",
-	"overwatchInvalidPlayerName": "\"{{playerTag}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
+	"overwatchInvalidPlayerName": "\"{{parameter}}\" es un nombre de jugador inválido\nPara PC tiene que ser su etiqueta de Batalla Blizzard completa, por ejemplo \"bame#1784\".\nPara Xbox y Playstation sólo tiene que ser su nombre de usuario.",
 	"overwatchQueryFail": "Error al obtener los datos de \"{{player}}\", ¿estás seguro de que juegan en \"{{platform}}\"?\nTambién asegúrese de escribir las mayúsculas correctas, los nombres distinguen mayúsculas.",
 	"overwatchNoStats": "He encontrado un jugador con la etiqueta \"{{player}}\" pero no había estadísticas disponibles para ellos.",
 	"overwatchEmbedDataStats": {

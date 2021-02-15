@@ -10,7 +10,7 @@ import { Args } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-const kTagRegex = /#[A-Z0-9]{3,}/;
+const kTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 
 const kTotalBrawlers = 43; // this will need updating
 const kMaxMembers = 100;
@@ -193,7 +193,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static tagResolver = Args.make<string>((parameter, { argument }) => {
-		if (kTagRegex.test(parameter)) return Args.ok(parameter);
+		if (kTagRegex.test(parameter)) return Args.ok(parameter.startsWith('#') ? parameter : `#${parameter}`);
 		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag });
 	});
 }

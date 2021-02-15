@@ -16,7 +16,7 @@ const enum ClashOfClansFetchCategories {
 	CLANS = 'clans'
 }
 
-const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
+const kPlayerTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -155,7 +155,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	public static playerTagResolver = Args.make<string>((parameter, { argument }) => {
-		if (kPlayerTagRegex.test(parameter)) return Args.ok(parameter);
+		if (kPlayerTagRegex.test(parameter)) return Args.ok(parameter.startsWith('#') ? parameter : `#${parameter}`);
 		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag });
 	});
 }

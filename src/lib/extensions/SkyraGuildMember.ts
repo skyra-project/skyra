@@ -101,6 +101,8 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 declare module 'discord.js' {
 	export interface GuildMember {
 		fetchRank(): Promise<number>;
+		isGuildOwner(): boolean;
+		isOnlyListener(): boolean;
 		isDJ(): Promise<boolean>;
 		isModerator(): Promise<boolean>;
 		isAdmin(): Promise<boolean>;

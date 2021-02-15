@@ -7,7 +7,7 @@ import { sleep } from '#utils/Promisified/sleep';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { ExecOptions } from 'child_process';
+import type { ExecOptions } from 'child_process';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';
 

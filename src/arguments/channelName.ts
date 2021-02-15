@@ -31,6 +31,6 @@ export class UserArgument extends Argument<GuildChannel> {
 	}
 }
 
-interface ChannelArgumentContext extends ArgumentContext {
+interface ChannelArgumentContext extends ArgumentContext<GuildChannel> {
 	filter?: (entry: GuildChannel) => boolean;
 }

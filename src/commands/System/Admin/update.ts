@@ -47,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async updateDependencies(message: Message) {
-		const { stderr, code } = await this.exec('yarn install --frozen-lockfile');
+		const { stderr, code } = await this.exec('yarn install --frozen-lockfile --ignore-scripts');
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully updated dependencies.`);
 	}

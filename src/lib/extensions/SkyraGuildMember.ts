@@ -31,16 +31,32 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 		return null;
 	}
 
-	public isDJ() {
-		return this.guild.readSettings((settings) => this.checkDj(settings) || this.checkModerator(settings) || this.checkAdministrator(settings));
+	public async isDJ() {
+		return (
+			this.isGuildOwner() ||
+			this.isOnlyListener() ||
+			this.guild.readSettings((settings) => this.checkDj(settings) || this.checkModerator(settings) || this.checkAdministrator(settings))
+		);
 	}
 
-	public isModerator() {
-		return this.guild.readSettings((settings) => this.checkModerator(settings) || this.checkAdministrator(settings));
+	public async isModerator() {
+		return this.isGuildOwner() || this.guild.readSettings((settings) => this.checkModerator(settings) || this.checkAdministrator(settings));
 	}
 
-	public isAdmin() {
-		return this.guild.readSettings((settings) => this.checkAdministrator(settings));
+	public async isAdmin() {
+		return this.isGuildOwner() || this.guild.readSettings((settings) => this.checkAdministrator(settings));
+	}
+
+	public isGuildOwner() {
+		return this.id === this.guild.ownerID;
+	}
+
+	public isOnlyListener() {
+		const { voiceChannel } = this.guild.audio;
+		if (voiceChannel === null) return false;
+
+		const { listeners } = voiceChannel;
+		return listeners.length === 1 && listeners[0] === this.id;
 	}
 
 	public isOwner() {

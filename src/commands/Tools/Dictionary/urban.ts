@@ -24,6 +24,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`,
 			FetchResultTypes.JSON
 		);
+		if (result.list.length === 0) this.error(LanguageKeys.Commands.Tools.UrbanNoDefinition, { parameter: query });
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
 		const display = await this.buildDisplay(list, message, args.t, query);

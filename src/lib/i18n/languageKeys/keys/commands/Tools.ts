@@ -137,6 +137,7 @@ export const TopInvitesEmbedData = T<{
 }>('commands/tools:topInvitesEmbedData');
 export const UrbanDescription = T<string>('commands/tools:urbanDescription');
 export const UrbanExtended = T<LanguageHelpDisplayOptions>('commands/tools:urbanExtended');
+export const UrbanNoDefinition = FT<{ parameter: string }, string>('commands/tools:urbanNoDefinition');
 export const WhoisDescription = T<string>('commands/tools:whoisDescription');
 export const WhoisExtended = T<LanguageHelpDisplayOptions>('commands/tools:whoisExtended');
 export const AvatarNone = T<string>('commands/tools:avatarNone');

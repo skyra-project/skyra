@@ -281,6 +281,7 @@
 		],
 		"examples": ["spam"]
 	},
+	"urbanNoDefinition": "There are no definitions for the query `{{parameter}}`!",
 	"voteDescription": "Simplified reaction-based vote.",
 	"voteExtended": {
 		"usages": ["Question"],

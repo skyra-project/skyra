@@ -58,49 +58,6 @@ declare module 'discord.js' {
 		readonly webhookError: Webhook;
 		readonly webhookFeedback: Webhook | null;
 		readonly websocket: WebsocketHandler;
-
-		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
-		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
-		emit(
-			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
-			message: Message,
-			resultMessage: Message,
-			channel: TextChannel,
-			role: Role,
-			content: string
-		): boolean;
-		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
-		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
-		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
-		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
-		emit(event: Events.MusicFinish, queue: Queue): boolean;
-		emit(event: Events.MusicFinishNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicLeave, queue: Queue): boolean;
-		emit(event: Events.MusicPrune, queue: Queue): boolean;
-		emit(event: Events.MusicQueueSync, queue: Queue): boolean;
-		emit(event: Events.MusicRemove, queue: Queue): boolean;
-		emit(event: Events.MusicRemoveNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicReplayUpdate, queue: Queue, repeating: boolean): boolean;
-		emit(event: Events.MusicReplayUpdateNotify, channel: MessageAcknowledgeable, repeating: boolean): boolean;
-		emit(event: Events.MusicSongPause, queue: Queue): boolean;
-		emit(event: Events.MusicSongPauseNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicSongPlay, queue: Queue, status: NP): boolean;
-		emit(event: Events.MusicSongPlayNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicSongReplay, queue: Queue, status: NP): boolean;
-		emit(event: Events.MusicSongResume, queue: Queue): boolean;
-		emit(event: Events.MusicSongResumeNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicSongSeekUpdate, queue: Queue): boolean;
-		emit(event: Events.MusicSongSeekUpdateNotify, channel: MessageAcknowledgeable, time: number): boolean;
-		emit(event: Events.MusicSongSkip, queue: Queue): boolean;
-		emit(event: Events.MusicSongSkipNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicSongVolumeUpdate, queue: Queue, next: number): boolean;
-		emit(event: Events.MusicSongVolumeUpdateNotify, channel: MessageAcknowledgeable, previous: number, next: number): boolean;
-		emit(event: Events.MusicVoiceChannelJoin, queue: Queue, voiceChannel: VoiceChannel): boolean;
-		emit(event: Events.MusicVoiceChannelLeave, queue: Queue): boolean;
-		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
-		emit(event: Events.ResourceAnalyticsSync): boolean;
-		emit(event: Events.TwitchStreamHookedAnalytics, status: AnalyticsSchema.TwitchStreamStatus): boolean;
-		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
 	interface ClientOptions {
@@ -113,6 +70,44 @@ declare module 'discord.js' {
 		schedule?: {
 			interval: number;
 		};
+	}
+
+	export interface ClientEvents {
+		[Events.AnalyticsSync]: [guilds: number, users: number];
+		[Events.CommandUsageAnalytics]: [command: string, category: string, subCategory: string];
+		[Events.GuildAnnouncementSend]: [message: Message, resultMessage: Message, channel: TextChannel, role: Role, content: string];
+		[Events.GuildAnnouncementEdit]: [message: Message, resultMessage: Message, channel: TextChannel, role: Role, content: string];
+		[Events.GuildAnnouncementError]: [message: Message, channel: TextChannel, role: Role, content: string, error: any];
+		[Events.MoneyTransaction]: [target: User, moneyChange: number, moneyBeforeChange: number];
+		[Events.MoneyPayment]: [message: Message, user: User, target: User, money: number];
+		[Events.MusicAddNotify]: [channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]];
+		[Events.MusicFinish]: [queue: Queue];
+		[Events.MusicFinishNotify]: [channel: MessageAcknowledgeable];
+		[Events.MusicLeave]: [queue: Queue];
+		[Events.MusicPrune]: [queue: Queue];
+		[Events.MusicQueueSync]: [queue: Queue];
+		[Events.MusicRemove]: [queue: Queue];
+		[Events.MusicRemoveNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
+		[Events.MusicReplayUpdate]: [queue: Queue, repeating: boolean];
+		[Events.MusicReplayUpdateNotify]: [channel: MessageAcknowledgeable, repeating: boolean];
+		[Events.MusicSongPause]: [queue: Queue];
+		[Events.MusicSongPauseNotify]: [channel: MessageAcknowledgeable];
+		[Events.MusicSongPlay]: [queue: Queue, status: NP];
+		[Events.MusicSongPlayNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
+		[Events.MusicSongReplay]: [queue: Queue, status: NP];
+		[Events.MusicSongResume]: [queue: Queue];
+		[Events.MusicSongResumeNotify]: [channel: MessageAcknowledgeable];
+		[Events.MusicSongSeekUpdate]: [queue: Queue];
+		[Events.MusicSongSeekUpdateNotify]: [channel: MessageAcknowledgeable, time: number];
+		[Events.MusicSongSkip]: [queue: Queue];
+		[Events.MusicSongSkipNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
+		[Events.MusicSongVolumeUpdate]: [queue: Queue, next: number];
+		[Events.MusicSongVolumeUpdateNotify]: [channel: MessageAcknowledgeable, previous: number, next: number];
+		[Events.MusicVoiceChannelJoin]: [queue: Queue, voiceChannel: VoiceChannel];
+		[Events.MusicVoiceChannelLeave]: [queue: Queue];
+		[Events.MusicConnect]: [queue: Queue, voiceChannelID: string];
+		[Events.ResourceAnalyticsSync]: [];
+		[Events.TwitchStreamHookedAnalytics]: [status: AnalyticsSchema.TwitchStreamStatus];
 	}
 }
 

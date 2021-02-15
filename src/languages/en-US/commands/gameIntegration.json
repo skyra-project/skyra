@@ -120,12 +120,12 @@
 			"unknown": "Unknown"
 		}
 	},
-	"brawlStarsInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
+	"brawlStarsInvalidPlayerTag": "I am sorry, \"{{parameter}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
 	"brawlStarsClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
-	"brawlStarsPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
-	"clashofclansInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
+	"brawlStarsPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{parameter}}\".",
+	"clashofclansInvalidPlayerTag": "I am sorry, \"{{parameter}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
 	"clashOfClansClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
-	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
+	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{parameter}}\".",
 	"FFXIVDescription": "Queries the Final Fantasy 14 API for game data",
 	"FFXIVExtended": {
 		"usages": [
@@ -253,7 +253,7 @@
 		"reminder": "**Player names are case sensitive!**"
 	},
 	"overwatchInvalidPlatform": "{{REDCROSS}} I am sorry, but that is an invalid platform for Overwatch. The valid platforms are: `xbl`, `psn`, and `pc`",
-	"overwatchInvalidPlayerName": "\"{{playerTag}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
+	"overwatchInvalidPlayerName": "\"{{parameter}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
 	"overwatchQueryFail": "Failed to get data for \"{{player}}\", are you sure they play on \"{{platform}}\"?\nAlso make sure to get the casing right, names are case sensitive.",
 	"overwatchNoStats": "I found a player with the tag \"{{player}}\" but no stats were available for them.",
 	"overwatchEmbedDataStats": {

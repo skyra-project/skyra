@@ -112,7 +112,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async exec(script: string) {
 		try {
-			const result = await exec(script);
+			const result = await exec(script, { env: { ...process.env, NODE_ENV: undefined } });
 			return { ...result, code: 0 };
 		} catch (error) {
 			return { stdout: '', stderr: error?.message || error || '', code: error.code ?? 1 };

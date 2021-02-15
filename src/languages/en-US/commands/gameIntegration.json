@@ -120,7 +120,7 @@
 			"unknown": "Unknown"
 		}
 	},
-	"brawlStarsInvalidPlayerTag": "I am sorry, \"{{parameter}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
+	"brawlStarsInvalidPlayerTag": "I am sorry, \"{{parameter}}\" is not a valid Brawl Stars player tag. Player tags have to start with a \"#\" followed by the ID.",
 	"brawlStarsClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
 	"brawlStarsPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{parameter}}\".",
 	"clashofclansInvalidPlayerTag": "I am sorry, \"{{parameter}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",

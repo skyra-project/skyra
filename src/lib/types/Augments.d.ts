@@ -18,7 +18,7 @@ import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
-import type { Piece, Store } from '@sapphire/framework';
+import type { Events, Piece, Store } from '@sapphire/framework';
 import type { Image } from 'canvas';
 import type {
 	APIMessage,
@@ -38,7 +38,6 @@ import type {
 } from 'discord.js';
 import type { Scope } from './definitions/ArgumentTypes';
 import type { MessageAcknowledgeable } from './Discord';
-import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
 
 declare module 'discord.js' {
@@ -145,6 +144,78 @@ declare module '@sapphire/framework' {
 		time: Date;
 		timespan: number;
 		userName: User;
+	}
+
+	export enum Events {
+		AnalyticsSync = 'analyticsSync',
+		ApiError = 'apiError',
+		ArgumentError = 'argumentError',
+		CommandUsageAnalytics = 'commandUsageAnalytics',
+		GuildAnnouncementEdit = 'guildAnnouncementEdit',
+		GuildAnnouncementError = 'guildAnnouncementError',
+		GuildAnnouncementSend = 'guildAnnouncementSend',
+		GuildMessageDelete = 'guildMessageDelete',
+		GuildMessageLog = 'guildMessageLog',
+		GuildMessageUpdate = 'guildMessageUpdate',
+		GuildUserMessage = 'guildUserMessage',
+		LavalinkClose = 'lavalinkClose',
+		LavalinkEnd = 'lavalinkEnd',
+		LavalinkException = 'lavalinkException',
+		LavalinkPlayerUpdate = 'lavalinkPlayerUpdate',
+		LavalinkStart = 'lavalinkStart',
+		LavalinkStuck = 'lavalinkStuck',
+		LavalinkWebsocketClosed = 'lavalinkWebsocketClosed',
+		MentionSpamExceeded = 'mentionSpamExceeded',
+		MentionSpamWarning = 'mentionSpamWarning',
+		ModerationEntryAdd = 'moderationEntryAdd',
+		ModerationEntryEdit = 'moderationEntryEdit',
+		MoneyPayment = 'moneyPayment',
+		MoneyTransaction = 'moneyTransaction',
+		MusicAddNotify = 'musicAddNotify',
+		MusicConnect = 'musicConnect',
+		MusicFinish = 'musicFinish',
+		MusicFinishNotify = 'musicFinishNotify',
+		MusicLeave = 'musicLeave',
+		MusicPrune = 'musicPrune',
+		MusicQueueSync = 'musicQueueSync',
+		MusicRemove = 'musicRemove',
+		MusicRemoveNotify = 'musicRemoveNotify',
+		MusicReplayUpdate = 'musicReplayUpdate',
+		MusicReplayUpdateNotify = 'musicReplayUpdateNotify',
+		MusicSongPause = 'musicSongPause',
+		MusicSongPauseNotify = 'musicSongPauseNotify',
+		MusicSongPlay = 'musicSongPlay',
+		MusicSongPlayNotify = 'musicSongPlayNotify',
+		MusicSongReplay = 'musicSongReplay',
+		MusicSongResume = 'musicSongResume',
+		MusicSongResumeNotify = 'musicSongResumeNotify',
+		MusicSongSeekUpdate = 'musicSongSeekUpdate',
+		MusicSongSeekUpdateNotify = 'musicSongSeekUpdateNotify',
+		MusicSongSkip = 'musicSongSkip',
+		MusicSongSkipNotify = 'musicSongSkipNotify',
+		MusicSongVolumeUpdate = 'musicSongVolumeUpdate',
+		MusicSongVolumeUpdateNotify = 'musicSongVolumeUpdateNotify',
+		MusicVoiceChannelJoin = 'musicVoiceChannelJoin',
+		MusicVoiceChannelLeave = 'musicVoiceChannelLeave',
+		NotMutedMemberAdd = 'notMutedMemberAdd',
+		Raw = 'raw',
+		RawMemberAdd = 'rawMemberAdd',
+		RawMemberRemove = 'rawMemberRemove',
+		RawMessageCreate = 'rawMessageCreate',
+		RawMessageDelete = 'rawMessageDelete',
+		RawMessageDeleteBulk = 'rawMessageDeleteBulk',
+		RawReactionAdd = 'rawReactionAdd',
+		RawReactionRemove = 'rawReactionRemove',
+		ReactionBlacklist = 'reactionBlacklist',
+		Reconnecting = 'reconnecting',
+		ResourceAnalyticsSync = 'resourceAnalyticsSync',
+		SettingsUpdate = 'settingsUpdate',
+		TaskError = 'taskError',
+		TwitchStreamHookedAnalytics = 'twitchStreamHookedAnalytics',
+		TwitchStreamOffline = 'twitchStreamOffline',
+		TwitchStreamOnline = 'twitchStreamOnline',
+		UnhandledRejection = 'unhandledRejection',
+		UserMessage = 'userMessage'
 	}
 }
 

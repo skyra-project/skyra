@@ -60,10 +60,10 @@ export class UserCommand extends SkyraCommand {
 	private async resolveArguments(args: SkyraCommand.Args) {
 		const user = await args.pickResult('userName');
 		if (user.success) {
-			return { money: await args.pick('integer'), user: user.value } as const;
+			return { money: await args.pick('integer', { minimum: 1 }), user: user.value } as const;
 		}
 
-		return { money: await args.pick('integer'), user: await args.pick('userName') } as const;
+		return { money: await args.pick('integer', { minimum: 1 }), user: await args.pick('userName') } as const;
 	}
 
 	private acceptPayment(message: GuildMessage, t: TFunction, user: User, money: number) {

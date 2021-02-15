@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { SettingsManager } from '#lib/database';
+import type { SettingsManager, UserEntity } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type {
 	AnalyticsData,
@@ -75,10 +75,17 @@ declare module 'discord.js' {
 	export interface ClientEvents {
 		[Events.AnalyticsSync]: [guilds: number, users: number];
 		[Events.CommandUsageAnalytics]: [command: string, category: string, subCategory: string];
-		[Events.GuildAnnouncementSend]: [message: Message, resultMessage: Message, channel: TextChannel, role: Role, content: string];
+		[Events.GuildAnnouncementSend]: [
+			message: Message,
+			resultMessage: Message,
+			channel: TextChannel,
+			role: Role,
+			content: string,
+			announcement: string
+		];
 		[Events.GuildAnnouncementEdit]: [message: Message, resultMessage: Message, channel: TextChannel, role: Role, content: string];
-		[Events.GuildAnnouncementError]: [message: Message, channel: TextChannel, role: Role, content: string, error: any];
-		[Events.MoneyTransaction]: [target: User, moneyChange: number, moneyBeforeChange: number];
+		[Events.GuildAnnouncementError]: [message: Message, channel: TextChannel, role: Role, content: string, announcement: string, error: any];
+		[Events.MoneyTransaction]: [target: User | UserEntity, moneyChange: number, moneyBeforeChange: number];
 		[Events.MoneyPayment]: [message: Message, user: User, target: User, money: number];
 		[Events.MusicAddNotify]: [channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]];
 		[Events.MusicFinish]: [queue: Queue];
@@ -87,24 +94,24 @@ declare module 'discord.js' {
 		[Events.MusicPrune]: [queue: Queue];
 		[Events.MusicQueueSync]: [queue: Queue];
 		[Events.MusicRemove]: [queue: Queue];
-		[Events.MusicRemoveNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
+		[Events.MusicRemoveNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry | null];
 		[Events.MusicReplayUpdate]: [queue: Queue, repeating: boolean];
 		[Events.MusicReplayUpdateNotify]: [channel: MessageAcknowledgeable, repeating: boolean];
-		[Events.MusicSongPause]: [queue: Queue];
+		[Events.MusicSongPause]: [queue: Queue, value?: boolean];
 		[Events.MusicSongPauseNotify]: [channel: MessageAcknowledgeable];
 		[Events.MusicSongPlay]: [queue: Queue, status: NP];
 		[Events.MusicSongPlayNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
 		[Events.MusicSongReplay]: [queue: Queue, status: NP];
 		[Events.MusicSongResume]: [queue: Queue];
 		[Events.MusicSongResumeNotify]: [channel: MessageAcknowledgeable];
-		[Events.MusicSongSeekUpdate]: [queue: Queue];
+		[Events.MusicSongSeekUpdate]: [queue: Queue, position: number];
 		[Events.MusicSongSeekUpdateNotify]: [channel: MessageAcknowledgeable, time: number];
-		[Events.MusicSongSkip]: [queue: Queue];
-		[Events.MusicSongSkipNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry];
+		[Events.MusicSongSkip]: [queue: Queue, entry: QueueEntry];
+		[Events.MusicSongSkipNotify]: [channel: MessageAcknowledgeable, entry: QueueEntry | null];
 		[Events.MusicSongVolumeUpdate]: [queue: Queue, next: number];
 		[Events.MusicSongVolumeUpdateNotify]: [channel: MessageAcknowledgeable, previous: number, next: number];
 		[Events.MusicVoiceChannelJoin]: [queue: Queue, voiceChannel: VoiceChannel];
-		[Events.MusicVoiceChannelLeave]: [queue: Queue];
+		[Events.MusicVoiceChannelLeave]: [queue: Queue, voiceChannel: VoiceChannel | null];
 		[Events.MusicConnect]: [queue: Queue, voiceChannelID: string];
 		[Events.ResourceAnalyticsSync]: [];
 		[Events.TwitchStreamHookedAnalytics]: [status: AnalyticsSchema.TwitchStreamStatus];

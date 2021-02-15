@@ -1,3 +1,5 @@
+export { Events } from '@sapphire/framework';
+
 export const enum PermissionLevels {
 	Everyone = 0,
 	Moderator = 5,

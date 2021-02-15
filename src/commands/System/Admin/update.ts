@@ -7,6 +7,7 @@ import { sleep } from '#utils/Promisified/sleep';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import type { ExecOptions } from 'child_process';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';
 
@@ -47,7 +48,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async updateDependencies(message: Message) {
-		const { stderr, code } = await this.exec('yarn install --frozen-lockfile --ignore-scripts');
+		const { stderr, code } = await this.exec('yarn install --frozen-lockfile --ignore-scripts', { env: { ...process.env, NODE_ENV: undefined } });
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully updated dependencies.`);
 	}
@@ -110,9 +111,9 @@ export class UserCommand extends SkyraCommand {
 		return output.includes('Your local changes to the following files would be overwritten by merge');
 	}
 
-	private async exec(script: string) {
+	private async exec(script: string, options?: ExecOptions) {
 		try {
-			const result = await exec(script);
+			const result = await exec(script, { ...options, encoding: 'utf8' });
 			return { ...result, code: 0 };
 		} catch (error) {
 			return { stdout: '', stderr: error?.message || error || '', code: error.code ?? 1 };

@@ -10,7 +10,7 @@
 	"capsFilterFooter": "Too Many UpperCases",
 	"inviteFilterAlert": "{{REDCROSS}} Dear {{user}}, invite links aren't allowed here.",
 	"inviteFilterLog": "**Link**: {{links, andList}}",
-	"inviteFilterLogPlural": "**Links**: {{links, andList}}",
+	"inviteFilterLog_plural": "**Links**: {{links, andList}}",
 	"inviteLink": "Invite link",
 	"invites": "[Auto-Moderation] Triggered invite filter, no threshold.",
 	"invitesWithMaximum": "[Auto-Moderation] Triggered invite filter, reached {{amount}} out of {{maximum}} infractions.",

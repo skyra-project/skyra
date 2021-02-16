@@ -66,9 +66,9 @@
 	"createEmojiDescription": "Adds a custom emoji to your Discord server.",
 	"createEmojiExtended": {
 		"usages": ["Emoji"],
-		"reminder": "Make sure the bot has {{MANAGE_EMOJI, permissions}} permissions in this server!",
-		"extendedHelp": "Using a custom emoji on another server, I can re-upload that emoji to the current server so non-nitro users can also access it.",
-		"explainedUsage": [["Emoji", "A custom emoji on Discord."]]
+		"extendedHelp": "Using a custom emoji on another server, I can re-upload that emoji to the current server, so non-nitro users can also access it.",
+		"explainedUsage": [["Emoji", "A custom emoji on Discord."]],
+		"reminder": "Make sure the bot has {{MANAGE_EMOJI, permissions}} permissions in this server!"
 	},
 	"createEmojiInvalidDiscordEmoji": "I could not resolve `{{parameter}}` to a valid Discord emoji. Make sure it is from a Discord server, and not a default emoji.",
 	"createEmojiDuplicate": "An emoji named `{{name}}` already exists!",

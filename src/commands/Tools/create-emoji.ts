@@ -22,7 +22,10 @@ export class UserCommand extends SkyraCommand {
 			return this.error(LanguageKeys.Commands.Tools.CreateEmojisDuplicate, { name: emojiData.name });
 
 		try {
-			const emoji = await message.guild!.emojis.create(`https://cdn.discordapp.com/emojis/${emojiData.id}.png`, emojiData.name);
+			const emoji = await message.guild!.emojis.create(
+				`https://cdn.discordapp.com/emojis/${emojiData.id}.${emojiData.animated ? 'gif' : 'png'}`,
+				emojiData.name
+			);
 			return message.sendTranslated(LanguageKeys.Commands.Tools.CreateEmojiSuccess, [{ emoji: emoji.toString() }]);
 		} catch {
 			return this.error(LanguageKeys.Commands.Tools.CreateEmojiInvalidEmoji);
@@ -32,7 +35,7 @@ export class UserCommand extends SkyraCommand {
 	public static emojiResolver = Args.make<EmojiData>((parameter, { argument }) => {
 		const match = EmojiRegex.exec(parameter);
 		return match && match.groups
-			? Args.ok({ id: match.groups.id, name: match.groups.name })
+			? Args.ok({ id: match.groups.id, name: match.groups.name, animated: Boolean(match.groups.animated) })
 			: Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Tools.CreateEmojiInvalidDiscordEmoji });
 	});
 }
@@ -40,4 +43,5 @@ export class UserCommand extends SkyraCommand {
 interface EmojiData {
 	id: string;
 	name: string;
+	animated: boolean;
 }

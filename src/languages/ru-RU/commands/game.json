@@ -462,7 +462,7 @@
 		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
-	"hungerGamesResultDeathsPlural": "",
+	"hungerGamesResultDeaths_plural": "",
 	"hungerGamesResultHeaderBloodbath": "",
 	"hungerGamesResultHeaderMoon": "Ночь {{game.turn}}",
 	"hungerGamesResultHeaderSun": "День {{game.turn}}",

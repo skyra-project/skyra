@@ -63,6 +63,17 @@
 		"OTHER": "Other",
 		"OVERVIEW": "Overview"
 	},
+	"createEmojiDescription": "Adds a custom emoji to your Discord server.",
+	"createEmojiExtended": {
+		"usages": ["Emoji"],
+		"extendedHelp": "Using a custom emoji on another server, I can re-upload that emoji to the current server.",
+		"explainedUsage": [["Emoji", "A custom emoji on Discord."]],
+		"reminder": "Make sure the bot has {{MANAGE_EMOJI, permissions}} permissions in this server!"
+	},
+	"createEmojiInvalidDiscordEmoji": "I could not resolve `{{parameter}}` to a valid Discord emoji. Make sure it is from a Discord server, and not a default emoji.",
+	"createEmojiDuplicate": "An emoji named `{{name}}` already exists!",
+	"createEmojiInvalidEmoji": "{{REDCROSS}} Failed to download that emoji.",
+	"createEmojiSuccess": "{{GREENTICK}} Success: {{emoji}} was created",
 	"defineDescription": "Check the definition of a word.",
 	"defineExtended": {
 		"usages": ["Word"],

@@ -24,6 +24,12 @@ export const CountryFields = T<{
 	overview: { officialName: string; capital: string; population: string };
 	other: { demonym: string; area: string; currencies: string };
 }>('commands/tools:countryFields');
+export const CreateEmojiDescription = T<string>('commands/tools:createEmojiDescription');
+export const CreateEmojiExtended = T<LanguageHelpDisplayOptions>('commands/tools:createEmojiExtended');
+export const CreateEmojisDuplicate = FT<{ name: string }, string>('commands/tools:createEmojiDuplicate');
+export const CreateEmojiInvalidDiscordEmoji = FT<{ parameter: string }, string>('commands/tools:createEmojiInvalidDiscordEmoji');
+export const CreateEmojiInvalidEmoji = T<string>('commands/tools:createEmojiInvalidEmoji');
+export const CreateEmojiSuccess = FT<{ emoji: string }, string>('commands/tools:createEmojiSuccess');
 export const CountryTimezone = T<{ timezone: string[]; count: number }>('commands/tools:countryTimezone');
 export const EshopDescription = T<string>('commands/tools:eshopDescription');
 export const EshopExtended = T<LanguageHelpDisplayOptions>('commands/tools:eshopExtended');

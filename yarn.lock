@@ -724,7 +724,7 @@
   dependencies:
     twemoji-parser "^13.0.0"
 
-"@sapphire/discord.js-utilities@^1.4.0", "@sapphire/discord.js-utilities@^1.4.2":
+"@sapphire/discord.js-utilities@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@sapphire/discord.js-utilities/-/discord.js-utilities-1.4.2.tgz#6118bac875878be46174aa291d7e36d0fce56ff0"
   integrity sha512-Tqv5KysKmgQzr1Cah/9vvivwfJGWpofaqeTix0SqFIMMzD7QA97PImNhgI5KiAZL9pjuK4uyQF2xNYiQHPKSzg==
@@ -736,13 +736,12 @@
   resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-2.1.1.tgz#c18217d00b4a0a8b62da24ebb9875d856d474510"
   integrity sha512-OoM2KYco1+HF+z/WjaAPhPhvEPGA8ddrn8ATLWvOvs4JiACRYbUGIMQrxRgb5afvEKIacLlGUKi/emZa8G9s+Q==
 
-"@sapphire/framework@^1.0.0-alpha.10":
+"@sapphire/framework@sapphire-project/framework#build":
   version "1.0.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/@sapphire/framework/-/framework-1.0.0-alpha.10.tgz#468cfb5f935209512e68e7b09bd69d570e468fc6"
-  integrity sha512-93lj4RWa5xjlB9GiJHV+KuHBsXLgZvH1sU2U6Whg5GVtD4tI5qze/i2YoewW9epNrQB4JVlfLFa9DFWIPTHEQQ==
+  resolved "https://codeload.github.com/sapphire-project/framework/tar.gz/9c50b721774fbbce6a2c07475240a9b5743397e5"
   dependencies:
     "@sapphire/discord-utilities" "^2.0.1"
-    "@sapphire/discord.js-utilities" "^1.4.0"
+    "@sapphire/discord.js-utilities" "^1.4.2"
     "@sapphire/pieces" "^1.2.2"
     "@sapphire/ratelimits" "^1.1.4"
     "@sapphire/utilities" "^1.4.4"
@@ -755,10 +754,9 @@
   dependencies:
     "@discordjs/collection" "^0.1.6"
 
-"@sapphire/plugin-api@^2.0.2":
+"@sapphire/plugin-api@sapphire-project/plugins#build-api":
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-2.0.2.tgz#8bb81eed8a298300bfeca14205bcf3120f93551e"
-  integrity sha512-wIHEzsG8vW1cBUS/AzPJdzPouabXVrldoRfveIaMHqtRfWMTJyotibMHdvgXurBXNPmzz1PctvXH2u7bYT3DwQ==
+  resolved "https://codeload.github.com/sapphire-project/plugins/tar.gz/70564b046c36d206d7b7be50d8c1353b10637889"
   dependencies:
     node-fetch "^2.6.1"
     tslib "^2.1.0"

@@ -19,7 +19,8 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { animated, id, name } = await args.pick(UserCommand.emojiResolver);
 
-		if (message.guild.emojis.cache.has(id)) return this.error(LanguageKeys.Commands.Tools.CreateEmojisDuplicate, { name });
+		if (message.guild.emojis.cache.some((emoji) => emoji.name === name))
+			return this.error(LanguageKeys.Commands.Tools.CreateEmojisDuplicate, { name });
 
 		try {
 			const emoji = await message.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'png'}`, name);

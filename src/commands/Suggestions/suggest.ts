@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		const suggestion = await args.pick('string');
+		const suggestion = await args.rest('string');
 		const [[upvoteEmoji, downvoteEmoji], [suggestions, currentSuggestionId]] = await Promise.all([
 			message.guild.readSettings([GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji]),
 			this.getCurrentSuggestionID(message.guild.id)

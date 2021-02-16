@@ -124,9 +124,16 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position)
+
+			// Skyra cannot moderate members with higher role position than her:
+			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) {
 				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
-			if (targetHighestRolePosition >= message.member.roles.highest.position) throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
+			}
+
+			// A member who isn't a server owner is not allowed to moderate somebody with higher role tham them:
+			if (!message.member.isGuildOwner() && targetHighestRolePosition >= message.member.roles.highest.position) {
+				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
+			}
 		}
 
 		return member;

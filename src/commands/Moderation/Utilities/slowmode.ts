@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 			.catch(() => args.rest('timespan', { minimum: 1, maximum: MAXIMUM_DURATION }));
 
 		const channel = message.channel as TextChannel;
-		await channel.setRateLimitPerUser(cooldown);
+		await channel.setRateLimitPerUser(cooldown / 1000);
 		return cooldown === 0
 			? message.send(args.t(LanguageKeys.Commands.Moderation.SlowmodeReset))
 			: message.send(args.t(LanguageKeys.Commands.Moderation.SlowmodeSet, { cooldown }));

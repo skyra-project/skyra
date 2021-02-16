@@ -4,7 +4,6 @@ import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
 import { MessageEmbed, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -17,19 +16,19 @@ import type { TFunction } from 'i18next';
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const roles = args.finished ? null : await args.pick(UserPaginatedMessageCommand.rolenames);
-
-		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Roles.Public],
-			settings[GuildSettings.Roles.UniqueRoleSets],
-			settings[GuildSettings.Roles.RemoveInitial],
-			settings[GuildSettings.Roles.Initial]
+		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial] = await message.guild.readSettings([
+			GuildSettings.Roles.Public,
+			GuildSettings.Roles.UniqueRoleSets,
+			GuildSettings.Roles.RemoveInitial,
+			GuildSettings.Roles.Initial
 		]);
 
+		if (!rolesPublic.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
+
 		// If no argument was provided then show the list of available roles
-		if (!roles) {
-			return this.list(message, args.t, rolesPublic);
-		}
+		if (args.finished) return this.list(message, args.t, rolesPublic);
+
+		const roles = [...new Set(await args.repeat('roleName', { filter: (role: Role) => rolesPublic.includes(role.id) }))];
 
 		// Otherwise start process of claiming a role
 		const memberRoles = new Set(message.member!.roles.cache.keys());
@@ -136,16 +135,4 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
-
-	private static rolenames = Args.make<Role[]>(async (parameter, { argument, message, args }) => {
-		const rolesPublic = await message.guild!.readSettings(GuildSettings.Roles.Public);
-		if (!rolesPublic.length) {
-			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Management.RolesListEmpty });
-		}
-
-		const roles = await args.repeat('roleName');
-		const output = roles.filter((role) => rolesPublic.includes(role.id));
-
-		return output.length ? Args.ok([...new Set(output)]) : Args.ok(output);
-	});
 }

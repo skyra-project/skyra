@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const suggestionData = await args.pick(UserCommand.suggestion);
 		const action = await args.pick(UserCommand.action);
-		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.pick('string');
+		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.rest('string');
 
 		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = await message.guild.readSettings([
 			GuildSettings.Suggestions.OnAction.DM,

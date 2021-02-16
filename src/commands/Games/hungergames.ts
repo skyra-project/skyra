@@ -162,7 +162,7 @@ export class UserCommand extends SkyraCommand {
 
 		const header = t(headerKey, { game });
 		const death = deaths.length
-			? `${t(LanguageKeys.Commands.Games.HungerGamesResultDeaths, { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			? `${t(LanguageKeys.Commands.Games.HungerGamesResultDeaths, { count: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
 		const proceed = t(LanguageKeys.Commands.Games.HungerGamesResultProceed);
 		const panels = chunk(results, 5);

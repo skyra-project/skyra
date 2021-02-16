@@ -38,8 +38,10 @@ export class UserCommand extends SkyraCommand {
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,
-						`[Smogon](${itemDetails.smogonPage})`
-					].join(' | ')
+						itemDetails.smogonPage ? `[Smogon](${itemDetails.smogonPage})` : undefined
+					]
+						.filter(Boolean)
+						.join(' | ')
 				)
 		);
 	}

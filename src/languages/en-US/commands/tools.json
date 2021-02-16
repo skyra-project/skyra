@@ -63,6 +63,13 @@
 		"OTHER": "Other",
 		"OVERVIEW": "Overview"
 	},
+	"createEmojiDescription": "Adds a custom emoji to your Discord server.",
+	"createEmojiExtended": {
+		"usages": ["Emoji"],
+		"reminder": "Make sure the bot has Manage Emoji permissions in this server!"
+	},
+	"createEmojiInvalidEmoji": "An invalid emoji was provided.",
+	"createEmojiSuccess": "{{GREENTICK}} Success: {{emoji}}",
 	"defineDescription": "Check the definition of a word.",
 	"defineExtended": {
 		"usages": ["Word"],

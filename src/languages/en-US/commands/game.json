@@ -433,7 +433,7 @@
 		"reminder": "You can specify `--autoskip` to automatically skip after some time."
 	},
 	"hungerGamesResultDeaths": "**{{deaths}} cannon shot can be heard in the distance.**",
-	"hungerGamesResultDeathsPlural": "**{{deaths}} cannon shots can be heard in the distance.**",
+	"hungerGamesResultDeaths_plural": "**{{deaths}} cannon shots can be heard in the distance.**",
 	"hungerGamesResultHeaderBloodbath": "Bloodbath",
 	"hungerGamesResultHeaderMoon": "Night {{game.turn}}",
 	"hungerGamesResultHeaderSun": "Day {{game.turn}}",

@@ -25,7 +25,7 @@
 	},
 	"addPlaylist": "",
 	"addPlaylistSongs": "",
-	"addPlaylistSongsPlural": "",
+	"addPlaylistSongs_plural": "",
 	"addSong": "",
 	"clearDescription": "",
 	"clearExtended": {
@@ -33,7 +33,7 @@
 		"reminder": ""
 	},
 	"clearSuccess": "",
-	"clearSuccessPlural": "",
+	"clearSuccess_plural": "",
 	"exportQueueDescription": "",
 	"exportQueueExtended": {
 		"extendedHelp": "",

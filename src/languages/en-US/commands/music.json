@@ -25,7 +25,7 @@
 	},
 	"addPlaylist": "{{GREENTICK}} Added {{songs}} to the queue 🎶",
 	"addPlaylistSongs": "**{{count}}** song",
-	"addPlaylistSongsPlural": "**{{count}}** songs",
+	"addPlaylistSongs_plural": "**{{count}}** songs",
 	"addSong": "{{GREENTICK}} Added **{{title}}** to the queue 🎶",
 	"clearDescription": "Clears the queue list.",
 	"clearExtended": {
@@ -33,7 +33,7 @@
 		"reminder": "Before you can use this command there has to be a queue to clear and you have to be a DJ or a moderator!"
 	},
 	"clearSuccess": "{{REDCROSS}}  Pruned {{count}} song.",
-	"clearSuccessPlural": "{{REDCROSS}}  Pruned {{count}} songs.",
+	"clearSuccess_plural": "{{REDCROSS}}  Pruned {{count}} songs.",
 	"exportQueueDescription": "Exports your queue to a `.squeue` file.",
 	"exportQueueExtended": {
 		"extendedHelp": "Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now\nUse \"exportqueue\" and I'll pack the music in your queue into a neat file you can either save or share with your friends!\nWhen you want to play it back, just use it with `play`, `add` or `importqueue`!",

@@ -1,17 +1,16 @@
 {
-	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "node",
+			"type": "pwa-node",
 			"request": "launch",
+			"runtimeArgs": ["run-script", "start"],
 			"name": "Debugger",
-			"args": ["${workspaceFolder}/dist/Skyra.js"],
-			"protocol": "inspector",
+			"runtimeExecutable": "npm",
+			"skipFiles": ["<node_internals>/**", "node_modules/tslib/**"],
 			"internalConsoleOptions": "openOnSessionStart",
 			"env": {
 				"NODE_ENV": "development"
 			},
-			"skipFiles": ["<node_internals>/**", "node_modules/tslib/**"],
 			"console": "internalConsole",
 			"outputCapture": "std",
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"]

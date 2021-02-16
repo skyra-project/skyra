@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { DMMessage, GuildMessage } from '#lib/types';
+import type { DMMessage, GuildMessage } from '#lib/types';
 import { Event, Events } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 

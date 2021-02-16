@@ -1,14 +1,11 @@
 import { GuildEntity, GuildSettings } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Command, Identifiers, Precondition } from '@sapphire/framework';
-import type { PieceContext } from '@sapphire/pieces';
 import type { Message } from 'discord.js';
 
+@ApplyOptions<Precondition.Options>({ position: 10 })
 export class UserPrecondition extends Precondition {
-	public constructor(context: PieceContext) {
-		super(context, { position: 10 });
-	}
-
 	public run(message: Message, command: Command, context: Precondition.Context): Precondition.Result {
 		return message.guild ? this.runGuild(message as GuildMessage, command, context) : this.runDM(command, context);
 	}

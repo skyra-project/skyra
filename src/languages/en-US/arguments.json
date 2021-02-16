@@ -14,7 +14,6 @@
 	"dateFormats": "- `2016` (YYYY)\n- `2016-11` (YYYY-MM)\n- `2016-11-24` (YYYY-MM-DD)\n- `2016-11-24T23:56` (YYYY-MM-DDTHH:mm)\n- `2016-11-24T23:56:12` (YYYY-MM-DDTHH:mm:ss)\n- `2016-11-24T23:56:12.000` (YYYY-MM-DDTHH:mm:ss.sss)\n\n> **Tip**: The last 3 formats accept `Z` at the end to mark the time as UTC.",
 	"dateTooBig": "The parameter `{{parameter}}` resolved to a date older than {{maximum, dateTime}}, which is not allowed!",
 	"dateTooSmall": "The parameter `{{parameter}}` resolved to a date earlier than {{minimum, dateTime}}, which is not allowed!",
-	"discordEmoji": "I could not resolve `{{parameter}}` to a valid Discord emoji. Make sure it is from a Discord server, and not a default emoji.",
 	"timeSpan": "I could not resolve `{{parameter}}` to a valid duration, make sure you typed a valid integer or a duration formatted value. Some of the valid formats are:\n\n- `45` (45 seconds).\n$t(arguments:durationFormats)",
 	"timeSpanTooSmall": "The parameter `{{parameter}}` resolved to a duration shorter than {{minimum, duration}}, which is not allowed!",
 	"timeSpanTooBig": "The parameter `{{parameter}}` resolved to a duration longer than {{maximum, duration}}, which is not allowed!",

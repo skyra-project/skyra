@@ -20,7 +20,6 @@ export const TimeSpanTooSmall = FT<{ parameter: string }, string>('arguments:tim
 export const TimeSpanTooBig = FT<{ parameter: string }, string>('arguments:timeSpanTooBig');
 export const DateTooBig = FT<{ parameter: string; maximum: number }, string>('arguments:dateTooBig');
 export const DateTooSmall = FT<{ parameter: string; minimum: number }, string>('arguments:dateTooSmall');
-export const DiscordEmoji = FT<{ parameter: string }, string>('arguments:discordEmoji');
 export const DMChannel = FT<{ parameter: string }, string>('arguments:dmChannel');
 export const Duration = FT<{ parameter: string }, string>('arguments:duration');
 export const Emoji = FT<{ parameter: string }, string>('arguments:emoji');

@@ -18,7 +18,8 @@ import { Message } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const emojiData = await args.pick(UserCommand.emojiResolver);
-		if ([...message.guild!.emojis.cache.values()].some((emoji) => emoji.name === emojiData.name))
+
+		if (message.guild!.emojis.cache.has(emojiData.id))
 			return this.error(LanguageKeys.Commands.Tools.CreateEmojisDuplicate, { name: emojiData.name });
 
 		try {

@@ -34,7 +34,7 @@
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "Управление уникальными наборами ролей.",
+	"rolesetDescription": "Управляйте наборами уникальных ролей.",
 	"rolesetExtended": {
 		"usages": [
 			"",
@@ -68,7 +68,7 @@
 			],
 			[
 				"",
-				""
+				"Название набора ролей"
 			],
 			[
 				"",
@@ -88,13 +88,13 @@
 		"reminder": "Эта команда может добавить и/или удалить несколько ролей одновременно."
 	},
 	"rolesetCreated": "",
-	"rolesetAdded": "",
-	"rolesetRemoved": "",
+	"rolesetAdded": "Набор уникальных ролей {{name}} обновлён, теперь он содержит следующие роли: {{roles, andList}}.",
+	"rolesetRemoved": "Набор уникальных ролей {{name}} больше не будет включать в себя следующие роли: {{roles, andList}}",
 	"rolesetResetEmpty": "",
 	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
 	"rolesetResetNotExists": "{{REDCROSS}} На этом сервере не существует набора ролей `{{name}}`.",
 	"rolesetResetGroup": "{{GREENTICK}} Набор ролей `{{name}}` успешно удалён с этого сервера.",
-	"rolesetUpdated": "",
+	"rolesetUpdated": "Набор уникальных ролей {{name}} обновлён.",
 	"rolesetNoRolesets": "У вас нет наборов ролей.",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",

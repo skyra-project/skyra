@@ -5,7 +5,7 @@
 	"main": "dist/Skyra.js",
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
-		"#lib/audio": "./dist/lib/audio/index.js",
+		"#lib/audio": "./dist/audio/lib/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",
@@ -27,7 +27,6 @@
 		"test:watch": "jest --watch",
 		"update": "yarn upgrade-interactive --latest",
 		"build": "tsc -b src",
-		"postbuild": "node scripts/copy-lua-files.mjs",
 		"clean": "tsc -b src --clean",
 		"scripts:tlds": "node scripts/tlds.mjs",
 		"scripts:migration": "node scripts/migrations.mjs",

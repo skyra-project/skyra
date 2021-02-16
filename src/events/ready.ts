@@ -1,7 +1,7 @@
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
-import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
+import { DEV, ENABLE_INFLUX, ENABLE_AUDIO, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
@@ -72,7 +72,7 @@ export class UserEvent extends Event {
 	}
 
 	private async connectLavalink() {
-		if (ENABLE_LAVALINK) {
+		if (ENABLE_AUDIO) {
 			await this.context.client.audio.connect();
 			await this.context.client.audio.queues!.start();
 		}

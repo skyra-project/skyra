@@ -1,4 +1,9 @@
-import { ConnectFourConstants } from '#utils/constants';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ConnectFourConstants, Time } from '#utils/constants';
+import type { Message } from 'discord.js';
+import type { BaseController } from '../base/BaseController';
+import { GameStatus } from '../base/BaseGame';
+import { BaseReactionGame } from '../base/BaseReactionGame';
 
 export enum Cell {
 	Empty,
@@ -12,41 +17,55 @@ export const kColumns = 7;
 export const kRows = 6;
 const kRenderMargin = '       ';
 
-export class Board {
-	private cells: Cell[];
-	private stack: Cell[][];
+export class ConnectFourGame extends BaseReactionGame<number> {
+	public readonly board = new Uint8Array(kColumns * kRows);
+	public readonly remaining = new Uint8Array(kColumns).fill(kRows);
+	private winner: readonly [number, number][] | null = null;
 
-	public constructor(cells?: readonly Cell[]) {
-		if (!cells) cells = Board.generate();
-		this.cells = cells as Cell[];
-		this.stack = [];
+	public constructor(message: Message, playerA: BaseController<number>, playerB: BaseController<number>, turn = ConnectFourGame.getTurn()) {
+		super(message, playerA, playerB, ConnectFourGame.emojis, Time.Minute * 5, turn);
 	}
 
-	public getAt(x: number, y: number) {
-		return this.cells[x + y * kColumns];
+	public get finished() {
+		return super.finished || this.winner !== null || this.isTableFull();
 	}
 
-	public setAt(x: number, y: number, value: Cell) {
-		this.cells[x + y * kColumns] = value;
-	}
-
-	public save() {
-		this.stack.push(this.cells.slice(0));
-	}
-
-	public restore() {
-		if (this.stack.length) {
-			this.cells = this.stack.pop()!;
+	protected handle(value: number, player: BaseController<number>): void {
+		if (value !== -1) {
+			const y = --this.remaining[value];
+			this.setAt(value, y, player.turn + 1);
+			this.winner = this.check(value, y);
 		}
 	}
 
-	public render() {
+	protected render(status: GameStatus): string {
+		return status === GameStatus.End ? this.renderOnEnd() : this.renderOnUpdateOrStart();
+	}
+
+	protected renderOnEnd() {
+		return this.winner === null
+			? this.t(LanguageKeys.Commands.Games.TicTacToeDraw, { board: this.renderBoard() })
+			: this.t(LanguageKeys.Commands.Games.TicTacToeWinner, {
+					winner: this.player.name,
+					board: this.renderBoard()
+			  });
+	}
+
+	protected renderOnUpdateOrStart(): string {
+		return this.t(LanguageKeys.Commands.Games.TicTacToeTurn, {
+			icon: ConnectFourGame.players[this.turn],
+			player: this.player.name,
+			board: this.renderBoard()
+		});
+	}
+
+	protected renderBoard(): string {
 		const output: string[] = [];
 		for (let y = 0; y < kRows; ++y) {
 			// Render each line
 			const line: string[] = [];
 			for (let x = 0; x < kColumns; ++x) {
-				line.push(Board.renderCell(this.getAt(x, y)));
+				line.push(ConnectFourGame.renderCell(this.getAt(x, y)));
 			}
 			output.push(line.join(kRenderMargin));
 		}
@@ -54,7 +73,17 @@ export class Board {
 		return output.join('\n');
 	}
 
-	public check(x: number, y: number): readonly [number, number][] | null {
+	private setAt(x: number, y: number, value: Cell) {
+		const cell = x + y * kColumns;
+		this.board[cell] = value;
+	}
+
+	private getAt(x: number, y: number) {
+		const cell = x + y * kColumns;
+		return this.board[cell];
+	}
+
+	private check(x: number, y: number): readonly [number, number][] | null {
 		const cell = this.getAt(x, y);
 
 		return (
@@ -65,22 +94,8 @@ export class Board {
 		);
 	}
 
-	public isTableFull() {
-		for (let x = 0; x < kColumns; ++x) {
-			if (!this.isLineFull(x)) return false;
-		}
-		return true;
-	}
-
-	public isLineFull(x: number) {
-		return this.getAt(x, 0) !== Cell.Empty;
-	}
-
-	public getMoveAt(x: number) {
-		for (let y = kRows; y >= 0; --y) {
-			if (this.getAt(x, y) === Cell.Empty) return y;
-		}
-		return -1;
+	private isTableFull() {
+		return this.remaining.every((value) => value === 0);
 	}
 
 	private checkHorizontal(x: number, y: number, cell: Cell) {
@@ -262,6 +277,9 @@ export class Board {
 		return null;
 	}
 
+	private static readonly emojis: readonly string[] = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'];
+	private static readonly players: readonly string[] = [ConnectFourConstants.Emojis.PlayerOne, ConnectFourConstants.Emojis.PlayerTwo];
+
 	private static renderCell(cell: Cell) {
 		switch (cell) {
 			case Cell.Empty:
@@ -275,13 +293,5 @@ export class Board {
 			case Cell.WinnerPlayerTwo:
 				return ConnectFourConstants.Emojis.WinnerTwo;
 		}
-	}
-
-	private static generate(): readonly Cell[] {
-		const cells: Cell[] = [];
-		for (let i = 0, max = kColumns * kRows; i < max; ++i) {
-			cells[i] = Cell.Empty;
-		}
-		return cells;
 	}
 }

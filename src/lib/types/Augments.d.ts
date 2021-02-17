@@ -2,16 +2,7 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
-import type {
-	AnalyticsData,
-	ColorHandler,
-	ConnectFourManager,
-	GiveawayManager,
-	InviteCodeValidEntry,
-	InviteStore,
-	ScheduleManager,
-	SkyraCommand
-} from '#lib/structures';
+import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
@@ -45,7 +36,6 @@ declare module 'discord.js' {
 	interface Client {
 		readonly analytics: AnalyticsData | null;
 		readonly audio: QueueClient;
-		readonly connectFour: ConnectFourManager;
 		readonly giveaways: GiveawayManager;
 		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
 		readonly invites: InviteStore;

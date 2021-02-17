@@ -1,8 +1,13 @@
+import { ConnectFourBotController } from '#lib/games/connect-four/ConnectFourBotController';
+import { ConnectFourGame } from '#lib/games/connect-four/ConnectFourGame';
+import { ConnectFourHumanController } from '#lib/games/connect-four/ConnectFourHumanController';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
+import { User } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
@@ -13,37 +18,44 @@ import { ApplyOptions } from '@sapphire/decorators';
 	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const user = await args.pick('userName');
+	private readonly channels: Set<string> = new Set();
 
-		if (user.id === CLIENT_ID) this.error(LanguageKeys.Commands.Games.GamesSkyra);
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		if (this.channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
+
+		const user = await args.pick('userName');
+		const player1 = this.getAuthorController(message);
+		const player2 = await this.getTargetController(message, args.t, user);
+
+		this.channels.add(message.channel.id);
+		const game = new ConnectFourGame(message, player1, player2);
+
+		try {
+			await game.run();
+		} finally {
+			this.channels.delete(message.channel.id);
+		}
+	}
+
+	private getAuthorController(message: GuildMessage) {
+		return new ConnectFourHumanController(message.author.username, message.author.id);
+	}
+
+	private async getTargetController(message: GuildMessage, t: TFunction, user: User) {
+		if (user.id === CLIENT_ID) return new ConnectFourBotController();
 		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 
-		const { client } = this.context;
-		if (client.connectFour.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
-		client.connectFour.set(message.channel.id, null);
+		const response = await message.ask(
+			t(LanguageKeys.Commands.Games.TicTacToePrompt, {
+				challenger: message.author.toString(),
+				challengee: user.toString()
+			}),
+			undefined,
+			{ target: user }
+		);
 
-		try {
-			const response = await message.ask(
-				args.t(LanguageKeys.Commands.Games.C4Prompt, {
-					challenger: message.author.toString(),
-					challengee: user.toString()
-				}),
-				undefined,
-				{ target: user }
-			);
-
-			if (response) {
-				await client.connectFour.create(message, message.author, user)!.run();
-			} else {
-				this.error(LanguageKeys.Commands.Games.GamesPromptDeny);
-			}
-		} catch (error) {
-			if (typeof error !== 'string') client.logger.fatal(error);
-			this.error(LanguageKeys.Commands.Games.GamesPromptTimeout);
-		} finally {
-			client.connectFour.delete(message.channel.id);
-		}
+		if (response) return new ConnectFourHumanController(user.username, user.id);
+		this.error(LanguageKeys.Commands.Games.GamesPromptDeny);
 	}
 }

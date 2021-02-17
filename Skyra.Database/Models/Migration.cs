@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Skyra.Database.Models
 {
-    [Table("migrations")]
-    public partial class Migration
-    {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
-        [Column("timestamp")]
-        public long Timestamp { get; set; }
-        [Required]
-        [Column("name", TypeName = "character varying")]
-        public string Name { get; set; }
-    }
+	[Table("migrations")]
+	public partial class Migration
+	{
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
+		[Column("timestamp")]
+		public long Timestamp { get; set; }
+		[Required]
+		[Column("name", TypeName = "character varying")]
+		public string Name { get; set; }
+	}
 }

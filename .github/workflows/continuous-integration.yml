@@ -87,10 +87,11 @@ jobs:
         with:
           name: coverage
           path: coverage/
-      - name: Run dotnet tests
+      - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.x.x'
+      - name: Run dotnet tests
         run: |
           dotnet test services/Skyra.Tests
 
@@ -120,8 +121,9 @@ jobs:
           popd
       - name: Build Code
         run: yarn build
-      - name: Build Services
+      - name: Setup dotnet
         uses: actions/setup-dotnet@v1
+      - name: Build Services
         with:
           dotnet-version: '5.x.x'
         run: |

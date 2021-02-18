@@ -53,7 +53,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 
 	protected renderCell(cell: number): string {
 		const value = this.board[cell];
-		return value === 0 ? TicTacToeGame.kEmojis[cell] : TicTacToeGame.kPlayer[value - 1];
+		return value === 0 ? decodeURIComponent(TicTacToeGame.kEmojis[cell]) : TicTacToeGame.kPlayer[value - 1];
 	}
 
 	private equals(a: number, b: number, c: number): boolean {
@@ -92,6 +92,6 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly kEmojis = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'] as const;
+	private static readonly kEmojis = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'].map(encodeURIComponent) as readonly string[];
 	private static readonly kPlayer = ['⭕', '❌'] as const;
 }

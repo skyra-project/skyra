@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ConnectFourConstants, Time } from '#utils/constants';
+import { resolveEmoji } from '#utils/util';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
@@ -284,7 +285,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly emojis = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as const;
+	private static readonly emojis = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'].map(resolveEmoji) as readonly string[];
 	private static readonly players = [ConnectFourConstants.Emojis.PlayerOne, ConnectFourConstants.Emojis.PlayerTwo] as const;
 
 	private static renderCell(cell: Cell) {

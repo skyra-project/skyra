@@ -64,15 +64,15 @@ export abstract class BaseGame<T> {
 
 	protected abstract handle(value: T, player: BaseController<T>): unknown;
 
-	protected onStart(): unknown {
+	protected onStart(): Promise<unknown> {
 		return this.message.edit(this.render(GameStatus.Start));
 	}
 
-	protected onUpdate(): unknown {
+	protected onUpdate(): Promise<unknown> {
 		return this.message.edit(this.render(GameStatus.Update));
 	}
 
-	protected onEnd(): unknown {
+	protected onEnd(): Promise<unknown> {
 		return this.message.edit(this.render(GameStatus.End));
 	}
 

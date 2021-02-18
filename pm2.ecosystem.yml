@@ -3,8 +3,8 @@ apps:
     name: 'Skyra'
     vizion: false
     env:
-      ENABLE_LAVALINK: 'true'
+      ENABLE_AUDIO: 'true'
     env_development:
       DEV: 'true'
-      ENABLE_LAVALINK: 'false'
+      ENABLE_AUDIO: 'false'
       ENABLE_LOCAL_POKEDEX: 'true'

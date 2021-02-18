@@ -1,20 +1,20 @@
 import './extensions';
 
-import { QueueClient } from '#lib/audio';
+import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
-import { CLIENT_OPTIONS, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
+import { CLIENT_OPTIONS, ENABLE_AUDIO, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
 import { mergeDefault } from '@sapphire/utilities';
 import { ClientOptions, Message, Webhook } from 'discord.js';
+import { join } from 'path';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
 import { enumerable } from './util/util';
-import { WebsocketHandler } from './websocket/WebsocketHandler';
 
 export class SkyraClient extends SapphireClient {
 	/**
@@ -87,6 +87,8 @@ export class SkyraClient extends SapphireClient {
 			return Promise.resolve(guild?.shard.send(packet));
 		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
+
+		if (ENABLE_AUDIO) this.stores.registerUserDirectories(join(__dirname, '..', 'audio'));
 	}
 
 	public async login(token?: string) {

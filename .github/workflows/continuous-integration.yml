@@ -90,7 +90,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.x.x'
+          dotnet-version: '5.0.103'
       - name: Run dotnet tests
         run: |
           dotnet test services/Skyra.Tests
@@ -124,7 +124,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.x.x'
+          dotnet-version: '5.0.103'
       - name: Build Services
         run: |
           dotnet build services

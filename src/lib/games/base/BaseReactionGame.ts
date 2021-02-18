@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { pickRandom } from '#utils/util';
-import type { Message } from 'discord.js';
+import { Message } from 'discord.js';
 import type { BaseController } from './BaseController';
 import { BaseGame } from './BaseGame';
 
@@ -30,7 +30,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 			this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
 			for (const reaction of this.reactions) await this.message.react(reaction);
 		} catch {
-			await this.message.sendTranslated(LanguageKeys.Misc.UnexpectedIssue).catch((error) => this.client.emit(Events.ApiError, error));
+			await this.message.send(this.t(LanguageKeys.Misc.UnexpectedIssue)).catch((error) => this.client.emit(Events.ApiError, error));
 		}
 
 		return super.onStart();
@@ -40,7 +40,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 		return this.listener.ended;
 	}
 
-	protected onEnd(): unknown {
+	protected onEnd(): Promise<unknown> {
 		this.listener.end();
 		return super.onEnd();
 	}

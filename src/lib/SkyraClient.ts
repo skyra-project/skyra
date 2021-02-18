@@ -2,7 +2,7 @@ import './extensions';
 
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
-import { AnalyticsData, ConnectFourManager, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
+import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
@@ -70,12 +70,6 @@ export class SkyraClient extends SapphireClient {
 
 	@enumerable(false)
 	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue(this);
-
-	/**
-	 * The ConnectFour manager
-	 */
-	@enumerable(false)
-	public connectFour: ConnectFourManager = new ConnectFourManager(this);
 
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();

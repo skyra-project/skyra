@@ -1,4 +1,4 @@
-import { DEV, PGSQL_DATABASE_HOST, PGSQL_DATABASE_NAME, PGSQL_DATABASE_PASSWORD, PGSQL_DATABASE_PORT, PGSQL_DATABASE_USER } from '#root/config';
+import { PGSQL_DATABASE_HOST, PGSQL_DATABASE_NAME, PGSQL_DATABASE_PASSWORD, PGSQL_DATABASE_PORT, PGSQL_DATABASE_USER } from '#root/config';
 import { join } from 'path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -20,8 +20,7 @@ export const config: ConnectionOptions = {
 		migrationsDir: 'src/lib/database/migrations',
 		subscribersDir: 'src/lib/database/subscribers'
 	},
-	namingStrategy: new SnakeNamingStrategy(),
-	logging: DEV
+	namingStrategy: new SnakeNamingStrategy()
 };
 
 export const connect = (): Promise<Connection> => {

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using Skyra.Database.Extensions;
 
 namespace Skyra.Database.Networking.Services
 {
@@ -17,15 +18,9 @@ namespace Skyra.Database.Networking.Services
 
 		public override async Task<Result> AddPoints(Points request, ServerCallContext context)
 		{
-			var user = await _context.Users.FindAsync(request.Id);
+			var user = await _context.Users.UpsertAsync(request.Id, () => new Models.User { Id = request.Id, Money = 0 });
 
-			// Upsert
-			if (user is null)
-			{
-				user = new Models.User { Id = request.Id, Money = request.Amount };
-				await _context.Users.AddAsync(user);
-			}
-			else user.Money += request.Amount;
+			user.Money += request.Amount;
 
 			await _context.SaveChangesAsync();
 

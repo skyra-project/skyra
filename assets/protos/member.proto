@@ -8,6 +8,7 @@ package member;
 service Member {
   // Sends a greeting
   rpc AddPoints (Points) returns (Result);
+  rpc GetPoints (MemberQuery) returns (Result);
 }
 
 // The request message containing the user's name.
@@ -16,8 +17,13 @@ message Points {
   int64 amount = 2;
 }
 
+message MemberQuery {
+  string id = 1;
+}
+
 // The response message containing the greetings.
 message Result {
   bool success = 1;
-  int64 new_amount = 2;
+  int64 amount = 2;
+  string error_message = 3;
 }

@@ -15,12 +15,19 @@ namespace Skyra.Database.Networking
 			_logger = logger;
 		}
 
-		public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+		public override async Task SayHello(IAsyncStreamReader<HelloRequest> requestStream, IServerStreamWriter<HelloReply> responseStream, ServerCallContext context)
 		{
-			return Task.FromResult(new HelloReply
+
+
+			while (context.CancellationToken.IsCancellationRequested && await requestStream.MoveNext())
 			{
-				Message = "Hello " + request.Name
-			});
+				var current = requestStream.Current;
+
+				await responseStream.WriteAsync(new HelloReply
+				{
+					Message = current.Name
+				});
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 <Project>
     <PropertyGroup>
         <Deterministic>true</Deterministic>
+        <Features>strict</Features>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 

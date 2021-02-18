@@ -87,6 +87,12 @@ jobs:
         with:
           name: coverage
           path: coverage/
+      - name: Run dotnet tests
+        uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: '5.x.x'
+        run: |
+          dotnet test services/Skyra.Tests
 
   Building:
     name: Compile source code
@@ -114,6 +120,12 @@ jobs:
           popd
       - name: Build Code
         run: yarn build
+      - name: Build Services
+        uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: '5.x.x'
+        run: |
+          dotnet build services
 
   Upload_Coverage_Report:
     name: Upload coverage report to coveralls

@@ -7,7 +7,6 @@ import type { GuildMessage } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { User } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
@@ -15,7 +14,8 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Games.C4Description,
 	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
 	permissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text']
+	runIn: ['text'],
+	strategyOptions: { flags: ['easy', 'medium', 'hard'] }
 })
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 
 		const user = await args.pick('userName');
 		const player1 = this.getAuthorController(message);
-		const player2 = await this.getTargetController(message, args.t, user);
+		const player2 = await this.getTargetController(message, user, args);
 
 		this.channels.add(message.channel.id);
 		const game = new ConnectFourGame(message, player1, player2);
@@ -41,13 +41,13 @@ export class UserCommand extends SkyraCommand {
 		return new ConnectFourHumanController(message.author.username, message.author.id);
 	}
 
-	private async getTargetController(message: GuildMessage, t: TFunction, user: User) {
-		if (user.id === CLIENT_ID) return new ConnectFourBotController();
+	private async getTargetController(message: GuildMessage, user: User, args: SkyraCommand.Args) {
+		if (user.id === CLIENT_ID) return new ConnectFourBotController(this.getDifficulty(args));
 		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 
 		const response = await message.ask(
-			t(LanguageKeys.Commands.Games.TicTacToePrompt, {
+			args.t(LanguageKeys.Commands.Games.TicTacToePrompt, {
 				challenger: message.author.toString(),
 				challengee: user.toString()
 			}),
@@ -57,5 +57,11 @@ export class UserCommand extends SkyraCommand {
 
 		if (response) return new ConnectFourHumanController(user.username, user.id);
 		this.error(LanguageKeys.Commands.Games.GamesPromptDeny);
+	}
+
+	private getDifficulty(args: SkyraCommand.Args) {
+		if (args.getFlags('hard')) return 7;
+		if (args.getFlags('easy')) return 3;
+		return 5;
 	}
 }

@@ -1,12 +1,18 @@
 import { cast } from '#utils/util';
-import { ticTacToe } from '@skyra/ai';
+import { connectFour } from '@skyra/ai';
 import { BaseBotController } from '../base/BaseBotController';
 import type { ConnectFourGame } from './ConnectFourGame';
 
 export class ConnectFourBotController extends BaseBotController<number> {
+	private readonly depth: number;
+
+	public constructor(depth: number) {
+		super();
+		this.depth = depth;
+	}
+
 	public await(): number {
 		const game = cast<ConnectFourGame>(this.game);
-		// TODO: Replace this with ConnectFour AI
-		return ticTacToe(game.board);
+		return connectFour(game.board, this.depth);
 	}
 }

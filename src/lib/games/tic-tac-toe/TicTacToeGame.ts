@@ -92,6 +92,6 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly kEmojis: readonly string[] = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
-	private static readonly kPlayer: readonly string[] = ['⭕', '❌'];
+	private static readonly kEmojis = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'] as const;
+	private static readonly kPlayer = ['⭕', '❌'] as const;
 }

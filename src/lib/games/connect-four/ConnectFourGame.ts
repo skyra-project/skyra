@@ -15,7 +15,7 @@ export enum Cell {
 
 export const kColumns = 7;
 export const kRows = 6;
-const kRenderMargin = '       ';
+const kRenderMargin = ' '.repeat(7);
 
 export class ConnectFourGame extends BaseReactionGame<number> {
 	public readonly board = new Uint8Array(kColumns * kRows);
@@ -35,6 +35,13 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 			const y = --this.remaining[value];
 			this.setAt(value, y, player.turn + 1);
 			this.winner = this.check(value, y);
+			if (this.winner !== null) {
+				// + 1 is used to show the color, + 2 is used to show the winner
+				const cell = player.turn + 3;
+				for (const [x, y] of this.winner) {
+					this.setAt(x, y, cell);
+				}
+			}
 		}
 	}
 
@@ -277,8 +284,8 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly emojis: readonly string[] = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'];
-	private static readonly players: readonly string[] = [ConnectFourConstants.Emojis.PlayerOne, ConnectFourConstants.Emojis.PlayerTwo];
+	private static readonly emojis = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as const;
+	private static readonly players = [ConnectFourConstants.Emojis.PlayerOne, ConnectFourConstants.Emojis.PlayerTwo] as const;
 
 	private static renderCell(cell: Cell) {
 		switch (cell) {

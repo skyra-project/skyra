@@ -113,6 +113,24 @@
 		"OTHER": "",
 		"OVERVIEW": ""
 	},
+	"createEmojiDescription": "",
+	"createEmojiExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"createEmojiInvalidDiscordEmoji": "",
+	"createEmojiDuplicate": "",
+	"createEmojiInvalidEmoji": "",
+	"createEmojiSuccess": "",
 	"defineDescription": "",
 	"defineExtended": {
 		"usages": [

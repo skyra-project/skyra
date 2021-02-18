@@ -2,12 +2,12 @@
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
 		"usages": [
-			""
+			"Название страны"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Название страны",
 				""
 			]
 		],
@@ -29,12 +29,12 @@
 	"gimageDescription": "",
 	"gimageExtended": {
 		"usages": [
-			""
+			"Поисковый запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Поисковый запрос",
 				"Изображение, которое вы хотите найти в Google"
 			]
 		],
@@ -47,12 +47,12 @@
 	"gsearchDescription": "",
 	"gsearchExtended": {
 		"usages": [
-			""
+			"Поисковый запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Поисковый запрос",
 				"То, что вы хотите найти в Google"
 			]
 		],

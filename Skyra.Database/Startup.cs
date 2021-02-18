@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Skyra.Database.Networking;
+using Skyra.Database.Networking.Services;
 
 namespace Skyra.Database
 {
@@ -18,6 +19,7 @@ namespace Skyra.Database
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddGrpc();
+			services.AddSingleton<SkyraDbContext>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

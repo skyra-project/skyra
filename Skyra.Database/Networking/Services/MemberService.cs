@@ -1,40 +1,65 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using Skyra.Database.Extensions;
 
-namespace Skyra.Database.Networking
+namespace Skyra.Database.Networking.Services
 {
 	public class MemberService : Member.MemberBase
 	{
 		private readonly ILogger<MemberService> _logger;
-		public MemberService(ILogger<MemberService> logger)
+		private readonly SkyraDbContext _context;
+		public MemberService(ILogger<MemberService> logger, SkyraDbContext context)
 		{
 			_logger = logger;
+			_context = context;
 		}
 
 		public override async Task<Result> AddPoints(Points request, ServerCallContext context)
 		{
-			await using var ctx = new SkyraDbContext();
-			var user = await ctx.Users.FindAsync(request.Id);
+			var user = await _context.Users.UpsertAsync(request.Id, () => new Models.User { Id = request.Id, Money = 0 });
 
-			// Upsert
-			if (user is null)
-			{
-				user = new Models.User { Id = request.Id, Money = request.Amount };
-				await ctx.Users.AddAsync(user);
-			}
-			else user.Money += request.Amount;
+			user.Money += request.Amount;
 
-			await ctx.SaveChangesAsync();
+			await _context.SaveChangesAsync();
 
 			return new Result
 			{
 				Success = true,
-				NewAmount = user.Money
+				Amount = user.Money
 			};
+		}
+
+		public override async Task<Result> GetPoints(MemberQuery request, ServerCallContext context)
+		{
+			try
+			{
+				var user = await _context.Users.FindAsync(request.Id);
+
+				if (user is null)
+				{
+					return new Result
+					{
+						Success = true,
+						Amount = 0
+					};
+				}
+
+				return new Result
+				{
+					Amount = user.Points,
+					Success = true
+				};
+			}
+			catch (Exception e)
+			{
+				return new Result
+				{
+					Success = false,
+					ErrorMessage = e.ToString()
+				};
+			}
 		}
 	}
 }

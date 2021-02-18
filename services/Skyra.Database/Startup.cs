@@ -34,7 +34,6 @@ namespace Skyra.Database
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapGrpcService<GreeterService>();
 				endpoints.MapGrpcService<MemberService>();
 
 				endpoints.MapGet("/", async context =>

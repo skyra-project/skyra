@@ -125,8 +125,7 @@ jobs:
         with:
           dotnet-version: '5.0.103'
       - name: Build Services
-        run: |
-          dotnet build services
+        run: dotnet build services
 
   Upload_Coverage_Report:
     name: Upload coverage report to coveralls

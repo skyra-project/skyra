@@ -122,8 +122,8 @@ jobs:
         run: yarn build
       - name: Build Services
         uses: actions/setup-dotnet@v1
-          with:
-            dotnet-version: '5.x.x'
+        with:
+          dotnet-version: '5.x.x'
         run: |
           dotnet build services
 

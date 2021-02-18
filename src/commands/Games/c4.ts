@@ -18,7 +18,7 @@ import { User } from 'discord.js';
 	strategyOptions: { flags: ['easy', 'medium', 'hard'] }
 })
 export class UserCommand extends SkyraCommand {
-	private readonly channels: Set<string> = new Set();
+	private readonly channels = new Set<string>();
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		if (this.channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);

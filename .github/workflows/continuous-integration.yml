@@ -89,8 +89,8 @@ jobs:
           path: coverage/
       - name: Run dotnet tests
         uses: actions/setup-dotnet@v1
-          with:
-            dotnet-version: '5.x.x'
+        with:
+          dotnet-version: '5.x.x'
         run: |
           dotnet test services/Skyra.Tests
 

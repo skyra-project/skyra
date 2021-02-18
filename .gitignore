@@ -48,4 +48,4 @@ wiki/
 # Dotnet build outputs
 
 obj/
-build/
+bin/

@@ -7,6 +7,7 @@ import { MissingArgumentsError } from './errors/MissingArgumentsError';
 import { ParserNotRunError } from './errors/ParserNotRunError';
 
 export const validTypes = new Set<string>(InvalidTypeError.possibles);
+export const argLessTypes = new Set<string>(InvalidTypeError.argLessPossibles);
 
 export function validate(parser: Parser) {
 	if (parser.parts.length === 0) throw new ParserNotRunError(parser);
@@ -41,8 +42,7 @@ export function ensure(content: string) {
 }
 
 export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Awaited<string> {
-	if (type === 'random') return '';
-	if (args.finished) throw new MissingArgumentsError(args, type);
+	if (!argLessTypes.has(type) && args.finished) throw new MissingArgumentsError(args, type);
 
 	switch (type) {
 		case 'author':
@@ -74,6 +74,8 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 			return args.rest('string');
 		case 'pick':
 			return args.pick('string');
+		case 'random':
+			return '';
 		case 'role':
 			return args.pick('role').then((role) => role.toString());
 		case 'role.color':

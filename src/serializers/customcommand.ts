@@ -1,3 +1,4 @@
+import { parseAndValidate } from '#lib/customCommands';
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
@@ -33,9 +34,8 @@ export class UserSerializer extends Serializer<CustomCommand> {
 			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidContent));
 		}
 
-		if (!Array.isArray(value.args) || value.args.some((arg) => typeof arg !== 'string')) {
-			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidArgs));
-		}
+		// We will need to mutate this because the dashboard can't send Sentence instances:
+		value.content = parseAndValidate(value.content);
 
 		return true;
 	}

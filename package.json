@@ -6,6 +6,7 @@
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
 		"#lib/audio": "./dist/audio/lib/index.js",
+		"#lib/customCommands": "./dist/lib/customCommands/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",
@@ -75,6 +76,7 @@
 		"@skyra/audio": "^1.0.2",
 		"@skyra/char": "^1.0.1",
 		"@skyra/editable-commands": "^1.0.0",
+		"@skyra/tags": "^1.0.1",
 		"async-rwlock": "^1.1.1",
 		"binarytf": "^2.0.0",
 		"bufferutil": "^4.0.3",

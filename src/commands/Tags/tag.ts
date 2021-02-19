@@ -1,3 +1,4 @@
+import { InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -118,28 +119,32 @@ export class UserCommand extends SkyraCommand {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
 		const tag = tags.find((command) => command.id === id);
-		return tag
-			? tag.embed
-				? message.send(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
-				: message.send(tag.content, { allowedMentions: { users: [], roles: [] } })
-			: null;
+		if (tag === undefined) return null;
+
+		const iterator = tag.content.run();
+		let result = iterator.next();
+		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type));
+
+		return tag.embed
+			? message.send(new MessageEmbed().setDescription(result.value).setColor(tag.color))
+			: message.send(result.value, { allowedMentions: { users: [], roles: [] } });
 	}
 
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
 		const tag = tags.find((command) => command.id === id);
-		return tag ? message.send(codeBlock('md', tag.content), { allowedMentions: { users: [], roles: [] } }) : null;
+		return tag ? message.send(codeBlock('md', tag.content.toString()), { allowedMentions: { users: [], roles: [] } }) : null;
 	}
 
 	private createTag(args: SkyraCommand.Args, id: string, content: string): CustomCommand {
+		// Create the tag data:
 		const embed = args.getFlags('embed');
 		return {
 			id,
-			content,
+			content: parseAndValidate(content),
 			embed,
-			color: embed ? this.parseColour(args) : 0,
-			args: []
+			color: embed ? this.parseColour(args) : 0
 		};
 	}
 

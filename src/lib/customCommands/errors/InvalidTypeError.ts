@@ -20,24 +20,32 @@ export class InvalidTypeError extends UserError {
 		this.tag = tag;
 	}
 
-	public static readonly possibles = [
+	public static readonly argLessPossibles = [
 		'author.id',
 		'author.name',
 		'author',
-		'channel.id',
-		'channel.name',
-		'channel',
-		'emoji',
 		'guild.acronym',
 		'guild.id',
 		'guild.name',
 		'guild',
+		'random',
+		'server.acronym',
+		'server.id',
+		'server.name',
+		'server'
+	] as const;
+
+	public static readonly possibles = [
+		...InvalidTypeError.argLessPossibles,
+		'channel.id',
+		'channel.name',
+		'channel',
+		'emoji',
 		'member.displayName',
 		'member.id',
 		'member.name',
 		'member',
 		'pick',
-		'random',
 		'rest',
 		'role.color',
 		'role.hoist',
@@ -45,10 +53,6 @@ export class InvalidTypeError extends UserError {
 		'role.name',
 		'role.position',
 		'role',
-		'server.acronym',
-		'server.id',
-		'server.name',
-		'server',
 		'user.displayName',
 		'user.id',
 		'user.name',
@@ -59,24 +63,31 @@ export class InvalidTypeError extends UserError {
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace InvalidTypeError {
-	export type Type =
+	export type ArgLessType =
 		| 'author.id'
 		| 'author.name'
 		| 'author'
-		| 'channel.id'
-		| 'channel.name'
-		| 'channel'
-		| 'emoji'
 		| 'guild.acronym'
 		| 'guild.id'
 		| 'guild.name'
 		| 'guild'
+		| 'random'
+		| 'server.acronym'
+		| 'server.id'
+		| 'server.name'
+		| 'server';
+
+	export type Type =
+		| ArgLessType
+		| 'channel.id'
+		| 'channel.name'
+		| 'channel'
+		| 'emoji'
 		| 'member.displayName'
 		| 'member.id'
 		| 'member.name'
 		| 'member'
 		| 'pick'
-		| 'random'
 		| 'rest'
 		| 'role.color'
 		| 'role.hoist'
@@ -84,10 +95,6 @@ export namespace InvalidTypeError {
 		| 'role.name'
 		| 'role.position'
 		| 'role'
-		| 'server.acronym'
-		| 'server.id'
-		| 'server.name'
-		| 'server'
 		| 'user.displayName'
 		| 'user.id'
 		| 'user.name'

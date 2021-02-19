@@ -66,9 +66,12 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 		case 'server.acronym':
 		case 'guild.acronym':
 			return args.message.guild!.nameAcronym;
-		case 'pick':
 		case 'random':
-			return args.next();
+			return '';
+		case 'rest':
+			return args.rest('string');
+		case 'pick':
+			return args.pick('string');
 		case 'role':
 			return args.pick('role').then((role) => role.toString());
 		case 'role.color':
@@ -93,5 +96,7 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 		case 'member.id':
 		case 'user.id':
 			return args.pick('member').then((member) => member.id);
+		case 'word':
+			return args.pick('string');
 	}
 }

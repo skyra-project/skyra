@@ -7,7 +7,10 @@ export class InvalidTypeError extends UserError {
 	public readonly tag: Tag;
 
 	public constructor(parser: Parser, tag: Tag) {
-		super({ identifier: LanguageKeys.Serializers.CustomCommands.InvalidType, context: { parser, tag, possibles: InvalidTypeError.possibles } });
+		super({
+			identifier: LanguageKeys.Serializers.CustomCommands.InvalidType,
+			context: { parser, tag, possibles: InvalidTypeError.possibles.map((possible) => `\`${possible}\``) }
+		});
 		this.parser = parser;
 		this.tag = tag;
 	}
@@ -30,6 +33,7 @@ export class InvalidTypeError extends UserError {
 		'member',
 		'pick',
 		'random',
+		'rest',
 		'role.color',
 		'role.hoist',
 		'role.id',
@@ -43,7 +47,8 @@ export class InvalidTypeError extends UserError {
 		'user.displayName',
 		'user.id',
 		'user.name',
-		'user'
+		'user',
+		'word'
 	] as const;
 }
 
@@ -67,6 +72,7 @@ export namespace InvalidTypeError {
 		| 'member'
 		| 'pick'
 		| 'random'
+		| 'rest'
 		| 'role.color'
 		| 'role.hoist'
 		| 'role.id'
@@ -80,5 +86,6 @@ export namespace InvalidTypeError {
 		| 'user.displayName'
 		| 'user.id'
 		| 'user.name'
-		| 'user';
+		| 'user'
+		| 'word';
 }

@@ -1,5 +1,5 @@
+import { ensure } from '#lib/customCommands';
 import { isNullish } from '@sapphire/utilities';
-import { parse } from '@skyra/tags';
 import { ValueTransformer } from 'typeorm';
 import type { CustomCommand } from '../entities/GuildEntity';
 
@@ -10,7 +10,7 @@ export const kBigIntTransformer: ValueTransformer = {
 
 export const kTagsTransformer: ValueTransformer = {
 	from: (values: RawCustomCommand[]): CustomCommand[] =>
-		values.map((value) => ({ id: value.id, embed: value.embed, color: value.color, content: parse(value.content) })),
+		values.map((value) => ({ id: value.id, embed: value.embed, color: value.color, content: ensure(value.content) })),
 	to: (values: CustomCommand[]): RawCustomCommand[] =>
 		values.map((value) => ({ id: value.id, embed: value.embed, color: value.color, content: value.content.toString() }))
 };

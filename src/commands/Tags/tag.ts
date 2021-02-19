@@ -1,3 +1,4 @@
+import { InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
 import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -8,7 +9,6 @@ import { requiresLevel, requiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
-import { Lexer, Parser, Sentence, Tag } from '@skyra/tags';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -123,7 +123,7 @@ export class UserCommand extends SkyraCommand {
 
 		const iterator = tag.content.run();
 		let result = iterator.next();
-		while (!result.done) result = iterator.next(await this.handleTag(args, result.value));
+		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type));
 
 		return tag.embed
 			? message.send(new MessageEmbed().setDescription(result.value).setColor(tag.color))
@@ -138,16 +138,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private createTag(args: SkyraCommand.Args, id: string, content: string): CustomCommand {
-		// Creates a tags parser, parses, and checks:
-		const parser = new Parser(new Lexer(content));
-		const parts = parser.parse();
-		parser.check();
-
 		// Create the tag data:
 		const embed = args.getFlags('embed');
 		return {
 			id,
-			content: new Sentence(parts),
+			content: parseAndValidate(content),
 			embed,
 			color: embed ? this.parseColour(args) : 0
 		};
@@ -163,34 +158,5 @@ export class UserCommand extends SkyraCommand {
 		if (this.#kHexlessRegex.test(color)) color = `#${color}`;
 
 		return parseColour(color)?.b10.value ?? 0;
-	}
-
-	private async handleTag(args: SkyraCommand.Args, tag: Tag) {
-		const message = args.message as GuildMessage;
-		switch (tag.type) {
-			case 'author':
-				return message.author.toString();
-			case 'authorid':
-				return message.author.id;
-			case 'authorname':
-				return message.author.username;
-			case 'channel':
-				return message.channel.toString();
-			case 'channelid':
-				return message.channel.id;
-			case 'channelname':
-				return message.channel.name;
-			case 'server':
-			case 'guild':
-				return message.guild.name;
-			case 'serverid':
-			case 'guildid':
-				return message.guild.id;
-			case 'pick':
-			case 'random':
-				return args.next();
-			default:
-				return String(await args.pick(tag.type as any));
-		}
 	}
 }

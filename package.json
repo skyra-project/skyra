@@ -6,6 +6,7 @@
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
 		"#lib/audio": "./dist/audio/lib/index.js",
+		"#lib/customCommands": "./dist/lib/customCommands/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",

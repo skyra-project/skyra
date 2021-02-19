@@ -3,6 +3,7 @@ import type { SkyraArgs } from '#lib/structures';
 import { Awaited } from '@sapphire/utilities';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
 import { InvalidTypeError } from './errors/InvalidTypeError';
+import { MissingArgumentsError } from './errors/MissingArgumentsError';
 import { ParserNotRunError } from './errors/ParserNotRunError';
 
 export const validTypes = new Set<string>(InvalidTypeError.possibles);
@@ -40,6 +41,9 @@ export function ensure(content: string) {
 }
 
 export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Awaited<string> {
+	if (type === 'random') return '';
+	if (args.finished) throw new MissingArgumentsError(args, type);
+
 	switch (type) {
 		case 'author':
 			return args.message.author.toString();
@@ -66,8 +70,6 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 		case 'server.acronym':
 		case 'guild.acronym':
 			return args.message.guild!.nameAcronym;
-		case 'random':
-			return '';
 		case 'rest':
 			return args.rest('string');
 		case 'pick':

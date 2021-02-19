@@ -9,7 +9,12 @@ export class InvalidTypeError extends UserError {
 	public constructor(parser: Parser, tag: Tag) {
 		super({
 			identifier: LanguageKeys.Serializers.CustomCommands.InvalidType,
-			context: { parser, tag, possibles: InvalidTypeError.possibles.map((possible) => `\`${possible}\``) }
+			context: {
+				parser,
+				tag,
+				possibles: InvalidTypeError.possibles.map((possible) => `\`${possible}\``),
+				count: InvalidTypeError.possibles.length
+			}
 		});
 		this.parser = parser;
 		this.tag = tag;

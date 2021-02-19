@@ -2,8 +2,6 @@ name: 'Update Crowdin Pull Request Name'
 
 on:
   pull_request:
-    types:
-      - opened
 
 jobs:
   update_pr:

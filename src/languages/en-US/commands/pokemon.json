@@ -130,6 +130,7 @@
 		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
+	"spritePokemonIsCap": "{{REDCROSS}} Oh oh, it looks like **{{name}}** is a Pokémon from Pokémon Showdown's Create A Pokemon (CAP). They do not have sprites right now.",
 	"typeDescription": "Gives the type matchups for one or two Pokémon types",
 	"typeExtended": {
 		"usages": ["Type", "Type1 Type2"],

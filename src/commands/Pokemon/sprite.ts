@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getPokemonSprite } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { toTitleCase } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -19,6 +20,10 @@ export class UserCommand extends SkyraCommand {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase());
+
+		if (pokeDetails.num < 0) {
+			this.error(LanguageKeys.Commands.Pokemon.SpritePokemonIsCap, { name: toTitleCase(pokeDetails.species) });
+		}
 
 		return response.edit(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite, { embed: null });
 	}

@@ -269,6 +269,8 @@ export const getPokemonSprite = gql`
 		getPokemonDetailsByFuzzy(pokemon: $pokemon) {
 			sprite
 			shinySprite
+			num
+			species
 		}
 	}
 `;

@@ -7,11 +7,12 @@ import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
+import { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
-import { kBigIntTransformer } from '../utils/Transformers';
+import { kBigIntTransformer, kTagsTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity {
@@ -35,7 +36,7 @@ export class GuildEntity extends BaseEntity {
 	public disabledCommands: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand', array: true })
-	@Column('jsonb', { name: 'custom-commands', default: () => "'[]'::JSONB" })
+	@Column('jsonb', { name: 'custom-commands', transformer: kTagsTransformer, default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 
 	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
@@ -797,8 +798,7 @@ export interface CustomCommand {
 	id: string;
 	embed: boolean;
 	color: number;
-	content: string;
-	args: string[];
+	content: Sentence;
 }
 
 export type CommandAutoDelete = readonly [string, number];

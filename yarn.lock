@@ -968,6 +968,11 @@
   dependencies:
     graphql "^15.4.0"
 
+"@skyra/tags@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@skyra/tags/-/tags-1.0.1.tgz#d62ba769d256344d50ac7637423b163ac7f65110"
+  integrity sha512-JJs0hqbeytX2JOdfcc0AuqSMhPGE+TwdNyih5YlxaGrZYa0th02wj4bmKVXanDgP+uFa+qo5aU9bTC0VhxuQ+w==
+
 "@sqltools/formatter@1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@sqltools/formatter/-/formatter-1.2.2.tgz#9390a8127c0dcba61ebd7fdcc748655e191bdd68"

@@ -33,10 +33,6 @@ export class UserSerializer extends Serializer<CustomCommand> {
 			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidContent));
 		}
 
-		if (!Array.isArray(value.args) || value.args.some((arg) => typeof arg !== 'string')) {
-			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidArgs));
-		}
-
 		return true;
 	}
 

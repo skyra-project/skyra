@@ -56,13 +56,8 @@ export class UserEvent extends Event {
 				const channel = guild.channels.cache.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// If the message could not be retrieved then skip this notification.
-				if (subscription.message !== null) {
-					const embedData = this.transformTextToObject(data, game);
-
-					// Construct a message embed and send it.
-					floatPromise(channel.send(this.buildEmbed(embedData, t)));
-				}
+				// Construct a message embed and send it.
+				floatPromise(channel.send(this.buildEmbed(this.transformTextToObject(data, game), t)));
 
 				break;
 			}

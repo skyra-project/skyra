@@ -500,7 +500,7 @@ export function cleanMentions(guild: Guild, input: string) {
  * @param input The input extract mentions from
  * @returns an array of mentions
  */
-export const extractMentions = (input: string) => input.match(/@(?:here|everyone)|<(@[!&]?)(\d{17,19})>/g) ?? [];
+export const extractMentions = (input: string) => input.match(/<(@[!&]?)(\d{17,19})>/g) ?? [];
 
 /**
  * Creates an array picker function

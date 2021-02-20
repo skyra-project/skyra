@@ -3,6 +3,7 @@
         <Deterministic>true</Deterministic>
         <Features>strict</Features>
         <Nullable>enable</Nullable>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
     <!-- We add InternalsVisibleTo to every project, making sure Skyra.Tests can see internals (to test) APART from Skyra.Tests itself. -->

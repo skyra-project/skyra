@@ -48,3 +48,5 @@ wiki/
 # Ignore dotnet build outputs
 obj/
 bin/
+TestResults/
+coverage.json

@@ -1,10 +1,14 @@
-name: Continuous Integration
+name: Continuous Integration - NodeJS
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - services/**
   pull_request:
+    paths-ignore:
+      - services/**
 
 jobs:
   pre_ci:
@@ -128,7 +132,7 @@ jobs:
         run: dotnet build services
 
   Upload_Coverage_Report:
-    name: Upload coverage report to coveralls
+    name: Upload coverage report to codecov
     needs: [Testing]
     runs-on: ubuntu-latest
     steps:
@@ -139,7 +143,10 @@ jobs:
         with:
           name: coverage
           path: coverage/
-      - name: Coveralls Upload
-        uses: coverallsapp/github-action@master
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage/
+          flags: unittests-nodejs
+          fail_ci_if_error: true

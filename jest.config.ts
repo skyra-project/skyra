@@ -26,6 +26,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/node_modules',
 		'<rootDir>/tests/mocks',
 		'<rootDir>/src/arguments',
+		'<rootDir>/src/audio',
 		'<rootDir>/src/commands',
 		'<rootDir>/src/events',
 		'<rootDir>/src/languages',

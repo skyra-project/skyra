@@ -19,7 +19,7 @@ namespace Skyra.Grpc.Services
 			_context = context;
 		}
 
-		public override async Task<Result> AddPoints(PointsQuery request, ServerCallContext context)
+		public override async Task<PointsResult> AddPoints(PointsQuery request, ServerCallContext context)
 		{
 			var user = await _context.Users.UpsertAsync(request.Id, () => new User {Id = request.Id, Money = 0});
 
@@ -27,35 +27,27 @@ namespace Skyra.Grpc.Services
 
 			await _context.SaveChangesAsync();
 
-			return new Result
+			return new PointsResult
 			{
 				Success = true,
 				Amount = user.Money
 			};
 		}
 
-		public override async Task<Result> GetPoints(MemberQuery request, ServerCallContext context)
+		public override async Task<PointsResult> GetPoints(MemberQuery request, ServerCallContext context)
 		{
 			try
 			{
 				var user = await _context.Users.FindAsync(request.Id);
-
-				if (user is null)
-					return new Result
-					{
-						Success = true,
-						Amount = 0
-					};
-
-				return new Result
+				return new PointsResult
 				{
-					Amount = user.Points,
+					Amount = user?.Points ?? 0,
 					Success = true
 				};
 			}
 			catch (Exception e)
 			{
-				return new Result
+				return new PointsResult
 				{
 					Success = false,
 					ErrorMessage = e.ToString()

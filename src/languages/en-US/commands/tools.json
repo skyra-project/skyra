@@ -68,7 +68,8 @@
 		"usages": ["Emoji"],
 		"extendedHelp": "Using a custom emoji on another server, I can re-upload that emoji to the current server.",
 		"explainedUsage": [["Emoji", "A custom emoji on Discord."]],
-		"reminder": "Make sure the bot has {{MANAGE_EMOJI, permissions}} permissions in this server!"
+		"examples": ["<:Skyra:638508279357767680>", "<a:SkyraHappy:735068843407573043>"],
+		"reminder": "Make sure the bot has {{MANAGE_EMOJIS, permissions}} permissions in this server!"
 	},
 	"createEmojiInvalidDiscordEmoji": "I could not resolve `{{parameter}}` to a valid Discord emoji. Make sure it is from a Discord server, and not a default emoji.",
 	"createEmojiDuplicate": "An emoji named `{{name}}` already exists!",

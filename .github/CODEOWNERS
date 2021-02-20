@@ -11,6 +11,7 @@
 # Just Favna
 /docker/ @favna
 /.github/ @favna
+/.devcontainer/ @favna
 /.vscode/ @favna
 /scripts/ @favna
 /.all-contributorsrc @favna
@@ -18,8 +19,7 @@
 /.gitignore @favna
 /.gqlconfig @favna
 /.prettierrc @favna
-/.yarnclean @favna
-/jest.config.js @favna
+/jest.config.ts @favna
 /pm2.ecosystem.yml @favna
 
 # Tyler & Kyra

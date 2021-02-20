@@ -91,9 +91,9 @@ export class UserCommand extends SkyraCommand {
 								: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 										header
 								  }),
-							this.buildEmbed(announcement)
+							{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
 					  )
-					: await previous.edit(`${header}:\n${announcement}`);
+					: await previous.edit(`${header}:\n${announcement}`, { allowedMentions: { users: mentions, roles: [role.id, ...mentions] } });
 				this.context.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
@@ -107,9 +107,11 @@ export class UserCommand extends SkyraCommand {
 									: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 											header
 									  }),
-								this.buildEmbed(announcement)
+								{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
 						  )
-						: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
+						: ((await channel.send(`${header}:\n${announcement}`, {
+								allowedMentions: { users: mentions, roles: [role.id, ...mentions] }
+						  })) as GuildMessage);
 					this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage as GuildMessage);
 				} else {
@@ -128,9 +130,11 @@ export class UserCommand extends SkyraCommand {
 							: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 									header
 							  }),
-						this.buildEmbed(announcement)
+						{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
 				  )
-				: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
+				: ((await channel.send(`${header}:\n${announcement}`, {
+						allowedMentions: { users: mentions, roles: [role.id, ...mentions] }
+				  })) as GuildMessage);
 			this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage as GuildMessage);
 		}

@@ -116,12 +116,12 @@
 	"createEmojiDescription": "",
 	"createEmojiExtended": {
 		"usages": [
-			""
+			"Эмодзи"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Эмодзи",
 				""
 			]
 		],
@@ -134,12 +134,12 @@
 	"defineDescription": "",
 	"defineExtended": {
 		"usages": [
-			""
+			"Слово"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Слово",
 				""
 			]
 		],
@@ -153,11 +153,11 @@
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		],
@@ -172,7 +172,7 @@
 	"emojiDescription": "",
 	"emojiExtended": {
 		"usages": [
-			""
+			"Эмодзи"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -195,7 +195,7 @@
 	"eshopDescription": "",
 	"eshopExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -211,7 +211,7 @@
 		]
 	},
 	"eshopNotInDatabase": "",
-	"eshopPriceFree": "",
+	"eshopPriceFree": "Бесплатно",
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
@@ -271,9 +271,9 @@
 	"igdbDescription": "",
 	"igdbExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к IGDB API, чтобы показать информацию о ваших любимых играх.",
 		"explainedUsage": [
 			[
 				"Запрос",
@@ -287,8 +287,8 @@
 	},
 	"igdbTitles": {
 		"ageRating": "",
-		"developers": "",
-		"genres": "",
+		"developers": "Разработчик(и)",
+		"genres": "Жанр(ы)",
 		"platform": "",
 		"releaseDate": "Дата выпуска",
 		"userScore": ""
@@ -296,9 +296,9 @@
 	"itunesDescription": "",
 	"itunesExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Эта команда обращается к Apple iTunes API, чтобы показать информацию о запрошенной вами музыке.",
 		"explainedUsage": [
 			[
 				"Запрос",
@@ -332,7 +332,7 @@
 	"moviesDescription": "",
 	"moviesExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -418,7 +418,7 @@
 			],
 			[
 				"сообщение",
-				""
+				"ID цитируемого сообщения."
 			]
 		]
 	},

@@ -2,9 +2,8 @@ extraction:
   csharp:
     index:
       solution: services/Skyra.sln
-      msbuild:
-        configuration: release
-        platform: x64
+      dotnet:
+        version: 5.0.100
   javascript:
     index:
       include:

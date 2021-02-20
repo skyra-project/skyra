@@ -21,7 +21,7 @@
 	"permissionNodesReset": "",
 	"permissionNodesShowName": "",
 	"permissionNodesShowAllow": "**अनुमति**:{{allow}}",
-	"permissionNodesShowDeny": "**मना**:{{deny, andList}}",
+	"permissionNodesShowDeny": "",
 	"triggersRemoveNottaken": "",
 	"triggersRemove": "",
 	"triggersAddTaken": "",

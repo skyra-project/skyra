@@ -1,1 +1,24 @@
-{}
+{
+	"cooldown": "Acabas de usar este comando. Puedes usarlo de nuevo en {{remaining, duration}}.",
+	"dmOnly": "Este comando solo puede ser utilizado en mensajes directos.",
+	"guildOnly": "Este comando solo puede ser utilizado dentro de un servidor.",
+	"nsfw": "¡No puedes usar comandos con contenido no apropiado en este canal!",
+	"permissions": "¡No tengo suficientes permisos! Necesito: {{missing, permissionsAndList}}",
+	"administrator": "Necesitas privilegios de administrador para ejecutar `{{command.name}}`!",
+	"moderator": "Necesitas privilegios de moderador para ejecutar `{{command.name}}`!",
+	"dj": "Necesitas privilegios de DJ para ejecutar `{{command.name}}`!",
+	"disabledGlobal": "Este comando ha sido desactivado globalmente por los propietarios del bot. ¿Quieres saber por qué y averiguar cuándo va a volver? Únete al servidor oficial de Skyra: <https://join.skyra.pw>",
+	"textOnly": "Este comando solo puede ser utilizado en canales de texto.",
+	"newsOnly": "Este comando sólo puede utilizarse en canales de anuncios.",
+	"spam": "¿Podemos movernos a {{channel}}, por favor? Este comando puede causar mucho spam y puede arruinar las conversaciones de otras personas.",
+	"musicBothVoiceChannel": "{{REDCROSS}} ¡Oye! ¡Parece que no estás en el mismo canal de voz que yo! ¡Por favor únete a mí!",
+	"musicBotVoiceChannel": "{{REDCROSS}} Me temo que necesito estar en un canal de voz para operar este comando, ¡por favor muéstrame el camino!",
+	"musicDjMember": "{{REDCROSS}} ¡Creo que esto es algo que solo un moderador o un DJ de esta sesión se supone que debe hacer!",
+	"musicNothingPlaying": "{{REDCROSS}} Parece que nada está reproduciéndose ahora, ¿qué tal si inicias la fiesta 🎉?",
+	"musicNotPlaying": "{{REDCROSS}} Hmm, no parece que esté reproduciendo nada en este momento.",
+	"musicPaused": "{{REDCROSS}} ¡La cola de música está siendo reproducida y la sesión seguirá hasta que termine la noche!",
+	"musicQueueEmpty": "{{REDCROSS}} ¡La cola está vacía! La sesión comenzará tan pronto como tengamos algunas canciones en cola.",
+	"musicUserVoiceChannel": "{{REDCROSS}} Hey, ¡Necesito que te unas a un canal de voz antes de poder ejecutar este comando!",
+	"disabledGuild": "¡Este comando ha sido desactivado por un administrador en este servidor!",
+	"permissionNodes": "{{REDCROSS}} ¡No tienes permiso para usar este comando!"
+}

@@ -13,13 +13,13 @@
 	"externalServerError": "El servicio externo que utilizamos no ha podido procesar nuestro mensaje. Inténtalo de nuevo más tarde.",
 	"fetchBansFail": "Error al obtener la información de los baneos. ¿Tengo el permiso **{{ADMINISTRATOR, permissions}}**?",
 	"helpTitles": {
-		"aliases": "",
-		"usages": "",
-		"extendedHelp": "",
-		"explainedUsage": "",
-		"possibleFormats": "",
-		"examples": "",
-		"reminders": ""
+		"aliases": "🖇️ | **Aliases**",
+		"usages": "📝 | **Uso de Comando**",
+		"extendedHelp": "🔍 | **Ayuda Extendida**",
+		"explainedUsage": "⚙ | **Uso explicado**",
+		"possibleFormats": "🔢 | **Formatos posibles**",
+		"examples": "🔗 | **Ejemplos**",
+		"reminders": "⏰ | **Recordatorio**"
 	},
 	"highestRole": "La posición jerárquica de este rol es mayor o igual que yo, no puedo concederla a nadie.",
 	"jumpTo": "Saltar al Mensaje ►",
@@ -33,7 +33,7 @@
 		"{{LOADING}} Ajustando a las frecuencias correctas...",
 		"{{LOADING}} Reticulando curvas..."
 	],
-	"messagePromptTimeout": "",
+	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
 	"noResults": "No pude encontrar resultados para esa consulta",
 	"parseError": "{{REDCROSS}} No he podido procesar los datos que me has proporcionado, ¡lo siento~!",
 	"pokedexExternalResource": "Recursos Externos",
@@ -41,8 +41,8 @@
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
 	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?",
 	"textPromptAbortOptions": [
-		"",
-		"",
-		""
+		"abortar",
+		"cancelar",
+		"parar"
 	]
 }

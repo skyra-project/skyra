@@ -91,45 +91,6 @@ jobs:
         with:
           name: coverage
           path: coverage/
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.103'
-      - name: Run dotnet tests
-        run: dotnet test services/Skyra.Tests
-
-  Building:
-    name: Compile source code
-    runs-on: ubuntu-latest
-    if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
-    needs: pre_ci
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
-      - name: Use Node.js 15
-        uses: actions/setup-node@v2
-        with:
-          node-version: 15
-      - name: Restore CI Cache
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-15-${{ hashFiles('**/yarn.lock') }}
-      - name: Install Dependencies
-        run: yarn --ignore-scripts --frozen-lockfile
-      - name: Copy Configuration
-        run: |
-          pushd src &&
-          cp config.example.ts config.ts &&
-          popd
-      - name: Build Code
-        run: yarn build
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.103'
-      - name: Build Services
-        run: dotnet build services
 
   Upload_Coverage_Report:
     name: Upload coverage report to codecov

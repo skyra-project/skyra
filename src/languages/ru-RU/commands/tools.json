@@ -3,12 +3,12 @@
 	"avatarExtended": {
 		"usages": [
 			"",
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -19,13 +19,13 @@
 	"colorDescription": "",
 	"colorExtended": {
 		"usages": [
-			"",
+			"Цвет",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Цвет",
 				""
 			],
 			[
@@ -59,7 +59,7 @@
 	"contentDescription": "",
 	"contentExtended": {
 		"usages": [
-			"",
+			"Сообщение",
 			""
 		],
 		"extendedHelp": "",
@@ -81,12 +81,12 @@
 	"countryDescription": "Показывает информацию о стране.",
 	"countryExtended": {
 		"usages": [
-			""
+			"Страна"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Страна",
 				"Название страны."
 			]
 		],
@@ -177,7 +177,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Эмодзи",
 				""
 			]
 		],
@@ -200,7 +200,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				"Название игры, которую вы ищете."
 			]
 		],
@@ -276,7 +276,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		],
@@ -301,7 +301,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		],
@@ -337,7 +337,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		],
@@ -407,7 +407,7 @@
 	"quoteDescription": "",
 	"quoteExtended": {
 		"usages": [
-			"",
+			"Сообщение",
 			""
 		],
 		"extendedHelp": "",
@@ -430,12 +430,12 @@
 	"showsDescription": "",
 	"showsExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		],
@@ -472,7 +472,7 @@
 	"urbanDescription": "",
 	"urbanExtended": {
 		"usages": [
-			"",
+			"Слово",
 			""
 		],
 		"extendedHelp": "",
@@ -494,14 +494,14 @@
 	"voteDescription": "",
 	"voteExtended": {
 		"usages": [
-			""
+			"Вопрос"
 		],
 		"examples": [
 			""
 		],
 		"explainedUsage": [
 			[
-				"",
+				"Вопрос",
 				""
 			]
 		]
@@ -510,12 +510,12 @@
 	"whoisExtended": {
 		"usages": [
 			"",
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		]
@@ -544,12 +544,12 @@
 	"wikipediaDescription": "",
 	"wikipediaExtended": {
 		"usages": [
-			""
+			"Страница"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Страница",
 				""
 			]
 		],
@@ -559,12 +559,12 @@
 	"youtubeDescription": "",
 	"youtubeExtended": {
 		"usages": [
-			""
+			"Запрос"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Запрос",
 				""
 			]
 		]

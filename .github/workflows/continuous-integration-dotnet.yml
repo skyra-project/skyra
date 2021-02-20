@@ -78,5 +78,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./services/Skyra.Tests/TestResults/
-          flags: unittests-dotnet
+          flags: dotnet
           fail_ci_if_error: true

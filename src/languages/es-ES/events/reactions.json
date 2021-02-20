@@ -1,1 +1,5 @@
-{}
+{
+	"reaction": "Reacción Añadida",
+	"filterFooter": "Reacción Filtrada",
+	"filter": "{{REDCROSS}} Hey {{user}}, ¡por favor no añadas esa reacción!"
+}

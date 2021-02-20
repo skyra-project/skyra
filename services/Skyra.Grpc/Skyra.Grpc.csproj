@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Skyra.Database\Skyra.Database.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="..\..\assets\protos\greet.proto" GrpcServices="Server" />
+      <Protobuf Include="..\..\assets\protos\member.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+</Project>

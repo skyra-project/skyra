@@ -550,11 +550,11 @@
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
 		"usages": [
-			""
+			"Ставка"
 		],
 		"extendedHelp": "",
 		"examples": [
-			"",
+			"50",
 			"200"
 		]
 	},

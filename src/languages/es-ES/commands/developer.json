@@ -2,7 +2,7 @@
 	"yarnDescription": "Responde con información sobre un paquete NodeJS usando el registro de paquetes Yarn",
 	"yarnExtended": {
 		"usages": [
-			""
+			"Nombre del Paquete"
 		],
 		"extendedHelp": "Esto es para desarrolladores de NodeJS que quieren encontrar rápidamente información sobre un paquete publicado en [npm](https://npmjs.com)",
 		"explainedUsage": [

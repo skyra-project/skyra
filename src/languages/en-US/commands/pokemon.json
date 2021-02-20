@@ -21,7 +21,8 @@
 		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
-	"flavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"flavorsQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"flavorNoFlavors": "{{REDCROSS}} I am sorry, but no flavor text was available for `{{pokemon}}`.",
 	"itemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
 	"itemExtended": {
 		"usages": ["Item"],
@@ -130,7 +131,6 @@
 		],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
-	"spritePokemonIsCap": "{{REDCROSS}} Oh oh, it looks like **{{name}}** is a Pokémon from Pokémon Showdown's Create A Pokemon (CAP). They do not have sprites right now.",
 	"typeDescription": "Gives the type matchups for one or two Pokémon types",
 	"typeExtended": {
 		"usages": ["Type", "Type1 Type2"],

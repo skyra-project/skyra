@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - services/**
+      - .github/workflows/codeql-analysis-dotnet.yml
+      - .github/workflows/continuous-integration-dotnet.yml
   pull_request:
     paths:
       - services/**
@@ -19,9 +21,6 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-        with:
-          # We need to fetch with a depth of 2 for pull_request.
-          fetch-depth: 2
 
         # If this workflow was triggered by a push then resolve the commit message from HEAD
         # It is stored in output steps, to be referenced with ${{ steps.push_get_commit_message.outputs.push_commit_message }}
@@ -55,15 +54,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 2
-
-      # If this run was triggered by a pull request event, then checkout
-      # the head of the pull request instead of the merge commit.
-      - run: git checkout HEAD^2
-        if: ${{ github.event_name == 'pull_request' }}
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -80,9 +70,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}
 
       - name: Build .NET code
         run: dotnet build services

@@ -6,9 +6,13 @@ on:
       - main
     paths:
       - services/**
+      - .github/workflows/codeql-analysis-dotnet.yml
+      - .github/workflows/continuous-integration-dotnet.yml
   pull_request:
     paths:
       - services/**
+      - .github/workflows/codeql-analysis-dotnet.yml
+      - .github/workflows/continuous-integration-dotnet.yml
 
 jobs:
   pre_ci:
@@ -27,10 +31,6 @@ jobs:
         if: github.event_name == 'pull_request'
         id: pr_get_commit_message
         run: echo ::set-output name=pr_commit_message::$(git log --format=%B -n 1 HEAD^2)
-      - name: Add problem matchers
-        run: |
-          echo "::add-matcher::.github/problemMatchers/tsc.json"
-          echo "::add-matcher::.github/problemMatchers/eslint-stylish.json"
     outputs:
       commit_message: $( [ -z "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" ] && echo "${{ steps.push_get_commit_message.outputs.push_commit_message }}" || echo "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" )
 
@@ -50,9 +50,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}
       - name: Build C# code
         run: dotnet build services
       - name: Run C# tests

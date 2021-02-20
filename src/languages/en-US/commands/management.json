@@ -21,7 +21,7 @@
 	"permissionNodesReset": "{{GREENTICK}} Successfully removed all commands from the permission node.",
 	"permissionNodesShowName": "Permissions for: __{{name}}__",
 	"permissionNodesShowAllow": "**Allow**: {{allow}}",
-	"permissionNodesShowDeny": "**Deny**: {{deny, andList}}",
+	"permissionNodesShowDeny": "**Deny**: {{deny}}",
 	"triggersRemoveNottaken": "There is no trigger with this input.",
 	"triggersRemove": "Successfully removed this trigger.",
 	"triggersAddTaken": "There is already a trigger with this input.",

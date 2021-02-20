@@ -64,7 +64,7 @@ jobs:
           path: services/Skyra.Tests/TestResults/
 
   Upload_Coverage_Report:
-    name: Upload coverage report to coveralls
+    name: Upload coverage report to codecov
     needs: [BuildAndTest]
     runs-on: ubuntu-latest
     steps:

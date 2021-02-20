@@ -132,7 +132,7 @@ jobs:
         run: dotnet build services
 
   Upload_Coverage_Report:
-    name: Upload coverage report to coveralls
+    name: Upload coverage report to codecov
     needs: [Testing]
     runs-on: ubuntu-latest
     steps:

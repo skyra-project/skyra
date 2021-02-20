@@ -458,10 +458,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@favware/graphql-pokemon@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-5.1.1.tgz#c906a897d0dab7ecff4ed4a6728d27fe1ea80492"
-  integrity sha512-XlC0xcfEk+z4fEvMsSJVIl6JBU9ba+9IVKx/rvmlccNq+GyguPKj7gOSUVhRg8qahuSF8PAnQdzi1YjfR6+Eww==
+"@favware/graphql-pokemon@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-5.1.2.tgz#45c4060de89182160adcb76ae312a68ed50d30bf"
+  integrity sha512-CtwdTS8KV4auLj8y2LhUBammjKYRLIUPYNwPxBGSdPecVzgueQrIr9cD3iyhfyLlC6ujjrdD6mCwrjEYtro87A==
   dependencies:
     graphql "^15.5.0"
 

@@ -45,6 +45,7 @@
 		]
 	},
 	"flavorsQueryFail": "",
+	"flavorNoFlavors": "",
 	"itemDescription": "",
 	"itemExtended": {
 		"usages": [
@@ -222,7 +223,6 @@
 			""
 		]
 	},
-	"spritePokemonIsCap": "",
 	"typeDescription": "",
 	"typeExtended": {
 		"usages": [

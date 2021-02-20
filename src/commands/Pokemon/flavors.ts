@@ -24,6 +24,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const pokemonData = await this.fetchAPI(pokemon);
 
+		if (!pokemonData.flavorTexts.length) {
+			this.error(LanguageKeys.Commands.Pokemon.FlavorNoFlavors, { pokemon: toTitleCase(pokemonData.species) });
+		}
+
 		await this.buildDisplay(pokemonData, args).start(response as GuildMessage, message.author);
 		return response;
 	}

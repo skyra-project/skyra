@@ -7,12 +7,12 @@ package member;
 // The greeting service definition.
 service Member {
   // Sends a greeting
-  rpc AddPoints (Points) returns (Result);
+  rpc AddPoints (PointsQuery) returns (Result);
   rpc GetPoints (MemberQuery) returns (Result);
 }
 
 // The request message containing the user's name.
-message Points {
+message PointsQuery {
   string id = 1;
   int64 amount = 2;
 }

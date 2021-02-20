@@ -6,7 +6,7 @@ namespace Skyra.Database.Extensions
 {
 	public static class DbSetExtensions
 	{
-		public async static Task<T> UpsertAsync<T>(this DbSet<T> db, object key, Func<T> data) where T : class
+		public static async Task<T> UpsertAsync<T>(this DbSet<T> db, object key, Func<T> data) where T : class
 		{
 			var entity = await db.FindAsync(key);
 

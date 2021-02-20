@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace Skyra.Database.Models
 {
 	[Table("user_game_integration")]
-	public partial class UserGameIntegration
+	public class UserGameIntegration
 	{
 		[Key]
 		[Column("id")]
 		public int Id { get; set; }
+
 		[Required]
 		[Column("game")]
 		[StringLength(35)]
 		public string Game { get; set; }
+
 		[Required]
 		[Column("extra_data", TypeName = "jsonb")]
 		public string ExtraData { get; set; }
+
 		[Column("user_id")]
 		[StringLength(19)]
 		public string UserId { get; set; }

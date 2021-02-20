@@ -10,17 +10,18 @@ namespace Skyra.Grpc.Services
 {
 	public class MemberService : Member.MemberBase
 	{
-		private readonly ILogger<MemberService> _logger;
 		private readonly SkyraDbContext _context;
+		private readonly ILogger<MemberService> _logger;
+
 		public MemberService(ILogger<MemberService> logger, SkyraDbContext context)
 		{
 			_logger = logger;
 			_context = context;
 		}
 
-		public override async Task<Result> AddPoints(Points request, ServerCallContext context)
+		public override async Task<Result> AddPoints(PointsQuery request, ServerCallContext context)
 		{
-			var user = await _context.Users.UpsertAsync(request.Id, () => new User { Id = request.Id, Money = 0 });
+			var user = await _context.Users.UpsertAsync(request.Id, () => new User {Id = request.Id, Money = 0});
 
 			user.Money += request.Amount;
 
@@ -40,13 +41,11 @@ namespace Skyra.Grpc.Services
 				var user = await _context.Users.FindAsync(request.Id);
 
 				if (user is null)
-				{
 					return new Result
 					{
 						Success = true,
 						Amount = 0
 					};
-				}
 
 				return new Result
 				{

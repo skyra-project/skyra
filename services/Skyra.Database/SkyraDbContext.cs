@@ -6,7 +6,7 @@ using Skyra.Database.Models;
 
 namespace Skyra.Database
 {
-	public partial class SkyraDbContext : DbContext
+	public class SkyraDbContext : DbContext
 	{
 		public SkyraDbContext()
 		{
@@ -58,7 +58,8 @@ namespace Skyra.Database
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.HasPostgresEnum(null, "rpg_item_type_enum", new[] { "Weapon", "Shield", "Disposable", "Special" })
+			modelBuilder.HasPostgresEnum(null, "rpg_item_type_enum",
+					new[] {"Weapon", "Shield", "Disposable", "Special"})
 				.HasAnnotation("Relational:Collation", "en_US.utf8");
 
 			modelBuilder.Entity<Client>(entity =>
@@ -76,7 +77,7 @@ namespace Skyra.Database
 
 			modelBuilder.Entity<Giveaway>(entity =>
 			{
-				entity.HasKey(e => new { e.GuildId, e.MessageId })
+				entity.HasKey(e => new {e.GuildId, e.MessageId})
 					.HasName("PK_e73020907ca2a4b1ae14fce6e74");
 
 				entity.Property(e => e.Minimum).HasDefaultValueSql("1");
@@ -150,15 +151,18 @@ namespace Skyra.Database
 
 				entity.Property(e => e.RolesUniqueRoleSets).HasDefaultValueSql("'[]'::jsonb");
 
-				entity.Property(e => e.SelfmodAttachmentsIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodAttachmentsIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
-				entity.Property(e => e.SelfmodAttachmentsIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodAttachmentsIgnoredRoles)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodAttachmentsThresholdDuration).HasDefaultValueSql("60000");
 
 				entity.Property(e => e.SelfmodAttachmentsThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodCapitalsIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodCapitalsIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodCapitalsIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 
@@ -182,7 +186,8 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodIgnoreChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
 
-				entity.Property(e => e.SelfmodInvitesIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodInvitesIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodInvitesIgnoredCodes).HasDefaultValueSql("ARRAY[]::character varying[]");
 
@@ -204,7 +209,8 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodLinksWhitelist).HasDefaultValueSql("ARRAY[]::character varying[]");
 
-				entity.Property(e => e.SelfmodMessagesIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodMessagesIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodMessagesIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 
@@ -216,7 +222,8 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodMessagesThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodNewlinesIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodNewlinesIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodNewlinesIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 
@@ -230,7 +237,8 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodReactionsBlacklist).HasDefaultValueSql("ARRAY[]::character varying[]");
 
-				entity.Property(e => e.SelfmodReactionsIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodReactionsIgnoredChannels)
+					.HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodReactionsIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 
@@ -258,9 +266,11 @@ namespace Skyra.Database
 
 				entity.Property(e => e.StickyRoles).HasDefaultValueSql("'[]'::jsonb");
 
-				entity.Property(e => e.SuggestionsEmojisDownvote).HasDefaultValueSql("':ArrowB:694594285269680179'::character varying");
+				entity.Property(e => e.SuggestionsEmojisDownvote)
+					.HasDefaultValueSql("':ArrowB:694594285269680179'::character varying");
 
-				entity.Property(e => e.SuggestionsEmojisUpvote).HasDefaultValueSql("':ArrowT:694594285487652954'::character varying");
+				entity.Property(e => e.SuggestionsEmojisUpvote)
+					.HasDefaultValueSql("':ArrowT:694594285487652954'::character varying");
 
 				entity.Property(e => e.TriggerAlias).HasDefaultValueSql("'[]'::jsonb");
 
@@ -269,13 +279,13 @@ namespace Skyra.Database
 
 			modelBuilder.Entity<Member>(entity =>
 			{
-				entity.HasKey(e => new { e.GuildId, e.UserId })
+				entity.HasKey(e => new {e.GuildId, e.UserId})
 					.HasName("PK_923cd70108499f5f72ae286417c");
 			});
 
 			modelBuilder.Entity<Moderation>(entity =>
 			{
-				entity.HasKey(e => new { e.CaseId, e.GuildId })
+				entity.HasKey(e => new {e.CaseId, e.GuildId})
 					.HasName("PK_e9ec6c684894a7067a45b7ae4f6");
 
 				entity.Property(e => e.ImageUrl).HasDefaultValueSql("NULL::character varying");
@@ -390,20 +400,17 @@ namespace Skyra.Database
 					.HasConstraintName("FK_0babac6e86746fb7ab492f6d948");
 			});
 
-			modelBuilder.Entity<Schedule>(entity =>
-			{
-				entity.Property(e => e.CatchUp).HasDefaultValueSql("true");
-			});
+			modelBuilder.Entity<Schedule>(entity => { entity.Property(e => e.CatchUp).HasDefaultValueSql("true"); });
 
 			modelBuilder.Entity<Starboard>(entity =>
 			{
-				entity.HasKey(e => new { e.MessageId, e.GuildId })
+				entity.HasKey(e => new {e.MessageId, e.GuildId})
 					.HasName("PK_4bd6406cf1cf6cff7e9de1fafd2");
 			});
 
 			modelBuilder.Entity<Suggestion>(entity =>
 			{
-				entity.HasKey(e => new { e.Id, e.GuildId })
+				entity.HasKey(e => new {e.Id, e.GuildId})
 					.HasName("PK_5a7d999d79058230627a279853a");
 			});
 
@@ -412,10 +419,7 @@ namespace Skyra.Database
 				entity.Property(e => e.GuildIds).HasDefaultValueSql("ARRAY[]::character varying[]");
 			});
 
-			modelBuilder.Entity<User>(entity =>
-			{
-				entity.Property(e => e.ModerationDm).HasDefaultValueSql("true");
-			});
+			modelBuilder.Entity<User>(entity => { entity.Property(e => e.ModerationDm).HasDefaultValueSql("true"); });
 
 			modelBuilder.Entity<UserCooldown>(entity =>
 			{
@@ -460,7 +464,7 @@ namespace Skyra.Database
 
 			modelBuilder.Entity<UserSpousesUser>(entity =>
 			{
-				entity.HasKey(e => new { e.UserId1, e.UserId2 })
+				entity.HasKey(e => new {e.UserId1, e.UserId2})
 					.HasName("PK_d03519ca87f9a551e7623625f17");
 
 				entity.HasOne(d => d.UserId1Navigation)
@@ -477,6 +481,9 @@ namespace Skyra.Database
 			OnModelCreatingPartial(modelBuilder);
 		}
 
-		partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+		private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

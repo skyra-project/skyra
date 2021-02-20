@@ -1,0 +1,12 @@
+extraction:
+  csharp:
+    index:
+      solution: services/Skyra.sln
+      msbuild:
+        configuration: release   
+        platform: x64
+  javascript:
+    index:
+      include:
+        - src
+        - tests

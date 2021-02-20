@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - services/**
-      - .github/workflows/codeql-analysis-dotnet.yml
-      - .github/workflows/continuous-integration-dotnet.yml
   pull_request:
     paths-ignore:
       - services/**

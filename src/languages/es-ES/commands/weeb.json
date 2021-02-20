@@ -6,12 +6,12 @@
 	"wcryDescription": "¡Llora a alguien con una imagen de anime!",
 	"wcryExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Llora con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario al que llorar."
 			]
 		],
@@ -22,12 +22,12 @@
 	"wcuddleDescription": "¡Abraza a alguien con una foto de anime!",
 	"wcuddleExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "A diferencia del comando original `cuddle`, éste muestra imágenes al azar de animes, ¡disfruta!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario con el que abrazar."
 			]
 		],
@@ -42,12 +42,12 @@
 	"whugDescription": "¡Abraza a alguien con una foto de anime!",
 	"whugExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "A diferencia del comando original `hug`, éste muestra imágenes al azar de animes, ¡disfruta!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a abrazar."
 			]
 		],
@@ -58,12 +58,12 @@
 	"wkissDescription": "¡Besa a alguien con una foto de anime!",
 	"wkissExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Besa a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario al que dar el beso."
 			]
 		],
@@ -74,12 +74,12 @@
 	"wlickDescription": "¡Lame a alguien con una foto de anime!",
 	"wlickExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Lame a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a lamer."
 			]
 		],
@@ -98,12 +98,12 @@
 	"wpatDescription": "¡Acaricia la cabeza de alguien!",
 	"wpatExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Acaricia la cabeza de alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario con el que dar palmaditas."
 			]
 		],
@@ -118,12 +118,12 @@
 	"wslapDescription": "¡Abofetea a alguien con una foto de anime!",
 	"wslapExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "A diferencia del comando original `slap`, éste muestra imágenes al azar de animes, ¡disfruta!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a abofetear."
 			]
 		],
@@ -138,12 +138,12 @@
 	"wstareDescription": "*Mirar fijamente*",
 	"wstareExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "*Sigue mirándote fijamente*",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario al que mirar fijamente."
 			]
 		],
@@ -156,7 +156,7 @@
 		"extendedHelp": "¡Dale cosquillas a alguien!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a darle cosquillas."
 			]
 		],
@@ -171,7 +171,7 @@
 		"extendedHelp": "¡Dispara a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario al que disparar."
 			]
 		],
@@ -186,12 +186,12 @@
 	"wbiteDescription": "*nom nom* ¡estás delicioso/a!",
 	"wbiteExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Muerde a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a morder."
 			]
 		],
@@ -202,12 +202,12 @@
 	"wgreetDescription": "¡Saluda a otro usuario!",
 	"wgreetExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Saluda a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a saludar."
 			]
 		],
@@ -222,12 +222,12 @@
 	"wpunchDescription": "*pow* 👊👊",
 	"wpunchExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
 		"extendedHelp": "¡Da un puñetazo a alguien con una imagen al azar de anime!",
 		"explainedUsage": [
 			[
-				"",
+				"Usuario",
 				"El usuario a darle un puñetazo."
 			]
 		],

@@ -46,6 +46,5 @@ gh
 wiki/
 
 # Ignore dotnet build outputs
-
 obj/
 bin/

@@ -44,3 +44,7 @@ gh
 
 # Ignore the "wiki" folder so we can checkout the wiki inside the same folder
 wiki/
+
+# Ignore dotnet build outputs
+obj/
+bin/

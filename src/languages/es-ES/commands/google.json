@@ -2,12 +2,12 @@
 	"currentTimeDescription": "Obtiene la hora actual en cualquier lugar del mundo",
 	"currentTimeExtended": {
 		"usages": [
-			""
+			"Nombre del País"
 		],
 		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando tiene las coordenadas, consulta TimezoneDB para obtener los datos de tiempo.",
 		"explainedUsage": [
 			[
-				"",
+				"Nombre del País",
 				"La localidad, gobernación, país o continente para comprobar su tiempo."
 			]
 		],
@@ -29,12 +29,12 @@
 	"gimageDescription": "Encuentra tus imágenes favoritas en Google",
 	"gimageExtended": {
 		"usages": [
-			""
+			"Consulta de Búsqueda"
 		],
 		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar imágenes para tu consulta. Para resultados web regulares, por favor usa el comando `gsearch`.",
 		"explainedUsage": [
 			[
-				"",
+				"Consulta de Búsqueda",
 				"La imagen que desea encontrar en Google"
 			]
 		],
@@ -47,12 +47,12 @@
 	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
 	"gsearchExtended": {
 		"usages": [
-			""
+			"Consulta de Búsqueda"
 		],
 		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
 		"explainedUsage": [
 			[
-				"",
+				"Consulta de Búsqueda",
 				"Lo que desea encontrar en Google"
 			]
 		],
@@ -64,14 +64,14 @@
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
 		"usages": [
-			"",
-			""
+			"Ciudad",
+			"Ciudad --imperial/--fahrenheit"
 		],
 		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando obtuvo las coordenadas, consulta a DarkSky para obtener información sobre el clima.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Ciudad",
+				"La localidad, gobernación, país o continente para comprobar su tiempo."
 			]
 		],
 		"examples": [

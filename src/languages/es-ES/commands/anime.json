@@ -2,7 +2,7 @@
 	"animeDescription": "Busca tu anime favorito por su título con este comando.",
 	"animeExtended": {
 		"usages": [
-			""
+			"Nombre de Anime"
 		],
 		"extendedHelp": "Este comando consulta Kitsu.io para mostrar los datos del anime que usted solicite.",
 		"examples": [
@@ -12,7 +12,7 @@
 	"mangaDescription": "Busca tu manga favorito por su título con este comando.",
 	"mangaExtended": {
 		"usages": [
-			""
+			"Nombre de Manga"
 		],
 		"extendedHelp": "Este comando consulta Kitsu.io para mostrar los datos del manga que usted solicite.",
 		"examples": [

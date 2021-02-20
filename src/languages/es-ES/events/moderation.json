@@ -1,1 +1,20 @@
-{}
+{
+	"attachmentFilter": "{{REDCROSS}} Estimado {{user}}, los archivos adjuntos no están permitidos aquí.",
+	"attachmentFilterFooter": "Demasiados archivos adjuntos",
+	"capsFilter": "¡{{REDCROSS}} EEEOOOO {{user}}! ¡POR FAVOR NO GRITES EN ESTE LUGAR! ¡HAS ALCANZADO EL LÍMITE DE MAYÚSCULAS!",
+	"capsFilterDm": "¡Habla más bajo! Sé que necesitas expresar tus pensamientos. Hay un mensaje que borrado:{{message}}",
+	"capsFilterFooter": "Demasiadas Mayúsculas",
+	"inviteFilterAlert": "{{REDCROSS}} Estimado {{user}}, los enlaces de invitación no están permitidos aquí.",
+	"inviteFilterLog": "**Enlace**: {{links, andList}}",
+	"inviteFilterLog_plural": "**Enlaces**: {{links, andList}}",
+	"inviteLink": "Enlace de Invitación",
+	"link": "Enlace Filtrado",
+	"messageFilter": "{{REDCROSS}} ¡Oye oye, ¡por favor deja de republicar tanto {{user}}!",
+	"messageFilterFooter": "Demasiados Mensajes Duplicados",
+	"newlineFilter": "{{REDCROSS}} Muro de texto entrante de {{user}}, ¡muro de texto despejado!",
+	"newlineFilterFooter": "Demasiadas Líneas",
+	"nolink": "{{REDCROSS}} ¡Oye {{user}}, ¡no puedes publicar enlaces aquí!",
+	"wordFilter": "{{REDCROSS}} Perdona, querido/a {{user}}, has dicho algo que no está permitido en este servidor.",
+	"wordFilterDm": "¡Shush! ¡Has dicho algunas palabras que no están permitidas en el servidor! Pero puesto que te tomó un momento para escribir el mensaje, lo publicaré aquí:\n{{filtered}}",
+	"wordFilterFooter": "Palabra Filtrada"
+}

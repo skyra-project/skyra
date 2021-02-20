@@ -69,25 +69,28 @@ export class UserCommand extends SkyraCommand {
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
-		return message.send([
-			args.t(LanguageKeys.Commands.Management.PermissionNodesShowName, {
-				name: isRole ? (target as Role).name : (target as GuildMember).displayName
-			}),
-			args.t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
-				allow: node.allow.length
-					? args.t(LanguageKeys.Globals.AndListValue, {
-							value: node.allow.map((command) => `\`${command}\``)
-					  })
-					: args.t(LanguageKeys.Globals.None)
-			}),
-			args.t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
-				deny: node.deny.length
-					? args.t(LanguageKeys.Globals.AndListValue, {
-							value: node.deny.map((command) => `\`${command}\``)
-					  })
-					: args.t(LanguageKeys.Globals.None)
-			})
-		]);
+		return message.send(
+			[
+				args.t(LanguageKeys.Commands.Management.PermissionNodesShowName, {
+					name: isRole ? (target as Role).name : (target as GuildMember).displayName
+				}),
+				args.t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
+					allow: node.allow.length
+						? args.t(LanguageKeys.Globals.AndListValue, {
+								value: node.allow.map((command) => `\`${command}\``)
+						  })
+						: args.t(LanguageKeys.Globals.None)
+				}),
+				args.t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
+					deny: node.deny.length
+						? args.t(LanguageKeys.Globals.AndListValue, {
+								value: node.deny.map((command) => `\`${command}\``)
+						  })
+						: args.t(LanguageKeys.Globals.None)
+				})
+			].join('\n'),
+			{ allowedMentions: { users: [], roles: [] } }
+		);
 	}
 
 	private checkPermissions(message: GuildMessage, target: Role | GuildMember) {

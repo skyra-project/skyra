@@ -125,6 +125,10 @@
 				""
 			]
 		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"createEmojiInvalidDiscordEmoji": "",

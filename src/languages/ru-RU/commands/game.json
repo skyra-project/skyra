@@ -11,8 +11,8 @@
 	},
 	"c4GameColumnFull": "Этот столбец заполнен. Пожалуйста, попробуйте другой.",
 	"c4GameDraw": "Этот матч завершился **ничьей**!",
-	"c4GameNext": "",
-	"c4GameNextTurn0": "",
+	"c4GameNext": "Ход: {{user}} (красный).",
+	"c4GameNextTurn0": "Ход: {{user}} (синий).",
 	"c4GameWin": "",
 	"c4GameWinTurn0": "",
 	"c4Prompt": "",
@@ -25,14 +25,14 @@
 	"coinFlipDescription": "Подбросьте монетку!",
 	"coinFlipExtended": {
 		"usages": [
-			"",
+			"орёл/решка",
 			"",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"орёл/решка",
 				""
 			],
 			[
@@ -41,9 +41,9 @@
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
+			"решка",
+			"орёл 50",
+			"решка 200",
 			""
 		]
 	},

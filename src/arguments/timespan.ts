@@ -7,7 +7,7 @@ export class UserArgument extends Argument<number> {
 		const seconds = Number(parameter);
 		const duration = Number.isNaN(seconds) ? new Duration(parameter).offset : seconds * Time.Second;
 
-		if (duration <= 0 || !Number.isSafeInteger(duration)) {
+		if (duration < 0 || !Number.isSafeInteger(duration)) {
 			return this.error({ parameter, identifier: LanguageKeys.Arguments.TimeSpan, context });
 		}
 

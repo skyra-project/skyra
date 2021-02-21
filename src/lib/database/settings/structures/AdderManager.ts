@@ -2,7 +2,8 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
 import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
 import { Adder } from '#lib/database/utils/Adder';
-import { isNullish, Nullish } from '@sapphire/utilities';
+import { isNullishOrZero } from '#utils/comparators';
+import { Nullish } from '@sapphire/utilities';
 
 export type AdderKey = 'attachments' | 'capitals' | 'links' | 'messages' | 'newlines' | 'invites' | 'words' | 'reactions';
 
@@ -115,12 +116,12 @@ export class AdderManager implements IBaseManager {
 	}
 
 	private makeAdder(maximum: number | Nullish, duration: number | Nullish) {
-		if (isNullish(maximum) || isNullish(duration)) return null;
+		if (isNullishOrZero(maximum) || isNullishOrZero(duration)) return null;
 		return new Adder<string>(maximum, duration, true);
 	}
 
 	private updateAdder(adder: Adder<string> | null, maximum: number | Nullish, duration: number | Nullish) {
-		if (isNullish(maximum) || isNullish(duration)) return null;
+		if (isNullishOrZero(maximum) || isNullishOrZero(duration)) return null;
 		if (!adder || adder.maximum !== maximum || adder.duration !== duration) return new Adder<string>(maximum, duration, true);
 		return adder;
 	}

@@ -283,7 +283,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.attachments.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -329,7 +329,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.capitals.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -371,7 +371,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.links.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -417,7 +417,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.messages.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -459,7 +459,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.newlines.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -505,7 +505,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.invites.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -547,7 +547,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.filter.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
@@ -597,7 +597,7 @@ export class GuildEntity extends BaseEntity {
 		dashboardOnly: true,
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
-		minimum: Time.Second,
+		minimum: 0,
 		maximum: Time.Year * 5
 	})
 	@Column('bigint', { name: 'selfmod.reactions.hardActionDuration', nullable: true, transformer: kBigIntTransformer })

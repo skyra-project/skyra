@@ -156,10 +156,9 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 					kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
 					kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
 					kHardAction: t(SelfModerationCommand.displayHardAction(hardAction)),
-					hardActionDurationText:
-						hardActionDuration === null
-							? t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
-							: t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration }),
+					hardActionDurationText: hardActionDuration
+						? t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration })
+						: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent),
 					thresholdMaximumText: adder?.maximum ? adder.maximum : t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
 					thresholdDurationText: adder?.duration
 						? t(LanguageKeys.Globals.DurationValue, { value: adder.duration })

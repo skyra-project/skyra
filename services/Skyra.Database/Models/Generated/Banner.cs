@@ -8,7 +8,10 @@ namespace Skyra.Database.Models.Generated
 	[Table("banner")]
 	public class Banner
 	{
-		[Key] [Column("id")] [StringLength(6)] public string Id { get; set; }
+		[Key]
+		[Column("id")]
+		[StringLength(6)]
+		public string Id { get; set; }
 
 		[Required]
 		[Column("group")]
@@ -25,6 +28,7 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string AuthorId { get; set; }
 
-		[Column("price")] public int Price { get; set; }
+		[Column("price")]
+		public int Price { get; set; }
 	}
 }

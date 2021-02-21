@@ -8,7 +8,9 @@ namespace Skyra.Database.Models.Generated
 	[Table("suggestion")]
 	public class Suggestion
 	{
-		[Key] [Column("id")] public int Id { get; set; }
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
 
 		[Key]
 		[Column("guild_id")]

@@ -14,9 +14,11 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(16)]
 		public string Id { get; set; }
 
-		[Column("is_streaming")] public bool IsStreaming { get; set; }
+		[Column("is_streaming")]
+		public bool IsStreaming { get; set; }
 
-		[Column("expires_at")] public DateTime ExpiresAt { get; set; }
+		[Column("expires_at")]
+		public DateTime ExpiresAt { get; set; }
 
 		[Required]
 		[Column("guild_ids", TypeName = "character varying(19)[]")]

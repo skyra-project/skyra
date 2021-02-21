@@ -11,25 +11,34 @@ namespace Skyra.Database.Models.Generated
 	[Index(nameof(ChallengerUser), Name = "REL_5230797f292df6a36d1fb5f0f0", IsUnique = true)]
 	public class RpgBattle
 	{
-		[Key] [Column("id")] public long Id { get; set; }
+		[Key]
+		[Column("id")]
+		public long Id { get; set; }
 
-		[Column("challenger_turn")] public bool ChallengerTurn { get; set; }
+		[Column("challenger_turn")]
+		public bool ChallengerTurn { get; set; }
 
-		[Column("challenger_cooldown")] public short ChallengerCooldown { get; set; }
+		[Column("challenger_cooldown")]
+		public short ChallengerCooldown { get; set; }
 
-		[Column("challenger_health")] public int ChallengerHealth { get; set; }
+		[Column("challenger_health")]
+		public int ChallengerHealth { get; set; }
 
-		[Column("challenger_energy")] public int ChallengerEnergy { get; set; }
+		[Column("challenger_energy")]
+		public int ChallengerEnergy { get; set; }
 
 		[Required]
 		[Column("challenger_effects", TypeName = "jsonb")]
 		public string ChallengerEffects { get; set; }
 
-		[Column("challenged_cooldown")] public short ChallengedCooldown { get; set; }
+		[Column("challenged_cooldown")]
+		public short ChallengedCooldown { get; set; }
 
-		[Column("challenged_health")] public int ChallengedHealth { get; set; }
+		[Column("challenged_health")]
+		public int ChallengedHealth { get; set; }
 
-		[Column("challenged_energy")] public int ChallengedEnergy { get; set; }
+		[Column("challenged_energy")]
+		public int ChallengedEnergy { get; set; }
 
 		[Required]
 		[Column("challenged_effects", TypeName = "jsonb")]
@@ -40,14 +49,16 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string ChallengedUser { get; set; }
 
-		[Column("challenged_weapon_id")] public long? ChallengedWeaponId { get; set; }
+		[Column("challenged_weapon_id")]
+		public long? ChallengedWeaponId { get; set; }
 
 		[Required]
 		[Column("challenger_user")]
 		[StringLength(19)]
 		public string ChallengerUser { get; set; }
 
-		[Column("challenger_weapon_id")] public long? ChallengerWeaponId { get; set; }
+		[Column("challenger_weapon_id")]
+		public long? ChallengerWeaponId { get; set; }
 
 		[ForeignKey(nameof(ChallengedUser))]
 		[InverseProperty(nameof(RpgUser.RpgBattleChallengedUserNavigation))]

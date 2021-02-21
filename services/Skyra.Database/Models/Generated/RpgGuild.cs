@@ -15,7 +15,9 @@ namespace Skyra.Database.Models.Generated
 			RpgUsers = new HashSet<RpgUser>();
 		}
 
-		[Key] [Column("id")] public int Id { get; set; }
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
 
 		[Required]
 		[Column("name")]
@@ -26,17 +28,23 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(200)]
 		public string Description { get; set; }
 
-		[Column("member_limit")] public short MemberLimit { get; set; }
+		[Column("member_limit")]
+		public short MemberLimit { get; set; }
 
-		[Column("win_count")] public long WinCount { get; set; }
+		[Column("win_count")]
+		public long WinCount { get; set; }
 
-		[Column("lose_count")] public long LoseCount { get; set; }
+		[Column("lose_count")]
+		public long LoseCount { get; set; }
 
-		[Column("money_count")] public long MoneyCount { get; set; }
+		[Column("money_count")]
+		public long MoneyCount { get; set; }
 
-		[Column("bank_limit")] public long BankLimit { get; set; }
+		[Column("bank_limit")]
+		public long BankLimit { get; set; }
 
-		[Column("upgrade")] public short Upgrade { get; set; }
+		[Column("upgrade")]
+		public short Upgrade { get; set; }
 
 		[InverseProperty(nameof(RpgGuildRank.Guild))]
 		public virtual ICollection<RpgGuildRank> RpgGuildRanks { get; set; }

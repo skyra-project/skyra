@@ -9,11 +9,15 @@ namespace Skyra.Database.Models.Generated
 	[Table("moderation")]
 	public class Moderation
 	{
-		[Key] [Column("case_id")] public int CaseId { get; set; }
+		[Key]
+		[Column("case_id")]
+		public int CaseId { get; set; }
 
-		[Column("created_at")] public DateTime? CreatedAt { get; set; }
+		[Column("created_at")]
+		public DateTime? CreatedAt { get; set; }
 
-		[Column("duration")] public int? Duration { get; set; }
+		[Column("duration")]
+		public int? Duration { get; set; }
 
 		[Column("extra_data", TypeName = "json")]
 		public string ExtraData { get; set; }
@@ -36,8 +40,11 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(2000)]
 		public string ImageUrl { get; set; }
 
-		[Column("user_id")] [StringLength(19)] public string UserId { get; set; }
+		[Column("user_id")]
+		[StringLength(19)]
+		public string UserId { get; set; }
 
-		[Column("type")] public short Type { get; set; }
+		[Column("type")]
+		public short Type { get; set; }
 	}
 }

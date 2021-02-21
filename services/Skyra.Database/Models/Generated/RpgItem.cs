@@ -16,28 +16,38 @@ namespace Skyra.Database.Models.Generated
 			RpgUserItems = new HashSet<RpgUserItem>();
 		}
 
-		[Key] [Column("id")] public int Id { get; set; }
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
 
 		[Required]
 		[Column("name")]
 		[StringLength(50)]
 		public string Name { get; set; }
 
-		[Column("maximum_durability")] public int MaximumDurability { get; set; }
+		[Column("maximum_durability")]
+		public int MaximumDurability { get; set; }
 
-		[Column("maximum_cooldown")] public short MaximumCooldown { get; set; }
+		[Column("maximum_cooldown")]
+		public short MaximumCooldown { get; set; }
 
-		[Column("attack")] public double Attack { get; set; }
+		[Column("attack")]
+		public double Attack { get; set; }
 
-		[Column("defense")] public double Defense { get; set; }
+		[Column("defense")]
+		public double Defense { get; set; }
 
-		[Column("health")] public double Health { get; set; }
+		[Column("health")]
+		public double Health { get; set; }
 
-		[Column("required_energy")] public double RequiredEnergy { get; set; }
+		[Column("required_energy")]
+		public double RequiredEnergy { get; set; }
 
-		[Column("rarity")] public int Rarity { get; set; }
+		[Column("rarity")]
+		public int Rarity { get; set; }
 
-		[Column("accuracy")] public short Accuracy { get; set; }
+		[Column("accuracy")]
+		public short Accuracy { get; set; }
 
 		[Required]
 		[Column("effects", TypeName = "jsonb")]

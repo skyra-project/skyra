@@ -14,7 +14,8 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(256)]
 		public string Title { get; set; }
 
-		[Column("ends_at")] public DateTime EndsAt { get; set; }
+		[Column("ends_at")]
+		public DateTime EndsAt { get; set; }
 
 		[Key]
 		[Column("guild_id")]
@@ -31,8 +32,10 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string MessageId { get; set; }
 
-		[Column("minimum")] public int Minimum { get; set; }
+		[Column("minimum")]
+		public int Minimum { get; set; }
 
-		[Column("minimum_winners")] public int MinimumWinners { get; set; }
+		[Column("minimum_winners")]
+		public int MinimumWinners { get; set; }
 	}
 }

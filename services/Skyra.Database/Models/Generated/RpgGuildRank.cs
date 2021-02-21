@@ -14,14 +14,17 @@ namespace Skyra.Database.Models.Generated
 			RpgUsers = new HashSet<RpgUser>();
 		}
 
-		[Key] [Column("id")] public int Id { get; set; }
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
 
 		[Required]
 		[Column("name")]
 		[StringLength(50)]
 		public string Name { get; set; }
 
-		[Column("guild_id")] public int? GuildId { get; set; }
+		[Column("guild_id")]
+		public int? GuildId { get; set; }
 
 		[ForeignKey(nameof(GuildId))]
 		[InverseProperty(nameof(RpgGuild.RpgGuildRanks))]

@@ -9,9 +9,11 @@ namespace Skyra.Database.Models.Generated
 	[Table("user_cooldown")]
 	public class UserCooldown
 	{
-		[Column("daily")] public DateTime? Daily { get; set; }
+		[Column("daily")]
+		public DateTime? Daily { get; set; }
 
-		[Column("reputation")] public DateTime? Reputation { get; set; }
+		[Column("reputation")]
+		public DateTime? Reputation { get; set; }
 
 		[Key]
 		[Column("user_id")]

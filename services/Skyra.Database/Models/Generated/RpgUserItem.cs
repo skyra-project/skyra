@@ -16,11 +16,15 @@ namespace Skyra.Database.Models.Generated
 			RpgUsers = new HashSet<RpgUser>();
 		}
 
-		[Key] [Column("id")] public long Id { get; set; }
+		[Key]
+		[Column("id")]
+		public long Id { get; set; }
 
-		[Column("durability")] public int Durability { get; set; }
+		[Column("durability")]
+		public int Durability { get; set; }
 
-		[Column("item_id")] public int? ItemId { get; set; }
+		[Column("item_id")]
+		public int? ItemId { get; set; }
 
 		[ForeignKey(nameof(ItemId))]
 		[InverseProperty(nameof(RpgItem.RpgUserItems))]

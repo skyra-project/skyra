@@ -59,7 +59,7 @@
 	"gamesBot": "",
 	"gamesNoPlayers": "",
 	"gamesProgress": "",
-	"gamesPromptDeny": "",
+	"gamesPromptDeny": "Сожалею, но соперник отказался играть.",
 	"gamesPromptTimeout": "",
 	"gamesRepeat": "",
 	"gamesSelf": "",
@@ -496,12 +496,12 @@
 		],
 		"extendedHelp": "",
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
-	"ticTacToeWinner": "",
+	"ticTacToeWinner": "Победитель... {{winner}}!\n{{board}}",
 	"triviaActiveGame": "",
 	"triviaDescription": "",
 	"triviaEmbedTitles": {

@@ -89,8 +89,8 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param error The error returned by the Argument.
 	 */
 	protected errorFromArgument<E>(args: Serializer.Args, error: ArgumentError<E>): SerializerResult<T>;
-	protected errorFromArgument<E>(args: Serializer.Args, error: ArgumentError<E>): SerializerResult<T> {
-		const argument = error.argument.name;
+	protected errorFromArgument<E>(args: Serializer.Args, error: UserError | ArgumentError<E>): SerializerResult<T> {
+		const argument = error instanceof ArgumentError ? error.argument.name : 'Unknown';
 		const identifier = translate(error.identifier);
 		return this.error(args.t(identifier, { ...error, ...(error.context as O), argument }));
 	}

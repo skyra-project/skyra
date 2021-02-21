@@ -1,43 +1,43 @@
 {
-	"helpAllFlag": "",
+	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
 	"helpCommandCount": "{{count}} comando",
 	"helpCommandCount_plural": "{{count}} comandos",
 	"helpData": {
 		"footer": "Descripción de ayuda para {{footerName}}",
 		"title": "{{titleDescription}}"
 	},
-	"helpDescription": "",
+	"helpDescription": "Muestra todos los comandos o la descripción de uno.",
 	"helpExtended": {
 		"usages": [
-			"",
-			"",
-			"",
-			"",
-			""
+			"--cat/--categories",
+			"--all",
+			"NombreDeCategoría",
+			"Página",
+			"NombreDeComando"
 		],
-		"extendedHelp": "",
-		"reminder": "",
+		"extendedHelp": "El comando de ayuda muestra una lista paginada de todos los comandos por sus categorías, o la información extendida de un comando si se especifica.\n\nSi utiliza `--categories` o `--cat`, puede obtener la lista de todas las categorías y la cantidad de comandos en cada una de ellas.",
+		"reminder": "El comando de ayuda **sólo** muestra los comandos que puedes utilizar. Para la lista completa, por favor visita <https://skyra.pw/commands>.",
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
+			"--cat",
+			"--all",
+			"Moderación",
+			"12",
+			"help"
 		]
 	},
-	"helpDm": "",
-	"helpNodm": "",
-	"infoBody": "",
-	"infoDescription": "",
+	"helpDm": "📥 | La lista de comandos a los que tienes acceso ha sido enviada a tus mensajes directos.",
+	"helpNodm": "{{REDCROSS}} | Tienes los mensajes directos deshabilitados, por lo que no pude enviarte la lista de comandos.",
+	"infoBody": "Skyra {{VERSION}} es un bot multipropósito de Discord diseñado para ejecutar la mayoría de las tareas con un gran rendimiento y un constante tiempo de actividad las 24 horas al día durante los 7 días de la semana.\nElla está construida sobre el framework Sapphire, un framework 'plug-and-play' construido sobre la librería Discord.js.\n\nSkyra tiene:\n• Moderación avanzada con acciones temporales incluídas\n• Gestión de anuncios\n• Totalmente configurable\n• Registros de mensajes, registros de miembros, y registros de mods\n• Multilenguaje\n• Perfiles y niveles, con tablas de clasificación y gestión social\n• Gestión de roles\n• Comandos de anime (+10)!\n• Una PokéDex completa con todos los datos que necesitarás\nY mucho más!",
+	"infoDescription": "Proporciona información acerca de mí.",
 	"infoExtended": {
 		"extendedHelp": "Simplemente... eso :P"
 	},
 	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
 	"inviteExtended": {
 		"usages": [
-			""
+			"--noperms/--nopermissions"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Si desea obtener un enlace donde Skyra no solicitará ningún permiso, añada `noperms`, `--noperms` o `--nopermissions` al comando.",
 		"examples": [
 			"",
 			"noperms",

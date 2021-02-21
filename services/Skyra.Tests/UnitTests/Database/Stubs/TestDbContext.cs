@@ -8,7 +8,7 @@ namespace Skyra.Tests.UnitTests.Database.Stubs
 
 		protected override void OnConfiguring(DbContextOptionsBuilder builder)
 		{
-			builder.UseInMemoryDatabase("unit_tests");
+			builder.UseInMemoryDatabase("database_unit_tests");
 		}
 	}
 }

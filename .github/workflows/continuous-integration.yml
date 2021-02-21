@@ -144,7 +144,9 @@ jobs:
 
   Upload_Coverage_Report:
     name: Upload coverage report to codecov
-    needs: [DotNetCI, NodeTesting]
+    needs:
+      - DotNetCI
+      - NodeTesting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project

@@ -2,7 +2,7 @@ import { DbSet } from '#lib/database';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -35,9 +35,11 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
-			.setThumbnail(body.Image)
 			.setDescription(body.AbstractText)
 			.setFooter(args.t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy));
+
+		const thumbnail = getImageUrl(body.Image);
+		if (thumbnail !== undefined) embed.setThumbnail(thumbnail);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
 			embed.addField(args.t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);

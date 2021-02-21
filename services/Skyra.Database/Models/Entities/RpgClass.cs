@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Skyra.Database.Models.Generated
+namespace Skyra.Database.Models.Entities
 {
 	[Table("rpg_class")]
 	[Index(nameof(Name), Name = "UQ_c21506119f763eff259ec4a91cd", IsUnique = true)]

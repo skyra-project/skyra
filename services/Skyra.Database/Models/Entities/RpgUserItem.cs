@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
-namespace Skyra.Database.Models.Generated
+namespace Skyra.Database.Models.Entities
 {
 	[Table("rpg_user_item")]
 	public class RpgUserItem

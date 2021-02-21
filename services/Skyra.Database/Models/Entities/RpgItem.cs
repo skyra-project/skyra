@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Skyra.Database.Models.Generated
+namespace Skyra.Database.Models.Entities
 {
 	[Table("rpg_item")]
 	[Index(nameof(Name), nameof(Rarity), Name = "IDX_a10f6fa9678ea762b217fd77ba", IsUnique = true)]

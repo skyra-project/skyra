@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Skyra.Database.Models.Generated
+namespace Skyra.Database.Models.Entities
 {
 	[Table("user_spouses_user")]
 	[Index(nameof(UserId2), Name = "IDX_039ee960316593d0e8102ae6c5")]

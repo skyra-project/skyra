@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Skyra.Database.Extensions;
 using Skyra.Database.Models;
-using Skyra.Database.Models.Generated;
+using Skyra.Database.Models.Entities;
 
 namespace Skyra.Database
 {

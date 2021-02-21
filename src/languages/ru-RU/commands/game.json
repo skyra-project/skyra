@@ -158,7 +158,7 @@
 		"",
 		"{1} исследует арену.",
 		"",
-		"",
+		"{1} отвлекает внимание {2} и убегает.",
 		"{1} преследует {2}.",
 		"{1} рыбачит.",
 		"{1} маскируется в кустах.",
@@ -178,7 +178,7 @@
 		"",
 		"{1} умоляет {2} убить его/её. Он/а отказывается, оставляя {1} в живых.",
 		"",
-		"",
+		"{1}, {2}, {3} и {4} совершают набег на лагерь {5}, пока он/а охотится.",
 		"",
 		"",
 		"{1} практикуется в стрельбе из лука.",
@@ -425,7 +425,7 @@
 	"higherLowerEmbed": {
 		"description": "Ваше число - {{number}}. Следующее число будет больше или меньше?",
 		"footer": "",
-		"title": ""
+		"title": "Больше или Меньше? | Ход {{turn}}"
 	},
 	"higherLowerExtended": {
 		"usages": [
@@ -452,7 +452,7 @@
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"usages": [
-			"",
+			"Пользователь1 Пользователь2 Пользователь3...",
 			""
 		],
 		"extendedHelp": "",
@@ -468,7 +468,7 @@
 	"hungerGamesResultHeaderSun": "День {{game.turn}}",
 	"hungerGamesResultProceed": "Продолжить?",
 	"hungerGamesStop": "",
-	"hungerGamesWinner": "",
+	"hungerGamesWinner": "И победитель... {{winner}}!",
 	"notEnoughMoney": "",
 	"slotmachineCanvasTextLost": "Вы проиграли",
 	"slotmachineCanvasTextWon": "Вы выиграли",

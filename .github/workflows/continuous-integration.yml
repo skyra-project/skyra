@@ -112,7 +112,7 @@ jobs:
       - name: Store code coverage report
         uses: actions/upload-artifact@v2
         with:
-          name: coverage
+          name: nodejs-coverage
           path: coverage/
 
   DotNetCI:

@@ -3,9 +3,9 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, Identifiers } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import type { TextChannel } from 'discord.js';
+import { Permissions, TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 const options = ['winners'];
@@ -14,13 +14,15 @@ const options = ['winners'];
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
-	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	strategyOptions: { options }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
+		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
+
 		const schedule = await args.pick('time');
 		const duration = await args.pick('time');
 		let winners = await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10));
@@ -54,4 +56,12 @@ export class UserCommand extends SkyraCommand {
 		const match = kWinnersArgRegex.exec(parameter);
 		return match ? Args.ok(Number(match[1])) : Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
 	});
+
+	private static requiredPermissions = new Permissions([
+		Permissions.FLAGS.ADD_REACTIONS,
+		Permissions.FLAGS.EMBED_LINKS,
+		Permissions.FLAGS.READ_MESSAGE_HISTORY,
+		Permissions.FLAGS.SEND_MESSAGES,
+		Permissions.FLAGS.VIEW_CHANNEL
+	]);
 }

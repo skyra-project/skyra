@@ -3,8 +3,8 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
-import type { TextChannel } from 'discord.js';
+import { Args, Identifiers } from '@sapphire/framework';
+import { Permissions, TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 const options = ['winners'];
@@ -13,13 +13,14 @@ const options = ['winners'];
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	permissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	strategyOptions: { options }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
+		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
 
 		const time = await args.pick('time');
 		const offset = time.getTime() - Date.now();
@@ -43,4 +44,12 @@ export class UserCommand extends SkyraCommand {
 		const match = kWinnersArgRegex.exec(parameter);
 		return match ? Args.ok(parseInt(match[1], 10)) : Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
 	});
+
+	private static requiredPermissions = new Permissions([
+		Permissions.FLAGS.ADD_REACTIONS,
+		Permissions.FLAGS.EMBED_LINKS,
+		Permissions.FLAGS.READ_MESSAGE_HISTORY,
+		Permissions.FLAGS.SEND_MESSAGES,
+		Permissions.FLAGS.VIEW_CHANNEL
+	]);
 }

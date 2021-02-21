@@ -4,7 +4,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
-          <Format>json</Format>          
+          <Format>cobertura</Format>          
           <Exclude>[*]Skyra.Tests*,[*]Skyra.Database.Models*</Exclude>
 		  <ExcludeByFile>services/**/Program.cs,services/**/Startup.cs</ExcludeByFile>
           <IncludeTestAssembly>true</IncludeTestAssembly>

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using Skyra.Database.Extensions;
 using Skyra.Tests.UnitTests.Database.Stubs;
@@ -92,6 +90,5 @@ namespace Skyra.Tests.UnitTests.Database.Extensions
 			Assert.AreEqual(1, after.Id);
 			Assert.AreEqual("John Wick", after.Name);
 		}
-
 	}
 }

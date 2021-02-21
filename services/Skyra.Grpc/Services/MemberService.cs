@@ -1,11 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
 using Skyra.Database;
-using Skyra.Database.Extensions;
-using Skyra.Database.Models;
-using Skyra.Database.Models.Generated;
 
 namespace Skyra.Grpc.Services
 {

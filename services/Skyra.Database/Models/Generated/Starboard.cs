@@ -8,8 +8,7 @@ namespace Skyra.Database.Models.Generated
 	[Table("starboard")]
 	public class Starboard
 	{
-		[Column("enabled")]
-		public bool Enabled { get; set; }
+		[Column("enabled")] public bool Enabled { get; set; }
 
 		[Required]
 		[Column("user_id")]
@@ -35,7 +34,6 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string StarMessageId { get; set; }
 
-		[Column("stars")]
-		public int Stars { get; set; }
+		[Column("stars")] public int Stars { get; set; }
 	}
 }

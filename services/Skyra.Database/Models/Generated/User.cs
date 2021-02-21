@@ -21,27 +21,19 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string Id { get; set; }
 
-		[Column("points")]
-		public int Points { get; set; }
+		[Column("points")] public int Points { get; set; }
 
-		[Column("reputations")]
-		public int Reputations { get; set; }
+		[Column("reputations")] public int Reputations { get; set; }
 
-		[Required]
-		[Column("moderation_dm")]
-		public bool? ModerationDm { get; set; }
+		[Required] [Column("moderation_dm")] public bool? ModerationDm { get; set; }
 
-		[Column("money")]
-		public long Money { get; set; }
+		[Column("money")] public long Money { get; set; }
 
-		[InverseProperty("User")]
-		public virtual RpgUser RpgUser { get; set; }
+		[InverseProperty("User")] public virtual RpgUser RpgUser { get; set; }
 
-		[InverseProperty("User")]
-		public virtual UserCooldown UserCooldown { get; set; }
+		[InverseProperty("User")] public virtual UserCooldown UserCooldown { get; set; }
 
-		[InverseProperty("User")]
-		public virtual UserProfile UserProfile { get; set; }
+		[InverseProperty("User")] public virtual UserProfile UserProfile { get; set; }
 
 		[InverseProperty(nameof(UserGameIntegration.User))]
 		public virtual ICollection<UserGameIntegration> UserGameIntegrations { get; set; }

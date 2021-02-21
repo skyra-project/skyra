@@ -18,7 +18,6 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(19)]
 		public string UserId { get; set; }
 
-		[Column("points")]
-		public long Points { get; set; }
+		[Column("points")] public long Points { get; set; }
 	}
 }

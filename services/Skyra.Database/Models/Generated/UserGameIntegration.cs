@@ -8,9 +8,7 @@ namespace Skyra.Database.Models.Generated
 	[Table("user_game_integration")]
 	public class UserGameIntegration
 	{
-		[Key]
-		[Column("id")]
-		public int Id { get; set; }
+		[Key] [Column("id")] public int Id { get; set; }
 
 		[Required]
 		[Column("game")]
@@ -21,9 +19,7 @@ namespace Skyra.Database.Models.Generated
 		[Column("extra_data", TypeName = "jsonb")]
 		public string ExtraData { get; set; }
 
-		[Column("user_id")]
-		[StringLength(19)]
-		public string UserId { get; set; }
+		[Column("user_id")] [StringLength(19)] public string UserId { get; set; }
 
 		[ForeignKey(nameof(UserId))]
 		[InverseProperty("UserGameIntegrations")]

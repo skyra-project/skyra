@@ -8,12 +8,9 @@ namespace Skyra.Database.Models.Generated
 	[Table("migrations")]
 	public class Migration
 	{
-		[Key]
-		[Column("id")]
-		public int Id { get; set; }
+		[Key] [Column("id")] public int Id { get; set; }
 
-		[Column("timestamp")]
-		public long Timestamp { get; set; }
+		[Column("timestamp")] public long Timestamp { get; set; }
 
 		[Required]
 		[Column("name", TypeName = "character varying")]

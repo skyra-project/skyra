@@ -1,6 +1,5 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using Skyra.Database.Models;
 using Skyra.Database.Models.Generated;
 
 #nullable disable
@@ -44,7 +43,10 @@ namespace Skyra.Database
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (optionsBuilder.IsConfigured) return;
+			if (optionsBuilder.IsConfigured)
+			{
+				return;
+			}
 
 			var user = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
 			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";

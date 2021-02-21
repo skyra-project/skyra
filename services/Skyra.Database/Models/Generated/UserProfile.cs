@@ -20,11 +20,9 @@ namespace Skyra.Database.Models.Generated
 		[Column("badges", TypeName = "character varying[]")]
 		public string[] Badges { get; set; }
 
-		[Column("color")]
-		public int Color { get; set; }
+		[Column("color")] public int Color { get; set; }
 
-		[Column("vault")]
-		public long Vault { get; set; }
+		[Column("vault")] public long Vault { get; set; }
 
 		[Required]
 		[Column("banner_level")]
@@ -36,8 +34,7 @@ namespace Skyra.Database.Models.Generated
 		[StringLength(6)]
 		public string BannerProfile { get; set; }
 
-		[Column("dark_theme")]
-		public bool DarkTheme { get; set; }
+		[Column("dark_theme")] public bool DarkTheme { get; set; }
 
 		[Key]
 		[Column("user_id")]

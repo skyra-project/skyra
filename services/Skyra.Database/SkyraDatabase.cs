@@ -8,7 +8,6 @@ namespace Skyra.Database
 {
 	public class SkyraDatabase : IDatabase
 	{
-
 		private readonly SkyraDbContext _context;
 
 		public SkyraDatabase(SkyraDbContext context)

@@ -7,7 +7,7 @@ namespace Skyra.Tests.UnitTests.Grpc.Stubs
 {
 	public class TestDatabase : IDatabase
 	{
-		private Dictionary<string, long> _data = new Dictionary<string, long>();
+		private readonly Dictionary<string, long> _data = new Dictionary<string, long>();
 
 		public Task<PointsQuery> AddUserPointsAsync(string userId, long points)
 		{
@@ -41,5 +41,4 @@ namespace Skyra.Tests.UnitTests.Grpc.Stubs
 			});
 		}
 	}
-
 }

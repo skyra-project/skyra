@@ -16,6 +16,7 @@ namespace Skyra.Grpc
 		{
 			services.AddGrpc();
 			services.AddScoped<SkyraDbContext>();
+			services.AddScoped<IDatabase, SkyraDatabase>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

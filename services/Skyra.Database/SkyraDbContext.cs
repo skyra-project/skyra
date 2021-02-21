@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Skyra.Database.Models;
+using Skyra.Database.Models.Generated;
 
 #nullable disable
 

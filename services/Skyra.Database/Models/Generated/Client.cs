@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
-namespace Skyra.Database.Models
+namespace Skyra.Database.Models.Generated
 {
 	[Table("client")]
 	public class Client

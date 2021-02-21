@@ -71,6 +71,11 @@ jobs:
           key: ${{ runner.os }}-15-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn --ignore-scripts --frozen-lockfile
+      - name: Copy Configuration
+        run: |
+          pushd src &&
+          cp config.example.ts config.ts &&
+          popd
       - name: Run tsc
         run: yarn build
 
@@ -144,6 +149,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Download NodeJS Coverage report
         uses: actions/download-artifact@v2
         with:

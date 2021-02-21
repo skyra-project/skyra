@@ -135,7 +135,7 @@ jobs:
       - name: Build C# code
         run: dotnet build services
       - name: Run C# tests
-        run: dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true
+        run: dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true --settings services/coverlet.runsettings
       - name: Store code coverage report
         uses: actions/upload-artifact@v2
         with:

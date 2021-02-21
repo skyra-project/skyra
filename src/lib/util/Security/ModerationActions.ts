@@ -4,6 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
 import type { KeyOfType } from '#lib/types';
 import { CLIENT_ID } from '#root/config';
+import { isNullishOrEmpty, isNullishOrZero } from '#utils/comparators';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { isNullish, Nullish } from '@sapphire/utilities';
@@ -968,8 +969,9 @@ export class ModerationActions {
 
 	private static fillOptions(rawOptions: ModerationActionOptions, type: Moderation.TypeCodes) {
 		const options = { reason: null, ...rawOptions, type };
-		if (typeof options.reason === 'undefined') options.reason = null;
-		if (typeof options.moderatorID === 'undefined') options.moderatorID = CLIENT_ID;
+		if (isNullishOrEmpty(options.reason)) options.reason = null;
+		if (isNullishOrEmpty(options.moderatorID)) options.moderatorID = CLIENT_ID;
+		if (isNullishOrZero(options.duration)) options.duration = null;
 		return options;
 	}
 

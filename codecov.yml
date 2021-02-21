@@ -1,0 +1,10 @@
+flag_management:
+  individual_flags:
+    - name: dotnet
+      carryforward: true
+      paths:
+        - coverage/dotnet-coverage
+    - name: nodejs
+      carryforward: true
+      paths: 
+        - coverage/nodejs-coverage

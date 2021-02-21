@@ -1,14 +1,10 @@
-name: Continuous Integration - NodeJS
+name: Continuous Integration
 
 on:
   push:
     branches:
       - main
   pull_request:
-    paths-ignore:
-      - services/**
-      - .github/workflows/codeql-analysis-dotnet.yml
-      - .github/workflows/continuous-integration-dotnet.yml
 
 jobs:
   pre_ci:
@@ -34,8 +30,8 @@ jobs:
     outputs:
       commit_message: $( [ -z "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" ] && echo "${{ steps.push_get_commit_message.outputs.push_commit_message }}" || echo "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" )
 
-  Linting:
-    name: Linting
+  NodeLinting:
+    name: Linting NodeJS
     runs-on: ubuntu-latest
     if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
     needs: pre_ci
@@ -56,7 +52,34 @@ jobs:
       - name: Run ESLint
         run: yarn lint --fix=false
 
-  Testing:
+  NodeBuilding:
+    name: Building NodeJS
+    runs-on: ubuntu-latest
+    if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
+    needs: pre_ci
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Use Node.js 15
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15
+      - name: Restore CI Cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-15-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn --ignore-scripts --frozen-lockfile
+      - name: Copy Configuration
+        run: |
+          pushd src &&
+          cp config.example.ts config.ts &&
+          popd
+      - name: Run tsc
+        run: yarn build
+
+  NodeTesting:
     name: Unit Tests
     runs-on: ubuntu-latest
     if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
@@ -89,25 +112,55 @@ jobs:
       - name: Store code coverage report
         uses: actions/upload-artifact@v2
         with:
-          name: coverage
+          name: nodejs-coverage
           path: coverage/
+
+  DotNetCI:
+    name: Dotnet Build & Test
+    runs-on: ubuntu-latest
+    if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
+    needs: pre_ci
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      - name: Restore CI Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}
+      - name: Build C# code
+        run: dotnet build services
+      - name: Run C# tests
+        run: dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true
+      - name: Store code coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-coverage
+          path: services/Skyra.Tests/TestResults/
 
   Upload_Coverage_Report:
     name: Upload coverage report to codecov
-    needs: [Testing]
+    needs:
+      - DotNetCI
+      - NodeTesting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-      - name: Download Coverage report
+        with:
+          fetch-depth: 2
+      - name: Download NodeJS Coverage report
         uses: actions/download-artifact@v2
         with:
-          name: coverage
           path: coverage/
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage/
-          flags: nodejs
+          directory: coverage/
+          flags: dotnet,nodejs
           fail_ci_if_error: true

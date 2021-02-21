@@ -6,28 +6,28 @@
 	"wcryDescription": "",
 	"wcryExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Пользователь",
+				"Пользователь, которому вы хотите поплакаться."
 			]
 		],
 		"examples": [
-			""
+			"@Skyra"
 		]
 	},
 	"wcuddleDescription": "",
 	"wcuddleExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -42,12 +42,12 @@
 	"whugDescription": "",
 	"whugExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -58,13 +58,13 @@
 	"wkissDescription": "",
 	"wkissExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Пользователь",
+				"Пользователь, которого вы хотите поцеловать."
 			]
 		],
 		"examples": [
@@ -74,17 +74,17 @@
 	"wlickDescription": "",
 	"wlickExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Пользователь",
+				"Пользователь, которого вы хотите лизнуть."
 			]
 		],
 		"examples": [
-			""
+			"@Skyra"
 		]
 	},
 	"wnomDescription": "",
@@ -98,12 +98,12 @@
 	"wpatDescription": "",
 	"wpatExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -118,12 +118,12 @@
 	"wslapDescription": "",
 	"wslapExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -138,12 +138,12 @@
 	"wstareDescription": "",
 	"wstareExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -156,7 +156,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -171,7 +171,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],
@@ -186,33 +186,33 @@
 	"wbiteDescription": "",
 	"wbiteExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Пользователь",
+				"Пользователь, которого вы хотите укусить."
 			]
 		],
 		"examples": [
-			""
+			"@Skyra"
 		]
 	},
 	"wgreetDescription": "",
 	"wgreetExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Пользователь",
+				"Пользователь, которого вы хотите поприветствовать."
 			]
 		],
 		"examples": [
-			""
+			"@Skyra"
 		]
 	},
 	"wlewdDescription": "",
@@ -222,12 +222,12 @@
 	"wpunchDescription": "",
 	"wpunchExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Пользователь",
 				""
 			]
 		],

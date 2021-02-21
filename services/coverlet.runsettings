@@ -6,7 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>          
           <Exclude>[*]Skyra.Tests*,[*]Skyra.Database.Models*</Exclude>
-		  <ExcludeByFile>services/**/Program.cs,services/**/Startup.cs</ExcludeByFile>
+		  <ExcludeByFile>**/Program.cs,**/Startup.cs,**/.nuget/,**/obj/,**/build/</ExcludeByFile>
           <IncludeTestAssembly>true</IncludeTestAssembly>
           <SkipAutoProps>true</SkipAutoProps>
         </Configuration>

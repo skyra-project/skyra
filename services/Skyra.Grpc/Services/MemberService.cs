@@ -25,7 +25,7 @@ namespace Skyra.Grpc.Services
 			{
 				Success = result.Success,
 				Amount = result.Points,
-				ErrorMessage = result.FailureReason
+				ErrorMessage = result.FailureReason ?? ""
 			};
 		}
 
@@ -36,7 +36,7 @@ namespace Skyra.Grpc.Services
 			{
 				Success = result.Success,
 				Amount = result.Points,
-				ErrorMessage = result.FailureReason
+				ErrorMessage = result.FailureReason ?? ""
 			};
 		}
 	}

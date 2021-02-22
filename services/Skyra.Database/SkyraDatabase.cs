@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Database.Extensions;
 using Skyra.Database.Models;

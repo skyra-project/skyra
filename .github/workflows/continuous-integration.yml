@@ -142,6 +142,8 @@ jobs:
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
           dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true --settings services/coverlet.runsettings
+        env:
+          POSTGRES_NAME: test
       - name: Store code coverage report
         uses: actions/upload-artifact@v2
         with:

@@ -16,20 +16,20 @@ namespace Skyra.Database
 			_context = context;
 		}
 
-		public async Task<PointsQuery> AddUserPointsAsync(string userId, long points)
+		public async Task<PointsQuery> AddUserPointsAsync(string userId, int points)
 		{
 			try
 			{
-				var user = await _context.Users.UpsertAsync(userId, () => new User {Id = userId, Money = 0});
+				var user = await _context.Users.UpsertAsync(userId, () => new User {Id = userId, Points = 0});
 
-				user.Money += points;
+				user.Points += points;
 
 				await _context.SaveChangesAsync();
 
 				return new PointsQuery
 				{
 					Success = true,
-					Points = user.Money
+					Points = user.Points
 				};
 			}
 			catch (Exception e)

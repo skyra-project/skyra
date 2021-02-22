@@ -7,9 +7,9 @@ namespace Skyra.Tests.UnitTests.Grpc.Stubs
 {
 	public class TestDatabase : IDatabase
 	{
-		private readonly Dictionary<string, long> _data = new Dictionary<string, long>();
+		private readonly Dictionary<string, int> _data = new Dictionary<string, int>();
 
-		public Task<PointsQuery> AddUserPointsAsync(string userId, long points)
+		public Task<PointsQuery> AddUserPointsAsync(string userId, int points)
 		{
 			if (_data.TryGetValue(userId, out var value))
 			{

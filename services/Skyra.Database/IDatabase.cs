@@ -5,7 +5,7 @@ namespace Skyra.Database
 {
 	public interface IDatabase
 	{
-		Task<PointsQuery> AddUserPointsAsync(string userId, long points);
+		Task<PointsQuery> AddUserPointsAsync(string userId, int points);
 		Task<PointsQuery> GetUserPointsAsync(string userId);
 	}
 }

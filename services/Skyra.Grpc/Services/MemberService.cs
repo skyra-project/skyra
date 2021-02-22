@@ -24,7 +24,7 @@ namespace Skyra.Grpc.Services
 			};
 		}
 
-		public override async Task<PointsResult> GetPoints(MemberQuery request, ServerCallContext? context)
+		public override async Task<PointsResult> GetPoints(MemberQuery request, ServerCallContext context)
 		{
 			var result = await _database.GetUserPointsAsync(request.Id);
 			return new PointsResult

@@ -6,7 +6,7 @@ using Skyra.Database.Models.Entities;
 
 namespace Skyra.Database
 {
-	public class SkyraDatabase : IDatabase
+	public class SkyraDatabase : IDatabase, IDisposable
 	{
 		private readonly SkyraDbContext _context;
 
@@ -60,6 +60,11 @@ namespace Skyra.Database
 					FailureReason = e.ToString()
 				};
 			}
+		}
+
+		public void Dispose()
+		{
+			_context.Dispose();
 		}
 	}
 }

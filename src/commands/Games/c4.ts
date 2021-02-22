@@ -47,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 
 		const response = await message.ask(
-			args.t(LanguageKeys.Commands.Games.TicTacToePrompt, {
+			args.t(LanguageKeys.Commands.Games.C4Prompt, {
 				challenger: message.author.toString(),
 				challengee: user.toString()
 			}),

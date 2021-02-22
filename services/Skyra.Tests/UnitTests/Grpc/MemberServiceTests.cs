@@ -30,7 +30,7 @@ namespace Skyra.Tests.UnitTests.Grpc
 
 			await database.AddUserPointsAsync(userId, startingPoints);
 
-			var result = await service.AddPoints(query, null);
+			var result = await service.AddPoints(query, null!);
 
 			// assert
 
@@ -57,7 +57,7 @@ namespace Skyra.Tests.UnitTests.Grpc
 
 			// act
 
-			var result = await service.AddPoints(query, null);
+			var result = await service.AddPoints(query, null!);
 
 			// assert
 
@@ -84,7 +84,7 @@ namespace Skyra.Tests.UnitTests.Grpc
 			// act
 
 			await database.AddUserPointsAsync(userId, amount);
-			var result = await service.GetPoints(query, null);
+			var result = await service.GetPoints(query, null!);
 
 			// assert
 
@@ -109,7 +109,7 @@ namespace Skyra.Tests.UnitTests.Grpc
 
 			// act
 
-			var result = await service.GetPoints(query, null);
+			var result = await service.GetPoints(query, null!);
 
 			// assert
 

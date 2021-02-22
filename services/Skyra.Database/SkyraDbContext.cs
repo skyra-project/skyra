@@ -480,13 +480,6 @@ namespace Skyra.Database
 					.HasForeignKey(d => d.UserId2)
 					.HasConstraintName("FK_039ee960316593d0e8102ae6c51");
 			});
-
-			OnModelCreatingPartial(modelBuilder);
-		}
-
-		private void OnModelCreatingPartial(ModelBuilder modelBuilder)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

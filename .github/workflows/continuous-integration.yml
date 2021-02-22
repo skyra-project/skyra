@@ -139,8 +139,8 @@ jobs:
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
           docker container run --name postgres -e POSTGRES_PASSWORD=postgres -d --expose 5432 -p 5432:5432 -it postgres:12
-          dotnet tool run dotnet-ef migrations add --project services/Skyra.Database
-          dotnet tool run dotnet-ef database update --porject services/Skyra.Database
+          dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
+          dotnet tool run dotnet-ef database update --project services/Skyra.Database
           dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true --settings services/coverlet.runsettings
       - name: Store code coverage report
         uses: actions/upload-artifact@v2

@@ -9,3 +9,5 @@ extraction:
       include:
         - src
         - tests
+      filters:
+        - exclude: "src/languages/**/*.json"

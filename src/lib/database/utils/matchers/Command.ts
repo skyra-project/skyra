@@ -40,43 +40,63 @@ export function match(name: string, command: SkyraCommand): boolean {
 	return matchNameCategoryAndSubCategory(subCategoryRest, category, subCategory, command);
 }
 
-function hasCategory(commands: CommandStore, category: string): boolean {
+function resolveCategory(commands: CommandStore, category: string): string | null {
+	const scanned = new Set<string>();
+	const lowerCaseCategory = category.toLowerCase();
+
 	for (const command of commands.values()) {
-		if ((command as SkyraCommand).category === category) return true;
+		const value = (command as SkyraCommand).category;
+		if (scanned.has(value)) continue;
+		if (value.toLowerCase() === lowerCaseCategory) return value;
+		scanned.add(value);
 	}
 
-	return false;
+	return null;
 }
 
-function hasSubCategory(commands: CommandStore, subCategory: string): boolean {
+function resolveSubCategory(commands: CommandStore, subCategory: string): string | null {
+	const scanned = new Set<string>();
+	const lowerCaseSubCategory = subCategory.toLowerCase();
+
 	for (const command of commands.values()) {
-		if ((command as SkyraCommand).subCategory === subCategory) return true;
+		const value = (command as SkyraCommand).subCategory;
+		if (scanned.has(value)) continue;
+		if (value.toLowerCase() === lowerCaseSubCategory) return value;
+		scanned.add(value);
 	}
 
-	return false;
+	return null;
+}
+
+function resolveCommandWithCategoryAndSubCategory(commands: CommandStore, name: string, category: string, subCategory: string): string | null {
+	const command = commands.get(name) as SkyraCommand | undefined;
+	if (command === undefined) return null;
+	return command.category === category && command.subCategory === subCategory ? command.name : null;
 }
 
 export function resolve(name: string): string | null {
 	// Match All:
 	if (name === '*') return name;
 
+	const parts = name.split('.');
+
+	// If it's an empty string, or has more than three parts, it is invalid:
+	if (parts.length === 0 || parts.length > 3) return null;
+
 	const commands = Store.injectedContext.stores.get('commands');
 
-	// Match Category:
-	const [category, categoryRest] = getNameSpaceDetails(name);
-	if (category === null) return commands.get(name)?.name ?? null;
-	if (!hasCategory(commands, category)) return null;
-	if (categoryRest === '*') return name;
+	// Handle `${command}`:
+	if (parts.length === 1) return commands.get(name.toLowerCase())?.name ?? null;
 
-	// Match Sub-Category
-	const [subCategory, subCategoryRest] = getNameSpaceDetails(categoryRest);
-	if (subCategory === null) {
-		const command = commands.get(name);
-		if (command === undefined) return null;
-		return matchNameAndCategory(name, category, command as SkyraCommand) ? name : null;
-	}
-	if (!hasSubCategory(commands, subCategory)) return null;
-	if (subCategoryRest === '*') return name;
+	// Handle `${category}.${string}`:
+	const category = resolveCategory(commands, parts[0]);
+	if (category === null) return null;
+	if (parts.length === 2) return parts[1] === '*' ? `${category}.*` : null;
 
-	return null;
+	// Handle `${category}.${category}.${string}`:
+	const subCategory = resolveSubCategory(commands, parts[1]);
+	if (subCategory === null) return null;
+	return parts[2] === '*'
+		? `${category}.${subCategory}.*`
+		: resolveCommandWithCategoryAndSubCategory(commands, parts[2].toLowerCase(), category, subCategory);
 }

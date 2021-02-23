@@ -13,3 +13,4 @@ export const command = new TestCommand(
 );
 
 commands.set(command.name, command);
+for (const alias of command.aliases) commands.aliases.set(alias, command);

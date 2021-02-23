@@ -12,6 +12,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 	testMatch: ['<rootDir>/tests/**/*.test.ts'],
 	moduleNameMapper: {
 		'^#utils/(.*)$': '<rootDir>/src/lib/util/$1',
+		'^#lib/audio$': '<rootDir>/src/audio/lib',
 		'^#lib/(.*)$': '<rootDir>/src/lib/$1',
 		'^#root/(.*)$': '<rootDir>/src/$1',
 		'^#mocks/(.*)$': '<rootDir>/tests/mocks/$1'

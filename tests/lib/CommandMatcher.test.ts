@@ -1,7 +1,10 @@
 import { CommandMatcher } from '#lib/database';
-import { command } from '#mocks/MockInstances';
+import type { SkyraCommand } from '#lib/structures';
+import { commands } from '#mocks/MockInstances';
 
 describe('CommandMatcher', () => {
+	const command = commands.get('ping') as SkyraCommand;
+
 	describe('match', () => {
 		test('GIVEN match-all THEN always passes test', () => {
 			expect(CommandMatcher.match('*', command)).toBe(true);
@@ -57,6 +60,10 @@ describe('CommandMatcher', () => {
 	});
 
 	describe('resolve', () => {
+		test('GIVEN empty string THEN returns null', () => {
+			expect(CommandMatcher.resolve('')).toBe(null);
+		});
+
 		test('GIVEN match-all THEN returns match-all', () => {
 			expect(CommandMatcher.resolve('*')).toBe('*');
 		});
@@ -78,7 +85,7 @@ describe('CommandMatcher', () => {
 		});
 
 		test('GIVEN incorrect command name THEN returns null', () => {
-			expect(CommandMatcher.resolve('PONG')).toBe('ping');
+			expect(CommandMatcher.resolve('eval')).toBe(null);
 		});
 
 		test('GIVEN correct category THEN returns category', () => {
@@ -95,6 +102,30 @@ describe('CommandMatcher', () => {
 
 		test('GIVEN incorrect category THEN returns null', () => {
 			expect(CommandMatcher.resolve('Admin.*')).toBe(null);
+		});
+
+		test('GIVEN correct category and command name THEN returns command name', () => {
+			expect(CommandMatcher.resolve('Social.balance')).toBe('balance');
+		});
+
+		test('GIVEN correct category and command name in lower cases THEN returns command name', () => {
+			expect(CommandMatcher.resolve('social.balance')).toBe('balance');
+		});
+
+		test('GIVEN correct category and command name in upper cases THEN returns command name', () => {
+			expect(CommandMatcher.resolve('SOCIAL.BALANCE')).toBe('balance');
+		});
+
+		test('GIVEN correct category and command alias THEN returns command name', () => {
+			expect(CommandMatcher.resolve('Social.bal')).toBe('balance');
+		});
+
+		test('GIVEN correct category and command alias in lower cases THEN returns command name', () => {
+			expect(CommandMatcher.resolve('social.bal')).toBe('balance');
+		});
+
+		test('GIVEN correct category and command alias in upper cases THEN returns command name', () => {
+			expect(CommandMatcher.resolve('SOCIAL.BAL')).toBe('balance');
 		});
 
 		test('GIVEN correct category and correct sub-category THEN returns category and sub-category', () => {
@@ -139,6 +170,10 @@ describe('CommandMatcher', () => {
 
 		test('GIVEN correct category, correct sub-category, and incorrect command name THEN returns null', () => {
 			expect(CommandMatcher.resolve('General.Chat Bot Info.eval')).toBe(null);
+		});
+
+		test('GIVEN string with too many parts THEN returns null', () => {
+			expect(CommandMatcher.resolve('never.gonna.say.goodbye')).toBe(null);
 		});
 	});
 });

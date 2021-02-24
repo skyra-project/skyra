@@ -54,18 +54,26 @@ function resolveCategory(commands: CommandStore, category: string): string | nul
 	return null;
 }
 
-function resolveSubCategory(commands: CommandStore, subCategory: string): string | null {
+function resolveSubCategory(commands: CommandStore, category: string, subCategory: string): string | null {
 	const scanned = new Set<string>();
 	const lowerCaseSubCategory = subCategory.toLowerCase();
 
-	for (const command of commands.values()) {
-		const value = (command as SkyraCommand).subCategory;
-		if (scanned.has(value)) continue;
-		if (value.toLowerCase() === lowerCaseSubCategory) return value;
-		scanned.add(value);
+	for (const cmd of commands.values()) {
+		const command = cmd as SkyraCommand;
+		if (command.category !== category) continue;
+
+		if (scanned.has(command.subCategory)) continue;
+		if (command.subCategory.toLowerCase() === lowerCaseSubCategory) return command.subCategory;
+		scanned.add(command.subCategory);
 	}
 
 	return null;
+}
+
+function resolveCommandWithCategory(commands: CommandStore, name: string, category: string): string | null {
+	const command = commands.get(name) as SkyraCommand | undefined;
+	if (command === undefined) return null;
+	return command.category === category ? command.name : null;
 }
 
 function resolveCommandWithCategoryAndSubCategory(commands: CommandStore, name: string, category: string, subCategory: string): string | null {
@@ -91,10 +99,10 @@ export function resolve(name: string): string | null {
 	// Handle `${category}.${string}`:
 	const category = resolveCategory(commands, parts[0]);
 	if (category === null) return null;
-	if (parts.length === 2) return parts[1] === '*' ? `${category}.*` : null;
+	if (parts.length === 2) return parts[1] === '*' ? `${category}.*` : resolveCommandWithCategory(commands, parts[1].toLowerCase(), category);
 
 	// Handle `${category}.${category}.${string}`:
-	const subCategory = resolveSubCategory(commands, parts[1]);
+	const subCategory = resolveSubCategory(commands, category, parts[1]);
 	if (subCategory === null) return null;
 	return parts[2] === '*'
 		? `${category}.${subCategory}.*`

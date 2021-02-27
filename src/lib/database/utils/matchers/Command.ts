@@ -20,6 +20,13 @@ function matchNameCategoryAndSubCategory(name: string, category: string, subCate
 	return command.subCategory === subCategory && matchNameAndCategory(name, category, command);
 }
 
+export function matchAny(names: Iterable<string>, command: SkyraCommand): boolean {
+	for (const name of names) {
+		if (match(name, command)) return true;
+	}
+	return false;
+}
+
 export function match(name: string, command: SkyraCommand): boolean {
 	// Match All:
 	if (name === '*') return true;

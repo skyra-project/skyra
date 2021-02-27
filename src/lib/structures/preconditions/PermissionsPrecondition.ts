@@ -11,7 +11,7 @@ export abstract class PermissionsPrecondition extends Precondition {
 		// If it should skip, go directly to handle:
 		if (this.shouldRun(message, command)) {
 			const nodes = await message.guild.readSettings((settings) => settings.permissionNodes);
-			const result = nodes.run(message.member, command.name);
+			const result = nodes.run(message.member, command);
 			if (result) return this.ok();
 			if (result === false) return this.error({ identifier: LanguageKeys.Preconditions.PermissionNodes });
 		}

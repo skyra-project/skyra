@@ -114,6 +114,7 @@ declare module '@sapphire/framework' {
 		cleanString: string;
 		color: ColorHandler;
 		command: SkyraCommand;
+		commandMatch: string;
 		commandName: SkyraCommand;
 		duration: Date;
 		emoji: string;

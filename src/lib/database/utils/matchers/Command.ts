@@ -1,5 +1,5 @@
-import { SkyraCommand } from '#lib/structures';
-import { CommandStore } from '@sapphire/framework';
+import type { SkyraCommand } from '#lib/structures';
+import type { CommandStore } from '@sapphire/framework';
 import { Store } from '@sapphire/pieces';
 
 function getNameSpaceDetails(name: string): readonly [string | null, string] {

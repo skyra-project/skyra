@@ -1,6 +1,6 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
-import { CommandMatcher } from '#lib/database/utils/matchers';
+import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import Collection from '@discordjs/collection';
@@ -162,8 +162,8 @@ export class PermissionNodeManager implements IBaseManager {
 		const memberID = member.id;
 		for (const node of permissionNodeRoles) {
 			if (node.id !== memberID) continue;
-			if (CommandMatcher.matchAny(node.allow, command)) return true;
-			if (CommandMatcher.matchAny(node.deny, command)) return false;
+			if (matchAny(node.allow, command)) return true;
+			if (matchAny(node.deny, command)) return false;
 		}
 
 		return null;
@@ -175,8 +175,8 @@ export class PermissionNodeManager implements IBaseManager {
 		// Assume sorted data
 		for (const [id, node] of this.#sorted.entries()) {
 			if (!roles.has(id)) continue;
-			if (CommandMatcher.matchAny(node.allow, command)) return true;
-			if (CommandMatcher.matchAny(node.deny, command)) return false;
+			if (matchAny(node.allow, command)) return true;
+			if (matchAny(node.deny, command)) return false;
 		}
 
 		return null;

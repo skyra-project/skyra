@@ -9,6 +9,7 @@
 	"categoryChannel": "I could not resolve `{{parameter}}` to a category channel, please make sure you typed its name or ID correctly!",
 	"channel": "I could not resolve `{{parameter}}` to a channel, make sure you typed its name or ID correctly!",
 	"command": "I could not resolve `{{parameter}}` to a command! Make sure you typed its name or one of its aliases correctly!",
+	"commandMatch": "I could not resolve `{{parameter}}` to a command nor a category match, there are some of the valid formats:\n\n- `ping` (matches the ping command only).\n- `social.*` (matches all commands under the **Social** category).\n- `social.member management.*` (matches all commands under **Social** > **Member Management** sub-category).\n\n> **Hint**: When checking `{{commandContext.commandPrefix}}help`, the category of each command is located at the top of the embed.",
 	"color": "I could not resolve `{{parameter}}` to a valid color, there are some of the valid formats:\n\n- `#dfdfdf` (Hexadecimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"date": "I could not resolve `{{parameter}}` to a date, there are some of the valid formats:\n\n$t(arguments:dateFormats)",
 	"dateFormats": "- `2016` (YYYY)\n- `2016-11` (YYYY-MM)\n- `2016-11-24` (YYYY-MM-DD)\n- `2016-11-24T23:56` (YYYY-MM-DDTHH:mm)\n- `2016-11-24T23:56:12` (YYYY-MM-DDTHH:mm:ss)\n- `2016-11-24T23:56:12.000` (YYYY-MM-DDTHH:mm:ss.sss)\n\n> **Tip**: The last 3 formats accept `Z` at the end to mark the time as UTC.",

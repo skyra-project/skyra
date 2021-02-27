@@ -1,6 +1,8 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
+import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures';
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
@@ -33,7 +35,7 @@ export class PermissionNodeManager implements IBaseManager {
 		return Store.injectedContext.client;
 	}
 
-	public run(member: GuildMember, command: string) {
+	public run(member: GuildMember, command: SkyraCommand) {
 		return this.runUser(member, command) ?? this.runRole(member, command);
 	}
 
@@ -154,27 +156,27 @@ export class PermissionNodeManager implements IBaseManager {
 		this.#previous = [];
 	}
 
-	private runUser(member: GuildMember, command: string) {
+	private runUser(member: GuildMember, command: SkyraCommand) {
 		// Assume sorted data
 		const permissionNodeRoles = this.#settings.permissionsUsers;
 		const memberID = member.id;
 		for (const node of permissionNodeRoles) {
 			if (node.id !== memberID) continue;
-			if (node.allow.includes(command)) return true;
-			if (node.deny.includes(command)) return false;
+			if (matchAny(node.allow, command)) return true;
+			if (matchAny(node.deny, command)) return false;
 		}
 
 		return null;
 	}
 
-	private runRole(member: GuildMember, command: string) {
+	private runRole(member: GuildMember, command: SkyraCommand) {
 		const roles = member.roles.cache;
 
 		// Assume sorted data
 		for (const [id, node] of this.#sorted.entries()) {
 			if (!roles.has(id)) continue;
-			if (node.allow.has(command)) return true;
-			if (node.deny.has(command)) return false;
+			if (matchAny(node.allow, command)) return true;
+			if (matchAny(node.deny, command)) return false;
 		}
 
 		return null;

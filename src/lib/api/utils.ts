@@ -1,4 +1,5 @@
 import * as GuildSettings from '#lib/database/keys/settings/All';
+import { SkyraCommand } from '#lib/structures';
 import { RateLimitManager } from '#lib/structures/external/ratelimit/RateLimitManager';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { createFunctionInhibitor } from '#utils/decorators';
@@ -54,7 +55,7 @@ export async function canManage(guild: Guild, member: GuildMember): Promise<bool
 
 	const [roles, pnodes] = await guild.readSettings((settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
 
-	return isAdmin(member, roles) && (pnodes.run(member, 'conf') ?? true);
+	return isAdmin(member, roles) && (pnodes.run(member, Store.injectedContext.stores.get('commands').get('conf') as SkyraCommand) ?? true);
 }
 
 export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {

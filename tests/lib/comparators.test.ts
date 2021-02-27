@@ -55,7 +55,7 @@ describe('comparators', () => {
 			expect(hasAtLeastOneKeyInMap(new Map<string, string>([]), ['foo'])).toEqual(false);
 		});
 
-		test('GIVEN filled map and filled array with no common keys THEN passes test', () => {
+		test('GIVEN filled map and filled array with at least one common key THEN passes test', () => {
 			expect(
 				hasAtLeastOneKeyInMap(
 					new Map<string, string>([['foo', 'bar']]),
@@ -64,13 +64,13 @@ describe('comparators', () => {
 			).toEqual(true);
 		});
 
-		test('GIVEN filled map and filled array with at least one common key THEN passes test', () => {
+		test('GIVEN filled map and filled array with no common keys THEN fails test', () => {
 			expect(
 				hasAtLeastOneKeyInMap(
 					new Map<string, string>([['foo', 'bar']]),
 					['world', 'baz']
 				)
-			).toEqual(true);
+			).toEqual(false);
 		});
 	});
 });

@@ -6,6 +6,7 @@ import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#l
 import { CLIENT_OPTIONS, ENABLE_AUDIO, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
+import { TimerManager } from '@sapphire/time-utilities';
 import { mergeDefault } from '@sapphire/utilities';
 import { ClientOptions, Message, Webhook } from 'discord.js';
 import { join } from 'path';
@@ -94,6 +95,11 @@ export class SkyraClient extends SapphireClient {
 	public async login(token?: string) {
 		await this.schedules.init();
 		return super.login(token);
+	}
+
+	public destroy() {
+		TimerManager.destroy();
+		return super.destroy();
 	}
 
 	/**

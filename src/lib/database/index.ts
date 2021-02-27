@@ -5,3 +5,4 @@ export * from './repositories/MemberRepository';
 export * from './repositories/UserRepository';
 export * from './settings';
 export * from './utils/DbSet';
+export * from './utils/matchers';

@@ -13,6 +13,7 @@ export const CaseLatestOptions = T<readonly string[]>('arguments:caseLatestOptio
 export const CategoryChannel = FT<{ parameter: string }, string>('arguments:categoryChannel');
 export const Channel = FT<{ parameter: string }, string>('arguments:channel');
 export const Command = FT<{ parameter: string }, string>('arguments:command');
+export const CommandMatch = FT<{ parameter: string }, string>('arguments:commandMatch');
 export const Color = FT<{ parameter: string }, string>('arguments:color');
 export const Date = FT<{ parameter: string }, string>('arguments:date');
 export const TimeSpan = FT<{ parameter: string }, string>('arguments:timeSpan');

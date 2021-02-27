@@ -1,4 +1,5 @@
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { CommandMatcher, GuildEntity, GuildSettings } from '#lib/database';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, Identifiers, Precondition } from '@sapphire/framework';
@@ -15,7 +16,7 @@ export class UserPrecondition extends Precondition {
 	}
 
 	private async runGuild(message: GuildMessage, command: Command, context: Precondition.Context): Precondition.AsyncResult {
-		const disabled = await message.guild.readSettings((settings) => this.checkGuildDisabled(settings, message, command));
+		const disabled = await message.guild.readSettings((settings) => this.checkGuildDisabled(settings, message, command as SkyraCommand));
 		if (disabled) {
 			const isModerator = await message.member.isModerator();
 			if (!isModerator) return this.error({ context: { ...context, silent: true } });
@@ -24,13 +25,13 @@ export class UserPrecondition extends Precondition {
 		return this.runDM(command, context);
 	}
 
-	private checkGuildDisabled(settings: GuildEntity, message: GuildMessage, command: Command) {
-		if (settings[GuildSettings.DisabledCommands].includes(command.name)) return true;
+	private checkGuildDisabled(settings: GuildEntity, message: GuildMessage, command: SkyraCommand) {
 		if (settings[GuildSettings.DisabledChannels].includes(message.channel.id)) return true;
+		if (CommandMatcher.matchAny(settings[GuildSettings.DisabledCommands], command)) return true;
 
 		const entry = settings[GuildSettings.DisabledCommandChannels].find((d) => d.channel === message.channel.id);
 		if (entry === undefined) return false;
 
-		return entry.commands.includes(command.name);
+		return CommandMatcher.matchAny(entry.commands, command);
 	}
 }

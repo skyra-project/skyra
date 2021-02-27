@@ -53,7 +53,7 @@ export class ScheduleManager {
 		if (this.queue.length) {
 			// Process the active tasks, they're sorted by the time they end
 			const now = Date.now();
-			const execute = [];
+			const execute: Promise<ResponseValue>[] = [];
 			for (const entry of this.queue) {
 				if (entry.time.getTime() > now) break;
 				execute.push(entry.run());

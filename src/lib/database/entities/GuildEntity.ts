@@ -31,7 +31,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'disableNaturalPrefix', default: false })
 	public disableNaturalPrefix = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledCommands, type: 'command' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledCommands, type: 'commandmatch' })
 	@Column('varchar', { name: 'disabledCommands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
 

@@ -1,6 +1,8 @@
-import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
+import { CommandMatcher, PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionLevels } from '#lib/types/Enums';
+import { CommandStore } from '@sapphire/framework';
 import { isObject } from '@sapphire/utilities';
 import type { GuildMember, Role } from 'discord.js';
 
@@ -41,24 +43,25 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 
 		// Check all commands
 		const commands = this.context.stores.get('commands');
-		const checked = new Map<string, SkyraCommand>();
+		const checked = new Set<string>();
 		for (const allowed of value.allow) {
 			if (checked.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
 
-			const command = commands.get(allowed) as SkyraCommand | undefined;
-			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
-			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
-			checked.set(allowed, command);
+			const match = CommandMatcher.resolve(allowed);
+			if (match === null || !this.validCommand(commands, match)) {
+				throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
+			}
+			checked.add(match);
 		}
 
 		for (const denied of value.deny) {
 			if (checked.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
 
-			const command = commands.get(denied) as SkyraCommand | undefined;
-			if (!command) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
-			if (command.permissionLevel >= 9) throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
-			if (command.guarded) throw t(LanguageKeys.Serializers.PermissionNodeSecurityGuarded, { command: denied });
-			checked.set(denied, command);
+			const match = CommandMatcher.resolve(denied);
+			if (match === null || !this.validCommand(commands, match)) {
+				throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
+			}
+			checked.add(match);
 		}
 
 		return true;
@@ -66,5 +69,15 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 
 	public stringify(value: PermissionsNode) {
 		return `${value.id}(${value.allow.join(', ')} | ${value.deny.join(', ')})`;
+	}
+
+	private validCommand(commands: CommandStore, name: string) {
+		const command = commands.get(name) as SkyraCommand | undefined;
+
+		// No command means it matched a group, which is fine:
+		if (command === undefined) return true;
+
+		// If it matched a command, it must not be a bot-owner one:
+		return command.permissionLevel < PermissionLevels.BotOwner;
 	}
 }

@@ -258,6 +258,7 @@
 		"explainedUsage": [["Case", "Number of the case ID to get or `latest`"]],
 		"examples": ["5", "latest"]
 	},
+	"caseDeleted": "{{GREENTICK}} Case {{case}} has been successfully deleted.",
 	"permissionsDescription": "Check the permission for a member, or yours.",
 	"permissionsExtended": {
 		"usages": ["", "User"],

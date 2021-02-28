@@ -10,13 +10,25 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text'],
+	subCommands: ['delete', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const index = await args.pick('case');
 		const modlog = await message.guild.moderation.fetch(index);
 		if (modlog) return message.send(await modlog.prepareEmbed());
 		this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
+	}
+
+	public async delete(message: GuildMessage, args: SkyraCommand.Args) {
+		const index = await args.pick('case');
+		const modlog = await message.guild.moderation.fetch(index);
+		if (!modlog) this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
+
+		modlog.remove();
+		message.guild.moderation.delete(modlog.caseID);
+
+		return message.send(args.t(LanguageKeys.Commands.Moderation.CaseDeleted, { case: modlog.caseID }));
 	}
 }

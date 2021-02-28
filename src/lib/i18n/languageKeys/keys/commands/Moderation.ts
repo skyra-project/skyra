@@ -52,6 +52,7 @@ export const PruneDescription = T<string>('commands/moderation:pruneDescription'
 export const PruneExtended = T<LanguageHelpDisplayOptions>('commands/moderation:pruneExtended');
 export const CaseDescription = T<string>('commands/moderation:caseDescription');
 export const CaseExtended = T<LanguageHelpDisplayOptions>('commands/moderation:caseExtended');
+export const CaseDeleted = FT<{ case: number }, string>('commands/moderation:caseDeleted');
 export const PermissionsDescription = T<string>('commands/moderation:permissionsDescription');
 export const PermissionsExtended = T<LanguageHelpDisplayOptions>('commands/moderation:permissionsExtended');
 export const FlowDescription = T<string>('commands/moderation:flowDescription');

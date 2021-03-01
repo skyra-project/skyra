@@ -139,7 +139,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static task = Args.make<ReminderScheduledTask>((parameter, { message, argument }) => {
 		const id = Number(parameter);
-		if (Number.isInteger(id) || id < 0) {
+		if (!Number.isInteger(id) || id < 0) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.RemindMeInvalidId });
 		}
 

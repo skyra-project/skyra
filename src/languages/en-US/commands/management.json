@@ -109,6 +109,7 @@
 			"remove Role/Member allow/deny Command",
 			"reset Role/Member",
 			"show Role/Member",
+			"show",
 			"Role/Member"
 		],
 		"extendedHelp": "Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.\nFor example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command for the staff role now.",

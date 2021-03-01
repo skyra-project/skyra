@@ -79,6 +79,7 @@ export const PermissionNodesCommandNotExists = T<string>('commands/management:pe
 export const PermissionNodesDescription = T<string>('commands/management:permissionNodesDescription');
 export const PermissionNodesExtended = T<LanguageHelpDisplayOptions>('commands/management:permissionNodesExtended');
 export const PermissionNodesHigher = T<string>('commands/management:permissionNodesHigher');
+export const PermissionNodesCannotAllowEveryone = T<string>('commands/management:permissionNodesCannotAllowEveryone');
 export const PermissionNodesInvalidType = T<string>('commands/management:permissionNodesInvalidType');
 export const PermissionNodesNodeNotExists = T<string>('commands/management:permissionNodesNodeNotExists');
 export const PermissionNodesRemove = T<string>('commands/management:permissionNodesRemove');

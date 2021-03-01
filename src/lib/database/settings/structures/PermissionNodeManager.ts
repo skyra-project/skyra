@@ -4,7 +4,6 @@ import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import Collection from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role, User } from 'discord.js';
 import type { IBaseManager } from '../base/IBaseManager';
@@ -29,10 +28,6 @@ export class PermissionNodeManager implements IBaseManager {
 
 	public constructor(settings: GuildEntity) {
 		this.#settings = settings;
-	}
-
-	public get client() {
-		return Store.injectedContext.client;
 	}
 
 	public run(member: GuildMember, command: SkyraCommand) {

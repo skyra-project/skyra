@@ -13,6 +13,7 @@
 	"nickSet": "Changed the nickname to **{{nickname}}**.",
 	"nickCleared": "Nickname cleared.",
 	"permissionNodesHigher": "{{REDCROSS}} You cannot modify nor preview the permission nodes for this target.",
+	"permissionNodesCannotAllowEveryone": "{{REDCROSS}} You cannot allow commands for the `@everyone` role.",
 	"permissionNodesInvalidType": "{{REDCROSS}} Invalid type, expected either of `allow` or `deny`.",
 	"permissionNodesAdd": "{{GREENTICK}} Successfully added the command to the permission node.",
 	"permissionNodesNodeNotExists": "{{REDCROSS}} The selected permission node does not exist.",

@@ -3,6 +3,7 @@ import { WeebCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
+	aliases: ['wsalute'],
 	description: LanguageKeys.Commands.Weeb.GreetDescription,
 	extendedHelp: LanguageKeys.Commands.Weeb.GreetExtended,
 	queryType: 'greet',

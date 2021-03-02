@@ -35,6 +35,9 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		if (channel.nsfw && !message.channel.nsfw) {
+			return this.error(LanguageKeys.Commands.Fun.MarkovNsfwChannel, { channel: channel.toString() });
+		}
 		const username = args.finished ? message.author : await args.pick('userName');
 
 		// Send loading message

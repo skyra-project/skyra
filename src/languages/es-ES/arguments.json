@@ -32,6 +32,7 @@
 	"categoryChannel": "No pude resolver `{{parameter}}` a un canal de categoría, ¡por favor asegúrese de que escribió su nombre o ID correctamente!",
 	"channel": "No pude resolver `{{parameter}}` a un canal, ¡asegúrate de que escribiste su nombre o ID correctamente!",
 	"command": "¡No pude resolver `{{parameter}}` a un comando! ¡Asegúrate de que escribiste su nombre o uno de sus alias correctamente!",
+	"commandMatch": "",
 	"color": "No pude resolver `{{parameter}}` a un color válido, aquí tiene alguno de los formatos válidos:\n\n- `#dfdf` (Hexadecimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"date": "No pude resolver `{{parameter}}` a una fecha, aquí tiene alguno de los formatos válidos:\n\n$t(arguments:dateFormats)",
 	"dateFormats": "- `2016` (AAAA)\n- `2016-11` (AAAA-MM)\n- `2016-11-24` (AAAA-MM-DD)\n- `2016-11-24T23:56` (AAAA-MM-DDTHH:mm)\n- `2016-11-24T23:56:12` (AAAA-MM-DDTHH:mm:ss)\n- `2016-11-24T23:56:12. 00` (AAAA-MM-DDTHH:mm:sss)\n\n> **Pista**: Los últimos 3 formatos aceptan `Z` al final para marcar la hora como UTC.",

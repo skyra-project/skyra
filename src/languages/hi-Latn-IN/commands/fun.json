@@ -287,6 +287,7 @@
 	"loveResult": "परिणाम",
 	"markovTimer": "समय लगा {{timer}} |",
 	"markovNoMessages": "व्यक्ति ने कोई संदेश नहीं भेजा है अथवा चैनल में कोई संदेश नहीं है |",
+	"markovNsfwChannel": "",
 	"norrisOutput": "चक नौर्रिस",
 	"rateOutput": "**{{author}}**, मैं **{{userToRate}}** को देती हूँ **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [

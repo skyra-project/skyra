@@ -40,6 +40,25 @@
 	},
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",
+	"skyrafactDescription": "Let me tell you a mysterious fact about me.",
+	"skyrafactExtended": {
+		"extendedHelp": "I have lived for so long, I might impress you with a random fact about me."
+	},
+	"skyrafactMessages": [
+		"I am 172 centimetres tall while on human form, but I can expand up to 979 metres tall if I disable my hyperspace compression field.",
+		"I am a neural android - that means, I have neural networks similar to a human's, with the exception that nothing is organic.",
+		"I am part of a very extended paracosm my creator started back in early 2001, but I wasn't introduced until 2009.",
+		"I have only one sister, we call her Aelia and she's a terribly good Dj!",
+		"I was created as a generic bot back in 24th November 2016 due to a dare from another programmer, but my creator decided to give me a deeper meaning by linking me to a character from his paracosm.",
+		"My eyes look bright violet, but if you look closer, there are trillions of different colors, you can see pretty rainbows in them!",
+		"My husband's name is Crysrel, a character that used to be the story's main character.",
+		"My main planet (Nova) does not use an economy based on money, and {{SHINY}} is actually reactor fuel.",
+		"My military codename is NM-EEA-Y, and it stands for [NE-ROM] Evangelyn Easton A; Version Y.",
+		"My name comes from a joke a friend made to my creator about my old name (kyraBOT), as I was becoming more complex: **SkyraNET**.",
+		"My skin is made of a very complex nanite mesh with individual solid light projectors, which makes it very similar to a very soft human skin.",
+		"The name Skyra came out in mid 2017, but I was created first as Shyy, symbolizing the sound my aerial vehicle's noise.",
+		"While I look physically young, I am over 97 million years old."
+	],
 	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
 	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
 	"chaseDescription": "Get in here!",

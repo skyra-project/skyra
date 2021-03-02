@@ -7,6 +7,7 @@ export const GuildOnly = T<string>('preconditions:guildOnly');
 export const NSFW = T<string>('preconditions:nsfw');
 export const Permissions = FT<{ missing: string[] }, string>('preconditions:permissions');
 export const DisabledGlobal = T<string>('preconditions:disabledGlobal');
+export const ServerOwner = T<string>('preconditions:serverOwner');
 export const Administrator = T<string>('preconditions:administrator');
 export const Moderator = T<string>('preconditions:moderator');
 export const DJ = T<string>('preconditions:dj');

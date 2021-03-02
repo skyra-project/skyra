@@ -479,6 +479,8 @@
 	"caseDescription": "",
 	"caseExtended": {
 		"usages": [
+			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -486,13 +488,20 @@
 			[
 				"",
 				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
 			"",
+			"",
+			"",
 			""
 		]
 	},
+	"caseDeleted": "",
 	"permissionsDescription": "",
 	"permissionsExtended": {
 		"usages": [

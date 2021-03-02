@@ -40,8 +40,50 @@
 	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
+	"skyrafactDescription": "",
+	"skyrafactExtended": {
+		"extendedHelp": ""
+	},
+	"skyrafactTitle": "",
+	"skyrafactMessages": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
 	"upvoteMessage": "",
-	"vaporwaveOutput": "",
 	"chaseDescription": "",
 	"chaseExtended": {
 		"usages": [
@@ -315,5 +357,24 @@
 		"examples": [
 			""
 		]
-	}
+	},
+	"vaporwaveOutput": "",
+	"zalgoDescription": "",
+	"zalgoExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"zalgoOutput": ""
 }

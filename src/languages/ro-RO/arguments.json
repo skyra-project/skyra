@@ -32,6 +32,7 @@
 	"categoryChannel": "",
 	"channel": "",
 	"command": "",
+	"commandMatch": "",
 	"color": "",
 	"date": "",
 	"dateFormats": "",

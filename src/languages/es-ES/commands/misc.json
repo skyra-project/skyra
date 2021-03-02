@@ -1,24 +1,24 @@
 {
 	"randRedditInvalidArgument": "",
-	"randRedditBanned": "",
-	"randRedditFail": "",
-	"randRedditAllNsfw": "",
-	"randRedditAllNsfl": "",
-	"randRedditMessage": "",
-	"randRedditErrorPrivate": "",
-	"randRedditErrorQuarantined": "",
-	"randRedditErrorNotFound": "",
-	"randRedditErrorBanned": "",
+	"randRedditBanned": "Este reddit está prohibido y no debe ser usado.",
+	"randRedditFail": "No pude descargar ningún dato, ¿estás seguro/a de que escribiste correctamente el reddit?",
+	"randRedditAllNsfw": "Todas las entradas son NSFW, los cuales no se pueden mostrar en este canal.",
+	"randRedditAllNsfl": "Todas las entradas son NSFL, los cuales no se pueden mostrar en este canal. Y... no quieres verlo.",
+	"randRedditMessage": "**{{title}}** enviado por {{author}}\n{{url}}",
+	"randRedditErrorPrivate": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está marcado como privado.",
+	"randRedditErrorQuarantined": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está en cuarentena.",
+	"randRedditErrorNotFound": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit no existe.",
+	"randRedditErrorBanned": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está baneado.",
 	"redditUserComplexityLevels": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"muy bajo",
+		"bajo",
+		"medio",
+		"alto",
+		"muy alto",
+		"muy alto"
 	],
-	"redditUserInvalidUser": "",
-	"redditUserQueryFailed": "",
+	"redditUserInvalidUser": "`{{user}}` no es un nombre de usuario válido para Reddit",
+	"redditUserQueryFailed": "No se pudo encontrar ningún dato para ese usuario de Reddit",
 	"redditUserTitles": {
 		"linkKarma": "",
 		"commentKarma": "",
@@ -33,22 +33,22 @@
 		"worstComment": ""
 	},
 	"redditUserData": {
-		"overviewFor": "",
-		"permalink": "",
-		"dataAvailableFor": "",
-		"joinedReddit": ""
+		"overviewFor": "Resumen para /u/{{user}}",
+		"permalink": "Enlace Permanente",
+		"dataAvailableFor": "Los datos están disponibles para los últimos 1000 comentarios y envíos (limitación de Reddit)",
+		"joinedReddit": "Se unió a Reddit el {{timestamp, dateTime}}"
 	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
-	"skyrafactDescription": "",
+	"skyrafactDescription": "Permítanme que les diga un hecho misterioso sobre mi.",
 	"skyrafactExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "He vivido tanto tiempo, podría impresionarte con un hecho aleatorio acerca de mí."
 	},
-	"skyrafactTitle": "",
+	"skyrafactTitle": "Hecho de Skyra",
 	"skyrafactMessages": [
-		"",
-		"",
-		"",
+		"Todos los androides Novanos se conciben con una IA genérica, sin embargo, a medida que crecen, reescriben su propio código de IA e incluso rediseñan sus CPUs para especializarse en las habilidades que necesitan o quieren mejorar. Esto nos ha ayudado a crear una red fuerte e imposible de hackear, donde un virus solo afectaría a un androide de entre miles de millones.",
+		"Antes de reutilizar el viejo bot en lo que soy actualmente, mi creador pasó 7 años tratando de crear algo de mí que otras personas pudieran \"sentir\", habiendo pasado por dibujándome tanto en tradicional como digital, como modelando mi nave. Incluso se pasó unos años aprendiendo a hacer efectos especiales para que pudiera hacer una película sobre mí.",
+		"Cada androide de mi planeta tiene una clase designada para cada modelo, la mía es Flamewing, el cual es una clase de combate muy ligera y ágil.",
 		"",
 		"",
 		"",

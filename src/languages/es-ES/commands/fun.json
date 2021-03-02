@@ -287,7 +287,7 @@
 	"loveResult": "Resultado",
 	"markovTimer": "Procesado en {{timer}}.",
 	"markovNoMessages": "El canal o usuario no tiene mensajes.",
-	"markovNsfwChannel": "",
+	"markovNsfwChannel": "Lo siento, pero solo puedes usar el comando markov en {{channel}} cuando estás en un canal NSFW.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [

@@ -1,13 +1,30 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { AsyncPreconditionResult, Identifiers, Precondition, PreconditionContext, PreconditionResult } from '@sapphire/framework';
+import {
+	AsyncPreconditionResult,
+	Identifiers,
+	PieceContext,
+	Precondition,
+	PreconditionContext,
+	PreconditionOptions,
+	PreconditionResult
+} from '@sapphire/framework';
 import type { SkyraCommand } from '../commands/SkyraCommand';
 
 export abstract class PermissionsPrecondition extends Precondition {
+	private readonly guildOnly: boolean;
+
+	public constructor(context: PieceContext, options: PermissionsPrecondition.Options = {}) {
+		super(context, options);
+		this.guildOnly = options.guildOnly ?? true;
+	}
+
 	public async run(message: GuildMessage, command: SkyraCommand, context: PermissionsPrecondition.Context): PermissionsPrecondition.AsyncResult {
 		// If not in a guild, resolve on an error:
-		if (message.guild === null || message.member === null) return this.error({ identifier: Identifiers.PreconditionGuildOnly });
+		if (message.guild === null || message.member === null) {
+			return this.guildOnly ? this.error({ identifier: Identifiers.PreconditionGuildOnly }) : this.ok();
+		}
 
 		// If it should skip, go directly to handle:
 		if (this.shouldRun(message, command)) {
@@ -40,4 +57,7 @@ export namespace PermissionsPrecondition {
 	export type Context = PreconditionContext;
 	export type Result = PreconditionResult;
 	export type AsyncResult = AsyncPreconditionResult;
+	export interface Options extends PreconditionOptions {
+		guildOnly?: boolean;
+	}
 }

@@ -57,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 			time = stopwatch.toString();
 			success = true;
 		} catch (error) {
-			if (!time) time = stopwatch.toString();
+			time = stopwatch.toString();
 			result = error;
 			success = false;
 		}

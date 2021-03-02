@@ -26,7 +26,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 }
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['remind', 'reminder', 'reminders'],
+	aliases: ['rmm', 'remind', 'reminder', 'reminders'],
 	bucket: 2,
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.RemindMeDescription,

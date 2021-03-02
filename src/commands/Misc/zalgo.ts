@@ -15,7 +15,8 @@ export class UserCommand extends SkyraCommand {
 		const input = await args.rest('string', { maximum: 50 });
 
 		return message.channel.send(
-			args.t(LanguageKeys.Commands.Misc.ZalgoOutput, { str: zalgo(input, { down: false, middle: true, up: false, size: 'mini' }) })
+			args.t(LanguageKeys.Commands.Misc.ZalgoOutput, { str: zalgo(input, { down: false, middle: true, up: false, size: 'mini' }) }),
+			{ allowedMentions: { users: [], roles: [] } }
 		);
 	}
 }

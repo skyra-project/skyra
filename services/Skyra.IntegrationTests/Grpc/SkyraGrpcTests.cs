@@ -12,6 +12,11 @@ namespace Skyra.IntegrationTests.Grpc
 	{
 		private Random _rng = new Random(DateTime.Now.Millisecond);
 
+		private GrpcChannel GetChannel() => GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions
+		{
+			HttpHandler = Utils.GetHandler()
+		});
+
 		[OneTimeSetUp]
 		public async Task Setup()
 		{
@@ -31,7 +36,7 @@ namespace Skyra.IntegrationTests.Grpc
 
 			var amount = _rng.Next();
 
-			var channel = GrpcChannel.ForAddress("https://localhost:5001");
+			var channel = GetChannel();
 			var client = new Member.MemberClient(channel);
 			var query = new PointsQuery
 			{
@@ -57,7 +62,7 @@ namespace Skyra.IntegrationTests.Grpc
 			var startingAmount = _rng.Next();
 			var additionalAmount = _rng.Next();
 
-			var channel = GrpcChannel.ForAddress("https://localhost:5001");
+			var channel = GetChannel();
 			var client = new Member.MemberClient(channel);
 			var createQuery = new PointsQuery
 			{
@@ -87,7 +92,7 @@ namespace Skyra.IntegrationTests.Grpc
 		{
 			// arrange
 
-			var channel = GrpcChannel.ForAddress("https://localhost:5001");
+			var channel = GetChannel();
 			var client = new Member.MemberClient(channel);
 
 			var getQuery = new MemberQuery
@@ -111,7 +116,7 @@ namespace Skyra.IntegrationTests.Grpc
 
 			var amount = _rng.Next();
 
-			var channel = GrpcChannel.ForAddress("https://localhost:5001");
+			var channel = GetChannel();
 			var client = new Member.MemberClient(channel);
 			var createQuery = new PointsQuery
 			{

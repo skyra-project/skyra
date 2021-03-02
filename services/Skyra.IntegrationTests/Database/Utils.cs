@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Skyra.Database;
@@ -44,5 +45,11 @@ namespace Skyra.IntegrationTests.Database
 
 			return new SkyraDbContext(optionsBuilder.Options);
 		}
+
+		public static HttpClientHandler GetHandler()
+			=> new HttpClientHandler
+			{
+				ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+			};
 	}
 }

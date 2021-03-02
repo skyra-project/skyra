@@ -13,6 +13,7 @@
 	"nickSet": "",
 	"nickCleared": "Apodo borrado.",
 	"permissionNodesHigher": "{{REDCROSS}} No puedes modificar ni previsualizar los nodos de permiso para este objetivo.",
+	"permissionNodesCannotAllowEveryone": "",
 	"permissionNodesInvalidType": "",
 	"permissionNodesAdd": "{{GREENTICK}} Se ha añadido correctamente el comando al nodo de permisos.",
 	"permissionNodesNodeNotExists": "{{REDCROSS}} El nodo de permiso seleccionado no existe.",
@@ -116,6 +117,7 @@
 	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
 		"usages": [
+			"",
 			"",
 			"",
 			"",

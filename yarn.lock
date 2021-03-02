@@ -730,10 +730,17 @@
   dependencies:
     twemoji-parser "^13.0.0"
 
-"@sapphire/discord.js-utilities@^1.4.3", "@sapphire/discord.js-utilities@^1.5.0":
+"@sapphire/discord.js-utilities@^1.4.3":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@sapphire/discord.js-utilities/-/discord.js-utilities-1.5.0.tgz#80249d69640372a1e0762777ced68c4178cc948a"
   integrity sha512-AuQA4ej/MSbyIEp8ORVcdYVJi8LyQT0RLdNqMbW/1NUzxfq7H6pPjC5CI9O1ZZppqcmt2iXPYJoN7ABaHHfqWQ==
+  dependencies:
+    "@sapphire/discord-utilities" "^2.0.5"
+
+"@sapphire/discord.js-utilities@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@sapphire/discord.js-utilities/-/discord.js-utilities-1.5.1.tgz#b1e1887f9b44df884d2e6d95f46231b2cb7a0c57"
+  integrity sha512-7XL9npEED8TPPE3cxTTwAsOKeRWb92mmutJ5JfzpEstgzrf5p78G9AjC5mGMuNWaLMaF5iSgOfgbFKUAUhhdUA==
   dependencies:
     "@sapphire/discord-utilities" "^2.0.5"
 
@@ -927,10 +934,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skyra/ai@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@skyra/ai/-/ai-1.1.0.tgz#a5cb73574bd75178d3266128fd8d1c3d5a96a911"
-  integrity sha512-yr/Gsc6iaTT9b0ovisuYzhQj3rbBZzo6jNz68W9QpDTUd5F2DVZCrYD86/0Fx71/YVDLIIXd4i0t0bCf+ykfiA==
+"@skyra/ai@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@skyra/ai/-/ai-1.1.1.tgz#3261c86655d19fe3e92e1979793eba7c5469aef0"
+  integrity sha512-lcgl8W2B6HgiZV76aU6DWAb0z7ila3QT39PPawSTw6Oe3YFvYs6OJxfgBEu+J7XO8bZMJZJjswMmiTQOsfCkRw==
   dependencies:
     bindings "^1.5.0"
     node-addon-api "*"
@@ -4398,10 +4405,10 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nock@^13.0.9:
-  version "13.0.9"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-13.0.9.tgz#32b9f6408a71991b25f044109cac92ee556c8539"
-  integrity sha512-SoGx/J0SsZPOdBFrBC9PP6NwaEgOBQIRPbsOsO9q+OwOPWc5eT6wALSxn3ZNE4Fv2ImIUXM4Hv/07rjq/uWDew==
+nock@^13.0.10:
+  version "13.0.10"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-13.0.10.tgz#a9a015269408d56ec9ac57fe3ede86b0a83ecc6a"
+  integrity sha512-AvUO/tbiWVBjlC3WsuIutPXltPbPmHWfcLwDSYzykKBJhOeo9eZPczo8n9aV4AHHCgpeL70zBXLwiSE+mzx89g==
   dependencies:
     debug "^4.1.0"
     json-stringify-safe "^5.0.1"

@@ -40,6 +40,7 @@ export const LoveLess75 = T<string>('commands/fun:loveLess75');
 export const LoveResult = T<string>('commands/fun:loveResult');
 export const MarkovDescription = T<string>('commands/fun:markovDescription');
 export const MarkovExtended = T<LanguageHelpDisplayOptions>('commands/fun:markovExtended');
+export const MarkovNsfwChannel = FT<{ channel: string }, string>('commands/fun:markovNsfwChannel');
 export const MarkovNoMessages = T<string>('commands/fun:markovNoMessages');
 export const MarkovTimer = FT<{ timer: string }, string>('commands/fun:markovTimer');
 export const NorrisDescription = T<string>('commands/fun:norrisDescription');

@@ -51,7 +51,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	}
 
 	/**
-	 * The pre-parse method. This method can be overriden by plugins to define their own argument parser.
+	 * The pre-parse method. This method can be overridden by plugins to define their own argument parser.
 	 * @param message The message that triggered the command.
 	 * @param parameters The raw parameters as a single string.
 	 * @param context The command-context used in this execution.
@@ -94,7 +94,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	}
 
 	protected static resolvePermissionLevelPreCondition(permissionLevel = 0): PreconditionEntryResolvable | null {
-		if (permissionLevel === 0) return null;
+		if (permissionLevel === 0) return ['BotOwner', 'Everyone'];
 		if (permissionLevel <= PermissionLevels.Moderator) return ['BotOwner', 'Moderator'];
 		if (permissionLevel <= PermissionLevels.Administrator) return ['BotOwner', 'Administrator'];
 		if (permissionLevel <= PermissionLevels.BotOwner) return 'BotOwner';

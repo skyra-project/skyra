@@ -77,6 +77,7 @@ export class UserCommand extends SkyraCommand {
 		let result: unknown | undefined = undefined;
 		let thenable = false;
 		let type: Type | undefined = undefined;
+
 		try {
 			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
 

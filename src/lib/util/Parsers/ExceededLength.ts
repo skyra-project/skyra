@@ -9,25 +9,21 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 	options: HandleMessageData<ED>
 ): Promise<Message | Message[] | null> {
 	const t = await message.fetchT();
+	const typeFooter = options.footer ? t(LanguageKeys.System.ExceededLengthOutputType, { type: options.footer }) : undefined;
+	const timeTaken = options.time ? t(LanguageKeys.System.ExceededLengthOutputTime, { time: options.time }) : undefined;
+
 	switch (options.sendAs) {
 		case 'file': {
 			if (message.channel.attachable) {
-				return message.channel.send(
-					t(
-						options.time !== undefined && options.footer !== undefined
-							? LanguageKeys.System.ExceededLengthOutputFileWithTypeAndTime
-							: LanguageKeys.System.ExceededLengthOutputFile,
-						{ time: options.time, type: options.footer }
-					),
-					{
-						files: [
-							{
-								attachment: Buffer.from(options.content ? options.content : options.result!),
-								name: options.targetId ? `${options.targetId}.txt` : 'output.txt'
-							}
-						]
-					}
-				);
+				const output = t(LanguageKeys.System.ExceededLengthOutputFile);
+				return message.channel.send([output, typeFooter, timeTaken].filter(Boolean), {
+					files: [
+						{
+							attachment: Buffer.from(options.content ? options.content : options.result!),
+							name: options.targetId ? `${options.targetId}.txt` : 'output.txt'
+						}
+					]
+				});
 			}
 
 			await getTypeOutput(message, t, options);
@@ -35,18 +31,17 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		}
 		case 'haste':
 		case 'hastebin': {
-			if (!options.url)
+			if (!options.url) {
 				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
-			if (options.url)
-				return message.send(
-					t(
-						options.time !== undefined && options.footer !== undefined
-							? LanguageKeys.System.ExceededLengthOutputHastebinWithTypeAndTime
-							: LanguageKeys.System.ExceededLengthOutputHastebin,
-						{ url: options.url, time: options.time, type: options.footer }
-					)
-				);
+			}
+
+			if (options.url) {
+				const hastebinUrl = t(LanguageKeys.System.ExceededLengthOutputHastebin, { url: options.url });
+				return message.send([hastebinUrl, typeFooter, timeTaken].filter(Boolean));
+			}
+
 			options.hastebinUnavailable = true;
+
 			await getTypeOutput(message, t, options);
 			return handleMessage(message, options);
 		}
@@ -54,14 +49,8 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'log': {
 			if (options.canLogToConsole) {
 				message.client.logger.info(options.result);
-				return message.send(
-					t(
-						options.time !== undefined && options.footer !== undefined
-							? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime
-							: LanguageKeys.System.ExceededLengthOutputConsole,
-						{ time: options.time, type: options.footer }
-					)
-				);
+				const output = t(LanguageKeys.System.ExceededLengthOutputConsole);
+				return message.send([output, typeFooter, timeTaken].filter(Boolean));
 			}
 			await getTypeOutput(message, t, options);
 			return handleMessage(message, options);
@@ -83,20 +72,13 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					{ code: 'md' }
 				);
 			}
-			return message.send(
-				t(
-					options.success
-						? options.time !== undefined && options.footer !== undefined
-							? LanguageKeys.System.ExceededLengthOutputWithTypeAndTime
-							: LanguageKeys.System.ExceededLengthOutput
-						: LanguageKeys.Commands.System.EvalError,
-					{
-						output: codeBlock(options.language!, options.result!),
-						time: options.time,
-						type: options.footer
-					}
-				)
-			);
+
+			if (options.success) {
+				const parsedOutput = t(LanguageKeys.System.ExceededLengthOutput, { output: codeBlock(options.language!, options.result!) });
+				return message.send([parsedOutput, typeFooter, timeTaken].filter(Boolean));
+			}
+
+			return message.send(t(LanguageKeys.Commands.System.EvalError));
 		}
 	}
 }
@@ -130,12 +112,8 @@ type HandleMessageData<ED extends ExtraDataPartial> = {
 	canLogToConsole: boolean;
 } & ED;
 
-export interface EvalExtraData {
-	success: boolean;
-	result: string;
-	time: string;
+export interface EvalExtraData extends QueryExtraData {
 	footer: string;
-	language: string;
 }
 
 export interface ContentExtraData {
@@ -144,4 +122,11 @@ export interface ContentExtraData {
 	attachments: string;
 }
 
-type ExtraDataPartial = Partial<EvalExtraData> & Partial<ContentExtraData>;
+export interface QueryExtraData {
+	success: boolean;
+	result: string;
+	time: string;
+	language: string;
+}
+
+type ExtraDataPartial = Partial<EvalExtraData> & Partial<ContentExtraData> & Partial<QueryExtraData>;

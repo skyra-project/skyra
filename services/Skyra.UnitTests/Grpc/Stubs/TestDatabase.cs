@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Skyra.Database;
 using Skyra.Database.Models;
 
-namespace Skyra.Tests.UnitTests.Grpc.Stubs
+namespace Skyra.UnitTests.Grpc.Stubs
 {
 	public class TestDatabase : IDatabase
 	{

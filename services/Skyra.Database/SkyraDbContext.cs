@@ -52,7 +52,7 @@ namespace Skyra.Database
 			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
 			var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 			var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-			var name = Environment.GetEnvironmentVariable("POSTGRES_NAME") ?? "postgres";
+			var name = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "postgres";
 
 			optionsBuilder.UseNpgsql(
 				$"User ID={user};Password={password};Server={host};Port={port};Database={name};Pooling=true;",

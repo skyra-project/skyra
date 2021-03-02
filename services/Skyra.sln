@@ -1,10 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Tests", "Skyra.Tests\Skyra.Tests.csproj", "{0AE01293-2D6A-49B3-8E6F-7A2627565631}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.UnitTests", "Skyra.UnitTests\Skyra.UnitTests.csproj", "{0AE01293-2D6A-49B3-8E6F-7A2627565631}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Database", "Skyra.Database\Skyra.Database.csproj", "{12F4030C-3612-4CF7-B194-FF6A5DC282C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Grpc", "Skyra.Grpc\Skyra.Grpc.csproj", "{1D4FC3B3-B54A-4932-9856-6A0B75657310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.IntegrationTests", "Skyra.IntegrationTests\Skyra.IntegrationTests.csproj", "{54FC829B-2BD8-44FF-A17F-6A4E1FF4A1B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{1D4FC3B3-B54A-4932-9856-6A0B75657310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D4FC3B3-B54A-4932-9856-6A0B75657310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D4FC3B3-B54A-4932-9856-6A0B75657310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54FC829B-2BD8-44FF-A17F-6A4E1FF4A1B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54FC829B-2BD8-44FF-A17F-6A4E1FF4A1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54FC829B-2BD8-44FF-A17F-6A4E1FF4A1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54FC829B-2BD8-44FF-A17F-6A4E1FF4A1B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

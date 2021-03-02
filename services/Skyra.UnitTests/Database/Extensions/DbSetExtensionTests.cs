@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using Skyra.Database.Extensions;
-using Skyra.Tests.UnitTests.Database.Stubs;
+using Skyra.UnitTests.Database.Stubs;
 
-namespace Skyra.Tests.UnitTests.Database.Extensions
+namespace Skyra.UnitTests.Database.Extensions
 {
 	[TestFixture]
 	public class DbSetExtensionTests

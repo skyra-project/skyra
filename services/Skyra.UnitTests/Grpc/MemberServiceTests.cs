@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using Skyra.Grpc.Services;
-using Skyra.Tests.UnitTests.Grpc.Stubs;
+using Skyra.UnitTests.Grpc.Stubs;
 
-namespace Skyra.Tests.UnitTests.Grpc
+namespace Skyra.UnitTests.Grpc
 {
 	[TestFixture]
 	public class MemberServiceTests

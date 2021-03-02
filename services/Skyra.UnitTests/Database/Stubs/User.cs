@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Skyra.Tests.UnitTests.Database.Stubs
+namespace Skyra.UnitTests.Database.Stubs
 {
 	public class UserStub
 	{

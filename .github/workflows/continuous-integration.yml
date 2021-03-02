@@ -134,21 +134,30 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}
       - name: Build C# code
         run: dotnet build services
-      - name: Run C# tests
+      - name: Run C# unit tests
+        run: dotnet test services/Skyra.UnitTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
+      - name: Run C# integration tests
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
           docker container run --name postgres -e POSTGRES_PASSWORD=postgres -d --expose 5432 -p 5432:5432 -it postgres:12
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
-          dotnet test services --collect:"XPlat Code Coverage" /p:SkipAutoProps=true --settings services/coverlet.runsettings
+          dotnet run services/Skyra.Gprc &
+          sleep 5 &&
+          dotnet test services/Skyra.IntegrationTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
         env:
-          POSTGRES_NAME: test
-      - name: Store code coverage report
+          POSTGRES_DB: test
+      - name: Store code coverage report (Unit Tests)
         uses: actions/upload-artifact@v2
         with:
           name: dotnet-coverage
-          path: services/Skyra.Tests/TestResults/
+          path: services/Skyra.UnitTests/TestResults/
+      - name: Store code coverage report (Integration Tests)
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-coverage
+          path: services/Skyra.IntegrationTests/TestResults/
 
   Upload_Coverage_Report:
     name: Upload coverage report to codecov

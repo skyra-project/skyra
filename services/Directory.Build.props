@@ -6,11 +6,14 @@
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
-    <!-- We add InternalsVisibleTo to every project, making sure Skyra.Tests can see internals (to test) APART from Skyra.Tests itself. -->
+    <!-- We add InternalsVisibleTo to every project, making sure Skyra.*Tests can see internals (to test) APART from Skyra.*Tests itself. -->
 
-    <ItemGroup Condition="'$(MSBuildProjectName)' != 'Skyra.Tests.csproj'">
+    <ItemGroup Condition="'$(MSBuildProjectName)' != 'Skyra.UnitTests.csproj' And $(MSBuildProjectName) != 'Skyra.IntegrationTests.csproj'">
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>Skyra.Tests</_Parameter1>
+            <_Parameter1>Skyra.IntegrationTests</_Parameter1>
+        </AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Skyra.UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 </Project>

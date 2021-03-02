@@ -84,7 +84,6 @@
 		"While I look physically young, I am over 97 million years old."
 	],
 	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
-	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
 	"chaseDescription": "Get in here!",
 	"chaseExtended": {
 		"usages": [
@@ -351,12 +350,31 @@
 		"extendedHelp": "Well, what can I tell you? This command turns your messages into unicode monospaced characters. That is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...",
 		"explainedUsage": [
 			[
-				"phrase",
+				"Content",
 				"The phrase to convert"
 			]
 		],
 		"examples": [
 			"A E S T H E T I C"
 		]
-	}
+	},
+	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
+	"zalgoDescription": "Create zalgo of your message!",
+	"zalgoExtended": {
+		"usages": [
+			"Content"
+		],
+		"extendedHelp": "To invoke the hive-mind representing chaos.\nInvoking the feeling of chaos.\nWithout order.\nThe Nezperdian hive-mind of chaos. Zalgo.\nHe who Waits Behind The Wall.\nZALGO!",
+		"explainedUsage": [
+			[
+				"Content",
+				"The phrase to convert"
+			]
+		],
+		"examples": [
+			"HE COMES"
+		],
+		"reminder": "H̡̰͉̜̰̠̣͆ͣ̒ͯ̽̃E̪̱̬̪ͣ̓̈́̐͗́̑ͩ͠ͅ ̞͍͍̪̟͚̩̃̀ͯ̓ͥͪͦ̎͜C̣̮̄ͩͤͬͥ͆͛͆͢͞O̲͙̟͎̙͑̿̋̚M̛̖͙͖̣͇̊ͦ̽ͭ͋̑̂̾Ē̸̳͎͖̟̿̆S̱̭̩̳̠̜ͨ̔̿ͅ"
+	},
+	"zalgoOutput": "Here is your converted message:\n{{str}}"
 }

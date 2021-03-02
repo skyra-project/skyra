@@ -5,6 +5,7 @@ import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import type { DexDetails } from '@favware/graphql-pokemon';
+import { zalgo } from '@favware/zalgo';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -49,8 +50,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setThumbnail(args.getFlags('shiny') ? pokemonData.shinySprite : pokemonData.sprite)
 		});
 
-		for (const flavorText of pokemonData.flavorTexts) {
-			display.addPageEmbed((embed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
+		for (const { game, flavor } of pokemonData.flavorTexts) {
+			display.addPageEmbed((embed) => embed.setDescription([`**${game}**`, pokemonData.num === 0 ? zalgo(flavor) : flavor].join('\n')));
 		}
 
 		return display;

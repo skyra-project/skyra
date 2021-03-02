@@ -76,3 +76,6 @@ export const UpvoteMessage = T<string>('commands/misc:upvoteMessage');
 export const VaporwaveDescription = T<string>('commands/misc:vaporwaveDescription');
 export const VaporwaveExtended = T<LanguageHelpDisplayOptions>('commands/misc:vaporwaveExtended');
 export const VaporwaveOutput = FT<{ str: string }, string>('commands/misc:vaporwaveOutput');
+export const ZalgoDescription = T<string>('commands/misc:zalgoDescription');
+export const ZalgoExtended = T<LanguageHelpDisplayOptions>('commands/misc:zalgoExtended');
+export const ZalgoOutput = FT<{ str: string }, string>('commands/misc:zalgoOutput');

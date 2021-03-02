@@ -35,7 +35,7 @@
 		"dev": "yarn build && yarn start",
 		"dockerps": "pwsh -NoLogo ./docker/control.ps1",
 		"typeorm:schema:resync": "docker container rm -f pgsql && docker volume rm postgres-data && docker volume create postgres-data && docker-compose -p skyra -f ./docker/docker-compose.yml up -d postgres && sleep 3 && yarn typeorm schema:sync",
-		"postinstall": "husky install .github/husky"
+		"prepare": "husky install .github/husky"
 	},
 	"repository": {
 		"type": "git",
@@ -60,7 +60,7 @@
 		"@influxdata/influxdb-client-apis": "^1.10.0",
 		"@sapphire/async-queue": "^1.0.4",
 		"@sapphire/decorators": "^2.0.5",
-		"@sapphire/discord.js-utilities": "^1.5.0",
+		"@sapphire/discord.js-utilities": "^1.5.1",
 		"@sapphire/framework": "^1.0.0-alpha.11",
 		"@sapphire/plugin-api": "^2.0.3",
 		"@sapphire/plugin-i18next": "^1.3.2",
@@ -73,7 +73,7 @@
 		"@sapphire/utilities": "^1.4.5",
 		"@sentry/integrations": "^6.2.1",
 		"@sentry/node": "^6.2.1",
-		"@skyra/ai": "^1.1.0",
+		"@skyra/ai": "^1.1.1",
 		"@skyra/audio": "^1.0.2",
 		"@skyra/char": "^1.0.1",
 		"@skyra/editable-commands": "^1.0.0",
@@ -130,7 +130,7 @@
 		"jest-circus": "^26.6.3",
 		"jest-mock-random": "^1.1.1",
 		"lint-staged": "^10.5.4",
-		"nock": "^13.0.9",
+		"nock": "^13.0.10",
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0",
 		"ts-jest": "^26.5.2",

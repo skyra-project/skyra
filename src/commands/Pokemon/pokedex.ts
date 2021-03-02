@@ -6,6 +6,7 @@ import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
+import { zalgo } from '@favware/zalgo';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -156,11 +157,15 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
-		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+		if (pokeDetails.num < 0) {
+			return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+		} else if (pokeDetails.num === 0) {
+			return this.parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+		}
 		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }, t);
 	}
 
-	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
+	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs): UserPaginatedMessage {
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
@@ -184,6 +189,45 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
 					.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true)
 					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
+			);
+	}
+
+	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs): UserPaginatedMessage {
+		const externalResources = args.t(LanguageKeys.System.PokedexExternalResource);
+		const externalResourceData = [
+			`[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/MissingNo.)`,
+			`[Serebii](https://www.serebii.net/pokedex/000.shtml)`
+		].join(' | ');
+
+		return new UserPaginatedMessage({
+			template: new MessageEmbed()
+				.setColor(resolveColour(pokeDetails.color))
+				.setAuthor(`#${pokeDetails.num} - ${zalgo(toTitleCase(pokeDetails.species))}`, CdnUrls.Pokedex)
+				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
+		})
+			.addPageEmbed((embed) =>
+				embed
+					.addField(embedTranslations.types, zalgo(pokeDetails.types.join(', ')), true)
+					.addField(embedTranslations.abilities, zalgo(abilities.join(', ')), true)
+					.addField(embedTranslations.genderRatio, zalgo(this.parseGenderRatio(pokeDetails.gender)), true)
+					.addField(embedTranslations.evolutionaryLine, zalgo(evoChain))
+					.addField(
+						embedTranslations.baseStats,
+						zalgo(`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`)
+					)
+					.addField(externalResources, externalResourceData)
+			)
+			.addPageEmbed((embed) =>
+				embed
+					.addField(embedTranslations.height, zalgo(`${pokeDetails.height}m`), true)
+					.addField(embedTranslations.weight, zalgo(`${pokeDetails.weight}kg`), true)
+					.addField(embedTranslations.eggGroups, zalgo(pokeDetails.eggGroups?.join(', ') || ''), true)
+					.addField(externalResources, externalResourceData)
+			)
+			.addPageEmbed((embed) =>
+				embed
+					.addField(embedTranslations.flavourText, `\`(${pokeDetails.flavorTexts[0].game})\` ${zalgo(pokeDetails.flavorTexts[0].flavor)}`)
+					.addField(externalResources, externalResourceData)
 			);
 	}
 

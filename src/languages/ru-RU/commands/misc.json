@@ -84,7 +84,6 @@
 		""
 	],
 	"upvoteMessage": "",
-	"vaporwaveOutput": "",
 	"chaseDescription": "",
 	"chaseExtended": {
 		"usages": [
@@ -358,5 +357,24 @@
 		"examples": [
 			""
 		]
-	}
+	},
+	"vaporwaveOutput": "",
+	"zalgoDescription": "",
+	"zalgoExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"zalgoOutput": ""
 }

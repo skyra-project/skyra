@@ -144,6 +144,7 @@ jobs:
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
           dotnet dev-certs https --clean
+          dotnet dev-certs https
           dotnet dev-certs https --trust
           dotnet run --project services/Skyra.Grpc &
           sleep 5 &&

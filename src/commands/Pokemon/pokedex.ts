@@ -165,7 +165,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }, t);
 	}
 
-	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs): UserPaginatedMessage {
+	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
@@ -192,7 +192,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			);
 	}
 
-	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs): UserPaginatedMessage {
+	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
 		const externalResources = args.t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/MissingNo.)`,

@@ -95,3 +95,6 @@ export const UpcomingBirthdaysDescription = T<string>('commands/misc:upcomingBir
 export const UpcomingBirthdaysExtended = T<LanguageHelpDisplayOptions>('commands/misc:upcomingBirthdaysExtended');
 export const UpcomingBirthdaysTitle = FT<{ user: string }, string>('commands/misc:upcomingBirthdaysTitle');
 export const UpcomingBirthdaysNone = FT<{ birthDate: number; user: string }, string>('commands/misc:upcomingBirthdaysNone');
+export const ZalgoDescription = T<string>('commands/misc:zalgoDescription');
+export const ZalgoExtended = T<LanguageHelpDisplayOptions>('commands/misc:zalgoExtended');
+export const ZalgoOutput = FT<{ str: string }, string>('commands/misc:zalgoOutput');

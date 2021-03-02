@@ -11,7 +11,7 @@ namespace Skyra.UnitTests.Database
         {
 			// arrange
 
-			var database = new SkyraDatabase(null); // we pass null here on purpose, as it simulates something going wrong and thus making it throw.
+			var database = new SkyraDatabase(null!); // we pass null here on purpose, as it simulates something going wrong and thus making it throw.
 
 			// act
 
@@ -27,7 +27,7 @@ namespace Skyra.UnitTests.Database
         {
 	        // arrange
 
-	        var database = new SkyraDatabase(null); // we pass null here on purpose, as it simulates something going wrong and thus making it throw.
+	        var database = new SkyraDatabase(null!); // we pass null here on purpose, as it simulates something going wrong and thus making it throw.
 
 	        // act
 

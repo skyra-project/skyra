@@ -143,9 +143,6 @@ jobs:
           docker container run --name postgres -e POSTGRES_PASSWORD=postgres -d --expose 5432 -p 5432:5432 -it postgres:12
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
-          dotnet dev-certs https --clean
-          dotnet dev-certs https
-          dotnet dev-certs https --trust
           dotnet run --project services/Skyra.Grpc &
           sleep 5 &&
           dotnet test services/Skyra.IntegrationTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
@@ -154,12 +151,12 @@ jobs:
       - name: Store code coverage report (Unit Tests)
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-coverage
+          name: dotnet-coverage-unit
           path: services/Skyra.UnitTests/TestResults/
       - name: Store code coverage report (Integration Tests)
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-coverage
+          name: dotnet-coverage-integration
           path: services/Skyra.IntegrationTests/TestResults/
 
   Upload_Coverage_Report:

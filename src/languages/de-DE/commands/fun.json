@@ -287,6 +287,7 @@
 	"loveResult": "Ergebnis",
 	"markovTimer": "In {{timer}} verarbeitet.",
 	"markovNoMessages": "Der Channel oder Benutzer hat keine Nachrichten.",
+	"markovNsfwChannel": "",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, ich würde **{{userToRate}}** eine **{{rate}}**/100 {{emoji}} geben",
 	"rateMyself": [

@@ -184,7 +184,7 @@
 	"loveResult": "Result",
 	"markovTimer": "Processed in {{timer}}.",
 	"markovNoMessages": "The channel or user has no messages.",
-	"markovNsfwChannel": "I am sorry, but you cannot use the markov command on an NSFW channel here.",
+	"markovNsfwChannel": "I am sorry, but you can only use the markov command on {{channel}} when you are in an NSFW channel.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, I would give **{{userToRate}}** a **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [". I love myself a lot 😊", "myself"],

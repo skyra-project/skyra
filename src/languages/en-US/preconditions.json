@@ -4,6 +4,7 @@
 	"guildOnly": "This command can only be used in server channels.",
 	"nsfw": "You may not use NSFW commands in this channel!",
 	"permissions": "I don't have sufficient permissions! I'm missing: {{missing, permissionsAndList}}",
+	"serverOwner": "You need to be the server's owner to run `{{command.name}}`!",
 	"administrator": "You need administrator privileges to run `{{command.name}}`!",
 	"moderator": "You need moderator privileges to run `{{command.name}}`!",
 	"dj": "You need DJ privileges to run `{{command.name}}`!",

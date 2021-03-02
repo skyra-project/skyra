@@ -51,7 +51,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	}
 
 	/**
-	 * The pre-parse method. This method can be overriden by plugins to define their own argument parser.
+	 * The pre-parse method. This method can be overridden by plugins to define their own argument parser.
 	 * @param message The message that triggered the command.
 	 * @param parameters The raw parameters as a single string.
 	 * @param context The command-context used in this execution.
@@ -83,8 +83,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		const runInPreCondition = this.resolveRunInPreCondition(context, options.runIn);
 		if (runInPreCondition !== null) preconditions.push(runInPreCondition);
 
-		const permissionLevelPreCondition = this.resolvePermissionLevelPreCondition(options.permissionLevel);
-		if (permissionLevelPreCondition !== null) preconditions.push(permissionLevelPreCondition);
+		preconditions.push(this.resolvePermissionLevelPreCondition(context, options.permissionLevel));
 
 		if (options.bucket && options.cooldown) {
 			preconditions.push({ name: 'Cooldown', context: { bucket: options.bucket, cooldown: options.cooldown } });
@@ -93,12 +92,23 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		return options;
 	}
 
-	protected static resolvePermissionLevelPreCondition(permissionLevel = 0): PreconditionEntryResolvable | null {
-		if (permissionLevel === 0) return null;
-		if (permissionLevel <= PermissionLevels.Moderator) return ['BotOwner', 'Moderator'];
-		if (permissionLevel <= PermissionLevels.Administrator) return ['BotOwner', 'Administrator'];
-		if (permissionLevel <= PermissionLevels.BotOwner) return 'BotOwner';
-		return null;
+	protected static resolvePermissionLevelPreCondition(context: PieceContext, permissionLevel?: PermissionLevels): PreconditionEntryResolvable {
+		switch (permissionLevel ?? PermissionLevels.Everyone) {
+			case PermissionLevels.Everyone:
+				return ['BotOwner', 'Everyone'];
+			case PermissionLevels.Moderator:
+				return ['BotOwner', 'Moderator'];
+			case PermissionLevels.Administrator:
+				return ['BotOwner', 'Administrator'];
+			case PermissionLevels.ServerOwner:
+				return ['BotOwner', 'ServerOwner'];
+			case PermissionLevels.BotOwner:
+				return 'BotOwner';
+			default:
+				throw new Error(
+					`SkyraCommand[${context.name}]: "permissionLevel" was specified as an invalid permission level (${permissionLevel}).`
+				);
+		}
 	}
 
 	protected static resolveRunInPreCondition(context: PieceContext, runIn?: SkyraCommand.RunInOption[]): PreconditionEntryResolvable | null {

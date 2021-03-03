@@ -1,6 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using Skyra.Database.Models;
+using Skyra.Database.Models.Entities;
 
 #nullable disable
 
@@ -43,13 +43,16 @@ namespace Skyra.Database
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (optionsBuilder.IsConfigured) return;
+			if (optionsBuilder.IsConfigured)
+			{
+				return;
+			}
 
 			var user = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
 			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
 			var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 			var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-			var name = Environment.GetEnvironmentVariable("POSTGRES_NAME") ?? "postgres";
+			var name = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "postgres";
 
 			optionsBuilder.UseNpgsql(
 				$"User ID={user};Password={password};Server={host};Port={port};Database={name};Pooling=true;",
@@ -477,13 +480,6 @@ namespace Skyra.Database
 					.HasForeignKey(d => d.UserId2)
 					.HasConstraintName("FK_039ee960316593d0e8102ae6c51");
 			});
-
-			OnModelCreatingPartial(modelBuilder);
-		}
-
-		private void OnModelCreatingPartial(ModelBuilder modelBuilder)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

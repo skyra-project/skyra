@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>          
+          <Exclude>[*]Skyra.UnitTests*,[*]Skyra.IntegrationTests*,[*]Skyra.Database.Models*</Exclude>
+		  <ExcludeByFile>**/Program.cs,**/Startup.cs,**/.nuget/,**/obj/,**/build/,**/SkyraDbContext.cs</ExcludeByFile>
+          <IncludeTestAssembly>true</IncludeTestAssembly>
+          <SkipAutoProps>true</SkipAutoProps>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

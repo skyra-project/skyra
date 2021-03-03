@@ -120,6 +120,19 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(needs.pre_ci.outputs.commit_message, '[skip ci]')"
     needs: pre_ci
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
@@ -140,11 +153,12 @@ jobs:
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
-          docker container run --name postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=test -d --expose 5432 -p 5432:5432 -it postgres:12
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
           dotnet run --project services/Skyra.Grpc &
-          sleep 5
+          while ! nc -z localhost 5000; do   
+            sleep 0.1 # wait for 1/10 of the second before check again
+          done
           dotnet test services/Skyra.IntegrationTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
         env:
           POSTGRES_DB: test

@@ -64,6 +64,14 @@ services:
       STORAGE_PASSWORD: redis
       STORAGE_DB: 2
       STORAGE_EXPIRE_SECONDS: 21600
+  outflux:
+    container_name: outflux
+    image: skyrabot/outflux
+    restart: always
+    environment:
+      INFLUX_BASE_URL: 'http://host.docker.internal:8285'
+    ports:
+      - '8286:8286'
 
 volumes:
   postgres-data:

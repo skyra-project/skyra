@@ -287,7 +287,8 @@ export namespace Mime {
 	export const enum Types {
 		ApplicationJson = 'application/json',
 		ApplicationFormUrlEncoded = 'application/x-www-form-urlencoded',
-		TextPlain = 'text/plain'
+		TextPlain = 'text/plain',
+		ImagePng = 'image/png'
 	}
 }
 

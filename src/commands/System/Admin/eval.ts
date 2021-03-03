@@ -139,7 +139,7 @@ export class UserCommand extends SkyraCommand {
 			success = true;
 		} catch (error) {
 			time = stopwatch.toString();
-			if (!type!) type = new Type(error);
+			type = new Type(error);
 			result = error;
 			success = false;
 		}

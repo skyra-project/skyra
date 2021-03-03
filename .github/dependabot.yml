@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/services"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "12:00"
+    assignees:
+      - "Tylertron1998"
+    reviewers:
+      - "kyranet"
+      - "Tylertron1998"
+    labels:
+      - "Meta: Dependencies"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "12:00"
+    assignees:
+      - "favna"
+    reviewers:
+      - "favna"
+    labels:
+      - "Meta: Dependencies"
+      - "Meta: Github"

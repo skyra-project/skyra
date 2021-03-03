@@ -6,8 +6,7 @@
 			"launchBrowser": false,
 			"applicationUrl": "http://localhost:5000;https://localhost:5001",
 			"environmentVariables": {
-				"ASPNETCORE_ENVIRONMENT": "Development",
-				"POSTGRES_DB": "test"
+				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		}
 	}

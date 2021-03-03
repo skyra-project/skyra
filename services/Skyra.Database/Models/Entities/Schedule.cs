@@ -25,7 +25,7 @@ namespace Skyra.Database.Models.Entities
 
 		[Required]
 		[Column("catch_up")]
-		public bool? CatchUp { get; set; }
+		public bool CatchUp { get; set; }
 
 		[Required]
 		[Column("data", TypeName = "jsonb")]

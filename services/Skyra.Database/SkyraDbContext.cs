@@ -6,12 +6,15 @@ using Skyra.Database.Models.Entities;
 
 namespace Skyra.Database
 {
+	/// <inheritdoc />
 	public class SkyraDbContext : DbContext
 	{
+		/// <inheritdoc />
 		public SkyraDbContext()
 		{
 		}
 
+		/// <inheritdoc />
 		public SkyraDbContext(DbContextOptions<SkyraDbContext> options)
 			: base(options)
 		{

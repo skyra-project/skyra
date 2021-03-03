@@ -125,7 +125,7 @@ jobs:
         image: postgres:12
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test
+          POSTGRES_DB: skyra-dotnet-test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -153,15 +153,14 @@ jobs:
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
-          dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate
           dotnet tool run dotnet-ef database update --project services/Skyra.Database
           dotnet run --project services/Skyra.Grpc &
-          while ! nc -z localhost 5000; do   
+          while ! nc -z localhost 5000; do
             sleep 0.1 # wait for 1/10 of the second before check again
           done
           dotnet test services/Skyra.IntegrationTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
         env:
-          POSTGRES_DB: test
+          POSTGRES_DB: skyra-dotnet-test
       - name: Store code coverage report (Unit Tests)
         uses: actions/upload-artifact@v2
         with:

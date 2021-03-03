@@ -8,6 +8,7 @@ namespace Skyra.IntegrationTests.Database
 {
 	public static class Utils
 	{
+		private const string DbName = "skyra-dotnet-test";
 
 		public static async Task WipeDb()
 		{
@@ -15,16 +16,16 @@ namespace Skyra.IntegrationTests.Database
 
 			var name = context.Database.GetDbConnection().Database;
 
-			if (name != "test")
+			if (name != DbName)
 			{
-				Console.Error.WriteLine($"Exiting tests due to database name not being `test`, database name was {name}");
+				Console.Error.WriteLine(
+					$"Exiting tests due to database name not being {DbName}, database name was {name}");
 				Environment.Exit(-1);
 			}
 
-			foreach (var user in context.Users)
-			{
-				context.Users.Remove(user);
-			}
+			context.Users.RemoveRange(context.Users);
+			context.Members.RemoveRange(context.Members);
+			context.Starboards.RemoveRange(context.Starboards);
 
 			await context.SaveChangesAsync();
 		}
@@ -37,7 +38,7 @@ namespace Skyra.IntegrationTests.Database
 			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
 			var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 			var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-			var name = "test";
+			var name = DbName;
 
 			optionsBuilder.UseNpgsql(
 				$"User ID={user};Password={password};Server={host};Port={port};Database={name};Pooling=true;",
@@ -46,10 +47,10 @@ namespace Skyra.IntegrationTests.Database
 			return new SkyraDbContext(optionsBuilder.Options);
 		}
 
-		public static HttpClientHandler GetHandler()
-			=> new HttpClientHandler
-			{
-				ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-			};
+		public static HttpClientHandler GetHandler() => new()
+		{
+			ServerCertificateCustomValidationCallback =
+				HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+		};
 	}
 }

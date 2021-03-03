@@ -27,4 +27,4 @@ const content = source
 	})
 	.join('\n');
 
-await writeFile(join(__dirname, '..', 'src', 'lib', 'util', 'Links', 'TLDs.ts'), header + content + footer);
+await writeFile(join(__dirname, '..', 'typescript', 'src', 'lib', 'util', 'Links', 'TLDs.ts'), header + content + footer);

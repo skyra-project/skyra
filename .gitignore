@@ -5,6 +5,7 @@ node_modules/
 *.iml
 /rethinkdb_data/
 coverage/
+generated/
 
 # Environment variables
 .DS_Store

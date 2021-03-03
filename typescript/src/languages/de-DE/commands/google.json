@@ -1,0 +1,72 @@
+{
+	"currentTimeDescription": "",
+	"currentTimeExtended": {
+		"usages": [""],
+		"extendedHelp": "",
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
+	},
+	"currentTimeLocationNotFound": "",
+	"currentTimeTitles": {
+		"currentTime": "",
+		"currentDate": "",
+		"country": "",
+		"gmsOffset": "",
+		"dst": ""
+	},
+	"currentTimeDst": "",
+	"currentTimeNoDst": "",
+	"gimageDescription": "",
+	"gimageExtended": {
+		"usages": [""],
+		"extendedHelp": "",
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""],
+		"reminder": ""
+	},
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"usages": [""],
+		"extendedHelp": "",
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
+	},
+	"lmgtfyDescription": "",
+	"lmgtfyExtended": {
+		"usages": [""],
+		"explainedUsage": [["", ""]],
+		"extendedHelp": "",
+		"examples": ["", ""]
+	},
+	"lmgtfyClick": "",
+	"weatherDescription": "",
+	"weatherExtended": {
+		"usages": ["", "", ""],
+		"extendedHelp": "",
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""],
+		"reminder": ""
+	},
+	"errorZeroResults": "",
+	"errorRequestDenied": "",
+	"errorInvalidRequest": "",
+	"errorOverQueryLimit": "",
+	"errorPermissionDenied": "",
+	"errorUnknown": "",
+	"weatherFahrenheit": "",
+	"weatherInches": "",
+	"weatherMiles": "",
+	"weatherMilesPerHour": "",
+	"weatherCelsius": "",
+	"weatherMillimeters": "",
+	"weatherPascal": "",
+	"weatherKilometers": "",
+	"weatherKilometersPerHour": "",
+	"weatherInvalidJsonBody": "",
+	"weatherUnknownLocation": "",
+	"weatherUnknownError": "",
+	"weatherBlockedLocation": "",
+	"weatherRateLimited": "",
+	"weatherRemoteServerError": "",
+	"weatherServiceUnavailable": ""
+}

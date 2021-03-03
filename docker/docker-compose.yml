@@ -1,15 +1,6 @@
 version: '2.4'
 services:
-  protos:
-    build:
-      context: ../assets/protos
-    command: exit 1
-    image: ghcr.io/skyra-project/grpc-protofiles:latest
-    networks:
-      - skyra
   grpc:
-    build:
-      context: ../services
     image: skyrabot/grpc:latest
     container_name: 'skyra-grpc'
     depends_on:

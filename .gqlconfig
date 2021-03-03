@@ -6,7 +6,7 @@
 	query: {
 		files: [
 			{
-				match: { include: 'src/lib/util/APIs/Pokemon.ts' },
+				match: { include: 'typescript/src/lib/util/APIs/Pokemon.ts' },
 				parser: ['EmbeddedQueryParser', { startTag: 'gql`', endTag: '`' }]
 			}
 		]

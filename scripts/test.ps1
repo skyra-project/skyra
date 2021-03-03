@@ -25,19 +25,19 @@ function Step-Main {
 }
 
 function RunTests {
-	
+
 	Param(
 		[string] $path
 	)
 
 	RunDependencies
-	
+
 	$job = & dotnet run -p $SERVICES_PATH\Skyra.Grpc -c Release &
 
 	do {
 		Write-Host "waiting..."
-		Start-Sleep 3      
-	} until(($job | Receive-Job).JobStateInfo.State -ne [JobStateInfo]::Running && Test-NetConnection localhost -Port 5001 | Where-Object { $_.TcpTestSucceeded })
+		Start-Sleep 3
+	} until(($job | Receive-Job).JobStateInfo.State -ne [JobStateInfo]::Running && Test-NetConnection localhost -Port 8291 | Where-Object { $_.TcpTestSucceeded })
 
 	if(($job | Receive-Job).JobStateInfo.State -ne [JobStateInfo]::Running) {
 		Write-Host Grpc service quit unexpectedly. -ForegroundColor Red
@@ -57,10 +57,10 @@ function RunTests {
 
 function RunDependencies {
 	Invoke-Expression -Command "docker rm -f postgres" | Out-Null
-	Invoke-Expression -Command "docker container run --name postgres -e POSTGRES_PASSWORD=postgres -d --expose 5432 -p 5432:5432 -it postgres:12"
-	Invoke-Expression -Command "dotnet new tool-manifest --force" 
-	Invoke-Expression -Command "dotnet tool install dotnet-ef" 
-	Invoke-Expression -Command "dotnet tool run dotnet-ef database update -p ${SERVICES_PATH}\Skyra.Database" 
+	Invoke-Expression -Command "docker container run --name postgres -d --expose 5432 -p 5432:5432 -it skyrabot/postgres:latest"
+	Invoke-Expression -Command "dotnet new tool-manifest --force"
+	Invoke-Expression -Command "dotnet tool install dotnet-ef"
+	Invoke-Expression -Command "dotnet tool run dotnet-ef database update -p ${SERVICES_PATH}\Skyra.Database"
 }
 
 Step-Main @args

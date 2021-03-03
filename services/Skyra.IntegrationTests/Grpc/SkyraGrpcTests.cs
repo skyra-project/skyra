@@ -23,7 +23,7 @@ namespace Skyra.IntegrationTests.Grpc
 
 		protected readonly Random Rng = new(DateTime.Now.Millisecond);
 
-		protected static GrpcChannel GetChannel() => GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions
+		protected static GrpcChannel GetChannel() => GrpcChannel.ForAddress("http://localhost:8291", new GrpcChannelOptions
 		{
 			HttpHandler = Utils.GetHandler()
 		});

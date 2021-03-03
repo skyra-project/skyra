@@ -7,7 +7,8 @@ extraction:
   javascript:
     index:
       include:
-        - src
-        - tests
+        - typescript/src
+        - typescript/unit-tests
+        - typescript/integration-tests
       filters:
-        - exclude: "src/languages/**/*.json"
+        - exclude: 'typescript/src/languages/**/*.json'

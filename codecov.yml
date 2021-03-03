@@ -3,7 +3,8 @@ flag_management:
     - name: dotnet
       carryforward: true
       paths:
-        - coverage/dotnet-coverage
+        - coverage/dotnet-coverage-unit
+        - coverage/dotnet-coverage-integration
     - name: nodejs
       carryforward: true
       paths: 

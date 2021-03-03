@@ -67,7 +67,7 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Restore CI Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}

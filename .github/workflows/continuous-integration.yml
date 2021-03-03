@@ -140,7 +140,7 @@ jobs:
         run: |
           dotnet new tool-manifest &&
           dotnet tool install dotnet-ef &&
-          docker container run --name postgres -e POSTGRES_PASSWORD=postgres -d --expose 5432 -p 5432:5432 -it postgres:12 &&
+          docker container run --name postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=test -d --expose 5432 -p 5432:5432 -it postgres:12 &&
           dotnet tool run dotnet-ef migrations add --project services/Skyra.Database InitCreate &&
           dotnet tool run dotnet-ef database update --project services/Skyra.Database &&
           dotnet run --project services/Skyra.Grpc &

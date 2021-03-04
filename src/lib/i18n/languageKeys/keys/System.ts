@@ -9,21 +9,13 @@ export const Loading = T<readonly string[]>('system:loading');
 export const DiscordAbortError = T<string>('system:discordAbortError');
 export const QueryFail = T<string>('system:queryFail');
 export const NoResults = T<string>('system:noResults');
-export const ExceededLengthOutput = FT<{ output: string; time?: string; type?: string }, string>('system:exceededLengthOutput');
-export const ExceededLengthOutputWithTypeAndTime = FT<{ output: string; time?: string; type?: string }, string>(
-	'system:exceededLengthOutputWithTypeAndTime'
-);
-export const ExceededLengthOutputConsole = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputConsole');
-export const ExceededLengthOutputConsoleWithTypeAndTime = FT<{ time?: string; type?: string }, string>(
-	'system:exceededLengthOutputConsoleWithTypeAndTime'
-);
-export const ExceededLengthOutputFile = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputFile');
-export const ExceededLengthOutputFileWithTypeAndTime = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputFileWithTypeAndTime');
-export const ExceededLengthOutputHastebin = FT<{ url: string; time?: string; type?: string }, string>('system:exceededLengthOutputHastebin');
-export const ExceededLengthOutputHastebinWithTypeAndTime = FT<{ url: string; time?: string; type?: string }, string>(
-	'system:exceededLengthOutputHastebinWithTypeAndTime'
-);
+export const ExceededLengthOutput = FT<{ output: string }, string>('system:exceededLengthOutput');
+export const ExceededLengthOutputConsole = T<string>('system:exceededLengthOutputConsole');
+export const ExceededLengthOutputFile = T<string>('system:exceededLengthOutputFile');
+export const ExceededLengthOutputHastebin = FT<{ url: string }, string>('system:exceededLengthOutputHastebin');
 export const ExceededLengthChooseOutput = FT<{ output: string[] }, string>('system:exceededLengthChooseOutput');
+export const ExceededLengthOutputType = FT<{ type: string }, string>('system:exceededLengthOutputType');
+export const ExceededLengthOutputTime = FT<{ time: string }, string>('system:exceededLengthOutputTime');
 export const ExternalServerError = T<string>('system:externalServerError');
 export const PokedexExternalResource = T<string>('system:pokedexExternalResource');
 export const HelpTitles = T<{

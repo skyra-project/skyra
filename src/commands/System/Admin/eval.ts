@@ -1,3 +1,4 @@
+import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -19,7 +20,7 @@ import { inspect } from 'util';
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	strategyOptions: {
-		flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden'],
+		flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden', 'sql'],
 		options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth']
 	}
 })
@@ -32,14 +33,15 @@ export class UserCommand extends SkyraCommand {
 		const wait = args.getOption('wait');
 		const flagTime = args.getFlags('no-timeout') ? (wait === null ? this.kTimeout : Number(wait)) : Infinity;
 		const language = args.getOption('lang', 'language') ?? (args.getFlags('json') ? 'json' : 'js');
-		const { success, result, time, type } = await this.timedEval(message, args, code, flagTime);
+		const executeSql = args.getFlags('sql');
+		const { success, result, time, type } = executeSql ? await this.sql(code) : await this.timedEval(message, args, code, flagTime);
 
 		if (args.getFlags('silent')) {
 			if (!success && result && cast<Error>(result).stack) this.context.client.logger.fatal(cast<Error>(result).stack);
 			return null;
 		}
 
-		const footer = codeBlock('ts', type);
+		const footer = executeSql ? undefined : codeBlock('ts', type);
 		const sendAs = args.getOption('output', 'output-to') ?? (args.getFlags('log') ? 'log' : null);
 
 		return handleMessage<Partial<EvalExtraData>>(message, {
@@ -77,6 +79,7 @@ export class UserCommand extends SkyraCommand {
 		let result: unknown | undefined = undefined;
 		let thenable = false;
 		let type: Type | undefined = undefined;
+
 		try {
 			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
 
@@ -114,10 +117,44 @@ export class UserCommand extends SkyraCommand {
 							showHidden: args.getFlags('showHidden', 'hidden')
 					  });
 		}
-		return { success, type: type!, time: this.formatTime(syncTime, asyncTime ?? ''), result: clean(result as string) };
+		return {
+			success,
+			type: type!,
+			time: this.formatTime(syncTime, asyncTime ?? ''),
+			result: clean(result as string)
+		};
 	}
 
-	private formatTime(syncTime: string, asyncTime: string) {
+	private async sql(sql: string) {
+		const stopwatch = new Stopwatch();
+		let success: boolean | undefined = undefined;
+		let time: string | undefined = undefined;
+		let result: unknown | undefined = undefined;
+		let type: Type | undefined = undefined;
+
+		try {
+			result = await DbSet.instance?.connection.query(sql);
+			time = stopwatch.toString();
+			type = new Type(result);
+			success = true;
+		} catch (error) {
+			time = stopwatch.toString();
+			type = new Type(error);
+			result = error;
+			success = false;
+		}
+
+		stopwatch.stop();
+
+		return {
+			success,
+			type: type!,
+			time: this.formatTime(time),
+			result: JSON.stringify(result, null, 2)
+		};
+	}
+
+	private formatTime(syncTime: string, asyncTime?: string) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 }

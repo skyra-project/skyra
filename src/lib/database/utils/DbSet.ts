@@ -73,7 +73,7 @@ export class DbSet {
 		this.userCooldowns = this.connection.getRepository(UserCooldownEntity);
 	}
 
-	private static instance: DbSet | null = null;
+	public static instance: DbSet | null = null;
 	private static connectPromise: Promise<DbSet> | null;
 
 	public static async connect() {

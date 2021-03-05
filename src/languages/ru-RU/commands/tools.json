@@ -219,9 +219,9 @@
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
-		"categories": "Категории",
+		"genres": "",
 		"esrb": "",
-		"noCategories": "",
+		"noGenres": "",
 		"nsuid": "",
 		"numberOfPlayers": "Количество игроков",
 		"platform": "Платформа",

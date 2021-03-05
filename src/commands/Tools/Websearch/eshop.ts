@@ -12,7 +12,7 @@ import { decode } from 'he';
 import type { TFunction } from 'i18next';
 import { stringify } from 'querystring';
 
-const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
+const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/ncom_game_en_us/query`;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 10,
@@ -25,10 +25,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const response = await sendLoadingMessage(message, args.t);
 
-		const { results: entries } = await this.fetchAPI(gameName);
-		if (!entries.length) this.error(LanguageKeys.System.QueryFail);
+		const { hits } = await this.fetchAPI(gameName);
+		if (!hits.length) this.error(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, args.t, entries[0].hits);
+		const display = await this.buildDisplay(message, args.t, hits);
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}
@@ -45,18 +45,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 						'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
 					},
 					body: JSON.stringify({
-						requests: [
-							{
-								indexName: 'noa_aem_game_en_us',
-								params: stringify({
-									facetFilters: ['type:game'],
-									hitsPerPage: 10,
-									maxValuesPerFacet: 30,
-									page: 0,
-									query: gameName
-								})
-							}
-						]
+						params: stringify({
+							hitsPerPage: 10,
+							page: 0,
+							query: gameName
+						})
 					})
 				},
 				FetchResultTypes.JSON
@@ -77,31 +70,32 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					? t(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
 					: t(LanguageKeys.Commands.Tools.EshopPriceFree)
 				: 'TBD';
-			const esrbText = game.esrb
-				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
+			const esrbText = game.esrbRating
+				? [`**${game.esrbRating}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join(
+						''
+				  )
 				: t(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
-			display.addPageEmbed((embed) =>
-				embed
+			display.addPageEmbed((embed) => {
+				const releaseDate = new Date(game.releaseDateDisplay).getTime();
+				return embed
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)
-					.setThumbnail(`https://nintendo.com${game.boxArt}`)
+					.setThumbnail(game.boxart ?? game.horizontalHeaderImage ?? '')
 					.setDescription(description)
 					.addField(titles.price, price, true)
 					.addField(titles.availability, game.availability[0], true)
 					.addField(
 						titles.releaseDate,
-						game.releaseDateMask === 'TBD'
-							? game.releaseDateMask
-							: t(LanguageKeys.Globals.DateValue, { value: new Date(game.releaseDateMask).getTime() }),
+						releaseDate ? t(LanguageKeys.Globals.DateValue, { value: releaseDate }) : game.releaseDateDisplay,
 						true
 					)
-					.addField(titles.numberOfPlayers, toTitleCase(game.players), true)
+					.addField(titles.numberOfPlayers, toTitleCase(game.numOfPlayers), true)
 					.addField(titles.platform, game.platform, true)
 					.addField(titles.nsuid, game.nsuid || 'TBD', true)
 					.addField(titles.esrb, esrbText)
-					.addField(titles.categories, game.categories.join(', ') || titles.noCategories)
-			);
+					.addField(titles.genres, game.genres.join(', ') || titles.noGenres);
+			});
 		}
 
 		return display;
@@ -109,48 +103,44 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 }
 
 interface EShopHit {
-	type: string;
-	locale: string;
-	url: string;
-	title: string;
-	description: string;
-	lastModified: number;
-	id: string;
-	nsuid: string;
-	slug: string;
-	boxArt: string;
-	gallery: string;
-	platform: string;
-	releaseDateMask: string;
-	characters: string[];
-	categories: string[];
-	msrp: number | null;
-	esrb?: string;
-	esrbDescriptors?: string[];
-	virtualConsole: string;
-	generalFilters: string[];
-	filterShops: string[];
-	filterPlayers: string[];
-	publishers: string[];
-	developers: string[];
-	players: string;
-	featured: boolean;
-	freeToStart: boolean;
-	priceRange: string | null;
-	salePrice: number | null;
 	availability: string[];
+	boxart?: string;
+	description: string;
+	developers: string[];
+	esrbDescriptors: string[];
+	esrbRating: string;
+	featured: boolean;
+	franchises: string;
+	freeToStart: boolean;
+	generalFilters: string[];
+	genres: string[];
+	horizontalHeaderImage?: string;
+	howToShop: string[];
+	lastModified: number;
+	lowestPrice: number;
+	msrp: number;
+	nsuid: string;
+	numOfPlayers: string;
 	objectID: string;
+	platform: string;
+	playerFilters: string[];
+	priceRange: string;
+	publishers: string[];
+	releaseDateDisplay: string;
+	salePrice: number | null;
+	slug: string;
+	title: string;
+	url: string;
 }
 
-interface EshopData {
+interface EshopResult {
 	hits: EShopHit[];
 	nbHits: number;
 	page: number;
 	nbPages: number;
 	hitsPerPage: number;
+	exhaustiveNbHits: true;
+	query: string;
+	params: string;
 	processingTimeMS: number;
-}
-
-interface EshopResult {
-	results: EshopData[];
 }

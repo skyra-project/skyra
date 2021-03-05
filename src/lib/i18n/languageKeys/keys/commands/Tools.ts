@@ -40,8 +40,8 @@ export const EshopTitles = T<{
 	releaseDate: string;
 	numberOfPlayers: string;
 	platform: string;
-	categories: string;
-	noCategories: string;
+	genres: string;
+	noGenres: string;
 	nsuid: 'NSUID';
 	esrb: 'ESRB';
 }>('commands/tools:eshopTitles');

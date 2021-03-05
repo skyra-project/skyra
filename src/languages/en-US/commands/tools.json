@@ -125,9 +125,9 @@
 	"eshopPricePaid": "${{price}} USD",
 	"eshopTitles": {
 		"availability": "Availability",
-		"categories": "Categories",
+		"genres": "Genres",
 		"esrb": "ESRB",
-		"noCategories": "This game has not been sorted into any categories",
+		"noGenres": "This game has not been sorted into any genres",
 		"nsuid": "NSUID",
 		"numberOfPlayers": "Number of Players",
 		"platform": "Platform",

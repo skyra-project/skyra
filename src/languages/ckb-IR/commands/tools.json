@@ -153,9 +153,9 @@
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
-		"categories": "",
+		"genres": "",
 		"esrb": "",
-		"noCategories": "",
+		"noGenres": "",
 		"nsuid": "",
 		"numberOfPlayers": "",
 		"platform": "",

@@ -1,7 +1,12 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { ENABLE_INFLUX } from '#root/config';
+import { Mime } from '#utils/constants';
+import { sleep } from '#utils/Promisified/sleep';
+import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Time } from '@sapphire/time-utilities';
 import { roundNumber } from '@sapphire/utilities';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
@@ -16,7 +21,10 @@ import { CpuInfo, cpus, uptime } from 'os';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		return message.send(await this.buildEmbed(message, args));
+		const loadingMessage = await sendLoadingMessage(message, args.t);
+		const embed = await this.buildEmbed(message, args);
+		await loadingMessage.delete();
+		return message.send(embed);
 	}
 
 	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
@@ -26,11 +34,23 @@ export class UserCommand extends SkyraCommand {
 			uptime: this.uptimeStatistics,
 			usage: this.usageStatistics
 		});
-		return new MessageEmbed()
+
+		const outfluxImage = ENABLE_INFLUX
+			? // Try to get the image from Outflux within 30 seconds, return undefined otherwise
+			  await Promise.race([sleep(Time.Second * 30).then(() => undefined), this.getOutfluxImage()])
+			: undefined;
+
+		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);
+
+		if (outfluxImage) {
+			embed.attachFiles([{ attachment: outfluxImage, name: 'outfluxImage.png' }]).setImage('attachment://outfluxImage.png');
+		}
+
+		return embed;
 	}
 
 	private get generalStatistics(): StatsGeneral {
@@ -59,6 +79,23 @@ export class UserCommand extends SkyraCommand {
 			ramTotal: usage.heapTotal / 1048576,
 			ramUsed: usage.heapUsed / 1048576
 		};
+	}
+
+	private async getOutfluxImage() {
+		try {
+			return await fetch(
+				'http://localhost:8286',
+				{
+					headers: {
+						'Content-Type': Mime.Types.ImagePng
+					}
+				},
+				FetchResultTypes.Buffer
+			);
+		} catch (err) {
+			this.context.client.logger.fatal(err);
+			return undefined;
+		}
 	}
 
 	private static formatCpuInfo({ times }: CpuInfo) {

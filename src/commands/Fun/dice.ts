@@ -42,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 		if (typeof pattern === 'number') {
 			if (!isNumber(pattern) || pattern <= 0) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
 			amount = 1;
-			dice = 6;
+			dice = pattern;
 		} else {
 			const results = this.kDice20RegExp.exec(pattern);
 			if (results === null) this.error(LanguageKeys.Commands.Fun.DiceRollsError);

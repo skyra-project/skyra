@@ -40,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
+			if (!isNumber(pattern) || pattern < 3) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
 			amount = 1;
 			dice = pattern;
 		} else {

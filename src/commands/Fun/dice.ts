@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
 			dice = Number(results[2]);
 
-			if (amount <= 1 || amount > 1024) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (amount < 1 || amount > 1024) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
 			if (dice < 3 || dice > 1024) this.error(LanguageKeys.Commands.Fun.DiceSidesError);
 
 			if (results[3].length > 0) {

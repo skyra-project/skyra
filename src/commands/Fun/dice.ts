@@ -40,16 +40,16 @@ export class UserCommand extends SkyraCommand {
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
-			amount = pattern;
-			dice = 6;
+			if (!isNumber(pattern) || pattern < 3) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });
+			amount = 1;
+			dice = pattern;
 		} else {
 			const results = this.kDice20RegExp.exec(pattern);
 			if (results === null) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
 			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
 			dice = Number(results[2]);
 
-			if (amount <= 1 || amount > 1024) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (amount < 1 || amount > 1024) this.error(LanguageKeys.Commands.Fun.DiceRollsError);
 			if (dice < 3 || dice > 1024) this.error(LanguageKeys.Commands.Fun.DiceSidesError);
 
 			if (results[3].length > 0) {

@@ -56,8 +56,8 @@
 	"dependencies": {
 		"@discordjs/collection": "^0.1.6",
 		"@favware/zalgo": "^3.1.1",
-		"@influxdata/influxdb-client": "^1.10.0",
-		"@influxdata/influxdb-client-apis": "^1.10.0",
+		"@influxdata/influxdb-client": "^1.11.0",
+		"@influxdata/influxdb-client-apis": "^1.11.0",
 		"@sapphire/async-queue": "^1.0.4",
 		"@sapphire/decorators": "^2.0.5",
 		"@sapphire/discord.js-utilities": "^1.5.1",
@@ -116,7 +116,7 @@
 		"@types/jest": "^26.0.20",
 		"@types/node": "^14.14.31",
 		"@types/node-fetch": "^2.5.8",
-		"@types/pg": "^7.14.10",
+		"@types/pg": "^7.14.11",
 		"@types/ws": "^7.4.0",
 		"@typescript-eslint/eslint-plugin": "^4.16.1",
 		"@typescript-eslint/parser": "^4.16.1",
@@ -133,7 +133,7 @@
 		"nock": "^13.0.10",
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0",
-		"ts-jest": "^26.5.2",
+		"ts-jest": "^26.5.3",
 		"ts-node": "^9.1.1",
 		"typescript": "4.2.3"
 	},

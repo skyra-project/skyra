@@ -471,15 +471,15 @@
   resolved "https://registry.yarnpkg.com/@favware/zalgo/-/zalgo-3.1.1.tgz#9945e5c08ed756e3ec6f135a365a42f85fb132cb"
   integrity sha512-jEYKoCb3H5EO8bSSgwbtIyburhxFBAqbM2GY0z5A2zjE40xukTnqqrhIzJodBiP3IAJ+dkNJovktHbCxp8BtGQ==
 
-"@influxdata/influxdb-client-apis@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client-apis/-/influxdb-client-apis-1.10.0.tgz#8595b5255ffdab18b9346d86a228ac3e76337206"
-  integrity sha512-v9mPb69VdNN0ILUmGMUI2T6GDWUT/eLpwDmvMGETqKGgFeZ92eGzYqOnhsEp7m0OiuKexSzwtypBUx88QIg5Qg==
+"@influxdata/influxdb-client-apis@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client-apis/-/influxdb-client-apis-1.11.0.tgz#dd187015b3fb26dc1e57adba29d2a9db020c9ba6"
+  integrity sha512-rUkH3TOM/7/OS9LUP85gdusJ16LYXuD1WMd+0+wsfrjchcm9IAO9yJEB+45qbc4C8Ohz5H8aR4m1jUmhd5a+Fw==
 
-"@influxdata/influxdb-client@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client/-/influxdb-client-1.10.0.tgz#3e8cef27c808a986a62665dd64c9a258811b21c2"
-  integrity sha512-2TTeLsh4m+an82m4I0XU8QUj5NAO8fA+wHPjKC9ju7MLODOsq1Fyb66SCJWZdn8EMQ4fob2mZ6U7l5NZ6fSIHA==
+"@influxdata/influxdb-client@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client/-/influxdb-client-1.11.0.tgz#322feb494cbf44232137d7b81f3bca352bd13245"
+  integrity sha512-zvnoTzzOUkpFj0/+z1i1CU1HXFkfNM9Ih8lziub3NCv3rL1/C8P//4F8RFQSoWpYuxVb/xypxSV6fKeBN4h2NQ==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -1060,7 +1060,7 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@26.x", "@types/jest@^26.0.20":
+"@types/jest@^26.0.20":
   version "26.0.20"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.20.tgz#cd2f2702ecf69e86b586e1f5223a60e454056307"
   integrity sha512-9zi2Y+5USJRxd0FsahERhBwlcvFh6D2GLQnY2FH2BzK8J9s9omvNHIbvABwIluXa0fD8XVKMLTO0aOEuUfACAA==
@@ -1106,10 +1106,10 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/pg@^7.14.10":
-  version "7.14.10"
-  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.10.tgz#95c01de1a54e45d78058b9b5b4c365102e4113f7"
-  integrity sha512-m6G0mrpj71YgVgHJF0cIHC3OZTKiQSUzTkMj869a+YWXF2tdbmO2PmIpNnDkiFPhHWcoGq2bk5P2e0CZX0F9Mg==
+"@types/pg@^7.14.11":
+  version "7.14.11"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.11.tgz#daf5555504a1f7af4263df265d91f140fece52e3"
+  integrity sha512-EnZkZ1OMw9DvNfQkn2MTJrwKmhJYDEs5ujWrPfvseWNoI95N8B4HzU/Ltrq5ZfYxDX/Zg8mTzwr6UAyTjjFvXA==
   dependencies:
     "@types/node" "*"
     pg-protocol "^1.2.0"
@@ -5819,12 +5819,11 @@ trim-off-newlines@^1.0.0:
   resolved "https://registry.yarnpkg.com/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
 
-ts-jest@^26.5.2:
-  version "26.5.2"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.2.tgz#5281d6b44c2f94f71205728a389edc3d7995b0c4"
-  integrity sha512-bwyJ2zJieSugf7RB+o8fgkMeoMVMM2KPDE0UklRLuACxjwJsOrZNo6chrcScmK33YavPSwhARffy8dZx5LJdUQ==
+ts-jest@^26.5.3:
+  version "26.5.3"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.3.tgz#a6ee00ba547be3b09877550df40a1465d0295554"
+  integrity sha512-nBiiFGNvtujdLryU7MiMQh1iPmnZ/QvOskBbD2kURiI1MwqvxlxNnaAB/z9TbslMqCsSbu5BXvSSQPc5tvHGeA==
   dependencies:
-    "@types/jest" "26.x"
     bs-logger "0.x"
     buffer-from "1.x"
     fast-json-stable-stringify "2.x"

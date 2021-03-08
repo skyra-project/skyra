@@ -269,10 +269,10 @@
 		"title": "",
 		"description": ""
 	},
-	"shindeiruDescription": "",
+	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [

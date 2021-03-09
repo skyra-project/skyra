@@ -20,7 +20,8 @@ export const config: ConnectionOptions = {
 		migrationsDir: 'src/lib/database/migrations',
 		subscribersDir: 'src/lib/database/subscribers'
 	},
-	namingStrategy: new SnakeNamingStrategy()
+	namingStrategy: new SnakeNamingStrategy(),
+	logging: true
 };
 
 export const connect = (): Promise<Connection> => {

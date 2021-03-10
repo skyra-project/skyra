@@ -12,16 +12,17 @@ import { DbSet, ScheduleEntity } from '#lib/database';
 })
 export default class extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const schedules = Object.entries(
-			this.context.client.schedules.queue
+		const schedules = [
+			...this.context.client.schedules.queue
 				.filter((schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild!.id)
 				.reduce((a, b) => {
 					const key = b.time.getTime();
-					if (Reflect.has(a, key)) Reflect.get(a, key).push(b);
-					else Reflect.set(a, key, [b]);
+					if (a.has(key)) a.get(key)!.push(b);
+					else a.set(key, [b]);
 					return a;
-				}, {})
-		).sort((a, b) => (Number(a) > Number(b) ? -1 : 1)) as [string, ScheduleEntity[]][];
+				}, new Map<number, ScheduleEntity[]>())
+				.entries()
+		].sort((a, b) => (a[0] > b[0] ? -1 : 1)) as [number, ScheduleEntity[]][];
 
 		if (schedules.length === 0) return this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone);
 		const embed = new MessageEmbed()
@@ -33,10 +34,10 @@ export default class extends SkyraCommand {
 			embed.addField(
 				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),
 				users
-					.map((schedule) => {
-						console.log(schedule.data);
-						return `<@${schedule.data.userID}> (${new Date().getFullYear() - new Date(schedule.data.birthDate as string).getFullYear()})`;
-					})
+					.map(
+						(schedule) =>
+							`<@${schedule.data.userID}> (${new Date().getFullYear() - new Date(schedule.data.birthDate as string).getFullYear()})`
+					)
 					.join('\n')
 			);
 		}

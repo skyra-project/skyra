@@ -4,7 +4,6 @@ export const Prefix = T<string>('settings:prefix');
 export const Language = T<string>('settings:language');
 export const DisabledCommands = T<string>('settings:disabledCommands');
 export const DisableNaturalPrefix = T<string>('settings:disableNaturalPrefix');
-// TODOstitch): complete these
 export const BirthdayChannel = T<string>('settings:birthdayChannel');
 export const BirthdayMessage = T<string>('settings:birthdayMessage');
 export const BirthdayRole = T<string>('settings:birthdayRole');

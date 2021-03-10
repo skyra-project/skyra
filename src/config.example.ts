@@ -29,6 +29,7 @@ export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
 export const PGSQL_DATABASE_PORT = 5432;
 export const PGSQL_DATABASE_HOST = 'localhost';
+export const TYPEORM_DEBUG_LOGS = false;
 
 export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';

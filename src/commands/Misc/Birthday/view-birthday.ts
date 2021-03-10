@@ -17,11 +17,11 @@ export default class extends SkyraCommand {
 		)?.time;
 
 		return message.send(
-			// @ts-ignore i have no idea what causes this
-			args.t(birthDate ? LanguageKeys.Commands.Misc.ViewBirthdaySet : LanguageKeys.Commands.Misc.ViewBirthdayNotSet, {
-				birthDate: birthDate ? birthDate.getTime() : null,
-				user: user.tag
-			})
+			args.t(
+				birthDate
+					? args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, { birthDate: birthDate.getTime(), user: user.tag })
+					: args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag })
+			)
 		);
 	}
 }

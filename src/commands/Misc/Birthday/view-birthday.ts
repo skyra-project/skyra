@@ -6,7 +6,8 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended
+	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
+	runIn: ['text']
 })
 export default class extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

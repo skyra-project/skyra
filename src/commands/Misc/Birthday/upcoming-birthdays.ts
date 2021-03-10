@@ -7,7 +7,8 @@ import { DbSet, ScheduleEntity } from '#lib/database';
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended
+	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
+	runIn: ['text']
 })
 export default class extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

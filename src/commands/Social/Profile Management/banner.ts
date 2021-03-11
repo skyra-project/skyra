@@ -181,7 +181,7 @@ export class UserCommand extends SkyraCommand {
 			parameter,
 			argument,
 			identifier: LanguageKeys.Commands.Social.BannerNotExists,
-			context: { prefix: commandContext.prefix }
+			context: { prefix: commandContext.commandPrefix }
 		});
 	});
 

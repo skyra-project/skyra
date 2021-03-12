@@ -341,7 +341,7 @@
 		"explainedUsage": [
 			[
 				"local/global",
-				"Whether you want to view the local or global profile. Defaults to \"local\"."
+				"Whether you want to view the local or global profile. Defaults to \"global\"."
 			],
 			[
 				"User",

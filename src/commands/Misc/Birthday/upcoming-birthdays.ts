@@ -1,24 +1,25 @@
 import { SkyraCommand } from '#lib/structures';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { DbSet, ScheduleEntity } from '#lib/database';
+import { GuildMessage } from '#lib/types';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
+	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
 	runIn: ['text']
 })
 export default class extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const schedules = [
 			...this.context.client.schedules.queue
-				.filter((schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild!.id)
+				.filter((schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild.id)
 				.reduce((a, b) => {
 					const key = b.time.getTime();
-					if (a.has(key)) a.get(key)!.push(b);
-					else a.set(key, [b]);
+					const valueAtA = a.get(key);
+					valueAtA ? valueAtA.push(b) : a.set(key, [b]);
 					return a;
 				}, new Map<number, ScheduleEntity[]>())
 				.entries()

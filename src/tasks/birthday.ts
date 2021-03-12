@@ -1,5 +1,6 @@
 import { getHandler } from '#languages';
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { Birthday } from '#lib/database/keys/settings/All';
 import { GuildMember, TextChannel, User } from 'discord.js';
 
 const enum Matches {
@@ -21,7 +22,7 @@ export class UserTask extends Task {
 		if (!member) return null;
 
 		const t = await guild.fetchT();
-		const [birthdayRole, birthdayChannel, birthdayMessage] = await guild.readSettings(['birthdayRole', 'birthdayChannel', 'birthdayMessage']);
+		const [birthdayRole, birthdayChannel, birthdayMessage] = await guild.readSettings([Birthday.Role, Birthday.Channel, Birthday.Message]);
 		if (!birthdayRole && !(birthdayChannel && birthdayMessage)) return null;
 		const me = guild.me!;
 

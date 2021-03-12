@@ -1,5 +1,4 @@
 {
-	"birthdayNotConfigured": "A birthday channel or role has not been configured in this server. Configure one using the conf command.",
 	"randRedditInvalidArgument": "{{REDCROSS}} The name you gave was not a valid name for a subreddit.",
 	"randRedditBanned": "This reddit is banned and should not be used.",
 	"randRedditFail": "I failed to retrieve data, are you sure you wrote the reddit correctly?",
@@ -249,27 +248,27 @@
 	},
 	"resetBirthdayDescription": "Reset your birthday.",
 	"resetBirthdayNotSet": "{{REDCROSS}} You have not set your birthday in this server.",
-	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you in this server anymore.",
-	"setBirthdayDescription": "Set your birthday to be automatically notified.",
+	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you a happy birthday in this server anymore.",
+	"setBirthdayDescription": "Set your birthday, and I will automatically notify the other members on that date.",
 	"setBirthdayExtended": {
-		"usages": ["Date"],
-		"extendedHelp": "This command needs the settings `birthday.role` or `birthday.channel` to be configured. On a user's birthday, I will give them the birthday role, and send `birthday.message` to the birthday channel.",
+		"usages": ["BirthDate"],
+		"extendedHelp": "This command needs the settings `birthday.role` and/or `birthday.channel` to be configured. On a user's birthday, I will give them the birthday role, and send `birthday.message` to the birthday channel.",
 		"explainedUsage": [
 			[
 				"BirthDate",
-				"Your birth-date, in the format YYYY/MM/DD."
+				"Your birth-date, in the format YYYY/MM/DD. (Year/Month/Day)"
 			]
 		],
 		"examples": [
 			"2002/01/01"
 		],
-		"reminder": "By using this command, you consent to Skyra saving your date of birth."
+		"reminder": "By using this command, you consent to it that we save your date of birth in our database."
 	},
-	"setBirthdayNotConfigured": "A birthday channel or role has not been configured in this server. Ask an admin to configure one using the conf command!",
+	"setBirthdayNotConfigured": "{{REDCROSS}} A birthday channel or role has not been configured in this server. You can configure both using the `{{prefix}}conf` command.",
 	"setBirthdayInvalidDate": "I'm sorry, but that doesn't seem right!",
 	"setBirthdayAlreadySet": "{{REDCROSS}} Your birthdate is already set to {{birthDate}}.",
 	"setBirthdayConfirmation": "Are you sure you want to change your birthday again?",
-	"setBirthdaySuccess": "{{GREENTICK}} I will wish you on {{nextBirthday, date}}.",
+	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday, date}}.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [
@@ -384,9 +383,15 @@
 	},
 	"viewBirthdayDescription": "View a user's birthday.",
 	"viewBirthdayExtended": {
-		"extendedHelp": "Birthdays are stored per-server. If you don't see yours, you probably haven't used the `set-birthday` command in this server yet!",
 		"usages": [
-			"@User"
+			"User"
+		],
+		"extendedHelp": "Birthdays are stored per-server. If you don't see yours, you probably haven't used the `{{prefix}}set-birthday` command in this server yet!",
+		"explainedUsage": [
+			[
+				"User",
+				"The user for whom to view the birthday"
+			]
 		],
 		"examples": [
 			"@Stitch#4094"

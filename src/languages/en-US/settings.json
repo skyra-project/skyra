@@ -1,6 +1,6 @@
 {
 	"birthdayChannel": "The channel where `birthday.message` will be sent to.",
-	"birthdayRole": "A role that will be given to users on their birthday (and removed in 24 hours).",
+	"birthdayRole": "A role that will be given to users on their birthday (and removed 24 hours later).",
 	"birthdayMessage": "A personalized greeting that will be sent to `birthday.channel`.",
 	"channelsAnnouncements": "The channel for announcements. This (alongside the `roles.subscriber` key) is required for the announce command.",
 	"channelsFarewell": "The channel I will use to send farewells, you must enable the events and set up the messages, in other categories.",

@@ -1,19 +1,19 @@
 import { SkyraCommand } from '#lib/structures';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Message } from 'discord.js';
+import { GuildMessage } from '#lib/types';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
+	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
 	runIn: ['text']
 })
 export default class extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
-		const user = args.finished ? message.author! : await args.pick('userName');
+	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		const user = args.finished ? message.author : await args.pick('userName');
 		const birthDate = this.context.client.schedules.queue.find(
-			(schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild!.id && schedule.data.userID === user.id
+			(schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild.id && schedule.data.userID === user.id
 		)?.time;
 
 		return message.send(

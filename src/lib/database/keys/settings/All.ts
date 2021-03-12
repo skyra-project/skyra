@@ -1,3 +1,4 @@
+export * as Birthday from './Birthday';
 export * as Channels from './Channels';
 export * as Events from './Events';
 export * as Messages from './Messages';

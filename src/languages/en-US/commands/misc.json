@@ -397,7 +397,7 @@
 			"@Stitch#4094"
 		]
 	},
-	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `set-birthday` command to set your birthday.",
+	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
 	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, date}}.",
 	"upcomingBirthdayDescription": "View the next 10 birthdays in this server.",
 	"upcomingBirthdaysTitle": "Upcoming Birthdays",

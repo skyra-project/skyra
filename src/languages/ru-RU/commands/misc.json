@@ -246,6 +246,31 @@
 			""
 		]
 	},
+	"resetBirthdayDescription": "",
+	"resetBirthdayNotSet": "",
+	"resetBirthdaySuccess": "",
+	"setBirthdayDescription": "",
+	"setBirthdayExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"setBirthdayNotConfigured": "",
+	"setBirthdayInvalidDate": "",
+	"setBirthdayAlreadySet": "",
+	"setBirthdayConfirmation": "",
+	"setBirthdaySuccess": "",
 	"shipDescription": "",
 	"shipExtended": {
 		"usages": [
@@ -358,6 +383,26 @@
 			""
 		]
 	},
+	"viewBirthdayDescription": "",
+	"viewBirthdayExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"viewBirthdayNotSet": "",
+	"viewBirthdaySet": "",
+	"upcomingBirthdayDescription": "",
+	"upcomingBirthdaysTitle": "",
 	"vaporwaveOutput": "",
 	"zalgoDescription": "",
 	"zalgoExtended": {

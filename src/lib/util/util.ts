@@ -641,6 +641,14 @@ export const random = (num: number) => Math.round(Math.random() * num);
 export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
 	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
+export function nextBirthday(birthDate: Date, now = new Date()) {
+	const copy = new Date(birthDate.getTime());
+	copy.setFullYear(now.getFullYear());
+	// next year
+	if (now.getTime() - copy.getTime() > Time.Day) copy.setFullYear(now.getFullYear() + 1);
+	return copy;
+}
+
 export interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;

@@ -246,6 +246,29 @@
 			"GloriousGe0rge"
 		]
 	},
+	"resetBirthdayDescription": "Reset your birthday.",
+	"resetBirthdayNotSet": "{{REDCROSS}} You have not set your birthday in this server.",
+	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you a happy birthday in this server anymore.",
+	"setBirthdayDescription": "Set your birthday, and I will automatically notify the other members on that date.",
+	"setBirthdayExtended": {
+		"usages": ["BirthDate"],
+		"extendedHelp": "This command needs the settings `birthday.role` and/or `birthday.channel` to be configured. On a user's birthday, I will give them the birthday role, and send `birthday.message` to the birthday channel.",
+		"explainedUsage": [
+			[
+				"BirthDate",
+				"Your birth-date, in the format YYYY/MM/DD. (Year/Month/Day)"
+			]
+		],
+		"examples": [
+			"2002/01/01"
+		],
+		"reminder": "By using this command, you consent to it that we save your date of birth in our database."
+	},
+	"setBirthdayNotConfigured": "{{REDCROSS}} A birthday channel or role has not been configured in this server. You can configure both using the `{{prefix}}conf` command.",
+	"setBirthdayInvalidDate": "I'm sorry, but that doesn't seem right!",
+	"setBirthdayAlreadySet": "{{REDCROSS}} Your birthdate is already set to {{birthDate}}.",
+	"setBirthdayConfirmation": "Are you sure you want to change your birthday again?",
+	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday, date}}.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [
@@ -358,6 +381,26 @@
 			"A E S T H E T I C"
 		]
 	},
+	"viewBirthdayDescription": "View a user's birthday.",
+	"viewBirthdayExtended": {
+		"usages": [
+			"User"
+		],
+		"extendedHelp": "Birthdays are stored per-server. If you don't see yours, you probably haven't used the `{{prefix}}set-birthday` command in this server yet!",
+		"explainedUsage": [
+			[
+				"User",
+				"The user for whom to view the birthday"
+			]
+		],
+		"examples": [
+			"@Stitch#4094"
+		]
+	},
+	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
+	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, date}}.",
+	"upcomingBirthdayDescription": "View the next 10 birthdays in this server.",
+	"upcomingBirthdaysTitle": "Upcoming Birthdays",
 	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
 	"zalgoDescription": "Create zalgo of your message!",
 	"zalgoExtended": {
@@ -374,7 +417,7 @@
 		"examples": [
 			"HE COMES"
 		],
-		"reminder": "H̡̰͉̜̰̠̣͆ͣ̒ͯ̽̃E̪̱̬̪ͣ̓̈́̐͗́̑ͩ͠ͅ ̞͍͍̪̟͚̩̃̀ͯ̓ͥͪͦ̎͜C̣̮̄ͩͤͬͥ͆͛͆͢͞O̲͙̟͎̙͑̿̋̚M̛̖͙͖̣͇̊ͦ̽ͭ͋̑̂̾Ē̸̳͎͖̟̿̆S̱̭̩̳̠̜ͨ̔̿ͅ"
+		"reminder": "H̡̰͉̜̰̠̣͆ͣ̒ͯ̽̃E̪̱̬̪ͣ̓̈́̐͗́̑ͩ͠ͅ ̞͍͍̪̟͚̩̃̀ͯ̓ͥͪͦ̎͜C̣̮̄ͩͤͬͥ͆͛͆͢͞O̲͙̟͎̙͑̿̋̚M̛̖͙͖̣͇̊ͦ̽ͭ͋̑̂̾Ē̸̳͎͖̟̿̆S̱̭̩̳̠̜ͨ̔̿ͅ"
 	},
 	"zalgoOutput": "Here is your converted message:\n{{str}}"
 }

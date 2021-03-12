@@ -1,4 +1,4 @@
-import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
@@ -51,6 +51,17 @@ export const RedditUserTitles = T<{
 	bestComment: string;
 	worstComment: string;
 }>('commands/misc:redditUserTitles');
+export const ResetBirthdayDescription = T<string>('commands/misc:resetBirthdayDescription');
+export const ResetBirthdayExtended = T<LanguageHelpDisplayOptions>('commands/misc:resetBirthdayExtended');
+export const ResetBirthdaySuccess = FT<{ user: string }, string>('commands/misc:resetBirthdaySuccess');
+export const ResetBirthdayNotSet = FT<{ birthDate: number; user: string }, string>('commands/misc:resetBirthdayNotSet');
+export const SetBirthdayDescription = T<string>('commands/misc:setBirthdayDescription');
+export const SetBirthdayExtended = T<LanguageHelpDisplayOptions>('commands/misc:setBirthdayExtended');
+export const SetBirthdayNotConfigured = FT<{ prefix: string }, string>('commands/misc:setBirthdayNotConfigured');
+export const SetBirthdayInvalidDate = T<string>('commands/misc:setBirthdayInvalidDate');
+export const SetBirthdayAlreadySet = FT<{ birthDate: string }, string>('commands/misc:setBirthdayAlreadySet');
+export const SetBirthdayConfirmation = T<string>('commands/misc:setBirthdayConfirmation');
+export const SetBirthdaySuccess = FT<{ nextBirthday: number }, string>('commands/misc:setBirthdaySuccess');
 export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
 	'commands/misc:shipData'
 );
@@ -76,6 +87,14 @@ export const UpvoteMessage = T<string>('commands/misc:upvoteMessage');
 export const VaporwaveDescription = T<string>('commands/misc:vaporwaveDescription');
 export const VaporwaveExtended = T<LanguageHelpDisplayOptions>('commands/misc:vaporwaveExtended');
 export const VaporwaveOutput = FT<{ str: string }, string>('commands/misc:vaporwaveOutput');
+export const ViewBirthdayDescription = T<string>('commands/misc:viewBirthdayDescription');
+export const ViewBirthdayExtended = T<LanguageHelpDisplayOptions>('commands/misc:viewBirthdayExtended');
+export const ViewBirthdaySet = FT<{ user: string }, string>('commands/misc:viewBirthdaySet');
+export const ViewBirthdayNotSet = FT<{ birthDate: number; user: string; prefix: string }, string>('commands/misc:viewBirthdayNotSet');
+export const UpcomingBirthdaysDescription = T<string>('commands/misc:upcomingBirthdaysDescription');
+export const UpcomingBirthdaysExtended = T<LanguageHelpDisplayOptions>('commands/misc:upcomingBirthdaysExtended');
+export const UpcomingBirthdaysTitle = FT<{ user: string }, string>('commands/misc:upcomingBirthdaysTitle');
+export const UpcomingBirthdaysNone = FT<{ birthDate: number; user: string }, string>('commands/misc:upcomingBirthdaysNone');
 export const ZalgoDescription = T<string>('commands/misc:zalgoDescription');
 export const ZalgoExtended = T<LanguageHelpDisplayOptions>('commands/misc:zalgoExtended');
 export const ZalgoOutput = FT<{ str: string }, string>('commands/misc:zalgoOutput');

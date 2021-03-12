@@ -45,6 +45,18 @@ export class GuildEntity extends BaseEntity {
 	@Column('jsonb', { name: 'permissions.roles', default: () => "'[]'::JSONB" })
 	public permissionsRoles: PermissionsNode[] = [];
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayChannel, type: 'textchannel' })
+	@Column('varchar', { name: 'birthday.channel', nullable: true, length: 19 })
+	public birthdayChannel?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayMessage })
+	@Column('varchar', { name: 'birthday.message', nullable: true, length: 200 })
+	public birthdayMessage?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayRole, type: 'role' })
+	@Column('varchar', { name: 'birthday.role', nullable: true, length: 19 })
+	public birthdayRole?: string | null;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsAnnouncements, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.announcements', nullable: true, length: 19 })
 	public channelsAnnouncements?: string | null;

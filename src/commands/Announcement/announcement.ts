@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
+import { map } from '#utils/iterator';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -76,7 +77,7 @@ export class UserCommand extends SkyraCommand {
 		if (!mentionable) await role.edit({ mentionable: true });
 
 		const detailedMentions = args.getFlags(...flags) ? empty : extractDetailedMentions(announcement);
-		const mentions = [...detailedMentions.channels, ...detailedMentions.users];
+		const mentions = [...map(detailedMentions.roles.values(), (id) => `<@&${id}>`), ...map(detailedMentions.users.values(), (id) => `<@${id}>`)];
 
 		const { t } = args;
 		const content = embedEnabled
@@ -85,7 +86,7 @@ export class UserCommand extends SkyraCommand {
 				: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header })
 			: `${header}:\n${announcement}`;
 		const options = {
-			allowedMentions: { users: [...detailedMentions.users], roles: [role.id, ...mentions] },
+			allowedMentions: { users: [...detailedMentions.users], roles: [role.id, ...detailedMentions.roles] },
 			embed: embedEnabled ? this.buildEmbed(announcement) : undefined
 		};
 

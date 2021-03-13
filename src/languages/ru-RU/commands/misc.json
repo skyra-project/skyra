@@ -246,6 +246,31 @@
 			""
 		]
 	},
+	"resetBirthdayDescription": "",
+	"resetBirthdayNotSet": "",
+	"resetBirthdaySuccess": "",
+	"setBirthdayDescription": "",
+	"setBirthdayExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"setBirthdayNotConfigured": "",
+	"setBirthdayInvalidDate": "",
+	"setBirthdayAlreadySet": "",
+	"setBirthdayConfirmation": "",
+	"setBirthdaySuccess": "",
 	"shipDescription": "",
 	"shipExtended": {
 		"usages": [
@@ -269,12 +294,12 @@
 		"title": "",
 		"description": ""
 	},
-	"shindeiruDescription": "",
+	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
 		"usages": [
-			""
+			"Пользователь"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "\"Ты уже мёртв\", по-японски: お前はもう死んでいる; Omae Wa Mou Shindeiru, - это выражение из манги и аниме \"Кулак Северной звезды\".\nЭта команда показывает комикс-стрип с персонажем, произносящим вышеупомянутые слова, что заставляет оппонента ответить \"nani?\" (\"что?\").",
 		"explainedUsage": [
 			[
 				"пользователь",
@@ -358,6 +383,26 @@
 			""
 		]
 	},
+	"viewBirthdayDescription": "",
+	"viewBirthdayExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"viewBirthdayNotSet": "",
+	"viewBirthdaySet": "",
+	"upcomingBirthdayDescription": "",
+	"upcomingBirthdaysTitle": "",
 	"vaporwaveOutput": "",
 	"zalgoDescription": "",
 	"zalgoExtended": {

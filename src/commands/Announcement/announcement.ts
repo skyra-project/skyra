@@ -80,10 +80,10 @@ export class UserCommand extends SkyraCommand {
 
 		const { t } = args;
 		const content = embedEnabled
-			? `${header}:\n${announcement}`
-			: mentions.length
-			? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, { header, mentions })
-			: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header });
+			? mentions.length
+				? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, { header, mentions })
+				: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header })
+			: `${header}:\n${announcement}`;
 		const options = {
 			allowedMentions: { users: [...detailedMentions.users], roles: [role.id, ...mentions] },
 			embed: embedEnabled ? this.buildEmbed(announcement) : undefined

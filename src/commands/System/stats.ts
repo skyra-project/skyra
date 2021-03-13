@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import { ENABLE_INFLUX } from '#root/config';
 import { Mime } from '#utils/constants';
 import { sleep } from '#utils/Promisified/sleep';
-import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import { roundNumber } from '@sapphire/utilities';
@@ -21,10 +21,7 @@ import { CpuInfo, cpus, uptime } from 'os';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const loadingMessage = await sendLoadingMessage(message, args.t);
-		const embed = await this.buildEmbed(message, args);
-		await loadingMessage.delete();
-		return message.send(embed);
+		return message.send(await this.buildEmbed(message, args));
 	}
 
 	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
@@ -35,16 +32,16 @@ export class UserCommand extends SkyraCommand {
 			usage: this.usageStatistics
 		});
 
-		const outfluxImage = ENABLE_INFLUX
-			? // Try to get the image from Outflux within 30 seconds, return undefined otherwise
-			  await Promise.race([sleep(Time.Second * 30).then(() => undefined), this.getOutfluxImage()])
-			: undefined;
-
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);
+
+		const outfluxImage = ENABLE_INFLUX
+			? // Try to get the image from Outflux within 30 seconds, return undefined otherwise
+			  await Promise.race([sleep(Time.Second * 30).then(() => undefined), this.getOutfluxImage()])
+			: undefined;
 
 		if (outfluxImage) {
 			embed.attachFiles([{ attachment: outfluxImage, name: 'outfluxImage.png' }]).setImage('attachment://outfluxImage.png');
@@ -93,7 +90,6 @@ export class UserCommand extends SkyraCommand {
 				FetchResultTypes.Buffer
 			);
 		} catch (err) {
-			this.context.client.logger.fatal(err);
 			return undefined;
 		}
 	}

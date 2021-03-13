@@ -1,9 +1,9 @@
-import { SkyraCommand } from '#lib/structures';
+import { DbSet, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
-import { DbSet, ScheduleEntity } from '#lib/database';
-import { GuildMessage } from '#lib/types';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -30,18 +30,19 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
-		for (const [time, users] of schedules.slice(0, 10)) {
-			const birthday = new Date(Number(time));
+		for (const [time, users] of schedules.reverse().slice(0, 10)) {
+			const birthday = new Date(time);
 			embed.addField(
 				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),
-				users
-					.map(
-						(schedule) =>
-							`<@${schedule.data.userID}> (${new Date().getFullYear() - new Date(schedule.data.birthDate as string).getFullYear()})`
-					)
-					.join('\n')
+				users.map((schedule) => `<@${schedule.data.userID}> (${this.calculateAge(new Date(schedule.data.birthDate as string))})`).join('\n')
 			);
 		}
 		return message.send(embed);
 	}
+
+	private calculateAge = (birthday: Date): number => {
+		const ageDifMs = Date.now() - birthday.getTime();
+		const ageDate = new Date(ageDifMs);
+		return Math.abs(ageDate.getUTCFullYear() - 1970) + 1;
+	};
 }

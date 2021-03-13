@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 				},
 				FetchResultTypes.Buffer
 			);
-		} catch (err) {
+		} catch {
 			throw this.error(LanguageKeys.Commands.General.GrowthOutfluxError);
 		}
 	}

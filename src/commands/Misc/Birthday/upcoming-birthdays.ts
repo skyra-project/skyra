@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
-		for (const [time, users] of schedules.reverse().slice(0, 10)) {
+		for (const [time, users] of schedules.slice(-10).reverse()) {
 			const birthday = new Date(time);
 			embed.addField(
 				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),

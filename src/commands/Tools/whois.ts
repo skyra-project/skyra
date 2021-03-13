@@ -12,7 +12,7 @@ const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Numbe
 const { FLAGS } = Permissions;
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['userinfo', 'uinfo'],
+	aliases: ['userinfo', 'uinfo', 'user'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,

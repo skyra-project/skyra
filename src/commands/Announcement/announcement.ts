@@ -4,13 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
-import { announcementCheck, extractMentions } from '#utils/util';
+import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const flags = ['excludeMentions', 'em'];
+const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new Set(), users: new Set() };
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['announce'],
@@ -74,44 +75,29 @@ export class UserCommand extends SkyraCommand {
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
-		const mentions = args.getFlags(...flags) ? [] : [...new Set(extractMentions(announcement))];
+		const detailedMentions = args.getFlags(...flags) ? empty : extractDetailedMentions(announcement);
+		const mentions = [...detailedMentions.channels, ...detailedMentions.users];
+
+		const { t } = args;
+		const content = embedEnabled
+			? `${header}:\n${announcement}`
+			: mentions.length
+			? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, { header, mentions })
+			: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header });
+		const options = {
+			allowedMentions: { users: [...detailedMentions.users], roles: [role.id, ...mentions] },
+			embed: embedEnabled ? this.buildEmbed(announcement) : undefined
+		};
 
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
-		const { t } = args;
 		if (previous) {
 			try {
-				const resultMessage = embedEnabled
-					? await previous.edit(
-							mentions.length
-								? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
-										header,
-										mentions
-								  })
-								: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
-										header
-								  }),
-							{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
-					  )
-					: await previous.edit(`${header}:\n${announcement}`, { allowedMentions: { users: mentions, roles: [role.id, ...mentions] } });
+				const resultMessage = await previous.edit(content, options);
 				this.context.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
-					const resultMessage = embedEnabled
-						? await channel.send(
-								mentions.length
-									? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
-											header,
-											mentions
-									  })
-									: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
-											header
-									  }),
-								{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
-						  )
-						: ((await channel.send(`${header}:\n${announcement}`, {
-								allowedMentions: { users: mentions, roles: [role.id, ...mentions] }
-						  })) as GuildMessage);
+					const resultMessage = await channel.send(content, options);
 					this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage as GuildMessage);
 				} else {
@@ -120,21 +106,7 @@ export class UserCommand extends SkyraCommand {
 				}
 			}
 		} else {
-			const resultMessage = embedEnabled
-				? await channel.send(
-						mentions.length
-							? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
-									header,
-									mentions
-							  })
-							: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
-									header
-							  }),
-						{ allowedMentions: { users: mentions, roles: [role.id, ...mentions] }, embed: this.buildEmbed(announcement) }
-				  )
-				: ((await channel.send(`${header}:\n${announcement}`, {
-						allowedMentions: { users: mentions, roles: [role.id, ...mentions] }
-				  })) as GuildMessage);
+			const resultMessage = await channel.send(content, options);
 			this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage as GuildMessage);
 		}

@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		if (channel.nsfw && !message.channel.nsfw) {
 			return this.error(LanguageKeys.Commands.Fun.MarkovNsfwChannel, { channel: channel.toString() });
 		}
-		const username = args.finished ? message.author : await args.pick('userName');
+		const username = args.finished ? undefined : await args.pick('userName');
 
 		// Send loading message
 		const response = await sendLoadingMessage(message, args.t);

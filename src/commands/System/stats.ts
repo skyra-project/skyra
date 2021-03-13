@@ -1,12 +1,7 @@
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { ENABLE_INFLUX } from '#root/config';
-import { Mime } from '#utils/constants';
-import { sleep } from '#utils/Promisified/sleep';
-import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import { roundNumber } from '@sapphire/utilities';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
@@ -32,22 +27,11 @@ export class UserCommand extends SkyraCommand {
 			usage: this.usageStatistics
 		});
 
-		const embed = new MessageEmbed()
+		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);
-
-		const outfluxImage = ENABLE_INFLUX
-			? // Try to get the image from Outflux within 30 seconds, return undefined otherwise
-			  await Promise.race([sleep(Time.Second * 30).then(() => undefined), this.getOutfluxImage()])
-			: undefined;
-
-		if (outfluxImage) {
-			embed.attachFiles([{ attachment: outfluxImage, name: 'outfluxImage.png' }]).setImage('attachment://outfluxImage.png');
-		}
-
-		return embed;
 	}
 
 	private get generalStatistics(): StatsGeneral {
@@ -76,22 +60,6 @@ export class UserCommand extends SkyraCommand {
 			ramTotal: usage.heapTotal / 1048576,
 			ramUsed: usage.heapUsed / 1048576
 		};
-	}
-
-	private async getOutfluxImage() {
-		try {
-			return await fetch(
-				'http://localhost:8286',
-				{
-					headers: {
-						'Content-Type': Mime.Types.ImagePng
-					}
-				},
-				FetchResultTypes.Buffer
-			);
-		} catch (err) {
-			return undefined;
-		}
 	}
 
 	private static formatCpuInfo({ times }: CpuInfo) {

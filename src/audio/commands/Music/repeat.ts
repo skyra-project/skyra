@@ -5,7 +5,7 @@ import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	aliases: ['replay'],
+	aliases: ['replay', 'loop', 'loopsong'],
 	description: LanguageKeys.Commands.Music.RepeatDescription,
 	extendedHelp: LanguageKeys.Commands.Music.RepeatExtended
 })

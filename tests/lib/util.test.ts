@@ -266,6 +266,89 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('extractDetailedMentions', () => {
+		test('GIVEN empty string THEN returns empty results', () => {
+			const result = utils.extractDetailedMentions('');
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN a user mention THEN returns one user ID', () => {
+			const result = utils.extractDetailedMentions('<@242043489611808769>');
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect([...result.users]).toStrictEqual(['242043489611808769']);
+		});
+
+		test('GIVEN a member mention THEN returns one user ID', () => {
+			const result = utils.extractDetailedMentions('<@!242043489611808769>');
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect([...result.users]).toStrictEqual(['242043489611808769']);
+		});
+
+		test('GIVEN a duplicated user mention THEN returns only one user ID', () => {
+			const result = utils.extractDetailedMentions('<@242043489611808769> <@!242043489611808769>');
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect([...result.users]).toStrictEqual(['242043489611808769']);
+		});
+
+		test('GIVEN a channel mention THEN returns one channel ID', () => {
+			const result = utils.extractDetailedMentions('<#541740581832097792>');
+			expect([...result.channels]).toStrictEqual(['541740581832097792']);
+			expect(result.roles.size).toBe(0);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN a duplicated channel mention THEN returns only one channel ID', () => {
+			const result = utils.extractDetailedMentions('<#541740581832097792> <#541740581832097792>');
+			expect([...result.channels]).toStrictEqual(['541740581832097792']);
+			expect(result.roles.size).toBe(0);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN a role mention THEN returns one role ID', () => {
+			const result = utils.extractDetailedMentions('<@&541739191776575502>');
+			expect(result.channels.size).toBe(0);
+			expect([...result.roles]).toStrictEqual(['541739191776575502']);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN a duplicated role mention THEN returns only one role ID', () => {
+			const result = utils.extractDetailedMentions('<@&541739191776575502> <@&541739191776575502>');
+			expect(result.channels.size).toBe(0);
+			expect([...result.roles]).toStrictEqual(['541739191776575502']);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN invalid mentions (ID shorter than 17 digits) THEN returns empty results', () => {
+			const result = utils.extractDetailedMentions('<#5417391917765755> <@&5417391917765755> <@5417391917765755> <@!5417391917765755>');
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN invalid mentions (ID longer than 19 digits) THEN returns empty results', () => {
+			const result = utils.extractDetailedMentions(
+				'<#54173919177657550212> <@&54173919177657550212> <@54173919177657550212> <@!54173919177657550212>'
+			);
+			expect(result.channels.size).toBe(0);
+			expect(result.roles.size).toBe(0);
+			expect(result.users.size).toBe(0);
+		});
+
+		test('GIVEN a role, a channel, and a user mention THEN returns one ID for each', () => {
+			const result = utils.extractDetailedMentions(
+				'<@268792781713965056> sent a message in <#541740581832097792> mentioning <@&541739191776575502>!'
+			);
+			expect([...result.channels]).toStrictEqual(['541740581832097792']);
+			expect([...result.roles]).toStrictEqual(['541739191776575502']);
+			expect([...result.users]).toStrictEqual(['268792781713965056']);
+		});
+	});
+
 	describe('fetch', () => {
 		// eslint-disable-next-line @typescript-eslint/init-declarations
 		let nockScope: nock.Scope;

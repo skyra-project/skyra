@@ -494,13 +494,45 @@ export function cleanMentions(guild: Guild, input: string) {
 	});
 }
 
+export const anyMentionRegExp = /<(@[!&]?|#)(\d{17,19})>/g;
+
 /**
- * Extracts mentions from a body of text
- * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`
- * @param input The input extract mentions from
- * @returns an array of mentions
+ * Extracts mentions from a body of text.
+ * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`.
+ * @param input The input to extract mentions from.
  */
-export const extractMentions = (input: string) => input.match(/<(@[!&]?)(\d{17,19})>/g) ?? [];
+export function extractDetailedMentions(input: string): DetailedMentionExtractionResult {
+	const users = new Set<string>();
+	const roles = new Set<string>();
+	const channels = new Set<string>();
+
+	let result: RegExpExecArray | null;
+	while ((result = anyMentionRegExp.exec(input)) !== null) {
+		switch (result[1]) {
+			case '@':
+			case '@!': {
+				users.add(result[2]);
+				continue;
+			}
+			case '@&': {
+				roles.add(result[2]);
+				continue;
+			}
+			case '#': {
+				channels.add(result[2]);
+				continue;
+			}
+		}
+	}
+
+	return { users, roles, channels };
+}
+
+export interface DetailedMentionExtractionResult {
+	users: ReadonlySet<string>;
+	roles: ReadonlySet<string>;
+	channels: ReadonlySet<string>;
+}
 
 /**
  * Creates an array picker function

@@ -86,7 +86,10 @@ export class UserCommand extends SkyraCommand {
 				: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header })
 			: `${header}:\n${announcement}`;
 		const options = {
-			allowedMentions: { users: [...detailedMentions.users], roles: [role.id, ...detailedMentions.roles] },
+			allowedMentions: {
+				users: this.trim([...detailedMentions.users]),
+				roles: this.trim(detailedMentions.roles.has(role.id) ? [...detailedMentions.roles] : [role.id, ...detailedMentions.roles])
+			},
 			embed: embedEnabled ? this.buildEmbed(announcement) : undefined
 		};
 
@@ -120,5 +123,9 @@ export class UserCommand extends SkyraCommand {
 			.setColor(BrandingColors.Primary)
 			.setDescription(`${header ? `${header}\n` : ''}${announcement}`)
 			.setTimestamp();
+	}
+
+	private trim<T>(array: T[]) {
+		return array.length <= 20 ? array : array.slice(0, 20);
 	}
 }

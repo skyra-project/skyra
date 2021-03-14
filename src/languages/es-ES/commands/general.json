@@ -1,4 +1,10 @@
 {
+	"growthDescription": "",
+	"growthExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"growthOutfluxError": "",
 	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
 	"helpCommandCount": "{{count}} comando",
 	"helpCommandCount_plural": "{{count}} comandos",

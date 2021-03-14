@@ -1,4 +1,10 @@
 {
+	"growthDescription": "Shows you my growth over the past 24 hours.",
+	"growthExtended": {
+		"extendedHelp": "Every day I reach more and more users and servers. Ever wanted to get an insight into how that growth goes? You can use this command to find out.",
+		"reminder": "Information will only be refreshed every 12 hours."
+	},
+	"growthOutfluxError": "Failed to request growth information. Try again in a few hours.",
 	"helpAllFlag": "Displaying one category per page. Have issues with the embed? Run `{{prefix}}help --all` for a full list in DMs.",
 	"helpCommandCount": "{{count}} command",
 	"helpCommandCount_plural": "{{count}} commands",

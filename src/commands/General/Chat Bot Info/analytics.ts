@@ -18,6 +18,7 @@ import { Message, MessageAttachment } from 'discord.js';
 export default class extends SkyraCommand {
 	private cachedGrowth: CachedImage = { nextRefresh: Date.now(), attachment: null };
 	private pendingPromise: Promise<Buffer> | null = null;
+
 	public async run(message: Message) {
 		if (this.cachedGrowth.attachment && this.cachedGrowth.nextRefresh >= Date.now()) {
 			return message.send(this.cachedGrowth.attachment);

@@ -1,0 +1,1033 @@
+{
+	"commandModeEnable": "",
+	"commandModeDisable": "",
+	"commandModeActionAlert": "",
+	"commandModeActionLog": "",
+	"commandModeActionDelete": "",
+	"commandModePunishment": "",
+	"commandModePunishmentDuration": "",
+	"commandModeThreshold": "",
+	"commandModeThresholdDuration": "",
+	"commandModeReminder": "",
+	"commandHandlerAborted": "",
+	"nickSet": "",
+	"nickCleared": "",
+	"permissionNodesHigher": "",
+	"permissionNodesCannotAllowEveryone": "",
+	"permissionNodesInvalidType": "",
+	"permissionNodesAdd": "",
+	"permissionNodesNodeNotExists": "",
+	"permissionNodesCommandNotExists": "",
+	"permissionNodesRemove": "",
+	"permissionNodesReset": "",
+	"permissionNodesShowName": "",
+	"permissionNodesShowAllow": "",
+	"permissionNodesShowDeny": "",
+	"triggersRemoveNottaken": "",
+	"triggersRemove": "",
+	"triggersAddTaken": "",
+	"triggersAdd": "",
+	"triggersListEmpty": "",
+	"guildInfoTitles": {
+		"CHANNELS": "",
+		"MEMBERS": "",
+		"OTHER": ""
+	},
+	"guildInfoChannels": "",
+	"guildInfoChannelsAfkChannelText": "",
+	"guildInfoMembers": "",
+	"guildInfoOther": "",
+	"roleInfoTitles": {
+		"PERMISSIONS": ""
+	},
+	"roleInfoData": "",
+	"roleInfoAll": "",
+	"roleInfoNoPermissions": "",
+	"filterUndefinedWord": "",
+	"filterTooLong": "",
+	"filterAlreadyFiltered": "",
+	"filterNotFiltered": "",
+	"filterAdded": "",
+	"filterRemoved": "",
+	"filterReset": "",
+	"filterShowEmpty": "",
+	"filterShow": "",
+	"manageCommandAutoDeleteShowEmpty": "",
+	"manageCommandAutoDeleteShow": "",
+	"manageCommandAutoDeleteAdd": "",
+	"manageCommandAutoDeleteRemove": "",
+	"manageCommandAutoDeleteRemoveNotset": "",
+	"manageCommandAutoDeleteReset": "",
+	"manageCommandChannelShow": "",
+	"manageCommandChannelShowEmpty": "",
+	"manageCommandChannelAddAlreadyset": "",
+	"manageCommandChannelAdd": "",
+	"manageCommandChannelRemoveNotset": "",
+	"manageCommandChannelRemove": "",
+	"manageCommandChannelResetEmpty": "",
+	"manageCommandChannelReset": "",
+	"manageReactionRolesShowEmpty": "",
+	"manageReactionRolesAddChannel": "",
+	"manageReactionRolesAddPrompt": "",
+	"manageReactionRolesAddMissing": "",
+	"manageReactionRolesAdd": "",
+	"manageReactionRolesRemoveNotExists": "",
+	"manageReactionRolesRemove": "",
+	"manageReactionRolesResetEmpty": "",
+	"manageReactionRolesReset": "",
+	"setStarboardEmojiSet": "",
+	"configurationEquals": "",
+	"setIgnoreChannelsSet": "",
+	"setIgnoreChannelsRemoved": "",
+	"setImageLogsSet": "",
+	"setMemberLogsSet": "",
+	"setMessageLogsSet": "",
+	"setModLogsSet": "",
+	"setPrefixSet": "",
+	"stickyRolesNotExists": "",
+	"stickyRolesReset": "",
+	"stickyRolesRemove": "",
+	"stickyRolesAdd": "",
+	"stickyRolesShowEmpty": "",
+	"stickyRolesShowSingle": "",
+	"createMuteDescription": "",
+	"createMuteExtended": {
+		"extendedHelp": ""
+	},
+	"nickDescription": "",
+	"nickExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"reminder": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"permissionNodesDescription": "",
+	"permissionNodesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"triggersDescription": "",
+	"triggersExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"managecommandautodeleteDescription": "",
+	"managecommandautodeleteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"manageCommandChannelDescription": "",
+	"manageCommandChannelExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"manageReactionRolesDescription": "",
+	"manageReactionRolesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"rolesAdded": "",
+	"rolesAuditlog": "",
+	"rolesListEmpty": "",
+	"rolesListTitle": "",
+	"rolesNotManageable": "",
+	"rolesNotPublic": "",
+	"rolesRemoved": "",
+	"setIgnoreChannelsDescription": "",
+	"setIgnoreChannelsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setImageLogsDescription": "",
+	"setImageLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setMemberLogsDescription": "",
+	"setMemberLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setMessageLogsDescription": "",
+	"setMessageLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setmodlogsDescription": "",
+	"setmodlogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setprefixDescription": "",
+	"setprefixExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setStarboardEmojiDescription": "",
+	"setStarboardEmojiExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			""
+		]
+	},
+	"guildInfoDescription": "",
+	"guildInfoExtended": {
+		"extendedHelp": ""
+	},
+	"roleInfoDescription": "",
+	"roleInfoExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"stickyRolesDescription": "",
+	"stickyRolesExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"attachmentsModeDescription": "",
+	"attachmentsModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"capitalsModeDescription": "",
+	"capitalsModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"filterDescription": "",
+	"filterExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"filterModeDescription": "",
+	"filterModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"inviteModeDescription": "",
+	"inviteModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"linkModeDescription": "",
+	"linkModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"messageModeDescription": "",
+	"messageModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"newlineModeDescription": "",
+	"newlineModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"reactionModeDescription": "",
+	"reactionModeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"rolesDescription": "",
+	"rolesExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	}
+}

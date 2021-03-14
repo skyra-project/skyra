@@ -8,6 +8,7 @@ import { Time } from '@sapphire/time-utilities';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	aliases: ['growth'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.General.GrowthDescription,
 	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
@@ -15,21 +16,20 @@ import { Message, MessageAttachment } from 'discord.js';
 	enabled: ENABLE_INFLUX
 })
 export default class extends SkyraCommand {
-	private cachedGrowth: CachedImage = { cachedDate: Date.now(), buffer: null };
+	private cachedGrowth: CachedImage = { nextRefresh: Date.now(), attachment: null };
+	private pendingPromise: Promise<Buffer> | null = null;
 	public async run(message: Message) {
-		if (this.cachedGrowth.buffer && this.cachedGrowth.cachedDate + Time.Hour * 12 >= Date.now()) {
-			return this.sendAttachment(message, this.cachedGrowth.buffer);
+		if (this.cachedGrowth.attachment && this.cachedGrowth.nextRefresh >= Date.now()) {
+			return message.send(this.cachedGrowth.attachment);
 		}
 
-		const image = await this.getOutfluxImage();
-		this.cachedGrowth.cachedDate = Date.now();
-		this.cachedGrowth.buffer = image;
+		const image = await (this.pendingPromise ??= this.getOutfluxImage().finally(() => {
+			this.pendingPromise = null;
+		}));
+		this.cachedGrowth.nextRefresh = Date.now() + Time.Hour * 12;
+		this.cachedGrowth.attachment = new MessageAttachment(image, 'growth.png');
 
-		return this.sendAttachment(message, image);
-	}
-
-	private sendAttachment(message: Message, buffer: Buffer) {
-		return message.send(new MessageAttachment(buffer, 'growth.png'));
+		return message.send(this.cachedGrowth.attachment);
 	}
 
 	private async getOutfluxImage() {
@@ -50,6 +50,6 @@ export default class extends SkyraCommand {
 }
 
 interface CachedImage {
-	cachedDate: number;
-	buffer: Buffer | null;
+	nextRefresh: number;
+	attachment: MessageAttachment | null;
 }

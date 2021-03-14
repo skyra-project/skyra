@@ -1,0 +1,62 @@
+{
+	"animeDescription": "",
+	"animeExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"mangaDescription": "",
+	"mangaExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"waifuDescription": "",
+	"waifuExtended": {
+		"extendedHelp": ""
+	},
+	"animeTypes": {
+		"tv": "",
+		"movie": "",
+		"ova": "",
+		"special": ""
+	},
+	"animeOutputDescription": "",
+	"animeNoSynopsis": "",
+	"animeEmbedData": {
+		"type": "",
+		"score": "",
+		"episodes": "",
+		"episodeLength": "",
+		"ageRating": "",
+		"firstAirDate": "",
+		"watchIt": "",
+		"stillAiring": ""
+	},
+	"mangaOutputDescription": "",
+	"mangaTypes": {
+		"manga": "",
+		"novel": "",
+		"manhwa": "",
+		"oneShot": "",
+		"special": ""
+	},
+	"mangaEmbedData": {
+		"ageRating": "",
+		"firstPublishDate": "",
+		"readIt": "",
+		"score": "",
+		"type": "",
+		"none": ""
+	},
+	"waifuFooter": ""
+}

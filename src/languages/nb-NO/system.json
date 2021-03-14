@@ -1,0 +1,46 @@
+{
+	"channelNotPostable": "",
+	"discordAbortError": "",
+	"exceededLengthChooseOutput": "",
+	"exceededLengthOutput": "",
+	"exceededLengthOutputConsole": "",
+	"exceededLengthOutputType": "",
+	"exceededLengthOutputTime": "",
+	"exceededLengthOutputFile": "",
+	"exceededLengthOutputHastebin": "",
+	"externalServerError": "",
+	"fetchBansFail": "",
+	"helpTitles": {
+		"aliases": "",
+		"usages": "",
+		"extendedHelp": "",
+		"explainedUsage": "",
+		"possibleFormats": "",
+		"examples": "",
+		"reminders": ""
+	},
+	"highestRole": "",
+	"jumpTo": "",
+	"loading": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"messagePromptTimeout": "",
+	"noResults": "",
+	"parseError": "",
+	"pokedexExternalResource": "",
+	"poweredByWeebSh": "",
+	"prefixReminder": "",
+	"queryFail": "",
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
+}

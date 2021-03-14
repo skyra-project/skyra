@@ -1,0 +1,51 @@
+{
+	"added": "",
+	"description": "",
+	"edited": "",
+	"exists": "",
+	"extended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"listEmpty": "",
+	"nameNotAllowed": "",
+	"nameTooLong": "",
+	"notexists": "",
+	"permissionlevel": "",
+	"removed": "",
+	"reset": ""
+}

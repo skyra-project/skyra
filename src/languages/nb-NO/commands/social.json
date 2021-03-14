@@ -1,0 +1,483 @@
+{
+	"autoRoleUpdateConfigured": "",
+	"autoRoleUpdateUnconfigured": "",
+	"autoRoleUpdate": "",
+	"autoRoleRemove": "",
+	"autoRoleAdd": "",
+	"autoRoleListEmpty": "",
+	"balance": "",
+	"balanceSelf": "",
+	"balanceBots": "",
+	"socialMemberNotexists": "",
+	"socialAdd": "",
+	"socialAdd_plural": "",
+	"socialRemove": "",
+	"socialRemove_plural": "",
+	"socialUnchanged": "",
+	"socialReset": "",
+	"bannerMissing": "",
+	"bannerNotexists": "",
+	"bannerUserlistEmpty": "",
+	"bannerResetDefault": "",
+	"bannerReset": "",
+	"bannerSetNotBought": "",
+	"bannerSet": "",
+	"bannerBought": "",
+	"bannerMoney": "",
+	"bannerPaymentCancelled": "",
+	"bannerBuy": "",
+	"bannerAllOrUser": "",
+	"toggleDarkModeEnabled": "",
+	"toggleDarkModeDisabled": "",
+	"dailyTime": "",
+	"dailyTimeSuccess": "",
+	"dailyGrace": "",
+	"dailyGraceAccepted": "",
+	"dailyGraceDenied": "",
+	"dailyCollect": "",
+	"level": {
+		"level": "",
+		"experience": "",
+		"nextIn": ""
+	},
+	"divorceSelf": "",
+	"divorceNotTaken": "",
+	"divorcePrompt": "",
+	"divorceCancel": "",
+	"divorceDm": "",
+	"divorceSuccess": "",
+	"marryWith": "",
+	"marryNotTaken": "",
+	"marrySkyra": "",
+	"marryAelia": "",
+	"marryBots": "",
+	"marrySelf": "",
+	"marryAuthorTaken": "",
+	"marryAuthorMultipleCancel": "",
+	"marryTaken": "",
+	"marryTaken_plural": "",
+	"marryAlreadyMarried": "",
+	"marryAuthorTooMany": "",
+	"marryTargetTooMany": "",
+	"marryMultipleCancel": "",
+	"marryPetition": "",
+	"marryNoreply": "",
+	"marryDenied": "",
+	"marryAccepted": "",
+	"mylevel": "",
+	"mylevelSelf": "",
+	"mylevelNext": "",
+	"payMissingMoney": "",
+	"payPrompt": "",
+	"payPromptAccept": "",
+	"payPromptDeny": "",
+	"paySelf": "",
+	"socialPayBot": "",
+	"profile": {
+		"globalRank": "",
+		"credits": "",
+		"reputation": "",
+		"experience": "",
+		"level": ""
+	},
+	"profileMoney": "",
+	"remindmeCreate": "",
+	"remindmeCreateNoDescription": "",
+	"remindmeDelete": "",
+	"remindmeListEmpty": "",
+	"remindmeShowFooter": "",
+	"remindmeInvalidId": "",
+	"remindmeNotfound": "",
+	"reputationTime": "",
+	"reputationUsable": "",
+	"reputationSelf": "",
+	"reputationGive": "",
+	"reputationsBots": "",
+	"reputationsSelf": "",
+	"reputation": "",
+	"reputation_plural": "",
+	"reputations": "",
+	"scoreboardPosition": "",
+	"setColor": "",
+	"socialDescription": "",
+	"socialExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"bannerDescription": "",
+	"bannerExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"toggleDarkModeDescription": "",
+	"toggleDarkModeExtended": {
+		"extendedHelp": ""
+	},
+	"autoRoleDescription": "",
+	"autoRoleExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"balanceDescription": "",
+	"balanceExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": ""
+	},
+	"dailyDescription": "",
+	"dailyExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"divorceDescription": "",
+	"divorceExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": ""
+	},
+	"leaderboardDescription": "",
+	"leaderboardExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"leaderboardListifyPage": "",
+	"levelDescription": "",
+	"levelExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"marriedDescription": "",
+	"marriedExtended": {
+		"extendedHelp": ""
+	},
+	"marryDescription": "",
+	"marryExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"mylevelDescription": "",
+	"mylevelExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"payDescription": "",
+	"payExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"profileDescription": "",
+	"profileExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"remindmeDescription": "",
+	"remindmeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"reputationDescription": "",
+	"reputationExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"setColorDescription": "",
+	"setColorExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"possibleFormats": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"vaultDescription": "",
+	"vaultEmbedData": {
+		"accountMoney": "",
+		"accountVault": "",
+		"depositedDescription": "",
+		"showDescription": "",
+		"withdrewDescription": ""
+	},
+	"vaultExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"vaultNotEnoughInVault": "",
+	"vaultNotEnoughMoney": "",
+	"vaultInvalidAll": ""
+}

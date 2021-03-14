@@ -3,6 +3,7 @@ import { ExtendedHandler as DeDeHandler } from './de-DE/constants';
 import { ExtendedHandler as EnGbHandler } from './en-GB/constants';
 import { ExtendedHandler as EnUsHandler } from './en-US/constants';
 import { ExtendedHandler as EsEsHandler } from './es-ES/constants';
+import { ExtendedHandler as NbNoHandler } from './nb-NO/constants';
 import { ExtendedHandler as NlNlHandler } from './nl-NL/constants';
 
 export const handlers = new Map<string, Handler>([
@@ -10,6 +11,7 @@ export const handlers = new Map<string, Handler>([
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
 	['es-ES', new EsEsHandler()],
+	['nb-NO', new NbNoHandler()],
 	['nl-NL', new NlNlHandler()]
 ]);
 

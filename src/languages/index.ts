@@ -11,8 +11,8 @@ export const handlers = new Map<string, Handler>([
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
 	['es-ES', new EsEsHandler()],
-	['nl-NL', new NlNlHandler()],
-	['nb-NO', new NbNoHandler]
+	['nb-NO', new NbNoHandler()],
+	['nl-NL', new NlNlHandler()]
 ]);
 
 export function getHandler(name: string): Handler {

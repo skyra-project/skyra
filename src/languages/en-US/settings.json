@@ -1,7 +1,7 @@
 {
 	"birthdayChannel": "The channel where `birthday.message` will be sent to.",
 	"birthdayRole": "A role that will be given to users on their birthday (and removed 24 hours later).",
-	"birthdayMessage": "A personalized greeting that will be sent to `birthday.channel`.",
+	"birthdayMessage": "A personalized message that will be sent to `birthday.channel`.\nThe following will be replaced with their respective values:\n- `{age}`: will be replaced with the age of the user\n- `{age.ordinal}`: will be replaced with the ordinal version of the user's age (for example `{age.ordinal} birthday` for `18th birthday`)\n- `{user}`: will be replaced with a mention of the user.\n- `{user.name}`: will be replaced with just the username of the user.\n- `{user.tag}`: will be replaced with the username + tag (for example `user#0000`)",
 	"channelsAnnouncements": "The channel for announcements. This (alongside the `roles.subscriber` key) is required for the announce command.",
 	"channelsFarewell": "The channel I will use to send farewells, you must enable the events and set up the messages, in other categories.",
 	"channelsGreeting": "The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.",

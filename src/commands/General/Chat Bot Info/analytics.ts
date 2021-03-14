@@ -16,21 +16,22 @@ import { Message, MessageAttachment } from 'discord.js';
 	enabled: ENABLE_INFLUX
 })
 export default class extends SkyraCommand {
-	private cachedGrowth: CachedImage = { nextRefresh: Date.now(), attachment: null };
+	private nextRefresh = Date.now();
+	private attachment: MessageAttachment | null = null;
 	private pendingPromise: Promise<Buffer> | null = null;
 
 	public async run(message: Message) {
-		if (this.cachedGrowth.attachment && this.cachedGrowth.nextRefresh >= Date.now()) {
-			return message.send(this.cachedGrowth.attachment);
+		if (this.attachment && this.nextRefresh >= Date.now()) {
+			return message.send(this.attachment);
 		}
 
 		const image = await (this.pendingPromise ??= this.getOutfluxImage().finally(() => {
 			this.pendingPromise = null;
 		}));
-		this.cachedGrowth.nextRefresh = Date.now() + Time.Hour * 12;
-		this.cachedGrowth.attachment = new MessageAttachment(image, 'growth.png');
+		this.nextRefresh = Date.now() + Time.Hour * 12;
+		this.attachment = new MessageAttachment(image, 'growth.png');
 
-		return message.send(this.cachedGrowth.attachment);
+		return message.send(this.attachment);
 	}
 
 	private async getOutfluxImage() {
@@ -48,9 +49,4 @@ export default class extends SkyraCommand {
 			throw this.error(LanguageKeys.Commands.General.GrowthOutfluxError);
 		}
 	}
-}
-
-interface CachedImage {
-	nextRefresh: number;
-	attachment: MessageAttachment | null;
 }

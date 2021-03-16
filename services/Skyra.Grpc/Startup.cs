@@ -31,7 +31,14 @@ namespace Skyra.Grpc
 
 			app.UseEndpoints(endpoints =>
 			{
+				endpoints.MapGrpcService<GiveawayService>();
+				endpoints.MapGrpcService<GuildService>();
 				endpoints.MapGrpcService<MemberService>();
+				endpoints.MapGrpcService<ScheduleService>();
+				endpoints.MapGrpcService<SocialService>();
+				endpoints.MapGrpcService<StarboardService>();
+				endpoints.MapGrpcService<UserService>();
+				endpoints.MapGrpcService<RunnerService>();
 
 				endpoints.MapGet("/",
 					async context =>

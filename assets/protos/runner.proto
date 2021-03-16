@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+import "shared.proto";
+
+option csharp_namespace = "Skyra.Grpc.Services";
+
+package runner;
+
+service Runner {
+  rpc Run(RunnerRunQuery) returns (RunnerRunResult);
+}
+
+message RunnerRunQuery {
+  string query = 1;
+}
+
+message RunnerRunResult {
+  Status status = 1;
+  string result = 2;
+}

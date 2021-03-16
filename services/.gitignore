@@ -1,0 +1,14 @@
+# .NET package locks
+package.lock.json
+
+# Rider configuration
+*DotSettings.user
+
+# Ignore build outputs
+obj/
+bin/
+TestResults/
+coverage.json
+
+# Ignore generated database migrations
+SkyraDbContextModelSnapshot.cs

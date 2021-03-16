@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option csharp_namespace = "Skyra.Grpc.Services.Shared";
+
+enum Status {
+  Success = 0;
+  Failed = 1;
+  NotFound = 2;
+  JsonParseError = 3;
+}
+
+message Result {
+  Status status = 1;
+}

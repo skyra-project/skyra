@@ -13,17 +13,19 @@ namespace Skyra.UnitTests.Database.Extensions
 		{
 			// arrange
 
-			using var context = new TestDbContext();
+			await using var context = new TestDbContext();
+
+			const int id = 1;
 
 			var userToBeInserted = new UserStub
 			{
-				Id = 1,
+				Id = id,
 				Name = "Captain Smeghead"
 			};
 
 			var userToBeUpserted = new UserStub
 			{
-				Id = 1,
+				Id = id,
 				Name = "John Wick"
 			};
 
@@ -32,7 +34,7 @@ namespace Skyra.UnitTests.Database.Extensions
 			context.Add(userToBeInserted);
 			await context.SaveChangesAsync();
 
-			var value = await context.Users.UpsertAsync(1, () => userToBeUpserted);
+			var value = await context.Users.UpsertAsync(id, () => userToBeUpserted);
 
 			// assert
 
@@ -45,18 +47,19 @@ namespace Skyra.UnitTests.Database.Extensions
 			// arrange
 
 			using var context = new TestDbContext();
+			const int id = 2;
 
 			var userToBeUpserted = new UserStub
 			{
-				Id = 1,
+				Id = id,
 				Name = "John Wick"
 			};
 
 			// act
 
-			var before = await context.Users.FindAsync(1);
+			var before = await context.Users.FindAsync(id);
 
-			var after = await context.Users.UpsertAsync(1, () => userToBeUpserted);
+			var after = await context.Users.UpsertAsync(id, () => userToBeUpserted);
 
 			// assert
 
@@ -70,24 +73,25 @@ namespace Skyra.UnitTests.Database.Extensions
 			// arrange
 
 			using var context = new TestDbContext();
+			const int id = 3;
 
 			var userToBeUpserted = new UserStub
 			{
-				Id = 1,
+				Id = id,
 				Name = "John Wick"
 			};
 
 			// act
 
-			var before = await context.Users.FindAsync(1);
+			var before = await context.Users.FindAsync(id);
 
-			var after = await context.Users.UpsertAsync(1, () => userToBeUpserted);
+			var after = await context.Users.UpsertAsync(id, () => userToBeUpserted);
 
 			// assert
 
 			Assert.IsNull(before);
 			Assert.IsNotNull(after);
-			Assert.AreEqual(1, after.Id);
+			Assert.AreEqual(id, after.Id);
 			Assert.AreEqual("John Wick", after.Name);
 		}
 	}

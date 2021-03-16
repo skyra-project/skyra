@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Protobuf Include="..\..\assets\protos\member.proto" GrpcServices="Server" />
+      <Protobuf Include="..\..\assets\protos\*.proto" GrpcServices="Server" />
     </ItemGroup>
 
 </Project>

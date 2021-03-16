@@ -1,29 +1,31 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
 option csharp_namespace = "Skyra.Grpc.Services";
 
-package member;
+import "shared.proto";
 
-// The greeting service definition.
+package Member;
+
 service Member {
-  // Sends a greeting
-  rpc AddPoints (PointsQuery) returns (PointsResult);
-  rpc GetPoints (MemberQuery) returns (PointsResult);
-}
-
-// The request message containing the user's name.
-message PointsQuery {
-  string id = 1;
-  int32 amount = 2;
+  rpc GetPoints (MemberQuery) returns (ExperienceResult);
+  rpc AddPoints (MemberQueryWithPoints) returns (ExperienceResult);
+  rpc RemovePoints (MemberQueryWithPoints) returns (ExperienceResult);
+  rpc SetPoints (MemberQueryWithPoints) returns (Result);
+  rpc ResetPoints (MemberQuery) returns (Result);
 }
 
 message MemberQuery {
-  string id = 1;
+  string user_id = 1;
+  string guild_id = 2;
 }
 
-// The response message containing the greetings.
-message PointsResult {
-  bool success = 1;
-  int64 amount = 2;
-  string error_message = 3;
+message MemberQueryWithPoints {
+  string user_id = 1;
+  string guild_id = 2;
+  int64 amount = 3;
+}
+
+message ExperienceResult {
+  Status status = 1;
+  int64 experience = 2;
 }

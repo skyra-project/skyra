@@ -35,7 +35,7 @@ In addition, Skyra was built with a dependence on many services which need consi
 -    [`Redis`] for the music queue, and as a cache for [`Saelem`]
 -    [`InfluxDB`] for keeping anonymous metrics of how she is being used
 -    [`PostgreSQL`] as database.
--	   Other external APIs , each requiring their own individual API keys
+-    Other external APIs, each requiring their own individual API keys
 
 With this in mind, it is also worth noting that Skyra will in no way be capable of running on services such as [Glitch] or [Heroku]. A dedicated VPS (Virtual Private Server) is required in order to maintain the proper production environment.
 

@@ -61,6 +61,19 @@
 			"Skyra"
 		]
 	},
+	"lmgtfyDescription": "Send a LMGTFY (Let Me Google That For You) link.",
+	"lmgtfyExtended": {
+		"usages": ["Query"],
+		"explainedUsage": [
+			["Query", "The query to google"]
+		],
+		"extendedHelp": "Just google it people, it's not that hard.",
+		"examples": [
+			"How to walk the stairs??",
+			"How do I make pancakes??"
+		]
+	},
+	"lmgtfyClick": "[Click me to search]({{link}})",
 	"weatherDescription": "Check the weather status in a location.",
 	"weatherExtended": {
 		"usages": [

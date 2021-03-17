@@ -27,19 +27,17 @@
 
 ## A note to aspiring developers who want to self host Skyra
 
-We are not supportive of the idea of people self hosting Skyra as we put a very high priority on providing the best experience we can for our end-users. This image of Skyra will be diminished if people self-host her as they will not use identical architecture to what we do and likely not put in the same amount of effort as we do. If Skyra is lacking a feature you'd like to see, please refer to the developing guidelines above and if you can add that feature it will be in Skyra to stay.
+The developer team does not support the idea of other self-hosted instances of Skyra. The team pride's itself on providing the best experience and support for the end-users. As such, an offshoot or unafeliated mirror of Skyra may cause ill effects to the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
 
-Furthermore, Skyra has not been build with the idea of self hosting in mind and she makes use of many services that you will need to maintain in a production environment for full functionality. For example
+In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
--   Skyra uses many external API's for which you would have to create API keys
--   Skyra uses [`Lavalink`] as music module, this means you need to host your own instance of Lavalink (a Java application)
--   Skyra uses [`Redis`] for the music queue, and as a cache for [`Saelem`]
--   Skyra uses [`InfluxDB`] for keeping anonymous metrics of how she is being used
--   Skyra uses [`PostgreSQL`] as database.
+-    [`Lavalink`] as music module, this means you need to host your own instance of Lavalink (a Java application)
+-    [`Redis`] for the music queue, and as a cache for [`Saelem`]
+-    [`InfluxDB`] for keeping anonymous metrics of how she is being used
+-    [`PostgreSQL`] as database.
+-	   Other external APIs , each requiring their own individual API keys
 
-All this said, if you really are going to self-host Skyra please take heed, she **_will absolutely not_** run on services such as [Glitch] or [Heroku]. You **_will need_** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
-
-Sidenote, if you really think you're clever enough to self host then you're probably also smart enough to write your own bot.
+With this in mind, it is also worth noting that Skyra will in no way be capable of running on services such as [Glitch] or [Heroku]. A dedicated VPS (Virtual Private Server) is required in order to maintain the proper production environment.
 
 ## Story
 

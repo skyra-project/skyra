@@ -61,6 +61,24 @@
 			"Skyra"
 		]
 	},
+	"lmgtfyDescription": "",
+	"lmgtfyExtended": {
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"lmgtfyClick": "",
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
 		"usages": [

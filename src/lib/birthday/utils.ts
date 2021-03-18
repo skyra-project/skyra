@@ -3,6 +3,9 @@ import { filter, first } from '#utils/iterator';
 import { Store } from '@sapphire/pieces';
 import { BirthdayScheduleEntity, DateWithOptionalYear, Month } from './types';
 
+/**
+ * Determines whether or not a month of a year contains a specific day.
+ */
 export function monthOfYearContainsDay(leap: boolean, month: Month, day: number) {
 	if (day < 1) return false;
 
@@ -22,22 +25,40 @@ export function monthOfYearContainsDay(leap: boolean, month: Month, day: number)
 	}
 }
 
+/**
+ * Determines whether or not a year is a leap year.
+ */
 export function yearIsLeap(year: number) {
 	return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
+/**
+ * Determines whether or not a task is a birthday task.
+ */
 export function isBirthdayTask(task: ScheduleEntity): task is BirthdayScheduleEntity {
 	return task.taskID === 'birthday';
 }
 
+/**
+ * Gets all birthdays from the schedule's queue. This reads the data from {@link Store.injectedContext.schedule}.
+ */
 export function getBirthdays(): IterableIterator<BirthdayScheduleEntity> {
 	return filter(Store.injectedContext.schedule.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
 }
 
+/**
+ * Gets all birthdays from the schedule's queue and filters them by the guild ID.
+ * @see getBirthdays
+ */
 export function getGuildBirthdays(guildID: string): IterableIterator<BirthdayScheduleEntity> {
 	return filter(getBirthdays(), (task) => task.data.guildID === guildID);
 }
 
+/**
+ * Gets the first entry from all birthdays from the schedule's queue that is a birthday task whose guild ID and user ID match.
+ * @see getGuildBirthdays
+ * @returns A {@link BirthdayScheduleEntity} if one was found, `null` otherwise.
+ */
 export function getGuildMemberBirthday(guildID: string, userID: string): BirthdayScheduleEntity | null {
 	return first(filter(getGuildBirthdays(guildID), (task) => task.data.userID === userID));
 }
@@ -57,7 +78,7 @@ export interface TimeOptions {
  * Compares a date with now.
  * @param month The month to compare.
  * @param day The day to compare.
- * @param options The time we wish to compare, defaults to `Date.now()`
+ * @param options The options for the operation of this function.
  * @returns One of the following:
  * - `-1`: `date < now`.
  * - `0`: `date === now`.
@@ -81,6 +102,12 @@ export function compareDate(month: Month, day: number, { now = Date.now() }: Tim
 	return 0;
 }
 
+/**
+ * Gets the current age from a date.
+ * @param data The data to compare.
+ * @param options The options for the operation of this function.
+ * @returns `null` if `data.year` is `null`, a number of years otherwise.
+ */
 export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
 	if (data.year === null) return null;
 
@@ -110,6 +137,13 @@ export interface NextTimeOptions extends TimeOptions {
 	timeZoneOffset?: number;
 }
 
+/**
+ * Gets the next birthday's date.
+ * @param month The month component from the date, starting with 1.
+ * @param day The day component from the date, starting with 1.
+ * @param options The options for the operation of this function.
+ * @returns A `Date` representing the next birthday, which can be `now`'s date if `options.nextYearIfToday` is set as `false`.
+ */
 export function nextBirthday(month: Month, day: number, { now = Date.now(), nextYearIfToday = false, timeZoneOffset = 0 }: NextTimeOptions = {}) {
 	const yearNow = new Date(now).getUTCFullYear();
 

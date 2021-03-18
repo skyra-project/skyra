@@ -100,24 +100,20 @@ export interface NextTimeOptions extends TimeOptions {
 	 * @default false
 	 */
 	nextYearIfToday?: boolean;
+
+	/**
+	 * The timezone offset in milliseconds.
+	 * @default 0
+	 */
+	timeZoneOffset?: number;
 }
 
-export function nextBirthday(month: number, day: number, { now = Date.now(), nextYearIfToday = false }: NextTimeOptions = {}) {
+export function nextBirthday(month: number, day: number, { now = Date.now(), nextYearIfToday = false, timeZoneOffset = 0 }: NextTimeOptions = {}) {
 	const yearNow = new Date(now).getUTCFullYear();
 
 	const yearComparisonResult = compareDate(month, day, { now });
-
-	// * If `nextYearIfToday` is true, this should schedule for next year if `yearComparisonResult` is:
-	//   - `-1`: Already happened.
-	//   - `0`: Takes place today
-	//
-	//   The possible values are `-1`, `0`, and `1`, since we want to match both but `1`, we do `!== 1`.
-	//
-	// * If `nextYearIfToday` is false, this should schedule for next year if `yearComparisonResult` is:
-	//   - `-1`: Already happened
 	const shouldBeScheduledForNextYear = nextYearIfToday ? yearComparisonResult <= 0 : yearComparisonResult < 0;
 	const yearOffset = shouldBeScheduledForNextYear ? 1 : 0;
 
-	// If the month has passed, or it's the same month but the day has passed, the birthday should be scheduled for next year:
-	return new Date(yearNow + yearOffset, month - 1, day);
+	return new Date(Date.UTC(yearNow + yearOffset, month - 1, day) + timeZoneOffset);
 }

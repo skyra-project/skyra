@@ -21,18 +21,16 @@ export class UserCommand extends SkyraCommand {
 			Birthday.Message
 		]);
 		if (!this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage))
-			return this.error(LanguageKeys.Commands.Misc.SetBirthdayNotConfigured, { prefix: context.commandPrefix });
+			this.error(LanguageKeys.Commands.Misc.SetBirthdayNotConfigured, { prefix: context.commandPrefix });
 
 		const date = await this.handleArguments(args);
 
-		// delete any existing reminders
+		// Delete the previous birthday task, if any
 		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
 		if (currentTask) await this.context.client.schedules.remove(currentTask);
 
 		const birthday = nextBirthday(date.month, date.day);
-		await this.context.client.schedules.add('birthday', birthday, {
-			data: this.constructData(date, message)
-		});
+		await this.context.client.schedules.add('birthday', birthday, { data: this.constructData(date, message) });
 		return message.send(args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
 	}
 
@@ -54,7 +52,6 @@ export class UserCommand extends SkyraCommand {
 
 		// The world's oldest human alive was born in January 1903:
 		if (birthDate.getTime() > Date.now() || birthDate.getFullYear() < 1903) this.error(LanguageKeys.Commands.Misc.SetBirthdayInvalidDate);
-
 		return { year: birthDate.getUTCFullYear(), month: birthDate.getUTCMonth() + 1, day: birthDate.getUTCDate() };
 	}
 
@@ -63,14 +60,13 @@ export class UserCommand extends SkyraCommand {
 		return !isNullish(birthdayRole) || (!isNullish(birthdayChannel) && !isNullish(birthdayMessage));
 	}
 
-	private static readonly currentYear = new Date().getUTCFullYear();
 	private static readonly dateRegExp = /^(?:(\d{4})[-/])?(\d{1,2})[-/](\d{1,2})/;
 	private static dateWithOptionalYear = Args.make<DateWithOptionalYear>((parameter, { argument }) => {
 		const result = this.dateRegExp.exec(parameter);
 		if (result === null) return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate });
 
 		const year = result[1] === undefined ? null : Number(result[1]);
-		if (year !== null && (year < 1903 || year > this.currentYear)) {
+		if (year !== null && (year < 1903 || year > new Date().getUTCFullYear())) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidYear });
 		}
 

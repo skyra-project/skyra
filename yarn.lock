@@ -779,13 +779,13 @@
     i18next-fs-backend "^1.0.8"
     tslib "^2.1.0"
 
-"@sapphire/plugin-logger@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-logger/-/plugin-logger-1.0.8.tgz#3d24ebd124293109994884a325f2d5ce9dcf047b"
-  integrity sha512-e9pBGmXgZADhjcHevabyO/n0bdSdojG+qyhMrMLr2/rdBMBlUK+pecaE0fGFe40V2veJJ9/GyPukECDYQfhpRQ==
+"@sapphire/plugin-logger@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-logger/-/plugin-logger-1.0.9.tgz#1e77cc92b45b187438cf9a32d123ff8504121138"
+  integrity sha512-r8PkCkzeiMG1HKZTTcqJGIfdD+vstgpUMSG1wz53AiAu+uo5noWhEaGKC/8PR5RiZYBk1/49EX/3ZgJ9gkXHQA==
   dependencies:
-    "@sapphire/time-utilities" "^1.2.9"
-    colorette "^1.2.1"
+    "@sapphire/time-utilities" "^1.2.11"
+    colorette "^1.2.2"
     tslib "^2.1.0"
 
 "@sapphire/plugin-subcommands@^1.0.1":
@@ -813,12 +813,12 @@
   resolved "https://registry.yarnpkg.com/@sapphire/stopwatch/-/stopwatch-1.0.5.tgz#3a85f02e151525ab4980a19ce479e6fb3f117a45"
   integrity sha512-2NeVF7IWeiQCwQprkChIdQNR/7BWTBz/pOZH9dHgDqE31ENbkIIcm7H6IEfvMTwfOmbHMOyICAv8HrxrWOOwig==
 
-"@sapphire/time-utilities@^1.2.10", "@sapphire/time-utilities@^1.2.9":
-  version "1.2.10"
-  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.10.tgz#a7659723571508a905cc2a2279ff8a3246bc1635"
-  integrity sha512-+9mvo8c4oD/J+eprJ262G44Mn8o8MF8pjAzVR1A/VuSc5yxPXBiG7X/ZIPJCy9BTE8Y1972c3DlMLIlTnEOIpg==
+"@sapphire/time-utilities@^1.2.10", "@sapphire/time-utilities@^1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.11.tgz#7458b335adcfaece6aa386df23c763eaeaaf03ae"
+  integrity sha512-T83QrsyfVf66xlP5xkKN8zLN0EndhVp4vUcI7j/uq+jGrwTXQvRiYXdB6jbjf4GfeMxdjOWJKWYP6BIwz4whAw==
   dependencies:
-    "@sapphire/utilities" "^1.4.5"
+    "@sapphire/utilities" "^1.4.6"
 
 "@sapphire/ts-config@^2.0.1":
   version "2.0.1"
@@ -830,10 +830,10 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.5.tgz#3c7e5b37b36e82df6ca53437d03d6d43fc9f2681"
   integrity sha512-1IZvaatSo3MmqmsWueYnMCHvGEk1K/3TS5GwVu4dc2Eb2Hgj1ao/7Sv4Ag8KdJV0FgrcL8l4IFvyXslkWbj6Kg==
 
-"@sapphire/utilities@^1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.5.tgz#ef7e89c31bb51bb738cd04b41681bdba29a6ba1b"
-  integrity sha512-uyz/SzwFRPerrVybRZ0SRKe0WN21HWd87IjGkBD0doe+/SGFGeP19H1YBVX+q8mv629XQCYula2P5JgjuJM4Ug==
+"@sapphire/utilities@^1.4.5", "@sapphire/utilities@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.6.tgz#3fbc8b8682cb10c872e3f883864e49dbcf147e9f"
+  integrity sha512-cSpifhuXlmIIEZQCMPU4psDzXE9WumdTGI7JgWmH+FbQkbJ2Hn1pxITMnLwOEPH96ypXFf9V4sOqr9kIxk2V6w==
 
 "@sentry/core@6.2.2":
   version "6.2.2"
@@ -1844,7 +1844,7 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-colorette@^1.2.1, colorette@^1.2.2:
+colorette@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
   integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==

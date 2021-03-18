@@ -1,8 +1,8 @@
-import { getHandler } from '#languages';
-import { TaskBirthDayData } from '#lib/birthday';
-import { PartialResponseValue, ResponseType, Task } from '#lib/database';
-import { Birthday } from '#lib/database/keys/settings/All';
-import { GuildMember, TextChannel, User } from 'discord.js';
+import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
+import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { GuildMember, TextChannel, User } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 const enum Matches {
 	Age = '{age}',
@@ -15,7 +15,7 @@ const enum Matches {
 export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
-	public async run(data: TaskBirthDayData): Promise<PartialResponseValue | null> {
+	public async run(data: TaskBirthdayData): Promise<PartialResponseValue | null> {
 		const guild = this.context.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
@@ -23,7 +23,11 @@ export class UserTask extends Task {
 		if (!member) return null;
 
 		const t = await guild.fetchT();
-		const [birthdayRole, birthdayChannel, birthdayMessage] = await guild.readSettings([Birthday.Role, Birthday.Channel, Birthday.Message]);
+		const [birthdayRole, birthdayChannel, birthdayMessage] = await guild.readSettings([
+			GuildSettings.Birthday.Role,
+			GuildSettings.Birthday.Channel,
+			GuildSettings.Birthday.Message
+		]);
 		if (!birthdayRole && !(birthdayChannel && birthdayMessage)) return null;
 		const me = guild.me!;
 
@@ -32,17 +36,16 @@ export class UserTask extends Task {
 		}
 
 		if (birthdayChannel && birthdayMessage) {
-			const channel = guild.channels.cache.get(birthdayChannel);
-			if (!channel || !channel.permissionsFor(me!)?.has('SEND_MESSAGES')) return null;
-			await (channel as TextChannel).send(this.transformMessage(birthdayMessage, member.user, data.birthDate, t.lng));
+			const channel = guild.channels.cache.get(birthdayChannel) as TextChannel | undefined;
+			if (!channel || !channel.postable) return null;
+			await channel.send(this.transformMessage(birthdayMessage, member.user, getAge(data), t));
 		}
 
-		const nextBirthday = this.nextBirthday();
-
-		return { type: ResponseType.Update, value: nextBirthday };
+		const next = nextBirthday(data.month, data.day, { nextYearIfToday: true });
+		return { type: ResponseType.Update, value: next };
 	}
 
-	private async addBirthdayRole(data: TaskBirthDayData, member: GuildMember, birthdayRole: string) {
+	private async addBirthdayRole(data: TaskBirthdayData, member: GuildMember, birthdayRole: string) {
 		await member.roles.add(birthdayRole);
 		const tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
@@ -55,13 +58,13 @@ export class UserTask extends Task {
 		});
 	}
 
-	private transformMessage(message: string, user: User, birthDate: Date, language: string) {
+	private transformMessage(message: string, user: User, age: number | null, t: TFunction) {
 		return message.replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
 				case Matches.Age:
-					return this.getAge(birthDate).toString();
+					return age === null ? t(LanguageKeys.Globals.Unknown) : age.toString();
 				case Matches.AgeOrdinal:
-					return getHandler(language).ordinal(this.getAge(birthDate));
+					return age === null ? t(LanguageKeys.Globals.Unknown) : t(LanguageKeys.Globals.OrdinalValue, { value: age });
 				case Matches.User:
 					return user.toString();
 				case Matches.UserName:
@@ -72,20 +75,5 @@ export class UserTask extends Task {
 					return match;
 			}
 		});
-	}
-
-	private getAge(birthDate: Date) {
-		return new Date().getFullYear() - birthDate.getFullYear();
-	}
-
-	private nextBirthday() {
-		const nextBirthday = new Date();
-		nextBirthday.setUTCFullYear(nextBirthday.getFullYear() + 1);
-		nextBirthday.setUTCHours(0);
-		nextBirthday.setUTCMinutes(0);
-		nextBirthday.setUTCSeconds(0);
-		nextBirthday.setUTCMilliseconds(0);
-
-		return nextBirthday;
 	}
 }

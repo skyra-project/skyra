@@ -1,7 +1,7 @@
 import { ScheduleEntity } from '#lib/database';
 import { filter, first } from '#utils/iterator';
 import { Store } from '@sapphire/pieces';
-import { BirthDayScheduleEntity, DateWithOptionalYear, Month } from './types';
+import { BirthdayScheduleEntity, DateWithOptionalYear, Month } from './types';
 
 export function monthOfYearContainsDay(leap: boolean, month: Month, day: number) {
 	switch (month) {
@@ -24,44 +24,100 @@ export function yearIsLeap(year: number) {
 	return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
-export function isBirthDayTask(task: ScheduleEntity): task is BirthDayScheduleEntity {
+export function isBirthdayTask(task: ScheduleEntity): task is BirthdayScheduleEntity {
 	return task.taskID === 'birthday';
 }
 
-export function getBirthDays(): IterableIterator<BirthDayScheduleEntity> {
-	return filter(Store.injectedContext.client.schedules.queue.values(), isBirthDayTask) as IterableIterator<BirthDayScheduleEntity>;
+export function getBirthdays(): IterableIterator<BirthdayScheduleEntity> {
+	return filter(Store.injectedContext.client.schedules.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
 }
 
-export function getGuildBirthDays(guildID: string): IterableIterator<BirthDayScheduleEntity> {
-	return filter(getBirthDays(), (task) => task.data.guildID === guildID);
+export function getGuildBirthdays(guildID: string): IterableIterator<BirthdayScheduleEntity> {
+	return filter(getBirthdays(), (task) => task.data.guildID === guildID);
 }
 
-export function getGuildMemberBirthDay(guildID: string, userID: string): BirthDayScheduleEntity | null {
-	return first(filter(getGuildBirthDays(guildID), (task) => task.data.userID === userID));
+export function getGuildMemberBirthday(guildID: string, userID: string): BirthdayScheduleEntity | null {
+	return first(filter(getGuildBirthdays(guildID), (task) => task.data.userID === userID));
 }
 
-export function dateIsBeforeToday(month: Month, day: number, now = Date.now()) {
+/**
+ * The time options for birthday functions.
+ */
+export interface TimeOptions {
+	/**
+	 * The time we wish to compare.
+	 * @default Date.now()
+	 */
+	now?: number;
+}
+
+/**
+ * Compares a date with now.
+ * @param month The month to compare.
+ * @param day The day to compare.
+ * @param now The time we wish to compare, defaults to `Date.now()`
+ * @returns One of the following:
+ * - `-1`: `date < now`.
+ * - `0`: `date === now`.
+ * - `1`: `date > now`.
+ */
+export function compareDate(month: Month, day: number, { now = Date.now() }: TimeOptions = {}) {
 	const date = new Date(now);
-	const dateMonth = date.getUTCMonth() + 1;
-	const dateDay = date.getUTCDate();
 
-	// If the month has passed, or it's the same month but the day has passed, the birthday should be scheduled for next year:
-	return month < dateMonth || (month === dateMonth && day < dateDay);
+	// Compare the month, if it's earlier, pass -1, if it's later, pass 1:
+	const dateMonth = date.getUTCMonth() + 1;
+	if (month < dateMonth) return -1;
+	if (month > dateMonth) return 1;
+
+	// * The month is the same.
+	// Compare the day, if it's earlier, pass -1, if it's later, pass 1:
+	const dateDay = date.getUTCDate();
+	if (day < dateDay) return -1;
+	if (day > dateDay) return 1;
+
+	// * The month and day are the same.
+	return 0;
 }
 
-export function getAge(data: DateWithOptionalYear, now = Date.now()) {
+export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
 	if (data.year === null) return null;
 
-	// If the birthday hasn't happened yet, we substract the years by one, that way:
+	// If the birthday has happened, we substract the years by one, that way:
 	//
 	// * 2021/03/18 - 2020/05/10 = 0
 	// * 2021/03/18 - 2020/02/26 = 1
-	const extra = dateIsBeforeToday(data.month, data.day) ? 0 : -1;
+	const extra = compareDate(data.month, data.day) === 1 ? 0 : -1;
 	const years = new Date(now).getUTCFullYear() - data.year;
 	return years + extra;
 }
 
-export function nextBirthday(month: number, day: number, now = Date.now()) {
+/**
+ * The time options for birthday functions.
+ */
+export interface NextTimeOptions extends TimeOptions {
+	/**
+	 * Whether or not we wish to get a birthday this year if the month and day are the same.
+	 * @default false
+	 */
+	nextYearIfToday?: boolean;
+}
+
+export function nextBirthday(month: number, day: number, { now = Date.now(), nextYearIfToday = false }: NextTimeOptions = {}) {
+	const yearNow = new Date(now).getUTCFullYear();
+
+	const yearComparisonResult = compareDate(month, day, { now });
+
+	// * If `nextYearIfToday` is true, this should schedule for next year if `yearComparisonResult` is:
+	//   - `-1`: Already happened.
+	//   - `0`: Takes place today
+	//
+	//   The possible values are `-1`, `0`, and `1`, since we want to match both but `1`, we do `!== 1`.
+	//
+	// * If `nextYearIfToday` is false, this should schedule for next year if `yearComparisonResult` is:
+	//   - `-1`: Already happened
+	const shouldBeScheduledForNextYear = nextYearIfToday ? yearComparisonResult <= 0 : yearComparisonResult < 0;
+	const yearOffset = shouldBeScheduledForNextYear ? 1 : 0;
+
 	// If the month has passed, or it's the same month but the day has passed, the birthday should be scheduled for next year:
-	return new Date(new Date(now).getUTCFullYear() + (dateIsBeforeToday(month, day, now) ? 1 : 0), month - 1, day);
+	return new Date(yearNow + yearOffset, month - 1, day);
 }

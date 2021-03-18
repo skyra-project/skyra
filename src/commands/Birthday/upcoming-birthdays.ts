@@ -1,4 +1,4 @@
-import { BirthDayScheduleEntity, getAge, getGuildBirthDays } from '#lib/birthday';
+import { BirthdayScheduleEntity, getAge, getGuildBirthdays } from '#lib/birthday';
 import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -17,16 +17,16 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const schedules = [
 			...reduce(
-				getGuildBirthDays(message.guild.id),
+				getGuildBirthdays(message.guild.id),
 				(map, b) => {
 					const key = b.time.getTime();
 					const valueAtA = map.get(key);
 					valueAtA ? valueAtA.push(b) : map.set(key, [b]);
 					return map;
 				},
-				new Map<number, BirthDayScheduleEntity[]>()
+				new Map<number, BirthdayScheduleEntity[]>()
 			).entries()
-		].sort((a, b) => (a[0] > b[0] ? -1 : 1)) as [number, BirthDayScheduleEntity[]][];
+		].sort((a, b) => (a[0] > b[0] ? -1 : 1)) as [number, BirthdayScheduleEntity[]][];
 
 		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone);
 		const embed = new MessageEmbed()

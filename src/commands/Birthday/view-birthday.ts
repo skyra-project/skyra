@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMessage } from '#lib/types';
 import { CommandContext } from '@sapphire/framework';
-import { getGuildMemberBirthDay } from '#lib/birthday';
+import { getGuildMemberBirthday } from '#lib/birthday';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -14,7 +14,7 @@ import { getGuildMemberBirthDay } from '#lib/birthday';
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const user = args.finished ? message.author : await args.pick('userName');
-		const task = getGuildMemberBirthDay(message.guild.id, user.id);
+		const task = getGuildMemberBirthday(message.guild.id, user.id);
 
 		return message.send(
 			task

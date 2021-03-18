@@ -1,4 +1,4 @@
-import { getGuildMemberBirthDay, monthOfYearContainsDay, nextBirthday, TaskBirthDayData, yearIsLeap } from '#lib/birthday';
+import { getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
 import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -20,13 +20,13 @@ export class UserCommand extends SkyraCommand {
 			Birthday.Channel,
 			Birthday.Message
 		]);
-		if (this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage))
+		if (!this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage))
 			return this.error(LanguageKeys.Commands.Misc.SetBirthdayNotConfigured, { prefix: context.commandPrefix });
 
 		const date = await this.handleArguments(args);
 
 		// delete any existing reminders
-		const currentTask = getGuildMemberBirthDay(message.guild.id, message.author.id);
+		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
 		if (currentTask) await this.context.client.schedules.remove(currentTask);
 
 		const birthday = nextBirthday(date.month, date.day);
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
 	}
 
-	private constructData(birthDate: DateWithOptionalYear, message: GuildMessage): TaskBirthDayData {
+	private constructData(birthDate: DateWithOptionalYear, message: GuildMessage): TaskBirthdayData {
 		return {
 			guildID: message.guild.id,
 			userID: message.author.id,
@@ -81,7 +81,7 @@ export class UserCommand extends SkyraCommand {
 
 		const day = Number(result[3]);
 		if (day <= 0 || !monthOfYearContainsDay(year === null ? true : yearIsLeap(year), month, day)) {
-			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDay });
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDay, context: { year, month } });
 		}
 
 		return Args.ok({ year, month, day });

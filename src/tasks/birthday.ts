@@ -104,7 +104,7 @@ export class UserTask extends Task {
 		await member.roles.add(birthdayRole);
 		const tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
-		await this.context.client.schedules.add('removeBirthdayRole', tomorrow, {
+		await this.context.schedule.add('removeBirthdayRole', tomorrow, {
 			data: {
 				guildID: data.guildID,
 				roleID: birthdayRole,

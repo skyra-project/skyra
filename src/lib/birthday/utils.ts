@@ -1,9 +1,11 @@
-import { ScheduleEntity } from '#lib/database';
+import type { ScheduleEntity } from '#lib/database';
 import { filter, first } from '#utils/iterator';
 import { Store } from '@sapphire/pieces';
 import { BirthdayScheduleEntity, DateWithOptionalYear, Month } from './types';
 
 export function monthOfYearContainsDay(leap: boolean, month: Month, day: number) {
+	if (day < 1) return false;
+
 	switch (month) {
 		case Month.February:
 			return day <= (leap ? 29 : 28);
@@ -29,7 +31,7 @@ export function isBirthdayTask(task: ScheduleEntity): task is BirthdayScheduleEn
 }
 
 export function getBirthdays(): IterableIterator<BirthdayScheduleEntity> {
-	return filter(Store.injectedContext.client.schedules.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
+	return filter(Store.injectedContext.schedule.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
 }
 
 export function getGuildBirthdays(guildID: string): IterableIterator<BirthdayScheduleEntity> {
@@ -55,7 +57,7 @@ export interface TimeOptions {
  * Compares a date with now.
  * @param month The month to compare.
  * @param day The day to compare.
- * @param now The time we wish to compare, defaults to `Date.now()`
+ * @param options The time we wish to compare, defaults to `Date.now()`
  * @returns One of the following:
  * - `-1`: `date < now`.
  * - `0`: `date === now`.
@@ -82,11 +84,11 @@ export function compareDate(month: Month, day: number, { now = Date.now() }: Tim
 export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
 	if (data.year === null) return null;
 
-	// If the birthday has happened, we substract the years by one, that way:
+	// If the birthday has happened, we subtract the years by one, that way:
 	//
 	// * 2021/03/18 - 2020/05/10 = 0
 	// * 2021/03/18 - 2020/02/26 = 1
-	const extra = compareDate(data.month, data.day) === 1 ? 0 : -1;
+	const extra = compareDate(data.month, data.day, { now }) === -1 ? 0 : -1;
 	const years = new Date(now).getUTCFullYear() - data.year;
 	return years + extra;
 }
@@ -108,7 +110,7 @@ export interface NextTimeOptions extends TimeOptions {
 	timeZoneOffset?: number;
 }
 
-export function nextBirthday(month: number, day: number, { now = Date.now(), nextYearIfToday = false, timeZoneOffset = 0 }: NextTimeOptions = {}) {
+export function nextBirthday(month: Month, day: number, { now = Date.now(), nextYearIfToday = false, timeZoneOffset = 0 }: NextTimeOptions = {}) {
 	const yearNow = new Date(now).getUTCFullYear();
 
 	const yearComparisonResult = compareDate(month, day, { now });

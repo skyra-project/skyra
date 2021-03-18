@@ -27,10 +27,10 @@ export class UserCommand extends SkyraCommand {
 
 		// Delete the previous birthday task, if any
 		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
-		if (currentTask) await this.context.client.schedules.remove(currentTask);
+		if (currentTask) await this.context.schedule.remove(currentTask);
 
 		const birthday = nextBirthday(date.month, date.day);
-		await this.context.client.schedules.add('birthday', birthday, { data: this.constructData(date, message) });
+		await this.context.schedule.add('birthday', birthday, { data: this.constructData(date, message) });
 		return message.send(args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
 	}
 

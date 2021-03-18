@@ -4,7 +4,7 @@ import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, ENABLE_AUDIO, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
-import { SapphireClient } from '@sapphire/framework';
+import { SapphireClient, Store } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
 import { mergeDefault } from '@sapphire/utilities';
@@ -36,7 +36,7 @@ export class SkyraClient extends SapphireClient {
 	/**
 	 * The Schedule manager
 	 */
-	public schedules: ScheduleManager = new ScheduleManager(this);
+	public schedules: ScheduleManager;
 
 	/**
 	 * The settings manager
@@ -83,6 +83,8 @@ export class SkyraClient extends SapphireClient {
 	public constructor() {
 		// @ts-ignore Shut the fuck up TS
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as ClientOptions);
+		this.schedules = new ScheduleManager(this);
+		Store.injectedContext.schedule = this.schedules;
 		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
 			const guild = this.guilds.cache.get(guildID);
 			return Promise.resolve(guild?.shard.send(packet));

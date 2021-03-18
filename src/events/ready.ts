@@ -1,7 +1,7 @@
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
-import { DEV, ENABLE_INFLUX, ENABLE_AUDIO, VERSION } from '#root/config';
+import { DEV, ENABLE_AUDIO, ENABLE_INFLUX, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
@@ -38,23 +38,23 @@ export class UserEvent extends Event {
 	}
 
 	private async initPostStatsTask() {
-		const { queue } = this.context.client.schedules;
+		const { queue } = this.context.schedule;
 		if (!queue.some((task) => task.taskID === Schedules.Poststats)) {
-			await this.context.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
+			await this.context.schedule.add(Schedules.Poststats, '*/10 * * * *', {});
 		}
 	}
 
 	private async initTwitchRefreshSubscriptionsTask() {
-		const { queue } = this.context.client.schedules;
+		const { queue } = this.context.schedule;
 		if (!queue.some((task) => task.taskID === Schedules.TwitchRefreshSubscriptions)) {
-			await this.context.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '@daily');
+			await this.context.schedule.add(Schedules.TwitchRefreshSubscriptions, '@daily');
 		}
 	}
 
 	private async initSyncResourceAnalyticsTask() {
-		const { queue } = this.context.client.schedules;
+		const { queue } = this.context.schedule;
 		if (!queue.some((task) => task.taskID === Schedules.SyncResourceAnalytics)) {
-			await this.context.client.schedules.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
+			await this.context.schedule.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
 		}
 	}
 

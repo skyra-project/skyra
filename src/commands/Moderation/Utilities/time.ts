@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
-		const task = this.context.client.schedules.queue.find(
+		const task = this.context.schedule.queue.find(
 			(tk) => tk.data && tk.data[Moderation.SchemaKeys.Case] === entry.caseID && tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id
 		)!;
 

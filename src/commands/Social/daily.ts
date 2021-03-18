@@ -65,7 +65,7 @@ export class UserCommand extends SkyraCommand {
 		await settings.save();
 
 		if (remind) {
-			await this.context.client.schedules.add(Schedules.Reminder, nextTime, {
+			await this.context.schedule.add(Schedules.Reminder, nextTime, {
 				data: {
 					content: t(LanguageKeys.Commands.Social.DailyCollect),
 					user: message.author.id

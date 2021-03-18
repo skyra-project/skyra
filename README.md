@@ -25,6 +25,10 @@
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
+## Translating Skyra <a href="https://translation.skyra.pw" target="_blank"><img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%"></a>
+
+We use **Crowdin** to translate Skyra's messages into different languages. If you'd like to help by contributing new translations (or improving existing ones), [**click here.**](https://translation.skyra.pw) Thanks for any contributions!
+
 ## A note to aspiring developers who want to self host Skyra
 
 The developer team does not support the idea of other self-hosted instances of Skyra. The team prides itself on providing the best experience and support for the end-users. As such, an offshoot or unaffiliated mirror of Skyra may cause ill effects to the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
@@ -57,10 +61,6 @@ Klasa. And later in September 2020 I split from Dirigeants along with many of th
 which is what Skyra is currently using, specifically [Sapphire Framework][]
 
 _Who knows, I might write a book someday for Skyra's lore._
-
-## Translating Skyra <a href="https://translation.skyra.pw" target="_blank"><img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%"></a>
-
-We use **Crowdin** to translate Skyra's messages into different languages. If you'd like to help by contributing new translations (or improving existing ones), [**click here.**](https://translation.skyra.pw) Thanks for any contributions!
 
 ## Links
 

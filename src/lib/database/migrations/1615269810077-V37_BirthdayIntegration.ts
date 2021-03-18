@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-export class V36BirthdayIntegration1615269810077 implements MigrationInterface {
+export class V37BirthdayIntegration1615269810077 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.addColumns('guilds', [
 			new TableColumn({ name: 'birthday.channel', type: 'varchar', isNullable: true, length: '19' }),

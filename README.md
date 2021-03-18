@@ -27,7 +27,7 @@
 
 ## A note to aspiring developers who want to self host Skyra
 
-The developer team does not support the idea of other self-hosted instances of Skyra. The team prides itself on providing the best experience and support for the end-users. As such, an offshoot or unafeliated mirror of Skyra may cause ill effects to the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
+The developer team does not support the idea of other self-hosted instances of Skyra. The team prides itself on providing the best experience and support for the end-users. As such, an offshoot or unaffiliated mirror of Skyra may cause ill effects to the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 

@@ -1,4 +1,5 @@
 import { getHandler } from '#languages';
+import { TaskBirthDayData } from '#lib/birthday';
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Birthday } from '#lib/database/keys/settings/All';
 import { GuildMember, TextChannel, User } from 'discord.js';
@@ -14,7 +15,7 @@ const enum Matches {
 export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
-	public async run(data: BirthdayTaskData): Promise<PartialResponseValue | null> {
+	public async run(data: TaskBirthDayData): Promise<PartialResponseValue | null> {
 		const guild = this.context.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
@@ -41,7 +42,7 @@ export class UserTask extends Task {
 		return { type: ResponseType.Update, value: nextBirthday };
 	}
 
-	private async addBirthdayRole(data: BirthdayTaskData, member: GuildMember, birthdayRole: string) {
+	private async addBirthdayRole(data: TaskBirthDayData, member: GuildMember, birthdayRole: string) {
 		await member.roles.add(birthdayRole);
 		const tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
@@ -87,10 +88,4 @@ export class UserTask extends Task {
 
 		return nextBirthday;
 	}
-}
-
-interface BirthdayTaskData extends Record<string, unknown> {
-	birthDate: Date;
-	guildID: string;
-	userID: string;
 }

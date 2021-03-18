@@ -31,12 +31,27 @@ export function* filter<T>(iterator: IterableIterator<T>, cb: (value: T) => bool
 	}
 }
 
+export function reduce<T, R>(iterator: IterableIterator<T>, cb: (previous: R, value: T) => R, first: R): R {
+	let output = first;
+	let result: IteratorResult<T> | null = null;
+	while (!(result = iterator.next()).done) {
+		output = cb(output, result.value);
+	}
+
+	return output;
+}
+
 export function* take<T>(iterator: IterableIterator<T>, amount: number): IterableIterator<T> {
 	let i = 0;
 	let result: IteratorResult<T> | null = null;
 	while (i++ < amount && !(result = iterator.next()).done) {
 		yield result.value;
 	}
+}
+
+export function first<T>(iterator: IterableIterator<T>): T | null {
+	const result = iterator.next();
+	return result.done ? null : result.value;
 }
 
 export function* prepend<T>(iterator: IterableIterator<T>, value: T): IterableIterator<T> {

@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
 import { GuildMessage } from '#lib/types';
 import { CommandContext } from '@sapphire/framework';
+import { getGuildMemberBirthDay } from '#lib/birthday';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -10,17 +11,15 @@ import { CommandContext } from '@sapphire/framework';
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const user = args.finished ? message.author : await args.pick('userName');
-		const birthDate = this.context.client.schedules.queue.find(
-			(schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild.id && schedule.data.userID === user.id
-		)?.time;
+		const task = getGuildMemberBirthDay(message.guild.id, user.id);
 
 		return message.send(
-			birthDate
+			task
 				? (args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, {
-						birthDate: birthDate.getTime(),
+						birthDate: task.time.getTime(),
 						user: user.tag
 				  }) as string)
 				: (args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix }) as string)

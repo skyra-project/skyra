@@ -6,8 +6,6 @@ export class V38UpdateBirthdayIntegration1616108184492 implements MigrationInter
 			await queryRunner.query(/* sql */ `SELECT id, data FROM public.schedule WHERE task_id = 'birthday'`)
 		);
 
-		console.log(newEntries);
-
 		for (const entry of newEntries) {
 			await queryRunner.query(/* sql */ `UPDATE public.schedule SET data = $1::JSONB WHERE id = $2 AND task_id = 'birthday'`, [
 				JSON.stringify(entry.data),

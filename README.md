@@ -35,11 +35,11 @@ The developer team does not support the idea of other self-hosted instances of S
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
--    [`Lavalink`] as music module, this means you need to host your own instance of Lavalink (a Java application)
+-    [`Lavalink`] as music module, this requires hosting a personal instance of Lavalink (a Java application)
 -    [`Redis`] for the music queue, and as a cache for [`Saelem`]
--    [`InfluxDB`] for keeping anonymous metrics of how she is being used
--    [`PostgreSQL`] as database.
--    Other external APIs, each requiring their own individual API keys
+-    [`InfluxDB`] in order to keep anonymous metrics on bot usage
+-    [`PostgreSQL`] as database
+-    Other external APIs, each requiring their own individual API keys.
 
 With this in mind, it is also worth noting that Skyra will in no way be capable of running on services such as [Glitch] or [Heroku]. A dedicated VPS (Virtual Private Server) is required in order to maintain the proper production environment.
 

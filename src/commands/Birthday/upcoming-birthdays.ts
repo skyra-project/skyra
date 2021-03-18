@@ -37,7 +37,14 @@ export class UserCommand extends SkyraCommand {
 			const birthday = new Date(time);
 			embed.addField(
 				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),
-				users.map((schedule) => `<@${schedule.data.userID}> (${getAge(schedule.data) ?? args.t(LanguageKeys.Globals.Unknown)})`).join('\n')
+				users
+					.map((schedule) => {
+						const calculatedAge = getAge(schedule.data);
+						const age = calculatedAge === null ? args.t(LanguageKeys.Globals.Unknown) : calculatedAge + 1;
+
+						return `<@${schedule.data.userID}> (${age})`;
+					})
+					.join('\n')
 			);
 		}
 

@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
 				.setThumbnail(itemDetails.sprite)
 				.setDescription(itemDetails.desc)

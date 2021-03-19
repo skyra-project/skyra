@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 		const { t } = args;
 		const wager = await args.pick('shinyWager');
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
@@ -79,7 +79,7 @@ export class UserCommand extends SkyraCommand {
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null,
-			color: await DbSet.fetchColor(message),
+			color: await this.context.db.fetchColor(message),
 			canceledByChoice: false
 		};
 

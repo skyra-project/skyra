@@ -53,7 +53,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async processRelease(message: GuildMessage, _: TFunction, markov: Markov) {
-		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
+		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await this.context.db.fetchColor(message));
 	}
 
 	private async processDevelopment(message: GuildMessage, t: TFunction, markov: Markov) {
@@ -63,7 +63,7 @@ export class UserCommand extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setFooter(t(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 

@@ -133,7 +133,7 @@ export class UserCommand extends SkyraCommand {
 		let type: Type | undefined = undefined;
 
 		try {
-			result = await DbSet.instance?.connection.query(sql);
+			result = await this.context.db.connection.query(sql);
 			time = stopwatch.toString();
 			type = new Type(result);
 			success = true;

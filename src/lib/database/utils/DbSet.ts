@@ -73,6 +73,45 @@ export class DbSet {
 		this.userCooldowns = this.connection.getRepository(UserCooldownEntity);
 	}
 
+	public async fetchModerationDirectMessageEnabled(id: string) {
+		const entry = await this.users.findOne(id, { select: ['moderationDM'] });
+		return entry?.moderationDM ?? true;
+	}
+
+	/**
+	 * Finds entities that match given options.
+	 */
+	public fetchModerationEntry(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity>;
+
+	/**
+	 * Finds entities that match given conditions.
+	 */
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	public fetchModerationEntry(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity>;
+	public async fetchModerationEntry(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
+		return this.moderations.findOne(optionsOrConditions as any);
+	}
+
+	/**
+	 * Finds entities that match given options.
+	 */
+	public fetchModerationEntries(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity[]>;
+
+	/**
+	 * Finds entities that match given conditions.
+	 */
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	public fetchModerationEntries(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity[]>;
+	public async fetchModerationEntries(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
+		return this.moderations.find(optionsOrConditions as any);
+	}
+
+	public async fetchColor(message: Message) {
+		const user = await this.userProfiles.findOne(message.author.id, { select: ['color'] });
+
+		return user?.color || message.member?.displayColor || BrandingColors.Primary;
+	}
+
 	public static instance: DbSet | null = null;
 	private static connectPromise: Promise<DbSet> | null;
 
@@ -81,48 +120,5 @@ export class DbSet {
 			DbSet.connectPromise = null;
 			return new DbSet(connection);
 		})));
-	}
-
-	public static async fetchModerationDirectMessageEnabled(id: string) {
-		const { users } = await DbSet.connect();
-		const entry = await users.findOne(id, { select: ['moderationDM'] });
-		return entry?.moderationDM ?? true;
-	}
-
-	/**
-	 * Finds entities that match given options.
-	 */
-	public static fetchModerationEntry(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity>;
-
-	/**
-	 * Finds entities that match given conditions.
-	 */
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public static fetchModerationEntry(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity>;
-	public static async fetchModerationEntry(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
-		const { moderations } = await DbSet.connect();
-		return moderations.findOne(optionsOrConditions as any);
-	}
-
-	/**
-	 * Finds entities that match given options.
-	 */
-	public static fetchModerationEntries(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity[]>;
-
-	/**
-	 * Finds entities that match given conditions.
-	 */
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public static fetchModerationEntries(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity[]>;
-	public static async fetchModerationEntries(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
-		const { moderations } = await DbSet.connect();
-		return moderations.find(optionsOrConditions as any);
-	}
-
-	public static async fetchColor(message: Message) {
-		const { userProfiles } = await DbSet.connect();
-		const user = await userProfiles.findOne(message.author.id, { select: ['color'] });
-
-		return user?.color || message.member?.displayColor || BrandingColors.Primary;
 	}
 }

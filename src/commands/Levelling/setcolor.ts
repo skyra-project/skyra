@@ -17,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const { hex, b10 } = await args.rest('color');
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
 			user.profile.color = b10.value;

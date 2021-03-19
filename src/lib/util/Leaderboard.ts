@@ -1,5 +1,6 @@
 import { DbSet } from '#lib/database';
 import Collection from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
 import type { Client } from 'discord.js';
 import { Time } from './constants';
 import { PreciseTimeout } from './PreciseTimeout';
@@ -112,7 +113,7 @@ export class Leaderboard {
 	}
 
 	private async createMemberSyncHandle(guild: string) {
-		const { members } = await DbSet.connect();
+		const { members } = Store.injectedContext.db;
 		const data = await members
 			.createQueryBuilder()
 			.select(['user_id', 'points'])
@@ -157,7 +158,7 @@ export class Leaderboard {
 	}
 
 	private async createUserSyncHandle() {
-		const { users } = await DbSet.connect();
+		const { users } = Store.injectedContext.db;
 		// Get the sorted data from the db
 		const data = await users
 			.createQueryBuilder()

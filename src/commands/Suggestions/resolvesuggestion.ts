@@ -122,7 +122,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Retrieve the suggestion data
-		const { suggestions } = await DbSet.connect();
+		const { suggestions } = this.context.db;
 		const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
 		if (!suggestionData) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound });

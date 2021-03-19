@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setTitle(args.t(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);

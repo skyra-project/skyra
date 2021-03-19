@@ -11,7 +11,7 @@ export class UserRoute extends Route {
 
 		const body = request.body as Body;
 		try {
-			const { users } = await DbSet.connect();
+			const { users } = this.context.db;
 			await users.lock([body.user.id], async (id) => {
 				const user = await users.ensure(id);
 

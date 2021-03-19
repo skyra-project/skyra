@@ -107,7 +107,7 @@ export class SettingsMenu {
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
-			.setColor(await DbSet.fetchColor(this.message))
+			.setColor(await Store.injectedContext.db.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
 			.setFooter(parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();

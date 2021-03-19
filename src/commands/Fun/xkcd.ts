@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setImage(comic.img)
 				.setTitle(comic.title)
 				.setURL(`https://xkcd.com/${comicNumber}/`)

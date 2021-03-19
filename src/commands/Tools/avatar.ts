@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(
 			new MessageEmbed()
 				.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setImage(user.displayAvatarURL({ size, format: 'png', dynamic: true }))
 		);
 	}

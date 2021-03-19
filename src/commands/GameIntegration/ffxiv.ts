@@ -77,7 +77,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
 		}).addPageEmbed((embed) =>
 			embed
@@ -136,7 +136,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: FFXIV.ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const item of items) {
 			display.addPageEmbed((embed) =>

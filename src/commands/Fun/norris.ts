@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setTitle(args.t(LanguageKeys.Commands.Fun.NorrisOutput))
 				.setURL(data.url)
 				.setThumbnail(data.icon_url)

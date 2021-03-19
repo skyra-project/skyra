@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 		const toRemind = args.getFlags(...REMINDER_FLAGS);
 		const now = Date.now();
 
-		const connection = await DbSet.connect();
+		const connection = this.context.db;
 		return connection.users.lock([message.author.id], async (id) => {
 			const settings = await connection.users.ensureCooldowns(id);
 

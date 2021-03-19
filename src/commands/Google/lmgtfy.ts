@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const [query, color] = await Promise.all([args.rest('string'), DbSet.fetchColor(message)]);
+		const [query, color] = await Promise.all([args.rest('string'), this.context.db.fetchColor(message)]);
 
 		const url = new URL('https://letmegooglethat.com/');
 		url.searchParams.append('q', query);

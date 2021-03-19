@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setImage(getImage(remoteMessage)!)
 			.setTimestamp(remoteMessage.createdAt);
 

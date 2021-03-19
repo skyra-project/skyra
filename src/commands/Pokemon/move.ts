@@ -49,7 +49,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
 		})

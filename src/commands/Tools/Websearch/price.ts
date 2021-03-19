@@ -60,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		return new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setDescription(t(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}

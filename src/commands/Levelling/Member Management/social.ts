@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 1, maximum: 1000000 });
 
-		const { members } = await DbSet.connect();
+		const { members } = this.context.db;
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		if (settings) {
 			const newAmount = settings.points + amount;
@@ -42,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 1, maximum: 100000000 });
 
-		const { members } = await DbSet.connect();
+		const { members } = this.context.db;
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		if (!settings) this.error(LanguageKeys.Commands.Social.SocialMemberNotExists);
 
@@ -57,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 0, maximum: 1000000 });
 
-		const { members } = await DbSet.connect();
+		const { members } = this.context.db;
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		let oldValue = 0;
 		if (settings) {
@@ -92,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
-		const { members } = await DbSet.connect();
+		const { members } = this.context.db;
 		await members.delete({ userID: user.id, guildID: message.guild.id });
 		return message.send(args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username }));
 	}

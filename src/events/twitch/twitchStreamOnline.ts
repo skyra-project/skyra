@@ -17,7 +17,7 @@ export class UserEvent extends Event {
 		if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');
 
 		// Fetch the streamer, and if it could not be found, return error.
-		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const { twitchStreamSubscriptions } = this.context.db;
 		const streamer = await twitchStreamSubscriptions.findOne({ id: data.user_id });
 		if (!streamer) return response.error('No streamer could be found in the database.');
 

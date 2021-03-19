@@ -15,7 +15,7 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
-		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTimestamp();
+		const embed = new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setTimestamp();
 
 		try {
 			const randomImageBuffer = await fetch('https://cataas.com/cat', FetchResultTypes.Buffer);

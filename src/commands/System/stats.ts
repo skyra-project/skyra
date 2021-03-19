@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);

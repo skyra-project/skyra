@@ -36,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 		});
 		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 

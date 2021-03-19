@@ -89,7 +89,7 @@ export class UserCommand extends SkyraCommand {
 			errored: erroredChanges.length,
 			users: message.guild.members.cache.size
 		});
-		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
+		const embed = new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setTitle(embedLanguage.title);
 
 		let { description } = embedLanguage;
 		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;

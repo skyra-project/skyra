@@ -111,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const bulk of chunk(reactionRoles, 20)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');

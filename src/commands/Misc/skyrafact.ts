@@ -16,7 +16,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setTitle(args.t(LanguageKeys.Commands.Misc.SkyraFactTitle))
 				.setDescription(this.getLine(args))
 		);

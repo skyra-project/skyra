@@ -1,4 +1,5 @@
 import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
+import { Store } from '@sapphire/framework';
 import type { Client } from 'discord.js';
 
 export class GiveawayManager {
@@ -11,7 +12,7 @@ export class GiveawayManager {
 	}
 
 	public async init() {
-		const { giveaways } = await DbSet.connect();
+		const { giveaways } = Store.injectedContext.db;
 		const qb = giveaways.createQueryBuilder().select();
 		if (this.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...this.client.guilds.cache.keys()] });
 

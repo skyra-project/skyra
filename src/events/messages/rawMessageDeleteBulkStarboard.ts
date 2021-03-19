@@ -12,7 +12,7 @@ export class UserEvent extends Event {
 		for (const id of data.ids) guild.starboard.delete(id);
 
 		// Delete entries from starboard if it exists
-		const { starboards } = await DbSet.connect();
+		const { starboards } = this.context.db;
 		const results = await starboards
 			.createQueryBuilder()
 			.delete()

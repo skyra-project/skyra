@@ -11,7 +11,7 @@ import type { EventOptions } from '@sapphire/framework';
 })
 export class UserAnalyticsEvent extends AnalyticsEvent {
 	public async run(guilds: number, users: number) {
-		const dbSet = await DbSet.connect();
+		const dbSet = this.context.db;
 		const [economyHealth, twitchSubscriptionCount] = await Promise.all([this.fetchEconomyHealth(dbSet), dbSet.twitchStreamSubscriptions.count()]);
 
 		this.writePoints([

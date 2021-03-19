@@ -59,7 +59,7 @@ export interface BrawlStarsGIData {
 })
 export class UserCommand extends SkyraCommand {
 	public async player(message: Message, args: SkyraCommand.Args) {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		const tag = (args.finished && bsData.extraData?.playerTag) || (await args.pick(UserCommand.tagResolver));
@@ -75,7 +75,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async club(message: Message, args: SkyraCommand.Args) {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		const tag = (args.finished && bsData.extraData?.playerTag) || (await args.pick(UserCommand.tagResolver));
@@ -96,7 +96,7 @@ export class UserCommand extends SkyraCommand {
 		const digitFormat = (value: number) => t(LanguageKeys.Globals.NumberValue, { value });
 
 		return new MessageEmbed()
-			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
+			.setColor(player.nameColor?.substr(4) ?? (await this.context.db.fetchColor(message)))
 			.setTitle(`${player.name} - ${player.tag}`)
 			.setURL(`https://brawlstats.com/profile/${player.tag.substr(1)}`)
 			.addField(
@@ -155,7 +155,7 @@ export class UserCommand extends SkyraCommand {
 		const president = club.members.find((member) => member.role === 'president');
 
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(`${club.name} - ${club.tag}`)
 			.setURL(`https://brawlstats.com/club/${club.tag.substr(1)}`)
 			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(club.trophies)}`)

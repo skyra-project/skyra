@@ -16,13 +16,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const spouses = await users.fetchSpouses(message.author.id);
 		if (spouses.length === 0) return message.send(args.t(LanguageKeys.Commands.Social.MarryNotTaken));
 
 		const usernames = chunk(await Promise.all(spouses.map((user) => this.fetchUser(user))), 20);
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const usernameChunk of usernames) {
 			display.addPageEmbed((embed) => embed.setDescription(args.t(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk })));
 		}

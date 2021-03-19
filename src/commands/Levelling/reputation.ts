@@ -60,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async downloadSettings(authorID: string, targetID: string | null): Promise<Settings> {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		return {
 			users,
 			author: await users.ensureProfileAndCooldowns(authorID),

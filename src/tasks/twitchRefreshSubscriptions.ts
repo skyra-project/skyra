@@ -12,7 +12,7 @@ export class UserTask extends Task {
 		if (client.options.dev) return { type: ResponseType.Finished };
 
 		// Retrieve all the Twitch subscriptions
-		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const { twitchStreamSubscriptions } = this.context.db;
 		const allSubscriptions = await twitchStreamSubscriptions.find();
 
 		// If there are no subscriptions then just exit early

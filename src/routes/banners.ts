@@ -7,7 +7,7 @@ import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire
 export class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public async [methods.GET](_: ApiRequest, response: ApiResponse) {
-		const { banners } = await DbSet.connect();
+		const { banners } = this.context.db;
 		const entries = await banners.find();
 		return response.json(entries);
 	}

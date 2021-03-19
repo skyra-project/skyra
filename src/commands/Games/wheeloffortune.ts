@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -14,8 +13,8 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const [{ users }, wager] = await Promise.all([DbSet.connect(), args.pick('shinyWager')]);
-		const { t } = args;
+		const { users } = this.context.db;
+		const wager = await args.pick('shinyWager');
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
@@ -23,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();
-		return message.send(t(LanguageKeys.Commands.Games.BalanceDifference, { previous: balance, next: amount }), {
+		return message.send(args.t(LanguageKeys.Commands.Games.BalanceDifference, { previous: balance, next: amount }), {
 			files: [{ attachment, name: 'wof.png' }]
 		});
 	}

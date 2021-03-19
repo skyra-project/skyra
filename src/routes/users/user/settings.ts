@@ -14,7 +14,7 @@ export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(5, 1000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const user = await users.ensureProfile(request.auth!.id);
 
 		return response.json(user);
@@ -25,7 +25,7 @@ export class UserRoute extends Route {
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { data: BodyData };
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const userID = request.auth!.id;
 
 		try {

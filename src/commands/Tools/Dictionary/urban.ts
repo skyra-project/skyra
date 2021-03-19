@@ -37,7 +37,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 				.setFooter('© Urban Dictionary')
 		});

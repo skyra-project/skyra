@@ -55,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setTitle(fieldsData.overviewFor)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setThumbnail(about.icon_img)
 				.setFooter(` • ${fieldsData.dataAvailableFor}`)
 		})

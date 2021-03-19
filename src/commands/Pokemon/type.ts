@@ -92,7 +92,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message)) //
+				.setColor(await this.context.db.fetchColor(message)) //
 				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
 		})
 			.addPageEmbed((embed) =>

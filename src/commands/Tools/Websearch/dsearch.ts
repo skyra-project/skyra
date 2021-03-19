@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
 			.setDescription(body.AbstractText)

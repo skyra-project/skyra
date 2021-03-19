@@ -68,7 +68,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getCurrentSuggestionID(guildID: string) {
-		const { suggestions } = await DbSet.connect();
+		const { suggestions } = this.context.db;
 
 		// Retrieve the ID for the latest suggestion
 		const [{ max }] = (await suggestions.query(

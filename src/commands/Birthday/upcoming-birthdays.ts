@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone);
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
 		for (const [time, users] of schedules.slice(-10).reverse()) {

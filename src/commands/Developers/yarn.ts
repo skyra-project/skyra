@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 					: `https://www.npmjs.com/package/${result.name}`
 			)
 			.setThumbnail(CdnUrls.NodeJSLogo)
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setDescription(
 				cutText(
 					[

@@ -123,7 +123,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const user = this.context.client.user!;
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});

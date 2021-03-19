@@ -65,7 +65,7 @@ export class UserCommand extends SkyraCommand {
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		});
 
@@ -99,7 +99,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

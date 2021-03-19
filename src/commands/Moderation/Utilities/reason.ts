@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 
 		const reason = await args.rest('string');
 		const imageURL = getImage(message);
-		const { moderations } = await DbSet.connect();
+		const { moderations } = this.context.db;
 		await moderations
 			.createQueryBuilder()
 			.update()

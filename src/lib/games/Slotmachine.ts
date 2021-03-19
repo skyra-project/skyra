@@ -2,6 +2,7 @@ import { DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
+import { Store } from '@sapphire/pieces';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';
@@ -158,7 +159,7 @@ export class Slotmachine {
 
 	/** The boost */
 	private async fetchBoost() {
-		const { clients } = await DbSet.connect();
+		const { clients } = Store.injectedContext.db;
 		const settings = await clients.ensure();
 
 		return (

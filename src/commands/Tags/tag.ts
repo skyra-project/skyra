@@ -101,7 +101,7 @@ export class UserCommand extends SkyraCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		// Get prefix and display all tags
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {

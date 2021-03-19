@@ -24,7 +24,7 @@ export class UserMusicCommand extends MusicCommand {
 
 		// Generate the pages with 5 songs each
 		const template = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
 		const queueDisplay = new UserPaginatedMessage({ template });
 

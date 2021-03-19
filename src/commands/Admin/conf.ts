@@ -72,7 +72,7 @@ export class UserCommand extends SkyraCommand {
 		const [key, schemaKey] = await this.fetchKey(args);
 		const response = await message.guild.writeSettings(async (settings) => {
 			reset(settings, schemaKey);
-			schemaKey.display(settings, args.t);
+			return schemaKey.display(settings, args.t);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }), {

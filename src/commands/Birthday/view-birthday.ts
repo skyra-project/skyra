@@ -21,9 +21,10 @@ export class UserCommand extends SkyraCommand {
 			task
 				? (args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, {
 						birthDate: task.time.getTime(),
-						user: user.tag
+						user: user.toString()
 				  }) as string)
-				: (args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix }) as string)
+				: (args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix }) as string),
+			{ allowedMentions: { users: [], roles: [] } }
 		);
 	}
 }

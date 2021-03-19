@@ -343,8 +343,7 @@
 				"answer",
 				"The sentence that will reveal the truth."
 			]
-		],
-		"examples": [
+		],		"examples": [
 			"Your waifu is not real."
 		]
 	},
@@ -387,6 +386,7 @@
 	"viewBirthdayDescription": "View a user's birthday.",
 	"viewBirthdayExtended": {
 		"usages": [
+			"",
 			"User"
 		],
 		"extendedHelp": "Birthdays are stored per-server. If you don't see yours, you probably haven't used the `{{prefix}}set-birthday` command in this server yet!",
@@ -397,11 +397,12 @@
 			]
 		],
 		"examples": [
-			"@Stitch#4094"
+			"",
+			"<@{{CLIENT_ID}}>"
 		]
 	},
 	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
-	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, date}}.",
+	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, dateFull}}.",
 	"upcomingBirthdayDescription": "View the next 10 birthdays in this server.",
 	"upcomingBirthdaysTitle": "Upcoming Birthdays",
 	"vaporwaveOutput": "Here is your converted message:\n{{str}}",

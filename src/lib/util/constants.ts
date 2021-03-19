@@ -2,7 +2,7 @@
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { Colors, LanguageFormatters } from '#lib/types/Constants';
-import { DEV, PREFIX, VERSION as SKYRA_VERSION } from '#root/config';
+import { CLIENT_ID, DEV, PREFIX, VERSION as SKYRA_VERSION } from '#root/config';
 import { getHandler } from '#root/languages/index';
 import { LogLevel } from '@sapphire/framework';
 import { ServerOptionsAuth } from '@sapphire/plugin-api';
@@ -344,6 +344,7 @@ export const clientOptions: Partial<ClientOptions> = {
 					GREENTICK: Emojis.GreenTick,
 					REDCROSS: Emojis.RedCross,
 					DEFAULT_PREFIX: PREFIX,
+					CLIENT_ID,
 					/* Permissions */
 					ADMINISTRATOR: 'ADMINISTRATOR',
 					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
@@ -419,6 +420,8 @@ export const clientOptions: Partial<ClientOptions> = {
 						}
 						case LanguageFormatters.Date:
 							return getHandler(language!).date.format(value as number);
+						case LanguageFormatters.DateFull:
+							return getHandler(language!).dateFull.format(value as number);
 						case LanguageFormatters.DateTime: {
 							return getHandler(language!).dateTime.format(value as number);
 						}

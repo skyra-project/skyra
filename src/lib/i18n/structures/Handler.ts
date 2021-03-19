@@ -7,6 +7,7 @@ export abstract class Handler {
 	public readonly listAnd: Intl.ListFormat;
 	public readonly listOr: Intl.ListFormat;
 	public readonly date: Intl.DateTimeFormat;
+	public readonly dateFull: Intl.DateTimeFormat;
 	public readonly dateTime: Intl.DateTimeFormat;
 	public readonly duration: DurationFormatter;
 
@@ -17,6 +18,7 @@ export abstract class Handler {
 		this.listAnd = new Intl.ListFormat(this.name, { type: 'conjunction' });
 		this.listOr = new Intl.ListFormat(this.name, { type: 'disjunction' });
 		this.date = new Intl.DateTimeFormat(this.name, { timeZone: 'Etc/UTC', dateStyle: 'short' });
+		this.dateFull = new Intl.DateTimeFormat(this.name, { timeZone: 'Etc/UTC', dateStyle: 'full' });
 		this.dateTime = new Intl.DateTimeFormat(this.name, { timeZone: 'Etc/UTC', dateStyle: 'short', timeStyle: 'medium' });
 		this.duration = new DurationFormatter(options.duration);
 	}

@@ -82,7 +82,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchKey(args: SkyraCommand.Args) {
 		const key = await args.pick('string');
-		const value = configurableGroups.getPathString(key);
+		const value = configurableGroups.getPathString(key.toLowerCase());
 		if (value === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 		if (value.dashboardOnly) this.error(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
 		if (isSchemaGroup(value)) {

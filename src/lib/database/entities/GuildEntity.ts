@@ -28,11 +28,11 @@ export class GuildEntity extends BaseEntity {
 	public language = 'en-US';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisableNaturalPrefix })
-	@Column('boolean', { name: 'disableNaturalPrefix', default: false })
+	@Column('boolean', { name: 'disable-natural-prefix', default: false })
 	public disableNaturalPrefix = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledCommands, type: 'commandmatch' })
-	@Column('varchar', { name: 'disabledCommands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'disabled-commands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand', array: true })
@@ -117,30 +117,30 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'channels.ignore.reaction-add', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreReactionAdds: string[] = [];
 
-	@Column('jsonb', { name: 'command-autodelete', default: () => "'[]'::JSONB" })
+	@Column('jsonb', { name: 'command-auto-delete', default: () => "'[]'::JSONB" })
 	public commandAutoDelete: CommandAutoDelete[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'disabledChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'disabled-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledChannels: string[] = [];
 
-	@Column('jsonb', { name: 'disabledCommandsChannels', default: () => "'[]'::JSONB" })
+	@Column('jsonb', { name: 'disabled-commands-channels', default: () => "'[]'::JSONB" })
 	public disabledCommandsChannels: DisabledCommandChannel[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsBanAdd })
-	@Column('boolean', { name: 'events.banAdd', default: false })
+	@Column('boolean', { name: 'events.ban-add', default: false })
 	public eventsBanAdd = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsBanRemove })
-	@Column('boolean', { name: 'events.banRemove', default: false })
+	@Column('boolean', { name: 'events.ban-remove', default: false })
 	public eventsBanRemove = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberAdd })
-	@Column('boolean', { name: 'events.memberAdd', default: false })
+	@Column('boolean', { name: 'events.member-add', default: false })
 	public eventsMemberAdd = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberRemove })
-	@Column('boolean', { name: 'events.memberRemove', default: false })
+	@Column('boolean', { name: 'events.member-remove', default: false })
 	public eventsMemberRemove = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberNickNameUpdate })
@@ -152,15 +152,15 @@ export class GuildEntity extends BaseEntity {
 	public eventsMemberUserNameUpdate = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberRoleUpdate })
-	@Column('boolean', { name: 'events.memberRoleUpdate', default: false })
+	@Column('boolean', { name: 'events.member-role-update', default: false })
 	public eventsMemberRoleUpdate = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMessageDelete })
-	@Column('boolean', { name: 'events.messageDelete', default: false })
+	@Column('boolean', { name: 'events.message-delete', default: false })
 	public eventsMessageDelete = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMessageEdit })
-	@Column('boolean', { name: 'events.messageEdit', default: false })
+	@Column('boolean', { name: 'events.message-edit', default: false })
 	public eventsMessageEdit = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsTwemojiReactions })
@@ -180,7 +180,7 @@ export class GuildEntity extends BaseEntity {
 	public messagesJoinDM?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesIgnoreChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'messages.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'messages.ignore-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public messagesIgnoreChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAnnouncementEmbed })
@@ -207,7 +207,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'messages.moderator-name-display', default: true })
 	public messagesModeratorNameDisplay = true;
 
-	@Column('jsonb', { name: 'stickyRoles', default: () => "'[]'::JSONB" })
+	@Column('jsonb', { name: 'sticky-roles', default: () => "'[]'::JSONB" })
 	public stickyRoles: StickyRole[] = [];
 
 	@Column('jsonb', { name: 'reaction-roles', default: () => "'[]'::JSONB" })
@@ -257,7 +257,7 @@ export class GuildEntity extends BaseEntity {
 	public rolesPublic: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRemoveInitial })
-	@Column('boolean', { name: 'roles.removeInitial', default: false })
+	@Column('boolean', { name: 'roles.remove-initial', default: false })
 	public rolesRemoveInitial = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role' })
@@ -268,7 +268,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })
 	public rolesSubscriber?: string | null;
 
-	@Column('jsonb', { name: 'roles.uniqueRoleSets', default: () => "'[]'::JSONB" })
+	@Column('jsonb', { name: 'roles.unique-role-sets', default: () => "'[]'::JSONB" })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsEnabled })
@@ -276,19 +276,19 @@ export class GuildEntity extends BaseEntity {
 	public selfmodAttachmentsEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.attachments.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.attachments.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodAttachmentsIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.attachments.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.attachments.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodAttachmentsIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.attachments.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.attachments.soft-action', default: 0 })
 	public selfmodAttachmentsSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.attachments.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.attachments.hard-action', default: 0 })
 	public selfmodAttachmentsHardAction = 0;
 
 	@ConfigurableKey({
@@ -298,15 +298,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.attachments.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.attachments.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodAttachmentsHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.attachments.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.attachments.threshold-maximum', default: 10 })
 	public selfmodAttachmentsThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.attachments.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.attachments.threshold-duration', default: 60000 })
 	public selfmodAttachmentsThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsEnabled })
@@ -314,11 +314,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodCapitalsEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.capitals.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.capitals.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.capitals.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.capitals.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsMinimum, minimum: 5, maximum: 2000 })
@@ -330,11 +330,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodCapitalsMaximum = 50;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.capitals.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.capitals.soft-action', default: 0 })
 	public selfmodCapitalsSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.capitals.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.capitals.hard-action', default: 0 })
 	public selfmodCapitalsHardAction = 0;
 
 	@ConfigurableKey({
@@ -344,15 +344,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.capitals.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.capitals.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodCapitalsHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.capitals.threshold-maximum', default: 10 })
 	public selfmodCapitalsThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.capitals.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.capitals.threshold-duration', default: 60000 })
 	public selfmodCapitalsThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksEnabled })
@@ -364,19 +364,19 @@ export class GuildEntity extends BaseEntity {
 	public selfmodLinksWhitelist: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.links.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.links.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodLinksIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.links.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.links.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodLinksIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.links.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.links.soft-action', default: 0 })
 	public selfmodLinksSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.links.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.links.hard-action', default: 0 })
 	public selfmodLinksHardAction = 0;
 
 	@ConfigurableKey({
@@ -386,15 +386,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.links.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.links.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodLinksHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.links.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.links.threshold-maximum', default: 10 })
 	public selfmodLinksThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.links.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.links.threshold-duration', default: 60000 })
 	public selfmodLinksThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesEnabled })
@@ -402,11 +402,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodMessagesEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.messages.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.messages.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.messages.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.messages.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesMaximum, minimum: 2, maximum: 100 })
@@ -418,11 +418,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodMessagesQueueSize = 50;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.messages.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.messages.soft-action', default: 0 })
 	public selfmodMessagesSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.messages.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.messages.hard-action', default: 0 })
 	public selfmodMessagesHardAction = 0;
 
 	@ConfigurableKey({
@@ -432,15 +432,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.messages.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.messages.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodMessagesHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.messages.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.messages.threshold-maximum', default: 10 })
 	public selfmodMessagesThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.messages.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.messages.threshold-duration', default: 60000 })
 	public selfmodMessagesThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesEnabled })
@@ -448,11 +448,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodNewlinesEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.newlines.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.newlines.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodNewlinesIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.newlines.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.newlines.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodNewlinesIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesMaximum, minimum: 10, maximum: 100 })
@@ -460,11 +460,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodNewlinesMaximum = 20;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.newlines.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.newlines.soft-action', default: 0 })
 	public selfmodNewlinesSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.newlines.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.newlines.hard-action', default: 0 })
 	public selfmodNewlinesHardAction = 0;
 
 	@ConfigurableKey({
@@ -474,15 +474,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.newlines.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.newlines.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodNewlinesHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.newlines.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.newlines.threshold-maximum', default: 10 })
 	public selfmodNewlinesThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.newlines.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.newlines.threshold-duration', default: 60000 })
 	public selfmodNewlinesThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesEnabled })
@@ -490,27 +490,27 @@ export class GuildEntity extends BaseEntity {
 	public selfmodInvitesEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredCodes })
-	@Column('varchar', { name: 'selfmod.invites.ignoredCodes', array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.invites.ignored-codes', array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredCodes: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredGuilds })
-	@Column('varchar', { name: 'selfmod.invites.ignoredGuilds', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.invites.ignored-guilds', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredGuilds: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.invites.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.invites.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.invites.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.invites.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.invites.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.invites.soft-action', default: 0 })
 	public selfmodInvitesSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.invites.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.invites.hard-action', default: 0 })
 	public selfmodInvitesHardAction = 0;
 
 	@ConfigurableKey({
@@ -520,15 +520,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.invites.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.invites.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodInvitesHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.invites.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.invites.threshold-maximum', default: 10 })
 	public selfmodInvitesThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.invites.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.invites.threshold-duration', default: 60000 })
 	public selfmodInvitesThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterEnabled })
@@ -540,19 +540,19 @@ export class GuildEntity extends BaseEntity {
 	public selfmodFilterRaw: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.filter.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.filter.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.filter.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.filter.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.filter.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.filter.soft-action', default: 0 })
 	public selfmodFilterSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.filter.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.filter.hard-action', default: 0 })
 	public selfmodFilterHardAction = 0;
 
 	@ConfigurableKey({
@@ -562,15 +562,15 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.filter.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.filter.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodFilterHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.filter.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.filter.threshold-maximum', default: 10 })
 	public selfmodFilterThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.filter.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.filter.threshold-duration', default: 60000 })
 	public selfmodFilterThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsEnabled })
@@ -578,11 +578,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodReactionsEnabled = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'selfmod.reactions.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.reactions.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.reactions.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.reactions.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsIgnoredChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsMaximum, minimum: 1, maximum: 100 })
@@ -598,11 +598,11 @@ export class GuildEntity extends BaseEntity {
 	public selfmodReactionsBlacklist: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.reactions.softAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.reactions.soft-action', default: 0 })
 	public selfmodReactionsSoftAction = 0;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
-	@Column('smallint', { name: 'selfmod.reactions.hardAction', default: 0 })
+	@Column('smallint', { name: 'selfmod.reactions.hard-action', default: 0 })
 	public selfmodReactionsHardAction = 0;
 
 	@ConfigurableKey({
@@ -612,19 +612,19 @@ export class GuildEntity extends BaseEntity {
 		minimum: 0,
 		maximum: Time.Year * 5
 	})
-	@Column('bigint', { name: 'selfmod.reactions.hardActionDuration', nullable: true, transformer: kBigIntTransformer })
+	@Column('bigint', { name: 'selfmod.reactions.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodReactionsHardActionDuration: number | null = null;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: 100 })
-	@Column('smallint', { name: 'selfmod.reactions.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.reactions.threshold-maximum', default: 10 })
 	public selfmodReactionsThresholdMaximum = 10;
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
-	@Column('integer', { name: 'selfmod.reactions.thresholdDuration', default: 60000 })
+	@Column('integer', { name: 'selfmod.reactions.threshold-duration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodIgnoreChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'selfmod.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'selfmod.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodIgnoreChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamEnabled })
@@ -636,11 +636,11 @@ export class GuildEntity extends BaseEntity {
 	public noMentionSpamAlerts = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamMentionsAllowed, minimum: 0 })
-	@Column('smallint', { name: 'no-mention-spam.mentionsAllowed', default: 20 })
+	@Column('smallint', { name: 'no-mention-spam.mentions-allowed', default: 20 })
 	public noMentionSpamMentionsAllowed = 20;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod, minimum: 0 })
-	@Column('integer', { name: 'no-mention-spam.timePeriod', default: 8 })
+	@Column('integer', { name: 'no-mention-spam.time-period', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialEnabled })
@@ -652,7 +652,7 @@ export class GuildEntity extends BaseEntity {
 	public socialAchieve = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveMessage })
-	@Column('varchar', { name: 'social.achieveMessage', nullable: true, length: 2000 })
+	@Column('varchar', { name: 'social.achieve-message', nullable: true, length: 2000 })
 	public socialAchieveMessage?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, minimum: 0, maximum: 5 })
@@ -660,7 +660,7 @@ export class GuildEntity extends BaseEntity {
 	public socialMultiplier = 1;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoreChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'social.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'social.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public socialIgnoreChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardChannel, type: 'textchannel' })
@@ -672,7 +672,7 @@ export class GuildEntity extends BaseEntity {
 	public starboardEmoji = '%E2%AD%90';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardIgnoreChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'starboard.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	@Column('varchar', { name: 'starboard.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public starboardIgnoreChannels: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardMinimum, minimum: 1 })
@@ -680,7 +680,7 @@ export class GuildEntity extends BaseEntity {
 	public starboardMinimum = 1;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardSelfStar })
-	@Column('boolean', { name: 'starboard.selfStar', default: false })
+	@Column('boolean', { name: 'starboard.self-star', default: false })
 	public starboardSelfStar = false;
 
 	@Column('jsonb', { name: 'trigger.alias', default: () => "'[]'::JSONB" })

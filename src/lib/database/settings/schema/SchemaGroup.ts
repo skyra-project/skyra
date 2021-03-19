@@ -1,13 +1,13 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
-import Collection from '@discordjs/collection';
 import { codeBlock, isNullish, toTitleCase } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
+import { AliasedCollection } from '../structures/collections/AliasedCollection';
 import type { SchemaKey } from './SchemaKey';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
-export class SchemaGroup extends Collection<string, ISchemaValue> implements ISchemaValue {
+export class SchemaGroup extends AliasedCollection<string, ISchemaValue> implements ISchemaValue {
 	public readonly parent: SchemaGroup | null;
 	public readonly name: string;
 	public readonly dashboardOnly = false;
@@ -17,6 +17,15 @@ export class SchemaGroup extends Collection<string, ISchemaValue> implements ISc
 		super();
 		this.name = name;
 		this.parent = parent;
+	}
+
+	public set(key: string, value: ISchemaValue) {
+		// Add auto-alias:
+		if (key.includes('-')) {
+			this.aliases.set(key.replaceAll('-', ''), value);
+		}
+
+		return super.set(key, value);
 	}
 
 	public add([key, ...tail]: NonEmptyArray<string>, value: SchemaKey): SchemaGroup {

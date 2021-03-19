@@ -239,8 +239,6 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodNewlinesThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodRaidthreshold).HasDefaultValueSql("10");
-
 				entity.Property(e => e.SelfmodReactionsBlacklist).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodReactionsIgnoredChannels)

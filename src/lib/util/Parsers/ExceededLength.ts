@@ -78,7 +78,13 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				return message.send([parsedOutput, typeFooter, timeTaken].filter(Boolean));
 			}
 
-			return message.send(t(LanguageKeys.Commands.System.EvalError));
+			return message.send(
+				t(LanguageKeys.Commands.System.EvalError, {
+					time: options.time!,
+					output: codeBlock(options.language ?? 'ts', options.result!),
+					type: options.footer!
+				})
+			);
 		}
 	}
 }

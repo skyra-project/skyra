@@ -24,6 +24,7 @@ export const JoinVoiceFull = T<string>('commands/music:joinVoiceFull');
 export const JoinVoiceNoConnect = T<string>('commands/music:joinVoiceNoConnect');
 export const JoinVoiceNoSpeak = T<string>('commands/music:joinVoiceNoSpeak');
 export const JoinVoiceSame = T<string>('commands/music:joinVoiceSame');
+export const JoinVoiceNotAllowed = FT<{ channel: string }, string>('commands/music:joinVoiceNotAllowed');
 export const JoinFailed = T<string>('commands/music:joinFailed');
 export const LeaveDescription = T<string>('commands/music:leaveDescription');
 export const LeaveExtended = T<LanguageHelpDisplayOptions>('commands/music:leaveExtended');

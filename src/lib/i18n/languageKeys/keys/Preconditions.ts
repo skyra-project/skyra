@@ -25,3 +25,4 @@ export const MusicUserVoiceChannel = T<string>('preconditions:musicUserVoiceChan
 export const MusicBotVoiceChannel = T<string>('preconditions:musicBotVoiceChannel');
 export const MusicBothVoiceChannel = T<string>('preconditions:musicBothVoiceChannel');
 export const MusicNothingPlaying = T<string>('preconditions:musicNothingPlaying');
+export const MusicRoleNotAllowed = T<string>('preconditions:musicRoleNotAllowed');

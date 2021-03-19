@@ -65,6 +65,6 @@ export class UserMusicCommand extends MusicCommand {
 		const allowedChannels = await message.guild.readSettings(GuildSettings.Music.AllowedVoiceChannels);
 		if (allowedChannels.length === 0) return;
 		if (allowedChannels.includes(voiceChannel.id)) return;
-		this.error(LanguageKeys.Commands.Music.JoinVoiceNotAllowed, { channel: voiceChannel });
+		this.error(LanguageKeys.Commands.Music.JoinVoiceNotAllowed, { channel: voiceChannel.toString() });
 	}
 }

@@ -8,7 +8,7 @@ import { Args, CommandContext } from '@sapphire/framework';
 import { isNullish, Nullish } from '@sapphire/utilities';
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['setbday'],
+	aliases: ['setbday', 'birthday'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.SetBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SetBirthdayExtended,

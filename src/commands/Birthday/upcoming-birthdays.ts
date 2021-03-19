@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['upbday'],
+	aliases: ['upbday', 'birthdays'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,

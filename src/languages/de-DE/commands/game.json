@@ -9,13 +9,13 @@
 			""
 		]
 	},
-	"c4GameColumnFull": "",
+	"c4GameColumnFull": "Diese Spalte ist voll. Bitte wähle eine andere.",
 	"c4GameDraw": "Dieses Spiel wurde mit einem **Unentschieden** beendet!",
 	"c4GameNext": "Runde von: {{user}} (rot).",
 	"c4GameNextTurn0": "Runde von: {{user}} (blau).",
 	"c4GameWin": "{{user}} (rot) hat gewonnen!",
 	"c4GameWinTurn0": "{{user}} (blau) hat gewonnen!",
-	"c4Prompt": "",
+	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
 	"c4Start": "Lass uns spielen! Runde für: **{{player}}**.",
 	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
 	"coinFlipCoinnames": [
@@ -42,7 +42,7 @@
 		],
 		"examples": [
 			"",
-			"",
+			"Kopf 50",
 			"",
 			""
 		]

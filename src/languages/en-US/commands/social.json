@@ -1,9 +1,13 @@
 {
 	"autoRoleUpdateConfigured": "This role is already configured as an autorole. Use the remove type instead.",
 	"autoRoleUpdateUnconfigured": "This role is not configured as an autorole. Use the add type instead.",
-	"autoRoleUpdate": "Updated autorole: {{role.name}} ({{role.id}}). Points required: {{points}} (before: {{before}})",
-	"autoRoleRemove": "Removed the autorole: {{role.name}} ({{role.id}}), which required {{before}} points.",
-	"autoRoleAdd": "Added new autorole: {{role.name}} ({{role.id}}). Points required: {{points}}",
+	"autoRoleInvalidLevel": "I could not resolve `{{parameter}}` into a level, you must input either a number (for example: `1500` or `51000`) or a number suffixed with `l` or `L` (for example: `10L` or `20l`)",
+	"autoRoleInvalidNegativeOrZeroLevel": "I could not resolve `{{parameter}}` into a valid level. A level cannot be zero or lower.",
+	"autoRoleTooLow": "I could not resolve `{{parameter}}` into a valid level, it resolves to {{points, number}} points, which is below {{minimum, number}}.",
+	"autoRoleTooHigh": "I could not resolve `{{parameter}}` into a valid level, it resolves to {{points, number}} points, which is above {{maximum, number}}.",
+	"autoRoleUpdate": "Updated autorole: {{role}}. Points required: {{points, number}} (before: {{before, number}})",
+	"autoRoleRemove": "Removed the autorole: {{role}}, which required {{before, number}} points.",
+	"autoRoleAdd": "Added new autorole: {{role}}. Points required: {{points, number}}",
 	"autoRoleListEmpty": "There is no role configured as an autorole in this server.",
 	"balance": "The user {{user}} has a total of {{amount, number}}{{SHINY}}",
 	"balanceSelf": "You have a total of {{amount, number}}{{SHINY}}",
@@ -178,8 +182,10 @@
 	"autoRoleExtended": {
 		"usages": [
 			"add Role Integer",
+			"add Role Level",
 			"remove Role",
 			"update Role Integer",
+			"update Role Level",
 			"show",
 			""
 		],
@@ -205,7 +211,9 @@
 		"reminder": "The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.",
 		"examples": [
 			"add \"Trusted Member\" 20000",
+			"add \"Trusted Member\" 15L",
 			"update \"Trusted Member\" 15000",
+			"update \"Trusted Member\" 10L",
 			"remove \"Trusted Member\"",
 			"show",
 			""

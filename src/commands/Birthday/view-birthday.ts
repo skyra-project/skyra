@@ -6,6 +6,7 @@ import { CommandContext } from '@sapphire/framework';
 import { getGuildMemberBirthday } from '#lib/birthday';
 
 @ApplyOptions<SkyraCommand.Options>({
+	aliases: ['viewbday'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,

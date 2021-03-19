@@ -8,6 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	aliases: ['upbday'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
@@ -39,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),
 				users
 					.map((schedule) => {
-						const calculatedAge = getAge(schedule.data);
+						const calculatedAge = getAge(schedule.data, { now: time });
 						const age = calculatedAge === null ? args.t(LanguageKeys.Globals.Unknown) : calculatedAge + 1;
 
 						return `<@${schedule.data.userID}> (${age})`;

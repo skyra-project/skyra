@@ -126,8 +126,8 @@ export class UserCommand extends SkyraCommand {
 		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type));
 
 		return tag.embed
-			? message.send(new MessageEmbed().setDescription(result.value).setColor(tag.color))
-			: message.send(result.value, { allowedMentions: { users: [], roles: [] } });
+			? message.send(new MessageEmbed().setDescription(result.value.trim()).setColor(tag.color))
+			: message.send(result.value.trim(), { allowedMentions: { users: [], roles: [] } });
 	}
 
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {

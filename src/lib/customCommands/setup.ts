@@ -1,6 +1,7 @@
 import { Transformer } from '@skyra/tags';
 
 Transformer.formatters
+	.set('empty', () => '')
 	.set('mockcase', (value) =>
 		value
 			.split(' ')

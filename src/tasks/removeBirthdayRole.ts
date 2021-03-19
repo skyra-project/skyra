@@ -11,7 +11,7 @@ export class UserTask extends Task {
 		if (!guild) return null;
 
 		// If the guild is not available, re-schedule the task by creating
-		// another with the same data but happening 20 seconds later.
+		// another with the same data but happening 30 seconds later.
 		if (!guild.available) return { type: ResponseType.Delay, value: Time.Second * 30 };
 
 		// Get and check the member:

@@ -247,6 +247,9 @@
 		]
 	},
 	"resetBirthdayDescription": "",
+	"resetBirthdayExtended": {
+		"extendedHelp": ""
+	},
 	"resetBirthdayNotSet": "",
 	"resetBirthdaySuccess": "",
 	"setBirthdayDescription": "",
@@ -406,8 +409,13 @@
 	},
 	"viewBirthdayNotSet": "",
 	"viewBirthdaySet": "",
-	"upcomingBirthdayDescription": "",
+	"upcomingBirthdaysDescription": "",
 	"upcomingBirthdaysTitle": "",
+	"upcomingBirthdaysNone": "",
+	"upcomingBirthdaysExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"vaporwaveOutput": "",
 	"zalgoDescription": "",
 	"zalgoExtended": {

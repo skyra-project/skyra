@@ -272,7 +272,7 @@
 		"Ja - auf jeden Fall.",
 		"Du kannst dich darauf verlassen."
 	],
-	"choiceOutput": "",
+	"choiceOutput": "🕺 *Ene, mene, miste, deine Muddah rappelt in der Kiste...* {{user}}, Ich wähle: {{word, codeBlock}}",
 	"choiceMissing": "Bitte gebe mindestens zwei durch ein Komma getrennte Optionen an.",
 	"choiceDuplicates": "Warum sollte ich doppelte Wörter akzeptieren? \"{{words}}\".",
 	"diceOutput": "Du hast den Würfel gerollt! Du hast eine: **{{result}}**",

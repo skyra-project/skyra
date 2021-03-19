@@ -388,6 +388,20 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("music.allow-streams")
                         .HasDefaultValueSql("true");
 
+                    b.Property<string[]>("MusicAllowedVoiceChannels")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("music.allowed-voice-channels")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MusicAllowedRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("music.allowed-roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.Property<short>("MusicDefaultVolume")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")

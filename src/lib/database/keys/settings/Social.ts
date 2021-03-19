@@ -2,4 +2,5 @@ export const Enabled = 'socialEnabled';
 export const Achieve = 'socialAchieve';
 export const AchieveMessage = 'socialAchieveMessage';
 export const Multiplier = 'socialMultiplier';
-export const IgnoreChannels = 'socialIgnoreChannels';
+export const IgnoredChannels = 'socialIgnoredChannels';
+export const IgnoredRoles = 'socialIgnoredRoles';

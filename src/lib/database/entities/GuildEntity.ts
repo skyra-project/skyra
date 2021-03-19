@@ -659,9 +659,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('numeric', { name: 'social.multiplier', precision: 53, default: 1 })
 	public socialMultiplier = 1;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoreChannels, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'social.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public socialIgnoreChannels: string[] = [];
+	public socialIgnoredChannels: string[] = [];
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoredRoles, type: 'role' })
+	@Column('varchar', { name: 'social.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public socialIgnoredRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'starboard.channel', nullable: true, length: 19 })

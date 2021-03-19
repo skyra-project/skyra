@@ -1,6 +1,5 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { SettingsCollection, SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
-import { DbSet } from '#lib/database/utils/DbSet';
 import { Store } from '@sapphire/pieces';
 
 export interface GuildSettingsCollectionCallback<R> extends SettingsCollectionCallback<GuildEntity, R> {}

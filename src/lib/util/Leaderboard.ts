@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
 import type { Client } from 'discord.js';

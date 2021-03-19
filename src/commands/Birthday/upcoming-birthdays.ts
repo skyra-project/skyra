@@ -1,5 +1,4 @@
 import { BirthdayScheduleEntity, getAge, getGuildBirthdays } from '#lib/birthday';
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';

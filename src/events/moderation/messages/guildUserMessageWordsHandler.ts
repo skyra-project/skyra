@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';

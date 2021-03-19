@@ -1,5 +1,4 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-import { DbSet } from '#lib/database/utils/DbSet';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';

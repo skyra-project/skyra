@@ -1,5 +1,4 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
-import { DbSet } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';

@@ -1,5 +1,5 @@
 import { InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
-import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
+import { CustomCommand, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';

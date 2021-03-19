@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { TOKENS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';

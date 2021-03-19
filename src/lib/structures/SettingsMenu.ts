@@ -12,7 +12,6 @@ import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import * as Lexure from 'lexure';
-import { DbSet } from '../database/utils/DbSet';
 import { SkyraArgs } from './commands/parsers/SkyraArgs';
 import { SkyraCommand } from './commands/SkyraCommand';
 

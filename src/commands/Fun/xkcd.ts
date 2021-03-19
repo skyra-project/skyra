@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetch, FetchResultTypes } from '#utils/util';

@@ -1,5 +1,4 @@
 import {
-	DbSet,
 	GuildSettings,
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,

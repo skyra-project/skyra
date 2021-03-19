@@ -4,7 +4,6 @@ import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel } from 'discord.js';
-import { DbSet } from '../../database/utils/DbSet';
 
 /**
  * The StarboardManager class that manages the starboard channel

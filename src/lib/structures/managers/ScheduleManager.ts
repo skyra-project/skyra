@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { DbSet, ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
+import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
 import { Store } from '@sapphire/framework';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
 import type { Client } from 'discord.js';

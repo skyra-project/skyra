@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';

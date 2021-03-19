@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';

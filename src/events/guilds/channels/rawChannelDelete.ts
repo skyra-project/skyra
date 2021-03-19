@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';

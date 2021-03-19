@@ -1,4 +1,4 @@
-import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
+import { GiveawayEntity, GiveawayEntityData } from '#lib/database';
 import { Store } from '@sapphire/framework';
 import type { Client } from 'discord.js';
 

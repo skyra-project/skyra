@@ -1,5 +1,4 @@
 import { MusicCommand, Queue, requireQueueNotEmpty } from '#lib/audio';
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';

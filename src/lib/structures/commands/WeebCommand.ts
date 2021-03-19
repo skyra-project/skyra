@@ -5,7 +5,6 @@ import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
-import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace WeebCommand {

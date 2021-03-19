@@ -1,4 +1,4 @@
-import { DbSet, PartialResponseValue, ResponseType, Task, TwitchStreamSubscriptionEntity } from '#lib/database';
+import { PartialResponseValue, ResponseType, Task, TwitchStreamSubscriptionEntity } from '#lib/database';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { blueBright } from 'colorette';
 import type { Repository } from 'typeorm';

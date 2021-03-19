@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -7,7 +7,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, Store } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
 
@@ -122,7 +122,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Retrieve the suggestion data
-		const { suggestions } = this.context.db;
+		const { suggestions } = Store.injectedContext.db;
 		const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
 		if (!suggestionData) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound });

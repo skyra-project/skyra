@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';

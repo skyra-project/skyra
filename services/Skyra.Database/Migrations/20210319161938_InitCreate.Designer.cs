@@ -985,11 +985,18 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("social.enabled")
                         .HasDefaultValueSql("true");
 
-                    b.Property<string[]>("SocialIgnoreChannels")
+                    b.Property<string[]>("SocialIgnoredChannels")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(19)[]")
                         .HasColumnName("social.ignored-channels")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("SocialIgnoredRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("social.ignored-roles")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<decimal>("SocialMultiplier")

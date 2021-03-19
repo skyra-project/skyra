@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const key = args.finished ? '' : await args.pick('string');
-		const schemaValue = configurableGroups.getPathString(key);
+		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
 		const output = await message.guild.readSettings((settings) => {
@@ -33,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		if (isSchemaKey(schemaValue)) {
-			return message.send(args.t(LanguageKeys.Commands.Admin.ConfGet, { key, value: output }), {
+			return message.send(args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output }), {
 				allowedMentions: { users: [], roles: [] }
 			});
 		}
@@ -82,7 +82,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchKey(args: SkyraCommand.Args) {
 		const key = await args.pick('string');
-		const value = configurableGroups.getPathString(key);
+		const value = configurableGroups.getPathString(key.toLowerCase());
 		if (value === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 		if (value.dashboardOnly) this.error(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
 		if (isSchemaGroup(value)) {
@@ -96,6 +96,6 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		return [key, value as SchemaKey] as const;
+		return [value.name, value as SchemaKey] as const;
 	}
 }

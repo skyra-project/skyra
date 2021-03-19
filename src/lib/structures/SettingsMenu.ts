@@ -120,7 +120,7 @@ export class SettingsMenu {
 		this.llrc?.setTime(TIMEOUT);
 		this.errorMessage = null;
 		if (isSchemaGroup(this.schema)) {
-			const schema = this.schema.get(message.content);
+			const schema = this.schema.get(message.content.toLowerCase());
 			if (schema && !schema.dashboardOnly) {
 				this.schema = schema as SchemaKey | SchemaGroup;
 				this.oldValue = undefined;

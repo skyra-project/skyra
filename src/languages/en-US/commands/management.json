@@ -208,7 +208,7 @@
 	"setMemberLogsDescription": "Set the member logs channel.",
 	"setMemberLogsExtended": {
 		"usages": ["here/TextChannel"],
-		"extendedHelp": "This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: \"Member Join\" and \"Member Leave\".\nIf a muted user joins, it will send a special \"Muted Member Join\" event.\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.memberAdd` and `events.memberRemove`.\nFor roles, you would enable `events.memberNicknameChange` and/or `events.memberRoleUpdate` via the `config` command.",
+		"extendedHelp": "This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: \"Member Join\" and \"Member Leave\".\nIf a muted user joins, it will send a special \"Muted Member Join\" event.\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.member-add` and `events.member-remove`.\nFor roles, you would enable `events.member-nickname-change` and/or `events.member-role-update` via the `config` command.",
 		"explainedUsage": [
 			[
 				"channel",
@@ -220,7 +220,7 @@
 	"setMessageLogsDescription": "Set the message logs channel.",
 	"setMessageLogsExtended": {
 		"usages": ["here/TextChannel"],
-		"extendedHelp": "This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: \"Message Delete\", \"Message Edit\", and \"Message Prune\".\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.messageDelete` and `events.messageEdit` via the `config` command.",
+		"extendedHelp": "This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: \"Message Delete\", \"Message Edit\", and \"Message Prune\".\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.message-delete` and `events.message-edit` via the `config` command.",
 		"explainedUsage": [
 			[
 				"channel",
@@ -233,7 +233,7 @@
 	"setmodlogsDescription": "Set the mod logs channel.",
 	"setmodlogsExtended": {
 		"usages": ["here/TextChannel"],
-		"extendedHelp": "This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with \"claimable\" reasons and moderators.\nThis channel is not a must and you can always retrieve specific modlogs with the `case` command.\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nFor auto-detection, you need to individually set the \"events\" you want to listen: `events.banAdd`, `events.banRemove` via the `config` command.",
+		"extendedHelp": "This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with \"claimable\" reasons and moderators.\nThis channel is not a must and you can always retrieve specific modlogs with the `case` command.\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nFor auto-detection, you need to individually set the \"events\" you want to listen: `events.ban-add`, `events.ban-remove` via the `config` command.",
 		"explainedUsage": [
 			[
 				"channel",

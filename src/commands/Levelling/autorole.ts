@@ -36,7 +36,9 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.Roles.Auto] = sorted;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleAdd, { role, points }));
+		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleAdd, { role: role.toString(), points }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -56,7 +58,9 @@ export class UserCommand extends SkyraCommand {
 			return roleEntry;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleRemove, { role, before: roleEntry.points }));
+		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleRemove, { role: role.toString(), before: roleEntry.points }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	public async update(message: GuildMessage, args: SkyraCommand.Args) {
@@ -77,7 +81,9 @@ export class UserCommand extends SkyraCommand {
 			return autoRole;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role, points, before: autoRole.points }));
+		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role: role.toString(), points, before: autoRole.points }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	public async show(message: GuildMessage) {
@@ -103,7 +109,7 @@ export class UserCommand extends SkyraCommand {
 			return output;
 		});
 
-		return message.send(output.join('\n'), { code: 'http' });
+		return message.send(output.join('\n'), { allowedMentions: { users: [], roles: [] }, code: 'http' });
 	}
 
 	private async parseLevel(args: SkyraCommand.Args) {

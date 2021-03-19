@@ -140,7 +140,7 @@ export class UserCommand extends SkyraCommand {
 			return Args.error({
 				argument,
 				parameter,
-				identifier: LanguageKeys.Commands.Social.AutoRoleTooSmall,
+				identifier: LanguageKeys.Commands.Social.AutoRoleTooLow,
 				context: { minimum: 1, maximum: this.maximumPoints, points }
 			});
 		}
@@ -149,7 +149,7 @@ export class UserCommand extends SkyraCommand {
 			return Args.error({
 				argument,
 				parameter,
-				identifier: LanguageKeys.Commands.Social.AutoRoleTooBig,
+				identifier: LanguageKeys.Commands.Social.AutoRoleTooHigh,
 				context: { minimum: 1, maximum: this.maximumPoints, points }
 			});
 		}

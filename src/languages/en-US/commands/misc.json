@@ -247,6 +247,9 @@
 		]
 	},
 	"resetBirthdayDescription": "Reset your birthday.",
+	"resetBirthdayExtended": {
+		"extendedHelp": "Removing your birthday will remove the entry from our database. Use when you want to anonymize your birthday again."
+	},
 	"resetBirthdayNotSet": "{{REDCROSS}} You have not set your birthday in this server.",
 	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you a happy birthday in this server anymore.",
 	"setBirthdayDescription": "Set your birthday, and I will automatically notify the other members on that date.",
@@ -404,8 +407,13 @@
 	},
 	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
 	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, dateFull}}.",
-	"upcomingBirthdayDescription": "View the next 10 birthdays in this server.",
+	"upcomingBirthdaysDescription": "View the next 10 birthdays in this server.",
 	"upcomingBirthdaysTitle": "Upcoming Birthdays",
+	"upcomingBirthdaysNone": "",
+	"upcomingBirthdaysExtended": {
+		"extendedHelp": "Use to find out whose birthday is when",
+		"reminder": "If people haven't set their year I will show \"unknown\" for the user's age"
+	},
 	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
 	"zalgoDescription": "Create zalgo of your message!",
 	"zalgoExtended": {

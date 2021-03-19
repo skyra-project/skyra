@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 		if (winners > 25) winners = 25;
 
 		// This creates an single time task to start the giveaway
-		await this.context.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
+		await this.context.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
 				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,

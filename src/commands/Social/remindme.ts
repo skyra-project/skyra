@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 			? args.t(LanguageKeys.Commands.Social.RemindMeCreateNoDescription)
 			: await args.rest('string', { maximum: 1024 });
 
-		const task = await this.context.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
+		const task = await this.context.schedule.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
 			data: {
 				content: description,

@@ -22,6 +22,7 @@ export const enum LanguageFormatters {
 	Permissions = 'permissions',
 	Random = 'random',
 	Date = 'date',
+	DateFull = 'dateFull',
 	DateTime = 'dateTime',
 	ToTitleCase = 'toTitleCase',
 	PermissionsAndList = 'permissionsAndList'

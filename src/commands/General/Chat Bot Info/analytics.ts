@@ -15,7 +15,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	permissions: ['ATTACH_FILES'],
 	enabled: ENABLE_INFLUX
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	private nextRefresh = Date.now();
 	private attachment: MessageAttachment | null = null;
 	private pendingPromise: Promise<Buffer> | null = null;

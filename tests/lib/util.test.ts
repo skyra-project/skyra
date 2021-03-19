@@ -899,30 +899,4 @@ describe('Utils', () => {
 			resetMockRandom();
 		});
 	});
-
-	describe('nextBirthday', () => {
-		test("GIVEN today's date THEN returns today", () => {
-			// 2nd Feb 2002
-			const birthDate = new Date(Date.UTC(2002, 1, 2));
-			// 2nd Feb 2021
-			const now = new Date(Date.UTC(2021, 1, 2));
-			const next = utils.nextBirthday(birthDate, now);
-			// the next birthday is the same day
-			expect(next.getDate()).toBe(now.getDate());
-			expect(next.getMonth()).toBe(now.getMonth());
-			expect(next.getFullYear()).toBe(now.getFullYear());
-		});
-
-		test("GIVEN a date after your birthday THEN returns next year's birthday", () => {
-			// 2nd Feb 2002
-			const birthDate = new Date(Date.UTC(2002, 1, 2));
-			// 2nd March 2021
-			const now = new Date(Date.UTC(2021, 2, 2));
-			const next = utils.nextBirthday(birthDate, now);
-			// the next birthday is next year (2nd Feb 2022)
-			expect(next.getDate()).toBe(birthDate.getDate());
-			expect(next.getMonth()).toBe(birthDate.getMonth());
-			expect(next.getFullYear()).toBe(now.getFullYear() + 1);
-		});
-	});
 });

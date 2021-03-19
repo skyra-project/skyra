@@ -1,7 +1,8 @@
-import { SkyraCommand } from '#lib/structures';
+import { getGuildMemberBirthday } from '#lib/birthday';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ApplyOptions } from '@sapphire/decorators';
+import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
+import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -9,13 +10,11 @@ import { GuildMessage } from '#lib/types';
 	extendedHelp: LanguageKeys.Commands.Misc.ResetBirthdayExtended,
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const birthdayReminder = this.context.client.schedules.queue.find(
-			(schedule) => schedule.taskID === 'birthday' && schedule.data.guildID === message.guild.id && schedule.data.userID === message.author.id
-		);
+		const birthdayReminder = getGuildMemberBirthday(message.guild.id, message.author.id);
 		if (!birthdayReminder) return this.error(LanguageKeys.Commands.Misc.ResetBirthdayNotSet);
-		await this.context.client.schedules.remove(birthdayReminder);
+		await this.context.schedule.remove(birthdayReminder);
 		return message.send(args.t(LanguageKeys.Commands.Misc.ResetBirthdaySuccess));
 	}
 }

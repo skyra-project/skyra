@@ -107,6 +107,12 @@ declare module 'discord.js' {
 	}
 }
 
+declare module '@sapphire/pieces' {
+	interface PieceContextExtras {
+		schedule: ScheduleManager;
+	}
+}
+
 declare module '@sapphire/framework' {
 	interface ArgType {
 		case: number;

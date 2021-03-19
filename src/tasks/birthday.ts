@@ -1,7 +1,9 @@
-import { getHandler } from '#languages';
-import { PartialResponseValue, ResponseType, Task } from '#lib/database';
-import { Birthday } from '#lib/database/keys/settings/All';
-import { GuildMember, TextChannel, User } from 'discord.js';
+import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
+import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { isNullish, Nullish } from '@sapphire/utilities';
+import type { GuildMember, TextChannel, User } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 const enum Matches {
 	Age = '{age}',
@@ -11,41 +13,98 @@ const enum Matches {
 	UserTag = '{user.tag}'
 }
 
+const enum PartResult {
+	NotSet,
+	Invalid,
+	Success
+}
+
 export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
-	public async run(data: BirthdayTaskData): Promise<PartialResponseValue | null> {
+	public async run(data: TaskBirthdayData): Promise<PartialResponseValue | null> {
 		const guild = this.context.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
 		const member = await guild.members.fetch(data.userID);
 		if (!member) return null;
 
-		const t = await guild.fetchT();
-		const [birthdayRole, birthdayChannel, birthdayMessage] = await guild.readSettings([Birthday.Role, Birthday.Channel, Birthday.Message]);
-		if (!birthdayRole && !(birthdayChannel && birthdayMessage)) return null;
-		const me = guild.me!;
+		const [birthdayRole, birthdayChannel, birthdayMessage, t] = await guild.readSettings((settings) => [
+			settings[GuildSettings.Birthday.Role],
+			settings[GuildSettings.Birthday.Channel],
+			settings[GuildSettings.Birthday.Message],
+			settings.getLanguage()
+		]);
+		if (!this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage)) return null;
 
-		if (birthdayRole && me.permissions.has('MANAGE_ROLES') && me.roles.highest.position > member.roles.highest.position) {
-			await this.addBirthdayRole(data, member, birthdayRole);
-		}
+		const results = await Promise.all([
+			this.handleRole(data, member, birthdayRole),
+			this.handleMessage(data, member, birthdayChannel, birthdayMessage, t)
+		]);
 
-		if (birthdayChannel && birthdayMessage) {
-			const channel = guild.channels.cache.get(birthdayChannel);
-			if (!channel || !channel.permissionsFor(me!)?.has('SEND_MESSAGES')) return null;
-			await (channel as TextChannel).send(this.transformMessage(birthdayMessage, member.user, data.birthDate, t.lng));
-		}
+		// If there was no success (unset or invalid results), we remove the task:
+		const success = results.includes(PartResult.Success);
+		if (!success) return null;
 
-		const nextBirthday = this.nextBirthday();
-
-		return { type: ResponseType.Update, value: nextBirthday };
+		// Re-schedule the task as there was at least one success:
+		const next = nextBirthday(data.month, data.day, { nextYearIfToday: true });
+		return { type: ResponseType.Update, value: next };
 	}
 
-	private async addBirthdayRole(data: BirthdayTaskData, member: GuildMember, birthdayRole: string) {
+	private isCorrectlyConfigured(birthdayRole: string | Nullish, birthdayChannel: string | Nullish, birthdayMessage: string | Nullish) {
+		// A birthday role, or a channel and message must be configured:
+		return !isNullish(birthdayRole) || (!isNullish(birthdayChannel) && !isNullish(birthdayMessage));
+	}
+
+	private async handleRole(data: TaskBirthdayData, member: GuildMember, roleID: string | Nullish): Promise<PartResult> {
+		if (isNullish(roleID)) return PartResult.NotSet;
+
+		const role = member.guild.roles.cache.get(roleID);
+
+		// If the role doesn't exist anymore, reset:
+		if (!role) {
+			await member.guild.writeSettings([[GuildSettings.Birthday.Role, null]]);
+			return PartResult.Invalid;
+		}
+
+		// If the role can be given, add it to the user:
+		if (member.guild.me!.roles.highest.position > role.position) {
+			await this.addBirthdayRole(data, member, role.id);
+		}
+
+		return PartResult.Success;
+	}
+
+	private async handleMessage(
+		data: TaskBirthdayData,
+		member: GuildMember,
+		channelID: string | Nullish,
+		content: string | Nullish,
+		t: TFunction
+	): Promise<PartResult> {
+		if (isNullish(channelID) || isNullish(content)) return PartResult.NotSet;
+
+		const channel = member.guild.channels.cache.get(channelID) as TextChannel | undefined;
+
+		// If the channel doesn't exist anymore, reset:
+		if (!channel) {
+			await member.guild.writeSettings([[GuildSettings.Birthday.Channel, null]]);
+			return PartResult.Invalid;
+		}
+
+		// If the channel is postable, send the message:
+		if (channel.postable) {
+			await channel.send(this.transformMessage(content, member.user, getAge(data), t));
+		}
+
+		return PartResult.Success;
+	}
+
+	private async addBirthdayRole(data: TaskBirthdayData, member: GuildMember, birthdayRole: string) {
 		await member.roles.add(birthdayRole);
 		const tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
-		await this.context.client.schedules.add('removeBirthdayRole', tomorrow, {
+		await this.context.schedule.add('removeBirthdayRole', tomorrow, {
 			data: {
 				guildID: data.guildID,
 				roleID: birthdayRole,
@@ -54,13 +113,13 @@ export class UserTask extends Task {
 		});
 	}
 
-	private transformMessage(message: string, user: User, birthDate: Date, language: string) {
+	private transformMessage(message: string, user: User, age: number | null, t: TFunction) {
 		return message.replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
 				case Matches.Age:
-					return this.getAge(birthDate).toString();
+					return age === null ? t(LanguageKeys.Globals.Unknown) : age.toString();
 				case Matches.AgeOrdinal:
-					return getHandler(language).ordinal(this.getAge(birthDate));
+					return age === null ? t(LanguageKeys.Globals.Unknown) : t(LanguageKeys.Globals.OrdinalValue, { value: age });
 				case Matches.User:
 					return user.toString();
 				case Matches.UserName:
@@ -72,25 +131,4 @@ export class UserTask extends Task {
 			}
 		});
 	}
-
-	private getAge(birthDate: Date) {
-		return new Date().getFullYear() - birthDate.getFullYear();
-	}
-
-	private nextBirthday() {
-		const nextBirthday = new Date();
-		nextBirthday.setUTCFullYear(nextBirthday.getFullYear() + 1);
-		nextBirthday.setUTCHours(0);
-		nextBirthday.setUTCMinutes(0);
-		nextBirthday.setUTCSeconds(0);
-		nextBirthday.setUTCMilliseconds(0);
-
-		return nextBirthday;
-	}
-}
-
-interface BirthdayTaskData extends Record<string, unknown> {
-	birthDate: Date;
-	guildID: string;
-	userID: string;
 }

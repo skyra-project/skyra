@@ -98,7 +98,7 @@ export class UserEvent extends Event {
 
 		const taskName = entry.duration === null ? null : entry.appealTaskName;
 		if (taskName !== null) {
-			await this.context.client.schedules
+			await this.context.schedule
 				.add(taskName, entry.duration! + Date.now(), {
 					catchUp: true,
 					data: {
@@ -114,7 +114,7 @@ export class UserEvent extends Event {
 
 	private retrievePreviousSchedule(entry: ModerationEntity) {
 		return (
-			this.context.client.schedules.queue.find(
+			this.context.schedule.queue.find(
 				(task) =>
 					typeof task.data === 'object' &&
 					task.data !== null &&

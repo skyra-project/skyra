@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class V39RenamePropertiesToSnakeCase1616168146993 implements MigrationInterface {
+export class V39RenamePropertiesToKebabCase1616168146993 implements MigrationInterface {
 	private readonly keys: readonly [previous: string, next: string][] = [
 		['disableNaturalPrefix', 'disable-natural-prefix'],
 		['disabledCommands', 'disabled-commands'],

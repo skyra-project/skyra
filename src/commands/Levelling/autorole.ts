@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Args, Identifiers } from '@sapphire/framework';
 import { deepClone } from '@sapphire/utilities';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
@@ -21,7 +22,7 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName');
-		const points = await args.pick('integer', { minimum: 1, maximum: 100_000_000 });
+		const points = await this.parseLevel(args);
 
 		await message.guild.writeSettings((settings) => {
 			const roles = settings[GuildSettings.Roles.Auto];
@@ -60,7 +61,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async update(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName');
-		const points = await args.pick('integer', { minimum: 1, maximum: 100_000_000 });
+		const points = await this.parseLevel(args);
 
 		const autoRole = await message.guild.writeSettings((settings) => {
 			const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((entry) => entry.id === role.id);
@@ -104,4 +105,55 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(output.join('\n'), { code: 'http' });
 	}
+
+	private async parseLevel(args: SkyraCommand.Args) {
+		const result = await args.pickResult('integer', { minimum: 1, maximum: UserCommand.maximumPoints });
+
+		// If the integer parse was successful, return it:
+		if (result.success) return result.value;
+
+		// If it was erroneous, but it was because it wasn't a valid integer, try parsing level:
+		if (result.error.identifier === Identifiers.ArgumentInteger) return args.pick(UserCommand.level);
+
+		// It was a valid integer, but the number was out of range:
+		throw result.error;
+	}
+
+	private static readonly maximumPoints = 100_000_000;
+	private static readonly level = Args.make<number>((parameter, { argument }) => {
+		if (parameter.length === 1 || (!parameter.endsWith('l') && !parameter.endsWith('L'))) {
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.AutoRoleInvalidLevel });
+		}
+
+		const level = Number(parameter.slice(0, -1));
+		if (Number.isNaN(level)) {
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.AutoRoleInvalidLevel });
+		}
+
+		// There cannot be a level below 0
+		if (level <= 0) {
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.AutoRoleInvalidNegativeOrZeroLevel });
+		}
+
+		const points = Math.floor((level / 0.2) ** 2);
+		if (points < 1) {
+			return Args.error({
+				argument,
+				parameter,
+				identifier: LanguageKeys.Commands.Social.AutoRoleTooSmall,
+				context: { minimum: 1, maximum: this.maximumPoints, points }
+			});
+		}
+
+		if (points > this.maximumPoints) {
+			return Args.error({
+				argument,
+				parameter,
+				identifier: LanguageKeys.Commands.Social.AutoRoleTooBig,
+				context: { minimum: 1, maximum: this.maximumPoints, points }
+			});
+		}
+
+		return Args.ok(points);
+	});
 }

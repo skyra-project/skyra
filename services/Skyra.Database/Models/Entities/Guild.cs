@@ -527,7 +527,11 @@ namespace Skyra.Database.Models.Entities
 
 		[Required]
 		[Column("social.ignored-channels", TypeName = "character varying(19)[]")]
-		public string[] SocialIgnoreChannels { get; set; }
+		public string[] SocialIgnoredChannels { get; set; }
+
+		[Required]
+		[Column("social.ignored-roles", TypeName = "character varying(19)[]")]
+		public string[] SocialIgnoredRoles { get; set; }
 
 		[Column("starboard.channel")]
 		[StringLength(19)]

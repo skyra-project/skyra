@@ -256,7 +256,9 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SocialEnabled).HasDefaultValueSql("true");
 
-				entity.Property(e => e.SocialIgnoreChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SocialIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+
+				entity.Property(e => e.SocialIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SocialMultiplier)
 					.HasPrecision(53)

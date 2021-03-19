@@ -1,8 +1,9 @@
-import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
+import { DbSet, GuildEntity, GuildSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RateLimitManager } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -18,13 +19,12 @@ export class UserEvent extends Event {
 	private readonly ratelimits = new RateLimitManager(Time.Minute, 1);
 
 	public async run(message: GuildMessage) {
-		const [socialEnabled, ignoredChannels, multiplier] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.Social.Enabled],
-			settings[GuildSettings.Social.IgnoreChannels],
+		const [enabled, multiplier] = await message.guild.readSettings((settings) => [
+			this.isEnabled(message, settings),
 			settings[GuildSettings.Social.Multiplier]
 		]);
 
-		if (!socialEnabled || ignoredChannels.includes(message.channel.id)) return;
+		if (!enabled) return;
 		if (this.isRatelimited(message.author.id)) return;
 
 		// If boosted guild, increase rewards
@@ -37,6 +37,26 @@ export class UserEvent extends Event {
 			this.addMemberPoints(set, message.author.id, message.guild.id, Math.round(add * multiplier))
 		]);
 		await this.handleRoles(message, points);
+	}
+
+	/**
+	 * Checks whether or not the settings enable running the handler for the specified message.
+	 * @param message The message that ran the event.
+	 * @param settings The settings to check the data from.
+	 * @returns Whether or not the handler should run.
+	 */
+	private isEnabled(message: GuildMessage, settings: GuildEntity) {
+		// If the social module is not enabled, return false:
+		if (!settings[GuildSettings.Social.Enabled]) return false;
+
+		// If the channel is ignored, return false:
+		if (settings[GuildSettings.Social.IgnoredChannels].includes(message.channel.id)) return false;
+
+		// If the role is ignored, return false:
+		if (hasAtLeastOneKeyInMap(message.member.roles.cache, settings[GuildSettings.Social.IgnoredRoles])) return false;
+
+		// Else, it's enabled, return true
+		return true;
 	}
 
 	private isRatelimited(userID: string) {

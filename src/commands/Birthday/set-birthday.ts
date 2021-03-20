@@ -24,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 		if (!this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage))
 			this.error(LanguageKeys.Commands.Misc.SetBirthdayNotConfigured, { prefix: context.commandPrefix });
 
-		const date = await this.handleArguments(args);
+		const date = await args.pick(UserCommand.dateWithOptionalYear);
 
 		// Delete the previous birthday task, if any
 		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
@@ -43,20 +43,6 @@ export class UserCommand extends SkyraCommand {
 			month: birthDate.month,
 			day: birthDate.day
 		};
-	}
-
-	private async handleArguments(args: SkyraCommand.Args): Promise<DateWithOptionalYear> {
-		const result = await args.pickResult(UserCommand.dateWithOptionalYear);
-		if (result.success) return result.value;
-
-		// If it wasn't a date parse error, bubble this one:
-		if (result.error.identifier !== LanguageKeys.Commands.Misc.SetBirthdayInvalidDate) throw result.error;
-
-		const birthDate = await args.rest('date');
-
-		// The world's oldest human alive was born in January 1903:
-		if (birthDate.getTime() > Date.now() || birthDate.getFullYear() < 1903) this.error(LanguageKeys.Commands.Misc.SetBirthdayInvalidDate);
-		return { year: birthDate.getUTCFullYear(), month: birthDate.getUTCMonth() + 1, day: birthDate.getUTCDate() };
 	}
 
 	private isCorrectlyConfigured(birthdayRole: string | Nullish, birthdayChannel: string | Nullish, birthdayMessage: string | Nullish) {

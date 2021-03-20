@@ -5,6 +5,7 @@ import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
+import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Time } from '#utils/constants';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v6';
@@ -36,7 +37,10 @@ export const kGiveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownEmoji
 ];
 
-export type GiveawayEntityData = Pick<GiveawayEntity, 'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners'>;
+export type GiveawayEntityData = Pick<
+	GiveawayEntity,
+	'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners' | 'allowedRoles'
+>;
 
 @Entity('giveaway', { schema: 'public' })
 @Check(/* sql */ `"minimum" <> 0`)
@@ -68,6 +72,9 @@ export class GiveawayEntity extends BaseEntity {
 
 	@Column('integer', { default: 1 })
 	public minimumWinners = 1;
+
+	@Column('varchar', { length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public allowedRoles: string[] = [];
 
 	public constructor(data: Partial<GiveawayEntityData> = {}) {
 		super();
@@ -238,7 +245,7 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	private async pickWinners() {
-		const participants = await this.fetchParticipants();
+		const participants = await this.filterParticipants(await this.fetchParticipants());
 		if (participants.length < this.minimum) return null;
 
 		let m = participants.length;
@@ -263,6 +270,36 @@ export class GiveawayEntity extends BaseEntity {
 			}
 			return [];
 		}
+	}
+
+	private async filterParticipants(users: string[]): Promise<string[]> {
+		// If it's below minimum, there's no point of filtering, return empty array:
+		if (users.length < this.minimum) return [];
+
+		const { guild } = this;
+
+		// If the guild is uncached, return empty array:
+		if (guild === null) return [];
+
+		// If not all members are cached, fetch all members:
+		if (guild.members.cache.size !== guild.memberCount) await guild.members.fetch().catch(() => null);
+
+		const members = guild.members.cache;
+		const filtered: string[] = [];
+		for (const user of users) {
+			const member = members.get(user);
+
+			// If the user is not longer in the guild, skip:
+			if (member === undefined) continue;
+
+			// If there is at least one allowed role, and the user doesn't have any of them, skip:
+			if (this.allowedRoles.length > 0 && !hasAtLeastOneKeyInMap(member.roles.cache, this.allowedRoles)) continue;
+
+			// Add the user to the list of allowed members:
+			filtered.push(user);
+		}
+
+		return filtered;
 	}
 
 	private static getContent(state: States, t: TFunction): string {

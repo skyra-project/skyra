@@ -141,6 +141,13 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("title");
 
+                    b.Property<string[]>("AllowedRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("allowed_roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.HasKey("GuildId", "MessageId")
                         .HasName("PK_e73020907ca2a4b1ae14fce6e74");
 

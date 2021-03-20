@@ -24,6 +24,7 @@ export class UserCommand extends SkyraCommand {
 		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
 
 		const schedule = await args.pick('time');
+		const allowedRoles = await this.getAllowedRoles(args);
 		const duration = await args.pick('time');
 		let winners = await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10));
 		const title = await args.rest('string', { maximum: 256 });
@@ -39,17 +40,27 @@ export class UserCommand extends SkyraCommand {
 		// This creates an single time task to start the giveaway
 		await this.context.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
-				title,
+				allowedRoles,
+				channelID: channel.id,
 				endsAt: duration.getTime() + scheduleOffset + 500,
 				guildID: message.guild.id,
-				channelID: channel.id,
 				minimum: 1,
-				minimumWinners: winners
+				minimumWinners: winners,
+				title
 			},
 			catchUp: true
 		});
 
 		return message.send(args.t(LanguageKeys.Giveaway.Scheduled, { scheduledTime: scheduleOffset }));
+	}
+
+	private async getAllowedRoles(args: SkyraCommand.Args): Promise<string[]> {
+		try {
+			const roles = await args.repeat('roleName');
+			return roles.map((role) => role.id);
+		} catch {
+			return [];
+		}
 	}
 
 	private static winners = Args.make<number>((parameter, { argument }) => {

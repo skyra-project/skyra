@@ -37,5 +37,8 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("minimum_winners")]
 		public int MinimumWinners { get; set; }
+
+		[Column("allowed_roles")]
+		public string[] AllowedRoles { get; set; }
 	}
 }

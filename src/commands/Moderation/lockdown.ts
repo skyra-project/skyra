@@ -5,7 +5,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { LockdownEntry } from '#utils/Security/GuildSecurity';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Permissions, TextChannel } from 'discord.js';
+import { Permissions, Role, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -23,32 +23,34 @@ export class UserCommand extends SkyraCommand {
 		if (args.commandContext.commandName === 'lock') return this.lock(message, args);
 		if (args.commandContext.commandName === 'unlock') return this.unlock(message, args);
 
+		const role = await args.pick('roleName').catch(() => message.guild.roles.everyone);
 		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
-		if (this.hasLock(channel)) return this.handleUnlock(message, args, channel);
+		if (this.hasLock(role, channel)) return this.handleUnlock(message, args, role, channel);
 
 		const duration = args.finished ? null : await args.pick('timespan');
-		return this.handleLock(message, args, channel, duration);
+		return this.handleLock(message, args, role, channel, duration);
 	}
 
 	public async unlock(message: GuildMessage, args: SkyraCommand.Args) {
+		const role = await args.pick('roleName').catch(() => message.guild.roles.everyone);
 		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
-		return this.handleUnlock(message, args, channel);
+		return this.handleUnlock(message, args, role, channel);
 	}
 
 	public async lock(message: GuildMessage, args: SkyraCommand.Args) {
+		const role = await args.pick('roleName').catch(() => message.guild.roles.everyone);
 		const channel = args.finished ? (message.channel as TextChannel) : await args.pick('textChannelName');
 		const duration = args.finished ? null : await args.pick('timespan');
-		return this.handleLock(message, args, channel, duration);
+		return this.handleLock(message, args, role, channel, duration);
 	}
 
-	private async handleLock(message: GuildMessage, args: SkyraCommand.Args, channel: TextChannel, duration: number | null) {
+	private async handleLock(message: GuildMessage, args: SkyraCommand.Args, role: Role, channel: TextChannel, duration: number | null) {
 		// If there was a lockdown, abort lock
-		if (this.hasLock(channel)) {
+		if (this.hasLock(role, channel)) {
 			this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 		}
 
 		// Get the role, then check if the user could send messages
-		const role = message.guild.roles.cache.get(message.guild.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
 		if (!couldSend) this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 
@@ -70,8 +72,8 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	private async handleUnlock(message: GuildMessage, args: SkyraCommand.Args, channel: TextChannel) {
-		const entry = this.getLock(channel);
+	private async handleUnlock(message: GuildMessage, args: SkyraCommand.Args, role: Role, channel: TextChannel) {
+		const entry = this.getLock(role, channel);
 		if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
 		return entry.timeout ? entry.timeout.stop() : this._unlock(message, args.t, channel);
 	}
@@ -82,18 +84,15 @@ export class UserCommand extends SkyraCommand {
 		return message.send(t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
 	}
 
-	private hasLock(channel: TextChannel): boolean {
-		return (
-			channel.guild.security.lockdowns.has(channel.id) ||
-			!channel.permissionsFor(channel.guild.roles.everyone)!.has(Permissions.FLAGS.SEND_MESSAGES)
-		);
+	private hasLock(role: Role, channel: TextChannel): boolean {
+		return channel.guild.security.lockdowns.has(channel.id) || !channel.permissionsFor(role)!.has(Permissions.FLAGS.SEND_MESSAGES);
 	}
 
-	private getLock(channel: TextChannel): LockdownEntry | null {
+	private getLock(role: Role, channel: TextChannel): LockdownEntry | null {
 		const entry = channel.guild.security.lockdowns.get(channel.id);
 		if (entry) return entry;
 
-		const permissions = channel.permissionsFor(channel.guild.roles.everyone)!;
+		const permissions = channel.permissionsFor(role)!;
 		return permissions.has(Permissions.FLAGS.SEND_MESSAGES) ? null : { timeout: null };
 	}
 }

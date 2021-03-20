@@ -155,17 +155,18 @@
 	},
 	"lockdownDescription": "Close the gates for this channel!",
 	"lockdownExtended": {
-		"usages": ["", "lock TextChannel Duration", "unlock TextChannel", "TextChannel Duration"],
+		"usages": ["", "lock Role TextChannel Duration", "unlock Role TextChannel", "Role TextChannel Duration"],
 		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** in order to be able to manage the permissions for a channel.\nThis command removes the permission **{{SEND_MESSAGES, permissions}}** to the `@everyone` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.\nOptionally, you can pass time as second argument.",
 		"explainedUsage": [
 			[
 				"lock/unlock",
 				"Whether to lock or unlock the channel. Defaults to \"lock\" if the channel is currently unlocked, or \"unlock\" if it is currently locked."
 			],
+			["Role", "The role to lock. Defaults to the `@everyone` role."],
 			["TextChannel", "The channel to lock. Defaults to the current channel."],
 			["Duration", "The amount of time this lock should last. Defaults to infinite."]
 		],
-		"examples": ["", "#general", "lock #general 5m", "unlock #general"],
+		"examples": ["", "#general", "lock #general 5m", "unlock #general", "lock Members #general"],
 		"reminder": "If your members need a role such as \"member\" to send messages in the channel to begin with then this command will not work. It is in our backlog of work to add make the role that should be locked configurable."
 	},
 	"muteDescription": "Mute a user in all text and voice channels.",

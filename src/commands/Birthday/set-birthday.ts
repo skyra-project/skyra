@@ -1,4 +1,4 @@
-import { getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
+import { getDateFormat, getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, removeYear, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
 import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -61,22 +61,29 @@ export class UserCommand extends SkyraCommand {
 		return !isNullish(birthdayRole) || (!isNullish(birthdayChannel) && !isNullish(birthdayMessage));
 	}
 
-	private static readonly dateRegExp = /^(?:(\d{4})[-/])?(\d{1,2})[-/](\d{1,2})/;
-	private static dateWithOptionalYear = Args.make<DateWithOptionalYear>((parameter, { argument }) => {
-		const result = this.dateRegExp.exec(parameter);
-		if (result === null) return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate });
+	private static readonly dateWithOptionalYear = Args.make<DateWithOptionalYear>((parameter, { argument, args }) => {
+		const format = args.t(LanguageKeys.Globals.DateFormat);
+		const regExp = getDateFormat(format, args.t.lng);
+		const result = regExp.exec(parameter);
+		if (result === null)
+			return Args.error({
+				argument,
+				parameter,
+				identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate,
+				context: { formatWithYear: format, formatWithoutYear: removeYear(format) }
+			});
 
-		const year = result[1] === undefined ? null : Number(result[1]);
+		const year = result.groups!.year === undefined ? null : Number(result[1]);
 		if (year !== null && (year < 1903 || year > new Date().getUTCFullYear())) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidYear });
 		}
 
-		const month = Number(result[2]);
+		const month = Number(result.groups!.month);
 		if (month <= 0 || month > 12) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidMonth });
 		}
 
-		const day = Number(result[3]);
+		const day = Number(result.groups!.day);
 		if (day <= 0 || !monthOfYearContainsDay(year === null ? true : yearIsLeap(year), month, day)) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDay, context: { year, month } });
 		}

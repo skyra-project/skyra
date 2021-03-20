@@ -67,13 +67,21 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async resolveArguments(args: SkyraCommand.Args): Promise<ResolvedArguments> {
+		// If the user is not an administrator, they cannot create suggestions on behalf of other users:
+		if (!(await args.message.member!.isAdmin())) return this.resolveStringContent(args);
+
+		// Administrator fallback, try message, then fallback to rest string if it fails:
 		try {
 			const message = await args.pick('message');
 			return { author: message.author, content: message.content, image: getImage(message) };
 		} catch {
-			const suggestion = await args.rest('string');
-			return { author: args.message.author, content: suggestion, image: getImage(args.message) };
+			return this.resolveStringContent(args);
 		}
+	}
+
+	private async resolveStringContent(args: SkyraCommand.Args): Promise<ResolvedArguments> {
+		const suggestion = await args.rest('string');
+		return { author: args.message.author, content: suggestion, image: getImage(args.message) };
 	}
 
 	private async getCurrentSuggestionID(guildID: string) {

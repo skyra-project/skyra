@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { floatPromise, resolveOnErrorCodes } from '#utils/util';
@@ -16,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		if (user === message.author) this.error(LanguageKeys.Commands.Social.DivorceSelf);
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			const entry = await users.fetchSpouse(authorID, targetID);
 			if (!entry) return message.send(args.t(LanguageKeys.Commands.Social.DivorceNotTaken));

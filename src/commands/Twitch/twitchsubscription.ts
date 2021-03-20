@@ -1,5 +1,4 @@
 import {
-	DbSet,
 	GuildSettings,
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,
@@ -151,7 +150,7 @@ export class UserCommand extends SkyraCommand {
 			});
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
-			const { twitchStreamSubscriptions } = await DbSet.connect();
+			const { twitchStreamSubscriptions } = this.context.db;
 			await twitchStreamSubscriptions.manager.transaction(async (em) => {
 				const entries = await em.find(TwitchStreamSubscriptionEntity, { where: { guildIds: Any([message.guild.id]) } });
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
@@ -212,7 +211,7 @@ export class UserCommand extends SkyraCommand {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 		});
 		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
 
@@ -260,7 +259,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async upsertSubscription(guild: Guild, streamer: Streamer) {
-		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const { twitchStreamSubscriptions } = this.context.db;
 		const results = await twitchStreamSubscriptions
 			.createQueryBuilder()
 			.insert()
@@ -277,7 +276,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async removeSubscription(guild: Guild, streamer: Streamer) {
-		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const { twitchStreamSubscriptions } = this.context.db;
 		const subscription = await twitchStreamSubscriptions.findOne({ id: streamer.id });
 		if (!subscription) return;
 

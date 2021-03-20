@@ -28,7 +28,7 @@ export class UserEvent extends Event {
 		if (this.isRatelimited(message.author.id)) return;
 
 		// If boosted guild, increase rewards
-		const set = await DbSet.connect();
+		const set = this.context.db;
 		const { guildBoost } = await set.clients.ensure();
 		const add = (Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1);
 

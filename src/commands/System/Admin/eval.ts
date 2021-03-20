@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -133,7 +132,7 @@ export class UserCommand extends SkyraCommand {
 		let type: Type | undefined = undefined;
 
 		try {
-			result = await DbSet.instance?.connection.query(sql);
+			result = await this.context.db.connection.query(sql);
 			time = stopwatch.toString();
 			type = new Type(result);
 			success = true;

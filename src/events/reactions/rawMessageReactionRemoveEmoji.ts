@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { compareEmoji } from '#utils/util';
@@ -22,7 +21,7 @@ export class UserEvent extends Event {
 
 		// Delete entry from starboard if it exists
 		try {
-			const { starboards } = await DbSet.connect();
+			const { starboards } = this.context.db;
 			const results = await starboards
 				.createQueryBuilder()
 				.delete()

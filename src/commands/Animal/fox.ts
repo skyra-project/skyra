@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
@@ -20,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 		const { image } = await fetch<FoxResultOk>(url, FetchResultTypes.JSON);
 		return message.send(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setImage(getImageUrl(image) ?? 'https://i.imgur.com/JCtnTv8.png')
 				.setTimestamp()
 		);

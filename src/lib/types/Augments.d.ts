@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { SettingsManager } from '#lib/database';
+import type { DbSet, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
@@ -109,6 +109,7 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface PieceContextExtras {
+		db: DbSet;
 		schedule: ScheduleManager;
 	}
 }

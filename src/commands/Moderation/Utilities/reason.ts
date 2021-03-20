@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -28,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 
 		const reason = await args.rest('string');
 		const imageURL = getImage(message);
-		const { moderations } = await DbSet.connect();
+		const { moderations } = this.context.db;
 		await moderations
 			.createQueryBuilder()
 			.update()

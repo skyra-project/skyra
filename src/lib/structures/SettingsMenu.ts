@@ -12,7 +12,6 @@ import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import * as Lexure from 'lexure';
-import { DbSet } from '../database/utils/DbSet';
 import { SkyraArgs } from './commands/parsers/SkyraArgs';
 import { SkyraCommand } from './commands/SkyraCommand';
 
@@ -107,7 +106,7 @@ export class SettingsMenu {
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
-			.setColor(await DbSet.fetchColor(this.message))
+			.setColor(await Store.injectedContext.db.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
 			.setFooter(parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();

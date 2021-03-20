@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -35,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new SkyraEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setThumbnail(message.guild.iconURL()!)
 				.setTitle(`${message.guild.name} [${message.guild.id}]`)
 				.splitFields(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roles.length }), roles.join(' '))

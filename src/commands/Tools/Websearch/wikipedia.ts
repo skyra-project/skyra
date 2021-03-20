@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
@@ -34,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setTitle(pageInformation.title)
 			.setURL(pageUrl)
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
 			.setFooter('© Wikipedia');

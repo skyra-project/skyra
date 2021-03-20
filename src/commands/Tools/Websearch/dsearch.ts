@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -32,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
 			.setDescription(body.AbstractText)

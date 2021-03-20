@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
@@ -20,7 +20,7 @@ export class UserEvent extends Event {
 
 		// Delete entries from starboard if it exists
 		try {
-			const { starboards } = await DbSet.connect();
+			const { starboards } = this.context.db;
 			const results = await starboards
 				.createQueryBuilder()
 				.delete()

@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -17,7 +16,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 		if (user.bot) this.error(LanguageKeys.Commands.Social.BalanceBots);
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const money = (await users.findOne(user.id))?.money ?? 0;
 
 		return message.send(

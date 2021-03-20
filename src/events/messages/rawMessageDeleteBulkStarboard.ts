@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -12,7 +12,7 @@ export class UserEvent extends Event {
 		for (const id of data.ids) guild.starboard.delete(id);
 
 		// Delete entries from starboard if it exists
-		const { starboards } = await DbSet.connect();
+		const { starboards } = this.context.db;
 		const results = await starboards
 			.createQueryBuilder()
 			.delete()

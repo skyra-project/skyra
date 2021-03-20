@@ -1,9 +1,9 @@
 import { GuildSettings, StarboardEntity } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import Collection from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel } from 'discord.js';
-import { DbSet } from '../../database/utils/DbSet';
 
 /**
  * The StarboardManager class that manages the starboard channel
@@ -89,7 +89,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		const message = (await channel.messages.fetch(messageID).catch(() => null)) as GuildMessage | null;
 		if (!message) return null;
 
-		const { starboards } = await DbSet.connect();
+		const { starboards } = Store.injectedContext.db;
 		const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });
 		if (previous) {
 			previous.setup(this, message);

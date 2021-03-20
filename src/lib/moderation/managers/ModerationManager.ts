@@ -1,8 +1,9 @@
-import { DbSet, GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildSettings, ModerationEntity } from '#lib/database';
 import type { StrictRequired } from '#lib/types';
 import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
@@ -36,6 +37,10 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 
 	public get client() {
 		return this.guild.client;
+	}
+
+	private get db() {
+		return Store.injectedContext.db;
 	}
 
 	public constructor(guild: Guild) {
@@ -96,7 +101,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		// Case number
 		if (typeof id === 'number') {
 			return (
-				super.get(id) || this._cache(await DbSet.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None)
+				super.get(id) || this._cache(await this.db.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None)
 			);
 		}
 
@@ -104,22 +109,22 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		if (typeof id === 'string') {
 			return this._count === super.size
 				? super.filter((entry) => entry.userID === id)
-				: this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, userID: id } }), CacheActions.None);
+				: this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id, userID: id } }), CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
-			return this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: In(id) } }), CacheActions.None);
+			return this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: In(id) } }), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
-			this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id } }), CacheActions.Fetch);
+			this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id } }), CacheActions.Fetch);
 		}
 		return this;
 	}
 
 	public async count() {
 		if (this._count === null) {
-			const { moderations } = await DbSet.connect();
+			const { moderations } = this.db;
 			this._count = await moderations.count({ where: { guildID: this.guild.id } });
 		}
 		return this._count!;

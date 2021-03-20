@@ -5,7 +5,6 @@ import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
-import { DbSet } from '../../database/utils/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace WeebCommand {
@@ -65,7 +64,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			embed: new MessageEmbed()
 				.setTitle('→')
 				.setURL(url)
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setImage(url)
 				.setFooter(t(LanguageKeys.System.PoweredByWeebSh))
 		});

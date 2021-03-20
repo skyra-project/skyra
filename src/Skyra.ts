@@ -6,6 +6,7 @@ import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
+import { Store } from '@sapphire/framework';
 
 const client = new SkyraClient();
 
@@ -30,7 +31,7 @@ async function main() {
 
 	try {
 		// Connect to the Database
-		await DbSet.connect();
+		Store.injectedContext.db = await DbSet.connect();
 
 		// Login to the Discord gateway
 		await client.login(TOKENS.BOT_TOKEN);

@@ -1,4 +1,4 @@
-import { DbSet, UserEntity } from '#lib/database';
+import { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -21,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 		const all = await args.pick(UserCommand.all).catch(() => null);
 		let coins = all === null ? await args.pick('integer', { minimum: 1 }) : null;
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -47,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 		const all = await args.pick(UserCommand.all).catch(() => null);
 		let coins = all === null ? await args.pick('integer', { minimum: 1 }) : null;
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -70,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async show(message: Message, args: SkyraCommand.Args) {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const settings = await users.ensureProfile(message.author.id);
 		return message.send(await this.buildEmbed(message, args.t, settings.money, settings.profile.vault));
 	}
@@ -90,7 +90,7 @@ export class UserCommand extends SkyraCommand {
 		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;
 
 		return new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setDescription(description)
 			.addField(accountMoney, money, true)
 			.addField(accountVault, vault, true);

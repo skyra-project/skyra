@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { floatPromise } from '#utils/util';
@@ -10,7 +10,7 @@ import type { TFunction } from 'i18next';
 export class UserEvent extends Event {
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
-		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const { twitchStreamSubscriptions } = this.context.db;
 		const streamer = await twitchStreamSubscriptions.findOne({ id: data.id });
 		if (!streamer) return response.error('No streamer could be found in the database.');
 

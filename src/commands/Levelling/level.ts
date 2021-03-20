@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
@@ -35,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {
-		const { members, users } = await DbSet.connect();
+		const { members, users } = this.context.db;
 		const settings = await users.ensureProfile(user.id);
 		const { level, points } = scope === Scope.Local && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 

@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -30,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		if (guess === null) return this.noGuess(message, t);
 		if (wager === 'cashless') return this.cashless(message, t, guess);
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 
@@ -95,7 +94,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async buildEmbed(message: Message, result: CoinType) {
 		return new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`);
 	}
 

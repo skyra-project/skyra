@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -62,7 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Animation.MangaEmbedData);
 		const display = new UserPaginatedMessage({
-			template: new MessageEmbed().setColor(await DbSet.fetchColor(message)).setFooter(' - © kitsu.io')
+			template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setFooter(' - © kitsu.io')
 		});
 
 		for (const entry of entries) {

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { DbSet, ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
+import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
+import { Store } from '@sapphire/framework';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
 import type { Client } from 'discord.js';
 
@@ -13,7 +14,7 @@ export class ScheduleManager {
 	}
 
 	public async init() {
-		const { schedules } = await DbSet.connect();
+		const { schedules } = Store.injectedContext.db;
 		const entries = await schedules.find();
 
 		for (const entry of entries) this._insert(entry.setup(this).resume());
@@ -81,7 +82,7 @@ export class ScheduleManager {
 	}
 
 	private async _handleResponses(responses: readonly ResponseValue[]) {
-		const { connection } = await DbSet.connect();
+		const { connection } = Store.injectedContext.db;
 		const queryRunner = connection.createQueryRunner();
 		await queryRunner.connect();
 		await queryRunner.startTransaction();

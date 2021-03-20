@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -30,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 
 		const minimum = await message.guild.readSettings(GuildSettings.Starboard.Minimum);
 
-		const { starboards } = await DbSet.connect();
+		const { starboards } = this.context.db;
 		const qb = starboards
 			.createQueryBuilder()
 			.select()
@@ -107,7 +107,7 @@ export class UserCommand extends SkyraCommand {
 		// If there is no configured starboard channel, return no stars
 		if (!starboardChannelID) return message.send(t(LanguageKeys.Commands.Starboard.StarNoChannel));
 
-		const { starboards } = await DbSet.connect();
+		const { starboards } = this.context.db;
 		const qb = starboards
 			.createQueryBuilder()
 			.select()

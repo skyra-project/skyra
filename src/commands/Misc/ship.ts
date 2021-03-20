@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
@@ -31,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([this.fetchAvatar(firstUser), this.fetchAvatar(secondUser)]);
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const settings = await users.ensureProfile(message.author.id);
 
 		// Build up the ship canvas

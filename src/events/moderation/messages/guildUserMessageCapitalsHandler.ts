@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -49,7 +49,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
 		floatPromise(message.nuke());
-		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
+		if (value > 25 && (await this.context.db.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) })
 			);

@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
@@ -76,7 +75,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)
 				.setTitle(embedData.title)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)

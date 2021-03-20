@@ -1,5 +1,4 @@
 import { BirthdayScheduleEntity, getAge, getGuildBirthdays } from '#lib/birthday';
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
@@ -31,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone);
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
 		for (const [time, users] of schedules.slice(-10).reverse()) {

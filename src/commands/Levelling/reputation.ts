@@ -1,4 +1,4 @@
-import { DbSet, UserRepository } from '#lib/database';
+import { UserRepository } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -60,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async downloadSettings(authorID: string, targetID: string | null): Promise<Settings> {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		return {
 			users,
 			author: await users.ensureProfileAndCooldowns(authorID),

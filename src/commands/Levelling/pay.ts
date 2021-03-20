@@ -1,4 +1,4 @@
-import { DbSet, UserEntity } from '#lib/database';
+import { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		if (message.author === user) this.error(LanguageKeys.Commands.Social.PaySelf);
 		if (user.bot) return message.send(args.t(LanguageKeys.Commands.Social.SocialPayBot));
 
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const response = await users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			const settings = await users.ensure(authorID);
 

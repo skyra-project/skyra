@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
@@ -67,7 +66,7 @@ export class UserCommand extends SkyraCommand {
 					: `https://www.npmjs.com/package/${result.name}`
 			)
 			.setThumbnail(CdnUrls.NodeJSLogo)
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setDescription(
 				cutText(
 					[

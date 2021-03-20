@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
@@ -25,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 			new MessageEmbed()
 				.setTitle('→')
 				.setURL(url)
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setImage(getImageUrl(url) ?? 'https://i.imgur.com/vKUeMoH.png')
 				.setFooter(args.t(LanguageKeys.Commands.Animation.WaifuFooter))
 				.setTimestamp()

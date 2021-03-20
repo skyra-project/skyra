@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -118,7 +117,7 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await DbSet.fetchColor(message)) });
+		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((template: MessageEmbed) =>
 				template
@@ -151,7 +150,7 @@ export class UserCommand extends SkyraCommand {
 		});
 		const user = this.context.client.user!;
 		return new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(data.footer)

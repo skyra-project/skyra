@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -37,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
-				.setColor(await DbSet.fetchColor(message))
+				.setColor(await this.context.db.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 				.setFooter('© Urban Dictionary')
 		});

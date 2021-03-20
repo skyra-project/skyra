@@ -1,5 +1,4 @@
 import { MusicCommand, Queue, requireQueueNotEmpty } from '#lib/audio';
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
@@ -24,7 +23,7 @@ export class UserMusicCommand extends MusicCommand {
 
 		// Generate the pages with 5 songs each
 		const template = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
+			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
 		const queueDisplay = new UserPaginatedMessage({ template });
 

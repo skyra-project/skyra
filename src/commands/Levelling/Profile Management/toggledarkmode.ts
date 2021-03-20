@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -12,7 +11,7 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const { users } = await DbSet.connect();
+		const { users } = this.context.db;
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
 

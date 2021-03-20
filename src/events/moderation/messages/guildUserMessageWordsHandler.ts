@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
@@ -35,7 +35,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
 		floatPromise(message.nuke());
-		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
+		if (message.content.length > 25 && (await this.context.db.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) })
 			);

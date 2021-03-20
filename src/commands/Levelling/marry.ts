@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -34,7 +33,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 		if (user.bot) return message.send(t(LanguageKeys.Commands.Social.MarryBots));
 
-		const { users, clients } = await DbSet.connect();
+		const { users, clients } = this.context.db;
 		const clientSettings = await clients.findOne(CLIENT_ID);
 		const premiumUsers = clientSettings?.userBoost ?? [];
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {

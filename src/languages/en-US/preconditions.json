@@ -16,6 +16,7 @@
 	"musicBotVoiceChannel": "{{REDCROSS}} I am afraid I need to be in a voice channel to operate this command, please show me the way!",
 	"musicDjMember": "{{REDCROSS}} I believe this is something only a moderator or a DJ of this session is supposed to do!",
 	"musicNothingPlaying": "{{REDCROSS}} Looks like nothing is playing right now, how about you start the party 🎉?",
+	"musicRoleNotAllowed": "{{REDCROSS}} You cannot run this command as you do not have any of the allowed roles.",
 	"musicNotPlaying": "{{REDCROSS}} Hmm, doesn't look like I'm playing anything right now.",
 	"musicPaused": "{{REDCROSS}} The queue's playing and the session is still up 'till the night ends!",
 	"musicQueueEmpty": "{{REDCROSS}} The queue's empty! The session will start as soon as we have some songs queued.",

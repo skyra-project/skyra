@@ -270,6 +270,10 @@ namespace Skyra.Database
 
 				entity.Property(e => e.StarboardMinimum).HasDefaultValueSql("1");
 
+				entity.Property(e => e.MusicAllowedVoiceChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+
+				entity.Property(e => e.MusicAllowedRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
+
 				entity.Property(e => e.StickyRoles).HasDefaultValueSql("'[]'::jsonb");
 
 				entity.Property(e => e.SuggestionsEmojisDownvote)

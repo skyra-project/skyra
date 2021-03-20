@@ -709,6 +709,14 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'music.allow-streams', default: true })
 	public musicAllowStreams = true;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowedVoiceChannels, type: 'voicechannel' })
+	@Column('varchar', { name: 'music.allowed-voice-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public musicAllowedVoiceChannels: string[] = [];
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowedRoles, type: 'role' })
+	@Column('varchar', { name: 'music.allowed-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public musicAllowedRoles: string[] = [];
+
 	@Column('jsonb', { name: 'notifications.streams.twitch.streamers', default: () => "'[]'::JSONB" })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 

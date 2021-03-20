@@ -574,6 +574,14 @@ namespace Skyra.Database.Models.Entities
 		public bool? MusicAllowStreams { get; set; }
 
 		[Required]
+		[Column("music.allowed-voice-channels", TypeName = "character varying(19)[]")]
+		public string[] MusicAllowedVoiceChannels { get; set; }
+
+		[Required]
+		[Column("music.allowed-roles", TypeName = "character varying(19)[]")]
+		public string[] MusicAllowedRoles { get; set; }
+
+		[Required]
 		[Column("notifications.streams.twitch.streamers", TypeName = "jsonb")]
 		public string NotificationsStreamsTwitchStreamers { get; set; }
 

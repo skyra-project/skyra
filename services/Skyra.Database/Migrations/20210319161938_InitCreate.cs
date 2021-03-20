@@ -412,6 +412,12 @@ namespace Skyra.Database.Migrations
 						type: "smallint", nullable: false, defaultValueSql: "100"),
 					musicallowstreams = table.Column<bool>(name: "music.allow-streams", type: "boolean",
 						nullable: false, defaultValueSql: "true"),
+					musicallowedvoicechannels = table.Column<string[]>(name: "music.allowed-voice-channels",
+						type: "character varying(19)[]", nullable: false,
+						defaultValueSql: "ARRAY[]::character varying[]"),
+					musicallowedroles = table.Column<string[]>(name: "music.allowed-roles",
+						type: "character varying(19)[]", nullable: false,
+						defaultValueSql: "ARRAY[]::character varying[]"),
 					notificationsstreamstwitchstreamers = table.Column<string>(
 						name: "notifications.streams.twitch.streamers", type: "jsonb", nullable: false,
 						defaultValueSql: "'[]'::jsonb"),

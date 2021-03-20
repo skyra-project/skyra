@@ -1,4 +1,5 @@
 import { MusicCommand, Queue, requireUserInVoiceChannel } from '#lib/audio';
+import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -19,6 +20,9 @@ export class UserMusicCommand extends MusicCommand {
 
 		// If the member is not in a voice channel then throw
 		if (!channel) this.error(LanguageKeys.Commands.Music.JoinNoVoiceChannel);
+
+		// Check if the channel is allowed
+		await this.checkAllowedChannel(message, channel);
 
 		const { audio } = message.guild;
 
@@ -55,5 +59,12 @@ export class UserMusicCommand extends MusicCommand {
 		if (selfVoiceChannel === null) return;
 
 		this.error(voiceChannel.id === selfVoiceChannel ? LanguageKeys.Commands.Music.JoinVoiceSame : LanguageKeys.Commands.Music.JoinVoiceDifferent);
+	}
+
+	private async checkAllowedChannel(message: GuildMessage, voiceChannel: VoiceChannel): Promise<void> {
+		const allowedChannels = await message.guild.readSettings(GuildSettings.Music.AllowedVoiceChannels);
+		if (allowedChannels.length === 0) return;
+		if (allowedChannels.includes(voiceChannel.id)) return;
+		this.error(LanguageKeys.Commands.Music.JoinVoiceNotAllowed, { channel: voiceChannel.toString() });
 	}
 }

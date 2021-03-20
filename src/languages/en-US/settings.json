@@ -43,6 +43,8 @@
 	"messagesModerationReasonDisplay": "Whether the reason will be displayed in moderation commands.",
 	"messagesModeratorNameDisplay": "Whether or not I should display the name of the moderator who took the action when sending the target user a moderation message. Requires `messages.moderation-dm` to be enabled.",
 	"musicAllowStreams": "Whether livestreams should be allowed to be played.",
+	"musicAllowedVoiceChannels": "The voice channels I am allowed to join. If none was specified, I will join any.",
+	"musicAllowedRoles": "The roles allowed to use my music functions. If none was specified, I will listen to any user.",
 	"musicDefaultVolume": "The default music volume to start playing at for this server.",
 	"musicMaximumDuration": "The maximum length any playable single track can have.",
 	"musicMaximumEntriesPerUser": "The maximum amount of entries one user can have in the queue.",

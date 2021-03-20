@@ -50,7 +50,9 @@ namespace Skyra.Database.Migrations
 					ends_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
 					channel_id = table.Column<string>(type: "character varying(19)", maxLength: 19, nullable: false),
 					minimum = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "1"),
-					minimum_winners = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "1")
+					minimum_winners = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "1"),
+					allowed_roles = table.Column<string[]>(type: "character varying[]", nullable: false,
+						defaultValueSql: "ARRAY[]::character varying[]")
 				},
 				constraints: table =>
 				{

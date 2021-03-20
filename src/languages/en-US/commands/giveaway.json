@@ -1,10 +1,11 @@
 {
 	"giveawayDescription": "Start a new giveaway.",
 	"giveawayExtended": {
-		"usages": ["Time Title", "TextChannel Time Title", "Time --winners/Winners Title"],
+		"usages": ["Time Title", "TextChannel Time Title", "Time --winners/Winners Title", "TextChannel Role1 Role2 Time Title", "Role1 Role2 Time Title"],
 		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
 			["TextChannel", "The channel in which to start the giveaway, defaults to the channel the command was run at."],
+			["Roles", "A list of roles separated by space members must have in order to participate, if any."],
 			["Time", "The time the giveaway should last."],
 			["Winners", "The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."],
 			["Title", "The title of the giveaway."]
@@ -23,11 +24,12 @@
 	},
 	"giveawayScheduleDescription": "Schedule a giveaway to start at a certain time.",
 	"giveawayScheduleExtended": {
-		"usages": ["Schedule Time Title", "TextChannel Schedule Time Title", "Schedule Time --winners/Winners Title"],
+		"usages": ["Schedule Time Title", "TextChannel Schedule Time Title", "Schedule Time --winners/Winners Title", "TextChannel Schedule Role1 Role2 Time Title", "Schedule Role1 Role2 Time Title"],
 		"extendedHelp": "This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.\nYou can pass a flag of `--winners=X`, wherein X is a number, to allow multiple people to win this giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
 			["TextChannel", "The channel in which to start the giveaway, defaults to the channel the command was run at."],
 			["Schedule", "The time to wait before starting the giveaway."],
+			["Roles", "A list of roles separated by space members must have in order to participate, if any."],
 			["Time", "The time the giveaway should last."],
 			["Winners", "The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."],
 			["Title", "The title of the giveaway."]

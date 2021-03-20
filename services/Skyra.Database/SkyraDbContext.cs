@@ -89,6 +89,8 @@ namespace Skyra.Database
 				entity.Property(e => e.Minimum).HasDefaultValueSql("1");
 
 				entity.Property(e => e.MinimumWinners).HasDefaultValueSql("1");
+
+				entity.Property(e => e.AllowedRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
 			});
 
 			modelBuilder.Entity<Guild>(entity =>

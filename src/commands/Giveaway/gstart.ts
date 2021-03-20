@@ -22,6 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
 		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
 
+		const allowedRoles = await this.getAllowedRoles(args);
 		const time = await args.pick('time');
 		const offset = time.getTime() - Date.now();
 		if (offset < 9500) this.error(LanguageKeys.Giveaway.Time);
@@ -31,6 +32,7 @@ export class UserCommand extends SkyraCommand {
 		const title = await args.rest('string', { maximum: 256 });
 
 		await this.context.client.giveaways.create({
+			allowedRoles,
 			channelID: channel.id,
 			endsAt: new Date(time.getTime() + 500),
 			guildID: message.guild.id,
@@ -38,6 +40,15 @@ export class UserCommand extends SkyraCommand {
 			minimumWinners: winners,
 			title
 		});
+	}
+
+	private async getAllowedRoles(args: SkyraCommand.Args): Promise<string[]> {
+		try {
+			const roles = await args.repeat('roleName');
+			return roles.map((role) => role.id);
+		} catch {
+			return [];
+		}
 	}
 
 	private static winners = Args.make<number>((parameter, { argument }) => {

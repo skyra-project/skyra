@@ -44,7 +44,12 @@ const enum Filter {
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const limit = await args.pick('integer', { minimum: 1, maximum: 100 });
-		const rawFilter = args.finished ? null : await args.pick(UserCommand.filter).catch(() => args.pick('user'));
+		const rawFilter = args.finished
+			? null
+			: await args
+					.pick(UserCommand.filter)
+					.catch(() => args.pick('user'))
+					.catch(() => null);
 		const rawPosition = args.finished ? null : await args.pick(UserCommand.position);
 		const targetMessage = args.finished && rawPosition === null ? message : await args.pick('message');
 

@@ -49,6 +49,9 @@ export class UserCommand extends SkyraCommand {
 		const result = await args.pickResult(UserCommand.dateWithOptionalYear);
 		if (result.success) return result.value;
 
+		// If it wasn't a date parse error, bubble this one:
+		if (result.error.identifier !== LanguageKeys.Commands.Misc.SetBirthdayInvalidDate) throw result.error;
+
 		const birthDate = await args.rest('date');
 
 		// The world's oldest human alive was born in January 1903:
@@ -65,15 +68,16 @@ export class UserCommand extends SkyraCommand {
 		const format = args.t(LanguageKeys.Globals.DateFormat);
 		const regExp = getDateFormat(format, args.t.lng);
 		const result = regExp.exec(parameter);
-		if (result === null)
+		if (result === null) {
 			return Args.error({
 				argument,
 				parameter,
 				identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate,
 				context: { formatWithYear: format, formatWithoutYear: removeYear(format) }
 			});
+		}
 
-		const year = result.groups!.year === undefined ? null : Number(result[1]);
+		const year = result.groups!.year === undefined ? null : Number(result.groups!.year);
 		if (year !== null && (year < 1903 || year > new Date().getUTCFullYear())) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidYear });
 		}

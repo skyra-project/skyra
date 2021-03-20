@@ -270,7 +270,7 @@
 		"reminder": ""
 	},
 	"setBirthdayNotConfigured": "",
-	"setBirthdayInvalidDate": "",
+	"setBirthdayInvalidDate": "I could not resolve `{{parameter}}` to a valid date, you must input the data in `{{formatWithYear}}` or `{{formatWithoutYear}}` (if you want to hide the year), for example, `24/11/1984` for 24th November 1984.",
 	"setBirthdayInvalidYear": "",
 	"setBirthdayInvalidMonth": "",
 	"setBirthdayInvalidDay": "",

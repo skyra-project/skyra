@@ -274,7 +274,7 @@
 	"setBirthdayInvalidDay": "I could not resolve {{parameter}} to a valid day, the {{month, ordinal}} of {{year}} has less days than the one you have given.",
 	"setBirthdayAlreadySet": "{{REDCROSS}} Your birthdate is already set to {{birthDate}}.",
 	"setBirthdayConfirmation": "Are you sure you want to change your birthday again?",
-	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday, date}}.",
+	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday, dateFull}}.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [

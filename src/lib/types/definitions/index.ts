@@ -11,4 +11,3 @@ export * from './Reddit';
 export * from './Suggestion';
 export * from './Tmdb';
 export * from './Twitch';
-export * from './Yarnpkg';

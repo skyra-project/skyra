@@ -2,12 +2,14 @@ import {
 	compareDate,
 	getAge,
 	getBirthdays,
+	getDateFormat,
 	getGuildBirthdays,
 	getGuildMemberBirthday,
 	isBirthdayTask,
 	Month,
 	monthOfYearContainsDay,
 	nextBirthday,
+	removeYear,
 	TaskBirthdayData,
 	yearIsLeap
 } from '#lib/birthday';
@@ -378,6 +380,118 @@ describe('Birthday', () => {
 			test('GIVEN month after now THEN returns this year', () => {
 				expect(nextBirthday(Month.July, 1, {}).getTime()).toBe(new Date('2020-07-01T00:00:00.000Z').getTime());
 			});
+		});
+	});
+
+	describe('getDateFormat', () => {
+		test('GIVEN DD/MM/YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('DD/MM/YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN DD-MM-YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('DD-MM-YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN DD.MM.YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('DD.MM.YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN MM/DD/YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('MM/DD/YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN MM-DD-YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('MM-DD-YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN MM.DD.YYYY THEN returns RegExp instance', () => {
+			expect(getDateFormat('MM.DD.YYYY', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY/MM/DD THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY/MM/DD', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY-MM-DD THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY-MM-DD', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY.MM.DD THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY.MM.DD', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY/DD/MM THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY/DD/MM', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY-DD-MM THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY-DD-MM', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN YYYY.DD.MM THEN returns RegExp instance', () => {
+			expect(getDateFormat('YYYY.DD.MM', 'en-US')).toBeInstanceOf(RegExp);
+		});
+
+		test('GIVEN DD/YYYY/MM THEN throws Error', () => {
+			expect(() => getDateFormat('DD/YYYY/MM', 'en-US')).toThrow(Error);
+		});
+
+		test('GIVEN DD-YYYY-MM THEN throws Error', () => {
+			expect(() => getDateFormat('DD-YYYY-MM', 'en-US')).toThrow(Error);
+		});
+
+		test('GIVEN DD.YYYY.MM THEN throws Error', () => {
+			expect(() => getDateFormat('DD.YYYY.MM', 'en-US')).toThrow(Error);
+		});
+	});
+
+	describe('removeYear', () => {
+		test('GIVEN DD/MM/YYYY THEN returns DD/MM', () => {
+			expect(removeYear('DD/MM/YYYY')).toBe('DD/MM');
+		});
+
+		test('GIVEN DD-MM-YYYY THEN returns DD-MM', () => {
+			expect(removeYear('DD-MM-YYYY')).toBe('DD-MM');
+		});
+
+		test('GIVEN DD.MM.YYYY THEN returns DD.MM', () => {
+			expect(removeYear('DD.MM.YYYY')).toBe('DD.MM');
+		});
+
+		test('GIVEN MM/DD/YYYY THEN returns MM/DD', () => {
+			expect(removeYear('MM/DD/YYYY')).toBe('MM/DD');
+		});
+
+		test('GIVEN MM-DD-YYYY THEN returns MM-DD', () => {
+			expect(removeYear('MM-DD-YYYY')).toBe('MM-DD');
+		});
+
+		test('GIVEN MM.DD.YYYY THEN returns MM.DD', () => {
+			expect(removeYear('MM.DD.YYYY')).toBe('MM.DD');
+		});
+
+		test('GIVEN YYYY/MM/DD THEN returns MM/DD', () => {
+			expect(removeYear('YYYY/MM/DD')).toBe('MM/DD');
+		});
+
+		test('GIVEN YYYY-MM-DD THEN returns MM-DD', () => {
+			expect(removeYear('YYYY-MM-DD')).toBe('MM-DD');
+		});
+
+		test('GIVEN YYYY.MM.DD THEN returns MM.DD', () => {
+			expect(removeYear('YYYY.MM.DD')).toBe('MM.DD');
+		});
+
+		test('GIVEN YYYY/DD/MM THEN returns DD/MM', () => {
+			expect(removeYear('YYYY/DD/MM')).toBe('DD/MM');
+		});
+
+		test('GIVEN YYYY-DD-MM THEN returns DD-MM', () => {
+			expect(removeYear('YYYY-DD-MM')).toBe('DD-MM');
+		});
+
+		test('GIVEN YYYY.DD.MM THEN returns DD.MM', () => {
+			expect(removeYear('YYYY.DD.MM')).toBe('DD.MM');
 		});
 	});
 });

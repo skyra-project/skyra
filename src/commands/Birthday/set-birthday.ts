@@ -1,4 +1,4 @@
-import { getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
+import { getDateFormat, getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, removeYear, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
 import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -24,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 		if (!this.isCorrectlyConfigured(birthdayRole, birthdayChannel, birthdayMessage))
 			this.error(LanguageKeys.Commands.Misc.SetBirthdayNotConfigured, { prefix: context.commandPrefix });
 
-		const date = await this.handleArguments(args);
+		const date = await args.pick(UserCommand.dateWithOptionalYear);
 
 		// Delete the previous birthday task, if any
 		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
@@ -45,38 +45,35 @@ export class UserCommand extends SkyraCommand {
 		};
 	}
 
-	private async handleArguments(args: SkyraCommand.Args): Promise<DateWithOptionalYear> {
-		const result = await args.pickResult(UserCommand.dateWithOptionalYear);
-		if (result.success) return result.value;
-
-		const birthDate = await args.rest('date');
-
-		// The world's oldest human alive was born in January 1903:
-		if (birthDate.getTime() > Date.now() || birthDate.getFullYear() < 1903) this.error(LanguageKeys.Commands.Misc.SetBirthdayInvalidDate);
-		return { year: birthDate.getUTCFullYear(), month: birthDate.getUTCMonth() + 1, day: birthDate.getUTCDate() };
-	}
-
 	private isCorrectlyConfigured(birthdayRole: string | Nullish, birthdayChannel: string | Nullish, birthdayMessage: string | Nullish) {
 		// A birthday role, or a channel and message must be configured:
 		return !isNullish(birthdayRole) || (!isNullish(birthdayChannel) && !isNullish(birthdayMessage));
 	}
 
-	private static readonly dateRegExp = /^(?:(\d{4})[-/])?(\d{1,2})[-/](\d{1,2})/;
-	private static dateWithOptionalYear = Args.make<DateWithOptionalYear>((parameter, { argument }) => {
-		const result = this.dateRegExp.exec(parameter);
-		if (result === null) return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate });
+	private static readonly dateWithOptionalYear = Args.make<DateWithOptionalYear>((parameter, { argument, args }) => {
+		const format = args.t(LanguageKeys.Globals.DateFormat);
+		const regExp = getDateFormat(format, args.t.lng);
+		const result = regExp.exec(parameter);
+		if (result === null) {
+			return Args.error({
+				argument,
+				parameter,
+				identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDate,
+				context: { formatWithYear: format, formatWithoutYear: removeYear(format) }
+			});
+		}
 
-		const year = result[1] === undefined ? null : Number(result[1]);
+		const year = result.groups!.year === undefined ? null : Number(result.groups!.year);
 		if (year !== null && (year < 1903 || year > new Date().getUTCFullYear())) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidYear });
 		}
 
-		const month = Number(result[2]);
+		const month = Number(result.groups!.month);
 		if (month <= 0 || month > 12) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidMonth });
 		}
 
-		const day = Number(result[3]);
+		const day = Number(result.groups!.day);
 		if (day <= 0 || !monthOfYearContainsDay(year === null ? true : yearIsLeap(year), month, day)) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.SetBirthdayInvalidDay, context: { year, month } });
 		}

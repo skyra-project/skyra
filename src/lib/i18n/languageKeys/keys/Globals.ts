@@ -12,3 +12,4 @@ export const DateValue = FT<{ value: number }, string>('globals:dateValue');
 export const DateTimeValue = FT<{ value: number }, string>('globals:dateTimeValue');
 export const AndListValue = FT<{ value: string[] }, string>('globals:andListValue');
 export const OrListValue = FT<{ value: string[] }, string>('globals:orListValue');
+export const DateFormat = T<string>('globals:dateFormat');

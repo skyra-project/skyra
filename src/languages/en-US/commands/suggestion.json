@@ -1,18 +1,15 @@
 {
 	"suggestDescription": "Posts a suggestion for the server.",
 	"suggestExtended": {
-		"usages": [
-			"Suggestion"
-		],
+		"usages": ["Suggestion", "Message"],
 		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
 		"explainedUsage": [
-			[
-				"Suggestion",
-				"Your suggestion"
-			]
+			["Suggestion", "Your suggestion."],
+			["Message", "An existing message to use as a suggestion, this only works for administrators."]
 		],
 		"examples": [
-			"Let's make a music channel!"
+			"Let's make a music channel!",
+			"https://discord.com/channels/254360814063058944/283965220446273547/822462253202538506"
 		],
 		"reminder": "You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command."
 	},

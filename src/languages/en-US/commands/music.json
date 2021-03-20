@@ -61,6 +61,7 @@
 	"joinVoiceNoConnect": "{{REDCROSS}} I do not have enough permissions to connect to your voice channel. I am missing the **{{CONNECT, permissions}}** permission.",
 	"joinVoiceNoSpeak": "{{REDCROSS}} I can connect... but not speak. Please turn on this permission so I can emit music.",
 	"joinVoiceSame": "{{REDCROSS}} Turn on your volume! I am playing music there!",
+	"joinVoiceNotAllowed": "{{REDCROSS}} The voice channel you are in ({{channel}}) is not allowed.",
 	"joinFailed": "{{REDCROSS}} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \"@Skyra support\" and alert my developers.",
 	"leaveDescription": "Leaves the voice channel.",
 	"leaveExtended": {

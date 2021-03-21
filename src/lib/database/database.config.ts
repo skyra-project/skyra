@@ -1,3 +1,7 @@
+// Config must be the first to be loaded, as it sets the env:
+import '#root/config';
+
+// Import everything else:
 import { envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { join } from 'path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';

@@ -90,7 +90,6 @@ function parseRegExpPrefix(): RegExp | undefined {
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: parseAudio(),
-	shards: 'auto',
 	ws: {
 		intents: [
 			'GUILDS',

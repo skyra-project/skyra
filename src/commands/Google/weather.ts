@@ -21,7 +21,7 @@ const flags = ['fahrenheit', 'f', 'imperial', 'i'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
-	cooldown: 120,
+	cooldown: 60,
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	permissions: ['ATTACH_FILES'],
@@ -36,7 +36,9 @@ export class UserCommand extends SkyraCommand {
 
 		const resolved = useImperial ? resolveCurrentConditionsImperial(current, args.t) : resolveCurrentConditionsSI(current, args.t);
 		const [nearestArea] = data.nearest_area;
-		const place = `${nearestArea.region[0].value}, ${nearestArea.country[0].value}`;
+
+		// Region can be an empty string, e.g. `Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu`:
+		const place = `${nearestArea.region[0].value || nearestArea.areaName[0].value}, ${nearestArea.country[0].value}`;
 		const weatherDescription = this.getWeatherDescription(current, base);
 
 		const attachment = await this.draw(weatherDescription, place, current, resolved);

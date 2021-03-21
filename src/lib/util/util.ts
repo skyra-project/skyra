@@ -3,7 +3,7 @@ import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { Store } from '@sapphire/framework';
+import { err, ok, Result, Store } from '@sapphire/framework';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -273,6 +273,14 @@ export async function fetch(url: URL | string, options?: RequestInit | FetchResu
 			return result.text();
 		default:
 			throw new Error(`Unknown type ${type}`);
+	}
+}
+
+export async function wrap<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
+	try {
+		return ok(await promise);
+	} catch (error) {
+		return err(error);
 	}
 }
 

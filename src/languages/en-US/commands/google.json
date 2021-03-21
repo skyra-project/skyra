@@ -80,15 +80,15 @@
 			"Place",
 			"Place --imperial/--fahrenheit"
 		],
-		"extendedHelp": "This command uses Google Maps to get the coordinates of the place.\nOnce this command got the coordinates, it queries DarkSky to retrieve information about the weather.",
+		"extendedHelp": "This command uses [wttr.in](https://wttr.in) to get weather data from a location and displays it with a pretty card.",
 		"explainedUsage": [
 			[
 				"Place",
-				"The locality, governing, country, or continent to check the weather from."
+				"The place, city, or country to check the weather from."
 			]
 		],
 		"examples": [
-			"Antarctica",
+			"Madrid",
 			"Arizona"
 		],
 		"reminder": "Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**."
@@ -107,5 +107,12 @@
 	"weatherMillimeters": "{{value}} mm",
 	"weatherPascal": "{{value}} Pa",
 	"weatherKilometers": "{{value}} km",
-	"weatherKilometersPerHour": "{{value}} km/h"
+	"weatherKilometersPerHour": "{{value}} km/h",
+	"weatherInvalidJsonBody": "The server sent me a malformed response when I was looking for `{{query}}`, and I can't make heads or tails of it, sorry!",
+	"weatherUnknownLocation": "Apparently, the server doesn't know where `{{query}}` is at, or has no data, please try somewhere else!",
+	"weatherUnknownError": "I received an unknown error when looking for `{{query}}`, I am sorry!",
+	"weatherBlockedLocation": "I could not find any data about `{{query}}` because it was blocked by the server.",
+	"weatherRateLimited": "I could not find any data about `{{query}}` because I exceeded the amount of queries I can do, please try again later!",
+	"weatherRemoteServerError": "I could not find any data about `{{query}}` because the server found an internal error, please try again later!",
+	"weatherServiceUnavailable": "I could not find any data about `{{query}}` because the server has hit its capacity limit, which means they can not longer serve any more requests in the remainder of the day, please try again later!"
 }

@@ -1,9 +1,12 @@
+import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { assetsFolder } from '#utils/constants';
-import { fetch } from '#utils/util';
-import { UserError } from '@sapphire/framework';
+import { fetch, FetchResultTypes, wrap } from '#utils/util';
+import { Store, UserError } from '@sapphire/framework';
+import { tryParse } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import { resolveImage } from 'canvas-constructor';
+import { cyan, gray, red } from 'colorette';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
 import { CurrentCondition, Weather, WeatherCode, WeatherName } from './types';
@@ -27,7 +30,7 @@ export function getColors(name: WeatherName): WeatherTheme {
 			return { background: '#FAFAFA', text: '#1F1F1F', theme: 'dark' };
 		case 'PartlyCloudy':
 		case 'Sunny':
-			return { background: '#8AD5FF', text: '#1F1F1F', theme: 'dark' };
+			return { background: '#0096D6', text: '#FAFAFA', theme: 'light' };
 		case 'ThunderyHeavyRain':
 		case 'ThunderyShowers':
 		case 'ThunderySnowShowers':
@@ -122,15 +125,41 @@ export async function getIcons(theme: Theme): Promise<Icons> {
 }
 
 const getDataBaseURL = 'https://wttr.in/';
-export async function getData(name: string, lang: string): Promise<Weather> {
-	try {
-		const url = new URL(`${getDataBaseURL}~${encodeURIComponent(name)}`);
-		url.searchParams.append('format', 'j1');
-		url.searchParams.append('lang', lang);
-		return await fetch(url);
-	} catch (error) {
-		throw new UserError({ identifier: LanguageKeys.Commands.Google.MessagesErrorUnknown, context: { error } });
+export async function getData(query: string, lang: string): Promise<Weather> {
+	const url = new URL(`${getDataBaseURL}~${encodeURIComponent(query)}`);
+	url.searchParams.append('format', 'j1');
+	url.searchParams.append('lang', lang);
+
+	const result = await wrap<string, QueryError>(fetch(url, FetchResultTypes.Text));
+	if (result.success) {
+		const { value } = result;
+		// JSON object:
+		if (value.startsWith('{')) {
+			const parsed = tryParse(value);
+			if (parsed === null) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherInvalidJsonBody, context: { query } });
+			return parsed as Weather;
+		}
+
+		// Yes, wttr.in returns 200 OK on errors (ref: https://github.com/chubin/wttr.in/issues/591).
+		// "Unknown location; ..." message:
+		if (value.startsWith('Unknown location')) {
+			throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownLocation, context: { query } });
+		}
+
+		// Log the error and return unknown error:
+		Store.injectedContext.logger.error(`[${cyan('WEATHER')}]: Unknown Error Body Received: ${gray(value)}`);
+		throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError, context: { query } });
 	}
+
+	const { error } = result;
+	if (error.code === 403) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherBlockedLocation, context: { query } });
+	if (error.code === 429) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherRateLimited, context: { query } });
+	if (error.code === 500) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherRemoteServerError, context: { query } });
+	if (error.code === 503) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherServiceUnavailable, context: { query } });
+
+	// Log the error and return unknown error:
+	Store.injectedContext.logger.error(`[${cyan('WEATHER')}]: Unknown Error Code Received: ${red(error.code.toString())} - ${gray(error.response)}`);
+	throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError });
 }
 
 export function resolveCurrentConditionsImperial(conditions: CurrentCondition, t: TFunction): ResolvedConditions {

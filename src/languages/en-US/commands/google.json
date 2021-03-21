@@ -84,7 +84,7 @@
 		"explainedUsage": [
 			[
 				"Place",
-				"The place, city, or country to check the weather from."
+				"The coordinates, place, city, or country to check the weather from."
 			]
 		],
 		"examples": [

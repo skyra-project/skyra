@@ -6,10 +6,10 @@ import {
 	getData,
 	getFile,
 	getIcons,
+	getWeatherName,
 	resolveCurrentConditionsImperial,
 	resolveCurrentConditionsSI,
-	ResolvedConditions,
-	resolveWeatherName
+	ResolvedConditions
 } from '#lib/weather';
 import { radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -29,12 +29,12 @@ const flags = ['fahrenheit', 'f', 'imperial', 'i'];
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const useImperial = args.getFlags(...flags);
-		const data = await getData(await args.rest('string'));
+		const data = await getData(await args.rest('string'), args.t.lng);
 		const [current] = data.current_condition;
 
 		const resolved = useImperial ? resolveCurrentConditionsImperial(current, args.t) : resolveCurrentConditionsSI(current, args.t);
 		const [nearestArea] = data.nearest_area;
-		const place = `${nearestArea.areaName[0].value}, ${nearestArea.country[0].value}`;
+		const place = `${nearestArea.region[0].value}, ${nearestArea.country[0].value}`;
 
 		const attachment = await this.draw(place, current, resolved);
 		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
@@ -42,10 +42,10 @@ export class UserCommand extends SkyraCommand {
 
 	private async draw(place: string, conditions: CurrentCondition, resolved: ResolvedConditions) {
 		const weatherDescription = conditions.weatherDesc[0].value;
-		const weatherName = resolveWeatherName(weatherDescription);
-		const { background, text, theme } = getColors(weatherDescription);
+		const weatherName = getWeatherName(conditions.weatherCode);
+		const { background, text, theme } = getColors(weatherName);
 
-		const [conditionImage, icons] = await Promise.all([getFile(weatherDescription), getIcons(theme)]);
+		const [conditionImage, icons] = await Promise.all([getFile(weatherName), getIcons(theme)]);
 		const { coordinates } = UserCommand;
 		const { columns, rows } = coordinates;
 
@@ -57,51 +57,53 @@ export class UserCommand extends SkyraCommand {
 		const iconMargin = iconSize + 6;
 
 		return (
-			new Canvas(400, 230)
+			new Canvas(coordinates.width, coordinates.height)
 				.save()
 				.setShadowColor('rgba(0,0,0,.7)')
-				.setShadowBlur(7)
+				.setShadowBlur(coordinates.margin / 2)
 				.setColor(background)
 				.createRoundedPath(
 					coordinates.margin,
 					coordinates.margin,
-					coordinates.margin + coordinates.contentWidth,
-					coordinates.margin + coordinates.contentHeight,
+					coordinates.contentWidth,
+					coordinates.contentHeight,
 					coordinates.margin / 2
 				)
 				.fill()
 				.restore()
 
 				// Place Name
-				.setTextFont('16px Roboto')
+				.setTextFont('24px RobotoRegular')
+				.setTextBaseline('middle')
 				.setColor(text)
-				.printResponsiveText(place, columns[0].left, rows[0].bottom, coordinates.contentWidth)
+				.printResponsiveText(place, columns[0].left + coordinates.margin, rows[0].center, coordinates.contentWidth - coordinates.margin)
 
 				// Weather Icon
-				.printImage(conditionImage, columns[0].center - halfImageSize, rows[2].bottom - halfImageSize)
+				.setTextFont('20px RobotoLight')
+				.printImage(conditionImage, columns[0].center - halfImageSize, rows[2].center - halfImageSize)
 
 				// Weather Name
-				.printText(weatherName, columns[1].left, rows[1].bottom)
+				.printText(weatherDescription, columns[1].left, rows[1].center)
 
 				// Temperature
-				.printImage(icons.temperature, columns[1].left, rows[2].bottom, iconSize, iconSize)
-				.printText(resolved.temperature, columns[1].left + iconMargin, rows[2].bottom)
+				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize, iconSize, iconSize)
+				.printText(resolved.temperature, columns[1].left + iconMargin, rows[2].center)
 
 				// Wind
 				.save()
-				.translate(columns[2].left + halfIconSize, rows[2].bottom - halfIconSize)
+				.translate(columns[2].left + halfIconSize, rows[2].center)
 				.rotate(radians(Number(conditions.winddirDegree)))
-				.printImage(icons.pointer, 0, 0, iconSize, iconSize)
+				.printImage(icons.pointer, -halfIconSize, -halfIconSize, iconSize, iconSize)
 				.restore()
-				.printText(resolved.temperature, columns[2].left + iconMargin, rows[2].bottom)
+				.printText(resolved.temperature, columns[2].left + iconMargin, rows[2].center)
 
 				// Precipitation
-				.printImage(icons.precipitation, columns[1].left, rows[3].bottom, iconSize, iconSize)
-				.printText(resolved.precipitation, columns[1].left + iconMargin, rows[3].bottom)
+				.printImage(icons.precipitation, columns[1].left, rows[3].center - halfIconSize, iconSize, iconSize)
+				.printText(resolved.precipitation, columns[1].left + iconMargin, rows[3].center)
 
 				// Visibility
-				.printImage(icons.visibility, columns[2].left, rows[3].bottom, iconSize, iconSize)
-				.printText(resolved.visibility, columns[2].left + iconMargin, rows[3].bottom)
+				.printImage(icons.visibility, columns[2].left, rows[3].center - halfIconSize, iconSize, iconSize)
+				.printText(resolved.visibility, columns[2].left + iconMargin, rows[3].center)
 
 				.toBufferAsync()
 		);
@@ -109,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static coordinates = this.resolveCoordinates();
 	private static resolveCoordinates(): Coordinates {
-		const width = 450;
+		const width = 480;
 		const height = 250;
 		const margin = 15;
 

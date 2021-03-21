@@ -16,6 +16,7 @@
 		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#lib/setup": "./dist/lib/setup/index.js",
 		"#lib/types": "./dist/lib/types/index.js",
+		"#lib/weather": "./dist/lib/weather/index.js",
 		"#lib/i18n/languageKeys": "./dist/lib/i18n/languageKeys/index.js",
 		"#root/*": "./dist/*.js",
 		"#languages": "./dist/languages/index.js",

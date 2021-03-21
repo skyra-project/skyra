@@ -6,38 +6,97 @@ import { Image } from 'canvas';
 import { resolveImage } from 'canvas-constructor';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
-import type { CurrentCondition, Weather, WeatherName } from './types';
+import { CurrentCondition, Weather, WeatherCode, WeatherName } from './types';
 
 export function getColors(name: WeatherName): WeatherTheme {
 	switch (name) {
-		case 'Cloudy':
-		case 'Fog':
-			return { background: '#2E2E2E', text: '#FAFAFA', theme: 'dark' };
-		case 'HeavyRain':
-		case 'HeavyShowers':
-		case 'VeryCloudy':
-			return { background: '#EAEAEA', text: '#1F1F1F', theme: 'light' };
-		case 'HeavySnow':
-		case 'HeavySnowShowers':
-			return { background: '#FAFAFA', text: '#1F1F1F', theme: 'light' };
-		case 'LightRain':
-		case 'LightSleet':
-		case 'LightSnow':
-			return { background: '#5AABC8', text: '#1F1F1F', theme: 'light' };
 		case 'LightShowers':
 		case 'LightSleetShowers':
 		case 'LightSnowShowers':
+		case 'Cloudy':
+		case 'Fog':
+			return { background: '#2E2E2E', text: '#FAFAFA', theme: 'light' };
+		case 'HeavyRain':
+		case 'HeavyShowers':
+		case 'VeryCloudy':
+			return { background: '#EAEAEA', text: '#1F1F1F', theme: 'dark' };
+		case 'HeavySnow':
+		case 'HeavySnowShowers':
+			return { background: '#FAFAFA', text: '#1F1F1F', theme: 'dark' };
+		case 'LightRain':
+		case 'LightSleet':
+		case 'LightSnow':
+			return { background: '#5AABC8', text: '#1F1F1F', theme: 'dark' };
+		case 'Clear':
 		case 'PartlyCloudy':
 		case 'Sunny':
-			return { background: '#6ABBD8', text: '#1F1F1F', theme: 'light' };
+			return { background: '#6ABBD8', text: '#1F1F1F', theme: 'dark' };
 		case 'ThunderyHeavyRain':
 		case 'ThunderyShowers':
 		case 'ThunderySnowShowers':
-			return { background: '##99446B', text: '#FAFAFA', theme: 'dark' };
+			return { background: '##99446B', text: '#FAFAFA', theme: 'light' };
+		default:
+			throw new Error(`Could not find weather name '${name}'.`);
 	}
 }
 
-const weatherFolder = join(assetsFolder, 'weather');
+const getWeatherNameMap = new Map<WeatherCode, WeatherName>([
+	[WeatherCode.ClearOrSunny, 'Sunny'],
+	[WeatherCode.PartlyCloudy, 'PartlyCloudy'],
+	[WeatherCode.Cloudy, 'Cloudy'],
+	[WeatherCode.Overcast, 'VeryCloudy'],
+	[WeatherCode.Mist, 'Fog'],
+	[WeatherCode.PatchyRainNearby, 'LightShowers'],
+	[WeatherCode.PatchySnowNearby, 'LightSleetShowers'],
+	[WeatherCode.PatchySleetNearby, 'LightSleet'],
+	[WeatherCode.PatchyFreezingDrizzleNearby, 'LightSleet'],
+	[WeatherCode.ThunderyOutbreaksInNearby, 'ThunderyShowers'],
+	[WeatherCode.BlowingSnow, 'LightSnow'],
+	[WeatherCode.Blizzard, 'HeavySnow'],
+	[WeatherCode.Fog, 'Fog'],
+	[WeatherCode.FreezingFog, 'Fog'],
+	[WeatherCode.PatchyLightDrizzle, 'LightShowers'],
+	[WeatherCode.LightDrizzle, 'LightRain'],
+	[WeatherCode.FreezingDrizzle, 'LightSleet'],
+	[WeatherCode.HeavyFreezingDrizzle, 'LightSleet'],
+	[WeatherCode.PatchyLightRain, 'LightRain'],
+	[WeatherCode.LightRain, 'LightRain'],
+	[WeatherCode.ModerateRainAtTimes, 'HeavyShowers'],
+	[WeatherCode.ModerateRain, 'HeavyRain'],
+	[WeatherCode.HeavyRainAtTimes, 'HeavyShowers'],
+	[WeatherCode.HeavyRain, 'HeavyRain'],
+	[WeatherCode.LightFreezingRain, 'LightSleet'],
+	[WeatherCode.ModerateOrHeavyFreezingRain, 'LightSleet'],
+	[WeatherCode.LightSleet, 'LightSleet'],
+	[WeatherCode.ModerateOrHeavySleet, 'LightSnow'],
+	[WeatherCode.PatchyLightSnow, 'LightSnowShowers'],
+	[WeatherCode.LightSnow, 'LightSnowShowers'],
+	[WeatherCode.PatchyModerateSnow, 'HeavySnow'],
+	[WeatherCode.ModerateSnow, 'HeavySnow'],
+	[WeatherCode.PatchyHeavySnow, 'HeavySnowShowers'],
+	[WeatherCode.HeavySnow, 'HeavySnow'],
+	[WeatherCode.IcePellets, 'LightSleet'],
+	[WeatherCode.LightRainShower, 'LightShowers'],
+	[WeatherCode.ModerateOrHeavyRainShower, 'HeavyShowers'],
+	[WeatherCode.TorrentialRainShower, 'HeavyShowers'],
+	[WeatherCode.LightSleetShowers, 'LightSleetShowers'],
+	[WeatherCode.ModerateOrHeavySleetShowers, 'LightSleetShowers'],
+	[WeatherCode.LightSnowShowers, 'LightSnowShowers'],
+	[WeatherCode.ModerateOrHeavySnowShowers, 'LightSnowShowers'],
+	[WeatherCode.LightShowersOfIcePellets, 'LightSleetShowers'],
+	[WeatherCode.ModerateOrHeavyShowersOfIcePellets, 'LightSleet'],
+	[WeatherCode.PatchyLightRainInAreaWithThunder, 'ThunderyShowers'],
+	[WeatherCode.ModerateOrHeavyRainInAreaWithThunder, 'ThunderyHeavyRain'],
+	[WeatherCode.PatchyLightSnowInAreaWithThunder, 'ThunderySnowShowers'],
+	[WeatherCode.ModerateOrHeavySnowInAreaWithThunder, 'HeavySnowShowers']
+]);
+export function getWeatherName(code: WeatherCode): WeatherName {
+	const name = getWeatherNameMap.get(code);
+	if (name === undefined) throw new Error(`The code '${code}' is not available.`);
+	return name;
+}
+
+const weatherFolder = join(assetsFolder, 'images', 'weather');
 const getFileCache = new Map<WeatherName, Image>();
 export async function getFile(name: WeatherName): Promise<Image> {
 	const existing = getFileCache.get(name);
@@ -66,9 +125,11 @@ export async function getIcons(theme: Theme): Promise<Icons> {
 }
 
 const getDataBaseURL = 'https://wttr.in/';
-export async function getData(name: string): Promise<Weather> {
+export async function getData(name: string, lang: string): Promise<Weather> {
 	try {
-		const url = `${getDataBaseURL}${encodeURIComponent(name)}`;
+		const url = new URL(`${getDataBaseURL}~${encodeURIComponent(name)}`);
+		url.searchParams.append('format', 'j1');
+		url.searchParams.append('lang', lang);
 		return await fetch(url);
 	} catch (error) {
 		throw new UserError({ identifier: LanguageKeys.Commands.Google.MessagesErrorUnknown, context: { error } });
@@ -99,47 +160,6 @@ export function resolveCurrentConditionsSI(conditions: CurrentCondition, t: TFun
 		visibility: t(LanguageKeys.Commands.Google.WeatherKilometers, { value: Number(conditions.visibility) }),
 		windSpeed: t(LanguageKeys.Commands.Google.WeatherKilometersPerHour, { value: Number(conditions.windspeedKmph) })
 	};
-}
-
-export function resolveWeatherName(name: WeatherName): string {
-	switch (name) {
-		case 'Cloudy':
-			return LanguageKeys.Commands.Google.WeatherTypeCloudy;
-		case 'Fog':
-			return LanguageKeys.Commands.Google.WeatherTypeFog;
-		case 'HeavyRain':
-			return LanguageKeys.Commands.Google.WeatherTypeHeavyRain;
-		case 'HeavyShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeHeavyShowers;
-		case 'HeavySnow':
-			return LanguageKeys.Commands.Google.WeatherTypeHeavySnow;
-		case 'HeavySnowShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeHeavySnowShowers;
-		case 'LightRain':
-			return LanguageKeys.Commands.Google.WeatherTypeLightRain;
-		case 'LightShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeLightShowers;
-		case 'LightSleet':
-			return LanguageKeys.Commands.Google.WeatherTypeLightSleet;
-		case 'LightSleetShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeLightSleetShowers;
-		case 'LightSnow':
-			return LanguageKeys.Commands.Google.WeatherTypeLightSnow;
-		case 'LightSnowShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeLightSnowShowers;
-		case 'PartlyCloudy':
-			return LanguageKeys.Commands.Google.WeatherTypePartlyCloudy;
-		case 'Sunny':
-			return LanguageKeys.Commands.Google.WeatherTypeSunny;
-		case 'ThunderyHeavyRain':
-			return LanguageKeys.Commands.Google.WeatherTypeThunderyHeavyRain;
-		case 'ThunderyShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeThunderyShowers;
-		case 'ThunderySnowShowers':
-			return LanguageKeys.Commands.Google.WeatherTypeThunderySnowShowers;
-		case 'VeryCloudy':
-			return LanguageKeys.Commands.Google.WeatherTypeVeryCloudy;
-	}
 }
 
 export type Theme = 'light' | 'dark';

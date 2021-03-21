@@ -76,7 +76,7 @@ export class UserCommand extends SkyraCommand {
 				.setTextFont('24px RobotoRegular')
 				.setTextBaseline('middle')
 				.setColor(text)
-				.printResponsiveText(place, columns[0].left + coordinates.margin, rows[0].center, coordinates.contentWidth - coordinates.margin)
+				.printResponsiveText(place, coordinates.margin * 2, rows[0].center, coordinates.contentWidth - coordinates.margin * 2)
 
 				// Weather Icon
 				.setTextFont('20px RobotoLight')
@@ -86,23 +86,23 @@ export class UserCommand extends SkyraCommand {
 				.printText(weatherDescription, columns[1].left, rows[1].center)
 
 				// Temperature
-				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize, iconSize, iconSize)
+				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize)
 				.printText(resolved.temperature, columns[1].left + iconMargin, rows[2].center)
 
 				// Wind
 				.save()
 				.translate(columns[2].left + halfIconSize, rows[2].center)
-				.rotate(radians(Number(conditions.winddirDegree)))
-				.printImage(icons.pointer, -halfIconSize, -halfIconSize, iconSize, iconSize)
+				.rotate(radians(Number(conditions.winddirDegree)) + Math.PI)
+				.printImage(icons.pointer, -halfIconSize, -halfIconSize)
 				.restore()
-				.printText(resolved.temperature, columns[2].left + iconMargin, rows[2].center)
+				.printText(resolved.windSpeed, columns[2].left + iconMargin, rows[2].center)
 
 				// Precipitation
-				.printImage(icons.precipitation, columns[1].left, rows[3].center - halfIconSize, iconSize, iconSize)
+				.printImage(icons.precipitation, columns[1].left, rows[3].center - halfIconSize)
 				.printText(resolved.precipitation, columns[1].left + iconMargin, rows[3].center)
 
 				// Visibility
-				.printImage(icons.visibility, columns[2].left, rows[3].center - halfIconSize, iconSize, iconSize)
+				.printImage(icons.visibility, columns[2].left, rows[3].center - halfIconSize)
 				.printText(resolved.visibility, columns[2].left + iconMargin, rows[3].center)
 
 				.toBufferAsync()

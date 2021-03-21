@@ -89,7 +89,6 @@ export interface WeatherDescription {
 }
 
 export type WeatherName =
-	| 'Clear'
 	| 'Cloudy'
 	| 'Fog'
 	| 'HeavyRain'

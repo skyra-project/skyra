@@ -13,24 +13,21 @@ export function getColors(name: WeatherName): WeatherTheme {
 		case 'LightShowers':
 		case 'LightSleetShowers':
 		case 'LightSnowShowers':
+		case 'LightRain':
+		case 'LightSleet':
+		case 'LightSnow':
 		case 'Cloudy':
 		case 'Fog':
 			return { background: '#2E2E2E', text: '#FAFAFA', theme: 'light' };
 		case 'HeavyRain':
 		case 'HeavyShowers':
 		case 'VeryCloudy':
-			return { background: '#EAEAEA', text: '#1F1F1F', theme: 'dark' };
 		case 'HeavySnow':
 		case 'HeavySnowShowers':
 			return { background: '#FAFAFA', text: '#1F1F1F', theme: 'dark' };
-		case 'LightRain':
-		case 'LightSleet':
-		case 'LightSnow':
-			return { background: '#5AABC8', text: '#1F1F1F', theme: 'dark' };
-		case 'Clear':
 		case 'PartlyCloudy':
 		case 'Sunny':
-			return { background: '#6ABBD8', text: '#1F1F1F', theme: 'dark' };
+			return { background: '#8AD5FF', text: '#1F1F1F', theme: 'dark' };
 		case 'ThunderyHeavyRain':
 		case 'ThunderyShowers':
 		case 'ThunderySnowShowers':

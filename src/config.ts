@@ -1,12 +1,12 @@
 // Unless explicitly defined, set NODE_ENV as development:
 process.env.NODE_ENV ??= 'development';
 
-import { getHandler } from '#languages';
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import type { QueueClientOptions } from '#lib/audio';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageFormatters } from '#lib/types/Constants';
+import { getHandler } from '#root/languages/index';
 import { Emojis, rootFolder } from '#utils/constants';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
@@ -120,7 +120,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		role: 2
 	},
 	logger: {
-		level: process.env.NODE_ENV === 'development' ? LogLevel.Debug : LogLevel.Info
+		level: process.env.NODE_ENV === 'production' ? LogLevel.Info : LogLevel.Debug
 	},
 	i18n: {
 		defaultMissingKey: 'default',

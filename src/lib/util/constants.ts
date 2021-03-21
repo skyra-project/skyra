@@ -6,7 +6,7 @@ import { join } from 'path';
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
-export const cdnFolder = process.env.NODE_ENV === 'development' ? join(assetsFolder, 'public') : join('/var', 'www', 'skyra.pw', 'cdn');
+export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'www', 'skyra.pw', 'cdn') : join(assetsFolder, 'public');
 
 export const ZeroWidthSpace = '\u200B';
 

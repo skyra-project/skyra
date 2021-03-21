@@ -1,4 +1,4 @@
-export type BooleanString = `${'true' | 'false'}`;
+export type BooleanString = 'true' | 'false';
 export type IntegerString = `${bigint}`;
 
 export type SkyraEnvAny = keyof SkyraEnv;

@@ -17,7 +17,7 @@ import { enumerable } from './util/util';
 
 export class SkyraClient extends SapphireClient {
 	@enumerable(false)
-	public dev = process.env.NODE_ENV === 'development';
+	public dev = process.env.NODE_ENV !== 'production';
 
 	/**
 	 * The loaded Leaderboard singleton instance

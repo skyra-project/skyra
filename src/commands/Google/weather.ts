@@ -12,12 +12,16 @@ import {
 	ResolvedConditions,
 	ValueWrapper
 } from '#lib/weather';
-import { baseLanguage, radians } from '#utils/util';
+import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';
 
-const flags = ['fahrenheit', 'f', 'imperial', 'i'];
+const imperial = ['fahrenheit', 'f', 'imperial', 'i'];
+const metric = ['celsius', 'c', 'metric', 'm'];
+
+// United States (en-US), Liberia (en-LR), and Myanmar (my-MM) are the only countries in the world that use Imperial:
+const imperialCountries = ['US', 'LR', 'MM'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -25,11 +29,11 @@ const flags = ['fahrenheit', 'f', 'imperial', 'i'];
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	permissions: ['ATTACH_FILES'],
-	strategyOptions: { flags }
+	strategyOptions: { flags: [...imperial, ...metric] }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const useImperial = args.getFlags(...flags);
+		const useImperial = this.shouldUseImperial(args);
 		const base = baseLanguage(args.t.lng);
 		const data = await getData(await args.rest('string'), base);
 		const [current] = data.current_condition;
@@ -45,6 +49,12 @@ export class UserCommand extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
 	}
 
+	private shouldUseImperial(args: SkyraCommand.Args) {
+		if (args.getFlags(...imperial)) return true;
+		if (args.getFlags(...metric)) return false;
+		return imperialCountries.includes(countryLanguage(args.t.lng));
+	}
+
 	private getWeatherDescription(conditions: CurrentCondition, base: string) {
 		const translated = Reflect.get(conditions, `lang_${base}`) as ValueWrapper[] | undefined;
 		return translated?.[0].value ?? conditions.weatherDesc[0].value;
@@ -55,8 +65,7 @@ export class UserCommand extends SkyraCommand {
 		const { background, text, theme } = getColors(weatherName);
 
 		const [conditionImage, icons] = await Promise.all([getFile(weatherName), getIcons(theme)]);
-		const { coordinates } = UserCommand;
-		const { columns, rows } = coordinates;
+		const { width, height, cardWidth, cardHeight, margin, columns, rows } = UserCommand.coordinates;
 
 		const imageSize = 128;
 		const halfImageSize = imageSize / 2;
@@ -66,12 +75,12 @@ export class UserCommand extends SkyraCommand {
 		const iconMargin = iconSize + 10;
 
 		return (
-			new Canvas(coordinates.width, coordinates.height)
+			new Canvas(width, height)
 				.save()
 				.setShadowColor('rgba(0,0,0,.7)')
-				.setShadowBlur(coordinates.margin / 2)
+				.setShadowBlur(margin)
 				.setColor(background)
-				.createRoundedPath(coordinates.margin, coordinates.margin, coordinates.cardWidth, coordinates.cardHeight, coordinates.margin / 2)
+				.createRoundedPath(margin, margin, cardWidth, cardHeight, margin / 2)
 				.fill()
 				.restore()
 
@@ -79,7 +88,7 @@ export class UserCommand extends SkyraCommand {
 				.setTextFont('24px RobotoRegular')
 				.setTextBaseline('middle')
 				.setColor(text)
-				.printResponsiveText(place, columns[0].left, rows[0].center, coordinates.cardWidth)
+				.printResponsiveText(place, columns[0].left, rows[0].center, columns[2].right - columns[0].left)
 
 				// Weather Icon
 				.setTextFont('20px RobotoLight')

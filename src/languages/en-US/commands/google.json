@@ -78,6 +78,7 @@
 	"weatherExtended": {
 		"usages": [
 			"Place",
+			"Place --metric/--celsius",
 			"Place --imperial/--fahrenheit"
 		],
 		"extendedHelp": "This command uses [wttr.in](https://wttr.in) to get weather data from a location and displays it with a pretty card.",
@@ -88,10 +89,10 @@
 			]
 		],
 		"examples": [
-			"Madrid",
-			"Arizona"
+			"New York",
+			"San Francisco"
 		],
-		"reminder": "Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**."
+		"reminder": "The units are in the Imperial System by default. Use the --celsius or --metric flag to view it in the **International System**."
 	},
 	"errorZeroResults": "Your request returned no results.",
 	"errorRequestDenied": "The GeoCode API Request was denied.",

@@ -683,12 +683,22 @@ export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction
 
 /**
  * Gets the base language from an i18n code.
- * @param lang The base language to get, e.g. `en-US`
+ * @param lang The ISO 639-1 language to process, e.g. `en-US`
  * @returns The base language, for example, `en-US` becomes `en`.
  */
 export function baseLanguage(lang: string): string {
 	const index = lang.indexOf('-');
 	return index === -1 ? lang : lang.slice(0, index);
+}
+
+/**
+ * Gets the country from an i18n code.
+ * @param lang The ISO 639-1 language to process, e.g. `en-US`
+ * @returns The country, for example, `en-US` becomes `US`.
+ */
+export function countryLanguage(lang: string): string {
+	const index = lang.lastIndexOf('-');
+	return index === -1 ? lang : lang.slice(index + 1);
 }
 
 export interface UtilOneToTenEntry {

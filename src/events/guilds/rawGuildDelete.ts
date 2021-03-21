@@ -8,6 +8,6 @@ export class UserEvent extends Event {
 		if (data.unavailable) return;
 
 		this.context.client.settings.guilds.delete(data.id);
-		this.context.client.audio.queues?.delete(data.id);
+		this.context.client.audio?.queues.delete(data.id);
 	}
 }

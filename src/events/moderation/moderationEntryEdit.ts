@@ -1,5 +1,4 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Event } from '@sapphire/framework';
@@ -51,7 +50,7 @@ export class UserEvent extends Event {
 
 	private validateModerationLogMessage(message: Message, caseID: number) {
 		return (
-			message.author.id === CLIENT_ID &&
+			message.author.id === process.env.CLIENT_ID &&
 			message.attachments.size === 0 &&
 			message.embeds.length === 1 &&
 			this.validateModerationLogMessageEmbed(message.embeds[0]) &&

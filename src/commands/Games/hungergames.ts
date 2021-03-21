@@ -2,7 +2,6 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CLIENT_ID } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sleep } from '#utils/Promisified/sleep';
@@ -141,7 +140,7 @@ export class UserCommand extends SkyraCommand {
 		if (reaction.userID === message.author.id) return false;
 
 		// Don't listen to herself
-		if (reaction.userID === CLIENT_ID) return true;
+		if (reaction.userID === process.env.CLIENT_ID) return true;
 
 		try {
 			// Fetch the member for level measuring purposes

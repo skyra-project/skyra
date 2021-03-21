@@ -4,7 +4,6 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { SuggestionData } from '#lib/types/definitions/Suggestion';
 import { PermissionLevels } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Store } from '@sapphire/framework';
@@ -79,7 +78,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (shouldRepostSuggestion) {
 			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
-		} else if (suggestionData.message.author.id === CLIENT_ID) {
+		} else if (suggestionData.message.author.id === process.env.CLIENT_ID) {
 			await suggestionData.message.edit(newEmbed);
 		}
 

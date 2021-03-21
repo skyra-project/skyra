@@ -4,7 +4,6 @@ import { TicTacToeHumanController } from '#lib/games/tic-tac-toe/TicTacToeHumanC
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -42,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getTargetController(message: GuildMessage, t: TFunction, user: User) {
-		if (user.id === CLIENT_ID) return new TicTacToeBotController();
+		if (user.id === process.env.CLIENT_ID) return new TicTacToeBotController();
 		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 

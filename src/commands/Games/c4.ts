@@ -4,7 +4,6 @@ import { ConnectFourHumanController } from '#lib/games/connect-four/ConnectFourH
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { User } from 'discord.js';
 
@@ -42,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getTargetController(message: GuildMessage, user: User, args: SkyraCommand.Args) {
-		if (user.id === CLIENT_ID) return new ConnectFourBotController(this.getDifficulty(args));
+		if (user.id === process.env.CLIENT_ID) return new ConnectFourBotController(this.getDifficulty(args));
 		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 

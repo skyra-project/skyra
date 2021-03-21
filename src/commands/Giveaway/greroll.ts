@@ -4,7 +4,6 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -61,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 	private async fetchParticipants(message: GuildMessage): Promise<string[]> {
 		try {
 			const users = await fetchReactionUsers(message.channel.id, message.id, this.#kResolvedEmoji);
-			users.delete(CLIENT_ID);
+			users.delete(process.env.CLIENT_ID);
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
@@ -78,7 +77,12 @@ export class UserCommand extends SkyraCommand {
 	 * Validates that this message is a message from Skyra and is a giveaway
 	 */
 	private validateMessage(message: Message) {
-		return message.author !== null && message.author.id === CLIENT_ID && message.embeds.length === 1 && message.reactions.cache.has(kRawEmoji);
+		return (
+			message.author !== null &&
+			message.author.id === process.env.CLIENT_ID &&
+			message.embeds.length === 1 &&
+			message.reactions.cache.has(kRawEmoji)
+		);
 	}
 
 	/**

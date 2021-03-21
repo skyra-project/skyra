@@ -1,7 +1,7 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,9 +11,10 @@ import { decode } from 'he';
 import type { TFunction } from 'i18next';
 import { stringify } from 'querystring';
 
-const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/ncom_game_en_us/query`;
+const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/ncom_game_en_us/query`;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('NINTENDO_ID', 'NINTENDO_TOKEN'),
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EshopDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended
@@ -40,8 +41,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					method: FetchMethods.Post,
 					headers: {
 						'Content-Type': Mime.Types.ApplicationJson,
-						'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
-						'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
+						'X-Algolia-API-Key': process.env.NINTENDO_TOKEN,
+						'X-Algolia-Application-Id': process.env.NINTENDO_ID
 					},
 					body: JSON.stringify({
 						params: stringify({

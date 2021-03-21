@@ -1,4 +1,3 @@
-import { DEV } from '#root/config';
 import { MigrationInterface, QueryRunner, TableCheck } from 'typeorm';
 import { RandomGenerator } from 'typeorm/util/RandomGenerator';
 
@@ -90,7 +89,7 @@ export class V21AddMissingChecks1597266996401 implements MigrationInterface {
 										ON nsp.oid = connamespace
 					WHERE nsp.nspname = 'public'
 					AND rel.relname = '${table}'
-					AND conname LIKE ${DEV ? "'%CHK%'" : "'%_check%'"}
+					AND conname LIKE ${process.env.NODE_ENV === 'development' ? "'%CHK%'" : "'%_check%'"}
 				) LOOP
 					EXECUTE 'ALTER TABLE guilds DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname) || ' ';
 				END LOOP;

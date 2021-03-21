@@ -12,7 +12,6 @@ export const enum Events {
 	CommandUsageAnalytics = 'commandUsageAnalytics',
 	CoreSettingsDelete = 'coreSettingsDelete',
 	CoreSettingsUpdate = 'coreSettingsUpdate',
-	DatabaseError = 'databaseError',
 	Disconnect = 'disconnect',
 	EventError = 'eventError',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',

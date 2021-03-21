@@ -1,7 +1,7 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { BrawlStars } from '#lib/types/definitions/BrawlStars';
-import { TOKENS } from '#root/config';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -50,6 +50,7 @@ export interface BrawlStarsGIData {
 }
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('BRAWL_STARS_TOKEN'),
 	aliases: ['bs'],
 	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
@@ -179,7 +180,7 @@ export class UserCommand extends SkyraCommand {
 				url,
 				{
 					headers: {
-						Authorization: `Bearer ${TOKENS.BRAWL_STARS_KEY}`
+						Authorization: `Bearer ${process.env.BRAWL_STARS_TOKEN}`
 					}
 				},
 				FetchResultTypes.JSON

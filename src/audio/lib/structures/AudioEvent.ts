@@ -1,4 +1,4 @@
-import { ENABLE_AUDIO } from '#root/config';
+import { envParseBoolean } from '#lib/env';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import { OutgoingWebSocketMessage } from '../websocket/Shared';
 
@@ -8,7 +8,7 @@ interface AudioBroadcastCallback {
 
 export abstract class AudioEvent extends Event {
 	public constructor(context: PieceContext, options: AudioEvent.Options = {}) {
-		super(context, { ...options, enabled: ENABLE_AUDIO });
+		super(context, { ...options, enabled: envParseBoolean('AUDIO_ENABLED') });
 	}
 
 	public *getWebSocketListenersFor(guildID: string) {

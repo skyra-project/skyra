@@ -1,12 +1,13 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { TOKENS } from '#root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('TIMEZONEDB_TOKEN'),
 	aliases: ['ctime'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
@@ -47,7 +48,7 @@ export class UserCommand extends SkyraCommand {
 		const url = new URL('http://api.timezonedb.com/v2.1/get-time-zone');
 		url.searchParams.append('by', 'position');
 		url.searchParams.append('format', 'json');
-		url.searchParams.append('key', TOKENS.TIMEZONEDB_KEY);
+		url.searchParams.append('key', process.env.TIMEZONEDB_TOKEN);
 		url.searchParams.append('lat', lat.toString());
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');

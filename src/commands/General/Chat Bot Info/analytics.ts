@@ -1,6 +1,6 @@
+import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { ENABLE_INFLUX } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -8,12 +8,12 @@ import { Time } from '@sapphire/time-utilities';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envParseBoolean('INFLUX_ENABLED'),
 	aliases: ['growth'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.General.GrowthDescription,
 	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
-	permissions: ['ATTACH_FILES'],
-	enabled: ENABLE_INFLUX
+	permissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	private nextRefresh = Date.now();

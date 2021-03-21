@@ -1,6 +1,5 @@
 import { ratelimit } from '#lib/api/utils';
 import type { SkyraCommand } from '#lib/structures';
-import { PREFIX } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -26,7 +25,7 @@ export class UserRoute extends Route {
 		return {
 			category: command.category,
 			description: t(command.description),
-			extendedHelp: t(command.extendedHelp, { replace: { prefix: PREFIX }, postProcess: 'helpUsagePostProcessor' }),
+			extendedHelp: t(command.extendedHelp, { replace: { prefix: process.env.CLIENT_PREFIX }, postProcess: 'helpUsagePostProcessor' }),
 			guarded: command.guarded,
 			name: command.name,
 			permissionLevel: command.permissionLevel,

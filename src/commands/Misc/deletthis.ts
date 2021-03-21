@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { CLIENT_ID, OWNERS } from '#root/config';
+import { OWNERS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		let author: User | undefined = undefined;
 		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
 		if (user === message.author) [target, author] = [message.author, this.context.client.user!];
-		else if (OWNERS.concat(CLIENT_ID).includes(user.id)) [target, author] = [message.author, user];
+		else if (OWNERS.concat(process.env.CLIENT_ID).includes(user.id)) [target, author] = [message.author, user];
 		else [target, author] = [user, message.author];
 
 		const [hammered, hammerer] = await Promise.all([fetchAvatar(target, 256), fetchAvatar(author, 256)]);

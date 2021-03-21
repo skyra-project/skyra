@@ -7,7 +7,7 @@ import { GatewayDispatchEvents } from 'discord-api-types/v6';
 export class UserAudioEvent extends AudioEvent {
 	public async run(data: VoiceServerUpdate): Promise<void> {
 		try {
-			await this.context.client.audio.voiceServerUpdate(data);
+			await this.context.client.audio!.voiceServerUpdate(data);
 		} catch (error) {
 			this.context.client.logger.error(error);
 		}

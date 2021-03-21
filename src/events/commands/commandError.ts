@@ -83,7 +83,7 @@ export class UserEvent extends Event<Events.CommandError> {
 		}
 
 		try {
-			await this.context.client.webhookError.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
+			await this.context.client.webhookError?.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
 		} catch (err) {
 			this.context.client.emit(Events.ApiError, err);
 		}

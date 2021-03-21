@@ -2,7 +2,6 @@ import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
@@ -100,7 +99,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.warning({
 				userID: message.author.id,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
@@ -111,7 +110,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.kick({
 				userID: message.author.id,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 			})
 		);
@@ -121,7 +120,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.mute({
 				userID: message.author.id,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
@@ -133,7 +132,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 			message.guild.security.actions.softBan(
 				{
 					userID: message.author.id,
-					moderatorID: CLIENT_ID,
+					moderatorID: process.env.CLIENT_ID,
 					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
 				1
@@ -146,7 +145,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 			message.guild.security.actions.ban(
 				{
 					userID: message.author.id,
-					moderatorID: CLIENT_ID,
+					moderatorID: process.env.CLIENT_ID,
 					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 					duration
 				},

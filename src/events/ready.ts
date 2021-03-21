@@ -1,12 +1,13 @@
+import { envParseBoolean } from '#lib/env';
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
-import { DEV, ENABLE_AUDIO, ENABLE_INFLUX, VERSION } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
-const style = DEV ? yellow : blue;
+const dev = process.env.NODE_ENV === 'development';
+const style = dev ? yellow : blue;
 
 @ApplyOptions<EventOptions>({ once: true })
 export class UserEvent extends Event {
@@ -59,7 +60,7 @@ export class UserEvent extends Event {
 	}
 
 	private async initAnalytics() {
-		if (ENABLE_INFLUX) {
+		if (envParseBoolean('INFLUX_ENABLED')) {
 			const { client } = this.context;
 			client.emit(
 				Events.AnalyticsSync,
@@ -72,9 +73,9 @@ export class UserEvent extends Event {
 	}
 
 	private async connectLavalink() {
-		if (ENABLE_AUDIO) {
-			await this.context.client.audio.connect();
-			await this.context.client.audio.queues!.start();
+		if (envParseBoolean('AUDIO_ENABLED')) {
+			await this.context.client.audio!.connect();
+			await this.context.client.audio!.queues!.start();
 		}
 	}
 
@@ -82,8 +83,8 @@ export class UserEvent extends Event {
 		const { client } = this.context;
 		const success = green('+');
 		const failed = red('-');
-		const llc = DEV ? magentaBright : white;
-		const blc = DEV ? magenta : blue;
+		const llc = dev ? magentaBright : white;
+		const blc = dev ? magenta : blue;
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
@@ -112,13 +113,13 @@ ${line04}  \___  \   |    __/    \\  \/ |_____/   )   /' /\  \
 ${line05}   __/  \\  (// _  \    /   /   //      /   //  __'  \
 ${line06}  /" \   :) |: | \  \  /   /   |:  __   \  /   /  \\  \
 ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
-${line08} ${blc(VERSION.padStart(55, ' '))}
+${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
-${line11} ${pad}[${client.audio.queues?.client.connected ? success : failed}] Audio
+${line11} ${pad}[${client.audio!.queues?.client.connected ? success : failed}] Audio
 ${line12} ${pad}[${success}] Moderation
 ${line13} ${pad}[${success}] Social & Leaderboards
-${line14}${DEV ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+${line14}${dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}

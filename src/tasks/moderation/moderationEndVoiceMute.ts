@@ -1,17 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationData, ModerationTask } from '#lib/moderation';
-import { CLIENT_ID } from '#root/config';
 import { Guild, Permissions } from 'discord.js';
 
 export class UserModerationTask extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {
-		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
+		const me = guild.me === null ? await guild.members.fetch(process.env.CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) return null;
 
 		const t = await guild.fetchT();
 		await guild.security.actions.unVoiceMute(
 			{
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				userID: data.userID,
 				reason: `[MODERATION] Voice Mute released after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
 			},

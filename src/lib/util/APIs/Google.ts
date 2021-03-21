@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
-import { TOKENS } from '#root/config';
 import { Store } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 import { fetch, FetchResultTypes } from '../util';
@@ -27,7 +26,7 @@ export const enum GoogleResponseCodes {
 export async function queryGoogleMapsAPI(message: Message, location: string) {
 	const url = new URL(GOOGLE_MAPS_API_URL);
 	url.searchParams.append('address', location);
-	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
+	url.searchParams.append('key', process.env.GOOGLE_MAPS_API_TOKEN);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
 	if (status !== GoogleResponseCodes.Ok) throw await message.resolveKey(handleNotOK(status));
@@ -45,8 +44,11 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 	try {
 		const nsfwAllowed = message.channel.type === 'text' ? message.channel.nsfw : true;
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
-		url.searchParams.append('cx', type === CustomSearchType.Search ? TOKENS.GOOGLE_CUSTOM_SEARCH_WEB_KEY : TOKENS.GOOGLE_CUSTOM_SEARCH_IMAGE_KEY);
-		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
+		url.searchParams.append(
+			'cx',
+			type === CustomSearchType.Search ? process.env.GOOGLE_CUSTOM_SEARCH_WEB_TOKEN : process.env.GOOGLE_CUSTOM_SEARCH_IMAGE_TOKEN
+		);
+		url.searchParams.append('key', process.env.GOOGLE_API_TOKEN);
 		url.searchParams.append('q', query);
 		url.searchParams.append('safe', nsfwAllowed ? 'off' : 'active');
 		if (type === CustomSearchType.Image) url.searchParams.append('searchType', 'image');

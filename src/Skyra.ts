@@ -1,12 +1,11 @@
 import '#lib/setup';
 import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
-import { TOKENS } from '#root/config';
 import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
+import { Store } from '@sapphire/framework';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
-import { Store } from '@sapphire/framework';
 
 const client = new SkyraClient();
 
@@ -15,9 +14,9 @@ async function main() {
 	i18next.use(helpUsagePostProcessor);
 
 	// Load in Sentry for error logging
-	if (TOKENS.SENTRY_URL) {
+	if (process.env.SENTRY_URL) {
 		Sentry.init({
-			dsn: TOKENS.SENTRY_URL,
+			dsn: process.env.SENTRY_URL,
 			integrations: [
 				new Sentry.Integrations.Modules(),
 				new Sentry.Integrations.FunctionToString(),
@@ -34,7 +33,7 @@ async function main() {
 		Store.injectedContext.db = await DbSet.connect();
 
 		// Login to the Discord gateway
-		await client.login(TOKENS.BOT_TOKEN);
+		await client.login();
 	} catch (error) {
 		client.logger.error(error);
 		client.destroy();

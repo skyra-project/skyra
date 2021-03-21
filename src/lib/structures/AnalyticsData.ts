@@ -1,10 +1,10 @@
-import { ENABLE_INFLUX, INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
+import { envParseBoolean, envParseString } from '#lib/env';
 import { enumerable } from '#utils/util';
 import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 
 export class AnalyticsData {
 	@enumerable(false)
-	public influx: InfluxDB | null = ENABLE_INFLUX ? new InfluxDB(INFLUX_OPTIONS) : null;
+	public influx: InfluxDB | null = envParseBoolean('INFLUX_ENABLED') ? new InfluxDB(envParseString('INFLUX_URL')) : null;
 
 	public writeApi!: WriteApi;
 	public queryApi!: QueryApi;
@@ -12,7 +12,7 @@ export class AnalyticsData {
 	public messageCount = 0;
 
 	public constructor() {
-		this.writeApi = this.influx!.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, 's');
-		this.queryApi = this.influx!.getQueryApi(INFLUX_ORG);
+		this.writeApi = this.influx!.getWriteApi(envParseString('INFLUX_ORG'), envParseString('INFLUX_ORG_ANALYTICS_BUCKET'), 's');
+		this.queryApi = this.influx!.getQueryApi(envParseString('INFLUX_ORG'));
 	}
 }

@@ -31,9 +31,6 @@ dist/
 !jest.config.js
 !ormconfig.js
 
-# Ignore the config file (contains sensitive information such as tokens)
-config.ts
-
 # Ignore heapsnapshot and log files
 *.heapsnapshot
 *.log

@@ -1,11 +1,10 @@
-import { TOKENS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/topgg', route: 'webhooks/topgg' })
 export class UserRoute extends Route {
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
-		if (request.headers.authorization !== TOKENS.WEBHOOK_TOPGG) return response.forbidden();
+		if (request.headers.authorization !== process.env.WEBHOOK_TOPGG_TOKEN) return response.forbidden();
 		if (!request.body) return response.badRequest();
 
 		const body = request.body as Body;

@@ -1,8 +1,8 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
-import { TOKENS } from '#root/config';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
@@ -10,6 +10,7 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),
 	aliases: ['movie', 'tmdb'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.MoviesDescription,
@@ -31,7 +32,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchAPI(movie: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/movie');
-			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('api_key', process.env.THEMOVIEDATABASE_TOKEN);
 			url.searchParams.append('query', movie);
 			if (year !== null) url.searchParams.append('year', year.trim());
 
@@ -44,7 +45,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchMovieData(movieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
-			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('api_key', process.env.THEMOVIEDATABASE_TOKEN);
 
 			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
 		} catch {

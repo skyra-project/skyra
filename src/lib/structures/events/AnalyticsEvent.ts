@@ -1,5 +1,5 @@
+import { envParseBoolean } from '#lib/env';
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
-import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
 import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
@@ -9,8 +9,7 @@ export abstract class AnalyticsEvent extends Event {
 	public tags: [AnalyticsSchema.Tags, string][] = [];
 
 	public constructor(context: PieceContext, options?: EventOptions) {
-		super(context, options);
-		this.enabled = ENABLE_INFLUX;
+		super(context, { enabled: envParseBoolean('INFLUX_ENABLED'), ...options });
 	}
 
 	public onLoad() {
@@ -35,6 +34,6 @@ export abstract class AnalyticsEvent extends Event {
 	}
 
 	protected initTags() {
-		this.tags.push([AnalyticsSchema.Tags.Client, CLIENT_ID], [AnalyticsSchema.Tags.OriginEvent, this.event]);
+		this.tags.push([AnalyticsSchema.Tags.Client, process.env.CLIENT_ID], [AnalyticsSchema.Tags.OriginEvent, this.event]);
 	}
 }

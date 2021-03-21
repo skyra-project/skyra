@@ -1,8 +1,8 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
-import { TOKENS } from '#root/config';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -19,6 +19,7 @@ const kPlayerTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('CLASH_OF_CLANS_TOKEN'),
 	aliases: ['coc'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
@@ -63,7 +64,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				url,
 				{
 					headers: {
-						Authorization: `Bearer ${TOKENS.CLASH_OF_CLANS_KEY}`
+						Authorization: `Bearer ${process.env.CLASH_OF_CLANS_TOKEN}`
 					}
 				},
 				FetchResultTypes.JSON

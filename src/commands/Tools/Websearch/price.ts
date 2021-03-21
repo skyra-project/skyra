@@ -1,7 +1,7 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { NAME, TOKENS, VERSION } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,6 +10,7 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('CRYPTOCOMPARE_TOKEN'),
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.PriceDescription,
@@ -35,12 +36,12 @@ export class UserCommand extends SkyraCommand {
 			const url = new URL('https://min-api.cryptocompare.com/data/price');
 			url.searchParams.append('fsym', fromCurrency.toUpperCase());
 			url.searchParams.append('tsyms', toCurrency.join(',').toUpperCase());
-			url.searchParams.append('extraParams', `${NAME} ${VERSION} Discord Bot`);
+			url.searchParams.append('extraParams', `${process.env.CLIENT_NAME} ${process.env.CLIENT_VERSION} Discord Bot`);
 
 			const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(
 				url,
 				{
-					headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
+					headers: [['authorization', `Apikey ${process.env.CRYPTOCOMPARE_TOKEN}`]]
 				},
 				FetchResultTypes.JSON
 			);

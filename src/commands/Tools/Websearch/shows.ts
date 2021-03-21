@@ -1,8 +1,8 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
-import { TOKENS } from '#root/config';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
@@ -10,6 +10,7 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
@@ -31,7 +32,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchAPI(show: string, year: string | null) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/tv');
-			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('api_key', process.env.THEMOVIEDATABASE_TOKEN);
 			url.searchParams.append('query', show);
 
 			if (year !== null) url.searchParams.append('first_air_date_year', year.toString());
@@ -44,7 +45,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchShowData(serieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
-			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('api_key', process.env.THEMOVIEDATABASE_TOKEN);
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {

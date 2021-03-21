@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
-import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { toTitleCase } from '@sapphire/utilities';
@@ -79,7 +78,7 @@ export const FFXIVServers = [
 
 export const FFXIV_BASE_URL = 'https://xivapi.com';
 const FFXIV_PAYLOAD = JSON.stringify({
-	private_key: TOKENS.XIVAPI_KEY
+	private_key: process.env.XIVAPI_TOKEN
 });
 const FFXIV_HEADERS = {
 	'Content-Type': Mime.Types.ApplicationJson
@@ -158,7 +157,7 @@ export async function searchItem(t: TFunction, item: string) {
 				method: FetchMethods.Post,
 				headers: FFXIV_HEADERS,
 				body: JSON.stringify({
-					private_key: TOKENS.XIVAPI_KEY,
+					private_key: process.env.XIVAPI_TOKEN,
 					indexes: 'item',
 					columns: 'Name,Description,ItemKind.Name,Icon,LevelEquip,ItemSearchCategory.Name',
 					body: {

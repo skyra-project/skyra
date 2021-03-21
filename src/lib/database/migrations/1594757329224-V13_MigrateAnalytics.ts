@@ -1,5 +1,4 @@
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
-import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
 import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { readFile } from 'fs/promises';
@@ -7,7 +6,7 @@ import { join } from 'path';
 import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
-const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
+const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${process.env.INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
 
 /**
  * Since I believe in the competence of this dev team.
@@ -19,8 +18,8 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		const categories = new Map<string, CategoryData>(JSON.parse(await readFile(join(__dirname, CATEGORIES_FILE), 'utf-8')));
 
-		const influx = new InfluxDB(INFLUX_OPTIONS);
-		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, 's');
+		const influx = new InfluxDB(process.env.INFLUX_URL);
+		const writer = influx.getWriteApi(process.env.INFLUX_ORG, process.env.INFLUX_ORG_ANALYTICS_BUCKET, 's');
 
 		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */ `SELECT * FROM command_counter`);
 
@@ -40,12 +39,12 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		const influx = new InfluxDB(INFLUX_OPTIONS);
+		const influx = new InfluxDB(process.env.INFLUX_URL);
 		const bucketAPI = new BucketsAPI(influx);
 		const buckets = await bucketAPI.getBuckets();
-		const reader = influx.getQueryApi(INFLUX_ORG);
+		const reader = influx.getQueryApi(process.env.INFLUX_ORG);
 
-		if (!buckets.buckets?.some((bucket) => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) return;
+		if (!buckets.buckets?.some((bucket) => bucket.name === process.env.INFLUX_ORG_ANALYTICS_BUCKET)) return;
 
 		const commands = await reader.collectRows<InfluxSummedCommandEntry>(INFLUX_ALL_COMMANDS_SCRIPT);
 

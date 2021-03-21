@@ -1,8 +1,8 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
-import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -21,6 +21,7 @@ function isIgdbCompany(company: unknown): company is Company {
 }
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('TWITCH_CLIENT_ID'),
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended
@@ -30,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private readonly igdbRequestHeaders = {
 		'Content-Type': Mime.Types.TextPlain,
 		Accept: Mime.Types.ApplicationJson,
-		'Client-ID': TOKENS.TWITCH_CLIENT_ID
+		'Client-ID': process.env.TWITCH_CLIENT_ID
 	};
 
 	private readonly commonQuery = [

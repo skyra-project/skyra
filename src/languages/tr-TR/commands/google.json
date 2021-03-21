@@ -83,6 +83,7 @@
 	"weatherExtended": {
 		"usages": [
 			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -103,5 +104,21 @@
 	"errorInvalidRequest": "",
 	"errorOverQueryLimit": "",
 	"errorPermissionDenied": "",
-	"errorUnknown": ""
+	"errorUnknown": "",
+	"weatherFahrenheit": "",
+	"weatherInches": "",
+	"weatherMiles": "",
+	"weatherMilesPerHour": "",
+	"weatherCelsius": "",
+	"weatherMillimeters": "",
+	"weatherPascal": "",
+	"weatherKilometers": "",
+	"weatherKilometersPerHour": "",
+	"weatherInvalidJsonBody": "",
+	"weatherUnknownLocation": "",
+	"weatherUnknownError": "",
+	"weatherBlockedLocation": "",
+	"weatherRateLimited": "",
+	"weatherRemoteServerError": "",
+	"weatherServiceUnavailable": ""
 }

@@ -85,9 +85,6 @@ export class UserCommand extends SkyraCommand {
 				.setTextFont('20px RobotoLight')
 				.printImage(conditionImage, columns[0].center - halfImageSize, rows[2].center - halfImageSize)
 
-				// Weather Name
-				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
-
 				// Temperature
 				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize)
 				.printText(resolved.temperature, columns[1].left + iconMargin, rows[2].center)
@@ -108,14 +105,17 @@ export class UserCommand extends SkyraCommand {
 				.printImage(icons.visibility, columns[2].left, rows[3].center - halfIconSize)
 				.printText(resolved.visibility, columns[2].left + iconMargin, rows[3].center)
 
+				// Weather Name
+				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
+
 				.toBufferAsync()
 		);
 	}
 
 	private static coordinates = this.resolveCoordinates();
 	private static resolveCoordinates(): Coordinates {
-		const width = 480;
-		const height = 250;
+		const width = 540;
+		const height = 260;
 		const margin = 15;
 
 		const cardWidth = width - margin * 2;

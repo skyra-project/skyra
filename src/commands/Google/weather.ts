@@ -1,257 +1,186 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { TOKENS } from '#root/config';
-import { queryGoogleMapsAPI } from '#utils/APIs/Google';
-import { assetsFolder } from '#utils/constants';
-import { fetch, FetchResultTypes } from '#utils/util';
+import {
+	CurrentCondition,
+	getColors,
+	getData,
+	getFile,
+	getIcons,
+	getWeatherName,
+	resolveCurrentConditionsImperial,
+	resolveCurrentConditionsSI,
+	ResolvedConditions,
+	ValueWrapper
+} from '#lib/weather';
+import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';
-import { join } from 'path';
 
-const COLORS = {
-	cloudy: '#88929F',
-	day: '#6ABBD8',
-	night: '#575D83',
-	rain: '#457AD0',
-	snow: '#FAFAFA',
-	thunderstorm: '#99446B',
-	windy: '#33B679'
-};
+const imperial = ['fahrenheit', 'f', 'imperial', 'i'];
+const metric = ['celsius', 'c', 'metric', 'm'];
 
-const celsiusToFahrenheit = (celsius: number) => (celsius * 9) / 5 + 32;
-
-const enum TemperatureUnit {
-	Celsius,
-	Fahrenheit
-}
-
-const flags = ['fahrenheit', 'f', 'imperial', 'i'];
+// United States (en-US), Liberia (en-LR), and Myanmar (my-MM) are the only countries in the world that use Imperial:
+const imperialCountries = ['US', 'LR', 'MM'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
-	cooldown: 120,
+	cooldown: 60,
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	permissions: ['ATTACH_FILES'],
-	strategyOptions: { flags }
+	strategyOptions: { flags: [...imperial, ...metric] }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const useImperial = args.getFlags(...flags);
-		const query = await args.rest('string');
-		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, query);
+		const useImperial = this.shouldUseImperial(args);
+		const base = baseLanguage(args.t.lng);
+		const data = await getData(await args.rest('string'), base);
+		const [current] = data.current_condition;
 
-		const params = `${lat},${lng}`;
-		let locality = '';
-		let governing = '';
-		let country = '';
-		let continent = '';
+		const resolved = useImperial ? resolveCurrentConditionsImperial(current, args.t) : resolveCurrentConditionsSI(current, args.t);
+		const [nearestArea] = data.nearest_area;
 
-		for (const component of addressComponents) {
-			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
-			if (!governing.length && component.types.includes('administrative_area_level_1')) governing = component.long_name;
-			if (!country.length && component.types.includes('country')) country = component.long_name;
-			if (!continent.length && component.types.includes('continent')) continent = component.long_name;
-		}
+		// Region can be an empty string, e.g. `Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu`:
+		const place = `${nearestArea.region[0].value || nearestArea.areaName[0].value}, ${nearestArea.country[0].value}`;
+		const weatherDescription = this.getWeatherDescription(current, base);
 
-		const localityOrCountry = locality ? country : null;
-		const state = locality && governing ? governing : localityOrCountry ?? null;
+		const attachment = await this.draw(weatherDescription, place, current, resolved);
+		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
+	}
 
-		const { currently } = await fetch<WeatherResultOk>(
-			`https://api.darksky.net/forecast/${TOKENS.DARKSKY_WEATHER_KEY}/${params}?exclude=minutely,hourly,flags&units=si`,
-			FetchResultTypes.JSON
+	private shouldUseImperial(args: SkyraCommand.Args) {
+		if (args.getFlags(...imperial)) return true;
+		if (args.getFlags(...metric)) return false;
+		return imperialCountries.includes(countryLanguage(args.t.lng));
+	}
+
+	private getWeatherDescription(conditions: CurrentCondition, base: string) {
+		const translated = Reflect.get(conditions, `lang_${base}`) as ValueWrapper[] | undefined;
+		return translated?.[0].value ?? conditions.weatherDesc[0].value;
+	}
+
+	private async draw(weatherDescription: string, place: string, conditions: CurrentCondition, resolved: ResolvedConditions) {
+		const weatherName = getWeatherName(conditions.weatherCode);
+		const { background, text, theme } = getColors(weatherName);
+
+		const [conditionImage, icons] = await Promise.all([getFile(weatherName), getIcons(theme)]);
+		const { width, height, cardWidth, cardHeight, margin, columns, rows } = UserCommand.coordinates;
+
+		const imageSize = 128;
+		const halfImageSize = imageSize / 2;
+
+		const iconSize = 32;
+		const halfIconSize = iconSize / 2;
+		const iconMargin = iconSize + 10;
+
+		return (
+			new Canvas(width, height)
+				.save()
+				.setShadowColor('rgba(0,0,0,.7)')
+				.setShadowBlur(margin)
+				.setColor(background)
+				.createRoundedPath(margin, margin, cardWidth, cardHeight, margin / 2)
+				.fill()
+				.restore()
+
+				// Place Name
+				.setTextFont('24px RobotoRegular')
+				.setTextBaseline('middle')
+				.setColor(text)
+				.printResponsiveText(place, columns[0].left, rows[0].center, columns[2].right - columns[0].left)
+
+				// Weather Icon
+				.setTextFont('20px RobotoLight')
+				.printImage(conditionImage, columns[0].center - halfImageSize, rows[2].center - halfImageSize)
+
+				// Temperature
+				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize)
+				.printText(resolved.temperature, columns[1].left + iconMargin, rows[2].center)
+
+				// Wind
+				.save()
+				.translate(columns[2].left + halfIconSize, rows[2].center)
+				.rotate(radians(Number(conditions.winddirDegree)) + Math.PI)
+				.printImage(icons.pointer, -halfIconSize, -halfIconSize)
+				.restore()
+				.printText(resolved.windSpeed, columns[2].left + iconMargin, rows[2].center)
+
+				// Precipitation
+				.printImage(icons.precipitation, columns[1].left, rows[3].center - halfIconSize)
+				.printText(resolved.precipitation, columns[1].left + iconMargin, rows[3].center)
+
+				// Visibility
+				.printImage(icons.visibility, columns[2].left, rows[3].center - halfIconSize)
+				.printText(resolved.visibility, columns[2].left + iconMargin, rows[3].center)
+
+				// Weather Name
+				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
+
+				.toBufferAsync()
 		);
-
-		const { icon } = currently;
-		const condition = currently.summary;
-		const chanceOfRain = Math.round((currently.precipProbability * 100) / 5) * 5;
-		const temperature = Math.round(useImperial ? celsiusToFahrenheit(currently.temperature) : currently.temperature);
-		const humidity = Math.round(currently.humidity * 100);
-
-		return this.draw(message, {
-			geoCodeLocation: formattedAddress,
-			state,
-			condition,
-			icon,
-			chanceOfRain,
-			temperature,
-			humidity,
-			temperatureUnit: useImperial ? TemperatureUnit.Fahrenheit : TemperatureUnit.Celsius
-		});
 	}
 
-	public async draw(
-		message: Message,
-		{ geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity, temperatureUnit }: WeatherData
-	) {
-		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
-		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
-			loadImage(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
-			loadImage(join(assetsFolder, 'images', 'weather', theme, 'humidity.png')),
-			loadImage(join(assetsFolder, 'images', 'weather', theme, 'precip.png'))
-		]);
+	private static coordinates = this.resolveCoordinates();
+	private static resolveCoordinates(): Coordinates {
+		const width = 540;
+		const height = 260;
+		const margin = 15;
 
-		const attachment = await new Canvas(400, 230)
-			.save()
-			.setShadowColor('rgba(0,0,0,.7)')
-			.setShadowBlur(7)
-			.setColor(COLORS[this.timePicker(icon)])
-			.createRoundedPath(10, 10, 380, 220, 5)
-			.fill()
-			.restore()
+		const cardWidth = width - margin * 2;
+		const cardHeight = height - margin * 2;
 
-			// City Name
-			.setTextFont('20px Roboto')
-			.setColor(fontColor)
-			.printWrappedText(geoCodeLocation, 30, 60, 300)
+		const contentWidth = cardWidth - margin * 2;
+		const contentHeight = cardHeight - margin * 2;
 
-			// Prefecture Name
-			.setTextFont('16px Roboto')
-			.setColor(theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')
-			.printText(state ?? '', 30, 30)
+		const contentMargin = margin * 2;
 
-			// Temperature
-			.setTextFont("48px 'Roboto Mono'")
-			.setColor(fontColor)
-			.printText(`${temperature}°${temperatureUnit === TemperatureUnit.Celsius ? 'C' : 'F'}`, 30, 190)
+		const amountColumns = 3;
+		const amountRows = 4;
 
-			// Condition
-			.setTextFont('16px Roboto')
-			.setTextAlign('right')
-			.printText(condition, 370, 192)
+		const columnWidth = contentWidth / amountColumns;
+		const rowHeight = contentHeight / amountRows;
 
-			// Titles
-			.setTextFont("16px 'Roboto Condensed'")
-			.printText(`${humidity}%`, 353, 150)
-			.printText(`${chanceOfRain}%`, 353, 171)
-
-			// Icons
-			.printImage(conditionBuffer, 325, 31, 48, 48)
-			.printImage(humidityBuffer, 358, 138, 13, 13)
-			.printImage(precipicityBuffer, 358, 158, 13, 13)
-
-			.toBufferAsync();
-
-		return message.channel.send({ files: [{ attachment, name: `${geoCodeLocation}.png` }] });
-	}
-
-	public timePicker(icon: string) {
-		switch (icon) {
-			case 'clear-day':
-			case 'partly-cloudy-day':
-				return 'day';
-
-			case 'clear-night':
-			case 'partly-cloudy-night':
-				return 'night';
-
-			case 'rain':
-				return 'rain';
-
-			case 'thunderstorm':
-				return 'thunderstorm';
-
-			case 'snow':
-			case 'sleet':
-			case 'fog':
-				return 'snow';
-
-			case 'wind':
-			case 'tornado':
-				return 'windy';
-
-			default:
-				return 'cloudy';
+		const columns: Column[] = [];
+		for (let x = 0; x < amountColumns; ++x) {
+			const left = Math.ceil(x * columnWidth) + contentMargin;
+			const center = Math.round((x + 0.5) * columnWidth) + contentMargin;
+			const right = Math.floor((x + 1) * columnWidth) + contentMargin;
+			columns.push({ left, center, right });
 		}
+
+		const rows: Row[] = [];
+		for (let y = 0; y < amountRows; ++y) {
+			const top = Math.ceil(y * rowHeight) + contentMargin;
+			const center = Math.round((y + 0.5) * rowHeight) + contentMargin;
+			const bottom = Math.floor((y + 1) * rowHeight) + contentMargin;
+			rows.push({ top, center, bottom });
+		}
+
+		return { width, height, margin, cardWidth, cardHeight, contentWidth, contentHeight, columns, rows };
 	}
 }
 
-interface WeatherData {
-	geoCodeLocation: string;
-	state: string | null;
-	condition: string;
-	icon: string;
-	chanceOfRain: number;
-	temperature: number;
-	humidity: number;
-	temperatureUnit: TemperatureUnit;
+interface Column {
+	left: number;
+	center: number;
+	right: number;
 }
 
-export interface WeatherResultOk {
-	latitude: number;
-	longitude: number;
-	timezone: string;
-	currently: WeatherResultOkCurrently;
-	daily: WeatherResultOkDaily;
-	offset: number;
+interface Row {
+	top: number;
+	center: number;
+	bottom: number;
 }
 
-export interface WeatherResultOkCurrently {
-	time: number;
-	summary: string;
-	icon: string;
-	precipIntensity: number;
-	precipProbability: number;
-	temperature: number;
-	apparentTemperature: number;
-	dewPoint: number;
-	humidity: number;
-	pressure: number;
-	windSpeed: number;
-	windGust: number;
-	windBearing: number;
-	cloudCover: number;
-	uvIndex: number;
-	visibility: number;
-	ozone: number;
-}
-
-export interface WeatherResultOkDaily {
-	summary: string;
-	icon: string;
-	data: WeatherResultOkDatum[];
-}
-
-export interface WeatherResultOkDatum {
-	time: number;
-	summary: string;
-	icon: string;
-	sunriseTime: number;
-	sunsetTime: number;
-	moonPhase: number;
-	precipIntensity: number;
-	precipIntensityMax: number;
-	precipIntensityMaxTime: number;
-	precipProbability: number;
-	precipType?: string;
-	temperatureHigh: number;
-	temperatureHighTime: number;
-	temperatureLow: number;
-	temperatureLowTime: number;
-	apparentTemperatureHigh: number;
-	apparentTemperatureHighTime: number;
-	apparentTemperatureLow: number;
-	apparentTemperatureLowTime: number;
-	dewPoint: number;
-	humidity: number;
-	pressure: number;
-	windSpeed: number;
-	windGust: number;
-	windGustTime: number;
-	windBearing: number;
-	cloudCover: number;
-	uvIndex: number;
-	uvIndexTime: number;
-	visibility: number;
-	ozone: number;
-	temperatureMin: number;
-	temperatureMinTime: number;
-	temperatureMax: number;
-	temperatureMaxTime: number;
-	apparentTemperatureMin: number;
-	apparentTemperatureMinTime: number;
-	apparentTemperatureMax: number;
-	apparentTemperatureMaxTime: number;
+interface Coordinates {
+	width: number;
+	height: number;
+	margin: number;
+	cardWidth: number;
+	cardHeight: number;
+	contentWidth: number;
+	contentHeight: number;
+	columns: Column[];
+	rows: Row[];
 }

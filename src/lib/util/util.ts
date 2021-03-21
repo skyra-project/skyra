@@ -3,7 +3,7 @@ import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { Store } from '@sapphire/framework';
+import { err, ok, Result, Store } from '@sapphire/framework';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -273,6 +273,14 @@ export async function fetch(url: URL | string, options?: RequestInit | FetchResu
 			return result.text();
 		default:
 			throw new Error(`Unknown type ${type}`);
+	}
+}
+
+export async function wrap<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
+	try {
+		return ok(await promise);
+	} catch (error) {
+		return err(error);
 	}
 }
 
@@ -672,6 +680,26 @@ export const random = (num: number) => Math.round(Math.random() * num);
 
 export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
 	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+
+/**
+ * Gets the base language from an i18n code.
+ * @param lang The ISO 639-1 language to process, e.g. `en-US`
+ * @returns The base language, for example, `en-US` becomes `en`.
+ */
+export function baseLanguage(lang: string): string {
+	const index = lang.indexOf('-');
+	return index === -1 ? lang : lang.slice(0, index);
+}
+
+/**
+ * Gets the country from an i18n code.
+ * @param lang The ISO 639-1 language to process, e.g. `en-US`
+ * @returns The country, for example, `en-US` becomes `US`.
+ */
+export function countryLanguage(lang: string): string {
+	const index = lang.lastIndexOf('-');
+	return index === -1 ? lang : lang.slice(index + 1);
+}
 
 export interface UtilOneToTenEntry {
 	emoji: string;

@@ -19,22 +19,22 @@ export function getColors(name: WeatherName): WeatherTheme {
 		case 'LightRain':
 		case 'LightSleet':
 		case 'LightSnow':
+		case 'HeavySnow':
+		case 'HeavySnowShowers':
 		case 'Cloudy':
 		case 'Fog':
 			return { background: '#2E2E2E', text: '#FAFAFA', theme: 'light' };
 		case 'HeavyRain':
 		case 'HeavyShowers':
 		case 'VeryCloudy':
-		case 'HeavySnow':
-		case 'HeavySnowShowers':
-			return { background: '#FAFAFA', text: '#1F1F1F', theme: 'dark' };
+			return { background: '#EAEAEA', text: '#1F1F1F', theme: 'dark' };
 		case 'PartlyCloudy':
 		case 'Sunny':
 			return { background: '#0096D6', text: '#FAFAFA', theme: 'light' };
 		case 'ThunderyHeavyRain':
 		case 'ThunderyShowers':
 		case 'ThunderySnowShowers':
-			return { background: '##99446B', text: '#FAFAFA', theme: 'light' };
+			return { background: '#99446B', text: '#FAFAFA', theme: 'light' };
 		default:
 			throw new Error(`Could not find weather name '${name}'.`);
 	}
@@ -88,7 +88,7 @@ const getWeatherNameMap = new Map<WeatherCode, WeatherName>([
 	[WeatherCode.PatchyLightRainInAreaWithThunder, 'ThunderyShowers'],
 	[WeatherCode.ModerateOrHeavyRainInAreaWithThunder, 'ThunderyHeavyRain'],
 	[WeatherCode.PatchyLightSnowInAreaWithThunder, 'ThunderySnowShowers'],
-	[WeatherCode.ModerateOrHeavySnowInAreaWithThunder, 'HeavySnowShowers']
+	[WeatherCode.ModerateOrHeavySnowInAreaWithThunder, 'ThunderySnowShowers']
 ]);
 export function getWeatherName(code: WeatherCode): WeatherName {
 	const name = getWeatherNameMap.get(code);

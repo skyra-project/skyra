@@ -71,13 +71,7 @@ export class UserCommand extends SkyraCommand {
 				.setShadowColor('rgba(0,0,0,.7)')
 				.setShadowBlur(coordinates.margin / 2)
 				.setColor(background)
-				.createRoundedPath(
-					coordinates.margin,
-					coordinates.margin,
-					coordinates.contentWidth,
-					coordinates.contentHeight,
-					coordinates.margin / 2
-				)
+				.createRoundedPath(coordinates.margin, coordinates.margin, coordinates.cardWidth, coordinates.cardHeight, coordinates.margin / 2)
 				.fill()
 				.restore()
 
@@ -85,14 +79,14 @@ export class UserCommand extends SkyraCommand {
 				.setTextFont('24px RobotoRegular')
 				.setTextBaseline('middle')
 				.setColor(text)
-				.printResponsiveText(place, coordinates.margin * 2, rows[0].center, coordinates.contentWidth - coordinates.margin * 2)
+				.printResponsiveText(place, columns[0].left, rows[0].center, coordinates.cardWidth)
 
 				// Weather Icon
 				.setTextFont('20px RobotoLight')
 				.printImage(conditionImage, columns[0].center - halfImageSize, rows[2].center - halfImageSize)
 
 				// Weather Name
-				.printText(weatherDescription, columns[1].left, rows[1].center)
+				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
 
 				// Temperature
 				.printImage(icons.temperature, columns[1].left, rows[2].center - halfIconSize)
@@ -124,8 +118,13 @@ export class UserCommand extends SkyraCommand {
 		const height = 250;
 		const margin = 15;
 
-		const contentWidth = width - margin * 2;
-		const contentHeight = height - margin * 2;
+		const cardWidth = width - margin * 2;
+		const cardHeight = height - margin * 2;
+
+		const contentWidth = cardWidth - margin * 2;
+		const contentHeight = cardHeight - margin * 2;
+
+		const contentMargin = margin * 2;
 
 		const amountColumns = 3;
 		const amountRows = 4;
@@ -135,21 +134,21 @@ export class UserCommand extends SkyraCommand {
 
 		const columns: Column[] = [];
 		for (let x = 0; x < amountColumns; ++x) {
-			const left = Math.ceil(x * columnWidth) + margin;
-			const center = Math.round((x + 0.5) * columnWidth) + margin;
-			const right = Math.floor((x + 1) * columnWidth) + margin;
+			const left = Math.ceil(x * columnWidth) + contentMargin;
+			const center = Math.round((x + 0.5) * columnWidth) + contentMargin;
+			const right = Math.floor((x + 1) * columnWidth) + contentMargin;
 			columns.push({ left, center, right });
 		}
 
 		const rows: Row[] = [];
 		for (let y = 0; y < amountRows; ++y) {
-			const top = Math.ceil(y * rowHeight) + margin;
-			const center = Math.round((y + 0.5) * rowHeight) + margin;
-			const bottom = Math.floor((y + 1) * rowHeight) + margin;
+			const top = Math.ceil(y * rowHeight) + contentMargin;
+			const center = Math.round((y + 0.5) * rowHeight) + contentMargin;
+			const bottom = Math.floor((y + 1) * rowHeight) + contentMargin;
 			rows.push({ top, center, bottom });
 		}
 
-		return { width, height, margin, contentWidth, contentHeight, columns, rows };
+		return { width, height, margin, cardWidth, cardHeight, contentWidth, contentHeight, columns, rows };
 	}
 }
 
@@ -169,6 +168,8 @@ interface Coordinates {
 	width: number;
 	height: number;
 	margin: number;
+	cardWidth: number;
+	cardHeight: number;
 	contentWidth: number;
 	contentHeight: number;
 	columns: Column[];

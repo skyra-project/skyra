@@ -109,24 +109,16 @@ export type WeatherName =
 	| 'VeryCloudy';
 
 export interface NearestArea {
-	areaName: AreaName[];
-	country: Country[];
+	areaName: ValueWrapper[];
+	country: ValueWrapper[];
 	latitude: FloatString;
 	longitude: FloatString;
 	population: IntegerString;
-	region: Region[];
+	region: ValueWrapper[];
 	weatherUrl: Url[];
 }
 
-export interface AreaName {
-	value: string;
-}
-
-export interface Country {
-	value: string;
-}
-
-export interface Region {
+export interface ValueWrapper {
 	value: string;
 }
 

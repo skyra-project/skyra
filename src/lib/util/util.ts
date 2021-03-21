@@ -673,6 +673,16 @@ export const random = (num: number) => Math.round(Math.random() * num);
 export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
 	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
+/**
+ * Gets the base language from an i18n code.
+ * @param lang The base language to get, e.g. `en-US`
+ * @returns The base language, for example, `en-US` becomes `en`.
+ */
+export function baseLanguage(lang: string): string {
+	const index = lang.indexOf('-');
+	return index === -1 ? lang : lang.slice(0, index);
+}
+
 export interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;

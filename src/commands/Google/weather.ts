@@ -9,9 +9,10 @@ import {
 	getWeatherName,
 	resolveCurrentConditionsImperial,
 	resolveCurrentConditionsSI,
-	ResolvedConditions
+	ResolvedConditions,
+	ValueWrapper
 } from '#lib/weather';
-import { radians } from '#utils/util';
+import { baseLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas } from 'canvas-constructor';
 import type { Message } from 'discord.js';
@@ -29,19 +30,25 @@ const flags = ['fahrenheit', 'f', 'imperial', 'i'];
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const useImperial = args.getFlags(...flags);
-		const data = await getData(await args.rest('string'), args.t.lng);
+		const base = baseLanguage(args.t.lng);
+		const data = await getData(await args.rest('string'), base);
 		const [current] = data.current_condition;
 
 		const resolved = useImperial ? resolveCurrentConditionsImperial(current, args.t) : resolveCurrentConditionsSI(current, args.t);
 		const [nearestArea] = data.nearest_area;
 		const place = `${nearestArea.region[0].value}, ${nearestArea.country[0].value}`;
+		const weatherDescription = this.getWeatherDescription(current, base);
 
-		const attachment = await this.draw(place, current, resolved);
+		const attachment = await this.draw(weatherDescription, place, current, resolved);
 		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
 	}
 
-	private async draw(place: string, conditions: CurrentCondition, resolved: ResolvedConditions) {
-		const weatherDescription = conditions.weatherDesc[0].value;
+	private getWeatherDescription(conditions: CurrentCondition, base: string) {
+		const translated = Reflect.get(conditions, `lang_${base}`) as ValueWrapper[] | undefined;
+		return translated?.[0].value ?? conditions.weatherDesc[0].value;
+	}
+
+	private async draw(weatherDescription: string, place: string, conditions: CurrentCondition, resolved: ResolvedConditions) {
 		const weatherName = getWeatherName(conditions.weatherCode);
 		const { background, text, theme } = getColors(weatherName);
 
@@ -54,7 +61,7 @@ export class UserCommand extends SkyraCommand {
 
 		const iconSize = 32;
 		const halfIconSize = iconSize / 2;
-		const iconMargin = iconSize + 6;
+		const iconMargin = iconSize + 10;
 
 		return (
 			new Canvas(coordinates.width, coordinates.height)

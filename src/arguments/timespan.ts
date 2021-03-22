@@ -4,8 +4,7 @@ import { Duration, Time } from '@sapphire/time-utilities';
 
 export class UserArgument extends Argument<number> {
 	public run(parameter: string, context: ArgumentContext) {
-		const seconds = Number(parameter);
-		const duration = Number.isNaN(seconds) ? new Duration(parameter).offset : seconds * Time.Second;
+		const duration = this.parseParameter(parameter);
 
 		if (duration < 0 || !Number.isSafeInteger(duration)) {
 			return this.error({ parameter, identifier: LanguageKeys.Arguments.TimeSpan, context });
@@ -20,5 +19,18 @@ export class UserArgument extends Argument<number> {
 		}
 
 		return this.ok(duration);
+	}
+
+	private parseParameter(parameter: string): number {
+		const seconds = Number(parameter);
+		if (!Number.isNaN(seconds)) return seconds * Time.Second;
+
+		const duration = new Duration(parameter).offset;
+		if (!Number.isNaN(duration)) return duration;
+
+		const date = Date.parse(parameter);
+		if (!Number.isNaN(date)) return date - Date.now();
+
+		return NaN;
 	}
 }

@@ -18,9 +18,19 @@
 	"c4Prompt": "",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": [
-		"Heads",
-		"Tails"
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
+		"",
+		""
 	],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
@@ -47,7 +57,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
 	"coinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "You lost.",

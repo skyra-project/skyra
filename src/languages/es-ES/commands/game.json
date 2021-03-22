@@ -47,7 +47,7 @@
 			"tails cashless"
 		]
 	},
-	"coinFlipInvalidCoinname": "Disculpe, ¡pero {{arg}} no es una cara de moneda!",
+	"coinFlipInvalidCoinName": "Disculpe, ¡pero `{{parameter}}` no es una cara de moneda!",
 	"coinFlipLoseDescription": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente.",
 	"coinFlipLoseDescriptionWithWager": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente y perdiste {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "¡Perdiste!",

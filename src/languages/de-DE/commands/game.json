@@ -47,7 +47,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "Entschuldigung, aber {{arg}} ist keine Münzseite!",
+	"coinFlipInvalidCoinName": "Entschuldigung, aber `{{parameter}}` ist keine Münzseite!",
 	"coinFlipLoseDescription": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten.",
 	"coinFlipLoseDescriptionWithWager": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten und {{wager}} {{SHINY}} verloren.",
 	"coinFlipLoseTitle": "Du hast verloren.",

@@ -94,6 +94,7 @@
 	"remindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
 	"reputationTime": "You can give a reputation point in {{remaining, duration}}.",
 	"reputationUsable": "You can give a reputation point now!",
+	"reputationAvailable": "A day passed, and you can now give somebody a reputation point!",
 	"reputationSelf": "You cannot give a reputation point to yourself!",
 	"reputationGive": "You have given a reputation point to **{{user}}**!",
 	"reputationsBots": "Bots cannot have reputation points...",

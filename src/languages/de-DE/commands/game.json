@@ -18,9 +18,19 @@
 	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
 	"c4Start": "Lass uns spielen! Runde für: **{{player}}**.",
 	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
-	"coinFlipCoinnames": [
-		"Kopf",
-		"Zahl"
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
+		"",
+		""
 	],
 	"coinFlipDescription": "Wirf eine Münze!",
 	"coinFlipExtended": {
@@ -47,7 +57,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "Entschuldigung, aber {{arg}} ist keine Münzseite!",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten.",
 	"coinFlipLoseDescriptionWithWager": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten und {{wager}} {{SHINY}} verloren.",
 	"coinFlipLoseTitle": "Du hast verloren.",

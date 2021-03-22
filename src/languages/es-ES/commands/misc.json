@@ -20,6 +20,8 @@
 	"redditUserInvalidUser": "`{{user}}` no es un nombre de usuario válido para Reddit",
 	"redditUserQueryFailed": "No se pudo encontrar ningún dato para ese usuario de Reddit",
 	"redditUserTitles": {
+		"awardGiving": "",
+		"awardReceiving": "",
 		"linkKarma": "",
 		"commentKarma": "",
 		"totalComments": "",

@@ -1,6 +1,10 @@
 {
 	"autoRoleUpdateConfigured": "",
 	"autoRoleUpdateUnconfigured": "",
+	"autoRoleInvalidLevel": "",
+	"autoRoleInvalidNegativeOrZeroLevel": "",
+	"autoRoleTooLow": "",
+	"autoRoleTooHigh": "",
 	"autoRoleUpdate": "",
 	"autoRoleRemove": "",
 	"autoRoleAdd": "",
@@ -181,6 +185,8 @@
 			"",
 			"",
 			"",
+			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -204,6 +210,8 @@
 		],
 		"reminder": "",
 		"examples": [
+			"",
+			"",
 			"",
 			"",
 			"",

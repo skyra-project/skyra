@@ -20,6 +20,8 @@
 	"redditUserInvalidUser": "",
 	"redditUserQueryFailed": "",
 	"redditUserTitles": {
+		"awardGiving": "",
+		"awardReceiving": "",
 		"linkKarma": "",
 		"commentKarma": "",
 		"totalComments": "",

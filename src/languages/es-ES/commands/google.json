@@ -83,25 +83,42 @@
 	"weatherExtended": {
 		"usages": [
 			"Ciudad",
-			"Ciudad --imperial/--fahrenheit"
+			"",
+			""
 		],
-		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando obtuvo las coordenadas, consulta a DarkSky para obtener información sobre el clima.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Ciudad",
-				"La localidad, gobernación, país o continente para comprobar su tiempo."
+				""
 			]
 		],
 		"examples": [
-			"Antártida",
-			"Arizona"
+			"",
+			""
 		],
-		"reminder": "La temperatura está en **Celsius** por defecto. Usa el modificador --imperial o --fahrenheit para verla en **Fahrenheit**."
+		"reminder": ""
 	},
 	"errorZeroResults": "Tu búsqueda no ha devuelto ningún resultado.",
 	"errorRequestDenied": "La solicitud de API de GeoCode ha sido denegada.",
 	"errorInvalidRequest": "Petición inválida.",
 	"errorOverQueryLimit": "Límite de consulta excedido. Inténtalo de nuevo mañana.",
 	"errorPermissionDenied": "Google denegó mi permiso para este recurso, por favor contacte a los desarrolladores acerca de esto en el servidor de soporte oficial en <https://join.skyra.pw>",
-	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google."
+	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google.",
+	"weatherFahrenheit": "",
+	"weatherInches": "",
+	"weatherMiles": "",
+	"weatherMilesPerHour": "",
+	"weatherCelsius": "",
+	"weatherMillimeters": "",
+	"weatherPascal": "",
+	"weatherKilometers": "",
+	"weatherKilometersPerHour": "",
+	"weatherInvalidJsonBody": "",
+	"weatherUnknownLocation": "",
+	"weatherUnknownError": "",
+	"weatherBlockedLocation": "",
+	"weatherRateLimited": "",
+	"weatherRemoteServerError": "",
+	"weatherServiceUnavailable": ""
 }

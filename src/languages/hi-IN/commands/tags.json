@@ -6,6 +6,7 @@
 	"extended": {
 		"usages": [
 			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -38,6 +39,7 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
@@ -47,5 +49,6 @@
 	"notexists": "",
 	"permissionlevel": "",
 	"removed": "",
+	"renamed": "",
 	"reset": ""
 }

@@ -20,6 +20,8 @@
 	"redditUserInvalidUser": "`{{user}}` ni veljavno Reddit uporabniško ime",
 	"redditUserQueryFailed": "",
 	"redditUserTitles": {
+		"awardGiving": "",
+		"awardReceiving": "",
 		"linkKarma": "",
 		"commentKarma": "",
 		"totalComments": "",

@@ -2,6 +2,7 @@
 	"suggestDescription": "",
 	"suggestExtended": {
 		"usages": [
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -9,9 +10,14 @@
 			[
 				"",
 				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
+			"",
 			""
 		],
 		"reminder": ""

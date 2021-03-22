@@ -1,8 +1,8 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
-import { TOKENS } from '#root/config';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
@@ -12,6 +12,7 @@ import type { TFunction } from 'i18next';
 const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('FORTNITE_TOKEN'),
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended
@@ -35,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
-				{ headers: { 'TRN-Api-Key': TOKENS.FORTNITE_KEY } },
+				{ headers: { 'TRN-Api-Key': process.env.FORTNITE_TOKEN } },
 				FetchResultTypes.JSON
 			);
 

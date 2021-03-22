@@ -1,7 +1,6 @@
 import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
@@ -33,8 +32,8 @@ export abstract class WeebCommand extends SkyraCommand {
 	public requireUser: boolean;
 
 	private readonly kHeaders = {
-		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
-		'User-Agent': `Skyra/${VERSION}`
+		Authorization: `Wolke ${process.env.WEEB_SH_TOKEN}`,
+		'User-Agent': `Skyra/${process.env.CLIENT_VERSION}`
 	} as const;
 
 	protected constructor(context: PieceContext, options: WeebCommand.Options) {

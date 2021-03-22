@@ -1,6 +1,6 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { TOKENS } from '#root/config';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { fetch, FetchResultTypes } from '#utils/util';
@@ -16,6 +16,7 @@ const EMOJIS = {
 };
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('GOOGLE_API_TOKEN'),
 	aliases: ['yt'],
 	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.YouTubeDescription,
@@ -28,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		url.searchParams.append('part', 'snippet');
 		url.searchParams.append('safeSearch', 'strict');
 		url.searchParams.append('q', input);
-		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
+		url.searchParams.append('key', process.env.GOOGLE_API_TOKEN);
 
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const results = data.items.slice(0, 5);

@@ -1,4 +1,4 @@
-import { ENABLE_LOCAL_POKEDEX } from '#root/config';
+import { envParseBoolean } from '#lib/env';
 import type {
 	Query,
 	QueryGetAbilityDetailsByFuzzyArgs,
@@ -273,7 +273,7 @@ export const getPokemonSprite = gql`
 	}
 `;
 
-export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
+export const POKEMON_GRAPHQL_API_URL = envParseBoolean('LOCAL_POKEDEX_ENABLED') ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
 
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {

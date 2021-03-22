@@ -1,10 +1,10 @@
-import { ENABLE_AUDIO } from '#root/config';
+import { envParseBoolean } from '#lib/env';
 import type { PieceContext } from '@sapphire/framework';
 import { SkyraCommand } from '../../../lib/structures/commands/SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: MusicCommand.Options) {
-		super(context, { ...options, runIn: ['text'], preconditions: ['AudioEnabled'], enabled: ENABLE_AUDIO });
+		super(context, { ...options, runIn: ['text'], preconditions: ['AudioEnabled'], enabled: envParseBoolean('AUDIO_ENABLED') });
 	}
 }
 

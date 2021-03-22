@@ -1,20 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { transformOauthGuildsAndUser } from '#lib/api/utils';
-import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { Colors, LanguageFormatters } from '#lib/types/Constants';
-import { CLIENT_ID, DEV, PREFIX, VERSION as SKYRA_VERSION } from '#root/config';
-import { getHandler } from '#root/languages/index';
-import { LogLevel } from '@sapphire/framework';
-import { ServerOptionsAuth } from '@sapphire/plugin-api';
-import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import type { ClientOptions } from 'discord.js';
-import i18next, { FormatFunction, PostProcessorModule } from 'i18next';
+import { Colors } from '#lib/types/Constants';
+import { PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
-export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'skyra.pw', 'cdn');
+export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'www', 'skyra.pw', 'cdn') : join(assetsFolder, 'public');
 
 export const ZeroWidthSpace = '\u200B';
 
@@ -300,137 +292,6 @@ export const helpUsagePostProcessor: PostProcessorModule = {
 		if (value === key) return '';
 		// Otherwise just return the value
 		return value;
-	}
-};
-
-export const clientOptions: Partial<ClientOptions> = {
-	caseInsensitiveCommands: true,
-	caseInsensitivePrefixes: true,
-	loadDefaultErrorEvents: false,
-	nms: {
-		everyone: 5,
-		role: 2
-	},
-	logger: {
-		level: DEV ? LogLevel.Debug : LogLevel.Info
-	},
-	api: {
-		auth: ({
-			transformers: [transformOauthGuildsAndUser]
-		} as unknown) as ServerOptionsAuth
-	},
-	i18n: {
-		defaultMissingKey: 'default',
-		defaultNS: 'globals',
-		i18next: (_: string[], languages: string[]) => ({
-			supportedLngs: languages,
-			preload: languages,
-			returnObjects: true,
-			returnEmptyString: false,
-			returnNull: false,
-			load: 'all',
-			lng: 'en-US',
-			fallbackLng: 'en-US',
-			defaultNS: 'globals',
-			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
-			initImmediate: false,
-			interpolation: {
-				escapeValue: false,
-				defaultVariables: {
-					TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
-					VERSION: SKYRA_VERSION,
-					LOADING: Emojis.Loading,
-					SHINY: Emojis.Shiny,
-					GREENTICK: Emojis.GreenTick,
-					REDCROSS: Emojis.RedCross,
-					DEFAULT_PREFIX: PREFIX,
-					CLIENT_ID,
-					/* Permissions */
-					ADMINISTRATOR: 'ADMINISTRATOR',
-					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
-					MANAGE_GUILD: 'MANAGE_GUILD',
-					MANAGE_ROLES: 'MANAGE_ROLES',
-					MANAGE_CHANNELS: 'MANAGE_CHANNELS',
-					KICK_MEMBERS: 'KICK_MEMBERS',
-					BAN_MEMBERS: 'BAN_MEMBERS',
-					CREATE_INSTANT_INVITE: 'CREATE_INSTANT_INVITE',
-					CHANGE_NICKNAME: 'CHANGE_NICKNAME',
-					MANAGE_NICKNAMES: 'MANAGE_NICKNAMES',
-					MANAGE_EMOJIS: 'MANAGE_EMOJIS',
-					MANAGE_WEBHOOKS: 'MANAGE_WEBHOOKS',
-					VIEW_CHANNEL: 'VIEW_CHANNEL',
-					SEND_MESSAGES: 'SEND_MESSAGES',
-					SEND_TTS_MESSAGES: 'SEND_TTS_MESSAGES',
-					MANAGE_MESSAGES: 'MANAGE_MESSAGES',
-					EMBED_LINKS: 'EMBED_LINKS',
-					ATTACH_FILES: 'ATTACH_FILES',
-					READ_MESSAGE_HISTORY: 'READ_MESSAGE_HISTORY',
-					MENTION_EVERYONE: 'MENTION_EVERYONE',
-					USE_EXTERNAL_EMOJIS: 'USE_EXTERNAL_EMOJIS',
-					ADD_REACTIONS: 'ADD_REACTIONS',
-					CONNECT: 'CONNECT',
-					SPEAK: 'SPEAK',
-					STREAM: 'STREAM',
-					MUTE_MEMBERS: 'MUTE_MEMBERS',
-					DEAFEN_MEMBERS: 'DEAFEN_MEMBERS',
-					MOVE_MEMBERS: 'MOVE_MEMBERS',
-					USE_VAD: 'USE_VAD',
-					PRIORITY_SPEAKER: 'PRIORITY_SPEAKER',
-					VIEW_GUILD_INSIGHTS: 'VIEW_GUILD_INSIGHTS'
-				},
-				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
-					switch (format as LanguageFormatters) {
-						case LanguageFormatters.AndList: {
-							return getHandler(language!).listAnd.format(value as string[]);
-						}
-						case LanguageFormatters.OrList: {
-							return getHandler(language!).listOr.format(value as string[]);
-						}
-						case LanguageFormatters.Permissions: {
-							return i18next.t(`permissions:${value}`, { ...options, lng: language });
-						}
-						case LanguageFormatters.PermissionsAndList: {
-							return getHandler(language!).listAnd.format(
-								(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
-							);
-						}
-						case LanguageFormatters.HumanLevels: {
-							return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
-						}
-						case LanguageFormatters.ToTitleCase: {
-							return toTitleCase(value);
-						}
-						case LanguageFormatters.CodeBlock: {
-							return codeBlock('', value);
-						}
-						case LanguageFormatters.JsCodeBlock: {
-							return codeBlock('js', value);
-						}
-						case LanguageFormatters.Number: {
-							return getHandler(language!).number.format(value as number);
-						}
-						case LanguageFormatters.NumberCompact: {
-							return getHandler(language!).numberCompact.format(value as number);
-						}
-						case LanguageFormatters.Ordinal: {
-							return getHandler(language!).ordinal(value as number);
-						}
-						case LanguageFormatters.Duration: {
-							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
-						}
-						case LanguageFormatters.Date:
-							return getHandler(language!).date.format(value as number);
-						case LanguageFormatters.DateFull:
-							return getHandler(language!).dateFull.format(value as number);
-						case LanguageFormatters.DateTime: {
-							return getHandler(language!).dateTime.format(value as number);
-						}
-						default:
-							return value as string;
-					}
-				}
-			}
-		})
 	}
 };
 

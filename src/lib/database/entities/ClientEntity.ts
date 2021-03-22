@@ -1,10 +1,9 @@
-import { CLIENT_ID } from '#root/config';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('client', { schema: 'public' })
 export class ClientEntity extends BaseEntity {
-	@PrimaryColumn('varchar', { length: 19, default: CLIENT_ID })
-	public id: string = CLIENT_ID;
+	@PrimaryColumn('varchar', { length: 19, default: process.env.CLIENT_ID })
+	public id: string = process.env.CLIENT_ID;
 
 	@Column('varchar', { array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public userBlocklist: string[] = [];

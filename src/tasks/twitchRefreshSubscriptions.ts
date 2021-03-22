@@ -9,7 +9,7 @@ export class UserTask extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
 		const { client } = this.context;
 		// If we're running in developer mode then just exit early
-		if (client.options.dev) return { type: ResponseType.Finished };
+		if (client.dev) return { type: ResponseType.Finished };
 
 		// Retrieve all the Twitch subscriptions
 		const { twitchStreamSubscriptions } = this.context.db;

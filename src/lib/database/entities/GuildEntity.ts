@@ -2,7 +2,6 @@ import { ConfigurableKey, configurableKeys } from '#lib/database/settings/Config
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RateLimitManager } from '#lib/structures';
 import type { AnyObject } from '#lib/types';
-import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { Store } from '@sapphire/framework';
@@ -20,8 +19,8 @@ export class GuildEntity extends BaseEntity {
 	public id!: string;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10 })
-	@Column('varchar', { name: 'prefix', length: 10, default: PREFIX })
-	public prefix = PREFIX;
+	@Column('varchar', { name: 'prefix', length: 10, default: process.env.CLIENT_PREFIX })
+	public prefix = process.env.CLIENT_PREFIX;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Language, type: 'language' })
 	@Column('varchar', { name: 'language', default: 'en-US' })

@@ -1,6 +1,5 @@
 import type { GuildEntity } from '#lib/database';
 import type { KeyOfType } from '#lib/types/Utils';
-import { CLIENT_ID } from '#root/config';
 import { Event } from '@sapphire/framework';
 import type { Guild, MessageEmbed } from 'discord.js';
 import type { HardPunishment } from './ModerationMessageEvent';
@@ -42,7 +41,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.warning({
 				userID,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.',
 				duration
 			})
@@ -53,7 +52,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.kick({
 				userID,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.'
 			})
 		);
@@ -64,7 +63,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.mute({
 				userID,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.',
 				duration
 			})
@@ -76,7 +75,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 			guild.security.actions.softBan(
 				{
 					userID,
-					moderatorID: CLIENT_ID,
+					moderatorID: process.env.CLIENT_ID,
 					reason: '[Auto-Moderation] Threshold Reached.'
 				},
 				1
@@ -91,7 +90,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 			guild.security.actions.ban(
 				{
 					userID,
-					moderatorID: CLIENT_ID,
+					moderatorID: process.env.CLIENT_ID,
 					reason: '[Auto-Moderation] Threshold Reached.',
 					duration
 				},

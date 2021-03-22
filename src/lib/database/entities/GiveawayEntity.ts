@@ -4,7 +4,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Time } from '#utils/constants';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
@@ -259,7 +258,7 @@ export class GiveawayEntity extends BaseEntity {
 	private async fetchParticipants(): Promise<string[]> {
 		try {
 			const users = await fetchReactionUsers(this.channelID, this.messageID!, kEmoji);
-			users.delete(CLIENT_ID);
+			users.delete(process.env.CLIENT_ID);
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {

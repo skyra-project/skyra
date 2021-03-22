@@ -18,7 +18,7 @@ export class UserAudioEvent extends AudioEvent {
 			]);
 		}
 
-		const queue = this.context.client.audio.queues!.get(payload.guildId);
+		const queue = this.context.client.audio!.queues.get(payload.guildId);
 		await queue.next();
 	}
 }

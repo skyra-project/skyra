@@ -1,7 +1,7 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,6 +10,7 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('OWLBOT_TOKEN'),
 	aliases: ['definition', 'defination', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
@@ -59,7 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		try {
 			return await fetch<OwlbotResultOk>(
 				`https://owlbot.info/api/v4/dictionary/${encodeURIComponent(word.toLowerCase())}`,
-				{ headers: { Accept: Mime.Types.ApplicationJson, Authorization: `Token ${TOKENS.OWLBOT}` } },
+				{ headers: { Accept: Mime.Types.ApplicationJson, Authorization: `Token ${process.env.OWLBOT_TOKEN}` } },
 				FetchResultTypes.JSON
 			);
 		} catch {

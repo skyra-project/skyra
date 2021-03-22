@@ -74,7 +74,6 @@ jobs:
       - name: Copy Configuration
         run: |
           pushd src &&
-          cp config.example.ts config.ts &&
           popd
       - name: Run tsc
         run: yarn build
@@ -105,7 +104,6 @@ jobs:
       - name: Copy Configuration
         run: |
           pushd src &&
-          cp config.example.ts config.ts &&
           popd
       - name: Run tests
         run: yarn test --coverage

@@ -5,6 +5,6 @@ import { GatewayDispatchEvents, GatewayGuildCreateDispatch } from 'discord-api-t
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildCreate, emitter: 'ws' })
 export class UserEvent extends Event {
 	public run(data: GatewayGuildCreateDispatch['d']) {
-		return Promise.all(data.voice_states!.map((state) => this.context.client.audio.voiceStateUpdate({ ...state, guild_id: data.id })));
+		return Promise.all(data.voice_states!.map((state) => this.context.client.audio?.voiceStateUpdate({ ...state, guild_id: data.id })));
 	}
 }

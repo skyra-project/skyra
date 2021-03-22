@@ -36,7 +36,6 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/serializers',
 		'<rootDir>/src/tasks',
 		'<rootDir>/src/config.ts',
-		'<rootDir>/src/config.example.ts',
 		'<rootDir>/src/Skyra.ts',
 		'<rootDir>/src/lib/structures',
 		'<rootDir>/src/lib/util/Models'

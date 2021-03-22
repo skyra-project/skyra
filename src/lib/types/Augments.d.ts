@@ -2,6 +2,7 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { DbSet, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import type { SkyraEnv } from '#lib/env';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
@@ -34,8 +35,9 @@ import type { CustomFunctionGet, CustomGet } from './Utils';
 
 declare module 'discord.js' {
 	interface Client {
+		readonly dev: boolean;
 		readonly analytics: AnalyticsData | null;
-		readonly audio: QueueClient;
+		readonly audio: QueueClient | null;
 		readonly giveaways: GiveawayManager;
 		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
 		readonly invites: InviteStore;
@@ -45,9 +47,7 @@ declare module 'discord.js' {
 		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
 		readonly version: string;
-		readonly webhookDatabase: Webhook | null;
-		readonly webhookError: Webhook;
-		readonly webhookFeedback: Webhook | null;
+		readonly webhookError: Webhook | null;
 		readonly websocket: WebsocketHandler;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
@@ -95,8 +95,7 @@ declare module 'discord.js' {
 	}
 
 	interface ClientOptions {
-		audio: QueueClientOptions;
-		dev?: boolean;
+		audio?: QueueClientOptions;
 		nms?: {
 			role?: number;
 			everyone?: number;

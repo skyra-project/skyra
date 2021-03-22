@@ -1,6 +1,5 @@
 import { GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
-import { CLIENT_ID } from '#root/config';
 import { floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
@@ -73,7 +72,7 @@ export class UserEvent extends Event {
 		// Scan the audit logs.
 		for (const result of results.audit_log_entries) {
 			// If it was given by Skyra, continue.
-			if (result.user_id === CLIENT_ID) continue;
+			if (result.user_id === process.env.CLIENT_ID) continue;
 
 			// If the target isn't the edited user, continue.
 			if (result.target_id !== userID) continue;

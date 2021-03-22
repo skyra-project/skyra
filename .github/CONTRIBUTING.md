@@ -21,9 +21,9 @@ To run Skyra locally a few steps should be taken.
 1. Follow [the wiki page on setting up a PostgreSQL schema for Skyra][].
 1. In the Discord Developer portal go to your application and then to the "Bot" menu.
 1. At "Privileged Gateway Intents" enable "SERVER MEMBERS INTENT".
-1. Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`.
-1. Scroll down to `export const TOKENS = {`.
-1. At this section enter your own bot's API token at `BOT_TOKEN`.
+1. Copy and paste the [`.env.development`] file in the `src` directory and rename it to `.env.development.local`.
+1. Scroll down to the tokens section.
+1. At this section enter your own bot's API token at `DISCORD_TOKEN`.
 1. Fill in any other API keys you have / want to fill in.
 1. Follow the [installation instructions for node-canvas](https://github.com/Automattic/node-canvas/blob/master/Readme.md#installation).
     - Note: In case of using WSL then follow the Windows instructions.
@@ -69,7 +69,7 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 [installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/main/Readme.md#installation
 [oop paradigms]: https://en.wikipedia.org/wiki/Object-oriented_programming
 [discord bot best practices]: https://github.com/meew0/discord-bot-best-practices
-[`config.example.ts`]: /src/config.example.ts
+[`.env.development`]: /src/.env.development
 [scripts]: /scripts
 [the wiki page on setting up a postgresql schema for skyra]: https://github.com/skyra-project/skyra/wiki/PostgreSQL
 [the repository wiki]: https://github.com/skyra-project/skyra/wikib

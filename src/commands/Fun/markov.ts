@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { DEV } from '#root/config';
 import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, iteratorAt, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
@@ -48,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async onLoad() {
 		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
-		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
+		this.kProcess = this.context.client.dev ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 
 	private async processRelease(message: GuildMessage, _: TFunction, markov: Markov) {

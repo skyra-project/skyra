@@ -1,70 +1,62 @@
-import './extensions';
-
 import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
-import { CLIENT_OPTIONS, ENABLE_AUDIO, ENABLE_INFLUX, PREFIX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
+import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { SapphireClient, Store } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
-import { mergeDefault } from '@sapphire/utilities';
-import { ClientOptions, Message, Webhook } from 'discord.js';
+import { Message, Webhook } from 'discord.js';
 import { join } from 'path';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { clientOptions } from './util/constants';
+import { envParseBoolean } from './env';
+import './extensions';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
 import { enumerable } from './util/util';
 
 export class SkyraClient extends SapphireClient {
-	/**
-	 * The version of Skyra
-	 */
-	public version = VERSION;
+	@enumerable(false)
+	public dev = process.env.NODE_ENV !== 'production';
 
 	/**
 	 * The loaded Leaderboard singleton instance
 	 */
+	@enumerable(false)
 	public leaderboard: Leaderboard = new Leaderboard(this);
 
 	/**
 	 * The Giveaway manager
 	 */
+	@enumerable(false)
 	public giveaways: GiveawayManager = new GiveawayManager(this);
 
 	/**
 	 * The Schedule manager
 	 */
+	@enumerable(false)
 	public schedules: ScheduleManager;
 
 	/**
 	 * The settings manager
 	 */
+	@enumerable(false)
 	public settings: SettingsManager = new SettingsManager(this);
 
 	/**
 	 * The webhook to use for the error event
 	 */
-	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
-
-	/**
-	 * The webhook to use for feedbacks
-	 */
-	public webhookFeedback: Webhook | null = WEBHOOK_FEEDBACK ? new Webhook(this, WEBHOOK_FEEDBACK) : null;
-
-	/**
-	 * The webhook to use for database errors
-	 */
-	public webhookDatabase: Webhook | null = WEBHOOK_DATABASE ? new Webhook(this, WEBHOOK_DATABASE) : null;
+	@enumerable(false)
+	public webhookError: Webhook | null = WEBHOOK_ERROR ? new Webhook(this, WEBHOOK_ERROR) : null;
 
 	/**
 	 * The invite store
 	 */
+	@enumerable(false)
 	public invites: InviteStore = new InviteStore(this);
 
 	@enumerable(false)
-	public readonly audio: QueueClient;
+	public readonly audio: QueueClient | null;
 
 	@enumerable(false)
 	public readonly analytics: AnalyticsData | null;
@@ -78,20 +70,24 @@ export class SkyraClient extends SapphireClient {
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
+	@enumerable(false)
 	public websocket = new WebsocketHandler();
 
 	public constructor() {
-		// @ts-ignore Shut the fuck up TS
-		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as ClientOptions);
+		super(CLIENT_OPTIONS);
 		this.schedules = new ScheduleManager(this);
 		Store.injectedContext.schedule = this.schedules;
-		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
-			const guild = this.guilds.cache.get(guildID);
-			return Promise.resolve(guild?.shard.send(packet));
-		});
-		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
+		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 
-		if (ENABLE_AUDIO) this.stores.registerUserDirectories(join(__dirname, '..', 'audio'));
+		if (envParseBoolean('AUDIO_ENABLED')) {
+			this.audio = new QueueClient(this.options.audio!, (guildID, packet) => {
+				const guild = this.guilds.cache.get(guildID);
+				return Promise.resolve(guild?.shard.send(packet));
+			});
+			this.stores.registerUserDirectories(join(__dirname, '..', 'audio'));
+		} else {
+			this.audio = null;
+		}
 	}
 
 	public async login(token?: string) {
@@ -109,8 +105,8 @@ export class SkyraClient extends SapphireClient {
 	 * @param message The message that gives context.
 	 */
 	public fetchPrefix = async (message: Message) => {
-		if (!message.guild) return [PREFIX, ''] as readonly string[];
-		return (await message.guild?.readSettings(GuildSettings.Prefix)) ?? PREFIX;
+		if (!message.guild) return [process.env.CLIENT_PREFIX, ''] as readonly string[];
+		return (await message.guild?.readSettings(GuildSettings.Prefix)) ?? process.env.CLIENT_PREFIX;
 	};
 
 	/**

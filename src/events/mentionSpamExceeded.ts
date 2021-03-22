@@ -2,7 +2,6 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { Event } from '@sapphire/framework';
 
@@ -28,7 +27,7 @@ export class UserEvent extends Event {
 			await message.guild.moderation
 				.create({
 					userID: message.author.id,
-					moderatorID: CLIENT_ID,
+					moderatorID: process.env.CLIENT_ID,
 					type: Moderation.TypeCodes.Ban,
 					reason
 				})

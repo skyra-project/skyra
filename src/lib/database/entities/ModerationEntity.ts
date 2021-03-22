@@ -4,7 +4,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { Moderation, Time } from '#utils/constants';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
@@ -38,8 +37,8 @@ export class ModerationEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID: string = null!;
 
-	@Column('varchar', { length: 19, default: CLIENT_ID })
-	public moderatorID: string = CLIENT_ID;
+	@Column('varchar', { length: 19, default: process.env.CLIENT_ID })
+	public moderatorID: string = process.env.CLIENT_ID;
 
 	@Column('varchar', { nullable: true, length: 2000, default: () => 'null' })
 	public reason: string | null = null;
@@ -215,7 +214,7 @@ export class ModerationEntity extends BaseEntity {
 
 	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
-		if (this.moderatorID !== CLIENT_ID) return true;
+		if (this.moderatorID !== process.env.CLIENT_ID) return true;
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;

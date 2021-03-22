@@ -1,13 +1,12 @@
 import { AudioEvent } from '#lib/audio';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import type { VoiceState } from 'discord.js';
 
 export class UserAudioEvent extends AudioEvent {
 	public async run(oldState: VoiceState, newState: VoiceState) {
 		const { audio } = newState.guild;
 
-		if (newState.id === CLIENT_ID) {
+		if (newState.id === process.env.CLIENT_ID) {
 			// If both channels were the same, skip
 			if (oldState.channelID === newState.channelID) return;
 

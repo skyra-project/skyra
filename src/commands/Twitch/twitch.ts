@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
@@ -6,6 +7,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchExtended,
 	permissions: ['EMBED_LINKS']

@@ -1,7 +1,7 @@
+import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { ENABLE_INFLUX } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
@@ -15,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		await message.send(args.t(LanguageKeys.Commands.System.Reboot)).catch((err) => this.context.client.emit(Events.ApiError, err));
 
-		if (ENABLE_INFLUX) {
+		if (envParseBoolean('INFLUX_ENABLED')) {
 			const { client } = this.context;
 			try {
 				client.emit(

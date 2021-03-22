@@ -1,4 +1,3 @@
-import { CLIENT_ID } from '#root/config';
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
 
 export class V01MigrateClientStorage1594413973851 implements MigrationInterface {
@@ -17,7 +16,14 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 			new Table({
 				name: 'client',
 				columns: [
-					new TableColumn({ name: 'id', type: 'varchar', length: '19', default: `'${CLIENT_ID}'`, isNullable: false, isPrimary: true }),
+					new TableColumn({
+						name: 'id',
+						type: 'varchar',
+						length: '19',
+						default: `'${process.env.CLIENT_ID}'`,
+						isNullable: false,
+						isPrimary: true
+					}),
 					new TableColumn({ name: 'user_blocklist', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
 					new TableColumn({ name: 'user_boost', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
 					new TableColumn({ name: 'guild_blocklist', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),

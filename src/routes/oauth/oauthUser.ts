@@ -1,5 +1,4 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -51,7 +50,7 @@ export class UserRoute extends Route {
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {
-		const { client } = this.context;
+		const { client, server } = this.context;
 		try {
 			client.logger.debug(`Refreshing Token for ${id}`);
 			return await fetch<RESTPostOAuth2AccessTokenResult>(
@@ -59,12 +58,12 @@ export class UserRoute extends Route {
 				{
 					method: 'POST',
 					body: stringify({
-						client_id: CLIENT_ID,
-						client_secret: CLIENT_SECRET,
+						client_id: server.auth!.id,
+						client_secret: server.auth!.secret,
 						grant_type: 'refresh_token',
 						refresh_token: refreshToken,
-						redirect_uri: REDIRECT_URI,
-						scope: SCOPE
+						redirect_uri: server.auth!.redirect,
+						scope: server.auth!.scopes
 					}),
 					headers: {
 						'Content-Type': Mime.Types.ApplicationFormUrlEncoded

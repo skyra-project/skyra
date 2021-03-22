@@ -3,7 +3,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
@@ -100,7 +99,7 @@ export class UserCommand extends SkyraCommand {
 			case Filter.Links:
 				return (mes: GuildMessage) => UserCommand.kLinkRegExp.test(mes.content);
 			case Filter.Skyra:
-				return (mes: GuildMessage) => mes.author.id === CLIENT_ID;
+				return (mes: GuildMessage) => mes.author.id === process.env.CLIENT_ID;
 			case Filter.User:
 				return (mes: GuildMessage) => mes.author.id === user!.id;
 			default:

@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -10,6 +11,7 @@ import { EmbedField, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('XIVAPI_TOKEN'),
 	aliases: ['finalfantasy'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,

@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CLIENT_ID } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
@@ -24,7 +23,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { author } = message;
 
 		switch (user.id) {
-			case CLIENT_ID:
+			case process.env.CLIENT_ID:
 				return message.send(t(LanguageKeys.Commands.Social.MarrySkyra));
 			case AELIA_ID:
 				return message.send(t(LanguageKeys.Commands.Social.MarryAelia));
@@ -34,7 +33,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (user.bot) return message.send(t(LanguageKeys.Commands.Social.MarryBots));
 
 		const { users, clients } = this.context.db;
-		const clientSettings = await clients.findOne(CLIENT_ID);
+		const clientSettings = await clients.findOne(process.env.CLIENT_ID);
 		const premiumUsers = clientSettings?.userBoost ?? [];
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			// Retrieve the author's spouses

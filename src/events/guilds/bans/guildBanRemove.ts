@@ -1,5 +1,4 @@
 import { GuildSettings } from '#lib/database';
-import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { Event } from '@sapphire/framework';
 import type { Guild, User } from 'discord.js';
@@ -11,7 +10,7 @@ export class UserEvent extends Event {
 		await guild.moderation
 			.create({
 				userID: user.id,
-				moderatorID: CLIENT_ID,
+				moderatorID: process.env.CLIENT_ID,
 				type: Moderation.TypeCodes.UnBan
 			})
 			.create();

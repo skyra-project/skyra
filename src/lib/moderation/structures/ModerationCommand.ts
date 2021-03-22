@@ -3,7 +3,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { CLIENT_ID } from '#root/config';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, floatPromise } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
@@ -112,7 +111,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			throw context.args.t(LanguageKeys.Commands.Moderation.UserSelf);
 		}
 
-		if (context.target.id === CLIENT_ID) {
+		if (context.target.id === process.env.CLIENT_ID) {
 			throw context.args.t(LanguageKeys.Commands.Moderation.ToSkyra);
 		}
 

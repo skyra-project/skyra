@@ -6,8 +6,8 @@ import { exec } from '#utils/Promisified/exec';
 import { sleep } from '#utils/Promisified/sleep';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
 import type { ExecOptions } from 'child_process';
+import type { Message } from 'discord.js';
 import { rm } from 'fs/promises';
 import { resolve } from 'path';
 
@@ -48,7 +48,9 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async updateDependencies(message: Message) {
-		const { stderr, code } = await this.exec('yarn install --frozen-lockfile --ignore-scripts', { env: { ...process.env, NODE_ENV: undefined } });
+		const { stderr, code } = await this.exec('yarn install --frozen-lockfile --ignore-scripts', {
+			env: { ...process.env, NODE_ENV: 'development' }
+		});
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully updated dependencies.`);
 	}

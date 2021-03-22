@@ -1,6 +1,5 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { blueBright, green, red } from 'colorette';
@@ -30,41 +29,46 @@ export class UserTask extends Task {
 		const rawUsers = client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);
 
 		this.processAnalytics(rawGuilds, rawUsers);
-		if (DEV) return { type: ResponseType.Finished };
+		if (this.context.client.dev) return { type: ResponseType.Finished };
 
 		const guilds = rawGuilds.toString();
 		const users = rawUsers.toString();
 		const results = (
 			await Promise.all([
-				this.query(`https://top.gg/api/bots/${CLIENT_ID}/stats`, `{"server_count":${guilds}}`, TOKENS.TOP_GG, Lists.TopGG),
 				this.query(
-					`https://discord.bots.gg/api/v1/bots/${CLIENT_ID}/stats`,
+					`https://top.gg/api/bots/${process.env.CLIENT_ID}/stats`,
+					`{"server_count":${guilds}}`,
+					process.env.TOP_GG_TOKEN,
+					Lists.TopGG
+				),
+				this.query(
+					`https://discord.bots.gg/api/v1/bots/${process.env.CLIENT_ID}/stats`,
 					`{"guildCount":${guilds}}`,
-					TOKENS.DISCORD_BOTS,
+					process.env.DISCORD_BOTS_TOKEN,
 					Lists.DiscordBotsGG
 				),
 				this.query(
-					`https://botsfordiscord.com/api/bot/${CLIENT_ID}`,
+					`https://botsfordiscord.com/api/bot/${process.env.CLIENT_ID}`,
 					`{"server_count":${guilds}}`,
-					TOKENS.BOTS_FOR_DISCORD_KEY,
+					process.env.BOTS_FOR_DISCORD_TOKEN,
 					Lists.BotsForDiscord
 				),
 				this.query(
-					`https://discordbotlist.com/api/v1/bots/${CLIENT_ID}/stats`,
+					`https://discordbotlist.com/api/v1/bots/${process.env.CLIENT_ID}/stats`,
 					`{"guilds":${guilds},"users":${users}}`,
-					TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null,
+					process.env.DISCORD_BOT_LIST_TOKEN ? `Bot ${process.env.DISCORD_BOT_LIST_TOKEN}` : null,
 					Lists.DiscordBotList
 				),
 				this.query(
-					`https://bots.ondiscord.xyz/bot-api/bots/${CLIENT_ID}/guilds`,
+					`https://bots.ondiscord.xyz/bot-api/bots/${process.env.CLIENT_ID}/guilds`,
 					`{"guildCount":${guilds}}`,
-					TOKENS.BOTS_ON_DISCORD_KEY,
+					process.env.BOTS_ON_DISCORD_TOKEN,
 					Lists.BotsOnDiscord
 				),
 				this.query(
-					`https://api.botlist.space/v1/bots/${CLIENT_ID}`,
+					`https://api.botlist.space/v1/bots/${process.env.CLIENT_ID}`,
 					`{"server_count":${guilds}}`,
-					TOKENS.BOTLIST_SPACE_KEY,
+					process.env.BOTLIST_SPACE_TOKEN,
 					Lists.BotListSpace
 				)
 			])
@@ -93,6 +97,6 @@ export class UserTask extends Task {
 	}
 
 	private processAnalytics(guilds: number, users: number) {
-		if (ENABLE_INFLUX) this.context.client.emit(Events.AnalyticsSync, guilds, users);
+		this.context.client.emit(Events.AnalyticsSync, guilds, users);
 	}
 }

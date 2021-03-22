@@ -1,4 +1,4 @@
-import { DEV, WSS_PORT } from '#root/config';
+import { envParseInteger } from '#lib/env';
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
 import { ApiRequest, CookieStore } from '@sapphire/plugin-api';
@@ -12,14 +12,14 @@ export class WebsocketHandler {
 	public users = new Collection<string, WebsocketUser>();
 
 	public constructor() {
-		this.wss = new Server({ port: WSS_PORT });
+		this.wss = new Server({ port: envParseInteger('AUDIO_DASHBOARD_WSS_PORT') });
 
 		this.wss.on(WebSocketEvents.Connection, this.handleConnection.bind(this));
 	}
 
 	private handleConnection(ws: WebSocket, request: ApiRequest) {
 		// Read SKYRA_AUTH cookie
-		const cookies = new CookieStore(request, null!, !DEV);
+		const cookies = new CookieStore(request, null!, process.env.NODE_ENV === 'production');
 		const auth = cookies.get('SKYRA_AUTH');
 		if (!auth) return ws.close(CloseCodes.Unauthorized);
 

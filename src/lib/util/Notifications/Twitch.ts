@@ -6,7 +6,6 @@ import type {
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
-import { TOKENS, TWITCH_CALLBACK } from '#root/config';
 import { Mime, Time } from '#utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { createHmac } from 'crypto';
@@ -35,13 +34,13 @@ export class Twitch {
 	};
 
 	@enumerable(false)
-	private readonly $clientID = TOKENS.TWITCH_CLIENT_ID;
+	private readonly $clientID = process.env.TWITCH_CLIENT_ID;
 
 	@enumerable(false)
-	private readonly $clientSecret = TOKENS.TWITCH_SECRET;
+	private readonly $clientSecret = process.env.TWITCH_TOKEN;
 
 	@enumerable(false)
-	private readonly $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
+	private readonly $webhookSecret = process.env.TWITCH_WEBHOOK_TOKEN;
 
 	@enumerable(false)
 	private readonly kTwitchRequestHeaders = {
@@ -98,7 +97,7 @@ export class Twitch {
 			'https://api.twitch.tv/helix/webhooks/hub',
 			{
 				body: JSON.stringify({
-					'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
+					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerID}`,
 					'hub.mode': action,
 					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
 					'hub.lease_seconds': (9 * Time.Day) / Time.Second,

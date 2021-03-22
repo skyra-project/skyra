@@ -39,6 +39,8 @@ export const RedditUserExtended = T<LanguageHelpDisplayOptions>('commands/misc:r
 export const RedditUserInvalidUser = FT<{ user: string }, string>('commands/misc:redditUserInvalidUser');
 export const RedditUserQueryFailed = T<string>('commands/misc:redditUserQueryFailed');
 export const RedditUserTitles = T<{
+	awardGiving: string;
+	awardReceiving: string;
 	linkKarma: string;
 	commentKarma: string;
 	totalComments: string;

@@ -12,4 +12,5 @@ export const TagNameTooLong = T<string>('commands/tags:nameTooLong');
 export const TagNotExists = FT<{ tag: string }, string>('commands/tags:notexists');
 export const TagPermissionLevel = T<string>('commands/tags:permissionlevel');
 export const TagRemoved = FT<{ name: string }, string>('commands/tags:removed');
+export const TagRenamed = FT<{ name: string; previous: string }, string>('commands/tags:renamed');
 export const TagReset = T<string>('commands/tags:reset');

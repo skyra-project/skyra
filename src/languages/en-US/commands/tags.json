@@ -5,14 +5,15 @@
 	"exists": "The tag '{{tag}}' already exists.",
 	"extended": {
 		"usages": [
-			"add/remove/edit/source/list/reset/show Tag Content",
-			"add Tag Content --embed --color=Color"
+			"add/remove/edit/rename/source/list/reset/show Tag Content",
+			"add Tag Content --embed --color=Color",
+			"rename OldName NewName"
 		],
 		"extendedHelp": "Tags, also known as custom commands, can give you a chunk of text stored under a specific name.\nFor example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`\nWhen adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!), see Explained usage below.",
 		"explainedUsage": [
 			[
-				"add/remove/edit/source/list/reset/show",
-				"Whether to\n　- Add a new tag.\n　- Remove an existing tag\n　- Edit an existing tag\n　- View the source of an existing tag\n　- List all available tags\n　- Reset all tags\n　- Show an existing tag, same as calling that tag directly."
+				"add/remove/edit/rename/source/list/reset/show",
+				"Whether to\n　- Add a new tag.\n　- Remove an existing tag\n　- Edit an existing tag\n　- Rename an existing tag\n　- View the source of an existing tag\n　- List all available tags\n　- Reset all tags\n　- Show an existing tag, same as calling that tag directly."
 			],
 			[
 				"Tag",
@@ -35,6 +36,7 @@
 			"add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.",
 			"add rule1 --embed --color=#1E88E5 Respect other users. Harassment, hatespeech, etc... will not be tolerated.",
 			"edit rule1 Just be respectful with the others.",
+			"rename rule1 rule2",
 			"rule1",
 			"source rule1",
 			"remove rule1",
@@ -47,5 +49,6 @@
 	"notexists": "The tag '{{tag}}' does not exist.",
 	"permissionlevel": "You must be a staff member, moderator, or admin, to be able to manage tags.",
 	"removed": "Successfully removed the tag **{{name}}**.",
+	"renamed": "Successfully renamed the tag **{{previous}}** to **{{name}}**.",
 	"reset": "All tags have been successfully removed from this server."
 }

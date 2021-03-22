@@ -68,17 +68,18 @@ export class UserCommand extends SkyraCommand {
 		const points = await this.parseLevel(args);
 
 		const autoRole = await message.guild.writeSettings((settings) => {
-			const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((entry) => entry.id === role.id);
+			const autoRoles = settings[GuildSettings.Roles.Auto];
+			const roleIndex = autoRoles.findIndex((entry) => entry.id === role.id);
 
 			if (roleIndex === -1) {
 				this.error(LanguageKeys.Commands.Social.AutoRoleUpdateUnconfigured);
 			}
 
-			const autoRole = settings[GuildSettings.Roles.Auto][roleIndex];
-			const clone = deepClone(settings[GuildSettings.Roles.Auto]);
+			const clone = deepClone(autoRoles);
+			clone[roleIndex].points = points;
 
 			settings[GuildSettings.Roles.Auto] = clone.sort(SORT);
-			return autoRole;
+			return autoRoles[roleIndex];
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role: role.toString(), points, before: autoRole.points }), {

@@ -46,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		if (args.getFlags(...REMINDER_FLAGS)) {
-			await this.context.schedule.add(Schedules.Reminder, date, {
+			await this.context.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
 				data: {
 					content: args.t(LanguageKeys.Commands.Social.ReputationAvailable),
 					user: message.author.id

@@ -18,7 +18,17 @@
 	"c4Prompt": "",
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": [
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
 		"",
 		""
 	],
@@ -47,7 +57,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "",
 	"coinFlipLoseDescriptionWithWager": "",
 	"coinFlipLoseTitle": "",

@@ -18,9 +18,19 @@
 	"c4Prompt": "",
 	"c4Start": "खेल शुरू किया जाए ! बारी है: **{{player}}** |",
 	"cannotHaveNegativeMoney": "आपके पास {{SHINY}} ऋणात्मक संख्या में नहीं हो सकती |",
-	"coinFlipCoinnames": [
-		"चित्त",
-		"पट्ट"
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
+		"",
+		""
 	],
 	"coinFlipDescription": "सिक्का उछालें !",
 	"coinFlipExtended": {
@@ -47,7 +57,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "सुनिए, {{arg}} सिक्के का चेहरा नहीं है!",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था |",
 	"coinFlipLoseDescriptionWithWager": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था और आप {{wager}} {{SHINY}} हार गए |",
 	"coinFlipLoseTitle": "आप हार गए |",

@@ -5,11 +5,11 @@ export namespace Reddit {
 	}
 
 	export interface Data<K extends 'comments' | 'posts'> {
-		modhash: string;
-		dist: number;
-		children: Child<K>[];
 		after: string;
 		before: null;
+		children: Child<K>[];
+		dist: number;
+		modhash: string;
 	}
 
 	export interface Child<K extends 'comments' | 'posts'> {
@@ -22,27 +22,31 @@ export namespace Reddit {
 		approved_at_utc: unknown;
 		approved_by: unknown;
 		archived: boolean;
-		author_flair_background_color: string;
-		author_flair_css_class: string;
-		author_flair_richtext: AuthorFlairRichtext[];
-		author_flair_template_id: unknown;
-		author_flair_text_color: string;
-		author_flair_text: string;
+		associated_award: null;
+		author: string;
+		author_flair_background_color: string | null;
+		author_flair_css_class: string | null;
+		author_flair_richtext: FlairRichtext[];
+		author_flair_template_id: unknown | null;
+		author_flair_text: string | null;
+		author_flair_text_color: string | null;
 		author_flair_type: string;
 		author_fullname: string;
 		author_patreon_flair: boolean;
-		author: string;
+		author_premium: boolean;
 		banned_at_utc: unknown;
 		banned_by: unknown;
-		body_html: string;
 		body: string;
+		body_html: string;
 		can_gild: boolean;
 		can_mod_post: boolean;
-		collapsed_reason: unknown;
 		collapsed: boolean;
+		collapsed_because_crowd_control: unknown;
+		collapsed_reason: unknown;
+		comment_type: null;
 		controversiality: number;
-		created_utc: number;
 		created: number;
+		created_utc: number;
 		distinguished: unknown;
 		downs: number;
 		edited: boolean;
@@ -73,15 +77,17 @@ export namespace Reddit {
 		replies: string;
 		report_reasons: unknown;
 		saved: boolean;
+		score: number;
 		score_hidden: boolean;
-		score: 1;
 		send_replies: boolean;
 		stickied: boolean;
+		subreddit: string;
 		subreddit_id: string;
 		subreddit_name_prefixed: string;
 		subreddit_type: string;
-		subreddit: string;
+		top_awarded_type: null;
 		total_awards_received: number;
+		treatment_tags: unknown[];
 		ups: number;
 		user_reports: unknown[];
 	}
@@ -92,17 +98,18 @@ export namespace Reddit {
 		approved_at_utc: null;
 		approved_by: null;
 		archived: boolean;
-		author_flair_background_color: null;
-		author_flair_css_class: null | string;
-		author_flair_richtext: AuthorFlairRichtext[];
-		author_flair_template_id: null | string;
+		author: string;
+		author_flair_background_color: string | null;
+		author_flair_css_class: string | null;
+		author_flair_richtext: FlairRichtext[];
+		author_flair_template_id: string | null;
+		author_flair_text: string | null;
 		author_flair_text_color: FlairTextColor | null;
-		author_flair_text: null | string;
-		author_flair_type: AuthorFlairType;
+		author_flair_type: FlairType;
 		author_fullname: string;
 		author_patreon_flair: boolean;
-		author: string;
-		awarders: any[];
+		author_premium: boolean;
+		awarders: unknown[];
 		banned_at_utc: null;
 		banned_by: null;
 		can_gild: boolean;
@@ -111,10 +118,8 @@ export namespace Reddit {
 		clicked: boolean;
 		content_categories: null;
 		contest_mode: boolean;
-		created_utc: number;
 		created: number;
-		crosspost_parent_list?: PostDataElement[];
-		crosspost_parent?: string;
+		created_utc: number;
 		discussion_type: null;
 		distinguished: null | string;
 		domain: string;
@@ -135,18 +140,19 @@ export namespace Reddit {
 		likes: null;
 		link_flair_background_color: string;
 		link_flair_css_class: null;
-		link_flair_richtext: any[];
-		link_flair_text_color: FlairTextColor;
+		link_flair_richtext: FlairRichtext[];
+		link_flair_template_id: string;
 		link_flair_text: null;
-		link_flair_type: AuthorFlairType;
+		link_flair_text_color: FlairTextColor;
+		link_flair_type: FlairType;
 		locked: boolean;
+		media: null;
 		media_embed: Gildings;
 		media_only: boolean;
-		media: null;
 		mod_note: null;
 		mod_reason_by: null;
 		mod_reason_title: null;
-		mod_reports: any[];
+		mod_reports: unknown[];
 		name: string;
 		no_follow: boolean;
 		num_comments: number;
@@ -161,31 +167,36 @@ export namespace Reddit {
 		pwls: number | null;
 		quarantine: boolean;
 		removal_reason: null;
+		removed_by: null;
+		removed_by_category: string;
 		report_reasons: null;
 		saved: boolean;
 		score: number;
-		secure_media_embed: Gildings;
 		secure_media: null;
-		selftext_html: null;
+		secure_media_embed: Gildings;
 		selftext: string;
+		selftext_html: null;
 		send_replies: boolean;
 		spoiler: boolean;
-		steward_reports: any[];
 		stickied: boolean;
+		subreddit: string;
 		subreddit_id: string;
 		subreddit_name_prefixed: string;
 		subreddit_subscribers: number;
 		subreddit_type: SubredditType;
-		subreddit: string;
 		suggested_sort: null;
+		thumbnail: string;
 		thumbnail_height: number;
 		thumbnail_width: number;
-		thumbnail: string;
 		title: string;
+		top_awarded_type: null;
 		total_awards_received: number;
+		treatment_tags: unknown[];
 		ups: number;
+		upvote_ratio: number;
 		url: string;
-		user_reports: any[];
+		url_overridden_by_dest: string;
+		user_reports: unknown[];
 		view_count: null;
 		visited: boolean;
 		whitelist_status: null | string;
@@ -193,9 +204,11 @@ export namespace Reddit {
 	}
 
 	export interface AboutDataElement {
+		awardee_karma: number;
+		awarder_karma: number;
 		comment_karma: number;
-		created_utc: number;
 		created: number;
+		created_utc: number;
 		has_subscribed: boolean;
 		has_verified_email: boolean;
 		hide_from_robots: boolean;
@@ -208,16 +221,19 @@ export namespace Reddit {
 		link_karma: number;
 		name: string;
 		pref_show_snoovatar: boolean;
+		snoovatar_img: string;
+		snoovatar_size: number | null;
 		subreddit: UserSubreddit;
+		total_karma: number;
 		verified: boolean;
 	}
 
-	export interface AuthorFlairRichtext {
-		e: AuthorFlairType;
+	export interface FlairRichtext {
+		e: FlairType;
 		t: string;
 	}
 
-	export enum AuthorFlairType {
+	export enum FlairType {
 		Richtext = 'richtext',
 		Text = 'text'
 	}
@@ -252,42 +268,43 @@ export namespace Reddit {
 
 	export interface UserSubreddit {
 		banner_img: string;
-		community_icon: string;
+		banner_size: number[];
+		community_icon: string | null;
 		default_set: boolean;
 		description: string;
+		disable_contributor_requests: boolean;
 		display_name: string;
+		display_name_prefixed: string;
 		free_form_reports: boolean;
 		header_img: null;
 		header_size: null;
 		icon_color: string;
 		icon_img: string;
-		iconSize: unknown[];
-		over_18: boolean;
-		primary_color: string;
-		restrict_commenting: boolean;
-		restrict_posting: boolean;
-		show_media: boolean;
-		submit_link_label: string;
-		submit_text_label: string;
-		subscribers: number;
-		title: string;
-		user_is_banned: null;
-		user_is_contributor: null;
-		user_is_muted: null;
-		banner_size?: null;
-		disable_contributor_requests: boolean;
-		display_name_prefixed: string;
+		icon_size: number[];
 		is_default_banner: boolean;
 		is_default_icon: boolean;
 		key_color: string;
 		link_flair_enabled: boolean;
 		link_flair_position: string;
 		name: string;
+		over_18: boolean;
+		previous_names: string[];
+		primary_color: string;
 		public_description: string;
+		restrict_commenting: boolean;
+		restrict_posting: boolean;
+		show_media: boolean;
+		submit_link_label: string;
+		submit_text_label: string;
 		subreddit_type: string;
+		subscribers: number;
+		title: string;
 		url: string;
-		user_is_moderator?: null;
-		user_is_subscriber?: null;
+		user_is_banned: null;
+		user_is_contributor: null;
+		user_is_moderator: null;
+		user_is_muted: null;
+		user_is_subscriber: null;
 	}
 
 	export enum SubredditType {

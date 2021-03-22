@@ -67,6 +67,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.totalSubmissions, posts.length, true)
 					.addField(titles.commentControversiality, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
 					.addField(titles.textComplexity, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
+					.addField(titles.awardGiving, about.awarder_karma, true)
+					.addField(titles.awardReceiving, about.awardee_karma, true)
 			)
 			.addPageEmbed((embed) =>
 				embed

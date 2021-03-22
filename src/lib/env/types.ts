@@ -82,7 +82,6 @@ export interface SkyraEnv {
 	GOOGLE_CUSTOM_SEARCH_IMAGE_TOKEN: string;
 	GOOGLE_CUSTOM_SEARCH_WEB_TOKEN: string;
 	GOOGLE_MAPS_API_TOKEN: string;
-	INTERNETGAMEDATABASE_TOKEN: string;
 	KITSU_ID: string;
 	KITSU_TOKEN: string;
 	NINTENDO_ID: string;

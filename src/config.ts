@@ -79,7 +79,7 @@ function parsePresenceActivity(): PresenceData['activity'] | undefined {
 
 	return {
 		name: CLIENT_PRESENCE_NAME,
-		type: envParseString('CLIENT_PRESENCE_TYPE', 'Listening') as ActivityType
+		type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ActivityType
 	};
 }
 

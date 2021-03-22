@@ -1,9 +1,11 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.FollowageExtended,
 	permissions: ['EMBED_LINKS']

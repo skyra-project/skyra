@@ -5,6 +5,7 @@ import {
 	NotificationsStreamTwitch,
 	TwitchStreamSubscriptionEntity
 } from '#lib/database';
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -26,6 +27,7 @@ type Status = NotificationsStreamsTwitchEventStatus;
 type Entry = NotificationsStreamsTwitchStreamer;
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('TWITCH_CALLBACK', 'TWITCH_CLIENT_ID', 'TWITCH_TOKEN', 'TWITCH_WEBHOOK_TOKEN'),
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
 	generateDashLessAliases: true,
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,

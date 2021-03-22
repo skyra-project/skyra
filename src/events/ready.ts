@@ -6,11 +6,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
-const dev = process.env.NODE_ENV === 'development';
-const style = dev ? yellow : blue;
-
 @ApplyOptions<EventOptions>({ once: true })
 export class UserEvent extends Event {
+	private readonly style = this.context.client.dev ? yellow : blue;
+
 	public async run() {
 		const { client } = this.context;
 		try {
@@ -83,8 +82,8 @@ export class UserEvent extends Event {
 		const { client } = this.context;
 		const success = green('+');
 		const failed = red('-');
-		const llc = dev ? magentaBright : white;
-		const blc = dev ? magenta : blue;
+		const llc = this.context.client.dev ? magentaBright : white;
+		const blc = this.context.client.dev ? magenta : blue;
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
@@ -119,7 +118,7 @@ ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
 ${line11} ${pad}[${client.audio!.queues?.client.connected ? success : failed}] Audio
 ${line12} ${pad}[${success}] Moderation
 ${line13} ${pad}[${success}] Social & Leaderboards
-${line14}${dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+${line14}${this.context.client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}
@@ -134,6 +133,6 @@ ${line14}${dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MO
 	}
 
 	private styleStore(store: Store<any>, last: boolean) {
-		return gray(`${last ? '└─' : '├─'} Loaded ${style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
+		return gray(`${last ? '└─' : '├─'} Loaded ${this.style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
 	}
 }

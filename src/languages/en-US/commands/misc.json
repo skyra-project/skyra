@@ -20,6 +20,8 @@
 	"redditUserInvalidUser": "`{{user}}` is not a valid Reddit username",
 	"redditUserQueryFailed": "Couldn't find any data for that reddit user",
 	"redditUserTitles": {
+		"awardGiving": "Award Giving Karma",
+		"awardReceiving": "Award Receiving Karma",
 		"linkKarma": "Link Karma",
 		"commentKarma": "Comment Karma",
 		"totalComments": "Total Comments",

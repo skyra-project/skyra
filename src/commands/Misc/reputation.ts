@@ -2,11 +2,14 @@ import { UserRepository } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { Schedules } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { User } from 'discord.js';
 import type { TFunction } from 'i18next';
+
+const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rep'],
@@ -15,7 +18,8 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
 	runIn: ['text'],
-	spam: true
+	spam: true,
+	strategyOptions: { flags: REMINDER_FLAGS }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -40,6 +44,15 @@ export class UserCommand extends SkyraCommand {
 			settings.author.cooldowns.reputation = date;
 			await em.save([settings.target!, settings.author]);
 		});
+
+		if (args.getFlags(...REMINDER_FLAGS)) {
+			await this.context.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
+				data: {
+					content: args.t(LanguageKeys.Commands.Social.ReputationAvailable),
+					user: message.author.id
+				}
+			});
+		}
 
 		return message.send(args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() }));
 	}

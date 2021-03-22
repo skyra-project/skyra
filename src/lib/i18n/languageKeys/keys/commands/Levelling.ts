@@ -125,6 +125,7 @@ export const ReputationSelf = T<string>('commands/social:reputationSelf');
 export const ReputationsSelf = FT<{ points: number }, string>('commands/social:reputationsSelf');
 export const ReputationTime = FT<{ remaining: number }, string>('commands/social:reputationTime');
 export const ReputationUsable = T<string>('commands/social:reputationUsable');
+export const ReputationAvailable = T<string>('commands/social:reputationAvailable');
 export const SetColor = FT<{ color: string }, string>('commands/social:setColor');
 export const SetColorDescription = T<string>('commands/social:setColorDescription');
 export const SetColorExtended = T<LanguageHelpDisplayOptions>('commands/social:setColorExtended');

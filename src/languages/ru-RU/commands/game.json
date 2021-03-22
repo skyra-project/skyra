@@ -47,7 +47,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "Простите, но {{arg}} не является стороной монеты!",
+	"coinFlipInvalidCoinName": "Простите, но `{{parameter}}` не является стороной монеты!",
 	"coinFlipLoseDescription": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали.",
 	"coinFlipLoseDescriptionWithWager": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали и потеряли {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "Вы проиграли.",

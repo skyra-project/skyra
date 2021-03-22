@@ -22,12 +22,11 @@ export class UserCommand extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const { t } = args;
 		const guess = args.finished ? null : await args.pick(UserCommand.coinTypeResolver);
 		const wager = args.finished ? 'cashless' : await args.pick('shinyWager');
 
-		if (guess === null) return this.noGuess(message, t);
-		if (wager === 'cashless') return this.cashless(message, t, guess);
+		if (guess === null) return this.noGuess(message, args.t);
+		if (wager === 'cashless') return this.cashless(message, args.t, guess);
 
 		const { users } = this.context.db;
 		const settings = await users.ensure(message.author.id);
@@ -42,20 +41,14 @@ export class UserCommand extends SkyraCommand {
 		settings.money += won ? wager : -wager;
 		await settings.save();
 
+		const [title, description] = won
+			? ([LanguageKeys.Commands.Games.CoinFlipWinTitle, LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager] as const)
+			: ([LanguageKeys.Commands.Games.CoinFlipLoseTitle, LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager] as const);
+
 		return message.send(
 			(await this.buildEmbed(message, result))
-				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
-				.setDescription(
-					t(
-						won
-							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
-							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
-						{
-							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
-							wager
-						}
-					)
-				)
+				.setTitle(args.t(title))
+				.setDescription(args.t(description, { result: args.t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result], wager }))
 		);
 	}
 
@@ -81,9 +74,7 @@ export class UserCommand extends SkyraCommand {
 			(await this.buildEmbed(message, result)) //
 				.setTitle(t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
 				.setDescription(
-					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
-					})
+					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, { result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result] })
 				)
 		);
 	}
@@ -99,12 +90,9 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static coinTypeResolver: IArgument<CoinType | null> = Args.make((parameter, { argument, args }) => {
-		const { t } = args;
-		const lParam = parameter.toLowerCase();
-
-		const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lParam);
-		return face === -1
-			? Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Games.CoinFlipInvalidCoinName, context: { arg: parameter } })
-			: Args.ok(face);
+		const lowerCaseParameter = parameter.toLowerCase();
+		if (args.t(LanguageKeys.Commands.Games.CoinFlipHeadNames).includes(lowerCaseParameter)) return Args.ok(CoinType.Heads);
+		if (args.t(LanguageKeys.Commands.Games.CoinFlipTailNames).includes(lowerCaseParameter)) return Args.ok(CoinType.Tails);
+		return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Games.CoinFlipInvalidCoinName });
 	});
 }

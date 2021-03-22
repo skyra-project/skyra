@@ -47,7 +47,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
+	"coinFlipInvalidCoinName": "Excuse me, but `{{parameter}}` is not a coin face!",
 	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
 	"coinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "You lost.",

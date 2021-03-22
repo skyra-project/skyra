@@ -47,7 +47,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinname": "सुनिए, {{arg}} सिक्के का चेहरा नहीं है!",
+	"coinFlipInvalidCoinName": "सुनिए, `{{parameter}}` सिक्के का चेहरा नहीं है!",
 	"coinFlipLoseDescription": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था |",
 	"coinFlipLoseDescriptionWithWager": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था और आप {{wager}} {{SHINY}} हार गए |",
 	"coinFlipLoseTitle": "आप हार गए |",

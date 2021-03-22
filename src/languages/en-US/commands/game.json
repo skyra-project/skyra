@@ -14,7 +14,9 @@
 	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect-Four match. Click the 🇾 reaction to accept!",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s.",
-	"coinFlipCoinnames": ["Heads", "Tails"],
+	"coinFlipHeadNames": ["heads", "head", "h"],
+	"coinFlipTailNames": ["tails", "tail", "t"],
+	"coinFlipCoinNames": ["Heads", "Tails"],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
 		"usages": ["heads/tails", "heads cashless", "tails Wager"],
@@ -28,7 +30,7 @@
 		],
 		"examples": ["tails", "heads 50", "tails 200", "tails cashless"]
 	},
-	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
+	"coinFlipInvalidCoinName": "Excuse me, but `{{parameter}}` is not a coin face!",
 	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
 	"coinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "You lost.",

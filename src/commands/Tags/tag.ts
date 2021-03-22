@@ -18,7 +18,7 @@ import { MessageEmbed } from 'discord.js';
 	runIn: ['text'],
 	strategyOptions: { flags: ['embed'], options: ['color', 'colour'] },
 	permissions: ['MANAGE_MESSAGES'],
-	subCommands: ['add', 'remove', 'edit', 'source', 'list', 'reset', { input: 'show', default: true }]
+	subCommands: ['add', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	// Based on HEX regex from #utils/Color
@@ -58,6 +58,32 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }), {
+			allowedMentions: { users: [], roles: [] }
+		});
+	}
+
+	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
+		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	})
+	public async rename(message: GuildMessage, args: SkyraCommand.Args) {
+		const previous = (await args.pick('string')).toLowerCase();
+		const next = (await args.pick('string')).toLowerCase();
+
+		await message.guild.writeSettings((settings) => {
+			const tags = settings[GuildSettings.CustomCommands];
+
+			// Get previous tag:
+			const tag = tags.find((tag) => tag.id === previous);
+			if (tag === undefined) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: previous });
+
+			// Check if a tag with the name exists:
+			if (tags.some((tag) => tag.id === next)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
+
+			// Rename tag:
+			tag.id = next;
+		});
+
+		return message.send(args.t(LanguageKeys.Commands.Tags.TagRenamed, { name: next, previous }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}

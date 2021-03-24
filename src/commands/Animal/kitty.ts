@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -14,14 +14,16 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
-		const embed = new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setTimestamp();
-
-		try {
-			const randomImageBuffer = await fetch('https://cataas.com/cat', FetchResultTypes.Buffer);
-			embed.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }]).setImage('attachment://randomcat.jpg');
-		} catch {
-			embed.setImage('https://wallpapercave.com/wp/wp3021105.jpg');
-		}
-		return message.send(embed);
+		const result = await wrap(fetch<AwsRandomCatResult>('https://aws.random.cat/meow'));
+		return message.send(
+			new MessageEmbed()
+				.setColor(await this.context.db.fetchColor(message))
+				.setImage(result.success ? result.value.file : 'https://wallpapercave.com/wp/wp3021105.jpg')
+				.setTimestamp()
+		);
 	}
+}
+
+interface AwsRandomCatResult {
+	file: string;
 }

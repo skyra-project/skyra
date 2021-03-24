@@ -14,7 +14,7 @@
 	},
 	"kittyDescription": "KITTENS!",
 	"kittyExtended": {
-		"extendedHelp": "Do **you** know how cute are kittens? They are so beautiful!\nThis command uses [cataas.com](https://cataas.com/) to show pictures of the cuttest cats!"
+		"extendedHelp": "Do **you** know how cute are kittens? They are so beautiful!\nThis command uses [random.cat](https://aws.random.cat/) to show pictures of the cuttest cats!"
 	},
 	"shibeDescription": "Cute shibas!",
 	"shibeExtended": {

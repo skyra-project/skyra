@@ -9,6 +9,8 @@ namespace Skyra.Database
 {
 	public interface IDatabase
 	{
+		Task<Result<Asset>> GetAssetAsync(string id);
+
 		Task<Result> AddGiveawayAsync(string title, DateTime endsAt, string guildId, string channelId,
 			string messageId,
 			int minimum, int minimumWinners);

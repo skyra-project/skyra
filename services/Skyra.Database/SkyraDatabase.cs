@@ -29,6 +29,19 @@ namespace Skyra.Database
 			await _context.DisposeAsync();
 		}
 
+		public async Task<Result<Asset>> GetAssetAsync(string id)
+		{
+			try
+			{
+				var value = await _context.Assets.Where(asset => asset.Name == id).FirstOrDefaultAsync();
+				return value is null ? Result<Asset>.FromError("The asset does not exist", ResultStatus.NotFound) : Result<Asset>.FromSuccess(value);
+			}
+			catch (Exception e)
+			{
+				return HandleException<Asset>(e);
+			}
+		}
+
 		public async Task<Result> AddGiveawayAsync(string title, DateTime endsAt, string guildId, string channelId,
 			string messageId, int minimum, int minimumWinners)
 		{

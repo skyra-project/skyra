@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
+import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Store } from '@sapphire/framework';
@@ -88,6 +89,7 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
+	@requiresPermissions(PERMISSIONS_PAGINATED_MESSAGE)
 	private async display(message: Message, args: SkyraCommand.Args, index: number | null) {
 		const { commandPrefix: prefix } = args.commandContext;
 

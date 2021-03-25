@@ -48,7 +48,7 @@
 		],
 		"reminder": "Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.\nFurthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
 	},
-	"resolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
+	"resolveSuggestionInvalidId": "I am sorry, but I was not able to resolve `{{parameter}}` to a valid suggestion ID! They are integers between {{minimum, number}} and {{maximum, number}} inclusive.",
 	"resolveSuggestionInvalidAction": "I am sorry, but I was not able to resolve `{{parameter}}` into a valid action.\n**Hint**: The possible values are: {{possibles, orList}}.",
 	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
 	"resolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",

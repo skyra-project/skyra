@@ -316,6 +316,7 @@
 	"whoisMemberPermissionsAll": "All Permissions",
 	"whoisMemberRoles": "Role [1]",
 	"whoisMemberRoles_plural": "Roles [{{count}}]",
+	"whoisMemberRoleListAndMore": "{{count}} more.",
 	"whoisMemberTitles": {
 		"createdAt": "Created At",
 		"joined": "Joined"

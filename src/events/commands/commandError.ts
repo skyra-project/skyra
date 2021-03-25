@@ -21,8 +21,8 @@ export class UserEvent extends Event<Events.CommandError> {
 		if (error instanceof UserError) return this.userError(message, args.t, error);
 
 		const { client } = this.context;
-		// If the error was an AbortError, tell the user to re-try:
-		if (error.name === 'AbortError') {
+		// If the error was an AbortError or an Internal Server Error, tell the user to re-try:
+		if (error.name === 'AbortError' || error.message === 'Internal Server Error') {
 			client.logger.warn(`${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			return message.alert(args.t(LanguageKeys.System.DiscordAbortError));
 		}

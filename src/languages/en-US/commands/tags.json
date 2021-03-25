@@ -50,5 +50,22 @@
 	"permissionlevel": "You must be a staff member, moderator, or admin, to be able to manage tags.",
 	"removed": "Successfully removed the tag **{{name}}**.",
 	"renamed": "Successfully renamed the tag **{{previous}}** to **{{name}}**.",
-	"reset": "All tags have been successfully removed from this server."
+	"reset": "All tags have been successfully removed from this server.",
+	"parseMismatchingNamedArgumentTypeValidation": "{{REDCROSS}} Mismatching named argument types, expected `{{expected.type}}` but received `{{received.type}}`.",
+	"parseParserEmptyStringTag": "{{REDCROSS}} Content tags must have at least one character.",
+	"parseParserMissingToken": "{{REDCROSS}} A token was expected for the last tag, but none was given.",
+	"parseParserPickMissingOptions": "{{REDCROSS}} Pick tags require at least one option to be given.",
+	"parseParserRandomDuplicatedOptions": "{{REDCROSS}} Random tags cannot have duplicated options.",
+	"parseParserRandomMissingOptions": "{{REDCROSS}} Random tags must have at least two items.",
+	"parseParserUnexpectedToken": "{{REDCROSS}} I expected {{expected}}, however, I received a token {{received}}.",
+	"parsePickInvalidOption": "{{REDCROSS}} The key `{{option}}` is not a valid option.",
+	"parseSentenceMissingArgument": "{{REDCROSS}} An argument must be specified for this argument.",
+	"parseTokenColon": "Colon (\":\")",
+	"parseTokenEquals": "Equals (\"=\")",
+	"parseTokenLiteral": "Literal (Any Word)",
+	"parseTokenPipe": "Pipe (\"|\")",
+	"parseTokenSpace": "Space (\" \")",
+	"parseTokenTagEnd": "Tag End (\"}\")",
+	"parseTokenTagStart": "Tag Start (\"{\")",
+	"parseTransformerInvalidFormatter": "{{REDCROSS}} The key `{{formatter}}` does not correspond with a valid formatter."
 }

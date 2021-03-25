@@ -86,9 +86,13 @@ export class StarboardEntity extends BaseEntity {
 		return kColors[Math.min(this.stars, kMaxColors)];
 	}
 
-	public setup(manager: StarboardManager, message: GuildMessage) {
+	public setup(manager: StarboardManager) {
 		this.#client = manager.client;
 		this.#manager = manager;
+	}
+
+	public init(manager: StarboardManager, message: GuildMessage) {
+		this.setup(manager);
 		this.#message = message;
 		this.messageID = message.id;
 		this.channelID = message.channel.id;

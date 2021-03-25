@@ -123,6 +123,9 @@ export class UserCommand extends SkyraCommand {
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.send(t(LanguageKeys.Commands.Starboard.StarNoStars));
 
+		// Set up the starboard entry
+		starboardData.setup(message.guild.starboard);
+
 		// If there is no configured starboard channel, return no stars
 		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {

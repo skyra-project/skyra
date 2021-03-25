@@ -92,12 +92,12 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		const { starboards } = Store.injectedContext.db;
 		const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });
 		if (previous) {
-			previous.setup(this, message);
+			previous.init(this, message);
 			await previous.downloadStarMessage();
 			if (!previous.hasId()) return null;
 		}
 
-		const star = previous ?? new StarboardEntity().setup(this, message);
+		const star = previous ?? new StarboardEntity().init(this, message);
 		this.set(messageID, star);
 
 		await star.downloadUserList();

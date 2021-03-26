@@ -510,6 +510,8 @@
 			]
 		]
 	},
+	"voteContentNeeded": "",
+	"voteReactionBlocked": "",
 	"whoisDescription": "",
 	"whoisExtended": {
 		"usages": [
@@ -534,6 +536,7 @@
 	"whoisMemberPermissionsAll": "",
 	"whoisMemberRoles": "",
 	"whoisMemberRoles_plural": "",
+	"whoisMemberRoleListAndMore": "",
 	"whoisMemberTitles": {
 		"createdAt": "",
 		"joined": ""

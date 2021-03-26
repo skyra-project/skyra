@@ -167,6 +167,7 @@ export const WhoisMemberFields = FT<
 	{ joinedUnknown: string; joinedWithTimestamp: string; createdAt: string; footer: string }
 >('commands/tools:whoisMemberFields');
 export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
+export const WhoisMemberRoleListAndMore = FT<{ count: number }, string>('commands/tools:whoisMemberRoleListAndMore');
 export const WhoisMemberPermissions = T<string>('commands/tools:whoisMemberPermissions');
 export const WhoisMemberPermissionsAll = T<string>('commands/tools:whoisMemberPermissionsAll');
 export const WhoisUserTitles = T<{

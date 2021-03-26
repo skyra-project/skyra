@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Message } from 'discord.js';
+import { RESTJSONErrorCodes } from 'discord-api-types/common';
+import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 5,
@@ -11,13 +12,23 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		// Even thought we don't use the argument, it's to require it so users don't do `s!vote` without args.
-		await args.pick('string');
+		if (args.finished) this.error(LanguageKeys.Commands.Tools.VoteContentNeeded);
 
 		for (const reaction of ['👍', '👎', '🤷']) {
-			if (!message.reactions.cache.has(reaction)) await message.react(reaction);
+			if (!message.reactions.cache.has(reaction)) await this.react(message, reaction);
 		}
 
 		return message;
+	}
+
+	private async react(message: Message, reaction: string) {
+		try {
+			await message.react(reaction);
+		} catch (error) {
+			if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.ReactionWasBlocked) {
+				this.error(LanguageKeys.Commands.Tools.VoteReactionBlocked);
+			}
+			throw error;
+		}
 	}
 }

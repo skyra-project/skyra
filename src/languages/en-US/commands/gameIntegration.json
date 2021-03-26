@@ -146,8 +146,10 @@
 		"examples": [
 			"item potion",
 			"character Laytlan Ardevon",
+			"character Saewynn Frobisher --server=Omega",
 			"Laytlan Ardevon"
-		]
+		],
+		"reminder": "When searching for a character you can specify the server the character is playing on by including `--server=ServerName` in your message."
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "Server - Datacenter",

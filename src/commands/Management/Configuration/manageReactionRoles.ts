@@ -113,7 +113,7 @@ export class UserCommand extends SkyraCommand {
 
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
-		for (const bulk of chunk(reactionRoles, 20)) {
+		for (const bulk of chunk(reactionRoles, 15)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
 			display.addPageEmbed((template) => template.setDescription(serialized));
 		}

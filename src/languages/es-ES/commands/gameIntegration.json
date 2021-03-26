@@ -144,12 +144,12 @@
 			]
 		],
 		"examples": [
-			"item potion",
 			"character Laytlan Ardevon",
-			"character Saewynn Frobisher --server=Omega",
-			"Laytlan Ardevon"
+			"Laytlan Ardevon",
+			"",
+			""
 		],
-		"reminder": "Cuando buscas por un personaje, puedes especificar el servidor en el que juega incluyendo `--server=NombreDelServidor` en tu mensaje."
+		"reminder": ""
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "Servidor - Centro de Datos",

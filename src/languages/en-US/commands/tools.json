@@ -301,7 +301,7 @@
 		"explainedUsage": [["Question", "The question to vote on."]]
 	},
 	"voteContentNeeded": "{{REDCROSS}} You must give a topic for the poll.",
-	"voteReactionBlocked": "{{REDCROSS}} I was not able to add the reactions necessary for this command to work!",
+	"voteReactionBlocked": "{{REDCROSS}} I was not able to add the reactions necessary for this command to work because you have me blocked! 😢",
 	"whoisDescription": "Who are you?",
 	"whoisExtended": {
 		"usages": ["", "User"],

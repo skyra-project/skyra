@@ -819,11 +819,11 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.links.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string[]>("SelfmodLinksWhitelist")
+                    b.Property<string[]>("SelfmodLinksAllowed")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(128)[]")
-                        .HasColumnName("selfmod.links.whitelist")
+                        .HasColumnName("selfmod.links.allowed")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("SelfmodMessagesEnabled")
@@ -928,11 +928,11 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.newlines.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string[]>("SelfmodReactionsBlacklist")
+                    b.Property<string[]>("SelfmodReactionsBlocked")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(128)[]")
-                        .HasColumnName("selfmod.reactions.blacklist")
+                        .HasColumnName("selfmod.reactions.blocked")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("SelfmodReactionsEnabled")
@@ -983,11 +983,11 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.reactions.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string[]>("SelfmodReactionsWhitelist")
+                    b.Property<string[]>("SelfmodReactionsAllowed")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(128)[]")
-                        .HasColumnName("selfmod.reactions.whitelist")
+                        .HasColumnName("selfmod.reactions.allowed")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("SocialAchieve")

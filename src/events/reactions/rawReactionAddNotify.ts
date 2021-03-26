@@ -28,7 +28,7 @@ export class UserEvent extends Event {
 			ignoreAllEvents,
 			t
 		] = await data.guild.readSettings((settings) => [
-			settings[GuildSettings.Selfmod.Reactions.WhiteList],
+			settings[GuildSettings.Selfmod.Reactions.Allowed],
 			settings[GuildSettings.Channels.ReactionLogs],
 			settings[GuildSettings.Events.Twemoji],
 			settings[GuildSettings.Messages.IgnoreChannels],
@@ -39,7 +39,7 @@ export class UserEvent extends Event {
 
 		if (allowList.includes(emoji)) return;
 
-		this.context.client.emit(Events.ReactionBlacklist, data, emoji);
+		this.context.client.emit(Events.ReactionBlocked, data, emoji);
 		if (!channel || (!twemojiEnabled && data.emoji.id === null)) return;
 
 		if (ignoreChannels.includes(data.channel.id)) return;

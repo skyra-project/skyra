@@ -358,9 +358,9 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'selfmod.links.enabled', default: false })
 	public selfmodLinksEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksWhiteList })
-	@Column('varchar', { name: 'selfmod.links.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodLinksWhitelist: string[] = [];
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksAllowed })
+	@Column('varchar', { name: 'selfmod.links.allowed', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodLinksAllowed: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.links.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -588,13 +588,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.reactions.maximum', default: 10 })
 	public selfmodReactionsMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsWhiteList })
-	@Column('varchar', { name: 'selfmod.reactions.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodReactionsWhitelist: string[] = [];
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsAllowed })
+	@Column('varchar', { name: 'selfmod.reactions.allowed', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodReactionsAllowed: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsBlackList })
-	@Column('varchar', { name: 'selfmod.reactions.blacklist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodReactionsBlacklist: string[] = [];
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsBlocked })
+	@Column('varchar', { name: 'selfmod.reactions.blocked', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodReactionsBlocked: string[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
 	@Column('smallint', { name: 'selfmod.reactions.soft-action', default: 0 })

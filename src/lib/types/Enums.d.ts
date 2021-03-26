@@ -78,7 +78,7 @@ export const enum Events {
 	RawMessageDeleteBulk = 'rawMessageDeleteBulk',
 	RawReactionAdd = 'rawReactionAdd',
 	RawReactionRemove = 'rawReactionRemove',
-	ReactionBlacklist = 'reactionBlacklist',
+	ReactionBlocked = 'reactionBlocked',
 	Reconnecting = 'reconnecting',
 	ResourceAnalyticsSync = 'resourceAnalyticsSync',
 	SettingsUpdate = 'settingsUpdate',

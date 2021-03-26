@@ -1,9 +1,13 @@
 {
 	"c4Description": "Play Connect-Four with somebody.",
 	"c4Extended": {
-		"usages": ["User"],
+		"usages": [
+			"User"
+		],
 		"extendedHelp": "This game is best played on PC.\nConnect Four is a two-player connection game in which the players first choose a color and then take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid.",
-		"examples": ["Skyra"]
+		"examples": [
+			"Skyra"
+		]
 	},
 	"c4GameColumnFull": "This column is full. Please try another.",
 	"c4GameDraw": "This match concluded in a **draw**!",
@@ -14,21 +18,44 @@
 	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect-Four match. Click the 🇾 reaction to accept!",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s.",
-	"coinFlipHeadNames": ["heads", "head", "h"],
-	"coinFlipTailNames": ["tails", "tail", "t"],
-	"coinFlipCoinNames": ["Heads", "Tails"],
+	"coinFlipHeadNames": [
+		"heads",
+		"head",
+		"h"
+	],
+	"coinFlipTailNames": [
+		"tails",
+		"tail",
+		"t"
+	],
+	"coinFlipCoinNames": [
+		"Heads",
+		"Tails"
+	],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
-		"usages": ["heads/tails", "heads cashless", "tails Wager"],
+		"usages": [
+			"heads/tails",
+			"heads cashless",
+			"tails Wager"
+		],
 		"extendedHelp": "Flip a coin. If you guess the side that shows up, you get back your wager, doubled.\nIf you don't, you lose your wager.\nYou can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.\nNow get those coins flippin'.",
 		"explainedUsage": [
-			["heads/tails", "Whether you think the coin will lands heads or tails up."],
+			[
+				"heads/tails",
+				"Whether you think the coin will lands heads or tails up."
+			],
 			[
 				"cashless, Wager",
 				"If cashless (default) then you do not input shinies for the coinflip (useful for RPG games or making decision). You can also put a wager of shinies here to gamble them."
 			]
 		],
-		"examples": ["tails", "heads 50", "tails 200", "tails cashless"]
+		"examples": [
+			"tails",
+			"heads 50",
+			"tails 200",
+			"tails cashless"
+		]
 	},
 	"coinFlipInvalidCoinName": "Excuse me, but `{{parameter}}` is not a coin face!",
 	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
@@ -411,9 +438,14 @@
 		"title": "Higher or Lower? | Turn {{turn}}"
 	},
 	"higherLowerExtended": {
-		"usages": ["Wager"],
+		"usages": [
+			"Wager"
+		],
 		"extendedHelp": "Higher/Lower is a game of luck.\nI will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis.\nYour winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 emoji.\nBe warned though! The further you go, the more chances you have to lose the winnings.",
-		"examples": ["50", "200"]
+		"examples": [
+			"50",
+			"200"
+		]
 	},
 	"higherLowerLoading": "{{LOADING}} Starting a new game of Higher/Lower.",
 	"higherLowerLose": {
@@ -429,9 +461,14 @@
 	},
 	"hungerGamesDescription": "Play Hunger Games with your friends!",
 	"hungerGamesExtended": {
-		"usages": ["User1 User2 User3...", "--autofill"],
+		"usages": [
+			"User1 User2 User3...",
+			"--autofill"
+		],
 		"extendedHelp": "Enough discussion, let the games begin!",
-		"examples": ["Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight"],
+		"examples": [
+			"Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight"
+		],
 		"reminder": "You can specify `--autoskip` to automatically skip after some time."
 	},
 	"hungerGamesResultDeaths": "**{{count}} cannon shot can be heard in the distance.**",
@@ -447,8 +484,15 @@
 	"slotmachineCanvasTextWon": "You won",
 	"slotmachineDescription": "I bet 100 {{SHINY}}'s you ain't winning this round.",
 	"slotmachineExtended": {
-		"usages": ["Wager"],
-		"explainedUsage": [["Wager", "Either 50, 100, 200, 500, 1000, and even more {{SHINY}} to bet."]],
+		"usages": [
+			"Wager"
+		],
+		"explainedUsage": [
+			[
+				"Wager",
+				"Either 50, 100, 200, 500, 1000, and even more {{SHINY}} to bet."
+			]
+		],
 		"extendedHelp": "Spin a slot machine of 3 reels and gamble your shinies for larger rewards.",
 		"reminder": "You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin)."
 	},
@@ -457,9 +501,13 @@
 	"ticTacToeDescription": "Play Tic-Tac-Toe with somebody.",
 	"ticTacToeDraw": "This match concluded in a **draw**!\n{{board}}",
 	"ticTacToeExtended": {
-		"usages": ["User"],
+		"usages": [
+			"User"
+		],
 		"extendedHelp": "Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.\nThe player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game.",
-		"examples": ["Skyra"]
+		"examples": [
+			"Skyra"
+		]
 	},
 	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Tic-Tac-Toe match. Click the 🇾 reaction to accept!",
 	"ticTacToeTurn": "({{icon}}) Turn for {{player}}!\n{{board}}",
@@ -471,15 +519,37 @@
 		"trivia": "Trivia"
 	},
 	"triviaExtended": {
-		"usages": ["", "Category", "Category multiple/boolean/truefalse", "multiple easy/medium/hard", "hard 2m"],
+		"usages": [
+			"",
+			"Category",
+			"Category multiple/boolean/truefalse",
+			"multiple easy/medium/hard",
+			"hard 2m"
+		],
 		"extendedHelp": "Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)\n\n**Categories**: {{TRIVIA_CATEGORIES}}",
 		"explainedUsage": [
-			["Category", "The category questions are asked from."],
-			["multiple/boolean/truefalse", "Whether you want a multiple choice or a true/false question."],
-			["easy/medium/hard", "The difficulty level of the questions asked."],
-			["Timespan", "The amount of time you get to answer. The minimum is 1 second and the maximum is 1 minute"]
+			[
+				"Category",
+				"The category questions are asked from."
+			],
+			[
+				"multiple/boolean/truefalse",
+				"Whether you want a multiple choice or a true/false question."
+			],
+			[
+				"easy/medium/hard",
+				"The difficulty level of the questions asked."
+			],
+			[
+				"Timespan",
+				"The amount of time you get to answer. The minimum is 1 second and the maximum is 1 minute"
+			]
 		],
-		"examples": ["history", "books multiple easy", "videogames 45s"]
+		"examples": [
+			"history",
+			"books multiple easy",
+			"videogames 45s"
+		]
 	},
 	"triviaIncorrect": "I am sorry, but **{{attempt}}** is not the correct answer. Better luck next time!",
 	"triviaInvalidCategory": "Invalid category: Please use `Skyra, help trivia` for a list of categories.",
@@ -489,9 +559,14 @@
 	"wheelOfFortuneCanvasTextWon": "You won",
 	"wheelOfFortuneDescription": "Gamble your shinies by spinning a wheel of fortune",
 	"wheelOfFortuneExtended": {
-		"usages": ["Wager"],
+		"usages": [
+			"Wager"
+		],
 		"extendedHelp": "You can lose 0.1, 0.2, 0.3 or 0.5 times your input or win 1.2, 1.5, 1.7 or 2.4 times your input",
-		"examples": ["50", "200"]
+		"examples": [
+			"50",
+			"200"
+		]
 	},
 	"balanceDifference": "**Previous**: {{previous, number}} {{SHINY}}\n**New**: {{next, number}} {{SHINY}}"
 }

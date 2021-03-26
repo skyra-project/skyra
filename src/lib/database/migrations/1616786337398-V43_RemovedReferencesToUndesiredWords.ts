@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class V43RemovedReferencesToUndesiredWords1616786337398 implements MigrationInterface {
 	private readonly keys: readonly [previous: string, next: string][] = [

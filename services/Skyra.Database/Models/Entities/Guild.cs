@@ -307,8 +307,8 @@ namespace Skyra.Database.Models.Entities
 		public bool SelfmodLinksEnabled { get; set; }
 
 		[Required]
-		[Column("selfmod.links.whitelist", TypeName = "character varying(128)[]")]
-		public string[] SelfmodLinksWhitelist { get; set; }
+		[Column("selfmod.links.allowed", TypeName = "character varying(128)[]")]
+		public string[] SelfmodLinksAllowed { get; set; }
 
 		[Required]
 		[Column("selfmod.links.ignored-roles", TypeName = "character varying(19)[]")]
@@ -473,12 +473,12 @@ namespace Skyra.Database.Models.Entities
 		public short SelfmodReactionsMaximum { get; set; }
 
 		[Required]
-		[Column("selfmod.reactions.whitelist", TypeName = "character varying(128)[]")]
-		public string[] SelfmodReactionsWhitelist { get; set; }
+		[Column("selfmod.reactions.allowed", TypeName = "character varying(128)[]")]
+		public string[] SelfmodReactionsAllowed { get; set; }
 
 		[Required]
-		[Column("selfmod.reactions.blacklist", TypeName = "character varying(128)[]")]
-		public string[] SelfmodReactionsBlacklist { get; set; }
+		[Column("selfmod.reactions.blocked", TypeName = "character varying(128)[]")]
+		public string[] SelfmodReactionsBlocked { get; set; }
 
 		[Column("selfmod.reactions.soft-action")]
 		public short SelfmodReactionsSoftAction { get; set; }

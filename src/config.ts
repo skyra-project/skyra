@@ -88,6 +88,9 @@ function parseRegExpPrefix(): RegExp | undefined {
 	return CLIENT_REGEX_PREFIX ? new RegExp(CLIENT_REGEX_PREFIX, 'i') : undefined;
 }
 
+export const PROJECT_ROOT = join(rootFolder, process.env.OVERRIDE_ROOT_PATH ?? 'dist');
+export const LANGUAGE_ROOT = join(PROJECT_ROOT, 'languages');
+
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: parseAudio(),
 	ws: {
@@ -125,6 +128,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	i18n: {
 		defaultMissingKey: 'default',
 		defaultNS: 'globals',
+		defaultLanguageDirectory: LANGUAGE_ROOT,
 		i18next: (_: string[], languages: string[]) => ({
 			supportedLngs: languages,
 			preload: languages,

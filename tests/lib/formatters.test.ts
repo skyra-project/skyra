@@ -160,6 +160,17 @@ describe('formatters', () => {
 			);
 		});
 
+		test('GIVEN embed with image only THEN returns embed with image only', () => {
+			const message = createMessage({ embeds: [{ image: { url: 'https://skyra.pw/avatars/skyra.png' } }] });
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'>🖼️ [https://skyra.pw/avatars/skyra.png]'
+				)
+			);
+		});
+
 		test('GIVEN embed footer with text only THEN returns embed footer with text only', () => {
 			const message = createMessage({ embeds: [{ footer: { text: 'Your Footer!' } }] });
 

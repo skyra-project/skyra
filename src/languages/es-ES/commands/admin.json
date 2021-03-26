@@ -15,7 +15,7 @@
 			"reset NombreDeClave",
 			"menu"
 		],
-		"extendedHelp": "Te permite configurar Skyra desde Discord, como una alternativa rápida al [panel de control web](https://skyra.pw).",
+		"extendedHelp": "",
 		"examples": [
 			"set language es-ES",
 			"set channels.moderation-logs #logs-de-moderacion",

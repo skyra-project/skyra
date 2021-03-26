@@ -18,9 +18,19 @@
 	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
 	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
-	"coinFlipCoinnames": [
-		"Cara",
-		"Cruz"
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
+		"",
+		""
 	],
 	"coinFlipDescription": "¡Lanza una moneda al aire!",
 	"coinFlipExtended": {
@@ -47,7 +57,7 @@
 			"tails cashless"
 		]
 	},
-	"coinFlipInvalidCoinName": "Disculpe, ¡pero `{{parameter}}` no es una cara de moneda!",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente.",
 	"coinFlipLoseDescriptionWithWager": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente y perdiste {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "¡Perdiste!",

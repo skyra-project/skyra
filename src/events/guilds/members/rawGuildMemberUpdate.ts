@@ -10,13 +10,20 @@ import {
 	RESTGetAPIAuditLogQuery,
 	RESTGetAPIAuditLogResult
 } from 'discord-api-types/v6';
-import type { Guild } from 'discord.js';
+import { Guild, Permissions } from 'discord.js';
 
 @ApplyOptions<EventOptions>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export class UserEvent extends Event {
+	private readonly requiredPermissions = new Permissions(Permissions.FLAGS.VIEW_AUDIT_LOG);
+
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
 		const guild = this.context.client.guilds.cache.get(data.guild_id);
+
+		// If the guild does not exist for some reason, skip:
 		if (typeof guild === 'undefined') return;
+
+		// If the bot doesn't have the required permissions, skip:
+		if (!guild.me!.permissions.has(this.requiredPermissions)) return;
 
 		floatPromise(this.handleRoleSets(guild, data));
 	}

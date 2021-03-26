@@ -18,9 +18,19 @@
 	"c4Prompt": "",
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": [
-		"Орёл",
-		"Решка"
+	"coinFlipHeadNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipTailNames": [
+		"",
+		"",
+		""
+	],
+	"coinFlipCoinNames": [
+		"",
+		""
 	],
 	"coinFlipDescription": "Подбросьте монетку!",
 	"coinFlipExtended": {
@@ -47,7 +57,7 @@
 			""
 		]
 	},
-	"coinFlipInvalidCoinName": "Простите, но `{{parameter}}` не является стороной монеты!",
+	"coinFlipInvalidCoinName": "",
 	"coinFlipLoseDescription": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали.",
 	"coinFlipLoseDescriptionWithWager": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали и потеряли {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "Вы проиграли.",

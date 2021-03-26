@@ -149,7 +149,7 @@
 			"character Saewynn Frobisher --server=Omega",
 			"Laytlan Ardevon"
 		],
-		"reminder": "When searching for a character you can specify the server the character is playing on by including `--server=ServerName` in your message."
+		"reminder": "Cuando buscas por un personaje, puedes especificar el servidor en el que juega incluyendo `--server=NombreDelServidor` en tu mensaje."
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "Servidor - Centro de Datos",

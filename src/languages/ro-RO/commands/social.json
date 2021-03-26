@@ -94,6 +94,7 @@
 	"remindmeNotfound": "",
 	"reputationTime": "",
 	"reputationUsable": "",
+	"reputationAvailable": "",
 	"reputationSelf": "",
 	"reputationGive": "",
 	"reputationsBots": "",
@@ -391,12 +392,14 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
 	"reputationDescription": "",
 	"reputationExtended": {
 		"usages": [
+			"",
 			"",
 			"",
 			""
@@ -414,6 +417,7 @@
 		],
 		"reminder": "",
 		"examples": [
+			"",
 			"",
 			"",
 			"",

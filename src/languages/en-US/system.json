@@ -38,5 +38,9 @@
 	"poweredByWeebSh": "Powered by weeb.sh",
 	"prefixReminder": "The prefix in this guild is set to: `{{prefix}}`",
 	"queryFail": "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",
-	"textPromptAbortOptions": ["abort", "cancel", "stop"]
+	"textPromptAbortOptions": [
+		"abort",
+		"cancel",
+		"stop"
+	]
 }

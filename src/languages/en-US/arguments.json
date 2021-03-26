@@ -3,9 +3,32 @@
 	"boolean": "I could not resolve `{{parameter}}` to a boolean, the only possible value is: {{possibles}}",
 	"booleanDisabled": "Disabled",
 	"booleanEnabled": "Enabled",
-	"booleanFalseOptions": ["false", "f", "no", "n", "off", "disable", "disabled", "0", "-"],
-	"booleanTrueOptions": ["true", "t", "yes", "y", "on", "enable", "enabled", "1", "+"],
-	"caseLatestOptions": ["last", "latest"],
+	"booleanFalseOptions": [
+		"false",
+		"f",
+		"no",
+		"n",
+		"off",
+		"disable",
+		"disabled",
+		"0",
+		"-"
+	],
+	"booleanTrueOptions": [
+		"true",
+		"t",
+		"yes",
+		"y",
+		"on",
+		"enable",
+		"enabled",
+		"1",
+		"+"
+	],
+	"caseLatestOptions": [
+		"last",
+		"latest"
+	],
 	"categoryChannel": "I could not resolve `{{parameter}}` to a category channel, please make sure you typed its name or ID correctly!",
 	"channel": "I could not resolve `{{parameter}}` to a channel, make sure you typed its name or ID correctly!",
 	"command": "I could not resolve `{{parameter}}` to a command! Make sure you typed its name or one of its aliases correctly!",
@@ -31,7 +54,7 @@
 	"integer": "I could not resolve `{{parameter}}` to an integer!",
 	"integerTooBig": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"integerTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
-	"invite": "I could not resolve `{{parameter}}` to a valid invite link, they have one of the following formats:\n\n- `https://discord\u200B.gg/6gakFR2`.\n- `https://discord\u200B.com/invite/6gakFR2`.\n- `https://discordapp\u200B.com/invite/6gakFR2`.\n\n> **Tip**: You can omit the `https://` part, `discord\u200B.gg/6gakFR2` is also accepted as a valid parameter.",
+	"invite": "I could not resolve `{{parameter}}` to a valid invite link, they have one of the following formats:\n\n- `https://discord​.gg/6gakFR2`.\n- `https://discord​.com/invite/6gakFR2`.\n- `https://discordapp​.com/invite/6gakFR2`.\n\n> **Tip**: You can omit the `https://` part, `discord​.gg/6gakFR2` is also accepted as a valid parameter.",
 	"language": "I could not resolve `{{parameter}}` to a valid language code!\n**Hint**: the following are supported: {{possibles, andList}}.\n\n> **Tip**: You can add more (or improve the existing ones) at <https://translation.skyra.pw>!",
 	"member": "I could not resolve `{{parameter}}` to a member from this server, please make sure you typed their name or ID correctly!\n\n> **Tip**: You can also use mentions!",
 	"memberMissingGuild": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
@@ -41,7 +64,10 @@
 	"numberTooBig": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"numberTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"piece": "I could not resolve `{{parameter}}` to a piece! Make sure you typed its name or one of its aliases correctly!",
-	"resetPossibles": ["off", "reset"],
+	"resetPossibles": [
+		"off",
+		"reset"
+	],
 	"role": "I could not resolve `{{parameter}}` to a role, please make sure you typed its name or ID correctly!\n\n> **Tip**: You can also mention it!",
 	"roleMissingGuild": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
 	"scopeGlobal": "global",

@@ -206,7 +206,7 @@
 		]
 	},
 	"fortniteInvalidPlatform": "{{REDCROSS}} Lo siento, pero eso era una plataforma inválida para Fortnite. Las plataformas válidas son: `xbox`, `psn` y `pc`",
-	"fortniteNoUser": "Lo siento, pero no he podido encontrar un usuario con ese nombre.\n¿Estás seguro de que juegan en la plataforma proporcionada? (PC [default], Xbox o PSN)",
+	"fortniteNoUser": "",
 	"fortniteEmbedTitle": "Estadísticas de juego para {{epicUserHandle}}",
 	"fortniteEmbedSectionTitles": {
 		"lifetimeStats": "**_Estadísticas de por Vida_**",

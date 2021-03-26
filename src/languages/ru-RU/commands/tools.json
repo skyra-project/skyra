@@ -510,6 +510,8 @@
 			]
 		]
 	},
+	"voteContentNeeded": "",
+	"voteReactionBlocked": "",
 	"whoisDescription": "Кто вы?",
 	"whoisExtended": {
 		"usages": [
@@ -532,8 +534,9 @@
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "Все разрешения",
-	"whoisMemberRoles": "Роль [1]",
-	"whoisMemberRoles_plural": "Роли [{{count}}]",
+	"whoisMemberRoles": "",
+	"whoisMemberRoles_plural": "",
+	"whoisMemberRoleListAndMore": "",
 	"whoisMemberTitles": {
 		"createdAt": "",
 		"joined": ""

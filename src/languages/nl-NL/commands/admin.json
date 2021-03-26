@@ -15,7 +15,7 @@
 			"reset NameOfKey",
 			"menu"
 		],
-		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>).",
+		"extendedHelp": "",
 		"examples": [
 			"set language en-GB",
 			"set channel.moderation-logs #moderation-logs",

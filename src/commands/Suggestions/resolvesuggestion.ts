@@ -19,6 +19,9 @@ const enum SuggestionsColors {
 type Actions = 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c';
 const kActions: readonly Actions[] = ['accept', 'a', 'deny', 'd', 'consider', 'c'];
 
+const minimum = 1;
+const maximum = 2_147_483_647; // Maximum value for int32
+
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['resu'],
 	cooldown: 10,
@@ -116,8 +119,13 @@ export class UserCommand extends SkyraCommand {
 
 		// Validate the suggestion number
 		const id = Number(parameter);
-		if (!Number.isInteger(id) || id < 1) {
-			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID });
+		if (!Number.isInteger(id) || id < minimum || id > maximum) {
+			return Args.error({
+				argument,
+				parameter,
+				identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID,
+				context: { minimum, maximum }
+			});
 		}
 
 		// Retrieve the suggestion data

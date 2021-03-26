@@ -28,7 +28,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	public async run(data: LLRCData, emoji: string) {
 		const [enabled, blockedReactions, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.Reactions.Enabled],
-			settings[GuildSettings.Selfmod.Reactions.BlackList],
+			settings[GuildSettings.Selfmod.Reactions.Blocked],
 			settings[GuildSettings.Channels.Ignore.ReactionAdd],
 			settings[GuildSettings.Selfmod.Reactions.SoftAction],
 			settings[GuildSettings.Selfmod.Reactions.HardAction],
@@ -57,7 +57,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	}
 
 	protected async preProcess([data, emoji]: Readonly<ArgumentType>) {
-		return (await data.guild.readSettings(GuildSettings.Selfmod.Reactions.BlackList)).includes(emoji) ? 1 : null;
+		return (await data.guild.readSettings(GuildSettings.Selfmod.Reactions.Blocked)).includes(emoji) ? 1 : null;
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
@@ -66,7 +66,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 				.channels(data.channel.id)
 				.messages(data.messageID)
 				.reactions(emoji, data.userID)
-				.delete({ reason: '[MODERATION] Automatic Removal of Blacklisted Emoji.' })
+				.delete({ reason: '[MODERATION] Automatic Removal of Blocked Emoji.' })
 		);
 	}
 

@@ -23,18 +23,18 @@ import type { TFunction } from 'i18next';
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
-	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
+	private readonly kAllowedDomains = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
 	protected async preProcess(message: GuildMessage) {
 		if (message.content.length === 0) return null;
 
 		let match: RegExpExecArray | null = null;
 
-		const whitelist = await message.guild.readSettings(GuildSettings.Selfmod.Links.Whitelist);
+		const allowed = await message.guild.readSettings(GuildSettings.Selfmod.Links.Allowed);
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
-			if (this.kWhitelist.test(hostname)) continue;
-			if (whitelist.includes(hostname)) continue;
+			if (this.kAllowedDomains.test(hostname)) continue;
+			if (allowed.includes(hostname)) continue;
 			return 1;
 		}
 

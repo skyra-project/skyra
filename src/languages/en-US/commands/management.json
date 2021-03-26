@@ -148,15 +148,15 @@
 		"reminder": "The channel argument is optional, defaulting to the message's channel, but it uses fuzzy search when possible.",
 		"examples": ["show", "add #general 4s", "remove #general", "reset"]
 	},
-	"manageCommandChannelDescription": "Manage per-channel command blacklist.",
+	"manageCommandChannelDescription": "Manage per-channel blocked command list.",
 	"manageCommandChannelExtended": {
 		"usages": ["add TextChannel Command", "remove TextChannel Command", "reset TextChannel", "show TextChannel"],
-		"extendedHelp": "This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
+		"extendedHelp": "This command manages this guild's per-channel blocked command list, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
 		"explainedUsage": [
-			["show [channel]", "Show the command blacklist for the selected channel."],
-			["add [channel] <command>", "Add a command to the specified channel's command blacklist."],
-			["remove [channel] <command>", "Remove a command to the specified channel's command blacklist."],
-			["reset [channel]", "Clear the command blacklist for the specified channel."]
+			["show [channel]", "Show the blocked command list for the selected channel."],
+			["add [channel] <command>", "Add a command to the specified channel's blocked command list."],
+			["remove [channel] <command>", "Remove a command to the specified channel's blocked command list."],
+			["reset [channel]", "Clear the blocked command list for the specified channel."]
 		],
 		"reminder": "The channel argument is optional, but it uses fuzzy search when possible.",
 		"examples": ["add #general profile", "remove #general profile", "reset #general", "show #general"]
@@ -356,10 +356,10 @@
 			"threshold-duration 30s"
 		]
 	},
-	"filterDescription": "Manage this guild's word blacklist.",
+	"filterDescription": "Manage this guild's blocked word list.",
 	"filterExtended": {
 		"usages": ["add Word", "remove Word", "reset", "show", ""],
-		"extendedHelp": "The filter command manages the word blacklist for this server and must have a filter mode set up, check `Skyra, help filterMode`.\n\nSkyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters duplicated characters for enhanced filtering.",
+		"extendedHelp": "The filter command manages the blocked word list for this server and must have a filter mode set up, check `Skyra, help filterMode`.\n\nSkyra's word filter can find matches even with special characters or spaces between the letters of a blocked word, as well as it filters duplicated characters for enhanced filtering.",
 		"examples": ["add darn", "remove darn", "reset", "show", ""]
 	},
 	"filterModeDescription": "Manage this server's word filter modes.",

@@ -31,7 +31,7 @@ export class UserEvent extends Event {
 			if (error.code === RESTJSONErrorCodes.UnknownMessage) return;
 			// Attempted to react to a user who blocked the bot
 			if (error.code === RESTJSONErrorCodes.ReactionWasBlocked) return;
-			// The emoji has been deleted or the bot is not in the whitelist
+			// The emoji has been deleted or the bot is not in the allowed list
 			if (error.code === RESTJSONErrorCodes.UnknownEmoji) {
 				await message.guild.writeSettings((settings) => {
 					const triggerIndex = settings[GuildSettings.Trigger.Includes].findIndex((element) => element === trigger);

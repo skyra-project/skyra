@@ -9,6 +9,7 @@ import { requiresLevel, requiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
+import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -168,10 +169,73 @@ export class UserCommand extends SkyraCommand {
 		const embed = args.getFlags('embed');
 		return {
 			id,
-			content: parseAndValidate(content),
+			content: this.parseContent(args, content),
 			embed,
 			color: embed ? this.parseColour(args) : 0
 		};
+	}
+
+	private parseContent(args: SkyraCommand.Args, content: string) {
+		try {
+			return parseAndValidate(content);
+		} catch (error) {
+			if (!(error instanceof UserError)) throw error;
+
+			switch (error.identifier) {
+				case Identifiers.MismatchingNamedArgumentTypeValidation:
+					this.error(LanguageKeys.Commands.Tags.ParseMismatchingNamedArgumentTypeValidation, error);
+				case Identifiers.ParserEmptyStringTag:
+					this.error(LanguageKeys.Commands.Tags.ParseParserEmptyStringTag, error);
+				case Identifiers.ParserMissingToken:
+					this.error(LanguageKeys.Commands.Tags.ParseParserMissingToken, error);
+				case Identifiers.ParserPickMissingOptions:
+					this.error(LanguageKeys.Commands.Tags.ParseParserPickMissingOptions, error);
+				case Identifiers.ParserRandomDuplicatedOptions:
+					this.error(LanguageKeys.Commands.Tags.ParseParserRandomDuplicatedOptions, error);
+				case Identifiers.ParserRandomMissingOptions:
+					this.error(LanguageKeys.Commands.Tags.ParseParserRandomMissingOptions, error);
+				case Identifiers.ParserUnexpectedToken: {
+					const typedError = error as ParserUnexpectedTokenError;
+					this.error(LanguageKeys.Commands.Tags.ParseParserUnexpectedToken, {
+						expected: this.parseContentGetPartTypeName(args, typedError.expected),
+						received: this.parseContentGetPartTypeName(args, typedError.received)
+					});
+				}
+				case Identifiers.PickInvalidOption:
+					this.error(LanguageKeys.Commands.Tags.ParsePickInvalidOption, error);
+				case Identifiers.SentenceMissingArgument:
+					this.error(LanguageKeys.Commands.Tags.ParseSentenceMissingArgument, error);
+				case Identifiers.TransformerInvalidFormatter:
+					this.error(LanguageKeys.Commands.Tags.ParseTransformerInvalidFormatter, error);
+			}
+		}
+	}
+
+	private parseContentGetPartTypeName(args: SkyraCommand.Args, type: PartType | readonly PartType[]): string {
+		if (Array.isArray(type)) {
+			return args.t(LanguageKeys.Globals.OrListValue, { value: type.map((v) => this.inlineCode(this.parseContentGetPartTypeName(args, v))) });
+		}
+
+		switch (type as PartType) {
+			case PartType.Space:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenSpace));
+			case PartType.TagStart:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenTagStart));
+			case PartType.TagEnd:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenTagEnd));
+			case PartType.Equals:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenEquals));
+			case PartType.Colon:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenColon));
+			case PartType.Pipe:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenPipe));
+			case PartType.Literal:
+				return this.inlineCode(args.t(LanguageKeys.Commands.Tags.ParseTokenLiteral));
+		}
+	}
+
+	private inlineCode(content: string) {
+		return `\`${content}\``;
 	}
 
 	private parseColour(args: SkyraCommand.Args) {

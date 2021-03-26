@@ -4,7 +4,7 @@
 		"usages": [
 			""
 		],
-		"extendedHelp": "Acesta este pentru dezvoltatorii NodeJS care doresc să găsească rapid informații despre un pachet publicat pe [npm](https://npmjs.com)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"package",

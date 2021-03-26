@@ -215,7 +215,7 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodLinksThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodLinksWhitelist).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodLinksAllowed).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodMessagesIgnoredChannels)
 					.HasDefaultValueSql("ARRAY[]::character varying[]");
@@ -241,7 +241,7 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodNewlinesThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodReactionsBlacklist).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodReactionsBlocked).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SelfmodReactionsIgnoredChannels)
 					.HasDefaultValueSql("ARRAY[]::character varying[]");
@@ -254,7 +254,7 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SelfmodReactionsThresholdMaximum).HasDefaultValueSql("10");
 
-				entity.Property(e => e.SelfmodReactionsWhitelist).HasDefaultValueSql("ARRAY[]::character varying[]");
+				entity.Property(e => e.SelfmodReactionsAllowed).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.SocialEnabled).HasDefaultValueSql("true");
 

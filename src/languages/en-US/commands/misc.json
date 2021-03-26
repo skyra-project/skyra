@@ -256,7 +256,9 @@
 	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you a happy birthday in this server anymore.",
 	"setBirthdayDescription": "Set your birthday, and I will automatically notify the other members on that date.",
 	"setBirthdayExtended": {
-		"usages": ["BirthDate"],
+		"usages": [
+			"BirthDate"
+		],
 		"extendedHelp": "This command needs the settings `birthday.role` and/or `birthday.channel` to be configured. On a user's birthday, I will give them the birthday role, and send `birthday.message` to the birthday channel.",
 		"explainedUsage": [
 			[

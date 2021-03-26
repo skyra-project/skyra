@@ -158,7 +158,7 @@
 	},
 	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
 	"wakandaExtended": {
-		"extendedHelp": "Genera una imagen usando la plantilla [No Hacemos Eso Aquí](https://knowyourmeme.com/memes/we-dont-do-that-here) con el usuario dado."
+		"extendedHelp": ""
 	},
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {

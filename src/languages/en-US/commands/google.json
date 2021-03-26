@@ -63,9 +63,14 @@
 	},
 	"lmgtfyDescription": "Send a LMGTFY (Let Me Google That For You) link.",
 	"lmgtfyExtended": {
-		"usages": ["Query"],
+		"usages": [
+			"Query"
+		],
 		"explainedUsage": [
-			["Query", "The query to google"]
+			[
+				"Query",
+				"The query to google"
+			]
 		],
 		"extendedHelp": "Just google it people, it's not that hard.",
 		"examples": [

@@ -1,11 +1,20 @@
 {
 	"suggestDescription": "Posts a suggestion for the server.",
 	"suggestExtended": {
-		"usages": ["Suggestion", "Message"],
+		"usages": [
+			"Suggestion",
+			"Message"
+		],
 		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
 		"explainedUsage": [
-			["Suggestion", "Your suggestion."],
-			["Message", "An existing message to use as a suggestion, this only works for administrators."]
+			[
+				"Suggestion",
+				"Your suggestion."
+			],
+			[
+				"Message",
+				"An existing message to use as a suggestion, this only works for administrators."
+			]
 		],
 		"examples": [
 			"Let's make a music channel!",

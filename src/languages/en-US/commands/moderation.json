@@ -90,7 +90,7 @@
 	"moderationDmDescriptionWithReason": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Reason**: {{reason}}",
 	"moderationDmDescriptionWithDuration": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Duration**: {{duration, duration}}\n**❯ Reason**: None specified",
 	"moderationDmDescriptionWithReasonWithDuration": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Duration**: {{duration, duration}}\n**❯ Reason**: {{reason}}",
-	"historyDescription": "Display the count of moderation cases from this guild or from a user.",
+	"historyDescription": "Display the count of moderation cases from this server or from a user.",
 	"historyExtended": {
 		"usages": [
 			"",
@@ -127,7 +127,7 @@
 	"historyFooterKicks_plural": "kicks",
 	"historyFooterBans": "ban",
 	"historyFooterBans_plural": "bans",
-	"moderationsDescription": "List all running moderation logs from this guild.",
+	"moderationsDescription": "List all running moderation logs from this server.",
 	"moderationsExtended": {
 		"usages": [
 			"",
@@ -156,25 +156,25 @@
 	"moderationsEmpty": "There are no active moderations that will expire at some future date or time. If you want to see all moderations in this server use: `{{prefix}}history`.",
 	"moderationsAmount": "There is 1 entry.",
 	"moderationsAmount_plural": "There are {{count}} entries.",
-	"mutesDescription": "List all mutes from this guild or from a user.",
+	"mutesDescription": "List all mutes from this server or from a user.",
 	"mutesExtended": {
 		"usages": [
 			"",
 			"User"
 		],
-		"extendedHelp": "This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
+		"extendedHelp": "This command shows either all mutes filed in this server, or all mutes filed in this server for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
 		"examples": [
 			"",
 			"@Pete"
 		]
 	},
-	"warningsDescription": "List all warnings from this guild or from a user.",
+	"warningsDescription": "List all warnings from this server or from a user.",
 	"warningsExtended": {
 		"usages": [
 			"",
 			"User"
 		],
-		"extendedHelp": "This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
+		"extendedHelp": "This command shows either all warnings filed in this server, or all warnings filed in this server for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
 		"examples": [
 			"",
 			"@Pete"
@@ -220,7 +220,7 @@
 				"The amount of days of messages to prune. Should be a number between a minimum of 0 and maximum of 7."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the guild's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
+		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming all channels.",
@@ -239,7 +239,7 @@
 			"User1 User2 User3...User10",
 			"User Reason"
 		],
-		"extendedHelp": "This command requires **{{KICK_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be kicked by me. No, the guild's owner cannot be kicked.",
+		"extendedHelp": "This command requires **{{KICK_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be kicked by me. No, the server's owner cannot be kicked.",
 		"explainedUsage": [
 			[
 				"User/User1/User2",
@@ -313,7 +313,7 @@
 				"The reason for the mute. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be muted.\nThis action can be optionally timed to create a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.\nThe muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be muted.\nThis action can be optionally timed to create a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.\nThe muted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Alphonse",
 			"@Alphonse Spamming all channels",
@@ -347,7 +347,7 @@
 				"The reason for this nickname change. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner nickname cannot be changed.",
+		"extendedHelp": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner nickname cannot be changed.",
 		"examples": [
 			"@Pete peeehteeerrr",
 			"@ꓑ𝗲੮ẻ Pete Unmentionable name"
@@ -381,7 +381,7 @@
 				"The reason for adding this role. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner roles cannot be changed.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner roles cannot be changed.",
 		"examples": [
 			"@John member",
 			"@John member Make John a member"
@@ -414,7 +414,7 @@
 				"The reason for removing this role. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner roles cannot be changed.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner roles cannot be changed.",
 		"examples": [
 			"@Paula member",
 			"@Paula member Remove member permissions from Paula"
@@ -570,7 +570,7 @@
 				"The reason for adding this restriction. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Pete",
 			"@Pete Sending weird images",
@@ -599,7 +599,7 @@
 				"The reason for adding this restriction. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Pete",
 			"@Pete Sending weird links",
@@ -629,7 +629,7 @@
 				"The reason for adding this restriction. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming external emojis",
@@ -659,7 +659,7 @@
 				"The reason for adding this restriction. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming reactions",
@@ -688,7 +688,7 @@
 				"The reason for adding this restriction. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the server's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the server, it will be added back.",
 		"examples": [
 			"@Pete",
 			"@Pete Earraping in general voice channels",
@@ -712,7 +712,7 @@
 				"The reason for the softban. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the guild's owner cannot be banned.\nThe ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.\nThe user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.",
+		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThe ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.\nThe user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming all channels",
@@ -723,7 +723,7 @@
 	"toggleModerationDmExtended": {
 		"extendedHelp": "This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation action (automatic or manual) will DM you, but you can disable them with this command."
 	},
-	"unbanDescription": "Unban somebody from this guild!.",
+	"unbanDescription": "Unban somebody from this server.",
 	"unbanExtended": {
 		"usages": [
 			"User",
@@ -740,7 +740,7 @@
 				"The reason for the ban removal. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**. It literally gets somebody from the rubbish bin, cleans them up, and allows the pass to this guild's gates.",
+		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**. It literally gets somebody from the rubbish bin, cleans them up, and allows the pass to this server's gates.",
 		"examples": [
 			"@Pete",
 			"@Pete Turns out he was not the one who spammed all channels 🤷"
@@ -923,7 +923,7 @@
 				"The reason for adding this voice mute. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be silenced by me.\nNo, the guild's owner cannot be silenced.\nThis action can be optionally timed to create a temporary voice mute.",
+		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be silenced by me.\nNo, the server's owner cannot be silenced.\nThis action can be optionally timed to create a temporary voice mute.",
 		"examples": [
 			"@Pete",
 			"@Pete Singing too loud",
@@ -971,7 +971,7 @@
 				"The reason for removing the voice mute. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be un-silenced by me.\nNo, the guild's owner cannot be un-silenced.",
+		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be un-silenced by me.\nNo, the server's owner cannot be un-silenced.",
 		"examples": [
 			"@Pete",
 			"@Pete Appealed his times signing hear rape."

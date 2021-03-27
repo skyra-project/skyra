@@ -28,6 +28,5 @@
 	"DEAFEN_MEMBERS": "Mettre en sourdine des membres",
 	"MOVE_MEMBERS": "Déplacer des membres",
 	"USE_VAD": "Utiliser la détection d’activité vocale",
-	"PRIORITY_SPEAKER": "Voix prioritaire",
-	"VIEW_GUILD_INSIGHTS": "Voir les analyses de serveur"
+	"PRIORITY_SPEAKER": "Voix prioritaire"
 }

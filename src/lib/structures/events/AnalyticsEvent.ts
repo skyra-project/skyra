@@ -9,7 +9,7 @@ export abstract class AnalyticsEvent extends Event {
 	public tags: [AnalyticsSchema.Tags, string][] = [];
 
 	public constructor(context: PieceContext, options?: EventOptions) {
-		super(context, { enabled: envParseBoolean('INFLUX_ENABLED'), ...options });
+		super(context, { ...options, enabled: envParseBoolean('INFLUX_ENABLED') });
 	}
 
 	public onLoad() {

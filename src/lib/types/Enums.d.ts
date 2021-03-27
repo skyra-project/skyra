@@ -1,6 +1,6 @@
 export const enum Events {
 	AnalyticsSync = 'analyticsSync',
-	ApiError = 'apiError',
+	Error = 'error',
 	PreMessageParsed = 'preMessageParsed',
 	ArgumentError = 'argumentError',
 	CommandError = 'commandError',

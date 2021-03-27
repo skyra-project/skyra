@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
@@ -42,7 +43,8 @@ export abstract class WeebCommand extends SkyraCommand {
 			cooldown: 30,
 			permissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			...options
+			...options,
+			enabled: envIsDefined('WEEB_SH_TOKEN')
 		});
 
 		this.queryType = options.queryType;

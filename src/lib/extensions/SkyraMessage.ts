@@ -54,7 +54,7 @@ export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) 
 	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
-		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
+		message.nuke().catch((error) => this.client.emit(Events.Error, error));
 		if (responses.size === 0) throw await this.resolveKey(LanguageKeys.Misc.MessagePromptTimeout);
 		return responses.first()!;
 	}
@@ -88,7 +88,7 @@ export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) 
 		}
 
 		const msg = (await this.send(content, options as MessageOptions)) as Message;
-		msg.nuke(typeof timer === 'number' ? timer : Time.Minute).catch((error) => this.client.emit(Events.ApiError, error));
+		msg.nuke(typeof timer === 'number' ? timer : Time.Minute).catch((error) => this.client.emit(Events.Error, error));
 		return msg;
 	}
 
@@ -121,7 +121,7 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 
 	// Remove all reactions if the user has permissions to do so
 	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
-		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit(Events.ApiError, error));
+		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit(Events.Error, error));
 	}
 
 	return reactions.size === 0 ? null : reactions.firstKey() === REACTIONS.YES;

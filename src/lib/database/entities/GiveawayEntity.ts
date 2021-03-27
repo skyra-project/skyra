@@ -149,7 +149,7 @@ export class GiveawayEntity extends BaseEntity {
 				if (error instanceof DiscordAPIError && kGiveawayBlockListReactionErrors.includes(error.code)) {
 					return this;
 				}
-				this.#client.emit(Events.ApiError, error);
+				this.#client.emit(Events.Error, error);
 			}
 		}
 
@@ -169,7 +169,7 @@ export class GiveawayEntity extends BaseEntity {
 			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
 				await this.finish();
 			} else {
-				this.#client.emit(Events.ApiError, error);
+				this.#client.emit(Events.Error, error);
 			}
 		}
 
@@ -202,7 +202,7 @@ export class GiveawayEntity extends BaseEntity {
 				.channels(this.channelID)
 				.messages.post({ data: { content, allowed_mentions: { users: this.#winners ?? [], roles: [] } } });
 		} catch (error) {
-			this.#client.emit(Events.ApiError, error);
+			this.#client.emit(Events.Error, error);
 		}
 	}
 
@@ -265,7 +265,7 @@ export class GiveawayEntity extends BaseEntity {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants();
-				this.#client.emit(Events.ApiError, error);
+				this.#client.emit(Events.Error, error);
 			}
 			return [];
 		}

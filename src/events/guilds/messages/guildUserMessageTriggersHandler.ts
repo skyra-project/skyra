@@ -38,7 +38,7 @@ export class UserEvent extends Event {
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);
 				});
 			} else {
-				this.context.client.emit(Events.ApiError, error);
+				this.context.client.emit(Events.Error, error);
 			}
 		}
 	}

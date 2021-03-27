@@ -13,7 +13,7 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		await message.send(args.t(LanguageKeys.Commands.System.Reboot)).catch((err) => this.context.client.emit(Events.ApiError, err));
+		await message.send(args.t(LanguageKeys.Commands.System.Reboot)).catch((err) => this.context.client.emit(Events.Error, err));
 
 		if (envParseBoolean('INFLUX_ENABLED')) {
 			const { client } = this.context;

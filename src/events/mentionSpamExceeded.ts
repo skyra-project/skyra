@@ -17,10 +17,10 @@ export class UserEvent extends Event {
 		try {
 			await message.guild.members
 				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Events.NoMentionSpam.Footer) })
-				.catch((error) => this.context.client.emit(Events.ApiError, error));
+				.catch((error) => this.context.client.emit(Events.Error, error));
 			await message.channel
 				.send(t(LanguageKeys.Events.NoMentionSpam.Message, { user: message.author }))
-				.catch((error) => this.context.client.emit(Events.ApiError, error));
+				.catch((error) => this.context.client.emit(Events.Error, error));
 			nms.delete(message.author.id);
 
 			const reason = t(LanguageKeys.Events.NoMentionSpam.ModerationLog, { threshold });

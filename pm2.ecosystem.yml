@@ -3,8 +3,6 @@ apps:
     name: 'Skyra'
     vizion: false
     env:
-      ENABLE_AUDIO: 'true'
+      NODE_ENV: 'production'
     env_development:
-      DEV: 'true'
-      ENABLE_AUDIO: 'false'
-      ENABLE_LOCAL_POKEDEX: 'true'
+      NODE_ENV: 'development'

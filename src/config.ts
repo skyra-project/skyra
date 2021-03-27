@@ -8,6 +8,7 @@ import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageFormatters } from '#lib/types/Constants';
 import { getHandler } from '#root/languages/index';
 import { Emojis, rootFolder } from '#utils/constants';
+import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
@@ -46,6 +47,16 @@ function parseAudio(): QueueClientOptions | undefined {
 				}
 			}
 		}
+	};
+}
+
+export function parseAnalytics(): ConnectionOptions {
+	const url = envParseString('INFLUX_URL');
+	const token = envParseString('INFLUX_TOKEN');
+
+	return {
+		url,
+		token
 	};
 }
 

@@ -34,13 +34,13 @@ export class UserEvent extends Event {
 				.channels(channel)
 				.messages(filteredResults[0])
 				.delete({ reason: 'Starboard Management: Message Deleted' })
-				.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
+				.catch((error: DiscordAPIError) => this.context.client.emit(Events.Error, error));
 			return;
 		}
 
 		await api()
 			.channels(channel)
 			.messages['bulk-delete'].post({ data: { messages: filteredResults }, reason: 'Starboard Management: Message Deleted' })
-			.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
+			.catch((error: DiscordAPIError) => this.context.client.emit(Events.Error, error));
 	}
 }

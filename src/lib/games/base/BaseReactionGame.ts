@@ -30,7 +30,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 			this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
 			for (const reaction of this.reactions) await this.message.react(reaction);
 		} catch {
-			await this.message.send(this.t(LanguageKeys.Misc.UnexpectedIssue)).catch((error) => this.client.emit(Events.ApiError, error));
+			await this.message.send(this.t(LanguageKeys.Misc.UnexpectedIssue)).catch((error) => this.client.emit(Events.Error, error));
 		}
 
 		return super.onStart();

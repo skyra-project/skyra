@@ -41,7 +41,7 @@ export class UserEvent extends Event {
 					.channels(channel)
 					.messages(result.star_message_id)
 					.delete({ reason: 'Starboard Management: Reactions Cleared' })
-					.catch((error: DiscordAPIError) => this.context.client.emit(Events.ApiError, error));
+					.catch((error: DiscordAPIError) => this.context.client.emit(Events.Error, error));
 			}
 		} catch (error) {
 			this.context.client.logger.fatal(error);

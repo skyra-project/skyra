@@ -183,7 +183,7 @@ export class SettingsMenu {
 			}
 
 			// Log any other error
-			this.message.client.emit(Events.ApiError, error);
+			this.message.client.emit(Events.Error, error);
 		}
 	}
 
@@ -196,7 +196,7 @@ export class SettingsMenu {
 				this.response = null;
 				this.llrc?.end();
 			} else {
-				this.message.client.emit(Events.ApiError, error);
+				this.message.client.emit(Events.Error, error);
 			}
 		}
 	}
@@ -210,7 +210,7 @@ export class SettingsMenu {
 				this.response = null;
 				this.llrc?.end();
 			} else {
-				this.message.client.emit(Events.ApiError, error);
+				this.message.client.emit(Events.Error, error);
 			}
 		}
 	}
@@ -267,11 +267,11 @@ export class SettingsMenu {
 	private stop(): void {
 		if (this.response) {
 			if (this.response.reactions.cache.size) {
-				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
+				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.Error, error));
 			}
 			this.response
 				.edit(this.t(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
-				.catch((error) => this.message.client.emit(Events.ApiError, error));
+				.catch((error) => this.message.client.emit(Events.Error, error));
 		}
 
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();

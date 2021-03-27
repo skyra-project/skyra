@@ -55,7 +55,7 @@ export abstract class BaseReactionController<T> extends BaseController<T> {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;
 			}
 
-			Store.injectedContext.client.emit(Events.ApiError, error);
+			Store.injectedContext.client.emit(Events.Error, error);
 		}
 	}
 }

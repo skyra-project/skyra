@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraCommand } from '#lib/structures';
@@ -5,8 +6,9 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { OWNERS } from '#root/config';
 import { O, rootFolder, ZeroWidthSpace } from '#utils/constants';
-import { ArgumentError, Command, CommandErrorPayload, Event, UserError } from '@sapphire/framework';
+import { Args, ArgumentError, Command, CommandErrorPayload, Event, UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
+import { captureException } from '@sentry/minimal';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -14,6 +16,8 @@ import type { TFunction } from 'i18next';
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 
 export class UserEvent extends Event<Events.CommandError> {
+	private readonly sentry = envIsDefined('SENTRY_URL');
+
 	public async run(error: Error, { message, piece, parameters, args }: CommandErrorPayload) {
 		// If the error was a string or an UserError, send it to the user:
 		if (typeof error === 'string') return this.stringError(message, args.t, error);
@@ -30,7 +34,7 @@ export class UserEvent extends Event<Events.CommandError> {
 		// Extract useful information about the DiscordAPIError
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			if (ignoredCodes.includes(error.code)) return;
-			client.emit(Events.ApiError, error);
+			client.emit(Events.Error, error);
 		} else {
 			client.logger.warn(`${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 		}
@@ -42,12 +46,25 @@ export class UserEvent extends Event<Events.CommandError> {
 		// Emit where the error was emitted
 		client.logger.fatal(`[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
-			await message.alert(OWNERS.includes(message.author.id) ? codeBlock('js', error.stack!) : args.t(LanguageKeys.Events.Errors.Wtf));
+			await message.alert(this.generateUnexpectedErrorMessage(args, error));
 		} catch (err) {
-			client.emit(Events.ApiError, err);
+			client.emit(Events.Error, err);
 		}
 
 		return undefined;
+	}
+
+	private generateUnexpectedErrorMessage(args: Args, error: Error) {
+		if (OWNERS.includes(args.message.author.id)) return codeBlock('js', error.stack!);
+		if (!this.sentry) return args.t(LanguageKeys.Events.Errors.UnexpectedError);
+
+		try {
+			const report = captureException(error, { tags: { command: args.command.name } });
+			return args.t(LanguageKeys.Events.Errors.UnexpectedErrorWithContext, { report });
+		} catch (reportError) {
+			this.context.client.emit(Events.Error, reportError);
+			return args.t(LanguageKeys.Events.Errors.UnexpectedError);
+		}
 	}
 
 	private stringError(message: Message, t: TFunction, error: string) {
@@ -85,7 +102,7 @@ export class UserEvent extends Event<Events.CommandError> {
 		try {
 			await this.context.client.webhookError?.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
 		} catch (err) {
-			this.context.client.emit(Events.ApiError, err);
+			this.context.client.emit(Events.Error, err);
 		}
 	}
 

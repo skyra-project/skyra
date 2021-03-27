@@ -77,7 +77,7 @@
 		"@sentry/integrations": "^6.2.3",
 		"@sentry/node": "^6.2.3",
 		"@skyra/ai": "^1.1.1",
-		"@skyra/audio": "^1.0.2",
+		"@skyra/audio": "^1.1.1",
 		"@skyra/char": "^1.0.1",
 		"@skyra/editable-commands": "^1.0.0",
 		"@skyra/tags": "^1.1.0",

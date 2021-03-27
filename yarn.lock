@@ -956,13 +956,13 @@
     bindings "^1.5.0"
     node-addon-api "*"
 
-"@skyra/audio@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@skyra/audio/-/audio-1.0.2.tgz#c0a58934bae32300517166ab826c01332f41586b"
-  integrity sha512-N4zN0Z7HCi5sFmlNjcYS0Uka21MnxcICQy0/77i9lrcZ94uzQjsOwz4a0O9GRcY68Z1yaHFVaRHf14HA/S4N3w==
+"@skyra/audio@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@skyra/audio/-/audio-1.1.1.tgz#bdb7df6bd977658cb255c413aa0a4b1a44cddef8"
+  integrity sha512-EmM4BIhbaqjUs/T1wqfHmQZo7mF0cuUDyTe0Y7+O+F+nhWOWKuKLsdx1RBdyjM/w4i3MyihZ9T12CR9GvnzmQA==
   dependencies:
     backoff "^2.5.0"
-    ws "^7.4.1"
+    ws "^7.4.4"
 
 "@skyra/char@^1.0.1":
   version "1.0.1"
@@ -6158,7 +6158,7 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^7.3.1, ws@^7.4.1, ws@^7.4.4:
+ws@^7.3.1, ws@^7.4.4:
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
   integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==

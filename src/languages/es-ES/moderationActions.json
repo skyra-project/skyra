@@ -25,7 +25,7 @@
 	"setNicknameSet": "",
 	"setupMuteExists": "**Abortando la creación del rol de silencio**: Ya existe uno.",
 	"setupRestrictionExists": "**Abortando la creación del rol de restricción**: Ya existe uno.",
-	"setupTooManyRoles": "**Abortando la creación del rol**: Ya hay 250 roles en este servidor, debe borrar uno.",
+	"setupTooManyRoles": "",
 	"sharedRoleSetupAsk": "{{LOADING}} ¿Puedo modificar el canal {{channels}} para aplicar al rol {{role}} el siguiente permiso: {{permissions}}?",
 	"sharedRoleSetupNoMessage": "No ha mandado un mensaje a tiempo, ¡cancelando la configuración!",
 	"sharedRoleSetupExisting": "No he podido encontrar un rol configurado. ¿Quieres configurar uno existente?",

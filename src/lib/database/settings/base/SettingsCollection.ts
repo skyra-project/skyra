@@ -1,13 +1,13 @@
 import Collection from '@discordjs/collection';
 import { RWLock } from 'async-rwlock';
 import type { Client } from 'discord.js';
-import type { BaseEntity } from 'typeorm';
+import type { IBaseEntity } from './IBaseEntity';
 
-export interface SettingsCollectionCallback<T extends BaseEntity, R> {
+export interface SettingsCollectionCallback<T extends IBaseEntity, R> {
 	(entity: T): Promise<R> | R;
 }
 
-export abstract class SettingsCollection<T extends BaseEntity> extends Collection<string, T> {
+export abstract class SettingsCollection<T extends IBaseEntity> extends Collection<string, T> {
 	public readonly client: Client;
 	private readonly queue = new Map<string, Promise<T>>();
 	private readonly locks = new Map<string, RWLock>();
@@ -196,7 +196,7 @@ export abstract class SettingsCollection<T extends BaseEntity> extends Collectio
 			await settings.save();
 			return undefined;
 		} catch (error) {
-			await settings.reload();
+			await this.tryReload(settings);
 			throw error;
 		} finally {
 			lock.unlock();
@@ -204,6 +204,15 @@ export abstract class SettingsCollection<T extends BaseEntity> extends Collectio
 	}
 
 	public abstract fetch(key: string): Promise<T>;
+
+	private async tryReload(entity: T): Promise<void> {
+		try {
+			await entity.reload();
+		} catch (error) {
+			if (error instanceof Error && error.name === 'EntityNotFound') entity.resetAll();
+			else throw error;
+		}
+	}
 
 	private async unlockOnThrow(promise: Promise<T>, lock: RWLock) {
 		try {

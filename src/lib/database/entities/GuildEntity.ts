@@ -9,12 +9,13 @@ import { arrayStrictEquals } from '@sapphire/utilities';
 import { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import type { IBaseEntity } from '../settings/base/IBaseEntity';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
 import { kBigIntTransformer, kTagsTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
-export class GuildEntity extends BaseEntity {
+export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@PrimaryColumn('varchar', { name: 'id', length: 19 })
 	public id!: string;
 
@@ -779,6 +780,15 @@ export class GuildEntity extends BaseEntity {
 	 */
 	public toJSON(): AnyObject {
 		return Object.fromEntries(configurableKeys.map((v) => [v.property, this[v.property] ?? v.default]));
+	}
+
+	public resetAll(): this {
+		for (const value of configurableKeys.values()) {
+			Reflect.set(this, value.property, value.default);
+		}
+
+		this.entityRemove();
+		return this;
 	}
 
 	@AfterLoad()

@@ -71,10 +71,6 @@ jobs:
           key: ${{ runner.os }}-15-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn --ignore-scripts --frozen-lockfile
-      - name: Copy Configuration
-        run: |
-          pushd src &&
-          popd
       - name: Run tsc
         run: yarn build
 
@@ -101,10 +97,6 @@ jobs:
           yarn global add node-gyp node-pre-gyp
       - name: Install Dependencies
         run: yarn --frozen-lockfile
-      - name: Copy Configuration
-        run: |
-          pushd src &&
-          popd
       - name: Run tests
         run: yarn test --coverage
       - name: Store code coverage report

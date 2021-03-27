@@ -19,6 +19,5 @@
 	"musicPaused": "{{REDCROSS}} ¡La cola de música está siendo reproducida y la sesión seguirá hasta que termine la noche!",
 	"musicQueueEmpty": "{{REDCROSS}} ¡La cola está vacía! La sesión comenzará tan pronto como tengamos algunas canciones en cola.",
 	"musicUserVoiceChannel": "{{REDCROSS}} Hey, ¡Necesito que te unas a un canal de voz antes de poder ejecutar este comando!",
-	"disabledGuild": "¡Este comando ha sido desactivado por un administrador en este servidor!",
 	"permissionNodes": "{{REDCROSS}} ¡No tienes permiso para usar este comando!"
 }

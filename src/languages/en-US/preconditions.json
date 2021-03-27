@@ -21,6 +21,6 @@
 	"musicPaused": "{{REDCROSS}} The queue's playing and the session is still up 'till the night ends!",
 	"musicQueueEmpty": "{{REDCROSS}} The queue's empty! The session will start as soon as we have some songs queued.",
 	"musicUserVoiceChannel": "{{REDCROSS}} Hey, I need you to join a voice channel before I can run this command!",
-	"disabledGuild": "This command has been disabled by an admin in this guild!",
+	"disabledGuild": "This command has been disabled by an admin in this server!",
 	"permissionNodes": "{{REDCROSS}} You do not have permission to use this command!"
 }

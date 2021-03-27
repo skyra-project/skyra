@@ -22,6 +22,7 @@
 -   [`GraphQL-Pokemon`]: Pokemon API
 -   [`Saelem`]: Horoscope API
 -   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`]
+-   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -144,6 +145,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`postgresql`]: https://www.postgresql.org/download/
 [`lavalink`]: https://github.com/Frederikam/Lavalink
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
+[`outflux`]: https://github.com/skyra-project/outflux
 [`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
 [`saelem`]: https://github.com/skyra-project/saelem
 [`redis`]: https://redis.io

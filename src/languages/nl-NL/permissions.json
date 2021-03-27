@@ -28,6 +28,5 @@
 	"DEAFEN_MEMBERS": "Geluid van leden dempen",
 	"MOVE_MEMBERS": "Leden verplaatsen",
 	"USE_VAD": "Spraakactivatie gebruiken",
-	"PRIORITY_SPEAKER": "Prioriteitsspreker",
-	"VIEW_GUILD_INSIGHTS": "Serverinzichten bekijken"
+	"PRIORITY_SPEAKER": "Prioriteitsspreker"
 }

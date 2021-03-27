@@ -1,3 +1,4 @@
+export * from './base/IBaseEntity';
 export * from './base/IBaseManager';
 export * from './base/SettingsCollection';
 export * from './ConfigurableKey';

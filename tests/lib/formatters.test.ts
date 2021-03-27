@@ -1,7 +1,7 @@
 import { GuildMessage } from '#lib/types';
 import { client, textChannel } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
-import { APIMessage } from 'discord-api-types/v6';
+import { APIMessage, EmbedType } from 'discord-api-types/v6';
 import { Message } from 'discord.js';
 
 describe('formatters', () => {
@@ -85,6 +85,41 @@ describe('formatters', () => {
 				join(
 					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
 					'># Your Title Goes Here'
+				)
+			);
+		});
+
+		test('GIVEN embed author only THEN returns embed author only', () => {
+			const message = createMessage({
+				embeds: [{ author: { name: 'Skyra', icon_url: 'https://skyra.pw/avatars/skyra.png', url: 'https://skyra.pw' } }]
+			});
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'> 👤 [https://skyra.pw/avatars/skyra.png] Skyra <https://skyra.pw>'
+				)
+			);
+		});
+
+		test('GIVEN embed author with name only THEN returns embed author with name only', () => {
+			const message = createMessage({ embeds: [{ author: { name: 'Skyra' } }] });
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'> 👤 Skyra'
+				)
+			);
+		});
+
+		test('GIVEN embed author with iconURL only THEN returns embed author with iconURL only', () => {
+			const message = createMessage({ embeds: [{ author: { icon_url: 'https://skyra.pw/avatars/skyra.png' } }] });
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'> 👤 [https://skyra.pw/avatars/skyra.png] -'
 				)
 			);
 		});
@@ -188,7 +223,7 @@ describe('formatters', () => {
 			expect(formatMessage(t(), message)).toBe(
 				join(
 					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
-					'>_ [🖼️ https://skyra.pw/avatars/skyra.png]'
+					'>_ [https://skyra.pw/avatars/skyra.png]'
 				)
 			);
 		});
@@ -199,7 +234,74 @@ describe('formatters', () => {
 			expect(formatMessage(t(), message)).toBe(
 				join(
 					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
-					'>_ [🖼️ https://skyra.pw/avatars/skyra.png] - Yes, that is me!'
+					'>_ [https://skyra.pw/avatars/skyra.png] - Yes, that is me!'
+				)
+			);
+		});
+
+		test('GIVEN image embed THEN returns image embed', () => {
+			const message = createMessage({
+				embeds: [
+					{
+						type: EmbedType.Image,
+						url: 'https://media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif',
+						thumbnail: {
+							url: 'https://media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif',
+							proxy_url:
+								'https://images-ext-2.discordapp.net/external/nFHEK4-YMyLCGsv4MbtTgwxCudyi3Q6jezLx4cLdfOc/https/media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif',
+							width: 494,
+							height: 368
+						}
+					}
+				]
+			});
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'🖼️ [https://media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif]'
+				)
+			);
+		});
+
+		test('GIVEN video embed THEN returns video embed', () => {
+			const message = createMessage({
+				embeds: [
+					{
+						type: EmbedType.Video,
+						url: 'https://www.youtube.com/watch?v=5dqixBi8TPU',
+						title: "LADY'S ONLY feat. Marpril - Throwback",
+						description:
+							"ハッとした時の冷却。\n\n【Throwback】\n\nVocal ：Marpril \n立花鈴\nhttps://twitter.com/Rin04ple\n谷田透佳\nhttps://twitter.com/Touka03mar\n\nMusic：LADY'S ONLY\nhttps://twitter.com/LADY50NLY\n\nLyric：uyuni\nhttps://twitter.com/uyn_yn\n\nChoreographer：ALEXANDER KAWAMOTO(アレックス) \nhttps://www.instagram.com/alex_kwmt/ \n\nMovie：ノノル ／ ヲタきち\nThrowback ロゴデザイン　チョロみ\nhttps://twitter.com/nonolu41...",
+						color: 16711680,
+						author: {
+							name: 'Marpril Channel',
+							url: 'https://www.youtube.com/channel/UCWhv732tk4DAQ7X32qHKrfA'
+						},
+						provider: {
+							name: 'YouTube',
+							url: 'https://www.youtube.com'
+						},
+						thumbnail: {
+							url: 'https://i.ytimg.com/vi/5dqixBi8TPU/maxresdefault.jpg',
+							proxy_url:
+								'https://images-ext-1.discordapp.net/external/gk1nrmD5dvvSyYrFm1tMGNOm6f80Ps1hyX8zf9bYImw/https/i.ytimg.com/vi/5dqixBi8TPU/maxresdefault.jpg',
+							width: 1280,
+							height: 720
+						},
+						video: {
+							url: 'https://www.youtube.com/embed/5dqixBi8TPU',
+							width: 1280,
+							height: 720
+						}
+					}
+				]
+			});
+
+			expect(formatMessage(t(), message)).toBe(
+				join(
+					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
+					'📹 [https://www.youtube.com/watch?v=5dqixBi8TPU] (YouTube).'
 				)
 			);
 		});

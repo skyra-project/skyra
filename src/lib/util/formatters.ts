@@ -37,7 +37,7 @@ function formatContent(guild: Guild, content: string): string {
 		.join('\n');
 }
 
-function formatAttachment(attachment: MessageAttachment): string {
+export function formatAttachment(attachment: MessageAttachment): string {
 	return `📂 [${attachment.name}: ${attachment.url}]`;
 }
 
@@ -53,11 +53,11 @@ function formatEmbed(guild: Guild, embed: MessageEmbed): string {
 }
 
 function formatEmbedVideo(embed: MessageEmbed): string {
-	return `📹 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
+	return `📹 [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
 }
 
 function formatEmbedImage(embed: MessageEmbed): string {
-	return `🖼️ [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
+	return `🖼️ [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
 }
 
 function formatEmbedRich(guild: Guild, embed: MessageEmbed): string {
@@ -85,7 +85,7 @@ function formatEmbedRichUrl(url: string): string {
 }
 
 function formatEmbedRichAuthor(author: Exclude<MessageEmbed['author'], null>): string {
-	return `> 👤 ${author.name || '-'}${author.iconURL ? ` [${author.iconURL}]` : ''}${author.url ? ` <${author.url}>` : ''}`;
+	return `> 👤 ${author.iconURL ? `[${author.iconURL}] ` : ''}${author.name || '-'}${author.url ? ` <${author.url}>` : ''}`;
 }
 
 function formatEmbedRichDescription(guild: Guild, description: string): string {
@@ -107,9 +107,9 @@ function formatEmbedRichImage(image: MessageEmbedImage): string {
 }
 
 function formatEmbedRichFooter(footer: MessageEmbedFooter): string {
-	return `>_ ${footer.iconURL ? `[🖼️ ${footer.iconURL}]${footer.text ? ' - ' : ''}` : ''}${footer.text ?? ''}`;
+	return `>_ ${footer.iconURL ? `[${footer.iconURL}]${footer.text ? ' - ' : ''}` : ''}${footer.text ?? ''}`;
 }
 
 function formatEmbedRichProvider(embed: MessageEmbed): string {
-	return `🔖 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
+	return `🔖 [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
 }

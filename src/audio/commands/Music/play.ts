@@ -20,6 +20,13 @@ export class UserMusicCommand extends MusicCommand {
 
 	@requireUserInVoiceChannel()
 	public async run(message: GuildMessage, args: MusicCommand.Args, context: MusicCommand.Context) {
+		const { audio } = message.guild;
+
+		// If Skyra is not in a voice channel, join
+		if (!audio.voiceChannelID) {
+			await this.join.run(message, args, context);
+		}
+
 		if (!args.finished) {
 			// If there are songs or a queue, add them
 			await this.add.run(message, args, context);
@@ -27,15 +34,9 @@ export class UserMusicCommand extends MusicCommand {
 		}
 
 		// Retrieve the currently playing track, then check if there is at least one track to be played.
-		const { audio } = message.guild;
 		const current = await audio.getCurrentTrack();
 		if (!current && (await audio.count()) === 0) {
 			return message.send(args.t(LanguageKeys.Commands.Music.PlayQueueEmpty));
-		}
-
-		// If Skyra is not in a voice channel, join
-		if (!audio.voiceChannelID) {
-			await this.join.run(message, args, context);
 		}
 
 		// If Skyra is already playing, send a message.

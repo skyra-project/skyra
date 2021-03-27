@@ -65,12 +65,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			}
 
 			if (options.content) {
-				return message.send(
-					`${options.content}${
-						options.content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments
-					}`,
-					{ code: 'md' }
-				);
+				return message.send(options.content, { code: 'md' });
 			}
 
 			if (options.success) {
@@ -125,7 +120,6 @@ export interface EvalExtraData extends QueryExtraData {
 export interface ContentExtraData {
 	content: string;
 	targetId: string;
-	attachments: string;
 }
 
 export interface QueryExtraData {

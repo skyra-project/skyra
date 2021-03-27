@@ -4,13 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Moderation } from '#utils/constants';
+import { formatMessage } from '#utils/formatters';
 import { urlRegex } from '#utils/Links/UrlRegex';
-import { cleanMentions, floatPromise } from '#utils/util';
+import { floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
+import { Collection, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const enum Position {
@@ -153,111 +154,11 @@ export class UserCommand extends SkyraCommand {
 	private generateAttachment(t: TFunction, messages: Collection<string, GuildMessage>) {
 		const header = t(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
-			.map((message) => this.formatMessage(t, message))
+			.map((message) => formatMessage(t, message))
 			.reverse()
 			.join('\n\n');
 		const buffer = Buffer.from(`${header}\n\n${processed}`);
 		return new MessageAttachment(buffer, 'prune.txt');
-	}
-
-	private formatMessage(t: TFunction, message: GuildMessage) {
-		const header = this.formatHeader(t, message);
-		const content = this.formatContents(message);
-		return `${header}\n${content}`;
-	}
-
-	private formatHeader(t: TFunction, message: GuildMessage) {
-		return `${this.formatTimestamp(t, message.createdTimestamp)} ${message.system ? 'SYSTEM' : this.formatAuthor(message.author)}`;
-	}
-
-	private formatTimestamp(t: TFunction, timestamp: number) {
-		return `[${t(LanguageKeys.Globals.DateTimeValue, { value: timestamp })}]`;
-	}
-
-	private formatAuthor(author: User) {
-		return `${author.tag}${author.bot ? ' [BOT]' : ''}`;
-	}
-
-	private formatContents(message: GuildMessage) {
-		const output: string[] = [];
-		if (message.content.length > 0) output.push(this.formatContent(message.guild, message.content));
-		if (message.embeds.length > 0) output.push(message.embeds.map((embed) => this.formatEmbed(message.guild, embed)).join('\n'));
-		if (message.attachments.size > 0) output.push(message.attachments.map((attachment) => this.formatAttachment(attachment)).join('\n'));
-		return output.join('\n');
-	}
-
-	private formatContent(guild: Guild, content: string) {
-		return cleanMentions(guild, content)
-			.split('\n')
-			.map((line) => `> ${line}`)
-			.join('\n');
-	}
-
-	private formatAttachment(attachment: MessageAttachment) {
-		return `📂 [${attachment.name}: ${attachment.url}]`;
-	}
-
-	private formatEmbed(guild: Guild, embed: MessageEmbed) {
-		switch (embed.type) {
-			case 'video':
-				return this.formatEmbedVideo(embed);
-			case 'image':
-				return this.formatEmbedImage(embed);
-			default:
-				return this.formatEmbedRich(guild, embed);
-		}
-	}
-
-	private formatEmbedVideo(embed: MessageEmbed) {
-		return `📹 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
-	}
-
-	private formatEmbedImage(embed: MessageEmbed) {
-		return `🖼️ [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
-	}
-
-	private formatEmbedRich(guild: Guild, embed: MessageEmbed) {
-		if (typeof embed.provider === 'undefined') {
-			const output: string[] = [];
-			if (embed.title) output.push(this.formatEmbedRichTitle(embed.title));
-			if (embed.author) output.push(this.formatEmbedRichAuthor(embed.author));
-			if (embed.url) output.push(this.formatEmbedRichUrl(embed.url));
-			if (embed.description) output.push(this.formatEmbedRichDescription(guild, embed.description));
-			if (embed.fields.length > 0) output.push(embed.fields.map((field) => this.formatEmbedRichField(guild, field)).join('\n'));
-			return output.join('\n');
-		}
-
-		return this.formatEmbedRichProvider(embed);
-	}
-
-	private formatEmbedRichTitle(title: string) {
-		return `># ${title}`;
-	}
-
-	private formatEmbedRichUrl(url: string) {
-		return `> 📎 ${url}`;
-	}
-
-	private formatEmbedRichAuthor(author: Exclude<MessageEmbed['author'], null>) {
-		return `> 👤 ${author.name || '-'}${author.iconURL ? ` [${author.iconURL}]` : ''}${author.url ? ` <${author.url}>` : ''}`;
-	}
-
-	private formatEmbedRichDescription(guild: Guild, description: string) {
-		return cleanMentions(guild, description)
-			.split('\n')
-			.map((line) => `> > ${line}`)
-			.join('\n');
-	}
-
-	private formatEmbedRichField(guild: Guild, field: EmbedField) {
-		return `> #> ${field.name}\n${cleanMentions(guild, field.value)
-			.split('\n')
-			.map((line) => `>  > ${line}`)
-			.join('\n')}`;
-	}
-
-	private formatEmbedRichProvider(embed: MessageEmbed) {
-		return `🔖 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
 
 	private static filter = Args.make<Filter>((parameter, { argument }) => {

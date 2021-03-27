@@ -512,7 +512,7 @@ describe('Utils', () => {
 					content: '',
 					embeds: [new MessageEmbed().addField('Name', 'Value')]
 				} as unknown) as Message)
-			).toEqual('Name Value');
+			).toEqual('Name\nValue');
 		});
 
 		test('GIVEN no detectable content THEN returns null', () => {

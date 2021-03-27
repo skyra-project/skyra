@@ -354,7 +354,7 @@ export function getAllContent(message: Message): string {
 		if (embed.author?.name) output.push(embed.author.name);
 		if (embed.title) output.push(embed.title);
 		if (embed.description) output.push(embed.description);
-		for (const field of embed.fields) output.push(`${field.name} ${field.value}`);
+		for (const field of embed.fields) output.push(`${field.name}\n${field.value}`);
 		if (embed.footer?.text) output.push(embed.footer.text);
 	}
 

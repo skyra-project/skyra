@@ -60,17 +60,26 @@
 	"contentExtended": {
 		"usages": [
 			"Message",
-			"Channel Message"
+			"Channel Message",
+			"Channel Message --all/--format"
 		],
 		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting.",
 		"explainedUsage": [
 			[
-				"channel",
+				"Channel",
 				"The channel in which the message is to get the content from. Defaults to the current channel"
 			],
 			[
-				"message",
+				"Message",
 				"ID of the message to get the content from."
+			],
+			[
+				"--all",
+				"Gets all content including embeds and formats them separated by lines."
+			],
+			[
+				"--format",
+				"Gets all content including embeds and formats them in a more readable format."
 			]
 		],
 		"examples": [

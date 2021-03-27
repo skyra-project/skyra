@@ -14,7 +14,7 @@
 	"invalidCommand": "{{name}} must be a command name.",
 	"invalidEmoji": "{{name}} must be a valid emoji.",
 	"invalidFloat": "{{name}} must be a valid number.",
-	"invalidGuild": "{{name}} must be a valid guild ID.",
+	"invalidGuild": "{{name}} must be a valid server ID.",
 	"invalidInt": "{{name}} must be an integer.",
 	"invalidInvite": "{{name}} must be a valid invite code.",
 	"invalidRole": "{{name}} must be a role mention or role id.",

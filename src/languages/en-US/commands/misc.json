@@ -286,7 +286,7 @@
 			"User",
 			""
 		],
-		"extendedHelp": "This commands generates a ship name between two users and creates more love in the world.\nUsers are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.",
+		"extendedHelp": "This commands generates a ship name between two users and creates more love in the world.\nUsers are optional, you can provide none, just one or both users. For any non-provided users I will pick a random server member.",
 		"explainedUsage": [
 			[
 				"User",

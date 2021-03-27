@@ -27,7 +27,7 @@
 	"triggersRemove": "Successfully removed this trigger.",
 	"triggersAddTaken": "There is already a trigger with this input.",
 	"triggersAdd": "Successfully added the trigger.",
-	"triggersListEmpty": "The trigger list for this guild is empty.",
+	"triggersListEmpty": "The trigger list for this server is empty.",
 	"guildInfoTitles": {
 		"CHANNELS": "Channels",
 		"MEMBERS": "Members",
@@ -92,7 +92,7 @@
 	"stickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles, andList}}.",
 	"createMuteDescription": "Prepare the mute system.",
 	"createMuteExtended": {
-		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{CONNECT, permissions}}** in voice channels for said role."
+		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the server settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{CONNECT, permissions}}** in voice channels for said role."
 	},
 	"nickDescription": "Change Skyra's nickname for this server.",
 	"nickExtended": {
@@ -152,7 +152,7 @@
 		],
 		"reminder": "The server owner cannot have any actions, nor the `everyone` role can have allowed commands."
 	},
-	"triggersDescription": "Set custom triggers for your guild!.",
+	"triggersDescription": "Set custom triggers for your server.",
 	"triggersExtended": {
 		"usages": [
 			"add alias Input Command",
@@ -161,7 +161,7 @@
 			"show",
 			""
 		],
-		"extendedHelp": "This command allows administrators to go further with the personalization of Skyra in the guild!.\nA trigger is a piece that can active other functions.\nFor example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.\nWhen this happens, the alias system executes and tries to find an entry that matches with the input.",
+		"extendedHelp": "This command allows administrators to go further with the personalization of Skyra in the server.\nA trigger is a piece that can active other functions.\nFor example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.\nWhen this happens, the alias system executes and tries to find an entry that matches with the input.",
 		"explainedUsage": [
 			[
 				"add alias",
@@ -189,7 +189,7 @@
 			""
 		]
 	},
-	"managecommandautodeleteDescription": "Manage per-channel autodelete timer.",
+	"managecommandautodeleteDescription": "Manage per-channel auto-delete timer.",
 	"managecommandautodeleteExtended": {
 		"usages": [
 			"add TextChannel Seconds",
@@ -198,15 +198,15 @@
 			"show",
 			""
 		],
-		"extendedHelp": "This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.",
+		"extendedHelp": "This command manages this server's per-channel command auto-delete timer, it serves well to leave a channel clean from commands.",
 		"explainedUsage": [
 			[
 				"add",
-				"Add an autodelete timer for the specified channel."
+				"Add an auto-delete timer for the specified channel."
 			],
 			[
 				"remove",
-				"Remove the autotimer from the specified channel."
+				"Remove the auto-timer from the specified channel."
 			],
 			[
 				"reset",
@@ -228,7 +228,7 @@
 	"manageCommandChannelDescription": "Manage per-channel blocked command list.",
 	"manageCommandChannelExtended": {
 		"usages": ["add TextChannel Command", "remove TextChannel Command", "reset TextChannel", "show TextChannel"],
-		"extendedHelp": "This command manages this guild's per-channel blocked command list, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
+		"extendedHelp": "This command manages this server's per-channel blocked command list, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
 		"explainedUsage": [
 			["show [channel]", "Show the list of commands blocked in the specified channel."],
 			["add [channel] <command>", "Add a command to the specified channel's list of blocked commands."],
@@ -350,7 +350,7 @@
 				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
 			]
 		],
-		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.",
+		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of servers and the amount of times I can fetch them in a period of time.",
 		"examples": [
 			"#message-logs",
 			"here"
@@ -409,9 +409,9 @@
 			"⭐"
 		]
 	},
-	"guildInfoDescription": "Check the information of the guild!.",
+	"guildInfoDescription": "Check the information of the server.",
 	"guildInfoExtended": {
-		"extendedHelp": "The serverinfo command displays information for the guild the message got sent.\nIt shows the amount of channels, with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles, region, creation date, verification level... between others."
+		"extendedHelp": "The serverinfo command displays information for the server the message got sent.\nIt shows the amount of channels, with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles, region, creation date, verification level... between others."
 	},
 	"roleInfoDescription": "Check the information for a role.",
 	"roleInfoExtended": {
@@ -464,7 +464,7 @@
 		],
 		"reminder": "The member's roles will not be modified by this command, you need to add or remove them."
 	},
-	"attachmentsModeDescription": "Manage this guild's flags for the attachments filter.",
+	"attachmentsModeDescription": "Manage this server's flags for the attachments filter.",
 	"attachmentsModeExtended": {
 		"usages": [
 			"on/e/enable",
@@ -528,7 +528,7 @@
 			"threshold-duration 30s"
 		]
 	},
-	"capitalsModeDescription": "Manage this guild's flags for the caps filter.",
+	"capitalsModeDescription": "Manage this server's flags for the caps filter.",
 	"capitalsModeExtended": {
 		"usages": [
 			"on/e/enable",
@@ -592,10 +592,10 @@
 			"threshold-duration 30s"
 		]
 	},
-	"filterDescription": "Manage this guild's list of blocked words.",
+	"filterDescription": "Manage this server's list of blocked words.",
 	"filterExtended": {
 		"usages": ["add Word", "remove Word", "reset", "show", ""],
-		"extendedHelp": "The filter command manages the list of blocked words for this guild and must have a filter mode set up (see: `Skyra, help filterMode`).\n\nSkyra's word filter can find matches even with special characters or spaces between the letters of a blocked word, as well as duplicated characters for enhanced filtering.",
+		"extendedHelp": "The filter command manages the list of blocked words for this server and must have a filter mode set up (see: `Skyra, help filterMode`).\n\nSkyra's word filter can find matches even with special characters or spaces between the letters of a blocked word, as well as duplicated characters for enhanced filtering.",
 		"examples": ["add darn", "remove darn", "reset", "show", ""]
 	},
 	"filterModeDescription": "Manage this server's word filter modes.",

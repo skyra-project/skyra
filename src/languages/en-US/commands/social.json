@@ -104,7 +104,7 @@
 	"reputations": "The user {{user}} has a total of {{points}}.",
 	"scoreboardPosition": "Your placing position is: {{position}}",
 	"setColor": "Color changed to {{color}}",
-	"socialDescription": "Configure this guild's member points.",
+	"socialDescription": "Configure this server's member points.",
 	"socialExtended": {
 		"usages": [
 			"add User Integer",
@@ -179,7 +179,7 @@
 	"toggleDarkModeExtended": {
 		"extendedHelp": "This command lets you toggle the template used to generate your profile."
 	},
-	"autoRoleDescription": "List or configure the autoroles for a guild.",
+	"autoRoleDescription": "List or configure the level roles for a server.",
 	"autoRoleExtended": {
 		"usages": [
 			"add Role Integer",
@@ -190,7 +190,7 @@
 			"show",
 			""
 		],
-		"extendedHelp": "Autoroles are roles that are available for everyone, and automatically given when they reach a configured amount of (local) points, an administrator must configure them through a setting command.\nNote that if the role name has spaces in the name you need to put `'quotes'` around the name!",
+		"extendedHelp": "Level roles are roles that are available for everyone, and automatically given when they reach a configured amount of (local) points, an administrator must configure them through a setting command.\nNote that if the role name has spaces in the name you need to put `'quotes'` around the name!",
 		"explainedUsage": [
 			[
 				"add",
@@ -260,7 +260,7 @@
 				"The page number to jump to. Defaults to 1."
 			]
 		],
-		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds."
+		"reminder": "`local` leaderboards refer to the server's top list. `global` refers to all scores from all servers."
 	},
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
 	"levelDescription": "Check your global level.",
@@ -309,11 +309,11 @@
 			"User",
 			""
 		],
-		"extendedHelp": "How much until next auto role? How many points do I have in this guild?",
+		"extendedHelp": "How much until next auto role? How many points do I have in this server?",
 		"explainedUsage": [
 			[
 				"user",
-				"(Optional) The user's profile to show. Defaults to the message's author!."
+				"(Optional) The user's profile to show. Defaults to the message's author."
 			]
 		]
 	},

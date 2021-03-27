@@ -1,6 +1,6 @@
 {
 	"added": "Successfully added a new tag: **{{name}}** with a content of:\n{{content}}",
-	"description": "Manage this guilds' tags.",
+	"description": "Manage this server's tags.",
 	"edited": "Successfully edited the tag **{{name}}** with a content of:\n{{content}}",
 	"exists": "The tag '{{tag}}' already exists.",
 	"extended": {

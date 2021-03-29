@@ -125,7 +125,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.19.0",
 		"@typescript-eslint/parser": "^4.19.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"discord-api-types": "^0.12.1",
+		"discord-api-types": "^0.13.3",
 		"eslint": "^7.23.0",
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-prettier": "^3.3.1",

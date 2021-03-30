@@ -263,7 +263,7 @@
 		"explainedUsage": [
 			[
 				"BirthDate",
-				"Your birth-date, in the format $t(globals:dateFormat). ($t(globals:dateFormatExplanation))"
+				"Your birth-date, in the format $t(globals:dateFormat) (`$t(globals:dateFormatExplanation)`)."
 			]
 		],
 		"examples": [

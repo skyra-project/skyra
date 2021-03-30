@@ -17,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.deletable) message.nuke().catch(() => null);
 
-		const channel = await args.pick('textChannel').catch(() => message.channel);
+		const channel = await args.pick('textOrNewsChannelName').catch(() => message.channel);
 		const content = await args.rest('string').catch(() => '');
 
 		const attachment = message.attachments.size ? message.attachments.first()!.url : null;

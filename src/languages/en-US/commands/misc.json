@@ -263,11 +263,12 @@
 		"explainedUsage": [
 			[
 				"BirthDate",
-				"Your birth-date, in the format YYYY/MM/DD. (Year/Month/Day)"
+				"Your birth-date, in the format $t(globals:dateFormat) (`$t(globals:dateFormatExplanation)`)."
 			]
 		],
 		"examples": [
-			"2002/01/01"
+			"05/04/1984",
+			"05/04"
 		],
 		"reminder": "By using this command, you consent to it that we save your date of birth in our database."
 	},

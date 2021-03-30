@@ -1,0 +1,17 @@
+pull_request_rules:
+  - name: Automatic Depfu merging
+    conditions:
+      - author=depfu[bot]
+      - base=main
+      - label~=^Meta:\ Dependencies
+    actions:
+      merge:
+        method: squash
+  - name: Automatic Dependabot merging
+    conditions:
+      - author=dependabot[bot]
+      - base=main
+      - label~=^Meta:\ Dependencies
+    actions:
+      merge:
+        method: squash

@@ -267,7 +267,8 @@
 			]
 		],
 		"examples": [
-			"2002/01/01"
+			"05/04/1984",
+			"05/04"
 		],
 		"reminder": "By using this command, you consent to it that we save your date of birth in our database."
 	},

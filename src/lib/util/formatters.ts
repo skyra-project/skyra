@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import type { EmbedField, Guild, MessageAttachment, MessageEmbed, MessageEmbedFooter, MessageEmbedImage, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { cleanMentions } from './util';
+import { cleanMentions } from './util.js';
 
 export function formatMessage(t: TFunction, message: GuildMessage): string {
 	const header = formatHeader(t, message);

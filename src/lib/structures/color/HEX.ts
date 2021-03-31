@@ -1,4 +1,6 @@
-import type { ColorHandler } from './index';
+import { B10 } from './B10.js';
+import type { ColorHandler } from './index.js';
+import { RGB } from './RGB.js';
 
 export class HEX implements ColorHandler {
 	public r: string;
@@ -47,6 +49,3 @@ export class HEX implements ColorHandler {
 		return String(`#${this.r}${this.g}${this.b}`);
 	}
 }
-
-import { B10 } from './B10';
-import { RGB } from './RGB';

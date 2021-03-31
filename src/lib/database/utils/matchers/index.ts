@@ -1,1 +1,1 @@
-export * as CommandMatcher from './Command';
+export * as CommandMatcher from './Command.js';

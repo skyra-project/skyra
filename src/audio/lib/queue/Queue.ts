@@ -6,7 +6,7 @@ import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
-import type { QueueStore } from './QueueStore';
+import type { QueueStore } from './QueueStore.js';
 
 const kExpireTime = Time.Day * 2;
 

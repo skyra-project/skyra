@@ -1,5 +1,5 @@
 import { Store } from '@sapphire/framework';
-import { Task } from './Task';
+import { Task } from './Task.js';
 
 export class TaskStore extends Store<Task> {
 	/**

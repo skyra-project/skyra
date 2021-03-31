@@ -1,7 +1,7 @@
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { BaseEntity, Check, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
-import { RpgGuildRankEntity } from './RpgGuildRankEntity';
-import { RpgUserEntity } from './RpgUserEntity';
+import { RpgGuildRankEntity } from './RpgGuildRankEntity.js';
+import { RpgUserEntity } from './RpgUserEntity.js';
 
 @Check(/* sql */ `member_limit >= 5`)
 @Check(/* sql */ `win_count >= 0`)

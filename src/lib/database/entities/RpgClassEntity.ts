@@ -1,5 +1,5 @@
 import { BaseEntity, Check, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RpgUserEntity } from './RpgUserEntity';
+import { RpgUserEntity } from './RpgUserEntity.js';
 
 @Check(/* sql */ `name <> ''`)
 @Check(/* sql */ `attack_multiplier >= 0`)

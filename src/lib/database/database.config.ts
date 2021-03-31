@@ -6,9 +6,7 @@ import { envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { join } from 'path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import './repositories/ClientRepository';
-import './repositories/MemberRepository';
-import './repositories/UserRepository';
+import './repositories/index.js';
 
 export const config: ConnectionOptions = {
 	type: 'postgres',

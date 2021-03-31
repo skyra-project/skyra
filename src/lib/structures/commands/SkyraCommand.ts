@@ -6,7 +6,7 @@ import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
 import { Message, PermissionResolvable } from 'discord.js';
 import * as Lexure from 'lexure';
 import { sep } from 'path';
-import { SkyraArgs } from './parsers/SkyraArgs';
+import { SkyraArgs } from './parsers/SkyraArgs.js';
 
 export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.Args, SkyraCommand> {
 	public readonly guarded: boolean;

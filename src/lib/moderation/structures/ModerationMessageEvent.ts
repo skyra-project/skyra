@@ -8,7 +8,7 @@ import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField.js';
 
 export abstract class ModerationMessageEvent<T = unknown> extends Event {
 	private readonly keyEnabled: KeyOfType<GuildEntity, boolean>;

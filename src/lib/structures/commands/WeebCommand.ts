@@ -5,7 +5,7 @@ import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { fetch, FetchResultTypes } from '#utils/util';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand.js';
 
 export namespace WeebCommand {
 	/**

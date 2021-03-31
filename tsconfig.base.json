@@ -2,6 +2,8 @@
 	"extends": "@sapphire/ts-config",
 	"compilerOptions": {
 		"target": "ESNext",
+		"module": "ES2020",
+		"allowSyntheticDefaultImports": true,
 		"noEmitHelpers": true,
 		"importHelpers": true,
 		"removeComments": true,

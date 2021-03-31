@@ -1,6 +1,6 @@
 import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { RpgUserEntity } from './RpgUserEntity';
-import { RpgUserItemEntity } from './RpgUserItemEntity';
+import { RpgUserEntity } from './RpgUserEntity.js';
+import { RpgUserItemEntity } from './RpgUserItemEntity.js';
 
 @Check(/* sql */ `challenger_cooldown >= 0`)
 @Check(/* sql */ `challenger_health >= 0`)

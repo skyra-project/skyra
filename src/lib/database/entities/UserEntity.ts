@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { Events } from '#lib/types/Enums';
 import { Store } from '@sapphire/framework';
 import {
@@ -16,11 +17,10 @@ import {
 	OneToOne,
 	PrimaryColumn
 } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
-import { RpgUserEntity } from './RpgUserEntity';
-import { UserCooldownEntity } from './UserCooldownEntity';
-import { UserGameIntegrationEntity } from './UserGameIntegrationEntity';
-import { UserProfileEntity } from './UserProfileEntity';
+import { RpgUserEntity } from './RpgUserEntity.js';
+import { UserCooldownEntity } from './UserCooldownEntity.js';
+import { UserGameIntegrationEntity } from './UserGameIntegrationEntity.js';
+import { UserProfileEntity } from './UserProfileEntity.js';
 
 @Check(/* sql */ `money >= 0`)
 @Check(/* sql */ `points >= 0`)

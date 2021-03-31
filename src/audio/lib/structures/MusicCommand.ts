@@ -1,6 +1,6 @@
 import { envParseBoolean } from '#lib/env';
+import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { PieceContext } from '@sapphire/framework';
-import { SkyraCommand } from '../../../lib/structures/commands/SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: MusicCommand.Options) {

@@ -1,2 +1,2 @@
-export * from './AnalyticsEvent';
-export * from './ShardEvent';
+export * from './AnalyticsEvent.js';
+export * from './ShardEvent.js';

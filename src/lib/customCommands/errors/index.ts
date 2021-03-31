@@ -1,3 +1,3 @@
-export * from './InvalidTypeError';
-export * from './MissingArgumentsError';
-export * from './ParserNotRunError';
+export * from './InvalidTypeError.js';
+export * from './MissingArgumentsError.js';
+export * from './ParserNotRunError.js';

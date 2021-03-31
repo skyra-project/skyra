@@ -2,8 +2,8 @@ import type { GuildEntity } from '#lib/database';
 import type { KeyOfType } from '#lib/types/Utils';
 import { Event } from '@sapphire/framework';
 import type { Guild, MessageEmbed } from 'discord.js';
-import type { HardPunishment } from './ModerationMessageEvent';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import type { HardPunishment } from './ModerationMessageEvent.js';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField.js';
 
 export abstract class ModerationEvent<V extends unknown[], T = unknown> extends Event {
 	public abstract run(...params: V): unknown;

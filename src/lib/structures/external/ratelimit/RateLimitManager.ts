@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { TimerManager } from '@sapphire/time-utilities';
-import { RateLimit } from './RateLimit';
+import { RateLimit } from './RateLimit.js';
 
 export class RateLimitManager<K = string> extends Collection<K, RateLimit<K>> {
 	/**

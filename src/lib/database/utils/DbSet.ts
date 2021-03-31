@@ -1,28 +1,28 @@
+import { connect } from '#lib/database/database.config';
+import {
+	BannerEntity,
+	GiveawayEntity,
+	GuildEntity,
+	ModerationEntity,
+	RpgBattleEntity,
+	RpgClassEntity,
+	RpgGuildEntity,
+	RpgGuildRankEntity,
+	RpgItemEntity,
+	RpgUserEntity,
+	RpgUserItemEntity,
+	ScheduleEntity,
+	StarboardEntity,
+	SuggestionEntity,
+	TwitchStreamSubscriptionEntity,
+	UserCooldownEntity,
+	UserGameIntegrationEntity,
+	UserProfileEntity
+} from '#lib/database/entities/index';
+import { ClientRepository, MemberRepository, UserRepository } from '#lib/database/repositories/index';
 import { BrandingColors } from '#utils/constants';
 import type { Message } from 'discord.js';
 import type { Connection, FindConditions, FindManyOptions, Repository } from 'typeorm';
-import { connect } from '../database.config';
-import { BannerEntity } from '../entities/BannerEntity';
-import { GiveawayEntity } from '../entities/GiveawayEntity';
-import { GuildEntity } from '../entities/GuildEntity';
-import { ModerationEntity } from '../entities/ModerationEntity';
-import { RpgBattleEntity } from '../entities/RpgBattleEntity';
-import { RpgClassEntity } from '../entities/RpgClassEntity';
-import { RpgGuildEntity } from '../entities/RpgGuildEntity';
-import { RpgGuildRankEntity } from '../entities/RpgGuildRankEntity';
-import { RpgItemEntity } from '../entities/RpgItemEntity';
-import { RpgUserEntity } from '../entities/RpgUserEntity';
-import { RpgUserItemEntity } from '../entities/RpgUserItemEntity';
-import { ScheduleEntity } from '../entities/ScheduleEntity';
-import { StarboardEntity } from '../entities/StarboardEntity';
-import { SuggestionEntity } from '../entities/SuggestionEntity';
-import { TwitchStreamSubscriptionEntity } from '../entities/TwitchStreamSubscriptionEntity';
-import { UserCooldownEntity } from '../entities/UserCooldownEntity';
-import { UserGameIntegrationEntity } from '../entities/UserGameIntegrationEntity';
-import { UserProfileEntity } from '../entities/UserProfileEntity';
-import { ClientRepository } from '../repositories/ClientRepository';
-import { MemberRepository } from '../repositories/MemberRepository';
-import { UserRepository } from '../repositories/UserRepository';
 
 export class DbSet {
 	public readonly connection: Connection;

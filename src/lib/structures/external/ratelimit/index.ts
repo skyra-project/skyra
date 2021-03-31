@@ -1,2 +1,2 @@
-export * from './RateLimit';
-export * from './RateLimitManager';
+export * from './RateLimit.js';
+export * from './RateLimitManager.js';

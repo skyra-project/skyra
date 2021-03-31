@@ -1,6 +1,6 @@
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { BaseEntity, Check, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
-import { UserEntity } from './UserEntity';
+import { UserEntity } from './UserEntity.js';
 
 @Check(/* sql */ `(color >= 0) AND (color <= 16777215)`)
 @Entity('user_profile', { schema: 'public' })

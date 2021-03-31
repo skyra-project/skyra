@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { UserEntity } from './UserEntity';
+import { UserEntity } from './UserEntity.js';
 
 @Entity('user_game_integration', { schema: 'public' })
 export class UserGameIntegrationEntity<T = unknown> extends BaseEntity {

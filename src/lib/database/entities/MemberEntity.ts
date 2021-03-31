@@ -1,5 +1,5 @@
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('member', { schema: 'public' })
 @Check(/* sql */ `"points" >= 0`)

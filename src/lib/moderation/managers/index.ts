@@ -1,2 +1,2 @@
-export * from './ModerationManager';
-export * from './StickyRoleManager';
+export * from './ModerationManager.js';
+export * from './StickyRoleManager.js';

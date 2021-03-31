@@ -1,6 +1,7 @@
 {
 	"name": "skyra",
 	"version": "6.0.0",
+	"type": "module",
 	"description": "Multipurpose Discord Bot built on Sapphire Framework",
 	"main": "dist/Skyra.js",
 	"imports": {
@@ -12,6 +13,7 @@
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",
 		"#lib/env": "./dist/lib/env/index.js",
+		"#lib/extensions": "./dist/lib/extensions/index.js",
 		"#lib/moderation": "./dist/lib/moderation/index.js",
 		"#lib/structures": "./dist/lib/structures/index.js",
 		"#lib/structures/color": "./dist/lib/structures/color/index.js",

@@ -7,7 +7,7 @@ import type { AnyObject, CustomGet } from '#lib/types';
 import { Store } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import type { SchemaGroup } from './SchemaGroup';
+import type { SchemaGroup } from './SchemaGroup.js';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**

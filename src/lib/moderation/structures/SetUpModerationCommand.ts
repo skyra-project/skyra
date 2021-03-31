@@ -4,7 +4,7 @@ import type { GuildMessage, KeyOfType } from '#lib/types';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { Argument, PieceContext } from '@sapphire/framework';
 import type { Role } from 'discord.js';
-import { ModerationCommand } from './ModerationCommand';
+import { ModerationCommand } from './ModerationCommand.js';
 
 export abstract class SetUpModerationCommand extends ModerationCommand {
 	public readonly roleKey: KeyOfType<GuildEntity, string | undefined | null>;

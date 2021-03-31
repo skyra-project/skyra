@@ -1,4 +1,4 @@
-import type { RateLimitManager } from './RateLimitManager';
+import type { RateLimitManager } from './RateLimitManager.js';
 
 export class RateLimit<K> {
 	/**

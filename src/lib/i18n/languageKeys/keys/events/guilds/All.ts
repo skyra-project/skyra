@@ -1,2 +1,2 @@
-export * as Members from './Members';
-export * as Messages from './Messages';
+export * as Members from './Members.js';
+export * as Messages from './Messages.js';

@@ -1,5 +1,5 @@
 import { Identifiers } from '@sapphire/framework';
-import { LanguageKeys } from './languageKeys';
+import { LanguageKeys } from './languageKeys/index.js';
 
 export function translate(identifier: string): string {
 	switch (identifier) {

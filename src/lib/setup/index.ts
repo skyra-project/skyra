@@ -7,7 +7,7 @@ import '@sapphire/plugin-api/register';
 import '@sapphire/plugin-i18next/register-discordjs';
 import '@sapphire/plugin-logger/register';
 import 'reflect-metadata';
-import './Canvas';
+import './Canvas.js';
 
 import * as colorette from 'colorette';
 import { inspect } from 'util';

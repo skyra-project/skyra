@@ -1,4 +1,4 @@
-export * as Ignore from './Channels/Ignore';
+export * as Ignore from './Channels/Ignore.js';
 
 export const Announcements = 'channelsAnnouncements';
 export const Greeting = 'channelsGreeting';

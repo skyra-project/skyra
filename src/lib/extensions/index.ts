@@ -1,8 +1,8 @@
 import '@skyra/editable-commands';
-import './SkyraGuild';
-import './SkyraGuildMember';
-import './SkyraMessage';
-import './SkyraNewsChannel';
-import './SkyraTextChannel';
-import './SkyraUser';
-import './SkyraVoiceChannel';
+import './SkyraGuild.js';
+import './SkyraGuildMember.js';
+import './SkyraMessage.js';
+import './SkyraNewsChannel.js';
+import './SkyraTextChannel.js';
+import './SkyraUser.js';
+import './SkyraVoiceChannel.js';

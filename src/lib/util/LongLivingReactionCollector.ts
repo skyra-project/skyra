@@ -1,7 +1,7 @@
 import { Store } from '@sapphire/framework';
 import { noop } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel, User } from 'discord.js';
-import { Time } from './constants';
+import { Time } from './constants.js';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 

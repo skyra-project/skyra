@@ -7,7 +7,7 @@ import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
-import GIFEncoder = require('gifencoder');
+import GIFEncoder from 'gifencoder';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],

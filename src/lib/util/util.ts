@@ -5,7 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { err, ok, Result, Store } from '@sapphire/framework';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
-import { Image, loadImage } from 'canvas';
+import type { Image } from 'canvas';
+import { resolveImage } from 'canvas-constructor';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
@@ -24,9 +25,9 @@ import {
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { api } from '../discord/Api';
-import { BrandingColors, Time, ZeroWidthSpace } from './constants';
-import type { LeaderboardUser } from './Leaderboard';
+import { api } from '../discord/Api.js';
+import { BrandingColors, Time, ZeroWidthSpace } from './constants.js';
+import type { LeaderboardUser } from './Leaderboard.js';
 
 export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
 export const kRegExpFormattedCustomEmoji = /<a?:\w{2,32}:\d{17,18}>/;
@@ -287,7 +288,7 @@ export async function wrap<T, E = Error>(promise: Promise<T>): Promise<Result<T,
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await loadImage(url);
+		return await resolveImage(url);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

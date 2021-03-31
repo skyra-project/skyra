@@ -4,8 +4,8 @@ import { Store } from '@sapphire/framework';
 import { ApiRequest, CookieStore } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
 import WebSocket, { Server } from 'ws';
-import { CloseCodes, WebSocketEvents } from './Shared';
-import { WebsocketUser } from './WebsocketUser';
+import { CloseCodes, WebSocketEvents } from './Shared.js';
+import { WebsocketUser } from './WebsocketUser.js';
 
 export class WebsocketHandler {
 	public wss: Server;

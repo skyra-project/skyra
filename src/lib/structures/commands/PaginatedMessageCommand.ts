@@ -1,6 +1,6 @@
 import type { CommandContext, PieceContext } from '@sapphire/framework';
 import type { PermissionResolvable } from 'discord.js';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand.js';
 
 export namespace PaginatedMessageCommand {
 	/**

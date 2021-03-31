@@ -2,9 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { Awaited } from '@sapphire/utilities';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
-import { InvalidTypeError } from './errors/InvalidTypeError';
-import { MissingArgumentsError } from './errors/MissingArgumentsError';
-import { ParserNotRunError } from './errors/ParserNotRunError';
+import { InvalidTypeError, MissingArgumentsError, ParserNotRunError } from './errors/index.js';
 
 export const validTypes = new Set<string>(InvalidTypeError.possibles);
 export const argLessTypes = new Set<string>(InvalidTypeError.argLessPossibles);

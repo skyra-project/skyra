@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
 import type { Client } from 'discord.js';
-import { Time } from './constants';
-import { PreciseTimeout } from './PreciseTimeout';
+import { Time } from './constants.js';
+import { PreciseTimeout } from './PreciseTimeout.js';
 
 /**
  * The Leaderboard singleton class in charge of storing local and global leaderboards

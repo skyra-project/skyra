@@ -8,7 +8,7 @@ import { Store } from '@sapphire/pieces';
 import { TimerManager } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
-import { UserEntity } from '../entities/UserEntity';
+import { UserEntity } from '../entities/UserEntity.js';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {

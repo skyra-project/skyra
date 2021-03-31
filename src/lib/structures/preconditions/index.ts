@@ -1,1 +1,1 @@
-export * from './PermissionsPrecondition';
+export * from './PermissionsPrecondition.js';

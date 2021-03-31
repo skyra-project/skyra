@@ -1,1 +1,1 @@
-export * from './SkyraArgs';
+export * from './SkyraArgs.js';

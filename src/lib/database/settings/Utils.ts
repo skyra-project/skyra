@@ -1,9 +1,9 @@
+import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
-import type { GuildEntity } from '../entities/GuildEntity';
-import type { ISchemaValue } from './base/ISchemaValue';
-import type { SchemaGroup } from './schema/SchemaGroup';
-import type { SchemaKey } from './schema/SchemaKey';
+import type { ISchemaValue } from './base/ISchemaValue.js';
+import type { SchemaGroup } from './schema/SchemaGroup.js';
+import type { SchemaKey } from './schema/SchemaKey.js';
 
 export function isSchemaGroup(groupOrKey: ISchemaValue): groupOrKey is SchemaGroup {
 	return groupOrKey.type === 'Group';

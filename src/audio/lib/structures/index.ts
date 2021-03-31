@@ -1,2 +1,2 @@
-export * from './AudioEvent';
-export * from './MusicCommand';
+export * from './AudioEvent.js';
+export * from './MusicCommand.js';

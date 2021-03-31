@@ -1,6 +1,6 @@
 import type { PreciseTimeout } from '#utils/PreciseTimeout';
 import type { Guild } from 'discord.js';
-import { ModerationActions } from './ModerationActions';
+import { ModerationActions } from './ModerationActions.js';
 
 export interface LockdownEntry {
 	timeout: PreciseTimeout | null;

@@ -1,7 +1,7 @@
-export * from './B10';
-export * from './HEX';
-export * from './HSL';
-export * from './RGB';
+export * from './B10.js';
+export * from './HEX.js';
+export * from './HSL.js';
+export * from './RGB.js';
 
 export interface ColorHandler {
 	check(): void;

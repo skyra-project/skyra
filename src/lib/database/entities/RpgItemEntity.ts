@@ -1,5 +1,5 @@
 import { BaseEntity, Check, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RpgUserItemEntity } from './RpgUserItemEntity';
+import { RpgUserItemEntity } from './RpgUserItemEntity.js';
 
 @Check(/* sql */ `name <> ''`)
 @Check(/* sql */ `maximum_durability >= 0`)

@@ -1,6 +1,6 @@
 import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RpgGuildEntity } from './RpgGuildEntity';
-import { RpgUserEntity } from './RpgUserEntity';
+import { RpgGuildEntity } from './RpgGuildEntity.js';
+import { RpgUserEntity } from './RpgUserEntity.js';
 
 @Check(/* sql */ `name <> ''`)
 @Entity('rpg_guild_rank', { schema: 'public' })

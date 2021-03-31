@@ -14,8 +14,8 @@ import {
 	SubscriptionName,
 	WebSocketEvents
 } from './Shared';
-import type { WebsocketHandler } from './WebsocketHandler';
-import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore';
+import type { WebsocketHandler } from './WebsocketHandler.js';
+import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore.js';
 
 export class WebsocketUser {
 	public musicSubscriptions = new WebsocketSubscriptionStore();

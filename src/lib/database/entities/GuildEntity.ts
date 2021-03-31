@@ -1,4 +1,8 @@
+import type { IBaseEntity } from '#lib/database/settings/base/IBaseEntity';
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
+import { AdderManager } from '#lib/database/settings/structures/AdderManager';
+import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
+import { kBigIntTransformer, kTagsTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RateLimitManager } from '#lib/structures';
 import type { AnyObject } from '#lib/types';
@@ -9,10 +13,6 @@ import { arrayStrictEquals } from '@sapphire/utilities';
 import { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import type { IBaseEntity } from '../settings/base/IBaseEntity';
-import { AdderManager } from '../settings/structures/AdderManager';
-import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
-import { kBigIntTransformer, kTagsTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity implements IBaseEntity {

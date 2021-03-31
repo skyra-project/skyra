@@ -1,2 +1,2 @@
-export * from './GuildMemberFetchQueue';
-export * from './SkyraEmbed';
+export * from './GuildMemberFetchQueue.js';
+export * from './SkyraEmbed.js';

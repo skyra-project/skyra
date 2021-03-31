@@ -3,8 +3,8 @@ import Collection from '@discordjs/collection';
 import { readFileSync } from 'fs';
 import type { KeyType, Redis } from 'ioredis';
 import { resolve } from 'path';
-import { Queue } from './Queue';
-import type { QueueClient } from './QueueClient';
+import { Queue } from './Queue.js';
+import type { QueueClient } from './QueueClient.js';
 
 interface RedisCommand {
 	name: string;

@@ -1,11 +1,11 @@
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
-import { RpgBattleEntity } from './RpgBattleEntity';
-import { RpgClassEntity } from './RpgClassEntity';
-import { RpgGuildEntity } from './RpgGuildEntity';
-import { RpgGuildRankEntity } from './RpgGuildRankEntity';
-import { RpgUserItemEntity } from './RpgUserItemEntity';
-import { UserEntity } from './UserEntity';
+import { RpgBattleEntity } from './RpgBattleEntity.js';
+import { RpgClassEntity } from './RpgClassEntity.js';
+import { RpgGuildEntity } from './RpgGuildEntity.js';
+import { RpgGuildRankEntity } from './RpgGuildRankEntity.js';
+import { RpgUserItemEntity } from './RpgUserItemEntity.js';
+import { UserEntity } from './UserEntity.js';
 
 @Check(/* sql */ `win_count >= 0`)
 @Check(/* sql */ `death_count >= 0`)

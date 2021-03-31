@@ -1,6 +1,6 @@
 import { Node, NodeOptions, NodeSend } from '@skyra/audio';
 import Redis from 'ioredis';
-import { QueueStore } from './QueueStore';
+import { QueueStore } from './QueueStore.js';
 
 export interface QueueClientOptions extends NodeOptions {
 	redis: Redis.Redis | Redis.RedisOptions;

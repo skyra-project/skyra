@@ -1,7 +1,7 @@
 import type { Client } from 'discord.js';
-import { GuildSettingsCollection } from './structures/collections/GuildSettingsCollection';
-import { SerializerStore } from './structures/SerializerStore';
-import { TaskStore } from './structures/TaskStore';
+import { GuildSettingsCollection } from './structures/collections/GuildSettingsCollection.js';
+import { SerializerStore } from './structures/SerializerStore.js';
+import { TaskStore } from './structures/TaskStore.js';
 
 export class SettingsManager {
 	public readonly client: Client;

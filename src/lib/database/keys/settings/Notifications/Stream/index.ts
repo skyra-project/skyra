@@ -1,1 +1,1 @@
-export * from './Twitch';
+export * from './Twitch.js';

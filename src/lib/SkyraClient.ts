@@ -1,5 +1,7 @@
 import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
+import { envParseBoolean } from '#lib/env';
+import '#lib/extensions';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { SapphireClient, Store } from '@sapphire/framework';
@@ -7,13 +9,11 @@ import { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
 import { Message, Webhook } from 'discord.js';
 import { join } from 'path';
-import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { envParseBoolean } from './env';
-import './extensions';
-import { Leaderboard } from './util/Leaderboard';
-import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { Twitch } from './util/Notifications/Twitch';
-import { enumerable } from './util/util';
+import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue.js';
+import { Leaderboard } from './util/Leaderboard.js';
+import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector.js';
+import { Twitch } from './util/Notifications/Twitch.js';
+import { enumerable } from './util/util.js';
 
 export class SkyraClient extends SapphireClient {
 	@enumerable(false)

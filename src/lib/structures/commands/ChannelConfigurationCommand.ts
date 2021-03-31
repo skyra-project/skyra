@@ -5,7 +5,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { Args, IArgument, PieceContext, Store } from '@sapphire/framework';
 import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand } from './SkyraCommand.js';
 
 export namespace ChannelConfigurationCommand {
 	/**

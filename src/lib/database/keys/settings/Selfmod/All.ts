@@ -1,11 +1,11 @@
-export * as Attachments from './Attachments';
-export * as Capitals from './Capitals';
-export * as Filter from './Filter';
-export * as Invites from './Invites';
-export * as Links from './Links';
-export * as Messages from './Messages';
-export * as NewLines from './Newlines';
-export * as NoMentionSpam from './NoMentionSpam';
-export * as Reactions from './Reactions';
+export * as Attachments from './Attachments.js';
+export * as Capitals from './Capitals.js';
+export * as Filter from './Filter.js';
+export * as Invites from './Invites.js';
+export * as Links from './Links.js';
+export * as Messages from './Messages.js';
+export * as NewLines from './Newlines.js';
+export * as NoMentionSpam from './NoMentionSpam.js';
+export * as Reactions from './Reactions.js';
 
 export const IgnoreChannels = 'selfmodIgnoreChannels';

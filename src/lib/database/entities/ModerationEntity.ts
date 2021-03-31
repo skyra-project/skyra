@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { GuildSettings } from '#lib/database';
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import type { AnyObject } from '#lib/types';
@@ -9,7 +10,6 @@ import { Duration } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
-import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
 @Check(/* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)`) // 5 years

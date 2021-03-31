@@ -7,7 +7,7 @@ import type { KeyOfType } from '#lib/types/Utils';
 import { PieceContext } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField.js';
 
 export enum AKeys {
 	Enable,

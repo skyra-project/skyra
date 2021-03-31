@@ -120,4 +120,4 @@ export const SuggestionsOnActionRepost = T<string>('settings:suggestionsOnAction
 export const SuggestionsOnActionHideAuthor = T<string>('settings:suggestionsOnActionHideAuthor');
 export const DashboardOnlyKey = T<string>('settings:dashboardOnlyKey');
 
-export * as Gateway from './settings/Gateway';
+export * as Gateway from './settings/Gateway.js';

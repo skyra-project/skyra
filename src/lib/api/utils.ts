@@ -7,7 +7,7 @@ import { Store } from '@sapphire/pieces';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
-import { flattenGuild } from './ApiTransformers';
+import { flattenGuild } from './ApiTransformers.js';
 import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginData } from './types';
 
 function isAdmin(member: GuildMember, roles: readonly string[]): boolean {

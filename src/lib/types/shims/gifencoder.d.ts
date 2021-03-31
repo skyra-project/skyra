@@ -10,5 +10,5 @@ declare module 'gifencoder' {
 		public addFrame(context: CanvasRenderingContext2D): void;
 	}
 
-	export = GIFEncoder;
+	export default GIFEncoder;
 }

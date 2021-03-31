@@ -1,6 +1,6 @@
 import { envParseBoolean } from '#lib/env';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
-import { OutgoingWebSocketMessage } from '../websocket/Shared';
+import { OutgoingWebSocketMessage } from '../websocket/Shared.js';
 
 interface AudioBroadcastCallback {
 	(): OutgoingWebSocketMessage | Promise<OutgoingWebSocketMessage>;

@@ -1,0 +1,71 @@
+{
+	"added": "",
+	"description": "",
+	"edited": "",
+	"exists": "",
+	"extended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"listEmpty": "",
+	"nameNotAllowed": "",
+	"nameTooLong": "",
+	"notexists": "",
+	"permissionlevel": "",
+	"removed": "",
+	"renamed": "",
+	"reset": "",
+	"parseMismatchingNamedArgumentTypeValidation": "",
+	"parseParserEmptyStringTag": "",
+	"parseParserMissingToken": "",
+	"parseParserPickMissingOptions": "",
+	"parseParserRandomDuplicatedOptions": "",
+	"parseParserRandomMissingOptions": "",
+	"parseParserUnexpectedToken": "",
+	"parsePickInvalidOption": "",
+	"parseSentenceMissingArgument": "",
+	"parseTokenColon": "",
+	"parseTokenEquals": "",
+	"parseTokenLiteral": "",
+	"parseTokenPipe": "",
+	"parseTokenSpace": "",
+	"parseTokenTagEnd": "",
+	"parseTokenTagStart": "",
+	"parseTransformerInvalidFormatter": ""
+}

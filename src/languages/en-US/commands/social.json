@@ -263,6 +263,7 @@
 		"reminder": "`local` leaderboards refer to the server's top list. `global` refers to all scores from all servers."
 	},
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
+	"leaderboardUnknownUser": "User not in server ({{user}})",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
 		"usages": [

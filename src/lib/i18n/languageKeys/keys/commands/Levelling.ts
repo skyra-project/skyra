@@ -66,6 +66,7 @@ export const DivorceSuccess = FT<{ user: string }, string>('commands/social:divo
 export const LeaderboardDescription = T<string>('commands/social:leaderboardDescription');
 export const LeaderboardExtended = T<LanguageHelpDisplayOptions>('commands/social:leaderboardExtended');
 export const LeaderboardListifyPage = FT<{ page: number; pageCount: number; results: number }, string>('commands/social:leaderboardListifyPage');
+export const LeaderboardUnknownUser = FT<{ user: string }, string>('commands/social:leaderboardUnknownUser');
 export const Level = T<LevelTitles>('commands/social:level');
 export const LevelDescription = T<string>('commands/social:levelDescription');
 export const LevelExtended = T<LanguageHelpDisplayOptions>('commands/social:levelExtended');

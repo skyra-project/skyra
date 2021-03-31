@@ -1,11 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraCommand, UserLazyPaginatedMessage } from '#lib/structures';
 import { GuildMessage, Scope } from '#lib/types';
+import { skip, take } from '#utils/iterator';
 import type { LeaderboardUser } from '#utils/Leaderboard';
-import { pickRandom } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { TFunction } from 'i18next';
+import { MessageBuilder } from '@sapphire/discord.js-utilities';
+import { MessageOptions } from 'discord.js';
 
 const titles = {
 	[Scope.Global]: '🌐 Global Score Scoreboard',
@@ -24,56 +25,50 @@ const titles = {
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const scope = args.finished ? Scope.Local : await args.pick('scope').catch(() => Scope.Local);
-		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1 });
 
 		const list = await this.context.client.leaderboard.fetch(scope === Scope.Local ? message.guild.id : undefined);
+		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1, maximum: Math.ceil(list.size / 10) });
 
-		const { position } = list.get(message.author.id) || { position: list.size + 1 };
-		const page = await this.generatePage(message, args.t, list, index - 1, position);
-		return message.send(`${titles[scope]}\n${page.join('\n')}`, { code: 'asciidoc' });
+		const { position } = list.get(message.author.id) ?? { position: list.size + 1 };
+		const display = this.buildDisplay(args, list, titles[scope], index - 1, position);
+		return display.run(message.author, message.channel);
 	}
 
-	public async generatePage(message: GuildMessage, t: TFunction, list: Collection<string, LeaderboardUser>, index: number, position: number) {
-		if (index > list.size / 10 || index < 0) index = 0;
-		const retrievedPage: LeaderboardUser[] = [];
-		const promises: Promise<void>[] = [];
-		const page: string[] = [];
+	private buildDisplay(args: SkyraCommand.Args, list: Collection<string, LeaderboardUser>, header: string, index: number, position: number) {
+		const display = new UserLazyPaginatedMessage();
+
+		for (let i = 0, m = Math.ceil(list.size / 10); i < m; ++i) {
+			display.addPage(() => this.generatePage(args, list, header, i, position));
+		}
+
+		display.setIndex(Math.ceil((index - 1) / 10));
+
+		return display;
+	}
+
+	private async generatePage(
+		args: SkyraCommand.Args,
+		list: Collection<string, LeaderboardUser>,
+		header: string,
+		index: number,
+		position: number
+	): Promise<MessageOptions> {
+		const page = [header];
 		const listSize = list.size;
 		const pageCount = Math.ceil(listSize / 10);
 		const indexLength = (index * 10 + 10).toString().length;
 		const positionOffset = index * 10;
-		for (const [id, value] of list) {
-			if (positionOffset > value.position) continue;
-			if (positionOffset + 10 < value.position) break;
-			retrievedPage.push(value);
-			if (!value.name) {
-				promises.push(
-					this.context.client.users.fetch(id).then((user) => {
-						value.name = user.username || `Unknown: ${id}`;
-					})
-				);
-			}
-		}
 
-		if (promises.length) {
-			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
-			await Promise.all(promises);
-		}
-		for (const value of retrievedPage) {
-			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name!).padEnd(25, ' ')} :: ${value.points}`);
+		const members = args.message.guild!.members.cache;
+		for (const [id, value] of take(skip(list.entries(), positionOffset), 10)) {
+			const name = members.get(id)?.displayName ?? args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
+			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${name.padEnd(40, ' ')} :: ${value.points}`);
 		}
 
 		page.push('');
-		page.push(t(LanguageKeys.Commands.Social.LeaderboardListifyPage, { page: index + 1, pageCount, results: listSize }));
-		page.push(t(LanguageKeys.Commands.Social.ScoreboardPosition, { position }));
+		page.push(args.t(LanguageKeys.Commands.Social.LeaderboardListifyPage, { page: index + 1, pageCount, results: listSize }));
+		page.push(args.t(LanguageKeys.Commands.Social.ScoreboardPosition, { position }));
 
-		return page;
-	}
-
-	public keyUser(str: string) {
-		const user = this.context.client.users.cache.get(str);
-		if (user) str = user.username;
-		if (str.length < 25) return str;
-		return `${str.substring(0, 22)}...`;
+		return new MessageBuilder().setContent(page.join('\n')).setCode('asciidoc');
 	}
 }

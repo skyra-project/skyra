@@ -24,6 +24,20 @@ export function* map<T, R>(iterator: IterableIterator<T>, cb: (value: T) => R): 
 	}
 }
 
+export function skip<T>(iterator: IterableIterator<T>, times: number): IterableIterator<T> {
+	if (times <= 0) return iterator;
+
+	let result: IteratorResult<T> | null = null;
+	let i = 0;
+
+	do {
+		result = iterator.next();
+		++i;
+	} while (i < times && !result.done);
+
+	return iterator;
+}
+
 export function* filter<T>(iterator: IterableIterator<T>, cb: (value: T) => boolean): IterableIterator<T> {
 	let result: IteratorResult<T> | null = null;
 	while (!(result = iterator.next()).done) {

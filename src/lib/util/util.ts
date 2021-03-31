@@ -10,7 +10,6 @@ import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
-	Client,
 	DiscordAPIError,
 	Guild,
 	GuildChannel,
@@ -198,36 +197,37 @@ export function iteratorRange<T>(iterator: IterableIterator<T>, position: number
 
 export interface Payload {
 	avatar: string | null;
-	username: string;
-	discriminator: string;
+	username: string | null;
+	discriminator: string | null;
 	points: number;
 	position: number;
 }
 
-export async function fetchAllLeaderboardEntries(client: Client, results: readonly [string, LeaderboardUser][]) {
-	const promises: Promise<unknown>[] = [];
-	for (const [id, element] of results) {
-		if (element.name === null) {
-			promises.push(
-				client.users.fetch(id).then((user) => {
-					element.name = user.username;
-				})
-			);
-		}
-	}
-	await Promise.all(promises);
-
+export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [string, LeaderboardUser][]) {
+	const members = guild.members.cache;
 	const payload: Payload[] = [];
 	for (const [id, element] of results) {
-		const user = client.users.cache.get(id)!;
-		payload.push({
-			avatar: user.avatar,
-			username: user.username,
-			discriminator: user.discriminator,
-			points: element.points,
-			position: element.position
-		});
+		const member = members.get(id);
+		if (member === undefined) {
+			payload.push({
+				avatar: null,
+				username: null,
+				discriminator: null,
+				points: element.points,
+				position: element.position
+			});
+		} else {
+			const { user } = member;
+			payload.push({
+				avatar: user.avatar,
+				username: user.username,
+				discriminator: user.discriminator,
+				points: element.points,
+				position: element.position
+			});
+		}
 	}
+
 	return payload;
 }
 

@@ -1,4 +1,4 @@
-import { UserPaginatedMessage } from '#lib/structures';
+import { UserLazyPaginatedMessage, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -8,5 +8,6 @@ import { Event, EventOptions } from '@sapphire/framework';
 export class UserEvent extends Event {
 	public run(message: GuildMessage) {
 		UserPaginatedMessage.messages.get(message.id)?.collector?.stop();
+		UserLazyPaginatedMessage.messages.get(message.id)?.collector?.stop();
 	}
 }

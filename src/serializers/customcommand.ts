@@ -22,6 +22,10 @@ export class UserSerializer extends Serializer<CustomCommand> {
 			throw t(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 		}
 
+		if (!Array.isArray(value.aliases) || value.aliases.some((alias) => typeof alias !== 'string')) {
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidAliases));
+		}
+
 		if (typeof value.embed !== 'boolean') {
 			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
 		}

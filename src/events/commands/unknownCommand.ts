@@ -1,3 +1,4 @@
+import { getFromID } from '#lib/customCommands';
 import { GuildSettings } from '#lib/database';
 import { GuildMessage } from '#lib/types';
 import { Event, Events, UnknownCommandPayload } from '@sapphire/framework';
@@ -17,8 +18,8 @@ export class UserEvent extends Event<Events.UnknownCommand> {
 
 		const name = commandName.toLowerCase();
 
-		const tag = tags.some((t) => t.id === name);
-		if (tag) return this.runCommand(message as GuildMessage, commandPrefix, 'tag', name);
+		const tag = getFromID(name, tags);
+		if (tag) return this.runCommand(message as GuildMessage, commandPrefix, 'tag', tag.id);
 
 		const alias = aliases.find((entry) => entry.input === name);
 		if (alias) return this.runCommand(message as GuildMessage, commandPrefix, alias.output, '');

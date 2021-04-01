@@ -1,3 +1,4 @@
+import { CustomCommand } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { Awaited } from '@sapphire/utilities';
@@ -103,4 +104,14 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 		case 'word':
 			return args.pick('string');
 	}
+}
+
+export function getFromID(name: string, tags: CustomCommand[]): CustomCommand | null {
+	for (const tag of tags) {
+		if (tag.id === name) return tag;
+		if (tag.aliases.includes(name)) return tag;
+	}
+
+	// No tag matched, skip and return null:
+	return null;
 }

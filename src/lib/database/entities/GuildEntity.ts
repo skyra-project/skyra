@@ -847,6 +847,7 @@ export interface CustomCommand {
 	id: string;
 	embed: boolean;
 	color: number;
+	aliases: string[];
 	content: Sentence;
 }
 

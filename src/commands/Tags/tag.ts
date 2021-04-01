@@ -1,4 +1,4 @@
-import { InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
+import { getFromID, InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
 import { CustomCommand, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -13,18 +13,18 @@ import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@s
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['tags', 'customcommand', 'copypasta'],
+	aliases: ['tags', 'custom-command', 'copy-pasta'],
 	description: LanguageKeys.Commands.Tags.TagDescription,
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
 	runIn: ['text'],
 	strategyOptions: { flags: ['embed'], options: ['color', 'colour'] },
 	permissions: ['MANAGE_MESSAGES'],
-	subCommands: ['add', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
+	subCommands: ['add', 'alias', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	// Based on HEX regex from #utils/Color
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
+	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
 	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
 		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
@@ -34,10 +34,10 @@ export class UserCommand extends SkyraCommand {
 		const content = await args.rest('string');
 
 		await message.guild.writeSettings((settings) => {
-			if (settings[GuildSettings.CustomCommands].some((command) => command.id === id))
-				this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
+			const tags = settings[GuildSettings.CustomCommands];
+			if (tags.some((command) => command.id === id)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
-			settings[GuildSettings.CustomCommands].push(this.createTag(args, id, content));
+			tags.push(this.createTag(args, id, content));
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }), {
@@ -52,13 +52,55 @@ export class UserCommand extends SkyraCommand {
 		const id = (await args.pick('string')).toLowerCase();
 
 		await message.guild.writeSettings((settings) => {
-			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
+			const tags = settings[GuildSettings.CustomCommands];
+			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }), {
+			allowedMentions: { users: [], roles: [] }
+		});
+	}
+
+	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
+		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	})
+	public async alias(message: GuildMessage, args: SkyraCommand.Args) {
+		const input = (await args.pick('string')).toLowerCase();
+		let output = (await args.pick('string')).toLowerCase();
+
+		await message.guild.writeSettings((settings) => {
+			const tags = settings[GuildSettings.CustomCommands];
+
+			// Get destination tag:
+			const destinationTag = getFromID(output, tags);
+			if (destinationTag === null) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: output });
+
+			output = destinationTag.id;
+
+			// Get source tag, if any exists:
+			const sourceTag = getFromID(input, tags);
+			if (sourceTag === null) {
+				destinationTag.aliases.push(input);
+				return;
+			}
+
+			// If the input is a tag source, it cannot be aliased:
+			if (sourceTag.id === input) {
+				this.error(LanguageKeys.Commands.Tags.TagCannotAlias, { tag: sourceTag.id });
+			}
+
+			// Remove previous alias:
+			const index = sourceTag.aliases.indexOf(input);
+			if (index !== -1) sourceTag.aliases.splice(index, 1);
+
+			// Add new alias:
+			destinationTag.aliases.push(input);
+		});
+
+		return message.send(args.t(LanguageKeys.Commands.Tags.TagAlias, { input, output }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -78,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 			if (tag === undefined) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: previous });
 
 			// Check if a tag with the name exists:
-			if (tags.some((tag) => tag.id === next)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
+			if (getFromID(next, tags) !== null) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
 
 			// Rename tag:
 			tag.id = next;
@@ -108,10 +150,11 @@ export class UserCommand extends SkyraCommand {
 		const content = await args.rest('string');
 
 		await message.guild.writeSettings((settings) => {
-			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
+			const tags = settings[GuildSettings.CustomCommands];
+			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
-			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(args, id, content));
+			tags[tagIndex] = this.createTag(args, id, content, tags[tagIndex].aliases);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }), {
@@ -145,8 +188,8 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
-		const tag = tags.find((command) => command.id === id);
-		if (tag === undefined) return null;
+		const tag = getFromID(id, tags);
+		if (tag === null) return null;
 
 		const iterator = tag.content.run();
 		let result = iterator.next();
@@ -160,17 +203,18 @@ export class UserCommand extends SkyraCommand {
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
-		const tag = tags.find((command) => command.id === id);
+		const tag = getFromID(id, tags);
 		return tag ? message.send(codeBlock('md', tag.content.toString()), { allowedMentions: { users: [], roles: [] } }) : null;
 	}
 
-	private createTag(args: SkyraCommand.Args, id: string, content: string): CustomCommand {
+	private createTag(args: SkyraCommand.Args, id: string, content: string, aliases: string[] = []): CustomCommand {
 		// Create the tag data:
 		const embed = args.getFlags('embed');
 		return {
 			id,
 			content: this.parseContent(args, content),
 			embed,
+			aliases,
 			color: embed ? this.parseColour(args) : 0
 		};
 	}
@@ -245,7 +289,7 @@ export class UserCommand extends SkyraCommand {
 
 		const number = Number(color);
 		if (Number.isSafeInteger(number)) return Math.max(Math.min(number, 0xffffff), 0x000000);
-		if (this.#kHexlessRegex.test(color)) color = `#${color}`;
+		if (this.#kHexLessRegex.test(color)) color = `#${color}`;
 
 		return parseColour(color)?.b10.value ?? 0;
 	}

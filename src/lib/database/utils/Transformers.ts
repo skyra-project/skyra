@@ -9,15 +9,10 @@ export const kBigIntTransformer: ValueTransformer = {
 };
 
 export const kTagsTransformer: ValueTransformer = {
-	from: (values: RawCustomCommand[]): CustomCommand[] =>
-		values.map((value) => ({ id: value.id, embed: value.embed, color: value.color, content: ensure(value.content) })),
-	to: (values: CustomCommand[]): RawCustomCommand[] =>
-		values.map((value) => ({ id: value.id, embed: value.embed, color: value.color, content: value.content.toString() }))
+	from: (values: RawCustomCommand[]): CustomCommand[] => values.map((value) => ({ ...value, content: ensure(value.content) })),
+	to: (values: CustomCommand[]): RawCustomCommand[] => values.map((value) => ({ ...value, content: value.content.toString() }))
 };
 
-interface RawCustomCommand {
-	id: string;
-	embed: boolean;
-	color: number;
+interface RawCustomCommand extends Omit<CustomCommand, 'content'> {
 	content: string;
 }

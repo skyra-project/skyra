@@ -1,28 +1,28 @@
 {
-	"animeDescription": "",
+	"animeDescription": "جستجوی اسم انیمه مورد علاقه شما با این دستور.",
 	"animeExtended": {
 		"usages": [
-			""
+			"نام انیمه"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "این دستور از وبسایت Kitsu.io استفاده میکند تا اطلاعات انیمه مورد علاقه شما را نشان دهد.",
 		"examples": [
 			""
 		]
 	},
-	"mangaDescription": "",
+	"mangaDescription": "جستجوی اسم مانگا مورد علاقه شما با این دستور.",
 	"mangaExtended": {
 		"usages": [
-			""
+			"اسم مانگا"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "این دستور از وبسایت Kitsu.io استفاده میکند تا اطلاعات مانگا مورد علاقه شما را نشان دهد.",
 		"examples": [
 			"",
 			""
 		]
 	},
-	"waifuDescription": "",
+	"waifuDescription": "ارسال یک عکس ویفو به صورت تصادفی.",
 	"waifuExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "این دستور یک عکس ویفو به صورت تصادفی از وبسایت <https://thiswaifudoesnotexist.net/> ارسال میکند"
 	},
 	"animeTypes": {
 		"tv": "",
@@ -30,33 +30,33 @@
 		"ova": "",
 		"special": ""
 	},
-	"animeOutputDescription": "",
-	"animeNoSynopsis": "",
+	"animeOutputDescription": "**نام انگلیسی:** {{englishTitle}}\n**نام ژاپنی:** {{japaneseTitle}}\n**نام استاندارد:** {{canonicalTitle}}\n{{synopsis}}",
+	"animeNoSynopsis": "هیچ خلاصه داستانی برای این نام پیدا نشد.",
 	"animeEmbedData": {
-		"type": "",
-		"score": "",
-		"episodes": "",
-		"episodeLength": "",
-		"ageRating": "",
-		"firstAirDate": "",
-		"watchIt": "",
-		"stillAiring": ""
+		"type": "نوع",
+		"score": "امتیاز",
+		"episodes": "قسمت(ها)",
+		"episodeLength": "مقدار زمان هر قسمت",
+		"ageRating": "رده سنی",
+		"firstAirDate": "تاریخ پخش",
+		"watchIt": "تماشا در:",
+		"stillAiring": "درحال پخش"
 	},
-	"mangaOutputDescription": "",
+	"mangaOutputDescription": "**نام انگلیسی:** {{englishTitle}}\n**نام ژاپنی:** {{japaneseTitle}}\n**نام استاندارد:** {{canonicalTitle}}\n{{synopsis}}",
 	"mangaTypes": {
-		"manga": "",
-		"novel": "",
-		"manhwa": "",
-		"oneShot": "",
+		"manga": "📘 مانگا",
+		"novel": "📕 رمان",
+		"manhwa": "🇰🇷 مانگهای رنگی",
+		"oneShot": "☄ تک قسمتی",
 		"special": ""
 	},
 	"mangaEmbedData": {
-		"ageRating": "",
-		"firstPublishDate": "",
-		"readIt": "",
-		"score": "",
-		"type": "",
-		"none": ""
+		"ageRating": "رده سنی",
+		"firstPublishDate": "تاریخ اولین انتشار",
+		"readIt": "در اینجا بخوانید:",
+		"score": "امتیاز",
+		"type": "نوع",
+		"none": "هیچ‌کدام"
 	},
-	"waifuFooter": ""
+	"waifuFooter": "ساخته شده توسط thiswaifudoesnotexist.net"
 }

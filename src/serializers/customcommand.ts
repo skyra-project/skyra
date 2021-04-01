@@ -1,4 +1,4 @@
-import { isAlias, parseAndValidate } from '#lib/customCommands';
+import { parseAndValidate } from '#lib/customCommands';
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
@@ -22,26 +22,24 @@ export class UserSerializer extends Serializer<CustomCommand> {
 			throw t(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 		}
 
-		if (isAlias(value)) {
-			if (typeof value.alias !== 'string') {
-				throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidAlias));
-			}
-		} else {
-			if (typeof value.embed !== 'boolean') {
-				throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
-			}
-
-			if (typeof value.color !== 'number') {
-				throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidColor));
-			}
-
-			if (typeof value.content !== 'string') {
-				throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidContent));
-			}
-
-			// We will need to mutate this because the dashboard can't send Sentence instances:
-			value.content = parseAndValidate(value.content);
+		if (!Array.isArray(value.aliases) || value.aliases.some((alias) => typeof alias !== 'string')) {
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidAliases));
 		}
+
+		if (typeof value.embed !== 'boolean') {
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
+		}
+
+		if (typeof value.color !== 'number') {
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidColor));
+		}
+
+		if (typeof value.content !== 'string') {
+			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidContent));
+		}
+
+		// We will need to mutate this because the dashboard can't send Sentence instances:
+		value.content = parseAndValidate(value.content);
 
 		return true;
 	}

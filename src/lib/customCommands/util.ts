@@ -1,7 +1,6 @@
-import { CustomCommand, CustomCommandAlias, CustomCommandContent } from '#lib/database';
+import { CustomCommand } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
-import type { O } from '#utils/constants';
 import { Awaited } from '@sapphire/utilities';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
 import { InvalidTypeError } from './errors/InvalidTypeError';
@@ -107,50 +106,12 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 	}
 }
 
-export function isAlias(command: CustomCommandAlias | O): command is CustomCommandAlias {
-	return Reflect.has(command, 'alias');
-}
-
-export function isContent(command: CustomCommandContent | O): command is CustomCommandContent {
-	return !Reflect.has(command, 'alias');
-}
-
-export function getFromName(name: string, tags: CustomCommand[]): CustomCommandContent | null {
+export function getFromID(name: string, tags: CustomCommand[]): CustomCommand | null {
 	for (const tag of tags) {
-		if (tag.id !== name) continue;
-		if (isContent(tag)) return tag;
-
-		// It matched an alias, break the loop:
-		break;
-	}
-
-	// No tag matched, return null:
-	return null;
-}
-
-export function getFromPossibleAlias(name: string, tags: CustomCommand[]): CustomCommandContent | null {
-	for (const tag of tags) {
-		if (tag.id !== name) continue;
-		if (isContent(tag)) return tag;
-
-		return getFromName(tag.alias, tags);
+		if (tag.id === name) return tag;
+		if (tag.aliases.includes(name)) return tag;
 	}
 
 	// No tag matched, skip and return null:
 	return null;
-}
-
-export function renameAliases(previous: string, next: string, tags: CustomCommand[]) {
-	for (const tag of tags) {
-		if (isAlias(tag) && tag.alias === previous) tag.alias = next;
-	}
-}
-
-export function removeAliases(id: string, tags: CustomCommand[]) {
-	let i = 0;
-	while (i < tags.length) {
-		const tag = tags[i];
-		if (isAlias(tag) && tag.alias === id) tags.splice(i, 1);
-		else ++i;
-	}
 }

@@ -1,7 +1,7 @@
-import { ensure, isAlias } from '#lib/customCommands';
+import { ensure } from '#lib/customCommands';
 import { isNullish } from '@sapphire/utilities';
 import { ValueTransformer } from 'typeorm';
-import type { CustomCommand, CustomCommandAlias, CustomCommandContent } from '../entities/GuildEntity';
+import type { CustomCommand } from '../entities/GuildEntity';
 
 export const kBigIntTransformer: ValueTransformer = {
 	from: (value) => (isNullish(value) ? value : Number(value as string)),
@@ -9,12 +9,10 @@ export const kBigIntTransformer: ValueTransformer = {
 };
 
 export const kTagsTransformer: ValueTransformer = {
-	from: (values: RawCustomCommand[]): CustomCommand[] =>
-		values.map((value) => (isAlias(value) ? value : { ...value, content: ensure(value.content) })),
-	to: (values: CustomCommand[]): RawCustomCommand[] =>
-		values.map((value) => (isAlias(value) ? value : { ...value, content: value.content.toString() }))
+	from: (values: RawCustomCommand[]): CustomCommand[] => values.map((value) => ({ ...value, content: ensure(value.content) })),
+	to: (values: CustomCommand[]): RawCustomCommand[] => values.map((value) => ({ ...value, content: value.content.toString() }))
 };
 
-type RawCustomCommand = RawCustomCommandAlias | RawCustomCommandContent;
-type RawCustomCommandAlias = CustomCommandAlias;
-type RawCustomCommandContent = Omit<CustomCommandContent, 'content'> & { content: string };
+interface RawCustomCommand extends Omit<CustomCommand, 'content'> {
+	content: string;
+}

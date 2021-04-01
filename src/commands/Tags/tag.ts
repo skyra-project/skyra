@@ -1,4 +1,4 @@
-import { getFromPossibleAlias, InvalidTypeError, isAlias, parseAndValidate, parseParameter, removeAliases, renameAliases } from '#lib/customCommands';
+import { getFromID, InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
 import { CustomCommand, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -35,15 +35,9 @@ export class UserCommand extends SkyraCommand {
 
 		await message.guild.writeSettings((settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
-			const tagIndex = tags.findIndex((command) => command.id === id);
+			if (tags.some((command) => command.id === id)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
-			if (tagIndex === -1) {
-				tags.push(this.createTag(args, id, content));
-			} else {
-				const tag = tags[tagIndex];
-				if (isAlias(tag)) tags.splice(tagIndex, 1, this.createTag(args, id, content));
-				else this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
-			}
+			tags.push(this.createTag(args, id, content));
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }), {
@@ -63,7 +57,6 @@ export class UserCommand extends SkyraCommand {
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
-			removeAliases(id, tags);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }), {
@@ -82,26 +75,29 @@ export class UserCommand extends SkyraCommand {
 			const tags = settings[GuildSettings.CustomCommands];
 
 			// Get destination tag:
-			const destinationTag = tags.find((tag) => tag.id === output);
-			if (destinationTag === undefined) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: output });
+			const destinationTag = getFromID(output, tags);
+			if (destinationTag === null) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: output });
 
-			// If the destination is an alias, assign current alias as the destination's alias, instead of having an alias to an alias:
-			if (isAlias(destinationTag)) output = destinationTag.alias;
+			output = destinationTag.id;
 
 			// Get source tag, if any exists:
-			const sourceTagIndex = tags.findIndex((tag) => tag.id === input);
-			if (sourceTagIndex === -1) {
-				// If the alias does not exist, create new one:
-				tags.push({ id: input, alias: output });
-			} else {
-				const sourceTag = tags[sourceTagIndex];
-				// If one already exists, and is an alias, change it:
-				if (isAlias(sourceTag)) {
-					sourceTag.alias = output;
-				} else {
-					this.error(LanguageKeys.Commands.Tags.TagCannotAlias, { tag: sourceTag.id });
-				}
+			const sourceTag = getFromID(input, tags);
+			if (sourceTag === null) {
+				destinationTag.aliases.push(input);
+				return;
 			}
+
+			// If the input is a tag source, it cannot be aliased:
+			if (sourceTag.id === input) {
+				this.error(LanguageKeys.Commands.Tags.TagCannotAlias, { tag: sourceTag.id });
+			}
+
+			// Remove previous alias:
+			const index = sourceTag.aliases.indexOf(input);
+			if (index !== -1) sourceTag.aliases.splice(index, 1);
+
+			// Add new alias:
+			destinationTag.aliases.push(input);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagAlias, { input, output }), {
@@ -124,10 +120,9 @@ export class UserCommand extends SkyraCommand {
 			if (tag === undefined) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: previous });
 
 			// Check if a tag with the name exists:
-			if (tags.some((tag) => tag.id === next)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
+			if (getFromID(next, tags) !== null) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
 
 			// Rename tag:
-			renameAliases(tag.id, next, tags);
 			tag.id = next;
 		});
 
@@ -155,10 +150,11 @@ export class UserCommand extends SkyraCommand {
 		const content = await args.rest('string');
 
 		await message.guild.writeSettings((settings) => {
-			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
+			const tags = settings[GuildSettings.CustomCommands];
+			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
-			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(args, id, content));
+			tags[tagIndex] = this.createTag(args, id, content, tags[tagIndex].aliases);
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }), {
@@ -192,7 +188,7 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
-		const tag = getFromPossibleAlias(id, tags);
+		const tag = getFromID(id, tags);
 		if (tag === null) return null;
 
 		const iterator = tag.content.run();
@@ -207,17 +203,18 @@ export class UserCommand extends SkyraCommand {
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
-		const tag = getFromPossibleAlias(id, tags);
+		const tag = getFromID(id, tags);
 		return tag ? message.send(codeBlock('md', tag.content.toString()), { allowedMentions: { users: [], roles: [] } }) : null;
 	}
 
-	private createTag(args: SkyraCommand.Args, id: string, content: string): CustomCommand {
+	private createTag(args: SkyraCommand.Args, id: string, content: string, aliases: string[] = []): CustomCommand {
 		// Create the tag data:
 		const embed = args.getFlags('embed');
 		return {
 			id,
 			content: this.parseContent(args, content),
 			embed,
+			aliases,
 			color: embed ? this.parseColour(args) : 0
 		};
 	}

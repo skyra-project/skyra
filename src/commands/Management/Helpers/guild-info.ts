@@ -85,11 +85,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private getSummaryRoles(args: SkyraCommand.Args, roles: Role[]): string {
-		if (roles.length <= roleLimit) return args.t(LanguageKeys.Globals.AndListValue, { value: roles.map((role) => role.toString()) });
+		if (roles.length <= roleLimit) return args.t(LanguageKeys.Globals.AndListValue, { value: roles.map(roleMention) });
 
 		const mentions = roles
 			.slice(0, roleLimit - 1)
-			.map((role) => role.toString())
+			.map(roleMention)
 			.concat(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoleListAndMore, { count: roles.length - roleLimit - 1 }));
 		return args.t(LanguageKeys.Globals.AndListValue, { value: mentions });
 	}

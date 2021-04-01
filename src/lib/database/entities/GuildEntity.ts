@@ -207,6 +207,22 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'messages.moderator-name-display', default: true })
 	public messagesModeratorNameDisplay = true;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredAll })
+	@Column('boolean', { name: 'messages.auto-delete.ignored-all', default: false })
+	public messagesAutoDeleteIgnoredAll = false;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredRoles, type: 'role' })
+	@Column('varchar', { name: 'messages.auto-delete.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public messagesAutoDeleteIgnoredRoles: string[] = [];
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredChannels, type: 'textchannel' })
+	@Column('varchar', { name: 'messages.auto-delete.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public messagesAutoDeleteIgnoredChannels: string[] = [];
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredCommands, type: 'commandmatch' })
+	@Column('varchar', { name: 'messages.auto-delete.ignored-commands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public messagesAutoDeleteIgnoredCommands: string[] = [];
+
 	@Column('jsonb', { name: 'sticky-roles', default: () => "'[]'::JSONB" })
 	public stickyRoles: StickyRole[] = [];
 

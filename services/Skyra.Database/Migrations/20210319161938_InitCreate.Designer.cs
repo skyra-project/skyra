@@ -1057,6 +1057,31 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("starboard.self-star");
 
+                    b.Property<bool>("MessagesAutoDeleteIgnoredAll")
+                        .HasColumnType("boolean")
+                        .HasColumnName("messages.auto-delete.ignored-all");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("messages.auto-delete.ignored-roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredChannels")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("messages.auto-delete.ignored-channels")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredCommands")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("messages.auto-delete.ignored-commands")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.Property<string>("StickyRoles")
                         .IsRequired()
                         .ValueGeneratedOnAdd()

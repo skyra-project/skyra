@@ -40,13 +40,16 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
 	"listEmpty": "",
 	"nameNotAllowed": "",
 	"nameTooLong": "",
-	"notexists": "",
+	"notExists": "",
+	"cannotAlias": "",
+	"alias": "",
 	"permissionlevel": "",
 	"removed": "",
 	"renamed": "",

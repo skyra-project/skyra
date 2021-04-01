@@ -125,6 +125,12 @@ namespace Skyra.Database
 
 				entity.Property(e => e.MessagesModeratorNameDisplay).HasDefaultValueSql("true");
 
+				entity.Property(e => e.MessagesAutoDeleteIgnoredRoles).HasDefaultValueSql("ARRAY[]::character varying[]");
+
+				entity.Property(e => e.MessagesAutoDeleteIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
+
+				entity.Property(e => e.MessagesAutoDeleteIgnoredCommands).HasDefaultValueSql("ARRAY[]::character varying[]");
+
 				entity.Property(e => e.MusicAllowStreams).HasDefaultValueSql("true");
 
 				entity.Property(e => e.MusicDefaultVolume).HasDefaultValueSql("100");

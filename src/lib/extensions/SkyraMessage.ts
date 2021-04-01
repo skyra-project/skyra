@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { SkyraCommand } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { sleep } from '#utils/Promisified/sleep';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
@@ -21,7 +22,18 @@ const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 const kReactablePermissions = new Permissions(['VIEW_CHANNEL', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY']);
 
+const commands = new WeakMap<SkyraMessage, SkyraCommand>();
+
 export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) {
+	public set command(value: SkyraCommand | null) {
+		if (value === null) commands.delete(this);
+		else commands.set(this, value);
+	}
+
+	public get command(): SkyraCommand | null {
+		return commands.get(this) ?? null;
+	}
+
 	public async fetchLanguage(): Promise<string> {
 		return this._fetchLanguage(this.guild, this.channel, this.author);
 	}
@@ -141,6 +153,7 @@ declare module 'discord.js' {
 	}
 
 	export interface Message extends I18nextMessageImplementation, I18nextChannelImplementation {
+		command: SkyraCommand | null;
 		reactable: boolean;
 		fetchLanguage(): Promise<string>;
 		prompt(content: string, time?: number): Promise<Message>;

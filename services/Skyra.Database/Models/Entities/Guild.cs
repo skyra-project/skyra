@@ -179,6 +179,18 @@ namespace Skyra.Database.Models.Entities
 		public bool? MessagesModeratorNameDisplay { get; set; }
 
 		[Required]
+		[Column("messages.auto-delete.ignored-roles", TypeName = "character varying(19)[]")]
+		public string[] MessagesAutoDeleteIgnoredRoles { get; set; }
+
+		[Required]
+		[Column("messages.auto-delete.ignored-channels", TypeName = "character varying(19)[]")]
+		public string[] MessagesAutoDeleteIgnoredChannels { get; set; }
+
+		[Required]
+		[Column("messages.auto-delete.ignored-commands", TypeName = "character varying(19)[]")]
+		public string[] MessagesAutoDeleteIgnoredCommands { get; set; }
+
+		[Required]
 		[Column("sticky-roles", TypeName = "jsonb")]
 		public string StickyRoles { get; set; }
 

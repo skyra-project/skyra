@@ -66,6 +66,7 @@ VALUES
 	(1616188199786, 'V40AddSocialIgnoredRoles1616188199786'),
 	(1616191193015, 'V41AddMusicAllowedVoiceChannelsAndRoles1616191193015'),
 	(1616201639503, 'V42AddAllowedRolesIntoGiveaways1616201639503'),
-	(1616786337398, 'V43RemovedReferencesToUndesiredWords1616786337398');
+	(1616786337398, 'V43RemovedReferencesToUndesiredWords1616786337398'),
+	(1617272351741, 'V44AddAutoDeleteIgnoreOptions1617272351741');
 
 COMMIT;

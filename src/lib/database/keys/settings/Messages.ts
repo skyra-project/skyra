@@ -8,3 +8,5 @@ export const ModerationReasonDisplay = 'messagesModerationReasonDisplay';
 export const ModerationMessageDisplay = 'messagesModerationMessageDisplay';
 export const ModerationAutoDelete = 'messagesModerationAutoDelete';
 export const ModeratorNameDisplay = 'messagesModeratorNameDisplay';
+
+export * as AutoDelete from './AutoDelete/All';

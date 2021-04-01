@@ -843,7 +843,14 @@ export interface PermissionsNode {
 	deny: string[];
 }
 
-export interface CustomCommand {
+export type CustomCommand = CustomCommandAlias | CustomCommandContent;
+
+export interface CustomCommandAlias {
+	id: string;
+	alias: string;
+}
+
+export interface CustomCommandContent {
 	id: string;
 	embed: boolean;
 	color: number;

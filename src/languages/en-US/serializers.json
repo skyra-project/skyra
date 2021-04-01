@@ -1,5 +1,6 @@
 {
 	"customCommandInvalidArgs": "The property \"args\" must be an array of strings.",
+	"customCommandInvalidAlias": "The property \"alias\" must be a string.",
 	"customCommandInvalidColor": "The property \"color\" must be a number.",
 	"customCommandInvalidContent": "The property \"content\" must be a string.",
 	"customCommandInvalidEmbed": "The property \"embed\" must be a boolean.",

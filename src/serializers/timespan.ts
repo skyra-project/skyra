@@ -11,4 +11,8 @@ export class UserSerializer extends Serializer<number> {
 		if (typeof value === 'number' && Number.isInteger(value) && this.minOrMax(value, value, context)) return true;
 		throw context.t(LanguageKeys.Serializers.InvalidInt, { name: context.entry.name });
 	}
+
+	public stringify(data: number, { t }: SerializerUpdateContext): string {
+		return t(LanguageKeys.Globals.DurationValue, { value: data });
+	}
 }

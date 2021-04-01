@@ -736,13 +736,13 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('jsonb', { name: 'notifications.streams.twitch.streamers', default: () => "'[]'::JSONB" })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpvote, type: 'emoji' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
-	public suggestionsEmojisUpvote = ':ArrowT:694594285487652954';
+	public suggestionsEmojisUpVote = ':ArrowT:694594285487652954';
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownvote, type: 'emoji' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownVote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: ':ArrowB:694594285269680179' })
-	public suggestionsEmojisDownvote = ':ArrowB:694594285269680179';
+	public suggestionsEmojisDownVote = ':ArrowB:694594285269680179';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
@@ -752,9 +752,9 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'suggestions.on-action.dm', default: false })
 	public suggestionsOnActionDm = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionRepost })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionRePost })
 	@Column('boolean', { name: 'suggestions.on-action.repost', default: false })
-	public suggestionsOnActionRepost = false;
+	public suggestionsOnActionRePost = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionHideAuthor })
 	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })

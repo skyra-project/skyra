@@ -38,10 +38,10 @@ export class UserCommand extends SkyraCommand {
 		const action = await args.pick(UserCommand.action);
 		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.rest('string');
 
-		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = await message.guild.readSettings([
+		const [shouldDM, shouldHideAuthor, shouldRePostSuggestion] = await message.guild.readSettings([
 			GuildSettings.Suggestions.OnAction.DM,
 			GuildSettings.Suggestions.OnAction.HideAuthor,
-			GuildSettings.Suggestions.OnAction.RepostMessage
+			GuildSettings.Suggestions.OnAction.RePostMessage
 		]);
 		const [suggestion] = suggestionData.message.embeds;
 
@@ -79,7 +79,7 @@ export class UserCommand extends SkyraCommand {
 			}
 		}
 
-		if (shouldRepostSuggestion) {
+		if (shouldRePostSuggestion) {
 			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
 		} else if (suggestionData.message.author.id === process.env.CLIENT_ID) {
 			await suggestionData.message.edit(newEmbed);

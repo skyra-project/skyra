@@ -117,10 +117,10 @@ export const StarboardIgnoreChannels = T<string>('settings:starboardIgnoreChanne
 export const StarboardMinimum = T<string>('settings:starboardMinimum');
 export const StarboardSelfStar = T<string>('settings:starboardSelfStar');
 export const SuggestionsChannel = T<string>('settings:suggestionsChannel');
-export const SuggestionsEmojisUpvote = T<string>('settings:suggestionsEmojisUpvote');
-export const SuggestionsEmojisDownvote = T<string>('settings:suggestionsEmojisDownvote');
+export const SuggestionsEmojisUpVote = T<string>('settings:suggestionsEmojisUpVote');
+export const SuggestionsEmojisDownVote = T<string>('settings:suggestionsEmojisDownVote');
 export const SuggestionsOnActionDM = T<string>('settings:suggestionsOnActionDm');
-export const SuggestionsOnActionRepost = T<string>('settings:suggestionsOnActionRepost');
+export const SuggestionsOnActionRePost = T<string>('settings:suggestionsOnActionRePost');
 export const SuggestionsOnActionHideAuthor = T<string>('settings:suggestionsOnActionHideAuthor');
 export const DashboardOnlyKey = T<string>('settings:dashboardOnlyKey');
 

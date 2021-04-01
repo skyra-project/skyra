@@ -1,11 +1,12 @@
-import { GuildSettings } from '#lib/database';
+import { configurableKeys, GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel, User } from 'discord.js';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -31,8 +32,8 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const { author, content, image } = await this.resolveArguments(args);
-		const [[upvoteEmoji, downvoteEmoji], [suggestions, currentSuggestionId]] = await Promise.all([
-			message.guild.readSettings([GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji]),
+		const [[upVoteEmoji, downVoteEmoji], [suggestions, currentSuggestionId]] = await Promise.all([
+			message.guild.readSettings([GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji]),
 			this.getCurrentSuggestionID(message.guild.id)
 		]);
 
@@ -44,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 			.setDescription(content);
 		if (image !== null) embed.setImage(image);
 
-		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(embed);
+		const suggestionsMessage = (await (suggestionsChannel as TextChannel).send(embed)) as GuildMessage;
 
 		// Commit the suggestion to the DB
 		await suggestions.insert({
@@ -54,16 +55,30 @@ export class UserCommand extends SkyraCommand {
 			messageID: suggestionsMessage.id
 		});
 
-		// Add the upvote/downvote reactions
-		for (const emoji of [upvoteEmoji, downvoteEmoji]) {
-			await suggestionsMessage.react(emoji);
-		}
+		// Add the up-vote/down-vote reactions
+		await this.react(suggestionsMessage, upVoteEmoji, GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji);
+		await this.react(suggestionsMessage, downVoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji);
 
-		return message.send(
-			args.t(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
-				channel: suggestionsChannel.toString()
-			})
-		);
+		return message.send(args.t(LanguageKeys.Commands.Suggestions.SuggestSuccess, { channel: suggestionsChannel.toString() }));
+	}
+
+	private async react(message: GuildMessage, emoji: string, path: keyof GuildEntity) {
+		try {
+			await message.react(emoji);
+		} catch (error) {
+			// If it's not a DiscordAPIError, throw:
+			if (!(error instanceof DiscordAPIError)) throw error;
+
+			// If it's not an UnknownEmoji error, throw:
+			if (error.code !== RESTJSONErrorCodes.UnknownEmoji) throw error;
+
+			// If it's the default value, throw:
+			const defaultEmoji = configurableKeys.get(path)!.default as string;
+			if (emoji === defaultEmoji) throw error;
+
+			await message.react(defaultEmoji);
+			await message.guild.writeSettings([[path, defaultEmoji]]);
+		}
 	}
 
 	private async resolveArguments(args: SkyraCommand.Args): Promise<ResolvedArguments> {

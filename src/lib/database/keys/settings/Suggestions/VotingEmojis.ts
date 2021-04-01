@@ -1,2 +1,2 @@
-export const UpvoteEmoji = 'suggestionsEmojisUpvote';
-export const DownvoteEmoji = 'suggestionsEmojisDownvote';
+export const UpVoteEmoji = 'suggestionsEmojisUpVote';
+export const DownVoteEmoji = 'suggestionsEmojisDownVote';

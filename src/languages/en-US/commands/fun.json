@@ -135,10 +135,22 @@
 		],
 		"extendedHelp": "Allows you to generate a pop board where there is one non-pop word, which you have to find and send to the channel. For example, you must send `e60` from ||`pop`||||`e60`||||`pop`|| to win.",
 		"explainedUsage": [
-			["Duration", "The amount of time I should allow you to find the non-pop, defaults to 30 seconds."],
-			["--x/--width", "The amount of columns the board should have, defaults to 8."],
-			["--y/--height", "The amount of rows the board should have, defaults to 3."],
-			["--length", "The length of the pops and the solution, defaults to 3."]
+			[
+				"Duration",
+				"The amount of time I should allow you to find the non-pop, defaults to 30 seconds."
+			],
+			[
+				"--x/--width",
+				"The amount of columns the board should have, defaults to 8."
+			],
+			[
+				"--y/--height",
+				"The amount of rows the board should have, defaults to 3."
+			],
+			[
+				"--length",
+				"The length of the pops and the solution, defaults to 3."
+			]
 		],
 		"examples": [
 			"15",

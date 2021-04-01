@@ -36,8 +36,8 @@
 		"type": "Тип",
 		"score": "",
 		"episodes": "Эпизод(ы)",
-		"episodeLength": "",
-		"ageRating": "",
+		"episodeLength": "Длительность эпизода",
+		"ageRating": "Возрастной рейтинг",
 		"firstAirDate": "",
 		"watchIt": "Смотрите здесь:",
 		"stillAiring": ""
@@ -51,7 +51,7 @@
 		"special": ""
 	},
 	"mangaEmbedData": {
-		"ageRating": "",
+		"ageRating": "Возрастной рейтинг",
 		"firstPublishDate": "",
 		"readIt": "Читайте здесь:",
 		"score": "",

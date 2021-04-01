@@ -83,7 +83,7 @@
 		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": "• **Пользователи**: {{stats.users, number}}\n• **Гильдии**: {{stats.guilds, number}}\n• **Каналы**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
+		"stats": "",
 		"uptime": "",
 		"serverUsage": ""
 	},

@@ -146,8 +146,10 @@
 		"examples": [
 			"",
 			"",
+			"",
 			""
-		]
+		],
+		"reminder": ""
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "",

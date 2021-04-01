@@ -1,4 +1,3 @@
 {
-	"string": "{{REDCROSS}} Querido/a {{mention}}, {{message}}",
-	"wtf": "{{REDCROSS}} ¡Qué terrible fallo! ¡Lo siento mucho!"
+	"string": "{{REDCROSS}} Querido/a {{mention}}, {{message}}"
 }

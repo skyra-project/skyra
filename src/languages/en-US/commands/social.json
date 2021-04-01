@@ -254,7 +254,9 @@
 				"The page number to jump to. Defaults to 1."
 			]
 		],
-		"examples": ["2"],
+		"examples": [
+			"2"
+		],
 		"reminder": "The leaderboards refresh every 10 minutes."
 	},
 	"leaderboardHeader": "🏡 Local Score Scoreboard",

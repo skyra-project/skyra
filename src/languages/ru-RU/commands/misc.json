@@ -151,6 +151,35 @@
 			""
 		]
 	},
+	"flipDescription": "",
+	"flipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"flipDisabled": "",
+	"flipOutput": "",
 	"goodnightDescription": "",
 	"goodnightExtended": {
 		"usages": [
@@ -267,6 +296,7 @@
 			]
 		],
 		"examples": [
+			"",
 			""
 		],
 		"reminder": ""

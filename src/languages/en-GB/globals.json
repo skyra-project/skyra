@@ -12,7 +12,5 @@
 	"dateValue": "{{value, date}}",
 	"dateTimeValue": "{{value, dateTime}}",
 	"andListValue": "{{value, andList}}",
-	"orListValue": "{{value, orList}}",
-	"dateFormat": "DD/MM/YYYY",
-	"dateFormatExplanation": "Day/Month/Year"
+	"orListValue": "{{value, orList}}"
 }

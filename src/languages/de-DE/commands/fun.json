@@ -125,6 +125,43 @@
 			""
 		]
 	},
+	"popDescription": "",
+	"popExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"popTitle": "",
+	"popTitleLost": "",
+	"popTitleWinner": "",
 	"punDescription": "Zeigt dir einen zufälligen Wortwitz.",
 	"punExtended": {
 		"extendedHelp": "Ein Steak Wortwitz ist selten gut durch.\nHol dir deine tägliche Dosis dad jokes von icanhazdadjoke.com und lache über witzige Sprüche."

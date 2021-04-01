@@ -1,6 +1,6 @@
 {
-	"VIEW_CHANNEL": "संदेश पढ़ें",
-	"SEND_MESSAGES": "संदेश भेजो",
 	"CONNECT": "जुडिये",
-	"SPEAK": "बोले"
+	"SEND_MESSAGES": "संदेश भेजो",
+	"SPEAK": "बोले",
+	"VIEW_CHANNEL": "संदेश पढ़ें"
 }

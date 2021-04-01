@@ -40,13 +40,16 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		]
 	},
 	"listEmpty": "Список тегов для этого сервера пуст.",
 	"nameNotAllowed": "Название тега не может содержать гравис или невидимые символы.",
 	"nameTooLong": "",
-	"notexists": "",
+	"notExists": "",
+	"cannotAlias": "",
+	"alias": "",
 	"permissionlevel": "",
 	"removed": "Тег **{{name}}** успешно удалён.",
 	"renamed": "",

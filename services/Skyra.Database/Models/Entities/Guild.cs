@@ -568,6 +568,9 @@ namespace Skyra.Database.Models.Entities
 		[Column("starboard.self-star")]
 		public bool StarboardSelfStar { get; set; }
 
+		[Column("starboard.maximum-age")]
+		public long? StarboardMaximumAge { get; set; }
+
 		[Required]
 		[Column("trigger.alias", TypeName = "jsonb")]
 		public string TriggerAlias { get; set; }

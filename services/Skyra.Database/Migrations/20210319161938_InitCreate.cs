@@ -408,8 +408,8 @@ namespace Skyra.Database.Migrations
 						defaultValueSql: "ARRAY[]::character varying[]"),
 					starboardminimum = table.Column<short>(name: "starboard.minimum", type: "smallint", nullable: false,
 						defaultValueSql: "1"),
-					starboardselfstar =
-						table.Column<bool>(name: "starboard.self-star", type: "boolean", nullable: false),
+					starboardselfstar = table.Column<bool>(name: "starboard.self-star", type: "boolean", nullable: false),
+					starboardmaximumage = table.Column<long?>(name: "starboard.maximum-age", type: "bigint", nullable: true),
 					triggeralias = table.Column<string>(name: "trigger.alias", type: "jsonb", nullable: false,
 						defaultValueSql: "'[]'::jsonb"),
 					triggerincludes = table.Column<string>(name: "trigger.includes", type: "jsonb", nullable: false,

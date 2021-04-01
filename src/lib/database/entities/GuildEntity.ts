@@ -703,6 +703,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'starboard.self-star', default: false })
 	public starboardSelfStar = false;
 
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.StarboardMaximumAge, minimum: 0, maximum: Time.Year * 5 })
+	@Column('bigint', { name: 'starboard.maximum-age', nullable: true, transformer: kBigIntTransformer })
+	public starboardMaximumAge: number | null = null;
+
 	@Column('jsonb', { name: 'trigger.alias', default: () => "'[]'::JSONB" })
 	public triggerAlias: TriggerAlias[] = [];
 

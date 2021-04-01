@@ -8,6 +8,7 @@ import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const roleMention = (role: Role) => role.toString();
+const roleLimit = 15;
 
 const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
@@ -42,6 +43,8 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		display.addPageEmbed(await this.getSummary(args, roles, color));
+
+		if (roles.length <= roleLimit) return display;
 
 		for (const batch of chunk(roles, 20)) {
 			if (batch.length <= 10) {
@@ -82,12 +85,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private getSummaryRoles(args: SkyraCommand.Args, roles: Role[]): string {
-		if (roles.length <= 15) return args.t(LanguageKeys.Globals.AndListValue, { value: roles.map((role) => role.toString()) });
+		if (roles.length <= roleLimit) return args.t(LanguageKeys.Globals.AndListValue, { value: roles.map((role) => role.toString()) });
 
 		const mentions = roles
-			.slice(0, 14)
+			.slice(0, roleLimit - 1)
 			.map((role) => role.toString())
-			.concat(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoleListAndMore, { count: roles.length - 14 }));
+			.concat(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoleListAndMore, { count: roles.length - roleLimit - 1 }));
 		return args.t(LanguageKeys.Globals.AndListValue, { value: mentions });
 	}
 

@@ -116,6 +116,7 @@ export const StarboardChannel = T<string>('settings:starboardChannel');
 export const StarboardIgnoreChannels = T<string>('settings:starboardIgnoreChannels');
 export const StarboardMinimum = T<string>('settings:starboardMinimum');
 export const StarboardSelfStar = T<string>('settings:starboardSelfStar');
+export const StarboardMaximumAge = T<string>('settings:starboardMaximumAge');
 export const SuggestionsChannel = T<string>('settings:suggestionsChannel');
 export const SuggestionsEmojisUpVote = T<string>('settings:suggestionsEmojisUpVote');
 export const SuggestionsEmojisDownVote = T<string>('settings:suggestionsEmojisDownVote');

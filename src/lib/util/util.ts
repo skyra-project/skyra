@@ -4,6 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { err, ok, Result, Store } from '@sapphire/framework';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -72,6 +73,11 @@ export function showSeconds(duration: number): string {
 	}
 
 	return output;
+}
+
+export function snowflakeAge(snowflake: string | bigint) {
+	const { timestamp } = DiscordSnowflake.deconstruct(snowflake);
+	return Math.max(Date.now() - Number(timestamp), 0);
 }
 
 /**

@@ -1057,6 +1057,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("starboard.self-star");
 
+                    b.Property<long?>("StarboardMaximumAge")
+                        .HasColumnType("bigint")
+                        .HasColumnName("starboard.maximum-age");
+
                     b.Property<bool>("MessagesAutoDeleteIgnoredAll")
                         .HasColumnType("boolean")
                         .HasColumnName("messages.auto-delete.ignored-all");

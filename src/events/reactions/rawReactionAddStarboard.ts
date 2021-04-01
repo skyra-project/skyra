@@ -1,6 +1,8 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { isNullishOrZero } from '#utils/comparators';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { snowflakeAge } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import type { TextChannel } from 'discord.js';
@@ -10,14 +12,22 @@ export class UserEvent extends Event {
 	public async run(data: LLRCData, emojiID: string) {
 		if (data.channel.nsfw) return;
 
-		const [channel, ignoreChannels, emoji, selfStar] = await data.guild.readSettings([
+		const [channel, ignoreChannels, emoji, selfStar, maximumAge] = await data.guild.readSettings([
 			GuildSettings.Starboard.Channel,
 			GuildSettings.Starboard.IgnoreChannels,
 			GuildSettings.Starboard.Emoji,
-			GuildSettings.Starboard.SelfStar
+			GuildSettings.Starboard.SelfStar,
+			GuildSettings.Starboard.MaximumAge
 		]);
-		if (data.channel.id === channel || emojiID !== emoji) return;
-		if (!channel || ignoreChannels.includes(data.channel.id)) return;
+
+		// If there is no channel, or channel is the starboard channel, or the emoji isn't the starboard one, skip:
+		if (!channel || data.channel.id === channel || emojiID !== emoji) return;
+
+		// If the message is too old, skip:
+		if (!isNullishOrZero(maximumAge) && snowflakeAge(data.messageID) > maximumAge) return;
+
+		// If the channel is ignored, skip:
+		if (ignoreChannels.includes(data.channel.id)) return;
 
 		const starboardChannel = data.guild.channels.cache.get(channel) as TextChannel | undefined;
 		if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {

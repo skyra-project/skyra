@@ -42,6 +42,7 @@ export const MessagesModerationDM = T<string>('settings:messagesModerationDm');
 export const MessagesModerationMessageDisplay = T<string>('settings:messagesModerationMessageDisplay');
 export const MessagesModerationReasonDisplay = T<string>('settings:messagesModerationReasonDisplay');
 export const MessagesModeratorNameDisplay = T<string>('settings:messagesModeratorNameDisplay');
+export const MessagesAutoDeleteIgnoredAll = T<string>('settings:messagesAutoDeleteIgnoredAll');
 export const MessagesAutoDeleteIgnoredRoles = T<string>('settings:messagesAutoDeleteIgnoredRoles');
 export const MessagesAutoDeleteIgnoredChannels = T<string>('settings:messagesAutoDeleteIgnoredChannels');
 export const MessagesAutoDeleteIgnoredCommands = T<string>('settings:messagesAutoDeleteIgnoredCommands');

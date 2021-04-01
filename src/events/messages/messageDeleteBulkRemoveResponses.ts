@@ -19,11 +19,15 @@ export class UserEvent extends Event<Events.MessageDeleteBulk> {
 		// If the auto-delete behavior cannot be customized, delete all:
 		if (!this.canBeCustomized(first)) return this.deleteAll(messages);
 
-		const [ignoredChannels, ignoredCommands, ignoredRoles] = await first.guild.readSettings([
+		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await first.guild.readSettings([
+			GuildSettings.Messages.AutoDelete.IgnoredAll,
 			GuildSettings.Messages.AutoDelete.IgnoredChannels,
 			GuildSettings.Messages.AutoDelete.IgnoredCommands,
 			GuildSettings.Messages.AutoDelete.IgnoredRoles
 		]);
+
+		// If auto-delete is disabled globally, skip all:
+		if (ignoredAll) return;
 
 		// If the channel is ignored, skip all:
 		if (ignoredChannels.includes(first.channel.id)) return;

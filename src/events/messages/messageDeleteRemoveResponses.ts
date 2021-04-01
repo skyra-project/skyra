@@ -30,11 +30,15 @@ export class UserEvent extends Event {
 	private async shouldBeIgnored(message: Message): Promise<boolean> {
 		if (!this.canBeCustomized(message)) return false;
 
-		const [ignoredChannels, ignoredCommands, ignoredRoles] = await message.guild.readSettings([
+		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await message.guild.readSettings([
+			GuildSettings.Messages.AutoDelete.IgnoredAll,
 			GuildSettings.Messages.AutoDelete.IgnoredChannels,
 			GuildSettings.Messages.AutoDelete.IgnoredCommands,
 			GuildSettings.Messages.AutoDelete.IgnoredRoles
 		]);
+
+		// Check for ignored all:
+		if (ignoredAll) return true;
 
 		// Check for ignored channels:
 		if (ignoredChannels.includes(message.channel.id)) return true;

@@ -1057,6 +1057,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("starboard.self-star");
 
+                    b.Property<bool>("MessagesAutoDeleteIgnoredAll")
+                        .HasColumnType("boolean")
+                        .HasColumnName("messages.auto-delete.ignored-all");
+
                     b.Property<string[]>("MessagesAutoDeleteIgnoredRoles")
                         .IsRequired()
                         .ValueGeneratedOnAdd()

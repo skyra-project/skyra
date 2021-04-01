@@ -42,6 +42,7 @@
 	"messagesModerationMessageDisplay": "Whether or not a response should be sent for moderation commands.",
 	"messagesModerationReasonDisplay": "Whether the reason will be displayed in moderation commands.",
 	"messagesModeratorNameDisplay": "Whether or not I should display the name of the moderator who took the action when sending the target user a moderation message. Requires `messages.moderation-dm` to be enabled.",
+	"messagesAutoDeleteIgnoredAll": "Whether or not command responses should be automatically deleted when deleting any user's message.",
 	"messagesAutoDeleteIgnoredRoles": "The roles users should have for their command responses to not be automatically deleted when deleting the user's message.",
 	"messagesAutoDeleteIgnoredChannels": "The channels where command responses will not be automatically deleted when deleting the user's message.",
 	"messagesAutoDeleteIgnoredCommands": "The command which responses will not be automatically deleted when deleting the user's message.",

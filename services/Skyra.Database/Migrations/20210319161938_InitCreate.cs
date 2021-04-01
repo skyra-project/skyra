@@ -156,6 +156,8 @@ namespace Skyra.Database.Migrations
 						type: "boolean", nullable: false),
 					messagesmoderatornamedisplay = table.Column<bool>(name: "messages.moderator-name-display",
 						type: "boolean", nullable: false, defaultValueSql: "true"),
+					messagesautodeleteignoredall = table.Column<bool>(name: "messages.auto-delete.ignored-all",
+						type: "boolean", nullable: false, defaultValueSql: "false"),
 					messagesautodeleteignoredroles = table.Column<string[]>(name: "messages.auto-delete.ignored-roles", type: "character varying(19)[]",
 						nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
 					messagesautodeleteignoredchannels = table.Column<string[]>(name: "messages.auto-delete.ignored-channels", type: "character varying(19)[]",

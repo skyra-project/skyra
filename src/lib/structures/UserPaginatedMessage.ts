@@ -55,8 +55,8 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		return this.addPage({ content });
 	}
 
-	public addPageEmbed(cb: (builder: MessageEmbed) => MessageEmbed): this {
-		return this.addPage({ embed: cb(new MessageEmbed()) });
+	public addPageEmbed(cb: MessageEmbed | ((builder: MessageEmbed) => MessageEmbed)): this {
+		return this.addPage({ embed: typeof cb === 'function' ? cb(new MessageEmbed()) : cb });
 	}
 
 	/**

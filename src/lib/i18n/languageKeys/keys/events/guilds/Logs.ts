@@ -1,0 +1,27 @@
+import { FT, T } from '#lib/types';
+
+export const ChannelUpdateBitrate = FT<{ previous: number; next: number }, string>('events/guild-logs:channelUpdateBitrate');
+export const ChannelUpdateName = FT<{ previous: string; next: string }, string>('events/guild-logs:channelUpdateName');
+export const ChannelUpdateNsfw = FT<{ previous: string; next: string }, string>('events/guild-logs:channelUpdateNsfw');
+export const ChannelUpdateParent = FT<{ previous: string; next: string }, string>('events/guild-logs:channelUpdateParent');
+export const ChannelUpdateParentAdded = FT<{ channel: string }, string>('events/guild-logs:channelUpdateParentAdded');
+export const ChannelUpdateParentRemoved = FT<{ channel: string }, string>('events/guild-logs:channelUpdateParentRemoved');
+export const ChannelUpdatePosition = FT<{ previous: number; next: number }, string>('events/guild-logs:channelUpdatePosition');
+export const ChannelUpdateRateLimit = FT<{ previous: number; next: number }, string>('events/guild-logs:channelUpdateRateLimit');
+export const ChannelUpdateRateLimitAdded = FT<{ rateLimit: number }, string>('events/guild-logs:channelUpdateRateLimitAdded');
+export const ChannelUpdateRateLimitRemoved = FT<{ rateLimit: number }, string>('events/guild-logs:channelUpdateRateLimitRemoved');
+export const ChannelUpdateTopic = FT<{ previous: string; next: string }, string>('events/guild-logs:channelUpdateTopic');
+export const ChannelUpdateTopicAdded = FT<{ topic: string }, string>('events/guild-logs:channelUpdateTopicAdded');
+export const ChannelUpdateTopicRemoved = FT<{ topic: string }, string>('events/guild-logs:channelUpdateTopicRemoved');
+export const ChannelUpdateType = FT<{ previous: string; next: string }, string>('events/guild-logs:channelUpdateType');
+export const ChannelUpdateUserLimit = FT<{ previous: number; next: number }, string>('events/guild-logs:channelUpdateUserLimit');
+export const ChannelUpdateUserLimitAdded = FT<{ userLimit: string }, string>('events/guild-logs:channelUpdateUserLimitAdded');
+export const ChannelUpdateUserLimitRemoved = FT<{ userLimit: string }, string>('events/guild-logs:channelUpdateUserLimitRemoved');
+export const RoleUpdate = T<string>('events/guilds-logs:roleUpdate');
+export const RoleUpdateColor = FT<{ previous: string; next: string }, string>('events/guilds-logs:roleUpdateColor');
+export const RoleUpdateHoist = FT<{ previous: string; next: string }, string>('events/guilds-logs:roleUpdateHoist');
+export const RoleUpdateMentionable = FT<{ previous: string; next: string }, string>('events/guilds-logs:roleUpdateMentionable');
+export const RoleUpdateName = FT<{ previous: string; next: string }, string>('events/guilds-logs:roleUpdateName');
+export const RoleUpdatePermissionsAdded = FT<{ permissions: string[]; count: number }, string>('events/guilds-logs:roleUpdatePermissionsAdded');
+export const RoleUpdatePermissionsRemoved = FT<{ permissions: string[]; count: number }, string>('events/guilds-logs:roleUpdatePermissionsAdded');
+export const RoleUpdatePosition = FT<{ previous: number; next: number }, string>('events/guilds-logs:roleUpdatePosition');

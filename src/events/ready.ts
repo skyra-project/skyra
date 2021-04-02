@@ -115,7 +115,7 @@ ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
 ${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
-${line11} ${pad}[${client.audio!.queues?.client.connected ? success : failed}] Audio
+${line11} ${pad}[${client.audio?.queues?.client.connected ? success : failed}] Audio
 ${line12} ${pad}[${success}] Moderation
 ${line13} ${pad}[${success}] Social & Leaderboards
 ${line14}${this.context.client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}

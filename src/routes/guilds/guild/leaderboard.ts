@@ -1,5 +1,5 @@
 import { ratelimit } from '#lib/api/utils';
-import { fetchAllLeaderboardEntries, iteratorRange } from '#utils/util';
+import { fetchAllLeaderBoardEntries, iteratorRange } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
@@ -22,6 +22,6 @@ export class UserRoute extends Route {
 		const leaderboard = await client.leaderboard.fetch(guildID);
 		const results = iteratorRange(leaderboard.entries(), after - 1, limit);
 
-		return response.json(await fetchAllLeaderboardEntries(client, results));
+		return response.json(fetchAllLeaderBoardEntries(guild, results));
 	}
 }

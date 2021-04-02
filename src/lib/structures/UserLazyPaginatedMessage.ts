@@ -1,22 +1,22 @@
 import { GuildMessage } from '#lib/types';
-import { MessageBuilder, MessagePage, PaginatedMessage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
+import { LazyPaginatedMessage, MessageBuilder, MessagePage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
 import { Time } from '@sapphire/time-utilities';
 import { RESTPostAPIChannelMessageJSONBody } from 'discord-api-types/v6';
 import { APIMessage, MessageEmbed, MessageOptions, NewsChannel, TextChannel, User } from 'discord.js';
 import { applyTemplate } from './utils/templates';
 
-export class UserPaginatedMessage extends PaginatedMessage {
+export class UserLazyPaginatedMessage extends LazyPaginatedMessage {
 	public template: MessageOptions;
 
-	public constructor(options: UserPaginatedMessage.Options = {}) {
+	public constructor(options: UserLazyPaginatedMessage.Options = {}) {
 		super(options);
 		this.setIdle(Time.Minute * 5);
-		this.template = UserPaginatedMessage.resolveTemplate(options.template);
+		this.template = UserLazyPaginatedMessage.resolveTemplate(options.template);
 	}
 
 	public async start(message: GuildMessage, target = message.author): Promise<this> {
 		// Stop the previous display and cache the new one
-		const display = UserPaginatedMessage.handlers.get(target.id);
+		const display = UserLazyPaginatedMessage.handlers.get(target.id);
 		if (display) display.collector!.stop();
 
 		// If the message was sent by Skyra, set the response as this one
@@ -27,12 +27,12 @@ export class UserPaginatedMessage extends PaginatedMessage {
 
 		if (this.collector) {
 			this.collector!.once('end', () => {
-				UserPaginatedMessage.messages.delete(messageID);
-				UserPaginatedMessage.handlers.delete(target.id);
+				UserLazyPaginatedMessage.messages.delete(messageID);
+				UserLazyPaginatedMessage.handlers.delete(target.id);
 			});
 
-			UserPaginatedMessage.messages.set(messageID, handler);
-			UserPaginatedMessage.handlers.set(target.id, handler);
+			UserLazyPaginatedMessage.messages.set(messageID, handler);
+			UserLazyPaginatedMessage.handlers.set(target.id, handler);
 		}
 
 		return handler;
@@ -41,8 +41,8 @@ export class UserPaginatedMessage extends PaginatedMessage {
 	/**
 	 * This clones the current handler into a new instance.
 	 */
-	public clone(): UserPaginatedMessage {
-		const clone = super.clone() as UserPaginatedMessage;
+	public clone(): UserLazyPaginatedMessage {
+		const clone = super.clone() as UserLazyPaginatedMessage;
 		clone.template = this.template;
 		return clone;
 	}
@@ -89,8 +89,8 @@ export class UserPaginatedMessage extends PaginatedMessage {
 		return message;
 	}
 
-	public static readonly messages = new Map<string, UserPaginatedMessage>();
-	public static readonly handlers = new Map<string, UserPaginatedMessage>();
+	public static readonly messages = new Map<string, UserLazyPaginatedMessage>();
+	public static readonly handlers = new Map<string, UserLazyPaginatedMessage>();
 
 	private static resolveTemplate(template?: MessageEmbed | MessageOptions): MessageOptions {
 		if (template === undefined) return {};
@@ -100,7 +100,7 @@ export class UserPaginatedMessage extends PaginatedMessage {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace UserPaginatedMessage {
+export namespace UserLazyPaginatedMessage {
 	export interface Options extends PaginatedMessageOptions {
 		template?: MessageEmbed | MessageOptions;
 	}

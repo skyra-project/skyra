@@ -245,24 +245,21 @@
 	"leaderboardDescription": "Check the leaderboards.",
 	"leaderboardExtended": {
 		"usages": [
-			"local/global Index",
-			"local/global",
 			"Index"
 		],
-		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
+		"extendedHelp": "The leaderboard command shows a list of users sorted by their local amount of points, by default, when using no arguments, it will show the first page of the local leaderboard.",
 		"explainedUsage": [
-			[
-				"local/global",
-				"Whether you want to view the local or global leaderboard. Defaults to \"local\"."
-			],
 			[
 				"Index",
 				"The page number to jump to. Defaults to 1."
 			]
 		],
-		"reminder": "`local` leaderboards refer to the server's top list. `global` refers to all scores from all servers."
+		"examples": ["2"],
+		"reminder": "The leaderboards refresh every 10 minutes."
 	},
+	"leaderboardHeader": "🏡 Local Score Scoreboard",
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
+	"leaderboardUnknownUser": "User not in server ({{user}})",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
 		"usages": [

@@ -130,7 +130,7 @@ export class Leaderboard {
 		const store = this.kGuilds.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
-			store.set(entry.user_id, { name: null, points: entry.points, position: ++i });
+			store.set(entry.user_id, { points: entry.points, position: ++i });
 		}
 
 		this.kTempPromises.guilds.delete(guild);
@@ -172,7 +172,7 @@ export class Leaderboard {
 
 		let i = 0;
 		for (const entry of data) {
-			this.kUsers.set(entry.id, { name: null, points: entry.points, position: ++i });
+			this.kUsers.set(entry.id, { points: entry.points, position: ++i });
 		}
 
 		this.kTempPromises.users = null;
@@ -182,7 +182,6 @@ export class Leaderboard {
 export interface LeaderboardUser {
 	points: number;
 	position: number;
-	name: string | null;
 }
 
 interface LeaderboardTimeouts {

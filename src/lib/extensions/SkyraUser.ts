@@ -34,7 +34,6 @@ export class SkyraUser extends Structures.get('User') {
 
 		const rank = list.get(this.id);
 		if (!rank) return list.size;
-		if (!rank.name) rank.name = this.username;
 		return rank.position;
 	}
 }

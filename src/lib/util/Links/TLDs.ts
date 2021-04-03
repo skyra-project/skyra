@@ -463,7 +463,6 @@ export const TLDs = [
 	'frontier',
 	'ftr',
 	'fujitsu',
-	'fujixerox',
 	'fun',
 	'fund',
 	'furniture',

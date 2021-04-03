@@ -69,7 +69,8 @@ function parseApiAuth(): ServerOptionsAuth | undefined {
 		cookie: envParseString('OAUTH_COOKIE'),
 		redirect: envParseString('OAUTH_REDIRECT_URI'),
 		scopes: envParseArray('OAUTH_SCOPE'),
-		transformers: [transformOauthGuildsAndUser]
+		transformers: [transformOauthGuildsAndUser],
+		domainOverwrite: envParseString('OAUTH_DOMAIN_OVERWRITE')
 	};
 }
 

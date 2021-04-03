@@ -19,7 +19,7 @@ export class WebsocketHandler {
 
 	private handleConnection(ws: WebSocket, request: ApiRequest) {
 		// Read SKYRA_AUTH cookie
-		const cookies = new CookieStore(request, null!, process.env.NODE_ENV === 'production');
+		const cookies = new CookieStore(request, null!, process.env.NODE_ENV === 'production', Store.injectedContext.server.auth?.domainOverwrite);
 		const auth = cookies.get('SKYRA_AUTH');
 		if (!auth) return ws.close(CloseCodes.Unauthorized);
 

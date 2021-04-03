@@ -27,9 +27,10 @@ export interface SkyraEnv {
 	API_PREFIX: string;
 
 	OAUTH_COOKIE: string;
-	OAUTH_SECRET: string;
+	OAUTH_DOMAIN_OVERWRITE: string;
 	OAUTH_REDIRECT_URI: string;
 	OAUTH_SCOPE: string;
+	OAUTH_SECRET: string;
 
 	TWITCH_CALLBACK: string;
 

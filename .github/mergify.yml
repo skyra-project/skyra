@@ -15,3 +15,12 @@ pull_request_rules:
     actions:
       merge:
         method: squash
+  - name: Automatic TLD Update Merger
+    conditions:
+      - author=NM-EEA-Y
+      - base=main
+      - label~=^Meta:\ Refactor
+      - title~=^refactor:\ update\ TLDs
+    actions:
+      merge:
+        method: squash

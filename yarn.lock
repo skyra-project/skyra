@@ -805,10 +805,10 @@
     "@discordjs/collection" "^0.1.6"
     tslib "^2.1.0"
 
-"@sapphire/plugin-api@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-2.1.1.tgz#9fb396c342f24fe5346fb36bef721be67261e03f"
-  integrity sha512-E+RN27bgiKrro6Tock5NBAkINyIsqRbLJRo7vqlYn1SXWAtMMRMO4uR7eznQKE0I2F/J7JmB1WypwWVM7KhIzQ==
+"@sapphire/plugin-api@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-api/-/plugin-api-2.1.2.tgz#83893291347c03e50f8eb1d17309d0881d424c74"
+  integrity sha512-/gd64BPUjlgDjDqZQ2BvJGV2MApuOzrN56WJn4FyUrzVMiYx8qBV1u6vCIxmhmj946IAzNG4Um1Mr74NO9kmCg==
   dependencies:
     "@types/psl" "^1.1.0"
     node-fetch "^2.6.1"

@@ -12,7 +12,21 @@ export function hasAtLeastOneKeyInMap<T>(map: ReadonlyMap<T, any>, keys: readonl
 	return keys.some((key) => map.has(key));
 }
 
-export function difference<K, V>(previous: ReadonlyMap<K, V>, next: ReadonlyMap<K, V>) {
+export function differenceBitField(previous: number, next: number) {
+	const diff = previous ^ next;
+	const added = next & diff;
+	const removed = previous & diff;
+	return { added, removed };
+}
+
+export function differenceArray<T>(previous: readonly T[], next: readonly T[]) {
+	const added = next.filter((value) => !previous.includes(value));
+	const removed = previous.filter((value) => !next.includes(value));
+
+	return { added, removed };
+}
+
+export function differenceMap<K, V>(previous: ReadonlyMap<K, V>, next: ReadonlyMap<K, V>) {
 	const added = new Map<K, V>();
 	const updated = new Map<K, V>();
 	const removed = new Map<K, V>();

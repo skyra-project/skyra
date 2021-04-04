@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
-import { difference } from '#utils/comparators';
+import { differenceMap } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -73,7 +73,7 @@ export class UserEvent extends Event<Events.EmojiUpdate> {
 			});
 		}
 
-		const modified = difference(previous.roles.cache, next.roles.cache);
+		const modified = differenceMap(previous.roles.cache, next.roles.cache);
 		if (modified.added.size !== 0) {
 			const roles = [...modified.added.keys()].map((id) => `<@&${id}>`);
 			yield t(LanguageKeys.Events.Guilds.Logs.EmojiUpdateRolesAdded, { roles, count: roles.length });

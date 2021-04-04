@@ -1,7 +1,8 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
-import { difference, toArray } from '#utils/permissions';
+import { differenceBitField } from '#utils/comparators';
+import { toPermissionsArray } from '#utils/bits';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -67,14 +68,14 @@ export class UserEvent extends Event<Events.RoleUpdate> {
 		}
 
 		if (previous.permissions.bitfield !== next.permissions.bitfield) {
-			const modified = difference(previous.permissions.bitfield, next.permissions.bitfield);
+			const modified = differenceBitField(previous.permissions.bitfield, next.permissions.bitfield);
 			if (modified.added) {
-				const added = toArray(modified.added).map((key) => t(`permissions:${key}`));
+				const added = toPermissionsArray(modified.added).map((key) => t(`permissions:${key}`));
 				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsAdded, { permissions: added, count: added.length });
 			}
 
 			if (modified.removed) {
-				const removed = toArray(modified.removed).map((key) => t(`permissions:${key}`));
+				const removed = toPermissionsArray(modified.removed).map((key) => t(`permissions:${key}`));
 				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsRemoved, { permissions: removed, count: removed.length });
 			}
 		}

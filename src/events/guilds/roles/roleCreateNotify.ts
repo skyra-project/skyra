@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
-import { toArray } from '#utils/permissions';
+import { toPermissionsArray } from '#utils/bits';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -43,7 +43,7 @@ export class UserEvent extends Event<Events.RoleCreate> {
 		yield t(LanguageKeys.Events.Guilds.Logs.RoleCreateName, { value: role.name });
 
 		if (role.permissions.bitfield !== 0) {
-			const permissions = toArray(role.permissions.bitfield).map((key) => t(`permissions:${key}`));
+			const permissions = toPermissionsArray(role.permissions.bitfield).map((key) => t(`permissions:${key}`));
 			yield t(LanguageKeys.Events.Guilds.Logs.RoleCreatePermissions, { permissions, count: permissions.length });
 		}
 

@@ -117,12 +117,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
-		const channelID = await message.guild.readSettings(GuildSettings.Channels.PruneLogs);
+		const channelID = await message.guild.readSettings(GuildSettings.Channels.Logs.Prune);
 		if (isNullish(channelID)) return;
 
 		const channel = message.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (typeof channel === 'undefined') {
-			await message.guild.writeSettings([[GuildSettings.Channels.PruneLogs, null]]);
+			await message.guild.writeSettings([[GuildSettings.Channels.Logs.Prune, null]]);
 			return;
 		}
 

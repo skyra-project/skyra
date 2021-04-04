@@ -25,7 +25,10 @@ export class UserEvent extends Event {
 		// If the message was edited, do not repost:
 		if (message.editedTimestamp) return;
 
-		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
+		const [logChannel, ignoredChannels] = await message.guild.readSettings([
+			GuildSettings.Channels.Logs.Image,
+			GuildSettings.Channels.Ignore.All
+		]);
 		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
 
 		const t = await message.fetchT();

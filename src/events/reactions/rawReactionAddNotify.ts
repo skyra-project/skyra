@@ -29,7 +29,7 @@ export class UserEvent extends Event {
 			t
 		] = await data.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.Reactions.Allowed],
-			settings[GuildSettings.Channels.ReactionLogs],
+			settings[GuildSettings.Channels.Logs.Reaction],
 			settings[GuildSettings.Events.Twemoji],
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.ReactionAdd],

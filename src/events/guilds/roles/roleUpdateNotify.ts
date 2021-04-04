@@ -6,6 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { MessageEmbed, Role, TextChannel } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<EventOptions>({ event: Events.RoleUpdate })
 export class UserEvent extends Event<Events.RoleUpdate> {
@@ -22,67 +23,7 @@ export class UserEvent extends Event<Events.RoleUpdate> {
 			return;
 		}
 
-		const changes: string[] = [];
-		const [no, yes] = [t(LanguageKeys.Globals.No), t(LanguageKeys.Globals.Yes)];
-
-		if (previous.color !== next.color) {
-			changes.push(
-				t(LanguageKeys.Events.Guilds.Logs.RoleUpdateColor, {
-					previous: previous.hexColor,
-					next: next.hexColor
-				})
-			);
-		}
-
-		if (previous.hoist !== next.hoist) {
-			changes.push(
-				t(LanguageKeys.Events.Guilds.Logs.RoleUpdateHoist, {
-					previous: previous.hoist ? yes : no,
-					next: next.hoist ? yes : no
-				})
-			);
-		}
-
-		if (previous.mentionable !== next.mentionable) {
-			changes.push(
-				t(LanguageKeys.Events.Guilds.Logs.RoleUpdateMentionable, {
-					previous: previous.mentionable ? yes : no,
-					next: next.mentionable ? yes : no
-				})
-			);
-		}
-
-		if (previous.name !== next.name) {
-			changes.push(
-				t(LanguageKeys.Events.Guilds.Logs.RoleUpdateName, {
-					previous: previous.name,
-					next: next.name
-				})
-			);
-		}
-
-		if (previous.permissions.bitfield !== next.permissions.bitfield) {
-			const modified = difference(previous.permissions.bitfield, next.permissions.bitfield);
-			if (modified.added) {
-				const added = toArray(modified.added).map((key) => t(`permissions:${key}`));
-				changes.push(t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsAdded, { permissions: added, count: added.length }));
-			}
-
-			if (modified.removed) {
-				const removed = toArray(modified.removed).map((key) => t(`permissions:${key}`));
-				changes.push(t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsRemoved, { permissions: removed, count: removed.length }));
-			}
-		}
-
-		if (previous.position !== next.position) {
-			changes.push(
-				t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePosition, {
-					previous: previous.position,
-					next: next.position
-				})
-			);
-		}
-
+		const changes: string[] = [...this.differenceRole(t, previous, next)];
 		if (changes.length === 0) return;
 
 		await channel.send(
@@ -92,5 +33,57 @@ export class UserEvent extends Event<Events.RoleUpdate> {
 				.setDescription(changes.join('\n'))
 				.setTimestamp()
 		);
+	}
+
+	private *differenceRole(t: TFunction, previous: Role, next: Role) {
+		const [no, yes] = [t(LanguageKeys.Globals.No), t(LanguageKeys.Globals.Yes)];
+
+		if (previous.color !== next.color) {
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdateColor, {
+				previous: previous.hexColor,
+				next: next.hexColor
+			});
+		}
+
+		if (previous.hoist !== next.hoist) {
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdateHoist, {
+				previous: previous.hoist ? yes : no,
+				next: next.hoist ? yes : no
+			});
+		}
+
+		if (previous.mentionable !== next.mentionable) {
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdateMentionable, {
+				previous: previous.mentionable ? yes : no,
+				next: next.mentionable ? yes : no
+			});
+		}
+
+		if (previous.name !== next.name) {
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdateName, {
+				previous: previous.name,
+				next: next.name
+			});
+		}
+
+		if (previous.permissions.bitfield !== next.permissions.bitfield) {
+			const modified = difference(previous.permissions.bitfield, next.permissions.bitfield);
+			if (modified.added) {
+				const added = toArray(modified.added).map((key) => t(`permissions:${key}`));
+				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsAdded, { permissions: added, count: added.length });
+			}
+
+			if (modified.removed) {
+				const removed = toArray(modified.removed).map((key) => t(`permissions:${key}`));
+				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsRemoved, { permissions: removed, count: removed.length });
+			}
+		}
+
+		if (previous.position !== next.position) {
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePosition, {
+				previous: previous.position,
+				next: next.position
+			});
+		}
 	}
 }

@@ -21,7 +21,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 
 		const channel = next.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.guild.writeSettings([[GuildSettings.Channels.Logs.RoleUpdate, null]]);
+			await next.guild.writeSettings([[GuildSettings.Channels.Logs.ChannelUpdate, null]]);
 			return;
 		}
 
@@ -32,7 +32,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.RoleUpdate))
+				.setTitle(t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate))
 				.setDescription(changes.join('\n'))
 				.setTimestamp()
 		);
@@ -97,15 +97,11 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 	}
 
 	private *differenceNewsChannel(t: TFunction, previous: NewsChannel, next: NewsChannel) {
-		yield* this.differenceGuildChannel(t, previous, next);
-
 		if (previous.nsfw !== next.nsfw) yield this.displayNsfw(t, previous.nsfw, next.nsfw);
 		if (previous.topic !== next.topic) yield this.displayTopic(t, previous.topic, next.topic);
 	}
 
 	private *differenceStoreChannel(t: TFunction, previous: StoreChannel, next: StoreChannel) {
-		yield* this.differenceGuildChannel(t, previous, next);
-
 		if (previous.nsfw !== next.nsfw) yield this.displayNsfw(t, previous.nsfw, next.nsfw);
 	}
 

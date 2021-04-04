@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.SetMessageLogsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetMessageLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetMessageLogsSet,
-	settingsKey: GuildSettings.Channels.MessageLogs
+	settingsKey: GuildSettings.Channels.Logs.Message
 })
 export class UserChannelConfigurationCommand extends ChannelConfigurationCommand {}

@@ -5,7 +5,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { MessageEmbed, Role, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<EventOptions>({ event: Events.RoleDelete })
 export class UserEvent extends Event<Events.RoleDelete> {
@@ -22,18 +21,12 @@ export class UserEvent extends Event<Events.RoleDelete> {
 			return;
 		}
 
-		const changes: string[] = [...this.getRoleInformation(t, next)];
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
-				.setDescription(changes.join('\n'))
 				.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleDelete))
 				.setTimestamp()
 		);
-	}
-
-	private *getRoleInformation(t: TFunction, role: Role) {
-		yield t(LanguageKeys.Events.Guilds.Logs.RoleCreatePosition, { value: role.position });
 	}
 }

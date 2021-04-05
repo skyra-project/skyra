@@ -2,16 +2,16 @@ import { Constructor } from '@sapphire/utilities';
 import { BitField, Permissions, SystemChannelFlags } from 'discord.js';
 
 function toMap<T extends string>(ctor: Constructor<BitField<T>>) {
-	return new Map(Object.entries(ctor).map(([key, value]) => [value as number, key as T] as const));
+	return new Map(Object.entries(Reflect.get(ctor, 'FLAGS')).map(([key, value]) => [value as number, key as T] as const));
 }
 
 function toArray<T>(map: Map<number, T>, bits: number): T[] {
 	const output: T[] = [];
-	while (bits !== 0) {
-		const bit = bits & 1;
-		if (bit) output.push(map.get(bit)!);
+	for (let i = 1; i <= bits; i <<= 1) {
+		if ((bits & i) === 0) continue;
 
-		bits >>= 1;
+		const value = map.get(i);
+		if (value !== undefined) output.push(value);
 	}
 
 	return output;
@@ -25,4 +25,12 @@ export function toPermissionsArray(bits: number) {
 export const channelFlags = toMap(SystemChannelFlags);
 export function toChannelsArray(bits: number) {
 	return toArray(channelFlags, bits);
+}
+
+if (!channelFlags.has(1 << 2)) {
+	// SystemChannelFlagsString includes 'WELCOME_MESSAGE_DISABLED' and 'BOOST_MESSAGE_DISABLED'
+	//
+	// - https://github.com/discord/discord-api-docs/pull/2753 implements 'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS'.
+	// - discord.js will most likely name this 'REMINDER_MESSAGE_DISABLED'.
+	channelFlags.set(1 << 2, 'REMINDER_MESSAGE_DISABLED' as any);
 }

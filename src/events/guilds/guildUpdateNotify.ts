@@ -255,9 +255,9 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	}
 
 	private displayPublicUpdatesChannel(t: TFunction, previous: string | null, next: string | null): string {
-		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannelAdded, { value: next! });
-		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannelRemoved, { value: previous });
-		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannel, { previous, next });
+		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannelAdded, { value: `<#${next!}>` });
+		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannelRemoved, { value: `<#${previous}>` });
+		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePublicUpdatesChannel, { previous: `<#${previous}>`, next: `<#${next}>` });
 	}
 
 	private displayRegion(t: TFunction, previous: string, next: string): string {
@@ -265,9 +265,9 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	}
 
 	private displayRulesChannel(t: TFunction, previous: string | null, next: string | null): string {
-		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannelAdded, { value: next! });
-		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannelRemoved, { value: previous });
-		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannel, { previous, next });
+		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannelAdded, { value: `<#${next!}>` });
+		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannelRemoved, { value: `<#${previous}>` });
+		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateRulesChannel, { previous: `<#${previous}>`, next: `<#${next}>` });
 	}
 
 	private displaySplash(t: TFunction, previous: string | null, next: string | null): string {
@@ -279,20 +279,20 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	private *displaySystemChannelFlags(t: TFunction, previous: ChannelFlags, next: ChannelFlags): IterableIterator<string> {
 		const modified = differenceBitField(previous.bitfield, next.bitfield);
 		if (modified.added !== 0) {
-			const values = toChannelsArray(modified.added);
+			const values = toChannelsArray(modified.added).map((value) => t(`guilds:${value}`));
 			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsAdded, { values, count: values.length });
 		}
 
 		if (modified.removed !== 0) {
-			const values = toChannelsArray(modified.removed);
+			const values = toChannelsArray(modified.removed).map((value) => t(`guilds:${value}`));
 			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsRemoved, { values, count: values.length });
 		}
 	}
 
 	private displaySystemChannel(t: TFunction, previous: string | null, next: string | null): string {
-		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelAdded, { value: next! });
-		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelRemoved, { value: previous });
-		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannel, { previous, next });
+		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelAdded, { value: `<#${next!}>` });
+		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelRemoved, { value: `<#${previous}>` });
+		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannel, { previous: `<#${previous}>`, next: `<#${next}>` });
 	}
 
 	private displayVanityURLCode(t: TFunction, previous: string | null, next: string | null): string {

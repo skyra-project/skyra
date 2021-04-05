@@ -54,37 +54,77 @@ namespace Skyra.Database.Models.Entities
 		[StringLength(19)]
 		public string ChannelsFarewell { get; set; }
 
-		[Column("channels.member-logs")]
-		[StringLength(19)]
-		public string ChannelsMemberLogs { get; set; }
-
-		[Column("channels.message-logs")]
-		[StringLength(19)]
-		public string ChannelsMessageLogs { get; set; }
-
-		[Column("channels.moderation-logs")]
-		[StringLength(19)]
-		public string ChannelsModerationLogs { get; set; }
-
-		[Column("channels.nsfw-message-logs")]
-		[StringLength(19)]
-		public string ChannelsNsfwMessageLogs { get; set; }
-
-		[Column("channels.image-logs")]
-		[StringLength(19)]
-		public string ChannelsImageLogs { get; set; }
-
-		[Column("channels.prune-logs")]
-		[StringLength(19)]
-		public string ChannelsPruneLogs { get; set; }
-
-		[Column("channels.reaction-logs")]
-		[StringLength(19)]
-		public string ChannelsReactionLogs { get; set; }
-
 		[Column("channels.spam")]
 		[StringLength(19)]
 		public string ChannelsSpam { get; set; }
+
+		[Column("channels.logs.member")]
+		[StringLength(19)]
+		public string ChannelsLogsMember { get; set; }
+
+		[Column("channels.logs.message")]
+		[StringLength(19)]
+		public string ChannelsLogsMessage { get; set; }
+
+		[Column("channels.logs.moderation")]
+		[StringLength(19)]
+		public string ChannelsLogsModeration { get; set; }
+
+		[Column("channels.logs.nsfw-message")]
+		[StringLength(19)]
+		public string ChannelsLogsNsfwMessage { get; set; }
+
+		[Column("channels.logs.image")]
+		[StringLength(19)]
+		public string ChannelsLogsImage { get; set; }
+
+		[Column("channels.logs.prune")]
+		[StringLength(19)]
+		public string ChannelsLogsPrune { get; set; }
+
+		[Column("channels.logs.reaction")]
+		[StringLength(19)]
+		public string ChannelsLogsReaction { get; set; }
+
+		[Column("channels.logs.role-create")]
+		[StringLength(19)]
+		public string ChannelsLogsRoleCreate { get; set; }
+
+		[Column("channels.logs.role-update")]
+		[StringLength(19)]
+		public string ChannelsLogsRoleUpdate { get; set; }
+
+		[Column("channels.logs.role-delete")]
+		[StringLength(19)]
+		public string ChannelsLogsRoleDelete { get; set; }
+
+		[Column("channels.logs.channel-create")]
+		[StringLength(19)]
+		public string ChannelsLogsChannelCreate { get; set; }
+
+		[Column("channels.logs.channel-update")]
+		[StringLength(19)]
+		public string ChannelsLogsChannelUpdate { get; set; }
+
+		[Column("channels.logs.channel-delete")]
+		[StringLength(19)]
+		public string ChannelsLogsChannelDelete { get; set; }
+
+		[Column("channels.logs.emoji-create")]
+		[StringLength(19)]
+		public string ChannelsLogsEmojiCreate { get; set; }
+
+		[Column("channels.logs.emoji-update")]
+		[StringLength(19)]
+		public string ChannelsLogsEmojiUpdate { get; set; }
+
+		[Column("channels.logs.emoji-delete")]
+		[StringLength(19)]
+		public string ChannelsLogsEmojiDelete { get; set; }
+
+		[Column("channels.logs.server-update")]
+		[StringLength(19)]
+		public string ChannelsLogsServerUpdate { get; set; }
 
 		[Required]
 		[Column("channels.ignore.all", TypeName = "character varying(19)[]")]

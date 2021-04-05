@@ -204,45 +204,95 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("channels.ignore.reaction-add")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
-                    b.Property<string>("ChannelsImageLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.image-logs");
-
-                    b.Property<string>("ChannelsMemberLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.member-logs");
-
-                    b.Property<string>("ChannelsMessageLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.message-logs");
-
-                    b.Property<string>("ChannelsModerationLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.moderation-logs");
-
-                    b.Property<string>("ChannelsNsfwMessageLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.nsfw-message-logs");
-
-                    b.Property<string>("ChannelsPruneLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.prune-logs");
-
-                    b.Property<string>("ChannelsReactionLogs")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.reaction-logs");
-
                     b.Property<string>("ChannelsSpam")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.spam");
+
+                    b.Property<string>("ChannelsLogsImage")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.image");
+
+                    b.Property<string>("ChannelsLogsMember")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.member");
+
+                    b.Property<string>("ChannelsLogsMessage")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.message");
+
+                    b.Property<string>("ChannelsLogsModeration")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.moderation");
+
+                    b.Property<string>("ChannelsLogsNsfwMessage")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.nsfw-message");
+
+                    b.Property<string>("ChannelsLogsPrune")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.prune");
+
+                    b.Property<string>("ChannelsLogsReaction")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.reaction");
+
+                    b.Property<string>("ChannelsLogsRoleCreate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.role-create");
+
+                    b.Property<string>("ChannelsLogsRoleUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.role-update");
+
+                    b.Property<string>("ChannelsLogsRoleDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.role-delete");
+
+                    b.Property<string>("ChannelsLogsChannelCreate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.channel-create");
+
+                    b.Property<string>("ChannelsLogsChannelUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.channel-update");
+
+                    b.Property<string>("ChannelsLogsChannelDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.channel-delete");
+
+                    b.Property<string>("ChannelsLogsEmojiCreate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-create");
+
+                    b.Property<string>("ChannelsLogsEmojiUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-update");
+
+                    b.Property<string>("ChannelsLogsEmojiDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-delete");
+
+                    b.Property<string>("ChannelsLogsServerUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.server-update");
 
                     b.Property<string>("CommandAutodelete")
                         .IsRequired()

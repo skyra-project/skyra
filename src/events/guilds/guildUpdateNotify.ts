@@ -277,7 +277,8 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	}
 
 	private *displaySystemChannelFlags(t: TFunction, previous: ChannelFlags, next: ChannelFlags): IterableIterator<string> {
-		const modified = differenceBitField(previous.bitfield, next.bitfield);
+		// NOTE: The order is swapped because fields being set mean they're disabled, opposite to other fields:
+		const modified = differenceBitField(next.bitfield, previous.bitfield);
 		if (modified.added !== 0) {
 			const values = toChannelsArray(modified.added).map((value) => t(`guilds:${value}`));
 			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsAdded, { values, count: values.length });

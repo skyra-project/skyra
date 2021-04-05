@@ -1,11 +1,14 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
+import { toPermissionsArray } from '#utils/bits';
+import { differenceBitField, differenceMap } from '#utils/comparators';
+import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
-import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
+import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 type Channel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
@@ -26,7 +29,6 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 		}
 
 		const changes: string[] = [...this.differenceChannel(t, previous, next)];
-
 		if (changes.length === 0) return;
 
 		await channel.send(
@@ -45,16 +47,22 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 
 		switch (next.type) {
 			case 'text':
-				return yield* this.differenceTextChannel(t, previous as TextChannel, next);
+				yield* this.differenceTextChannel(t, previous as TextChannel, next);
+				break;
 			case 'voice':
-				return yield* this.differenceVoiceChannel(t, previous as VoiceChannel, next);
+				yield* this.differenceVoiceChannel(t, previous as VoiceChannel, next);
+				break;
 			case 'news':
-				return yield* this.differenceNewsChannel(t, previous as NewsChannel, next);
+				yield* this.differenceNewsChannel(t, previous as NewsChannel, next);
+				break;
 			case 'store':
-				return yield* this.differenceStoreChannel(t, previous as StoreChannel, next);
+				yield* this.differenceStoreChannel(t, previous as StoreChannel, next);
+				break;
 			default:
 			// No Op
 		}
+
+		yield* this.differencePermissionOverwrites(t, previous, next);
 	}
 
 	private *differenceGuildChannel(t: TFunction, previous: GuildChannel, next: GuildChannel) {
@@ -79,9 +87,79 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 		if (previous.type !== next.type) {
 			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateType, { previous: previous.type, next: next.type });
 		}
+	}
 
-		// TODO(kyranet): Add this:
-		// previous.permissionOverwrites
+	private *differencePermissionOverwrites(t: TFunction, previous: GuildChannel, next: GuildChannel) {
+		const previousPermissions = previous.permissionOverwrites;
+		const nextPermissions = next.permissionOverwrites;
+
+		const difference = differenceMap(previousPermissions, nextPermissions);
+		for (const added of difference.added.values()) {
+			const allow = added.allow.bitfield;
+			const deny = added.deny.bitfield;
+			if (allow === 0 && deny === 0) continue;
+
+			const mention = this.displayMention(added);
+			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateAddedPermissionsTitle, { value: mention });
+			if (allow !== 0) {
+				const values = toPermissionsArray(allow).map((value) => t(`permissions:${value}`));
+				yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePermissionsAllow, { values, count: values.length });
+			}
+
+			if (deny !== 0) {
+				const values = toPermissionsArray(deny).map((value) => t(`permissions:${value}`));
+				yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePermissionsDeny, { values, count: values.length });
+			}
+		}
+
+		for (const removed of difference.removed.values()) {
+			const allow = removed.allow.bitfield;
+			const deny = removed.deny.bitfield;
+			if (allow === 0 && deny === 0) continue;
+
+			const mention = this.displayMention(removed);
+			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateDeletedPermissionsTitle, { value: mention });
+		}
+
+		for (const [previousPermission, nextPermission] of difference.updated.values()) {
+			const previousAllow = previousPermission.allow.bitfield;
+			const nextAllow = nextPermission.allow.bitfield;
+			const sameAllow = previousAllow === nextAllow;
+
+			const previousDeny = previousPermission.deny.bitfield;
+			const nextDeny = nextPermission.deny.bitfield;
+			const sameDeny = previousDeny === nextDeny;
+
+			if (sameAllow && sameDeny) continue;
+
+			const mention = this.displayMention(nextPermission);
+			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdatePermissionsTitle, { value: mention });
+			if (!sameAllow) {
+				const modified = differenceBitField(previousAllow, nextAllow);
+				if (modified.added !== 0) {
+					const values = toPermissionsArray(modified.added).map((value) => t(`permissions:${value}`));
+					yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateAddedPermissionsAllow, { values, count: values.length });
+				}
+
+				if (modified.removed !== 0) {
+					const values = toPermissionsArray(modified.removed).map((value) => t(`permissions:${value}`));
+					yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRemovedPermissionsAllow, { values, count: values.length });
+				}
+			}
+
+			if (!sameDeny) {
+				const modified = differenceBitField(previousDeny, nextDeny);
+				if (modified.added !== 0) {
+					const values = toPermissionsArray(modified.added).map((value) => t(`permissions:${value}`));
+					yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateAddedPermissionsDeny, { values, count: values.length });
+				}
+
+				if (modified.removed !== 0) {
+					const values = toPermissionsArray(modified.removed).map((value) => t(`permissions:${value}`));
+					yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRemovedPermissionsDeny, { values, count: values.length });
+				}
+			}
+		}
 	}
 
 	private *differenceTextChannel(t: TFunction, previous: TextChannel, next: TextChannel) {
@@ -126,12 +204,18 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 	}
 
 	private displayBitrate(t: TFunction, previous: number, next: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateBitrate, { previous, next });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateBitrate, { previous: previous / 1000, next: next / 1000 });
 	}
 
 	private displayUserLimit(t: TFunction, previous: number, next: number) {
 		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitAdded, { value: next });
 		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitRemoved, { value: previous });
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimit, { previous, next });
+	}
+
+	private displayMention(permissions: PermissionOverwrites) {
+		if (permissions.type === 'member') return `<@${permissions.id}>`;
+		if (permissions.id === permissions.channel.guild.id) return '@everyone';
+		return `<@&${permissions.id}>`;
 	}
 }

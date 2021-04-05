@@ -1,11 +1,13 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
+import { toPermissionsArray } from '#utils/bits';
+import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
-import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
+import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 type Channel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
@@ -41,24 +43,47 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 
 		switch (channel.type) {
 			case 'text':
-				return yield* this.getTextChannelInformation(t, channel);
+				yield* this.getTextChannelInformation(t, channel);
+				break;
 			case 'voice':
-				return yield* this.getVoiceChannelInformation(t, channel);
+				yield* this.getVoiceChannelInformation(t, channel);
+				break;
 			case 'news':
-				return yield* this.getNewsChannelInformation(t, channel);
+				yield* this.getNewsChannelInformation(t, channel);
+				break;
 			case 'store':
-				return yield* this.getStoreChannelInformation(t, channel);
+				yield* this.getStoreChannelInformation(t, channel);
+				break;
 			default:
 			// No Op
 		}
+
+		yield* this.getChannelPermissionOverwrites(t, channel);
 	}
 
 	private *getGuildChannelInformation(t: TFunction, channel: GuildChannel) {
 		if (channel.parentID) yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreateParent, { value: `<#${channel.parentID}>` });
 		yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePosition, { value: channel.position });
+	}
 
-		// TODO(kyranet): Add this:
-		// channel.permissionOverwrites
+	private *getChannelPermissionOverwrites(t: TFunction, channel: GuildChannel) {
+		for (const overwrite of channel.permissionOverwrites.values()) {
+			const allow = overwrite.allow.bitfield;
+			const deny = overwrite.deny.bitfield;
+			if (allow === 0 && deny === 0) continue;
+
+			const mention = this.displayMention(overwrite);
+			yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePermissionsTitle, { value: mention });
+			if (allow !== 0) {
+				const values = toPermissionsArray(allow).map((value) => t(`permissions:${value}`));
+				yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePermissionsAllow, { values, count: values.length });
+			}
+
+			if (deny !== 0) {
+				const values = toPermissionsArray(deny).map((value) => t(`permissions:${value}`));
+				yield LongWidthSpace + t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePermissionsDeny, { values, count: values.length });
+			}
+		}
 	}
 
 	private *getTextChannelInformation(t: TFunction, channel: TextChannel) {
@@ -94,10 +119,16 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 	}
 
 	private displayBitrate(t: TFunction, value: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value: value / 1000 });
 	}
 
 	private displayUserLimit(t: TFunction, value: number) {
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateUserLimit, { value });
+	}
+
+	private displayMention(permissions: PermissionOverwrites) {
+		if (permissions.type === 'member') return `<@${permissions.id}>`;
+		if (permissions.id === permissions.channel.guild.id) return '@everyone';
+		return `<@&${permissions.id}>`;
 	}
 }

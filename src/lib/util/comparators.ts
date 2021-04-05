@@ -28,15 +28,15 @@ export function differenceArray<T>(previous: readonly T[], next: readonly T[]) {
 
 export function differenceMap<K, V>(previous: ReadonlyMap<K, V>, next: ReadonlyMap<K, V>) {
 	const added = new Map<K, V>();
-	const updated = new Map<K, V>();
 	const removed = new Map<K, V>();
+	const updated = new Map<K, [previous: V, next: V]>();
 
 	for (const [key, value] of previous.entries()) {
 		const other = next.get(key);
 		if (other === undefined) {
 			removed.set(key, value);
 		} else if (other !== value) {
-			updated.set(key, value);
+			updated.set(key, [value, other]);
 		}
 	}
 

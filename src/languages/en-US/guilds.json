@@ -1,0 +1,7 @@
+{
+	"explicitContentFilterDisabled": "Disabled",
+	"explicitContentFilterMembersWithoutRoles": "Members without roles",
+	"explicitContentFilterAllMembers": "All members",
+	"messageNotificationsAll": "All Messages",
+	"messageNotificationsMentions": "Only @mentions"
+}

@@ -5,6 +5,7 @@ import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import type { QueueClientOptions } from '#lib/audio';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LanguageFormatters } from '#lib/types/Constants';
 import { getHandler } from '#root/languages/index';
 import { Emojis, rootFolder } from '#utils/constants';
@@ -13,7 +14,7 @@ import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { APIWebhook } from 'discord-api-types/v6';
-import type { ActivityType, ClientOptions, PresenceData } from 'discord.js';
+import type { ActivityType, ClientOptions, DefaultMessageNotifications, ExplicitContentFilterLevel, PresenceData } from 'discord.js';
 import { config } from 'dotenv-cra';
 import i18next, { FormatFunction } from 'i18next';
 import { join } from 'path';
@@ -220,6 +221,28 @@ export const CLIENT_OPTIONS: ClientOptions = {
 						}
 						case LanguageFormatters.ToTitleCase: {
 							return toTitleCase(value);
+						}
+						case LanguageFormatters.ExplicitContentFilter: {
+							switch (value as ExplicitContentFilterLevel) {
+								case 'DISABLED':
+									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterDisabled, { ...options, lng: language });
+								case 'MEMBERS_WITHOUT_ROLES':
+									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterMembersWithoutRoles, { ...options, lng: language });
+								case 'ALL_MEMBERS':
+									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterAllMembers, { ...options, lng: language });
+								default:
+									return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
+							}
+						}
+						case LanguageFormatters.MessageNotifications: {
+							switch (value as DefaultMessageNotifications | number) {
+								case 'ALL':
+									return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
+								case 'MENTIONS':
+									return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
+								default:
+									return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
+							}
 						}
 						case LanguageFormatters.CodeBlock: {
 							return codeBlock('', value);

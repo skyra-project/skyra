@@ -70,31 +70,31 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	public channelsFarewell?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Member, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.member-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.member', nullable: true, length: 19 })
 	public channelsLogsMember?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Message, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.message-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.message', nullable: true, length: 19 })
 	public channelsLogsMessage?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Moderation, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.moderation-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.moderation', nullable: true, length: 19 })
 	public channelsLogsModeration?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.NsfwMessage, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.nsfw-message-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.nsfw-message', nullable: true, length: 19 })
 	public channelsLogsNsfwMessage?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Image, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.image-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.image', nullable: true, length: 19 })
 	public channelsLogsImage?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Prune, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.prune-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.prune', nullable: true, length: 19 })
 	public channelsLogsPrune?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Reaction, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.reaction-logs', nullable: true, length: 19 })
+	@Column('varchar', { name: 'channels.logs.reaction', nullable: true, length: 19 })
 	public channelsLogsReaction?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.RoleCreate, type: 'textchannel' })

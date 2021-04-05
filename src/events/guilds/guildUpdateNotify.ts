@@ -92,10 +92,6 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 			yield this.displayMaximumMembers(t, previous.maximumMembers, next.maximumMembers);
 		}
 
-		if (previous.maximumPresences !== next.maximumPresences) {
-			yield this.displayMaximumPresences(t, previous.maximumPresences, next.maximumPresences);
-		}
-
 		if (previous.mfaLevel !== next.mfaLevel) {
 			yield this.displayMfaLevel(t, next.mfaLevel);
 		}
@@ -220,12 +216,6 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumMembersAdded, { value: next! });
 		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumMembersRemoved, { value: previous });
 		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumMembers, { previous, next });
-	}
-
-	private displayMaximumPresences(t: TFunction, previous: number | null, next: number | null): string {
-		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumPresencesAdded, { value: next! });
-		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumPresencesRemoved, { value: previous });
-		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateMaximumPresences, { previous, next });
 	}
 
 	private displayMfaLevel(t: TFunction, next: number): string {

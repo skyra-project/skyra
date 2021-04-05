@@ -32,8 +32,9 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate))
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate))
 				.setTimestamp()
 		);
 	}
@@ -63,9 +64,9 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 
 		if (previous.parentID !== next.parentID) {
 			if (previous.parentID === null) {
-				yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateParentAdded, { channel: `<#${next.parentID}>` });
+				yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateParentAdded, { value: `<#${next.parentID}>` });
 			} else if (next.parentID === null) {
-				yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateParentRemoved, { channel: `<#${previous.parentID}>` });
+				yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateParentRemoved, { value: `<#${previous.parentID}>` });
 			} else {
 				yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateParent, { previous: `<#${previous.parentID}>`, next: `<#${next.parentID}>` });
 			}
@@ -113,14 +114,14 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 	}
 
 	private displayTopic(t: TFunction, previous: string | null, next: string | null) {
-		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateTopicAdded, { topic: next! });
-		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateTopicRemoved, { topic: previous });
+		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateTopicAdded, { value: next! });
+		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateTopicRemoved, { value: previous });
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateTopic, { previous, next });
 	}
 
 	private displayRateLimitPerUser(t: TFunction, previous: number, next: number) {
-		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitAdded, { rateLimit: next * Time.Second });
-		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitRemoved, { rateLimit: previous * Time.Second });
+		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitAdded, { value: next * Time.Second });
+		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitRemoved, { value: previous * Time.Second });
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimit, { previous: previous * Time.Second, next: next * Time.Second });
 	}
 
@@ -129,8 +130,8 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 	}
 
 	private displayUserLimit(t: TFunction, previous: number, next: number) {
-		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitAdded, { userLimit: next });
-		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitRemoved, { userLimit: previous });
+		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitAdded, { value: next });
+		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimitRemoved, { value: previous });
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateUserLimit, { previous, next });
 	}
 }

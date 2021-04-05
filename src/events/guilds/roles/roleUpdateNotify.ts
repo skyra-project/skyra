@@ -1,8 +1,8 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
-import { differenceBitField } from '#utils/comparators';
 import { toPermissionsArray } from '#utils/bits';
+import { differenceBitField } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -30,8 +30,9 @@ export class UserEvent extends Event<Events.RoleUpdate> {
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.RoleUpdate))
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleUpdate))
 				.setTimestamp()
 		);
 	}
@@ -70,13 +71,13 @@ export class UserEvent extends Event<Events.RoleUpdate> {
 		if (previous.permissions.bitfield !== next.permissions.bitfield) {
 			const modified = differenceBitField(previous.permissions.bitfield, next.permissions.bitfield);
 			if (modified.added) {
-				const added = toPermissionsArray(modified.added).map((key) => t(`permissions:${key}`));
-				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsAdded, { permissions: added, count: added.length });
+				const values = toPermissionsArray(modified.added).map((key) => t(`permissions:${key}`));
+				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsAdded, { values, count: values.length });
 			}
 
 			if (modified.removed) {
-				const removed = toPermissionsArray(modified.removed).map((key) => t(`permissions:${key}`));
-				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsRemoved, { permissions: removed, count: removed.length });
+				const values = toPermissionsArray(modified.removed).map((key) => t(`permissions:${key}`));
+				yield t(LanguageKeys.Events.Guilds.Logs.RoleUpdatePermissionsRemoved, { values, count: values.length });
 			}
 		}
 

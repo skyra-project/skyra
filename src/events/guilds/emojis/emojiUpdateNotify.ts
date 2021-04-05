@@ -29,8 +29,10 @@ export class UserEvent extends Event<Events.EmojiUpdate> {
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate))
+				.setThumbnail(next.url)
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate))
 				.setTimestamp()
 		);
 	}
@@ -75,13 +77,13 @@ export class UserEvent extends Event<Events.EmojiUpdate> {
 
 		const modified = differenceMap(previous.roles.cache, next.roles.cache);
 		if (modified.added.size !== 0) {
-			const roles = [...modified.added.keys()].map((id) => `<@&${id}>`);
-			yield t(LanguageKeys.Events.Guilds.Logs.EmojiUpdateRolesAdded, { roles, count: roles.length });
+			const values = [...modified.added.keys()].map((id) => `<@&${id}>`);
+			yield t(LanguageKeys.Events.Guilds.Logs.EmojiUpdateRolesAdded, { values, count: values.length });
 		}
 
 		if (modified.removed.size !== 0) {
-			const roles = [...modified.removed.keys()].map((id) => `<@&${id}>`);
-			yield t(LanguageKeys.Events.Guilds.Logs.EmojiUpdateRolesRemoved, { roles, count: roles.length });
+			const values = [...modified.removed.keys()].map((id) => `<@&${id}>`);
+			yield t(LanguageKeys.Events.Guilds.Logs.EmojiUpdateRolesRemoved, { values, count: values.length });
 		}
 	}
 }

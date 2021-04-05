@@ -26,12 +26,12 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 		}
 
 		const changes: string[] = [...this.getChannelInformation(t, next)];
-
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.ChannelCreate))
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.ChannelCreate))
 				.setTimestamp()
 		);
 	}
@@ -54,20 +54,15 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 	}
 
 	private *getGuildChannelInformation(t: TFunction, channel: GuildChannel) {
-		yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreateName, { value: channel.name });
-
-		if (channel.parentID) {
-			yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreateParent, { value: `<#${channel.parentID}>` });
-		}
-
+		if (channel.parentID) yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreateParent, { value: `<#${channel.parentID}>` });
 		yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePosition, { value: channel.position });
 
 		// TODO(kyranet): Add this:
-		// previous.permissionOverwrites
+		// channel.permissionOverwrites
 	}
 
 	private *getTextChannelInformation(t: TFunction, channel: TextChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t, channel.nsfw);
+		if (channel.nsfw) yield this.displayNsfw(t);
 		if (channel.topic) yield this.displayTopic(t, channel.topic);
 		if (channel.rateLimitPerUser) yield this.displayRateLimitPerUser(t, channel.rateLimitPerUser);
 	}
@@ -78,18 +73,16 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 	}
 
 	private *getNewsChannelInformation(t: TFunction, channel: NewsChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t, channel.nsfw);
+		if (channel.nsfw) yield this.displayNsfw(t);
 		if (channel.topic) yield this.displayTopic(t, channel.topic);
 	}
 
 	private *getStoreChannelInformation(t: TFunction, channel: StoreChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t, channel.nsfw);
+		if (channel.nsfw) yield this.displayNsfw(t);
 	}
 
-	private displayNsfw(t: TFunction, value: boolean) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateNsfw, {
-			value: t(value ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)
-		});
+	private displayNsfw(t: TFunction) {
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateNsfw);
 	}
 
 	private displayTopic(t: TFunction, value: string) {

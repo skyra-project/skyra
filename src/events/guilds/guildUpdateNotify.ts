@@ -44,8 +44,9 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.ServerUpdate))
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.ServerUpdate))
 				.setTimestamp()
 		);
 	}
@@ -199,11 +200,13 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	private *displayFeatures(t: TFunction, previous: Features, next: Features): IterableIterator<string> {
 		const difference = differenceArray(previous, next);
 		if (difference.added.length) {
-			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateFeaturesAdded, { values: difference.added, count: difference.added.length });
+			const values = difference.added;
+			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateFeaturesAdded, { values, count: values.length });
 		}
 
 		if (difference.removed.length) {
-			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateFeaturesRemoved, { values: difference.removed, count: difference.removed.length });
+			const values = difference.removed;
+			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateFeaturesRemoved, { values, count: values.length });
 		}
 	}
 
@@ -276,13 +279,13 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 	private *displaySystemChannelFlags(t: TFunction, previous: ChannelFlags, next: ChannelFlags): IterableIterator<string> {
 		const modified = differenceBitField(previous.bitfield, next.bitfield);
 		if (modified.added !== 0) {
-			const added = toChannelsArray(modified.added);
-			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsAdded, { values: added, count: added.length });
+			const values = toChannelsArray(modified.added);
+			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsAdded, { values, count: values.length });
 		}
 
 		if (modified.removed !== 0) {
-			const added = toChannelsArray(modified.removed);
-			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsRemoved, { values: added, count: added.length });
+			const values = toChannelsArray(modified.removed);
+			yield t(LanguageKeys.Events.Guilds.Logs.ServerUpdateSystemChannelFlagsRemoved, { values, count: values.length });
 		}
 	}
 

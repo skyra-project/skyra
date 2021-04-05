@@ -24,13 +24,12 @@ export class UserEvent extends Event<Events.RoleCreate> {
 		}
 
 		const changes: string[] = [...this.getRoleInformation(t, next)];
-		if (changes.length === 0) return;
-
 		await channel.send(
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setTitle(t(LanguageKeys.Events.Guilds.Logs.RoleCreate))
+				.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
 				.setDescription(changes.join('\n'))
+				.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleCreate))
 				.setTimestamp()
 		);
 	}
@@ -40,11 +39,9 @@ export class UserEvent extends Event<Events.RoleCreate> {
 		if (role.hoist) yield t(LanguageKeys.Events.Guilds.Logs.RoleCreateHoist);
 		if (role.mentionable) yield t(LanguageKeys.Events.Guilds.Logs.RoleCreateMentionable);
 
-		yield t(LanguageKeys.Events.Guilds.Logs.RoleCreateName, { value: role.name });
-
 		if (role.permissions.bitfield !== 0) {
-			const permissions = toPermissionsArray(role.permissions.bitfield).map((key) => t(`permissions:${key}`));
-			yield t(LanguageKeys.Events.Guilds.Logs.RoleCreatePermissions, { permissions, count: permissions.length });
+			const values = toPermissionsArray(role.permissions.bitfield).map((key) => t(`permissions:${key}`));
+			yield t(LanguageKeys.Events.Guilds.Logs.RoleCreatePermissions, { values, count: values.length });
 		}
 
 		yield t(LanguageKeys.Events.Guilds.Logs.RoleCreatePosition, { value: role.position });

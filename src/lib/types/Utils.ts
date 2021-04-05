@@ -12,7 +12,16 @@ export function FT<TArgs, TReturn = string>(k: string): CustomFunctionGet<string
 	return k as CustomFunctionGet<string, TArgs, TReturn>;
 }
 
-export interface Difference<T> {
+export interface Value<T = string> {
+	value: T;
+}
+
+export interface Values<T = string> {
+	values: readonly T[];
+	count: number;
+}
+
+export interface Difference<T = string> {
 	previous: T;
 	next: T;
 }

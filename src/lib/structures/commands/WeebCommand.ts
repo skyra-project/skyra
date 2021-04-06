@@ -42,7 +42,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			bucket: 2,
 			cooldown: 30,
 			permissions: ['EMBED_LINKS'],
-			runIn: ['text'],
+			runIn: ['text', 'news'],
 			...options,
 			enabled: envIsDefined('WEEB_SH_TOKEN')
 		});

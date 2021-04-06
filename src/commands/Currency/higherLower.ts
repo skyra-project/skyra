@@ -24,7 +24,7 @@ const enum HigherLowerReactions {
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
 	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;

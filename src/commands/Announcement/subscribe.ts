@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Announcement.SubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.SubscribeExtended,
 	permissions: ['MANAGE_ROLES'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

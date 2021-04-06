@@ -16,7 +16,7 @@ import { Guild, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.Management.ManageReactionRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

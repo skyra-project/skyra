@@ -11,7 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

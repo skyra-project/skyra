@@ -22,7 +22,7 @@ const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	permissions: ['ADD_REACTIONS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: { flags }
 })
 export class UserCommand extends SkyraCommand {

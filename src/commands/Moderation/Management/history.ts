@@ -20,7 +20,7 @@ type DurationDisplay = (time: number) => string;
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['details', { input: 'overview', default: true }]
 })
 export class UserCommand extends SkyraCommand {

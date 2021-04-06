@@ -34,7 +34,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

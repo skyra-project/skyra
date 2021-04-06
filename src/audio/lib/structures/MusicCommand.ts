@@ -4,7 +4,7 @@ import { SkyraCommand } from '../../../lib/structures/commands/SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: MusicCommand.Options) {
-		super(context, { ...options, runIn: ['text'], preconditions: ['AudioEnabled'], enabled: envParseBoolean('AUDIO_ENABLED') });
+		super(context, { ...options, runIn: ['text', 'news'], preconditions: ['AudioEnabled'], enabled: envParseBoolean('AUDIO_ENABLED') });
 	}
 }
 

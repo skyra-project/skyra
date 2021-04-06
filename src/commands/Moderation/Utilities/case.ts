@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['delete', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

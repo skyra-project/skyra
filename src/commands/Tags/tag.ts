@@ -16,7 +16,7 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['tags', 'custom-command', 'copy-pasta'],
 	description: LanguageKeys.Commands.Tags.TagDescription,
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: { flags: ['embed'], options: ['color', 'colour'] },
 	permissions: ['MANAGE_MESSAGES'],
 	subCommands: ['add', 'alias', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]

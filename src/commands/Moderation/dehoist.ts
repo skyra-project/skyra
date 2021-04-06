@@ -16,7 +16,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.DehoistDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
 })

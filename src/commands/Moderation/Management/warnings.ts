@@ -11,7 +11,7 @@ import type { UserPaginatedMessageCommand as Moderations } from './moderations';
 	description: LanguageKeys.Commands.Moderation.WarningsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.WarningsExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: PaginatedMessageCommand.Context) {

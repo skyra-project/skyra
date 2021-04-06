@@ -9,7 +9,7 @@ import { Args } from '@sapphire/framework';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['add-emoji'],
 	cooldown: 10,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['MANAGE_EMOJIS'],
 	description: LanguageKeys.Commands.Tools.CreateEmojiDescription,

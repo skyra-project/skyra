@@ -99,7 +99,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 		super(context, {
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
+			runIn: ['text', 'news'],
 			...options
 		});
 	}

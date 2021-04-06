@@ -13,7 +13,7 @@ export const maximumExportQueueSize = 100;
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
 	permissions: ['ATTACH_FILES'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends MusicCommand {
 	@requireQueueNotEmpty()

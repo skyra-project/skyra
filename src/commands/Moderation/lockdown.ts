@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	subCommands: ['lock', 'unlock', { input: 'auto', default: true }],
 	description: LanguageKeys.Commands.Moderation.LockdownDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.LockdownExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })

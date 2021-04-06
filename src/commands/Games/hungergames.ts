@@ -16,7 +16,7 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
 	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: {
 		flags: ['autofill', 'autoskip']
 	}

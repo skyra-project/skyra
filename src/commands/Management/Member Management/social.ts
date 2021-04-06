@@ -11,7 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Social.SocialDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'set', 'reset']
 })
 export class UserCommand extends SkyraCommand {

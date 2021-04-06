@@ -1,16 +1,16 @@
-import { SkyraCommand } from '#lib/structures';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ApplyOptions } from '@sapphire/decorators';
-import { GuildMessage } from '#lib/types';
-import { CommandContext } from '@sapphire/framework';
 import { getGuildMemberBirthday } from '#lib/birthday';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SkyraCommand } from '#lib/structures';
+import { GuildMessage } from '#lib/types';
+import { ApplyOptions } from '@sapphire/decorators';
+import { CommandContext } from '@sapphire/framework';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['viewbday'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {

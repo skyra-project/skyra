@@ -11,7 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	permissions: ['MANAGE_ROLES'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

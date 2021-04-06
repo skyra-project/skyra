@@ -17,7 +17,7 @@ const { FLAGS } = Permissions;
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;

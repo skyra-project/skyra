@@ -21,7 +21,7 @@ const enum Type {
 	description: LanguageKeys.Commands.Management.TriggersDescription,
 	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

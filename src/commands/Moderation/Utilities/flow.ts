@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Moderation.FlowDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.FlowExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

@@ -18,7 +18,7 @@ const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACT
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

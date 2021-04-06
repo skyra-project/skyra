@@ -14,7 +14,7 @@ import { toTitleCase } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Admin.ConfExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
 })
 export class UserCommand extends SkyraCommand {

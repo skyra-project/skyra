@@ -17,7 +17,7 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	cooldown: 30,
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	spam: true,
 	strategyOptions: { flags: REMINDER_FLAGS }
 })

@@ -13,7 +13,7 @@ import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

@@ -28,7 +28,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 			bucket: 2,
 			cooldown: 10,
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
+			runIn: ['text', 'news'],
 			...options
 		});
 

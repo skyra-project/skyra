@@ -39,7 +39,7 @@ const enum Filter {
 	permissionLevel: PermissionLevels.Moderator,
 	strategyOptions: { flags: ['silent'] },
 	permissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

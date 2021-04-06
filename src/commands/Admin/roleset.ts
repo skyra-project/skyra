@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Admin.RoleSetDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'reset', 'list', { input: 'auto', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

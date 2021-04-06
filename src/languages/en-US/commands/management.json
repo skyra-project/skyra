@@ -37,6 +37,10 @@
 	"guildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **{{afkTime}}**min",
 	"guildInfoMembers": "• **{{memberCount, number}}** member(s)\n• Owner: **{{owner.tag}}**\n  (ID: **{{owner.id}}**)",
 	"guildInfoOther": "• Roles: **{{size}}**\n• Region: **{{region}}**\n• Created at: **{{createdAt, dateTime}}**\n• Verification Level: **{{verificationLevel, humanLevels}}**",
+	"guildInfoBanner": "Banner Image",
+	"guildInfoIcon": "Icon Image",
+	"guildInfoSplash": "Splash Image",
+	"guildInfoDiscoverySplash": "Discovery Splash Image",
 	"roleInfoTitles": {
 		"PERMISSIONS": "Permissions"
 	},

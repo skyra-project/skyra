@@ -33,6 +33,9 @@ export const GuildInfoOther = FT<
 	string
 >('commands/management:guildInfoOther');
 export const GuildInfoTitles = T<Record<string, string>>('commands/management:guildInfoTitles');
+export const GuildInfoBanner = T('commands/management:guildInfoBanner');
+export const GuildInfoIcon = T('commands/management:guildInfoIcon');
+export const GuildInfoSplash = T('commands/management:guildInfoSplash');
 export const InviteModeDescription = T<string>('commands/management:inviteModeDescription');
 export const InviteModeExtended = T<LanguageHelpDisplayOptions>('commands/management:inviteModeExtended');
 export const LinkModeDescription = T<string>('commands/management:linkModeDescription');

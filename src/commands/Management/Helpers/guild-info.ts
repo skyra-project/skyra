@@ -38,23 +38,26 @@ export class UserCommand extends SkyraCommand {
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed() //
 				.setColor(color)
-				.setThumbnail(guild.iconURL()!)
+				.setThumbnail(guild.iconURL({ size: 256, format: 'png', dynamic: true })!)
 				.setTitle(`${guild.name} [${guild.id}]`)
 		});
 
 		display.addPageEmbed(await this.getSummary(args, roles, color));
+		if (guild.icon) display.addPageEmbed(this.getIcon(args, color));
+		if (guild.banner) display.addPageEmbed(this.getBanner(args, color));
+		if (guild.splash) display.addPageEmbed(this.getSplash(args, color));
 
-		if (roles.length <= roleLimit) return display;
-
-		for (const batch of chunk(roles, 20)) {
-			if (batch.length <= 10) {
-				display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention)));
-			} else {
-				const left = batch.slice(0, 10);
-				const right = batch.slice(10);
-				display.addPageEmbed((embed) =>
-					embed.addField(ZeroWidthSpace, left.map(roleMention), true).addField(ZeroWidthSpace, right.map(roleMention), true)
-				);
+		if (roles.length > roleLimit) {
+			for (const batch of chunk(roles, 20)) {
+				if (batch.length <= 10) {
+					display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention)));
+				} else {
+					const left = batch.slice(0, 10);
+					const right = batch.slice(10);
+					display.addPageEmbed((embed) =>
+						embed.addField(ZeroWidthSpace, left.map(roleMention), true).addField(ZeroWidthSpace, right.map(roleMention), true)
+					);
+				}
 			}
 		}
 
@@ -68,12 +71,35 @@ export class UserCommand extends SkyraCommand {
 		const roleCount = guild.roles.cache.size - 1;
 		return new MessageEmbed()
 			.setColor(color)
-			.setThumbnail(guild.iconURL()!)
+			.setThumbnail(guild.iconURL({ size: 256, format: 'png', dynamic: true })!)
 			.setTitle(`${guild.name} [${guild.id}]`)
 			.addField(args.t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roleCount }), this.getSummaryRoles(args, roles))
 			.addField(serverInfoTitles.MEMBERS, await this.getSummaryMembers(args), true)
 			.addField(serverInfoTitles.CHANNELS, this.getSummaryChannels(args), true)
 			.addField(serverInfoTitles.OTHER, this.getSummaryOther(args));
+	}
+
+	private getBanner(args: SkyraCommand.Args, color: number): MessageEmbed {
+		const guild = args.message.guild!;
+		return this.getImage(args.t(LanguageKeys.Commands.Management.GuildInfoBanner), guild.bannerURL({ size: 4096, format: 'png' })!, color);
+	}
+
+	private getIcon(args: SkyraCommand.Args, color: number): MessageEmbed {
+		const guild = args.message.guild!;
+		return this.getImage(
+			args.t(LanguageKeys.Commands.Management.GuildInfoIcon),
+			guild.iconURL({ size: 4096, format: 'png', dynamic: true })!,
+			color
+		);
+	}
+
+	private getSplash(args: SkyraCommand.Args, color: number): MessageEmbed {
+		const guild = args.message.guild!;
+		return this.getImage(args.t(LanguageKeys.Commands.Management.GuildInfoSplash), guild.splashURL({ size: 4096, format: 'png' })!, color);
+	}
+
+	private getImage(description: string, url: string, color: number): MessageEmbed {
+		return new MessageEmbed().setColor(color).setDescription(`${description} [→](${url})`).setImage(url).setThumbnail(null!);
 	}
 
 	private getRoles(args: SkyraCommand.Args): Role[] {

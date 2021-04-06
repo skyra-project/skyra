@@ -1,5 +1,5 @@
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
-import { FT, T } from '#lib/types';
+import { FT, T, Value } from '#lib/types';
 
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
 export const ChaseExtended = T<LanguageHelpDisplayOptions>('commands/misc:chaseExtended');
@@ -9,6 +9,10 @@ export const DeletThisDescription = T<string>('commands/misc:deletthisDescriptio
 export const DeletThisExtended = T<LanguageHelpDisplayOptions>('commands/misc:deletthisExtended');
 export const FDescription = T<string>('commands/misc:fDescription');
 export const FExtended = T<LanguageHelpDisplayOptions>('commands/misc:fExtended');
+export const FlipDescription = T('commands/misc:flipDescription');
+export const FlipExtended = T<LanguageHelpDisplayOptions>('commands/misc:flipExtended');
+export const FlipDisabled = T('commands/misc:flipDisabled');
+export const FlipOutput = FT<Value>('commands/misc:flipOutput');
 export const GoodNightDescription = T<string>('commands/misc:goodnightDescription');
 export const GoodNightExtended = T<LanguageHelpDisplayOptions>('commands/misc:goodnightExtended');
 export const GoofyTimeDescription = T<string>('commands/misc:goofytimeDescription');

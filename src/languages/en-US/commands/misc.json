@@ -151,6 +151,35 @@
 			"Jake"
 		]
 	},
+	"flipDescription": "Flip your messages!",
+	"flipExtended": {
+		"usages": [
+			"Content",
+			"Content --x=no",
+			"Content --x=yes --y=no"
+		],
+		"extendedHelp": "You can flip messages both vertically and horizontally!",
+		"explainedUsage": [
+			[
+				"Content",
+				"The phrase to convert"
+			],
+			[
+				"--x/--h/--horizontal",
+				"Whether or not the content should be flipped horizontally, defaults to enabled."
+			],
+			[
+				"--y/--v/--vertical",
+				"Whether or not the content should be flipped vertically, defaults to enabled."
+			]
+		],
+		"examples": [
+			"Help, this message is not flipped!",
+			"Upside down! --h=no"
+		]
+	},
+	"flipDisabled": "You need to enable at least one of the flips!",
+	"flipOutput": "Here is your converted message:\n{{value}}",
 	"goodnightDescription": "Give somebody a nice Good Night!",
 	"goodnightExtended": {
 		"usages": [

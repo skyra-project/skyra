@@ -9,6 +9,7 @@ import { urlRegex } from '#utils/Links/UrlRegex';
 import { floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
@@ -78,7 +79,7 @@ export class UserCommand extends SkyraCommand {
 		floatPromise(this.sendPruneLogs(message, args.t, filtered, filteredKeys));
 		return args.getFlags('silent')
 			? null
-			: message.alert(args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit }));
+			: message.alert(args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit }), Time.Second * 10);
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {

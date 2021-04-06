@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, SuggestionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -105,7 +105,7 @@ export class UserCommand extends SkyraCommand {
 		return message.author.tag;
 	}
 
-	private static suggestion = Args.make<SuggestionData>(async (parameter, { message, argument }) => {
+	private static suggestion = Args.make<SuggestionData>(async (parameter, { args, argument, message }) => {
 		// Validate the suggestions channel ID
 		const channelID = await message.guild!.readSettings(GuildSettings.Suggestions.Channel);
 		if (!channelID) {
@@ -117,20 +117,28 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		// Validate the suggestion number
-		const id = Number(parameter);
-		if (!Number.isInteger(id) || id < minimum || id > maximum) {
-			return Args.error({
-				argument,
-				parameter,
-				identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID,
-				context: { minimum, maximum }
-			});
+		let suggestionData: SuggestionEntity | undefined;
+		if (args.t(LanguageKeys.Arguments.CaseLatestOptions).includes(parameter)) {
+			// Retrieve latest entry
+			const { suggestions } = Store.injectedContext.db;
+			suggestionData = await suggestions.findOne({ order: { id: 'DESC' }, where: { guildID: message.guild!.id } });
+		} else {
+			// Validate the suggestion number
+			const id = Number(parameter);
+			if (!Number.isInteger(id) || id < minimum || id > maximum) {
+				return Args.error({
+					argument,
+					parameter,
+					identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID,
+					context: { minimum, maximum }
+				});
+			}
+
+			// Retrieve the suggestion data
+			const { suggestions } = Store.injectedContext.db;
+			suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
 		}
 
-		// Retrieve the suggestion data
-		const { suggestions } = Store.injectedContext.db;
-		const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
 		if (!suggestionData) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound });
 		}
@@ -143,7 +151,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
-		return Args.ok({ message: suggestionMessage, author: suggestionAuthor, id });
+		return Args.ok({ message: suggestionMessage, author: suggestionAuthor, id: suggestionData.id });
 	});
 
 	private static action = Args.make<Actions>(async (parameter, { argument }) => {

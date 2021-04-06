@@ -36,7 +36,7 @@
 		"explainedUsage": [
 			[
 				"Suggestion",
-				"The suggestion to resolve"
+				"The suggestion to resolve, also accepts `latest` to manage the latest suggestion."
 			],
 			[
 				"accept/a/deny/d/consider/c",
@@ -48,6 +48,7 @@
 			]
 		],
 		"examples": [
+			"latest accept Thank you for your suggestion!",
 			"1 accept Thank you for your suggestion!",
 			"1 a Thank you for your suggestion!",
 			"1 consider Hmm... we may do this, but it's really low priority",

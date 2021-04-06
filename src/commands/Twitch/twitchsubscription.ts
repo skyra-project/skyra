@@ -45,13 +45,14 @@ export class UserCommand extends SkyraCommand {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const status = await args.pick(UserCommand.status);
+		const content = await args.rest('string').catch(() => null);
 		const entry: Entry = {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: null,
+			message: content ?? null,
 			status
 		};
 

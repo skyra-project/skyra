@@ -102,7 +102,7 @@
 	"reputation": "{{count}} reputation point",
 	"reputation_plural": "{{count}} reputation points",
 	"reputations": "The user {{user}} has a total of {{points}}.",
-	"scoreboardPosition": "Your placing position is: {{position}}",
+	"scoreboardFooter": "Ranked {{position, number}} out of {{total, number}}",
 	"setColor": "Color changed to {{color}}",
 	"socialDescription": "Configure this server's member points.",
 	"socialExtended": {
@@ -258,7 +258,6 @@
 		"reminder": "The leaderboards refresh every 10 minutes."
 	},
 	"leaderboardHeader": "🏡 Local Score Scoreboard",
-	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
 	"leaderboardUnknownUser": "User not in server ({{user}})",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {

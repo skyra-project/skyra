@@ -46,6 +46,7 @@ export class UserCommand extends SkyraCommand {
 		if (guild.icon) display.addPageEmbed(this.getIcon(args, color));
 		if (guild.banner) display.addPageEmbed(this.getBanner(args, color));
 		if (guild.splash) display.addPageEmbed(this.getSplash(args, color));
+		if (guild.discoverySplash) display.addPageEmbed(this.getDiscoverySplash(args, color));
 
 		if (roles.length > roleLimit) {
 			for (const batch of chunk(roles, 20)) {
@@ -96,6 +97,15 @@ export class UserCommand extends SkyraCommand {
 	private getSplash(args: SkyraCommand.Args, color: number): MessageEmbed {
 		const guild = args.message.guild!;
 		return this.getImage(args.t(LanguageKeys.Commands.Management.GuildInfoSplash), guild.splashURL({ size: 4096, format: 'png' })!, color);
+	}
+
+	private getDiscoverySplash(args: SkyraCommand.Args, color: number): MessageEmbed {
+		const guild = args.message.guild!;
+		return this.getImage(
+			args.t(LanguageKeys.Commands.Management.GuildInfoDiscoverySplash),
+			guild.discoverySplashURL({ size: 4096, format: 'png' })!,
+			color
+		);
 	}
 
 	private getImage(description: string, url: string, color: number): MessageEmbed {

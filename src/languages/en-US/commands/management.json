@@ -40,6 +40,7 @@
 	"guildInfoBanner": "Banner Image",
 	"guildInfoIcon": "Icon Image",
 	"guildInfoSplash": "Splash Image",
+	"guildInfoDiscoverySplash": "Discovery Splash Image",
 	"roleInfoTitles": {
 		"PERMISSIONS": "Permissions"
 	},

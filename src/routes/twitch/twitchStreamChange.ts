@@ -6,6 +6,8 @@ import { isObject } from '@sapphire/utilities';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export class UserRoute extends Route {
+	private lastNotificationId: string | null = null;
+
 	// Challenge
 	public [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
@@ -22,6 +24,9 @@ export class UserRoute extends Route {
 
 	// Stream Changed
 	public [methods.POST](request: ApiRequest, response: ApiResponse) {
+		// If this notification is the same as before, then send ok back
+		if (this.lastNotificationId && this.lastNotificationId === request.headers['Twitch-Notification-Id']) return response.ok();
+
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];
@@ -42,6 +47,8 @@ export class UserRoute extends Route {
 			client.emit(Events.TwitchStreamHookedAnalytics, AnalyticsSchema.TwitchStreamStatus.Offline);
 			client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
+
+		this.lastNotificationId = request.headers['Twitch-Notification-Id'];
 	}
 }
 
@@ -51,6 +58,7 @@ export interface PostStreamBody {
 
 export interface PostStreamBodyData {
 	game_id: string;
+	game_name?: string;
 	id: string;
 	language: string;
 	started_at: string;
@@ -60,5 +68,12 @@ export interface PostStreamBodyData {
 	type: string;
 	user_id: string;
 	user_name: string;
+	user_login: string;
 	viewer_count: number;
+}
+
+declare module 'http' {
+	interface IncomingHttpHeaders extends NodeJS.Dict<string | string[]> {
+		'Twitch-Notification-Id': string;
+	}
 }

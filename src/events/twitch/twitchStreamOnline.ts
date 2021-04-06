@@ -103,9 +103,8 @@ export class UserEvent extends Event {
 	}
 }
 
-type TwitchOnlineEmbedData = Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id'> &
+type TwitchOnlineEmbedData = Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id' | 'user_login'> &
 	Omit<Partial<TwitchHelixGameSearchResult>, 'id' | 'name'> & {
 		viewer_count: string;
 		started_at: Date;
-		game_name: string | undefined;
 	};

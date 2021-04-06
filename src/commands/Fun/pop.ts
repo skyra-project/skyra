@@ -69,22 +69,32 @@ export class UserCommand extends SkyraCommand {
 		return output;
 	}
 
-	private *generateBoard(width: number, height: number, pop: string, solution: string) {
-		const solutionX = random(width);
-		const solutionY = random(height);
-
+	private *generateBoard(width: number, height: number, pop: string, solution: string): IterableIterator<string> {
 		const wrappedPop = `||\`${pop}\`||`;
 		const wrappedSolution = `||\`${solution}\`||`;
+		if (height === 0) {
+			return yield this.generateBoardLineWithSolution(wrappedPop, wrappedSolution, width);
+		}
 
-		const fullPops = wrappedPop.repeat(width);
+		const solutionY = random(height);
+		const fullPops = this.generateBoardLineFullPops(wrappedPop, width);
 
 		let y = 0;
 		for (; y < solutionY; ++y) yield fullPops;
 
-		yield wrappedPop.repeat(solutionX) + wrappedSolution + wrappedPop.repeat(width - solutionX - 1);
+		yield this.generateBoardLineWithSolution(wrappedPop, wrappedSolution, width);
 		++y;
 
 		for (; y < height; ++y) yield fullPops;
+	}
+
+	private generateBoardLineFullPops(pop: string, width: number) {
+		return pop.repeat(width);
+	}
+
+	private generateBoardLineWithSolution(pop: string, solution: string, width: number) {
+		const solutionX = random(width);
+		return pop.repeat(solutionX) + solution + pop.repeat(width - solutionX - 1);
 	}
 
 	private async parseOption(args: SkyraCommand.Args, option: string[], defaultValue: number, minimum: number, maximum: number) {

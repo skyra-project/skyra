@@ -82,6 +82,7 @@ export class UserCommand extends SkyraCommand {
 		for (; y < solutionY; ++y) yield fullPops;
 
 		yield wrappedPop.repeat(solutionX) + wrappedSolution + wrappedPop.repeat(width - solutionX - 1);
+		++y;
 
 		for (; y < height; ++y) yield fullPops;
 	}

@@ -682,7 +682,7 @@ export const shuffle = <T>(array: T[]): T[] => {
 	return array;
 };
 
-export const random = (num: number) => Math.round(Math.random() * num);
+export const random = (num: number) => Math.floor(Math.random() * num);
 
 export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
 	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));

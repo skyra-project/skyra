@@ -125,6 +125,31 @@
 			"Joe"
 		]
 	},
+	"popDescription": "Generates a board to pop, pop, pop, and pop.",
+	"popExtended": {
+		"usages": [
+			"Duration",
+			"--x/--width",
+			"--y/--height",
+			"--length"
+		],
+		"extendedHelp": "Allows you to generate a pop board where there is one non-pop word, which you have to find and send to the channel. For example, you must send `e60` from ||`pop`||||`e60`||||`pop`|| to win.",
+		"explainedUsage": [
+			["Duration", "The amount of time I should allow you to find the non-pop, defaults to 30 seconds."],
+			["--x/--width", "The amount of columns the board should have, defaults to 8."],
+			["--y/--height", "The amount of rows the board should have, defaults to 3."],
+			["--length", "The length of the pops and the solution, defaults to 3."]
+		],
+		"examples": [
+			"15",
+			"--x=10",
+			"--y=5",
+			"--length=4"
+		]
+	},
+	"popTitle": "POP! Let the pops begin!",
+	"popTitleLost": "POP! Nobody got it in time!",
+	"popTitleWinner": "POP! We got a winner: {{value}}!",
 	"punDescription": "Shows you a random pun.",
 	"punExtended": {
 		"extendedHelp": "A steak pun is a rare medium well done.\nGet your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."

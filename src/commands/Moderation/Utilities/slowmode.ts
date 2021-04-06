@@ -16,7 +16,7 @@ const MAXIMUM_DURATION = Time.Hour * 6;
 	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['MANAGE_CHANNELS'],
-	runIn: ['text', 'news']
+	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

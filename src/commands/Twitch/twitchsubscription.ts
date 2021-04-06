@@ -20,7 +20,7 @@ import { Args, Store } from '@sapphire/framework';
 import { chunk } from '@sapphire/utilities';
 import { Guild, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { Any } from 'typeorm';
+import { EntityManager } from 'typeorm';
 
 type Streamer = TwitchHelixUsersSearchResult;
 type Status = NotificationsStreamsTwitchEventStatus;
@@ -45,14 +45,13 @@ export class UserCommand extends SkyraCommand {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const status = await args.pick(UserCommand.status);
-		const content = await args.rest('string').catch(() => null);
 		const entry: Entry = {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content ?? null,
+			message: null,
 			status
 		};
 
@@ -154,7 +153,7 @@ export class UserCommand extends SkyraCommand {
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
 			const { twitchStreamSubscriptions } = this.context.db;
 			await twitchStreamSubscriptions.manager.transaction(async (em) => {
-				const entries = await em.find(TwitchStreamSubscriptionEntity, { where: { guildIds: Any([message.guild.id]) } });
+				const entries = await this.getSubscriptions(em, message.guild.id);
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
 				const toDelete: TwitchStreamSubscriptionEntity[] = [];
 				for (const entry of entries) {
@@ -258,6 +257,13 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		return lines;
+	}
+
+	private async getSubscriptions(entityManager: EntityManager, ...guildIds: string[]): Promise<TwitchStreamSubscriptionEntity[]> {
+		return entityManager
+			.createQueryBuilder(TwitchStreamSubscriptionEntity, 'twitchsubs')
+			.where('twitchsubs.guild_ids IN (:ids)', { ids: guildIds })
+			.getMany();
 	}
 
 	private async upsertSubscription(guild: Guild, streamer: Streamer) {

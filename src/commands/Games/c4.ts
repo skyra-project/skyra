@@ -13,7 +13,7 @@ import { User } from 'discord.js';
 	description: LanguageKeys.Commands.Games.C4Description,
 	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
 	permissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: { flags: ['easy', 'medium', 'hard'] }
 })
 export class UserCommand extends SkyraCommand {

@@ -12,7 +12,7 @@ import { MessageEmbed, Permissions } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Management.RoleInfoExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

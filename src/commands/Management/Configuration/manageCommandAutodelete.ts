@@ -14,7 +14,7 @@ import type { TextChannel } from 'discord.js';
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

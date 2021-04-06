@@ -16,7 +16,7 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	spam: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

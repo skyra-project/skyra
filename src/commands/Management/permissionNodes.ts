@@ -18,7 +18,7 @@ import { GuildMember, Role } from 'discord.js';
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {

@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	cooldown: 15,
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

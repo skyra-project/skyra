@@ -26,7 +26,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
-			runIn: ['text'],
+			runIn: ['text', 'news'],
 			...options
 		});
 

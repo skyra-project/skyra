@@ -13,7 +13,7 @@ const options = ['winners'];
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: { options }
 })
 export class UserCommand extends SkyraCommand {

@@ -21,7 +21,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
 	permissions: ['MANAGE_MESSAGES'],
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

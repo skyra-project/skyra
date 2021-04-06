@@ -13,7 +13,7 @@ import type { NewsChannel, TextChannel } from 'discord.js';
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

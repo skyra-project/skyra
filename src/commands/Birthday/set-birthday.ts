@@ -12,7 +12,7 @@ import { isNullish, Nullish } from '@sapphire/utilities';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.SetBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SetBirthdayExtended,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {

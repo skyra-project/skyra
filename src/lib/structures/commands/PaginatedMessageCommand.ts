@@ -23,7 +23,7 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 		super(context, {
 			// Merge in all given options
 			...options,
-			runIn: ['text'],
+			runIn: ['text', 'news'],
 			// Add all requiredPermissions set in the command, along with the permissions required for PaginatedMessage
 			permissions: [
 				...((options.permissions as PermissionResolvable[] | undefined) ?? []),

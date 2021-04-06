@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.PayDescription,
 	extendedHelp: LanguageKeys.Commands.Social.PayExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

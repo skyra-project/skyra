@@ -18,7 +18,7 @@ const kCodeZ = 'Z'.charCodeAt(0);
 	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {

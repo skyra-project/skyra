@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EmotesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmotesExtended,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

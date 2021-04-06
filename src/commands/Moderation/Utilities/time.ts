@@ -14,7 +14,7 @@ import { Permissions, User } from 'discord.js';
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.TimeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

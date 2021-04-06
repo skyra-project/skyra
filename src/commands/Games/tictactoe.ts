@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Games.TicTacToeDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
 	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();

@@ -14,7 +14,7 @@ const options = ['winners'];
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
-	runIn: ['text'],
+	runIn: ['text', 'news'],
 	strategyOptions: { options }
 })
 export class UserCommand extends SkyraCommand {

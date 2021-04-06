@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ResetBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ResetBirthdayExtended,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

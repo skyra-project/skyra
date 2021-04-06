@@ -11,7 +11,7 @@ import type { MessageOptions } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

@@ -30,7 +30,7 @@ const maximum = 2_147_483_647; // Maximum value for int32
 	strategyOptions: { flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'] },
 	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

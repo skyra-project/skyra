@@ -118,7 +118,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		let suggestionData: SuggestionEntity | undefined;
-		if (args.t(LanguageKeys.Arguments.CaseLatestOptions).includes(parameter)) {
+		if (args.t(LanguageKeys.Arguments.CaseLatestOptions).includes(parameter.toLowerCase())) {
 			// Retrieve latest entry
 			const { suggestions } = Store.injectedContext.db;
 			suggestionData = await suggestions.findOne({ order: { id: 'DESC' }, where: { guildID: message.guild!.id } });

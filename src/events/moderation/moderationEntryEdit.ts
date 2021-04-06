@@ -34,7 +34,7 @@ export class UserEvent extends Event {
 				RESTJSONErrorCodes.MissingPermissions
 			);
 		} catch (error) {
-			await entry.guild.writeSettings([[GuildSettings.Channels.ModerationLogs, null]]);
+			await entry.guild.writeSettings([[GuildSettings.Channels.Logs.Moderation, null]]);
 		}
 	}
 

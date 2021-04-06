@@ -1,0 +1,17 @@
+export const ChannelCreate = 'channelsLogsChannelCreate';
+export const ChannelDelete = 'channelsLogsChannelDelete';
+export const ChannelUpdate = 'channelsLogsChannelUpdate';
+export const EmojiCreate = 'channelsLogsEmojiCreate';
+export const EmojiDelete = 'channelsLogsEmojiDelete';
+export const EmojiUpdate = 'channelsLogsEmojiUpdate';
+export const Image = 'channelsLogsImage';
+export const Member = 'channelsLogsMember';
+export const Message = 'channelsLogsMessage';
+export const Moderation = 'channelsLogsModeration';
+export const NSFWMessage = 'channelsLogsNsfwMessage';
+export const Prune = 'channelsLogsPrune';
+export const Reaction = 'channelsLogsReaction';
+export const RoleCreate = 'channelsLogsRoleCreate';
+export const RoleDelete = 'channelsLogsRoleDelete';
+export const RoleUpdate = 'channelsLogsRoleUpdate';
+export const ServerUpdate = 'channelsLogsServerUpdate';

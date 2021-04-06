@@ -57,63 +57,103 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'birthday.role', nullable: true, length: 19 })
 	public birthdayRole?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsAnnouncements, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Announcements, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.announcements', nullable: true, length: 19 })
 	public channelsAnnouncements?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsGreeting, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Greeting, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.greeting', nullable: true, length: 19 })
 	public channelsGreeting?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsFarewell, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Farewell, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.farewell', nullable: true, length: 19 })
 	public channelsFarewell?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsMemberLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.member-logs', nullable: true, length: 19 })
-	public channelsMemberLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Member, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member', nullable: true, length: 19 })
+	public channelsLogsMember?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsMessageLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.message-logs', nullable: true, length: 19 })
-	public channelsMessageLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Message, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.message', nullable: true, length: 19 })
+	public channelsLogsMessage?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsModerationLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.moderation-logs', nullable: true, length: 19 })
-	public channelsModerationLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Moderation, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.moderation', nullable: true, length: 19 })
+	public channelsLogsModeration?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsNsfwMessageLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.nsfw-message-logs', nullable: true, length: 19 })
-	public channelsNsfwMessageLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.NsfwMessage, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.nsfw-message', nullable: true, length: 19 })
+	public channelsLogsNsfwMessage?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsImageLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.image-logs', nullable: true, length: 19 })
-	public channelsImageLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Image, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.image', nullable: true, length: 19 })
+	public channelsLogsImage?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsPruneLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.prune-logs', nullable: true, length: 19 })
-	public channelsPruneLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Prune, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.prune', nullable: true, length: 19 })
+	public channelsLogsPrune?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsReactionLogs, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.reaction-logs', nullable: true, length: 19 })
-	public channelsReactionLogs?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Reaction, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.reaction', nullable: true, length: 19 })
+	public channelsLogsReaction?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsSpam, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.RoleCreate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.role-create', nullable: true, length: 19 })
+	public channelsLogsRoleCreate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.RoleUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.role-update', nullable: true, length: 19 })
+	public channelsLogsRoleUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.RoleDelete, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.role-delete', nullable: true, length: 19 })
+	public channelsLogsRoleDelete?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.ChannelCreate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.channel-create', nullable: true, length: 19 })
+	public channelsLogsChannelCreate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.ChannelUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.channel-update', nullable: true, length: 19 })
+	public channelsLogsChannelUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.ChannelDelete, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.channel-delete', nullable: true, length: 19 })
+	public channelsLogsChannelDelete?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.EmojiCreate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.emoji-create', nullable: true, length: 19 })
+	public channelsLogsEmojiCreate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.EmojiUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.emoji-update', nullable: true, length: 19 })
+	public channelsLogsEmojiUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.EmojiDelete, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.emoji-delete', nullable: true, length: 19 })
+	public channelsLogsEmojiDelete?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.ServerUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.server-update', nullable: true, length: 19 })
+	public channelsLogsServerUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Spam, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.spam', nullable: true, length: 19 })
 	public channelsSpam?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsIgnoreAll, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.All, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.all', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreAll: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsIgnoreMessageEdit, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.MessageEdit, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.message-edit', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreMessageEdits: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsIgnoreMessageDelete, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.MessageDelete, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.message-delete', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreMessageDeletes: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsIgnoreReactionAdd, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.ReactionAdd, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.reaction-add', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreReactionAdds: string[] = [];
 

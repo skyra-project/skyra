@@ -7,6 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.SetImageLogsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetImageLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetImageLogsSet,
-	settingsKey: GuildSettings.Channels.ImageLogs
+	settingsKey: GuildSettings.Channels.Logs.Image
 })
 export class UserChannelConfigurationCommand extends ChannelConfigurationCommand {}

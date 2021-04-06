@@ -52,7 +52,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 * The channel where messages have to be sent.
 	 */
 	public async fetchChannel() {
-		const channelID = await this.guild.readSettings(GuildSettings.Channels.ModerationLogs);
+		const channelID = await this.guild.readSettings(GuildSettings.Channels.Logs.Moderation);
 		if (isNullish(channelID)) return null;
 		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}

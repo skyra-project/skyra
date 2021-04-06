@@ -1,0 +1,10 @@
+{
+	"explicitContentFilterDisabled": "Disabled",
+	"explicitContentFilterMembersWithoutRoles": "Members without roles",
+	"explicitContentFilterAllMembers": "All members",
+	"messageNotificationsAll": "All Messages",
+	"messageNotificationsMentions": "Only @mentions",
+	"WELCOME_MESSAGE_DISABLED": "Member Join Messages",
+	"BOOST_MESSAGE_DISABLED": "Server Boost Messages",
+	"REMINDER_MESSAGE_DISABLED": "Server Setup Tip Messages"
+}

@@ -17,7 +17,7 @@ export class UserEvent extends Event {
 		try {
 			await resolveOnErrorCodes(channel.send(messageEmbed), RESTJSONErrorCodes.MissingAccess, RESTJSONErrorCodes.MissingPermissions);
 		} catch (error) {
-			await entry.guild.writeSettings([[GuildSettings.Channels.ModerationLogs, null]]);
+			await entry.guild.writeSettings([[GuildSettings.Channels.Logs.Moderation, null]]);
 		}
 	}
 

@@ -7,21 +7,6 @@ export const DisableNaturalPrefix = T<string>('settings:disableNaturalPrefix');
 export const BirthdayChannel = T<string>('settings:birthdayChannel');
 export const BirthdayMessage = T<string>('settings:birthdayMessage');
 export const BirthdayRole = T<string>('settings:birthdayRole');
-export const ChannelsAnnouncements = T<string>('settings:channelsAnnouncements');
-export const ChannelsFarewell = T<string>('settings:channelsFarewell');
-export const ChannelsGreeting = T<string>('settings:channelsGreeting');
-export const ChannelsImageLogs = T<string>('settings:channelsImageLogs');
-export const ChannelsMemberLogs = T<string>('settings:channelsMemberLogs');
-export const ChannelsMessageLogs = T<string>('settings:channelsMessageLogs');
-export const ChannelsModerationLogs = T<string>('settings:channelsModerationLogs');
-export const ChannelsNsfwMessageLogs = T<string>('settings:channelsNsfwMessageLogs');
-export const ChannelsPruneLogs = T<string>('settings:channelsPruneLogs');
-export const ChannelsReactionLogs = T<string>('settings:channelsReactionLogs');
-export const ChannelsSpam = T<string>('settings:channelsSpam');
-export const ChannelsIgnoreMessageDelete = T<string>('settings:channelsIgnoreMessageDelete');
-export const ChannelsIgnoreMessageEdit = T<string>('settings:channelsIgnoreMessageEdit');
-export const ChannelsIgnoreReactionAdd = T<string>('settings:channelsIgnoreReactionAdd');
-export const ChannelsIgnoreAll = T<string>('settings:channelsIgnoreAll');
 export const DisabledChannels = T<string>('settings:disabledChannels');
 export const EventsBanAdd = T<string>('settings:eventsBanAdd');
 export const EventsBanRemove = T<string>('settings:eventsBanRemove');
@@ -125,4 +110,5 @@ export const SuggestionsOnActionRePost = T<string>('settings:suggestionsOnAction
 export const SuggestionsOnActionHideAuthor = T<string>('settings:suggestionsOnActionHideAuthor');
 export const DashboardOnlyKey = T<string>('settings:dashboardOnlyKey');
 
+export * as Channels from './settings/Channels';
 export * as Gateway from './settings/Gateway';

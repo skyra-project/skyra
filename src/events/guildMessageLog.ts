@@ -4,12 +4,12 @@ import { Event } from '@sapphire/framework';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 
 const TYPES = {
-	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
-	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
-	[MessageLogsEnum.Image]: GuildSettings.Channels.ImageLogs,
-	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
-	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs,
-	[MessageLogsEnum.Reaction]: GuildSettings.Channels.ReactionLogs
+	[MessageLogsEnum.Member]: GuildSettings.Channels.Logs.Member,
+	[MessageLogsEnum.Message]: GuildSettings.Channels.Logs.Message,
+	[MessageLogsEnum.Image]: GuildSettings.Channels.Logs.Image,
+	[MessageLogsEnum.Moderation]: GuildSettings.Channels.Logs.Moderation,
+	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.Logs.NSFWMessage,
+	[MessageLogsEnum.Reaction]: GuildSettings.Channels.Logs.Reaction
 } as const;
 
 export class UserEvent extends Event {

@@ -5,17 +5,32 @@ import { toPermissionsArray } from '#utils/bits';
 import { differenceBitField, differenceMap } from '#utils/comparators';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isDMChannel } from '@sapphire/discord.js-utilities';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
-import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
+import {
+	CategoryChannel,
+	DMChannel,
+	GuildChannel,
+	MessageEmbed,
+	NewsChannel,
+	PermissionOverwrites,
+	StoreChannel,
+	TextChannel,
+	VoiceChannel
+} from 'discord.js';
 import type { TFunction } from 'i18next';
 
-type Channel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
+// NOTE: DMChannel is not emitted in Discord v8, whenever we update to discord.js v13, this should be removed.
+type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
+type Channel = DMChannel | GuildBasedChannel;
 
 @ApplyOptions<EventOptions>({ event: Events.ChannelUpdate })
 export class UserEvent extends Event<Events.ChannelUpdate> {
 	public async run(previous: Channel, next: Channel) {
+		if (isDMChannel(next)) return;
+
 		const [channelID, t] = await next.guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelUpdate],
 			settings.getLanguage()
@@ -28,7 +43,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 			return;
 		}
 
-		const changes: string[] = [...this.differenceChannel(t, previous, next)];
+		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannel, next)];
 		if (changes.length === 0) return;
 
 		await channel.send(
@@ -41,7 +56,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 		);
 	}
 
-	private *differenceChannel(t: TFunction, previous: Channel, next: Channel) {
+	private *differenceChannel(t: TFunction, previous: GuildBasedChannel, next: GuildBasedChannel) {
 		yield* this.differenceGuildChannel(t, previous, next);
 		if (previous.type !== next.type) return;
 

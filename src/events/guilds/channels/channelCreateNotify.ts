@@ -4,17 +4,32 @@ import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isDMChannel } from '@sapphire/discord.js-utilities';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
-import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
+import {
+	CategoryChannel,
+	DMChannel,
+	GuildChannel,
+	MessageEmbed,
+	NewsChannel,
+	PermissionOverwrites,
+	StoreChannel,
+	TextChannel,
+	VoiceChannel
+} from 'discord.js';
 import type { TFunction } from 'i18next';
 
-type Channel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
+// NOTE: DMChannel is not emitted in Discord v8, whenever we update to discord.js v13, this should be removed.
+type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
+type Channel = DMChannel | GuildBasedChannel;
 
 @ApplyOptions<EventOptions>({ event: Events.ChannelCreate })
 export class UserEvent extends Event<Events.ChannelCreate> {
 	public async run(next: Channel) {
+		if (isDMChannel(next)) return;
+
 		const [channelID, t] = await next.guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelCreate],
 			settings.getLanguage()
@@ -38,7 +53,7 @@ export class UserEvent extends Event<Events.ChannelCreate> {
 		);
 	}
 
-	private *getChannelInformation(t: TFunction, channel: Channel) {
+	private *getChannelInformation(t: TFunction, channel: GuildBasedChannel) {
 		yield* this.getGuildChannelInformation(t, channel);
 
 		switch (channel.type) {

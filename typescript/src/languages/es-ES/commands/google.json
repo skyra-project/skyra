@@ -61,43 +61,43 @@
 			"Skyra"
 		]
 	},
-	"lmgtfyDescription": "",
+	"lmgtfyDescription": "Envia un enlace a LMGTFY (Let Me Google That For You).",
 	"lmgtfyExtended": {
 		"usages": [
-			""
+			"Consulta"
 		],
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Consulta",
+				"La consulta a Google"
 			]
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Simplemente Googlealo, no es tan difícil.",
 		"examples": [
-			"",
-			""
+			"¿¿Cómo se camina por las escaleras??",
+			"¿¿Cómo hago panqueques??"
 		]
 	},
-	"lmgtfyClick": "",
+	"lmgtfyClick": "[Haz clic para buscar]({{link}})",
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
 		"usages": [
 			"Ciudad",
-			"",
-			""
+			"Lugar --metric/--celsius",
+			"Lugar --imperial/--fahrenheit"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Este comando usa [wttr.in](https://wttr.in) para obtener los datos meteorológicos de una ubicación y lo muestra con una tarjeta bonita.",
 		"explainedUsage": [
 			[
 				"Ciudad",
-				""
+				"Las coordenadas, lugar, ciudad o país desde donde comprobar el clima."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Zaragoza",
+			"San Francisco"
 		],
-		"reminder": ""
+		"reminder": "Las unidades están en el Sistema Internacional por defecto. Utilice la opción --fahrenheit o --imperial para verla en el **Sistema Imperial**."
 	},
 	"errorZeroResults": "Tu búsqueda no ha devuelto ningún resultado.",
 	"errorRequestDenied": "La solicitud de API de GeoCode ha sido denegada.",
@@ -105,20 +105,20 @@
 	"errorOverQueryLimit": "Límite de consulta excedido. Inténtalo de nuevo mañana.",
 	"errorPermissionDenied": "Google denegó mi permiso para este recurso, por favor contacte a los desarrolladores acerca de esto en el servidor de soporte oficial en <https://join.skyra.pw>",
 	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google.",
-	"weatherFahrenheit": "",
-	"weatherInches": "",
-	"weatherMiles": "",
-	"weatherMilesPerHour": "",
-	"weatherCelsius": "",
-	"weatherMillimeters": "",
-	"weatherPascal": "",
-	"weatherKilometers": "",
-	"weatherKilometersPerHour": "",
-	"weatherInvalidJsonBody": "",
-	"weatherUnknownLocation": "",
-	"weatherUnknownError": "",
-	"weatherBlockedLocation": "",
-	"weatherRateLimited": "",
-	"weatherRemoteServerError": "",
-	"weatherServiceUnavailable": ""
+	"weatherFahrenheit": "{{value}} ({{feelsLike}}) ºF",
+	"weatherInches": "{{value}} in",
+	"weatherMiles": "{{value}} mi",
+	"weatherMilesPerHour": "{{value}} mi/h",
+	"weatherCelsius": "{{value}} ({{feelsLike}}) ºC",
+	"weatherMillimeters": "{{value}} mm",
+	"weatherPascal": "{{value}} Pa",
+	"weatherKilometers": "{{value}} km",
+	"weatherKilometersPerHour": "{{value}} km/h",
+	"weatherInvalidJsonBody": "El servidor me envió una respuesta mal formada cuando estaba buscando `{{query}}`, ¡y no puedo averiguar qué significa, lo siento!",
+	"weatherUnknownLocation": "Aparentemente, el servidor no sabe dónde está `{{query}}`, o no tiene datos, ¡por favor intenta en otro lugar!",
+	"weatherUnknownError": "He recibido un error desconocido al buscar `{{query}}`, ¡lo siento!",
+	"weatherBlockedLocation": "No pude encontrar ningún dato sobre `{{query}}` porque fue bloqueado por el servidor.",
+	"weatherRateLimited": "No he podido encontrar ningún dato sobre `{{query}}` porque he excedido la cantidad de consultas que puedo hacer, ¡por favor inténtalo de nuevo más tarde!",
+	"weatherRemoteServerError": "No pude encontrar ningún dato sobre `{{query}}` porque el servidor encontró un error interno, ¡por favor intente de nuevo más tarde!",
+	"weatherServiceUnavailable": "No pude encontrar ningún dato sobre `{{query}}` porque el servidor ha alcanzado su límite de capacidad, lo que significa que ya no pueden atender más peticiones en el resto del día, ¡inténtalo de nuevo más tarde!"
 }

@@ -6,15 +6,15 @@
 	"catfactTitle": "Katzen-Fakt",
 	"dogDescription": "Süße Hundis! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Weißt **du** wie süß Hunde sind? Sie sind so schön!\nDieser Command verwendet [dog.ceo](https://dog.ceo) um Bilder der süßesten Hunde zu zeigen!"
 	},
 	"foxDescription": "Ich zeige dir ein Fuchsbild!",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Dieser Command zeigt ein zufälliges Bild von [randomfox.ca](https://randomfox.ca/)."
 	},
 	"kittyDescription": "KÄTZCHEN!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Weißt **du** wie süß Kätzchen sind? Sie sind so schön!\nDieser Command verwendet [cataas.com](https://cataas.com) um Bilder der süßesten Kätzchen zu zeigen!"
 	},
 	"shibeDescription": "Süße shibas!",
 	"shibeExtended": {

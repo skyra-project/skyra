@@ -19,18 +19,18 @@
 	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
 	"coinFlipHeadNames": [
-		"",
-		"",
-		""
+		"cara",
+		"cara",
+		"c"
 	],
 	"coinFlipTailNames": [
-		"",
-		"",
-		""
+		"cruz",
+		"cruz",
+		"c"
 	],
 	"coinFlipCoinNames": [
-		"",
-		""
+		"Cara",
+		"Cruz"
 	],
 	"coinFlipDescription": "¡Lanza una moneda al aire!",
 	"coinFlipExtended": {
@@ -57,7 +57,7 @@
 			"tails cashless"
 		]
 	},
-	"coinFlipInvalidCoinName": "",
+	"coinFlipInvalidCoinName": "Disculpe, ¡pero `{{parameter}}` no es una cara de moneda!",
 	"coinFlipLoseDescription": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente.",
 	"coinFlipLoseDescriptionWithWager": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente y perdiste {{wager}} {{SHINY}}.",
 	"coinFlipLoseTitle": "¡Perdiste!",

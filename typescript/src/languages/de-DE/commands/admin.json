@@ -7,10 +7,25 @@
 	"confNochange": "Der Wert für **{{key}}** war bereits dieser Wert.",
 	"confServerDescription": "Einstellungen für jeden Server definieren.",
 	"confServerExtended": {
-		"usages": ["", "", "", "", "", ""],
+		"usages": [
+			"setze NameOfKey Wert für Schlüssel",
+			"Zeige",
+			"zeige NameOfKey",
+			"entferne NameOfKey Wert für Schlüssel",
+			"NameOfKey zurücksetzen",
+			"Menü"
+		],
 		"extendedHelp": "",
-		"examples": ["", "", "", "", "", "", ""],
-		"reminder": ""
+		"examples": [
+			"wechsle Sprache auf en-GB",
+			"setze channels.moderation-logs #moderation-logs",
+			"Zeige",
+			"Channel anzeigen",
+			"roles.moderator Moderator entfernen",
+			"roles.moderator zurücksetzen",
+			"Menü"
+		],
+		"reminder": "Es gibt Schlüssel und Gruppen, Schlüssel, die innerhalb einer Gruppe sind, sind nach `GroupName.KeyName` benannt."
 	},
 	"confServer": "**Servereinstellung {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` kann nur über das Web-Dashboard konfiguriert werden (<https://skyra.pw>)",
@@ -21,16 +36,44 @@
 	},
 	"rolesetDescription": "Einzigartige Rollensets verwalten.",
 	"rolesetExtended": {
-		"usages": ["", "", "", "", "", ""],
+		"usages": [
+			"setze RoleSetName Role1 Role2 Role3...",
+			"entferne RoleSetName Role1 Role2 Role3...",
+			"Zurücksetzen",
+			"RoleSetName zurücksetzen",
+			"Liste",
+			"RoleSetName Role1 Role2 Role3"
+		],
 		"extendedHelp": "Ein Rollenset ist eine Gruppe von Rollen, die Skyra als einzigartig für alle Mitglieder des Servers identifiziert, d.h. ein Rollenset namens `Region` könnte die Rollen `Afrika`, `Amerika`, `Asien` und `Europa` beinhalten, und Mitglieder können nur eine von ihnen haben. Dies ist wie eine Art \"Regel\", die in den folgenden drei Situationen angewendet wird:\n\n- Wenn jemand eine Rolle über den \"Rollen\"-Command beansprucht.\n- Wenn jemand eine Rolle als Reaktionsrolle beansprucht.\n- Wenn jemand eine Rolle entweder manuell oder von einem anderen Bot erhält.",
 		"explainedUsage": [
-			["Hinzufügen", "Erstelle ein neues Rollenset oder füge eine Rolle zu einem existierenden Set hinzu."],
-			["Entfernen", "Entferne eine Rolle aus einem existierenden Rollenset."],
-			["Zurücksetzen", "Entfernt alle Rollen aus einem Rollenset oder, wenn nicht spezifiziert, aus allen vorhandenen Rollensets."],
-			["Liste", "Listet alle Rollensets auf."],
-			["Automatisch", "Fügt ein Rollenset hinzu oder entfernt es."],
-			["", ""],
-			["", ""]
+			[
+				"Hinzufügen",
+				"Erstelle ein neues Rollenset oder füge eine Rolle zu einem existierenden Set hinzu."
+			],
+			[
+				"Entfernen",
+				"Entferne eine Rolle aus einem existierenden Rollenset."
+			],
+			[
+				"Zurücksetzen",
+				"Entfernt alle Rollen aus einem Rollenset oder, wenn nicht spezifiziert, aus allen vorhandenen Rollensets."
+			],
+			[
+				"Liste",
+				"Listet alle Rollensets auf."
+			],
+			[
+				"Automatisch",
+				"Fügt ein Rollenset hinzu oder entfernt es."
+			],
+			[
+				"RoleSetName",
+				"Der Name des Rollensets"
+			],
+			[
+				"Rolle1 Rolle2 Rolle3",
+				"Die Rollen, die dem Rollenset hinzugefügt werden sollen"
+			]
 		],
 		"examples": [
 			"füge Region Amerika hinzu",
@@ -68,11 +111,21 @@
 	"confMenuSaved": "Alle Änderungen erfolgreich gespeichert.",
 	"updateDescription": "Bot aktualisieren",
 	"updateExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"Versionszweig",
+			"--clean",
+			"Versionszweig --clean"
+		],
 		"extendedHelp": "Ein bisschen polieren und ein wenig Aufräumen und wer hätte es gedacht, schon bin ich ein nagelneuer Android!",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"Versionszweig",
+				"Die branch von der von git gepulled werden soll"
+			],
+			[
+				"--clean",
+				"Ob der gesamte \"dist\" Ordner vor dem Erstellen bereinigt werden soll"
+			]
 		]
 	}
 }

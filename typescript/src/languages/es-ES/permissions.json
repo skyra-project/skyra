@@ -21,12 +21,15 @@
 	"MUTE_MEMBERS": "Silenciar Miembros",
 	"PRIORITY_SPEAKER": "Prioridad de Palabra",
 	"READ_MESSAGE_HISTORY": "Leer el Historial de Mensajes",
+	"REQUEST_TO_SPEAK": "Solicitud para Hablar",
 	"SEND_MESSAGES": "Enviar Mensajes",
 	"SEND_TTS_MESSAGES": "Enviar Mensajes de Texto a Voz",
 	"SPEAK": "Hablar",
 	"STREAM": "Vídeo",
+	"USE_APPLICATION_COMMANDS": "Utilizar comandos de Barra Diagonal",
 	"USE_EXTERNAL_EMOJIS": "Usar Emojis Externos",
 	"USE_VAD": "Usar Actividad de Voz",
 	"VIEW_AUDIT_LOG": "Ver el Registro de Auditoría",
-	"VIEW_CHANNEL": "Leer Mensajes"
+	"VIEW_CHANNEL": "Leer Mensajes",
+	"VIEW_GUILD_INSIGHTS": "Ver Información del Servidor"
 }

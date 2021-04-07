@@ -125,43 +125,43 @@
 			"Juan"
 		]
 	},
-	"popDescription": "",
+	"popDescription": "Genera un tablero de pop, pop, pop y pop.",
 	"popExtended": {
 		"usages": [
-			"",
-			"",
-			"",
-			""
+			"Duración",
+			"--x/--width",
+			"--y/--height",
+			"--length"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Le permite generar un tablero de burbujas, donde hay una palabra que no es pop, que usted debe encontrar y enviar al canal. Por ejemplo, debes enviar `e60` del ||`pop`|||`e60`|||||`pop`|| para poder ganar.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Duración",
+				"La cantidad de tiempo que debo permitirle encontrar la solución, por defecto es de 30 segundos."
 			],
 			[
-				"",
-				""
+				"--x/--width",
+				"La cantidad de columnas que el tablero debe tener, por defecto 8."
 			],
 			[
-				"",
-				""
+				"--y/--height",
+				"La cantidad de rilas que el tablero debe tener, por defecto 3."
 			],
 			[
-				"",
-				""
+				"--length",
+				"La longitud de los pops y la solución, el valor por defecto es 3."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			""
+			"15",
+			"--x=10",
+			"--y=5",
+			"--length=4"
 		]
 	},
-	"popTitle": "",
-	"popTitleLost": "",
-	"popTitleWinner": "",
+	"popTitle": "¡POP! ¡Que comiencen los pops!",
+	"popTitleLost": "¡POP! ¡Nadie lo consiguió a tiempo!",
+	"popTitleWinner": "¡POP! ¡Tenemos un ganador: {{value}}!",
 	"punDescription": "The muestra un chiste aleatorio.",
 	"punExtended": {
 		"extendedHelp": "👩 Ayer perdí 800 calorías en 1 minuto.\n🧑 ¿Y cómo lo hiciste?\n👩 Se me cayó la pizza al suelo. 🍕\n\nConsigue tu dosis diaria de chistes de padres desde icanhazdadjoke.com y ríete de sus ocurrencias ingeniosas."
@@ -195,7 +195,7 @@
 	},
 	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
 	"wakandaExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Genera una imagen usando la plantilla [No Hacemos Eso Aquí](https://knowyourmeme.com/memes/we-dont-do-that-here) con el usuario dado."
 	},
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {

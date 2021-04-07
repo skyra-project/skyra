@@ -6,15 +6,15 @@
 	"catfactTitle": "Факт о кошках",
 	"dogDescription": "Милые собачки! ❤",
 	"dogExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Вы** знаете, насколько собаки милые? Они такие красивые!\nЭта команда использует [dog.ceo](https://dog.ceo), чтобы показать изображения самых милых собачек!"
 	},
 	"foxDescription": "Позвольте мне показать вам изображение лисицы!",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Эта команда выдаёт случайное изображение с [randomfox.ca](https://randomfox.ca/)."
 	},
 	"kittyDescription": "КОТЯТА!",
 	"kittyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Вы** знаете, насколько котята милые? Они такие красивые!\nЭта команда использует [random.cat](https://aws.random.cat/), чтобы показать изображения самых милых кошек!"
 	},
 	"shibeDescription": "Милые сибы!",
 	"shibeExtended": {

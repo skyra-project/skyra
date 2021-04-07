@@ -37,6 +37,10 @@
 	"guildInfoChannelsAfkChannelText": "",
 	"guildInfoMembers": "",
 	"guildInfoOther": "",
+	"guildInfoBanner": "",
+	"guildInfoIcon": "",
+	"guildInfoSplash": "",
+	"guildInfoDiscoverySplash": "",
 	"roleInfoTitles": {
 		"PERMISSIONS": "अनुमतियां"
 	},

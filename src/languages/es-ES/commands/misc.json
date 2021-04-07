@@ -151,6 +151,35 @@
 			""
 		]
 	},
+	"flipDescription": "",
+	"flipExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"flipDisabled": "",
+	"flipOutput": "",
 	"goodnightDescription": "",
 	"goodnightExtended": {
 		"usages": [
@@ -267,8 +296,8 @@
 			]
 		],
 		"examples": [
-			"04/05/1984",
-			"04/05"
+			"",
+			""
 		],
 		"reminder": ""
 	},

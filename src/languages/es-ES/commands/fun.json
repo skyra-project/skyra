@@ -125,6 +125,43 @@
 			"Juan"
 		]
 	},
+	"popDescription": "",
+	"popExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"popTitle": "",
+	"popTitleLost": "",
+	"popTitleWinner": "",
 	"punDescription": "The muestra un chiste aleatorio.",
 	"punExtended": {
 		"extendedHelp": "👩 Ayer perdí 800 calorías en 1 minuto.\n🧑 ¿Y cómo lo hiciste?\n👩 Se me cayó la pizza al suelo. 🍕\n\nConsigue tu dosis diaria de chistes de padres desde icanhazdadjoke.com y ríete de sus ocurrencias ingeniosas."

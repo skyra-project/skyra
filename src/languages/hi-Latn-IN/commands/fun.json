@@ -125,6 +125,43 @@
 			""
 		]
 	},
+	"popDescription": "",
+	"popExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"popTitle": "",
+	"popTitleLost": "",
+	"popTitleWinner": "",
 	"punDescription": "कोई भी एक यमक दिखाया जाएगा |",
 	"punExtended": {
 		"extendedHelp": ""

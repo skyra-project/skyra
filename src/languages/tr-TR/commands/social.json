@@ -102,7 +102,7 @@
 	"reputation": "",
 	"reputation_plural": "",
 	"reputations": "",
-	"scoreboardPosition": "",
+	"scoreboardFooter": "",
 	"setColor": "",
 	"socialDescription": "",
 	"socialExtended": {
@@ -245,8 +245,6 @@
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
 		"usages": [
-			"",
-			"",
 			""
 		],
 		"extendedHelp": "",
@@ -254,15 +252,15 @@
 			[
 				"",
 				""
-			],
-			[
-				"",
-				""
 			]
+		],
+		"examples": [
+			""
 		],
 		"reminder": ""
 	},
-	"leaderboardListifyPage": "",
+	"leaderboardHeader": "",
+	"leaderboardUnknownUser": "",
 	"levelDescription": "",
 	"levelExtended": {
 		"usages": [

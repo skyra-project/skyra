@@ -260,7 +260,7 @@
 		"reminder": "The leaderboards refresh every 10 minutes."
 	},
 	"leaderboardHeader": "🏡 Local Score Scoreboard",
-	"leaderboardUnknownUser": "User not in server ({{user}})",
+	"leaderboardUnknownUser": "**User not in server** ({{user}})",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
 		"usages": [

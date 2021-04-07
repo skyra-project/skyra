@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 type LeaderboardUsers = Collection<string, LeaderboardUser>;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	aliases: ['top', 'scoreboard'],
+	aliases: ['lb', 'top', 'scoreboard', 'sb'],
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
@@ -54,7 +54,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const lines: string[] = [];
 		const members = args.message.guild!.members.cache;
 		for (const [id, value] of take(skip(list.entries(), index * 10), 10)) {
-			const name = members.get(id)?.displayName ?? args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
+			const displayName = members.get(id)?.displayName;
+			const name = displayName ? `**${displayName}**` : args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
 			lines.push(
 				`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`,
 				`${LongWidthSpace}└─ ${args.t(LanguageKeys.Globals.NumberValue, { value: value.points })}`

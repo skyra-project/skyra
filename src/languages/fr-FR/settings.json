@@ -6,10 +6,6 @@
 	"channelsIgnoreMessageDelete": "Les canaux que je devrais ignorer quand les messages sont supprimés.",
 	"channelsIgnoreMessageEdit": "Les canaux que je devrais ignorer quand les messages sont modifiés.",
 	"channelsIgnoreReactionAdd": "Les canaux que je devrais ignorer quand des réactions sont ajoutées aux messages.",
-	"channelsLogsImage": "Le canal sur lequel je vais envoyer toutes les images que je vois.",
-	"channelsLogsNsfwMessage": "Le canal pour les logs des messages NSFW; cette option est la même que `channelsLogsMessage` sauf pour les messages NSFW.",
-	"channelsLogsPrune": "Le canal pour les logs des messages élagués ; cette option est la même que `channelsLogsMessage` sauf pour les annonces des messages élagués.",
-	"channelsLogsReaction": "Le canal pour les logs des réactions ; cette option est la même que `channelsLogsMessage` sauf pour les réactions ajoutées aux messages. Si vous voulez que j'ignore les Twemoji (les émojis par défauts), vous pouvez désactiver `events.twemoji-reactions`.",
 	"channelsSpam": "Le canal vers lequel je devrais rediriger les utilisateurs quand ils utilisent des commandes que je considère comme spammy.",
 	"disabledChannels": "La liste des canaux où les commandes sont désactivées ; par exemple, ajouter le canal general va interdire l'utilisation des commandes là. Les modérateurs ne sont pas soumis à cette restriction.",
 	"disabledCommands": "Les commandes désactivées. Les commandes de base ne peuvent pas être désactivées et les modérateurs peuvent encore les utiliser. Les noms des commandes doivent être en minuscule."

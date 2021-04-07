@@ -7,10 +7,10 @@ import {
 	CloseCodes,
 	IncomingWebSocketAction,
 	IncomingWebSocketMessage,
-	MusicAction,
+	MusicActions,
 	OutgoingWebSocketAction,
 	OutgoingWebSocketMessage,
-	SubscriptionAction,
+	SubscriptionActions,
 	SubscriptionName,
 	WebSocketEvents
 } from './Shared';
@@ -70,20 +70,39 @@ export class WebsocketUser {
 		if (!(await member.isDJ())) return;
 
 		switch (message.data.music_action) {
-			case MusicAction.SkipSong: {
+			case MusicActions.Clear: {
+				await guild.audio.clear();
+				break;
+			}
+			case MusicActions.ClearTracks: {
+				await guild.audio.clearTracks();
+				break;
+			}
+			case MusicActions.ShuffleTracks: {
+				await guild.audio.shuffleTracks();
+				break;
+			}
+			case MusicActions.SetVolume: {
+				if (typeof message.data.volume === 'number') await guild.audio.setVolume(message.data.volume);
+				break;
+			}
+			case MusicActions.DeleteSong: {
+				if (typeof message.data.track_position === 'number') await guild.audio.removeAt(message.data.track_position);
+				break;
+			}
+			case MusicActions.SkipSong: {
 				await guild.audio.next().catch(() => null);
 				break;
 			}
-			case MusicAction.PauseSong: {
+			case MusicActions.PauseSong: {
 				await guild.audio.pause().catch(() => null);
 				break;
 			}
-			case MusicAction.ResumePlaying: {
+			case MusicActions.ResumePlaying: {
 				await guild.audio.resume().catch(() => null);
 				break;
 			}
-			case MusicAction.AddSong:
-			case MusicAction.DeleteSong: {
+			case MusicActions.AddSong: {
 				break;
 			}
 		}
@@ -93,9 +112,9 @@ export class WebsocketUser {
 		if (!message.data.subscription_name || !message.data.subscription_action) return;
 
 		switch (message.data.subscription_action) {
-			case SubscriptionAction.Subscribe:
+			case SubscriptionActions.Subscribe:
 				return this.handleSubscribeMessage(message);
-			case SubscriptionAction.Unsubscribe: {
+			case SubscriptionActions.Unsubscribe: {
 				return this.handleUnSubscribeMessage(message);
 			}
 		}

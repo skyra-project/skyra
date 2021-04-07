@@ -28,7 +28,11 @@ export const enum OutgoingWebSocketAction {
 	MusicWebsocketDisconnect = 'MUSIC_WEBSOCKET_DISCONNECT'
 }
 
-export const enum MusicAction {
+export const enum MusicActions {
+	Clear = 'CLEAR',
+	ClearTracks = 'CLEAR_TRACKS',
+	ShuffleTracks = 'SHUFFLE_TRACKS',
+	SetVolume = 'SET_VOLUME',
 	SkipSong = 'SKIP_SONG',
 	AddSong = 'ADD_SONG',
 	DeleteSong = 'DELETE_SONG',
@@ -36,7 +40,7 @@ export const enum MusicAction {
 	ResumePlaying = 'RESUME_PLAYING'
 }
 
-export const enum SubscriptionAction {
+export const enum SubscriptionActions {
 	Subscribe = 'SUBSCRIBE',
 	Unsubscribe = 'UNSUBSCRIBE'
 }
@@ -57,10 +61,12 @@ export const enum CloseCodes {
 export interface IncomingDataObject {
 	token?: string;
 	user_id?: string;
-	music_action?: MusicAction;
-	subscription_action?: SubscriptionAction;
+	music_action?: MusicActions;
+	subscription_action?: SubscriptionActions;
 	subscription_name?: SubscriptionName;
 	guild_id?: string;
+	track_position?: number;
+	volume?: number;
 }
 
 export interface IncomingWebSocketMessage {

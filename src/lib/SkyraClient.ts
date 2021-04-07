@@ -10,6 +10,7 @@ import { join } from 'path';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { envParseBoolean } from './env';
 import './extensions';
+import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
@@ -73,6 +74,9 @@ export class SkyraClient extends SapphireClient {
 	@enumerable(false)
 	public websocket = new WebsocketHandler();
 
+	@enumerable(false)
+	public readonly workers = new WorkerManager();
+
 	public constructor() {
 		super(CLIENT_OPTIONS);
 		this.schedules = new ScheduleManager(this);
@@ -91,11 +95,13 @@ export class SkyraClient extends SapphireClient {
 	}
 
 	public async login(token?: string) {
+		await this.workers.start();
 		await this.schedules.init();
 		return super.login(token);
 	}
 
-	public destroy() {
+	public async destroy() {
+		await this.workers.destroy();
 		TimerManager.destroy();
 		return super.destroy();
 	}

@@ -433,7 +433,7 @@ export function getDisplayAvatar(id: string, user: User | APIUser, options: Imag
 /**
  * Create a referred promise
  */
-export function createReferPromise<T>() {
+export function createReferPromise<T>(): ReferredPromise<T> {
 	let resolve: ((value: T) => void) | undefined = undefined;
 	let reject: ((error?: Error) => void) | undefined = undefined;
 	const promise: Promise<T> = new Promise((res, rej) => {

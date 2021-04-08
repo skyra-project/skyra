@@ -1,6 +1,6 @@
 import { AsyncQueue } from '@sapphire/async-queue';
 import { Store } from '@sapphire/pieces';
-import { cyan, green, red } from 'colorette';
+import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'events';
 import { join } from 'path';
 import { Worker } from 'worker_threads';
@@ -103,19 +103,19 @@ export class WorkerHandler {
 		this.online = false;
 		this.worker.removeAllListeners();
 
-		const worker = `[${cyan('WORKER')}]`;
+		const worker = `[${yellow('W')}]`;
 		const thread = cyan(this.threadID.toString(16));
 		const exit = code === 0 ? green('0') : red(code.toString());
-		Store.injectedContext.logger.warn(`${worker} ${thread} exited with code ${exit}.`);
+		Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
 	}
 
 	private handleOnline() {
 		this.online = true;
 		this.threadID = this.worker.threadId;
 
-		const worker = `[${cyan('WORKER')}]`;
+		const worker = `[${cyan('W')}]`;
 		const thread = cyan(this.threadID.toString(16));
-		Store.injectedContext.logger.info(`${worker} ${thread} ready.`);
+		Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
 	}
 
 	private static filename = join(__dirname, 'worker.js');

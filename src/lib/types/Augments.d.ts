@@ -11,6 +11,7 @@ import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
+import type { PieceContextExtras } from '@sapphire/pieces';
 import type { Image } from 'canvas';
 import type {
 	APIMessage,
@@ -50,6 +51,7 @@ declare module 'discord.js' {
 		readonly version: string;
 		readonly webhookError: Webhook | null;
 		readonly websocket: WebsocketHandler;
+		readonly context: PieceContextExtras;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;

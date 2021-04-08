@@ -74,19 +74,15 @@ export class SkyraClient extends SapphireClient {
 	@enumerable(false)
 	public websocket = new WebsocketHandler();
 
-	@enumerable(false)
-	public readonly workers: WorkerManager;
-
 	public constructor() {
 		super(CLIENT_OPTIONS);
 
+		// Workers
+		this.context.workers = new WorkerManager();
+
 		// Analytics
 		this.schedules = new ScheduleManager(this);
-		Store.injectedContext.schedule = this.schedules;
-
-		// Workers
-		this.workers = new WorkerManager();
-		Store.injectedContext.workers = this.workers;
+		this.context.schedule = this.schedules;
 
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 
@@ -101,14 +97,18 @@ export class SkyraClient extends SapphireClient {
 		}
 	}
 
+	public get context() {
+		return Store.injectedContext;
+	}
+
 	public async login(token?: string) {
-		await this.workers.start();
+		await this.context.workers.start();
 		await this.schedules.init();
 		return super.login(token);
 	}
 
 	public async destroy() {
-		await this.workers.destroy();
+		await this.context.workers.destroy();
 		TimerManager.destroy();
 		return super.destroy();
 	}

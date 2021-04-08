@@ -1,7 +1,7 @@
 {
 	"autoRoleUpdateConfigured": "This role is already configured as an autorole. Use the remove type instead.",
 	"autoRoleUpdateUnconfigured": "This role is not configured as an autorole. Use the add type instead.",
-	"autoRoleInvalidLevel": "I could not resolve `{{parameter}}` into a level, you must input either a number (for example: `1500` or `51000`) or a number suffixed with `l` or `L` (for example: `10L` or `20l`)",
+	"autoRoleInvalidLevel": "I could not resolve `{{parameter}}` into a level, you must input either a number (for example: `1500` or `51000`) or a number prefixed or suffixed with `l` or `L` (for example: `L10`, `10L`, `l20`, or `20l`)",
 	"autoRoleInvalidNegativeOrZeroLevel": "I could not resolve `{{parameter}}` into a valid level. A level cannot be zero or lower.",
 	"autoRoleTooLow": "I could not resolve `{{parameter}}` into a valid level, it resolves to {{points, number}} points, which is below {{minimum, number}}.",
 	"autoRoleTooHigh": "I could not resolve `{{parameter}}` into a valid level, it resolves to {{points, number}} points, which is above {{maximum, number}}.",
@@ -212,9 +212,9 @@
 		"reminder": "The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.",
 		"examples": [
 			"add \"Trusted Member\" 20000",
-			"add \"Trusted Member\" 15L",
+			"add \"Trusted Member\" L15",
 			"update \"Trusted Member\" 15000",
-			"update \"Trusted Member\" 10L",
+			"update \"Trusted Member\" L10",
 			"remove \"Trusted Member\"",
 			"show",
 			""

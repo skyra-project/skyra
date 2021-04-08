@@ -128,11 +128,14 @@ export class UserCommand extends SkyraCommand {
 
 	private static readonly maximumPoints = 100_000_000;
 	private static readonly level = Args.make<number>((parameter, { argument }) => {
-		if (parameter.length === 1 || (!parameter.endsWith('l') && !parameter.endsWith('L'))) {
+		const prefix = parameter.startsWith('L') || parameter.startsWith('l');
+		const suffix = parameter.endsWith('L') || parameter.endsWith('l');
+
+		if (parameter.length === 1 || (prefix && prefix === suffix) || !(prefix || suffix)) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.AutoRoleInvalidLevel });
 		}
 
-		const level = Number(parameter.slice(0, -1));
+		const level = Number(prefix ? parameter.slice(1) : parameter.slice(0, -1));
 		if (Number.isNaN(level)) {
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.AutoRoleInvalidLevel });
 		}

@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-#nullable disable
-
 namespace Skyra.Database.Models.Entities
 {
 	[Table("guilds")]
@@ -20,7 +18,6 @@ namespace Skyra.Database.Models.Entities
 
 		[Required]
 		[Column("language")]
-		[StringLength(5)]
 		public string Language { get; set; }
 
 		[Column("disable-natural-prefix")]
@@ -44,87 +41,87 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("channels.announcements")]
 		[StringLength(19)]
-		public string ChannelsAnnouncements { get; set; }
+		public string? ChannelsAnnouncements { get; set; }
 
 		[Column("channels.greeting")]
 		[StringLength(19)]
-		public string ChannelsGreeting { get; set; }
+		public string? ChannelsGreeting { get; set; }
 
 		[Column("channels.farewell")]
 		[StringLength(19)]
-		public string ChannelsFarewell { get; set; }
+		public string? ChannelsFarewell { get; set; }
 
 		[Column("channels.spam")]
 		[StringLength(19)]
-		public string ChannelsSpam { get; set; }
+		public string? ChannelsSpam { get; set; }
 
 		[Column("channels.logs.member")]
 		[StringLength(19)]
-		public string ChannelsLogsMember { get; set; }
+		public string? ChannelsLogsMember { get; set; }
 
 		[Column("channels.logs.message")]
 		[StringLength(19)]
-		public string ChannelsLogsMessage { get; set; }
+		public string? ChannelsLogsMessage { get; set; }
 
 		[Column("channels.logs.moderation")]
 		[StringLength(19)]
-		public string ChannelsLogsModeration { get; set; }
+		public string? ChannelsLogsModeration { get; set; }
 
 		[Column("channels.logs.nsfw-message")]
 		[StringLength(19)]
-		public string ChannelsLogsNsfwMessage { get; set; }
+		public string? ChannelsLogsNsfwMessage { get; set; }
 
 		[Column("channels.logs.image")]
 		[StringLength(19)]
-		public string ChannelsLogsImage { get; set; }
+		public string? ChannelsLogsImage { get; set; }
 
 		[Column("channels.logs.prune")]
 		[StringLength(19)]
-		public string ChannelsLogsPrune { get; set; }
+		public string? ChannelsLogsPrune { get; set; }
 
 		[Column("channels.logs.reaction")]
 		[StringLength(19)]
-		public string ChannelsLogsReaction { get; set; }
+		public string? ChannelsLogsReaction { get; set; }
 
 		[Column("channels.logs.role-create")]
 		[StringLength(19)]
-		public string ChannelsLogsRoleCreate { get; set; }
+		public string? ChannelsLogsRoleCreate { get; set; }
 
 		[Column("channels.logs.role-update")]
 		[StringLength(19)]
-		public string ChannelsLogsRoleUpdate { get; set; }
+		public string? ChannelsLogsRoleUpdate { get; set; }
 
 		[Column("channels.logs.role-delete")]
 		[StringLength(19)]
-		public string ChannelsLogsRoleDelete { get; set; }
+		public string? ChannelsLogsRoleDelete { get; set; }
 
 		[Column("channels.logs.channel-create")]
 		[StringLength(19)]
-		public string ChannelsLogsChannelCreate { get; set; }
+		public string? ChannelsLogsChannelCreate { get; set; }
 
 		[Column("channels.logs.channel-update")]
 		[StringLength(19)]
-		public string ChannelsLogsChannelUpdate { get; set; }
+		public string? ChannelsLogsChannelUpdate { get; set; }
 
 		[Column("channels.logs.channel-delete")]
 		[StringLength(19)]
-		public string ChannelsLogsChannelDelete { get; set; }
+		public string? ChannelsLogsChannelDelete { get; set; }
 
 		[Column("channels.logs.emoji-create")]
 		[StringLength(19)]
-		public string ChannelsLogsEmojiCreate { get; set; }
+		public string? ChannelsLogsEmojiCreate { get; set; }
 
 		[Column("channels.logs.emoji-update")]
 		[StringLength(19)]
-		public string ChannelsLogsEmojiUpdate { get; set; }
+		public string? ChannelsLogsEmojiUpdate { get; set; }
 
 		[Column("channels.logs.emoji-delete")]
 		[StringLength(19)]
-		public string ChannelsLogsEmojiDelete { get; set; }
+		public string? ChannelsLogsEmojiDelete { get; set; }
 
 		[Column("channels.logs.server-update")]
 		[StringLength(19)]
-		public string ChannelsLogsServerUpdate { get; set; }
+		public string? ChannelsLogsServerUpdate { get; set; }
 
 		[Required]
 		[Column("channels.ignore.all", TypeName = "character varying(19)[]")]
@@ -154,52 +151,63 @@ namespace Skyra.Database.Models.Entities
 		[Column("disabled-commands-channels", TypeName = "jsonb")]
 		public string DisabledCommandsChannels { get; set; }
 
+		[Required]
 		[Column("events.ban-add")]
 		public bool EventsBanAdd { get; set; }
 
+		[Required]
 		[Column("events.ban-remove")]
 		public bool EventsBanRemove { get; set; }
 
+		[Required]
 		[Column("events.member-add")]
 		public bool EventsMemberAdd { get; set; }
 
+		[Required]
 		[Column("events.member-remove")]
 		public bool EventsMemberRemove { get; set; }
 
+		[Required]
 		[Column("events.member-nickname-update")]
 		public bool EventsMemberNicknameUpdate { get; set; }
 
+		[Required]
 		[Column("events.member-role-update")]
 		public bool EventsMemberRoleUpdate { get; set; }
 
+		[Required]
 		[Column("events.message-delete")]
 		public bool EventsMessageDelete { get; set; }
 
+		[Required]
 		[Column("events.message-edit")]
 		public bool EventsMessageEdit { get; set; }
 
+		[Required]
 		[Column("events.twemoji-reactions")]
 		public bool EventsTwemojiReactions { get; set; }
 
 		[Column("messages.farewell")]
 		[StringLength(2000)]
-		public string MessagesFarewell { get; set; }
+		public string? MessagesFarewell { get; set; }
 
 		[Column("messages.greeting")]
 		[StringLength(2000)]
-		public string MessagesGreeting { get; set; }
+		public string? MessagesGreeting { get; set; }
 
 		[Column("messages.join-dm")]
 		[StringLength(1500)]
-		public string MessagesJoinDm { get; set; }
+		public string? MessagesJoinDm { get; set; }
 
 		[Required]
-		[Column("messages.ignored-channels", TypeName = "character varying(19)[]")]
+		[Column("messages.ignore-channels", TypeName = "character varying(19)[]")]
 		public string[] MessagesIgnoreChannels { get; set; }
 
+		[Required]
 		[Column("messages.announcement-embed")]
 		public bool MessagesAnnouncementEmbed { get; set; }
 
+		[Required]
 		[Column("messages.moderation-dm")]
 		public bool MessagesModerationDm { get; set; }
 
@@ -211,6 +219,7 @@ namespace Skyra.Database.Models.Entities
 		[Column("messages.moderation-message-display")]
 		public bool? MessagesModerationMessageDisplay { get; set; }
 
+		[Required]
 		[Column("messages.moderation-auto-delete")]
 		public bool MessagesModerationAutoDelete { get; set; }
 
@@ -231,7 +240,7 @@ namespace Skyra.Database.Models.Entities
 		public string[] MessagesAutoDeleteIgnoredChannels { get; set; }
 
 		[Required]
-		[Column("messages.auto-delete.ignored-commands", TypeName = "character varying(19)[]")]
+		[Column("messages.auto-delete.ignored-commands", TypeName = "character varying(32)[]")]
 		public string[] MessagesAutoDeleteIgnoredCommands { get; set; }
 
 		[Required]
@@ -252,7 +261,7 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("roles.initial")]
 		[StringLength(19)]
-		public string RolesInitial { get; set; }
+		public string? RolesInitial { get; set; }
 
 		[Required]
 		[Column("roles.moderator", TypeName = "character varying(19)[]")]
@@ -260,32 +269,33 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("roles.muted")]
 		[StringLength(19)]
-		public string RolesMuted { get; set; }
+		public string? RolesMuted { get; set; }
 
 		[Column("roles.restricted-reaction")]
 		[StringLength(19)]
-		public string RolesRestrictedReaction { get; set; }
+		public string? RolesRestrictedReaction { get; set; }
 
 		[Column("roles.restricted-embed")]
 		[StringLength(19)]
-		public string RolesRestrictedEmbed { get; set; }
+		public string? RolesRestrictedEmbed { get; set; }
 
 		[Column("roles.restricted-emoji")]
 		[StringLength(19)]
-		public string RolesRestrictedEmoji { get; set; }
+		public string? RolesRestrictedEmoji { get; set; }
 
 		[Column("roles.restricted-attachment")]
 		[StringLength(19)]
-		public string RolesRestrictedAttachment { get; set; }
+		public string? RolesRestrictedAttachment { get; set; }
 
 		[Column("roles.restricted-voice")]
 		[StringLength(19)]
-		public string RolesRestrictedVoice { get; set; }
+		public string? RolesRestrictedVoice { get; set; }
 
 		[Required]
 		[Column("roles.public", TypeName = "character varying(19)[]")]
 		public string[] RolesPublic { get; set; }
 
+		[Required]
 		[Column("roles.remove-initial")]
 		public bool RolesRemoveInitial { get; set; }
 
@@ -295,12 +305,13 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("roles.subscriber")]
 		[StringLength(19)]
-		public string RolesSubscriber { get; set; }
+		public string? RolesSubscriber { get; set; }
 
 		[Required]
 		[Column("roles.unique-role-sets", TypeName = "jsonb")]
 		public string RolesUniqueRoleSets { get; set; }
 
+		[Required]
 		[Column("selfmod.attachments.enabled")]
 		public bool SelfmodAttachmentsEnabled { get; set; }
 
@@ -312,21 +323,26 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.attachments.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodAttachmentsIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.attachments.soft-action")]
 		public short SelfmodAttachmentsSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.attachments.hard-action")]
 		public short SelfmodAttachmentsHardAction { get; set; }
 
 		[Column("selfmod.attachments.hard-action-duration")]
-		public int? SelfmodAttachmentsHardActionDuration { get; set; }
+		public long? SelfmodAttachmentsHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.attachments.threshold-maximum")]
 		public short SelfmodAttachmentsThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.attachments.threshold-duration")]
 		public int SelfmodAttachmentsThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.enabled")]
 		public bool SelfmodCapitalsEnabled { get; set; }
 
@@ -338,27 +354,34 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.capitals.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodCapitalsIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.minimum")]
 		public short SelfmodCapitalsMinimum { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.maximum")]
 		public short SelfmodCapitalsMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.soft-action")]
 		public short SelfmodCapitalsSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.hard-action")]
 		public short SelfmodCapitalsHardAction { get; set; }
 
 		[Column("selfmod.capitals.hard-action-duration")]
-		public int? SelfmodCapitalsHardActionDuration { get; set; }
+		public long? SelfmodCapitalsHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.threshold-maximum")]
 		public short SelfmodCapitalsThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.capitals.threshold-duration")]
 		public int SelfmodCapitalsThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.links.enabled")]
 		public bool SelfmodLinksEnabled { get; set; }
 
@@ -374,21 +397,26 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.links.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodLinksIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.links.soft-action")]
 		public short SelfmodLinksSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.links.hard-action")]
 		public short SelfmodLinksHardAction { get; set; }
 
 		[Column("selfmod.links.hard-action-duration")]
-		public int? SelfmodLinksHardActionDuration { get; set; }
+		public long? SelfmodLinksHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.links.threshold-maximum")]
 		public short SelfmodLinksThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.links.threshold-duration")]
 		public int SelfmodLinksThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.enabled")]
 		public bool SelfmodMessagesEnabled { get; set; }
 
@@ -400,27 +428,34 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.messages.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodMessagesIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.maximum")]
 		public short SelfmodMessagesMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.queue-size")]
 		public short SelfmodMessagesQueueSize { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.soft-action")]
 		public short SelfmodMessagesSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.hard-action")]
 		public short SelfmodMessagesHardAction { get; set; }
 
 		[Column("selfmod.messages.hard-action-duration")]
-		public int? SelfmodMessagesHardActionDuration { get; set; }
+		public long? SelfmodMessagesHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.threshold-maximum")]
 		public short SelfmodMessagesThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.messages.threshold-duration")]
 		public int SelfmodMessagesThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.enabled")]
 		public bool SelfmodNewlinesEnabled { get; set; }
 
@@ -432,24 +467,30 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.newlines.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodNewlinesIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.maximum")]
 		public short SelfmodNewlinesMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.soft-action")]
 		public short SelfmodNewlinesSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.hard-action")]
 		public short SelfmodNewlinesHardAction { get; set; }
 
 		[Column("selfmod.newlines.hard-action-duration")]
-		public int? SelfmodNewlinesHardActionDuration { get; set; }
+		public long? SelfmodNewlinesHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.threshold-maximum")]
 		public short SelfmodNewlinesThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.newlines.threshold-duration")]
 		public int SelfmodNewlinesThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.invites.enabled")]
 		public bool SelfmodInvitesEnabled { get; set; }
 
@@ -469,21 +510,26 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.invites.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodInvitesIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.invites.soft-action")]
 		public short SelfmodInvitesSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.invites.hard-action")]
 		public short SelfmodInvitesHardAction { get; set; }
 
 		[Column("selfmod.invites.hard-action-duration")]
-		public int? SelfmodInvitesHardActionDuration { get; set; }
+		public long? SelfmodInvitesHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.invites.threshold-maximum")]
 		public short SelfmodInvitesThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.invites.threshold-duration")]
 		public int SelfmodInvitesThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.filter.enabled")]
 		public bool SelfmodFilterEnabled { get; set; }
 
@@ -499,21 +545,26 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.filter.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodFilterIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.filter.soft-action")]
 		public short SelfmodFilterSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.filter.hard-action")]
 		public short SelfmodFilterHardAction { get; set; }
 
 		[Column("selfmod.filter.hard-action-duration")]
-		public int? SelfmodFilterHardActionDuration { get; set; }
+		public long? SelfmodFilterHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.filter.threshold-maximum")]
 		public short SelfmodFilterThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.filter.threshold-duration")]
 		public int SelfmodFilterThresholdDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.enabled")]
 		public bool SelfmodReactionsEnabled { get; set; }
 
@@ -525,6 +576,7 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.reactions.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodReactionsIgnoredChannels { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.maximum")]
 		public short SelfmodReactionsMaximum { get; set; }
 
@@ -536,18 +588,22 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.reactions.blocked", TypeName = "character varying(128)[]")]
 		public string[] SelfmodReactionsBlocked { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.soft-action")]
 		public short SelfmodReactionsSoftAction { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.hard-action")]
 		public short SelfmodReactionsHardAction { get; set; }
 
 		[Column("selfmod.reactions.hard-action-duration")]
-		public int? SelfmodReactionsHardActionDuration { get; set; }
+		public long? SelfmodReactionsHardActionDuration { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.threshold-maximum")]
 		public short SelfmodReactionsThresholdMaximum { get; set; }
 
+		[Required]
 		[Column("selfmod.reactions.threshold-duration")]
 		public int SelfmodReactionsThresholdDuration { get; set; }
 
@@ -555,15 +611,19 @@ namespace Skyra.Database.Models.Entities
 		[Column("selfmod.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] SelfmodIgnoreChannels { get; set; }
 
+		[Required]
 		[Column("no-mention-spam.enabled")]
 		public bool NoMentionSpamEnabled { get; set; }
 
+		[Required]
 		[Column("no-mention-spam.alerts")]
 		public bool NoMentionSpamAlerts { get; set; }
 
+		[Required]
 		[Column("no-mention-spam.mentions-allowed")]
 		public short NoMentionSpamMentionsAllowed { get; set; }
 
+		[Required]
 		[Column("no-mention-spam.time-period")]
 		public int NoMentionSpamTimePeriod { get; set; }
 
@@ -571,13 +631,15 @@ namespace Skyra.Database.Models.Entities
 		[Column("social.enabled")]
 		public bool? SocialEnabled { get; set; }
 
+		[Required]
 		[Column("social.achieve")]
 		public bool SocialAchieve { get; set; }
 
 		[Column("social.achieve-message")]
 		[StringLength(2000)]
-		public string SocialAchieveMessage { get; set; }
+		public string? SocialAchieveMessage { get; set; }
 
+		[Required]
 		[Column("social.multiplier")]
 		public decimal SocialMultiplier { get; set; }
 
@@ -591,7 +653,7 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("starboard.channel")]
 		[StringLength(19)]
-		public string StarboardChannel { get; set; }
+		public string? StarboardChannel { get; set; }
 
 		[Required]
 		[Column("starboard.emoji")]
@@ -602,9 +664,11 @@ namespace Skyra.Database.Models.Entities
 		[Column("starboard.ignored-channels", TypeName = "character varying(19)[]")]
 		public string[] StarboardIgnoreChannels { get; set; }
 
+		[Required]
 		[Column("starboard.minimum")]
 		public short StarboardMinimum { get; set; }
 
+		[Required]
 		[Column("starboard.self-star")]
 		public bool StarboardSelfStar { get; set; }
 
@@ -619,12 +683,15 @@ namespace Skyra.Database.Models.Entities
 		[Column("trigger.includes", TypeName = "jsonb")]
 		public string TriggerIncludes { get; set; }
 
+		[Required]
 		[Column("music.default-volume")]
 		public short MusicDefaultVolume { get; set; }
 
+		[Required]
 		[Column("music.maximum-duration")]
 		public int MusicMaximumDuration { get; set; }
 
+		[Required]
 		[Column("music.maximum-entries-per-user")]
 		public short MusicMaximumEntriesPerUser { get; set; }
 
@@ -656,7 +723,7 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("suggestions.channel")]
 		[StringLength(19)]
-		public string SuggestionsChannel { get; set; }
+		public string? SuggestionsChannel { get; set; }
 
 		[Column("suggestions.on-action.dm")]
 		public bool SuggestionsOnActionDm { get; set; }
@@ -667,7 +734,20 @@ namespace Skyra.Database.Models.Entities
 		[Column("suggestions.on-action.hide-author")]
 		public bool SuggestionsOnActionHideAuthor { get; set; }
 
+		[Required]
 		[Column("events.member-username-update")]
-		public bool? EventsMemberUsernameUpdate { get; set; }
+		public bool EventsMemberUsernameUpdate { get; set; }
+
+		[Column("birthday.channel")]
+		[StringLength(19)]
+		public string? BirthdayChannel { get; set; }
+
+		[Column("birthday.message")]
+		[StringLength(200)]
+		public string? BirthdayMessage { get; set; }
+
+		[Column("birthday.role")]
+		[StringLength(19)]
+		public string? BirthdayRole { get; set; }
 	}
 }

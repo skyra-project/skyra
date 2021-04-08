@@ -10,8 +10,8 @@ using Skyra.Database;
 namespace Skyra.Database.Migrations
 {
     [DbContext(typeof(SkyraDbContext))]
-    [Migration("20210319161938_InitCreate")]
-    partial class InitCreate
+    [Migration("20210409000118_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,13 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(19)")
                         .HasColumnName("message_id");
 
+                    b.Property<string[]>("AllowedRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("allowed_roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.Property<string>("ChannelId")
                         .IsRequired()
                         .HasMaxLength(19)
@@ -141,13 +148,6 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("title");
 
-                    b.Property<string[]>("AllowedRoles")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("allowed_roles")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
                     b.HasKey("GuildId", "MessageId")
                         .HasName("PK_e73020907ca2a4b1ae14fce6e74");
 
@@ -160,6 +160,21 @@ namespace Skyra.Database.Migrations
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("id");
+
+                    b.Property<string>("BirthdayChannel")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("birthday.channel");
+
+                    b.Property<string>("BirthdayMessage")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("birthday.message");
+
+                    b.Property<string>("BirthdayRole")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("birthday.role");
 
                     b.Property<string>("ChannelsAnnouncements")
                         .HasMaxLength(19)
@@ -204,10 +219,35 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("channels.ignore.reaction-add")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
-                    b.Property<string>("ChannelsSpam")
+                    b.Property<string>("ChannelsLogsChannelCreate")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.spam");
+                        .HasColumnName("channels.logs.channel-create");
+
+                    b.Property<string>("ChannelsLogsChannelDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.channel-delete");
+
+                    b.Property<string>("ChannelsLogsChannelUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.channel-update");
+
+                    b.Property<string>("ChannelsLogsEmojiCreate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-create");
+
+                    b.Property<string>("ChannelsLogsEmojiDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-delete");
+
+                    b.Property<string>("ChannelsLogsEmojiUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.emoji-update");
 
                     b.Property<string>("ChannelsLogsImage")
                         .HasMaxLength(19)
@@ -249,50 +289,25 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.role-create");
 
-                    b.Property<string>("ChannelsLogsRoleUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.role-update");
-
                     b.Property<string>("ChannelsLogsRoleDelete")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.role-delete");
 
-                    b.Property<string>("ChannelsLogsChannelCreate")
+                    b.Property<string>("ChannelsLogsRoleUpdate")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.channel-create");
-
-                    b.Property<string>("ChannelsLogsChannelUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.channel-update");
-
-                    b.Property<string>("ChannelsLogsChannelDelete")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.channel-delete");
-
-                    b.Property<string>("ChannelsLogsEmojiCreate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.emoji-create");
-
-                    b.Property<string>("ChannelsLogsEmojiUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.emoji-update");
-
-                    b.Property<string>("ChannelsLogsEmojiDelete")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.emoji-delete");
+                        .HasColumnName("channels.logs.role-update");
 
                     b.Property<string>("ChannelsLogsServerUpdate")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.server-update");
+
+                    b.Property<string>("ChannelsSpam")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.spam");
 
                     b.Property<string>("CommandAutodelete")
                         .IsRequired()
@@ -309,8 +324,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("'[]'::jsonb");
 
                     b.Property<bool>("DisableNaturalPrefix")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("disable-natural-prefix");
+                        .HasColumnName("disable-natural-prefix")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string[]>("DisabledChannels")
                         .IsRequired()
@@ -334,58 +351,105 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("'[]'::jsonb");
 
                     b.Property<bool>("EventsBanAdd")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.ban-add");
+                        .HasColumnName("events.ban-add")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsBanRemove")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.ban-remove");
+                        .HasColumnName("events.ban-remove")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMemberAdd")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.member-add");
+                        .HasColumnName("events.member-add")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMemberNicknameUpdate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.member-nickname-update");
+                        .HasColumnName("events.member-nickname-update")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMemberRemove")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.member-remove");
+                        .HasColumnName("events.member-remove")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMemberRoleUpdate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.member-role-update");
+                        .HasColumnName("events.member-role-update")
+                        .HasDefaultValueSql("false");
 
-                    b.Property<bool?>("EventsMemberUsernameUpdate")
+                    b.Property<bool>("EventsMemberUsernameUpdate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasColumnName("events.member-username-update")
                         .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMessageDelete")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.message-delete");
+                        .HasColumnName("events.message-delete")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsMessageEdit")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.message-edit");
+                        .HasColumnName("events.message-edit")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsTwemojiReactions")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("events.twemoji-reactions");
+                        .HasColumnName("events.twemoji-reactions")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string>("Language")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(5)
-                        .HasColumnType("character varying(5)")
+                        .HasColumnType("text")
                         .HasColumnName("language")
                         .HasDefaultValueSql("'en-US'::character varying");
 
                     b.Property<bool>("MessagesAnnouncementEmbed")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("messages.announcement-embed");
+                        .HasColumnName("messages.announcement-embed")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool?>("MessagesAutoDeleteIgnoredAll")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("messages.auto-delete.ignored-all")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredChannels")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("messages.auto-delete.ignored-channels")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredCommands")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(32)[]")
+                        .HasColumnName("messages.auto-delete.ignored-commands")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MessagesAutoDeleteIgnoredRoles")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("messages.auto-delete.ignored-roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<string>("MessagesFarewell")
                         .HasMaxLength(2000)
@@ -401,7 +465,7 @@ namespace Skyra.Database.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(19)[]")
-                        .HasColumnName("messages.ignored-channels")
+                        .HasColumnName("messages.ignore-channels")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<string>("MessagesJoinDm")
@@ -410,12 +474,16 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("messages.join-dm");
 
                     b.Property<bool>("MessagesModerationAutoDelete")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("messages.moderation-auto-delete");
+                        .HasColumnName("messages.moderation-auto-delete")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("MessagesModerationDm")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("messages.moderation-dm");
+                        .HasColumnName("messages.moderation-dm")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool?>("MessagesModerationMessageDisplay")
                         .IsRequired()
@@ -445,18 +513,18 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("music.allow-streams")
                         .HasDefaultValueSql("true");
 
-                    b.Property<string[]>("MusicAllowedVoiceChannels")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("music.allowed-voice-channels")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
                     b.Property<string[]>("MusicAllowedRoles")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("character varying(19)[]")
                         .HasColumnName("music.allowed-roles")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
+                    b.Property<string[]>("MusicAllowedVoiceChannels")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("music.allowed-voice-channels")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<short>("MusicDefaultVolume")
@@ -478,12 +546,16 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("100");
 
                     b.Property<bool>("NoMentionSpamAlerts")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("no-mention-spam.alerts");
+                        .HasColumnName("no-mention-spam.alerts")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("NoMentionSpamEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("no-mention-spam.enabled");
+                        .HasColumnName("no-mention-spam.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("NoMentionSpamMentionsAllowed")
                         .ValueGeneratedOnAdd()
@@ -579,8 +651,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("RolesRemoveInitial")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("roles.remove-initial");
+                        .HasColumnName("roles.remove-initial")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string>("RolesRestrictedAttachment")
                         .HasMaxLength(19)
@@ -620,15 +694,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("'[]'::jsonb");
 
                     b.Property<bool>("SelfmodAttachmentsEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.attachments.enabled");
+                        .HasColumnName("selfmod.attachments.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodAttachmentsHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.attachments.hard-action");
+                        .HasColumnName("selfmod.attachments.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodAttachmentsHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodAttachmentsHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.attachments.hard-action-duration");
 
                     b.Property<string[]>("SelfmodAttachmentsIgnoredChannels")
@@ -646,8 +724,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<short>("SelfmodAttachmentsSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.attachments.soft-action");
+                        .HasColumnName("selfmod.attachments.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodAttachmentsThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -662,15 +742,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("10");
 
                     b.Property<bool>("SelfmodCapitalsEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.capitals.enabled");
+                        .HasColumnName("selfmod.capitals.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodCapitalsHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.capitals.hard-action");
+                        .HasColumnName("selfmod.capitals.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodCapitalsHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodCapitalsHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.capitals.hard-action-duration");
 
                     b.Property<string[]>("SelfmodCapitalsIgnoredChannels")
@@ -700,8 +784,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("15");
 
                     b.Property<short>("SelfmodCapitalsSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.capitals.soft-action");
+                        .HasColumnName("selfmod.capitals.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodCapitalsThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -716,15 +802,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("10");
 
                     b.Property<bool>("SelfmodFilterEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.filter.enabled");
+                        .HasColumnName("selfmod.filter.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodFilterHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.filter.hard-action");
+                        .HasColumnName("selfmod.filter.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodFilterHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodFilterHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.filter.hard-action-duration");
 
                     b.Property<string[]>("SelfmodFilterIgnoredChannels")
@@ -749,8 +839,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<short>("SelfmodFilterSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.filter.soft-action");
+                        .HasColumnName("selfmod.filter.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodFilterThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -772,15 +864,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("SelfmodInvitesEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
+                        .HasDefaultValue(false)
                         .HasColumnName("selfmod.invites.enabled");
 
                     b.Property<short>("SelfmodInvitesHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
                         .HasColumnName("selfmod.invites.hard-action");
 
-                    b.Property<int?>("SelfmodInvitesHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodInvitesHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.invites.hard-action-duration");
 
                     b.Property<string[]>("SelfmodInvitesIgnoredChannels")
@@ -812,7 +908,9 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<short>("SelfmodInvitesSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
                         .HasColumnName("selfmod.invites.soft-action");
 
                     b.Property<int>("SelfmodInvitesThresholdDuration")
@@ -827,16 +925,27 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.invites.threshold-maximum")
                         .HasDefaultValueSql("10");
 
+                    b.Property<string[]>("SelfmodLinksAllowed")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(128)[]")
+                        .HasColumnName("selfmod.links.allowed")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.Property<bool>("SelfmodLinksEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.links.enabled");
+                        .HasColumnName("selfmod.links.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodLinksHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.links.hard-action");
+                        .HasColumnName("selfmod.links.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodLinksHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodLinksHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.links.hard-action-duration");
 
                     b.Property<string[]>("SelfmodLinksIgnoredChannels")
@@ -854,8 +963,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<short>("SelfmodLinksSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.links.soft-action");
+                        .HasColumnName("selfmod.links.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodLinksThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -869,23 +980,20 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.links.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string[]>("SelfmodLinksAllowed")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(128)[]")
-                        .HasColumnName("selfmod.links.allowed")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
                     b.Property<bool>("SelfmodMessagesEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.messages.enabled");
+                        .HasColumnName("selfmod.messages.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodMessagesHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.messages.hard-action");
+                        .HasColumnName("selfmod.messages.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodMessagesHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodMessagesHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.messages.hard-action-duration");
 
                     b.Property<string[]>("SelfmodMessagesIgnoredChannels")
@@ -915,8 +1023,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("50");
 
                     b.Property<short>("SelfmodMessagesSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.messages.soft-action");
+                        .HasColumnName("selfmod.messages.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodMessagesThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -931,15 +1041,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("10");
 
                     b.Property<bool>("SelfmodNewlinesEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.newlines.enabled");
+                        .HasColumnName("selfmod.newlines.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodNewlinesHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.newlines.hard-action");
+                        .HasColumnName("selfmod.newlines.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodNewlinesHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodNewlinesHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.newlines.hard-action-duration");
 
                     b.Property<string[]>("SelfmodNewlinesIgnoredChannels")
@@ -963,8 +1077,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("20");
 
                     b.Property<short>("SelfmodNewlinesSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.newlines.soft-action");
+                        .HasColumnName("selfmod.newlines.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodNewlinesThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -978,6 +1094,13 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.newlines.threshold-maximum")
                         .HasDefaultValueSql("10");
 
+                    b.Property<string[]>("SelfmodReactionsAllowed")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("character varying(128)[]")
+                        .HasColumnName("selfmod.reactions.allowed")
+                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+
                     b.Property<string[]>("SelfmodReactionsBlocked")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -986,15 +1109,19 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<bool>("SelfmodReactionsEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("selfmod.reactions.enabled");
+                        .HasColumnName("selfmod.reactions.enabled")
+                        .HasDefaultValueSql("false");
 
                     b.Property<short>("SelfmodReactionsHardAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.reactions.hard-action");
+                        .HasColumnName("selfmod.reactions.hard-action")
+                        .HasDefaultValueSql("0");
 
-                    b.Property<int?>("SelfmodReactionsHardActionDuration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SelfmodReactionsHardActionDuration")
+                        .HasColumnType("bigint")
                         .HasColumnName("selfmod.reactions.hard-action-duration");
 
                     b.Property<string[]>("SelfmodReactionsIgnoredChannels")
@@ -1018,8 +1145,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("10");
 
                     b.Property<short>("SelfmodReactionsSoftAction")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
-                        .HasColumnName("selfmod.reactions.soft-action");
+                        .HasColumnName("selfmod.reactions.soft-action")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("SelfmodReactionsThresholdDuration")
                         .ValueGeneratedOnAdd()
@@ -1033,16 +1162,11 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.reactions.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string[]>("SelfmodReactionsAllowed")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(128)[]")
-                        .HasColumnName("selfmod.reactions.allowed")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
                     b.Property<bool>("SocialAchieve")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("social.achieve");
+                        .HasColumnName("social.achieve")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string>("SocialAchieveMessage")
                         .HasMaxLength(2000)
@@ -1097,6 +1221,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("starboard.ignored-channels")
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
+                    b.Property<long?>("StarboardMaximumAge")
+                        .HasColumnType("bigint")
+                        .HasColumnName("starboard.maximum-age");
+
                     b.Property<short>("StarboardMinimum")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
@@ -1104,37 +1232,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("1");
 
                     b.Property<bool>("StarboardSelfStar")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("starboard.self-star");
-
-                    b.Property<long?>("StarboardMaximumAge")
-                        .HasColumnType("bigint")
-                        .HasColumnName("starboard.maximum-age");
-
-                    b.Property<bool>("MessagesAutoDeleteIgnoredAll")
-                        .HasColumnType("boolean")
-                        .HasColumnName("messages.auto-delete.ignored-all");
-
-                    b.Property<string[]>("MessagesAutoDeleteIgnoredRoles")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("messages.auto-delete.ignored-roles")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
-                    b.Property<string[]>("MessagesAutoDeleteIgnoredChannels")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("messages.auto-delete.ignored-channels")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
-
-                    b.Property<string[]>("MessagesAutoDeleteIgnoredCommands")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("messages.auto-delete.ignored-commands")
-                        .HasDefaultValueSql("ARRAY[]::character varying[]");
+                        .HasColumnName("starboard.self-star")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string>("StickyRoles")
                         .IsRequired()
@@ -1165,16 +1266,22 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("':ArrowT:694594285487652954'::character varying");
 
                     b.Property<bool>("SuggestionsOnActionDm")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("suggestions.on-action.dm");
+                        .HasColumnName("suggestions.on-action.dm")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("SuggestionsOnActionHideAuthor")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("suggestions.on-action.hide-author");
+                        .HasColumnName("suggestions.on-action.hide-author")
+                        .HasDefaultValueSql("false");
 
                     b.Property<bool>("SuggestionsOnActionRepost")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("suggestions.on-action.repost");
+                        .HasColumnName("suggestions.on-action.repost")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string>("TriggerAlias")
                         .IsRequired()
@@ -1209,8 +1316,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<long>("Points")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("points");
+                        .HasColumnName("points")
+                        .HasDefaultValueSql("0");
 
                     b.HasKey("GuildId", "UserId")
                         .HasName("PK_923cd70108499f5f72ae286417c");
@@ -1256,8 +1365,8 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int?>("Duration")
-                        .HasColumnType("integer")
+                    b.Property<long?>("Duration")
+                        .HasColumnType("bigint")
                         .HasColumnName("duration");
 
                     b.Property<string>("ExtraData")
@@ -1855,16 +1964,22 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("true");
 
                     b.Property<long>("Money")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("money");
+                        .HasColumnName("money")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("Points")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("points");
+                        .HasColumnName("points")
+                        .HasDefaultValueSql("0");
 
                     b.Property<int>("Reputations")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("reputations");
+                        .HasColumnName("reputations")
+                        .HasDefaultValueSql("0");
 
                     b.HasKey("Id")
                         .HasName("pk_user");
@@ -1964,12 +2079,16 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<int>("Color")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("color");
+                        .HasColumnName("color")
+                        .HasDefaultValueSql("0");
 
                     b.Property<bool>("DarkTheme")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("dark_theme");
+                        .HasColumnName("dark_theme")
+                        .HasDefaultValueSql("false");
 
                     b.Property<string[]>("PublicBadges")
                         .IsRequired()
@@ -1979,8 +2098,10 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("ARRAY[]::character varying[]");
 
                     b.Property<long>("Vault")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("vault");
+                        .HasColumnName("vault")
+                        .HasDefaultValueSql("0");
 
                     b.HasKey("UserId")
                         .HasName("PK_0468eeca19838d4337cb8f1ec93");

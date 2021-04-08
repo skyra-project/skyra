@@ -1,15 +1,40 @@
 version: '2.4'
 services:
+  protos:
+    build:
+      context: ../assets/protos
+    command: exit 1
+    image: ghcr.io/skyra-project/grpc-protofiles:latest
+    networks:
+      - skyra
+  grpc:
+    build:
+      context: ../services
+    image: skyrabot/grpc:latest
+    container_name: 'skyra-grpc'
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=skyra
+    networks:
+      - skyra
+    ports:
+      - '8291:80'
   pokedex:
     container_name: pokedex
     image: favware/graphql-pokemon:main
     restart: always
+    networks:
+      - skyra
     ports:
-      - '4000:8080'
+      - '4000:8288'
   postgres:
     container_name: pgsql
     image: skyrabot/postgres:main
     restart: always
+    networks:
+      - skyra
     ports:
       - '5432:5432'
     volumes:
@@ -18,12 +43,18 @@ services:
     container_name: lavalink
     image: skyrabot/lavalink:main
     restart: always
+    depends_on:
+      - redis
+    networks:
+      - skyra
     ports:
       - '2333:2333'
   saelem:
     container_name: saelem
     image: skyrabot/saelem:main
     restart: always
+    depends_on:
+      - redis
     environment:
       SAELEM_REDIS_HOST: redis
       SAELEM_REDIS_PORT: 8287
@@ -32,6 +63,8 @@ services:
       PORT: 8284
     ports:
       - '8284:8284'
+    networks:
+      - skyra
   influx:
     container_name: influxdb
     image: quay.io/influxdb/influxdb:v2.0.3
@@ -40,6 +73,8 @@ services:
       - influx-data:/var/lib/influxdb2
     ports:
       - '8285:8086'
+    networks:
+      - skyra
     command: influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt
   redis:
     container_name: redis
@@ -47,6 +82,8 @@ services:
     restart: always
     ports:
       - '8287:8287'
+    networks:
+      - skyra
     command: redis-server --port 8287 --requirepass redis
   hasteserver:
     container_name: hasteserver
@@ -56,6 +93,8 @@ services:
       - redis
     ports:
       - '8290:8290'
+    networks:
+      - skyra
     environment:
       PORT: 8290
       STORAGE_TYPE: redis
@@ -68,6 +107,10 @@ services:
     container_name: outflux
     image: skyrabot/outflux
     restart: always
+    depends_on:
+      - influx
+    networks:
+      - skyra
     environment:
       INFLUX_BASE_URL: 'http://host.docker.internal:8285'
     ports:
@@ -78,3 +121,6 @@ volumes:
     external: true
   influx-data:
     external: true
+
+networks:
+  skyra:

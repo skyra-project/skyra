@@ -17,7 +17,7 @@ namespace Skyra.Database.Models.Entities
 		public DateTime? CreatedAt { get; set; }
 
 		[Column("duration")]
-		public int? Duration { get; set; }
+		public long? Duration { get; set; }
 
 		[Column("extra_data", TypeName = "json")]
 		public string ExtraData { get; set; }

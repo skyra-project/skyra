@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { DbSet, SettingsManager, Task } from '#lib/database';
+import type { DbSet, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
@@ -10,6 +11,7 @@ import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
+import type { PieceContextExtras } from '@sapphire/pieces';
 import type { Image } from 'canvas';
 import type {
 	APIMessage,
@@ -49,6 +51,7 @@ declare module 'discord.js' {
 		readonly version: string;
 		readonly webhookError: Webhook | null;
 		readonly websocket: WebsocketHandler;
+		readonly context: PieceContextExtras;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
@@ -114,6 +117,7 @@ declare module '@sapphire/pieces' {
 	interface PieceContextExtras {
 		db: DbSet;
 		schedule: ScheduleManager;
+		workers: WorkerManager;
 	}
 }
 

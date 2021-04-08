@@ -1,13 +1,6 @@
 import { envParseInteger } from '#lib/env';
 import { cpus } from 'os';
-import type {
-	IncomingPayload,
-	IncomingRunGuildRegExpPayload,
-	IncomingUpdateGuildRegExpPayload,
-	NoId,
-	OutgoingNoContentPayload,
-	OutgoingRegExpMatchPayload
-} from './types';
+import type { IncomingPayload, IncomingRunRegExpPayload, NoId, OutgoingNoContentPayload, OutgoingRegExpMatchPayload } from './types';
 import { WorkerHandler } from './WorkerHandler';
 
 export class WorkerManager {
@@ -26,8 +19,7 @@ export class WorkerManager {
 		await Promise.all(this.workers.map((worker) => worker.start()));
 	}
 
-	public async send(data: NoId<IncomingUpdateGuildRegExpPayload>, delay?: number): Promise<OutgoingNoContentPayload>;
-	public async send(data: NoId<IncomingRunGuildRegExpPayload>, delay?: number): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
+	public async send(data: NoId<IncomingRunRegExpPayload>, delay?: number): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
 	public async send(data: NoId<IncomingPayload>, delay?: number) {
 		return this.getIdealWorker().send(data, delay);
 	}

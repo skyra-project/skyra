@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { DbSet, SettingsManager, Task } from '#lib/database';
+import type { DbSet, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
@@ -114,6 +115,7 @@ declare module '@sapphire/pieces' {
 	interface PieceContextExtras {
 		db: DbSet;
 		schedule: ScheduleManager;
+		workers: WorkerManager;
 	}
 }
 

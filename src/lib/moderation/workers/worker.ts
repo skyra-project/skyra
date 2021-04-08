@@ -15,23 +15,11 @@ TimerManager.setInterval(() => {
 	post({ type: OutgoingType.Heartbeat });
 }, 45000);
 
-const guildRegExpCache = new Map<string, RegExp>();
-
 parentPort.on('message', (message: IncomingPayload) => {
 	switch (message.type) {
-		case IncomingType.UpdateGuildRegExp: {
-			// If the RegExp was null, delete entry from cache, else set it:
-			if (message.data === null) guildRegExpCache.delete(message.guildID);
-			else guildRegExpCache.set(message.guildID, message.data);
-			break;
-		}
-		case IncomingType.RunGuildRegExp: {
-			// If there was no value in cache, skip as it indicates the guild has no RegExp:
-			const value = guildRegExpCache.get(message.guildID);
-			if (value === undefined) break;
-
+		case IncomingType.RunRegExp: {
 			// Remove confusables and run filter:
-			const result = filter(removeConfusables(message.content), value);
+			const result = filter(removeConfusables(message.content), message.regExp);
 			if (result === null) break;
 
 			// Post the results:

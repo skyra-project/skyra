@@ -75,12 +75,19 @@ export class SkyraClient extends SapphireClient {
 	public websocket = new WebsocketHandler();
 
 	@enumerable(false)
-	public readonly workers = new WorkerManager();
+	public readonly workers: WorkerManager;
 
 	public constructor() {
 		super(CLIENT_OPTIONS);
+
+		// Analytics
 		this.schedules = new ScheduleManager(this);
 		Store.injectedContext.schedule = this.schedules;
+
+		// Workers
+		this.workers = new WorkerManager();
+		Store.injectedContext.workers = this.workers;
+
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 
 		if (envParseBoolean('AUDIO_ENABLED')) {

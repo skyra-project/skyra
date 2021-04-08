@@ -5,21 +5,14 @@ export interface IdentifiablePayload {
 export type NoId<T> = Omit<T, 'id'>;
 
 export const enum IncomingType {
-	UpdateGuildRegExp,
-	RunGuildRegExp
+	RunRegExp
 }
 
-export type IncomingPayload = IncomingUpdateGuildRegExpPayload | IncomingRunGuildRegExpPayload;
+export type IncomingPayload = IncomingRunRegExpPayload;
 
-export interface IncomingUpdateGuildRegExpPayload extends IdentifiablePayload {
-	type: IncomingType.UpdateGuildRegExp;
-	guildID: string;
-	data: RegExp | null;
-}
-
-export interface IncomingRunGuildRegExpPayload extends IdentifiablePayload {
-	type: IncomingType.RunGuildRegExp;
-	guildID: string;
+export interface IncomingRunRegExpPayload extends IdentifiablePayload {
+	type: IncomingType.RunRegExp;
+	regExp: RegExp;
 	content: string;
 }
 

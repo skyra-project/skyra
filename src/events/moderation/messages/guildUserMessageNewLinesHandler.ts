@@ -24,7 +24,7 @@ const NEW_LINE = '\n';
 	}
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
-	protected async preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
 

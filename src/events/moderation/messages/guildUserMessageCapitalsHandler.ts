@@ -24,7 +24,7 @@ import type { TFunction } from 'i18next';
 	}
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
-	protected async preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		if (message.content.length === 0) return null;
 
 		const [minimumCapitals, maximumCapitals] = await message.guild.readSettings([

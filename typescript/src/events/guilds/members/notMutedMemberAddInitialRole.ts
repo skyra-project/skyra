@@ -7,7 +7,14 @@ import type { GuildMember } from 'discord.js';
 @ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
 export class UserEvent extends Event {
 	public async run(member: GuildMember) {
-		const roleID = await member.guild.readSettings(GuildSettings.Roles.Initial);
+		const [initial, initialHumans, initialBots] = await member.guild.readSettings([
+			GuildSettings.Roles.Initial,
+			GuildSettings.Roles.InitialHumans,
+			GuildSettings.Roles.InitialBots
+		]);
+		if (!initial && !initialHumans && !initialBots) return;
+
+		const roleID = initial ?? member.user.bot ? initialBots : initialHumans;
 		if (!roleID) return;
 
 		const role = member.guild.roles.cache.get(roleID);

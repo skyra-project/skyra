@@ -280,6 +280,14 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'roles.initial', nullable: true, length: 19 })
 	public rolesInitial?: string | null;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitialHumans, type: 'role' })
+	@Column('varchar', { name: 'roles.initial-humans', nullable: true, length: 19 })
+	public rolesInitialHumans?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitialBots, type: 'role' })
+	@Column('varchar', { name: 'roles.initial-bots', nullable: true, length: 19 })
+	public rolesInitialBots?: string | null;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesModerator, type: 'role' })
 	@Column('varchar', { name: 'roles.moderator', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public rolesModerator: string[] = [];

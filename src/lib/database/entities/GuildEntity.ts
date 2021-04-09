@@ -856,7 +856,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		this.adders.refresh();
 		this.permissionNodes.refresh();
 		this.nms = new RateLimitManager(this.noMentionSpamTimePeriod * 1000, this.noMentionSpamMentionsAllowed);
-		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
+		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'giu') : null;
 		this.#words = this.selfmodFilterRaw.slice();
 	}
 

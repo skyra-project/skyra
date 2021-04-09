@@ -69,8 +69,6 @@ export interface SkyraEnv {
 	WEBHOOK_ERROR_NAME: string;
 	WEBHOOK_ERROR_TOKEN: string;
 
-	WORKER_COUNT: IntegerString;
-
 	DISCORD_TOKEN: string;
 	BOTLIST_SPACE_TOKEN: string;
 	BOTS_FOR_DISCORD_TOKEN: string;

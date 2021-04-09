@@ -32,7 +32,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 		const regExp = await message.guild.readSettings((settings) => settings.wordFilterRegExp);
 		if (regExp === null) return null;
 
-		const result = await this.context.workers.send({ type: IncomingType.RunRegExp, regExp, content });
+		const result = await this.context.workers.send({ type: IncomingType.RunRegExp, regExp, content }, 500);
 		return result.type === OutgoingType.RegExpMatch ? result : null;
 	}
 

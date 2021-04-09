@@ -29,7 +29,7 @@ export class WorkerHandler {
 		return this.queue.remaining;
 	}
 
-	public async send(data: NoId<IncomingPayload>, delay = 500) {
+	public async send(data: NoId<IncomingPayload>, delay: number | null = null) {
 		await this.queue.wait();
 
 		try {

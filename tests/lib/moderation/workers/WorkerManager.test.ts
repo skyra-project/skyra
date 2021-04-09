@@ -63,7 +63,7 @@ describe('WorkerManager', () => {
 			highlighted: '__hello__ world!'
 		};
 
-		await expect(handler.send(given, 5000)).resolves.toEqual(expected);
+		await expect(handler.send(given)).resolves.toEqual(expected);
 		expect(getIdealWorker).toHaveBeenCalledTimes(1);
 		expect(getIdealWorker).toHaveLastReturnedWith(handler.workers[0]);
 	});
@@ -84,11 +84,11 @@ describe('WorkerManager', () => {
 		const given1: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'nope' };
 		const expected1: OutgoingNoContentPayload = { id: 0, type: OutgoingType.NoContent };
 
-		const promise0 = expect(handler.send(given0, 5000)).resolves.toEqual(expected0);
+		const promise0 = expect(handler.send(given0)).resolves.toEqual(expected0);
 		expect(getIdealWorker).toHaveBeenCalledTimes(1);
 		expect(getIdealWorker).toHaveLastReturnedWith(handler.workers[0]);
 
-		const promise1 = expect(handler.send(given1, 5000)).resolves.toEqual(expected1);
+		const promise1 = expect(handler.send(given1)).resolves.toEqual(expected1);
 		expect(getIdealWorker).toHaveBeenCalledTimes(2);
 		expect(getIdealWorker).toHaveLastReturnedWith(handler.workers[1]);
 
@@ -116,7 +116,7 @@ describe('WorkerManager', () => {
 		for (let i = 0; i < 25; ++i) tests.push({ given: given0, expected: expected0 });
 		for (let i = 0; i < 15; ++i) tests.push({ given: given1, expected: expected1 });
 
-		await Promise.all(tests.map((t) => expect(handler.send(t.given, 2000)).resolves.toHaveProperty('type', t.expected)));
+		await Promise.all(tests.map((t) => expect(handler.send(t.given)).resolves.toHaveProperty('type', t.expected)));
 
 		expect(getIdealWorker).toHaveBeenCalledTimes(100);
 		expect(send0).toHaveBeenCalledTimes(50);

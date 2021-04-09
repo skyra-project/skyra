@@ -25,7 +25,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private readonly kAllowedDomains = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
-	protected async preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		if (message.content.length === 0) return null;
 
 		let match: RegExpExecArray | null = null;

@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
-import { IncomingType } from '#lib/moderation/workers';
+import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { floatPromise, getContent } from '#utils/util';
@@ -25,12 +25,15 @@ import type { TFunction } from 'i18next';
 	}
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
-	protected async preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage): Promise<FilterResults | null> {
 		const content = getContent(message);
 		if (content === null) return null;
 
 		const regExp = await message.guild.readSettings((settings) => settings.wordFilterRegExp);
-		return regExp ? this.context.workers.send({ type: IncomingType.RunRegExp, regExp, content }) : null;
+		if (regExp === null) return null;
+
+		const result = await this.context.workers.send({ type: IncomingType.RunRegExp, regExp, content });
+		return result.type === OutgoingType.RegExpMatch ? result : null;
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {

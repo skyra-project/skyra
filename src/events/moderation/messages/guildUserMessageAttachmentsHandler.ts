@@ -21,7 +21,7 @@ import type { TFunction } from 'i18next';
 	}
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
-	protected preProcess(message: GuildMessage) {
+	protected preProcess(message: GuildMessage): 1 | null {
 		const attachments = message.attachments.size;
 		return attachments > 0 ? 1 : null;
 	}

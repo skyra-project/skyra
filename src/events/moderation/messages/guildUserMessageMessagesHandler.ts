@@ -24,7 +24,7 @@ import type { TFunction } from 'i18next';
 export class UserModerationMessageEvent extends ModerationMessageEvent {
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 
-	protected async preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		// Retrieve the threshold
 		const [threshold, queueSize] = await message.guild.readSettings([
 			GuildSettings.Selfmod.Messages.Maximum,

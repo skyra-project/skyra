@@ -743,28 +743,14 @@
   dependencies:
     tslib "2.x"
 
-"@sapphire/discord-utilities@^2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@sapphire/discord-utilities/-/discord-utilities-2.0.6.tgz#a0c192ef35d3eaed121764287762809980cc96a1"
-  integrity sha512-hQkp7ZQ0BsUigVd1Ox1vOVKtJ3/U1iAcqe1tjzVOFQwRgolmz8/PIQl0qJ+S8lT51LEgde/129WkXi0bDOSESQ==
-  dependencies:
-    twemoji-parser "^13.0.0"
-
-"@sapphire/discord-utilities@^2.0.7":
+"@sapphire/discord-utilities@^2.0.6", "@sapphire/discord-utilities@^2.0.7":
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@sapphire/discord-utilities/-/discord-utilities-2.0.7.tgz#3ecf623a2a401262ece137e9bc3a86c36b79a01d"
   integrity sha512-Os+Yl75lNRo2nyvi2hkfaMC3afFeqmJjK1iPgJeWdxfF2s/F33uOCHwpXF8F0G3laeYE9X3qcMYLggVfbLTHzQ==
   dependencies:
     twemoji-parser "^13.0.0"
 
-"@sapphire/discord.js-utilities@^1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@sapphire/discord.js-utilities/-/discord.js-utilities-1.5.2.tgz#5dc2b6ae25a89c5bd9826b594dae5ff48b750431"
-  integrity sha512-MKwgI71LEOU41zKY93Iw2W3F2rizLnCqwdiTUKr3n6VYPXaJC9rvQodGqP9m3JAJHXhyjAFvIwmUxM2+8GtLCw==
-  dependencies:
-    "@sapphire/discord-utilities" "^2.0.6"
-
-"@sapphire/discord.js-utilities@^1.5.4":
+"@sapphire/discord.js-utilities@^1.5.2", "@sapphire/discord.js-utilities@^1.5.4":
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/@sapphire/discord.js-utilities/-/discord.js-utilities-1.5.4.tgz#4c9b1d0c8d9171b1b7b5795544b63dc34096a74b"
   integrity sha512-AwwvO9SMywW/F7PnmI7hf8nsQmfc8h5A5Ed5L9yC6xwHQ5sT9W9Mc3RJn1Q5DdUItYg47LEVf3WT+oh3/ak68w==
@@ -885,12 +871,7 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.7.tgz#149abfbe9072b2af03c991af823d58b78c72759b"
   integrity sha512-JzxmwjAahDbwq4VdytmLUv4PpbqUpvWnbhoSbZ5AqejG5YjXgM7t/QI1n7ih7841mIptO2Xp0eAOwZxeTQ8hNw==
 
-"@sapphire/utilities@^1.4.6":
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.6.tgz#3fbc8b8682cb10c872e3f883864e49dbcf147e9f"
-  integrity sha512-cSpifhuXlmIIEZQCMPU4psDzXE9WumdTGI7JgWmH+FbQkbJ2Hn1pxITMnLwOEPH96ypXFf9V4sOqr9kIxk2V6w==
-
-"@sapphire/utilities@^1.4.7":
+"@sapphire/utilities@^1.4.6", "@sapphire/utilities@^1.4.7":
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.4.7.tgz#4668b57918fe773502087e63025f5ec84f670059"
   integrity sha512-9x7LwCuhJJ+oWPpbQqU7EKUHNwBnB0ew52qKv7Og2ruSqyKrrBRdNZYhXqiXeC2JTlHwhE9v+pcc1YTm0L4oAg==
@@ -6130,6 +6111,11 @@ typescript@4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
   integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
+
+typescript@4.2.4:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
+  integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
 
 union-value@^1.0.0:
   version "1.0.1"

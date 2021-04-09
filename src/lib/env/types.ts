@@ -7,7 +7,7 @@ export type SkyraEnvBoolean = { [K in SkyraEnvAny]: SkyraEnv[K] extends BooleanS
 export type SkyraEnvInteger = { [K in SkyraEnvAny]: SkyraEnv[K] extends IntegerString ? K : never }[SkyraEnvAny];
 
 export interface SkyraEnv {
-	NODE_ENV: 'development' | 'production';
+	NODE_ENV: 'test' | 'development' | 'production';
 	DOTENV_DEBUG_ENABLED: BooleanString;
 
 	CLIENT_NAME: string;

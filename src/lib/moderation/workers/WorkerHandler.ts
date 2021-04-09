@@ -62,9 +62,9 @@ export class WorkerHandler {
 		this.online = false;
 		this.lastHeartBeat = 0;
 		this.worker = new Worker(WorkerHandler.filename);
-		this.worker.on('message', this.handleMessage.bind(this));
-		this.worker.once('online', this.handleOnline.bind(this));
-		this.worker.once('exit', this.handleExit.bind(this));
+		this.worker.on('message', (message: OutgoingPayload) => this.handleMessage(message));
+		this.worker.once('online', () => this.handleOnline());
+		this.worker.once('exit', (code: number) => this.handleExit(code));
 		return this;
 	}
 

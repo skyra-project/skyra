@@ -30,10 +30,6 @@ describe('WorkerHandler', () => {
 		const handleExit = jest.spyOn(handler, 'handleExit' as any);
 		const terminate = jest.spyOn(handler['worker'], 'terminate');
 
-		expect(handleOnline).not.toHaveBeenCalled();
-		expect(handleExit).not.toHaveBeenCalled();
-		expect(terminate).not.toHaveBeenCalled();
-
 		await expect(handler.start()).resolves.toBeUndefined();
 
 		expect(handleOnline).toHaveBeenCalledTimes(1);

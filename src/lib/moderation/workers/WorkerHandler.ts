@@ -29,7 +29,7 @@ export class WorkerHandler {
 		return this.queue.remaining;
 	}
 
-	public async send(data: NoId<IncomingPayload>, delay = 50) {
+	public async send(data: NoId<IncomingPayload>, delay = 500) {
 		await this.queue.wait();
 
 		try {
@@ -109,22 +109,27 @@ export class WorkerHandler {
 		this.online = false;
 		this.worker.removeAllListeners();
 
-		const worker = `[${yellow('W')}]`;
-		const thread = cyan(this.threadID.toString(16));
-		const exit = code === 0 ? green('0') : red(code.toString());
-		Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+		if (WorkerHandler.logsEnabled) {
+			const worker = `[${yellow('W')}]`;
+			const thread = cyan(this.threadID.toString(16));
+			const exit = code === 0 ? green('0') : red(code.toString());
+			Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+		}
 	}
 
 	private handleOnline() {
 		this.online = true;
 		this.threadID = this.worker.threadId;
 
-		const worker = `[${cyan('W')}]`;
-		const thread = cyan(this.threadID.toString(16));
-		Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+		if (WorkerHandler.logsEnabled) {
+			const worker = `[${cyan('W')}]`;
+			const thread = cyan(this.threadID.toString(16));
+			Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+		}
 	}
 
-	private static workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
-	private static filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
-	private static maximumID = Number.MAX_SAFE_INTEGER;
+	private static readonly workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
+	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
+	private static readonly filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
+	private static readonly maximumID = Number.MAX_SAFE_INTEGER;
 }

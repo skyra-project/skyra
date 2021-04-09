@@ -1,7 +1,7 @@
 import { TimerManager } from '@sapphire/time-utilities';
 import { remove as removeConfusables } from 'confusables';
 import { isMainThread, parentPort } from 'worker_threads';
-import { IncomingPayload, IncomingType, OutgoingPayload, OutgoingType } from './types';
+import { IncomingPayload, IncomingRunRegExpPayload, IncomingType, OutgoingPayload, OutgoingType } from './types';
 
 if (isMainThread || parentPort === null) throw new Error('The Worker may only be ran via the worker_threads fork method!');
 
@@ -11,26 +11,27 @@ function post(message: OutgoingPayload) {
 
 post({ type: OutgoingType.Heartbeat });
 
-TimerManager.setInterval(() => {
-	post({ type: OutgoingType.Heartbeat });
-}, 45000);
+TimerManager.setInterval(() => post({ type: OutgoingType.Heartbeat }), 45000);
 
-parentPort.on('message', (message: IncomingPayload) => {
+parentPort.on('message', (message: IncomingPayload) => post(handleMessage(message)));
+
+function handleMessage(message: IncomingPayload): OutgoingPayload {
 	switch (message.type) {
-		case IncomingType.RunRegExp: {
-			// Remove confusables and run filter:
-			const result = filter(removeConfusables(message.content), message.regExp);
-			if (result === null) break;
-
-			// Post the results:
-			post({ id: message.id, type: OutgoingType.RegExpMatch, filtered: result.filtered, highlighted: result.highlighted });
-			return;
-		}
+		case IncomingType.RunRegExp:
+			return handleRunRegExp(message);
+		default:
+			return { id: message.id, type: OutgoingType.UnknownCommand };
 	}
+}
 
-	// Always send NoContent unless returned otherwise:
-	post({ id: message.id, type: OutgoingType.NoContent });
-});
+function handleRunRegExp(message: IncomingRunRegExpPayload): OutgoingPayload {
+	// Remove confusables and run filter:
+	const result = filter(removeConfusables(message.content), message.regExp);
+	if (result === null) return { id: message.id, type: OutgoingType.NoContent };
+
+	// Post the results:
+	return { id: message.id, type: OutgoingType.RegExpMatch, filtered: result.filtered, highlighted: result.highlighted };
+}
 
 function filter(str: string, regex: RegExp) {
 	const matches = str.match(regex);

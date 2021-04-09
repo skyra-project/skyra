@@ -28,6 +28,12 @@ export function toChannelsArray(bits: number) {
 }
 
 if (!channelFlags.has(1 << 2)) {
+	// TODO(kyranet): Flags are being renamed with https://github.com/discordjs/discord.js/pull/5506
+	// - WELCOME_MESSAGE_DISABLED -> SUPPRESS_JOIN_NOTIFICATIONS
+	// - BOOST_MESSAGE_DISABLED -> SUPPRESS_PREMIUM_SUBSCRIPTIONS
+	// - [REMINDER_MESSAGE_DISABLED?] -> SUPPRESS_GUILD_REMINDER_NOTIFICATIONS
+	// Once we update to discord.js v13, this must be changed, alongside the i18n keys.
+	//
 	// SystemChannelFlagsString includes 'WELCOME_MESSAGE_DISABLED' and 'BOOST_MESSAGE_DISABLED'
 	//
 	// - https://github.com/discord/discord-api-docs/pull/2753 implements 'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS'.

@@ -6,6 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
+	aliases: ['mcc'],
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandChannelDescription,

@@ -1,3 +1,5 @@
+import { envParseString } from '#lib/env';
+import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { Store } from '@sapphire/pieces';
 import { cyan, green, red, yellow } from 'colorette';
@@ -61,7 +63,11 @@ export class WorkerHandler {
 	public spawn() {
 		this.online = false;
 		this.lastHeartBeat = 0;
-		this.worker = new Worker(WorkerHandler.filename);
+		this.worker = new Worker(WorkerHandler.workerTsLoader, {
+			workerData: {
+				path: WorkerHandler.filename
+			}
+		});
 		this.worker.on('message', (message: OutgoingPayload) => this.handleMessage(message));
 		this.worker.once('online', () => this.handleOnline());
 		this.worker.once('exit', (code: number) => this.handleExit(code));
@@ -118,6 +124,7 @@ export class WorkerHandler {
 		Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
 	}
 
-	private static filename = join(__dirname, 'worker.js');
+	private static workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
+	private static filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
 	private static maximumID = Number.MAX_SAFE_INTEGER;
 }

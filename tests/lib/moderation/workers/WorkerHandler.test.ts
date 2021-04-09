@@ -9,6 +9,10 @@ describe('WorkerHandler', () => {
 		handler = new WorkerHandler();
 	});
 
+	afterAll(async () => {
+		await handler.destroy();
+	});
+
 	test('GIVEN new instance THEN has initial data', async () => {
 		expect(handler.remaining).toBe(0);
 		expect(handler.lastHeartBeat).toBe(0);

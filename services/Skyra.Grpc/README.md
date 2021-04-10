@@ -73,7 +73,7 @@ services:
 
 ### Using custom configuration
 
-Both the GRPC and PostgreSQL images use several environment variables that you can configure
+Both the GRPC and PostgreSQL images use several environment variables that you can configure.
 
 #### `POSTGRES_PASSWORD`
 

@@ -9,6 +9,7 @@ on:
       - 'assets/protos/*'
       - 'docker/docker-compose.yml'
       - 'docker/playwithdocker-grpc-stack.yml'
+      - '.github/workflows/continuous-delivery.yml'
 
 jobs:
   Publish:

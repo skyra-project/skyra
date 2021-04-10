@@ -23,7 +23,7 @@ services:
       - '8291:80'
   pokedex:
     container_name: pokedex
-    image: favware/graphql-pokemon:main
+    image: favware/graphql-pokemon:latest
     restart: always
     networks:
       - skyra
@@ -31,7 +31,7 @@ services:
       - '4000:8288'
   postgres:
     container_name: pgsql
-    image: skyrabot/postgres:main
+    image: skyrabot/postgres:latest
     restart: always
     networks:
       - skyra
@@ -41,7 +41,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
   lavalink:
     container_name: lavalink
-    image: skyrabot/lavalink:main
+    image: skyrabot/lavalink:latest
     restart: always
     depends_on:
       - redis
@@ -51,7 +51,7 @@ services:
       - '2333:2333'
   saelem:
     container_name: saelem
-    image: skyrabot/saelem:main
+    image: skyrabot/saelem:latest
     restart: always
     depends_on:
       - redis
@@ -87,7 +87,7 @@ services:
     command: redis-server --port 8287 --requirepass redis
   hasteserver:
     container_name: hasteserver
-    image: skyrabot/haste-server
+    image: skyrabot/haste-server:latest
     restart: always
     depends_on:
       - redis
@@ -105,7 +105,7 @@ services:
       STORAGE_EXPIRE_SECONDS: 21600
   outflux:
     container_name: outflux
-    image: skyrabot/outflux
+    image: skyrabot/outflux:latest
     restart: always
     depends_on:
       - influx

@@ -6,21 +6,25 @@ they would be ran. In order to easily control the docker-compose file there is a
 
 Skyra currently has the following microservices that can be dockerized:
 
+-   gRPC .NET connector
+    -   Service name in docker-compose: `grpc`
+    -   Image used: `skyrabot/grpc:latest`
+    -   For more information see [../services/Skyra.Grpc/README.md](../services/Skyra.Grpc/README.md)
+-   GraphQL-Pokémon
+    -   Service name in docker-compose: `pokedex`
+    -   Image used: `favware/graphql-pokemon:latest`
+    -   For more information see [favware/graphql-pokemon]
 -   PostgreSQL Database
     -   Service name in docker-compose: `postgres`
-    -   Image used: `skyrabot/postgres:main`
+    -   Image used: `skyrabot/postgres:latest`
     -   For more information see [skyra-project/docker-images]
 -   Lavalink
     -   Service name in docker-compose: `lavalink`
     -   Image used: `skyrabot/lavalink:main`
     -   For more information see [skyra-project/docker-images]
--   GraphQL-Pokémon
-    -   Service name in docker-compose: `pokedex`
-    -   Image used: `favware/graphql-pokemon:main`
-    -   For more information see [favware/graphql-pokemon]
 -   Saelem
     -   Service name in docker-compose: `saelem`
-    -   Image used: `skyrabot/saelem/saelem:main`
+    -   Image used: `skyrabot/saelem:latest`
     -   For more information see [skyra-project/saelem]
 -   InfluxDB
     -   Service name in docker-compose: `influx`
@@ -39,6 +43,14 @@ Skyra currently has the following microservices that can be dockerized:
     -   Service name in docker-compose: `redis`
     -   Image used: `redis:alpine`
     -   For more information see [redis]
+-   Hasteserver
+    -   Service name in docker-compose: `hasteserver`
+    -   Image used: `skyrabot/haste-server:latest`
+    -   For more information see [skyra-project/docker-images]
+-   Outflux
+    -   Service name in docker-compose: `outflux`
+    -   Image used: `skyrabot/outflux:latest`
+    -   For more information see [skyra-project/outflux]
 
 <!-- Link dump -->
 
@@ -53,4 +65,5 @@ Skyra currently has the following microservices that can be dockerized:
 [redis]: https://hub.docker.com/_/redis
 [skyra-project/docker-images]: https://github.com/skyra-project/docker-images
 [skyra-project/saelem]: https://github.com/skyra-project/saelem
+[skyra-project/outflux]: https://github.com/skyra-project/outflux
 [the config file]: ../src/config.ts

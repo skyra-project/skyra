@@ -61,7 +61,7 @@ services:
             - '8291:80'
     postgres:
         container_name: postgres
-        image: skyrabot/postgres:main
+        image: skyrabot/postgres:latest
         restart: always
         ports:
             - '5432:5432'
@@ -69,7 +69,7 @@ services:
             - postgres-data:/var/lib/postgresql/data
 ```
 
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://raw.githubusercontent.com/skyra-project/skyra/feat/docker-dotnet/docker/playwithdocker-grpc-stack.yml)
+[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](http://play-with-docker.com/?stack=https://raw.githubusercontent.com/skyra-project/skyra/main/docker/playwithdocker-grpc-stack.yml)
 
 ### Using custom configuration
 

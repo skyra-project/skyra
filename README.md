@@ -18,11 +18,12 @@
 ### Optional additions
 
 -   [`Lavalink`]: Audio server.
--   [`InfluxDB`]: Metrics platform
--   [`GraphQL-Pokemon`]: Pokemon API
--   [`Saelem`]: Horoscope API
--   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`]
--   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users
+-   [`InfluxDB`]: Metrics platform.
+-   [`GraphQL-Pokemon`]: Pokemon API.
+-   [`Saelem`]: Horoscope API.
+-   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`].
+-   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
+-   [`Skyra.gRPC`]: For interacting with the [`PostgreSQL`] database using [`.NET`] [`Entity Framework`][] over [`gRPC`].
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -36,11 +37,11 @@ The developer team does not support the idea of other self-hosted instances of S
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
--    [`Lavalink`] as music module, this requires hosting a personal instance of Lavalink (a Java application)
--    [`Redis`] for the music queue, and as a cache for [`Saelem`]
--    [`InfluxDB`] in order to keep anonymous metrics on bot usage
--    [`PostgreSQL`] as database
--    Other external APIs, each requiring their own individual API keys.
+-   [`Lavalink`] as music module, this requires hosting a personal instance of Lavalink (a Java application)
+-   [`Redis`] for the music queue, and as a cache for [`Saelem`]
+-   [`InfluxDB`] in order to keep anonymous metrics on bot usage
+-   [`PostgreSQL`] as database
+-   Other external APIs, each requiring their own individual API keys.
 
 With this in mind, it is also worth noting that Skyra will in no way be capable of running on services such as [Glitch] or [Heroku]. A dedicated VPS (Virtual Private Server) is required in order to maintain the proper production environment.
 
@@ -165,3 +166,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
 [ethereumimage]: https://cdn.skyra.pw/gh-assets/ethereum.png
 [litecoinimage]: https://cdn.skyra.pw/gh-assets/litecoin.png
+[`skyra.grpc`]: https://hub.docker.com/r/skyrabot/grpc
+[`.net`]: https://docs.microsoft.com/en-gb/dotnet/
+[`entity framework`]: https://docs.microsoft.com/en-gb/ef/
+[`grpc`]: https://grpc.io

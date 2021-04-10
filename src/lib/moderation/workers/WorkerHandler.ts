@@ -109,6 +109,7 @@ export class WorkerHandler {
 		this.online = false;
 		this.worker.removeAllListeners();
 
+		/* istanbul ignore next: logs are disabled in tests */
 		if (WorkerHandler.logsEnabled) {
 			const worker = `[${yellow('W')}]`;
 			const thread = cyan(this.threadID.toString(16));
@@ -121,6 +122,7 @@ export class WorkerHandler {
 		this.online = true;
 		this.threadID = this.worker.threadId;
 
+		/* istanbul ignore next: logs are disabled in tests */
 		if (WorkerHandler.logsEnabled) {
 			const worker = `[${cyan('W')}]`;
 			const thread = cyan(this.threadID.toString(16));

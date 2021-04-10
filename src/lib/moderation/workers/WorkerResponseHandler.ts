@@ -10,8 +10,7 @@ export class WorkerResponseHandler {
 
 	public timeout(delay: number | null) {
 		if (delay === null) {
-			this.clearTimeout();
-			return true;
+			return this.clearTimeout();
 		}
 
 		const { id } = this;
@@ -19,6 +18,7 @@ export class WorkerResponseHandler {
 			return false;
 		}
 
+		this.clearTimeout();
 		this.timer = TimerManager.setTimeout(() => this.reject(id, new TimeoutError()), delay);
 		return true;
 	}
@@ -52,6 +52,10 @@ export class WorkerResponseHandler {
 		if (this.timer) {
 			TimerManager.clearTimeout(this.timer);
 			this.timer = null;
+
+			return true;
 		}
+
+		return false;
 	}
 }

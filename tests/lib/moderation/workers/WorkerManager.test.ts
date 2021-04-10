@@ -1,13 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import {
-	IncomingRunRegExpPayload,
-	IncomingType,
-	NoId,
-	OutgoingNoContentPayload,
-	OutgoingRegExpMatchPayload,
-	OutgoingType,
-	WorkerManager
-} from '#lib/moderation/workers';
+import { IncomingRunRegExpPayload, IncomingType, NoId, OutgoingPayload, OutgoingType, WorkerManager } from '#lib/moderation/workers';
 
 describe('WorkerManager', () => {
 	let handler = new WorkerManager(2);
@@ -56,7 +48,7 @@ describe('WorkerManager', () => {
 		const getIdealWorker = jest.spyOn(handler, 'getIdealWorker' as any);
 
 		const given: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
-		const expected: OutgoingRegExpMatchPayload = {
+		const expected: OutgoingPayload = {
 			id: 0,
 			type: OutgoingType.RegExpMatch,
 			filtered: '***** world!',
@@ -74,7 +66,7 @@ describe('WorkerManager', () => {
 		const getIdealWorker = jest.spyOn(handler, 'getIdealWorker' as any);
 
 		const given0: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
-		const expected0: OutgoingRegExpMatchPayload = {
+		const expected0: OutgoingPayload = {
 			id: 0,
 			type: OutgoingType.RegExpMatch,
 			filtered: '***** world!',
@@ -82,7 +74,7 @@ describe('WorkerManager', () => {
 		};
 
 		const given1: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'nope' };
-		const expected1: OutgoingNoContentPayload = { id: 0, type: OutgoingType.NoContent };
+		const expected1: OutgoingPayload = { id: 0, type: OutgoingType.NoContent };
 
 		const promise0 = expect(handler.send(given0)).resolves.toEqual(expected0);
 		expect(getIdealWorker).toHaveBeenCalledTimes(1);

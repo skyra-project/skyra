@@ -1,3 +1,5 @@
+import { envParseString } from '#lib/env';
+import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { Store } from '@sapphire/pieces';
 import { cyan, green, red, yellow } from 'colorette';
@@ -27,7 +29,7 @@ export class WorkerHandler {
 		return this.queue.remaining;
 	}
 
-	public async send(data: NoId<IncomingPayload>, delay = 50) {
+	public async send(data: NoId<IncomingPayload>, delay: number | null = null) {
 		await this.queue.wait();
 
 		try {
@@ -61,10 +63,14 @@ export class WorkerHandler {
 	public spawn() {
 		this.online = false;
 		this.lastHeartBeat = 0;
-		this.worker = new Worker(WorkerHandler.filename);
-		this.worker.on('message', this.handleMessage.bind(this));
-		this.worker.once('online', this.handleOnline.bind(this));
-		this.worker.once('exit', this.handleExit.bind(this));
+		this.worker = new Worker(WorkerHandler.workerTsLoader, {
+			workerData: {
+				path: WorkerHandler.filename
+			}
+		});
+		this.worker.on('message', (message: OutgoingPayload) => this.handleMessage(message));
+		this.worker.once('online', () => this.handleOnline());
+		this.worker.once('exit', (code: number) => this.handleExit(code));
 		return this;
 	}
 
@@ -83,6 +89,7 @@ export class WorkerHandler {
 	}
 
 	private generateID() {
+		/* istanbul ignore if: extremely unlikely to happen, needs 9 quadrillion iterations */
 		if (this.id === WorkerHandler.maximumID) {
 			return (this.id = 0);
 		}
@@ -103,21 +110,29 @@ export class WorkerHandler {
 		this.online = false;
 		this.worker.removeAllListeners();
 
-		const worker = `[${yellow('W')}]`;
-		const thread = cyan(this.threadID.toString(16));
-		const exit = code === 0 ? green('0') : red(code.toString());
-		Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+		/* istanbul ignore if: logs are disabled in tests */
+		if (WorkerHandler.logsEnabled) {
+			const worker = `[${yellow('W')}]`;
+			const thread = cyan(this.threadID.toString(16));
+			const exit = code === 0 ? green('0') : red(code.toString());
+			Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+		}
 	}
 
 	private handleOnline() {
 		this.online = true;
 		this.threadID = this.worker.threadId;
 
-		const worker = `[${cyan('W')}]`;
-		const thread = cyan(this.threadID.toString(16));
-		Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+		/* istanbul ignore if: logs are disabled in tests */
+		if (WorkerHandler.logsEnabled) {
+			const worker = `[${cyan('W')}]`;
+			const thread = cyan(this.threadID.toString(16));
+			Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+		}
 	}
 
-	private static filename = join(__dirname, 'worker.js');
-	private static maximumID = Number.MAX_SAFE_INTEGER;
+	private static readonly workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
+	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
+	private static readonly filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
+	private static readonly maximumID = Number.MAX_SAFE_INTEGER;
 }

@@ -19,8 +19,8 @@ export class WorkerManager {
 		await Promise.all(this.workers.map((worker) => worker.start()));
 	}
 
-	public async send(data: NoId<IncomingRunRegExpPayload>, delay?: number): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
-	public async send(data: NoId<IncomingPayload>, delay?: number) {
+	public async send(data: NoId<IncomingRunRegExpPayload>, delay?: number | null): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
+	public async send(data: NoId<IncomingPayload>, delay?: number | null) {
 		return this.getIdealWorker().send(data, delay);
 	}
 
@@ -32,6 +32,6 @@ export class WorkerManager {
 	}
 
 	private getIdealWorker() {
-		return this.workers.reduce((best, worker) => (worker.remaining > best.remaining ? best : worker));
+		return this.workers.reduce((best, worker) => (best.remaining > worker.remaining ? worker : best));
 	}
 }

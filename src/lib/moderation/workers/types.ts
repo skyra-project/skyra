@@ -18,14 +18,19 @@ export interface IncomingRunRegExpPayload extends IdentifiablePayload {
 
 export const enum OutgoingType {
 	Heartbeat,
+	UnknownCommand,
 	NoContent,
 	RegExpMatch
 }
 
-export type OutgoingPayload = OutgoingHeartbeatPayload | OutgoingNoContentPayload | OutgoingRegExpMatchPayload;
+export type OutgoingPayload = OutgoingHeartbeatPayload | OutgoingUnknownCommandPayload | OutgoingNoContentPayload | OutgoingRegExpMatchPayload;
 
 export interface OutgoingHeartbeatPayload {
 	type: OutgoingType.Heartbeat;
+}
+
+export interface OutgoingUnknownCommandPayload extends IdentifiablePayload {
+	type: OutgoingType.UnknownCommand;
 }
 
 export interface OutgoingNoContentPayload extends IdentifiablePayload {

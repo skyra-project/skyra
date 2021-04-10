@@ -10,16 +10,16 @@ export class WorkerResponseHandler {
 
 	public timeout(delay: number | null) {
 		if (delay === null) {
-			this.clearTimeout();
-			return true;
+			return this.clearTimeout();
 		}
 
-		const { handler } = this;
-		if (handler === null) {
+		const { id } = this;
+		if (id === -1) {
 			return false;
 		}
 
-		this.timer = TimerManager.setTimeout(() => handler.reject(new TimeoutError()), delay);
+		this.clearTimeout();
+		this.timer = TimerManager.setTimeout(() => this.reject(id, new TimeoutError()), delay);
 		return true;
 	}
 
@@ -32,19 +32,19 @@ export class WorkerResponseHandler {
 
 	public resolve(id: number, data: OutgoingPayload) {
 		if (this.id === id) {
-			this.handler!.resolve(data);
 			this.id = -1;
-			this.handler = null;
 			this.clearTimeout();
+			this.handler!.resolve(data);
+			this.handler = null;
 		}
 	}
 
 	public reject(id: number, error: Error) {
 		if (this.id === id) {
-			this.handler!.reject(error);
 			this.id = -1;
-			this.handler = null;
 			this.clearTimeout();
+			this.handler!.reject(error);
+			this.handler = null;
 		}
 	}
 
@@ -52,6 +52,10 @@ export class WorkerResponseHandler {
 		if (this.timer) {
 			TimerManager.clearTimeout(this.timer);
 			this.timer = null;
+
+			return true;
 		}
+
+		return false;
 	}
 }

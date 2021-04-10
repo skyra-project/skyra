@@ -1,5 +1,5 @@
 import { isNullishOrEmpty } from '#utils/comparators';
-import { SkyraEnvAny, SkyraEnvBoolean, SkyraEnvInteger, SkyraEnvString } from './types';
+import { SkyraEnv, SkyraEnvAny, SkyraEnvBoolean, SkyraEnvInteger, SkyraEnvString } from './types';
 
 export function envParseInteger(key: SkyraEnvInteger, defaultValue?: number): number {
 	const value = process.env[key];
@@ -25,7 +25,7 @@ export function envParseBoolean(key: SkyraEnvBoolean, defaultValue?: boolean): b
 	throw new Error(`[ENV] ${key} - The key must be a boolean, but received '${value}'.`);
 }
 
-export function envParseString(key: SkyraEnvString, defaultValue?: string): string {
+export function envParseString<K extends SkyraEnvString>(key: K, defaultValue?: SkyraEnv[K]): SkyraEnv[K] {
 	const value = process.env[key];
 	if (isNullishOrEmpty(value)) {
 		if (defaultValue === undefined) throw new Error(`[ENV] ${key} - The key must be a string, but is empty or undefined.`);

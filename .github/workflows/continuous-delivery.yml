@@ -47,4 +47,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: skyrabot/grpc
+          readme-filepath: ./services/Skyra.Grpc/README.md
           short-description: GRPC Microservice to interact with Skyra Database

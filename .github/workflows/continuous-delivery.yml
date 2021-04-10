@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'services/**'
+      - 'assets/protos/*'
+      - 'docker/docker-compose.yml'
+      - 'docker/playwithdocker-grpc-stack.yml'
 
 jobs:
   Publish:

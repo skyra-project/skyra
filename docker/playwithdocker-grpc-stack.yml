@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  grpc:
+    image: skyrabot/grpc:latest
+    container_name: 'skyra-grpc'
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+    ports:
+      - '8291:80'
+  postgres:
+    container_name: postgres
+    image: skyrabot/postgres:main
+    restart: always
+    ports:
+      - '5432:5432'

@@ -2,6 +2,7 @@
 package.lock.json
 
 # Rider configuration
+.idea/
 *DotSettings.user
 
 # Ignore build outputs
@@ -13,3 +14,6 @@ coverage.json
 
 # Ignore generated database migrations
 SkyraDbContextModelSnapshot.cs
+
+# Ignore gitignore
+.gitignore

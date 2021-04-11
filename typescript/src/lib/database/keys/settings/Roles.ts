@@ -1,6 +1,8 @@
 export const Admin = 'rolesAdmin';
 export const Auto = 'rolesAuto';
 export const Initial = 'rolesInitial';
+export const InitialHumans = 'rolesInitialHumans';
+export const InitialBots = 'rolesInitialBots';
 export const Moderator = 'rolesModerator';
 export const Muted = 'rolesMuted';
 export const RestrictedReaction = 'rolesRestrictedReaction';

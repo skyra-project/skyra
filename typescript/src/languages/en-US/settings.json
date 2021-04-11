@@ -70,6 +70,8 @@
 	"rolesAdmin": "The administrator roles. Administrators have access to all moderation and management commands. Defaults to anyone with the {{MANAGE_GUILD, permissions}} permission.",
 	"rolesDj": "The DJ roles for this server. DJs have more advanced control over Skyra's music commands.",
 	"rolesInitial": "The initial role, if configured, I will give it to users as soon as they join.",
+	"rolesInitialHumans": "If configured, I will give this role to regular users upon joining. (not bots)",
+	"rolesInitialBots": "If configured, I will give this role to bot users upon joining.",
 	"rolesModerator": "The moderator roles. Moderators have access to almost all moderation commands. Defaults to anyone who can ban members.",
 	"rolesMuted": "The muted role, if configured, I will give new muted users this role. Otherwise I will prompt you the creation of one.",
 	"rolesPublic": "The public roles. These can be claimed by any user using the `roles` command.",

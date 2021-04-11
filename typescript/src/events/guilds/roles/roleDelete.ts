@@ -35,6 +35,8 @@ export class UserEvent extends Event {
 			settings.selfmodReactionsIgnoredRoles = settings.selfmodReactionsIgnoredRoles.filter((rm) => rm !== role.id);
 
 			if (settings.rolesInitial === role.id) settings.rolesInitial = null;
+			if (settings.rolesInitialHumans === role.id) settings.rolesInitialHumans = null;
+			if (settings.rolesInitialBots === role.id) settings.rolesInitialBots = null;
 			if (settings.rolesMuted === role.id) settings.rolesMuted = null;
 
 			if (settings.rolesRestrictedReaction === role.id) settings.rolesRestrictedReaction = null;

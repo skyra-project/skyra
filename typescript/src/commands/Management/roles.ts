@@ -16,11 +16,13 @@ import type { TFunction } from 'i18next';
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial] = await message.guild.readSettings([
+		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await message.guild.readSettings([
 			GuildSettings.Roles.Public,
 			GuildSettings.Roles.UniqueRoleSets,
 			GuildSettings.Roles.RemoveInitial,
-			GuildSettings.Roles.Initial
+			GuildSettings.Roles.Initial,
+			GuildSettings.Roles.InitialHumans,
+			GuildSettings.Roles.InitialBots
 		]);
 
 		if (!rolesPublic.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
@@ -76,13 +78,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			}
 		}
 
+		const actualInitialRole = rolesInitial ?? (message.author.bot ? rolesInitialBots : rolesInitialHumans);
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
-		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
+		if (actualInitialRole && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild.roles.cache.has(rolesInitial)) {
+			if (!message.guild.roles.cache.has(actualInitialRole)) {
 				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.context.client.logger.fatal(error));
-			} else if (message.member!.roles.cache.has(rolesInitial)) {
-				memberRoles.delete(rolesInitial);
+			} else if (message.member!.roles.cache.has(actualInitialRole)) {
+				memberRoles.delete(actualInitialRole);
 			}
 		}
 

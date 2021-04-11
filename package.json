@@ -91,7 +91,7 @@
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-prettier": "^3.3.1",
 		"grpc-tools": "^1.11.1",
-		"grpc_tools_node_protoc_ts": "^5.2.0",
+		"grpc_tools_node_protoc_ts": "^5.2.1",
 		"husky": "^6.0.0",
 		"jest": "^26.6.3",
 		"jest-circus": "^26.6.3",
@@ -114,6 +114,7 @@
 		"kind-of": "^6.0.3",
 		"lodash": "^4.17.21",
 		"minimist": "^1.2.5",
+		"highlight.js": "^10.7.2",
 		"node-ipc": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 	},
 	"engines": {

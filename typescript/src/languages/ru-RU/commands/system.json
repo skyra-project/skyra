@@ -1,5 +1,5 @@
 {
-	"dmDescription": "Отправляет личное сообщение.",
+	"dmDescription": "",
 	"dmExtended": {
 		"usages": [
 			""
@@ -40,7 +40,7 @@
 		"usages": [
 			""
 		],
-		"extendedHelp": "Вам лучше не знать об этом.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"",
@@ -76,7 +76,7 @@
 		"extendedHelp": ""
 	},
 	"evalTimeout": "",
-	"evalError": "**Ошибка**:{{output}}\n**Тип**:{{type}}\n{{time}}",
+	"evalError": "",
 	"statsTitles": {
 		"stats": "",
 		"uptime": "",
@@ -104,7 +104,7 @@
 	},
 	"disableWarn": "",
 	"dmNotSent": "",
-	"dmSent": "Я отправила вам личное сообщение.",
+	"dmSent": "",
 	"enable": "",
 	"enableDescription": "",
 	"enableExtended": {
@@ -121,7 +121,7 @@
 		"reminder": ""
 	},
 	"reboot": "",
-	"rebootDescription": "Перезагружает бота.",
+	"rebootDescription": "",
 	"rebootExtended": {
 		"extendedHelp": "",
 		"reminder": ""

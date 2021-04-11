@@ -1,274 +1,274 @@
 {
-	"wblushDescription": "¡Sonrójate con una imagen de anime!",
+	"wblushDescription": "",
 	"wblushExtended": {
-		"extendedHelp": "¡Sonrójate con una imagen al azar de anime!"
+		"extendedHelp": ""
 	},
-	"wcryDescription": "¡Llora a alguien con una imagen de anime!",
+	"wcryDescription": "",
 	"wcryExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Llora con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario al que llorar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wcuddleDescription": "¡Abraza a alguien con una foto de anime!",
+	"wcuddleDescription": "",
 	"wcuddleExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "A diferencia del comando original `cuddle`, éste muestra imágenes al azar de animes, ¡disfruta!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario con el que abrazar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wdanceDescription": "¡Baila con una imagen de anime!",
+	"wdanceDescription": "",
 	"wdanceExtended": {
-		"extendedHelp": "¡Baila con una imagen al azar de anime!"
+		"extendedHelp": ""
 	},
-	"whugDescription": "¡Abraza a alguien con una foto de anime!",
+	"whugDescription": "",
 	"whugExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "A diferencia del comando original `hug`, éste muestra imágenes al azar de animes, ¡disfruta!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a abrazar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wkissDescription": "¡Besa a alguien con una foto de anime!",
+	"wkissDescription": "",
 	"wkissExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Besa a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario al que dar el beso."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wlickDescription": "¡Lame a alguien con una foto de anime!",
+	"wlickDescription": "",
 	"wlickExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Lame a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a lamer."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wnomDescription": "¡Nom nom con un 🍞!",
+	"wnomDescription": "",
 	"wnomExtended": {
-		"extendedHelp": "¡Nom nom nom! Que~... ¡Estoy ocupada comiendo!"
+		"extendedHelp": ""
 	},
-	"wnekoDescription": "¡Gatitos humanos!",
+	"wnekoDescription": "",
 	"wnekoExtended": {
-		"extendedHelp": "A diferencia del comando original `kitten`, éste muestra imágenes al azar de animes, ¡disfruta!"
+		"extendedHelp": ""
 	},
-	"wpatDescription": "¡Acaricia la cabeza de alguien!",
+	"wpatDescription": "",
 	"wpatExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Acaricia la cabeza de alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario con el que dar palmaditas."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wpoutDescription": "Siento que alguien... perdió su cordura",
+	"wpoutDescription": "",
 	"wpoutExtended": {
-		"extendedHelp": "¡Muestra tu expresión con una imagen de anime al azar!"
+		"extendedHelp": ""
 	},
-	"wslapDescription": "¡Abofetea a alguien con una foto de anime!",
+	"wslapDescription": "",
 	"wslapExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "A diferencia del comando original `slap`, éste muestra imágenes al azar de animes, ¡disfruta!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a abofetear."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Pete"
+			""
 		]
 	},
-	"wsmugDescription": "Cara engreída",
+	"wsmugDescription": "",
 	"wsmugExtended": {
-		"extendedHelp": "¡Solo una cara angreída de anime!"
+		"extendedHelp": ""
 	},
-	"wstareDescription": "*Mirar fijamente*",
+	"wstareDescription": "",
 	"wstareExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "*Sigue mirándote fijamente*",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario al que mirar fijamente."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Pete"
+			""
 		]
 	},
-	"wtickleDescription": "¡Dale cosquillas a alguien con una imagen de anime!",
+	"wtickleDescription": "",
 	"wtickleExtended": {
-		"extendedHelp": "¡Dale cosquillas a alguien!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a darle cosquillas."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"weebUnavailableError": "Lo sentimos, pero la fuente de todas mis imágenes de anime no está disponible en este momento. Por favor, ¡inténtelo más tarde!",
-	"weebUnexpectedError": "¡Que extraño! ¡Encontré un error que nunca debería haber recibido!",
-	"wbangDescription": "Bang 💥🔫!",
+	"weebUnavailableError": "",
+	"weebUnexpectedError": "",
+	"wbangDescription": "",
 	"wbangExtended": {
-		"extendedHelp": "¡Dispara a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario al que disparar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wbangheadDescription": "¡PARA! ¡Estoy golpeandome la cabeza!",
+	"wbangheadDescription": "",
 	"wbangheadExtended": {
-		"extendedHelp": "¡Golpéate la cabeza con una imagen al azar de anime!"
+		"extendedHelp": ""
 	},
-	"wbiteDescription": "*nom nom* ¡estás delicioso/a!",
+	"wbiteDescription": "",
 	"wbiteExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Muerde a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a morder."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wgreetDescription": "¡Saluda a otro usuario!",
+	"wgreetDescription": "",
 	"wgreetExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Saluda a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a saludar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wlewdDescription": "¡Lewds! ¡Lewds! ¡Lewds!",
+	"wlewdDescription": "",
 	"wlewdExtended": {
-		"extendedHelp": "¡Imagen de anime al azar sobre esa lujuria!"
+		"extendedHelp": ""
 	},
-	"wpunchDescription": "*pow* 👊👊",
+	"wpunchDescription": "",
 	"wpunchExtended": {
 		"usages": [
-			"Usuario"
+			""
 		],
-		"extendedHelp": "¡Da un puñetazo a alguien con una imagen al azar de anime!",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"El usuario a darle un puñetazo."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"@Skyra"
+			""
 		]
 	},
-	"wsleepyDescription": "Estoy tan dormida... *bosteza*",
+	"wsleepyDescription": "",
 	"wsleepyExtended": {
-		"extendedHelp": "¡Demuestre lo dormido que estás con una imagen de anime al azar!"
+		"extendedHelp": ""
 	},
-	"wsmileDescription": "Huh, porque estoy feliz. ¡Da palmas si te sientes como una habitación sin tejado!",
+	"wsmileDescription": "",
 	"wsmileExtended": {
-		"extendedHelp": "¡Demuestre lo feliz que estás con una imagen de anime al azar!"
+		"extendedHelp": ""
 	},
-	"wthumbsupDescription": "¡Levanta tu pulgar en el aire en un espectáculo magnífico de aprobación!",
+	"wthumbsupDescription": "",
 	"wthumbsupExtended": {
-		"extendedHelp": "¡Levanta tu pulgar con una imagen al azar de anime!"
+		"extendedHelp": ""
 	},
-	"wbang": "Hola {{user}}... ¡bang!",
-	"wbanghead": "¡Golpeo de cabeza en progreso!",
-	"wbite": "¡Mordiendo a {{user}}!",
-	"wblush": "¡Le sonrojaste! 😊",
-	"wcry": "Estimado/a {{user}}, ¿le hiciste llorar? 💔",
-	"wcuddle": "Aquí tienes un abrazo, para ti, {{user}} 💞",
-	"wdance": "¡Bailando! 💃",
-	"wgreet": "¡Hola {{user}}!",
-	"whug": "Aquí tienes un abrazo, para ti, {{user}} ❤",
-	"wkiss": "Aquí tienes un beso para ti, {{user}}💜",
-	"wlewd": "¡Demasiado lewd para mis gustos!",
-	"wlick": "Lamiendo a {{user}} 👅",
-	"wnom": "¡Nom, nom, nom! 😊",
-	"wneko": "¡Miau! 🐱",
-	"wpat": "Acaricia la cabeza de {{user}} suavemente ❤",
-	"wpout": "¿Uh?",
-	"wpunch": "¡Golpeando a {{user}}!",
-	"wslap": "¡Abofeteando a {{user}}!",
-	"wsleepy": "Durmiendo...",
-	"wsmile": "¡Mostrando una sonrisa brillante!",
-	"wsmug": "¡Ahí tienes una cara engreída!",
-	"wstare": "Estimado/a {{user}}, alguien te está observando minuciosamente 👀",
-	"wthumbsup": "¡Tienes sus pulgares levantados!",
-	"wtickle": "¡Cosquillas para ti, {{user}}!"
+	"wbang": "",
+	"wbanghead": "",
+	"wbite": "",
+	"wblush": "",
+	"wcry": "",
+	"wcuddle": "",
+	"wdance": "",
+	"wgreet": "",
+	"whug": "",
+	"wkiss": "",
+	"wlewd": "",
+	"wlick": "",
+	"wnom": "",
+	"wneko": "",
+	"wpat": "",
+	"wpout": "",
+	"wpunch": "",
+	"wslap": "",
+	"wsleepy": "",
+	"wsmile": "",
+	"wsmug": "",
+	"wstare": "",
+	"wthumbsup": "",
+	"wtickle": ""
 }

@@ -1,63 +1,63 @@
 {
-	"growthDescription": "Muestra mi crecimiento en las últimas 24 horas.",
+	"growthDescription": "",
 	"growthExtended": {
-		"extendedHelp": "Cada día llego a más usuarios y servidores. ¿Alguna vez has querido ver cómo va ese crecimiento? Puedes usar este comando para averiguarlo.",
-		"reminder": "La información sólo se actualizará cada 12 horas."
+		"extendedHelp": "",
+		"reminder": ""
 	},
-	"growthOutfluxError": "No se pudo solicitar información del crecimiento. Inténtalo de nuevo en unas horas.",
-	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
-	"helpCommandCount": "{{count}} comando",
-	"helpCommandCount_plural": "{{count}} comandos",
+	"growthOutfluxError": "",
+	"helpAllFlag": "",
+	"helpCommandCount": "",
+	"helpCommandCount_plural": "",
 	"helpData": {
-		"footer": "Descripción de ayuda para {{footerName}}",
-		"title": "{{titleDescription}}"
+		"footer": "",
+		"title": ""
 	},
-	"helpDescription": "Muestra todos los comandos o la descripción de uno.",
+	"helpDescription": "",
 	"helpExtended": {
 		"usages": [
-			"--cat/--categories",
-			"--all",
-			"NombreDeCategoría",
-			"Página",
-			"NombreDeComando"
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"extendedHelp": "El comando de ayuda muestra una lista paginada de todos los comandos por sus categorías, o la información extendida de un comando si se especifica.\n\nSi utiliza `--categories` o `--cat`, puede obtener la lista de todas las categorías y la cantidad de comandos en cada una de ellas.",
-		"reminder": "El comando de ayuda **sólo** muestra los comandos que puedes utilizar. Para la lista completa, por favor visita <https://skyra.pw/commands>.",
-		"examples": [
-			"--cat",
-			"--all",
-			"Moderación",
-			"12",
-			"help"
-		]
-	},
-	"helpDm": "📥 | La lista de comandos a los que tienes acceso ha sido enviada a tus mensajes directos.",
-	"helpNodm": "{{REDCROSS}} | Tienes los mensajes directos deshabilitados, por lo que no pude enviarte la lista de comandos.",
-	"infoBody": "Skyra {{VERSION}} es un bot multipropósito de Discord diseñado para ejecutar la mayoría de las tareas con un gran rendimiento y un constante tiempo de actividad las 24 horas al día durante los 7 días de la semana.\nElla está construida sobre el framework Sapphire, un framework 'plug-and-play' construido sobre la librería Discord.js.\n\nSkyra tiene:\n• Moderación avanzada con acciones temporales incluídas\n• Gestión de anuncios\n• Totalmente configurable\n• Registros de mensajes, registros de miembros, y registros de mods\n• Multilenguaje\n• Perfiles y niveles, con tablas de clasificación y gestión social\n• Gestión de roles\n• Comandos de anime (+10)!\n• Una PokéDex completa con todos los datos que necesitarás\nY mucho más!",
-	"infoDescription": "Proporciona información acerca de mí.",
-	"infoExtended": {
-		"extendedHelp": "Simplemente... eso :P"
-	},
-	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
-	"inviteExtended": {
-		"usages": [
-			"--noperms/--nopermissions"
-		],
-		"extendedHelp": "Si desea obtener un enlace donde Skyra no solicitará ningún permiso, añada `noperms`, `--noperms` o `--nopermissions` al comando.",
+		"extendedHelp": "",
+		"reminder": "",
 		"examples": [
 			"",
-			"noperms",
-			"--noperms",
-			"--nopermissions"
+			"",
+			"",
+			"",
+			""
 		]
 	},
-	"invitePermissionInviteText": "Invítame a tu servidor",
-	"invitePermissionsDescription": "No tengas miedo de desmarcar algunos permisos, te informaré si estás intentando ejecutar un comando sin permisos.",
-	"invitePermissionSupportServerText": "Unirse al Servidor de Soporte",
-	"ping": "{{LOADING}} Eco...",
-	"pingDescription": "Ejecuta una prueba de conexión con Discord.",
-	"pingExtended": {
-		"extendedHelp": "¡Eco!"
+	"helpDm": "",
+	"helpNodm": "",
+	"infoBody": "",
+	"infoDescription": "",
+	"infoExtended": {
+		"extendedHelp": ""
 	},
-	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)"
+	"inviteDescription": "",
+	"inviteExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"invitePermissionInviteText": "",
+	"invitePermissionsDescription": "",
+	"invitePermissionSupportServerText": "",
+	"ping": "",
+	"pingDescription": "",
+	"pingExtended": {
+		"extendedHelp": ""
+	},
+	"pingPong": ""
 }

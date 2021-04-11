@@ -3,9 +3,32 @@
 	"boolean": "",
 	"booleanDisabled": "",
 	"booleanEnabled": "",
-	"booleanFalseOptions": ["", "", "", "", "", "", "", "", ""],
-	"booleanTrueOptions": ["", "", "", "", "", "", "", "", ""],
-	"caseLatestOptions": ["", ""],
+	"booleanFalseOptions": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"booleanTrueOptions": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"caseLatestOptions": [
+		"",
+		""
+	],
 	"categoryChannel": "",
 	"channel": "",
 	"command": "",
@@ -41,7 +64,10 @@
 	"numberTooBig": "",
 	"numberTooSmall": "",
 	"piece": "",
-	"resetPossibles": ["", ""],
+	"resetPossibles": [
+		"",
+		""
+	],
 	"role": "",
 	"roleMissingGuild": "",
 	"scopeGlobal": "",

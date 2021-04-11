@@ -6,6 +6,7 @@ import { BrandingColors } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
@@ -54,7 +55,11 @@ export class UserCommand extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
-		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, context.commandPrefix));
+		const prefix =
+			(context.prefix instanceof RegExp && !context.commandPrefix.endsWith(' ')) || UserOrMemberMentionRegex.test(context.commandPrefix)
+				? `${context.commandPrefix} `
+				: context.commandPrefix;
+		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, prefix));
 
 		return this.canRunPaginatedMessage(message) ? this.display(message, args, null) : this.all(message, args);
 	}

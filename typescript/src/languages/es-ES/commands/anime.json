@@ -1,62 +1,62 @@
 {
-	"animeDescription": "Busca tu anime favorito por su título con este comando.",
+	"animeDescription": "",
 	"animeExtended": {
 		"usages": [
-			"Nombre de Anime"
+			""
 		],
-		"extendedHelp": "Este comando consulta Kitsu.io para mostrar los datos del anime que usted solicite.",
+		"extendedHelp": "",
 		"examples": [
-			"One Piece"
+			""
 		]
 	},
-	"mangaDescription": "Busca tu manga favorito por su título con este comando.",
+	"mangaDescription": "",
 	"mangaExtended": {
 		"usages": [
-			"Nombre de Manga"
+			""
 		],
-		"extendedHelp": "Este comando consulta Kitsu.io para mostrar los datos del manga que usted solicite.",
+		"extendedHelp": "",
 		"examples": [
-			"Stone Ocean",
-			"One Piece"
+			"",
+			""
 		]
 	},
-	"waifuDescription": "Publica una imagen de una waifu generada al azar.",
+	"waifuDescription": "",
 	"waifuExtended": {
-		"extendedHelp": "Este comando publica un waifu aleatorio generado por <https://thiswaifudoesnotexist.net/>"
+		"extendedHelp": ""
 	},
 	"animeTypes": {
-		"tv": "📺 TV",
-		"movie": "🎥 Película",
-		"ova": "📼 Animación original de vídeo",
-		"special": "🎴 Especial"
+		"tv": "",
+		"movie": "",
+		"ova": "",
+		"special": ""
 	},
-	"animeOutputDescription": "**Título en inglés:** {{englishTitle}}\n**Título japonés:** {{japaneseTitle}}\n**Título canónico:** {{canonicalTitle}}\n{{synopsis}}",
-	"animeNoSynopsis": "No hay ninguna aplicación disponible para este título.",
+	"animeOutputDescription": "",
+	"animeNoSynopsis": "",
 	"animeEmbedData": {
-		"type": "Tipo",
-		"score": "Puntuación",
-		"episodes": "Episodio(s)",
-		"episodeLength": "Longitud del episodio",
-		"ageRating": "Clasificación por edad",
-		"firstAirDate": "Primera fecha de emisión",
-		"watchIt": "Véalo aquí:",
-		"stillAiring": "Sigue emitiendo"
+		"type": "",
+		"score": "",
+		"episodes": "",
+		"episodeLength": "",
+		"ageRating": "",
+		"firstAirDate": "",
+		"watchIt": "",
+		"stillAiring": ""
 	},
-	"mangaOutputDescription": "**Título en inglés:** {{englishTitle}}\n**Título japonés:** {{japaneseTitle}}\n**Título canónico:** {{canonicalTitle}}\n{{synopsis}}",
+	"mangaOutputDescription": "",
 	"mangaTypes": {
-		"manga": "📘 Manga",
-		"novel": "📕 Novel",
-		"manhwa": "🇰🇷 Manhwa",
-		"oneShot": "☄ One Shot",
-		"special": "🎴 Especial"
+		"manga": "",
+		"novel": "",
+		"manhwa": "",
+		"oneShot": "",
+		"special": ""
 	},
 	"mangaEmbedData": {
-		"ageRating": "Clasificación por edad",
-		"firstPublishDate": "Publicado originalmente",
-		"readIt": "Léalo aquí:",
-		"score": "Puntuación",
-		"type": "Subtipo",
-		"none": "Ninguno"
+		"ageRating": "",
+		"firstPublishDate": "",
+		"readIt": "",
+		"score": "",
+		"type": "",
+		"none": ""
 	},
-	"waifuFooter": "Hecho posible gracias a thiswaifudoesnotexist.net"
+	"waifuFooter": ""
 }

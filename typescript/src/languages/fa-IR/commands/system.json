@@ -146,7 +146,7 @@
 	"reloadInvalidEverything": "No pude resolver `{{parameter}}` a un válido \"everything\".\n**Pista**: El único valor posible es `everything`.",
 	"reloadLanguage": "{{GREENTICK}} Recargado recurso de idioma `{{language}}`. (Tomó: {{time}})",
 	"supportDescription": "Muestra las instrucciones de soporte",
-	"supportEmbedDescription": "¡Entonces probablemente deberías unirte a [Skyra's Lounge](https://join.skyra.pw)! ¡Aquí, puedes recibir apoyo de los desarrolladores y otros miembros de la comunidad!",
+	"supportEmbedDescription": "",
 	"supportEmbedTitle": "¿Estás buscando ayuda, {{username}}?",
 	"supportExtended": {
 		"extendedHelp": "Este comando te da un enlace a *Skyra's Lounge*, el mejor lugar para todo lo relacionado conmigo."

@@ -264,6 +264,14 @@ namespace Skyra.Database.Models.Entities
 		[StringLength(19)]
 		public string? RolesInitial { get; set; }
 
+		[Column("roles.initial-humans")]
+		[StringLength(19)]
+		public string? rolesInitialHumans { get; set; }
+
+		[Column("roles.initial-bots")]
+		[StringLength(19)]
+		public string? rolesInitialBots { get; set; }
+
 		[Required]
 		[Column("roles.moderator", TypeName = "character varying(19)[]")]
 		public string[] RolesModerator { get; set; } = Array.Empty<string>();

@@ -1,29 +1,29 @@
 {
-	"commandModeEnable": "Habilita el sub-sistema.",
-	"commandModeDisable": "Deshabilita el sub-sistema.",
-	"commandModeActionAlert": "Alternar alertas de mensajes en el canal.",
-	"commandModeActionLog": "Alterna los registros de mensajes en el canal de registro de moderación, si estuviera definido.",
-	"commandModeActionDelete": "Alterna el borrado de mensajes.",
-	"commandModePunishment": "La acción de moderación que debo tomar.",
-	"commandModePunishmentDuration": "La duración de la penalización.",
-	"commandModeThreshold": "La cantidad de infracciones que se pueden hacer dentro de `Threshold-Duration` antes de tomar acción, instantáneamente si no está establecido.",
-	"commandModeThresholdDuration": "El tiempo en el que las infracciones se acumularán antes de tomar acción, instantáneamente si no está establecido.",
-	"commandModeReminder": "`Action Log` requiere que `channel.logs.moderation` esté ya configurado.",
-	"commandHandlerAborted": "Cancelado",
-	"nickSet": "Me he cambiado el apodo a **{{nickname}}**.",
-	"nickCleared": "Apodo borrado.",
-	"permissionNodesHigher": "{{REDCROSS}} No puedes modificar ni previsualizar los nodos de permiso para este objetivo.",
-	"permissionNodesCannotAllowEveryone": "{{REDCROSS}} No puedes habilitar comandos para el rol `@everyone`.",
-	"permissionNodesInvalidType": "{{REDCROSS}} Tipo inválido, se esperaba ya sea de `allow` o `deny`.",
-	"permissionNodesAdd": "{{GREENTICK}} Se ha añadido correctamente el comando al nodo de permisos.",
-	"permissionNodesNodeNotExists": "{{REDCROSS}} El nodo de permiso seleccionado no existe.",
-	"permissionNodesCommandNotExists": "{{REDCROSS}} El comando seleccionado no existe en el nodo de permiso.",
-	"permissionNodesRemove": "{{GREENTICK}} Se ha eliminado correctamente el comando del nodo de permisos.",
-	"permissionNodesReset": "{{GREENTICK}} Se han eliminado correctamente todos los comandos del nodo de permisos.",
-	"permissionNodesShowName": "Permisos para: __{{name}}__",
-	"permissionNodesShowAllow": "**Permitidos**: {{allow}}",
-	"permissionNodesShowDeny": "**Desactivado**: {{deny}}",
-	"triggersRemoveNottaken": "No hay ningún disparador con esta entrada.",
+	"commandModeEnable": "",
+	"commandModeDisable": "",
+	"commandModeActionAlert": "",
+	"commandModeActionLog": "",
+	"commandModeActionDelete": "",
+	"commandModePunishment": "",
+	"commandModePunishmentDuration": "",
+	"commandModeThreshold": "",
+	"commandModeThresholdDuration": "",
+	"commandModeReminder": "",
+	"commandHandlerAborted": "",
+	"nickSet": "",
+	"nickCleared": "",
+	"permissionNodesHigher": "",
+	"permissionNodesCannotAllowEveryone": "",
+	"permissionNodesInvalidType": "",
+	"permissionNodesAdd": "",
+	"permissionNodesNodeNotExists": "",
+	"permissionNodesCommandNotExists": "",
+	"permissionNodesRemove": "",
+	"permissionNodesReset": "",
+	"permissionNodesShowName": "",
+	"permissionNodesShowAllow": "",
+	"permissionNodesShowDeny": "",
+	"triggersRemoveNottaken": "",
 	"triggersRemove": "",
 	"triggersAddTaken": "",
 	"triggersAdd": "",
@@ -98,35 +98,35 @@
 	"createMuteExtended": {
 		"extendedHelp": ""
 	},
-	"nickDescription": "Cambiar el apodo de Skyra para este servidor.",
+	"nickDescription": "",
 	"nickExtended": {
 		"usages": [
 			"",
-			"Apodo"
+			""
 		],
-		"extendedHelp": "Este comando te permite cambiar el apodo de Skyra fácilmente para el servidor.",
-		"reminder": "Este comando requiere el permiso **{{CHANGE_NICKNAME, permissions}}. Asegúrate de que Skyra lo tenga.",
+		"extendedHelp": "",
+		"reminder": "",
 		"explainedUsage": [
 			[
-				"Apodo",
-				"El nuevo apodo. Si no pones ninguno, se pondrá eliminará."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"SkyNET",
-			"Asistente",
+			"",
+			"",
 			""
 		]
 	},
-	"permissionNodesDescription": "Configurar los nodos de permiso para este servidor.",
+	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
 		"usages": [
-			"add Rol/Miembro allow/deny Comando",
-			"remove Role/Member allow/deny Command",
-			"reset Rol/Miembro",
-			"show Rol/Miembro",
-			"show",
-			"Rol/Miembro"
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -310,25 +310,25 @@
 	"setIgnoreChannelsDescription": "",
 	"setIgnoreChannelsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"canal",
+				"",
 				""
 			]
 		],
 		"reminder": "",
 		"examples": [
-			"#general",
+			"",
 			""
 		]
 	},
 	"setImageLogsDescription": "",
 	"setImageLogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -338,14 +338,14 @@
 			]
 		],
 		"examples": [
-			"#registro-de-imagenes",
-			"here"
+			"",
+			""
 		]
 	},
-	"setMemberLogsDescription": "Establece el canal de registros de miembros.",
+	"setMemberLogsDescription": "",
 	"setMemberLogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -355,32 +355,32 @@
 			]
 		],
 		"examples": [
-			"#registro-de-miembros",
-			"here"
+			"",
+			""
 		]
 	},
-	"setMessageLogsDescription": "Establece el canal de registros de mensajes.",
+	"setMessageLogsDescription": "",
 	"setMessageLogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"canal",
+				"",
 				""
 			]
 		],
 		"reminder": "",
 		"examples": [
-			"#registro-de-mensajes",
-			"here"
+			"",
+			""
 		]
 	},
 	"setmodlogsDescription": "",
 	"setmodlogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -421,67 +421,67 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"emoji",
-				"El emoji a establecer."
+				"",
+				""
 			]
 		],
-		"reminder": "Usa esto sabiamente, no todo el mundo espera que el tablero de estrellas se actúe con un emoji personalizado.",
+		"reminder": "",
 		"examples": [
-			"⭐"
+			""
 		]
 	},
-	"guildInfoDescription": "Revise la información del servidor.",
+	"guildInfoDescription": "",
 	"guildInfoExtended": {
-		"extendedHelp": "El comando serverinfo muestra información para el servidor en el que el mensaje ha sido enviado.\nMuestra la cantidad de canales, con el recuento para cada categoría, la cantidad de miembros (dada desde la API), el propietario con su id de usuario, la cantidad de roles, región, fecha de creación, nivel de verificación. entre otros."
+		"extendedHelp": ""
 	},
-	"roleInfoDescription": "Revise la información de un rol.",
+	"roleInfoDescription": "",
 	"roleInfoExtended": {
 		"usages": [
-			"Rol",
+			"",
 			""
 		],
-		"extendedHelp": "El comando roleinfo muestra información para un rol, como su id, nombre, color, si está elevado (se muestre por separado), su posición de jerarquía de rol, si mencionable, cuántos miembros tienen dicho el rol y sus permisos.\nEnvía un mensaje incrustado con el color del rol.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Rol",
-				"Nombre del rol, mención o id."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"Administrador",
-			"Moderador",
+			"",
+			"",
 			""
 		]
 	},
 	"stickyRolesDescription": "",
 	"stickyRolesExtended": {
 		"usages": [
-			"add Usuario Rol",
-			"remove Usuario Rol",
-			"reset Usuario",
-			"show Usuario",
-			"Usuario"
+			"",
+			"",
+			"",
+			"",
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Acción",
+				"",
 				""
 			],
 			[
-				"Usuario",
-				"El usuario objetivo para todas las acciones."
+				"",
+				""
 			],
 			[
-				"Rol",
-				"El rol a añadir o eliminar."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"add Skyra Diosa",
-			"show Skyra",
-			"remove Skyra Diosa",
-			"reset Skyra"
+			"",
+			"",
+			"",
+			""
 		],
 		"reminder": ""
 	},
@@ -502,19 +502,19 @@
 		"explainedUsage": [
 			[
 				"",
-				"$t(commands/management:commandModeEnable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeDisable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionLog)"
+				""
 			],
 			[
 				"",
@@ -570,38 +570,38 @@
 			],
 			[
 				"",
-				"$t(commands/management:commandModeDisable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionLog)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionDelete)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishment)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishmentDuration)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThreshold)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThresholdDuration)"
+				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",
@@ -648,15 +648,15 @@
 		"explainedUsage": [
 			[
 				"",
-				"$t(commands/management:commandModeEnable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeDisable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
@@ -683,7 +683,7 @@
 				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",
@@ -712,42 +712,42 @@
 		"explainedUsage": [
 			[
 				"",
-				"$t(commands/management:commandModeEnable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeDisable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionLog)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionDelete)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishment)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishmentDuration)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThreshold)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThresholdDuration)"
+				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",
@@ -784,34 +784,34 @@
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionLog)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionDelete)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishment)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishmentDuration)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThreshold)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThresholdDuration)"
+				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",
@@ -904,42 +904,42 @@
 		"explainedUsage": [
 			[
 				"",
-				"$t(commands/management:commandModeEnable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeDisable)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionAlert)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionLog)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeActionDelete)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishment)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishmentDuration)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThreshold)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThresholdDuration)"
+				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",
@@ -968,10 +968,6 @@
 		"explainedUsage": [
 			[
 				"",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"",
 				""
 			],
 			[
@@ -992,18 +988,22 @@
 			],
 			[
 				"",
-				"$t(commands/management:commandModePunishmentDuration)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThreshold)"
+				""
 			],
 			[
 				"",
-				"$t(commands/management:commandModeThresholdDuration)"
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
-		"reminder": "$t(commands/management:commandModeReminder)",
+		"reminder": "",
 		"examples": [
 			"",
 			"",

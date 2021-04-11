@@ -1,83 +1,83 @@
 {
-	"suggestDescription": "Publica una sugerencia para el servidor.",
+	"suggestDescription": "",
 	"suggestExtended": {
 		"usages": [
-			"Sugerencia",
-			"Mensaje"
+			"",
+			""
 		],
-		"extendedHelp": "Publica una sugerencia en el canal de sugerencias del servidor, si está configurado.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Sugerencia",
-				"Su sugerencia."
+				"",
+				""
 			],
 			[
-				"Mensaje",
-				"Un mensaje existente a utilizar como sugerencia, esto sólo funciona para los administradores."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"¡Vamos a hacer un canal de música!",
-			"https://discord.com/channels/254360814063058944/283965220446273547/822462253202538506"
+			"",
+			""
 		],
-		"reminder": "Necesitas tener una configuración de canal de sugerencias para que este comando funcione. Si eres un administrador, se te dará la oportunidad de hacerlo al invocar el comando."
+		"reminder": ""
 	},
-	"suggestNoSetup": "Lo siento {{username}}, pero no se ha configurado un canal de sugerencias.",
-	"suggestNopermissions": "¡Lo siento {{username}}, pero los administradores no me dieron permiso para enviar mensajes en {{channel}}!",
-	"suggestTitle": "Sugerencia #{{id}}",
-	"suggestSuccess": "¡Gracias por su sugerencia! Se ha publicado correctamente en {{channel}}!",
-	"resolveSuggestionDescription": "Establece el estado de la sugerencia.",
+	"suggestNoSetup": "",
+	"suggestNopermissions": "",
+	"suggestTitle": "",
+	"suggestSuccess": "",
+	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
 		"usages": [
-			"Sugerencia accept/a/deny/d/consider/c",
-			"Sugerencia accept/a/deny/d/consider/c Comentario"
+			"",
+			""
 		],
-		"extendedHelp": "Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Sugerencia",
-				"La sugerencia a resolver, también acepta `latest` para gestionar la última sugerencia."
+				"",
+				""
 			],
 			[
-				"accept/a/deny/d/consider/c",
-				"Si cambiar el estado de la sugerencia a aceptado, rechazado o considerado."
+				"",
+				""
 			],
 			[
-				"Comentario",
-				"Un comentario opcional que desea mandar a la persona que hizo esta sugerencia."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"latest accept ¡Gracias por tu sugerencia!",
-			"1 accept ¡Gracias por tu sugerencia!",
-			"1 a ¡Gracias por tu sugerencia!",
-			"1 consider Hmm... podemos hacer esto, pero es muy baja prioridad",
-			"1 c Hmm... podemos hacer esto, pero es muy baja prioridad",
-			"1 deny No hay manera de que esto vaya a suceder.",
-			"1 d No hay manera de que esto vaya a suceder."
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		],
-		"reminder": "Las sugerencias también pueden configurarse para mandar DM al autor con respecto al estado de su sugerencia, con la opción `suggestions.on-action.dm`.\nAdemás, en caso de que desee conservar el anonimato, puede ocultar su nombre usando la configuración en `suggestions.on-action`, que puede ser anulada con las opciones `--hide-author` y `--show-author`."
+		"reminder": ""
 	},
-	"resolveSuggestionInvalidId": "Lo siento, ¡pero no pude resolver `{{parameter}}` a un ID de sugerencia válida! Son enteros entre {{minimum, number}} y {{maximum, number}} inclusive.",
-	"resolveSuggestionInvalidAction": "Lo siento, pero no pude resolver `{{parameter}}` a una acción válida.\n**Pista**: Los valores posibles son: {{possibles, orList}}.",
-	"resolveSuggestionMessageNotFound": "{{REDCROSS}} No pude recuperar la sugerencia ya que su mensaje ha sido eliminado.",
-	"resolveSuggestionIdNotFound": "{{REDCROSS}} No se ha podido encontrar una sugerencia con ese ID",
-	"resolveSuggestionDefaultComment": "No se ha proporcionado ningún comentario.",
-	"resolveSuggestionAuthorAdmin": "Un administrador",
-	"resolveSuggestionAuthorModerator": "Un moderador",
+	"resolveSuggestionInvalidId": "",
+	"resolveSuggestionInvalidAction": "",
+	"resolveSuggestionMessageNotFound": "",
+	"resolveSuggestionIdNotFound": "",
+	"resolveSuggestionDefaultComment": "",
+	"resolveSuggestionAuthorAdmin": "",
+	"resolveSuggestionAuthorModerator": "",
 	"resolveSuggestionActions": {
-		"accept": "{{author}} ha aceptado esta sugerencia:",
-		"consider": "{{author}} ha considerado esta sugerencia:",
-		"deny": "{{author}} ha rechazado esta sugerencia:"
+		"accept": "",
+		"consider": "",
+		"deny": ""
 	},
 	"resolveSuggestionActionsDms": {
-		"accept": "{{author}} ha aceptado esta sugerencia en {{guild}}:",
-		"consider": "{{author}} consideró esta sugerencia en {{guild}}:",
-		"deny": "{{author}} ha rechazado esta sugerencia en {{guild}}:"
+		"accept": "",
+		"consider": "",
+		"deny": ""
 	},
-	"resolveSuggestionDmFail": "{{REDCROSS}} No pude enviar al autor un MD. ¿Están cerrados sus MD?",
-	"resolveSuggestionSuccess": "{{GREENTICK}} ¡Se ha {{actionText}} la sugerencia `{{id}}` con éxito!",
-	"resolveSuggestionSuccessAcceptedText": "aceptada",
-	"resolveSuggestionSuccessDeniedText": "rechazada",
-	"resolveSuggestionSuccessConsideredText": "considerada"
+	"resolveSuggestionDmFail": "",
+	"resolveSuggestionSuccess": "",
+	"resolveSuggestionSuccessAcceptedText": "",
+	"resolveSuggestionSuccessDeniedText": "",
+	"resolveSuggestionSuccessConsideredText": ""
 }

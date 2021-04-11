@@ -240,19 +240,19 @@
 		"extendedHelp": "This command manages this server's per-channel blocked command list, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
 		"explainedUsage": [
 			[
-				"show [channel\\\\]",
+				"show [channel\\]",
 				"Show the list of commands blocked in the specified channel."
 			],
 			[
-				"add [channel\\\\] <command>",
+				"add [channel\\] <command>",
 				"Add a command to the specified channel's list of blocked commands."
 			],
 			[
-				"remove [channel\\\\] <command>",
+				"remove [channel\\] <command>",
 				"Remove a command from the specified channel's list of blocked commands."
 			],
 			[
-				"reset [channel\\\\]",
+				"reset [channel\\]",
 				"Clear the list of commands blocked in the specified channel."
 			]
 		],

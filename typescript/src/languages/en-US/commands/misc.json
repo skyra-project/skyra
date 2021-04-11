@@ -443,7 +443,7 @@
 	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, dateFull}}.",
 	"upcomingBirthdaysDescription": "View the next 10 birthdays in this server.",
 	"upcomingBirthdaysTitle": "Upcoming Birthdays",
-	"upcomingBirthdaysNone": "",
+	"upcomingBirthdaysNone": "There aren't any upcoming birthdays set! Use {{prefix}}birthday to set your birthday.",
 	"upcomingBirthdaysExtended": {
 		"extendedHelp": "Use to find out whose birthday is when",
 		"reminder": "If people haven't set their year I will show \"unknown\" for the user's age"

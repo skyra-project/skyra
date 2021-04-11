@@ -4,5 +4,5 @@
 		"allowJs": true,
 		"checkJs": true
 	},
-	"include": ["src", "scripts", "tests", "jest.config.ts", "ormconfig.js"]
+	"include": ["typescript", "scripts", "ormconfig.js"]
 }

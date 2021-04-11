@@ -106,27 +106,74 @@
 	"setColor": "",
 	"socialDescription": "",
 	"socialExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"bannerDescription": "",
 	"bannerExtended": {
-		"usages": ["", "", "", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"toggleDarkModeDescription": "",
 	"toggleDarkModeExtended": {
@@ -134,50 +181,103 @@
 	},
 	"autoRoleDescription": "",
 	"autoRoleExtended": {
-		"usages": ["", "", "", "", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": "",
-		"examples": ["", "", "", "", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"balanceDescription": "",
 	"balanceExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": ""
 	},
 	"dailyDescription": "",
 	"dailyExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
 	"divorceDescription": "",
 	"divorceExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": ""
 	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"leaderboardHeader": "",
 	"leaderboardUnknownUser": "",
 	"levelDescription": "",
 	"levelExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"marriedDescription": "",
@@ -186,69 +286,172 @@
 	},
 	"marryDescription": "",
 	"marryExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"mylevelDescription": "",
 	"mylevelExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"payDescription": "",
 	"payExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"profileDescription": "",
 	"profileExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"remindmeDescription": "",
 	"remindmeExtended": {
-		"usages": ["", "", "", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"reputationDescription": "",
 	"reputationExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": "",
-		"examples": ["", "", "", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"setColorDescription": "",
 	"setColorExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"possibleFormats": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"vaultDescription": "",
@@ -260,13 +463,29 @@
 		"withdrewDescription": ""
 	},
 	"vaultExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"vaultNotEnoughInVault": "",
 	"vaultNotEnoughMoney": "",

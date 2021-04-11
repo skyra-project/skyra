@@ -24,7 +24,7 @@
 	"bannerUserlistEmpty": "",
 	"bannerResetDefault": "",
 	"bannerReset": "",
-	"bannerSetNotBought": "Вы ещё не купили этот баннер.",
+	"bannerSetNotBought": "",
 	"bannerSet": "",
 	"bannerBought": "",
 	"bannerMoney": "",
@@ -40,29 +40,29 @@
 	"dailyGraceDenied": "",
 	"dailyCollect": "",
 	"level": {
-		"level": "Уровень",
-		"experience": "Опыт",
+		"level": "",
+		"experience": "",
 		"nextIn": ""
 	},
 	"divorceSelf": "",
 	"divorceNotTaken": "",
 	"divorcePrompt": "",
 	"divorceCancel": "",
-	"divorceDm": "Простите... но... вы помните {{user}}? Он/а решил/а расстаться с вами 💔!",
+	"divorceDm": "",
 	"divorceSuccess": "",
 	"marryWith": "",
 	"marryNotTaken": "",
 	"marrySkyra": "",
 	"marryAelia": "",
-	"marryBots": "О нет! Вам не следует вступать в брак с ботами! Они всё ещё не понимают, что такое настоящая любовь, и они не тёплые!",
+	"marryBots": "",
 	"marrySelf": "",
 	"marryAuthorTaken": "",
 	"marryAuthorMultipleCancel": "",
-	"marryTaken": "Этот пользователь уже состоит в браке с кем-то. Хотите присоединиться к его/её гарему?",
-	"marryTaken_plural": "Этот пользователь уже состоит в браке с {{spousesCount}} людьми. Хотите присоединиться к его/её гарему?",
-	"marryAlreadyMarried": "Вы уже состоите в браке с {{user}}, вы забыли об этом?",
-	"marryAuthorTooMany": "{{REDCROSS}} Вы состоите в браке со слишком большим количеством людей, ваш максимум - {{limit}}!",
-	"marryTargetTooMany": "{{REDCROSS}} Пользователь, с которым вы пытаетесь вступить в брак, уже состоит в браке со слишком большим количеством людей, его/её максимум - {{limit}}!",
+	"marryTaken": "",
+	"marryTaken_plural": "",
+	"marryAlreadyMarried": "",
+	"marryAuthorTooMany": "",
+	"marryTargetTooMany": "",
 	"marryMultipleCancel": "",
 	"marryPetition": "",
 	"marryNoreply": "",
@@ -72,7 +72,7 @@
 	"mylevelSelf": "",
 	"mylevelNext": "",
 	"payMissingMoney": "",
-	"payPrompt": "Вы собираетесь заплатить {{user}} {{amount}}{{SHINY}}, вы уверены, что хотите продолжить?",
+	"payPrompt": "",
 	"payPromptAccept": "",
 	"payPromptDeny": "",
 	"paySelf": "",
@@ -80,11 +80,11 @@
 	"profile": {
 		"globalRank": "",
 		"credits": "",
-		"reputation": "Репутация",
-		"experience": "Опыт",
-		"level": "Уровень"
+		"reputation": "",
+		"experience": "",
+		"level": ""
 	},
-	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
+	"profileMoney": "",
 	"remindmeCreate": "",
 	"remindmeCreateNoDescription": "",
 	"remindmeDelete": "",
@@ -103,7 +103,7 @@
 	"reputation_plural": "",
 	"reputations": "",
 	"scoreboardFooter": "",
-	"setColor": "Цвет изменён на {{color}}",
+	"setColor": "",
 	"socialDescription": "",
 	"socialExtended": {
 		"usages": [
@@ -138,7 +138,7 @@
 			""
 		]
 	},
-	"bannerDescription": "Настройте баннер для своего профиля.",
+	"bannerDescription": "",
 	"bannerExtended": {
 		"usages": [
 			"",
@@ -220,7 +220,7 @@
 			""
 		]
 	},
-	"balanceDescription": "Проверьте свой текущий баланс.",
+	"balanceDescription": "",
 	"balanceExtended": {
 		"usages": [
 			""
@@ -261,14 +261,14 @@
 	},
 	"leaderboardHeader": "",
 	"leaderboardUnknownUser": "",
-	"levelDescription": "Проверьте свой глобальный уровень.",
+	"levelDescription": "",
 	"levelExtended": {
 		"usages": [
 			"",
 			"",
 			""
 		],
-		"extendedHelp": "Сколько до следующего уровня?",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"",
@@ -280,11 +280,11 @@
 			]
 		]
 	},
-	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
+	"marriedDescription": "",
 	"marriedExtended": {
-		"extendedHelp": "Эта команда сообщит вам, с кем вы состоите в браке."
+		"extendedHelp": ""
 	},
-	"marryDescription": "Вступите в брак с кем-нибудь!",
+	"marryDescription": "",
 	"marryExtended": {
 		"usages": [
 			""
@@ -292,7 +292,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"пользователь",
+				"",
 				""
 			]
 		],
@@ -301,7 +301,7 @@
 			""
 		]
 	},
-	"mylevelDescription": "Проверьте свой локальный уровень.",
+	"mylevelDescription": "",
 	"mylevelExtended": {
 		"usages": [
 			"",
@@ -310,7 +310,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"пользователь",
+				"",
 				""
 			]
 		]
@@ -328,12 +328,12 @@
 				""
 			],
 			[
-				"пользователь",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"200 @kyra",
+			"",
 			""
 		]
 	},
@@ -361,7 +361,7 @@
 			""
 		]
 	},
-	"remindmeDescription": "Управляйте своими напоминаниями.",
+	"remindmeDescription": "",
 	"remindmeExtended": {
 		"usages": [
 			"",
@@ -382,7 +382,7 @@
 				""
 			],
 			[
-				"ID",
+				"",
 				""
 			]
 		],
@@ -409,7 +409,7 @@
 				""
 			],
 			[
-				"Пользователь",
+				"",
 				""
 			]
 		],
@@ -417,7 +417,7 @@
 		"examples": [
 			"",
 			"",
-			"@kyra",
+			"",
 			"",
 			"",
 			""
@@ -431,22 +431,22 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Цвет",
+				"",
 				""
 			]
 		],
 		"possibleFormats": [
 			[
-				"HEX",
-				"#dfdfdf"
+				"",
+				""
 			],
 			[
-				"RGB",
-				"rgb(200, 200, 200)"
+				"",
+				""
 			],
 			[
-				"HSL",
-				"hsl(350, 100, 100)"
+				"",
+				""
 			],
 			[
 				"",

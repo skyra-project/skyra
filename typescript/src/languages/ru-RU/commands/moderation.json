@@ -1,6 +1,6 @@
 {
-	"permissions": "Разрешения для {{username}} ({{id}})",
-	"permissionsAll": "Все разрешения",
+	"permissions": "",
+	"permissionsAll": "",
 	"flow": "",
 	"timeTimed": "",
 	"timeUnsupportedType": "",
@@ -193,7 +193,7 @@
 		],
 		"reminder": ""
 	},
-	"banDescription": "Ударьте кого-нибудь банхаммером.",
+	"banDescription": "",
 	"banExtended": {
 		"usages": [
 			"",
@@ -320,7 +320,7 @@
 			""
 		]
 	},
-	"setNicknameDescription": "Измените никнейм пользователя.",
+	"setNicknameDescription": "",
 	"setNicknameExtended": {
 		"usages": [
 			"",

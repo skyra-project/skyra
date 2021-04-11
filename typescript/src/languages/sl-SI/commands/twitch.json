@@ -6,7 +6,7 @@
 		"followers": "",
 		"views": "",
 		"clickToVisit": "",
-		"partner": "Partner"
+		"partner": ""
 	},
 	"twitchPartnershipWithoutAffiliate": "",
 	"twitchAffiliateStatus": {
@@ -38,7 +38,7 @@
 		""
 	],
 	"twitchSubscriptionShowEmpty": "",
-	"twitchSubscriptionShowUnknownUser": "Neznano",
+	"twitchSubscriptionShowUnknownUser": "",
 	"followageDescription": "",
 	"followageExtended": {
 		"usages": [
@@ -73,7 +73,7 @@
 			]
 		],
 		"examples": [
-			"riotgames"
+			""
 		]
 	},
 	"twitchSubscriptionDescription": "",
@@ -113,11 +113,11 @@
 		"examples": [
 			"",
 			"",
-			"remove kyranet #twitch online",
-			"reset kyranet",
-			"reset",
-			"show kyranet",
-			"show"
+			"",
+			"",
+			"",
+			"",
+			""
 		]
 	}
 }

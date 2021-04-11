@@ -1,31 +1,31 @@
 {
-	"announcementHeader": "**Nuevo anuncio para** {{role}}",
-	"announcementCancelled": "El mensaje ha sido cancelado.",
-	"announcementDescription": "Envía nuevos anuncios, mencionando el rol de anuncio.",
-	"announcementEmbedMentions": "{{header}}:",
-	"announcementEmbedMentionsWithMentions": "{{header}}, y mencionando: {{mentions, andList}}:",
+	"announcementHeader": "",
+	"announcementCancelled": "",
+	"announcementDescription": "",
+	"announcementEmbedMentions": "",
+	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
 		"usages": [
-			"Mensaje de Anuncio"
+			""
 		],
-		"extendedHelp": "Este comando requiere un canal de anuncios (**channels.announcement** en el comando de configuración) que le diga a Skyra dónde debe publicar los mensajes de anuncio.\n\nPregunta es: ¿es necesario este comando? Bueno, nada te impide hacer tus anuncios por ti mismo, sin embargo, hay mucha gente que odia ser mencionada por todos o aquí.\n\nPara evitar esto, Skyra te da la opción de crear un rol de suscriptor, que no se puede mencionar (para evitar que la gente mencione el rol), y una vez que ejecutes este comando, Skyra establecerá el rol para ser mencionable, publicar el mensaje y volver a no mencionable.\n\nAdemás, puedes configurar Skyra para que envíe el anuncio como un mensaje incrustado configurando la opción **messages.announcement-embed** en el comando de configuración. Al enviar el mensaje como un incrustado puedes excluir las menciones de cualquier usuario, @aquí o @everyone proporcionando la bandera `--excludeMencions` al anuncio.",
+		"extendedHelp": "",
 		"examples": [
-			"¡Me complace anunciar que tenemos un bot capaz de enviar anuncios seguros para nuestros suscriptores!"
+			""
 		],
-		"reminder": "Si quieres editar el mensaje que enviaste en un anuncio, edita el mensaje que usaste para que Skyra envíe ese anuncio. Skyra editará el mensaje que envió anteriormente. Puedes hacer esto hasta 15 minutos después del anuncio inicial, ¡así que asegúrese de no esperar mucho tiempo!"
+		"reminder": ""
 	},
-	"announcementPrompt": "Este será el mensaje enviado en el canal de anuncios. ¿Está de acuerdo con esto?",
-	"announcementSuccess": "Se ha publicado un nuevo anuncio con éxito.",
-	"subscribeDescription": "Suscríbete a los anuncios de este servidor.",
+	"announcementPrompt": "",
+	"announcementSuccess": "",
+	"subscribeDescription": "",
 	"subscribeExtended": {
-		"extendedHelp": "Este comando sirve el propósito de **dar** el rol del suscriptor, que debe ser configurado por los administradores del servidor. Cuando un moderador o administrador use el comando **anuncio**, se te mencionará. Esta función está diseñada para reemplazar las etiquetas @everyone/@here y mencionar sólo a los usuarios interesados."
+		"extendedHelp": ""
 	},
-	"subscribeNoChannel": "Este servidor no tiene un canal de anuncio configurado.",
-	"subscribeNoRole": "Este servidor no tiene un rol de anuncio configurado.",
-	"subscribeSuccess": "Se ha otorgado correctamente el rol: **{{role}}**",
-	"unsubscribeDescription": "Darse de baja a los anuncios de este servidor.",
+	"subscribeNoChannel": "",
+	"subscribeNoRole": "",
+	"subscribeSuccess": "",
+	"unsubscribeDescription": "",
 	"unsubscribeExtended": {
-		"extendedHelp": "Este comando sirve el propósito de **quitar** el rol del suscriptor, que debe ser configurado por los administradores del servidor. Cuando un moderador o administrador use el comando **anuncio**, **no** se te mencionará. Esta función está diseñada para reemplazar las etiquetas @everyone/@here y mencionar sólo a los usuarios interesados."
+		"extendedHelp": ""
 	},
-	"unsubscribeSuccess": "Se ha eliminado correctamente el rol: **{{role}}**"
+	"unsubscribeSuccess": ""
 }

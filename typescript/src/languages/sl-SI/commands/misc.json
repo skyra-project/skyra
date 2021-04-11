@@ -10,14 +10,14 @@
 	"randRedditErrorNotFound": "",
 	"randRedditErrorBanned": "",
 	"redditUserComplexityLevels": [
-		"zelo nizko",
-		"nizko",
-		"srednje",
-		"visoko",
-		"zelo visoko",
-		"zelo visoko"
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	],
-	"redditUserInvalidUser": "`{{user}}` ni veljavno Reddit uporabniško ime",
+	"redditUserInvalidUser": "",
 	"redditUserQueryFailed": "",
 	"redditUserTitles": {
 		"awardGiving": "",
@@ -110,12 +110,12 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"uporabnik",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"Skyra"
+			""
 		]
 	},
 	"deletthisDescription": "",
@@ -126,7 +126,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"uporabnik",
+				"",
 				""
 			]
 		],

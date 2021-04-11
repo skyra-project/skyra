@@ -1,10 +1,27 @@
 {
 	"addDescription": "",
 	"addExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", "", "", "", "", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"addPlaylist": "",
 	"addPlaylistSongs": "",
@@ -25,7 +42,10 @@
 	"exportQueueSuccess": "",
 	"importQueueDescription": "",
 	"importQueueExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -46,7 +66,12 @@
 	"leaveDescription": "",
 	"leaveExtended": {
 		"extendedHelp": "",
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"leaveSuccess": "",
 	"pauseDescription": "",
@@ -58,8 +83,22 @@
 	"playDescription": "",
 	"playExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", "", "", "", "", "", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"playEnd": "",
@@ -97,19 +136,28 @@
 	"queueDashboardInfo": "",
 	"removeDescription": "",
 	"removeExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"reminder": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"removeIndexOutOfBounds": "",
 	"removeSuccess": "",
 	"seekDescription": "",
 	"seekExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"reminder": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"seekSuccess": "",
 	"resumeDescription": "",
@@ -127,7 +175,12 @@
 	"skipDescription": "",
 	"skipExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"skipPermissions": "",
@@ -136,20 +189,39 @@
 	"skipSuccess": "",
 	"promoteDescription": "",
 	"promoteExtended": {
-		"usages": [""],
-		"explainedUsage": [["", ""]],
-		"examples": [""],
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"promoteSuccess": "",
 	"volumeDescription": "",
 	"volumeExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"volumeSuccess": "",
 	"volumeChanged": "",
 	"volumeChangedExtreme": "",
-	"volumeChangedTexts": ["", "", ""]
+	"volumeChangedTexts": [
+		"",
+		"",
+		""
+	]
 }

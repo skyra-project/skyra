@@ -1,8 +1,8 @@
 {
-	"announcementHeader": "**Новое объявление для** {{role}}",
+	"announcementHeader": "",
 	"announcementCancelled": "",
 	"announcementDescription": "",
-	"announcementEmbedMentions": "{{header}}:",
+	"announcementEmbedMentions": "",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
 		"usages": [
@@ -15,17 +15,17 @@
 		"reminder": ""
 	},
 	"announcementPrompt": "",
-	"announcementSuccess": "Новое объявление успешно опубликовано.",
-	"subscribeDescription": "Подпишитесь на объявления этого сервера.",
+	"announcementSuccess": "",
+	"subscribeDescription": "",
 	"subscribeExtended": {
 		"extendedHelp": ""
 	},
 	"subscribeNoChannel": "",
 	"subscribeNoRole": "",
-	"subscribeSuccess": "Успешно предоставлена роль: **{{role}}**",
-	"unsubscribeDescription": "Отпишитесь от объявлений этого сервера.",
+	"subscribeSuccess": "",
+	"unsubscribeDescription": "",
 	"unsubscribeExtended": {
 		"extendedHelp": ""
 	},
-	"unsubscribeSuccess": "Успешно удалена роль: **{{role}}**"
+	"unsubscribeSuccess": ""
 }

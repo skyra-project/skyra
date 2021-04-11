@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { reduce } from '#utils/iterator';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -14,7 +15,7 @@ import { MessageEmbed } from 'discord.js';
 	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const schedules = [
 			...reduce(
 				getGuildBirthdays(message.guild.id),
@@ -28,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 			).entries()
 		].sort((a, b) => (a[0] > b[0] ? -1 : 1)) as [number, BirthdayScheduleEntity[]][];
 
-		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone);
+		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone, { prefix: context.commandPrefix });
 		const embed = new MessageEmbed()
 			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));

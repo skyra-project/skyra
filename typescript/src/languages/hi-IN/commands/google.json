@@ -12,15 +12,15 @@
 			]
 		],
 		"examples": [
-			"अंटार्कटिका",
-			"एरिज़ोना"
+			"",
+			""
 		]
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "वर्तमान समय",
-		"currentDate": "आज की तारीख",
-		"country": "देश",
+		"currentTime": "",
+		"currentDate": "",
+		"country": "",
 		"gmsOffset": "",
 		"dst": ""
 	},
@@ -39,8 +39,8 @@
 			]
 		],
 		"examples": [
-			"डिस्कोर्ड",
-			"स्कायरा"
+			"",
+			""
 		],
 		"reminder": ""
 	},
@@ -57,8 +57,8 @@
 			]
 		],
 		"examples": [
-			"डिस्कोर्ड",
-			"स्कायरा"
+			"",
+			""
 		]
 	},
 	"lmgtfyDescription": "",
@@ -101,7 +101,7 @@
 	},
 	"errorZeroResults": "",
 	"errorRequestDenied": "",
-	"errorInvalidRequest": "अमान्य अनुरोध",
+	"errorInvalidRequest": "",
 	"errorOverQueryLimit": "",
 	"errorPermissionDenied": "",
 	"errorUnknown": "",

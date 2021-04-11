@@ -1,124 +1,124 @@
 {
-	"currentTimeDescription": "Obtiene la hora actual en cualquier lugar del mundo",
+	"currentTimeDescription": "",
 	"currentTimeExtended": {
 		"usages": [
-			"Nombre del País"
+			""
 		],
-		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando tiene las coordenadas, consulta TimezoneDB para obtener los datos de tiempo.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Nombre del País",
-				"La localidad, gobernación, país o continente para comprobar su tiempo."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"Antártida",
-			"Arizona"
+			"",
+			""
 		]
 	},
-	"currentTimeLocationNotFound": "Lo siento, pero no pude encontrar los datos de tiempo para esa ubicación.",
+	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "Hora actual",
-		"currentDate": "Fecha Actual",
-		"country": "País",
-		"gmsOffset": "Desplazamiento GMT",
-		"dst": "**Horario de Verano**: {{dst}}"
+		"currentTime": "",
+		"currentDate": "",
+		"country": "",
+		"gmsOffset": "",
+		"dst": ""
 	},
-	"currentTimeDst": "No están en horario de verano",
-	"currentTimeNoDst": "Están en horario de verano",
-	"gimageDescription": "Encuentra tus imágenes favoritas en Google",
+	"currentTimeDst": "",
+	"currentTimeNoDst": "",
+	"gimageDescription": "",
 	"gimageExtended": {
 		"usages": [
-			"Consulta de Búsqueda"
+			""
 		],
-		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar imágenes para tu consulta. Para resultados web regulares, por favor usa el comando `gsearch`.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Consulta de Búsqueda",
-				"La imagen que desea encontrar en Google"
+				"",
+				""
 			]
 		],
 		"examples": [
-			"Discord",
-			"Skyra"
+			"",
+			""
 		],
-		"reminder": "Este comando ha sido marcado como NSFW porque es inevitable que cuando usted consulta contenido explícito, obtenga resultados explícitos."
+		"reminder": ""
 	},
-	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
+	"gsearchDescription": "",
 	"gsearchExtended": {
 		"usages": [
-			"Consulta de Búsqueda"
+			""
 		],
-		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Consulta de Búsqueda",
-				"Lo que desea encontrar en Google"
+				"",
+				""
 			]
 		],
 		"examples": [
-			"Discord",
-			"Skyra"
+			"",
+			""
 		]
 	},
-	"lmgtfyDescription": "Envia un enlace a LMGTFY (Let Me Google That For You).",
+	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
 		"usages": [
-			"Consulta"
+			""
 		],
 		"explainedUsage": [
 			[
-				"Consulta",
-				"La consulta a Google"
+				"",
+				""
 			]
 		],
-		"extendedHelp": "Simplemente Googlealo, no es tan difícil.",
+		"extendedHelp": "",
 		"examples": [
-			"¿¿Cómo se camina por las escaleras??",
-			"¿¿Cómo hago panqueques??"
+			"",
+			""
 		]
 	},
-	"lmgtfyClick": "[Haz clic para buscar]({{link}})",
-	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
+	"lmgtfyClick": "",
+	"weatherDescription": "",
 	"weatherExtended": {
 		"usages": [
-			"Ciudad",
-			"Lugar --metric/--celsius",
-			"Lugar --imperial/--fahrenheit"
+			"",
+			"",
+			""
 		],
-		"extendedHelp": "Este comando usa [wttr.in](https://wttr.in) para obtener los datos meteorológicos de una ubicación y lo muestra con una tarjeta bonita.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Ciudad",
-				"Las coordenadas, lugar, ciudad o país desde donde comprobar el clima."
+				"",
+				""
 			]
 		],
 		"examples": [
-			"Zaragoza",
-			"San Francisco"
+			"",
+			""
 		],
-		"reminder": "Las unidades están en el Sistema Internacional por defecto. Utilice la opción --fahrenheit o --imperial para verla en el **Sistema Imperial**."
+		"reminder": ""
 	},
-	"errorZeroResults": "Tu búsqueda no ha devuelto ningún resultado.",
-	"errorRequestDenied": "La solicitud de API de GeoCode ha sido denegada.",
-	"errorInvalidRequest": "Petición inválida.",
-	"errorOverQueryLimit": "Límite de consulta excedido. Inténtalo de nuevo mañana.",
-	"errorPermissionDenied": "Google denegó mi permiso para este recurso, por favor contacte a los desarrolladores acerca de esto en el servidor de soporte oficial en <https://join.skyra.pw>",
-	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google.",
-	"weatherFahrenheit": "{{value}} ({{feelsLike}}) ºF",
-	"weatherInches": "{{value}} in",
-	"weatherMiles": "{{value}} mi",
-	"weatherMilesPerHour": "{{value}} mi/h",
-	"weatherCelsius": "{{value}} ({{feelsLike}}) ºC",
-	"weatherMillimeters": "{{value}} mm",
-	"weatherPascal": "{{value}} Pa",
-	"weatherKilometers": "{{value}} km",
-	"weatherKilometersPerHour": "{{value}} km/h",
-	"weatherInvalidJsonBody": "El servidor me envió una respuesta mal formada cuando estaba buscando `{{query}}`, ¡y no puedo averiguar qué significa, lo siento!",
-	"weatherUnknownLocation": "Aparentemente, el servidor no sabe dónde está `{{query}}`, o no tiene datos, ¡por favor intenta en otro lugar!",
-	"weatherUnknownError": "He recibido un error desconocido al buscar `{{query}}`, ¡lo siento!",
-	"weatherBlockedLocation": "No pude encontrar ningún dato sobre `{{query}}` porque fue bloqueado por el servidor.",
-	"weatherRateLimited": "No he podido encontrar ningún dato sobre `{{query}}` porque he excedido la cantidad de consultas que puedo hacer, ¡por favor inténtalo de nuevo más tarde!",
-	"weatherRemoteServerError": "No pude encontrar ningún dato sobre `{{query}}` porque el servidor encontró un error interno, ¡por favor intente de nuevo más tarde!",
-	"weatherServiceUnavailable": "No pude encontrar ningún dato sobre `{{query}}` porque el servidor ha alcanzado su límite de capacidad, lo que significa que ya no pueden atender más peticiones en el resto del día, ¡inténtalo de nuevo más tarde!"
+	"errorZeroResults": "",
+	"errorRequestDenied": "",
+	"errorInvalidRequest": "",
+	"errorOverQueryLimit": "",
+	"errorPermissionDenied": "",
+	"errorUnknown": "",
+	"weatherFahrenheit": "",
+	"weatherInches": "",
+	"weatherMiles": "",
+	"weatherMilesPerHour": "",
+	"weatherCelsius": "",
+	"weatherMillimeters": "",
+	"weatherPascal": "",
+	"weatherKilometers": "",
+	"weatherKilometersPerHour": "",
+	"weatherInvalidJsonBody": "",
+	"weatherUnknownLocation": "",
+	"weatherUnknownError": "",
+	"weatherBlockedLocation": "",
+	"weatherRateLimited": "",
+	"weatherRemoteServerError": "",
+	"weatherServiceUnavailable": ""
 }

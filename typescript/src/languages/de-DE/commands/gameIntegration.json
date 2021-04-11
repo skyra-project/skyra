@@ -1,13 +1,26 @@
 {
 	"brawlstarsDescription": "",
 	"brawlstarsExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"brawlstarsPlayerEmbedTitles": {
 		"trophies": "",
@@ -43,13 +56,25 @@
 	},
 	"clashofclansDescription": "",
 	"clashofclansExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"clashofclansPlayerEmbedTitles": {
 		"xpLevel": "",
@@ -103,13 +128,27 @@
 	"clashofclansPlayersQueryFail": "",
 	"FFXIVDescription": "",
 	"FFXIVExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"FFXIVCharacterFields": {
@@ -144,13 +183,29 @@
 	"FFXIVNoItemFound": "",
 	"fortniteDescription": "",
 	"fortniteExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"fortniteInvalidPlatform": "",
 	"fortniteNoUser": "",
@@ -176,13 +231,27 @@
 	},
 	"overwatchDescription": "",
 	"overwatchExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
+		"examples": [
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"overwatchInvalidPlatform": "",

@@ -1,12 +1,1 @@
-{
-	"channelsAnnouncements": "Le canal pour les annonces. À côté de la clé `roles.subscriber`, ceci est requis pour la commande announce.",
-	"channelsFarewell": "Le canal sur lequel je vais faire des adieux. Il faut activer les évènements et configurer les messages dans d'autres catégories.",
-	"channelsGreeting": "Le canal sur lequel je vais faire de petits coucous aux nouveaux membres. Il faut activer les évènements et configurer les messages dans d'autres catégories.",
-	"channelsIgnoreAll": "Les canaux que je devrais ignorer pour tous les types de logging.",
-	"channelsIgnoreMessageDelete": "Les canaux que je devrais ignorer quand les messages sont supprimés.",
-	"channelsIgnoreMessageEdit": "Les canaux que je devrais ignorer quand les messages sont modifiés.",
-	"channelsIgnoreReactionAdd": "Les canaux que je devrais ignorer quand des réactions sont ajoutées aux messages.",
-	"channelsSpam": "Le canal vers lequel je devrais rediriger les utilisateurs quand ils utilisent des commandes que je considère comme spammy.",
-	"disabledChannels": "La liste des canaux où les commandes sont désactivées ; par exemple, ajouter le canal general va interdire l'utilisation des commandes là. Les modérateurs ne sont pas soumis à cette restriction.",
-	"disabledCommands": "Les commandes désactivées. Les commandes de base ne peuvent pas être désactivées et les modérateurs peuvent encore les utiliser. Les noms des commandes doivent être en minuscule."
-}
+[]

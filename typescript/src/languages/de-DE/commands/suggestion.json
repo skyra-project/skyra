@@ -1,13 +1,25 @@
 {
 	"suggestDescription": "",
 	"suggestExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
@@ -16,14 +28,34 @@
 	"suggestSuccess": "",
 	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", "", "", ""],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"resolveSuggestionInvalidId": "",

@@ -465,7 +465,7 @@
 		"status": "Status",
 		"userScore": "User score"
 	},
-	"systemTextTruncated": "{{definition}}... [continue reading\\]({{url}})",
+	"systemTextTruncated": "{{definition}}... [continue reading]({{url}})",
 	"topInvitesDescription": "Shows the top 10 most used invites for this server",
 	"topInvitesEmbedData": {
 		"channel": "Channel",
@@ -543,8 +543,8 @@
 	},
 	"whoisMemberPermissions": "Key Permissions",
 	"whoisMemberPermissionsAll": "All Permissions",
-	"whoisMemberRoles": "Role [1\\]",
-	"whoisMemberRoles_plural": "Roles [{{count}}\\]",
+	"whoisMemberRoles": "Role [1]",
+	"whoisMemberRoles_plural": "Roles [{{count}}]",
 	"whoisMemberRoleListAndMore": "{{count}} more.",
 	"whoisMemberTitles": {
 		"createdAt": "Created At",

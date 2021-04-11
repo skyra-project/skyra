@@ -438,9 +438,14 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -456,9 +461,14 @@
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"examples": [""],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"hungerGamesResultDeaths": "",
@@ -474,8 +484,15 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
-		"usages": [""],
-		"explainedUsage": [["", ""]],
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -484,9 +501,13 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -498,15 +519,37 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
-		"usages": ["", "", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",
@@ -516,9 +559,14 @@
 	"wheelOfFortuneCanvasTextWon": "",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"balanceDifference": ""
 }

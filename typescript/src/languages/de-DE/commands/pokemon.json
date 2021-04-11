@@ -1,10 +1,20 @@
 {
 	"abilityDescription": "",
 	"abilityExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"abilityEmbedTitles": {
 		"authorTitle": "",
@@ -13,22 +23,45 @@
 	"abilityQueryFail": "",
 	"flavorsDescription": "",
 	"flavorsExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"flavorsQueryFail": "",
 	"flavorNoFlavors": "",
 	"itemDescription": "",
 	"itemExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"itemEmbedData": {
 		"ITEM": "",
@@ -39,15 +72,37 @@
 	"itemQueryFail": "",
 	"learnDescription": "",
 	"learnExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"learnMethodTypes": {
 		"levelUpMoves": "",
@@ -65,10 +120,21 @@
 	"learnTitle": "",
 	"moveDescription": "",
 	"moveExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"moveEmbedData": {
@@ -93,13 +159,26 @@
 	"moveQueryFail": "",
 	"pokedexDescription": "",
 	"pokedexExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
+		"examples": [
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"pokedexEmbedData": {
@@ -123,20 +202,44 @@
 	"pokedexQueryFail": "",
 	"spriteDescription": "",
 	"spriteExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"typeDescription": "",
 	"typeExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"typeEmbedData": {
 		"offensive": "",

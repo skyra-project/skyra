@@ -4,8 +4,8 @@
 	"twitchNoEntries": "",
 	"twitchTitles": {
 		"followers": "",
-		"views": "Просмотры",
-		"clickToVisit": "Нажмите, чтобы перейти в канал стримера",
+		"views": "",
+		"clickToVisit": "",
 		"partner": ""
 	},
 	"twitchPartnershipWithoutAffiliate": "",
@@ -22,7 +22,7 @@
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
-	"twitchSubscriptionRemoveStreamerNotSubscribed": "{{REDCROSS}} Извините, вы не можете отписаться от канала, на который вы не подписаны. Пожалуйста, подпишитесь, чтобы иметь возможность отписаться.",
+	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
 	"twitchSubscriptionRemoveEntryNotExists": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",

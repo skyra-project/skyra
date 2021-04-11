@@ -126,14 +126,14 @@
 		"reminder": "Before you can use this command there should be any queue at all to show!"
 	},
 	"queueTitle": "Music queue for {{guildname}}",
-	"queueLine": "**[`{{position}}`\\\\]** │ \"{{duration}}\" │ [{{title}}\\\\]({{url}}) │ Requester: **{{requester}}**.",
-	"queueNowplaying": "[{{title}}\\\\]({{url}})\nRequester: **{{requester}}**",
+	"queueLine": "**[`{{position}}`\\]** │ \"{{duration}}\" │ [{{title}}\\]({{url}}) │ Requester: **{{requester}}**.",
+	"queueNowplaying": "[{{title}}\\]({{url}})\nRequester: **{{requester}}**",
 	"queueNowplayingLiveStream": "Live Stream",
 	"queueNowplayingTimeRemaining": "🕰 Time remaining: {{timeRemaining}}.",
 	"queueNowplayingTitle": "Now Playing:",
 	"queueTotalTitle": "Total songs:",
 	"queueTotal": "{{songs}} in the queue, with a total duration of {{remainingTime}}",
-	"queueDashboardInfo": "Did you know that you can also manage your music using a fancy webapp? [Click here to go there\\\\](https://skyra.pw/music/{{guild.id}})",
+	"queueDashboardInfo": "Did you know that you can also manage your music using a fancy webapp? [Click here to go there\\](https://skyra.pw/music/{{guild.id}})",
 	"removeDescription": "Remove a song from the queue list.",
 	"removeExtended": {
 		"usages": [

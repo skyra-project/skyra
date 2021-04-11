@@ -1,62 +1,62 @@
 {
-	"animeDescription": "Caută anime-ul tău preferat după titlu cu această comandă.",
+	"animeDescription": "",
 	"animeExtended": {
 		"usages": [
 			""
 		],
-		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru anime-ul pe care îl solicitați.",
+		"extendedHelp": "",
 		"examples": [
-			"One Piece"
+			""
 		]
 	},
-	"mangaDescription": "Caută manga-ul tău preferat după titlu cu această comandă.",
+	"mangaDescription": "",
 	"mangaExtended": {
 		"usages": [
 			""
 		],
-		"extendedHelp": "Această comandă accesează Kitsu.io pentru a afișa datele pentru manga-ul pe care îl solicitați.",
+		"extendedHelp": "",
 		"examples": [
-			"Stone Ocean",
-			"One Piece"
+			"",
+			""
 		]
 	},
-	"waifuDescription": "Postează o imagine waifu generată aleatoriu.",
+	"waifuDescription": "",
 	"waifuExtended": {
-		"extendedHelp": "Această comandă postează o imagine waifu generată aleatoriu de <https://thiswaifudoesnotexist.net/>"
+		"extendedHelp": ""
 	},
 	"animeTypes": {
-		"tv": "📺 TV",
-		"movie": "🎥 Movie",
-		"ova": "📼 Original Video Animation",
-		"special": "🎴 Special"
+		"tv": "",
+		"movie": "",
+		"ova": "",
+		"special": ""
 	},
-	"animeOutputDescription": "**Titlu englez:** ** {{englishTitle}}\n**Titlu japonez:** {{japaneseTitle}}\n**Titlu canonic:** {{canonicalTitle}}\n{{synopsis}}",
-	"animeNoSynopsis": "Nu exista rezumat disponibil pentru acest titlu.",
+	"animeOutputDescription": "",
+	"animeNoSynopsis": "",
 	"animeEmbedData": {
-		"type": "Tip",
-		"score": "Scor",
-		"episodes": "Episoade",
-		"episodeLength": "Lungimea episodului",
-		"ageRating": "Rating vârstă",
-		"firstAirDate": "Data primei difuzări",
-		"watchIt": "Urmărește-l aici:",
-		"stillAiring": "Încă se difuzează"
+		"type": "",
+		"score": "",
+		"episodes": "",
+		"episodeLength": "",
+		"ageRating": "",
+		"firstAirDate": "",
+		"watchIt": "",
+		"stillAiring": ""
 	},
-	"mangaOutputDescription": "**Titlu englez:** ** {{englishTitle}}\n**Titlu japonez:** {{japaneseTitle}}\n**Titlu canonic:** {{canonicalTitle}}\n{{synopsis}}",
+	"mangaOutputDescription": "",
 	"mangaTypes": {
-		"manga": "📘 Manga",
-		"novel": "📕 Novel",
-		"manhwa": "🇰🇷 Manhwa",
-		"oneShot": "☄ One Shot",
-		"special": "🎴 Special"
+		"manga": "",
+		"novel": "",
+		"manhwa": "",
+		"oneShot": "",
+		"special": ""
 	},
 	"mangaEmbedData": {
-		"ageRating": "Rating vârstă",
-		"firstPublishDate": "Prima publicare",
-		"readIt": "Citiţi-l aici:",
-		"score": "Scor",
-		"type": "Subtip",
-		"none": "Nimic"
+		"ageRating": "",
+		"firstPublishDate": "",
+		"readIt": "",
+		"score": "",
+		"type": "",
+		"none": ""
 	},
-	"waifuFooter": "Oferit de către thiswaifudoesnotexist.net"
+	"waifuFooter": ""
 }

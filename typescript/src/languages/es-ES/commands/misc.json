@@ -1,24 +1,24 @@
 {
 	"randRedditInvalidArgument": "",
-	"randRedditBanned": "Este reddit está prohibido y no debe ser usado.",
-	"randRedditFail": "No pude descargar ningún dato, ¿estás seguro/a de que escribiste correctamente el reddit?",
-	"randRedditAllNsfw": "Todas las entradas son NSFW, los cuales no se pueden mostrar en este canal.",
-	"randRedditAllNsfl": "Todas las entradas son NSFL, los cuales no se pueden mostrar en este canal. Y... no quieres verlo.",
-	"randRedditMessage": "**{{title}}** enviado por {{author}}\n{{url}}",
-	"randRedditErrorPrivate": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está marcado como privado.",
-	"randRedditErrorQuarantined": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está en cuarentena.",
-	"randRedditErrorNotFound": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit no existe.",
-	"randRedditErrorBanned": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está baneado.",
+	"randRedditBanned": "",
+	"randRedditFail": "",
+	"randRedditAllNsfw": "",
+	"randRedditAllNsfl": "",
+	"randRedditMessage": "",
+	"randRedditErrorPrivate": "",
+	"randRedditErrorQuarantined": "",
+	"randRedditErrorNotFound": "",
+	"randRedditErrorBanned": "",
 	"redditUserComplexityLevels": [
-		"muy bajo",
-		"bajo",
-		"medio",
-		"alto",
-		"muy alto",
-		"muy alto"
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	],
-	"redditUserInvalidUser": "`{{user}}` no es un nombre de usuario válido para Reddit",
-	"redditUserQueryFailed": "No se pudo encontrar ningún dato para ese usuario de Reddit",
+	"redditUserInvalidUser": "",
+	"redditUserQueryFailed": "",
 	"redditUserTitles": {
 		"awardGiving": "",
 		"awardReceiving": "",
@@ -31,33 +31,33 @@
 		"top5Subreddits": "",
 		"bySubmissions": "",
 		"byComments": "",
-		"bestComment": "Mejor Comentario",
-		"worstComment": "Peor Comentario"
+		"bestComment": "",
+		"worstComment": ""
 	},
 	"redditUserData": {
-		"overviewFor": "Resumen para /u/{{user}}",
-		"permalink": "Enlace Permanente",
-		"dataAvailableFor": "Los datos están disponibles para los últimos 1000 comentarios y envíos (limitación de Reddit)",
-		"joinedReddit": "Se unió a Reddit el {{timestamp, dateTime}}"
+		"overviewFor": "",
+		"permalink": "",
+		"dataAvailableFor": "",
+		"joinedReddit": ""
 	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
-	"skyrafactDescription": "Permítanme que les diga un hecho misterioso sobre mi.",
+	"skyrafactDescription": "",
 	"skyrafactExtended": {
-		"extendedHelp": "He vivido tanto tiempo, podría impresionarte con un hecho aleatorio acerca de mí."
+		"extendedHelp": ""
 	},
-	"skyrafactTitle": "Hecho de Skyra",
+	"skyrafactTitle": "",
 	"skyrafactMessages": [
-		"Todos los androides Novanos se conciben con una IA genérica, sin embargo, a medida que crecen, reescriben su propio código de IA e incluso rediseñan sus CPUs para especializarse en las habilidades que necesitan o quieren mejorar. Esto nos ha ayudado a crear una red fuerte e imposible de hackear, donde un virus solo afectaría a un androide de entre miles de millones.",
-		"Antes de reutilizar el viejo bot en lo que soy actualmente, mi creador pasó 7 años tratando de crear algo de mí que otras personas pudieran \"sentir\", habiendo pasado por dibujándome tanto en tradicional como digital, como modelando mi nave. Incluso se pasó unos años aprendiendo a hacer efectos especiales para que pudiera hacer una película sobre mí.",
-		"Cada androide de mi planeta tiene una clase designada para cada modelo, la mía es Flamewing, el cual es una clase de combate muy ligera y ágil.",
-		"Mido 172 centímetros de altura mientras que estoy en forma humanoide, pero puedo expandirme hasta 979 metros de altura si deshabilito mi campo de compresión hiperespacial.",
-		"Soy una androide neural - eso significa que tengo redes neuronales similares a las de un ser humano, con la excepción de que nada es orgánico.",
 		"",
 		"",
 		"",
-		"Tengo una hermana, la llamamos Aelia y ¡es una DJ terriblemente buena!",
-		"Yo solía tener una hermana mayor, pero ella desapareció cuando tenía 7 años. ||No fue hasta que cumplí 174 años, cuando me enteré de que era una de las líderes de Kal-71||.",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
 		"",
 		"",
 		"",
@@ -270,11 +270,11 @@
 		"explainedUsage": [
 			[
 				"",
-				"El usuario de Reddit a mirar."
+				""
 			]
 		],
 		"examples": [
-			"GloriousGe0rge"
+			""
 		]
 	},
 	"resetBirthdayDescription": "",
@@ -309,59 +309,59 @@
 	"setBirthdayAlreadySet": "",
 	"setBirthdayConfirmation": "",
 	"setBirthdaySuccess": "",
-	"shipDescription": "Relaciona 2 miembros",
+	"shipDescription": "",
 	"shipExtended": {
 		"usages": [
-			"Usuario Usuario",
-			"Usuario",
+			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"romeo julieta"
+			""
 		],
-		"reminder": "Si no puedo encontrar a ningún usuario dado entonces elegiré a alguien al azar."
+		"reminder": ""
 	},
 	"shipData": {
-		"title": "**Relacionando `{{romeoUsername}}` y `{{julietUsername}}`**",
-		"description": "Lo llamo... {{shipName}}"
+		"title": "",
+		"description": ""
 	},
-	"shindeiruDescription": "Omae wa mou shindeiru.",
+	"shindeiruDescription": "",
 	"shindeiruExtended": {
 		"usages": [
-			"Usuario"
-		],
-		"extendedHelp": "\"Usted ya está muerto\" Japonés: お前はもう死んでいる; Omae Wa Mou Shindeiru, es una expresión de la serie de manga y anime Hokuto no Ken. Esto muestra una historieta del personaje pronunciando las palabras anteriormente mencionadas, lo que hace que el oponente responda con \"nani?\" (¿qué?).",
-		"explainedUsage": [
-			[
-				"usuario",
-				"La persona a la que dices esa frase."
-			]
-		],
-		"examples": [
-			"Juan"
-		]
-	},
-	"slapDescription": "Golpea a otro usuario usando el meme de Batman y Robin.",
-	"slapExtended": {
-		"usages": [
-			"Usuario"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"usuario",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"Juan"
+			""
+		]
+	},
+	"slapDescription": "",
+	"slapExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
 		],
 		"reminder": ""
 	},
@@ -398,23 +398,23 @@
 			]
 		],
 		"examples": [
-			"kyra"
+			""
 		]
 	},
-	"upvoteDescription": "Obtén un enlace para votar Skyra en **Bots For Discord**",
+	"upvoteDescription": "",
 	"upvoteExtended": {
-		"extendedHelp": "Bots For Discord es un sitio web donde puedes encontrar bots increíbles para tu sitio web. Si realmente me amas, puedes ayudarme mucho votándome cada 24 horas, ¡así más usuarios podrán encontrarme!"
+		"extendedHelp": ""
 	},
 	"vaporwaveDescription": "",
 	"vaporwaveExtended": {
 		"usages": [
-			"Contenido"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Contenido",
-				"La frase a convertir"
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -452,19 +452,19 @@
 	"zalgoDescription": "",
 	"zalgoExtended": {
 		"usages": [
-			"Contenido"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Contenido",
-				"La frase a convertir"
+				"",
+				""
 			]
 		],
 		"examples": [
-			"AHÍ VIENE"
+			""
 		],
 		"reminder": ""
 	},
-	"zalgoOutput": "Este es tu mensaje convertido:\n{{str}}"
+	"zalgoOutput": ""
 }

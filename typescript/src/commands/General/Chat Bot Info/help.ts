@@ -55,13 +55,15 @@ export class UserCommand extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
-		const prefix =
-			(context.prefix instanceof RegExp && !context.commandPrefix.endsWith(' ')) || UserOrMemberMentionRegex.test(context.commandPrefix)
-				? `${context.commandPrefix} `
-				: context.commandPrefix;
-		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, prefix));
+		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, this.getCommandPrefix(context)));
 
 		return this.canRunPaginatedMessage(message) ? this.display(message, args, null) : this.all(message, args);
+	}
+
+	private getCommandPrefix(context: SkyraCommand.Context): string {
+		return (context.prefix instanceof RegExp && !context.commandPrefix.endsWith(' ')) || UserOrMemberMentionRegex.test(context.commandPrefix)
+			? `${context.commandPrefix} `
+			: context.commandPrefix;
 	}
 
 	private canRunPaginatedMessage(message: Message) {

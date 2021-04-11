@@ -21,7 +21,7 @@
 	"permissionNodesRemove": "",
 	"permissionNodesReset": "",
 	"permissionNodesShowName": "",
-	"permissionNodesShowAllow": "**अनुमति**:{{allow}}",
+	"permissionNodesShowAllow": "",
 	"permissionNodesShowDeny": "",
 	"triggersRemoveNottaken": "",
 	"triggersRemove": "",
@@ -29,9 +29,9 @@
 	"triggersAdd": "",
 	"triggersListEmpty": "",
 	"guildInfoTitles": {
-		"CHANNELS": "चैनल्स",
-		"MEMBERS": "सदस्यों",
-		"OTHER": "अन्य"
+		"CHANNELS": "",
+		"MEMBERS": "",
+		"OTHER": ""
 	},
 	"guildInfoChannels": "",
 	"guildInfoChannelsAfkChannelText": "",
@@ -42,15 +42,15 @@
 	"guildInfoSplash": "",
 	"guildInfoDiscoverySplash": "",
 	"roleInfoTitles": {
-		"PERMISSIONS": "अनुमतियां"
+		"PERMISSIONS": ""
 	},
 	"roleInfoData": "",
-	"roleInfoAll": "अनुमति दी गयी है |",
-	"roleInfoNoPermissions": "अनुमतियाँ प्रदान नहीं की गईं है ।",
+	"roleInfoAll": "",
+	"roleInfoNoPermissions": "",
 	"filterUndefinedWord": "",
 	"filterTooLong": "",
-	"filterAlreadyFiltered": "यह शब्द पहले से फ़िल्टर किया गया है ।",
-	"filterNotFiltered": "यह शब्द फ़िल्टर नहीं किया गया है |",
+	"filterAlreadyFiltered": "",
+	"filterNotFiltered": "",
 	"filterAdded": "",
 	"filterRemoved": "",
 	"filterReset": "",

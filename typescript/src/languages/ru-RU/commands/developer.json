@@ -2,32 +2,32 @@
 	"yarnDescription": "",
 	"yarnExtended": {
 		"usages": [
-			"Название пакета"
+			""
 		],
-		"extendedHelp": "Это для NodeJS-разработчиков, которые хотят быстро найти информацию о пакете, опубликованном в [npm](https://npmjs.com)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"пакет",
+				"",
 				""
 			]
 		],
 		"examples": [
-			"@skyra/char",
-			"@skyra/saelem",
-			"@skyra/eslint-config"
+			"",
+			"",
+			""
 		]
 	},
-	"yarnEmbedDescriptionAuthor": "❯ Автор: {{author}}",
-	"yarnEmbedDescriptionDateCreated": "❯ Дата создания: **{{dateCreated}}**",
-	"yarnEmbedDescriptionDateModified": "❯ Дата изменения: **{{dateModified}}**",
-	"yarnEmbedDescriptionDependenciesLabel": "__*Зависимости:*__",
-	"yarnEmbedDescriptionDependenciesNoDeps": "Нет зависимостей {{GREENTICK}}!",
+	"yarnEmbedDescriptionAuthor": "",
+	"yarnEmbedDescriptionDateCreated": "",
+	"yarnEmbedDescriptionDateModified": "",
+	"yarnEmbedDescriptionDependenciesLabel": "",
+	"yarnEmbedDescriptionDependenciesNoDeps": "",
 	"yarnEmbedDescriptionDeprecated": "",
-	"yarnEmbedDescriptionLatestVersion": "❯ Последняя версия: **{{latestVersionNumber}}**",
-	"yarnEmbedDescriptionLicense": "❯ Лицензия: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ Основной файл: **{{mainFile}}**",
-	"yarnEmbedDescriptionMaintainers": "❯ Сопровождающие: **{{maintainers, andList}}**",
+	"yarnEmbedDescriptionLatestVersion": "",
+	"yarnEmbedDescriptionLicense": "",
+	"yarnEmbedDescriptionMainFile": "",
+	"yarnEmbedDescriptionMaintainers": "",
 	"yarnEmbedMoreText": "",
-	"yarnPackageNotFound": "Простите, но мне не удалось найти в реестре пакет с названием `{{pkg}}`.",
+	"yarnPackageNotFound": "",
 	"yarnUnpublishedPackage": ""
 }

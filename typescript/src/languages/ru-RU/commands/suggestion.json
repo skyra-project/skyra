@@ -1,5 +1,5 @@
 {
-	"suggestDescription": "Публикует предложение для сервера.",
+	"suggestDescription": "",
 	"suggestExtended": {
 		"usages": [
 			"",
@@ -8,7 +8,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Предложение",
+				"",
 				""
 			],
 			[
@@ -17,16 +17,16 @@
 			]
 		],
 		"examples": [
-			"Давайте создадим музыкальный канал!",
+			"",
 			""
 		],
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
 	"suggestNopermissions": "",
-	"suggestTitle": "Предложение #{{id}}",
-	"suggestSuccess": "Спасибо за ваше предложение! Оно было успешно опубликовано в {{channel}}!",
-	"resolveSuggestionDescription": "Установите статус предложения.",
+	"suggestTitle": "",
+	"suggestSuccess": "",
+	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
 		"usages": [
 			"",
@@ -63,8 +63,8 @@
 	"resolveSuggestionMessageNotFound": "",
 	"resolveSuggestionIdNotFound": "",
 	"resolveSuggestionDefaultComment": "",
-	"resolveSuggestionAuthorAdmin": "Администратор",
-	"resolveSuggestionAuthorModerator": "Модератор",
+	"resolveSuggestionAuthorAdmin": "",
+	"resolveSuggestionAuthorModerator": "",
 	"resolveSuggestionActions": {
 		"accept": "",
 		"consider": "",
@@ -76,8 +76,8 @@
 		"deny": ""
 	},
 	"resolveSuggestionDmFail": "",
-	"resolveSuggestionSuccess": "{{GREENTICK}} Предложение `{{id}}` успешно {{actionText}}!",
-	"resolveSuggestionSuccessAcceptedText": "принято",
-	"resolveSuggestionSuccessDeniedText": "отклонено",
-	"resolveSuggestionSuccessConsideredText": "рассмотрено"
+	"resolveSuggestionSuccess": "",
+	"resolveSuggestionSuccessAcceptedText": "",
+	"resolveSuggestionSuccessDeniedText": "",
+	"resolveSuggestionSuccessConsideredText": ""
 }

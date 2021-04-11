@@ -1,23 +1,23 @@
 {
-	"catfactDescription": "Laat ik jou een mysterieus kattenfeit vertellen.",
+	"catfactDescription": "",
 	"catfactExtended": {
-		"extendedHelp": "Je weet dat katten erg nieuwsgierig zijn, toch? Ze hebben zeker een heleboel leuke en rare feiten.\nMet dit command krijg je een willekeurig feit."
+		"extendedHelp": ""
 	},
-	"catfactTitle": "Kat Feit",
-	"dogDescription": "Schattige hondjes! ❤",
+	"catfactTitle": "",
+	"dogDescription": "",
 	"dogExtended": {
 		"extendedHelp": ""
 	},
-	"foxDescription": "Laat me je een foto van een vos tonen!",
+	"foxDescription": "",
 	"foxExtended": {
 		"extendedHelp": ""
 	},
-	"kittyDescription": "KITTENS!",
+	"kittyDescription": "",
 	"kittyExtended": {
 		"extendedHelp": ""
 	},
-	"shibeDescription": "Schattige shibas!",
+	"shibeDescription": "",
 	"shibeExtended": {
-		"extendedHelp": "Iedereen houdt van shibas, dus ik ook! Ze zijn zo schattig ❤"
+		"extendedHelp": ""
 	}
 }

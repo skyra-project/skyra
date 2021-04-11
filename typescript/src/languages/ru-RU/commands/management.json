@@ -10,7 +10,7 @@
 	"commandModeThresholdDuration": "",
 	"commandModeReminder": "",
 	"commandHandlerAborted": "",
-	"nickSet": "Никнейм изменён на **{{nickname}}**.",
+	"nickSet": "",
 	"nickCleared": "",
 	"permissionNodesHigher": "",
 	"permissionNodesCannotAllowEveryone": "",
@@ -20,7 +20,7 @@
 	"permissionNodesCommandNotExists": "",
 	"permissionNodesRemove": "",
 	"permissionNodesReset": "",
-	"permissionNodesShowName": "Разрешения для: __{{name}}__",
+	"permissionNodesShowName": "",
 	"permissionNodesShowAllow": "",
 	"permissionNodesShowDeny": "",
 	"triggersRemoveNottaken": "",
@@ -29,7 +29,7 @@
 	"triggersAdd": "",
 	"triggersListEmpty": "",
 	"guildInfoTitles": {
-		"CHANNELS": "Каналы",
+		"CHANNELS": "",
 		"MEMBERS": "",
 		"OTHER": ""
 	},
@@ -42,31 +42,31 @@
 	"guildInfoSplash": "",
 	"guildInfoDiscoverySplash": "",
 	"roleInfoTitles": {
-		"PERMISSIONS": "Разрешения"
+		"PERMISSIONS": ""
 	},
 	"roleInfoData": "",
-	"roleInfoAll": "Все разрешения предоставлены.",
-	"roleInfoNoPermissions": "Разрешения не предоставлены.",
+	"roleInfoAll": "",
+	"roleInfoNoPermissions": "",
 	"filterUndefinedWord": "",
 	"filterTooLong": "",
-	"filterAlreadyFiltered": "Это слово уже фильтруется.",
-	"filterNotFiltered": "Это слово не фильтруется.",
-	"filterAdded": "{{GREENTICK}} Успешно! Слово {{word}} добавлено в фильтр.",
-	"filterRemoved": "{{GREENTICK}} Успешно! Слово {{word}} удалено из фильтра.",
+	"filterAlreadyFiltered": "",
+	"filterNotFiltered": "",
+	"filterAdded": "",
+	"filterRemoved": "",
 	"filterReset": "",
 	"filterShowEmpty": "",
 	"filterShow": "",
 	"manageCommandAutoDeleteShowEmpty": "",
 	"manageCommandAutoDeleteShow": "",
 	"manageCommandAutoDeleteAdd": "",
-	"manageCommandAutoDeleteRemove": "{{GREENTICK}} Успешно! Команды в {{channel}} больше не будут автоматически удаляться!",
+	"manageCommandAutoDeleteRemove": "",
 	"manageCommandAutoDeleteRemoveNotset": "",
 	"manageCommandAutoDeleteReset": "",
 	"manageCommandChannelShow": "",
 	"manageCommandChannelShowEmpty": "",
 	"manageCommandChannelAddAlreadyset": "",
 	"manageCommandChannelAdd": "",
-	"manageCommandChannelRemoveNotset": "Команда, которую вы пытаетесь включить, не была отключена для {{channel}}.",
+	"manageCommandChannelRemoveNotset": "",
 	"manageCommandChannelRemove": "",
 	"manageCommandChannelResetEmpty": "",
 	"manageCommandChannelReset": "",
@@ -98,14 +98,14 @@
 	"createMuteExtended": {
 		"extendedHelp": ""
 	},
-	"nickDescription": "Измените никнейм Skyra для этого сервера.",
+	"nickDescription": "",
 	"nickExtended": {
 		"usages": [
 			"",
 			""
 		],
 		"extendedHelp": "",
-		"reminder": "Эта команда требует разрешение **{{CHANGE_NICKNAME, permissions}}**. Убедитесь, что у Skyra оно есть.",
+		"reminder": "",
 		"explainedUsage": [
 			[
 				"",
@@ -315,7 +315,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			]
 		],
@@ -350,7 +350,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			]
 		],
@@ -367,7 +367,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			]
 		],
@@ -385,7 +385,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			]
 		],
@@ -421,7 +421,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"эмодзи",
+				"",
 				""
 			]
 		],
@@ -1024,7 +1024,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"роли",
+				"",
 				""
 			]
 		],

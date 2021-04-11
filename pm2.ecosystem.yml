@@ -1,5 +1,5 @@
 apps:
-  - script: './dist/Skyra.js'
+  - script: './typescript/dist/Skyra.js'
     name: 'Skyra'
     vizion: false
     env:

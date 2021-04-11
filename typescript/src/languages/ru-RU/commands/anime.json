@@ -1,23 +1,23 @@
 {
-	"animeDescription": "Ищите своё любимое аниме по названию с помощью этой команды.",
+	"animeDescription": "",
 	"animeExtended": {
 		"usages": [
-			"Название аниме"
+			""
 		],
-		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенном вами аниме.",
+		"extendedHelp": "",
 		"examples": [
-			"One Piece"
+			""
 		]
 	},
-	"mangaDescription": "Ищите свою любимую мангу по названию с помощью этой команды.",
+	"mangaDescription": "",
 	"mangaExtended": {
 		"usages": [
-			"Название манги"
+			""
 		],
-		"extendedHelp": "Эта команда обращается к Kitsu.io, чтобы показать информацию о запрошенной вами манге.",
+		"extendedHelp": "",
 		"examples": [
-			"Stone Ocean",
-			"One Piece"
+			"",
+			""
 		]
 	},
 	"waifuDescription": "",
@@ -25,7 +25,7 @@
 		"extendedHelp": ""
 	},
 	"animeTypes": {
-		"tv": "📺 ТВ",
+		"tv": "",
 		"movie": "",
 		"ova": "",
 		"special": ""
@@ -33,30 +33,30 @@
 	"animeOutputDescription": "",
 	"animeNoSynopsis": "",
 	"animeEmbedData": {
-		"type": "Тип",
+		"type": "",
 		"score": "",
-		"episodes": "Эпизод(ы)",
-		"episodeLength": "Длительность эпизода",
-		"ageRating": "Возрастной рейтинг",
+		"episodes": "",
+		"episodeLength": "",
+		"ageRating": "",
 		"firstAirDate": "",
-		"watchIt": "Смотрите здесь:",
+		"watchIt": "",
 		"stillAiring": ""
 	},
 	"mangaOutputDescription": "",
 	"mangaTypes": {
-		"manga": "📘 Манга",
+		"manga": "",
 		"novel": "",
-		"manhwa": "🇰🇷 Манхва",
-		"oneShot": "☄ Ваншот",
+		"manhwa": "",
+		"oneShot": "",
 		"special": ""
 	},
 	"mangaEmbedData": {
-		"ageRating": "Возрастной рейтинг",
+		"ageRating": "",
 		"firstPublishDate": "",
-		"readIt": "Читайте здесь:",
+		"readIt": "",
 		"score": "",
-		"type": "Подтип",
+		"type": "",
 		"none": ""
 	},
-	"waifuFooter": "При поддержке thiswaifudoesnotexist.net"
+	"waifuFooter": ""
 }

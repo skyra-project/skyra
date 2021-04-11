@@ -1,31 +1,31 @@
 {
-	"avatarDescription": "Просмотрите чей-либо аватар в полном размере.",
+	"avatarDescription": "",
 	"avatarExtended": {
 		"usages": [
 			"",
-			"Пользователь"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Пользователь",
+				"",
 				""
 			]
 		],
 		"reminder": ""
 	},
 	"avatarNone": "",
-	"color": "HEX: **{{hex}}**\nRGB: **{{rgb}}**\nHSL: **{{hsl}}**",
+	"color": "",
 	"colorDescription": "",
 	"colorExtended": {
 		"usages": [
-			"Цвет",
+			"",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Цвет",
+				"",
 				""
 			],
 			[
@@ -35,20 +35,20 @@
 		],
 		"examples": [
 			"",
-			"rgb(200, 130, 75)"
+			""
 		],
 		"possibleFormats": [
 			[
-				"HEX",
-				"#dfdfdf"
+				"",
+				""
 			],
 			[
-				"RGB",
-				"rgb(200, 200, 200)"
+				"",
+				""
 			],
 			[
-				"HSL",
-				"hsl(350, 100, 100)"
+				"",
+				""
 			],
 			[
 				"",
@@ -59,7 +59,7 @@
 	"contentDescription": "",
 	"contentExtended": {
 		"usages": [
-			"Сообщение",
+			"",
 			"",
 			""
 		],
@@ -87,16 +87,16 @@
 			""
 		]
 	},
-	"countryDescription": "Показывает информацию о стране.",
+	"countryDescription": "",
 	"countryExtended": {
 		"usages": [
-			"Страна"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Страна",
-				"Название страны."
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -105,32 +105,32 @@
 	},
 	"countryFields": {
 		"other": {
-			"area": "Площадь",
-			"currencies": "Валюты",
+			"area": "",
+			"currencies": "",
 			"demonym": ""
 		},
 		"overview": {
-			"capital": "Столица",
+			"capital": "",
 			"officialName": "",
-			"population": "Население"
+			"population": ""
 		}
 	},
-	"countryTimezone": "Часовой пояс: {{timezone.0}}",
-	"countryTimezone_plural": "Часовые пояса: {{timezone, andList}}",
+	"countryTimezone": "",
+	"countryTimezone_plural": "",
 	"countryTitles": {
-		"LANGUAGES": "Языки",
+		"LANGUAGES": "",
 		"OTHER": "",
 		"OVERVIEW": ""
 	},
 	"createEmojiDescription": "",
 	"createEmojiExtended": {
 		"usages": [
-			"Эмодзи"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Эмодзи",
+				"",
 				""
 			]
 		],
@@ -147,12 +147,12 @@
 	"defineDescription": "",
 	"defineExtended": {
 		"usages": [
-			"Слово"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Слово",
+				"",
 				""
 			]
 		],
@@ -161,16 +161,16 @@
 		]
 	},
 	"defineNotfound": "",
-	"definePronounciation": "Произношение",
+	"definePronounciation": "",
 	"defineUnknown": "",
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		],
@@ -181,16 +181,16 @@
 	"duckDuckGoNotfound": "",
 	"duckDuckGoUnknownError": "",
 	"duckDuckGoPoweredBy": "",
-	"emojiCustom": "→ `Эмодзи ::` **{{emoji}}**\n→ `Тип  ::` **Пользовательский**\n→ `ID    ::` **{{id}}**",
+	"emojiCustom": "",
 	"emojiDescription": "",
 	"emojiExtended": {
 		"usages": [
-			"Эмодзи"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Эмодзи",
+				"",
 				""
 			]
 		],
@@ -199,7 +199,7 @@
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
 	"emojiTwemoji": "",
-	"emotesDescription": "Показывает все пользовательские эмодзи, доступные на этом сервере",
+	"emotesDescription": "",
 	"emotesExtended": {
 		"extendedHelp": "",
 		"reminder": ""
@@ -208,13 +208,13 @@
 	"eshopDescription": "",
 	"eshopExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
-				"Название игры, которую вы ищете."
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -224,7 +224,7 @@
 		]
 	},
 	"eshopNotInDatabase": "",
-	"eshopPriceFree": "Бесплатно",
+	"eshopPriceFree": "",
 	"eshopPricePaid": "",
 	"eshopTitles": {
 		"availability": "",
@@ -232,10 +232,10 @@
 		"esrb": "",
 		"noGenres": "",
 		"nsuid": "",
-		"numberOfPlayers": "Количество игроков",
-		"platform": "Платформа",
-		"price": "Стоимость",
-		"releaseDate": "Дата выпуска"
+		"numberOfPlayers": "",
+		"platform": "",
+		"price": "",
+		"releaseDate": ""
 	},
 	"horoscopeDescription": "",
 	"horoscopeExtended": {
@@ -284,12 +284,12 @@
 	"igdbDescription": "",
 	"igdbExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
-		"extendedHelp": "Эта команда обращается к IGDB API, чтобы показать информацию о ваших любимых играх.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		],
@@ -300,21 +300,21 @@
 	},
 	"igdbTitles": {
 		"ageRating": "",
-		"developers": "Разработчик(и)",
-		"genres": "Жанр(ы)",
+		"developers": "",
+		"genres": "",
 		"platform": "",
-		"releaseDate": "Дата выпуска",
+		"releaseDate": "",
 		"userScore": ""
 	},
 	"itunesDescription": "",
 	"itunesExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
-		"extendedHelp": "Эта команда обращается к Apple iTunes API, чтобы показать информацию о запрошенной вами музыке.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		],
@@ -324,18 +324,18 @@
 		]
 	},
 	"itunesTitles": {
-		"artist": "Исполнитель",
+		"artist": "",
 		"collection": "",
 		"collectionPrice": "",
 		"numberOfTracksInCollection": "",
 		"preview": "",
-		"previewLabel": "Нажмите здесь",
+		"previewLabel": "",
 		"primaryGenre": "",
 		"trackPrice": "",
 		"trackReleaseDate": ""
 	},
 	"moviesData": {
-		"linkClickHere": "Нажмите здесь",
+		"linkClickHere": "",
 		"movieInProduction": "",
 		"noGenres": "",
 		"none": "",
@@ -345,12 +345,12 @@
 	"moviesDescription": "",
 	"moviesExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		],
@@ -362,7 +362,7 @@
 	},
 	"moviesTitles": {
 		"collection": "",
-		"genres": "Жанры",
+		"genres": "",
 		"homePage": "",
 		"imdbPage": "",
 		"releaseDate": "",
@@ -420,18 +420,18 @@
 	"quoteDescription": "",
 	"quoteExtended": {
 		"usages": [
-			"Сообщение",
+			"",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			],
 			[
-				"сообщение",
-				"ID цитируемого сообщения."
+				"",
+				""
 			]
 		]
 	},
@@ -443,12 +443,12 @@
 	"showsDescription": "",
 	"showsExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		],
@@ -461,20 +461,20 @@
 	"showsTitles": {
 		"episodeRuntime": "",
 		"firstAirDate": "",
-		"genres": "Жанры",
+		"genres": "",
 		"status": "",
 		"userScore": ""
 	},
 	"systemTextTruncated": "",
 	"topInvitesDescription": "",
 	"topInvitesEmbedData": {
-		"channel": "Канал",
-		"createdAt": "Дата создания",
-		"createdAtUnknown": "Дата создания неизвестна",
+		"channel": "",
+		"createdAt": "",
+		"createdAtUnknown": "",
 		"expiresIn": "",
-		"link": "Ссылка",
-		"neverExpress": "Никогда",
-		"temporary": "Временное приглашение",
+		"link": "",
+		"neverExpress": "",
+		"temporary": "",
 		"uses": ""
 	},
 	"topInvitesExtended": {
@@ -485,17 +485,17 @@
 	"urbanDescription": "",
 	"urbanExtended": {
 		"usages": [
-			"Слово",
+			"",
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Слово",
+				"",
 				""
 			],
 			[
-				"Страница",
+				"",
 				""
 			]
 		],
@@ -507,42 +507,42 @@
 	"voteDescription": "",
 	"voteExtended": {
 		"usages": [
-			"Вопрос"
+			""
 		],
 		"examples": [
 			""
 		],
 		"explainedUsage": [
 			[
-				"Вопрос",
+				"",
 				""
 			]
 		]
 	},
 	"voteContentNeeded": "",
 	"voteReactionBlocked": "",
-	"whoisDescription": "Кто вы?",
+	"whoisDescription": "",
 	"whoisExtended": {
 		"usages": [
 			"",
-			"Пользователь"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Пользователь",
+				"",
 				""
 			]
 		]
 	},
 	"whoisMemberFields": {
-		"createdAt": "{{member.user.createdTimestamp, dateTime}}\n{{createdTimestampOffset, duration}} назад",
-		"footer": "ID: {{member.id}}",
+		"createdAt": "",
+		"footer": "",
 		"joinedUnknown": "",
-		"joinedWithTimestamp": "{{member.joinedTimestamp, dateTime}}\n{{joinedTimestampOffset, duration}} назад"
+		"joinedWithTimestamp": ""
 	},
 	"whoisMemberPermissions": "",
-	"whoisMemberPermissionsAll": "Все разрешения",
+	"whoisMemberPermissionsAll": "",
 	"whoisMemberRoles": "",
 	"whoisMemberRoles_plural": "",
 	"whoisMemberRoleListAndMore": "",
@@ -551,8 +551,8 @@
 		"joined": ""
 	},
 	"whoisUserFields": {
-		"createdAt": "{{user.createdAt, dateTime}}\n{{createdTimestampOffset, duration}} назад",
-		"footer": "ID: {{user.id}}"
+		"createdAt": "",
+		"footer": ""
 	},
 	"whoisUserTitles": {
 		"createdAt": ""
@@ -560,12 +560,12 @@
 	"wikipediaDescription": "",
 	"wikipediaExtended": {
 		"usages": [
-			"Страница"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Страница",
+				"",
 				""
 			]
 		],
@@ -575,12 +575,12 @@
 	"youtubeDescription": "",
 	"youtubeExtended": {
 		"usages": [
-			"Запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Запрос",
+				"",
 				""
 			]
 		]

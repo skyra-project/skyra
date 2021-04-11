@@ -1,11 +1,11 @@
 {
-	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
-	"confUpdated": "Successfully updated the key **{{key}}**: `{{response}}`",
-	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
-	"confGet": "The value for the key **{{key}}** is: `{{value}}`",
-	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
-	"confNochange": "The value for **{{key}}** was already that value.",
-	"confServerDescription": "Define per-server settings.",
+	"confGuarded": "",
+	"confUpdated": "",
+	"confGetNoExt": "",
+	"confGet": "",
+	"confReset": "",
+	"confNochange": "",
+	"confServerDescription": "",
 	"confServerExtended": {
 		"usages": [
 			"",
@@ -27,14 +27,14 @@
 		],
 		"reminder": ""
 	},
-	"confServer": "**Server Setting {{key}}**\n{{list}}",
-	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
-	"confSettingNotSet": "Not Set",
+	"confServer": "",
+	"confDashboardOnlyKey": "",
+	"confSettingNotSet": "",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
-	"rolesetDescription": "Manage unique role sets.",
+	"rolesetDescription": "",
 	"rolesetExtended": {
 		"usages": [
 			"",
@@ -47,20 +47,20 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"add",
-				"Create a new roleset or add a role to an existing one."
+				"",
+				""
 			],
 			[
-				"remove",
-				"Remove a role from an existing roleset."
+				"",
+				""
 			],
 			[
-				"reset",
-				"Removes all roles from a roleset or, if not specified, all existing rolesets."
+				"",
+				""
 			],
 			[
-				"list",
-				"Lists all rolesets."
+				"",
+				""
 			],
 			[
 				"",

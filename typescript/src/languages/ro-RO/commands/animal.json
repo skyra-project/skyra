@@ -1,23 +1,23 @@
 {
-	"catfactDescription": "Lasa-mă să îți spun un fapt misterios despre pisici.",
+	"catfactDescription": "",
 	"catfactExtended": {
-		"extendedHelp": "Ştiai că pisicile sunt foarte curioase, nu? Cu siguranţă au o mulţime de fapte distractive şi ciudate.\nCu această comandă vei primi un fapt aleatoriu."
+		"extendedHelp": ""
 	},
-	"catfactTitle": "Fapte despre pisici",
-	"dogDescription": "Câini drăguți! ❤",
+	"catfactTitle": "",
+	"dogDescription": "",
 	"dogExtended": {
 		"extendedHelp": ""
 	},
-	"foxDescription": "Lasă-mă să îți arăt o imagine cu o vulpe!",
+	"foxDescription": "",
 	"foxExtended": {
 		"extendedHelp": ""
 	},
-	"kittyDescription": "PISICUȚE!",
+	"kittyDescription": "",
 	"kittyExtended": {
 		"extendedHelp": ""
 	},
-	"shibeDescription": "Shiba-uri drăguți!",
+	"shibeDescription": "",
 	"shibeExtended": {
-		"extendedHelp": "Toată lumea iubește shiba-uri, și eu o să îi iubesc! Sunt atât de adorabili ❤"
+		"extendedHelp": ""
 	}
 }

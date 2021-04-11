@@ -1,5 +1,5 @@
 {
-	"avatarDescription": "किसी का अवतार पूरे आकार में देखें।",
+	"avatarDescription": "",
 	"avatarExtended": {
 		"usages": [
 			"",
@@ -110,8 +110,8 @@
 			"demonym": ""
 		},
 		"overview": {
-			"capital": "राजधानी",
-			"officialName": "आधिकारिक नाम",
+			"capital": "",
+			"officialName": "",
 			"population": ""
 		}
 	},
@@ -152,7 +152,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"शब्द",
+				"",
 				""
 			]
 		],

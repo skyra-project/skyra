@@ -15,7 +15,7 @@
 			"reset NameOfKey",
 			"menu"
 		],
-		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the [web dashboard](https://skyra.pw).",
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the [web dashboard\\\\](https://skyra.pw).",
 		"examples": [
 			"set language en-GB",
 			"set channels.moderation-logs #moderation-logs",

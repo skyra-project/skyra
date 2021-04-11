@@ -1,7 +1,7 @@
 {
 	"channelNotPostable": "",
 	"discordAbortError": "",
-	"exceededLengthChooseOutput": "Выберите один из следующих вариантов: {{output, orList}}",
+	"exceededLengthChooseOutput": "",
 	"exceededLengthOutput": "",
 	"exceededLengthOutputConsole": "",
 	"exceededLengthOutputType": "",
@@ -20,7 +20,7 @@
 		"reminders": ""
 	},
 	"highestRole": "",
-	"jumpTo": "Перейти к сообщению ►",
+	"jumpTo": "",
 	"loading": [
 		"",
 		"",

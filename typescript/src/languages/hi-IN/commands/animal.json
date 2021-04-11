@@ -1,22 +1,22 @@
 {
-	"catfactDescription": "मैं आपको एक रहस्यमय बिल्ली तथ्य बताता हूं।",
+	"catfactDescription": "",
 	"catfactExtended": {
-		"extendedHelp": "तुम जानता है कि बिल्ली बहुत उत्सुक है, ठीक? उसको ज़रूर मज़े और अजीब वाली बातें ज़्यादा है ।\nइस आदेश से तुमको एक अनियमित तथ्य मिलते है ।"
+		"extendedHelp": ""
 	},
-	"catfactTitle": "बिल्लियों के तथ्य",
-	"dogDescription": "प्यारे कुत्ते! ❤",
+	"catfactTitle": "",
+	"dogDescription": "",
 	"dogExtended": {
 		"extendedHelp": ""
 	},
-	"foxDescription": "मैं तुमको एक लोमड़ी का चित्र दिखाता हूं ।",
+	"foxDescription": "",
 	"foxExtended": {
 		"extendedHelp": ""
 	},
-	"kittyDescription": "बिलौटा!",
+	"kittyDescription": "",
 	"kittyExtended": {
 		"extendedHelp": ""
 	},
-	"shibeDescription": "प्यारा कुत्तों!",
+	"shibeDescription": "",
 	"shibeExtended": {
 		"extendedHelp": ""
 	}

@@ -1,13 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.ToggleModerationDmDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
+	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended,
+	permissionLevel: PermissionLevels.Administrator
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

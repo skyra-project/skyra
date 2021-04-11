@@ -9,11 +9,11 @@
 	"confServerExtended": {
 		"usages": [
 			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"दिखाएँ",
+			"कुंजी का नाम दिखाएं",
+			"कुंजी के लिए कुंजी का नाम मूल्य निकालें",
+			"कुंजी का नाम पुन: प्रस्थापित करे",
+			"मेन्यू"
 		],
 		"extendedHelp": "",
 		"examples": [
@@ -30,7 +30,7 @@
 	"confServer": "**सर्वर सेटिंग्स {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "{{key}} केवल वेब डैशबोर्ड (<https://skyra.pw>) माध्यम से ही इसे रूप दिया जा सकता हैं।",
 	"confSettingNotSet": "निर्धारित नहीं है",
-	"heapSnapshotDescription": "",
+	"heapSnapshotDescription": "मेमरी रिसाव को ढूंढने के लिए एक हीपडंप तैयार करता है।",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},

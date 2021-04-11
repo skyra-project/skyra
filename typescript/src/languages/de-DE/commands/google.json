@@ -1,10 +1,20 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
@@ -18,33 +28,75 @@
 	"currentTimeNoDst": "",
 	"gimageDescription": "",
 	"gimageExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"gsearchDescription": "",
 	"gsearchExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
-		"usages": [""],
-		"explainedUsage": [["", ""]],
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"lmgtfyClick": "",
 	"weatherDescription": "",
 	"weatherExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"errorZeroResults": "",

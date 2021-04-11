@@ -5,8 +5,15 @@
 			"Frage"
 		],
 		"extendedHelp": "Dieser Command gibt die eine zufällige Frage basierend auf einem Fragentyp. Sei vorsichtig, sie könnte zu schlau sein.",
-		"explainedUsage": [["Frage", "Die Heilige Frage"]],
-		"examples": ["Warum ging das Huhn über die Straße?"]
+		"explainedUsage": [
+			[
+				"Frage",
+				"Die Heilige Frage"
+			]
+		],
+		"examples": [
+			"Warum ging das Huhn über die Straße?"
+		]
 	},
 	"changemymindDescription": "Skyre ist die beste, change my mind.",
 	"changemymindExtended": {
@@ -14,8 +21,15 @@
 			"Inhalt"
 		],
 		"extendedHelp": "Ich denke trotzdem dass ich die beste bin, change my mind. Ich mache ein Bild mit deinem Avatar und etwas Text auf einem Papier.",
-		"explainedUsage": [["Text", "Der Satz den du willst."]],
-		"examples": ["Skyra ist der beste Bot auf diesem Server"]
+		"explainedUsage": [
+			[
+				"Text",
+				"Der Satz den du willst."
+			]
+		],
+		"examples": [
+			"Skyra ist der beste Bot auf diesem Server"
+		]
 	},
 	"choiceDescription": "Ene, mene, miste, deine Mutter rappelt in der Kiste...",
 	"choiceExtended": {
@@ -23,8 +37,16 @@
 			"Wahl1 Wahl2 Wahl3..."
 		],
 		"extendedHelp": "Ich habe eine Existenzkrise... soll ich das Geschirr waschen oder aus dem Fenster werfen? Die Suche geht weiter. Liste mir kommagetrennte Sachen auf und ich werde eine aussuchen. Nebenbei, Ich bin nicht verantwortlich für was danach passiert.",
-		"explainedUsage": [["Wörter", "Eine durch Komma getrennte Liste von Wörtern."]],
-		"examples": ["Sollte Geschirr waschen, wirft das Geschirr aus dem Fenster", "Katze, Hund"]
+		"explainedUsage": [
+			[
+				"Wörter",
+				"Eine durch Komma getrennte Liste von Wörtern."
+			]
+		],
+		"examples": [
+			"Sollte Geschirr waschen, wirft das Geschirr aus dem Fenster",
+			"Katze, Hund"
+		]
 	},
 	"diceDescription": "Würfel mit dem d20-Syntax.",
 	"diceExtended": {
@@ -48,8 +70,15 @@
 			"Benutzer"
 		],
 		"extendedHelp": "Lass mich dir zeigen wie man effektiv mit jemandem flirtet mit der Technik die Tony Stark bei Captain America verwendet. Ich garantiere dir dass du ihn kriegst.",
-		"explainedUsage": [["Benutzer", "Der Nutzer den du anflirten möchtest."]],
-		"examples": ["Skyra"]
+		"explainedUsage": [
+			[
+				"Benutzer",
+				"Der Nutzer den du anflirten möchtest."
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
 	},
 	"loveDescription": "Liebesmeter, online!",
 	"loveExtended": {
@@ -57,8 +86,15 @@
 			"Benutzer"
 		],
 		"extendedHelp": "Hey! Wilst du das Liebesmeter überprüfen? Es ist ein komisches Gerät, aber viele Menschen lieben es! Sei nicht schüchtern und probier es!",
-		"explainedUsage": [["Benutzer", "Der zu bewertende Benutzer."]],
-		"examples": ["Skyra"]
+		"explainedUsage": [
+			[
+				"Benutzer",
+				"Der zu bewertende Benutzer."
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
 	},
 	"markovDescription": "Erzeugt eine Markov-Kette aus dem Textchannel.",
 	"markovExtended": {
@@ -91,15 +127,37 @@
 	},
 	"popDescription": "",
 	"popExtended": {
-		"usages": ["", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"popTitle": "",
 	"popTitleLost": "",
@@ -114,8 +172,16 @@
 			"Inhalt"
 		],
 		"extendedHelp": "Nur weil ich ein Bot bin bedeutet das nicht, dass ich dich nicht richtig bewerten kann. Ich kann dich mit einem Zufallszahlengenerator bewerten, um den Prozess zu vereinfachen. Okay okay, es ist nicht fair, aber ich meine... Ich kann dir auch eine 💯 geben.",
-		"explainedUsage": [["Benutzer", "Der zu bewertende Benutzer."]],
-		"examples": ["Skyra", "Ich"]
+		"explainedUsage": [
+			[
+				"Benutzer",
+				"Der zu bewertende Benutzer."
+			]
+		],
+		"examples": [
+			"Skyra",
+			"Ich"
+		]
 	},
 	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
@@ -138,8 +204,16 @@
 			"Comic Name"
 		],
 		"extendedHelp": "**xkcd** ist ein Archiv für Nerd-Comics voller Mathematik, Wissenschaft, Sarkasmus und Sprachen. Wenn du kein Argument angibst, werde ich einen zufälligen Comic von xkcd auswählen. Wenn du eine Nummer angibst werde ich den Comic mit dieser Nummer abrufen. Aber wenn du einen Titel/Text/Thema angibst, werde ich einen Comic suchen, der mit dieser Eingabe übereinstimmt und ihn anzeigen. Zum Beispiel wird `Skyra, xkcd Curiosity` die Comicnummer 1091 anzeigen.",
-		"explainedUsage": [["Suchanfrage", "Entweder die Nummer des Comics, oder der zu suchende Titel."]],
-		"examples": ["1091", "Neugierde"]
+		"explainedUsage": [
+			[
+				"Suchanfrage",
+				"Entweder die Nummer des Comics, oder der zu suchende Titel."
+			]
+		],
+		"examples": [
+			"1091",
+			"Neugierde"
+		]
 	},
 	"8ballOutput": "🎱 Frage von {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
@@ -150,8 +224,21 @@
 		"Why": "Warum",
 		"Who": "Wer"
 	},
-	"8ballWhen": ["Bald™", "Vielleicht morgen.", "Vielleicht nächstes Jahr...", "Jetzt.", "In ein paar Monaten."],
-	"8ballWhat": ["Ein Flugzeug.", "Was? Frage erneut.", "Ein Geschenk.", "Nichts.", "Ein Ring.", "Ich weiß nicht, vielleicht etwas."],
+	"8ballWhen": [
+		"Bald™",
+		"Vielleicht morgen.",
+		"Vielleicht nächstes Jahr...",
+		"Jetzt.",
+		"In ein paar Monaten."
+	],
+	"8ballWhat": [
+		"Ein Flugzeug.",
+		"Was? Frage erneut.",
+		"Ein Geschenk.",
+		"Nichts.",
+		"Ein Ring.",
+		"Ich weiß nicht, vielleicht etwas."
+	],
 	"8ballHowMuch": [
 		"Viel.",
 		"Ein bisschen.",
@@ -240,8 +327,14 @@
 	"markovNsfwChannel": "Es tut mir leid, aber du kannst den markov Command nur auf {{channel}} verwenden, wenn du in einem NSFW Channel bist.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, ich würde **{{userToRate}}** eine **{{rate}}**/100 {{emoji}} geben",
-	"rateMyself": [". Ich liebe mich sehr 😊", "Mich Selbst"],
-	"rateOwners": [". Ich liebe meine Entwickler sehr 🥰", "meine Entwickler"],
+	"rateMyself": [
+		". Ich liebe mich sehr 😊",
+		"Mich Selbst"
+	],
+	"rateOwners": [
+		". Ich liebe meine Entwickler sehr 🥰",
+		"meine Entwickler"
+	],
 	"punError": "Hoppla, leider ist etwas schiefgegangen. Versuch es später nochmal.",
 	"xkcdComics": "Es gibt nur {{amount}} Comics.",
 	"xkcdNotfound": "Ich habe weit und breit gesucht, aber ich hatte kein Glück diesen Comic zu finden, versuche es später noch einmal oder versuche einen anderen!"

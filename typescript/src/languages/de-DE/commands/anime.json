@@ -5,7 +5,9 @@
 			"Name des Animes"
 		],
 		"extendedHelp": "Dieser Command empfängt Informationen von Kitsu.io um den gewünschten Anime anzuzeigen.",
-		"examples": ["One Piece"]
+		"examples": [
+			"One Piece"
+		]
 	},
 	"mangaDescription": "Suche mit diesem Command via Titel nach deinem Lieblingsmanga.",
 	"mangaExtended": {
@@ -13,7 +15,10 @@
 			"Name des Manga"
 		],
 		"extendedHelp": "Dieser Command empfängt Informationen von Kitsu.io um den gewünschten Manga anzuzeigen.",
-		"examples": ["Stone Ocean", "One Piece"]
+		"examples": [
+			"Stone Ocean",
+			"One Piece"
+		]
 	},
 	"waifuDescription": "Postet ein zufällig generiertes Waifu-Bild.",
 	"waifuExtended": {

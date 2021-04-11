@@ -1,27 +1,52 @@
 {
 	"dmDescription": "",
 	"dmExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": ""
 	},
 	"evalDescription": "",
 	"evalExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"execDescription": "",
 	"execExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"donateDescription": "",
 	"donateExtended": {
@@ -29,11 +54,20 @@
 	},
 	"echoDescription": "",
 	"echoExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": ""
 	},
@@ -56,9 +90,16 @@
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"disableWarn": "",
@@ -67,9 +108,16 @@
 	"enable": "",
 	"enableDescription": "",
 	"enableExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"reboot": "",
@@ -82,9 +130,16 @@
 	"reloadAll": "",
 	"reloadDescription": "",
 	"reloadExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"reloadEverything": "",

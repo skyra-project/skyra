@@ -14,10 +14,22 @@
 	},
 	"helpDescription": "",
 	"helpExtended": {
-		"usages": ["", "", "", "", ""],
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"reminder": "",
-		"examples": ["", "", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"helpDm": "",
 	"helpNodm": "",
@@ -28,9 +40,16 @@
 	},
 	"inviteDescription": "",
 	"inviteExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"invitePermissionInviteText": "",
 	"invitePermissionsDescription": "",

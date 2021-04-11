@@ -1,154 +1,154 @@
 {
-	"dmDescription": "Enviar un Mensaje Directo.",
+	"dmDescription": "",
 	"dmExtended": {
 		"usages": [
-			"Usuario, Mensaje"
+			""
 		],
-		"extendedHelp": "El comando DM está reservado para los propietarios del bot, y sólo se utiliza para propósitos muy específicos, como responder a mensajes enviados por los usuarios.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"Usuario a enviar un DM"
+				"",
+				""
 			],
 			[
-				"Mensaje",
-				"El mensaje a enviar"
+				"",
+				""
 			]
 		],
-		"reminder": "Reservado para los propietarios de los bots con fines de responder."
+		"reminder": ""
 	},
-	"evalDescription": "Evalúa Javascript.",
+	"evalDescription": "",
 	"evalExtended": {
 		"usages": [
-			"Expresión"
+			""
 		],
-		"extendedHelp": "El comando eval evalúa el código tal cual, y cualquier error arrojado en él será manejado.\nTambién utiliza la función de opciones. Escribe --silent, --depth=number o --async para personalizar la salida.\nLa opción --wait cambia el tiempo que se ejecutará el número. Por defecto es de 10 segundos. Acepta el tiempo en milisegundos.\nLas opciones --output y --output-to aceptan ya sea `file`, `log`, `haste` o `hastebin`.\nLa opción --delete hace que el comando borre el mensaje que ejecutó el mensaje después de la evaluación.\nLa opción --silent hará que no se envíe ningún mensaje de respuesta.\nLa opción --depth acepta un número, por ejemplo, --depth=2, para personalizar la profundidad de util.inspect.\nLa opción --async envuelve el código en una función asíncrona donde se puede hacer uso del await, sin embargo, si desea devolver algo, necesitará utilizar return\nLa opción --showHidden habilitará la opción showHidden en util.inspect.\nLas opciones --lang y --language permiten un resaltado de sintaxis diferente para la salida.\nLa opción --json convierte la salida a json\nLa opción --no-timeout desactiva el timeout\nSi la salida es demasiado grande, enviará la salida como un archivo, o en la consola si el bot no tiene el permiso {{ATTACH_FILES, permissions}}.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Expresión",
-				"La expresión a evaluar"
+				"",
+				""
 			]
 		],
 		"examples": [
-			"msg.author.username;",
-			"1 + 1;"
+			"",
+			""
 		],
-		"reminder": "Reservado para los propietarios del bot."
+		"reminder": ""
 	},
-	"execDescription": "Ejecutar el pedido 66.",
+	"execDescription": "",
 	"execExtended": {
 		"usages": [
-			"Expresión"
+			""
 		],
-		"extendedHelp": "Es mejor que no sepan ustedes esto.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Expresión",
-				"La expresión a evaluar"
+				"",
+				""
 			]
 		]
 	},
-	"donateDescription": "Obtén información sobre cómo donar para mantener a Skyra viva por más tiempo.",
+	"donateDescription": "",
 	"donateExtended": {
-		"extendedHelp": "El Proyecto Skyra comenzó el 24 de octubre de 2016, si estás leyendo esto, estás usando la versión {{VERSION}}. El equipo de desarrollo mejora Skyra un montón con cada iteración.\n\nSin embargo, no todo es gratis y necesitamos tu ayuda para mantener a Skyra viva.\nEstaremos muy agradecidos si nos ayudas.\nHemos estado trabajando en muchas cosas, y Skyra es preciosa para nosotros. Cuida de su ❤\n\n¿Quieres apoyar este increíble proyecto? ¡Siéntete libre de hacerlo! https://donate.skyra.pw/patreon o https://donate.skyra.pw/kofi"
+		"extendedHelp": ""
 	},
-	"echoDescription": "Haz que Skyra envíe un mensaje a este (o otro) canal.",
+	"echoDescription": "",
 	"echoExtended": {
 		"usages": [
-			"Mensaje",
-			"Canal Mensaje"
+			"",
+			""
 		],
-		"extendedHelp": "Esto debería ser muy obvio...",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Canal",
-				"El canal al que enviar el texto"
+				"",
+				""
 			],
 			[
-				"Mensaje",
-				"El mensaje a enviar"
+				"",
+				""
 			]
 		],
-		"reminder": "Reservado para los propietarios del bot."
+		"reminder": ""
 	},
-	"statsDescription": "Proporciona algunos detalles acerca del bot y las estadísticas.",
+	"statsDescription": "",
 	"statsExtended": {
-		"extendedHelp": "Esto debería ser muy obvio..."
+		"extendedHelp": ""
 	},
-	"evalTimeout": "TIMEOUT: La operación tomó más de {{seconds}} segundos.",
-	"evalError": "**Error**:{{output}}\n**Tipo**:{{type}}\n{{time}}",
+	"evalTimeout": "",
+	"evalError": "",
 	"statsTitles": {
-		"stats": "Estadísticas",
-		"uptime": "Tiempo de Actividad",
-		"serverUsage": "Uso del Servidor"
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": "• **Usuarios**: {{stats.users, number}}\n• **Servidores**: {{stats.guilds, number}}\n• **Canales**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
-		"uptime": "• **Servidor**: {{uptime.host, duration}}\n• **Total**: {{uptime.total, duration}}\n• **Cliente**: {{uptime.client, duration}}",
-		"serverUsage": "• **Carga de CPU**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
 	},
-	"disable": "+ Desactivado correctamente el {{type}}: {{name}}",
-	"disableDescription": "Desactiva temporalmente un comando/precondiciones/evento. El estado predeterminado es restaurado al reiniciar.",
+	"disable": "",
+	"disableDescription": "",
 	"disableExtended": {
 		"usages": [
-			"Pieza"
+			""
 		],
-		"extendedHelp": "Desactiva una pieza que estaba previamente habilitada",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Pieza",
-				"La pieza a desactivar"
+				"",
+				""
 			]
 		],
-		"reminder": "Reservado para los propietarios del bot."
+		"reminder": ""
 	},
-	"disableWarn": "Probablemente no quieras deshabilitarlo, ya que no podrías ejecutar ningún comando para activarlo de nuevo",
-	"dmNotSent": "No puedo enviarte un mensaje en MMDD, ¿me has bloqueado?",
-	"dmSent": "Te he enviado el mensaje en MMDD.",
-	"enable": "+ Activado correctamente el {{type}}: {{name}}",
-	"enableDescription": "Desactiva temporalmente una pieza. El estado predeterminado es restaurado al reiniciar.",
+	"disableWarn": "",
+	"dmNotSent": "",
+	"dmSent": "",
+	"enable": "",
+	"enableDescription": "",
 	"enableExtended": {
 		"usages": [
-			"Pieza"
+			""
 		],
-		"extendedHelp": "Habilita una pieza que estaba previamente desactivada",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Pieza",
-				"La pieza a activar"
+				"",
+				""
 			]
 		],
-		"reminder": "Reservado para los propietarios del bot."
+		"reminder": ""
 	},
-	"reboot": "{{LOADING}} Reiniciando...",
-	"rebootDescription": "Reinicia el bot.",
+	"reboot": "",
+	"rebootDescription": "",
 	"rebootExtended": {
-		"extendedHelp": "El bot hace boom, y luego el bot revive.",
-		"reminder": "Reservado para los propietarios del bot."
+		"extendedHelp": "",
+		"reminder": ""
 	},
-	"reload": "{{GREENTICK}} Se recargó {{type}}: {{name}}. (Tomó: {{time}})",
-	"reloadAll": "{{GREENTICK}} Recargó todos los {{type}}. (Tomó: {{time}})",
-	"reloadDescription": "Recarga una pieza o todas las piezas de un conjunto.",
+	"reload": "",
+	"reloadAll": "",
+	"reloadDescription": "",
 	"reloadExtended": {
 		"usages": [
-			"Pieza/Idioma/everything"
+			""
 		],
-		"extendedHelp": "Recarga rápidamente una pieza.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Pieza/Idioma/everything",
-				"La pieza o idioma a recargar, o \"everything\" para recargar todo"
+				"",
+				""
 			]
 		],
-		"reminder": "¡Ten cuidado con nombres potencialmente duplicados, ya que puedes activar fácilmente la recarga de todas las piezas!"
+		"reminder": ""
 	},
-	"reloadEverything": "{{GREENTICK}} Se recargó todo. (Tomó: {{time}})",
-	"reloadInvalidEverything": "No pude resolver `{{parameter}}` a un válido \"everything\".\n**Pista**: El único valor posible es `everything`.",
-	"reloadLanguage": "{{GREENTICK}} Recargado recurso de idioma `{{language}}`. (Tomó: {{time}})",
-	"supportDescription": "Muestra las instrucciones de soporte",
-	"supportEmbedDescription": "¡Entonces probablemente deberías unirte a [Skyra's Lounge](https://join.skyra.pw)! ¡Aquí, puedes recibir apoyo de los desarrolladores y otros miembros de la comunidad!",
-	"supportEmbedTitle": "¿Estás buscando ayuda, {{username}}?",
+	"reloadEverything": "",
+	"reloadInvalidEverything": "",
+	"reloadLanguage": "",
+	"supportDescription": "",
+	"supportEmbedDescription": "",
+	"supportEmbedTitle": "",
 	"supportExtended": {
-		"extendedHelp": "Este comando te da un enlace a *Skyra's Lounge*, el mejor lugar para todo lo relacionado conmigo."
+		"extendedHelp": ""
 	}
 }

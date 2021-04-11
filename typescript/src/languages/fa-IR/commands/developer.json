@@ -1,14 +1,14 @@
 {
-	"yarnDescription": "نشان دادن اطلاعات یک پکیج Nodejs با استفاده از Yarn package registry",
+	"yarnDescription": "",
 	"yarnExtended": {
 		"usages": [
-			"نام پکیج"
+			""
 		],
-		"extendedHelp": "این برای برنامه نویس های NodeJS میباشد که میخواهند اطلاعات یک پکیج منتشر شده در [npm](https://npmjs.com) را مشاهده کنند",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"پکیج",
-				"نام بسته برای جستجو، اسم بسته باید دقیق و صحیح باشد"
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -17,17 +17,17 @@
 			""
 		]
 	},
-	"yarnEmbedDescriptionAuthor": "❯ منتشر کننده: {{author}}",
-	"yarnEmbedDescriptionDateCreated": "❯ تاریخ انتشار: **{{dateCreated}}**",
-	"yarnEmbedDescriptionDateModified": "❯ تاریخ اخریت تغییرات: **{{dateModified}}**",
-	"yarnEmbedDescriptionDependenciesLabel": "__*نیازمندی های بسته:*__",
-	"yarnEmbedDescriptionDependenciesNoDeps": "این بسته نیازمندی خاصی ندارد {{GREENTICK}}!",
-	"yarnEmbedDescriptionDeprecated": "❯ اعلامیه پشتیبانی: **{{deprecated}}**",
-	"yarnEmbedDescriptionLatestVersion": "❯ اخرین ورژن: **{{latestVersionNumber}}**",
-	"yarnEmbedDescriptionLicense": "❯ لایسنس: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ فایل اصلی: **{{mainFile}}**",
-	"yarnEmbedDescriptionMaintainers": "❯ برنامه نویس ها: **{{maintainers, andList}}**",
-	"yarnEmbedMoreText": "بیشتر...",
-	"yarnPackageNotFound": "متاسفانه، بسته ای با نام `{{pkg}}` پیدا نشد.",
-	"yarnUnpublishedPackage": "چه برنامه نویس احمقی این بسته {{pkg}} رو نوشته، اصن انتشار داده نشده!"
+	"yarnEmbedDescriptionAuthor": "",
+	"yarnEmbedDescriptionDateCreated": "",
+	"yarnEmbedDescriptionDateModified": "",
+	"yarnEmbedDescriptionDependenciesLabel": "",
+	"yarnEmbedDescriptionDependenciesNoDeps": "",
+	"yarnEmbedDescriptionDeprecated": "",
+	"yarnEmbedDescriptionLatestVersion": "",
+	"yarnEmbedDescriptionLicense": "",
+	"yarnEmbedDescriptionMainFile": "",
+	"yarnEmbedDescriptionMaintainers": "",
+	"yarnEmbedMoreText": "",
+	"yarnPackageNotFound": "",
+	"yarnUnpublishedPackage": ""
 }

@@ -5,8 +5,8 @@
 			"Tiempo Título",
 			"CanalDeTexto Tiempo Título",
 			"Tiempo --winners/Ganadores Título",
-			"",
-			""
+			"CanalDeTexto Rol1 Rol2 Tiempo Título",
+			"Rol1 Rol2 Tiempo Título"
 		],
 		"extendedHelp": "Este comando está diseñado para gestionar los sorteos. Puedes iniciarlos con este comando dándole la hora y el título.\n\nCuando se ha creado un sorteo, enviaré un mensaje y reaccionaré a éste con 🎉 para que los miembros del servidor puedan participar en él.\n\nTambién puedes pasar el modificador `--winners=Xw`, donde X es un número (por ejemplo 2w para 2 ganadores) para cambiar el número de ganadores que un sorteo tendrá.\n\nEl máximo de ganadores posible es de 25.",
 		"explainedUsage": [
@@ -15,20 +15,20 @@
 				"El canal en el que iniciar el regalo, por defecto en el canal en el que se ejecutó el comando."
 			],
 			[
-				"",
-				""
+				"Roles",
+				"Una lista de roles separados por espacio que los miembros deben tener para participar, si se especificaron."
 			],
 			[
-				"",
-				""
+				"Tiempo",
+				"El tiempo que debe durar el sorteo."
 			],
 			[
-				"",
-				""
+				"Ganadores",
+				"La cantidad de ganadores, esto toma un número entero con `w` de sufijo, por ejemplo `2w` para 2 ganadores."
 			],
 			[
-				"",
-				""
+				"Título",
+				"El título del sorteo."
 			]
 		],
 		"examples": [
@@ -67,8 +67,8 @@
 			"TiempoProgramado Tiempo Título",
 			"CanalDeTexto TiempoProgramado Tiempo Título",
 			"TiempoProgramado Tiempo --winners/Ganadores Título",
-			"",
-			""
+			"CanalDeTexto TiempoProgramado Rol1 Rol2 Tiempo Título",
+			"TiempoProgramado Rol1 Rol2 Tiempo Título"
 		],
 		"extendedHelp": "Este comando prepara un sorteo para comenzar en un determinado momento si no desea iniciarlo inmediatamente.\n\nPuedes pasarle el modificador `--winners=X`, donde X es un número, para permitir que varias personas ganen en el sorteo.\n\nTenga en cuenta que hay un máximo de 25 ganadores.",
 		"explainedUsage": [
@@ -81,20 +81,20 @@
 				"El tiempo para esperar antes de comenzar el sorteo."
 			],
 			[
-				"",
-				""
+				"Roles",
+				"Una lista de roles separados por espacio que los miembros deben tener para participar, si se especificaron."
 			],
 			[
-				"",
-				""
+				"Tiempo",
+				"El tiempo que debe durar el sorteo."
 			],
 			[
-				"",
-				""
+				"Ganadores",
+				"La cantidad de ganadores, esto toma un número entero con `w` de sufijo, por ejemplo `2w` para 2 ganadores."
 			],
 			[
-				"",
-				""
+				"Título",
+				"El título del sorteo."
 			]
 		],
 		"examples": [

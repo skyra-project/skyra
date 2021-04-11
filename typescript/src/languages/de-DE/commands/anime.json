@@ -1,13 +1,17 @@
 {
 	"animeDescription": "Suche mit diesem Command via Titel nach deinem Lieblingsanime.",
 	"animeExtended": {
-		"usages": [""],
+		"usages": [
+			"Name des Animes"
+		],
 		"extendedHelp": "Dieser Command empfängt Informationen von Kitsu.io um den gewünschten Anime anzuzeigen.",
 		"examples": ["One Piece"]
 	},
 	"mangaDescription": "Suche mit diesem Command via Titel nach deinem Lieblingsmanga.",
 	"mangaExtended": {
-		"usages": [""],
+		"usages": [
+			"Name des Manga"
+		],
 		"extendedHelp": "Dieser Command empfängt Informationen von Kitsu.io um den gewünschten Manga anzuzeigen.",
 		"examples": ["Stone Ocean", "One Piece"]
 	},

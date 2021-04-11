@@ -4,7 +4,7 @@
 		"usages": [
 			"Nombre del Paquete"
 		],
-		"extendedHelp": "Esto es para desarrolladores de NodeJS que quieren encontrar rápidamente información sobre un paquete publicado en [npm](https://npmjs.com)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"paquete",

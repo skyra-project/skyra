@@ -1,47 +1,107 @@
 {
 	"avatarDescription": "",
 	"avatarExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"avatarNone": "",
 	"color": "",
 	"colorDescription": "",
 	"colorExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""],
+		"examples": [
+			"",
+			""
+		],
 		"possibleFormats": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"contentDescription": "",
 	"contentExtended": {
-		"usages": ["", "", ""],
+		"usages": [
+			"",
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"countryDescription": "",
 	"countryExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"countryFields": {
 		"other": {
@@ -64,10 +124,20 @@
 	},
 	"createEmojiDescription": "",
 	"createEmojiExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"createEmojiInvalidDiscordEmoji": "",
@@ -76,18 +146,34 @@
 	"createEmojiSuccess": "",
 	"defineDescription": "",
 	"defineExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"defineNotfound": "",
 	"definePronounciation": "",
 	"defineUnknown": "",
 	"duckDuckGoDescription": "",
 	"duckDuckGoExtended": {
-		"usages": [""],
-		"explainedUsage": [["", ""]],
+		"usages": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -98,9 +184,16 @@
 	"emojiCustom": "",
 	"emojiDescription": "",
 	"emojiExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"emojiInvalid": "",
@@ -114,10 +207,21 @@
 	"emotesTitle": "",
 	"eshopDescription": "",
 	"eshopExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"eshopNotInDatabase": "",
 	"eshopPriceFree": "",
@@ -135,18 +239,37 @@
 	},
 	"horoscopeDescription": "",
 	"horoscopeExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"horoscopeInvalidSunsign": "",
 	"horoscopeTitles": {
 		"dailyHoroscope": "",
-		"metadata": ["", "", "", ""],
+		"metadata": [
+			"",
+			"",
+			"",
+			""
+		],
 		"metadataTitle": ""
 	},
 	"igdbData": {
@@ -160,10 +283,20 @@
 	},
 	"igdbDescription": "",
 	"igdbExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"igdbTitles": {
 		"ageRating": "",
@@ -175,10 +308,20 @@
 	},
 	"itunesDescription": "",
 	"itunesExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"itunesTitles": {
 		"artist": "",
@@ -201,10 +344,21 @@
 	},
 	"moviesDescription": "",
 	"moviesExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"moviesTitles": {
 		"collection": "",
@@ -218,32 +372,67 @@
 	},
 	"pollDescription": "",
 	"pollExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"pollReactionLimit": "",
 	"priceCurrency": "",
 	"priceCurrencyNotFound": "",
 	"priceDescription": "",
 	"priceExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"quoteDescription": "",
 	"quoteExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"showsData": {
@@ -253,10 +442,21 @@
 	},
 	"showsDescription": "",
 	"showsExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"showsTitles": {
 		"episodeRuntime": "",
@@ -284,28 +484,56 @@
 	"topInvitesTop10InvitesFor": "",
 	"urbanDescription": "",
 	"urbanExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"urbanNoDefinition": "",
 	"voteDescription": "",
 	"voteExtended": {
-		"usages": [""],
-		"examples": [""],
-		"explainedUsage": [["", ""]]
+		"usages": [
+			""
+		],
+		"examples": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"voteContentNeeded": "",
 	"voteReactionBlocked": "",
 	"whoisDescription": "",
 	"whoisExtended": {
-		"usages": ["", ""],
+		"usages": [
+			"",
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"whoisMemberFields": {
 		"createdAt": "",
@@ -331,17 +559,31 @@
 	},
 	"wikipediaDescription": "",
 	"wikipediaExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"wikipediaNotfound": "",
 	"youtubeDescription": "",
 	"youtubeExtended": {
-		"usages": [""],
+		"usages": [
+			""
+		],
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"youtubeNotfound": ""
 }

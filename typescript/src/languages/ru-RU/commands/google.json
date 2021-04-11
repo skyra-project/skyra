@@ -2,12 +2,12 @@
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
 		"usages": [
-			"Название страны"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Название страны",
+				"",
 				""
 			]
 		],
@@ -18,9 +18,9 @@
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "Текущее время",
-		"currentDate": "Текущая дата",
-		"country": "Страна",
+		"currentTime": "",
+		"currentDate": "",
+		"country": "",
 		"gmsOffset": "",
 		"dst": ""
 	},
@@ -29,13 +29,13 @@
 	"gimageDescription": "",
 	"gimageExtended": {
 		"usages": [
-			"Поисковый запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Поисковый запрос",
-				"Изображение, которое вы хотите найти в Google"
+				"",
+				""
 			]
 		],
 		"examples": [
@@ -47,13 +47,13 @@
 	"gsearchDescription": "",
 	"gsearchExtended": {
 		"usages": [
-			"Поисковый запрос"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Поисковый запрос",
-				"То, что вы хотите найти в Google"
+				"",
+				""
 			]
 		],
 		"examples": [

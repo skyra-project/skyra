@@ -14,7 +14,7 @@ export class UserEvent extends Event {
 		]);
 		if (!initial && !initialHumans && !initialBots) return;
 
-		const roleID = initial ?? member.user.bot ? initialBots : initialHumans;
+		const roleID = initial ?? (member.user.bot ? initialBots : initialHumans);
 		if (!roleID) return;
 
 		const role = member.guild.roles.cache.get(roleID);

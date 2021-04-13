@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/common';
+import { RESTJSONErrorCodes } from 'discord-api-types/rest/v6';
 import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

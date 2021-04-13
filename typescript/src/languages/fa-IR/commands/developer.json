@@ -4,7 +4,7 @@
 		"usages": [
 			"نام پکیج"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "این برای برنامه نویس های NodeJS میباشد که میخواهند اطلاعات یک پکیج منتشر شده در [npm](https://npmjs.com) را مشاهده کنند",
 		"explainedUsage": [
 			[
 				"پکیج",

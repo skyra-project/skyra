@@ -78,7 +78,7 @@
 			"¿¿Cómo hago panqueques??"
 		]
 	},
-	"lmgtfyClick": "",
+	"lmgtfyClick": "[Haz clic para buscar]({{link}})",
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
 		"usages": [
@@ -86,7 +86,7 @@
 			"Lugar --metric/--celsius",
 			"Lugar --imperial/--fahrenheit"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Este comando usa [wttr.in](https://wttr.in) para obtener los datos meteorológicos de una ubicación y lo muestra con una tarjeta bonita.",
 		"explainedUsage": [
 			[
 				"Ciudad",

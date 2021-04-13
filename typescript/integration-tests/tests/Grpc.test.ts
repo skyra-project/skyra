@@ -100,4 +100,78 @@ describe('Grpc', () => {
 			});
 		});
 	});
+
+	describe('Users', () => {
+		const authorId = '1';
+		const targetId = '2';
+		const authorQuery = { id: authorId };
+		const targetQuery = { id: targetId };
+		// const authorTargetQuery = { authorId, targetId };
+
+		beforeEach(async () => {
+			await grpc.users.resetPoints(authorQuery);
+			await grpc.users.resetPoints(targetQuery);
+		});
+
+		describe('Add Points', () => {
+			test('GIVEN 50 experience points on non-existing entry THEN returns 50', async () => {
+				const result = await grpc.users.addPoints({ ...authorQuery, amount: 50 });
+				expect(result.status).toBe(Status.SUCCESS);
+				expect(result.amount).toBe(50);
+			});
+
+			test('GIVEN 50 experience points on existing entry THEN returns 50 plus the existing amount', async () => {
+				await grpc.users.addPoints({ ...authorQuery, amount: 50 });
+				const result = await grpc.users.addPoints({ ...authorQuery, amount: 200 });
+				expect(result.status).toBe(Status.SUCCESS);
+				expect(result.amount).toBe(250);
+			});
+		});
+
+		describe('Get Points', () => {
+			test('GIVEN a non-existing entry THEN returns 0', async () => {
+				const result = await grpc.users.getPoints(authorQuery);
+				expect(result.status).toBe(Status.SUCCESS);
+				expect(result.amount).toBe(0);
+			});
+
+			test('GIVEN an existing entry THEN returns the existing amount', async () => {
+				await grpc.users.addPoints({ ...authorQuery, amount: 100 });
+				const result = await grpc.users.getPoints(authorQuery);
+				expect(result.status).toBe(Status.SUCCESS);
+				expect(result.amount).toBe(100);
+			});
+		});
+
+		describe('Reset Points', () => {
+			test('GIVEN a non-existing entry THEN returns 0', async () => {
+				const resetResult = await grpc.users.resetPoints(authorQuery);
+				expect(resetResult.status).toBe(Status.SUCCESS);
+
+				const getResult = await grpc.users.getPoints(authorQuery);
+				expect(getResult.status).toBe(Status.SUCCESS);
+				expect(getResult.amount).toBe(0);
+			});
+
+			test('GIVEN an existing entry THEN returns the existing amount', async () => {
+				await grpc.users.addPoints({ ...authorQuery, amount: 100 });
+
+				const resetResult = await grpc.users.resetPoints(authorQuery);
+				expect(resetResult.status).toBe(Status.SUCCESS);
+
+				const getResult = await grpc.users.getPoints(authorQuery);
+				expect(getResult.status).toBe(Status.SUCCESS);
+				expect(getResult.amount).toBe(0);
+			});
+		});
+
+		describe('Exceptions', () => {
+			test('GIVEN an identifier that is too long THEN generates Status.Failed', async () => {
+				const id = '1'.repeat(20);
+				const promise = grpc.users.addPoints({ id, amount: 100 });
+				await expect(promise).rejects.toThrowError("Received non-OK response: '1'");
+				await expect(promise).rejects.toBeInstanceOf(ResponseError);
+			});
+		});
+	});
 });

@@ -86,7 +86,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.21.0",
 		"@typescript-eslint/parser": "^4.21.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"discord-api-types": "^0.15.1",
+		"discord-api-types": "^0.16.0",
 		"eslint": "^7.24.0",
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-prettier": "^3.3.1",

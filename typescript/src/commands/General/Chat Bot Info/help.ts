@@ -44,20 +44,20 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (args.finished) {
 			if (args.getFlags('cat', 'categories')) return this.categories(message, args);
-			if (args.getFlags('all')) return this.all(message, args);
+			if (args.getFlags('all')) return this.all(message, args, context);
 		}
 
 		const category = await args.pickResult(UserCommand.categories);
-		if (category.success) return this.display(message, args, category.value - 1);
+		if (category.success) return this.display(message, args, category.value - 1, context);
 
 		const page = await args.pickResult('integer', { minimum: 0 });
-		if (page.success) return this.display(message, args, page.value - 1);
+		if (page.success) return this.display(message, args, page.value - 1, context);
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
 		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, this.getCommandPrefix(context)));
 
-		return this.canRunPaginatedMessage(message) ? this.display(message, args, null) : this.all(message, args);
+		return this.canRunPaginatedMessage(message) ? this.display(message, args, null, context) : this.all(message, args, context);
 	}
 
 	private getCommandPrefix(context: SkyraCommand.Context): string {
@@ -86,8 +86,8 @@ export class UserCommand extends SkyraCommand {
 		return message.send(commandCategories.join('\n'));
 	}
 
-	private async all(message: Message, args: SkyraCommand.Args) {
-		const content = await this.buildHelp(message, args.t, args.commandContext.commandPrefix);
+	private async all(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+		const content = await this.buildHelp(message, args.t, this.getCommandPrefix(context));
 		try {
 			const response = await message.author.send(content, { split: { char: '\n' } });
 			return message.channel.type === 'dm' ? response : await message.send(args.t(LanguageKeys.Commands.General.HelpDm));
@@ -97,8 +97,8 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@requiresPermissions(PERMISSIONS_PAGINATED_MESSAGE)
-	private async display(message: Message, args: SkyraCommand.Args, index: number | null) {
-		const { commandPrefix: prefix } = args.commandContext;
+	private async display(message: Message, args: SkyraCommand.Args, index: number | null, context: SkyraCommand.Context) {
+		const prefix = this.getCommandPrefix(context);
 
 		const response = await message.send(
 			args.t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),

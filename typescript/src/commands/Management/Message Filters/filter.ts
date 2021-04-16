@@ -1,9 +1,11 @@
-import { GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { remove as removeConfusables } from 'confusables';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -16,12 +18,11 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
-		const word = (await args.pick('string', { maximum: 32 })).toLowerCase();
-		await message.guild.writeSettings((settings) => {
+		const word = await this.getWord(args);
+		await message.guild.writeSettings(async (settings) => {
 			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
-			const regex = settings.wordFilterRegExp;
-			if (words.includes(word) || (regex && regex.test(word))) {
+			if (await this.hasWord(settings, word)) {
 				this.error(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
 			}
 
@@ -33,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
-		const word = (await args.pick('string', { maximum: 32 })).toLowerCase();
+		const word = await this.getWord(args);
 		await message.guild.writeSettings((settings) => {
 			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
@@ -59,5 +60,25 @@ export class UserCommand extends SkyraCommand {
 		return raw.length
 			? message.send(args.t(LanguageKeys.Commands.Management.FilterShow, { words: `\`${raw.join('`, `')}\`` }))
 			: message.send(args.t(LanguageKeys.Commands.Management.FilterShowEmpty));
+	}
+
+	private async getWord(args: SkyraCommand.Args) {
+		const word = await args.pick('string', { maximum: 32 });
+		return removeConfusables(word.toLowerCase());
+	}
+
+	private async hasWord(settings: GuildEntity, content: string) {
+		const words = settings[GuildSettings.Selfmod.Filter.Raw];
+		if (words.includes(content)) return true;
+
+		const regExp = settings.wordFilterRegExp;
+		if (regExp === null) return false;
+
+		try {
+			const result = await this.context.workers.send({ type: IncomingType.RunRegExp, content, regExp });
+			return result.type === OutgoingType.RegExpMatch;
+		} catch {
+			return false;
+		}
 	}
 }

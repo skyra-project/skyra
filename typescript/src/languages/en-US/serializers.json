@@ -36,6 +36,7 @@
 	"permissionNodeInvalidTarget": "No data could be found from the ID.",
 	"permissionNodeSecurityEveryoneAllows": "For security, the everyone role cannot have allows.",
 	"permissionNodeSecurityGuarded": "For security and for me to work properly, you cannot deny the usage for the command `{{command}}`.",
+	"wordIncluded": "The key `{{name}}` already includes the word `{{word}}`.",
 	"permissionNodeSecurityOwner": "You cannot set permission overrides on the server owner.",
 	"reactionRoleInvalid": "Invalid reaction role data.",
 	"stickyRoleInvalid": "Invalid sticky role data.",

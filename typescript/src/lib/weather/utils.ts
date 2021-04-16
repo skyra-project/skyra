@@ -159,7 +159,7 @@ export async function getData(query: string, lang: string): Promise<Weather> {
 
 	// Log the error and return unknown error:
 	Store.injectedContext.logger.error(`[${cyan('WEATHER')}]: Unknown Error Code Received: ${red(error.code.toString())} - ${gray(error.response)}`);
-	throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError });
+	throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError, context: { query } });
 }
 
 export function resolveCurrentConditionsImperial(conditions: CurrentCondition, t: TFunction): ResolvedConditions {

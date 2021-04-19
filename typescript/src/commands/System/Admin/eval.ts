@@ -18,6 +18,7 @@ import { inspect } from 'util';
 	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
+	quotes: [],
 	strategyOptions: {
 		flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden', 'sql'],
 		options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth']

@@ -3,7 +3,7 @@
 	"projectOwner": "skyra-project",
 	"repoType": "github",
 	"repoHost": "https://github.com",
-	"files": ["README.md", "services/Skyra.Grpc/README.md"],
+	"files": ["README.md", "assets/docker-hub/GRPC.md", "assets/docker-hub/SKYRA.md"],
 	"imageSize": 100,
 	"commit": true,
 	"commitConvention": "angular",

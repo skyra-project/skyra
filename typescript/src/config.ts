@@ -38,6 +38,7 @@ function parseAudio(): QueueClientOptions | undefined {
 		userID: envParseString('CLIENT_ID'),
 		password: envParseString('AUDIO_PASSWORD'),
 		redis: {
+			host: envParseString('REDIS_HOST'),
 			port: envParseInteger('REDIS_PORT'),
 			db: envParseInteger('REDIS_DB'),
 			password: envParseString('REDIS_PASSWORD')

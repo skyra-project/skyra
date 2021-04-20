@@ -1,111 +1,144 @@
 version: '2.4'
 services:
   grpc:
-    image: skyrabot/grpc:latest
-    container_name: 'skyra-grpc'
+    container_name: grpc
     depends_on:
       - postgres
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=skyra
+    image: 'skyrabot/grpc:latest'
     networks:
       - skyra
     ports:
       - '8291:80'
-  pokedex:
-    container_name: pokedex
-    image: favware/graphql-pokemon:latest
-    restart: always
-    networks:
-      - skyra
-    ports:
-      - '4000:8288'
-  postgres:
-    container_name: pgsql
-    image: skyrabot/postgres:latest
-    restart: always
-    networks:
-      - skyra
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-  lavalink:
-    container_name: lavalink
-    image: skyrabot/lavalink:latest
-    restart: always
+
+  hasteserver:
+    container_name: hasteserver
     depends_on:
       - redis
+    environment:
+      PORT: 8290
+      STORAGE_DB: 2
+      STORAGE_EXPIRE_SECONDS: 21600
+      STORAGE_HOST: redis
+      STORAGE_PASSWORD: redis
+      STORAGE_PORT: 8287
+      STORAGE_TYPE: redis
+    image: 'skyrabot/haste-server:latest'
+    networks:
+      - skyra
+    ports:
+      - '8290:8290'
+    restart: always
+
+  influx:
+    command: 'influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt'
+    container_name: influxdb
+    image: 'quay.io/influxdb/influxdb:v2.0.4'
+    networks:
+      - skyra
+    ports:
+      - '8285:8086'
+    restart: always
+    volumes:
+      - 'influx-data:/var/lib/influxdb2'
+
+  lavalink:
+    container_name: lavalink
+    depends_on:
+      - redis
+    image: 'skyrabot/lavalink:latest'
     networks:
       - skyra
     ports:
       - '2333:2333'
-  saelem:
-    container_name: saelem
-    image: skyrabot/saelem:latest
     restart: always
-    depends_on:
-      - redis
-    environment:
-      SAELEM_REDIS_HOST: redis
-      SAELEM_REDIS_PORT: 8287
-      SAELEM_REDIS_PASSWORD: redis
-      SAELEM_REDIS_DATABASE: 0
-      PORT: 8284
-    ports:
-      - '8284:8284'
-    networks:
-      - skyra
-  influx:
-    container_name: influxdb
-    image: quay.io/influxdb/influxdb:v2.0.3
-    restart: always
-    volumes:
-      - influx-data:/var/lib/influxdb2
-    ports:
-      - '8285:8086'
-    networks:
-      - skyra
-    command: influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt
-  redis:
-    container_name: redis
-    image: redis:alpine
-    restart: always
-    ports:
-      - '8287:8287'
-    networks:
-      - skyra
-    command: redis-server --port 8287 --requirepass redis
-  hasteserver:
-    container_name: hasteserver
-    image: skyrabot/haste-server:latest
-    restart: always
-    depends_on:
-      - redis
-    ports:
-      - '8290:8290'
-    networks:
-      - skyra
-    environment:
-      PORT: 8290
-      STORAGE_TYPE: redis
-      STORAGE_HOST: host.docker.internal
-      STORAGE_PORT: 8287
-      STORAGE_PASSWORD: redis
-      STORAGE_DB: 2
-      STORAGE_EXPIRE_SECONDS: 21600
+
   outflux:
     container_name: outflux
-    image: skyrabot/outflux:latest
-    restart: always
     depends_on:
       - influx
+    environment:
+      INFLUX_BASE_URL: 'http://influx:8086'
+    image: 'skyrabot/outflux:latest'
     networks:
       - skyra
-    environment:
-      INFLUX_BASE_URL: 'http://host.docker.internal:8285'
     ports:
       - '8286:8286'
+    restart: always
+
+  pokedex:
+    container_name: pokedex
+    image: 'favware/graphql-pokemon:latest'
+    networks:
+      - skyra
+    ports:
+      - '8288:8288'
+    restart: always
+
+  postgres:
+    container_name: postgres
+    image: 'skyrabot/postgres:latest'
+    networks:
+      - skyra
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - 'postgres-data:/var/lib/postgresql/data'
+
+  redis:
+    command: 'redis-server --port 8287 --requirepass redis'
+    container_name: redis
+    image: 'redis:alpine'
+    networks:
+      - skyra
+    ports:
+      - '8287:8287'
+    restart: always
+
+  saelem:
+    container_name: saelem
+    depends_on:
+      - redis
+    environment:
+      PORT: 8284
+      SAELEM_REDIS_DATABASE: 0
+      SAELEM_REDIS_HOST: redis
+      SAELEM_REDIS_PASSWORD: redis
+      SAELEM_REDIS_PORT: 8287
+    image: 'skyrabot/saelem:latest'
+    networks:
+      - skyra
+    ports:
+      - '8284:8284'
+    restart: always
+
+  skyra:
+    build:
+      context: ../
+      dockerfile: typescript/Dockerfile
+    container_name: skyra
+    depends_on:
+      - hasteserver
+      - influx
+      - lavalink
+      - outflux
+      - redis
+      - saelem
+      - postgres
+    env_file:
+      - ../typescript/src/.env.development
+      - ../typescript/src/.env.development.local
+    image: 'skyrabot/skyra:latest'
+    networks:
+      - skyra
+    ports:
+      - '9009:9009'
+      - '7282:7282'
+    restart: always
+    tty: true
 
 volumes:
   postgres-data:

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AnalyticsSchema {
 	export const enum Points {
 		Guilds = 'guilds',

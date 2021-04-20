@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getHaste } from '#utils/APIs/Hastebin';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { TFunction } from 'i18next';
-import { fetch, FetchMethods, FetchResultTypes } from '../util';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
 	message: Message,
@@ -95,15 +95,6 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: T
 		_choice = await message.prompt(t(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options })).catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();
-}
-
-async function getHaste(result: string, language = 'js') {
-	const { key } = await fetch<{ key: string }>(
-		`https://hastebin.skyra.pw/documents`,
-		{ method: FetchMethods.Post, body: result },
-		FetchResultTypes.JSON
-	);
-	return `https://hastebin.skyra.pw/${key}.${language}`;
 }
 
 type HandleMessageData<ED extends ExtraDataPartial> = {

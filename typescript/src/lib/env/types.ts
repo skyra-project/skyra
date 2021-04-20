@@ -43,6 +43,7 @@ export interface SkyraEnv {
 	PGSQL_DATABASE_HOST: string;
 	TYPEORM_DEBUG_LOGS: BooleanString;
 	GRPC_ENABLED: BooleanString;
+	REDIS_HOST: string;
 
 	REDIS_ENABLED: BooleanString;
 	REDIS_AFK_DB: IntegerString;
@@ -64,7 +65,11 @@ export interface SkyraEnv {
 	INFLUX_ORG: string;
 	INFLUX_ORG_ANALYTICS_BUCKET: string;
 
-	LOCAL_POKEDEX_ENABLED: BooleanString;
+	OUTFLUX_URL: string;
+	SAELEM_URL: string;
+	GRAPHQL_POKEMON_URL: string;
+	HASTEBIN_POST_URL: string;
+	HASTEBIN_GET_URL: string;
 
 	WEBHOOK_ERROR_ENABLED: BooleanString;
 	WEBHOOK_ERROR_AVATAR: string;

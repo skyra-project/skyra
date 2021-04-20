@@ -1,4 +1,4 @@
-import { envParseBoolean } from '#lib/env';
+import { envParseBoolean, envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Mime } from '#utils/constants';
@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 	private async getOutfluxImage() {
 		try {
 			return await fetch(
-				'http://localhost:8286',
+				envParseString('OUTFLUX_URL'),
 				{
 					headers: {
 						'Content-Type': Mime.Types.ImagePng

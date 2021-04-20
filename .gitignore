@@ -5,7 +5,6 @@ node_modules/
 *.iml
 /rethinkdb_data/
 coverage/
-generated/
 
 # Environment variables
 .DS_Store
@@ -20,11 +19,12 @@ dist/
 
 # Ignore auto-generated files
 .config/
+generated/
 
 # Ignore JavaScript files
 **/*.js
 **/*.mjs
-!scripts/*.mjs
+!scripts/**/*.mjs
 !scripts/workerTsLoader.js
 **/*.js.map
 **/*.d.ts

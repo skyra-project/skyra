@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getHaste } from '#utils/APIs/Hastebin';
 import { exec } from '#utils/Promisified/exec';
-import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock } from '@sapphire/utilities';
 import { Message, MessageAttachment } from 'discord.js';
@@ -29,14 +29,7 @@ export class UserCommand extends SkyraCommand {
 		const joined = [output, outerr].join('\n') || 'No output';
 
 		return message.send(
-			joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined
+			joined.length > 2000 ? await getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined
 		);
-	}
-
-	private async getHaste(result: string) {
-		const { key } = (await fetch(`https://hastebin.skyra.pw/documents`, { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON)) as {
-			key: string;
-		};
-		return `https://hastebin.skyra.pw/${key}.js`;
 	}
 }

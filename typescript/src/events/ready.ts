@@ -74,7 +74,7 @@ export class UserEvent extends Event {
 	private async connectLavalink() {
 		if (envParseBoolean('AUDIO_ENABLED')) {
 			await this.context.client.audio!.connect();
-			await this.context.client.audio!.queues!.start();
+			await this.context.client.audio!.queues.start();
 		}
 	}
 

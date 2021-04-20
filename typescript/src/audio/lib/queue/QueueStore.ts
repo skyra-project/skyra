@@ -1,5 +1,7 @@
 import { rootFolder } from '#utils/constants';
 import Collection from '@discordjs/collection';
+import { Store } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import { readFileSync } from 'fs';
 import type { KeyType, Redis } from 'ioredis';
 import { resolve } from 'path';
@@ -64,28 +66,11 @@ export class QueueStore extends Collection<string, Queue> {
 	}
 
 	public async start() {
-		const guilds = await this.getPlayingEntries();
-		await Promise.all(guilds.map((guild) => this.get(guild).start()));
-	}
+		for (const guild of Store.injectedContext.client.guilds.cache.values()) {
+			const channelID = guild.voice?.channelID;
+			if (isNullish(channelID)) continue;
 
-	private async getPlayingEntries(): Promise<string[]> {
-		const guilds = new Set<string>();
-
-		let cursor = '0';
-		do {
-			// `scan` returns a tuple with the next cursor (which must be used for the
-			// next iteration) and an array of the matching keys. The iterations end when
-			// cursor becomes '0' again.
-			const response = await this.redis.scan(cursor, 'MATCH', 'skyra.a.*.p');
-			[cursor] = response;
-
-			for (const key of response[1]) {
-				// Slice 'skyra.a.' from the start, and '.p' from the end:
-				const id = key.slice(8, -2);
-				guilds.add(id);
-			}
-		} while (cursor !== '0');
-
-		return [...guilds];
+			await this.get(guild.id).player.join(channelID, { deaf: true });
+		}
 	}
 }

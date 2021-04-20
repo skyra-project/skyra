@@ -36,8 +36,15 @@ function deserializeEntry(value: string): QueueEntry {
 }
 
 interface QueueKeys {
+	/**
+	 * Stored in reverse order: right-most (last) element is the next in queue
+	 */
 	readonly next: string;
 	readonly position: string;
+
+	/**
+	 * Left-most (first) element is the currently playing track,
+	 */
 	readonly current: string;
 	readonly skips: string;
 	readonly systemPause: string;
@@ -51,9 +58,9 @@ export class Queue {
 
 	public constructor(public readonly store: QueueStore, public readonly guildID: string) {
 		this.keys = {
-			next: `skyra.a.${this.guildID}.n`, // stored in reverse order: right-most (last) element is the next in queue
+			next: `skyra.a.${this.guildID}.n`,
 			position: `skyra.a.${this.guildID}.p`,
-			current: `skyra.a.${this.guildID}.c`, // left-most (first) element is the currently playing track,
+			current: `skyra.a.${this.guildID}.c`,
 			skips: `skyra.a.${this.guildID}.s`,
 			systemPause: `skyra.a.${this.guildID}.sp`,
 			replay: `skyra.a.${this.guildID}.r`,
@@ -184,8 +191,9 @@ export class Queue {
 	/**
 	 * Retrieves whether or not the system should repeat the current track.
 	 */
-	public getReplay(): Promise<boolean> {
-		return this.store.redis.get(this.keys.replay).then((d) => d === '1');
+	public async getReplay(): Promise<boolean> {
+		const d = await this.store.redis.get(this.keys.replay);
+		return d === '1';
 	}
 
 	/**

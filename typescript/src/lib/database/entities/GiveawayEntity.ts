@@ -11,7 +11,7 @@ import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTP
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 const enum States {
 	Running,
@@ -42,8 +42,6 @@ export type GiveawayEntityData = Pick<
 >;
 
 @Entity('giveaway', { schema: 'public' })
-@Check(/* sql */ `"minimum" <> 0`)
-@Check(/* sql */ `"minimum_winners" <> 0`)
 export class GiveawayEntity extends BaseEntity {
 	#client: Client = null!;
 	#paused = true;

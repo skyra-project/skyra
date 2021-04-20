@@ -20,9 +20,9 @@ export const config: ConnectionOptions = {
 	entities: [join(__dirname, 'entities/*Entity.js')],
 	migrations: [join(__dirname, 'migrations/*.js')],
 	cli: {
-		entitiesDir: 'src/lib/database/entities',
-		migrationsDir: 'src/lib/database/migrations',
-		subscribersDir: 'src/lib/database/subscribers'
+		entitiesDir: 'typescript/src/lib/database/entities',
+		migrationsDir: 'typescript/src/lib/database/migrations',
+		subscribersDir: 'typescript/src/lib/database/subscribers'
 	},
 	namingStrategy: new SnakeNamingStrategy(),
 	logging: envParseBoolean('TYPEORM_DEBUG_LOGS', false)

@@ -8,7 +8,7 @@ import { cutText, debounce, isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
 	0xffe3af,
@@ -30,7 +30,6 @@ export const kColors = [
 
 export const kMaxColors = kColors.length - 1;
 
-@Check('stars >= 0')
 @Entity('starboard', { schema: 'public' })
 export class StarboardEntity extends BaseEntity {
 	#users = new Set<string>();

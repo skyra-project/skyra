@@ -4,17 +4,16 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { isNullishOrZero } from '#utils/comparators';
 import { Moderation, Time } from '#utils/constants';
+import { UserError } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
-@Check(/* sql */ `("duration" >= 0) AND ("duration" <= 157680000000)`) // 5 years
-@Check(/* sql */ `"reason"::text <> ''::text`)
-@Check(/* sql */ `"type" >= 0`)
 export class ModerationEntity extends BaseEntity {
 	#client: Client = null!;
 	#manager: ModerationManager = null!;
@@ -349,12 +348,22 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public setDuration(value: string | number | null) {
+	public setDuration(duration: string | number | null) {
 		if (this.temporable) {
-			if (typeof value === 'string') value = new Duration(value.trim()).offset;
-			if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
+			if (typeof duration === 'string') duration = new Duration(duration.trim()).offset;
+			if (typeof duration === 'number' && (duration <= 0 || duration > Time.Year)) duration = null;
 
-			this.duration = isNumber(value) ? value : null;
+			if (isNumber(duration)) {
+				if (duration < 0 || duration > Time.Year * 5) {
+					throw new UserError({
+						identifier: LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent,
+						context: { duration }
+					});
+				}
+				this.duration = isNullishOrZero(duration) ? null : duration;
+			} else {
+				this.duration = null;
+			}
 		} else {
 			this.duration = null;
 		}
@@ -380,7 +389,7 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public setReason(value?: string | null) {
-		if (value) {
+		if (typeof value === 'string') {
 			const trimmed = value.trim();
 			value = trimmed.length === 0 ? null : trimmed;
 		} else {

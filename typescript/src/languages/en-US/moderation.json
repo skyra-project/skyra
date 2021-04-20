@@ -5,6 +5,7 @@
 	"logDescriptionTypeAndUser": "❯ **Type**: {{data.type}}\n❯ **User:** {{data.userName}}#{{data.userDiscriminator}} ({{data.userID}})",
 	"logDescriptionWithReason": "❯ **Reason:** {{data.reason}}{{data.formattedDuration}}",
 	"logDescriptionWithoutReason": "❯ **Reason:** Please use `{{data.prefix}}reason {{data.caseID}} <reason>` to set the reason.{{data.formattedDuration}}",
+	"logInvalidDuration": "I am sorry, but {{duration, duration}} is an invalid duration, it must be a positive duration up to 5 years.",
 	"logExpiresIn": "\n❯ **Expires In**: {{duration, duration}}",
 	"logFooter": "Case {{caseID}}",
 	"muteCannotManageRoles": "I must have **{{MANAGE_ROLES, permissions}}** permissions to be able to mute.",

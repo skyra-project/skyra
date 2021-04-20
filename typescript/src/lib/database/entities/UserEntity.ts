@@ -7,7 +7,6 @@ import {
 	AfterRemove,
 	AfterUpdate,
 	BaseEntity,
-	Check,
 	Column,
 	Entity,
 	JoinTable,
@@ -22,9 +21,6 @@ import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserGameIntegrationEntity } from './UserGameIntegrationEntity';
 import { UserProfileEntity } from './UserProfileEntity';
 
-@Check(/* sql */ `money >= 0`)
-@Check(/* sql */ `points >= 0`)
-@Check(/* sql */ `reputations >= 0`)
 @Entity('user', { schema: 'public' })
 export class UserEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })

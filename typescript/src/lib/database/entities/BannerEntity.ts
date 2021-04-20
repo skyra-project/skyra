@@ -1,9 +1,6 @@
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('banner', { schema: 'public' })
-@Check(/* sql */ `"group"::text <> ''::text`)
-@Check(/* sql */ `"title"::text <> ''::text`)
-@Check(/* sql */ `"price" >= 0`)
 export class BannerEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 6 })
 	public id!: string;

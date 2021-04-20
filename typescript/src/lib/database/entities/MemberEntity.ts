@@ -1,8 +1,7 @@
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('member', { schema: 'public' })
-@Check(/* sql */ `"points" >= 0`)
 export class MemberEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID!: string;

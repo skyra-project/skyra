@@ -1,8 +1,7 @@
-import { BaseEntity, Check, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { kBigIntTransformer } from '../utils/Transformers';
 import { UserEntity } from './UserEntity';
 
-@Check(/* sql */ `(color >= 0) AND (color <= 16777215)`)
 @Entity('user_profile', { schema: 'public' })
 export class UserProfileEntity extends BaseEntity {
 	@Column('varchar', { array: true, default: () => 'ARRAY[]::VARCHAR[]' })

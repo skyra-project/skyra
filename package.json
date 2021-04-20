@@ -32,6 +32,8 @@
 	},
 	"scripts": {
 		"start": "node ./typescript/dist/Skyra.js",
+		"start:profiler:0x": "0x --collect-only ./typescript/dist/Skyra.js",
+		"start:profiler:v8": "node --prof --prof-sampling-interval=1000000 --no-logfile-per-isolate --cpu-prof --cpu-prof-interval=1000000 ./typescript/dist/Skyra.js",
 		"lint": "eslint --fix typescript --ext ts",
 		"format": "prettier --write --loglevel=warn \"typescript/{src,unit-tests,integration-tests}/**/*.{js,ts,json}\"",
 		"test": "run-s test:**",
@@ -64,6 +66,7 @@
 		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"devDependencies": {
+		"0x": "^4.10.2",
 		"@commitlint/cli": "^12.1.1",
 		"@commitlint/config-conventional": "^12.1.1",
 		"@favware/graphql-pokemon": "^5.1.2",

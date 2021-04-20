@@ -45,3 +45,6 @@ gh
 
 # Ignore the "wiki" folder so we can checkout the wiki inside the same folder
 wiki/
+
+# Profiler data
+*.0x

@@ -338,7 +338,7 @@ namespace Skyra.Database
 
 				entity.Property(e => e.SocialEnabled).HasDefaultValueSql("true");
 
-				entity.Property(e => e.SocialAchieve).HasDefaultValueSql("false");
+				entity.Property(e => e.SocialAchieveMultiple).HasDefaultValueSql("1");
 
 				entity.Property(e => e.SocialIgnoredChannels).HasDefaultValueSql("ARRAY[]::character varying[]");
 

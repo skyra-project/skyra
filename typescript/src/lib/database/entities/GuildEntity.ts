@@ -711,13 +711,21 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'social.enabled', default: true })
 	public socialEnabled = true;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieve })
-	@Column('boolean', { name: 'social.achieve', default: false })
-	public socialAchieve = false;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveRole })
+	@Column('varchar', { name: 'social.achieve-role', nullable: true })
+	public socialAchieveRole?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveMessage })
-	@Column('varchar', { name: 'social.achieve-message', nullable: true, length: 2000 })
-	public socialAchieveMessage?: string | null;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveLevel })
+	@Column('varchar', { name: 'social.achieve-level', nullable: true })
+	public socialAchieveLevel?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveChannel, type: 'textchannel' })
+	@Column('varchar', { name: 'social.achieve-channel', nullable: true, length: 19 })
+	public socialAchieveChannel?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveMultiple, minimum: 1 })
+	@Column('smallint', { name: 'social.achieve-multiple', default: 1 })
+	public socialAchieveMultiple = 1;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, minimum: 0, maximum: 5 })
 	@Column('numeric', { name: 'social.multiplier', precision: 53, default: 1 })

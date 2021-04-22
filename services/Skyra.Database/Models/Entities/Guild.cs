@@ -640,13 +640,18 @@ namespace Skyra.Database.Models.Entities
 		[Column("social.enabled")]
 		public bool? SocialEnabled { get; set; }
 
-		[Required]
-		[Column("social.achieve")]
-		public bool SocialAchieve { get; set; }
+		[Column("social.achieve-role")]
+		public string? SocialAchieveRole { get; set; }
 
-		[Column("social.achieve-message")]
-		[StringLength(2000)]
-		public string? SocialAchieveMessage { get; set; }
+		[Column("social.achieve-level")]
+		public string? SocialAchieveLevel { get; set; }
+
+		[Column("social.achieve-channel")]
+		[StringLength(19)]
+		public string? SocialAchieveChannel { get; set; }
+
+		[Column("social.achieve-multiple")]
+		public short SocialAchieveMultiple { get; set; } = 1;
 
 		[Required]
 		[Column("social.multiplier")]

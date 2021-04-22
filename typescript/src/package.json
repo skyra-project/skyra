@@ -26,7 +26,7 @@
 		"@sapphire/framework": "^1.0.0",
 		"@sapphire/plugin-api": "^2.1.2",
 		"@sapphire/plugin-i18next": "^1.3.4",
-		"@sapphire/plugin-logger": "1.0.10",
+		"@sapphire/plugin-logger": "1.0.11",
 		"@sapphire/plugin-subcommands": "^1.0.3",
 		"@sapphire/snowflake": "^1.2.7",
 		"@sapphire/stopwatch": "^1.0.7",

@@ -30,6 +30,7 @@ export const WeatherInches = FT<{ value: number }, string>('commands/google:weat
 export const WeatherMiles = FT<{ value: number }, string>('commands/google:weatherMiles');
 export const WeatherMilesPerHour = FT<{ value: number }, string>('commands/google:weatherMilesPerHour');
 export const WeatherTemperatureCelsius = FT<{ value: number; feelsLike: number }, string>('commands/google:weatherCelsius');
+export const WeatherTemperatureKelvin = FT<{ value: number }, string>('commands/google:weatherKelvin');
 export const WeatherMillimeters = FT<{ value: number }, string>('commands/google:weatherMillimeters');
 export const WeatherPascal = FT<{ value: number }, string>('commands/google:weatherPascal');
 export const WeatherKilometers = FT<{ value: number }, string>('commands/google:weatherKilometers');

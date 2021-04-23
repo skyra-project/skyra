@@ -170,7 +170,7 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public remove() {
 		this.enabled = false;
-		this.#manager.delete(this.#message.id);
+		this.#manager.delete(this.messageID);
 		return super.remove();
 	}
 

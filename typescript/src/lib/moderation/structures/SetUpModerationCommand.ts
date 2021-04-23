@@ -46,7 +46,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 			await message.guild.security.actions.restrictionSetup(message, this.setUpKey);
 			await message.send(t(LanguageKeys.Commands.Moderation.Success));
 		} else {
-			await message.send(t(LanguageKeys.Commands.Management.CommandHandlerAborted));
+			this.error(LanguageKeys.Commands.Management.CommandHandlerAborted);
 		}
 
 		return undefined;

@@ -152,12 +152,21 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	protected async resolveOverloads(args: ModerationCommand.Args): Promise<CommandContext> {
 		return {
 			targets: await args.repeat('user', { times: 10 }),
-			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
+			duration: await this.resolveDurationArgument(args),
 			reason: args.finished ? null : await args.rest('string')
 		};
 	}
 
 	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
+
+	private async resolveDurationArgument(args: ModerationCommand.Args) {
+		if (!this.optionalDuration) return null;
+
+		const result = await args.pickResult('timespan', { minimum: 0, maximum: Time.Year * 5 });
+		if (result.success) return result.value;
+		if (result.error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
+		throw result.error;
+	}
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

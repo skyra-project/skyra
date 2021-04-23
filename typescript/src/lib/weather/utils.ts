@@ -175,17 +175,26 @@ export function resolveCurrentConditionsImperial(conditions: CurrentCondition, t
 	};
 }
 
-export function resolveCurrentConditionsSI(conditions: CurrentCondition, t: TFunction): ResolvedConditions {
+export function resolveCurrentConditionsSI(conditions: CurrentCondition, t: TFunction, options: ConditionsOptions = {}): ResolvedConditions {
+	const kelvin = options.kelvin ?? false;
+	const temperature = Number(conditions.temp_C);
 	return {
 		precipitation: t(LanguageKeys.Commands.Google.WeatherMillimeters, { value: Number(conditions.precipMM) }),
 		pressure: t(LanguageKeys.Commands.Google.WeatherPascal, { value: Number(conditions.pressure) }),
-		temperature: t(LanguageKeys.Commands.Google.WeatherTemperatureCelsius, {
-			value: Number(conditions.temp_C),
-			feelsLike: Number(conditions.FeelsLikeC)
-		}),
+		temperature: kelvin
+			? t(LanguageKeys.Commands.Google.WeatherTemperatureKelvin, { value: celsiusToKelvin(temperature) })
+			: t(LanguageKeys.Commands.Google.WeatherTemperatureCelsius, { value: temperature, feelsLike: Number(conditions.FeelsLikeC) }),
 		visibility: t(LanguageKeys.Commands.Google.WeatherKilometers, { value: Number(conditions.visibility) }),
 		windSpeed: t(LanguageKeys.Commands.Google.WeatherKilometersPerHour, { value: Number(conditions.windspeedKmph) })
 	};
+}
+
+export interface ConditionsOptions {
+	kelvin?: boolean;
+}
+
+function celsiusToKelvin(celsius: number): number {
+	return celsius + 273.15;
 }
 
 export type Theme = 'light' | 'dark';

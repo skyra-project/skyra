@@ -19,6 +19,7 @@ import type { Message } from 'discord.js';
 
 const imperial = ['fahrenheit', 'f', 'imperial', 'i'];
 const metric = ['celsius', 'c', 'metric', 'm'];
+const kelvin = ['kelvin', 'k'];
 
 // United States (en-US), Liberia (en-LR), and Myanmar (my-MM) are the only countries in the world that use Imperial:
 const imperialCountries = ['US', 'LR', 'MM'];
@@ -29,7 +30,7 @@ const imperialCountries = ['US', 'LR', 'MM'];
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	permissions: ['ATTACH_FILES'],
-	strategyOptions: { flags: [...imperial, ...metric] }
+	strategyOptions: { flags: [...imperial, ...metric, ...kelvin] }
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -38,7 +39,9 @@ export class UserCommand extends SkyraCommand {
 		const data = await getData(await args.rest('string'), base);
 		const [current] = data.current_condition;
 
-		const resolved = useImperial ? resolveCurrentConditionsImperial(current, args.t) : resolveCurrentConditionsSI(current, args.t);
+		const resolved = useImperial
+			? resolveCurrentConditionsImperial(current, args.t)
+			: resolveCurrentConditionsSI(current, args.t, { kelvin: args.getFlags(...kelvin) });
 		const [nearestArea] = data.nearest_area;
 
 		// Region can be an empty string, e.g. `Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu`:

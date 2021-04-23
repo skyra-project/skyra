@@ -44,6 +44,8 @@ export interface SkyraEnv {
 	TYPEORM_DEBUG_LOGS: BooleanString;
 	GRPC_ENABLED: BooleanString;
 
+	REDIS_ENABLED: BooleanString;
+	REDIS_AFK_DB: IntegerString;
 	REDIS_PORT: IntegerString;
 	REDIS_DB: IntegerString;
 	REDIS_PASSWORD: string;

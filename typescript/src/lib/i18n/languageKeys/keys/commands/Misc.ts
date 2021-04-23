@@ -1,6 +1,11 @@
 import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T, Value } from '#lib/types';
 
+export const AfkDescription = T('commands/misc:afkDescription');
+export const AfkExtended = T<LanguageHelpDisplayOptions>('commands/misc:afkExtended');
+export const AfkDefault = T('commands/misc:afkDefault');
+export const AfkPrefix = T('commands/misc:afkPrefix');
+export const AfkSet = T('commands/misc:afkSet');
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
 export const ChaseExtended = T<LanguageHelpDisplayOptions>('commands/misc:chaseExtended');
 export const CuddleDescription = T<string>('commands/misc:cuddleDescription');

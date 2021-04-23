@@ -259,7 +259,8 @@
 		],
 		"reminder": "The leaderboards refresh every 10 minutes."
 	},
-	"leaderboardHeader": "🏡 Local Score Scoreboard",
+	"leaderboardHeader": "{{guild}}'s Scoreboard",
+	"leaderboardNoEntries": "There are no entries for this server's leaderboard, who will be the first?",
 	"leaderboardUnknownUser": "**User not in server** ({{user}})",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {

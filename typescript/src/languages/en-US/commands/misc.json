@@ -86,6 +86,24 @@
 		"While I look physically young, I am over 97 million years old."
 	],
 	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
+	"afkDescription": "Set an AFK message with automatic replies!",
+	"afkExtended": {
+		"usages": ["Content"],
+		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an auto-replier for whoever mentions you.",
+		"explainedUsage": [
+			[
+				"Content",
+				"The message you want users to see when they mention you."
+			]
+		],
+		"examples": [
+			"Doing dishes."
+		],
+		"reminder": "The AFK status is automatically removed as soon as you send a message 30 seconds after you ran this command."
+	},
+	"afkDefault": "Nothing specified.",
+	"afkPrefix": "AFK -",
+	"afkSet": "Got it, see you soon!",
 	"chaseDescription": "Get in here!",
 	"chaseExtended": {
 		"usages": [

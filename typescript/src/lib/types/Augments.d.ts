@@ -29,6 +29,7 @@ import type {
 	TextChannel,
 	User
 } from 'discord.js';
+import { Redis } from 'ioredis';
 import type { TaskErrorPayload } from './definitions';
 import type { Scope } from './definitions/ArgumentTypes';
 import type { MessageAcknowledgeable } from './Discord';
@@ -115,6 +116,7 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface PieceContextExtras {
+		afk: Redis;
 		db: DbSet;
 		schedule: ScheduleManager;
 		workers: WorkerManager;

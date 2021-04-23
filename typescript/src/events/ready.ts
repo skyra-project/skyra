@@ -4,6 +4,7 @@ import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Store } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
 @ApplyOptions<EventOptions>({ once: true })
@@ -20,6 +21,7 @@ export class UserEvent extends Event {
 				WheelOfFortune.init().catch((error) => client.logger.fatal(error)),
 				// Initialize giveaways
 				client.giveaways.init().catch((error) => client.logger.fatal(error)),
+				this.connectAfk(),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()
@@ -76,6 +78,10 @@ export class UserEvent extends Event {
 			await this.context.client.audio!.connect();
 			await this.context.client.audio!.queues.start();
 		}
+	}
+
+	private async connectAfk() {
+		if (!isNullish(Store.injectedContext.afk)) await Store.injectedContext.afk.connect();
 	}
 
 	private printBanner() {

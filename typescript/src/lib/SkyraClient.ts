@@ -6,9 +6,10 @@ import { SapphireClient, Store } from '@sapphire/framework';
 import { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
 import { Message, Webhook } from 'discord.js';
+import Redis from 'ioredis';
 import { join } from 'path';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { envParseBoolean } from './env';
+import { envIsDefined, envParseBoolean, envParseInteger, envParseString } from './env';
 import './extensions';
 import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
@@ -94,6 +95,14 @@ export class SkyraClient extends SapphireClient {
 			this.stores.registerUserDirectories(join(__dirname, '..', 'audio'));
 		} else {
 			this.audio = null;
+		}
+
+		if (envIsDefined('REDIS_AFK_DB') && envParseBoolean('REDIS_ENABLED')) {
+			Store.injectedContext.afk = new Redis({
+				port: envParseInteger('REDIS_PORT'),
+				db: envParseInteger('REDIS_AFK_DB'),
+				password: envParseString('REDIS_PASSWORD')
+			});
 		}
 	}
 

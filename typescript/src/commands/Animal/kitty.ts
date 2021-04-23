@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, wrap } from '#utils/util';
+import { fetch, getImageUrl, wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(
 			new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
-				.setImage(result.success ? result.value.file : 'https://wallpapercave.com/wp/wp3021105.jpg')
+				.setImage((result.success && getImageUrl(result.value.file)) || 'https://wallpapercave.com/wp/wp3021105.jpg')
 				.setTimestamp()
 		);
 	}

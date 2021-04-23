@@ -3,7 +3,7 @@ import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/comma
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import type { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
 import { Time } from '#utils/constants';
 import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -120,15 +120,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const overwatchDataType = overwatchData[type];
 
 		return Object.keys(overwatchDataType.topHeroes)
-			.map((hero) => {
-				const timePlayed = overwatchDataType.topHeroes[hero].timePlayed.split(':').map(parseFloat);
-				const seconds =
-					timePlayed.length === 3
-						? Number(timePlayed[0] * 3600) + Number(timePlayed[1] * 60) + Number(timePlayed[0])
-						: Number(timePlayed[0] * 60) + Number(timePlayed[1]);
-
-				return { hero, time: seconds * Time.Second };
-			})
+			.map((hero) => ({ hero, time: UserPaginatedMessageCommand.decodeDuration(overwatchDataType.topHeroes[hero].timePlayed) }))
 			.sort((a, b) => b.time - a.time)
 			.slice(0, 5);
 	}
@@ -138,17 +130,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const {
 			careerStats: {
 				allHeroes: {
-					combat: { finalBlows, deaths, damageDone, objectiveKills, soloKills },
-					assists: { healingDone },
-					game: { timePlayed }
-				}
+					combat: { finalBlows = 0, deaths = 0, damageDone = 0, objectiveKills = 0, soloKills = 0 } = {},
+					assists: { healingDone = 0 } = {},
+					game: { timePlayed = '0' } = {}
+				} = {}
 			},
-			games: { won: gamesWon },
-			awards: { medalsBronze, medalsSilver, medalsGold }
+			games: { won: gamesWon = 0 } = {},
+			awards: { medalsBronze = 0, medalsSilver = 0, medalsGold = 0 } = {}
 		} = overwatchData[type];
 
-		const [hours, minutes] = timePlayed.split(':');
-		const timePlayedMilliseconds = Number(hours) * Time.Hour + Number(minutes) * Time.Minute;
+		const timePlayedMilliseconds = UserPaginatedMessageCommand.decodeDuration(timePlayed);
 		const statsData = t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
 			finalBlows,
 			deaths,
@@ -202,4 +193,19 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return Args.ok(parameter.toLowerCase() as PlatformUnion);
 		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlatform });
 	});
+
+	private static decodeDuration(duration: FormattedDuration) {
+		const parts = duration.split(':');
+		switch (parts.length) {
+			case 0:
+				return 0;
+			case 1:
+				return Number(parts[0]) * Time.Second;
+			case 2:
+				return Number(parts[0]) * Time.Minute + Number(parts[1]) * Time.Second;
+			case 3:
+			default:
+				return Number(parts[0]) * Time.Hour + Number(parts[1]) * Time.Minute + Number(parts[2]) * Time.Second;
+		}
+	}
 }

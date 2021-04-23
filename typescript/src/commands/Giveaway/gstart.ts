@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Identifiers } from '@sapphire/framework';
+import { Args, IArgument, Identifiers } from '@sapphire/framework';
 import { Permissions, TextChannel } from 'discord.js';
 
-const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
+const kWinnersArgRegex = /^(\d+)w$/i;
 const options = ['winners'];
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -17,6 +17,10 @@ const options = ['winners'];
 	strategyOptions: { options }
 })
 export class UserCommand extends SkyraCommand {
+	private get integer(): IArgument<number> {
+		return this.context.stores.get('arguments').get('integer') as IArgument<number>;
+	}
+
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
 		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
@@ -28,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		if (offset < 9500) this.error(LanguageKeys.Giveaway.Time);
 		if (offset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 
-		const winners = Math.min(await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10)), 25);
+		const winners = await this.getWinners(args);
 		const title = await args.rest('string', { maximum: 256 });
 
 		await this.context.client.giveaways.create({
@@ -51,9 +55,36 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
+	private async getWinners(args: SkyraCommand.Args) {
+		const argumentResult = await args.pickResult(UserCommand.winners);
+		if (argumentResult.success) return argumentResult.value;
+		if (argumentResult.error.identifier !== LanguageKeys.Arguments.Winners) throw argumentResult.error;
+
+		const parameter = args.getOption('winners');
+		if (parameter === null) return 1;
+
+		const argument = this.integer;
+		const optionResult = await argument.run(parameter, {
+			args,
+			argument,
+			command: this,
+			commandContext: args.commandContext,
+			message: args.message,
+			minimum: 1,
+			maximum: 20
+		});
+		if (optionResult.success) return optionResult.value;
+		throw optionResult.error;
+	}
+
 	private static winners = Args.make<number>((parameter, { argument }) => {
 		const match = kWinnersArgRegex.exec(parameter);
-		return match ? Args.ok(parseInt(match[1], 10)) : Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
+		if (match === null) return Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
+
+		const parsed = parseInt(match[1], 10);
+		if (parsed < 1) return Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.TooFewWinners });
+		if (parsed > 20) return Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.TooManyWinners });
+		return Args.ok(parsed);
 	});
 
 	private static requiredPermissions = new Permissions([

@@ -58,5 +58,7 @@ export const User = FT<{ parameter: string }, string>('arguments:user');
 export const VoiceChannel = FT<{ parameter: string }, string>('arguments:voiceChannel');
 export const Wager = FT<{ parameter: number; possibles: readonly string[] }, string>('arguments:wager');
 export const Winners = FT<{ parameter: string }, string>('arguments:winners');
+export const TooFewWinners = FT<{ parameter: string }>('arguments:tooFewWinners');
+export const TooManyWinners = FT<{ parameter: string }>('arguments:tooManyWinners');
 export const Unavailable = T<string>('arguments:unavailable');
 export const Missing = T<string>('arguments:missing');

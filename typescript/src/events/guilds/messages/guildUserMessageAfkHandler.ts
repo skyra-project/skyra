@@ -24,7 +24,7 @@ export class UserEvent extends Event {
 		// If it does not exist, do nothing:
 		if (entry === null) return;
 
-		// If the message was sent within a minute, do nothing:
+		// If the message was sent within 30 seconds, do nothing:
 		if (Date.now() - entry.time < this.threshold) return;
 
 		// Remove and notify the user:

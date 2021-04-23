@@ -10,6 +10,8 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<EventOptions>({ enabled: envParseBoolean('REDIS_ENABLED'), event: Events.GuildUserMessage })
 export class UserEvent extends Event {
+	private readonly threshold = Time.Second * 30;
+
 	public async run(message: GuildMessage) {
 		await this.removeAfk(message);
 		await this.notifyAfk(message);
@@ -23,7 +25,7 @@ export class UserEvent extends Event {
 		if (entry === null) return;
 
 		// If the message was sent within a minute, do nothing:
-		if (Date.now() - entry.time < Time.Minute) return;
+		if (Date.now() - entry.time < this.threshold) return;
 
 		// Remove and notify the user:
 		await this.context.afk.del(`afk:${message.guild.id}:${message.author.id}`);

@@ -87,6 +87,7 @@
 			"#announcement 810103450544767026"
 		]
 	},
+	"contentEmpty": "The message does not contain any content I can source.",
 	"countryDescription": "Shows information about a country.",
 	"countryExtended": {
 		"usages": [

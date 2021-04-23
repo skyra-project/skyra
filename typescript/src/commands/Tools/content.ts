@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
+import { isNullishOrEmpty } from '#utils/comparators';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { formatAttachment, formatMessage } from '#utils/formatters';
 import { handleMessage } from '#utils/Parsers/ExceededLength';
@@ -25,7 +26,10 @@ export class UserCommand extends SkyraCommand {
 		const target = await args.pick('message', { channel });
 
 		// Parse the message content:
-		const content = escapeCodeBlock(this.getContent(args, target as GuildMessage));
+		const raw = this.getContent(args, target as GuildMessage);
+		if (isNullishOrEmpty(raw)) this.error(LanguageKeys.Commands.Tools.ContentEmpty);
+
+		const content = escapeCodeBlock(raw);
 
 		const sendAs = args.getOption('output', 'output-to');
 		return handleMessage(message, {

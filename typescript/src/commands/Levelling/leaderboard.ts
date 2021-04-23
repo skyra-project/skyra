@@ -22,8 +22,9 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const list = await this.context.client.leaderboard.fetch(message.guild.id);
-		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1, maximum: Math.ceil(list.size / 10) });
+		if (list.size === 0) this.error(LanguageKeys.Commands.Social.LeaderboardNoEntries);
 
+		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1, maximum: Math.ceil(list.size / 10) });
 		const { position } = list.get(message.author.id) ?? { position: list.size + 1 };
 		const display = await this.buildDisplay(args, list, index - 1, position);
 		return display.run(message.author, message.channel);
@@ -35,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new UserLazyPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(args.message))
-				.setTitle(args.t(LanguageKeys.Commands.Social.LeaderboardHeader))
+				.setTitle(args.t(LanguageKeys.Commands.Social.LeaderboardHeader, { guild: args.message.guild!.name }))
 				.setFooter(` - ${footerText}`, footerIcon)
 				.setTimestamp()
 		});

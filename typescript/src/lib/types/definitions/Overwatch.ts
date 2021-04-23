@@ -1,11 +1,12 @@
 export type PlatformUnion = 'pc' | 'psn' | 'xbl';
 export type OverwatchStatsTypeUnion = 'competitiveStats' | 'quickPlayStats';
 
-export interface CareerStats extends Record<string, HeroStats> {
-	allHeroes: HeroStats;
+export interface CareerStats extends Record<string, HeroStats | undefined> {
+	allHeroes?: HeroStats;
 }
 
 export type TopHeroes = Record<string, TopHeroStats>;
+export type FormattedDuration = `${bigint}:${bigint}:${bigint}` | `${bigint}:${bigint}` | `${bigint}`;
 
 export interface TopHero {
 	hero: string;
@@ -32,23 +33,23 @@ export interface OverwatchDataSet {
 	prestigeIcon: string;
 	private: boolean;
 	rating: number;
+	ratingIcon: string;
 	ratings: OverwatchRating[] | null;
 	competitiveStats: StatsGroup;
 	quickPlayStats: StatsGroup;
 }
 
-interface TopHeroStats extends Record<string, string | number> {
-	timePlayed: string;
-	timePlayedInSeconds: number;
-	gamesWon: number;
-	winPercentage: number;
-	weaponAccuracy: number;
+interface TopHeroStats {
 	eliminationsPerLife: number;
+	gamesWon: number;
 	multiKillBest: number;
 	objectiveKills: number;
+	timePlayed: FormattedDuration;
+	weaponAccuracy: number;
+	winPercentage: number;
 }
 
-interface AwardStats extends Record<string, number> {
+interface AwardStats {
 	cards: number;
 	medals: number;
 	medalsBronze: number;
@@ -56,19 +57,19 @@ interface AwardStats extends Record<string, number> {
 	medalsGold: number;
 }
 
-interface CareerAllHeroesAssists extends Record<string, number> {
+interface CareerAllHeroesAssists {
 	defensiveAssists: number;
-	defensiveAssistsAvgPer10Min: number;
-	defensiveAssistsMostInGame: number;
+	defensiveAssistsAvgPer10Min?: number;
+	defensiveAssistsMostInGame?: number;
 	healingDone: number;
-	healingDoneAvgPer10Min: number;
-	healingDoneMostInGame: number;
+	healingDoneAvgPer10Min?: number;
+	healingDoneMostInGame?: number;
 	offensiveAssists: number;
-	offensiveAssistsAvgPer10Min: number;
-	offensiveAssistsMostInGame: number;
+	offensiveAssistsAvgPer10Min?: number;
+	offensiveAssistsMostInGame?: number;
 }
 
-interface CareerAllHeroesAverage extends Record<string, string | number> {
+interface CareerAllHeroesAverage {
 	allDamageDoneAvgPer10Min: number;
 	barrierDamageDoneAvgPer10Min: number;
 	deathsAvgPer10Min: number;
@@ -77,12 +78,12 @@ interface CareerAllHeroesAverage extends Record<string, string | number> {
 	healingDoneAvgPer10Min: number;
 	heroDamageDoneAvgPer10Min: number;
 	objectiveKillsAvgPer10Min: number;
-	objectiveTimeAvgPer10Min: string;
+	objectiveTimeAvgPer10Min: FormattedDuration;
 	soloKillsAvgPer10Min: number;
-	timeSpentOnFireAvgPer10Min: string;
+	timeSpentOnFireAvgPer10Min: FormattedDuration;
 }
 
-interface CareerAllHeroesBest extends Record<string, string | number> {
+interface CareerAllHeroesBest {
 	allDamageDoneMostInGame: number;
 	barrierDamageDoneMostInGame: number;
 	defensiveAssistsMostInGame: number;
@@ -95,15 +96,15 @@ interface CareerAllHeroesBest extends Record<string, string | number> {
 	meleeFinalBlowsMostInGame: number;
 	multikillsBest: number;
 	objectiveKillsMostInGame: number;
-	objectiveTimeMostInGame: string;
+	objectiveTimeMostInGame: FormattedDuration;
 	offensiveAssistsMostInGame: number;
 	soloKillsMostInGame: number;
 	teleporterPadsDestroyedMostInGame: number;
-	timeSpentOnFireMostInGame: string;
+	timeSpentOnFireMostInGame: FormattedDuration;
 	turretsDestroyedMostInGame: number;
 }
 
-interface CareerAllHeroesCombat extends Record<string, string | number> {
+interface CareerAllHeroesCombat {
 	barrierDamageDone: number;
 	damageDone: number;
 	deaths: number;
@@ -114,20 +115,20 @@ interface CareerAllHeroesCombat extends Record<string, string | number> {
 	meleeFinalBlows: number;
 	multikills: number;
 	objectiveKills: number;
-	objectiveTime: string;
+	objectiveTime: FormattedDuration;
 	soloKills: number;
-	timeSpentOnFire: string;
+	timeSpentOnFire: FormattedDuration;
 }
 
-interface CareerAllHeroesGame extends Record<string, string | number> {
+interface CareerAllHeroesGame {
 	gamesLost: number;
 	gamesPlayed: number;
 	gamesTied: number;
 	gamesWon: number;
-	timePlayed: string;
+	timePlayed: FormattedDuration;
 }
 
-interface CareerAllHeroesMatchAwards extends Record<string, number> {
+interface CareerAllHeroesMatchAwards {
 	cards: number;
 	medals: number;
 	medalsBronze: number;
@@ -135,31 +136,31 @@ interface CareerAllHeroesMatchAwards extends Record<string, number> {
 	medalsSilver: number;
 }
 
-interface CareerAllHeroesMisc extends Record<string, number> {
+interface CareerAllHeroesMiscellaneous {
 	teleporterPadsDestroyed: number;
 	turretsDestroyed: number;
 }
 
 interface HeroStats {
-	assists: CareerAllHeroesAssists;
-	average: CareerAllHeroesAverage;
-	best: CareerAllHeroesBest;
-	combat: CareerAllHeroesCombat;
-	deaths: unknown | null;
-	heroSpecific: null;
-	game: CareerAllHeroesGame;
-	matchAwards: CareerAllHeroesMatchAwards;
-	miscellaneous?: CareerAllHeroesMisc;
+	assists?: CareerAllHeroesAssists;
+	average?: CareerAllHeroesAverage;
+	best?: CareerAllHeroesBest;
+	combat?: CareerAllHeroesCombat;
+	deaths?: null;
+	game?: CareerAllHeroesGame;
+	heroSpecific?: null;
+	matchAwards?: CareerAllHeroesMatchAwards;
+	miscellaneous?: CareerAllHeroesMiscellaneous;
 }
 
-interface GamesStats extends Record<string, number> {
+interface GamesStats {
 	played: number;
 	won: number;
 }
 
 interface StatsGroup {
-	awards: AwardStats;
+	awards?: AwardStats;
 	careerStats: CareerStats;
-	games: GamesStats;
+	games?: GamesStats;
 	topHeroes: TopHeroes;
 }

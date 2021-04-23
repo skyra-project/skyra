@@ -16,14 +16,15 @@ import { GuildMember, Permissions } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
+		const name = this.removeAfkPrefix(message.member.displayName, args);
 
-		await this.appendNickNamePrefix(message.member, args);
-		await this.saveAfkMessage(message.member, content);
+		await this.appendNickNamePrefix(message.member, name, args);
+		await this.saveAfkMessage(message.member, name, content);
 
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkSet));
 	}
 
-	private async appendNickNamePrefix(member: GuildMember, args: SkyraCommand.Args) {
+	private async appendNickNamePrefix(member: GuildMember, name: string, args: SkyraCommand.Args) {
 		const me = member.guild.me!;
 
 		// If Skyra does not have permissions to manage nicknames, return:
@@ -36,19 +37,18 @@ export class UserCommand extends SkyraCommand {
 		if (member.roles.highest.position >= me.roles.highest.position) return;
 
 		const prefix = args.t(LanguageKeys.Commands.Misc.AfkPrefix);
-		const name = member.displayName;
 		if (prefix.length + name.length > 31) return;
-		if (name.startsWith(prefix)) return;
 		await member.setNickname(`${prefix} ${name}`);
 	}
 
-	private async saveAfkMessage(member: GuildMember, content: string) {
-		const entry: AfkEntry = {
-			time: Date.now(),
-			name: member.displayName,
-			content
-		};
+	private async saveAfkMessage(member: GuildMember, name: string, content: string) {
+		const entry: AfkEntry = { time: Date.now(), name, content };
 		await this.context.afk.psetex(`afk:${member.guild.id}:${member.id}`, Time.Day, JSON.stringify(entry));
+	}
+
+	private removeAfkPrefix(name: string, args: SkyraCommand.Args) {
+		const prefix = args.t(LanguageKeys.Commands.Misc.AfkPrefix);
+		return name.startsWith(prefix) ? name.slice(prefix.length + 1) : name;
 	}
 }
 

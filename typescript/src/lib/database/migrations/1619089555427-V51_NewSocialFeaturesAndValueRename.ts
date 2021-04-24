@@ -46,10 +46,10 @@ export class V51NewSocialFeaturesAndValueRename1619089555427 implements Migratio
 			if (message === this.defaultNewMessage) {
 				await queryRunner.query(/* sql */ `UPDATE public.guilds SET "social.achieve" = $2 WHERE id = $1;`, [entry.id, true]);
 			} else {
-				await queryRunner.query(/* sql */ `UPDATE public.guilds SET "social.achieve" = $2 WHERE id = $1;`, [
-					entry.id,
-					this.transformToOld(message)
-				]);
+				await queryRunner.query(
+					/* sql */ `UPDATE public.guilds SET "social.achieve" = $2, "social.achieve-message" = $3, $2 WHERE id = $1;`,
+					[entry.id, true, this.transformToOld(message)]
+				);
 			}
 		}
 

@@ -78,7 +78,7 @@
 			"How do I make pancakes??"
 		]
 	},
-	"lmgtfyClick": "[Click me to search]({{link}})",
+	"lmgtfyClick": "[Click me to search\\]({{link}})",
 	"weatherDescription": "Check the weather status in a location.",
 	"weatherExtended": {
 		"usages": [
@@ -86,7 +86,7 @@
 			"Place --metric/--celsius",
 			"Place --imperial/--fahrenheit"
 		],
-		"extendedHelp": "This command uses [wttr.in](https://wttr.in) to get weather data from a location and displays it with a pretty card.",
+		"extendedHelp": "This command uses [wttr.in\\](https://wttr.in) to get weather data from a location and displays it with a pretty card.",
 		"explainedUsage": [
 			[
 				"Place",

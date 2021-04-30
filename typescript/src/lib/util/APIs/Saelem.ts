@@ -1,3 +1,4 @@
+import { envParseString } from '#lib/env';
 import type { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
 import { Mime } from '../constants';
 import { fetch, FetchMethods, FetchResultTypes, gql } from '../util';
@@ -15,12 +16,10 @@ export const getHoroscope = gql`
 	}
 `;
 
-export const SAELEM_GRAPHQL_API_URL = 'http://localhost:8284';
-
 export async function fetchSaelem<R extends SaelemQueryReturnTypes>(query: string, variables: SaelemQueryVariables<R>) {
 	try {
 		return await fetch<SaelemResponse<R>>(
-			SAELEM_GRAPHQL_API_URL,
+			envParseString('SAELEM_URL'),
 			{
 				method: FetchMethods.Post,
 				headers: {

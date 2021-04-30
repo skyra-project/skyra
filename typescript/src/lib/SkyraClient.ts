@@ -99,9 +99,11 @@ export class SkyraClient extends SapphireClient {
 
 		if (envIsDefined('REDIS_AFK_DB') && envParseBoolean('REDIS_ENABLED')) {
 			Store.injectedContext.afk = new Redis({
+				host: envParseString('REDIS_HOST'),
 				port: envParseInteger('REDIS_PORT'),
 				db: envParseInteger('REDIS_AFK_DB'),
-				password: envParseString('REDIS_PASSWORD')
+				password: envParseString('REDIS_PASSWORD'),
+				lazyConnect: true
 			});
 		}
 	}

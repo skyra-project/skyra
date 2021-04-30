@@ -8,7 +8,7 @@ import { promisify } from 'util';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const rootDir = join(__dirname, '..');
+const rootDir = join(__dirname, '..', '..');
 const protoDirectory = join(rootDir, 'assets', 'protos');
 const generatedDirectory = join(rootDir, 'typescript', 'src', 'lib', 'grpc', 'generated');
 

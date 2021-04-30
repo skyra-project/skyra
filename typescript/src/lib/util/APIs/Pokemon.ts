@@ -1,4 +1,4 @@
-import { envParseBoolean } from '#lib/env';
+import { envParseString } from '#lib/env';
 import type {
 	Query,
 	QueryGetAbilityDetailsByFuzzyArgs,
@@ -273,12 +273,10 @@ export const getPokemonSprite = gql`
 	}
 `;
 
-export const POKEMON_GRAPHQL_API_URL = envParseBoolean('LOCAL_POKEDEX_ENABLED') ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
-
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {
 		return fetch<PokemonResponse<R>>(
-			POKEMON_GRAPHQL_API_URL,
+			envParseString('GRAPHQL_POKEMON_URL'),
 			{
 				method: FetchMethods.Post,
 				headers: {

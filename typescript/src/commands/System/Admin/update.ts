@@ -1,15 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Emojis, rootFolder } from '#utils/constants';
+import { Emojis } from '#utils/constants';
 import { exec } from '#utils/Promisified/exec';
 import { sleep } from '#utils/Promisified/sleep';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import type { ExecOptions } from 'child_process';
 import type { Message } from 'discord.js';
-import { rm } from 'fs/promises';
-import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pull'],
@@ -43,7 +41,8 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async cleanDist(message: Message) {
-		await rm(resolve(rootFolder, 'typescript', 'dist'), { recursive: true, force: true });
+		const { stderr, code } = await this.exec('yarn clean');
+		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 	}
 

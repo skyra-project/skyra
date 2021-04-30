@@ -2,9 +2,9 @@
 
 ![Skyra Logo](https://cdn.skyra.pw/gh-assets/skyra_avatar.png)
 
-# Skyra Project Grpc
+# Skyra
 
-**GRPC Microservice to interact with Skyra Database**
+**Amazing multi-purpose discord that fulfils all your needs**
 
 [![Discord](https://discord.com/api/guilds/254360814063058944/embed.png?style=banner2)](https://join.skyra.pw)
 
@@ -14,22 +14,15 @@
 
 **Table of Contents**
 
--   [Skyra Project Grpc](#skyra-project-grpc)
--   [Quick reference](#quick-reference)
+-   [Skyra](#skyra)
+    -   [Quick reference](#quick-reference)
     -   [How to use this image](#how-to-use-this-image)
-        -   [Setting up a Docker Compose file](#setting-up-a-docker-compose-file)
-        -   [Using custom configuration](#using-custom-configuration)
-            -   [`POSTGRES_PASSWORD`](#postgres_password)
-            -   [`POSTGRES_USER`](#postgres_user)
-            -   [`POSTGRES_DB`](#postgres_db)
-            -   [`POSTGRES_HOST`](#postgres_host)
-            -   [`POSTGRES_PORT`](#postgres_port)
     -   [Buy us some doughnuts](#buy-us-some-doughnuts)
     -   [Contributors ✨](#contributors-%E2%9C%A8)
 
 ---
 
-# Quick reference
+## Quick reference
 
 -   **Maintained by**:  
     [Skyra Project](https://github.com/skyra-project)
@@ -41,59 +34,11 @@
     [https://github.com/skyra-project/skyra/issues](https://github.com/skyra-project/skyra/issues)
 
 -   **Source of this description**:  
-    [Skyra repo `services/Skyra.Grpc` directory](https://github.com/skyra-project/skyra/blob/main/services/Skyra.Grpc/README.md) ([history](https://github.com/skyra-project/skyra/commits/main/services/Skyra.Grpc/README.md))
+    [Skyra repo `assets/docker-hub` directory](https://github.com/skyra-project/skyra/blob/main/assets/docker-hub/SKYRA.md) ([history](https://github.com/skyra-project/skyra/commits/main/assets/docker-hub/SKYRA.md))
 
 ## How to use this image
 
-### Setting up a Docker Compose file
-
-```yaml
-version: '2.4'
-services:
-    grpc:
-        image: skyrabot/grpc:latest
-        container_name: 'skyra-grpc'
-        depends_on:
-            - postgres
-        environment:
-            - POSTGRES_HOST=postgres
-        ports:
-            - '8291:80'
-    postgres:
-        container_name: postgres
-        image: skyrabot/postgres:latest
-        restart: always
-        ports:
-            - '5432:5432'
-        volumes:
-            - postgres-data:/var/lib/postgresql/data
-```
-
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](http://play-with-docker.com/?stack=https://raw.githubusercontent.com/skyra-project/skyra/main/docker/playwithdocker-grpc-stack.yml)
-
-### Using custom configuration
-
-Both the GRPC and PostgreSQL images use several environment variables that you can configure.
-
-#### `POSTGRES_PASSWORD`
-
-This optional environment variable is used for the `$POSTGRES_USER` to connect to the database. If it is not specified, then the default password of `postgres` will be used.
-
-#### `POSTGRES_USER`
-
-This optional environment variable is used in conjunction with `POSTGRES_PASSWORD` to set a user and its password. This variable will create the specified user with superuser power and a database with the same name. If it is not specified, then the default user of `postgres` will be used.
-
-#### `POSTGRES_DB`
-
-This optional environment variable can be used to define a different name for the default database that is created when the image is first started. If it is not specified, then the value of `skyra` will be used.
-
-#### `POSTGRES_HOST`
-
-This optional environment variable is _only_ for the `skyrabot/grpc` image and can be used to define a different host for the where the database runs relative to the GRPC serivce. If it is not specified, then the value of `localhost` will be used.
-
-#### `POSTGRES_PORT`
-
-This optional environment variable is _only_ for the `skyrabot/grpc` image and can be used to define a different port for the where the database runs relative to the GRPC serivce. If it is not specified, then the value of `5432` will be used.
+Because Skyra is a very advanced Discord bot that is not easy to set up locally we would rather like to refer you to [our stance on self-hosting Skyra](https://github.com/skyra-project/skyra#a-note-to-aspiring-developers-who-want-to-self-host-skyra).
 
 ## Buy us some doughnuts
 

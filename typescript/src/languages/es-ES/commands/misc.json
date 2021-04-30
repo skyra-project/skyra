@@ -86,6 +86,26 @@
 		""
 	],
 	"upvoteMessage": "",
+	"afkDescription": "",
+	"afkExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"afkDefault": "",
+	"afkPrefix": "",
+	"afkSet": "",
 	"chaseDescription": "",
 	"chaseExtended": {
 		"usages": [

@@ -260,6 +260,7 @@
 		"reminder": ""
 	},
 	"leaderboardHeader": "",
+	"leaderboardNoEntries": "",
 	"leaderboardUnknownUser": "",
 	"levelDescription": "",
 	"levelExtended": {

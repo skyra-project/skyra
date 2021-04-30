@@ -82,6 +82,8 @@
 	"voiceChannel": "No pude resolver `{{parameter}}` a un canal de voz, ¡por favor asegúrese de que escribió su nombre o ID correctamente!",
 	"wager": "Lo siento, pero {{parameter}} {{SHINY}} no es una cantidad válida para apostar. Puedes apostar uno de {{possibles, orList}}",
 	"winners": "¡No pude resolver `{{parameter}}` a una cantidad de ganador válida!\n**Pista**: el siguiente formato es compatible: `Nw`, siendo `N` cualquier entero, p. ej. `3w` o `12w`.",
+	"tooFewWinners": "",
+	"tooManyWinners": "",
 	"unavailable": "¡Ups! Parece que no he podido encontrar un analizador para un parámetro, ¡por favor contacta a mis desarrolladores sobre esto!",
 	"missing": "¡Necesitas escribir otro parámetro!\n\n> **Consejo**: puedes hacer `{{commandContext.commandPrefix}}help {{command.name}}` para averiguar cómo usar este comando."
 }

@@ -82,6 +82,8 @@
 	"voiceChannel": "",
 	"wager": "",
 	"winners": "",
+	"tooFewWinners": "",
+	"tooManyWinners": "",
 	"unavailable": "",
 	"missing": ""
 }

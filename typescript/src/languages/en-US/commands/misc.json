@@ -88,7 +88,9 @@
 	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
 	"afkDescription": "Set an AFK message with automatic replies!",
 	"afkExtended": {
-		"usages": ["Content"],
+		"usages": [
+			"Content"
+		],
 		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an auto-replier for whoever mentions you.",
 		"explainedUsage": [
 			[

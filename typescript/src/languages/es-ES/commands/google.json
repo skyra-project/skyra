@@ -110,6 +110,7 @@
 	"weatherMiles": "{{value}} mi",
 	"weatherMilesPerHour": "{{value}} mi/h",
 	"weatherCelsius": "{{value}} ({{feelsLike}}) ºC",
+	"weatherKelvin": "",
 	"weatherMillimeters": "{{value}} mm",
 	"weatherPascal": "{{value}} Pa",
 	"weatherKilometers": "{{value}} km",

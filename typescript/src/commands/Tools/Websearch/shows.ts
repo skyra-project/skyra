@@ -3,11 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
-import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+import { URL } from 'url';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),

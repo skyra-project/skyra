@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { count, filter, map, take } from '#utils/iterator';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, Argument, ArgumentContext } from '@sapphire/framework';
 import { parseURL } from '@sapphire/utilities';
 import { LoadType, Track } from '@skyra/audio';

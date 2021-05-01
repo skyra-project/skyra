@@ -2,13 +2,15 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
-import { fetch, FetchResultTypes, sendLoadingMessage } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { cutText, roundNumber } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
+import { URL } from 'url';
 
 const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 

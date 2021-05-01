@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Store } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { fetch, FetchResultTypes } from '../util';
+import { URL } from 'url';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 const GOOGLE_CUSTOM_SEARCH_API_URL = 'https://www.googleapis.com/customsearch/v1';

@@ -4,12 +4,14 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '#utils/util';
+import { IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Event, EventOptions } from '@sapphire/framework';
 import { isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { extname } from 'path';
+import { URL } from 'url';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte

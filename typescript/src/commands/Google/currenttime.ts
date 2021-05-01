@@ -2,9 +2,10 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
-import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
+import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('TIMEZONEDB_TOKEN'),

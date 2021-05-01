@@ -1,8 +1,5 @@
 import type { Config } from '@jest/types';
 
-// Make ts-jest shut up about "unsupported TS version"
-process.env.TS_JEST_DISABLE_VER_CHECKER = 'true';
-
 export default async (): Promise<Config.InitialOptions> => ({
 	rootDir: '../../',
 	coverageProvider: 'v8',

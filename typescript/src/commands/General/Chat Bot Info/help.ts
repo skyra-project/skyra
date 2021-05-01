@@ -55,7 +55,7 @@ export class UserCommand extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
-		if (command.success) return message.send(await this.buildCommandHelp(message, args.t, command.value, this.getCommandPrefix(context)));
+		if (command.success) return message.send(await this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context)));
 
 		return this.canRunPaginatedMessage(message) ? this.display(message, args, null, context) : this.all(message, args, context);
 	}
@@ -138,8 +138,9 @@ export class UserCommand extends SkyraCommand {
 		return display.setIdle(Time.Minute * 10);
 	}
 
-	private async buildCommandHelp(message: Message, t: TFunction, command: SkyraCommand, prefixUsed: string) {
-		const builderData = t(LanguageKeys.System.HelpTitles);
+	@requiresPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')
+	private async buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
+		const builderData = args.t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
 			.setUsages(builderData.usages)
@@ -150,12 +151,12 @@ export class UserCommand extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = t(command.extendedHelp, { replace: { prefix: prefixUsed }, postProcess: 'helpUsagePostProcessor' });
-		const extendedHelp = builder.display(command.name, this.formatAliases(t, command.aliases), extendedHelpData, prefixUsed);
+		const extendedHelpData = args.t(command.extendedHelp, { replace: { prefix: prefixUsed }, postProcess: 'helpUsagePostProcessor' });
+		const extendedHelp = builder.display(command.name, this.formatAliases(args.t, command.aliases), extendedHelpData, prefixUsed);
 
-		const data = t(LanguageKeys.Commands.General.HelpData, {
+		const data = args.t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
-			titleDescription: t(command.description)
+			titleDescription: args.t(command.description)
 		});
 		const user = this.context.client.user!;
 		return new MessageEmbed()

@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { requiresPermissions } from '#utils/decorators';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { displayEmoji, resolveEmoji, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -103,6 +104,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesReset));
 	}
 
+	@requiresPermissions('EMBED_LINKS')
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const reactionRoles = await message.guild.readSettings(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {

@@ -12,7 +12,7 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 	cooldown: 5,
 	description: LanguageKeys.Commands.Tools.PollDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PollExtended,
-	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
+	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
-import { fetch, sendLoadingMessage } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch } from '@sapphire/fetch';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes, kRegExpTwemoji, twemoji } from '#utils/util';
+import { kRegExpTwemoji, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import type { Message } from 'discord.js';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;

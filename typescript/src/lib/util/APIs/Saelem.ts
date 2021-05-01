@@ -1,7 +1,8 @@
 import { envParseString } from '#lib/env';
+import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import type { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
 import { Mime } from '../constants';
-import { fetch, FetchMethods, FetchResultTypes, gql } from '../util';
+import { gql } from '../util';
 
 export const getHoroscope = gql`
 	query getHoroscope($sunsign: Sunsigns!, $day: Days!) {

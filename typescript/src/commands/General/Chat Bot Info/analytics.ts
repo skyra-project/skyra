@@ -2,8 +2,8 @@ import { envParseBoolean, envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Mime } from '#utils/constants';
-import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Time } from '@sapphire/time-utilities';
 import { Message, MessageAttachment } from 'discord.js';
 

@@ -1,7 +1,7 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
 import { Mime, Time } from '#utils/constants';
-import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
 import { stringify } from 'querystring';

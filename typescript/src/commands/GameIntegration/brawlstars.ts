@@ -3,11 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
-import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+import { URL } from 'url';
 
 const kTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 

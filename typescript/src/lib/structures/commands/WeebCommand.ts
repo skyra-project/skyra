@@ -1,10 +1,10 @@
 import { envIsDefined } from '#lib/env';
-import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
+import { URL } from 'url';
 import { SkyraCommand } from './SkyraCommand';
 
 export namespace WeebCommand {

@@ -1,9 +1,10 @@
-import { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
+import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
+import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['duckduckgo'],

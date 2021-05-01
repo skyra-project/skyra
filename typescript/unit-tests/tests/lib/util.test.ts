@@ -1,8 +1,7 @@
 import { client } from '#mocks/MockInstances';
-import { Mime, Time } from '#utils/constants';
+import { Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
-import { HttpCodes } from '@sapphire/plugin-api';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import {
@@ -20,7 +19,6 @@ import {
 import { createReadStream } from 'fs';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
-import nock from 'nock';
 import { resolve } from 'path';
 
 describe('Utils', () => {
@@ -346,100 +344,6 @@ describe('Utils', () => {
 			expect([...result.channels]).toStrictEqual(['541740581832097792']);
 			expect([...result.roles]).toStrictEqual(['541739191776575502']);
 			expect([...result.users]).toStrictEqual(['268792781713965056']);
-		});
-	});
-
-	describe('fetch', () => {
-		// eslint-disable-next-line @typescript-eslint/init-declarations
-		let nockScope: nock.Scope;
-
-		beforeAll(() => {
-			nockScope = nock('http://localhost')
-				.persist()
-				.get('/simpleget')
-				.times(Infinity)
-				.reply(200, { test: true })
-				.get('/404')
-				.times(Infinity)
-				.reply(404, { success: false });
-		});
-
-		afterAll(() => {
-			nockScope.persist(false);
-			nock.restore();
-		});
-
-		describe('Successfull fetches', () => {
-			test('GIVEN fetch w/ JSON response THEN returns JSON', async () => {
-				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', utils.FetchResultTypes.JSON);
-
-				expect(response.test).toBe(true);
-			});
-
-			test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
-				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget');
-
-				expect(response.test).toBe(true);
-			});
-
-			test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
-				const response = await utils.fetch<{ test: boolean }>(
-					'http://localhost/simpleget',
-					{ headers: { accept: Mime.Types.ApplicationJson } },
-					utils.FetchResultTypes.JSON
-				);
-
-				expect(response.test).toBe(true);
-			});
-
-			test('GIVEN fetch w/ options w/ No Response THEN returns JSON', async () => {
-				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', {
-					headers: { accept: Mime.Types.ApplicationJson }
-				});
-
-				expect(response.test).toBe(true);
-			});
-
-			test('GIVEN fetch w/ Result Response THEN returns Result', async () => {
-				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Result);
-
-				expect(response.ok).toBe(true);
-				expect(response.bodyUsed).toBe(false);
-			});
-
-			test('GIVEN fetch w/ Buffer Response THEN returns Buffer', async () => {
-				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Buffer);
-
-				expect(response).toStrictEqual(Buffer.from(JSON.stringify({ test: true })));
-			});
-
-			test('GIVEN fetch w/ Text Response THEN returns raw text', async () => {
-				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Text);
-
-				expect(response).toStrictEqual(JSON.stringify({ test: true }));
-			});
-
-			test('GIVEN fetch w/ invalid type THEN throws', async () => {
-				await expect(utils.fetch('http://localhost/simpleget', 5)).rejects.toThrowError('Unknown type 5');
-			});
-
-			test('GIVEN fetch w/ JSON response THEN returns FetchError', async () => {
-				const url = 'http://localhost/404';
-				const fetchResult = utils.fetch(url, utils.FetchResultTypes.JSON);
-
-				await expect(fetchResult).rejects.toThrowError(`Failed to request '${url}' with code 404.`);
-				await expect(fetchResult).rejects.toBeInstanceOf(Error);
-
-				try {
-					await fetchResult;
-				} catch (error) {
-					expect(error.message).toBe(`Failed to request '${url}' with code 404.`);
-					expect(error.response).toBe('{"success":false}');
-					expect(error.code).toBe(HttpCodes.NotFound);
-					expect(error.url).toBe(url);
-					expect(error.toJSON()).toStrictEqual({ success: false });
-				}
-			});
 		});
 	});
 

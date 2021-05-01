@@ -32,6 +32,7 @@ generated/
 **/*.tsbuildinfo
 !jest.config.js
 !ormconfig.js
+!babel.config.js
 
 # Ignore heapsnapshot and log files
 *.heapsnapshot

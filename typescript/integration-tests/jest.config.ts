@@ -16,10 +16,5 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'^#lib/(.*)$': '<rootDir>/typescript/src/lib/$1',
 		'^#root/(.*)$': '<rootDir>/typescript/src/$1'
 	},
-	setupFilesAfterEnv: ['<rootDir>/typescript/integration-tests/jest.setup.ts'],
-	globals: {
-		'ts-jest': {
-			tsconfig: '<rootDir>/typescript/integration-tests/tsconfig.json'
-		}
-	}
+	setupFilesAfterEnv: ['<rootDir>/typescript/integration-tests/jest.setup.ts']
 });

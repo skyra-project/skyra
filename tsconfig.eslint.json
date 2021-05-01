@@ -4,5 +4,5 @@
 		"allowJs": true,
 		"checkJs": true
 	},
-	"include": ["typescript", "scripts", "ormconfig.js"]
+	"include": ["typescript", "scripts", "ormconfig.js", "babel.config.js"]
 }

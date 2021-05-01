@@ -7,19 +7,6 @@ import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
-export namespace WeebCommand {
-	/**
-	 * The WeebCommand Options
-	 */
-	export type Options = SkyraCommand.Options & {
-		queryType: string;
-		responseName: SimpleKey | ComplexKey;
-		requireUser?: boolean;
-	};
-
-	export type Args = SkyraCommand.Args;
-}
-
 export abstract class WeebCommand extends SkyraCommand {
 	/**
 	 * The type for this command.
@@ -87,6 +74,19 @@ export abstract class WeebCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
+}
+
+export namespace WeebCommand {
+	/**
+	 * The WeebCommand Options
+	 */
+	export type Options = SkyraCommand.Options & {
+		queryType: string;
+		responseName: SimpleKey | ComplexKey;
+		requireUser?: boolean;
+	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 interface WeebCommandResult {

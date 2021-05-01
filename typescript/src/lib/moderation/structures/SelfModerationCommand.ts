@@ -84,16 +84,6 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 	['ban', SelfModeratorHardActionFlags.Ban]
 ]);
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace SelfModerationCommand {
-	/**
-	 * The SelfModerationCommand Options
-	 */
-	export type Options = SkyraCommand.Options;
-
-	export type Args = SkyraCommand.Args;
-}
-
 export abstract class SelfModerationCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
 		super(context, {
@@ -316,4 +306,14 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	protected abstract keyHardActionDuration: KeyOfType<GuildEntity, number | null>;
 	protected abstract keyThresholdMaximum: KeyOfType<GuildEntity, number | null>;
 	protected abstract keyThresholdDuration: KeyOfType<GuildEntity, number | null>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace SelfModerationCommand {
+	/**
+	 * The SelfModerationCommand Options
+	 */
+	export type Options = SkyraCommand.Options;
+
+	export type Args = SkyraCommand.Args;
 }

@@ -62,7 +62,7 @@ export function radians(degrees: number) {
 }
 
 export function showSeconds(duration: number): string {
-	if (!isNumber(duration)) return '00:00';
+	if (!isNumbe(duration)) return '00:00';
 	const seconds = Math.floor(duration / Time.Second) % 60;
 	const minutes = Math.floor(duration / Time.Minute) % 60;
 	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;

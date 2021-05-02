@@ -4,6 +4,7 @@ export const RangeInvalid = FT<{ value: string }, string>('arguments/range:inval
 export const RangeMax = FT<{ value: string; maximum: number; count: number }, string>('arguments/range:max');
 export const ImageNotFound = FT<{ value: string }, string>('arguments/image:notFound');
 
+export const All = T('arguments:all');
 export const BoolDisabled = T<string>('arguments:booleanDisabled');
 export const Boolean = FT<{ parameter: string; possibles: string[]; count: number }, string>('arguments:boolean');
 export const BoolEnabled = T<string>('arguments:booleanEnabled');

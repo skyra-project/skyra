@@ -24,6 +24,9 @@ export class UserEvent extends Event {
 		// If it does not exist, do nothing:
 		if (entry === null) return;
 
+		// If the channel is ignored, do nothing:
+		if (entry.channels?.includes(message.channel.id)) return;
+
 		// If the message was sent within 30 seconds, do nothing:
 		if (Date.now() - entry.time < this.threshold) return;
 
@@ -36,12 +39,15 @@ export class UserEvent extends Event {
 	}
 
 	private async removeNickName(message: GuildMessage, oldName: string, t: TFunction) {
+		// If the target member is the guild's owner, return:
+		if (message.member.isGuildOwner()) return;
+
 		const me = message.guild.me!;
 
 		// If Skyra does not have permissions to manage nicknames, return:
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) return;
 
-		// If the target member has higher role hierarchy than Skyra, skip:
+		// If the target member has higher role hierarchy than Skyra, return:
 		if (message.member.roles.highest.position >= me.roles.highest.position) return;
 
 		const name = message.member.displayName;
@@ -60,6 +66,7 @@ export class UserEvent extends Event {
 
 			const entry = await this.getAfk(message.guild.id, user.id);
 			if (entry === null) continue;
+			if (entry.channels?.includes(message.channel.id)) continue;
 
 			entries.push(entry);
 		}
@@ -86,4 +93,5 @@ interface AfkEntry {
 	time: number;
 	name: string;
 	content: string;
+	channels?: readonly string[];
 }

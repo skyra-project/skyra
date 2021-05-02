@@ -101,5 +101,36 @@
 			""
 		]
 	},
-	"giveawayRerollInvalid": ""
+	"giveawayRerollInvalid": "",
+	"giveawayEndDescription": "",
+	"giveawayEndExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"giveawayEndMessageNotMine": "",
+	"giveawayEndMessageNotActive": "",
+	"giveawayEnd": ""
 }

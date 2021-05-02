@@ -101,5 +101,36 @@
 			"30m 6h A hug from Skyra."
 		]
 	},
-	"giveawayRerollInvalid": "The message ID does not exist or there is no finished giveaway."
+	"giveawayRerollInvalid": "The message ID does not exist or there is no finished giveaway.",
+	"giveawayEndDescription": "Ends a running giveaway message.",
+	"giveawayEndExtended": {
+		"usages": [
+			"Channel Message",
+			"Message",
+			"Link"
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"Channel Message",
+				"A channel and a message ID from it."
+			],
+			[
+				"Message",
+				"A message ID from this channel."
+			],
+			[
+				"Link",
+				"A link to a message in this server."
+			]
+		],
+		"examples": [
+			"#giveaways 739417065466888262",
+			"739417065466888262",
+			"https://discord.com/channels/254360814063058944/739242237489315869/739417065466888261"
+		]
+	},
+	"giveawayEndMessageNotMine": "I am sorry, but that does not seem like a giveaway that is being run by me!",
+	"giveawayEndMessageNotActive": "The message you have given me looks like it can be a giveaway, but I am not tracking it. If you want to re-roll a finished giveaway, please run `greroll`.",
+	"giveawayEnd": "Successfully finished the giveaway at {{url}}!"
 }

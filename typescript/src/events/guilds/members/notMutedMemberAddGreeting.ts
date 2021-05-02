@@ -1,6 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
+import { isNullishOrZero } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import type { Guild, GuildMember, TextChannel, User } from 'discord.js';
@@ -20,9 +21,10 @@ export class UserEvent extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 
 	public async run(member: GuildMember) {
-		const [channelID, content, t] = await member.guild.readSettings((settings) => [
+		const [channelID, content, timer, t] = await member.guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Greeting],
 			settings[GuildSettings.Messages.Greeting],
+			settings[GuildSettings.Messages.GreetingAutoDelete],
 			settings.getLanguage()
 		]);
 
@@ -30,7 +32,10 @@ export class UserEvent extends Event {
 
 		const channel = member.guild.channels.cache.get(channelID) as TextChannel;
 		if (channel && channel.postable) {
-			return channel.send(this.transformMessage(content, t, member.guild, member.user));
+			const messageContent = this.transformMessage(content, t, member.guild, member.user);
+			const message = await channel.send(messageContent, { allowedMentions: { users: [member.id], roles: [] } });
+			if (!isNullishOrZero(timer)) await message.nuke(timer);
+			return;
 		}
 
 		return member.guild.writeSettings([[GuildSettings.Channels.Greeting, null]]);

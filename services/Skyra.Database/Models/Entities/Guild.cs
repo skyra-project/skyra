@@ -192,9 +192,15 @@ namespace Skyra.Database.Models.Entities
 		[StringLength(2000)]
 		public string? MessagesFarewell { get; set; }
 
+		[Column("messages.farewell-auto-delete")]
+		public long? MessagesFarewellAutoDelete { get; set; }
+
 		[Column("messages.greeting")]
 		[StringLength(2000)]
 		public string? MessagesGreeting { get; set; }
+
+		[Column("messages.greeting-auto-delete")]
+		public long? MessagesGreetingAutoDelete { get; set; }
 
 		[Column("messages.join-dm")]
 		[StringLength(1500)]

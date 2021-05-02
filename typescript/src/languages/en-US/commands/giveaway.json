@@ -132,5 +132,5 @@
 	},
 	"giveawayEndMessageNotMine": "I am sorry, but that does not seem like a giveaway that is being run by me!",
 	"giveawayEndMessageNotActive": "The message you have given me looks like it can be a giveaway, but I am not tracking it. If you want to re-roll a finished giveaway, please run `greroll`.",
-	"giveawayEnd": "Successfully finished the giveaway at {{url}}!"
+	"giveawayEnd": "Successfully finished the giveaway at <{{url}}>!"
 }

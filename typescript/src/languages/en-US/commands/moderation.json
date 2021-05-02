@@ -423,8 +423,10 @@
 	"pruneDescription": "Prunes a certain amount of messages w/o filter.",
 	"pruneExtended": {
 		"usages": [
-			"Amount files/me/bots/humans/invites/links/skyra/User?",
-			"Amount files/me/bots/humans/invites/links/skyra/User? after/before Message",
+			"Amount Flags User",
+			"Amount Flags after/before Message",
+			"Amount User",
+			"Amount User after/before Message",
 			"Amount --silent"
 		],
 		"extendedHelp": "This command deletes the given amount of messages given a filter within the last 100 messages sent in the channel the command has been run.\nOptionally, you can add `--silent` to tell Skyra not to send a response message.",
@@ -434,35 +436,39 @@
 				"The amount of messages to delete."
 			],
 			[
-				"Filter: files",
+				"--f/file/files",
 				"Deletes messages with attachments."
 			],
 			[
-				"Filter: me",
+				"--a/author",
 				"Deletes your messages."
 			],
 			[
-				"Filter: bots",
+				"--b/bot/bots",
 				"Deletes messages sent by bots."
 			],
 			[
-				"Filter: humans",
+				"--h/human/humans",
 				"Deletes messages sent by users."
 			],
 			[
-				"Filter: invites",
+				"--i/invite/invites",
 				"Deletes messages that contain invite links."
 			],
 			[
-				"Filter: links",
+				"--l/link/links",
 				"Deletes messages that contain any link."
 			],
 			[
-				"Filter: skyra",
+				"--y/you",
 				"Deletes my messages."
 			],
 			[
-				"Filter: User",
+				"--p/pin/pins",
+				"Deletes pinned messages, unless specified, no other filter deletes pins."
+			],
+			[
+				"User",
 				"Deletes messages sent by the specified user."
 			],
 			[
@@ -474,15 +480,15 @@
 				"Deletes messages sent before the specified message."
 			],
 			[
-				"--silent",
-				"Whether or not a response message should be sent."
+				"--s/silent",
+				"Whether or not a response message should be sent, this will also delete your command message if there were less than 100 messages filtered."
 			]
 		],
 		"examples": [
-			"50 me",
+			"50 --a",
 			"75 @kyra",
-			"20 bots",
-			"60 humans before 629992398700675082",
+			"20 --bots",
+			"60 --humans --files before 629992398700675082",
 			"100 --silent"
 		],
 		"reminder": "Due to a Discord limitation, bots cannot delete messages older than 14 days."

@@ -1,15 +1,9 @@
-import { writeFile } from 'fs/promises';
-import fetch from 'node-fetch';
-import { dirname, join } from 'path';
-import { toUnicode } from 'punycode';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { writeFile } from 'node:fs/promises';
+import { toUnicode } from 'node:punycode';
 
 // Download entry from IANA, process the data as a string, and split it by new line
-const response = await fetch('http://data.iana.org/TLD/tlds-alpha-by-domain.txt');
-const text = await response.text();
+const text = await fetch('http://data.iana.org/TLD/tlds-alpha-by-domain.txt', FetchResultTypes.Text);
 const source = text.trim().split('\n');
 
 // Removes the comment from the start of the file
@@ -27,4 +21,6 @@ const content = source
 	})
 	.join('\n');
 
-await writeFile(join(__dirname, '..', 'typescript', 'src', 'lib', 'util', 'Links', 'TLDs.ts'), header + content + footer);
+const outputFile = new URL('../typescript/src/lib/util/Links/TLDs.ts', import.meta.url);
+
+void writeFile(outputFile, header + content + footer);

@@ -1,8 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
+import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
+import { URL } from 'url';
 
 const url = new URL('https://randomfox.ca/floof');
 

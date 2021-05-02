@@ -1,5 +1,5 @@
 import { envParseString } from '#lib/env';
-import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 
 interface HastebinResponse {
 	key: string;

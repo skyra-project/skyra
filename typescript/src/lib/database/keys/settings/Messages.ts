@@ -1,5 +1,7 @@
 export const Farewell = 'messagesFarewell';
+export const FarewellAutoDelete = 'messagesFarewellAutoDelete';
 export const Greeting = 'messagesGreeting';
+export const GreetingAutoDelete = 'messagesGreetingAutoDelete';
 export const JoinDM = 'messagesJoinDM';
 export const IgnoreChannels = 'messagesIgnoreChannels';
 export const AnnouncementEmbed = 'messagesAnnouncementEmbed';

@@ -89,23 +89,104 @@
 	"afkDescription": "Set an AFK message with automatic replies!",
 	"afkExtended": {
 		"usages": [
-			"Content"
+			"Content",
+			"set Content",
+			"ignore Channel",
+			"reset",
+			"reset Member",
+			"clear",
+			"clear Member",
+			"list"
 		],
 		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an auto-replier for whoever mentions you.",
 		"explainedUsage": [
 			[
 				"Content",
-				"The message you want users to see when they mention you."
+				"The message you want other members to see when they mention you."
+			],
+			[
+				"set Content",
+				"The same as `set Content`."
+			],
+			[
+				"ignore",
+				"The same as `ignore Channel` but with the message's channel."
+			],
+			[
+				"ignore Channel",
+				"Toggles whether the channel should not return you from AFK when sending a message in it."
+			],
+			[
+				"reset",
+				"Reset your AFK status to default."
+			],
+			[
+				"reset Member",
+				"Reset the AFK status for another member to default, requires moderator privileges."
+			],
+			[
+				"clear",
+				"Removes your AFK status."
+			],
+			[
+				"clear all",
+				"Removes the AFK status from all members."
+			],
+			[
+				"clear Member",
+				"Removes the AFK status from another member."
+			],
+			[
+				"list",
+				"Displays a list of all the members in AFK, requires moderator privileges."
+			],
+			[
+				"show",
+				"Displays your AFK status, if any."
+			],
+			[
+				"show Member",
+				"Displays the AFK status from another member."
 			]
 		],
 		"examples": [
-			"Doing dishes."
+			"Doing dishes.",
+			"ignore #staff-channel",
+			"reset",
+			"reset kyra",
+			"clear"
 		],
 		"reminder": "The AFK status is automatically removed as soon as you send a message 30 seconds after you ran this command."
 	},
 	"afkDefault": "Nothing specified.",
+	"afkAddedIgnoredChannel": "Successfully added {{channel}} to the list of ignored channels, I shall not remove your AFK if you talk in that channel.",
+	"afkClear": "Successfully cleared {{user}}'s AFK status.",
+	"afkClearSelf": "Successfully cleared your AFK status.",
+	"afkClearAllFailed_plural": "Failed to remove AFK from {{count, number}} users.",
+	"afkClearAllFailed": "Failed to remove AFK from {{count, number}} user.",
+	"afkClearAllProgress_plural": "Removing AFK from {{count, number}} users... {{percentage, number}} complete.",
+	"afkClearAllProgress": "Removing AFK from {{count, number}} user... {{percentage, number}} complete.",
+	"afkClearAllStarting_plural": "Removing AFK from {{count, number}} users...",
+	"afkClearAllStarting": "Removing AFK from {{count, number}} user...",
+	"afkClearAllTitle": "Server-wide AFK Removal",
+	"afkClearAllTotal_plural": "Successfully removed AFK from {{count, number}} users.",
+	"afkClearAllTotal": "Successfully removed AFK from {{count, number}} user.",
+	"afkListTitle": "List of AFK Users",
+	"afkListFooter": "{{count, number}} user total",
+	"afkListFooter_plural": "{{count, number}} users total",
+	"afkNoEntries": "There are no AFK members in this server.",
+	"afkNotSet": "{{user}} is not AFK.",
+	"afkNotSetSelf": "You are not AFK.",
+	"afkPermissionLevelList": "You need moderator privileges to check the list of AFK users.",
+	"afkPermissionLevelResetUser": "You need moderator privileges to reset the AFK message from a user.\n\n> **Hint**: If you want to reset your AFK message, simply run `afk reset` without specifying a user.",
+	"afkPermissionLevelClearUser": "You need moderator privileges to clear the AFK status from a user.\n\n> **Hint**: If you want to clear your AFK message, simply run `afk clear` without specifying a user.",
+	"afkPermissionLevelClearAll": "You need moderator privileges to clear the AFK status from all users.",
 	"afkPrefix": "AFK -",
+	"afkRemovedIgnoredChannel": "Successfully removed {{channel}} from the list of ignored channels, I shall remove your AFK as soon as you send a message in that channel.",
+	"afkReset": "Successfully set {{user}}'s AFK status to default.",
+	"afkResetSelf": "Successfully set your AFK message to default.",
 	"afkSet": "Got it, see you soon!",
+	"afkShowFooter": "AFK Status",
 	"chaseDescription": "Get in here!",
 	"chaseExtended": {
 		"usages": [

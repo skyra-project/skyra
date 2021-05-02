@@ -1,24 +1,11 @@
 import { envIsDefined } from '#lib/env';
-import type { QueryError } from '#lib/errors/QueryError';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { fetch, FetchResultTypes } from '#utils/util';
+import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import type { PieceContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
+import { URL } from 'url';
 import { SkyraCommand } from './SkyraCommand';
-
-export namespace WeebCommand {
-	/**
-	 * The WeebCommand Options
-	 */
-	export type Options = SkyraCommand.Options & {
-		queryType: string;
-		responseName: SimpleKey | ComplexKey;
-		requireUser?: boolean;
-	};
-
-	export type Args = SkyraCommand.Args;
-}
 
 export abstract class WeebCommand extends SkyraCommand {
 	/**
@@ -87,6 +74,19 @@ export abstract class WeebCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
+}
+
+export namespace WeebCommand {
+	/**
+	 * The WeebCommand Options
+	 */
+	export type Options = SkyraCommand.Options & {
+		queryType: string;
+		responseName: SimpleKey | ComplexKey;
+		requireUser?: boolean;
+	};
+
+	export type Args = SkyraCommand.Args;
 }
 
 interface WeebCommandResult {

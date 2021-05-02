@@ -8,8 +8,9 @@ import type {
 	QueryGetPokemonLearnsetByFuzzyArgs,
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
+import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { Mime } from '../constants';
-import { fetch, FetchMethods, FetchResultTypes, gql } from '../util';
+import { gql } from '../util';
 
 const FlavorsFrament = gql`
 	fragment flavors on FlavorEntry {

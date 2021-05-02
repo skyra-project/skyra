@@ -7,7 +7,8 @@ import type {
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
 import { Mime, Time } from '#utils/constants';
-import { enumerable, fetch, FetchMethods, FetchResultTypes } from '#utils/util';
+import { enumerable } from '#utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { createHmac } from 'crypto';
 
 export const enum TwitchHooksAction {

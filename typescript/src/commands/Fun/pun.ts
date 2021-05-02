@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Mime } from '#utils/constants';
-import { fetch } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch } from '@sapphire/fetch';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

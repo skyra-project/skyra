@@ -1,12 +1,8 @@
 import type { Config } from '@jest/types';
 
-// Make ts-jest shut up about "unsupported TS version"
-process.env.TS_JEST_DISABLE_VER_CHECKER = 'true';
-
 export default async (): Promise<Config.InitialOptions> => ({
 	rootDir: '../../',
 	displayName: 'integration test',
-	preset: 'ts-jest',
 	testEnvironment: 'node',
 	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/typescript/integration-tests/tests/**/*.test.ts'],
@@ -16,10 +12,5 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'^#lib/(.*)$': '<rootDir>/typescript/src/lib/$1',
 		'^#root/(.*)$': '<rootDir>/typescript/src/$1'
 	},
-	setupFilesAfterEnv: ['<rootDir>/typescript/integration-tests/jest.setup.ts'],
-	globals: {
-		'ts-jest': {
-			tsconfig: '<rootDir>/typescript/integration-tests/tsconfig.json'
-		}
-	}
+	setupFilesAfterEnv: ['<rootDir>/typescript/integration-tests/jest.setup.ts']
 });

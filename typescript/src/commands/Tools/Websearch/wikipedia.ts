@@ -1,9 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetch, FetchResultTypes, getImageUrl } from '#utils/util';
+import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
+import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wiki'],

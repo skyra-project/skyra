@@ -211,9 +211,17 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'messages.farewell', nullable: true, length: 2000 })
 	public messagesFarewell?: string | null;
 
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesFarewellAutoDelete, minimum: 0, maximum: Time.Minute * 15 })
+	@Column('bigint', { name: 'messages.farewell-auto-delete', nullable: true, transformer: kBigIntTransformer })
+	public messagesFarewellAutoDelete?: number | null = null;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesGreeting })
 	@Column('varchar', { name: 'messages.greeting', nullable: true, length: 2000 })
 	public messagesGreeting?: string | null;
+
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesGreetingAutoDelete, minimum: 0, maximum: Time.Minute * 15 })
+	@Column('bigint', { name: 'messages.greeting-auto-delete', nullable: true, transformer: kBigIntTransformer })
+	public messagesGreetingAutoDelete?: number | null = null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesJoinDM })
 	@Column('varchar', { name: 'messages.join-dm', nullable: true, length: 1500 })

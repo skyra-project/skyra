@@ -14,7 +14,7 @@
 		"examples": [
 			"@skyra/char",
 			"@skyra/saelem",
-			"@skyra/eslint-config"
+			"@sapphire/framework"
 		]
 	},
 	"yarnEmbedDescriptionAuthor": "❯ Author: {{author}}",

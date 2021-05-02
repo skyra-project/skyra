@@ -1,7 +1,5 @@
 # Skyra [![Discord](https://discord.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/skyra-project/skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/skyra/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/skyra-project/skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/Skyra/context:javascript)
 [![Codecov .NET](https://img.shields.io/codecov/c/github/skyra-project/skyra/main?flag=dotnet&label=.NET%20Code%20Coverage&logo=codecov&token=DYhRX6ailX)](https://codecov.io/gh/skyra-project/skyra/)
 [![Codecov NodeJS](https://img.shields.io/codecov/c/github/skyra-project/skyra/main?flag=nodejs&label=NodeJS%20Code%20Coverage&logo=codecov&token=DYhRX6ailX)](https://codecov.io/gh/skyra-project/skyra/)
 [![Status](https://top.gg/api/widget/status/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)

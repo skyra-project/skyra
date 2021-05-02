@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraArgs } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
@@ -90,9 +90,9 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
  * @remark This decorator makes the decorated function asynchronous.
  * @param permissionsResolvable Permissions that the method should have.
  */
-export const requiresPermissions = (permissionsResolvable: PermissionResolvable): MethodDecorator => {
+export const requiresPermissions = (...permissionsResolvable: PermissionResolvable[]): MethodDecorator => {
 	const resolved = new Permissions(permissionsResolvable);
-	return createFunctionInhibitor((message: GuildMessage, args: SkyraCommand.Args) => {
+	return createFunctionInhibitor((message: GuildMessage, args: SkyraArgs) => {
 		const missingPermissions = message.channel.permissionsFor(message.guild.me!)!.missing(resolved);
 
 		if (missingPermissions.length) {

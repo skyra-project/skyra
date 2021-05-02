@@ -1,4 +1,5 @@
 {
+	"all": "",
 	"boolean_plural": "No pude resolver `{{parameter}}` a un booleano, los valores posibles son: {{possibles, orList}}",
 	"boolean": "No pude resolver `{{parameter}}` a un booleano, el único posible valor es: {{possibles}}",
 	"booleanDisabled": "Desabilitado",

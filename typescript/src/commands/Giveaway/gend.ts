@@ -2,6 +2,7 @@ import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message } from 'discord.js';
 
@@ -9,6 +10,7 @@ import { Message } from 'discord.js';
 	aliases: ['ge', 'giveaway-end'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayEndDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayEndExtended,
+	permissionLevel: PermissionLevels.Moderator,
 	permissions: ['READ_MESSAGE_HISTORY'],
 	runIn: ['text', 'news']
 })

@@ -7,18 +7,6 @@ import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
-export namespace ChannelConfigurationCommand {
-	/**
-	 * The ChannelConfigurationCommand Options
-	 */
-	export type Options = SkyraCommand.Options & {
-		responseKey: CustomFunctionGet<string, { channel: string }, string>;
-		settingsKey: KeyOfType<GuildEntity, string | Nullish>;
-	};
-
-	export type Args = SkyraCommand.Args;
-}
-
 export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	private readonly responseKey: CustomFunctionGet<string, { channel: string }, string>;
 	private readonly settingsKey: KeyOfType<GuildEntity, string | Nullish>;
@@ -56,4 +44,16 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 		if (argument === 'here') return Args.ok(context.message.channel as TextChannel);
 		return (Store.injectedContext.stores.get('arguments').get('textChannelName') as IArgument<TextChannel>).run(argument, context);
 	});
+}
+
+export namespace ChannelConfigurationCommand {
+	/**
+	 * The ChannelConfigurationCommand Options
+	 */
+	export type Options = SkyraCommand.Options & {
+		responseKey: CustomFunctionGet<string, { channel: string }, string>;
+		settingsKey: KeyOfType<GuildEntity, string | Nullish>;
+	};
+
+	export type Args = SkyraCommand.Args;
 }

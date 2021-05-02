@@ -2,22 +2,6 @@ import type { CommandContext, PieceContext } from '@sapphire/framework';
 import type { PermissionResolvable } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
-export namespace PaginatedMessageCommand {
-	/**
-	 * The PaginatedMessageCommand Options
-	 */
-	export type Options = SkyraCommand.Options;
-	/**
-	 * The PaginatedMessageCommand Args
-	 */
-	export type Args = SkyraCommand.Args;
-
-	/**
-	 * The PaginatedMessageCommand CommandContext
-	 */
-	export type Context = CommandContext;
-}
-
 export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: PaginatedMessageCommand.Options) {
 		super(context, {
@@ -34,4 +18,20 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 			]
 		});
 	}
+}
+
+export namespace PaginatedMessageCommand {
+	/**
+	 * The PaginatedMessageCommand Options
+	 */
+	export type Options = SkyraCommand.Options;
+	/**
+	 * The PaginatedMessageCommand Args
+	 */
+	export type Args = SkyraCommand.Args;
+
+	/**
+	 * The PaginatedMessageCommand CommandContext
+	 */
+	export type Context = CommandContext;
 }

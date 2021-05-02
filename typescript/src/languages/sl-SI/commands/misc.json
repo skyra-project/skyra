@@ -89,6 +89,13 @@
 	"afkDescription": "",
 	"afkExtended": {
 		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -96,16 +103,90 @@
 			[
 				"",
 				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
+			"",
+			"",
+			"",
+			"",
 			""
 		],
 		"reminder": ""
 	},
 	"afkDefault": "",
+	"afkAddedIgnoredChannel": "",
+	"afkClear": "",
+	"afkClearSelf": "",
+	"afkClearAllFailed_plural": "",
+	"afkClearAllFailed": "",
+	"afkClearAllProgress_plural": "",
+	"afkClearAllProgress": "",
+	"afkClearAllStarting_plural": "",
+	"afkClearAllStarting": "",
+	"afkClearAllTitle": "",
+	"afkClearAllTotal_plural": "",
+	"afkClearAllTotal": "",
+	"afkListTitle": "",
+	"afkListFooter": "",
+	"afkListFooter_plural": "",
+	"afkNoEntries": "",
+	"afkNotSet": "",
+	"afkNotSetSelf": "",
+	"afkPermissionLevelList": "",
+	"afkPermissionLevelResetUser": "",
+	"afkPermissionLevelClearUser": "",
+	"afkPermissionLevelClearAll": "",
 	"afkPrefix": "",
+	"afkRemovedIgnoredChannel": "",
+	"afkReset": "",
+	"afkResetSelf": "",
 	"afkSet": "",
+	"afkShowFooter": "",
 	"chaseDescription": "",
 	"chaseExtended": {
 		"usages": [

@@ -1,6 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
+import { isNullishOrZero } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import type { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
@@ -22,18 +23,20 @@ export class UserEvent extends Event {
 	private readonly kTransformMessageRegExp = /%(?:MEMBER(?:NAME|TAG|(?:_(?:POSITION|HIGHEST_ROLE(?:NAME)?)))?|GUILD)%/g;
 
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
-		const [channelID, content, t] = await guild.readSettings((settings) => [
+		const [channelID, content, timer, t] = await guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Farewell],
 			settings[GuildSettings.Messages.Farewell],
+			settings[GuildSettings.Messages.FarewellAutoDelete],
 			settings.getLanguage()
 		]);
 		if (!channelID || !content) return;
 
 		const channel = guild.channels.cache.get(channelID) as TextChannel;
 		if (channel && channel.postable) {
-			return channel.send(this.transformMessage(t, guild, member, user, content), {
-				allowedMentions: { users: [], roles: [] }
-			});
+			const messageContent = this.transformMessage(t, guild, member, user, content);
+			const message = await channel.send(messageContent, { allowedMentions: { users: [], roles: [] } });
+			if (!isNullishOrZero(timer)) await message.nuke(timer);
+			return;
 		}
 
 		return guild.writeSettings([[GuildSettings.Channels.Farewell, null]]);

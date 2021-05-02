@@ -101,5 +101,36 @@
 			"30m 6h Un abrazo de Skyra."
 		]
 	},
-	"giveawayRerollInvalid": "O bien el identificador del mensaje no existe o no hay ningún sorteo terminado."
+	"giveawayRerollInvalid": "O bien el identificador del mensaje no existe o no hay ningún sorteo terminado.",
+	"giveawayEndDescription": "",
+	"giveawayEndExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"giveawayEndMessageNotMine": "",
+	"giveawayEndMessageNotActive": "",
+	"giveawayEnd": ""
 }

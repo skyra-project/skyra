@@ -1,5 +1,8 @@
 import { T } from '#lib/types';
 
+export const AfkRole = T('settings:afkRole');
+export const AfkPrefix = T('settings:afkPrefix');
+export const AfkPrefixForce = T('settings:afkPrefixForce');
 export const Prefix = T('settings:prefix');
 export const Language = T('settings:language');
 export const DisabledCommands = T('settings:disabledCommands');

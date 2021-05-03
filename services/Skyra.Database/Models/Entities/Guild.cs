@@ -28,6 +28,18 @@ namespace Skyra.Database.Models.Entities
 		[Column("disabled-commands", TypeName = "character varying(32)[]")]
 		public string[] DisabledCommands { get; set; } = Array.Empty<string>();
 
+		[Column("afk.role")]
+		[StringLength(19)]
+		public string? AfkRole { get; set; }
+
+		[Column("afk.prefix")]
+		[StringLength(32)]
+		public string? AfkPrefix { get; set; }
+
+		[Required]
+		[Column("afk.prefix-force")]
+		public bool AfkPrefixForce { get; set; }
+
 		[Required]
 		[Column("custom-commands", TypeName = "jsonb")]
 		public string CustomCommands { get; set; } = null!;

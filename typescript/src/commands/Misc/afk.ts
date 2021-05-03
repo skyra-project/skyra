@@ -1,3 +1,4 @@
+import { GuildSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
@@ -8,7 +9,7 @@ import { requiresLevel } from '#utils/decorators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { chunk } from '@sapphire/utilities';
+import { chunk, isNullish, Nullish } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -91,15 +92,21 @@ export class UserCommand extends SkyraCommand {
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
-		const name = this.removeAfkPrefix(message.member.displayName, args);
 
-		await this.appendNickNamePrefix(message.member, name, args);
+		const [prefix, force, roleID] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Afk.Prefix] ?? args.t(LanguageKeys.Commands.Misc.AfkPrefix),
+			settings[GuildSettings.Afk.PrefixForce],
+			settings[GuildSettings.Afk.Role]
+		]);
+		const name = this.removeAfkPrefix(message.member.displayName, prefix);
+
+		await Promise.all([this.addNickName(message.member, name, prefix, force), this.addRole(message.member, roleID)]);
 		await this.saveAfkMessage(message.member, name, content);
 
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkSet));
 	}
 
-	private async appendNickNamePrefix(member: GuildMember, name: string, args: SkyraCommand.Args) {
+	private async addNickName(member: GuildMember, name: string, prefix: string, force: boolean) {
 		const me = member.guild.me!;
 
 		// If Skyra does not have permissions to manage nicknames, return:
@@ -111,17 +118,34 @@ export class UserCommand extends SkyraCommand {
 		// If the target member has higher role hierarchy than Skyra, skip:
 		if (member.roles.highest.position >= me.roles.highest.position) return;
 
-		const prefix = args.t(LanguageKeys.Commands.Misc.AfkPrefix);
-		if (prefix.length + name.length > 31) return;
-		await member.setNickname(`${prefix} ${name}`);
+		if (!force && prefix.length + name.length >= 32) return;
+		await member.setNickname(`${prefix} ${name}`.slice(0, 32));
+	}
+
+	private async addRole(member: GuildMember, roleID: string | Nullish) {
+		if (isNullish(roleID)) return;
+
+		const role = member.guild.roles.cache.get(roleID);
+		if (role === undefined) {
+			await member.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			return;
+		}
+
+		if (role.position >= member.guild.me!.roles.highest.position) {
+			return;
+		}
+
+		const { roles } = member;
+		if (!roles.cache.has(role.id)) {
+			await roles.add(role.id);
+		}
 	}
 
 	private async saveAfkMessage(member: GuildMember, name: string, content: string) {
 		await this.insert(this.getKey(member), { time: Date.now(), name, content });
 	}
 
-	private removeAfkPrefix(name: string, args: SkyraCommand.Args) {
-		const prefix = args.t(LanguageKeys.Commands.Misc.AfkPrefix);
+	private removeAfkPrefix(name: string, prefix: string) {
 		return name.startsWith(prefix) ? name.slice(prefix.length + 1) : name;
 	}
 
@@ -180,6 +204,7 @@ export class UserCommand extends SkyraCommand {
 		const entries = await this.fetchEntries(template);
 		if (entries.size === 0) this.error(LanguageKeys.Commands.Misc.AfkNoEntries);
 
+		const roleID = await this.getRole(message.member);
 		await message.send(args.t(LanguageKeys.Commands.Misc.AfkClearAllStarting, { count: entries.size }));
 		let i = 0;
 		let failed = 0;
@@ -189,7 +214,7 @@ export class UserCommand extends SkyraCommand {
 		for (const [id, value] of entries) {
 			const member = members.get(id.slice(idOffset));
 			if (member === undefined) await this.context.afk.del(id);
-			else await this.handleClearAfkWithEntry(member, id, value).catch(() => ++failed);
+			else await this.handleClearAfkWithEntry(member, id, value, roleID).catch(() => ++failed);
 
 			if (++i % 10 === 0) {
 				const percentage = (i / entries.size) * 100;
@@ -215,15 +240,26 @@ export class UserCommand extends SkyraCommand {
 			this.error(targetIsSelf ? LanguageKeys.Commands.Misc.AfkNotSetSelf : LanguageKeys.Commands.Misc.AfkNotSet, { user: member.toString() });
 		}
 
-		return this.handleClearAfkWithEntry(member, key, JSON.parse(raw));
+		const roleID = await this.getRole(member);
+		return this.handleClearAfkWithEntry(member, key, JSON.parse(raw), roleID);
 	}
 
-	private async handleClearAfkWithEntry(member: GuildMember, key: string, value: AfkEntry) {
+	private async handleClearAfkWithEntry(member: GuildMember, key: string, value: AfkEntry, roleID: string | null) {
 		await this.context.afk.del(key);
-		await this.handleNicknameChange(member, value.name);
+		await this.handleClearNickName(member, value.name);
+		await this.handleClearRole(member, roleID);
 	}
 
-	private async handleNicknameChange(member: GuildMember, name: string) {
+	private async handleClearRole(member: GuildMember, roleID: string | null) {
+		if (roleID === null) return;
+
+		const { roles } = member;
+		if (roles.cache.has(roleID)) {
+			await roles.remove(roleID);
+		}
+	}
+
+	private async handleClearNickName(member: GuildMember, name: string) {
 		// If the target member is the guild's owner, return:
 		if (member.isGuildOwner()) return;
 
@@ -293,6 +329,23 @@ export class UserCommand extends SkyraCommand {
 		} while (cursor !== '0');
 
 		return [...users];
+	}
+
+	private async getRole(member: GuildMember) {
+		const roleID = await member.guild.readSettings(GuildSettings.Afk.Role);
+		return this.handleRole(member, roleID);
+	}
+
+	private async handleRole(member: GuildMember, roleID: string | Nullish) {
+		if (isNullish(roleID)) return null;
+
+		const role = member.guild.roles.cache.get(roleID);
+		if (role === undefined) {
+			await member.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			return null;
+		}
+
+		return role.id;
 	}
 
 	private getTemplate(member: GuildMember) {

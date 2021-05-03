@@ -95,6 +95,8 @@ namespace Skyra.Database
 
 			modelBuilder.Entity<Guild>(entity =>
 			{
+				entity.Property(e => e.AfkPrefixForce).HasDefaultValueSql("false");
+
 				entity.Property(e => e.ChannelsIgnoreAll).HasDefaultValueSql("ARRAY[]::character varying[]");
 
 				entity.Property(e => e.ChannelsIgnoreMessageDelete).HasDefaultValueSql("ARRAY[]::character varying[]");

@@ -98,7 +98,7 @@
 			"clear Member",
 			"list"
 		],
-		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an auto-replier for whoever mentions you.",
+		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an automatic response if you are mentioned.",
 		"explainedUsage": [
 			[
 				"Content",
@@ -156,7 +156,7 @@
 			"reset kyra",
 			"clear"
 		],
-		"reminder": "The AFK status is automatically removed as soon as you send a message 30 seconds after you ran this command."
+		"reminder": "The AFK status is automatically removed as soon as you send a message, with a 30 second grace period."
 	},
 	"afkDefault": "Nothing specified.",
 	"afkAddedIgnoredChannel": "Successfully added {{channel}} to the list of ignored channels, I shall not remove your AFK if you talk in that channel.",

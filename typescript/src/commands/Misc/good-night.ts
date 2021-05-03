@@ -9,7 +9,7 @@ import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['night'],
+	aliases: ['gn', 'night'],
 	bucket: 2,
 	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.GoodNightDescription,

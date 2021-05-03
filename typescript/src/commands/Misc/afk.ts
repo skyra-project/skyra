@@ -254,7 +254,7 @@ export class UserCommand extends SkyraCommand {
 		if (roleID === null) return;
 
 		const { roles } = member;
-		if (!roles.cache.has(roleID)) {
+		if (roles.cache.has(roleID)) {
 			await roles.remove(roleID);
 		}
 	}

@@ -57,7 +57,7 @@ completely configurable, she also has a backstory, inherited from the lore I hav
 
 There have been over 14 rewrites with an active development of over two years, I have met many developers and friends in
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for
-Klasa. And later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire Project][],
+Klasa. And later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire][sapphiredev],
 which is what Skyra is currently using, specifically [Sapphire Framework][]
 
 _Who knows, I might write a book someday for Skyra's lore._
@@ -81,13 +81,13 @@ may still want to donate just to show their appreciation. Thanks you very much i
 
 We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use the buttons below to donate through your method of choice.
 
-| Donate With |         QR         |                                                                  Address                                                                  |
-| :---------: | :----------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-|   Patreon   | ![PatreonImage][]  |                                               [Click Here](https://donate.skyra.pw/patreon)                                               |
-|   PayPal    |  ![PayPalImage][]  |                                               [Click Here](https://donate.skyra.pw/paypal)                                                |
-|   BitCoin   | ![BitcoinImage][]  |         [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)          |
-|  Ethereum   | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
-|  Litecoin   | ![LitecoinImage][] |         [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)         |
+| Donate With |         QR         |                        Address                         |
+| :---------: | :----------------: | :----------------------------------------------------: |
+|   Patreon   | ![PatreonImage][]  |                 [Click Here][patreon]                  |
+|   PayPal    |  ![PayPalImage][]  |                  [Click Here][paypal]                  |
+|   BitCoin   | ![BitcoinImage][]  |     [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco][bitcoin]      |
+|  Ethereum   | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c][ethereum] |
+|  Litecoin   | ![LitecoinImage][] |     [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM][litecoin]     |
 
 ## Contributors ✨
 
@@ -140,31 +140,35 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 <!----------------- LINKS --------------->
 
-[`node.js`]: https://nodejs.org/en/download/current/
-[`postgresql`]: https://www.postgresql.org/download/
-[`lavalink`]: https://github.com/Frederikam/Lavalink
-[`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
-[`outflux`]: https://github.com/skyra-project/outflux
-[`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
-[`saelem`]: https://github.com/skyra-project/saelem
-[`redis`]: https://redis.io
-[set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
-[glitch]: https://glitch.com/
-[heroku]: https://www.heroku.com/
-[netcup]: https://www.netcup.eu/
-[digitalocean]: https://www.digitalocean.com/
-[skyra invite link]: https://invite.skyra.pw
-[support server]: https://join.skyra.pw
-[patreon]: https://donate.skyra.pw/patreon
-[sapphire project]: https://github.com/sapphire-project
-[sapphire framework]: https://github.com/sapphire-project/framework
-[sapphire's website]: https://website.sapphire-project.vercel.app
-[patreonimage]: https://cdn.skyra.pw/gh-assets/patreon.png
-[paypalimage]: https://cdn.skyra.pw/gh-assets/paypal.png
-[bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
-[ethereumimage]: https://cdn.skyra.pw/gh-assets/ethereum.png
-[litecoinimage]: https://cdn.skyra.pw/gh-assets/litecoin.png
-[`skyra.grpc`]: https://hub.docker.com/r/skyrabot/grpc
 [`.net`]: https://docs.microsoft.com/en-gb/dotnet/
 [`entity framework`]: https://docs.microsoft.com/en-gb/ef/
+[`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
 [`grpc`]: https://grpc.io
+[`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
+[`lavalink`]: https://github.com/Frederikam/Lavalink
+[`node.js`]: https://nodejs.org/en/download/current/
+[`outflux`]: https://github.com/skyra-project/outflux
+[`postgresql`]: https://www.postgresql.org/download/
+[`redis`]: https://redis.io
+[`saelem`]: https://github.com/skyra-project/saelem
+[`skyra.grpc`]: https://hub.docker.com/r/skyrabot/grpc
+[bitcoin]: bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot
+[bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
+[digitalocean]: https://www.digitalocean.com/
+[ethereum]: ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot
+[ethereumimage]: https://cdn.skyra.pw/gh-assets/ethereum.png
+[glitch]: https://glitch.com/
+[heroku]: https://www.heroku.com/
+[litecoin]: litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot
+[litecoinimage]: https://cdn.skyra.pw/gh-assets/litecoin.png
+[netcup]: https://www.netcup.eu/
+[patreon]: https://donate.skyra.pw/patreon
+[patreonimage]: https://cdn.skyra.pw/gh-assets/patreon.png
+[paypal]: https://donate.skyra.pw/paypal
+[paypalimage]: https://cdn.skyra.pw/gh-assets/paypal.png
+[sapphire framework]: https://github.com/sapphiredev/framework
+[sapphiredev]: https://github.com/sapphiredev
+[sapphire's website]: https://sapphirejs.dev
+[set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
+[skyra invite link]: https://invite.skyra.pw
+[support server]: https://join.skyra.pw

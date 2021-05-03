@@ -115,7 +115,7 @@ export class UserCommand extends SkyraCommand {
 		else if (args.getFlags(...imageFlags)) fns.push((mes: GuildMessage) => mes.attachments.some((at) => !isNullish(getImageUrl(at.url))));
 		if (args.getFlags(...authorFlags)) fns.push((mes: GuildMessage) => mes.author.id === args.message.author.id);
 		if (args.getFlags(...botsFlags)) fns.push((mes: GuildMessage) => mes.author.bot);
-		if (args.getFlags(...humansFlags)) fns.push((mes: GuildMessage) => mes.author.id === args.message.author.id);
+		if (args.getFlags(...humansFlags)) fns.push((mes: GuildMessage) => !mes.author.bot);
 		if (args.getFlags(...invitesFlags)) fns.push((mes: GuildMessage) => UserCommand.kInviteRegExp.test(mes.content));
 		if (args.getFlags(...linksFlags)) fns.push((mes: GuildMessage) => UserCommand.kLinkRegExp.test(mes.content));
 		if (args.getFlags(...youFlags)) fns.push((mes: GuildMessage) => mes.author.id === process.env.CLIENT_ID);

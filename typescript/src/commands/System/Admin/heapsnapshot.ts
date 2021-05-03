@@ -33,7 +33,6 @@ import { writeHeapSnapshot } from 'v8';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Admin.HeapSnapshotDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.HeapSnapshotExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {

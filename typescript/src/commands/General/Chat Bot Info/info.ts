@@ -7,8 +7,7 @@ import type { Message } from 'discord.js';
 	aliases: ['bot-info'],
 	cooldown: 5,
 	description: LanguageKeys.Commands.General.InfoDescription,
-	extendedHelp: LanguageKeys.Commands.General.InfoExtended,
-	guarded: true
+	extendedHelp: LanguageKeys.Commands.General.InfoExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

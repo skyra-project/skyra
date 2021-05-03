@@ -13,7 +13,6 @@ import type { Message } from 'discord.js';
 	aliases: ['pull'],
 	description: LanguageKeys.Commands.Admin.UpdateDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.UpdateExtended,
-	guarded: true,
 	strategyOptions: { flags: ['clean'] },
 	permissionLevel: PermissionLevels.BotOwner
 })

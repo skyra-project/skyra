@@ -1,3 +1,4 @@
+import { GuildSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -5,6 +6,7 @@ import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { isNullish, Nullish } from '@sapphire/utilities';
 import { Permissions } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -33,12 +35,17 @@ export class UserEvent extends Event {
 		// Remove and notify the user:
 		await this.context.afk.del(`afk:${message.guild.id}:${message.author.id}`);
 
-		const t = await message.fetchT();
-		await this.removeNickName(message, entry.name, t);
+		const [prefix, roleID, t] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Afk.Prefix],
+			settings[GuildSettings.Afk.Role],
+			settings.getLanguage()
+		]);
+
+		await Promise.all([this.removeNickName(message, entry.name, prefix, t), this.removeRole(message, roleID)]);
 		await message.alert(t(LanguageKeys.Events.Messages.AfkRemove, { user: message.author.toString() }), Time.Second * 10);
 	}
 
-	private async removeNickName(message: GuildMessage, oldName: string, t: TFunction) {
+	private async removeNickName(message: GuildMessage, oldName: string, prefix: string | Nullish, t: TFunction) {
 		// If the target member is the guild's owner, return:
 		if (message.member.isGuildOwner()) return;
 
@@ -51,8 +58,28 @@ export class UserEvent extends Event {
 		if (message.member.roles.highest.position >= me.roles.highest.position) return;
 
 		const name = message.member.displayName;
-		const prefix = t(LanguageKeys.Commands.Misc.AfkPrefix);
-		if (name === `${prefix} ${oldName}`) await message.member.setNickname(oldName);
+		if (name.startsWith(prefix ?? t(LanguageKeys.Commands.Misc.AfkPrefix))) {
+			await message.member.setNickname(oldName);
+		}
+	}
+
+	private async removeRole(message: GuildMessage, roleID: string | Nullish) {
+		if (isNullish(roleID)) return;
+
+		const role = message.guild.roles.cache.get(roleID);
+		if (role === undefined) {
+			await message.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			return;
+		}
+
+		if (role.position >= message.guild.me!.roles.highest.position) {
+			return;
+		}
+
+		const { roles } = message.member;
+		if (roles.cache.has(role.id)) {
+			await roles.remove(role.id);
+		}
 	}
 
 	private async notifyAfk(message: GuildMessage) {

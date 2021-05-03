@@ -1,3 +1,4 @@
+export * as Afk from './Afk';
 export * as Birthday from './Birthday';
 export * as Channels from './Channels';
 export * as Events from './Events';

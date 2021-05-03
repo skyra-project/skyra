@@ -39,6 +39,18 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('jsonb', { name: 'custom-commands', transformer: kTagsTransformer, default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.AfkRole, type: 'role' })
+	@Column('varchar', { name: 'afk.role', nullable: true, length: 19 })
+	public afkRole?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.AfkPrefix })
+	@Column('varchar', { name: 'afk.prefix', nullable: true, length: 32 })
+	public afkPrefix?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.AfkPrefixForce })
+	@Column('boolean', { name: 'afk.prefix-force', default: false })
+	public afkPrefixForce = false;
+
 	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
 	public permissionsUsers: PermissionsNode[] = [];
 

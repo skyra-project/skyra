@@ -3,16 +3,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { andMix, BooleanFn, isNullishOrEmpty } from '#utils/comparators';
 import { Moderation } from '#utils/constants';
 import { formatMessage } from '#utils/formatters';
 import { urlRegex } from '#utils/Links/UrlRegex';
-import { floatPromise } from '#utils/util';
+import { floatPromise, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, IArgument } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Collection, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
+import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const enum Position {
@@ -20,17 +21,18 @@ const enum Position {
 	After
 }
 
-const enum Filter {
-	Attachments,
-	Author,
-	Bots,
-	Humans,
-	Invites,
-	Links,
-	None,
-	Skyra,
-	User
-}
+const attachmentsFlags = ['f', 'file', 'files', 'upload', 'uploads'] as const;
+const imageFlags = ['img', 'image', 'images'] as const;
+const authorFlags = ['a', 'author', 'me'] as const;
+const botsFlags = ['b', 'bot', 'bots'] as const;
+const humansFlags = ['h', 'human', 'humans'] as const;
+const invitesFlags = ['i', 'inv', 'invite', 'invites'] as const;
+const linksFlags = ['l', 'link', 'links'] as const;
+const youFlags = ['y', 'you', 'skyra'] as const;
+const pinsFlags = ['p', 'pin', 'pins'] as const;
+const silentFlags = ['s', 'silent'] as const;
+const ageOptions = ['age'] as const;
+const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['purge', 'nuke', 'sweep'],
@@ -38,36 +40,48 @@ const enum Filter {
 	description: LanguageKeys.Commands.Moderation.PruneDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	strategyOptions: { flags: ['silent'] },
+	strategyOptions: {
+		flags: [
+			...attachmentsFlags,
+			...imageFlags,
+			...authorFlags,
+			...botsFlags,
+			...humansFlags,
+			...invitesFlags,
+			...linksFlags,
+			...youFlags,
+			...pinsFlags,
+			...silentFlags
+		],
+		options: [...ageOptions, ...includesOptions]
+	},
 	permissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
 	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
+	private get timespan(): IArgument<number> {
+		return this.context.stores.get('arguments').get('timespan') as IArgument<number>;
+	}
+
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const limit = await args.pick('integer', { minimum: 1, maximum: 100 });
-		const rawFilter = args.finished
-			? null
-			: await args
-					.pick(UserCommand.filter)
-					.catch(() => args.pick('user'))
-					.catch(() => null);
+		const filter = await this.getFilters(args);
 		const rawPosition = args.finished ? null : await args.pick(UserCommand.position);
 		const targetMessage = args.finished && rawPosition === null ? message : await args.pick('message');
 
 		const position = this.resolvePosition(rawPosition);
-		const filter = this.resolveFilter(rawFilter);
 
 		// Fetch the messages
-		let messages = (await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id })) as Collection<string, GuildMessage>;
-		if (filter !== Filter.None) {
-			const user = filter === Filter.User ? (rawFilter as User) : null;
-			messages = messages.filter(this.getFilter(message, filter, user) as (message: Message) => boolean) as Collection<string, GuildMessage>;
-		}
+		const messages = (await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id })) as Collection<string, GuildMessage>;
 
 		// Filter the messages by their age
-		const now = Date.now();
-		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
+		const filtered = messages.filter(filter);
 		if (filtered.size === 0) this.error(LanguageKeys.Commands.Moderation.PruneNoDeletes);
+
+		const silent = args.getFlags(...silentFlags);
+		if (silent && filtered.size !== 100) {
+			filtered.set(message.id, message);
+		}
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -77,44 +91,62 @@ export class UserCommand extends SkyraCommand {
 
 		// Send prune logs and reply to the channel
 		floatPromise(this.sendPruneLogs(message, args.t, filtered, filteredKeys));
-		return args.getFlags('silent')
-			? null
-			: message.alert(args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit }), Time.Second * 10);
+		if (silent) return null;
+
+		const content = args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit });
+		return message.alert(content, Time.Second * 10);
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
 		return position === 'before' ? messages.slice(0, limit) : messages.slice(messages.length - limit, messages.length);
 	}
 
-	private getFilter(message: GuildMessage, filter: Filter, user: User | null) {
-		switch (filter) {
-			case Filter.Attachments:
-				return (mes: GuildMessage) => mes.attachments.size > 0;
-			case Filter.Author:
-				return (mes: GuildMessage) => mes.author.id === message.author.id;
-			case Filter.Bots:
-				return (mes: GuildMessage) => mes.author.bot;
-			case Filter.Humans:
-				return (mes: GuildMessage) => mes.author.id === message.author.id;
-			case Filter.Invites:
-				return (mes: GuildMessage) => UserCommand.kInviteRegExp.test(mes.content);
-			case Filter.Links:
-				return (mes: GuildMessage) => UserCommand.kLinkRegExp.test(mes.content);
-			case Filter.Skyra:
-				return (mes: GuildMessage) => mes.author.id === process.env.CLIENT_ID;
-			case Filter.User:
-				return (mes: GuildMessage) => mes.author.id === user!.id;
-			default:
-				return () => true;
-		}
-	}
+	private async getFilters(args: SkyraCommand.Args) {
+		const fns: BooleanFn<[GuildMessage]>[] = [];
 
-	private resolveFilter(filter: Filter | User | null) {
-		return filter === null ? Filter.None : filter instanceof User ? Filter.User : filter;
+		const user = args.finished ? null : await args.pick('user').catch(() => null);
+		if (user !== null) fns.push((mes: GuildMessage) => mes.author.id === user.id);
+
+		const maximumAge = await this.getAge(args);
+		const oldestMessageTimestamp = Date.now() - maximumAge;
+		fns.push((mes: GuildMessage) => mes.createdTimestamp > oldestMessageTimestamp);
+
+		if (args.getFlags(...attachmentsFlags)) fns.push((mes: GuildMessage) => mes.attachments.size > 0);
+		else if (args.getFlags(...imageFlags)) fns.push((mes: GuildMessage) => mes.attachments.some((at) => !isNullish(getImageUrl(at.url))));
+		if (args.getFlags(...authorFlags)) fns.push((mes: GuildMessage) => mes.author.id === args.message.author.id);
+		if (args.getFlags(...botsFlags)) fns.push((mes: GuildMessage) => mes.author.bot);
+		if (args.getFlags(...humansFlags)) fns.push((mes: GuildMessage) => !mes.author.bot);
+		if (args.getFlags(...invitesFlags)) fns.push((mes: GuildMessage) => UserCommand.kInviteRegExp.test(mes.content));
+		if (args.getFlags(...linksFlags)) fns.push((mes: GuildMessage) => UserCommand.kLinkRegExp.test(mes.content));
+		if (args.getFlags(...youFlags)) fns.push((mes: GuildMessage) => mes.author.id === process.env.CLIENT_ID);
+		if (!args.getFlags(...pinsFlags)) fns.push((mes: GuildMessage) => !mes.pinned);
+
+		const includes = args.getOption(...includesOptions)?.toLowerCase();
+		if (!isNullishOrEmpty(includes)) fns.push((mes: GuildMessage) => mes.content.toLowerCase().includes(includes));
+
+		return andMix(fns);
 	}
 
 	private resolvePosition(position: Position | null) {
 		return position === Position.After ? 'after' : 'before';
+	}
+
+	private async getAge(args: SkyraCommand.Args) {
+		const parameter = args.getOption(...ageOptions);
+		if (parameter === null) return Time.Day * 14;
+
+		const argument = this.timespan;
+		const optionResult = await argument.run(parameter, {
+			args,
+			argument,
+			command: this,
+			commandContext: args.commandContext,
+			message: args.message,
+			minimum: 0,
+			maximum: Time.Day * 14
+		});
+		if (optionResult.success) return optionResult.value;
+		throw optionResult.error;
 	}
 
 	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
@@ -162,15 +194,6 @@ export class UserCommand extends SkyraCommand {
 		return new MessageAttachment(buffer, 'prune.txt');
 	}
 
-	private static filter = Args.make<Filter>((parameter, { argument }) => {
-		const filter = this.kCommandPruneFilters[parameter.toLowerCase()];
-		if (typeof filter === 'undefined') {
-			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Moderation.PruneInvalidFilter });
-		}
-
-		return Args.ok(filter);
-	});
-
 	private static position = Args.make<Position>((parameter, { argument }) => {
 		const position = this.kCommandPrunePositions[parameter.toLowerCase()];
 		if (typeof position === 'undefined') {
@@ -188,24 +211,5 @@ export class UserCommand extends SkyraCommand {
 		b: Position.Before,
 		after: Position.After,
 		a: Position.After
-	};
-
-	private static readonly kCommandPruneFilters: Record<string, Filter> = {
-		file: Filter.Attachments,
-		files: Filter.Attachments,
-		upload: Filter.Attachments,
-		uploads: Filter.Attachments,
-		author: Filter.Author,
-		me: Filter.Author,
-		bot: Filter.Bots,
-		bots: Filter.Bots,
-		human: Filter.Humans,
-		humans: Filter.Humans,
-		invite: Filter.Invites,
-		invites: Filter.Invites,
-		link: Filter.Links,
-		links: Filter.Links,
-		skyra: Filter.Skyra,
-		you: Filter.Skyra
 	};
 }

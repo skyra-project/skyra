@@ -7,7 +7,6 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.System.DisableDescription,
 	extendedHelp: LanguageKeys.Commands.System.DisableExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {

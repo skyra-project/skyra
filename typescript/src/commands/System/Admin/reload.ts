@@ -11,7 +11,6 @@ import i18next, { TFunction } from 'i18next';
 	aliases: ['r'],
 	description: LanguageKeys.Commands.System.ReloadDescription,
 	extendedHelp: LanguageKeys.Commands.System.ReloadExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {

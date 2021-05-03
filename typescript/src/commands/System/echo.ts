@@ -9,7 +9,6 @@ import type { MessageOptions } from 'discord.js';
 	aliases: ['talk'],
 	description: LanguageKeys.Commands.System.EchoDescription,
 	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	runIn: ['text', 'news']
 })

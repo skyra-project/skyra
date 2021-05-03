@@ -16,7 +16,6 @@ import { inspect } from 'util';
 	aliases: ['ev'],
 	description: LanguageKeys.Commands.System.EvalDescription,
 	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	quotes: [],
 	strategyOptions: {

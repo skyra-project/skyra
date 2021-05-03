@@ -11,7 +11,6 @@ import { Message, MessageAttachment } from 'discord.js';
 	aliases: ['execute'],
 	description: LanguageKeys.Commands.System.ExecDescription,
 	extendedHelp: LanguageKeys.Commands.System.ExecExtended,
-	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	strategyOptions: { options: ['timeout'] }
 })

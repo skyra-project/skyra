@@ -44,4 +44,4 @@ async function main() {
 	}
 }
 
-main().catch(client.logger.error);
+main().catch(client.logger.error.bind(client.logger));

@@ -46,8 +46,6 @@ RUN apt-get update && \
     librsvg2-dev
 
 COPY --from=BUILDER /usr/src/app/typescript/dist typescript/dist
-COPY --from=BUILDER /usr/src/app/node_modules/ node_modules/
-COPY --from=BUILDER /usr/src/app/typescript/src/node_modules/ typescript/src/node_modules/
 
 COPY yarn.lock .
 COPY package.json .

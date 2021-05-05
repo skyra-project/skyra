@@ -88,8 +88,8 @@ export class UserEvent extends Event {
 		const { client } = this.context;
 		const success = green('+');
 		const failed = red('-');
-		const llc = this.context.client.dev ? magentaBright : white;
-		const blc = this.context.client.dev ? magenta : blue;
+		const llc = client.dev ? magentaBright : white;
+		const blc = client.dev ? magenta : blue;
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
@@ -124,7 +124,7 @@ ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
 ${line11} ${pad}[${client.audio?.queues?.client.connected ? success : failed}] Audio
 ${line12} ${pad}[${success}] Moderation
 ${line13} ${pad}[${success}] Social & Leaderboards
-${line14}${this.context.client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+${line14}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}

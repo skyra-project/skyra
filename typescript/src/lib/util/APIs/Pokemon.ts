@@ -9,7 +9,6 @@ import type {
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
-import { Store } from '@sapphire/pieces';
 import { Mime } from '../constants';
 import { gql } from '../util';
 
@@ -277,7 +276,6 @@ export const getPokemonSprite = gql`
 
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {
-		Store.injectedContext.client.logger.info('About to request pokemon with URL: ', envParseString('GRAPHQL_POKEMON_URL'));
 		return fetch<PokemonResponse<R>>(
 			envParseString('GRAPHQL_POKEMON_URL'),
 			{

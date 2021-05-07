@@ -7,6 +7,9 @@ export default async (): Promise<Config.InitialOptions> => ({
 	testEnvironment: 'node',
 	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/typescript/unit-tests/tests/**/*.test.ts'],
+	transform: {
+		'^.+\\.tsx?$': 'esbuild-jest'
+	},
 	moduleNameMapper: {
 		'^#utils/(.*)$': '<rootDir>/typescript/src/lib/util/$1',
 		'^#lib/audio$': '<rootDir>/typescript/src/audio/lib',

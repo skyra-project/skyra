@@ -71,6 +71,8 @@ services:
   pokedex:
     container_name: pokedex
     image: 'favware/graphql-pokemon:latest'
+    environment:
+      PORT: 8288
     networks:
       - skyra
     ports:

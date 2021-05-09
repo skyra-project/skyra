@@ -125,10 +125,10 @@
 			"Joe"
 		]
 	},
-	"popDescription": "",
+	"popDescription": "Erzeugt ein Board zu Pop, Pop, Pop, Pop und Pop.",
 	"popExtended": {
 		"usages": [
-			"",
+			"Dauer",
 			"",
 			"",
 			""
@@ -136,7 +136,7 @@
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
+				"Dauer",
 				""
 			],
 			[
@@ -145,15 +145,15 @@
 			],
 			[
 				"",
-				""
+				"Die Anzahl der Zeilen, die das Brett haben soll. Standard sind 3."
 			],
 			[
 				"",
-				""
+				"Die Länge der Pops und der Lösung, Standard sind 3."
 			]
 		],
 		"examples": [
-			"",
+			"15",
 			"",
 			"",
 			""

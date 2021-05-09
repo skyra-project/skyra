@@ -1,8 +1,8 @@
 {
-	"addDescription": "",
+	"addDescription": "Fügt der Warteschlange ein Lied hinzu.",
 	"addExtended": {
 		"usages": [
-			"",
+			"Lied",
 			""
 		],
 		"extendedHelp": "",

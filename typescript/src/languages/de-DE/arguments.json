@@ -1,8 +1,8 @@
 {
-	"all": "",
-	"boolean_plural": "",
+	"all": "Alle",
+	"boolean_plural": "Ich konnte `{{parameter}}` nicht zu einem Boolean auflösen, die möglichen Werte sind: {{possibles, orList}}",
 	"boolean": "",
-	"booleanDisabled": "",
+	"booleanDisabled": "Deaktiviert",
 	"booleanEnabled": "",
 	"booleanFalseOptions": [
 		"",

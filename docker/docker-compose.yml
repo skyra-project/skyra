@@ -138,7 +138,6 @@ services:
       - skyra
     ports:
       - '8282:8282'
-      - '9009:9009'
       - '7282:7282'
     restart: always
     tty: true

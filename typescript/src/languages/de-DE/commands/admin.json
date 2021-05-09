@@ -15,7 +15,7 @@
 			"NameOfKey zurücksetzen",
 			"Menü"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Erlaubt dir, Skyra von Discord zu konfigurieren, als schnelle Alternative zum [Web-Dashboard](https://skyra.pw).",
 		"examples": [
 			"wechsle Sprache auf en-GB",
 			"setze channels.moderation-logs #moderation-logs",

@@ -13,7 +13,7 @@ export class V51NewSocialFeaturesAndValueRename1619089555427 implements Migratio
 		await queryRunner.addColumn('guilds', new TableColumn({ name: 'social.achieve-multiple', type: 'smallint', default: 1 }));
 
 		const entries = (await queryRunner.query(
-			/* sql */ `SELECT "id", "social.achieve", "social.achieve-message" FROM public.guilds WHERE "social.achieve" OR char_length("social.achieve-message") > 1`
+			/* sql */ `SELECT "id", "social.achieve", "social.achieve-message" FROM public.guilds WHERE "social.achieve" OR char_length("social.achieve-message") > 1;`
 		)) as OldEntry[];
 
 		for (const entry of entries) {
@@ -36,7 +36,7 @@ export class V51NewSocialFeaturesAndValueRename1619089555427 implements Migratio
 		await queryRunner.addColumn('guilds', new TableColumn({ name: 'social.achieve-message', type: 'varchar', isNullable: true, length: '2000' }));
 
 		const entries = (await queryRunner.query(
-			/* sql */ `SELECT "id", "social.achieve-role" FROM public.guilds WHERE char_length("social.achieve-role") > 1`
+			/* sql */ `SELECT "id", "social.achieve-role" FROM public.guilds WHERE char_length("social.achieve-role") > 1;`
 		)) as NewEntry[];
 
 		for (const entry of entries) {

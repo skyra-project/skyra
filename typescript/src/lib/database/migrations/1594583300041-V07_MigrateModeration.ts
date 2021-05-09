@@ -7,7 +7,7 @@ export class V07MigrateModeration1594583300041 implements MigrationInterface {
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		const moderationRawData = revertTransformModerations(await queryRunner.query(/* sql */ `SELECT * FROM public.moderation`));
+		const moderationRawData = revertTransformModerations(await queryRunner.query(/* sql */ `SELECT * FROM public.moderation;`));
 		await queryRunner.clearTable('moderation');
 		await queryRunner.changeColumn(
 			'moderation',
@@ -25,7 +25,7 @@ export class V07MigrateModeration1594583300041 implements MigrationInterface {
 
 	private async migrateModerations(queryRunner: QueryRunner): Promise<void> {
 		// Get the data from the "moderation" table and transform it into Moderation entities
-		const moderationEntities = transformModerations(await queryRunner.query(/* sql */ `SELECT * FROM public.moderation`));
+		const moderationEntities = transformModerations(await queryRunner.query(/* sql */ `SELECT * FROM public.moderation;`));
 
 		// TRUNCATE the "moderation" table before filling it with new data
 		await queryRunner.clearTable('moderation');

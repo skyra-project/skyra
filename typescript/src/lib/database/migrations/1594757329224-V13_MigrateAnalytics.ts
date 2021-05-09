@@ -21,7 +21,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const influx = new InfluxDB(process.env.INFLUX_URL);
 		const writer = influx.getWriteApi(process.env.INFLUX_ORG, process.env.INFLUX_ORG_ANALYTICS_BUCKET, 's');
 
-		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */ `SELECT * FROM command_counter`);
+		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */ `SELECT * FROM command_counter;`);
 
 		const points: Point[] = [];
 		for await (const commandUse of commandUses) {

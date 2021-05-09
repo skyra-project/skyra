@@ -3,14 +3,14 @@ import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn, TableF
 export class V11MigrateRpg1594649287397 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		// Drops all tables
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_users CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_guilds CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild_rank CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_items CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_user_items CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_battles CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_class CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TYPE rpg_item_type`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_users CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_guilds CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild_rank CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_items CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_user_items CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_battles CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_class CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TYPE rpg_item_type;`);
 
 		await queryRunner.createTable(
 			new Table({
@@ -71,7 +71,7 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 			})
 		);
 
-		await queryRunner.query(/* sql */ `CREATE TYPE "public"."rpg_item_type_enum" AS ENUM('Weapon', 'Shield', 'Disposable', 'Special')`);
+		await queryRunner.query(/* sql */ `CREATE TYPE "public"."rpg_item_type_enum" AS ENUM('Weapon', 'Shield', 'Disposable', 'Special');`);
 
 		await queryRunner.createTable(
 			new Table({
@@ -299,13 +299,13 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		// Drops all tables
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_user CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild_rank CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_item CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_user_item CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_battle CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TABLE rpg_class CASCADE`);
-		await queryRunner.query(/* sql */ `DROP TYPE rpg_item_type_enum`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_user CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_guild_rank CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_item CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_user_item CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_battle CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE rpg_class CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TYPE rpg_item_type_enum;`);
 	}
 }

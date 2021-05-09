@@ -60,7 +60,7 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 		);
 
 		// Get the data from the "users" table and transform it into User and UserProfile entities
-		const { userEntities, userProfileEntities } = transformUser(await queryRunner.query(/* sql */ `SELECT * FROM public.users`));
+		const { userEntities, userProfileEntities } = transformUser(await queryRunner.query(/* sql */ `SELECT * FROM public.users;`));
 
 		// Save the new User entities to the database
 		const stringifiedUserData = JSON.stringify(userEntities).replace(/'/g, "''");

@@ -23,7 +23,7 @@ export class V10MigrateTwitchSubscription1594629639526 implements MigrationInter
 
 		// Get the data from the "users" table and transform it into User and UserProfile entities
 		const subscriptionEntities = transformTwitchSubscription(
-			await queryRunner.query(/* sql */ `SELECT * FROM public.twitch_stream_subscriptions`)
+			await queryRunner.query(/* sql */ `SELECT * FROM public.twitch_stream_subscriptions;`)
 		);
 
 		// Save the new TwitchStreamSubscription entities to the database
@@ -38,7 +38,7 @@ export class V10MigrateTwitchSubscription1594629639526 implements MigrationInter
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		// Get the data from the "users" table and transform it into User and UserProfile entities
 		const subscriptionEntities = revertTransformTwitchSubscription(
-			await queryRunner.query(/* sql */ `SELECT * FROM public.twitch_stream_subscription`)
+			await queryRunner.query(/* sql */ `SELECT * FROM public.twitch_stream_subscription;`)
 		);
 
 		// Save the new TwitchStreamSubscription entities to the database

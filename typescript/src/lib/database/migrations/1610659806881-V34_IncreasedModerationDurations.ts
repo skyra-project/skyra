@@ -5,17 +5,17 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 		// Modify guild schema:
 		const guilds = (await queryRunner.getTable('guilds'))!;
 		await queryRunner.dropCheckConstraints(guilds, guilds.checks);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.capitals.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.links.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.messages.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.newlines.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.invites.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.filter.hardActionDuration" TYPE bigint`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.reactions.hardActionDuration" TYPE bigint`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.capitals.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.links.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.messages.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.newlines.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.invites.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.filter.hardActionDuration" TYPE bigint;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.reactions.hardActionDuration" TYPE bigint;`);
 
 		// Modify moderation schema:
-		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE bigint`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE bigint;`);
 
 		// Modify checks:
 		const moderation = (await queryRunner.getTable('moderation'))!;
@@ -29,14 +29,14 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		// Modify guild schema:
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.capitals.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.links.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.messages.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.newlines.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.invites.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.filter.hardActionDuration" TYPE integer`);
-		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.reactions.hardActionDuration" TYPE integer`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.attachments.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.capitals.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.links.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.messages.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.newlines.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.invites.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.filter.hardActionDuration" TYPE integer;`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.guilds ALTER "selfmod.reactions.hardActionDuration" TYPE integer;`);
 
 		await queryRunner.createCheckConstraints('guilds', [
 			new TableCheck({ expression: /* sql */ `"prefix"::text <> ''::text` }),
@@ -88,7 +88,7 @@ export class V34IncreasedModerationDurations1610659806881 implements MigrationIn
 		]);
 
 		// Modify moderation schema:
-		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE integer`);
+		await queryRunner.query(/* sql */ `ALTER TABLE public.moderation ALTER "duration" TYPE integer;`);
 
 		// Modify checks:
 		const moderation = (await queryRunner.getTable('moderation'))!;

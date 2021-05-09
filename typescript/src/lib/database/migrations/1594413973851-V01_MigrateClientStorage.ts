@@ -75,7 +75,7 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 		// Get the data from the "clientStorage" table and transform it into Client entities
 		// Quotes around table name are required here
 		const { clientEntities, scheduleEntities } = transformClientStorage(
-			await queryRunner.query(/* sql */ `SELECT * FROM public."clientStorage"`)
+			await queryRunner.query(/* sql */ `SELECT * FROM public."clientStorage";`)
 		);
 
 		// Save the new Client entities to the database

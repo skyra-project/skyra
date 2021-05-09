@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class V36RemoveEveryonePermissionNodes1614640993140 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		const rows = (await queryRunner.query(
-			/* sql */ `SELECT "id", "permissions.roles" FROM public.guilds WHERE jsonb_array_length("permissions.roles") <> 0`
+			/* sql */ `SELECT "id", "permissions.roles" FROM public.guilds WHERE jsonb_array_length("permissions.roles") <> 0;`
 		)) as Entry[];
 
 		for (const row of rows) {

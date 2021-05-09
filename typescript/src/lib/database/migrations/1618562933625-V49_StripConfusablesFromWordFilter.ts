@@ -4,7 +4,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class V49StripConfusablesFromWordFilter1618562933625 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		const entries = (await queryRunner.query(
-			/* sql */ `SELECT "id", "selfmod.filter.raw" FROM public.guilds WHERE array_length("selfmod.filter.raw", 1) <> 0`
+			/* sql */ `SELECT "id", "selfmod.filter.raw" FROM public.guilds WHERE array_length("selfmod.filter.raw", 1) <> 0;`
 		)) as Entry[];
 
 		for (const entry of entries) {

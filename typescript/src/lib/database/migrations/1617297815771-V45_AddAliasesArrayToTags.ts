@@ -24,7 +24,7 @@ export class V45AddAliasesArrayToTags1617297815771 implements MigrationInterface
 	}
 
 	private getData<T extends OldData | NewData>(queryRunner: QueryRunner): Promise<T[]> {
-		return queryRunner.query(/* sql */ `SELECT id, "custom-commands" FROM public.guilds WHERE JSONB_ARRAY_LENGTH("custom-commands") > 0`);
+		return queryRunner.query(/* sql */ `SELECT id, "custom-commands" FROM public.guilds WHERE JSONB_ARRAY_LENGTH("custom-commands") > 0;`);
 	}
 
 	private setData<T extends OldData | NewData>(queryRunner: QueryRunner, entry: T) {

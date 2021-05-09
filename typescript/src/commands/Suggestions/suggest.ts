@@ -107,7 +107,7 @@ export class UserCommand extends SkyraCommand {
 			/* sql */ `
 			SELECT max(id)
 			FROM "${suggestions.metadata.tableName}"
-			WHERE guild_id = $1
+			WHERE guild_id = $1;
 		`,
 			[guildID]
 		)) as [MaxQuery];

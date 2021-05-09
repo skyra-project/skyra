@@ -44,7 +44,7 @@ export class V02MigrateDashboardUsers1594582514749 implements MigrationInterface
 		);
 
 		// Get the data from the "dashboard_users" table and transform it into DashboardUser entities
-		const dashboardUserEntities = transformDashboardUsers(await queryRunner.query(/* sql */ `SELECT * FROM public.dashboard_users`));
+		const dashboardUserEntities = transformDashboardUsers(await queryRunner.query(/* sql */ `SELECT * FROM public.dashboard_users;`));
 
 		// Save new DashboardUser entities to database
 		const stringifiedData = JSON.stringify(dashboardUserEntities).replace(/'/g, "''");

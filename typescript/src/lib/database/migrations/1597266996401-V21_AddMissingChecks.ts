@@ -33,7 +33,7 @@ export class V21AddMissingChecks1597266996401 implements MigrationInterface {
 	}
 
 	private async updateModerationChecks(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.query(/* sql */ `ALTER TABLE guilds DROP CONSTRAINT IF EXISTS moderation_duration_check`);
+		await queryRunner.query(/* sql */ `ALTER TABLE guilds DROP CONSTRAINT IF EXISTS moderation_duration_check;`);
 		await queryRunner.createCheckConstraint(
 			'moderation',
 			new TableCheck({

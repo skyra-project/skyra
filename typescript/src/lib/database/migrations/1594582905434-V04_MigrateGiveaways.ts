@@ -6,7 +6,7 @@ export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		const giveawayRawData = revertTransformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway`));
+		const giveawayRawData = revertTransformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway;`));
 		await queryRunner.clearTable('giveaway');
 		await queryRunner.changeColumn(
 			'giveaway',
@@ -25,7 +25,7 @@ export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
 
 	private async migrateGiveaways(queryRunner: QueryRunner): Promise<void> {
 		// Get the data from the "giveaway" table and transform it into Giveaway entities
-		const giveawayEntities = transformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway`));
+		const giveawayEntities = transformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway;`));
 
 		// TRUNCATE the "giveaway" table before filling it with new data
 		await queryRunner.clearTable('giveaway');

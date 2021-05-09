@@ -130,8 +130,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 				/* sql */ `
 					SELECT max(case_id)
 					FROM "${moderations.metadata.tableName}"
-					WHERE guild_id = $1
-					`,
+					WHERE guild_id = $1;
+			`,
 				[this.guild.id]
 			)) as [MaxQuery];
 

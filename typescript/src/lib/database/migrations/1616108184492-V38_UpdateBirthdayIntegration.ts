@@ -3,11 +3,11 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class V38UpdateBirthdayIntegration1616108184492 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		const newEntries = this.transformOldToNew(
-			await queryRunner.query(/* sql */ `SELECT id, data FROM public.schedule WHERE task_id = 'birthday'`)
+			await queryRunner.query(/* sql */ `SELECT id, data FROM public.schedule WHERE task_id = 'birthday';`)
 		);
 
 		for (const entry of newEntries) {
-			await queryRunner.query(/* sql */ `UPDATE public.schedule SET data = $1::JSONB WHERE id = $2 AND task_id = 'birthday'`, [
+			await queryRunner.query(/* sql */ `UPDATE public.schedule SET data = $1::JSONB WHERE id = $2 AND task_id = 'birthday';`, [
 				JSON.stringify(entry.data),
 				entry.id
 			]);
@@ -16,11 +16,11 @@ export class V38UpdateBirthdayIntegration1616108184492 implements MigrationInter
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const oldEntries = this.transformNewToOld(
-			await queryRunner.query(/* sql */ `SELECT id, data FROM public.schedule WHERE task_id = 'birthday'`)
+			await queryRunner.query(/* sql */ `SELECT id, data FROM public.schedule WHERE task_id = 'birthday';`)
 		);
 
 		for (const entry of oldEntries) {
-			await queryRunner.query(/* sql */ `UPDATE public.schedule SET data = $1::JSONB WHERE id = $2 AND task_id = 'birthday'`, [
+			await queryRunner.query(/* sql */ `UPDATE public.schedule SET data = $1::JSONB WHERE id = $2 AND task_id = 'birthday';`, [
 				JSON.stringify(entry.data),
 				entry.id
 			]);

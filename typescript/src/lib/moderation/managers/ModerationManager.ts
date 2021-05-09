@@ -122,12 +122,21 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		return this;
 	}
 
-	public async count() {
-		if (this._count === null) {
-			const { moderations } = this.db;
-			this._count = await moderations.count({ where: { guildID: this.guild.id } });
-		}
-		return this._count!;
+	public async getCurrentModerationID() {
+		const { moderations } = this.db;
+
+		const [{ max }] = (await moderations.query(
+			/* sql */ `
+				SELECT max(case_id)
+				FROM ${moderations.metadata.tableName}
+				WHERE guild_id = $1
+				`,
+			[this.guild.id]
+		)) as [MaxQuery];
+
+		this._count = max ?? 0;
+
+		return this._count;
 	}
 
 	public insert(data: ModerationEntity): ModerationEntity;
@@ -187,6 +196,10 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	public static get [Symbol.species]() {
 		return cast<CollectionConstructor>(Collection);
 	}
+}
+
+interface MaxQuery {
+	max: number | null;
 }
 
 export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL'>>;

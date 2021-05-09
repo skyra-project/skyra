@@ -106,7 +106,7 @@ export class UserCommand extends SkyraCommand {
 		const [{ max }] = (await suggestions.query(
 			/* sql */ `
 			SELECT max(id)
-			FROM suggestion
+			FROM ${suggestions.metadata.tableName}
 			WHERE guild_id = $1
 		`,
 			[guildID]

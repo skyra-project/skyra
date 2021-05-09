@@ -113,7 +113,7 @@ export const getPokemonFlavorTextsByFuzzy = gql`
 	}
 
 	query getPokemonFlavors($pokemon: String!) {
-		getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, reverse: true) {
+		getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, reverse: true, take: 50) {
 			sprite
 			shinySprite
 			num

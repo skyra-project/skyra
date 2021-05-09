@@ -429,7 +429,7 @@ export class ModerationEntity extends BaseEntity {
 		// If the entry should not send, abort creation
 		if (!this.shouldSend) return null;
 
-		this.caseID = (await this.#manager.getCurrentModerationID()) + 1;
+		this.caseID = (await this.#manager.getCurrentID()) + 1;
 		await this.save();
 		this.#manager.insert(this);
 

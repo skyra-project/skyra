@@ -122,19 +122,21 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		return this;
 	}
 
-	public async getCurrentModerationID() {
-		const { moderations } = this.db;
+	public async getCurrentID() {
+		if (this._count === null) {
+			const { moderations } = this.db;
 
-		const [{ max }] = (await moderations.query(
-			/* sql */ `
-				SELECT max(case_id)
-				FROM ${moderations.metadata.tableName}
-				WHERE guild_id = $1
-				`,
-			[this.guild.id]
-		)) as [MaxQuery];
+			const [{ max }] = (await moderations.query(
+				/* sql */ `
+					SELECT max(case_id)
+					FROM "${moderations.metadata.tableName}"
+					WHERE guild_id = $1
+					`,
+				[this.guild.id]
+			)) as [MaxQuery];
 
-		this._count = max ?? 0;
+			this._count = max ?? 0;
+		}
 
 		return this._count;
 	}

@@ -193,6 +193,18 @@
 			"Skyra"
 		]
 	},
+	"thinkDescription": "",
+	"thinkExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"reminder": "",
+		"examples": [
+			""
+		]
+	},
+	"thinkMessage": "",
 	"wakandaDescription": "",
 	"wakandaExtended": {
 		"extendedHelp": ""

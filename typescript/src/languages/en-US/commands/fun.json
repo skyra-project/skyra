@@ -214,7 +214,7 @@
 		"usages": [
 			"User"
 		],
-		"extendedHelp": "This command generates a meme from [Attack on Titan: The Final Season](https://anilist.co/anime/110277/Shingeki-no-Kyojin-The-Final-Season/), and it's better not to tell anything besides that this will generate a meme of you pointing to a user of your choice.",
+		"extendedHelp": "This command generates a meme from [Attack on Titan: The Final Season](https://anilist.co/anime/110277/Shingeki-no-Kyojin-The-Final-Season/), and it's better not to tell you anything, other than this will generate a meme of you pointing to a user of your choice.",
 		"examples": [
 			"Charm"
 		]

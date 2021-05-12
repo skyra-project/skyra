@@ -209,6 +209,17 @@
 	"wakandaExtended": {
 		"extendedHelp": ""
 	},
+	"whereDescription": "",
+	"whereExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"whereMessage": "",
 	"xkcdDescription": "Читайте комиксы с XKCD.",
 	"xkcdExtended": {
 		"usages": [

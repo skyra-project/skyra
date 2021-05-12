@@ -209,6 +209,17 @@
 	"wakandaExtended": {
 		"extendedHelp": ""
 	},
+	"whereDescription": "",
+	"whereExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"whereMessage": "",
 	"xkcdDescription": "XKCD से हास्य-पत्रिकाएँ पढ़ें |",
 	"xkcdExtended": {
 		"usages": [

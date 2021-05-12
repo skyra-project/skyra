@@ -209,6 +209,17 @@
 	"wakandaExtended": {
 		"extendedHelp": ""
 	},
+	"whereDescription": "",
+	"whereExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"whereMessage": "",
 	"xkcdDescription": "",
 	"xkcdExtended": {
 		"usages": [

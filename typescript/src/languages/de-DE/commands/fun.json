@@ -209,6 +209,17 @@
 	"wakandaExtended": {
 		"extendedHelp": "Erstellt ein Bild-Makro mit dem [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) unter Verwendung des angegebenen Benutzers."
 	},
+	"whereDescription": "",
+	"whereExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"whereMessage": "",
 	"xkcdDescription": "Lese Comics von XKCD.",
 	"xkcdExtended": {
 		"usages": [

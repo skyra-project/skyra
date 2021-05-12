@@ -5,7 +5,8 @@ export const enum CdnUrls {
 	OverwatchLogo = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png',
 	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
 	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png',
-	Pokedex = 'https://cdn.skyra.pw/skyra-assets/pokedex.png'
+	Pokedex = 'https://cdn.skyra.pw/skyra-assets/pokedex.png',
+	StarWarsLogo = 'https://cdn.skyra.pw/skyra-assets/star-wars-api-logo.png'
 }
 
 export const enum LanguageFormatters {

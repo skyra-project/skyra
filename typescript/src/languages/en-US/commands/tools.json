@@ -587,5 +587,89 @@
 			]
 		]
 	},
-	"youtubeNotfound": "I am sorry, I could not find something that could match your input in YouTube."
+	"youtubeNotfound": "I am sorry, I could not find something that could match your input in YouTube.",
+	"starWarsDescription": "Get data from the Star Wars universe",
+	"starWarsExtended": {
+		"usages": [
+			"films Film",
+			"people Person",
+			"planets Planet",
+			"species Species",
+			"starships Starship",
+			"vehicles Vehicle"
+		],
+		"extendedHelp": "This gets data from https://swapi.dev about the Star Wars franchise. You can search for films, people, planets, species, starships and vehicles.",
+		"explainedUsage": [
+			[
+				"films/people/planets/species/starships/vehicles",
+				"(optional, defaults to \"people\") The resource that you want to search for."
+			],
+			[
+				"Person/Film/Starship/Vehicle/Species/Planet",
+				"The thing you want to search"
+			]
+		],
+		"examples": [
+			"films A new Hope",
+			"people Luke Skywalker",
+			"planets Alderaan",
+			"species Twi'lek",
+			"starships Millenium Falcon",
+			"vehicles Snowspeeder"
+		]
+	},
+	"starWarsNoResult": "{{REDCROSS}} I'm sorry, but I could not find anything for {{query}}",
+	"starWarsPeopleTitles": {
+		"films": {
+			"characters": "Top 3 characters in this film",
+			"creationDate": "Creation date",
+			"director": "Director",
+			"episodeId": "Episode ID",
+			"planets": "Top 3 planets in this film",
+			"producer": "Producer",
+			"releaseDate": "Release date",
+			"species": "Top 3 species in this film",
+			"starships": "Top 3 starships in this film",
+			"vehicles": "Top 3 vehicles in this film"
+		},
+		"people": {
+			"appearedInFilms": "Appeared in films",
+			"eyeColour": "Eye color",
+			"gender": "Gender",
+			"hairColour": "Hair color",
+			"height": "Height (cm)",
+			"homeWorld": "Homeworld",
+			"mass": "Mass (kg)",
+			"ownedStarShips": "Owned starships",
+			"ownedVehicles": "Owned vehicles",
+			"skinColour": "Skin color",
+			"species": "Species",
+			"yearOfBirth": "Year of birth"
+		},
+		"starships": {
+			"amountOfPassengers": "Amount of passengers",
+			"cargoCapacity": "Cargo capacity",
+			"class": "Class of starship",
+			"consumables": "Time until needs to restock on consumables",
+			"costInCredits": "Cost",
+			"crew": "Number of personnel to pilot",
+			"films": "Appeared in films",
+			"length": "Length",
+			"manufacturer": "Manufacturer(s)",
+			"maximumAtmospheringSpeed": "Maximum atmospheric speed",
+			"megalightsTravelSpeed": "Maximum megalights per second",
+			"model": "Model name",
+			"pilots": "People who have piloted this ship"
+		},
+		"planets": {
+			"appearedInFilms": "Appeared in films",
+			"averageSentientPopulation": "Average of sentient inhabitants",
+			"climate": "Climate(s)",
+			"diameter": "Diameter in kilometers",
+			"orbitalPeriod": "Standard Days for planet to orbit around local star",
+			"rotationPeriod": "Standard hours for rotating around own axis",
+			"surfaceWaterPercentage": "Amount of surface covered by water",
+			"terrain": "Terrain(s)"
+		}
+	}
 }

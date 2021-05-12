@@ -61,7 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
 				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
-				if (answer)
+				if (!answer)
 					return message.send(
 						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, {
 							user: await this.context.client.users.fetch(spouses[0]).then((user) => user.username)
@@ -70,7 +70,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
 				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
-				if (answer) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
+				if (!answer) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
 			}
 
 			const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryPetition, { author, user }), undefined, { target: user });

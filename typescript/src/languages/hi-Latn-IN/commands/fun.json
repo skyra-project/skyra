@@ -193,6 +193,18 @@
 			""
 		]
 	},
+	"thinkDescription": "",
+	"thinkExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"reminder": "",
+		"examples": [
+			""
+		]
+	},
+	"thinkMessage": "",
 	"wakandaDescription": "सहायक विवरण? हम ऐसी चीज़ें यहाँ नहीं करते",
 	"wakandaExtended": {
 		"extendedHelp": ""

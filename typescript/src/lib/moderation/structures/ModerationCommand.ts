@@ -160,6 +160,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
 
 	private async resolveDurationArgument(args: ModerationCommand.Args) {
+		if (args.finished) return null;
 		if (!this.optionalDuration) return null;
 
 		const result = await args.pickResult('timespan', { minimum: 0, maximum: Time.Year * 5 });

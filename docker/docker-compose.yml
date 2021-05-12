@@ -79,6 +79,15 @@ services:
       - '8288:8288'
     restart: always
 
+  swapi:
+    container_name: star-wars-api
+    image: 'skyrabot/star-wars-api:latest'
+    networks:
+      - skyra
+    ports:
+      - '8293:8293'
+    restart: always
+
   postgres:
     container_name: postgres
     image: 'skyrabot/postgres:latest'

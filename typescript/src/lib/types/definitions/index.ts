@@ -8,6 +8,7 @@ export * from './Internals';
 export * from './Kitsu';
 export * from './Overwatch';
 export * from './Reddit';
+export * from './StarWars';
 export * from './Suggestion';
 export * from './Tmdb';
 export * from './Twitch';

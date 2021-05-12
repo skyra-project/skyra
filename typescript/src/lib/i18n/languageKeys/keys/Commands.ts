@@ -16,6 +16,7 @@ export * as Moderation from './commands/Moderation';
 export * as Music from './commands/Music';
 export * as Pokemon from './commands/Pokemon';
 export * as Starboard from './commands/Starboard';
+export * as StarWars from './commands/StarWars';
 export * as Suggestions from './commands/Suggestions';
 export * as System from './commands/System';
 export * as Tags from './commands/Tags';

@@ -19,23 +19,17 @@ export class UserEvent extends Event {
 	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public async run(data: LLRCData, emoji: string) {
-		const [
-			allowList,
-			channel,
-			twemojiEnabled,
-			ignoreChannels,
-			ignoreReactionAdd,
-			ignoreAllEvents,
-			t
-		] = await data.guild.readSettings((settings) => [
-			settings[GuildSettings.Selfmod.Reactions.Allowed],
-			settings[GuildSettings.Channels.Logs.Reaction],
-			settings[GuildSettings.Events.Twemoji],
-			settings[GuildSettings.Messages.IgnoreChannels],
-			settings[GuildSettings.Channels.Ignore.ReactionAdd],
-			settings[GuildSettings.Channels.Ignore.All],
-			settings.getLanguage()
-		]);
+		const [allowList, channel, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await data.guild.readSettings(
+			(settings) => [
+				settings[GuildSettings.Selfmod.Reactions.Allowed],
+				settings[GuildSettings.Channels.Logs.Reaction],
+				settings[GuildSettings.Events.Twemoji],
+				settings[GuildSettings.Messages.IgnoreChannels],
+				settings[GuildSettings.Channels.Ignore.ReactionAdd],
+				settings[GuildSettings.Channels.Ignore.All],
+				settings.getLanguage()
+			]
+		);
 
 		if (allowList.includes(emoji)) return;
 

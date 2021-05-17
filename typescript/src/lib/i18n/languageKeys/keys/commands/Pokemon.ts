@@ -11,10 +11,11 @@ export const FlavorsQueryFail = FT<{ pokemon: string }, string>('commands/pokemo
 export const FlavorNoFlavors = FT<{ pokemon: string }, string>('commands/pokemon:flavorNoFlavors');
 export const ItemDescription = T<string>('commands/pokemon:itemDescription');
 export const ItemExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:itemExtended');
-export const ItemEmbedData = FT<
-	{ availableInGen8: string },
-	{ ITEM: string; generationIntroduced: string; availableInGeneration8Title: string; availableInGeneration8Data: string }
->('commands/pokemon:itemEmbedData');
+export const ItemEmbedData =
+	FT<
+		{ availableInGen8: string },
+		{ ITEM: string; generationIntroduced: string; availableInGeneration8Title: string; availableInGeneration8Data: string }
+	>('commands/pokemon:itemEmbedData');
 export const ItemQueryFail = FT<{ item: string }, string>('commands/pokemon:itemQueryFail');
 export const LearnDescription = T<string>('commands/pokemon:learnDescription');
 export const LearnExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:learnExtended');
@@ -26,55 +27,56 @@ export const LearnCannotLearn = FT<{ pokemon: string; moves: string[] }, string>
 export const LearnTitle = FT<{ pokemon: string; generation: number }, string>('commands/pokemon:learnTitle');
 export const MoveDescription = T<string>('commands/pokemon:moveDescription');
 export const MoveExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:moveExtended');
-export const MoveEmbedData = FT<
-	{ availableInGen8: string },
-	{
-		move: string;
-		types: string;
-		basePower: string;
-		pp: string;
-		category: string;
-		accuracy: string;
-		priority: string;
-		target: string;
-		contestCondition: string;
-		zCrystal: string;
-		gmaxPokemon: string;
-		availableInGeneration8Title: string;
-		availableInGeneration8Data: string;
-		none: string;
-		maxMovePower: string;
-		zMovePower: string;
-		fieldMoveEffectTitle: string;
-	}
->('commands/pokemon:moveEmbedData');
+export const MoveEmbedData =
+	FT<
+		{ availableInGen8: string },
+		{
+			move: string;
+			types: string;
+			basePower: string;
+			pp: string;
+			category: string;
+			accuracy: string;
+			priority: string;
+			target: string;
+			contestCondition: string;
+			zCrystal: string;
+			gmaxPokemon: string;
+			availableInGeneration8Title: string;
+			availableInGeneration8Data: string;
+			none: string;
+			maxMovePower: string;
+			zMovePower: string;
+			fieldMoveEffectTitle: string;
+		}
+	>('commands/pokemon:moveEmbedData');
 export const MoveQueryFail = FT<{ move: string }, string>('commands/pokemon:moveQueryFail');
 export const PokedexDescription = T<string>('commands/pokemon:pokedexDescription');
 export const PokedexExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:pokedexExtended');
-export const PokedexEmbedData = FT<{ otherFormes: readonly string[]; cosmeticFormes: readonly string[] }, PokedexEmbedDataReturn>(
-	'commands/pokemon:pokedexEmbedData'
-);
+export const PokedexEmbedData =
+	FT<{ otherFormes: readonly string[]; cosmeticFormes: readonly string[] }, PokedexEmbedDataReturn>('commands/pokemon:pokedexEmbedData');
 export const PokedexQueryFail = FT<{ pokemon: string }, string>('commands/pokemon:pokedexQueryFail');
 export const SpriteDescription = T<string>('commands/pokemon:spriteDescription');
 export const SpriteExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:spriteExtended');
 export const TypeDescription = T<string>('commands/pokemon:typeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:typeExtended');
-export const TypeEmbedData = FT<
-	{ types: string[] },
-	{
-		offensive: string;
-		defensive: string;
-		superEffectiveAgainst: string;
-		dealsNormalDamageTo: string;
-		doesNotAffect: string;
-		notVeryEffectiveAgainst: string;
-		vulnerableTo: string;
-		takesNormalDamageFrom: string;
-		resists: string;
-		notAffectedBy: string;
-		typeEffectivenessFor: string;
-	}
->('commands/pokemon:typeEmbedData');
+export const TypeEmbedData =
+	FT<
+		{ types: string[] },
+		{
+			offensive: string;
+			defensive: string;
+			superEffectiveAgainst: string;
+			dealsNormalDamageTo: string;
+			doesNotAffect: string;
+			notVeryEffectiveAgainst: string;
+			vulnerableTo: string;
+			takesNormalDamageFrom: string;
+			resists: string;
+			notAffectedBy: string;
+			typeEffectivenessFor: string;
+		}
+	>('commands/pokemon:typeEmbedData');
 export const TypeTooManyTypes = T<string>('commands/pokemon:typeTooManyTypes');
 export const TypeNotAType = FT<{ type: string }, string>('commands/pokemon:typeNotAType');
 export const TypeQueryFail = FT<{ types: string[] }, string>('commands/pokemon:typeQueryFail');

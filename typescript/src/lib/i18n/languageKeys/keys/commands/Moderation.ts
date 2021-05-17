@@ -110,18 +110,19 @@ export const TimeExtended = T<LanguageHelpDisplayOptions>('commands/moderation:t
 export const BanNotBannable = T('commands/moderation:banNotBannable');
 export const DehoistStarting = FT<{ count: number }, string>('commands/moderation:dehoistStarting');
 export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commands/moderation:dehoistProgress');
-export const DehoistEmbed = FT<
-	{ users: number; dehoistedMemberCount: number; dehoistedWithErrorsCount: number; errored: number },
-	{
-		title: string;
-		descriptionNoone: string;
-		descriptionWithError: string;
-		descriptionWithMultipleErrors: string;
-		description: string;
-		descriptionMultipleMembers: string;
-		fieldErrorTitle: string;
-	}
->('commands/moderation:dehoistEmbed');
+export const DehoistEmbed =
+	FT<
+		{ users: number; dehoistedMemberCount: number; dehoistedWithErrorsCount: number; errored: number },
+		{
+			title: string;
+			descriptionNoone: string;
+			descriptionWithError: string;
+			descriptionWithMultipleErrors: string;
+			description: string;
+			descriptionMultipleMembers: string;
+			fieldErrorTitle: string;
+		}
+	>('commands/moderation:dehoistEmbed');
 export const KickNotKickable = T('commands/moderation:kickNotKickable');
 export const LockdownLock = FT<{ channel: string }, string>('commands/moderation:lockdownLock');
 export const LockdownLocking = FT<{ channel: string }, string>('commands/moderation:lockdownLocking');
@@ -156,9 +157,8 @@ export const ModerationLogAppealed = T('moderation:logAppealed');
 export const ModerationLogDescriptionTypeAndUser = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
 	'moderation:logDescriptionTypeAndUser'
 );
-export const ModerationLogDescriptionWithReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
-	'moderation:logDescriptionWithReason'
-);
+export const ModerationLogDescriptionWithReason =
+	FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderation:logDescriptionWithReason');
 export const ModerationLogDescriptionWithoutReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
 	'moderation:logDescriptionWithoutReason'
 );
@@ -223,19 +223,20 @@ export const AutomaticParameterThresholdMaximum = T('selfModeration:commandThres
 export const AutomaticParameterThresholdMaximumWithValue = FT<{ value: number }, string>('selfModeration:commandThresholdMaximumWithValue');
 export const AutomaticParameterThresholdDuration = T('selfModeration:commandThresholdDuration');
 export const AutomaticParameterThresholdDurationWithValue = FT<{ value: number }, string>('selfModeration:commandThresholdDurationWithValue');
-export const AutomaticParameterShow = FT<
-	{
-		kEnabled: string;
-		kAlert: string;
-		kLog: string;
-		kDelete: string;
-		kHardAction: string;
-		hardActionDurationText: string;
-		thresholdMaximumText: string | number;
-		thresholdDurationText: string;
-	},
-	string
->('selfModeration:commandShow');
+export const AutomaticParameterShow =
+	FT<
+		{
+			kEnabled: string;
+			kAlert: string;
+			kLog: string;
+			kDelete: string;
+			kHardAction: string;
+			hardActionDurationText: string;
+			thresholdMaximumText: string | number;
+			thresholdDurationText: string;
+		},
+		string
+	>('selfModeration:commandShow');
 export const AutomaticParameterShowDurationPermanent = T('selfModeration:commandShowDurationPermanent');
 export const AutomaticParameterShowUnset = T('selfModeration:commandShowUnset');
 export const AutomaticValueSoftActionAlert = T('selfModeration:softActionAlert');

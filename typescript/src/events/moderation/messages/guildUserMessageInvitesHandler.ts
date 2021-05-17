@@ -26,7 +26,8 @@ const enum CodeType {
 	}
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
-	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
+	private readonly kInviteRegExp =
+		/(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
 
 	protected async preProcess(message: GuildMessage): Promise<string[] | null> {
 		if (message.content.length === 0) return null;

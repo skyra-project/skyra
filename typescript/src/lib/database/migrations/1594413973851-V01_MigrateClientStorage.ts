@@ -96,9 +96,10 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 	}
 }
 
-function transformClientStorage(
-	clientStorage: ClientStorage[]
-): { clientEntities: TransformedClientStorage[]; scheduleEntities: TransformedSchedule[] } {
+function transformClientStorage(clientStorage: ClientStorage[]): {
+	clientEntities: TransformedClientStorage[];
+	scheduleEntities: TransformedSchedule[];
+} {
 	const scheduleEntities: TransformedSchedule[] = [];
 	const clientEntities: TransformedClientStorage[] = [];
 

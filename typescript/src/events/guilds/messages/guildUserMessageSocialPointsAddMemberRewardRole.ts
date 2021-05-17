@@ -12,7 +12,9 @@ const { FLAGS } = Permissions;
 
 @ApplyOptions<EventOptions>({ event: Events.GuildUserMessageSocialPointsAddMemberReward })
 export class UserEvent extends Event {
-	private readonly regExp = /{(role(?:\.(?:id|name|position|colou?r))?|(?:user|member)(?:\.(?:id|(?:user)?name|discriminator|tag))?|(?:guild|server)(?:\.(?:id|name))?|points|level)}/g;
+	private readonly regExp =
+		/{(role(?:\.(?:id|name|position|colou?r))?|(?:user|member)(?:\.(?:id|(?:user)?name|discriminator|tag))?|(?:guild|server)(?:\.(?:id|name))?|points|level)}/g;
+
 	public async run(message: GuildMessage, difference: Difference<number>) {
 		if (!message.guild.me!.permissions.has(FLAGS.MANAGE_ROLES)) return;
 

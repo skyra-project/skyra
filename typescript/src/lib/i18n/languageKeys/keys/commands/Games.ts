@@ -43,15 +43,12 @@ export const HigherLowerDescription = T<string>('commands/game:higherLowerDescri
 export const HigherLowerExtended = T<LanguageHelpDisplayOptions>('commands/game:higherLowerExtended');
 export const HigherLowerLoading = T<string>('commands/game:higherLowerLoading');
 export const HigherLowerNewRound = T<string>('commands/game:higherLowerNewround');
-export const HigherLowerEmbed = FT<{ turn: number; number: number }, { title: string; description: string; footer: string }>(
-	'commands/game:higherLowerEmbed'
-);
-export const HigherLowerLose = FT<{ number: number; losses: number }, { title: string; description: string; footer: string }>(
-	'commands/game:higherLowerLose'
-);
-export const HigherLowerWin = FT<{ potentials: number; number: number }, { title: string; description: string; footer: string }>(
-	'commands/game:higherLowerWin'
-);
+export const HigherLowerEmbed =
+	FT<{ turn: number; number: number }, { title: string; description: string; footer: string }>('commands/game:higherLowerEmbed');
+export const HigherLowerLose =
+	FT<{ number: number; losses: number }, { title: string; description: string; footer: string }>('commands/game:higherLowerLose');
+export const HigherLowerWin =
+	FT<{ potentials: number; number: number }, { title: string; description: string; footer: string }>('commands/game:higherLowerWin');
 export const HigherLowerCancel = FT<{ username: string }, { title: string; description: string }>('commands/game:higherLowerCancel');
 export const HigherLowerCashout = FT<{ amount: number }, string>('commands/game:higherLowerCashout');
 export const HungerGamesDescription = T<string>('commands/game:hungerGamesDescription');

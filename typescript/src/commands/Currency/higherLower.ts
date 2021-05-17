@@ -85,7 +85,11 @@ export class UserCommand extends SkyraCommand {
 
 		while (game.running) {
 			// Send the embed
-			const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerEmbed, {
+			const {
+				title: TITLE,
+				description: DESCRIPTION,
+				footer: FOOTER
+			} = game.t(LanguageKeys.Commands.Games.HigherLowerEmbed, {
 				turn: game.turn,
 				number: game.number
 			});
@@ -149,7 +153,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async win(game: HigherLowerGameData, message: GuildMessage, settings: UserEntity) {
-		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerWin, {
+		const {
+			title: TITLE,
+			description: DESCRIPTION,
+			footer: FOOTER
+		} = game.t(LanguageKeys.Commands.Games.HigherLowerWin, {
 			potentials: this.calculateWinnings(game.wager, game.turn),
 			number: game.number
 		});
@@ -194,7 +202,11 @@ export class UserCommand extends SkyraCommand {
 			await settings.save();
 		}
 
-		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerLose, {
+		const {
+			title: TITLE,
+			description: DESCRIPTION,
+			footer: FOOTER
+		} = game.t(LanguageKeys.Commands.Games.HigherLowerLose, {
 			number: game.number,
 			losses
 		});

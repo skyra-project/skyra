@@ -356,37 +356,37 @@ describe('Utils', () => {
 	describe('getContent', () => {
 		test('GIVEN content THEN returns content', () => {
 			expect(
-				utils.getContent(({
+				utils.getContent({
 					content: 'Something',
 					embeds: []
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Something');
 		});
 
 		test('GIVEN description in embed THEN returns description', () => {
 			expect(
-				utils.getContent(({
+				utils.getContent({
 					content: '',
 					embeds: [new MessageEmbed().setDescription('Hey there!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Hey there!');
 		});
 
 		test('GIVEN field value in embed THEN returns field value', () => {
 			expect(
-				utils.getContent(({
+				utils.getContent({
 					content: '',
 					embeds: [new MessageEmbed().addField('Name', 'Value')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Value');
 		});
 
 		test('GIVEN no detectable content THEN returns null', () => {
 			expect(
-				utils.getContent(({
+				utils.getContent({
 					content: '',
 					embeds: [new MessageEmbed()]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual(null);
 		});
 	});
@@ -394,85 +394,85 @@ describe('Utils', () => {
 	describe('getAllContent', () => {
 		test('GIVEN content THEN returns content', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: 'Something',
 					embeds: []
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Something');
 		});
 
 		test('GIVEN description in embed THEN returns description', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: '',
 					embeds: [new MessageEmbed().setDescription('Hey there!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Hey there!');
 		});
 
 		test('GIVEN field value in embed THEN returns field value', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: '',
 					embeds: [new MessageEmbed().addField('Name', 'Value')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Name\nValue');
 		});
 
 		test('GIVEN no detectable content THEN returns null', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: '',
 					embeds: [new MessageEmbed()]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('');
 		});
 
 		test('GIVEN content and description in embed THEN returns both', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: 'Something',
 					embeds: [new MessageEmbed().setDescription('Hey there!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Something\nHey there!');
 		});
 
 		test('GIVEN content and author in embed THEN returns both', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: 'Something',
 					embeds: [new MessageEmbed().setAuthor('Some author!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Something\nSome author!');
 		});
 
 		test('GIVEN content and title in embed THEN returns both', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: 'Something',
 					embeds: [new MessageEmbed().setTitle('Some title!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Something\nSome title!');
 		});
 
 		test('GIVEN description and footer in embed THEN returns both', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: '',
 					embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Description!\nSome footer!');
 		});
 
 		test('GIVEN two embeds THEN returns both', () => {
 			expect(
-				utils.getAllContent(({
+				utils.getAllContent({
 					content: '',
 					embeds: [
 						new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
 						new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
 					]
-				} as unknown) as Message)
+				} as unknown as Message)
 			).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');
 		});
 	});

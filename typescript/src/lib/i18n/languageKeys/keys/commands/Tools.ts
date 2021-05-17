@@ -21,10 +21,11 @@ export const EmojiExtended = T<LanguageHelpDisplayOptions>('commands/tools:emoji
 export const CountryDescription = T('commands/tools:countryDescription');
 export const CountryExtended = T<LanguageHelpDisplayOptions>('commands/tools:countryExtended');
 export const CountryTitles = T<{ OVERVIEW: string; LANGUAGES: string; OTHER: string }>('commands/tools:countryTitles');
-export const CountryFields = T<{
-	overview: { officialName: string; capital: string; population: string };
-	other: { demonym: string; area: string; currencies: string };
-}>('commands/tools:countryFields');
+export const CountryFields =
+	T<{
+		overview: { officialName: string; capital: string; population: string };
+		other: { demonym: string; area: string; currencies: string };
+	}>('commands/tools:countryFields');
 export const CreateEmojiDescription = T('commands/tools:createEmojiDescription');
 export const CreateEmojiExtended = T<LanguageHelpDisplayOptions>('commands/tools:createEmojiExtended');
 export const CreateEmojisDuplicate = FT<{ name: string }, string>('commands/tools:createEmojiDuplicate');
@@ -35,87 +36,95 @@ export const CountryTimezone = T<{ timezone: string[]; count: number }>('command
 export const EshopDescription = T('commands/tools:eshopDescription');
 export const EshopExtended = T<LanguageHelpDisplayOptions>('commands/tools:eshopExtended');
 export const EshopNotInDatabase = T('commands/tools:eshopNotInDatabase');
-export const EshopTitles = T<{
-	price: string;
-	availability: string;
-	releaseDate: string;
-	numberOfPlayers: string;
-	platform: string;
-	genres: string;
-	noGenres: string;
-	nsuid: 'NSUID';
-	esrb: 'ESRB';
-}>('commands/tools:eshopTitles');
+export const EshopTitles =
+	T<{
+		price: string;
+		availability: string;
+		releaseDate: string;
+		numberOfPlayers: string;
+		platform: string;
+		genres: string;
+		noGenres: string;
+		nsuid: 'NSUID';
+		esrb: 'ESRB';
+	}>('commands/tools:eshopTitles');
 export const EshopPricePaid = FT<{ price: number }, string>('commands/tools:eshopPricePaid');
 export const EshopPriceFree = T('commands/tools:eshopPriceFree');
 export const HoroscopeDescription = T('commands/tools:horoscopeDescription');
 export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commands/tools:horoscopeExtended');
 export const HoroscopeInvalidSunsign = FT<{ parameter: string; maybe: string }, string>('commands/tools:horoscopeInvalidSunsign');
-export const HoroscopeTitles = FT<
-	{ sign: string; intensity: string; keywords: readonly string[]; mood: string; rating: string },
-	{ dailyHoroscope: string; metadataTitle: string; metadata: readonly string[] }
->('commands/tools:horoscopeTitles');
+export const HoroscopeTitles =
+	FT<
+		{ sign: string; intensity: string; keywords: readonly string[]; mood: string; rating: string },
+		{ dailyHoroscope: string; metadataTitle: string; metadata: readonly string[] }
+	>('commands/tools:horoscopeTitles');
 export const IgdbDescription = T('commands/tools:igdbDescription');
 export const IgdbExtended = T<LanguageHelpDisplayOptions>('commands/tools:igdbExtended');
-export const IgdbTitles = T<{
-	userScore: string;
-	ageRating: string;
-	releaseDate: string;
-	genres: string;
-	developers: string;
-	platform: string;
-}>('commands/tools:igdbTitles');
-export const IgdbData = T<{
-	noDevelopers: string;
-	noPlatforms: string;
-	noReleaseDate: string;
-	noRating: string;
-	noSummary: string;
-	noAgeRatings: string;
-	noGenres: string;
-}>('commands/tools:igdbData');
+export const IgdbTitles =
+	T<{
+		userScore: string;
+		ageRating: string;
+		releaseDate: string;
+		genres: string;
+		developers: string;
+		platform: string;
+	}>('commands/tools:igdbTitles');
+export const IgdbData =
+	T<{
+		noDevelopers: string;
+		noPlatforms: string;
+		noReleaseDate: string;
+		noRating: string;
+		noSummary: string;
+		noAgeRatings: string;
+		noGenres: string;
+	}>('commands/tools:igdbData');
 export const ITunesDescription = T('commands/tools:itunesDescription');
 export const ITunesExtended = T<LanguageHelpDisplayOptions>('commands/tools:itunesExtended');
-export const ITunesTitles = T<{
-	artist: string;
-	collection: string;
-	collectionPrice: string;
-	trackPrice: string;
-	trackReleaseDate: string;
-	numberOfTracksInCollection: string;
-	primaryGenre: string;
-	preview: string;
-	previewLabel: string;
-}>('commands/tools:itunesTitles');
+export const ITunesTitles =
+	T<{
+		artist: string;
+		collection: string;
+		collectionPrice: string;
+		trackPrice: string;
+		trackReleaseDate: string;
+		numberOfTracksInCollection: string;
+		primaryGenre: string;
+		preview: string;
+		previewLabel: string;
+	}>('commands/tools:itunesTitles');
 export const MoviesDescription = T('commands/tools:moviesDescription');
 export const MoviesExtended = T<LanguageHelpDisplayOptions>('commands/tools:moviesExtended');
-export const MoviesTitles = T<{
-	runtime: string;
-	userScore: string;
-	status: string;
-	releaseDate: string;
-	imdbPage: string;
-	homePage: string;
-	collection: string;
-	genres: string;
-}>('commands/tools:moviesTitles');
-export const MoviesData = T<{
-	variableRuntime: string;
-	movieInProduction: string;
-	linkClickHere: string;
-	none: string;
-	notPartOfCollection: string;
-	noGenres: string;
-}>('commands/tools:moviesData');
+export const MoviesTitles =
+	T<{
+		runtime: string;
+		userScore: string;
+		status: string;
+		releaseDate: string;
+		imdbPage: string;
+		homePage: string;
+		collection: string;
+		genres: string;
+	}>('commands/tools:moviesTitles');
+export const MoviesData =
+	T<{
+		variableRuntime: string;
+		movieInProduction: string;
+		linkClickHere: string;
+		none: string;
+		notPartOfCollection: string;
+		noGenres: string;
+	}>('commands/tools:moviesData');
 export const ShowsDescription = T('commands/tools:showsDescription');
 export const ShowsExtended = T<LanguageHelpDisplayOptions>('commands/tools:showsExtended');
-export const ShowsTitles = T<{
-	episodeRuntime: string;
-	userScore: string;
-	status: string;
-	firstAirDate: string;
-	genres: string;
-}>('commands/tools:showsTitles');
+export const ShowsTitles =
+	T<{
+		episodeRuntime: string;
+		userScore: string;
+		status: string;
+		firstAirDate: string;
+		genres: string;
+	}>('commands/tools:showsTitles');
 export const ShowsData = T<{ variableRuntime: string; unknownUserScore: string; noGenres: string }>('commands/tools:showsData');
 export const DuckDuckGoDescription = T('commands/tools:duckDuckGoDescription');
 export const DuckDuckGoExtended = T<LanguageHelpDisplayOptions>('commands/tools:duckDuckGoExtended');
@@ -134,16 +143,17 @@ export const TopInvitesDescription = T('commands/tools:topInvitesDescription');
 export const TopInvitesExtended = T<LanguageHelpDisplayOptions>('commands/tools:topInvitesExtended');
 export const TopInvitesNoInvites = T('commands/tools:topInvitesNoInvites');
 export const TopInvitesTop10InvitesFor = FT<{ guild: Guild }, string>('commands/tools:topInvitesTop10InvitesFor');
-export const TopInvitesEmbedData = T<{
-	channel: string;
-	link: string;
-	createdAt: string;
-	createdAtUnknown: string;
-	expiresIn: string;
-	neverExpress: string;
-	temporary: string;
-	uses: string;
-}>('commands/tools:topInvitesEmbedData');
+export const TopInvitesEmbedData =
+	T<{
+		channel: string;
+		link: string;
+		createdAt: string;
+		createdAtUnknown: string;
+		expiresIn: string;
+		neverExpress: string;
+		temporary: string;
+		uses: string;
+	}>('commands/tools:topInvitesEmbedData');
 export const UrbanDescription = T('commands/tools:urbanDescription');
 export const UrbanExtended = T<LanguageHelpDisplayOptions>('commands/tools:urbanExtended');
 export const UrbanNoDefinition = FT<{ parameter: string }, string>('commands/tools:urbanNoDefinition');
@@ -165,20 +175,21 @@ export const DuckDuckGoUnknownError = T('commands/tools:duckDuckGoUnknownError')
 export const DuckDuckGoLookAlso = T('commands/tools:duckDuckGoLookalso');
 export const DuckDuckGoPoweredBy = T('commands/tools:duckDuckGoPoweredBy');
 export const WhoisMemberTitles = T<{ joined: string; createdAt: string }>('commands/tools:whoisMemberTitles');
-export const WhoisMemberFields = FT<
-	{ member: GuildMember; createdTimestampOffset: number; joinedTimestampOffset: number },
-	{ joinedUnknown: string; joinedWithTimestamp: string; createdAt: string; footer: string }
->('commands/tools:whoisMemberFields');
+export const WhoisMemberFields =
+	FT<
+		{ member: GuildMember; createdTimestampOffset: number; joinedTimestampOffset: number },
+		{ joinedUnknown: string; joinedWithTimestamp: string; createdAt: string; footer: string }
+	>('commands/tools:whoisMemberFields');
 export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
 export const WhoisMemberRoleListAndMore = FT<{ count: number }, string>('commands/tools:whoisMemberRoleListAndMore');
 export const WhoisMemberPermissions = T('commands/tools:whoisMemberPermissions');
 export const WhoisMemberPermissionsAll = T('commands/tools:whoisMemberPermissionsAll');
-export const WhoisUserTitles = T<{
-	createdAt: string;
-}>('commands/tools:whoisUserTitles');
-export const WhoisUserFields = FT<{ user: User; createdTimestampOffset: number }, { createdAt: string; footer: string }>(
-	'commands/tools:whoisUserFields'
-);
+export const WhoisUserTitles =
+	T<{
+		createdAt: string;
+	}>('commands/tools:whoisUserTitles');
+export const WhoisUserFields =
+	FT<{ user: User; createdTimestampOffset: number }, { createdAt: string; footer: string }>('commands/tools:whoisUserFields');
 export const WikipediaDescription = T('commands/tools:wikipediaDescription');
 export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commands/tools:wikipediaExtended');
 export const YouTubeDescription = T('commands/tools:youtubeDescription');

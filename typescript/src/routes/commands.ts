@@ -12,9 +12,8 @@ export class UserRoute extends Route {
 		const { lang, category } = request.query;
 		const { client, stores } = this.context;
 		const language = client.i18n.fetchT((lang as string) ?? 'en-US');
-		const commands = (category
-			? stores.get('commands').filter((cmd) => (cmd as SkyraCommand).category === category)
-			: stores.get('commands')
+		const commands = (
+			category ? stores.get('commands').filter((cmd) => (cmd as SkyraCommand).category === category) : stores.get('commands')
 		).filter((cmd) => (cmd as SkyraCommand).permissionLevel < 9);
 
 		return response.json(commands.map(UserRoute.process.bind(null, language)));

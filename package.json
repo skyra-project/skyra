@@ -72,7 +72,7 @@
 		"@babel/preset-typescript": "^7.13.0",
 		"@commitlint/cli": "^12.1.4",
 		"@commitlint/config-conventional": "^12.1.4",
-		"@favware/graphql-pokemon": "^5.1.2",
+		"@favware/graphql-pokemon": "^5.2.0",
 		"@sapphire/eslint-config": "^3.1.2",
 		"@sapphire/prettier-config": "^1.1.1",
 		"@sapphire/ts-config": "^2.2.1",
@@ -104,7 +104,7 @@
 		"typescript": "4.2.4"
 	},
 	"resolutions": {
-		"acorn": "^8.2.2",
+		"acorn": "^8.2.4",
 		"chalk": "^4.1.1",
 		"diff": "^5.0.0",
 		"jest-environment-jsdom": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",

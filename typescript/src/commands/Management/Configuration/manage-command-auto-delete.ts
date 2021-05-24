@@ -22,17 +22,17 @@ export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const time = await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute * 2 });
-		const duration = Math.round(time / Time.Second);
+
 		await message.guild.writeSettings((settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutoDelete.findIndex(([id]) => id === channel.id);
-			const value: readonly [string, number] = [channel.id, duration];
+			const value: readonly [string, number] = [channel.id, time];
 
 			if (index === -1) commandAutoDelete.push(value);
 			else commandAutoDelete[index] = value;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time: duration }));
+		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time }));
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {

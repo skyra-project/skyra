@@ -14,7 +14,7 @@
 		"examples": [
 			"@skyra/char",
 			"@skyra/saelem",
-			"@sapphire/framework"
+			""
 		]
 	},
 	"yarnEmbedDescriptionAuthor": "❯ Автор: {{author}}",

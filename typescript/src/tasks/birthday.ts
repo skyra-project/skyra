@@ -1,9 +1,7 @@
 import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
 import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { resolveOnErrorCodes } from '#utils/util';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types';
 import type { GuildMember, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -25,8 +23,7 @@ export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
 	public async run(data: TaskBirthdayData): Promise<PartialResponseValue | null> {
-		const guild = await resolveOnErrorCodes(this.context.client.guilds.fetch(data.guildID), RESTJSONErrorCodes.UnknownGuild);
-
+		const guild = this.context.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
 		const member = await guild.members.fetch(data.userID);

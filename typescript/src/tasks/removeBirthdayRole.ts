@@ -1,7 +1,5 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
-import { resolveOnErrorCodes } from '#utils/util';
 import { Time } from '@sapphire/time-utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types';
 import { Permissions } from 'discord.js';
 
 export class UserTask extends Task {
@@ -9,8 +7,7 @@ export class UserTask extends Task {
 
 	public async run(data: RemoveBirthdayRoleData): Promise<PartialResponseValue | null> {
 		// Get and check the guild:
-		const guild = await resolveOnErrorCodes(this.context.client.guilds.fetch(data.guildID), RESTJSONErrorCodes.UnknownGuild);
-
+		const guild = this.context.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
 		// If the guild is not available, re-schedule the task by creating
@@ -22,7 +19,7 @@ export class UserTask extends Task {
 		if (!member) return null;
 
 		// Get and check the role:
-		const role = await guild.roles.fetch(data.roleID);
+		const role = guild.roles.cache.get(data.roleID);
 		if (!role) return null;
 
 		const me = guild.me!;

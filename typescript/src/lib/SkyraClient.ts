@@ -114,8 +114,9 @@ export class SkyraClient extends SapphireClient {
 
 	public async login(token?: string) {
 		await this.context.workers.start();
+		const loginResponse = await super.login(token);
 		await this.schedules.init();
-		return super.login(token);
+		return loginResponse;
 	}
 
 	public async destroy() {

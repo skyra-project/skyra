@@ -1,13 +1,16 @@
 import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Moderation } from '#utils/constants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
+import { resolveOnErrorCodes } from '#utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types';
 import type { Guild, User } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
-		const guild = await this.context.client.guilds.fetch(data.guildID);
+		const guild = await resolveOnErrorCodes(this.context.client.guilds.fetch(data.guildID), RESTJSONErrorCodes.UnknownGuild);
+
 		// If the guild is not available, cancel the task.
-		if (typeof guild === 'undefined') return { type: ResponseType.Ignore };
+		if (!guild) return { type: ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.

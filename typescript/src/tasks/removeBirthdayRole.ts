@@ -7,7 +7,7 @@ export class UserTask extends Task {
 
 	public async run(data: RemoveBirthdayRoleData): Promise<PartialResponseValue | null> {
 		// Get and check the guild:
-		const guild = this.context.client.guilds.cache.get(data.guildID);
+		const guild = await this.context.client.guilds.fetch(data.guildID);
 		if (!guild) return null;
 
 		// If the guild is not available, re-schedule the task by creating
@@ -19,7 +19,7 @@ export class UserTask extends Task {
 		if (!member) return null;
 
 		// Get and check the role:
-		const role = guild.roles.cache.get(data.roleID);
+		const role = await guild.roles.fetch(data.roleID);
 		if (!role) return null;
 
 		const me = guild.me!;

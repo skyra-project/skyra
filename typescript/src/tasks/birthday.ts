@@ -23,7 +23,7 @@ export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
 	public async run(data: TaskBirthdayData): Promise<PartialResponseValue | null> {
-		const guild = this.context.client.guilds.cache.get(data.guildID);
+		const guild = await this.context.client.guilds.fetch(data.guildID);
 		if (!guild) return null;
 
 		const member = await guild.members.fetch(data.userID);

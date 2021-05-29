@@ -86,6 +86,7 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
 	}, fallback);
 };
 
+const ServerOnlyPermissions = [Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS];
 /**
  * Allows you to set permissions required for individual methods.
  * @remark This decorator makes the decorated function asynchronous.
@@ -94,8 +95,8 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
 export const requiresPermissions = (...permissionsResolvable: PermissionResolvable[]): MethodDecorator => {
 	const resolved = new Permissions(permissionsResolvable);
 	return createFunctionInhibitor((message: Message, args: SkyraArgs) => {
-		if (isDMChannel(message.channel) && resolved.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
-			throw args.t(LanguageKeys.Preconditions.SubcommandGuildOnly);
+		if (isDMChannel(message.channel) && resolved.has(ServerOnlyPermissions)) {
+			throw args.t(LanguageKeys.Preconditions.SubCommandGuildOnly);
 		}
 
 		if (isGuildBasedChannel(message.channel)) {

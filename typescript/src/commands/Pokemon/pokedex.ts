@@ -3,7 +3,14 @@ import type { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/command
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '#utils/APIs/Pokemon';
+import {
+	fetchGraphQLPokemon,
+	getPokemonDetailsByFuzzy,
+	GetPokemonSpriteParameters,
+	getSpriteKey,
+	parseBulbapediaURL,
+	resolveColour
+} from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
@@ -27,23 +34,26 @@ enum BaseStats {
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
 	permissions: ['EMBED_LINKS'],
-	strategyOptions: { flags: ['shiny'] }
+	strategyOptions: { flags: ['shiny', 'back'] }
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const pokemon = (await args.rest('string')).toLowerCase();
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
-		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase());
 
-		await this.buildDisplay(pokeDetails, t, args) //
-			.start(response as GuildMessage, message.author);
+		const pokemon = (await args.rest('string')).toLowerCase();
+		const backSprite = args.getFlags('back');
+		const shinySprite = args.getFlags('shiny');
+
+		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), { backSprite, shinySprite });
+
+		await this.buildDisplay(pokeDetails, t, { backSprite, shinySprite }).start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(pokemon: string) {
+	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
+			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy(getSpriteParams), { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
@@ -148,29 +158,31 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(pokeDetails: DexDetails, t: TFunction, args: PaginatedMessageCommand.Args) {
+	private buildDisplay(pokeDetails: DexDetails, t: TFunction, getSpriteParams: GetPokemonSpriteParameters) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
+		const spriteToGet = getSpriteKey(getSpriteParams);
+
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
 			otherFormes: pokeDetails.otherFormes ?? [],
 			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num < 0) {
-			return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+			return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
 		} else if (pokeDetails.num === 0) {
-			return this.parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args });
+			return this.parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
 		}
-		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }, t);
+		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
 	}
 
-	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
+	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, spriteToGet }: PokemonToDisplayArgs) {
 		return new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
+				.setThumbnail(pokeDetails[spriteToGet])
 		})
 			.addPageEmbed((embed) =>
 				embed
@@ -192,8 +204,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			);
 	}
 
-	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs) {
-		const externalResources = args.t(LanguageKeys.System.PokedexExternalResource);
+	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet }: PokemonToDisplayArgs) {
+		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/MissingNo.)`,
 			`[Serebii](https://www.serebii.net/pokedex/000.shtml)`
@@ -203,7 +215,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${zalgo(toTitleCase(pokeDetails.species))}`, CdnUrls.Pokedex)
-				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
+				.setThumbnail(pokeDetails[spriteToGet])
 		})
 			.addPageEmbed((embed) =>
 				embed
@@ -231,7 +243,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			);
 	}
 
-	private parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, args }: PokemonToDisplayArgs, t: TFunction) {
+	private parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet }: PokemonToDisplayArgs) {
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
@@ -243,7 +255,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(args.getFlags('shiny') ? pokeDetails.shinySprite : pokeDetails.sprite)
+				.setThumbnail(pokeDetails[spriteToGet])
 		})
 			.addPageEmbed((embed) =>
 				embed
@@ -301,6 +313,7 @@ interface PokemonToDisplayArgs {
 	abilities: string[];
 	baseStats: string[];
 	evoChain: string;
+	t: TFunction;
 	embedTranslations: PokedexEmbedDataReturn;
-	args: PaginatedMessageCommand.Args;
+	spriteToGet: ReturnType<typeof getSpriteKey>;
 }

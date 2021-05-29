@@ -19,110 +19,116 @@ const FlavorsFrament = gql`
 	}
 `;
 
-export const getPokemonDetailsByFuzzy = gql`
-	${FlavorsFrament}
+export const getPokemonDetailsByFuzzy = (params: GetPokemonSpriteParameters) => {
+	const spriteToGet = getSpriteKey(params);
 
-	fragment abilities on AbilitiesEntry {
-		first
-		second
-		hidden
-		special
-	}
+	return gql`
+		${FlavorsFrament}
 
-	fragment stats on StatsEntry {
-		hp
-		attack
-		defense
-		specialattack
-		specialdefense
-		speed
-	}
-
-	fragment genders on GenderEntry {
-		male
-		female
-	}
-
-	fragment dexdetails on DexDetails {
-		num
-		species
-		types
-		abilities {
-			...abilities
+		fragment abilities on AbilitiesEntry {
+			first
+			second
+			hidden
+			special
 		}
-		baseStats {
-			...stats
-		}
-		gender {
-			...genders
-		}
-		baseStatsTotal
-		color
-		eggGroups
-		evolutionLevel
-		height
-		weight
-		otherFormes
-		cosmeticFormes
-		sprite
-		shinySprite
-		smogonTier
-		bulbapediaPage
-		serebiiPage
-		smogonPage
-		flavorTexts {
-			...flavors
-		}
-	}
 
-	fragment evolutionsData on DexDetails {
-		species
-		evolutionLevel
-	}
-
-	fragment evolutions on DexDetails {
-		evolutions {
-			...evolutionsData
-			evolutions {
-				...evolutionsData
-			}
+		fragment stats on StatsEntry {
+			hp
+			attack
+			defense
+			specialattack
+			specialdefense
+			speed
 		}
-		preevolutions {
-			...evolutionsData
-			preevolutions {
-				...evolutionsData
-			}
+
+		fragment genders on GenderEntry {
+			male
+			female
 		}
-	}
 
-	query getPokemonDetails($pokemon: String!) {
-		getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, take: 1, reverse: true) {
-			...dexdetails
-			...evolutions
-		}
-	}
-`;
-
-export const getPokemonFlavorTextsByFuzzy = gql`
-	${FlavorsFrament}
-
-	fragment flavortexts on DexDetails {
-		flavorTexts {
-			...flavors
-		}
-	}
-
-	query getPokemonFlavors($pokemon: String!) {
-		getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, reverse: true, take: 50) {
-			sprite
-			shinySprite
+		fragment dexdetails on DexDetails {
 			num
 			species
+			types
+			abilities {
+				...abilities
+			}
+			baseStats {
+				...stats
+			}
+			gender {
+				...genders
+			}
+			baseStatsTotal
 			color
-			...flavortexts
+			eggGroups
+			evolutionLevel
+			height
+			weight
+			otherFormes
+			cosmeticFormes
+			${spriteToGet}
+			smogonTier
+			bulbapediaPage
+			serebiiPage
+			smogonPage
+			flavorTexts {
+				...flavors
+			}
 		}
-	}
+
+		fragment evolutionsData on DexDetails {
+			species
+			evolutionLevel
+		}
+
+		fragment evolutions on DexDetails {
+			evolutions {
+				...evolutionsData
+				evolutions {
+					...evolutionsData
+				}
+			}
+			preevolutions {
+				...evolutionsData
+				preevolutions {
+					...evolutionsData
+				}
+			}
+		}
+
+		query getPokemonDetails($pokemon: String!) {
+			getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, take: 1, reverse: true) {
+				...dexdetails
+				...evolutions
+			}
+		}
 `;
+};
+
+export const getPokemonFlavorTextsByFuzzy = (params: GetPokemonSpriteParameters) => {
+	const spriteToGet = getSpriteKey(params);
+
+	return gql`
+		${FlavorsFrament}
+
+		fragment flavortexts on DexDetails {
+			flavorTexts {
+				...flavors
+			}
+		}
+
+		query getPokemonFlavors($pokemon: String!) {
+			getPokemonDetailsByFuzzy(pokemon: $pokemon, skip: 0, reverse: true, take: 50) {
+				${spriteToGet}
+				num
+				species
+				color
+				...flavortexts
+			}
+		}
+`;
+};
 
 export const getAbilityDetailsByFuzzy = gql`
 	fragment ability on AbilityEntry {
@@ -161,52 +167,55 @@ export const getItemDetailsByFuzzy = gql`
 	}
 `;
 
-export const getPokemonLearnsetByFuzzy = gql`
-	fragment learnsetLevelupMove on LearnsetLevelUpMove {
-		name
-		generation
-		level
-	}
-	fragment learnsetMove on LearnsetMove {
-		name
-		generation
-	}
+export const getPokemonLearnsetByFuzzy = (params: GetPokemonSpriteParameters) => {
+	const spriteToGet = getSpriteKey(params);
 
-	fragment learnset on LearnsetEntry {
-		num
-		species
-		sprite
-		shinySprite
-		color
-		levelUpMoves {
-			...learnsetLevelupMove
+	return gql`
+		fragment learnsetLevelupMove on LearnsetLevelUpMove {
+			name
+			generation
+			level
 		}
-		virtualTransferMoves {
-			...learnsetMove
+		fragment learnsetMove on LearnsetMove {
+			name
+			generation
 		}
-		tutorMoves {
-			...learnsetMove
-		}
-		tmMoves {
-			...learnsetMove
-		}
-		eggMoves {
-			...learnsetMove
-		}
-		eventMoves {
-			...learnsetMove
-		}
-		dreamworldMoves {
-			...learnsetMove
-		}
-	}
 
-	query getLearnsetDetails($pokemon: String!, $moves: [String!]!, $generation: Int) {
-		getPokemonLearnsetByFuzzy(pokemon: $pokemon, moves: $moves, generation: $generation) {
-			...learnset
+		fragment learnset on LearnsetEntry {
+			num
+			species
+			${spriteToGet}
+			color
+			levelUpMoves {
+				...learnsetLevelupMove
+			}
+			virtualTransferMoves {
+				...learnsetMove
+			}
+			tutorMoves {
+				...learnsetMove
+			}
+			tmMoves {
+				...learnsetMove
+			}
+			eggMoves {
+				...learnsetMove
+			}
+			eventMoves {
+				...learnsetMove
+			}
+			dreamworldMoves {
+				...learnsetMove
+			}
 		}
-	}
+
+		query getLearnsetDetails($pokemon: String!, $moves: [String!]!, $generation: Int) {
+			getPokemonLearnsetByFuzzy(pokemon: $pokemon, moves: $moves, generation: $generation) {
+				...learnset
+			}
+		}
 `;
+};
 
 export const getMoveDetailsByFuzzy = gql`
 	fragment moves on MoveEntry {
@@ -265,14 +274,28 @@ export const getTypeMatchup = gql`
 	}
 `;
 
-export const getPokemonSprite = gql`
-	query getPokemonSprites($pokemon: String!) {
-		getPokemonDetailsByFuzzy(pokemon: $pokemon) {
-			sprite
-			shinySprite
+export const getPokemonSprite = (params: GetPokemonSpriteParameters) => {
+	const spriteToGet = getSpriteKey(params);
+
+	return gql`
+		query getPokemonSprites($pokemon: String!) {
+			getPokemonDetailsByFuzzy(pokemon: $pokemon) {
+				${spriteToGet}
+			}
 		}
-	}
 `;
+};
+
+export const getSpriteKey = ({
+	backSprite = false,
+	shinySprite = false
+}: GetPokemonSpriteParameters): 'sprite' | 'shinySprite' | 'backSprite' | 'shinyBackSprite' => {
+	if (backSprite && shinySprite) return 'shinyBackSprite';
+	if (backSprite) return 'backSprite';
+	if (shinySprite) return 'shinySprite';
+
+	return 'sprite';
+};
 
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {
@@ -329,6 +352,11 @@ export const resolveColour = (col: string) => {
 			return 0xff0000;
 	}
 };
+
+export interface GetPokemonSpriteParameters {
+	backSprite?: boolean;
+	shinySprite?: boolean;
+}
 
 export interface PokemonResponse<K extends keyof Omit<Query, '__typename'>> {
 	data: Record<K, Omit<Query[K], '__typename'>>;

@@ -167,52 +167,55 @@ export const getItemDetailsByFuzzy = gql`
 	}
 `;
 
-export const getPokemonLearnsetByFuzzy = gql`
-	fragment learnsetLevelupMove on LearnsetLevelUpMove {
-		name
-		generation
-		level
-	}
-	fragment learnsetMove on LearnsetMove {
-		name
-		generation
-	}
+export const getPokemonLearnsetByFuzzy = (params: GetPokemonSpriteParameters) => {
+	const spriteToGet = getSpriteKey(params);
 
-	fragment learnset on LearnsetEntry {
-		num
-		species
-		sprite
-		shinySprite
-		color
-		levelUpMoves {
-			...learnsetLevelupMove
+	return gql`
+		fragment learnsetLevelupMove on LearnsetLevelUpMove {
+			name
+			generation
+			level
 		}
-		virtualTransferMoves {
-			...learnsetMove
+		fragment learnsetMove on LearnsetMove {
+			name
+			generation
 		}
-		tutorMoves {
-			...learnsetMove
-		}
-		tmMoves {
-			...learnsetMove
-		}
-		eggMoves {
-			...learnsetMove
-		}
-		eventMoves {
-			...learnsetMove
-		}
-		dreamworldMoves {
-			...learnsetMove
-		}
-	}
 
-	query getLearnsetDetails($pokemon: String!, $moves: [String!]!, $generation: Int) {
-		getPokemonLearnsetByFuzzy(pokemon: $pokemon, moves: $moves, generation: $generation) {
-			...learnset
+		fragment learnset on LearnsetEntry {
+			num
+			species
+			${spriteToGet}
+			color
+			levelUpMoves {
+				...learnsetLevelupMove
+			}
+			virtualTransferMoves {
+				...learnsetMove
+			}
+			tutorMoves {
+				...learnsetMove
+			}
+			tmMoves {
+				...learnsetMove
+			}
+			eggMoves {
+				...learnsetMove
+			}
+			eventMoves {
+				...learnsetMove
+			}
+			dreamworldMoves {
+				...learnsetMove
+			}
 		}
-	}
+
+		query getLearnsetDetails($pokemon: String!, $moves: [String!]!, $generation: Int) {
+			getPokemonLearnsetByFuzzy(pokemon: $pokemon, moves: $moves, generation: $generation) {
+				...learnset
+			}
+		}
 `;
+};
 
 export const getMoveDetailsByFuzzy = gql`
 	fragment moves on MoveEntry {

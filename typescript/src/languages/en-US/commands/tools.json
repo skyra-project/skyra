@@ -206,6 +206,7 @@
 		"reminder": "The list of emotes is split per 50 emotes"
 	},
 	"emotesTitle": "Emotes in",
+	"emotesNoEmotes": "{{REDCROSS}} This server has no custom emotes. Why not upload your first?",
 	"eshopDescription": "Request information for any American Nintendo Digital Store",
 	"eshopExtended": {
 		"usages": [

@@ -174,7 +174,7 @@
 	"shuffleSuccess": "{{GREENTICK}} Successfully randomized {{amount}} songs.",
 	"skipDescription": "Skip the current song.",
 	"skipExtended": {
-		"extendedHelp": "Someone put a crappy song in the queue? Yeet it from the existance with this command. If there are more than 4 listeners in the channel (excluding Skyra) then a vote will be started before the song is skipped.",
+		"extendedHelp": "Someone put a crappy song in the queue? Yeet it from the existence with this command. If there are more than 4 listeners in the channel (excluding Skyra) then a vote will be started before the song is skipped.",
 		"explainedUsage": [
 			[
 				"force",

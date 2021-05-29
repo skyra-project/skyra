@@ -15,7 +15,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { sniped } = message.channel as TextChannel;
-		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
+		if (!sniped) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))

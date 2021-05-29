@@ -86,7 +86,7 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
 	}, fallback);
 };
 
-const ServerOnlyPermissions = [Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS];
+const ServerOnlyPermissions = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 /**
  * Allows you to set permissions required for individual methods.
  * @remark This decorator makes the decorated function asynchronous.

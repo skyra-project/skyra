@@ -2,7 +2,7 @@
 	"cooldown": "You have just used this command. You can use this command again in {{remaining, duration}}.",
 	"dmOnly": "This command can only be used in DM channels.",
 	"guildOnly": "This command can only be used in server channels.",
-	"subcommandGuildOnly": "This subcommand can only be used in server channels due to Discord limitations. We will likely make this command available in DMs when we implement the new \"buttons\" feature.",
+	"subCommandGuildOnly": "This subcommand can only be used in server channels due to Discord limitations. We will likely make this command available in DMs when we implement the new \"buttons\" feature.",
 	"nsfw": "You may not use NSFW commands in this channel!",
 	"permissions": "I don't have sufficient permissions! I'm missing: {{missing, permissionsAndList}}",
 	"serverOwner": "You need to be the server's owner to run `{{command.name}}`!",

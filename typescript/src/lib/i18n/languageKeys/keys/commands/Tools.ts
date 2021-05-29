@@ -168,6 +168,7 @@ export const EmojiTooLarge = FT<{ emoji: string }, string>('commands/tools:emoji
 export const EmotesDescription = T('commands/tools:emotesDescription');
 export const EmotesExtended = T<LanguageHelpDisplayOptions>('commands/tools:emotesExtended');
 export const EmotesTitle = T('commands/tools:emotesTitle');
+export const EmoteNoEmotes = T('commands/tools:emotesNoEmotes');
 export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
 export const PriceCurrencyNotFound = T('commands/tools:priceCurrencyNotFound');
 export const DuckDuckGoNotFound = T('commands/tools:duckDuckGoNotfound');

@@ -26,6 +26,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
 
+		if (animEmotes.length === 0 && staticEmotes.length === 0) {
+			this.error(LanguageKeys.Commands.Tools.EmoteNoEmotes);
+		}
+
 		const display = await this.buildDisplay(message, args.t, chunk(animEmotes, 50), chunk(staticEmotes, 50));
 
 		await display.start(response as GuildMessage, message.author);

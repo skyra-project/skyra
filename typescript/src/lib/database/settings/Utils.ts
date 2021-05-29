@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
+import { UserError } from '@sapphire/framework';
 import type { GuildEntity } from '../entities/GuildEntity';
 import type { ISchemaValue } from './base/ISchemaValue';
 import type { SchemaGroup } from './schema/SchemaGroup';
@@ -25,9 +26,12 @@ export async function set(settings: GuildEntity, key: SchemaKey, args: SkyraArgs
 		const value = Reflect.get(settings, key.property);
 		const { serializer } = key;
 		if (serializer.equals(value, parsed)) {
-			throw args.t(LanguageKeys.Settings.Gateway.DuplicateValue, {
-				path: key.name,
-				value: key.stringify(settings, args.t, parsed)
+			throw new UserError({
+				identifier: LanguageKeys.Settings.Gateway.DuplicateValue,
+				context: {
+					path: key.name,
+					value: key.stringify(settings, args.t, parsed)
+				}
 			});
 		}
 
@@ -44,9 +48,12 @@ export async function remove(settings: GuildEntity, key: SchemaKey, args: SkyraA
 		const { serializer } = key;
 		const index = values.findIndex((value) => serializer.equals(value, parsed));
 		if (index === -1) {
-			throw args.t(LanguageKeys.Settings.Gateway.MissingValue, {
-				path: key.name,
-				value: key.stringify(settings, args.t, parsed)
+			throw new UserError({
+				identifier: LanguageKeys.Settings.Gateway.MissingValue,
+				context: {
+					path: key.name,
+					value: key.stringify(settings, args.t, parsed)
+				}
 			});
 		}
 

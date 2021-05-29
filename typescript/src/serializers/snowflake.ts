@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import type { Awaited } from '@sapphire/utilities';
 
@@ -19,12 +20,12 @@ export class UserSerializer extends Serializer<string> {
 		return this.result(args, await args.pickResult('snowflake'));
 	}
 
-	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { entry }: SerializerUpdateContext): Awaited<boolean> {
 		if (this.kRegExp.test(value)) {
 			const snowflake = DiscordSnowflake.deconstruct(value);
 			const timestamp = Number(snowflake.timestamp);
 			if (timestamp >= this.kMinimum && timestamp < Date.now()) return true;
 		}
-		throw t(LanguageKeys.Serializers.InvalidSnowflake, { name: entry.name });
+		throw new UserError({ identifier: LanguageKeys.Serializers.InvalidSnowflake, context: { name: entry.name } });
 	}
 }

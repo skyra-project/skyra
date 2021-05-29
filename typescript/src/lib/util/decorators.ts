@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
 import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
+import { UserError } from '@sapphire/framework';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 
 /**
@@ -96,15 +97,18 @@ export const requiresPermissions = (...permissionsResolvable: PermissionResolvab
 	const resolved = new Permissions(permissionsResolvable);
 	return createFunctionInhibitor((message: Message, args: SkyraArgs) => {
 		if (isDMChannel(message.channel) && resolved.has(ServerOnlyPermissions)) {
-			throw args.t(LanguageKeys.Preconditions.SubCommandGuildOnly);
+			throw new UserError({ identifier: LanguageKeys.Preconditions.SubCommandGuildOnly });
 		}
 
 		if (isGuildBasedChannel(message.channel)) {
 			const missingPermissions = message.channel.permissionsFor(message.guild!.me!)!.missing(resolved);
 
 			if (missingPermissions.length) {
-				throw args.t(LanguageKeys.Preconditions.Permissions, {
-					missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
+				throw new UserError({
+					identifier: LanguageKeys.Preconditions.Permissions,
+					context: {
+						missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
+					}
 				});
 			}
 		}

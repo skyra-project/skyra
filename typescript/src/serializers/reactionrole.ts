@@ -1,6 +1,7 @@
 import { ReactionRole, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { displayEmoji } from '#utils/util';
+import { UserError } from '@sapphire/framework';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<ReactionRole> {
@@ -8,7 +9,7 @@ export class UserSerializer extends Serializer<ReactionRole> {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: ReactionRole, { t }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: ReactionRole): Awaited<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 4 &&
@@ -19,7 +20,7 @@ export class UserSerializer extends Serializer<ReactionRole> {
 		)
 			return true;
 
-		throw t(LanguageKeys.Serializers.ReactionRoleInvalid);
+		throw new UserError({ identifier: LanguageKeys.Serializers.ReactionRoleInvalid });
 	}
 
 	public stringify(value: ReactionRole, { t, guild }: SerializerUpdateContext) {

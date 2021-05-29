@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<UniqueRoleSet> {
@@ -13,7 +14,7 @@ export class UserSerializer extends Serializer<UniqueRoleSet> {
 		return this.ok({ name: name.value, roles: roles.value.map((role) => role.id) });
 	}
 
-	public isValid(value: UniqueRoleSet, { t, guild }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: UniqueRoleSet, { guild }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 2 &&
@@ -23,7 +24,7 @@ export class UserSerializer extends Serializer<UniqueRoleSet> {
 		)
 			return true;
 
-		throw t(LanguageKeys.Serializers.UniqueRoleSetInvalid);
+		throw new UserError({ identifier: LanguageKeys.Serializers.UniqueRoleSetInvalid });
 	}
 
 	public stringify(value: UniqueRoleSet, { t, entity: { guild } }: SerializerUpdateContext) {

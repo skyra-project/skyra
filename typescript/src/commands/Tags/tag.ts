@@ -8,6 +8,7 @@ import { parse as parseColour } from '#utils/Color';
 import { requiresLevel, requiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { UserError as SapphireUserError } from '@sapphire/framework';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
 import { MessageEmbed } from 'discord.js';
@@ -26,8 +27,8 @@ export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
@@ -45,8 +46,8 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
@@ -64,8 +65,8 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async alias(message: GuildMessage, args: SkyraCommand.Args) {
 		const input = (await args.pick('string')).toLowerCase();
@@ -105,8 +106,8 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async rename(message: GuildMessage, args: SkyraCommand.Args) {
 		const previous = (await args.pick('string')).toLowerCase();
@@ -131,8 +132,8 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await message.guild.writeSettings((settings) => {
@@ -142,8 +143,8 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagReset));
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new SapphireUserError({ identifier: LanguageKeys.Commands.Tags.TagPermissionLevel });
 	})
 	public async edit(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();

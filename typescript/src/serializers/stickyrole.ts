@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext, StickyRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<StickyRole> {
@@ -7,7 +8,7 @@ export class UserSerializer extends Serializer<StickyRole> {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: StickyRole, { t, guild }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: StickyRole, { guild }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 2 &&
@@ -17,7 +18,7 @@ export class UserSerializer extends Serializer<StickyRole> {
 		)
 			return true;
 
-		throw t(LanguageKeys.Serializers.StickyRoleInvalid);
+		throw new UserError({ identifier: LanguageKeys.Serializers.StickyRoleInvalid });
 	}
 
 	public stringify(value: StickyRole, { t, guild }: SerializerUpdateContext) {

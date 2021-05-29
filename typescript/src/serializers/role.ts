@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
@@ -8,9 +9,9 @@ export class UserSerializer extends Serializer<string> {
 		return role.success ? this.ok(role.value.id) : this.errorFromArgument(args, role.error);
 	}
 
-	public isValid(value: string, { t, entry, guild }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { entry, guild }: SerializerUpdateContext): Awaited<boolean> {
 		if (guild.roles.cache.has(value)) return true;
-		throw t(LanguageKeys.Serializers.InvalidRole, { name: entry.name });
+		throw new UserError({ identifier: LanguageKeys.Serializers.InvalidRole, context: { name: entry.name } });
 	}
 
 	public stringify(value: string, { guild }: SerializerUpdateContext) {

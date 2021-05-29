@@ -2,7 +2,7 @@ import { CommandMatcher, PermissionsNode, Serializer, SerializerUpdateContext } 
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import type { CommandStore } from '@sapphire/framework';
+import { CommandStore, UserError } from '@sapphire/framework';
 import { isObject } from '@sapphire/utilities';
 import type { GuildMember, Role } from 'discord.js';
 
@@ -11,55 +11,57 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public async isValid(value: PermissionsNode, { t, entry, guild }: SerializerUpdateContext): Promise<boolean> {
+	public async isValid(value: PermissionsNode, { entry, guild }: SerializerUpdateContext): Promise<boolean> {
 		// Safe-guard checks against arbitrary data
-		if (!isObject(value)) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (Object.keys(value).length !== 3) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (typeof value.id !== 'string') throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (!Array.isArray(value.allow)) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (!Array.isArray(value.deny)) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (!isObject(value)) throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalid });
+		if (Object.keys(value).length !== 3) throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalid });
+		if (typeof value.id !== 'string') throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalid });
+		if (!Array.isArray(value.allow)) throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalid });
+		if (!Array.isArray(value.deny)) throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalid });
 
 		// Check for target validity
 		let target: GuildMember | Role | undefined = undefined;
 		if (entry.name === 'permissionsRoles') {
 			const role = guild.roles.cache.get(value.id);
-			if (!role) throw t(LanguageKeys.Serializers.PermissionNodeInvalidTarget);
+			if (!role) throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalidTarget });
 			target = role;
 		} else {
 			target = await guild.members.fetch(value.id).catch(() => {
-				throw t(LanguageKeys.Serializers.PermissionNodeInvalidTarget);
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalidTarget });
 			});
 		}
 
 		// The @everyone role should not have allows
 		if (target.id === guild.id && value.allow.length !== 0) {
-			throw t(LanguageKeys.Serializers.PermissionNodeSecurityEveryoneAllows);
+			throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeSecurityEveryoneAllows });
 		}
 
 		// The owner cannot have allows nor denies
 		if (target.id === guild.ownerID) {
-			throw t(LanguageKeys.Serializers.PermissionNodeSecurityOwner);
+			throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeSecurityOwner });
 		}
 
 		// Check all commands
 		const commands = this.context.stores.get('commands');
 		const checked = new Set<string>();
 		for (const allowed of value.allow) {
-			if (checked.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
+			if (checked.has(allowed))
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command: allowed } });
 
 			const match = CommandMatcher.resolve(allowed);
 			if (match === null || !this.validCommand(commands, match)) {
-				throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: allowed });
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalidCommand, context: { command: allowed } });
 			}
 			checked.add(match);
 		}
 
 		for (const denied of value.deny) {
-			if (checked.has(denied)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
+			if (checked.has(denied))
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command: denied } });
 
 			const match = CommandMatcher.resolve(denied);
 			if (match === null || !this.validCommand(commands, match)) {
-				throw t(LanguageKeys.Serializers.PermissionNodeInvalidCommand, { command: denied });
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeInvalidCommand, context: { command: denied } });
 			}
 			checked.add(match);
 		}

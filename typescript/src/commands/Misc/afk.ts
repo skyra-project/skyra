@@ -7,7 +7,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { LongWidthSpace } from '#utils/constants';
 import { requiresLevel } from '#utils/decorators';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, UserError } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, isNullish, Nullish } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
@@ -51,8 +51,8 @@ export class UserCommand extends SkyraCommand {
 		return allResult.success ? this.clearAll(message, args) : this.clearUser(message, args);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Misc.AfkPermissionLevelList);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new UserError({ identifier: LanguageKeys.Commands.Misc.AfkPermissionLevelList });
 	})
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		const entries = await this.fetchEntries(this.getTemplate(message.member), false);
@@ -154,8 +154,8 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkResetSelf));
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Misc.AfkPermissionLevelResetUser);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new UserError({ identifier: LanguageKeys.Commands.Misc.AfkPermissionLevelResetUser });
 	})
 	private async resetUser(message: GuildMessage, args: SkyraCommand.Args) {
 		const member = await args.pick('member');
@@ -185,8 +185,8 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkClearSelf));
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Misc.AfkPermissionLevelClearUser);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new UserError({ identifier: LanguageKeys.Commands.Misc.AfkPermissionLevelClearUser });
 	})
 	private async clearUser(message: GuildMessage, args: SkyraCommand.Args) {
 		const member = await args.pick('member');
@@ -196,8 +196,8 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkClear, { user: member.toString() }), { allowedMentions: { roles: [], users: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Misc.AfkPermissionLevelClearAll);
+	@requiresLevel(PermissionLevels.Moderator, async () => {
+		throw new UserError({ identifier: LanguageKeys.Commands.Misc.AfkPermissionLevelClearAll });
 	})
 	private async clearAll(message: GuildMessage, args: SkyraCommand.Args) {
 		const template = this.getTemplate(message.member);

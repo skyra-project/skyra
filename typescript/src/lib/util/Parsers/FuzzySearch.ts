@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Collection } from '@discordjs/collection';
+import { UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { decode, jaroWinkler } from '../External/jaro-winkler';
@@ -84,10 +85,10 @@ export class FuzzySearch<K extends string, V> {
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') throw t(LanguageKeys.FuzzySearch.Aborted);
+		if (n.toLowerCase() === 'abort') throw new UserError({ identifier: LanguageKeys.FuzzySearch.Aborted });
 		const parsed = Number(n);
-		if (!Number.isSafeInteger(parsed)) throw t(LanguageKeys.FuzzySearch.InvalidNumber);
-		if (parsed < 0 || parsed >= results.length) throw t(LanguageKeys.FuzzySearch.InvalidIndex);
+		if (!Number.isSafeInteger(parsed)) throw new UserError({ identifier: LanguageKeys.FuzzySearch.InvalidNumber });
+		if (parsed < 0 || parsed >= results.length) throw new UserError({ identifier: LanguageKeys.FuzzySearch.InvalidIndex });
 		return results[parsed];
 	}
 }

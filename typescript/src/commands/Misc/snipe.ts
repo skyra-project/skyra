@@ -11,7 +11,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	runIn: ['text']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

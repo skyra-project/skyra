@@ -21,10 +21,8 @@ jobs:
                   --data '{"query":"query { repository(owner: \"cli\", name: \"cli\") { releases(last: 1) { nodes { releaseAssets(first: 20) { nodes { downloadUrl name }}}}}}"}' "https://api.github.com/graphql" |
                   jq -cr '.data.repository.releases.nodes[0].releaseAssets.nodes[]? | select(.name | contains("linux_amd64.tar.gz")).downloadUrl') |
               tar -xz --wildcards "*gh" && mv gh*linux_amd64/bin/gh . && rm -r gh_*linux_amd64
-      - name: Do something on commit
+      - name: Change PR title
+        if: (github.event.pull_request.title == 'New Crowdin updates' && github.event.pull_request.user.login == 'NM-EEA-Y' && github.event.pull_request.head.ref == 'i18n/crowdin')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "${{ github.event.pull_request.title }}" = "New Crowdin updates" ] && [ "${{ github.event.pull_request.user.login }}" = "NM-EEA-Y" ] && [ "${{ github.event.pull_request.head.ref }}" = "i18n/crowdin" ]; then
-            ./gh pr edit ${{ github.event.pull_request.number }} --title "feat(crowdin): update localization files"
-          fi
+        run: "./gh pr edit ${{ github.event.pull_request.number }} --title 'feat(crowdin): update localization files'"

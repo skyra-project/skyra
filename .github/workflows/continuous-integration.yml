@@ -43,7 +43,7 @@ jobs:
         with:
           node-version: 15
       - name: Restore CI Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: cache-restore
         with:
           path: node_modules
@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: 15
       - name: Restore CI Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: cache-restore
         with:
           path: node_modules
@@ -95,7 +95,7 @@ jobs:
           sudo apt-get install libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev -y &&
           yarn global add node-gyp node-pre-gyp
       - name: Restore CI Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: cache-restore
         with:
           path: node_modules
@@ -145,7 +145,7 @@ jobs:
         with:
           node-version: 15
       - name: Restore CI Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: cache-restore
         with:
           path: node_modules
@@ -196,7 +196,7 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       - name: Restore CI Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}

@@ -204,7 +204,7 @@
 			"Mark"
 		]
 	},
-	"thinkMessage": "Think, {{user}}, think!",
+	"thinkMessage": "Think, {{user}}!",
 	"wakandaDescription": "Helpful descriptions? We don't do that here",
 	"wakandaExtended": {
 		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."

@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '#utils/APIs/Pokemon';
+import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import type { DexDetails } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
@@ -15,39 +15,45 @@ import { MessageEmbed } from 'discord.js';
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.FlavorsExtended,
-	strategyOptions: { flags: ['shiny'] }
+	strategyOptions: { flags: ['shiny', 'back'] }
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const pokemon = (await args.rest('string')).toLowerCase();
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
-		const pokemonData = await this.fetchAPI(pokemon);
+		const pokemon = (await args.rest('string')).toLowerCase();
+		const backSprite = args.getFlags('back');
+		const shinySprite = args.getFlags('shiny');
+
+		const pokemonData = await this.fetchAPI(pokemon, { backSprite, shinySprite });
 
 		if (!pokemonData.flavorTexts.length) {
 			this.error(LanguageKeys.Commands.Pokemon.FlavorNoFlavors, { pokemon: toTitleCase(pokemonData.species) });
 		}
 
-		await this.buildDisplay(pokemonData, args).start(response as GuildMessage, message.author);
+		await this.buildDisplay(pokemonData, { backSprite, shinySprite }).start(response as GuildMessage, message.author);
 		return response;
 	}
 
-	private async fetchAPI(pokemon: string) {
+	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
+			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy(getSpriteParams), {
+				pokemon
+			});
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 
-	private buildDisplay(pokemonData: DexDetails, args: PaginatedMessageCommand.Args) {
+	private buildDisplay(pokemonData: DexDetails, getSpriteParams: GetPokemonSpriteParameters) {
+		const spriteToGet = getSpriteKey(getSpriteParams);
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(args.getFlags('shiny') ? pokemonData.shinySprite : pokemonData.sprite)
+				.setThumbnail(pokemonData[spriteToGet])
 		});
 
 		for (const { game, flavor } of pokemonData.flavorTexts) {

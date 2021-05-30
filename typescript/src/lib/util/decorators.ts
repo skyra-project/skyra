@@ -3,6 +3,7 @@ import { SkyraArgs } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
+import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 
 /**
@@ -85,6 +86,7 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
 	}, fallback);
 };
 
+const ServerOnlyPermissions = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 /**
  * Allows you to set permissions required for individual methods.
  * @remark This decorator makes the decorated function asynchronous.
@@ -92,13 +94,19 @@ export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): Met
  */
 export const requiresPermissions = (...permissionsResolvable: PermissionResolvable[]): MethodDecorator => {
 	const resolved = new Permissions(permissionsResolvable);
-	return createFunctionInhibitor((message: GuildMessage, args: SkyraArgs) => {
-		const missingPermissions = message.channel.permissionsFor(message.guild.me!)!.missing(resolved);
+	return createFunctionInhibitor((message: Message, args: SkyraArgs) => {
+		if (isDMChannel(message.channel) && resolved.has(ServerOnlyPermissions)) {
+			throw args.t(LanguageKeys.Preconditions.SubCommandGuildOnly);
+		}
 
-		if (missingPermissions.length) {
-			throw args.t(LanguageKeys.Preconditions.Permissions, {
-				missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
-			});
+		if (isGuildBasedChannel(message.channel)) {
+			const missingPermissions = message.channel.permissionsFor(message.guild!.me!)!.missing(resolved);
+
+			if (missingPermissions.length) {
+				throw args.t(LanguageKeys.Preconditions.Permissions, {
+					missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
+				});
+			}
 		}
 
 		return true;

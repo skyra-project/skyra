@@ -25,9 +25,11 @@
 	"flavorsExtended": {
 		"usages": [
 			"Pokémon",
-			"Pokémon --shiny"
+			"Pokémon --shiny",
+			"Pokémon --back --shiny",
+			"Pokémon --back"
 		],
-		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -35,13 +37,19 @@
 			],
 			[
 				"--shiny",
-				"Whether the data should show the shiny sprite of the Pokémon or not"
+				"Whether the data should show the shiny sprite of the Pokémon or not. Can be combined with `--back`."
+			],
+			[
+				"--back",
+				"Whether the data should show the back sprite of the Pokémon or not. Can be combined with `--shiny`."
 			]
 		],
 		"examples": [
 			"dragonite",
 			"pikachu",
-			"pikachu --shiny"
+			"pikachu --shiny",
+			"victini --back --shiny",
+			"mewtwo --back"
 		]
 	},
 	"flavorsQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
@@ -76,9 +84,11 @@
 			"Pokémon Move",
 			"Pokémon Move1 Move2 Move3 ...MoveX",
 			"Generation Pokémon Move",
-			"Generation Pokémon Move --shiny"
+			"Generation Pokémon Move --shiny",
+			"Generation Pokémon Move --shiny --back",
+			"Generation Pokémon Move --back"
 		],
-		"extendedHelp": "Uses a fuzzy search to also match against near-matches. Moves split on every `, ` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches. Moves split on every `, ` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
 		"explainedUsage": [
 			[
 				"Generation",
@@ -94,13 +104,19 @@
 			],
 			[
 				"--shiny",
-				"Whether the data should show the shiny sprite of the Pokémon or not"
+				"Whether the data should show the shiny sprite of the Pokémon or not. Can be combined with `--back`."
+			],
+			[
+				"--back",
+				"Whether the data should show the back sprite of the Pokémon or not. Can be combined with `--shiny`."
 			]
 		],
 		"examples": [
 			"7 dragonite dragon dance",
 			"pikachu thunder bolt",
 			"pikachu thunder bolt --shiny",
+			"pikachu thunder bolt --shiny --back",
+			"pikachu thunder bolt --back",
 			"pikachu thunder bolt, thunder"
 		]
 	},
@@ -161,9 +177,11 @@
 	"pokedexExtended": {
 		"usages": [
 			"Pokémon",
-			"Pokémon --shiny"
+			"Pokémon --shiny",
+			"Pokémon --shiny --back",
+			"Pokémon --back"
 		],
-		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -171,13 +189,19 @@
 			],
 			[
 				"--shiny",
-				"Whether the data should show the shiny sprite of the Pokémon or not"
+				"Whether the data should show the shiny sprite of the Pokémon or not. Can be combined with `--back`."
+			],
+			[
+				"--back",
+				"Whether the data should show the back sprite of the Pokémon or not. Can be combined with `--shiny`."
 			]
 		],
 		"examples": [
 			"dragonite",
 			"pikachu",
-			"pikachu --shiny"
+			"pikachu --shiny",
+			"pikachu --shiny --back",
+			"pikachu --back"
 		],
 		"reminder": "If there are any \"Other forme(s)\" on the optional fourth page, those can be requested as well.\nCosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex."
 	},
@@ -204,9 +228,11 @@
 	"spriteExtended": {
 		"usages": [
 			"Pokémon",
-			"Pokémon --shiny"
+			"Pokémon --shiny",
+			"Pokémon --shiny --back",
+			"Pokémon --back"
 		],
-		"extendedHelp": "Useful if you want to check if the name of a Pokémon that you're remembering is actually that Pokémon.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
+		"extendedHelp": "Useful if you want to check if the name of a Pokémon that you're remembering is actually that Pokémon.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -214,13 +240,19 @@
 			],
 			[
 				"--shiny",
-				"Whether the data should show the shiny sprite of the Pokémon or not"
+				"Whether the data should show the shiny sprite of the Pokémon or not. Can be combined with `--back`."
+			],
+			[
+				"--back",
+				"Whether the data should show the back sprite of the Pokémon or not. Can be combined with `--shiny`."
 			]
 		],
 		"examples": [
 			"dragonite",
 			"pikachu",
-			"pikachu --shiny"
+			"pikachu --shiny",
+			"pikachu --shiny --back",
+			"pikachu --back"
 		]
 	},
 	"typeDescription": "Gives the type matchups for one or two Pokémon types",

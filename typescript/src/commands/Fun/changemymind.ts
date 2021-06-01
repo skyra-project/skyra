@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
+import { Image, loadImage } from 'skia-canvas';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['cmm'],
@@ -48,7 +48,7 @@ export class UserCommand extends SkyraCommand {
 				.printWrappedText(text, 311, 375, 340)
 
 				// Render
-				.toBufferAsync()
+				.toBuffer()
 		);
 	}
 }

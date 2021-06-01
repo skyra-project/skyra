@@ -5,7 +5,7 @@ import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { err, ok, Result, Store } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
-import { Image, loadImage } from 'canvas';
+import { resolveImage } from 'canvas-constructor';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
@@ -22,6 +22,7 @@ import {
 	UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
+import type { Image } from 'skia-canvas';
 import { api } from '../discord/Api';
 import { BrandingColors, Time, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
@@ -240,7 +241,7 @@ export async function wrap<T, E = Error>(promise: Promise<T>): Promise<Result<T,
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await loadImage(url);
+		return await resolveImage(url);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

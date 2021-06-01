@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, streamToBuffer } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas, rgba } from 'canvas-constructor';
+import { Canvas, resolveImage, rgba } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 import GIFEncoder = require('gifencoder');
 
 const COORDINATES: readonly [number, number][] = [
@@ -61,6 +61,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/triggered.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/triggered.png'));
 	}
 }

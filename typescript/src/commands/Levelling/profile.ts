@@ -4,11 +4,11 @@ import { Scope } from '#lib/types';
 import { cdnFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
+import { Image, loadImage } from 'skia-canvas';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -112,60 +112,60 @@ export class UserCommand extends SkyraCommand {
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)
-				.toBufferAsync()
+				.toBuffer()
 		);
 	}
 
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.lightThemeDock, this.darkThemeDock] = await Promise.all([
-			new Canvas(640, 391)
-				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0, 0, 0, 0.7)')
-				.setShadowBlur(7)
-				.setColor('#FFFFFF')
-				.createRoundedPath(10, 10, 620, 371, 8)
-				.fill()
-				.createRoundedClip(10, 10, 620, 371, 5)
-				.clearRectangle(10, 10, 186, 371)
-				.printCircle(103, 103, 70.5)
-				.resetShadows()
-				.setColor('#E8E8E8')
-				.printRoundedRectangle(226, 351, 366, 11, 4)
-				.toBufferAsync()
-				.then(loadImage),
-			new Canvas(640, 391)
-				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0, 0, 0, 0.7)')
-				.setShadowBlur(7)
-				.setColor('#202225')
-				.createRoundedPath(10, 10, 620, 371, 8)
-				.fill()
-				.createRoundedClip(10, 10, 620, 371, 5)
-				.clearRectangle(10, 10, 186, 371)
-				.printCircle(103, 103, 70.5)
-				.resetShadows()
-				.setColor('#2C2F33')
-				.printRoundedRectangle(226, 351, 366, 11, 4)
-				.toBufferAsync()
-				.then(loadImage),
-			new Canvas(100, 391)
-				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0, 0, 0, 0.7)')
-				.setShadowBlur(7)
-				.setColor('#E8E8E8')
-				.createRoundedPath(10, 10, 80, 371, 8)
-				.fill()
-				.toBufferAsync()
-				.then(loadImage),
-			new Canvas(100, 391)
-				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0, 0, 0, 0.7)')
-				.setShadowBlur(7)
-				.setColor('#272A2E')
-				.createRoundedPath(10, 10, 80, 371, 8)
-				.fill()
-				.toBufferAsync()
-				.then(loadImage)
+			loadImage(
+				new Canvas(640, 391)
+					.setShadowColor('rgba(0, 0, 0, 0.7)')
+					.setShadowBlur(7)
+					.setColor('#FFFFFF')
+					.createRoundedPath(10, 10, 620, 371, 8)
+					.fill()
+					.createRoundedClip(10, 10, 620, 371, 5)
+					.clearRectangle(10, 10, 186, 371)
+					.printCircle(103, 103, 70.5)
+					.resetShadows()
+					.setColor('#E8E8E8')
+					.printRoundedRectangle(226, 351, 366, 11, 4)
+					.toBuffer()
+			),
+			loadImage(
+				new Canvas(640, 391)
+					.setShadowColor('rgba(0, 0, 0, 0.7)')
+					.setShadowBlur(7)
+					.setColor('#202225')
+					.createRoundedPath(10, 10, 620, 371, 8)
+					.fill()
+					.createRoundedClip(10, 10, 620, 371, 5)
+					.clearRectangle(10, 10, 186, 371)
+					.printCircle(103, 103, 70.5)
+					.resetShadows()
+					.setColor('#2C2F33')
+					.printRoundedRectangle(226, 351, 366, 11, 4)
+					.toBuffer()
+			),
+			loadImage(
+				new Canvas(100, 391)
+					.setShadowColor('rgba(0, 0, 0, 0.7)')
+					.setShadowBlur(7)
+					.setColor('#E8E8E8')
+					.createRoundedPath(10, 10, 80, 371, 8)
+					.fill()
+					.toBuffer()
+			),
+			loadImage(
+				new Canvas(100, 391)
+					.setShadowColor('rgba(0, 0, 0, 0.7)')
+					.setShadowBlur(7)
+					.setColor('#272A2E')
+					.createRoundedPath(10, 10, 80, 371, 8)
+					.fill()
+					.toBuffer()
+			)
 		]);
 	}
 }

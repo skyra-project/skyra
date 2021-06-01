@@ -4,11 +4,11 @@ import { wrap } from '#utils/util';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Store, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
-import { Image } from 'canvas';
 import { resolveImage } from 'canvas-constructor';
 import { cyan, gray, red } from 'colorette';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 import { URL } from 'url';
 import { CurrentCondition, Weather, WeatherCode, WeatherName } from './types';
 
@@ -103,7 +103,7 @@ export async function getFile(name: WeatherName): Promise<Image> {
 	const existing = getFileCache.get(name);
 	if (existing !== undefined) return existing;
 
-	const image = await resolveImage(join(weatherFolder, `${name}.png`));
+	const image = (await resolveImage(join(weatherFolder, `${name}.png`))) as Image;
 	getFileCache.set(name, image);
 	return image;
 }

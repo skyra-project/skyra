@@ -3,7 +3,6 @@ import { Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
 import type { DeepPartial } from '@sapphire/utilities';
-import { Image } from 'canvas';
 import {
 	CategoryChannel,
 	DMChannel,
@@ -20,6 +19,7 @@ import { createReadStream } from 'fs';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { resolve } from 'path';
+import { loadImage } from 'skia-canvas';
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {
@@ -84,9 +84,7 @@ describe('Utils', () => {
 			const readStream = createReadStream(filePath);
 			const buffer = await utils.streamToBuffer(readStream);
 
-			const image = new Image();
-			image.src = buffer;
-
+			const image = await loadImage(buffer);
 			expect(image.width).toBe(32);
 			expect(image.height).toBe(32);
 		});

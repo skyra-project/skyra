@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, resolveImage } from 'canvas-constructor';
 import type { Message } from 'discord.js';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const text = await args.rest('string');
-		const attachment = await this.generate(text);
+		const attachment = this.generate(text);
 		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}
 
@@ -31,10 +31,10 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('19px FamilyFriends')
 			.createRectangleClip(61, 335, 156, 60)
 			.printWrappedText(text, 143, 360, 156)
-			.toBufferAsync();
+			.toBuffer();
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 }

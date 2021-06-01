@@ -1,9 +1,12 @@
 import { assetsFolder } from '#utils/constants';
-import { registerFont } from 'canvas';
 import { join } from 'path';
+import { FontLibrary } from 'skia-canvas';
 
-registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), { family: 'RobotoRegular' });
-registerFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), { family: 'RobotoRegular' });
-registerFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), { family: 'RobotoRegular' });
-registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), { family: 'RobotoLight' });
-registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), { family: 'FamilyFriends' });
+FontLibrary.use('RobotoRegular', [
+	join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'),
+	join(assetsFolder, 'fonts', 'NotoEmoji.ttf'),
+	join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf')
+]);
+
+FontLibrary.use('RobotoLight', [join(assetsFolder, 'fonts', 'Roboto-Light.ttf')]);
+FontLibrary.use('FamilyFriends', [join(assetsFolder, 'fonts', 'Family-Friends.ttf')]);

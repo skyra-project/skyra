@@ -4,11 +4,11 @@ import { GuildMessage } from '#lib/types';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, resolveImage } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
 import type { User } from 'discord.js';
 import { join } from 'path';
+import { Image, loadImage } from 'skia-canvas';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 10,
@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 		const settings = await users.ensureProfile(message.author.id);
 
 		// Build up the ship canvas
-		const attachment = await new Canvas(224, 88)
+		const attachment = new Canvas(224, 88)
 			// Add base image
 			.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 224, 88)
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
@@ -43,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 			.printImage(this.heartIcon, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
-			.toBufferAsync();
+			.toBuffer();
 
 		// Return the lovely message
 		const data = args.t(LanguageKeys.Commands.Misc.ShipData, {
@@ -57,9 +57,9 @@ export class UserCommand extends SkyraCommand {
 	/** Initialize the light and dark theme templates and the heart icon */
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
-			loadImage(join(socialFolder, 'heart.png'))
+			loadImage(new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).toBuffer()),
+			loadImage(new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).toBuffer()),
+			resolveImage(join(socialFolder, 'heart.png'))
 		]);
 	}
 
@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 	 */
 	private async fetchAvatar(user: User): Promise<Image> {
 		try {
-			return await loadImage(user.displayAvatarURL({ size: 64, format: 'png', dynamic: true }));
+			return await resolveImage(user.displayAvatarURL({ size: 64, format: 'png', dynamic: true }));
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error.response}`;
 		}

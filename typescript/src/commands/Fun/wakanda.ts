@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, resolveImage } from 'canvas-constructor';
 import type { Message } from 'discord.js';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldown: 15,
@@ -20,13 +20,13 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName').catch(() => message.author);
 		const userAvatar = await fetchAvatar(user);
-		const attachment = await this.generateImage(userAvatar);
+		const attachment = this.generateImage(userAvatar);
 
 		return message.channel.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
 	}
 
 	private generateImage(avatar: Image) {
@@ -36,6 +36,6 @@ export class UserCommand extends SkyraCommand {
 			.translate(316, 115)
 			.rotate(radians(10))
 			.printCircularImage(avatar, 0, 0, 65)
-			.toBufferAsync();
+			.toBuffer();
 	}
 }

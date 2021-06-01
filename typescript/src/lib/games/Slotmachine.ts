@@ -3,11 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { Store } from '@sapphire/pieces';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, resolveImage } from 'canvas-constructor';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 
 const enum Icons {
 	Cherry,
@@ -154,7 +154,7 @@ export class Slotmachine {
 			)
 		);
 
-		return canvas.toBufferAsync();
+		return canvas.toBuffer();
 	}
 
 	/** The boost */
@@ -201,7 +201,10 @@ export class Slotmachine {
 	};
 
 	public static async init(): Promise<void> {
-		const [icon, shiny] = await Promise.all([loadImage(join(socialFolder, 'sm-icons.png')), loadImage(join(socialFolder, 'shiny-icon.png'))]);
+		const [icon, shiny] = await Promise.all([
+			resolveImage(join(socialFolder, 'sm-icons.png')),
+			resolveImage(join(socialFolder, 'shiny-icon.png'))
+		]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;
 	}

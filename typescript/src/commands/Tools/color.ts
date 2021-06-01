@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const { hex, hsl, rgb } = await args.rest('color');
 
 		const diff = await args.pick('integer', { minimum: 0, maximum: 255 }).catch(() => 10);
-		const attachment = await this.showColor(rgb, diff);
+		const attachment = this.showColor(rgb, diff);
 		return message.send(args.t(LanguageKeys.Commands.Tools.Color, { hex: hex.toString(), rgb: rgb.toString(), hsl: hsl.toString() }), {
 			files: [{ attachment, name: 'color.png' }]
 		});
@@ -53,7 +53,7 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('16px FiraSans')
 			.setColor(rgb(thisLum, thisLum, thisLum))
 			.printText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
-			.toBufferAsync();
+			.toBuffer();
 	}
 
 	public processFrame(ctx: Canvas, x: number, y: number, red: number, green: number, blue: number) {

@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, resolveImage } from 'canvas-constructor';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
+import type { Image } from 'skia-canvas';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gn', 'night'],
@@ -48,11 +48,11 @@ export class UserCommand extends SkyraCommand {
 				.printCircularImage(child, 0, 0, 55)
 
 				// Draw the buffer
-				.toBufferAsync()
+				.toBuffer()
 		);
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/goodnight.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/goodnight.png'));
 	}
 }

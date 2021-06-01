@@ -120,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 				// Weather Name
 				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
 
-				.toBufferAsync()
+				.toBuffer()
 		);
 	}
 

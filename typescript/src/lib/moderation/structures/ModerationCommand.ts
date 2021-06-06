@@ -128,7 +128,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
 			}
 
-			// A member who isn't a server owner is not allowed to moderate somebody with higher role tham them:
+			// A member who isn't a server owner is not allowed to moderate somebody with higher role than them:
 			if (!message.member.isGuildOwner() && targetHighestRolePosition >= message.member.roles.highest.position) {
 				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
 			}

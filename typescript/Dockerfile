@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:15-buster-slim as BUILDER
+FROM --platform=linux/amd64 node:16-buster-slim as BUILDER
 
 WORKDIR /usr/src/app
 
@@ -29,7 +29,7 @@ RUN yarn build
 #   Runner Stage   #
 # ================ #
 
-FROM --platform=linux/amd64 node:15-buster-slim AS RUNNER
+FROM --platform=linux/amd64 node:16-buster-slim AS RUNNER
 
 ENV NODE_ENV="production"
 

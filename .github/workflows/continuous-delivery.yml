@@ -17,7 +17,6 @@ jobs:
   PublishSkyra:
     name: Publish Skyra image to container registries
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
@@ -55,7 +54,6 @@ jobs:
   PublishGrpc:
     name: Publish gRPC image to container registries
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2

@@ -18,13 +18,12 @@ export const ExceededLengthOutputType = FT<{ type: string }, string>('system:exc
 export const ExceededLengthOutputTime = FT<{ time: string }, string>('system:exceededLengthOutputTime');
 export const ExternalServerError = T<string>('system:externalServerError');
 export const PokedexExternalResource = T<string>('system:pokedexExternalResource');
-export const HelpTitles =
-	T<{
-		aliases: string;
-		usages: string;
-		extendedHelp: string;
-		explainedUsage: string;
-		possibleFormats: string;
-		examples: string;
-		reminders: string;
-	}>('system:helpTitles');
+export const HelpTitles = T<{
+	aliases: string;
+	usages: string;
+	extendedHelp: string;
+	explainedUsage: string;
+	possibleFormats: string;
+	examples: string;
+	reminders: string;
+}>('system:helpTitles');

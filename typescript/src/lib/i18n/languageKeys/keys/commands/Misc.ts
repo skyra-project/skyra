@@ -60,30 +60,29 @@ export const RandRedditFail = T<string>('commands/misc:randRedditFail');
 export const RandRedditInvalidArgument = T<string>('commands/misc:randRedditInvalidArgument');
 export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commands/misc:randRedditMessage');
 export const RedditUserComplexityLevels = T<string[]>('commands/misc:redditUserComplexityLevels');
-export const RedditUserData =
-	FT<{ user: string; timestamp: number }, { overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }>(
-		'commands/misc:redditUserData'
-	);
+export const RedditUserData = FT<
+	{ user: string; timestamp: number },
+	{ overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }
+>('commands/misc:redditUserData');
 export const RedditUserDescription = T<string>('commands/misc:redditUserDescription');
 export const RedditUserExtended = T<LanguageHelpDisplayOptions>('commands/misc:redditUserExtended');
 export const RedditUserInvalidUser = FT<{ user: string }, string>('commands/misc:redditUserInvalidUser');
 export const RedditUserQueryFailed = T<string>('commands/misc:redditUserQueryFailed');
-export const RedditUserTitles =
-	T<{
-		awardGiving: string;
-		awardReceiving: string;
-		linkKarma: string;
-		commentKarma: string;
-		totalComments: string;
-		totalSubmissions: string;
-		commentControversiality: string;
-		textComplexity: string;
-		top5Subreddits: string;
-		bySubmissions: string;
-		byComments: string;
-		bestComment: string;
-		worstComment: string;
-	}>('commands/misc:redditUserTitles');
+export const RedditUserTitles = T<{
+	awardGiving: string;
+	awardReceiving: string;
+	linkKarma: string;
+	commentKarma: string;
+	totalComments: string;
+	totalSubmissions: string;
+	commentControversiality: string;
+	textComplexity: string;
+	top5Subreddits: string;
+	bySubmissions: string;
+	byComments: string;
+	bestComment: string;
+	worstComment: string;
+}>('commands/misc:redditUserTitles');
 export const ResetBirthdayDescription = T<string>('commands/misc:resetBirthdayDescription');
 export const ResetBirthdayExtended = T<LanguageHelpDisplayOptions>('commands/misc:resetBirthdayExtended');
 export const ResetBirthdaySuccess = FT<{ user: string }, string>('commands/misc:resetBirthdaySuccess');
@@ -98,8 +97,9 @@ export const SetBirthdayInvalidDay = FT<{ parameter: string; month: number; year
 export const SetBirthdayAlreadySet = FT<{ birthDate: string }, string>('commands/misc:setBirthdayAlreadySet');
 export const SetBirthdayConfirmation = T<string>('commands/misc:setBirthdayConfirmation');
 export const SetBirthdaySuccess = FT<{ nextBirthday: number }, string>('commands/misc:setBirthdaySuccess');
-export const ShipData =
-	FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>('commands/misc:shipData');
+export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
+	'commands/misc:shipData'
+);
 export const ShipDescription = T<string>('commands/misc:shipDescription');
 export const ShipExtended = T<LanguageHelpDisplayOptions>('commands/misc:shipExtended');
 export const SlapDescription = T<string>('commands/misc:slapDescription');

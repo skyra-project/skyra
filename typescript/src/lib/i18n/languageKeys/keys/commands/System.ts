@@ -36,10 +36,10 @@ export const ReloadLanguage = FT<{ time: string; language: string }, string>('co
 export const StatsDescription = T<string>('commands/system:statsDescription');
 export const StatsExtended = T<LanguageHelpDisplayOptions>('commands/system:statsExtended');
 export const StatsTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/system:statsTitles');
-export const StatsFields =
-	FT<{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage }, { stats: string; uptime: string; serverUsage: string }>(
-		'commands/system:statsFields'
-	);
+export const StatsFields = FT<
+	{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage },
+	{ stats: string; uptime: string; serverUsage: string }
+>('commands/system:statsFields');
 export const SupportDescription = T<string>('commands/system:supportDescription');
 export const SupportEmbedDescription = T<string>('commands/system:supportEmbedDescription');
 export const SupportEmbedTitle = FT<{ username: string }, string>('commands/system:supportEmbedTitle');

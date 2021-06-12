@@ -145,11 +145,10 @@ export const ToggleDarkModeDisabled = T('commands/social:toggleDarkModeDisabled'
 export const ToggleDarkModeEnabled = T('commands/social:toggleDarkModeEnabled');
 export const ToggleDarkModeExtended = T<LanguageHelpDisplayOptions>('commands/social:toggleDarkModeExtended');
 export const VaultDescription = T('commands/social:vaultDescription');
-export const VaultEmbedData =
-	FT<
-		{ coins?: number },
-		{ depositedDescription: string; withdrewDescription: string; showDescription: string; accountMoney: string; accountVault: string }
-	>('commands/social:vaultEmbedData');
+export const VaultEmbedData = FT<
+	{ coins?: number },
+	{ depositedDescription: string; withdrewDescription: string; showDescription: string; accountMoney: string; accountVault: string }
+>('commands/social:vaultEmbedData');
 export const VaultExtended = T<LanguageHelpDisplayOptions>('commands/social:vaultExtended');
 export const VaultNotEnoughInVault = FT<{ vault: number }, string>('commands/social:vaultNotEnoughInVault');
 export const VaultNotEnoughMoney = FT<{ money: number }, string>('commands/social:vaultNotEnoughMoney');

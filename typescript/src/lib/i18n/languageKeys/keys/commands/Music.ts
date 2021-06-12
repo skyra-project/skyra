@@ -50,8 +50,9 @@ export const RepeatSuccessDisabled = T<string>('commands/music:repeatSuccessDisa
 export const QueueDescription = T<string>('commands/music:queueDescription');
 export const QueueExtended = T<LanguageHelpDisplayOptions>('commands/music:queueExtended');
 export const QueueTitle = FT<{ guildname: string }, string>('commands/music:queueTitle');
-export const QueueLine =
-	FT<{ position: number; duration: string; title: string; url: string; requester: string }, string>('commands/music:queueLine');
+export const QueueLine = FT<{ position: number; duration: string; title: string; url: string; requester: string }, string>(
+	'commands/music:queueLine'
+);
 export const QueueNowPlaying = FT<{ title: string; url: string; requester: string }, string>('commands/music:queueNowplaying');
 export const QueueNowPlayingTimeRemaining = FT<{ timeRemaining: string }, string>('commands/music:queueNowplayingTimeRemaining');
 export const QueueNowPlayingLiveStream = T<string>('commands/music:queueNowplayingLiveStream');

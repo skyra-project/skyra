@@ -76,6 +76,9 @@ namespace Skyra.Database
 		Task<Result> RemoveBannerAsync(string id);
 		Task<Result<Tuple<long, string>[]>> GetLocalLeaderboardAsync(string id);
 		Task<Result<Tuple<long, string>[]>> GetGlobalLeaderboardAsync();
+		Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId, DateTime expiresAt);
+		Task<Result<(string, string[])[]>> GetSubscriptionsAsync();
+		Task<Result> RemoveSubscriptionAsync(string channelId, string guildId);
 		Task<Result<(string, string)[]>> ExecuteSqlAsync(string query);
 	}
 }

@@ -44,6 +44,8 @@ namespace Skyra.Database
 		public virtual DbSet<UserProfile> UserProfiles { get; set; }
 		public virtual DbSet<UserSpousesUser> UserSpousesUsers { get; set; }
 
+		public virtual DbSet<YoutubeSubscription> YoutubeSubscriptions { get; set; }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			if (optionsBuilder.IsConfigured)

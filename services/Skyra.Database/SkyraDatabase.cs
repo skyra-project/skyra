@@ -1284,6 +1284,63 @@ namespace Skyra.Database
 			}
 		}
 
+		public async Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId, DateTime expiresAt)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
+
+			if (subscription is null)
+			{
+				subscription = new YoutubeSubscription
+				{
+					ExpiresAt = expiresAt,
+					Id = channelId,
+					GuildIds = new[] {guildId}
+				};
+
+				return Result.FromSuccess();
+			}
+
+			var guilds = subscription.GuildIds;
+
+			// TODO: should this return an error?
+			if(guilds.Contains(guildId)) return Result.FromSuccess();
+
+			var newGuilds = new string[guilds.Length + 1];
+			newGuilds[newGuilds.Length] = guildId;
+
+			subscription.GuildIds = newGuilds;
+
+			await _context.SaveChangesAsync();
+			return Result.FromSuccess();
+		}
+
+		public async Task<Result<(string, string[])[]>> GetSubscriptionsAsync()
+		{
+			if (await _context.YoutubeSubscriptions.AnyAsync())
+			{
+				return Result<(string, string[])[]>.FromSuccess(_context.YoutubeSubscriptions
+					.Select(subscription =>
+						new ValueTuple<string, string[]>(subscription.Id, subscription.GuildIds)
+					).ToArray());
+			}
+
+			return Result<(string, string[])[]>.FromSuccess(Array.Empty<(string, string[])>());
+		}
+
+		public async Task<Result> RemoveSubscriptionAsync(string channelId, string guildId)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
+			if (subscription is null || !subscription.GuildIds.Contains(guildId))
+			{
+				return Result.FromError();
+			}
+
+			subscription.GuildIds = subscription.GuildIds.Where(id => id != guildId).ToArray();
+			await _context.SaveChangesAsync();
+			return Result.FromSuccess();
+
+		}
+
 		public async Task<Result<(string, string)[]>> ExecuteSqlAsync(string query)
 		{
 			await using var command = _context.Database.GetDbConnection().CreateCommand();

@@ -87,7 +87,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	/**
 	 * Parses abilities to an embeddable format
-	 * @remark required to distuingish hidden abilities from regular abilities
+	 * @remark required to distinguish hidden abilities from regular abilities
 	 * @returns an array of abilities
 	 */
 	private getAbilities(abilitiesData: AbilitiesEntry): string[] {
@@ -114,7 +114,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	/**
-	 * Parses the evolution chain to an embeddable formaet
+	 * Parses the evolution chain to an embeddable format
 	 * @returns The evolution chain for the Pokémon
 	 */
 	private getEvoChain(pokeDetails: DexDetails): string {

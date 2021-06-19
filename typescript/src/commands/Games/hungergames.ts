@@ -4,11 +4,11 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { sleep } from '#utils/Promisified/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, isFunction } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
+import { setTimeout } from 'timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],
@@ -104,7 +104,8 @@ export class UserCommand extends SkyraCommand {
 					const verification = await new Promise<boolean>(async (res) => {
 						resolve = res;
 						if (autoSkip) {
-							await sleep((gameMessage!.content.length / 20) * 1000);
+							// eslint-disable-next-line @typescript-eslint/no-implied-eval
+							await setTimeout((gameMessage!.content.length / 20) * 1000);
 							res(true);
 						}
 					});

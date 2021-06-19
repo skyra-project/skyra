@@ -2,7 +2,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
-import { sleep } from '#utils/Promisified/sleep';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,6 +9,7 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import { setTimeout } from 'timers/promises';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -59,7 +59,8 @@ export class UserCommand extends SkyraCommand {
 	private async timedEval(message: Message, args: SkyraCommand.Args, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, args, code);
 		return Promise.race([
-			sleep(flagTime).then(() => ({
+			// eslint-disable-next-line @typescript-eslint/no-implied-eval
+			setTimeout(flagTime).then(() => ({
 				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',

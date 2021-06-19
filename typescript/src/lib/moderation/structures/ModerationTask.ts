@@ -1,6 +1,5 @@
 import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
-// @ts-expect-error This is a namespace + const enum import
-import { Moderation } from '#utils/constants';
+import type { SchemaKeys } from '#utils/moderationConstants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import type { Guild, User } from 'discord.js';
 
@@ -37,10 +36,10 @@ export abstract class ModerationTask<T = unknown> extends Task {
 }
 
 export interface ModerationData<T = unknown> {
-	[Moderation.SchemaKeys.Case]: number;
-	[Moderation.SchemaKeys.Guild]: string;
-	[Moderation.SchemaKeys.User]: string;
-	[Moderation.SchemaKeys.Duration]: number;
-	[Moderation.SchemaKeys.ExtraData]: T;
+	[SchemaKeys.Case]: number;
+	[SchemaKeys.Guild]: string;
+	[SchemaKeys.User]: string;
+	[SchemaKeys.Duration]: number;
+	[SchemaKeys.ExtraData]: T;
 	scheduleRetryCount?: number;
 }

@@ -1,5 +1,4 @@
-// @ts-expect-error This is a namespace+const enum import
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Actions, CommandCategoryTypes, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { readFile } from 'fs/promises';
@@ -77,11 +76,11 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {
-		return new Point(AnalyticsSchema.Points.Commands)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
-			.tag(AnalyticsSchema.Tags.MigrationName, this.constructor.name)
-			.tag(AnalyticsSchema.CommandCategoryTypes.Category, categoryData.category)
-			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, categoryData.subCategory)
+		return new Point(Points.Commands)
+			.tag(Tags.Action, Actions.Addition)
+			.tag(Tags.MigrationName, this.constructor.name)
+			.tag(CommandCategoryTypes.Category, categoryData.category)
+			.tag(CommandCategoryTypes.SubCategory, categoryData.subCategory)
 			.timestamp(this.migStart)
 			.intField(commandName.replace(/^time$/, 'case-time'), commandUsageAmount);
 	}
@@ -93,8 +92,8 @@ interface InfluxSummedCommandEntry {
 	_start: string;
 	_stop: string;
 	_field: string;
-	_measurement: AnalyticsSchema.Points.Commands;
-	action: AnalyticsSchema.Actions;
+	_measurement: Points.Commands;
+	action: Actions;
 	category: string;
 	client_id: string;
 	origin_event: string;

@@ -2,7 +2,8 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum, Moderation } from '#utils/constants';
+import { MessageLogsEnum } from '#utils/constants';
+import { TypeCodes } from '#utils/moderationConstants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
@@ -60,9 +61,9 @@ export class UserEvent extends Event {
 		}
 
 		return {
-			kicked: latestLogForUser.isType(Moderation.TypeCodes.Kick),
-			banned: latestLogForUser.isType(Moderation.TypeCodes.Ban),
-			softbanned: latestLogForUser.isType(Moderation.TypeCodes.SoftBan)
+			kicked: latestLogForUser.isType(TypeCodes.Kick),
+			banned: latestLogForUser.isType(TypeCodes.Ban),
+			softbanned: latestLogForUser.isType(TypeCodes.SoftBan)
 		};
 	}
 

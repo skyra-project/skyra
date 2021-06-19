@@ -2,8 +2,7 @@ import { GuildSettings, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
-// @ts-expect-error This is a namespace + const enum import
-import { Moderation } from '#utils/constants';
+import { TypeCodes } from '#utils/moderationConstants';
 import { floatPromise, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
@@ -24,7 +23,7 @@ export class UserModerationCommand extends ModerationCommand {
 		]);
 
 		const modlog = await message.guild.moderation.fetch(caseID);
-		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) {
+		if (!modlog || !modlog.isType(TypeCodes.Warning)) {
 			this.error(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
 

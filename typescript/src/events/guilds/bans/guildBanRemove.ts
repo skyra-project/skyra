@@ -1,6 +1,5 @@
 import { GuildSettings } from '#lib/database';
-// @ts-expect-error This is a namespace + const enum import
-import { Moderation } from '#utils/constants';
+import { TypeCodes } from '#utils/moderationConstants';
 import { Event } from '@sapphire/framework';
 import type { Guild, User } from 'discord.js';
 
@@ -12,7 +11,7 @@ export class UserEvent extends Event {
 			.create({
 				userID: user.id,
 				moderatorID: process.env.CLIENT_ID,
-				type: Moderation.TypeCodes.UnBan
+				type: TypeCodes.UnBan
 			})
 			.create();
 	}

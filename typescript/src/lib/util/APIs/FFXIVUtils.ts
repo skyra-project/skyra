@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-// @ts-expect-error This is a namespace + const enum import
-import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
+import { CharacterResult, CharacterSearchResult, ClassMap, ClassSubcategory, ItemSearchResult, SearchResponse } from '#lib/types';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { toTitleCase } from '@sapphire/utilities';
@@ -112,7 +111,7 @@ export async function getCharacterDetails(t: TFunction, id: number) {
 			].join(',')
 		);
 
-		return await fetch<FFXIV.CharacterResult>(
+		return await fetch<CharacterResult>(
 			url,
 			{
 				method: FetchMethods.Post,
@@ -135,7 +134,7 @@ export async function searchCharacter(t: TFunction, name: string, server?: strin
 			else throw t(LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer);
 		}
 
-		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(
+		return await fetch<SearchResponse<CharacterSearchResult>>(
 			url,
 			{
 				method: FetchMethods.Post,
@@ -153,7 +152,7 @@ export async function searchItem(t: TFunction, item: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/search`);
 
-		return await fetch<FFXIV.SearchResponse<FFXIV.ItemSearchResult>>(
+		return await fetch<SearchResponse<ItemSearchResult>>(
 			url,
 			{
 				method: FetchMethods.Post,
@@ -186,13 +185,13 @@ export async function searchItem(t: TFunction, item: string) {
 	}
 }
 
-export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
+export const FFXIVClasses = new Map<string, ClassMap>([
 	[
 		'CRP',
 		{
 			fullName: 'Carpenter',
 			emote: '<:Carpenter:668480887616438293>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -200,7 +199,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Blacksmith',
 			emote: '<:Blacksmith:668480886487908362>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -208,7 +207,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Armorer',
 			emote: '<:Armorer:668480883086458892>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -216,7 +215,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Goldsmith',
 			emote: '<:Goldsmith:668480921057361931>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -224,7 +223,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Leatherworker',
 			emote: '<:Leatherworker:668480922768769086>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -232,7 +231,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Weaver',
 			emote: '<:Weaver:668480964984307743>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -240,7 +239,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Alchemist',
 			emote: '<:Alchemist:668480881291427890>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -248,7 +247,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Culinarian',
 			emote: '<:Culinarian:668480889403080745>',
-			subcategory: FFXIV.ClassSubcategory.DoH
+			subcategory: ClassSubcategory.DoH
 		}
 	],
 	[
@@ -256,7 +255,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Miner',
 			emote: '<:Miner:668480924878503936>',
-			subcategory: FFXIV.ClassSubcategory.DoL
+			subcategory: ClassSubcategory.DoL
 		}
 	],
 	[
@@ -264,7 +263,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Botanist',
 			emote: '<:Botanist:668480886395895819>',
-			subcategory: FFXIV.ClassSubcategory.DoL
+			subcategory: ClassSubcategory.DoL
 		}
 	],
 	[
@@ -272,7 +271,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Fisher',
 			emote: '<:Fisher:668480891449770016>',
-			subcategory: FFXIV.ClassSubcategory.DoL
+			subcategory: ClassSubcategory.DoL
 		}
 	],
 	[
@@ -280,7 +279,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Gladiator',
 			emote: '<:Gladiator:668480892007874590>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -288,7 +287,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Paladin',
 			emote: '<:Paladin:668480928997441569>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -296,7 +295,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Marauder',
 			emote: '<:Marauder:668480923767144518>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -304,7 +303,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Warrior',
 			emote: '<:Warrior:668480962757394453>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -312,7 +311,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Dark Knight',
 			emote: '<:DarkKnight:668480889704939530>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -320,7 +319,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Gunbreaker',
 			emote: '<:Gunbreaker:668486588799516672>',
-			subcategory: FFXIV.ClassSubcategory.Tank
+			subcategory: ClassSubcategory.Tank
 		}
 	],
 	[
@@ -328,7 +327,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Conjurer',
 			emote: '<:Conjurer:668480888102846504>',
-			subcategory: FFXIV.ClassSubcategory.Healer
+			subcategory: ClassSubcategory.Healer
 		}
 	],
 	[
@@ -336,7 +335,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'White Mage',
 			emote: '<:WhiteMage:668480964988764180>',
-			subcategory: FFXIV.ClassSubcategory.Healer
+			subcategory: ClassSubcategory.Healer
 		}
 	],
 	[
@@ -344,7 +343,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Scholar',
 			emote: '<:Scholar:668480935104086036>',
-			subcategory: FFXIV.ClassSubcategory.Healer
+			subcategory: ClassSubcategory.Healer
 		}
 	],
 	[
@@ -352,7 +351,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Astrologian',
 			emote: '<:Astrologian:668480884579500105>',
-			subcategory: FFXIV.ClassSubcategory.Healer
+			subcategory: ClassSubcategory.Healer
 		}
 	],
 	[
@@ -360,7 +359,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Pugilist',
 			emote: '<:Pugilist:668480928997179415>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -368,7 +367,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Monk',
 			emote: '<:Monk:668480924752543747>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -376,7 +375,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Lancer',
 			emote: '<:Lancer:668480923397914634>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -384,7 +383,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Dragoon',
 			emote: '<:Dragoon:668480891026145281>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -392,7 +391,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Rogue',
 			emote: '<:Rogue:668482057164292115>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -400,7 +399,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Ninja',
 			emote: '<:Ninja:668480925063053332>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -408,7 +407,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Samurai',
 			emote: '<:Samurai:668480929538375711>',
-			subcategory: FFXIV.ClassSubcategory.MDPS
+			subcategory: ClassSubcategory.MDPS
 		}
 	],
 	[
@@ -416,7 +415,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Archer',
 			emote: '<:Archer:668480882713296908>',
-			subcategory: FFXIV.ClassSubcategory.PRDPS
+			subcategory: ClassSubcategory.PRDPS
 		}
 	],
 	[
@@ -424,7 +423,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Bard',
 			emote: '<:Bard:668480886349758465>',
-			subcategory: FFXIV.ClassSubcategory.PRDPS
+			subcategory: ClassSubcategory.PRDPS
 		}
 	],
 	[
@@ -432,7 +431,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Machinist',
 			emote: '<:Machinist:668480923032879135>',
-			subcategory: FFXIV.ClassSubcategory.PRDPS
+			subcategory: ClassSubcategory.PRDPS
 		}
 	],
 	[
@@ -440,7 +439,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Dancer',
 			emote: '<:Dancer:668575277349208064>',
-			subcategory: FFXIV.ClassSubcategory.PRDPS
+			subcategory: ClassSubcategory.PRDPS
 		}
 	],
 	[
@@ -448,7 +447,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Thaumaturge',
 			emote: '<:Thaumaturge:668480935448150037>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	],
 	[
@@ -456,7 +455,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Black Mage',
 			emote: '<:BlackMage:668480886106357794>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	],
 	[
@@ -464,7 +463,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Arcanist',
 			emote: '<:Arcanist:668480881148559371>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	],
 	[
@@ -472,7 +471,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Summoner',
 			emote: '<:Summoner:668480935100022805>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	],
 	[
@@ -480,7 +479,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Red Mage',
 			emote: '<:RedMage:668480929089454081>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	],
 	[
@@ -488,7 +487,7 @@ export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 		{
 			fullName: 'Blue Mage',
 			emote: '<:BlueMage:668480886232317962>',
-			subcategory: FFXIV.ClassSubcategory.MRDPS
+			subcategory: ClassSubcategory.MRDPS
 		}
 	]
 ]);

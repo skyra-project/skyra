@@ -82,7 +82,7 @@ export class UserCommand extends SkyraCommand {
 		try {
 			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
 
-			// @ts-expect-error 6133
+			// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const msg = message;
 			// eslint-disable-next-line no-eval

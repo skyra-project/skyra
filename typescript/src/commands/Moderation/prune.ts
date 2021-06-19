@@ -4,9 +4,9 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { andMix, BooleanFn } from '#utils/comparators';
-import { Moderation } from '#utils/constants';
 import { formatMessage } from '#utils/formatters';
 import { urlRegex } from '#utils/Links/UrlRegex';
+import { metadata, TypeCodes } from '#utils/moderationConstants';
 import { floatPromise, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
@@ -203,7 +203,7 @@ export class UserCommand extends SkyraCommand {
 		return Args.ok(position);
 	});
 
-	private static readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
+	private static readonly kColor = metadata.get(TypeCodes.Prune)!.color;
 	private static readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
 	private static readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private static readonly kCommandPrunePositions: Record<string, Position> = {

@@ -1,6 +1,5 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-// @ts-expect-error This is a namespace + const enum import
-import { Moderation } from '#utils/constants';
+import { SchemaKeys } from '#utils/moderationConstants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Event } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -29,11 +28,11 @@ export class UserEvent extends Event {
 				.add(taskName, entry.duration! + Date.now(), {
 					catchUp: true,
 					data: {
-						[Moderation.SchemaKeys.Case]: entry.caseID,
-						[Moderation.SchemaKeys.User]: entry.userID,
-						[Moderation.SchemaKeys.Guild]: entry.guildID,
-						[Moderation.SchemaKeys.Duration]: entry.duration,
-						[Moderation.SchemaKeys.ExtraData]: entry.extraData
+						[SchemaKeys.Case]: entry.caseID,
+						[SchemaKeys.User]: entry.userID,
+						[SchemaKeys.Guild]: entry.guildID,
+						[SchemaKeys.Duration]: entry.duration,
+						[SchemaKeys.ExtraData]: entry.extraData
 					}
 				})
 				.catch((error) => this.context.client.logger.fatal(error));

@@ -1,13 +1,12 @@
 import { envParseBoolean } from '#lib/env';
-// @ts-expect-error This is a namespace + const enum import
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Tags } from '#lib/types/AnalyticsSchema';
 import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 
 export abstract class AnalyticsEvent extends Event {
 	@enumerable(false)
-	public tags: [AnalyticsSchema.Tags, string][] = [];
+	public tags: [Tags, string][] = [];
 
 	public constructor(context: PieceContext, options?: EventOptions) {
 		super(context, { ...options, enabled: envParseBoolean('INFLUX_ENABLED') });
@@ -35,6 +34,6 @@ export abstract class AnalyticsEvent extends Event {
 	}
 
 	protected initTags() {
-		this.tags.push([AnalyticsSchema.Tags.Client, process.env.CLIENT_ID], [AnalyticsSchema.Tags.OriginEvent, this.event]);
+		this.tags.push([Tags.Client, process.env.CLIENT_ID], [Tags.OriginEvent, this.event]);
 	}
 }

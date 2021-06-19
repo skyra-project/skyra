@@ -1,7 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-// @ts-expect-error This is a namespace + const enum import
-import { Moderation } from '#utils/constants';
+import type { ModerationManagerDescriptionData } from '#utils/moderationConstants';
 import type { User } from 'discord.js';
 
 export interface ModerationAction {
@@ -154,15 +153,9 @@ export const ModerationOutputWithReason = FT<{ count: number; range: string | nu
 );
 export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation:caseNotExists');
 export const ModerationLogAppealed = T('moderation:logAppealed');
-export const ModerationLogDescriptionTypeAndUser = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
-	'moderation:logDescriptionTypeAndUser'
-);
-export const ModerationLogDescriptionWithReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
-	'moderation:logDescriptionWithReason'
-);
-export const ModerationLogDescriptionWithoutReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
-	'moderation:logDescriptionWithoutReason'
-);
+export const ModerationLogDescriptionTypeAndUser = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionTypeAndUser');
+export const ModerationLogDescriptionWithReason = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionWithReason');
+export const ModerationLogDescriptionWithoutReason = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionWithoutReason');
 export const GuildBansEmpty = T('errors:guildBansEmpty');
 export const GuildBansNotFound = T('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T('errors:guildMemberNotVoicechannel');

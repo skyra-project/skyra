@@ -4,7 +4,7 @@ import type { DbSet, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
-import type { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
@@ -94,7 +94,7 @@ declare module 'discord.js' {
 		emit(event: Events.MusicVoiceChannelLeave, queue: Queue): boolean;
 		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;
-		emit(event: Events.TwitchStreamHookedAnalytics, status: AnalyticsSchema.TwitchStreamStatus): boolean;
+		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 

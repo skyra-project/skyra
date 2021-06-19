@@ -1,9 +1,7 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-// @ts-expect-error This is a namespace + const enum import
-import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
+import { Character, ClassJob, ClassSubcategory, GuildMessage, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -64,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return searchResult.Results;
 	}
 
-	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: FFXIV.Character) {
+	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: Character) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -136,7 +134,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return display;
 	}
 
-	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: FFXIV.ItemSearchResult[]) {
+	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
@@ -155,7 +153,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return display;
 	}
 
-	private parseCharacterClasses(classJobs: FFXIV.ClassJob[]) {
+	private parseCharacterClasses(classJobs: ClassJob[]) {
 		const discipleOfTheHandJobs: EmbedField[] = [];
 		const discipleOfTheLandJobs: EmbedField[] = [];
 		const tankClassValues: string[] = [];
@@ -168,33 +166,33 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			const classDetails = FFXIVClasses.get(classJob.Job.Abbreviation)!;
 
 			switch (classDetails.subcategory) {
-				case FFXIV.ClassSubcategory.DoH:
+				case ClassSubcategory.DoH:
 					discipleOfTheHandJobs.push({
 						name: `${classDetails.emote} ${classDetails.fullName}`,
 						value: classJob.Level.toString(),
 						inline: true
 					});
 					break;
-				case FFXIV.ClassSubcategory.DoL:
+				case ClassSubcategory.DoL:
 					discipleOfTheLandJobs.push({
 						name: `${classDetails.emote} ${classDetails.fullName}`,
 						value: classJob.Level.toString(),
 						inline: true
 					});
 					break;
-				case FFXIV.ClassSubcategory.Tank:
+				case ClassSubcategory.Tank:
 					tankClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
-				case FFXIV.ClassSubcategory.Healer:
+				case ClassSubcategory.Healer:
 					healerClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
-				case FFXIV.ClassSubcategory.MDPS:
+				case ClassSubcategory.MDPS:
 					meleeDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
-				case FFXIV.ClassSubcategory.PRDPS:
+				case ClassSubcategory.PRDPS:
 					phRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
-				case FFXIV.ClassSubcategory.MRDPS:
+				case ClassSubcategory.MRDPS:
 					magRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 			}

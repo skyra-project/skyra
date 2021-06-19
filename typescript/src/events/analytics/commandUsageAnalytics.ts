@@ -1,6 +1,5 @@
 import { AnalyticsEvent } from '#lib/structures';
-// @ts-expect-error This is a namespace + const enum import
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Actions, CommandCategoryTypes, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,10 +10,10 @@ import type { EventOptions } from '@sapphire/framework';
 })
 export class UserAnalyticsEvent extends AnalyticsEvent {
 	public run(commandName: string, category: string, subCategory: string) {
-		const command = new Point(AnalyticsSchema.Points.Commands)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
-			.tag(AnalyticsSchema.CommandCategoryTypes.Category, category)
-			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, subCategory)
+		const command = new Point(Points.Commands)
+			.tag(Tags.Action, Actions.Addition)
+			.tag(CommandCategoryTypes.Category, category)
+			.tag(CommandCategoryTypes.SubCategory, subCategory)
 			.intField(commandName.replace(/^time$/, 'case-time'), 1);
 
 		return this.writePoint(command);

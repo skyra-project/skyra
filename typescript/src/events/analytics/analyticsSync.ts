@@ -1,7 +1,6 @@
 import type { DbSet } from '#lib/database';
 import { AnalyticsEvent } from '#lib/structures';
-// @ts-expect-error This is a namespace + const enum import
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Actions, EconomyType, EconomyValueType, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -19,8 +18,8 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 			this.syncGuilds(guilds),
 			this.syncUsers(users),
 			this.syncVoiceConnections(),
-			this.syncEconomy(economyHealth.total_money, AnalyticsSchema.EconomyType.Money),
-			this.syncEconomy(economyHealth.total_vault, AnalyticsSchema.EconomyType.Vault),
+			this.syncEconomy(economyHealth.total_money, EconomyType.Money),
+			this.syncEconomy(economyHealth.total_vault, EconomyType.Vault),
 			this.syncTwitchSubscriptions(twitchSubscriptionCount),
 			this.syncMessageCount()
 		]);
@@ -30,8 +29,8 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 
 	private syncGuilds(value: number) {
 		return (
-			new Point(AnalyticsSchema.Points.Guilds)
-				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			new Point(Points.Guilds)
+				.tag(Tags.Action, Actions.Sync)
 				// TODO: Adjust for traditional sharding
 				.intField('value', value)
 		);
@@ -39,8 +38,8 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 
 	private syncUsers(value: number) {
 		return (
-			new Point(AnalyticsSchema.Points.Users)
-				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			new Point(Points.Users)
+				.tag(Tags.Action, Actions.Sync)
 				// TODO: Adjust for traditional sharding
 				.intField('value', value)
 		);
@@ -48,24 +47,19 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 
 	private syncVoiceConnections() {
 		return (
-			new Point(AnalyticsSchema.Points.VoiceConnections)
-				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			new Point(Points.VoiceConnections)
+				.tag(Tags.Action, Actions.Sync)
 				// TODO: Adjust for traditional sharding
 				.intField('value', this.context.client.audio?.queues.reduce((acc, queue) => (queue.player.playing ? acc + 1 : acc), 0) ?? 0)
 		);
 	}
 
-	private syncEconomy(value: string, type: AnalyticsSchema.EconomyType) {
-		return new Point(AnalyticsSchema.Points.Economy)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			.tag(AnalyticsSchema.Tags.ValueType, AnalyticsSchema.EconomyValueType.Size)
-			.intField(type, Number(value));
+	private syncEconomy(value: string, type: EconomyType) {
+		return new Point(Points.Economy).tag(Tags.Action, Actions.Sync).tag(Tags.ValueType, EconomyValueType.Size).intField(type, Number(value));
 	}
 
 	private syncTwitchSubscriptions(value: number) {
-		return new Point(AnalyticsSchema.Points.TwitchSubscriptions)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			.intField('count', value);
+		return new Point(Points.TwitchSubscriptions).tag(Tags.Action, Actions.Sync).intField('count', value);
 	}
 
 	private syncMessageCount() {
@@ -73,8 +67,8 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 		const value = client.analytics!.messageCount;
 		client.analytics!.messageCount = 0;
 
-		return new Point(AnalyticsSchema.Points.MessageCount) //
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+		return new Point(Points.MessageCount) //
+			.tag(Tags.Action, Actions.Sync)
 			.intField('value', value);
 	}
 

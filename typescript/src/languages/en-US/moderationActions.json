@@ -23,7 +23,7 @@
 	"setNicknameNoReasonSet": "[Action] Set Nickname.",
 	"setNicknameRemoved": "[Action] Removed Nickname | Reason: {{reason}}",
 	"setNicknameSet": "[Action] Set Nickname | Reason: {{reason}}",
-	"setupMuteExists": "**Aborting mute role creation**: There is already one that exists.",
+	"setupMuteExists": "**Aborting creating muted**: There is already a role called \"Muted\".",
 	"setupRestrictionExists": "**Aborting restriction role creation**: There is already one that exists.",
 	"setupTooManyRoles": "**Aborting role creation**: There are 250 roles in this server, you need to delete one role.",
 	"sharedRoleSetupAsk": "{{LOADING}} Can I modify {{channels}} channel to apply the role {{role}} the following permission: {{permissions}}?",

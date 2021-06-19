@@ -1,6 +1,5 @@
-import { Serializer, TriggerAlias } from '#lib/database';
+import { Serializer, SerializerUpdateContext, TriggerAlias } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { UserError } from '@sapphire/framework';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<TriggerAlias> {
@@ -14,10 +13,10 @@ export class UserSerializer extends Serializer<TriggerAlias> {
 		return this.ok({ input: input.value, output: output.value.name });
 	}
 
-	public isValid(value: TriggerAlias): Awaited<boolean> {
+	public isValid(value: TriggerAlias, { t }: SerializerUpdateContext): Awaited<boolean> {
 		if (isObject(value) && Object.keys(value).length === 2 && typeof value.input === 'string' && typeof value.output === 'string') return true;
 
-		throw new UserError({ identifier: LanguageKeys.Serializers.TriggerAliasInvalid });
+		throw t(LanguageKeys.Serializers.TriggerAliasInvalid);
 	}
 
 	public equals(left: TriggerAlias, right: TriggerAlias): boolean {

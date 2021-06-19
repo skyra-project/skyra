@@ -2,7 +2,6 @@ import { parseAndValidate } from '#lib/customCommands';
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
-import { UserError } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<CustomCommand> {
@@ -16,11 +15,11 @@ export class UserSerializer extends Serializer<CustomCommand> {
 		}
 
 		if (value.id.length > 50) {
-			throw new UserError({ identifier: LanguageKeys.Commands.Tags.TagNameTooLong });
+			throw t(LanguageKeys.Commands.Tags.TagNameTooLong);
 		}
 
 		if (value.id.includes('`') || value.id.includes(ZeroWidthSpace)) {
-			throw new UserError({ identifier: LanguageKeys.Commands.Tags.TagNameNotAllowed });
+			throw t(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 		}
 
 		if (!Array.isArray(value.aliases) || value.aliases.some((alias) => typeof alias !== 'string')) {

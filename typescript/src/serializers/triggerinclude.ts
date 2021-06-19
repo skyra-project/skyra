@@ -1,6 +1,5 @@
 import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { UserError } from '@sapphire/framework';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<TriggerIncludes> {
@@ -18,7 +17,7 @@ export class UserSerializer extends Serializer<TriggerIncludes> {
 		return this.ok({ action: action.value as 'react', input: input.value, output: output.value });
 	}
 
-	public isValid(data: TriggerIncludes): Awaited<boolean> {
+	public isValid(data: TriggerIncludes, { t }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 3 &&
@@ -28,7 +27,7 @@ export class UserSerializer extends Serializer<TriggerIncludes> {
 		)
 			return true;
 
-		throw new UserError({ identifier: LanguageKeys.Serializers.TriggerIncludeInvalid });
+		throw t(LanguageKeys.Serializers.TriggerIncludeInvalid);
 	}
 
 	public equals(left: TriggerIncludes, right: TriggerIncludes): boolean {

@@ -1,6 +1,5 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { UserError } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
@@ -26,14 +25,13 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public validate(data: string, { entry }: SerializerUpdateContext) {
+	public validate(data: string, { entry, t }: SerializerUpdateContext) {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
-			if (hostname.length > 128)
-				throw new UserError({ identifier: LanguageKeys.Serializers.MinMaxMaxInclusive, context: { name: entry.name, max: 128 } });
+			if (hostname.length > 128) throw t(LanguageKeys.Serializers.MinMaxMaxInclusive, { name: entry.name, max: 128 });
 			return hostname;
 		} catch {
-			throw new UserError({ identifier: LanguageKeys.Serializers.InvalidUrl, context: { name: entry.name } });
+			throw t(LanguageKeys.Serializers.InvalidUrl, { name: entry.name });
 		}
 	}
 

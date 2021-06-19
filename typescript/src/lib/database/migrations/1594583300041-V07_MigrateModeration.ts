@@ -1,4 +1,4 @@
-import type { AnyObject } from '#lib/types';
+import { NonNullObject } from '@sapphire/utilities';
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class V07MigrateModeration1594583300041 implements MigrationInterface {
@@ -87,7 +87,7 @@ interface Moderation {
 	case_id: number;
 	created_at: string | null;
 	duration: number;
-	extra_data: unknown[] | AnyObject | null;
+	extra_data: unknown[] | NonNullObject | null;
 	guild_id: string;
 	moderator_id: string;
 	reason: string;

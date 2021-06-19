@@ -1,20 +1,20 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
-import type { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
+import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaited, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMessageEvent<T = unknown> extends Event {
-	private readonly keyEnabled: KeyOfType<GuildEntity, boolean>;
-	private readonly ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
-	private readonly ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
-	private readonly softPunishmentPath: KeyOfType<GuildEntity, number>;
+	private readonly keyEnabled: PickByValue<GuildEntity, boolean>;
+	private readonly ignoredRolesPath: PickByValue<GuildEntity, readonly string[]>;
+	private readonly ignoredChannelsPath: PickByValue<GuildEntity, readonly string[]>;
+	private readonly softPunishmentPath: PickByValue<GuildEntity, number>;
 	private readonly hardPunishmentPath: HardPunishment;
 	private readonly reasonLanguageKey: CustomGet<string, string>;
 	private readonly reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
@@ -205,18 +205,18 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 }
 
 export interface HardPunishment {
-	action: KeyOfType<GuildEntity, number>;
-	actionDuration: KeyOfType<GuildEntity, number | null>;
+	action: PickByValue<GuildEntity, number>;
+	actionDuration: PickByValue<GuildEntity, number | null>;
 	adder: AdderKey;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ModerationMessageEvent {
 	export interface Options extends EventOptions {
-		keyEnabled: KeyOfType<GuildEntity, boolean>;
-		ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
-		ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
-		softPunishmentPath: KeyOfType<GuildEntity, number>;
+		keyEnabled: PickByValue<GuildEntity, boolean>;
+		ignoredRolesPath: PickByValue<GuildEntity, readonly string[]>;
+		ignoredChannelsPath: PickByValue<GuildEntity, readonly string[]>;
+		softPunishmentPath: PickByValue<GuildEntity, number>;
 		hardPunishmentPath: HardPunishment;
 		reasonLanguageKey: CustomGet<string, string>;
 		reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;

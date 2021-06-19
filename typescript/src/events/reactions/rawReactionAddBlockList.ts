@@ -2,23 +2,22 @@ import { GuildEntity, GuildSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/moderation';
-import type { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from '@sapphire/framework';
+import { hasAtLeastOneKeyInMap, PickByValue } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 type ArgumentType = [LLRCData, string];
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> {
-	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
-	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
+	protected keyEnabled: PickByValue<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
+	protected softPunishmentPath: PickByValue<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,

@@ -25,22 +25,3 @@ export interface Difference<T = string> {
 	previous: T;
 	next: T;
 }
-
-export interface NonNullObject {}
-
-export type AnyObject = Record<PropertyKey, unknown> | NonNullObject;
-
-export type KeyOfType<T, V> = {
-	[P in keyof T]: T[P] extends V ? P : never;
-}[keyof T] &
-	keyof T;
-
-export type Mutable<T> = {
-	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | NonNullObject ? Mutable<T[P]> : T[P];
-};
-
-export type StrictRequired<T> = {
-	[P in keyof T]-?: NonNullable<T[P]>;
-};
-
-export type ArrayElementType<T> = T extends (infer K)[] ? K : T extends readonly (infer RK)[] ? RK : T;

@@ -3,9 +3,9 @@ import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraArgs } from '#lib/structures';
-import type { AnyObject, CustomGet } from '#lib/types';
+import type { CustomGet } from '#lib/types';
 import { Store } from '@sapphire/framework';
-import { isNullish } from '@sapphire/utilities';
+import { isNullish, NonNullObject } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import type { SchemaGroup } from './SchemaGroup';
 
@@ -43,7 +43,7 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 	/**
 	 * The class this targets.
 	 */
-	public target: AnyObject;
+	public target: NonNullObject;
 
 	/**
 	 * The type of the value this property accepts.

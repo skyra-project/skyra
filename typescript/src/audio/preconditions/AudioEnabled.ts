@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { Identifiers, Precondition } from '@sapphire/framework';
+import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
 export class UserPrecondition extends Precondition {

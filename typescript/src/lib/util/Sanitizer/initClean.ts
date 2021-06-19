@@ -1,5 +1,5 @@
-import { isNullishOrEmpty } from '#utils/comparators';
 import { initClean } from '#utils/Sanitizer/clean';
+import { isNullishOrEmpty } from '@sapphire/utilities';
 
 const secrets = new Set<string>();
 for (const [key, value] of Object.entries(process.env)) {

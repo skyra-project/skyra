@@ -1,9 +1,9 @@
 import { CommandMatcher, GuildSettings } from '#lib/database';
 import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
+import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageDelete })

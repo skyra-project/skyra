@@ -1,13 +1,14 @@
 import type { GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage, KeyOfType } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { Argument, PieceContext } from '@sapphire/framework';
+import type { PickByValue } from '@sapphire/utilities';
 import type { Role } from 'discord.js';
 import { ModerationCommand } from './ModerationCommand';
 
 export abstract class SetUpModerationCommand extends ModerationCommand {
-	public readonly roleKey: KeyOfType<GuildEntity, string | undefined | null>;
+	public readonly roleKey: PickByValue<GuildEntity, string | undefined | null>;
 	public readonly setUpKey: ModerationSetupRestriction;
 
 	public constructor(context: PieceContext, options: SetUpModerationCommand.Options) {
@@ -67,7 +68,7 @@ export namespace SetUpModerationCommand {
 	 * The ModerationCommand Options
 	 */
 	export interface Options extends ModerationCommand.Options {
-		roleKey: KeyOfType<GuildEntity, string | undefined | null>;
+		roleKey: PickByValue<GuildEntity, string | undefined | null>;
 		setUpKey: ModerationSetupRestriction;
 	}
 

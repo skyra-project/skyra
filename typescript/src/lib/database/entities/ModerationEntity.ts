@@ -2,13 +2,11 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
-import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { isNullishOrZero } from '#utils/comparators';
 import { Moderation, Time } from '#utils/constants';
 import { UserError } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
-import { isNumber, parseURL } from '@sapphire/utilities';
+import { isNullishOrZero, isNumber, NonNullObject, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { kBigIntTransformer } from '../utils/Transformers';
@@ -31,7 +29,7 @@ export class ModerationEntity extends BaseEntity {
 	public duration: number | null = null;
 
 	@Column('json', { nullable: true, default: () => 'null' })
-	public extraData: unknown[] | AnyObject | null = null;
+	public extraData: unknown[] | NonNullObject | null = null;
 
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID: string = null!;

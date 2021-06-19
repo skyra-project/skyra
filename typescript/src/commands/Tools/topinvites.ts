@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { Emojis } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { NonNullableProperties } from '@sapphire/utilities';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -76,6 +77,4 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 }
 
-type NonNullableInvite = {
-	[P in keyof Invite]: NonNullable<Invite[P]>;
-};
+type NonNullableInvite = NonNullableProperties<Invite>;

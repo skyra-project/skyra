@@ -3,9 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import type { KeyOfType } from '#lib/types/Utils';
 import { PieceContext } from '@sapphire/framework';
-import { codeBlock } from '@sapphire/utilities';
+import { codeBlock, PickByValue } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
@@ -300,12 +299,12 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	}
 
 	protected abstract $adder: AdderKey;
-	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
-	protected abstract keySoftAction: KeyOfType<GuildEntity, number>;
-	protected abstract keyHardAction: KeyOfType<GuildEntity, number | null>;
-	protected abstract keyHardActionDuration: KeyOfType<GuildEntity, number | null>;
-	protected abstract keyThresholdMaximum: KeyOfType<GuildEntity, number | null>;
-	protected abstract keyThresholdDuration: KeyOfType<GuildEntity, number | null>;
+	protected abstract keyEnabled: PickByValue<GuildEntity, boolean>;
+	protected abstract keySoftAction: PickByValue<GuildEntity, number>;
+	protected abstract keyHardAction: PickByValue<GuildEntity, number | null>;
+	protected abstract keyHardActionDuration: PickByValue<GuildEntity, number | null>;
+	protected abstract keyThresholdMaximum: PickByValue<GuildEntity, number | null>;
+	protected abstract keyThresholdDuration: PickByValue<GuildEntity, number | null>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

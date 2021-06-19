@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
 import { GuildEntity, GuildSettings } from '#lib/database';
 import { OWNERS } from '#root/config';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
+import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
 

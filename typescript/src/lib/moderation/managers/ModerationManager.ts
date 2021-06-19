@@ -1,10 +1,9 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
-import type { StrictRequired } from '#lib/types';
 import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
-import { isNullish } from '@sapphire/utilities';
+import { isNullish, StrictRequired } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
 

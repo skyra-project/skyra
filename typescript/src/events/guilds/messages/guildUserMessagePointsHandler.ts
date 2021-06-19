@@ -2,10 +2,10 @@ import { GuildEntity, GuildSettings } from '#lib/database';
 import { RateLimitManager } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildUserMessage })
 export class UserEvent extends Event {

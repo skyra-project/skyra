@@ -1,3 +1,5 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import type { ColorHandler } from './index';
 
 export class B10 implements ColorHandler {
@@ -13,7 +15,9 @@ export class B10 implements ColorHandler {
 	}
 
 	public check() {
-		if (this.value < 0 || this.value > 0xffffff) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
+		if (this.value < 0 || this.value > 0xffffff) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidBase10, context: { value: this.value } });
+		}
 	}
 
 	public get hex() {

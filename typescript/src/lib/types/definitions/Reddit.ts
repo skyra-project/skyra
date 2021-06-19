@@ -1,3 +1,5 @@
+import type { NonNullObject } from '@sapphire/utilities';
+
 export namespace Reddit {
 	export interface Response<K extends 'comments' | 'posts' | 'about'> {
 		kind: string;
@@ -242,7 +244,7 @@ export namespace Reddit {
 		Dark = 'dark'
 	}
 
-	export interface Gildings {}
+	export type Gildings = NonNullObject;
 
 	export enum PostHint {
 		Link = 'link'

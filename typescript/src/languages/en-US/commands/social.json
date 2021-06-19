@@ -53,7 +53,7 @@
 	"marryWith": "Dear, how could you forget it... You are currently married to {{users, andList}}!",
 	"marryNotTaken": "Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?",
 	"marrySkyra": "I am sorry, I know you love me, but I am already taken by a brave man I love 💞!",
-	"marryAelia": "In your dreams. She is my sister, I am not letting somebody harm her!",
+	"marrySister": "In your dreams. She is my sister, I am not letting somebody harm her!",
 	"marryBots": "Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!",
 	"marrySelf": "No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔",
 	"marryAuthorTaken": "You are already married. Is your love big enough for two people? <@{{author.id}}>, reply with **yes** to confirm!",

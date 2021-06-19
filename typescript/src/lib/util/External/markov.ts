@@ -17,7 +17,7 @@ export class Markov {
 		if (!currentWord) return '';
 
 		this.sentence = currentWord;
-		let word: WordBankValue | undefined = undefined;
+		let word: WordBankValue | undefined;
 		while (typeof (word = this.wordBank.get(currentWord)) !== 'undefined' && !this.endFn()) {
 			currentWord = pickByWeights(word)!;
 			this.sentence += ` ${currentWord}`;

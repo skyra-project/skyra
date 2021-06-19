@@ -21,6 +21,8 @@ export interface SkyraEnv {
 	CLIENT_PRESENCE_NAME: string;
 	CLIENT_PRESENCE_TYPE: string;
 
+	SISTER_CLIENTS: string;
+
 	API_ENABLED: BooleanString;
 	API_ORIGIN: string;
 	API_PORT: IntegerString;

@@ -43,7 +43,6 @@ namespace Skyra.Grpc.Services
 				: new UserPointsResult {Status = Status.Failed};
 		}
 
-
 		public override async Task<Result> ResetPoints(UserQuery request, ServerCallContext context)
 		{
 			var result = await _database.ResetUserPointsAsync(request.Id);

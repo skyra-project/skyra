@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
-import { sendLoadingMessage } from '#utils/util';
+import { sendLoadingMessage, wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
@@ -34,20 +34,20 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async fetchAPI(user: string, platform: PlatformUnion) {
-		try {
-			const fortniteUser = await fetch<Fortnite.FortniteUser>(
+		const result = await wrap(
+			fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
 				{ headers: { 'TRN-Api-Key': process.env.FORTNITE_TOKEN } },
 				FetchResultTypes.JSON
-			);
-
-			if (fortniteUser.error) throw 'err'; // This gets handled in the catch, no reason to get the proper error message here.
-			return fortniteUser;
-		} catch {
-			// Either when no user is found (response will have an error message)
-			// Or there was a server fault (no json will be returned)
+			)
+		);
+		if (!result.success) this.error(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
+		if (result.value.error) {
+			this.context.logger.fatal(`Fortnite[${platform}/${user}]: ${result.value.error}`);
 			this.error(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
+
+		return result.value;
 	}
 
 	private async buildDisplay(

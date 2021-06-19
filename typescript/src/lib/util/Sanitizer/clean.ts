@@ -25,7 +25,7 @@
  */
 import { regExpEsc } from '@sapphire/utilities';
 
-let sensitivePattern: string | RegExp | undefined = undefined;
+let sensitivePattern: string | RegExp;
 const zws = String.fromCharCode(8203);
 
 /**

@@ -90,7 +90,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: T
 
 	if (message.channel.attachable) _options.push('file');
 	if (!options.hastebinUnavailable) _options.push('hastebin');
-	let _choice: { content: string } | undefined = undefined;
+	let _choice: { content: string };
 	do {
 		_choice = await message.prompt(t(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options })).catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { OWNERS } from '#root/config';
+import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -20,6 +20,7 @@ import { join } from 'path';
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
+	private readonly reflectedUsers = OWNERS.concat(SISTER_CLIENTS).concat(process.env.CLIENT_ID);
 
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
@@ -27,15 +28,9 @@ export class UserCommand extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
 	}
 
-	public async generate(message: Message, user: User) {
-		let target: User | undefined = undefined;
-		let author: User | undefined = undefined;
-		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
-		if (user === message.author) [target, author] = [message.author, this.context.client.user!];
-		else if (OWNERS.concat(process.env.CLIENT_ID).includes(user.id)) [target, author] = [message.author, user];
-		else [target, author] = [user, message.author];
-
-		const [hammered, hammerer] = await Promise.all([fetchAvatar(target, 256), fetchAvatar(author, 256)]);
+	public async generate(message: Message, possibleTarget: User) {
+		const { target, user } = this.resolve(message, possibleTarget);
+		const [hammered, hammerer] = await Promise.all([fetchAvatar(target, 256), fetchAvatar(user, 256)]);
 
 		return (
 			new Canvas(650, 471)
@@ -60,5 +55,16 @@ export class UserCommand extends SkyraCommand {
 
 	public async onLoad() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/DeletThis.png'));
+	}
+
+	private resolve(message: Message, possibleTarget: User) {
+		const targetSelf = possibleTarget.id === message.author.id;
+		if (targetSelf) {
+			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.context.client.user! };
+			this.error(LanguageKeys.Commands.Misc.CannotTargetOwner);
+		}
+
+		if (this.reflectedUsers.includes(possibleTarget.id)) return { target: message.author, user: possibleTarget };
+		return { target: possibleTarget, user: message.author };
 	}
 }

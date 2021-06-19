@@ -6,7 +6,7 @@ import { BrandingColors } from '#utils/constants';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { roundNumber } from '@sapphire/utilities';
+import { NonNullObject, roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -78,6 +78,6 @@ export interface CryptoCompareResultError {
 	ParamWithError: string;
 }
 
-export interface CryptoCompareResultErrorData {}
+export type CryptoCompareResultErrorData = NonNullObject;
 
 export interface CryptoCompareResultOk extends Record<string, number> {}

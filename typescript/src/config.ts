@@ -26,6 +26,7 @@ config({
 });
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
+export const SISTER_CLIENTS = envParseArray('SISTER_CLIENTS');
 
 function parseAudio(): QueueClientOptions | undefined {
 	if (!envParseBoolean('REDIS_ENABLED', false)) return undefined;

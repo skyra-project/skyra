@@ -187,6 +187,7 @@
 	"afkResetSelf": "",
 	"afkSet": "",
 	"afkShowFooter": "",
+	"cannotTargetOwner": "",
 	"chaseDescription": "",
 	"chaseExtended": {
 		"usages": [

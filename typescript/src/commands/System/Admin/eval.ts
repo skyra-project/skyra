@@ -2,7 +2,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
-import { sleep } from '#utils/Promisified/sleep';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,6 +9,7 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import { setTimeout as sleep } from 'timers/promises';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommand.Options>({

@@ -4,11 +4,11 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { sleep } from '#utils/Promisified/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, isFunction } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
+import { setTimeout as sleep } from 'timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],

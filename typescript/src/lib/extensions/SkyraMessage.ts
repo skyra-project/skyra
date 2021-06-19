@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
-import { sleep } from '#utils/Promisified/sleep';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { I18nextChannelImplementation, I18nextImplemented, I18nextMessageImplementation } from '@sapphire/plugin-i18next';
 import { Time } from '@sapphire/time-utilities';
@@ -16,6 +15,7 @@ import {
 	Structures,
 	TextChannel
 } from 'discord.js';
+import { setTimeout as sleep } from 'timers/promises';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };

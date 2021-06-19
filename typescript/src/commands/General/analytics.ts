@@ -1,9 +1,9 @@
 import { envParseBoolean, envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Mime } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { Time } from '@sapphire/time-utilities';
 import { Message, MessageAttachment } from 'discord.js';
 
@@ -40,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 				envParseString('OUTFLUX_URL'),
 				{
 					headers: {
-						'Content-Type': Mime.Types.ImagePng
+						'Content-Type': MimeTypes.ImagePng
 					}
 				},
 				FetchResultTypes.Buffer

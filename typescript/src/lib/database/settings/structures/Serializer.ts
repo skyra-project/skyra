@@ -3,7 +3,7 @@ import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraArgs } from '#lib/structures';
-import { O } from '#utils/constants';
+import type { O } from '#utils/constants';
 import { AliasPiece, AliasPieceOptions, ArgumentError, UserError } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';

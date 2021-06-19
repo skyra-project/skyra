@@ -1,4 +1,4 @@
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -41,10 +41,10 @@ export class UserRoute extends Route {
 		const lengthStatus = data.length === 0;
 
 		if (lengthStatus) {
-			client.emit(Events.TwitchStreamHookedAnalytics, AnalyticsSchema.TwitchStreamStatus.Online);
+			client.emit(Events.TwitchStreamHookedAnalytics, TwitchStreamStatus.Online);
 			client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
-			client.emit(Events.TwitchStreamHookedAnalytics, AnalyticsSchema.TwitchStreamStatus.Offline);
+			client.emit(Events.TwitchStreamHookedAnalytics, TwitchStreamStatus.Offline);
 			client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
 

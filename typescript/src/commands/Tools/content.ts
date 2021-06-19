@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { formatAttachment, formatMessage } from '#utils/formatters';
 import { handleMessage } from '#utils/Parsers/ExceededLength';

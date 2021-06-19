@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { PreciseTimeout } from '#utils/PreciseTimeout';
-import { LockdownEntry } from '#utils/Security/GuildSecurity';
+import type { LockdownEntry } from '#utils/Security/GuildSecurity';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Permissions, Role, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';

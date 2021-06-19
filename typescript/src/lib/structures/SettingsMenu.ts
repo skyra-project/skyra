@@ -13,7 +13,7 @@ import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import * as Lexure from 'lexure';
 import { SkyraArgs } from './commands/parsers/SkyraArgs';
-import { SkyraCommand } from './commands/SkyraCommand';
+import type { SkyraCommand } from './commands/SkyraCommand';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;

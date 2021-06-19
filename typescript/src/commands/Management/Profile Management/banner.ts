@@ -173,7 +173,7 @@ export class UserCommand extends SkyraCommand {
 	private static readonly banners: Map<string, BannerCache> = new Map();
 
 	private static banner = Args.make<BannerCache>((parameter, { argument, commandContext }) => {
-		const banner = this.banners.get(parameter);
+		const banner = UserCommand.banners.get(parameter);
 		if (banner) return Args.ok(banner);
 
 		return Args.error({

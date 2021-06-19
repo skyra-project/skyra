@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LongWidthSpace } from '#utils/constants';
 import { requiresLevel } from '#utils/decorators';

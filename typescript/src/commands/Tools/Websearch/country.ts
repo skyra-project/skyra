@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';

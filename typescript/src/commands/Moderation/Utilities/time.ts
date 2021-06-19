@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Moderation } from '#utils/constants';
+import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
 		const task = this.context.schedule.queue.find(
-			(tk) => tk.data && tk.data[Moderation.SchemaKeys.Case] === entry.caseID && tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id
+			(tk) => tk.data && tk.data[SchemaKeys.Case] === entry.caseID && tk.data[SchemaKeys.Guild] === entry.guild.id
 		)!;
 
 		if (cancel) {
@@ -64,37 +64,37 @@ export class UserCommand extends SkyraCommand {
 
 	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {
 		switch (modlog.type) {
-			case Moderation.TypeCodes.FastTemporaryBan:
-			case Moderation.TypeCodes.TemporaryBan:
-			case Moderation.TypeCodes.Ban:
+			case TypeCodes.FastTemporaryBan:
+			case TypeCodes.TemporaryBan:
+			case TypeCodes.Ban:
 				return this.checkBan(message, user);
-			case Moderation.TypeCodes.FastTemporaryMute:
-			case Moderation.TypeCodes.TemporaryMute:
-			case Moderation.TypeCodes.Mute:
+			case TypeCodes.FastTemporaryMute:
+			case TypeCodes.TemporaryMute:
+			case TypeCodes.Mute:
 				return this.checkMute(message, user);
-			case Moderation.TypeCodes.FastTemporaryVoiceMute:
-			case Moderation.TypeCodes.TemporaryVoiceMute:
-			case Moderation.TypeCodes.VoiceMute:
+			case TypeCodes.FastTemporaryVoiceMute:
+			case TypeCodes.TemporaryVoiceMute:
+			case TypeCodes.VoiceMute:
 				return this.checkVMute(message, user);
-			case Moderation.TypeCodes.Warning:
-			case Moderation.TypeCodes.FastTemporaryWarning:
-			case Moderation.TypeCodes.TemporaryWarning:
+			case TypeCodes.Warning:
+			case TypeCodes.FastTemporaryWarning:
+			case TypeCodes.TemporaryWarning:
 			// TODO(kyranet): Add checks for restrictions
-			case Moderation.TypeCodes.RestrictionAttachment:
-			case Moderation.TypeCodes.FastTemporaryRestrictionAttachment:
-			case Moderation.TypeCodes.TemporaryRestrictionAttachment:
-			case Moderation.TypeCodes.RestrictionEmbed:
-			case Moderation.TypeCodes.FastTemporaryRestrictionEmbed:
-			case Moderation.TypeCodes.TemporaryRestrictionEmbed:
-			case Moderation.TypeCodes.RestrictionEmoji:
-			case Moderation.TypeCodes.FastTemporaryRestrictionEmoji:
-			case Moderation.TypeCodes.TemporaryRestrictionEmoji:
-			case Moderation.TypeCodes.RestrictionReaction:
-			case Moderation.TypeCodes.FastTemporaryRestrictionReaction:
-			case Moderation.TypeCodes.TemporaryRestrictionReaction:
-			case Moderation.TypeCodes.RestrictionVoice:
-			case Moderation.TypeCodes.FastTemporaryRestrictionVoice:
-			case Moderation.TypeCodes.TemporaryRestrictionVoice:
+			case TypeCodes.RestrictionAttachment:
+			case TypeCodes.FastTemporaryRestrictionAttachment:
+			case TypeCodes.TemporaryRestrictionAttachment:
+			case TypeCodes.RestrictionEmbed:
+			case TypeCodes.FastTemporaryRestrictionEmbed:
+			case TypeCodes.TemporaryRestrictionEmbed:
+			case TypeCodes.RestrictionEmoji:
+			case TypeCodes.FastTemporaryRestrictionEmoji:
+			case TypeCodes.TemporaryRestrictionEmoji:
+			case TypeCodes.RestrictionReaction:
+			case TypeCodes.FastTemporaryRestrictionReaction:
+			case TypeCodes.TemporaryRestrictionReaction:
+			case TypeCodes.RestrictionVoice:
+			case TypeCodes.FastTemporaryRestrictionVoice:
+			case TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
 				this.error(LanguageKeys.Commands.Moderation.TimeUnsupportedType);

@@ -1,4 +1,4 @@
-import { SkyraCommand } from '#lib/structures';
+import type { SkyraCommand } from '#lib/structures';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandSuccessPayload, Event, EventOptions } from '@sapphire/framework';

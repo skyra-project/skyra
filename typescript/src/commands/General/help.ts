@@ -1,7 +1,7 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
@@ -180,7 +180,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static categories = Args.make<number>(async (parameter, { argument, message }) => {
 		const lowerCasedParameter = parameter.toLowerCase();
-		const commandsByCategory = await this.fetchCommands(message);
+		const commandsByCategory = await UserCommand.fetchCommands(message);
 		for (const [page, category] of commandsByCategory.keyArray().entries()) {
 			// Add 1, since 1 will be subtracted later
 			if (category.toLowerCase() === lowerCasedParameter) return Args.ok(page + 1);

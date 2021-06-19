@@ -1,4 +1,4 @@
-import { ScheduleEntity } from '#lib/database';
+import type { ScheduleEntity } from '#lib/database';
 
 export const enum Month {
 	January = 1,

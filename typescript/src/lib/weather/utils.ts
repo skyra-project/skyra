@@ -4,7 +4,7 @@ import { wrap } from '#utils/util';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Store, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
-import { Image } from 'canvas';
+import type { Image } from 'canvas';
 import { resolveImage } from 'canvas-constructor';
 import { cyan, gray, red } from 'colorette';
 import type { TFunction } from 'i18next';

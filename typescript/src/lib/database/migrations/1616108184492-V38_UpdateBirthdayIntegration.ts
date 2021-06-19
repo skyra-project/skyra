@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class V38UpdateBirthdayIntegration1616108184492 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

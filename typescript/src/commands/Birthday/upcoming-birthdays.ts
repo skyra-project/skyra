@@ -1,10 +1,10 @@
 import { BirthdayScheduleEntity, getAge, getGuildBirthdays } from '#lib/birthday';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { reduce } from '#utils/iterator';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CommandContext } from '@sapphire/framework';
+import type { CommandContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

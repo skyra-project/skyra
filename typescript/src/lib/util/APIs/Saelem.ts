@@ -1,7 +1,7 @@
 import { envParseString } from '#lib/env';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import type { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
-import { Mime } from '../constants';
 import { gql } from '../util';
 
 export const getHoroscope = gql`
@@ -24,7 +24,7 @@ export async function fetchSaelem<R extends SaelemQueryReturnTypes>(query: strin
 			{
 				method: FetchMethods.Post,
 				headers: {
-					'Content-Type': Mime.Types.ApplicationJson
+					'Content-Type': MimeTypes.ApplicationJson
 				},
 				body: JSON.stringify({
 					query,

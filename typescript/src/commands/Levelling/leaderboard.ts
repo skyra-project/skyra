@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserLazyPaginatedMessage } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { LongWidthSpace } from '#utils/constants';
 import { skip, take } from '#utils/iterator';
 import type { LeaderboardUser } from '#utils/Leaderboard';

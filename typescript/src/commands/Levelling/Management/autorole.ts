@@ -151,16 +151,16 @@ export class UserCommand extends SkyraCommand {
 				argument,
 				parameter,
 				identifier: LanguageKeys.Commands.Social.AutoRoleTooLow,
-				context: { minimum: 1, maximum: this.maximumPoints, points }
+				context: { minimum: 1, maximum: UserCommand.maximumPoints, points }
 			});
 		}
 
-		if (points > this.maximumPoints) {
+		if (points > UserCommand.maximumPoints) {
 			return Args.error({
 				argument,
 				parameter,
 				identifier: LanguageKeys.Commands.Social.AutoRoleTooHigh,
-				context: { minimum: 1, maximum: this.maximumPoints, points }
+				context: { minimum: 1, maximum: UserCommand.maximumPoints, points }
 			});
 		}
 

@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageEmbedOptions, MessageOptions } from 'discord.js';
+import type { MessageEmbed, MessageEmbedOptions, MessageOptions } from 'discord.js';
 
 type EmbedResolvable = MessageOptions['embed'];
 

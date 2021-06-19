@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { pickRandom } from '#utils/util';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import type { BaseController } from './BaseController';
 import { BaseGame } from './BaseGame';
 

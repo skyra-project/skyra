@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Mime } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -16,7 +16,7 @@ export class UserCommand extends SkyraCommand {
 		try {
 			const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {
 				headers: {
-					Accept: Mime.Types.ApplicationJson
+					Accept: MimeTypes.ApplicationJson
 				}
 			});
 			return message.send(joke);

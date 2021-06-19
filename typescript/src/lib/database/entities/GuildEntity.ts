@@ -5,7 +5,7 @@ import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { Store } from '@sapphire/framework';
 import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
-import { Sentence } from '@skyra/tags';
+import type { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import type { IBaseEntity } from '../settings/base/IBaseEntity';

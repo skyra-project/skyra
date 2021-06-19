@@ -3,10 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
-import { Mime } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -30,8 +30,8 @@ function isIgdbCompany(company: unknown): company is Company {
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
-		'Content-Type': Mime.Types.TextPlain,
-		Accept: Mime.Types.ApplicationJson,
+		'Content-Type': MimeTypes.TextPlain,
+		Accept: MimeTypes.ApplicationJson,
 		'Client-ID': process.env.TWITCH_CLIENT_ID
 	};
 

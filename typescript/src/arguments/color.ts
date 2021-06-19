@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ColorHandler } from '#lib/structures';
+import type { ColorHandler } from '#lib/structures';
 import { parse } from '#utils/Color';
 import { Argument, ArgumentContext, AsyncArgumentResult } from '@sapphire/framework';
 

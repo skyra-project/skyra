@@ -2,7 +2,7 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraArgs } from '#lib/structures';
+import type { SkyraArgs } from '#lib/structures';
 import type { CustomGet } from '#lib/types';
 import { Store } from '@sapphire/framework';
 import { isNullish, NonNullObject } from '@sapphire/utilities';

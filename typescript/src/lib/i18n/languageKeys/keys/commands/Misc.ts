@@ -1,4 +1,4 @@
-import { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T, Value } from '#lib/types';
 
 export const AfkDescription = T('commands/misc:afkDescription');

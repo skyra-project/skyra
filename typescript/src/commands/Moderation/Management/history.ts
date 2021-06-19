@@ -1,10 +1,10 @@
-import { ModerationEntity } from '#lib/database';
+import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Moderation } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
+import { TypeVariation } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -35,17 +35,17 @@ export class UserCommand extends SkyraCommand {
 		for (const log of logs.values()) {
 			if (log.invalidated || log.appealType) continue;
 			switch (log.typeVariation) {
-				case Moderation.TypeVariation.Ban:
-				case Moderation.TypeVariation.SoftBan:
+				case TypeVariation.Ban:
+				case TypeVariation.SoftBan:
 					++bans;
 					break;
-				case Moderation.TypeVariation.Mute:
+				case TypeVariation.Mute:
 					++mutes;
 					break;
-				case Moderation.TypeVariation.Kick:
+				case TypeVariation.Kick:
 					++kicks;
 					break;
-				case Moderation.TypeVariation.Warning:
+				case TypeVariation.Warning:
 					++warnings;
 			}
 		}

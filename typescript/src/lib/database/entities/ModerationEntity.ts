@@ -3,7 +3,17 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import { Events } from '#lib/types/Enums';
-import { Moderation, Time } from '#utils/constants';
+import { Time } from '#utils/constants';
+import {
+	metadata,
+	ModerationManagerDescriptionData,
+	ModerationTypeAssets,
+	TypeBits,
+	TypeCodes,
+	TypeMetadata,
+	TypeVariation,
+	TypeVariationAppealNames
+} from '#utils/moderationConstants';
 import { UserError } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
 import { isNullishOrZero, isNumber, NonNullObject, parseURL } from '@sapphire/utilities';
@@ -92,8 +102,8 @@ export class ModerationEntity extends BaseEntity {
 	/**
 	 * Retrieve the metadata (title and color) for this entry.
 	 */
-	public get metadata(): Moderation.ModerationTypeAssets {
-		const data = Moderation.metadata.get(this.type! & ~Moderation.TypeMetadata.Invalidated);
+	public get metadata(): ModerationTypeAssets {
+		const data = metadata.get(this.type! & ~TypeMetadata.Invalidated);
 		if (typeof data === 'undefined') throw new Error(`Inexistent metadata for '0b${this.type!.toString(2).padStart(8, '0')}'.`);
 		return data;
 	}
@@ -129,7 +139,7 @@ export class ModerationEntity extends BaseEntity {
 		 * 0bXXXX0100 =
 		 * 0b00000100
 		 */
-		return (this.type! & Moderation.TypeBits.Variation) as Moderation.TypeVariation;
+		return (this.type! & TypeBits.Variation) as TypeVariation;
 	}
 
 	/**
@@ -142,31 +152,31 @@ export class ModerationEntity extends BaseEntity {
 		 * 0b0010XXXX =
 		 * 0b00100000
 		 */
-		return (this.type! & Moderation.TypeBits.Metadata) as Moderation.TypeMetadata;
+		return (this.type! & TypeBits.Metadata) as TypeMetadata;
 	}
 
 	public get appealType() {
-		return (this.type! & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
+		return (this.type! & TypeMetadata.Appeal) === TypeMetadata.Appeal;
 	}
 
 	public get temporaryType() {
-		return (this.type! & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
+		return (this.type! & TypeMetadata.Temporary) === TypeMetadata.Temporary;
 	}
 
 	public get temporaryFastType() {
-		return (this.type! & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
+		return (this.type! & TypeMetadata.Fast) === TypeMetadata.Fast;
 	}
 
 	public get invalidated() {
-		return (this.type! & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
+		return (this.type! & TypeMetadata.Invalidated) === TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return !this.appealType && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
+		return !this.appealType && metadata.has(this.typeVariation | TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
-		return Moderation.metadata.has(this.type! | Moderation.TypeMetadata.Temporary);
+		return metadata.has(this.type! | TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -180,30 +190,30 @@ export class ModerationEntity extends BaseEntity {
 	public get appealTaskName() {
 		if (!this.appealable) return null;
 		switch (this.typeVariation) {
-			case Moderation.TypeVariation.Warning:
-				return Moderation.TypeVariationAppealNames.Warning;
-			case Moderation.TypeVariation.Mute:
-				return Moderation.TypeVariationAppealNames.Mute;
-			case Moderation.TypeVariation.Ban:
-				return Moderation.TypeVariationAppealNames.Ban;
-			case Moderation.TypeVariation.VoiceMute:
-				return Moderation.TypeVariationAppealNames.VoiceMute;
-			case Moderation.TypeVariation.RestrictedAttachment:
-				return Moderation.TypeVariationAppealNames.RestrictedAttachment;
-			case Moderation.TypeVariation.RestrictedReaction:
-				return Moderation.TypeVariationAppealNames.RestrictedReaction;
-			case Moderation.TypeVariation.RestrictedEmbed:
-				return Moderation.TypeVariationAppealNames.RestrictedEmbed;
-			case Moderation.TypeVariation.RestrictedEmoji:
-				return Moderation.TypeVariationAppealNames.RestrictedEmoji;
-			case Moderation.TypeVariation.RestrictedVoice:
-				return Moderation.TypeVariationAppealNames.RestrictedVoice;
-			case Moderation.TypeVariation.SetNickname:
-				return Moderation.TypeVariationAppealNames.SetNickname;
-			case Moderation.TypeVariation.AddRole:
-				return Moderation.TypeVariationAppealNames.AddRole;
-			case Moderation.TypeVariation.RemoveRole:
-				return Moderation.TypeVariationAppealNames.RemoveRole;
+			case TypeVariation.Warning:
+				return TypeVariationAppealNames.Warning;
+			case TypeVariation.Mute:
+				return TypeVariationAppealNames.Mute;
+			case TypeVariation.Ban:
+				return TypeVariationAppealNames.Ban;
+			case TypeVariation.VoiceMute:
+				return TypeVariationAppealNames.VoiceMute;
+			case TypeVariation.RestrictedAttachment:
+				return TypeVariationAppealNames.RestrictedAttachment;
+			case TypeVariation.RestrictedReaction:
+				return TypeVariationAppealNames.RestrictedReaction;
+			case TypeVariation.RestrictedEmbed:
+				return TypeVariationAppealNames.RestrictedEmbed;
+			case TypeVariation.RestrictedEmoji:
+				return TypeVariationAppealNames.RestrictedEmoji;
+			case TypeVariation.RestrictedVoice:
+				return TypeVariationAppealNames.RestrictedVoice;
+			case TypeVariation.SetNickname:
+				return TypeVariationAppealNames.SetNickname;
+			case TypeVariation.AddRole:
+				return TypeVariationAppealNames.AddRole;
+			case TypeVariation.RemoveRole:
+				return TypeVariationAppealNames.RemoveRole;
 			default:
 				return null;
 		}
@@ -215,7 +225,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;
-		const checkSoftBan = type === Moderation.TypeVariation.Ban;
+		const checkSoftBan = type === TypeVariation.Ban;
 		for (const entry of this.#manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
 			if (this.userID !== entry.userID || before > entry.createdTimestamp) continue;
@@ -224,7 +234,7 @@ export class ModerationEntity extends BaseEntity {
 			if (type === entry.typeVariation) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
-			if (checkSoftBan && entry.type === Moderation.TypeCodes.SoftBan) return false;
+			if (checkSoftBan && entry.type === TypeCodes.SoftBan) return false;
 		}
 
 		// For all other cases, it should send
@@ -260,11 +270,9 @@ export class ModerationEntity extends BaseEntity {
 		return moderator;
 	}
 
-	public isType(type: Moderation.TypeCodes) {
+	public isType(type: TypeCodes) {
 		return (
-			this.type === type ||
-			this.type === (type | Moderation.TypeMetadata.Temporary) ||
-			this.type === (type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast)
+			this.type === type || this.type === (type | TypeMetadata.Temporary) || this.type === (type | TypeMetadata.Temporary | TypeMetadata.Fast)
 		);
 	}
 
@@ -287,7 +295,7 @@ export class ModerationEntity extends BaseEntity {
 		if (this.invalidated) return this;
 		const clone = this.clone();
 		try {
-			this.type! |= Moderation.TypeMetadata.Invalidated;
+			this.type! |= TypeMetadata.Invalidated;
 			await this.save();
 		} catch (error) {
 			this.type = clone.type;
@@ -306,7 +314,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const [prefix, t] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
-		const descriptionData: Moderation.ModerationManagerDescriptionData = {
+		const descriptionData: ModerationManagerDescriptionData = {
 			type: this.title,
 			userName: user.username,
 			userDiscriminator: user.discriminator,
@@ -403,7 +411,7 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public setType(value: Moderation.TypeCodes) {
+	public setType(value: TypeCodes) {
 		this.type = value;
 		return this;
 	}
@@ -435,9 +443,9 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	private static getTypeFlagsFromDuration(type: Moderation.TypeCodes, duration: number | null) {
-		if (duration === null) return type & ~(Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast);
-		if (duration < Time.Minute) return type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast;
-		return type | Moderation.TypeMetadata.Temporary;
+	private static getTypeFlagsFromDuration(type: TypeCodes, duration: number | null) {
+		if (duration === null) return type & ~(TypeMetadata.Temporary | TypeMetadata.Fast);
+		if (duration < Time.Minute) return type | TypeMetadata.Temporary | TypeMetadata.Fast;
+		return type | TypeMetadata.Temporary;
 	}
 }

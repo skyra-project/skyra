@@ -6,9 +6,10 @@ import type {
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
-import { Mime, Time } from '#utils/constants';
+import { Time } from '#utils/constants';
 import { enumerable } from '#utils/util';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { createHmac } from 'crypto';
 
 export const enum TwitchHooksAction {
@@ -45,9 +46,8 @@ export class Twitch {
 
 	@enumerable(false)
 	private readonly kTwitchRequestHeaders = {
-		'Content-Type': Mime.Types.ApplicationJson,
-		Accept: Mime.Types.ApplicationJson,
-		// eslint-disable-next-line @typescript-eslint/no-invalid-this
+		'Content-Type': MimeTypes.ApplicationJson,
+		Accept: MimeTypes.ApplicationJson,
 		'Client-ID': this.$clientID
 	};
 

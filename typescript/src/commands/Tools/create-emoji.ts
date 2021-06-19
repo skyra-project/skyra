@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmojiRegex } from '@sapphire/discord.js-utilities';

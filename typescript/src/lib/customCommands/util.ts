@@ -1,7 +1,7 @@
-import { CustomCommand } from '#lib/database';
+import type { CustomCommand } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
 import { InvalidTypeError } from './errors/InvalidTypeError';
 import { MissingArgumentsError } from './errors/MissingArgumentsError';

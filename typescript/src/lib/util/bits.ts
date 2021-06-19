@@ -1,4 +1,4 @@
-import { Constructor } from '@sapphire/utilities';
+import type { Constructor } from '@sapphire/utilities';
 import { GuildSystemChannelFlags } from 'discord-api-types/v8';
 import { BitField, Permissions, SystemChannelFlags } from 'discord.js';
 

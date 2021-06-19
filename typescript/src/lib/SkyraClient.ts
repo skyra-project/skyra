@@ -3,7 +3,7 @@ import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { SapphireClient, Store } from '@sapphire/framework';
-import { I18nContext } from '@sapphire/plugin-i18next';
+import type { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
 import { Message, Webhook } from 'discord.js';
 import Redis from 'ioredis';

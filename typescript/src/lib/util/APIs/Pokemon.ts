@@ -9,7 +9,7 @@ import type {
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
-import { Mime } from '../constants';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { gql } from '../util';
 
 const FlavorsFrament = gql`
@@ -304,7 +304,7 @@ export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(que
 			{
 				method: FetchMethods.Post,
 				headers: {
-					'Content-Type': Mime.Types.ApplicationJson
+					'Content-Type': MimeTypes.ApplicationJson
 				},
 				body: JSON.stringify({
 					query,

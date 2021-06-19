@@ -1,4 +1,4 @@
-import { NonNullObject } from '@sapphire/utilities';
+import type { NonNullObject } from '@sapphire/utilities';
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class V07MigrateModeration1594583300041 implements MigrationInterface {

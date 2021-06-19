@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CommandContext } from '@sapphire/framework';
+import type { CommandContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 const AELIA_ID = '338249781594030090';
 

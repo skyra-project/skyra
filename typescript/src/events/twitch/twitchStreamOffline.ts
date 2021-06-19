@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { floatPromise } from '#utils/util';
 import { Event } from '@sapphire/framework';
-import { ApiResponse } from '@sapphire/plugin-api';
+import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 

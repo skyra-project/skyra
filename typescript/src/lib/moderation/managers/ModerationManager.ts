@@ -143,7 +143,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	public insert(data: ModerationEntity): ModerationEntity;
 	public insert(data: ModerationEntity[]): Collection<number, ModerationEntity>;
 	public insert(data: ModerationEntity | ModerationEntity[]) {
-		// @ts-expect-error TypeScript is being brain-dead
+		// @ts-expect-error TypeScript does not read the overloaded `data` parameter correctly
 		return this._cache(data, CacheActions.Insert);
 	}
 

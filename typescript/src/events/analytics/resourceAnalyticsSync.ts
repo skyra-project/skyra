@@ -1,5 +1,5 @@
 import { AnalyticsEvent } from '#lib/structures';
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Actions, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -17,7 +17,7 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 	}
 
 	private syncPerCoreLoad() {
-		const point = new Point(AnalyticsSchema.Points.PerCoreCPULoad).tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
+		const point = new Point(Points.PerCoreCPULoad).tag(Tags.Action, Actions.Sync);
 
 		let index = 0;
 		for (const { times } of cpus()) point.floatField(`cpu_${index++}`, (times.user + times.nice + times.sys + times.irq) / times.idle);
@@ -28,8 +28,8 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 	private syncMem() {
 		// TODO: Adjust for traditional sharding
 		const usage = process.memoryUsage();
-		return new Point(AnalyticsSchema.Points.Memory)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+		return new Point(Points.Memory) //
+			.tag(Tags.Action, Actions.Sync)
 			.floatField('total', usage.heapTotal)
 			.floatField('used', usage.heapUsed);
 	}

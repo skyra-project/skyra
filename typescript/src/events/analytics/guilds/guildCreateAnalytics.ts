@@ -1,5 +1,5 @@
 import { AnalyticsEvent } from '#lib/structures';
-import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
+import { Actions, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,14 +9,14 @@ import type { Guild } from 'discord.js';
 @ApplyOptions<EventOptions>({ event: Events.GuildCreate })
 export class UserAnalyticsEvent extends AnalyticsEvent {
 	public run(guild: Guild) {
-		const guilds = new Point(AnalyticsSchema.Points.Guilds)
-			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
+		const guilds = new Point(Points.Guilds)
+			.tag(Tags.Shard, guild.shardID.toString())
+			.tag(Tags.Action, Actions.Addition)
 			// TODO: Adjust for traditional sharding
 			.intField('value', guild.client.guilds.cache.size);
-		const users = new Point(AnalyticsSchema.Points.Users)
-			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
+		const users = new Point(Points.Users)
+			.tag(Tags.Shard, guild.shardID.toString())
+			.tag(Tags.Action, Actions.Addition)
 			// TODO: Adjust for traditional sharding
 			.intField(
 				'value',

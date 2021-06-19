@@ -1,9 +1,9 @@
-import { ModerationEntity } from '#lib/database';
+import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Moderation } from '#utils/constants';
+import { TypeCodes } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -144,13 +144,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			case Type.Mute:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
+							entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
 			case Type.Warning:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
+							entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
 			case Type.All:
 				return target
 					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userID === target.id

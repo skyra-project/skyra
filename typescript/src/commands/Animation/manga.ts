@@ -3,10 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
-import { Mime } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -41,7 +41,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				{
 					method: FetchMethods.Post,
 					headers: {
-						'Content-Type': Mime.Types.ApplicationJson,
+						'Content-Type': MimeTypes.ApplicationJson,
 						'X-Algolia-API-Key': process.env.KITSU_TOKEN,
 						'X-Algolia-Application-Id': process.env.KITSU_ID
 					},

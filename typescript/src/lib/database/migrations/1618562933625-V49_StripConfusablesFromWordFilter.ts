@@ -1,5 +1,5 @@
 import { remove as removeConfusables } from 'confusables';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class V49StripConfusablesFromWordFilter1618562933625 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

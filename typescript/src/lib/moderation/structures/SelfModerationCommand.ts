@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PieceContext } from '@sapphire/framework';
+import type { PieceContext } from '@sapphire/framework';
 import { codeBlock, PickByValue } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';

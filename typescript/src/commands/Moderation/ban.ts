@@ -1,10 +1,10 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
-import { Moderation } from '#utils/constants';
+import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ArgumentTypes } from '@sapphire/utilities';
+import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['b'],
@@ -34,11 +34,11 @@ export class UserModerationCommand extends ModerationCommand {
 		);
 	}
 
-	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Unlock>['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
 		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;

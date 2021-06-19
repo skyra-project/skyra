@@ -1,7 +1,7 @@
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { LazyPaginatedMessage, MessageBuilder, MessagePage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
 import { Time } from '@sapphire/time-utilities';
-import { RESTPostAPIChannelMessageJSONBody } from 'discord-api-types/v6';
+import type { RESTPostAPIChannelMessageJSONBody } from 'discord-api-types/v6';
 import { APIMessage, MessageEmbed, MessageOptions, NewsChannel, TextChannel, User } from 'discord.js';
 import { applyTemplate } from './utils/templates';
 

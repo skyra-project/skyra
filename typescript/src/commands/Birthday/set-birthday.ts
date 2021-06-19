@@ -2,7 +2,7 @@ import { getDateFormat, getGuildMemberBirthday, monthOfYearContainsDay, nextBirt
 import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandContext } from '@sapphire/framework';
 import { isNullish, Nullish } from '@sapphire/utilities';

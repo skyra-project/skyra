@@ -37,7 +37,7 @@ async function ask(message: Message, list: readonly string[]) {
 	const promptFilter = (m: Message) =>
 		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null = null;
-	let n: number | undefined = undefined;
+	let n = NaN;
 	let attempts = 0;
 	do {
 		if (attempts !== 0) {

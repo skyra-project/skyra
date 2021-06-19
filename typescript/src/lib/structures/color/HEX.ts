@@ -1,3 +1,5 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import type { ColorHandler } from './index';
 
 export class HEX implements ColorHandler {
@@ -20,9 +22,15 @@ export class HEX implements ColorHandler {
 	}
 
 	public check() {
-		if (Number.isNaN(parseInt(this.r, 16))) throw `Invalid Red range. Must be between '00' and 'ff', and it is '${this.r}'`;
-		if (Number.isNaN(parseInt(this.g, 16))) throw `Invalid Green range. Must be between '00' and 'ff', and it is '${this.g}'`;
-		if (Number.isNaN(parseInt(this.b, 16))) throw `Invalid Blue range. Must be between '00' and 'ff', and it is '${this.b}'`;
+		if (Number.isNaN(parseInt(this.r, 16))) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidHexRed, context: { value: this.r } });
+		}
+		if (Number.isNaN(parseInt(this.g, 16))) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidHexGreen, context: { value: this.g } });
+		}
+		if (Number.isNaN(parseInt(this.b, 16))) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidHexBlue, context: { value: this.b } });
+		}
 	}
 
 	public get hex() {
@@ -44,7 +52,7 @@ export class HEX implements ColorHandler {
 	}
 
 	public toString() {
-		return String(`#${this.r}${this.g}${this.b}`);
+		return `#${this.r}${this.g}${this.b}`;
 	}
 }
 

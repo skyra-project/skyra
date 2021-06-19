@@ -72,12 +72,12 @@ export class UserCommand extends SkyraCommand {
 	// Eval the input
 	private async eval(message: Message, args: SkyraCommand.Args, code: string) {
 		const stopwatch = new Stopwatch();
-		let success: boolean | undefined = undefined;
-		let syncTime: string | undefined = undefined;
-		let asyncTime: string | undefined = undefined;
-		let result: unknown | undefined = undefined;
+		let success: boolean;
+		let syncTime = '';
+		let asyncTime = '';
+		let result: unknown;
 		let thenable = false;
-		let type: Type | undefined = undefined;
+		let type: Type;
 
 		try {
 			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
@@ -97,8 +97,8 @@ export class UserCommand extends SkyraCommand {
 			}
 			success = true;
 		} catch (error) {
-			if (!syncTime) syncTime = stopwatch.toString();
-			if (thenable && !asyncTime) asyncTime = stopwatch.toString();
+			if (!syncTime.length) syncTime = stopwatch.toString();
+			if (thenable && !asyncTime.length) asyncTime = stopwatch.toString();
 			if (!type!) type = new Type(error);
 			result = error;
 			success = false;
@@ -126,10 +126,10 @@ export class UserCommand extends SkyraCommand {
 
 	private async sql(sql: string) {
 		const stopwatch = new Stopwatch();
-		let success: boolean | undefined = undefined;
-		let time: string | undefined = undefined;
-		let result: unknown | undefined = undefined;
-		let type: Type | undefined = undefined;
+		let success: boolean;
+		let time: string;
+		let result: unknown;
+		let type: Type;
 
 		try {
 			result = await this.context.db.connection.query(sql);

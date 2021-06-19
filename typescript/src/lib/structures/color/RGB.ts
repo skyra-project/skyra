@@ -1,3 +1,5 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import type { ColorHandler } from './index';
 
 export class RGB implements ColorHandler {
@@ -20,9 +22,15 @@ export class RGB implements ColorHandler {
 	}
 
 	public check() {
-		if (this.r < 0 || this.r > 255) throw `Invalid Red range. Must be between 0 and 255, and it is ${this.r}`;
-		if (this.g < 0 || this.g > 255) throw `Invalid Green range. Must be between 0 and 255, and it is ${this.g}`;
-		if (this.b < 0 || this.b > 255) throw `Invalid Blue range. Must be between 0 and 255, and it is ${this.b}`;
+		if (this.r < 0 || this.r > 255) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidRgbRed, context: { value: this.r } });
+		}
+		if (this.g < 0 || this.g > 255) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidRgbGreen, context: { value: this.g } });
+		}
+		if (this.b < 0 || this.b > 255) {
+			throw new UserError({ identifier: LanguageKeys.Colors.InvalidRgbBlue, context: { value: this.b } });
+		}
 	}
 
 	public get hex() {
@@ -40,8 +48,8 @@ export class RGB implements ColorHandler {
 		const b = this.b / 255;
 		const max = Math.max(r, g, b);
 		const min = Math.min(r, g, b);
-		let h: number | undefined = undefined;
-		let s: number | undefined = undefined;
+		let h: number;
+		let s: number;
 		const l = (max + min) / 2;
 
 		if (max === min) {

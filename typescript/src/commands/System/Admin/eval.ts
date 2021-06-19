@@ -9,7 +9,7 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { setTimeout } from 'timers/promises';
+import { setTimeout as sleep } from 'timers/promises';
 import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -59,8 +59,7 @@ export class UserCommand extends SkyraCommand {
 	private async timedEval(message: Message, args: SkyraCommand.Args, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, args, code);
 		return Promise.race([
-			// eslint-disable-next-line @typescript-eslint/no-implied-eval
-			setTimeout(flagTime).then(() => ({
+			sleep(flagTime).then(() => ({
 				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',

@@ -15,7 +15,7 @@ import {
 	Structures,
 	TextChannel
 } from 'discord.js';
-import { setTimeout } from 'timers/promises';
+import { setTimeout as sleep } from 'timers/promises';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
@@ -109,8 +109,7 @@ export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) 
 		if (time === 0) return this.nukeNow();
 
 		const lastEditedTimestamp = this.editedTimestamp;
-		// eslint-disable-next-line @typescript-eslint/no-implied-eval
-		await setTimeout(time, undefined, undefined);
+		await sleep(time, undefined, undefined);
 		return !this.deleted && this.editedTimestamp === lastEditedTimestamp ? this.nukeNow() : (this as Message);
 	}
 

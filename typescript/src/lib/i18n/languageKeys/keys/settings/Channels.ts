@@ -1,7 +1,7 @@
 import { T } from '#lib/types';
 
-export * as Logs from './channels/Logs';
 export * as Ignore from './channels/Ignore';
+export * as Logs from './channels/Logs';
 
 export const Announcements = T<string>('settings:channelsAnnouncements');
 export const Farewell = T<string>('settings:channelsFarewell');

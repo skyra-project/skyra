@@ -466,6 +466,7 @@
 		],
 		"reminder": "You try to slap me and I'll slap you instead."
 	},
+	"slapOwner": "Oh no, I would never slap you, boss! You are far too precious <a:SkyraGlasses:735070572416991235>",
 	"snipeDescription": "Retrieve the last deleted message from a channel",
 	"snipeExtended": {
 		"extendedHelp": "This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them."

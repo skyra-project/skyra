@@ -104,6 +104,7 @@ export const ShipDescription = T<string>('commands/misc:shipDescription');
 export const ShipExtended = T<LanguageHelpDisplayOptions>('commands/misc:shipExtended');
 export const SlapDescription = T<string>('commands/misc:slapDescription');
 export const SlapExtended = T<LanguageHelpDisplayOptions>('commands/misc:slapExtended');
+export const SlapOwner = T<string>('commands/misc:slapOwner');
 export const SnipeDescription = T<string>('commands/misc:snipeDescription');
 export const SnipeEmpty = T<string>('commands/misc:snipeEmpty');
 export const SnipeExtended = T<LanguageHelpDisplayOptions>('commands/misc:snipeExtended');

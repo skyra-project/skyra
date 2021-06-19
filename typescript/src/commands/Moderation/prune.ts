@@ -195,7 +195,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static position = Args.make<Position>((parameter, { argument }) => {
-		const position = this.kCommandPrunePositions[parameter.toLowerCase()];
+		const position = UserCommand.kCommandPrunePositions[parameter.toLowerCase()];
 		if (typeof position === 'undefined') {
 			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Moderation.PruneInvalidPosition });
 		}

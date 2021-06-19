@@ -180,7 +180,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static categories = Args.make<number>(async (parameter, { argument, message }) => {
 		const lowerCasedParameter = parameter.toLowerCase();
-		const commandsByCategory = await this.fetchCommands(message);
+		const commandsByCategory = await UserCommand.fetchCommands(message);
 		for (const [page, category] of commandsByCategory.keyArray().entries()) {
 			// Add 1, since 1 will be subtracted later
 			if (category.toLowerCase() === lowerCasedParameter) return Args.ok(page + 1);

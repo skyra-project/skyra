@@ -1,10 +1,10 @@
 import * as GuildSettings from '#lib/database/keys/settings/All';
 import { SkyraCommand } from '#lib/structures';
 import { RateLimitManager } from '#lib/structures/external/ratelimit/RateLimitManager';
-import { hasAtLeastOneKeyInMap } from '#utils/comparators';
 import { createFunctionInhibitor } from '#utils/decorators';
 import { Store } from '@sapphire/pieces';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
+import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
 import { flattenGuild } from './ApiTransformers';

@@ -21,7 +21,7 @@ import {
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-// NOTE: DMChannel is not emitted in Discord v8, whenever we update to discord.js v13, this should be removed.
+// TODO: DMChannel is not emitted in Discord v8, whenever we update to discord.js v13, this should be removed.
 type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
 type Channel = DMChannel | GuildBasedChannel;
 

@@ -1,4 +1,4 @@
-import { isNullishOrEmpty } from '#utils/comparators';
+import { isNullishOrEmpty } from '@sapphire/utilities';
 import { SkyraEnv, SkyraEnvAny, SkyraEnvBoolean, SkyraEnvInteger, SkyraEnvString } from './types';
 
 export function envParseInteger(key: SkyraEnvInteger, defaultValue?: number): number {

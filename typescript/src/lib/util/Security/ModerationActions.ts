@@ -2,11 +2,9 @@ import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
-import type { KeyOfType } from '#lib/types';
-import { isNullishOrEmpty, isNullishOrZero } from '#utils/comparators';
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
-import { isNullish, Nullish } from '@sapphire/utilities';
+import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	DiscordAPIError,
@@ -664,7 +662,7 @@ export class ModerationActions {
 		return member?.voice.serverMute ?? false;
 	}
 
-	private async sharedRoleSetup(message: Message, key: RoleDataKey, path: KeyOfType<GuildEntity, string | Nullish>) {
+	private async sharedRoleSetup(message: Message, key: RoleDataKey, path: PickByValue<GuildEntity, string | Nullish>) {
 		const roleData = kRoleDataOptions.get(key)!;
 		const role = await this.guild.roles.create({
 			data: roleData,
@@ -860,25 +858,25 @@ export class ModerationActions {
 		return [...roles];
 	}
 
-	private async addStickyRestriction(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
+	private async addStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
 		return this.guild.stickyRoles.add(id, roleID);
 	}
 
-	private async addRestrictionRole(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
+	private async addRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
 		await api().guilds(this.guild.id).members(id).roles(roleID).put();
 	}
 
-	private async removeStickyRestriction(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
+	private async removeStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
 		return this.guild.stickyRoles.remove(id, roleID);
 	}
 
-	private async removeRestrictionRole(id: string, key: KeyOfType<GuildEntity, string | Nullish>) {
+	private async removeRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
 		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
 		try {

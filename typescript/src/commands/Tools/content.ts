@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { GuildMessage } from '#lib/types';
-import { isNullishOrEmpty } from '#utils/comparators';
 import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
 import { formatAttachment, formatMessage } from '#utils/formatters';
 import { handleMessage } from '#utils/Parsers/ExceededLength';
 import { getAllContent, getContent } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNullishOrEmpty } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
 const allPlain = ['all', 'all-plain', 'all-plain-text'];

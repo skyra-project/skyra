@@ -1,11 +1,10 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RateLimitManager } from '#lib/structures';
-import type { AnyObject } from '#lib/types';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { Store } from '@sapphire/framework';
-import { arrayStrictEquals } from '@sapphire/utilities';
+import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
 import { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
@@ -874,7 +873,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	/**
 	 * Gets the bare representation of the entity.
 	 */
-	public toJSON(): AnyObject {
+	public toJSON(): NonNullObject {
 		return Object.fromEntries(configurableKeys.map((v) => [v.property, this[v.property] ?? v.default]));
 	}
 

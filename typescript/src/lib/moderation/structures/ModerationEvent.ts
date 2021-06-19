@@ -1,6 +1,6 @@
 import type { GuildEntity } from '#lib/database';
-import type { KeyOfType } from '#lib/types/Utils';
 import { Event } from '@sapphire/framework';
+import { PickByValue } from '@sapphire/utilities';
 import type { Guild, MessageEmbed } from 'discord.js';
 import type { HardPunishment } from './ModerationMessageEvent';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
@@ -105,8 +105,8 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 		unlock();
 	}
 
-	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
-	protected abstract softPunishmentPath: KeyOfType<GuildEntity, number>;
+	protected abstract keyEnabled: PickByValue<GuildEntity, boolean>;
+	protected abstract softPunishmentPath: PickByValue<GuildEntity, number>;
 	protected abstract hardPunishmentPath: HardPunishment;
 	protected abstract preProcess(args: Readonly<V>): Promise<T | null> | T | null;
 	protected abstract onLog(args: Readonly<V>, value: T): unknown;

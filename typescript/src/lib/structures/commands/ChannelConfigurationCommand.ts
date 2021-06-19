@@ -1,15 +1,15 @@
 import type { GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
+import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Args, IArgument, PieceContext, Store } from '@sapphire/framework';
-import type { Nullish } from '@sapphire/utilities';
+import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	private readonly responseKey: CustomFunctionGet<string, { channel: string }, string>;
-	private readonly settingsKey: KeyOfType<GuildEntity, string | Nullish>;
+	private readonly settingsKey: PickByValue<GuildEntity, string | Nullish>;
 
 	public constructor(context: PieceContext, options: ChannelConfigurationCommand.Options) {
 		super(context, {
@@ -52,7 +52,7 @@ export namespace ChannelConfigurationCommand {
 	 */
 	export type Options = SkyraCommand.Options & {
 		responseKey: CustomFunctionGet<string, { channel: string }, string>;
-		settingsKey: KeyOfType<GuildEntity, string | Nullish>;
+		settingsKey: PickByValue<GuildEntity, string | Nullish>;
 	};
 
 	export type Args = SkyraCommand.Args;

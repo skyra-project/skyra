@@ -55,11 +55,16 @@ export class UserAnalyticsEvent extends AnalyticsEvent {
 	}
 
 	private syncEconomy(value: string, type: EconomyType) {
-		return new Point(Points.Economy).tag(Tags.Action, Actions.Sync).tag(Tags.ValueType, EconomyValueType.Size).intField(type, Number(value));
+		return new Point(Points.Economy) //
+			.tag(Tags.Action, Actions.Sync)
+			.tag(Tags.ValueType, EconomyValueType.Size)
+			.intField(type, Number(value));
 	}
 
 	private syncTwitchSubscriptions(value: number) {
-		return new Point(Points.TwitchSubscriptions).tag(Tags.Action, Actions.Sync).intField('count', value);
+		return new Point(Points.TwitchSubscriptions) //
+			.tag(Tags.Action, Actions.Sync)
+			.intField('count', value);
 	}
 
 	private syncMessageCount() {

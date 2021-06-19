@@ -40,7 +40,6 @@ export class UserCommand extends SkyraCommand {
 				envParseString('OUTFLUX_URL'),
 				{
 					headers: {
-						// TODO(favna): Change to MimeTypes.ImagePng when I added it to @sapphire/plugin-api
 						'Content-Type': MimeTypes.ImagePng
 					}
 				},

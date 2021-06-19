@@ -109,7 +109,7 @@ export class SkyraMessage extends I18nextImplemented(Structures.get('Message')) 
 		if (time === 0) return this.nukeNow();
 
 		const lastEditedTimestamp = this.editedTimestamp;
-		await sleep(time, undefined, undefined);
+		await sleep(time);
 		return !this.deleted && this.editedTimestamp === lastEditedTimestamp ? this.nukeNow() : (this as Message);
 	}
 

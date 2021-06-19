@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { Argument, PieceContext } from '@sapphire/framework';
-import { PickByValue } from '@sapphire/utilities';
+import type { PickByValue } from '@sapphire/utilities';
 import type { Role } from 'discord.js';
 import { ModerationCommand } from './ModerationCommand';
 

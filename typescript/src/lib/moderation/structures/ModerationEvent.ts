@@ -1,6 +1,6 @@
 import type { GuildEntity } from '#lib/database';
 import { Event } from '@sapphire/framework';
-import { PickByValue } from '@sapphire/utilities';
+import type { PickByValue } from '@sapphire/utilities';
 import type { Guild, MessageEmbed } from 'discord.js';
 import type { HardPunishment } from './ModerationMessageEvent';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';

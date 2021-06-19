@@ -4,16 +4,16 @@ function Remove-All-Containers {
 }
 
 function Show-Help {
-	Write-Output ""
-	Write-Output "Skyra Docker Control Script" -ForegroundColor blue
-	Write-Output ""
-	Write-Output "Usage" -ForegroundColor yellow
-	Write-Output "
+	Write-Host ""
+	Write-Host "Skyra Docker Control Script" -ForegroundColor blue
+	Write-Host ""
+	Write-Host "Usage" -ForegroundColor yellow
+	Write-Host "
 ./docker/docker.sh [COMMAND] [ARGS...]
 ./docker/docker.sh -h | --help"
-	Write-Output ""
-	Write-Output "Commands" -ForegroundColor yellow
-	Write-Output "
+	Write-Host ""
+	Write-Host "Commands" -ForegroundColor yellow
+	Write-Host "
 build		Builds a Docker image so it is prepped for running
 start		Starts a service in detached state
 stop		Stops a service

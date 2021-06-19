@@ -27,6 +27,7 @@ export const AfkReset = FT<{ user: string }>('commands/misc:afkReset');
 export const AfkResetSelf = T('commands/misc:afkResetSelf');
 export const AfkSet = T('commands/misc:afkSet');
 export const AfkShowFooter = T('commands/misc:afkShowFooter');
+export const CannotTargetOwner = T('commands/misc:cannotTargetOwner');
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
 export const ChaseExtended = T<LanguageHelpDisplayOptions>('commands/misc:chaseExtended');
 export const CuddleDescription = T<string>('commands/misc:cuddleDescription');

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { OWNERS } from '#root/config';
+import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -19,6 +19,7 @@ import { join } from 'path';
 })
 export class UserCommand extends SkyraCommand {
 	private KTemplate: Image = null!;
+	private readonly reflectedUsers = OWNERS.concat(SISTER_CLIENTS).concat(process.env.CLIENT_ID);
 
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
@@ -26,15 +27,9 @@ export class UserCommand extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'chase.png' }] });
 	}
 
-	public async generate(message: Message, user: User) {
-		let chased: User;
-		let chaser: User;
-		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
-		if (user === message.author) [chased, chaser] = [message.author, this.context.client.user!];
-		else if (OWNERS.concat(process.env.CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
-		else [chased, chaser] = [user, message.author];
-
-		const [chasedAvatar, chaserAvatar] = await Promise.all([fetchAvatar(chased, 128), fetchAvatar(chaser, 128)]);
+	public async generate(message: Message, possibleTarget: User) {
+		const { target, user } = this.resolve(message, possibleTarget);
+		const [chasedAvatar, chaserAvatar] = await Promise.all([fetchAvatar(target, 128), fetchAvatar(user, 128)]);
 
 		return (
 			new Canvas(569, 327)
@@ -60,5 +55,16 @@ export class UserCommand extends SkyraCommand {
 
 	public async onLoad() {
 		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
+	}
+
+	private resolve(message: Message, possibleTarget: User) {
+		const targetSelf = possibleTarget.id === message.author.id;
+		if (targetSelf) {
+			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.context.client.user! };
+			this.error(LanguageKeys.Commands.Misc.CannotTargetOwner);
+		}
+
+		if (this.reflectedUsers.includes(possibleTarget.id)) return { target: message.author, user: possibleTarget };
+		return { target: possibleTarget, user: message.author };
 	}
 }

@@ -1,4 +1,5 @@
 import { envParseString } from '#lib/env';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type {
 	Query,
 	QueryGetAbilityDetailsByFuzzyArgs,
@@ -9,6 +10,7 @@ import type {
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { gql } from '../util';
 
@@ -315,7 +317,7 @@ export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(que
 		);
 	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
-		throw 'query_failed';
+		throw new UserError({ identifier: LanguageKeys.System.QueryFail });
 	}
 }
 

@@ -187,6 +187,7 @@
 	"afkResetSelf": "Successfully set your AFK message to default.",
 	"afkSet": "Got it, see you soon!",
 	"afkShowFooter": "AFK Status",
+	"cannotTargetOwner": "Hey, you can't target to yourself, and I won't do that for you!",
 	"chaseDescription": "Get in here!",
 	"chaseExtended": {
 		"usages": [

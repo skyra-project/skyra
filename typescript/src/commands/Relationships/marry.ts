@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { SISTER_CLIENTS } from '#root/config';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
-
-const AELIA_ID = '338249781594030090';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldown: 30,
@@ -22,15 +21,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async marry(message: GuildMessage, t: TFunction, user: User) {
 		const { author } = message;
 
-		switch (user.id) {
-			case process.env.CLIENT_ID:
-				return message.send(t(LanguageKeys.Commands.Social.MarrySkyra));
-			case AELIA_ID:
-				return message.send(t(LanguageKeys.Commands.Social.MarryAelia));
-			case author.id:
-				return message.send(t(LanguageKeys.Commands.Social.MarrySelf));
-		}
-		if (user.bot) return message.send(t(LanguageKeys.Commands.Social.MarryBots));
+		if (user.id === author.id) this.error(LanguageKeys.Commands.Social.MarrySelf);
+		if (user.id === process.env.CLIENT_ID) this.error(LanguageKeys.Commands.Social.MarrySkyra);
+		if (SISTER_CLIENTS.includes(user.id)) this.error(LanguageKeys.Commands.Social.MarrySister);
+		if (user.bot) this.error(LanguageKeys.Commands.Social.MarryBots);
 
 		const { users, clients } = this.context.db;
 		const clientSettings = await clients.findOne(process.env.CLIENT_ID);

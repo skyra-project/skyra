@@ -1,5 +1,7 @@
 import { envParseString } from '#lib/env';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
 import type { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
 import { gql } from '../util';
@@ -35,7 +37,7 @@ export async function fetchSaelem<R extends SaelemQueryReturnTypes>(query: strin
 		);
 	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
-		throw 'query_failed';
+		throw new UserError({ identifier: LanguageKeys.System.QueryFail });
 	}
 }
 

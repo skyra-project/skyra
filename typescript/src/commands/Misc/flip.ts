@@ -119,5 +119,5 @@ export class UserCommand extends SkyraCommand {
 		['⁅', '⁆']
 	]);
 
-	private static readonly flipsFlipped = new Map([...UserCommand.flips.entries()].map(([key, value]) => [value, key]));
+	private static readonly flipsFlipped = new Map([...this.flips.entries()].map(([key, value]) => [value, key]));
 }

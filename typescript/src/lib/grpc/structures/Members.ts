@@ -1,6 +1,6 @@
 import { MemberClient } from '../generated/member_grpc_pb';
 import * as Member from '../generated/member_pb';
-import * as Shared from '../generated/shared_pb';
+import type * as Shared from '../generated/shared_pb';
 import { ClientHandler } from './base/ClientHandler';
 
 export class MemberHandler extends ClientHandler {

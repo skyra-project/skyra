@@ -1,7 +1,7 @@
 import { translate } from '#lib/i18n/translate';
-import { Events } from '#lib/types/Enums';
+import type { Events } from '#lib/types/Enums';
 import { CommandDeniedPayload, Event, UserError } from '@sapphire/framework';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 export class UserEvent extends Event<Events.CommandDenied> {
 	public async run(error: UserError, { message, command }: CommandDeniedPayload) {

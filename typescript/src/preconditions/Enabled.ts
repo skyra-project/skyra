@@ -1,5 +1,5 @@
 import { CommandMatcher, GuildEntity, GuildSettings } from '#lib/database';
-import { SkyraCommand } from '#lib/structures';
+import type { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, Identifiers, Precondition } from '@sapphire/framework';

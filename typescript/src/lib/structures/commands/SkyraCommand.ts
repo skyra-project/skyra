@@ -3,7 +3,7 @@ import type { CustomGet } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Awaited, CommandContext, PermissionsPrecondition, PieceContext, PreconditionEntryResolvable, UserError } from '@sapphire/framework';
 import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
-import { Message, PermissionResolvable } from 'discord.js';
+import type { Message, PermissionResolvable } from 'discord.js';
 import * as Lexure from 'lexure';
 import { sep } from 'path';
 import { SkyraArgs } from './parsers/SkyraArgs';

@@ -1,8 +1,8 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
-import { Mime, Time } from '#utils/constants';
+import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { ApiRequest, ApiResponse, HttpCodes, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
 import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
 import { stringify } from 'querystring';
 
@@ -66,7 +66,7 @@ export class UserRoute extends Route {
 						scope: server.auth!.scopes
 					}),
 					headers: {
-						'Content-Type': Mime.Types.ApplicationFormUrlEncoded
+						'Content-Type': MimeTypes.ApplicationFormUrlEncoded
 					}
 				},
 				FetchResultTypes.JSON

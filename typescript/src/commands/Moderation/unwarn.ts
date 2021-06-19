@@ -2,6 +2,7 @@ import { GuildSettings, ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { floatPromise, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

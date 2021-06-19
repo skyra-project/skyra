@@ -1,7 +1,7 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';

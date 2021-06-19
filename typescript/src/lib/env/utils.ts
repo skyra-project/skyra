@@ -1,5 +1,5 @@
 import { isNullishOrEmpty } from '@sapphire/utilities';
-import { SkyraEnv, SkyraEnvAny, SkyraEnvBoolean, SkyraEnvInteger, SkyraEnvString } from './types';
+import type { SkyraEnv, SkyraEnvAny, SkyraEnvBoolean, SkyraEnvInteger, SkyraEnvString } from './types';
 
 export function envParseInteger(key: SkyraEnvInteger, defaultValue?: number): number {
 	const value = process.env[key];

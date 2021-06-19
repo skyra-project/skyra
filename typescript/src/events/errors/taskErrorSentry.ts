@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import type { TaskErrorPayload } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import type { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event } from '@sapphire/framework';
 import { captureException } from '@sentry/minimal';

@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+// @ts-expect-error This is a namespace + const enum import
 import { FFXIV } from '#lib/types/definitions/FFXIVTypings';
-import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { toTitleCase } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -82,7 +83,7 @@ const FFXIV_PAYLOAD = JSON.stringify({
 	private_key: process.env.XIVAPI_TOKEN
 });
 const FFXIV_HEADERS = {
-	'Content-Type': Mime.Types.ApplicationJson
+	'Content-Type': MimeTypes.ApplicationJson
 };
 
 export async function getCharacterDetails(t: TFunction, id: number) {

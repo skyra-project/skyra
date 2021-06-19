@@ -2,6 +2,7 @@ import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';

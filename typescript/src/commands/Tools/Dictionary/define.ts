@@ -2,10 +2,10 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Mime } from '#utils/constants';
 import { IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -61,7 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		try {
 			return await fetch<OwlbotResultOk>(
 				`https://owlbot.info/api/v4/dictionary/${encodeURIComponent(word.toLowerCase())}`,
-				{ headers: { Accept: Mime.Types.ApplicationJson, Authorization: `Token ${process.env.OWLBOT_TOKEN}` } },
+				{ headers: { Accept: MimeTypes.ApplicationJson, Authorization: `Token ${process.env.OWLBOT_TOKEN}` } },
 				FetchResultTypes.JSON
 			);
 		} catch {

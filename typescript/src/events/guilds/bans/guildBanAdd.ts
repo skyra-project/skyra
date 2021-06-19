@@ -1,4 +1,5 @@
 import { GuildSettings } from '#lib/database';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { Event } from '@sapphire/framework';
 import type { Guild, User } from 'discord.js';

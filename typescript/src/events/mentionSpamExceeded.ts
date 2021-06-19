@@ -2,6 +2,7 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { Event } from '@sapphire/framework';
 

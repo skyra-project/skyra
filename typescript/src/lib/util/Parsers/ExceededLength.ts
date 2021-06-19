@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
 	message: Message,

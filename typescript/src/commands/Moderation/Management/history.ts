@@ -1,8 +1,9 @@
-import { ModerationEntity } from '#lib/database';
+import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';

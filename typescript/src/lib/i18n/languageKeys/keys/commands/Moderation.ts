@@ -1,5 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import type { User } from 'discord.js';
 

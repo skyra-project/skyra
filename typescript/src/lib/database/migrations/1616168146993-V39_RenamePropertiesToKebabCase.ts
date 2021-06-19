@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class V39RenamePropertiesToKebabCase1616168146993 implements MigrationInterface {
 	private readonly keys: readonly [previous: string, next: string][] = [

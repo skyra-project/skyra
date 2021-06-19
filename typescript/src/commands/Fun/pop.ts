@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { Colors } from '#lib/types/Constants';
 import { random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Argument } from '@sapphire/framework';
+import type { Argument } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { Message, MessageEmbed } from 'discord.js';
 

@@ -20,7 +20,7 @@ import { Args, Store } from '@sapphire/framework';
 import { chunk } from '@sapphire/utilities';
 import { Guild, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { EntityManager } from 'typeorm';
+import type { EntityManager } from 'typeorm';
 
 type Streamer = TwitchHelixUsersSearchResult;
 type Status = NotificationsStreamsTwitchEventStatus;

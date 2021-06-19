@@ -1,7 +1,7 @@
 import type { SkyraCommand } from '#lib/structures';
 import { Args, CommandContext, isOk, Result, UserError } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import type { Args as LexureArgs } from 'lexure';
 
 export class SkyraArgs extends Args {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Colors } from '#lib/types/Constants';
-import { PostProcessorModule } from 'i18next';
+import type { PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..', '..');
@@ -273,15 +273,6 @@ export namespace Moderation {
 
 	export interface Unlock {
 		unlock(): void;
-	}
-}
-
-export namespace Mime {
-	export const enum Types {
-		ApplicationJson = 'application/json',
-		ApplicationFormUrlEncoded = 'application/x-www-form-urlencoded',
-		TextPlain = 'text/plain',
-		ImagePng = 'image/png'
 	}
 }
 

@@ -1,7 +1,7 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { Mime } from '#utils/constants';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';
 import { Constants } from 'discord.js';
 
@@ -85,7 +85,7 @@ export class UserTask extends Task {
 				url,
 				{
 					body,
-					headers: { 'content-type': Mime.Types.ApplicationJson, authorization: token },
+					headers: { 'content-type': MimeTypes.ApplicationJson, authorization: token },
 					method: 'POST'
 				},
 				FetchResultTypes.Result

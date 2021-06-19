@@ -1,5 +1,5 @@
 import * as GuildSettings from '#lib/database/keys/settings/All';
-import { SkyraCommand } from '#lib/structures';
+import type { SkyraCommand } from '#lib/structures';
 import { RateLimitManager } from '#lib/structures/external/ratelimit/RateLimitManager';
 import { createFunctionInhibitor } from '#utils/decorators';
 import { Store } from '@sapphire/pieces';

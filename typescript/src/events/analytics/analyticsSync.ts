@@ -1,5 +1,6 @@
-import { DbSet } from '#lib/database';
+import type { DbSet } from '#lib/database';
 import { AnalyticsEvent } from '#lib/structures';
+// @ts-expect-error This is a namespace + const enum import
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';

@@ -1,6 +1,6 @@
 import { getFromID } from '#lib/customCommands';
 import { GuildSettings } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { Event, Events, UnknownCommandPayload } from '@sapphire/framework';
 
 export class UserEvent extends Event<Events.UnknownCommand> {

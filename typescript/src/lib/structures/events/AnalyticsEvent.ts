@@ -1,4 +1,5 @@
 import { envParseBoolean } from '#lib/env';
+// @ts-expect-error This is a namespace + const enum import
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';

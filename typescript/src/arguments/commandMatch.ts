@@ -1,6 +1,6 @@
 import { CommandMatcher } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import type { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { OWNERS } from '#root/config';
 import { Argument, ArgumentContext } from '@sapphire/framework';

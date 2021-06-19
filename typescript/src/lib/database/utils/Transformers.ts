@@ -1,6 +1,6 @@
 import { ensure } from '#lib/customCommands';
 import { isNullish } from '@sapphire/utilities';
-import { ValueTransformer } from 'typeorm';
+import type { ValueTransformer } from 'typeorm';
 import type { CustomCommand } from '../entities/GuildEntity';
 
 export const kBigIntTransformer: ValueTransformer = {

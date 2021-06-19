@@ -2,7 +2,7 @@ import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildE
 import { GuildSettings } from '#lib/database/keys';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import type { SkyraCommand } from '#lib/structures';
 import Collection from '@discordjs/collection';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role, User } from 'discord.js';

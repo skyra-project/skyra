@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraArgs } from '#lib/structures';
-import { GuildMessage } from '#lib/types';
+import type { SkyraArgs } from '#lib/structures';
+import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
 import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';

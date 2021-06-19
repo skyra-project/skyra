@@ -1,4 +1,5 @@
 import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import type { Guild, User } from 'discord.js';

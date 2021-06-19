@@ -1,3 +1,4 @@
+// @ts-expect-error This is a namespace + const enum import
 import { AnalyticsSchema } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';

@@ -1,4 +1,5 @@
 import { GuildSettings, ModerationEntity } from '#lib/database';
+// @ts-expect-error This is a namespace + const enum import
 import { Moderation } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Event } from '@sapphire/framework';

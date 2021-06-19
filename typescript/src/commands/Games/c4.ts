@@ -5,7 +5,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { User } from 'discord.js';
+import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],

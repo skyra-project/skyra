@@ -106,6 +106,7 @@
 	"resolutions": {
 		"acorn": "^8.4.0",
 		"chalk": "^4.1.1",
+		"diff": "^5.0.0",
 		"jest-environment-jsdom": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"jest-jasmine2": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"lodash": "^4.17.21",

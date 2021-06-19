@@ -410,6 +410,5 @@ namespace Skyra.IntegrationTests.Grpc
 			Assert.AreEqual(Status.Success, getResult.Status, "GetMoney() failed.");
 			Assert.AreEqual(amount, getResult.Amount);
 		}
-
 	}
 }

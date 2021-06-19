@@ -19,7 +19,7 @@ function Step-Main {
 			unit {
 				Invoke-Expression -Command "dotnet test ${SERVICES_PATH}\Skyra.UnitTests"
 			}
-			default { Write-Host "Unknown Command." -ForegroundColor Red }
+			default { Write-Output "Unknown Command." -ForegroundColor Red }
 		}
 	}
 }
@@ -35,13 +35,13 @@ function RunTests {
 	$job = & dotnet run -p $SERVICES_PATH\Skyra.Grpc -c Release &
 
 	do {
-		Write-Host "waiting..."
+		Write-Output "waiting..."
 		Start-Sleep 3
 	} until(($job | Receive-Job).JobStateInfo.State -ne [JobStateInfo]::Running && Test-NetConnection localhost -Port 8291 | Where-Object { $_.TcpTestSucceeded })
 
 	if(($job | Receive-Job).JobStateInfo.State -ne [JobStateInfo]::Running) {
-		Write-Host Grpc service quit unexpectedly. -ForegroundColor Red
-		Write-Host $job.ChildJobs[0].Output -ForegroundColor Red
+		Write-Output Grpc service quit unexpectedly. -ForegroundColor Red
+		Write-Output $job.ChildJobs[0].Output -ForegroundColor Red
 
 		$job | Stop-Job
 		$job | Remove-Job

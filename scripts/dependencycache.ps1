@@ -18,7 +18,7 @@ Function Step-Main {
 					}
 				}
             }
-            default { Write-Host "Unrecognized command, please try again" -ForegroundColor Red }
+            default { Write-Output "Unrecognized command, please try again" -ForegroundColor Red }
         }
     }
 }

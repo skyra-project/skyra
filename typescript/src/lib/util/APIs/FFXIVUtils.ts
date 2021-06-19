@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CharacterResult, CharacterSearchResult, ClassMap, ClassSubcategory, ItemSearchResult, SearchResponse } from '#lib/types';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
+import { UserError } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
 export const FFXIVServers = [
@@ -85,7 +85,7 @@ const FFXIV_HEADERS = {
 	'Content-Type': MimeTypes.ApplicationJson
 };
 
-export async function getCharacterDetails(t: TFunction, id: number) {
+export async function getCharacterDetails(id: number) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/${id}`);
 		url.searchParams.append('extended', '1');
@@ -121,17 +121,17 @@ export async function getCharacterDetails(t: TFunction, id: number) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		throw new UserError({ identifier: LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound });
 	}
 }
 
-export async function searchCharacter(t: TFunction, name: string, server?: string) {
+export async function searchCharacter(name: string, server?: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);
 		if (server) {
 			if (FFXIVServers.includes(server.toLowerCase())) url.searchParams.append('server', toTitleCase(server));
-			else throw t(LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer);
+			else throw new UserError({ identifier: LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer });
 		}
 
 		return await fetch<SearchResponse<CharacterSearchResult>>(
@@ -144,11 +144,11 @@ export async function searchCharacter(t: TFunction, name: string, server?: strin
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		throw new UserError({ identifier: LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound });
 	}
 }
 
-export async function searchItem(t: TFunction, item: string) {
+export async function searchItem(item: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/search`);
 
@@ -181,7 +181,7 @@ export async function searchItem(t: TFunction, item: string) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
+		throw new UserError({ identifier: LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound });
 	}
 }
 

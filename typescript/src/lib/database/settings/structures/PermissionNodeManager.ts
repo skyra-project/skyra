@@ -4,6 +4,7 @@ import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import Collection from '@discordjs/collection';
+import { UserError } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role, User } from 'discord.js';
 import type { IBaseManager } from '../base/IBaseManager';
@@ -58,8 +59,7 @@ export class PermissionNodeManager implements IBaseManager {
 				(action === PermissionNodeAction.Allow && previous.allow.includes(command)) ||
 				(action === PermissionNodeAction.Deny && previous.deny.includes(command))
 			) {
-				const t = this.#settings.getLanguage();
-				throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command });
+				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command } });
 			}
 
 			const node: Node = {
@@ -76,14 +76,14 @@ export class PermissionNodeManager implements IBaseManager {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = this.#settings[key];
-		const t = this.#settings.getLanguage();
+
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-		if (nodeIndex === -1) throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+		if (nodeIndex === -1) throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists });
 
 		const property = this.getName(action);
 		const previous = nodes[nodeIndex];
 		const commandIndex = previous[property].indexOf(command);
-		if (commandIndex === -1) throw t(LanguageKeys.Commands.Management.PermissionNodesCommandNotExists);
+		if (commandIndex === -1) throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesCommandNotExists });
 
 		const node: Nodes[number] = {
 			id: target.id,
@@ -102,8 +102,7 @@ export class PermissionNodeManager implements IBaseManager {
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
 		if (nodeIndex === -1) {
-			const t = this.#settings.getLanguage();
-			throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+			throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists });
 		}
 
 		this.#settings[key].splice(nodeIndex, 1);

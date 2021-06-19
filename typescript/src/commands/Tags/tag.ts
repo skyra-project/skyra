@@ -26,9 +26,7 @@ export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const content = await args.rest('string');
@@ -45,9 +43,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 
@@ -64,9 +60,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async alias(message: GuildMessage, args: SkyraCommand.Args) {
 		const input = (await args.pick('string')).toLowerCase();
 		let output = (await args.pick('string')).toLowerCase();
@@ -105,9 +99,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async rename(message: GuildMessage, args: SkyraCommand.Args) {
 		const previous = (await args.pick('string')).toLowerCase();
 		const next = (await args.pick('string')).toLowerCase();
@@ -131,9 +123,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await message.guild.writeSettings((settings) => {
 			settings[GuildSettings.CustomCommands].length = 0;
@@ -142,9 +132,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(args.t(LanguageKeys.Commands.Tags.TagReset));
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, async (_: GuildMessage, args: SkyraCommand.Args) => {
-		throw args.t(LanguageKeys.Commands.Tags.TagPermissionLevel);
-	})
+	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async edit(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const content = await args.rest('string');

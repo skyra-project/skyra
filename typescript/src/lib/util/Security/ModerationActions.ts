@@ -4,6 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
 import { TypeCodes } from '#utils/moderationConstants';
 import { resolveOnErrorCodes } from '#utils/util';
+import { UserError } from '@sapphire/framework';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
@@ -605,20 +606,20 @@ export class ModerationActions {
 	}
 
 	public async muteSetup(message: Message) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
-		if (roleID && this.guild.roles.cache.has(roleID)) throw t(LanguageKeys.Commands.Moderation.ActionSetupMuteExists);
-		if (this.guild.roles.cache.size >= 250) throw t(LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted]]);
+		if (roleID && this.guild.roles.cache.has(roleID)) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.ActionSetupMuteExists });
+		if (this.guild.roles.cache.size >= 250) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles });
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, RoleDataKey.Muted, GuildSettings.Roles.Muted);
 	}
 
 	public async restrictionSetup(message: Message, path: ModerationSetupRestriction) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[path], settings.getLanguage()]);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[path]]);
 		if (!isNullish(roleID) && this.guild.roles.cache.has(roleID)) {
-			throw t(LanguageKeys.Commands.Moderation.ActionSetupRestrictionExists);
+			throw new UserError({ identifier: LanguageKeys.Commands.Moderation.ActionSetupRestrictionExists });
 		}
-		if (this.guild.roles.cache.size >= 250) throw t(LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles);
+		if (this.guild.roles.cache.size >= 250) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles });
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, ModerationActions.getRoleDataKeyFromSchemaKey(path), path);
@@ -722,14 +723,14 @@ export class ModerationActions {
 	}
 
 	private async addStickyMute(id: string) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings.rolesMuted, settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings.rolesMuted]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 		return this.guild.stickyRoles.add(id, roleID);
 	}
 
 	private async removeStickyMute(id: string) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings.rolesMuted, settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings.rolesMuted]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 		return this.guild.stickyRoles.remove(id, roleID);
 	}
 
@@ -745,13 +746,13 @@ export class ModerationActions {
 	}
 
 	private async muteUserInGuild(member: GuildMember, reason: string) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings.rolesMuted, settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings.rolesMuted]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 
 		const role = this.guild.roles.cache.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.writeSettings([[GuildSettings.Roles.Muted, null]]);
-			throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+			throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 		}
 
 		const { position } = (await this.fetchMe()).roles.highest;
@@ -799,28 +800,28 @@ export class ModerationActions {
 	 */
 	private async unmuteUserInGuildWithoutData(member: GuildMember, reason: string) {
 		// Retrieve the role ID of the mute role, return false if it does not exist.
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings.rolesMuted, settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings.rolesMuted]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 
 		// Retrieve the role instance from the role ID, reset and return false if it does not exist.
 		const role = this.guild.roles.cache.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.writeSettings([[GuildSettings.Roles.Muted, null]]);
-			throw t(LanguageKeys.Commands.Moderation.MuteNotConfigured);
+			throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotConfigured });
 		}
 
 		// If the user has the role, begin processing the data.
 		if (member.roles.cache.has(roleID)) {
 			// Fetch self and check if the bot has enough role hierarchy to manage the role, return false when not.
 			const { position } = (await this.fetchMe()).roles.highest;
-			if (role.position >= position) throw t(LanguageKeys.Commands.Moderation.MuteLowHierarchy);
+			if (role.position >= position) throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteLowHierarchy });
 
 			// Remove the role from the member.
 			await member.roles.remove(roleID, reason);
 			return;
 		}
 
-		throw t(LanguageKeys.Commands.Moderation.MuteNotInMember);
+		throw new UserError({ identifier: LanguageKeys.Commands.Moderation.MuteNotInMember });
 	}
 
 	private unmuteExtractRoles(member: GuildMember, roleID: string | Nullish, selfPosition: number, rawIdentifiers: readonly string[] | null) {
@@ -843,26 +844,26 @@ export class ModerationActions {
 	}
 
 	private async addStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[key]]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		return this.guild.stickyRoles.add(id, roleID);
 	}
 
 	private async addRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[key]]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		await api().guilds(this.guild.id).members(id).roles(roleID).put();
 	}
 
 	private async removeStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[key]]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		return this.guild.stickyRoles.remove(id, roleID);
 	}
 
 	private async removeRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
-		const [roleID, t] = await this.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (isNullish(roleID)) throw t(LanguageKeys.Misc.RestrictionNotConfigured);
+		const [roleID] = await this.guild.readSettings((settings) => [settings[key]]);
+		if (isNullish(roleID)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		try {
 			await api().guilds(this.guild.id).members(id).roles(roleID).delete();
 		} catch (error) {

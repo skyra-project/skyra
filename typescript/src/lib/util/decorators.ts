@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
 import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
+import { UserError } from '@sapphire/framework';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 
 /**
@@ -66,24 +67,35 @@ export function createFunctionInhibitor(inhibitor: Inhibitor, fallback: Fallback
  * Allows you to set permissions required for individual methods.
  * @remark This decorator makes the decorated function asynchronous.
  * @param permissionsResolvable Permissions that the method should have.
+ * @param thrownError The error to be thrown. This gets assigned as the `identifier` property for a {@link UserError}
+ * @param userErrorOptions Additional options to pass to the thrown {@link UserError}
  */
-export const requiresLevel = (level: PermissionLevels, fallback?: Fallback): MethodDecorator => {
-	return createFunctionInhibitor((message: GuildMessage) => {
-		if (message.member.isOwner()) return true;
+export const requiresLevel = (
+	level: PermissionLevels,
+	thrownError: string,
+	userErrorOptions?: Omit<UserError.Options, 'identifier'>
+): MethodDecorator => {
+	return createFunctionInhibitor(
+		(message: GuildMessage) => {
+			if (message.member.isOwner()) return true;
 
-		switch (level) {
-			case PermissionLevels.BotOwner:
-				return false;
-			case PermissionLevels.ServerOwner:
-				return message.author.id === message.guild.ownerID;
-			case PermissionLevels.Administrator:
-				return message.member.isAdmin();
-			case PermissionLevels.Moderator:
-				return message.member.isModerator();
-			case PermissionLevels.Everyone:
-				return true;
+			switch (level) {
+				case PermissionLevels.BotOwner:
+					return false;
+				case PermissionLevels.ServerOwner:
+					return message.author.id === message.guild.ownerID;
+				case PermissionLevels.Administrator:
+					return message.member.isAdmin();
+				case PermissionLevels.Moderator:
+					return message.member.isModerator();
+				case PermissionLevels.Everyone:
+					return true;
+			}
+		},
+		() => {
+			throw new UserError({ identifier: thrownError, ...userErrorOptions });
 		}
-	}, fallback);
+	);
 };
 
 const ServerOnlyPermissions = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
@@ -96,15 +108,18 @@ export const requiresPermissions = (...permissionsResolvable: PermissionResolvab
 	const resolved = new Permissions(permissionsResolvable);
 	return createFunctionInhibitor((message: Message, args: SkyraArgs) => {
 		if (isDMChannel(message.channel) && resolved.has(ServerOnlyPermissions)) {
-			throw args.t(LanguageKeys.Preconditions.SubCommandGuildOnly);
+			throw new UserError({ identifier: LanguageKeys.Preconditions.SubCommandGuildOnly });
 		}
 
 		if (isGuildBasedChannel(message.channel)) {
 			const missingPermissions = message.channel.permissionsFor(message.guild!.me!)!.missing(resolved);
 
 			if (missingPermissions.length) {
-				throw args.t(LanguageKeys.Preconditions.Permissions, {
-					missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
+				throw new UserError({
+					identifier: LanguageKeys.Preconditions.Permissions,
+					context: {
+						missing: missingPermissions.map((permission) => args.t(`permissions:${permission}`))
+					}
 				});
 			}
 		}

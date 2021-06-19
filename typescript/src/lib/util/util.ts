@@ -2,7 +2,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { err, ok, Result, Store } from '@sapphire/framework';
+import { err, ok, Result, Store, UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
@@ -92,13 +92,13 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * @param message The message instance to check with
  */
 export async function announcementCheck(message: GuildMessage) {
-	const [announcementID, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Subscriber], settings.getLanguage()]);
-	if (!announcementID) throw t(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	const [announcementID] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Subscriber]]);
+	if (!announcementID) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
 	const role = message.guild.roles.cache.get(announcementID);
-	if (!role) throw t(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	if (!role) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
-	if (role.position >= message.guild.me!.roles.highest.position) throw t(LanguageKeys.System.HighestRole);
+	if (role.position >= message.guild.me!.roles.highest.position) throw new UserError({ identifier: LanguageKeys.System.HighestRole });
 	return role;
 }
 

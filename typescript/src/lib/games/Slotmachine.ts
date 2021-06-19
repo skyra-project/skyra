@@ -2,6 +2,7 @@ import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
+import { UserError } from '@sapphire/framework';
 import { Store } from '@sapphire/pieces';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
@@ -104,7 +105,7 @@ export class Slotmachine {
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
 		const t = await this.message.fetchT();
-		if (amount < 0) throw t(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+		if (amount < 0) throw new UserError({ identifier: LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney });
 
 		this.settings.money += lost ? -this.bet : winnings;
 		await this.settings.save();

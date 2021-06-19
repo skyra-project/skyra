@@ -26,7 +26,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
-		const characterDetails = await this.fetchCharacter(t, name, args.getOption('server') ?? undefined);
+		const characterDetails = await this.fetchCharacter(name, args.getOption('server') ?? undefined);
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
 		await display.start(response as GuildMessage, message.author);
@@ -38,7 +38,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
-		const itemDetails = await this.fetchItems(t, item);
+		const itemDetails = await this.fetchItems(item);
 		const display = await this.buildItemDisplay(message, t, itemDetails);
 
 		await display.start(response as GuildMessage, message.author);
@@ -46,16 +46,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async fetchCharacter(t: TFunction, name: string, server?: string) {
-		const searchResult = await searchCharacter(t, name, server);
+	private async fetchCharacter(name: string, server?: string) {
+		const searchResult = await searchCharacter(name, server);
 
 		if (!searchResult.Results.length) this.error(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 
-		return getCharacterDetails(t, searchResult.Results[0].ID);
+		return getCharacterDetails(searchResult.Results[0].ID);
 	}
 
-	private async fetchItems(t: TFunction, item: string) {
-		const searchResult = await searchItem(t, item);
+	private async fetchItems(item: string) {
+		const searchResult = await searchItem(item);
 
 		if (!searchResult.Results.length) this.error(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
 

@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
@@ -48,7 +49,7 @@ async function ask(message: Message, list: readonly string[]) {
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
-			if (abortOptions.includes(response.content.toLowerCase())) throw t(LanguageKeys.PromptList.Aborted);
+			if (abortOptions.includes(response.content.toLowerCase())) throw new UserError({ identifier: LanguageKeys.PromptList.Aborted });
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {
 				await responseMessage.delete();

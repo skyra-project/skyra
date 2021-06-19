@@ -72,12 +72,12 @@ export class UserCommand extends SkyraCommand {
 	// Eval the input
 	private async eval(message: Message, args: SkyraCommand.Args, code: string) {
 		const stopwatch = new Stopwatch();
-		let success: boolean | undefined = undefined;
-		let syncTime: string | undefined = undefined;
-		let asyncTime: string | undefined = undefined;
-		let result: unknown | undefined = undefined;
+		let success: boolean | undefined;
+		let syncTime: string | undefined;
+		let asyncTime: string | undefined;
+		let result: unknown | undefined;
 		let thenable = false;
-		let type: Type | undefined = undefined;
+		let type: Type | undefined;
 
 		try {
 			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
@@ -126,10 +126,10 @@ export class UserCommand extends SkyraCommand {
 
 	private async sql(sql: string) {
 		const stopwatch = new Stopwatch();
-		let success: boolean | undefined = undefined;
-		let time: string | undefined = undefined;
-		let result: unknown | undefined = undefined;
-		let type: Type | undefined = undefined;
+		let success: boolean | undefined;
+		let time: string | undefined;
+		let result: unknown | undefined;
+		let type: Type | undefined;
 
 		try {
 			result = await this.context.db.connection.query(sql);

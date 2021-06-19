@@ -21,8 +21,8 @@ export class UserCommand extends SkyraCommand {
 		// Escape all markdown
 		let rateableThing = await args.rest('string');
 
-		let ratewaifu: string | undefined = undefined;
-		let rate: number | undefined = undefined;
+		let ratewaifu: string | undefined;
+		let rate: number | undefined;
 
 		if (this.botRegex.test(rateableThing)) {
 			rate = 100;

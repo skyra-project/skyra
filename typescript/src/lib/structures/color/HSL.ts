@@ -20,9 +20,9 @@ export class HSL implements ColorHandler {
 	}
 
 	public check() {
-		if (this.h < 0 || this.h > 360) throw `Invalid Hue range. Must be between 0 and 360, and it is ${this.h}`;
-		if (this.s < 0 || this.s > 100) throw `Invalid Saturation range. Must be between 0 and 100, and it is ${this.s}`;
-		if (this.l < 0 || this.l > 100) throw `Invalid Lightness range. Must be between 0 and 100, and it is ${this.l}`;
+		if (this.h < 0 || this.h > 360) throw new Error(`Invalid Hue range. Must be between 0 and 360, and it is ${this.h}`);
+		if (this.s < 0 || this.s > 100) throw new Error(`Invalid Saturation range. Must be between 0 and 100, and it is ${this.s}`);
+		if (this.l < 0 || this.l > 100) throw new Error(`Invalid Lightness range. Must be between 0 and 100, and it is ${this.l}`);
 	}
 
 	public get hex() {
@@ -34,9 +34,9 @@ export class HSL implements ColorHandler {
 		const s = this.s / 100;
 		const l = this.l / 100;
 		/* Parse HSL to RGB */
-		let r: number | undefined = undefined;
-		let g: number | undefined = undefined;
-		let b: number | undefined = undefined;
+		let r: number | undefined;
+		let g: number | undefined;
+		let b: number | undefined;
 
 		if (s === 0) {
 			/* Achromatic */

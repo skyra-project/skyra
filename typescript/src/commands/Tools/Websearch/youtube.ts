@@ -109,7 +109,7 @@ export class UserCommand extends SkyraCommand {
 				break;
 			default: {
 				this.context.client.logger.fatal(`YouTube -> Returned incompatible kind '${result.id.kind}'.`);
-				throw 'I found an incompatible kind of result...';
+				throw new Error('I found an incompatible kind of result...');
 			}
 		}
 

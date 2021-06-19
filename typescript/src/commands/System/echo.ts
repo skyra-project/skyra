@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const attachment = message.attachments.size ? message.attachments.first()!.url : null;
 
 		if (!content.length && !attachment) {
-			throw 'I have no content nor attachment to send, please write something.';
+			throw new Error('I have no content nor attachment to send, please write something.');
 		}
 
 		const options: MessageOptions = {};

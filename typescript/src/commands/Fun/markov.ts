@@ -84,7 +84,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async fetchMessages(channel: TextChannel, user: User | undefined) {
-		let messageBank: Collection<string, Message> | undefined = undefined;
+		let messageBank: Collection<string, Message> | undefined;
 
 		// Check the cache first to speed up and reduce API queries
 		const cachedMessageBank = this.kInternalMessageCache.get(channel);

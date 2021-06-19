@@ -55,7 +55,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private handleError(error: QueryError): never {
-		let parsed: RedditError | undefined = undefined;
+		let parsed: RedditError | undefined;
 		try {
 			parsed = error.toJSON() as RedditError;
 		} catch {

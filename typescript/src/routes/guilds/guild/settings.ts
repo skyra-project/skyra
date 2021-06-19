@@ -64,19 +64,19 @@ export class UserRoute extends Route {
 
 	private async validate(key: string, value: unknown, context: PartialSerializerUpdateContext) {
 		const entry = configurableKeys.get(key);
-		if (!entry || !isSchemaKey(entry)) throw `${key}: The key ${key} does not exist in the current schema.`;
+		if (!entry || !isSchemaKey(entry)) throw new Error(`${key}: The key ${key} does not exist in the current schema.`);
 		try {
 			// If null is passed, reset to default:
 			if (value === null) return [entry.property, entry.default];
 
 			const ctx = { ...context, entry };
 			const result = await (entry.array ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
-			if (!result) throw 'The value is not valid.';
+			if (!result) throw new Error('The value is not valid.');
 
 			return [entry.property, value] as const;
 		} catch (error) {
-			if (error instanceof Error) throw `${key}: ${error.message}`;
-			throw `${key}: ${error}`;
+			if (error instanceof Error) throw new Error(`${key}: ${error.message}`);
+			throw new Error(`${key}: ${error}`);
 		}
 	}
 

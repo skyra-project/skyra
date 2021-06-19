@@ -5,8 +5,8 @@ export class SkyraEmbed extends MessageEmbed {
 	public splitFields(contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 
-		let title: string | undefined = undefined;
-		let content: string | string[] | undefined = undefined;
+		let title: string | undefined;
+		let content: string | string[] | undefined;
 		if (typeof rawContent === 'undefined') {
 			title = ZeroWidthSpace;
 			content = contentOrTitle;
@@ -21,8 +21,8 @@ export class SkyraEmbed extends MessageEmbed {
 			return this;
 		}
 
-		let x: number | undefined = undefined;
-		let slice: string | undefined = undefined;
+		let x: number | undefined;
+		let slice: string | undefined;
 		while (content.length) {
 			if (content.length < 1024) {
 				this.fields.push({ name: title, value: content, inline: false });

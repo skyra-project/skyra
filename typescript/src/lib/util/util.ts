@@ -242,7 +242,7 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Im
 	try {
 		return await loadImage(url);
 	} catch (error) {
-		throw `Could not download the profile avatar: ${error}`;
+		throw new Error(`Could not download the profile avatar: ${error}`);
 	}
 }
 
@@ -381,8 +381,8 @@ export function getDisplayAvatar(id: string, user: User | APIUser, options: Imag
  * Create a referred promise
  */
 export function createReferPromise<T>(): ReferredPromise<T> {
-	let resolve: ((value: T) => void) | undefined = undefined;
-	let reject: ((error?: Error) => void) | undefined = undefined;
+	let resolve: ((value: T) => void) | undefined;
+	let reject: ((error?: Error) => void) | undefined;
 	const promise: Promise<T> = new Promise((res, rej) => {
 		resolve = res;
 		reject = rej;

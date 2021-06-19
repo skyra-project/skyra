@@ -35,7 +35,7 @@ export async function fetchSaelem<R extends SaelemQueryReturnTypes>(query: strin
 		);
 	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
-		throw 'query_failed';
+		throw new Error('query_failed');
 	}
 }
 

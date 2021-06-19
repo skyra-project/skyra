@@ -28,9 +28,9 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(message: Message, user: User) {
-		let target: User | undefined = undefined;
-		let author: User | undefined = undefined;
-		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw '💥';
+		let target: User | undefined;
+		let author: User | undefined;
+		if (user.id === message.author.id && OWNERS.includes(message.author.id)) throw new Error('💥');
 		if (user === message.author) [target, author] = [message.author, this.context.client.user!];
 		else if (OWNERS.concat(process.env.CLIENT_ID).includes(user.id)) [target, author] = [message.author, user];
 		else [target, author] = [user, message.author];

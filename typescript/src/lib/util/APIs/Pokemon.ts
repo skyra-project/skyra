@@ -315,7 +315,7 @@ export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(que
 		);
 	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
-		throw 'query_failed';
+		throw new Error('query_failed');
 	}
 }
 

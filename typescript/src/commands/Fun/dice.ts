@@ -36,8 +36,8 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async roll(pattern: string | number) {
-		let amount: number | undefined = undefined;
-		let dice: number | undefined = undefined;
+		let amount: number | undefined;
+		let dice: number | undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
 			if (!isNumber(pattern) || pattern < 3) this.error(LanguageKeys.Serializers.InvalidInt, { name: 'dice' });

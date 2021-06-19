@@ -20,7 +20,7 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 		if (!Array.isArray(value.deny)) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
 
 		// Check for target validity
-		let target: GuildMember | Role | undefined = undefined;
+		let target: GuildMember | Role | undefined;
 		if (entry.name === 'permissionsRoles') {
 			const role = guild.roles.cache.get(value.id);
 			if (!role) throw t(LanguageKeys.Serializers.PermissionNodeInvalidTarget);

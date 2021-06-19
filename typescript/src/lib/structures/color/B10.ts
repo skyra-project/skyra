@@ -13,7 +13,7 @@ export class B10 implements ColorHandler {
 	}
 
 	public check() {
-		if (this.value < 0 || this.value > 0xffffff) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
+		if (this.value < 0 || this.value > 0xffffff) throw new Error('Color must be within the range 0 - 16777215 (0xFFFFFF).');
 	}
 
 	public get hex() {

@@ -41,7 +41,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				FetchResultTypes.JSON
 			);
 
-			if (fortniteUser.error) throw 'err'; // This gets handled in the catch, no reason to get the proper error message here.
+			if (fortniteUser.error) throw new Error('err'); // This gets handled in the catch, no reason to get the proper error message here.
 			return fortniteUser;
 		} catch {
 			// Either when no user is found (response will have an error message)

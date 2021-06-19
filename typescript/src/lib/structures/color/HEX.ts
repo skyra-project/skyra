@@ -20,9 +20,9 @@ export class HEX implements ColorHandler {
 	}
 
 	public check() {
-		if (Number.isNaN(parseInt(this.r, 16))) throw `Invalid Red range. Must be between '00' and 'ff', and it is '${this.r}'`;
-		if (Number.isNaN(parseInt(this.g, 16))) throw `Invalid Green range. Must be between '00' and 'ff', and it is '${this.g}'`;
-		if (Number.isNaN(parseInt(this.b, 16))) throw `Invalid Blue range. Must be between '00' and 'ff', and it is '${this.b}'`;
+		if (Number.isNaN(parseInt(this.r, 16))) throw new Error(`Invalid Red range. Must be between '00' and 'ff', and it is '${this.r}'`);
+		if (Number.isNaN(parseInt(this.g, 16))) throw new Error(`Invalid Green range. Must be between '00' and 'ff', and it is '${this.g}'`);
+		if (Number.isNaN(parseInt(this.b, 16))) throw new Error(`Invalid Blue range. Must be between '00' and 'ff', and it is '${this.b}'`);
 	}
 
 	public get hex() {

@@ -145,7 +145,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
 [`grpc`]: https://grpc.io
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
-[`lavalink`]: https://github.com/Frederikam/Lavalink
+[`lavalink`]: https://github.com/freyacodes/lavalink
 [`node.js`]: https://nodejs.org/en/download/current/
 [`outflux`]: https://github.com/skyra-project/outflux
 [`postgresql`]: https://www.postgresql.org/download/

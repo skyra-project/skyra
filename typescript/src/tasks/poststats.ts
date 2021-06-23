@@ -66,7 +66,7 @@ export class UserTask extends Task {
 					Lists.BotsOnDiscord
 				),
 				this.query(
-					`https://api.botlist.space/v1/bots/${process.env.CLIENT_ID}`,
+					`https://api.discordlist.space/v1/bots/${process.env.CLIENT_ID}`,
 					`{"server_count":${guilds}}`,
 					process.env.BOTLIST_SPACE_TOKEN,
 					Lists.BotListSpace

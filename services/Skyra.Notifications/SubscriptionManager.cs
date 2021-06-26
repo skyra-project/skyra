@@ -10,26 +10,25 @@ using AngleSharp;
 using AngleSharp.Html.Dom;
 using Microsoft.Extensions.Logging;
 using Skyra.Database;
-using Skyra.Notifications.Models;
-using Skyra.Shared;
 using Skyra.Shared.Results;
 
 namespace Skyra.Notifications
 {
 	public class SubscriptionManager
 	{
-		private PubSubClient _pubSubClient;
-		private ILogger<SubscriptionManager> _logger;
-		private IDatabase _database;
+		private readonly IBrowsingContext _browsingContext;
+		private readonly IDatabase _database;
 		private HttpClient _httpClient;
-		private Dictionary<string, DateTime> _resubscribeTimes;
-		private Timer _resubTimer;
-		private IBrowsingContext _browsingContext;
 
 		private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
 		{
 			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 		};
+
+		private readonly ILogger<SubscriptionManager> _logger;
+		private readonly PubSubClient _pubSubClient;
+		private Dictionary<string, DateTime> _resubscribeTimes;
+		private readonly Timer _resubTimer;
 
 		public SubscriptionManager(PubSubClient pubSubClient, ILogger<SubscriptionManager> logger, IDatabase database, HttpClient httpClient, IBrowsingContext browsingContext)
 		{
@@ -141,6 +140,7 @@ namespace Skyra.Notifications
 					_resubscribeTimes.Remove(channelId);
 				}
 			}
+
 			return Result.FromSuccess();
 		}
 
@@ -162,9 +162,6 @@ namespace Skyra.Notifications
 			}
 
 			return cell.Content;
-
 		}
-
-
 	}
 }

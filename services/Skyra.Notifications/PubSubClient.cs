@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Skyra.Notifications.Models;
 using Skyra.Shared.Results;
 
 namespace Skyra.Notifications
 {
 	public class PubSubClient
 	{
-		private readonly string PubSubUrl;
 		private readonly string CallbackUrl;
-		private RequestCache _cache;
-		private HttpClient _httpClient;
-		private ILogger<PubSubClient> _logger;
+		private readonly string PubSubUrl;
+		private readonly RequestCache _cache;
+		private readonly HttpClient _httpClient;
+		private readonly ILogger<PubSubClient> _logger;
 
 		public PubSubClient(RequestCache cache, HttpClient httpClient, ILogger<PubSubClient> logger)
 		{
@@ -27,7 +24,7 @@ namespace Skyra.Notifications
 			CallbackUrl = Environment.GetEnvironmentVariable("CALLBACK_URL") ?? throw new ArgumentException("The environement variable 'CALLBACK_URL' must be set.");
 		}
 
-		public  Task<Result> SubscribeAsync(string channelId)
+		public Task<Result> SubscribeAsync(string channelId)
 		{
 			return SendRequestAsync(channelId, true);
 		}
@@ -40,9 +37,9 @@ namespace Skyra.Notifications
 		private async Task<Result> SendRequestAsync(string channelId, bool isSubscription)
 		{
 			var collection = new List<KeyValuePair<string?, string?>>();
-			collection.Add(new("hub.callback", CallbackUrl));
-			collection.Add(new("hub.mode", isSubscription ? "subscribe" : "unsubscribe"));
-			collection.Add(new("hub.topic", $"https://www.youtube.com/xml/feeds/videos.xml?channel_id={channelId}"));
+			collection.Add(new KeyValuePair<string?, string?>("hub.callback", CallbackUrl));
+			collection.Add(new KeyValuePair<string?, string?>("hub.mode", isSubscription ? "subscribe" : "unsubscribe"));
+			collection.Add(new KeyValuePair<string?, string?>("hub.topic", $"https://www.youtube.com/xml/feeds/videos.xml?channel_id={channelId}"));
 
 			var options = new FormUrlEncodedContent(collection);
 			_cache.AddRequest(channelId, true);
@@ -53,12 +50,10 @@ namespace Skyra.Notifications
 			{
 				return Result.FromSuccess();
 			}
-			else
-			{
-				_logger.LogWarning("Subscription request to pubsubhubbub failed: {Error}", await status.Content.ReadAsStringAsync());
-				_cache.RemoveRequest(channelId);
-				return Result.FromError();
-			}
+
+			_logger.LogWarning("Subscription request to pubsubhubbub failed: {Error}", await status.Content.ReadAsStringAsync());
+			_cache.RemoveRequest(channelId);
+			return Result.FromError();
 		}
 	}
 }

@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Net.Http;
-using System.Threading.Tasks;
 using AngleSharp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Skyra.Database;
-using Skyra.Grpc.Services;
 using Skyra.Notifications.Models;
 using Skyra.Notifications.Services;
-using YoutubeSubscription = Skyra.Database.Models.Entities.YoutubeSubscription;
 
 namespace Skyra.Notifications
 {
@@ -32,7 +24,7 @@ namespace Skyra.Notifications
 			services.AddSingleton<RequestCache>();
 			services.AddSingleton<HttpClient>();
 			services.AddSingleton<SkyraDbContext>();
-			services.AddSingleton<IBrowsingContext>(BrowsingContext.New(Configuration.Default.WithDefaultLoader()));
+			services.AddSingleton(BrowsingContext.New(Configuration.Default.WithDefaultLoader()));
 
 			services.AddGrpc();
 
@@ -50,7 +42,6 @@ namespace Skyra.Notifications
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-
 			app.UseRouting();
 
 			app.UseEndpoints(endpoints =>

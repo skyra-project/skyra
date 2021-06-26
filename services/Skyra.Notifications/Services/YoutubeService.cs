@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -10,21 +7,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Skyra.Database;
 using Skyra.Grpc.Services;
+using Skyra.Grpc.Services.Shared;
 using Skyra.Notifications.Models;
 using Action = Skyra.Grpc.Services.Action;
-using Result = Skyra.Grpc.Services.Shared.Result;
 using Status = Skyra.Grpc.Services.Shared.Status;
 using YoutubeServiceBase = Skyra.Grpc.Services.YoutubeSubscription.YoutubeSubscriptionBase;
-using YoutubeSubscription = Skyra.Database.Models.Entities.YoutubeSubscription;
 
 namespace Skyra.Notifications.Services
 {
 	public class YoutubeService : YoutubeServiceBase
 	{
 		private readonly IDatabase _database;
-		private SubscriptionManager _subscriptionManager;
-		private readonly ConcurrentQueue<Notification> _notificationQueue;
 		private readonly ILogger<YoutubeService> _logger;
+		private readonly ConcurrentQueue<Notification> _notificationQueue;
+		private readonly SubscriptionManager _subscriptionManager;
 
 		public YoutubeService(IDatabase database, SubscriptionManager subscriptionManager, ConcurrentQueue<Notification> notificationQueue, ILogger<YoutubeService> logger)
 		{
@@ -71,7 +67,10 @@ namespace Skyra.Notifications.Services
 		{
 			while (true)
 			{
-				if (!_notificationQueue.TryDequeue(out var notification)) continue;
+				if (!_notificationQueue.TryDequeue(out var notification))
+				{
+					continue;
+				}
 
 				_logger.LogInformation("DEQUEUE");
 				await using var database = new SkyraDatabase(new SkyraDbContext(), new NullLogger<SkyraDatabase>());

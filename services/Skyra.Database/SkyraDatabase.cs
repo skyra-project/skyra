@@ -15,7 +15,7 @@ namespace Skyra.Database
 	{
 		private readonly SkyraDbContext _context;
 		private readonly ILogger<SkyraDatabase> _logger;
-		private readonly Random _random = new();
+		private readonly Random _random = new Random();
 
 		public SkyraDatabase(SkyraDbContext context, ILogger<SkyraDatabase> logger)
 		{
@@ -1310,10 +1310,13 @@ namespace Skyra.Database
 			var guilds = subscription.GuildIds;
 
 			// TODO: should this return an error?
-			if(guilds.Contains(guildId)) return Result.FromSuccess();
+			if (guilds.Contains(guildId))
+			{
+				return Result.FromSuccess();
+			}
 
 
-			subscription.GuildIds = subscription.GuildIds.Concat(new []{ guildId }).ToArray();
+			subscription.GuildIds = subscription.GuildIds.Concat(new[] {guildId}).ToArray();
 
 			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
@@ -1329,6 +1332,7 @@ namespace Skyra.Database
 					_logger.LogError("UpdateYoutubeSubscriptionSettings was called with either a null channel ({Channel}), or message ({Message})", channel, message);
 					return Result.FromError();
 				}
+
 				_context.Guilds.Add(new Guild
 				{
 					YoutubeNotificationChannel = channel,
@@ -1338,12 +1342,10 @@ namespace Skyra.Database
 				await _context.SaveChangesAsync();
 				return Result.FromSuccess();
 			}
-			else
-			{
-				guild.YoutubeNotificationChannel = channel ?? guild.YoutubeNotificationChannel;
-				guild.YoutubeNotificationMessage = message ?? guild.YoutubeNotificationMessage;
-				await _context.SaveChangesAsync();
-			}
+
+			guild.YoutubeNotificationChannel = channel ?? guild.YoutubeNotificationChannel;
+			guild.YoutubeNotificationMessage = message ?? guild.YoutubeNotificationMessage;
+			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
 		}
 
@@ -1360,7 +1362,11 @@ namespace Skyra.Database
 		public async Task<Result<YoutubeSubscription>> GetSubscriptionAsync(string channelId)
 		{
 			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
-			if(subscription is null) return Result<YoutubeSubscription>.FromError();
+			if (subscription is null)
+			{
+				return Result<YoutubeSubscription>.FromError();
+			}
+
 			return Result<YoutubeSubscription>.FromSuccess(subscription);
 		}
 
@@ -1388,7 +1394,6 @@ namespace Skyra.Database
 			subscription.GuildIds = subscription.GuildIds.Where(id => id != guildId).ToArray();
 			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
-
 		}
 
 		public async Task<Result<(string, string)[]>> ExecuteSqlAsync(string query)

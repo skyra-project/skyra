@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Xml;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Skyra.Database;
 using Skyra.Notifications.Models;
-using Skyra.Shared.Results;
 
 namespace Skyra.Notifications.Controllers
 {
@@ -21,11 +17,11 @@ namespace Skyra.Notifications.Controllers
 	[Route("test")]
 	public class PubSubResponseController : ControllerBase
 	{
-		private ILogger<PubSubResponseController> _logger;
-		private RequestCache _cache;
-		private ConcurrentQueue<Notification> _notificationQueue;
-		private IDatabase _database;
 		private readonly DateTime StartupTime = DateTime.Now;
+		private readonly RequestCache _cache;
+		private readonly IDatabase _database;
+		private readonly ILogger<PubSubResponseController> _logger;
+		private readonly ConcurrentQueue<Notification> _notificationQueue;
 
 		public PubSubResponseController(ILogger<PubSubResponseController> logger, RequestCache cache, ConcurrentQueue<Notification> notificationQueue, IDatabase database)
 		{
@@ -64,7 +60,6 @@ namespace Skyra.Notifications.Controllers
 		[HttpPost("stuff")]
 		public async Task<IActionResult> Notify()
 		{
-
 			_logger.LogInformation("WOW");
 			var reader = new StreamReader(Request.Body);
 			var text = await reader.ReadToEndAsync();

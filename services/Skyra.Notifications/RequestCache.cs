@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Skyra.Shared.Results;
 
 namespace Skyra.Notifications
 {
 	public class RequestCache
 	{
-		private Dictionary<string, bool> _requests = new();
-		private ILogger<RequestCache> _logger;
+		private readonly ILogger<RequestCache> _logger;
+		private readonly Dictionary<string, bool> _requests = new Dictionary<string, bool>();
 
 		public RequestCache(ILogger<RequestCache> logger)
 		{
@@ -29,7 +28,6 @@ namespace Skyra.Notifications
 			}
 
 			return isCorrect;
-
 		}
 
 		public void AddRequest(string channelId, bool isSubscription)
@@ -41,6 +39,5 @@ namespace Skyra.Notifications
 		{
 			_requests.Remove(channelId);
 		}
-
 	}
 }

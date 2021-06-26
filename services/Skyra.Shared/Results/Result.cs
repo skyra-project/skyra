@@ -16,15 +16,24 @@ namespace Skyra.Shared.Results
 		public Exception? Exception { get; }
 		public string? ExceptionMessage => Exception?.Message ?? null;
 
-		public static Result FromSuccess() => new(ResultStatus.Success);
+		public static Result FromSuccess()
+		{
+			return new Result(ResultStatus.Success);
+		}
 
 		public static Result FromError(ResultStatus status = ResultStatus.Error)
-			=> new(status, new Exception($"Error: {status.ToString()}"));
+		{
+			return new Result(status, new Exception($"Error: {status.ToString()}"));
+		}
 
 		public static Result FromError(Exception exception, ResultStatus status = ResultStatus.Error)
-			=> new(status, exception);
+		{
+			return new Result(status, exception);
+		}
 
 		public static Result FromError(string message, ResultStatus status = ResultStatus.Error)
-			=> new(status, new Exception(message));
+		{
+			return new Result(status, new Exception(message));
+		}
 	}
 }

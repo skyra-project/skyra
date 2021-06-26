@@ -1284,6 +1284,11 @@ namespace Skyra.Database
 			}
 		}
 
+		public Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId)
+		{
+			return AddYoutubeSubscriptionAsync(channelId, guildId, default);
+		}
+
 		public async Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId, DateTime expiresAt)
 		{
 			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
@@ -1294,9 +1299,11 @@ namespace Skyra.Database
 				{
 					ExpiresAt = expiresAt,
 					Id = channelId,
-					GuildIds = new[] {guildId}
+					GuildIds = new[] {guildId},
+					AlreadySeenIds = Array.Empty<string>()
 				};
 
+				await _context.YoutubeSubscriptions.AddAsync(subscription);
 				return Result.FromSuccess();
 			}
 
@@ -1305,26 +1312,69 @@ namespace Skyra.Database
 			// TODO: should this return an error?
 			if(guilds.Contains(guildId)) return Result.FromSuccess();
 
-			var newGuilds = new string[guilds.Length + 1];
-			newGuilds[newGuilds.Length] = guildId;
 
-			subscription.GuildIds = newGuilds;
+			subscription.GuildIds = subscription.GuildIds.Concat(new []{ guildId }).ToArray();
 
 			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
 		}
 
-		public async Task<Result<(string, string[])[]>> GetSubscriptionsAsync()
+		public async Task<Result> UpdateYoutubeSubscriptionSettingsAsync(string guildId, string? message, string? channel)
+		{
+			var guild = await _context.Guilds.FindAsync(guildId);
+			if (guild is null)
+			{
+				if (message is null || channel is null)
+				{
+					_logger.LogError("UpdateYoutubeSubscriptionSettings was called with either a null channel ({Channel}), or message ({Message})", channel, message);
+					return Result.FromError();
+				}
+				_context.Guilds.Add(new Guild
+				{
+					YoutubeNotificationChannel = channel,
+					YoutubeNotificationMessage = message,
+					Id = guildId
+				});
+				await _context.SaveChangesAsync();
+				return Result.FromSuccess();
+			}
+			else
+			{
+				guild.YoutubeNotificationChannel = channel ?? guild.YoutubeNotificationChannel;
+				guild.YoutubeNotificationMessage = message ?? guild.YoutubeNotificationMessage;
+				await _context.SaveChangesAsync();
+			}
+			return Result.FromSuccess();
+		}
+
+		public async Task<Result<YoutubeSubscription[]>> GetSubscriptionsAsync()
 		{
 			if (await _context.YoutubeSubscriptions.AnyAsync())
 			{
-				return Result<(string, string[])[]>.FromSuccess(_context.YoutubeSubscriptions
-					.Select(subscription =>
-						new ValueTuple<string, string[]>(subscription.Id, subscription.GuildIds)
-					).ToArray());
+				return Result<YoutubeSubscription[]>.FromSuccess(_context.YoutubeSubscriptions.ToArray());
 			}
 
-			return Result<(string, string[])[]>.FromSuccess(Array.Empty<(string, string[])>());
+			return Result<YoutubeSubscription[]>.FromSuccess(Array.Empty<YoutubeSubscription>());
+		}
+
+		public async Task<Result<YoutubeSubscription>> GetSubscriptionAsync(string channelId)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
+			if(subscription is null) return Result<YoutubeSubscription>.FromError();
+			return Result<YoutubeSubscription>.FromSuccess(subscription);
+		}
+
+		public async Task<Result> AddSeenVideoAsync(string channelId, string videoId)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
+			subscription.AlreadySeenIds = subscription.AlreadySeenIds.Concat(new[] {videoId}).ToArray();
+			await _context.SaveChangesAsync();
+			return Result.FromSuccess();
+		}
+
+		public async Task<Result<bool>> SubscriptionExistsAsync(string channelId)
+		{
+			return Result<bool>.FromSuccess(await _context.YoutubeSubscriptions.FindAsync(channelId) != null);
 		}
 
 		public async Task<Result> RemoveSubscriptionAsync(string channelId, string guildId)
@@ -1360,6 +1410,20 @@ namespace Skyra.Database
 			}
 
 			return Result<(string, string)[]>.FromSuccess(results.ToArray());
+		}
+
+		public async Task<Result> UpdateSubscriptionTimerAsync(string key, DateTime resubTime)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(key);
+
+			if (subscription is null)
+			{
+				return Result.FromError("No subscription found.");
+			}
+
+			subscription.ExpiresAt = resubTime;
+			await _context.SaveChangesAsync();
+			return Result.FromSuccess();
 		}
 
 		/// <inheritdoc />

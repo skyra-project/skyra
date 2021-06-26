@@ -744,6 +744,14 @@ namespace Skyra.Database.Models.Entities
 		public string NotificationsStreamsTwitchStreamers { get; set; } = null!;
 
 		[Required]
+		[Column("notifications.youtube.channel", TypeName = "character varying(19)")]
+		public string YoutubeNotificationChannel { get; set; } = null!;
+
+		[Required]
+		[Column("notifications.youtube.message", TypeName = "character varying(19)")]
+		public string YoutubeNotificationMessage { get; set; } = null!;
+
+		[Required]
 		[Column("suggestions.emojis.upvote")]
 		[StringLength(128)]
 		public string SuggestionsEmojisUpvote { get; set; } = null!;

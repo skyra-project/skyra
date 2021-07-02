@@ -92,7 +92,7 @@
 		"babel-plugin-const-enum": "^1.0.1",
 		"cz-conventional-changelog": "^3.3.0",
 		"grpc-tools": "^1.11.2",
-		"husky": "^6.0.0",
+		"husky": "^7.0.0",
 		"jest": "^27.0.5",
 		"jest-circus": "^27.0.5",
 		"jest-mock-random": "^1.1.1",

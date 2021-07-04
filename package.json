@@ -85,7 +85,7 @@
 		"@types/i18next-fs-backend": "^1.0.0",
 		"@types/ioredis": "^4.26.4",
 		"@types/jest": "^26.0.23",
-		"@types/node": "^15.12.4",
+		"@types/node": "^16.0.0",
 		"@types/node-fetch": "^2.5.10",
 		"@types/pg": "^8.6.0",
 		"@types/ws": "^7.4.5",

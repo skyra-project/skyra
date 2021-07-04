@@ -34,7 +34,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Skyra Docker image
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           push: true
           context: ./
@@ -71,13 +71,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Protofiles Docker image
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: ./assets/protos
           push: true
           tags: ghcr.io/skyra-project/grpc-protofiles:latest
       - name: Build and push GRPC Docker image
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           push: true
           context: ./services

@@ -15,7 +15,7 @@ using Skyra.Notifications.Models;
 namespace Skyra.Notifications.Controllers
 {
 	[ApiController]
-	[Route("test")]
+	[Route("notifications")]
 	public class PubSubResponseController : ControllerBase
 	{
 		private readonly RequestCache _cache;
@@ -32,7 +32,7 @@ namespace Skyra.Notifications.Controllers
 			_database = database;
 		}
 
-		[HttpGet("auth")]
+		[HttpGet]
 		public async Task Authenticate()
 		{
 			var topic = Request.Query["hub.topic"];
@@ -58,7 +58,7 @@ namespace Skyra.Notifications.Controllers
 			await Response.Body.WriteAsync(Encoding.ASCII.GetBytes(challenge));
 		}
 
-		[HttpPost("notify")]
+		[HttpPost]
 		public async Task<IActionResult> Notify()
 		{
 			var elements = await GetElementsAsync();

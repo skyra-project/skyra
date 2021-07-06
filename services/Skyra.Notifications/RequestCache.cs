@@ -17,14 +17,14 @@ namespace Skyra.Notifications
 		{
 			var isCorrect = _requests.TryGetValue(channelId, out var subscription) && subscription == isSubscription;
 
-			if (remove)
-			{
-				RemoveRequest(channelId);
-			}
-
 			if (!isCorrect)
 			{
 				_logger.LogCritical("request with channel-id {Id} was not found in the request cache", channelId);
+			}
+
+			if (remove)
+			{
+				RemoveRequest(channelId);
 			}
 
 			return isCorrect;

@@ -18,9 +18,9 @@ namespace Skyra.Notifications.Services
 	public class YoutubeService : YoutubeServiceBase
 	{
 		private readonly IDatabase _database;
-		private readonly ILogger<YoutubeService> _logger;
 		private readonly ConcurrentQueue<Notification> _notificationQueue;
 		private readonly SubscriptionManager _subscriptionManager;
+		private readonly ILogger<YoutubeService> _logger;
 
 		public YoutubeService(IDatabase database, SubscriptionManager subscriptionManager, ConcurrentQueue<Notification> notificationQueue, ILogger<YoutubeService> logger)
 		{
@@ -43,7 +43,6 @@ namespace Skyra.Notifications.Services
 				{
 					ChannelId = sub.Id
 				};
-
 
 				subscription.GuildIds.AddRange(sub.GuildIds);
 
@@ -72,7 +71,6 @@ namespace Skyra.Notifications.Services
 					continue;
 				}
 
-				_logger.LogInformation("DEQUEUE");
 				await using var database = new SkyraDatabase(new SkyraDbContext(), new NullLogger<SkyraDatabase>());
 
 				var notificationSubscription = await database.GetSubscriptionAsync(notification.ChannelId);
@@ -103,21 +101,32 @@ namespace Skyra.Notifications.Services
 				subscriptionNotification.Channels.AddRange(channels);
 
 				await responseStream.WriteAsync(subscriptionNotification);
+
+				var guildsToString = string.Join(',', notificationSubscription.Value.GuildIds);
+				_logger.LogInformation("Send notification for {VideoTitle} ({VideoId}) to guilds [{GuildIds}]", notification.Title, notification.VideoId, guildsToString);
 			}
 		}
 
-		private async Task<Result> HandleSubscription(string channelUrl, string guildId, string message, string youtubeChannelId)
+		private async Task<Result> HandleSubscription(string channelUrl, string guildId, string message, string guildChannelId)
 		{
-			var result = await _subscriptionManager.SubscribeAsync(channelUrl, guildId, message, youtubeChannelId);
+			var result = await _subscriptionManager.SubscribeAsync(channelUrl, guildId, message, guildChannelId);
+
+			var resultMessage = result.Success ? "succeeded" : "failed";
+			_logger.LogInformation("Subscription to channel {ChannelUrl} from guild {GuildId} {Result}", channelUrl, guildId, resultMessage);
+
 			return new Result
 			{
 				Status = result.Success ? Status.Success : Status.Failed
 			};
 		}
 
-		private async Task<Result> HandleUnsubscription(string channelName, string guildId)
+		private async Task<Result> HandleUnsubscription(string channelUrl, string guildId)
 		{
-			var result = await _subscriptionManager.UnsubscribeAsync(channelName, guildId);
+			var result = await _subscriptionManager.UnsubscribeAsync(channelUrl, guildId);
+
+			var resultMessage = result.Success ? "succeeded" : "failed";
+			_logger.LogInformation("Unsubscription to channel {ChannelUrl} from guild {GuildId} {Result}", channelUrl, guildId, resultMessage);
+
 			return new Result
 			{
 				Status = result.Success ? Status.Success : Status.Failed

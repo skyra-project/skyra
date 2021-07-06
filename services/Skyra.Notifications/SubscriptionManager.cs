@@ -18,6 +18,10 @@ namespace Skyra.Notifications
 	{
 		private readonly IBrowsingContext _browsingContext;
 		private readonly IDatabase _database;
+
+		private readonly ILogger<SubscriptionManager> _logger;
+		private readonly PubSubClient _pubSubClient;
+		private readonly Timer _resubTimer;
 		private HttpClient _httpClient;
 
 		private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
@@ -25,10 +29,7 @@ namespace Skyra.Notifications
 			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 		};
 
-		private readonly ILogger<SubscriptionManager> _logger;
-		private readonly PubSubClient _pubSubClient;
 		private Dictionary<string, DateTime> _resubscribeTimes;
-		private readonly Timer _resubTimer;
 
 		public SubscriptionManager(PubSubClient pubSubClient, ILogger<SubscriptionManager> logger, IDatabase database, HttpClient httpClient, IBrowsingContext browsingContext)
 		{

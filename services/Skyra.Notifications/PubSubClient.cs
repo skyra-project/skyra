@@ -9,11 +9,11 @@ namespace Skyra.Notifications
 {
 	public class PubSubClient
 	{
-		private readonly string CallbackUrl;
-		private readonly string PubSubUrl;
 		private readonly RequestCache _cache;
 		private readonly HttpClient _httpClient;
 		private readonly ILogger<PubSubClient> _logger;
+		private readonly string CallbackUrl;
+		private readonly string PubSubUrl;
 
 		public PubSubClient(RequestCache cache, HttpClient httpClient, ILogger<PubSubClient> logger)
 		{

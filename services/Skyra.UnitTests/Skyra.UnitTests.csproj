@@ -21,6 +21,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Skyra.Database\Skyra.Database.csproj" />
       <ProjectReference Include="..\Skyra.Grpc\Skyra.Grpc.csproj" />
+      <ProjectReference Include="..\Skyra.Notifications\Skyra.Notifications.csproj" />
     </ItemGroup>
 
 </Project>

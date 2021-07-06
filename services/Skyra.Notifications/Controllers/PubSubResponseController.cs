@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,11 @@ namespace Skyra.Notifications.Controllers
 	[Route("test")]
 	public class PubSubResponseController : ControllerBase
 	{
-		private readonly DateTime StartupTime = DateTime.Now;
 		private readonly RequestCache _cache;
 		private readonly IDatabase _database;
 		private readonly ILogger<PubSubResponseController> _logger;
 		private readonly ConcurrentQueue<Notification> _notificationQueue;
+		private readonly DateTime _startupTime = DateTime.Now;
 
 		public PubSubResponseController(ILogger<PubSubResponseController> logger, RequestCache cache, ConcurrentQueue<Notification> notificationQueue, IDatabase database)
 		{
@@ -31,7 +32,7 @@ namespace Skyra.Notifications.Controllers
 			_database = database;
 		}
 
-		[HttpGet("stuff")]
+		[HttpGet("auth")]
 		public async Task Authenticate()
 		{
 			var topic = Request.Query["hub.topic"];
@@ -57,41 +58,32 @@ namespace Skyra.Notifications.Controllers
 			await Response.Body.WriteAsync(Encoding.ASCII.GetBytes(challenge));
 		}
 
-		[HttpPost("stuff")]
+		[HttpPost("notify")]
 		public async Task<IActionResult> Notify()
 		{
-			_logger.LogInformation("WOW");
-			var reader = new StreamReader(Request.Body);
-			var text = await reader.ReadToEndAsync();
-			var document = XElement.Parse(text);
-			var elements = document.Elements();
+			var elements = await GetElementsAsync();
 
 			var entry = elements.FirstOrDefault(element => element.Name.LocalName == "entry");
 
 			if (entry is null) // it's a delete, they have no 'entry' element, ignore
 			{
-				var atby = document.Elements().First(element => element.Name.LocalName == "deleted-entry").Elements().First(element => element.Name.LocalName == "by");
+				var atby = elements.First(element => element.Name.LocalName == "deleted-entry").Elements().First(element => element.Name.LocalName == "by");
 				var url = atby.Elements().First(element => element.Name.LocalName == "uri").Value;
 				_logger.LogInformation("Ignoring deleted video from channel: {Id}", url);
 				return Ok();
 			}
 
-			var published = DateTime.Parse(entry.Elements().First(element => element.Name.LocalName == "published").Value);
-			var updated = DateTime.Parse(entry.Elements().First(element => element.Name.LocalName == "updated").Value);
-
-			var channelId = entry.Elements().First(element => element.Name.LocalName == "channelId").Value;
-			var title = entry.Elements().First(element => element.Name.LocalName == "title").Value;
-			var videoId = entry.Elements().First(element => element.Name.LocalName == "videoId").Value;
+			var (published, channelId, title, videoId) = GetMetadata(entry);
 
 			// if it was published more then 10 minutes ago, we ignore it, as youtube likes to send videos from hours ago
-			if (published.AddMinutes(10) <= StartupTime)
+			if (published.AddMinutes(10) <= _startupTime)
 			{
 				_logger.LogInformation("Ignoring uploaded video that was uploaded at {PublishedTime} with ID of {Id}", published, videoId);
 			}
 
 			var subscriptionResult = await _database.GetSubscriptionAsync(channelId);
 
-			if (!subscriptionResult.Success)
+			if (!subscriptionResult.Success || subscriptionResult.Value is null)
 			{
 				// we don't actually have a subscription, but youtube is sending notifications for that channel anyway
 				_logger.LogInformation("Ignoring event with video ID of {VideoId} because it was not found as a subscription in the database", videoId);
@@ -112,7 +104,6 @@ namespace Skyra.Notifications.Controllers
 
 			await _database.AddSeenVideoAsync(channelId, videoId);
 
-
 			var channelName = entry.Elements().First(element => element.Name.LocalName == "author").Elements().First(element => element.Name.LocalName == "name").Value;
 
 			var thumbnailUrl = $"https://img.youtube.com/vi/{videoId}/maxresdefault.jpg";
@@ -129,6 +120,24 @@ namespace Skyra.Notifications.Controllers
 			});
 
 			return Ok();
+		}
+
+		private static (DateTime published, string? channelId, string? title, string? videoId) GetMetadata(XElement? entry)
+		{
+			var published = DateTime.Parse(entry.Elements().First(element => element.Name.LocalName == "published").Value);
+			var channelId = entry.Elements().First(element => element.Name.LocalName == "channelId").Value;
+			var title = entry.Elements().First(element => element.Name.LocalName == "title").Value;
+			var videoId = entry.Elements().First(element => element.Name.LocalName == "videoId").Value;
+			return (published, channelId, title, videoId);
+		}
+
+		private async Task<IEnumerable<XElement>?> GetElementsAsync()
+		{
+			var reader = new StreamReader(Request.Body);
+			var text = await reader.ReadToEndAsync();
+			var document = XElement.Parse(text);
+			var elements = document.Elements();
+			return elements;
 		}
 	}
 }

@@ -3,6 +3,7 @@ FROM node:16-buster-slim as BUILDER
 WORKDIR /usr/src/app
 
 ENV NODE_ENV="development"
+ENV HUSKY=0
 
 RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
@@ -23,8 +24,9 @@ COPY --chown=node:node assets/ assets/
 COPY --chown=node:node scripts/ scripts/
 COPY --chown=node:node typescript/src/ typescript/src/
 
-RUN yarn install --production=false --frozen-lockfile --link-duplicates && \
-    yarn build
+RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
+    && yarn install --production=false --frozen-lockfile --link-duplicates \
+    && yarn build
 
 # ================ #
 #   Runner Stage   #
@@ -60,8 +62,9 @@ COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
 COPY --chown=node:node typescript/src/package.json typescript/src/package.json
 COPY --chown=node:node typescript/src/.env typescript/src/.env
 
-RUN yarn install --production=true --frozen-lockfile --link-duplicates && \
-    yarn cache clean
+RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
+    && yarn install --production=true --frozen-lockfile --link-duplicates \
+    && yarn cache clean
 
 USER node
 

@@ -3414,10 +3414,10 @@ dot-prop@^5.1.0:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv-cra@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/dotenv-cra/-/dotenv-cra-2.1.0.tgz#87825a38a671cd5d59b228980110d5ee8e4f7141"
-  integrity sha512-DJj1ok6DongjQTFY19mtQ3sk70Sa9KGYLxFF07Ag+LLA2XKmYsJDCsTYw1v9VwYdL+MD0XhmeEatBbrTI4QKCA==
+dotenv-cra@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv-cra/-/dotenv-cra-3.0.1.tgz#7d1bea47be3865dd73b2cb714ee05e33f7b5d863"
+  integrity sha512-WLgVA7KOhPX5RIF2dTKle0fwg86595leBbvm9NQlNFmU49vjs7VJ3XCFEOXFGTmfVTLBWdmrGOZErwkNJKY+Qg==
   dependencies:
     dotenv "^10.0.0"
     dotenv-expand "^5.1.0"

@@ -2,11 +2,27 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
-import { APIChannel, APIGuild, ChannelType, GuildFeature } from 'discord-api-types/v6';
-import { Guild, TextChannel } from 'discord.js';
+import { APIChannel, APIGuild, APIRole, ChannelType, GuildFeature } from 'discord-api-types/v6';
+import { Guild, Role, TextChannel } from 'discord.js';
 import { resolve } from 'path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
+
+export const roleData: APIRole = {
+	id: '254360814063058944',
+	name: '@​everyone',
+	color: 0,
+	hoist: false,
+	position: 0,
+	permissions: 104189505,
+	permissions_new: '104189505',
+	managed: false,
+	mentionable: false
+};
+
+export function createRole(data: Partial<APIRole> = {}, g: Guild = guild) {
+	return new Role(client, { ...roleData, ...data }, g);
+}
 
 export const guildData: APIGuild = {
 	id: '254360814063058944',
@@ -34,19 +50,7 @@ export const guildData: APIGuild = {
 	widget_enabled: true,
 	widget_channel_id: '409663610780909569',
 	verification_level: 2,
-	roles: [
-		{
-			id: '254360814063058944',
-			name: '@​everyone',
-			color: 0,
-			hoist: false,
-			position: 0,
-			permissions: 104189505,
-			permissions_new: '104189505',
-			managed: false,
-			mentionable: false
-		}
-	],
+	roles: [roleData],
 	default_message_notifications: 1,
 	mfa_level: 1,
 	explicit_content_filter: 2,
@@ -63,7 +67,13 @@ export const guildData: APIGuild = {
 	embed_enabled: true,
 	embed_channel_id: '409663610780909569'
 };
-export const guild = new Guild(client, guildData);
+
+export function createGuild(data: Partial<APIGuild> = {}) {
+	const g = new Guild(client, { ...guildData, ...data });
+	client.guilds.cache.set(g.id, g);
+	return g;
+}
+export const guild = createGuild();
 
 export const textChannelData: APIChannel = {
 	type: ChannelType.GUILD_TEXT,
@@ -79,7 +89,14 @@ export const textChannelData: APIChannel = {
 	guild_id: '254360814063058944',
 	nsfw: false
 };
-export const textChannel = new TextChannel(guild, textChannelData);
+
+export function createTextChannel(data: Partial<APIChannel> = {}, g: Guild = guild) {
+	const c = new TextChannel(guild, { ...textChannelData, ...data });
+	g.channels.cache.set(c.id, c);
+	g.client.channels.cache.set(c.id, c);
+	return c;
+}
+export const textChannel = createTextChannel();
 
 export const commands = client.stores.get('commands');
 

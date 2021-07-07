@@ -23,9 +23,9 @@ export class PermissionNodeManager implements IBaseManager {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#settings: GuildEntity;
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	#sorted = new Collection<string, PermissionsManagerNode>();
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#previous: Nodes = [];
+
+	private sorted = new Collection<string, PermissionsManagerNode>();
 
 	public constructor(settings: GuildEntity) {
 		this.#settings = settings;
@@ -36,7 +36,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public has(roleID: string) {
-		return this.#sorted.has(roleID);
+		return this.sorted.has(roleID);
 	}
 
 	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
@@ -113,7 +113,7 @@ export class PermissionNodeManager implements IBaseManager {
 		this.#previous = nodes;
 
 		if (nodes.length === 0) {
-			this.#sorted.clear();
+			this.sorted.clear();
 			return;
 		}
 
@@ -129,7 +129,7 @@ export class PermissionNodeManager implements IBaseManager {
 			});
 		}
 
-		this.#sorted = sorted;
+		this.sorted = sorted;
 
 		// Delete redundant entries
 		if (pendingToRemove.length) {
@@ -146,7 +146,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public onRemove(): void {
-		this.#sorted.clear();
+		this.sorted.clear();
 		this.#previous = [];
 	}
 
@@ -167,7 +167,7 @@ export class PermissionNodeManager implements IBaseManager {
 		const roles = member.roles.cache;
 
 		// Assume sorted data
-		for (const [id, node] of this.#sorted.entries()) {
+		for (const [id, node] of this.sorted.entries()) {
 			if (!roles.has(id)) continue;
 			if (matchAny(node.allow, command)) return true;
 			if (matchAny(node.deny, command)) return false;

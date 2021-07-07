@@ -2,7 +2,7 @@
 
 ### How does it work?
 
-Youtube notifications work via a free service provided by Google, running on there own [pubsubhubbub](https://pubsubhubbub.appspot.com/) API.
+Youtube notifications work via a free service provided by Google, running on their own [pubsubhubbub](https://pubsubhubbub.appspot.com/) API.
 
 Firstly, we use GRPC to send in requests from the running instance of Skyra, to the microservice, to allow the two to communicate.
 

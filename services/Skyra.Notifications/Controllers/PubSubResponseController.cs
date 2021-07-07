@@ -37,15 +37,14 @@ namespace Skyra.Notifications.Controllers
 		{
 			var topic = Request.Query["hub.topic"];
 			var mode = Request.Query["hub.mode"];
-			var leaseTime = Request.Query["hub.lease"];
 			var challenge = Request.Query["hub.challenge"];
 			var queryParams = HttpUtility.ParseQueryString(new Uri(topic).Query);
 
 			var channelId = queryParams["channel_id"];
 			var isSubscription = mode == "subscribe";
 			// TODO: why is this not logging the lease time correctly?
-			_logger.LogInformation("Received Authentication request with challenge {Challenge} for topic {Topic} ({Mode}) with a lease time of {Time} seconds",
-				challenge, channelId, mode, leaseTime);
+			_logger.LogInformation("Received Authentication request with challenge {Challenge} for topic {Topic} ({Mode})",
+				challenge, channelId, mode);
 
 			if (!_cache.GetRequest(channelId, isSubscription))
 			{

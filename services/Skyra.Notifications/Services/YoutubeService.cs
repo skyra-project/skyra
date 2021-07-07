@@ -71,6 +71,8 @@ namespace Skyra.Notifications.Services
 					continue;
 				}
 
+				_logger.LogInformation("Sending notification {@Notification}", notification);
+
 				await using var database = new SkyraDatabase(new SkyraDbContext(), new NullLogger<SkyraDatabase>());
 
 				var notificationSubscription = await database.GetSubscriptionAsync(notification.ChannelId);

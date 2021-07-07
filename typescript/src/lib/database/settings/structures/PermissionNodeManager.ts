@@ -110,7 +110,7 @@ export class PermissionNodeManager implements IBaseManager {
 
 	public refresh() {
 		const nodes = this.#settings[GuildSettings.Permissions.Roles];
-		this.#previous = nodes;
+		this.#previous = nodes.slice();
 
 		if (nodes.length === 0) {
 			this.sorted.clear();

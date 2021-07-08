@@ -100,7 +100,7 @@ export class ScheduleEntity extends BaseEntity {
 		try {
 			response = (await task.run({ ...(this.data ?? {}), id: this.id })) as PartialResponseValue | null;
 		} catch (error) {
-			Store.injectedContext.client.emit(Events.TaskError, this, task, error);
+			Store.injectedContext.client.emit(Events.TaskError, error, { piece: task, entity: this });
 		}
 
 		this.#running = false;

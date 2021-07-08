@@ -154,8 +154,8 @@ declare module '@sapphire/framework' {
 		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;
 		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
-		emit(event: string | symbol, ...args: any[]): boolean;
 		emit(event: Events.TaskError, error: Error, payload: TaskErrorPayload): boolean;
+		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 }
 

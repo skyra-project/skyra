@@ -27,7 +27,8 @@ import type {
 	SplitOptions,
 	StringResolvable,
 	TextChannel,
-	User
+	User,
+	VoiceChannel
 } from 'discord.js';
 import { Redis } from 'ioredis';
 import type { TaskErrorPayload } from './definitions';
@@ -53,49 +54,6 @@ declare module 'discord.js' {
 		readonly webhookError: Webhook | null;
 		readonly websocket: WebsocketHandler;
 		readonly context: PieceContextExtras;
-
-		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
-		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
-		emit(
-			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
-			message: Message,
-			resultMessage: Message,
-			channel: TextChannel,
-			role: Role,
-			content: string
-		): boolean;
-		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
-		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
-		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
-		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
-		emit(event: Events.MusicFinish, queue: Queue): boolean;
-		emit(event: Events.MusicFinishNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicLeave, queue: Queue): boolean;
-		emit(event: Events.MusicPrune, queue: Queue): boolean;
-		emit(event: Events.MusicQueueSync, queue: Queue): boolean;
-		emit(event: Events.MusicRemove, queue: Queue): boolean;
-		emit(event: Events.MusicRemoveNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicReplayUpdate, queue: Queue, repeating: boolean): boolean;
-		emit(event: Events.MusicReplayUpdateNotify, channel: MessageAcknowledgeable, repeating: boolean): boolean;
-		emit(event: Events.MusicSongPause, queue: Queue): boolean;
-		emit(event: Events.MusicSongPauseNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicSongPlay, queue: Queue, status: NP): boolean;
-		emit(event: Events.MusicSongPlayNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicSongReplay, queue: Queue, status: NP): boolean;
-		emit(event: Events.MusicSongResume, queue: Queue): boolean;
-		emit(event: Events.MusicSongResumeNotify, channel: MessageAcknowledgeable): boolean;
-		emit(event: Events.MusicSongSeekUpdate, queue: Queue): boolean;
-		emit(event: Events.MusicSongSeekUpdateNotify, channel: MessageAcknowledgeable, time: number): boolean;
-		emit(event: Events.MusicSongSkip, queue: Queue): boolean;
-		emit(event: Events.MusicSongSkipNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
-		emit(event: Events.MusicSongVolumeUpdate, queue: Queue, next: number): boolean;
-		emit(event: Events.MusicSongVolumeUpdateNotify, channel: MessageAcknowledgeable, previous: number, next: number): boolean;
-		emit(event: Events.MusicVoiceChannelJoin, queue: Queue, voiceChannel: VoiceChannel): boolean;
-		emit(event: Events.MusicVoiceChannelLeave, queue: Queue): boolean;
-		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
-		emit(event: Events.ResourceAnalyticsSync): boolean;
-		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
-		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
 	interface ClientEvents {
@@ -152,6 +110,52 @@ declare module '@sapphire/framework' {
 		time: Date;
 		timespan: number;
 		userName: User;
+	}
+
+	interface SapphireClient {
+		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
+		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
+		emit(
+			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
+			message: Message,
+			resultMessage: Message,
+			channel: TextChannel,
+			role: Role,
+			content: string
+		): boolean;
+		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
+		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
+		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
+		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
+		emit(event: Events.MusicFinish, queue: Queue): boolean;
+		emit(event: Events.MusicFinishNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicLeave, queue: Queue): boolean;
+		emit(event: Events.MusicPrune, queue: Queue): boolean;
+		emit(event: Events.MusicQueueSync, queue: Queue): boolean;
+		emit(event: Events.MusicRemove, queue: Queue): boolean;
+		emit(event: Events.MusicRemoveNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicReplayUpdate, queue: Queue, repeating: boolean): boolean;
+		emit(event: Events.MusicReplayUpdateNotify, channel: MessageAcknowledgeable, repeating: boolean): boolean;
+		emit(event: Events.MusicSongPause, queue: Queue): boolean;
+		emit(event: Events.MusicSongPauseNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicSongPlay, queue: Queue, status: NP): boolean;
+		emit(event: Events.MusicSongPlayNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicSongReplay, queue: Queue, status: NP): boolean;
+		emit(event: Events.MusicSongResume, queue: Queue): boolean;
+		emit(event: Events.MusicSongResumeNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicSongSeekUpdate, queue: Queue): boolean;
+		emit(event: Events.MusicSongSeekUpdateNotify, channel: MessageAcknowledgeable, time: number): boolean;
+		emit(event: Events.MusicSongSkip, queue: Queue): boolean;
+		emit(event: Events.MusicSongSkipNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicSongVolumeUpdate, queue: Queue, next: number): boolean;
+		emit(event: Events.MusicSongVolumeUpdateNotify, channel: MessageAcknowledgeable, previous: number, next: number): boolean;
+		emit(event: Events.MusicVoiceChannelJoin, queue: Queue, voiceChannel: VoiceChannel): boolean;
+		emit(event: Events.MusicVoiceChannelLeave, queue: Queue): boolean;
+		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
+		emit(event: Events.ResourceAnalyticsSync): boolean;
+		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
+		emit(event: Events.TaskError, error: Error, payload: TaskErrorPayload): boolean;
+		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 }
 

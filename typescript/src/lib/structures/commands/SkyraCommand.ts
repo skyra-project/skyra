@@ -86,7 +86,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		preconditions.push(this.resolvePermissionLevelPreCondition(context, options.permissionLevel));
 
 		if (options.bucket && options.cooldown) {
-			preconditions.push({ name: 'Cooldown', context: { bucket: options.bucket, cooldown: options.cooldown } });
+			preconditions.push({ name: 'Cooldown', context: { limit: options.bucket, delay: options.cooldown } });
 		}
 
 		return options;

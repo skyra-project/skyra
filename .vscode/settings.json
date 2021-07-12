@@ -2,5 +2,6 @@
 	"eslint.validate": ["typescript"],
 	"editor.detectIndentation": true,
 	"files.eol": "\n",
-	"powershell.codeFormatting.addWhitespaceAroundPipe": true
+	"powershell.codeFormatting.addWhitespaceAroundPipe": true,
+	"jestrunner.configPath": "typescript/unit-tests/jest.config.ts"
 }

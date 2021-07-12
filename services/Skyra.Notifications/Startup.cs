@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Http;
 using AngleSharp;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +37,14 @@ namespace Skyra.Notifications
 				{
 					console.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
 				});
+
+				var dnsUrl = Environment.GetEnvironmentVariable("SENTRY_URL");
+
+				if (dnsUrl is not null)
+				{
+					options.AddSentry(options => options.Dsn = dnsUrl);
+				}
+
 			});
 		}
 

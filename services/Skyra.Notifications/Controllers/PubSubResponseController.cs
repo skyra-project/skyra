@@ -107,7 +107,6 @@ namespace Skyra.Notifications.Controllers
 
 			var thumbnailUrl = $"https://img.youtube.com/vi/{videoId}/maxresdefault.jpg";
 
-			_logger.LogInformation("QUEUE");
 			_notificationQueue.Enqueue(new Notification
 			{
 				ChannelId = channelId,

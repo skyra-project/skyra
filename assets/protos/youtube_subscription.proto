@@ -54,4 +54,5 @@ message NotificationChannel {
 message NotificationSettingsUpdate {
   string Message = 1;
   string Channel = 2;
+  string GuildId = 3;
 }

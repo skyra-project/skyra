@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('OWLBOT_TOKEN'),
-	aliases: ['definition', 'defination', 'dictionary'],
+	aliases: ['def', 'definition', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
 	description: LanguageKeys.Commands.Tools.DefineDescription,

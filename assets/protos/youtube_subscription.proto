@@ -33,7 +33,8 @@ message SubscriptionResponse {
 
 message Subscription {
   string ChannelId = 1;
-  repeated string GuildIds = 2;
+  string ChannelTitle = 2;
+  repeated string GuildIds = 3;
 }
 
 message SubscriptionNotification {

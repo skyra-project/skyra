@@ -21,5 +21,8 @@ namespace Skyra.Database.Models.Entities
 		[Required]
 		[Column("guild_ids", TypeName = "character varying(19)[]")]
 		public string[] GuildIds { get; set; }
+
+		[Column("channel_title")]
+		public string ChannelTitle { get; set; }
 	}
 }

@@ -41,7 +41,8 @@ namespace Skyra.Notifications.Services
 			{
 				var subscription = new Subscription
 				{
-					ChannelId = sub.Id
+					ChannelId = sub.Id,
+					ChannelTitle = sub.ChannelTitle
 				};
 
 				subscription.GuildIds.AddRange(sub.GuildIds);

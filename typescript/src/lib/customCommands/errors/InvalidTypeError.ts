@@ -23,6 +23,7 @@ export class InvalidTypeError extends UserError {
 	public static readonly argLessPossibles = [
 		'author.id',
 		'author.name',
+		'author.mention',
 		'author',
 		'guild.acronym',
 		'guild.id',
@@ -44,6 +45,7 @@ export class InvalidTypeError extends UserError {
 		'member.displayName',
 		'member.id',
 		'member.name',
+		'member.mention',
 		'member',
 		'pick',
 		'rest',
@@ -56,6 +58,7 @@ export class InvalidTypeError extends UserError {
 		'user.displayName',
 		'user.id',
 		'user.name',
+		'user.mention',
 		'user',
 		'word'
 	] as const;
@@ -66,16 +69,13 @@ export namespace InvalidTypeError {
 	export type ArgLessType =
 		| 'author.id'
 		| 'author.name'
+		| 'author.mention'
 		| 'author'
-		| 'guild.acronym'
-		| 'guild.id'
-		| 'guild.name'
-		| 'guild'
-		| 'random'
-		| 'server.acronym'
-		| 'server.id'
-		| 'server.name'
-		| 'server';
+		| `${'guild' | 'server'}.acronym`
+		| `${'guild' | 'server'}.id`
+		| `${'guild' | 'server'}.name`
+		| `${'guild' | 'server'}`
+		| 'random';
 
 	export type Type =
 		| ArgLessType
@@ -83,10 +83,11 @@ export namespace InvalidTypeError {
 		| 'channel.name'
 		| 'channel'
 		| 'emoji'
-		| 'member.displayName'
-		| 'member.id'
-		| 'member.name'
-		| 'member'
+		| `${'member' | 'user'}.displayName`
+		| `${'member' | 'user'}.id`
+		| `${'member' | 'user'}.name`
+		| `${'member' | 'user'}.mention`
+		| `${'member' | 'user'}`
 		| 'pick'
 		| 'rest'
 		| 'role.color'
@@ -95,9 +96,5 @@ export namespace InvalidTypeError {
 		| 'role.name'
 		| 'role.position'
 		| 'role'
-		| 'user.displayName'
-		| 'user.id'
-		| 'user.name'
-		| 'user'
 		| 'word';
 }

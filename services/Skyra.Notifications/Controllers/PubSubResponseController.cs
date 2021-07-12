@@ -105,6 +105,7 @@ namespace Skyra.Notifications.Controllers
 			await _database.AddSeenVideoAsync(channelId, videoId);
 
 			var channelName = entry.Elements().First(element => element.Name.LocalName == "author").Elements().First(element => element.Name.LocalName == "name").Value;
+			await _database.UpdateChannelNameAsync(channelId, channelName);
 
 			var thumbnailUrl = $"https://img.youtube.com/vi/{videoId}/maxresdefault.jpg";
 

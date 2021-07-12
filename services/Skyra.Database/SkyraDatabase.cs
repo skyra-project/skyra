@@ -1284,12 +1284,12 @@ namespace Skyra.Database
 			}
 		}
 
-		public Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId)
+		public Task<Result> AddYoutubeSubscriptionAsync(string channelId, string channelTitle, string guildId)
 		{
-			return AddYoutubeSubscriptionAsync(channelId, guildId, default);
+			return AddYoutubeSubscriptionAsync(channelId, channelTitle, guildId, default);
 		}
 
-		public async Task<Result> AddYoutubeSubscriptionAsync(string channelId, string guildId, DateTime expiresAt)
+		public async Task<Result> AddYoutubeSubscriptionAsync(string channelId, string channelName, string guildId, DateTime expiresAt)
 		{
 			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
 
@@ -1299,6 +1299,7 @@ namespace Skyra.Database
 				{
 					ExpiresAt = expiresAt,
 					Id = channelId,
+					ChannelTitle = channelName,
 					GuildIds = new[] {guildId},
 					AlreadySeenIds = Array.Empty<string>()
 				};
@@ -1435,6 +1436,16 @@ namespace Skyra.Database
 			}
 
 			subscription.ExpiresAt = resubTime;
+			await _context.SaveChangesAsync();
+			return Result.FromSuccess();
+		}
+
+		public async Task<Result> UpdateChannelNameAsync(string id, string name)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(id);
+			if(subscription.ChannelTitle == name) return Result.FromSuccess();
+
+			subscription.ChannelTitle = name;
 			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
 		}

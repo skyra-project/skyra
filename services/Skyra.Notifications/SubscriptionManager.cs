@@ -82,9 +82,9 @@ namespace Skyra.Notifications
 
 		public async Task<Result> SubscribeAsync(string channelUrl, string guildId, string message, string discordNotificationChannelId)
 		{
-			var youtubeChannelId = await GetChannelIdAsync(channelUrl);
+			var (youtubeChannelId, youtubeChannelName) = await GetChannelInfoAsync(channelUrl);
 
-			if (youtubeChannelId is null)
+			if (youtubeChannelId is null || youtubeChannelName is null)
 			{
 				return Result.FromError();
 			}
@@ -94,7 +94,7 @@ namespace Skyra.Notifications
 			if (exists.Value)
 			{
 				// we already have an active subscription, just need to add this guild to the sub
-				await _database.AddYoutubeSubscriptionAsync(youtubeChannelId, guildId);
+				await _database.AddYoutubeSubscriptionAsync(youtubeChannelId,youtubeChannelName, guildId);
 				await _database.UpdateYoutubeSubscriptionSettingsAsync(guildId, message, youtubeChannelId);
 				_logger.LogInformation("Added a subscription to {YoutubeChannelId} for {GuildId}", youtubeChannelId, guildId);
 			}
@@ -104,7 +104,7 @@ namespace Skyra.Notifications
 				var subscriptionResult = await _pubSubClient.SubscribeAsync(youtubeChannelId);
 				if (subscriptionResult.Success)
 				{
-					await _database.AddYoutubeSubscriptionAsync(youtubeChannelId, guildId, DateTime.Now.AddDays(5));
+					await _database.AddYoutubeSubscriptionAsync(youtubeChannelId, youtubeChannelName, guildId, DateTime.Now.AddDays(5));
 					await _database.UpdateYoutubeSubscriptionSettingsAsync(guildId, message, discordNotificationChannelId);
 					_resubscribeTimes[youtubeChannelId] = DateTime.Now.AddDays(5);
 				}
@@ -115,11 +115,10 @@ namespace Skyra.Notifications
 
 		public async Task<Result> UnsubscribeAsync(string channelUrl, string guildId)
 		{
-			var channelId = await GetChannelIdAsync(channelUrl);
+			var (channelId, _) = await GetChannelInfoAsync(channelUrl);
 
 			if (channelId is null)
 			{
-				_logger.LogWarning("Fetching ID from channel {Url} returned no results", channelUrl);
 				return Result.FromError();
 			}
 
@@ -145,24 +144,32 @@ namespace Skyra.Notifications
 			return Result.FromSuccess();
 		}
 
-		private async Task<string?> GetChannelIdAsync(string channelUrl)
+		private async Task<(string?, string?)> GetChannelInfoAsync(string channelUrl)
 		{
 			var document = await _browsingContext.OpenAsync(channelUrl);
 			if (document.StatusCode != HttpStatusCode.OK)
 			{
-				_logger.LogWarning("Did not recieve OK response from youtube for channel url of {Url} - instead received {Status}", channelUrl, document.StatusCode);
-				return null;
+				_logger.LogError("Did not recieve OK response from youtube for channel url of {Url} - instead received {Status}", channelUrl, document.StatusCode);
+				return (null, null);
 			}
 
 			var cell = document.QuerySelector("meta[itemprop='channelId']") as IHtmlMetaElement;
 
 			if (cell is null)
 			{
-				_logger.LogWarning("Could not find <meta> tag for the channel-id for url {Url}", channelUrl);
-				return null;
+				_logger.LogError("Could not find <meta> tag for the channel-id for url {Url}", channelUrl);
+				return (null, null);
 			}
 
-			return cell.Content;
+			var name = document.QuerySelector("meta[property='og:title']").Attributes["content"].Value;
+
+			if (name is null)
+			{
+				_logger.LogError("Could not find 'og:title' tag for url {Url}", channelUrl);
+				return (null, null);
+			}
+
+			return (cell.Content, name);
 		}
 	}
 }

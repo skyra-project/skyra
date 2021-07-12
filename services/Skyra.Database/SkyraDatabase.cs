@@ -1391,7 +1391,15 @@ namespace Skyra.Database
 				return Result.FromError();
 			}
 
-			subscription.GuildIds = subscription.GuildIds.Where(id => id != guildId).ToArray();
+			if (!subscription.GuildIds.Any())
+			{
+				_context.YoutubeSubscriptions.Remove(subscription);
+			}
+			else
+			{
+				subscription.GuildIds = subscription.GuildIds.Where(id => id != guildId).ToArray();
+			}
+
 			await _context.SaveChangesAsync();
 			return Result.FromSuccess();
 		}

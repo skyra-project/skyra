@@ -64,7 +64,7 @@ namespace Skyra.Notifications.Services
 
 		public override async Task<Result> UpdateSubscriptionSettings(NotificationSettingsUpdate request, ServerCallContext context)
 		{
-			var updated = await _database.UpdateYoutubeSubscriptionSettingsAsync(request.GuildId, request.Message, request.Channel)
+			var updated = await _database.UpdateYoutubeSubscriptionSettingsAsync(request.GuildId, request.Message, request.Channel);
 			return new Result
 			{
 				Status = updated.Success ? Status.Success : Status.Failed

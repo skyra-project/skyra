@@ -78,6 +78,7 @@ namespace Skyra.Notifications.Controllers
 			if (published.AddMinutes(10) <= _startupTime)
 			{
 				_logger.LogInformation("Ignoring uploaded video that was uploaded at {PublishedTime} with ID of {Id}", published, videoId);
+				return Ok();
 			}
 
 			var subscriptionResult = await _database.GetSubscriptionAsync(channelId);

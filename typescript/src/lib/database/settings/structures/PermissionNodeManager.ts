@@ -100,7 +100,7 @@ export class PermissionNodeManager implements IBaseManager {
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
 		if (nodeIndex === -1) {
-			throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists });
+			throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists, context: { target } });
 		}
 
 		this.#settings[key].splice(nodeIndex, 1);
@@ -130,11 +130,9 @@ export class PermissionNodeManager implements IBaseManager {
 		this.sorted = sorted;
 
 		// Delete redundant entries
-		if (pendingToRemove.size) {
-			for (const removedItem of pendingToRemove) {
-				const removedIndex = nodes.findIndex((element) => element.id === removedItem);
-				if (removedIndex !== -1) nodes.splice(removedIndex, 1);
-			}
+		for (const removedItem of pendingToRemove) {
+			const removedIndex = nodes.findIndex((element) => element.id === removedItem);
+			if (removedIndex !== -1) nodes.splice(removedIndex, 1);
 		}
 	}
 
@@ -175,7 +173,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	private generateSorted(nodes: readonly PermissionsNode[]) {
-		const [pendingToRemove, sortedRoles] = this.getSortedRoles(nodes);
+		const { pendingToRemove, sortedRoles } = this.getSortedRoles(nodes);
 
 		const sortedNodes: PermissionsNode[] = [];
 		for (const sortedRole of sortedRoles.values()) {
@@ -218,7 +216,10 @@ export class PermissionNodeManager implements IBaseManager {
 		// Guild#_sortedRoles sorts in the inverse order, so we need to turn it into an array and reverse it:
 		const reversed = [...roles.values()].reverse();
 
-		return [ids, reversed] as const;
+		return {
+			pendingToRemove: ids,
+			sortedRoles: reversed
+		};
 	}
 
 	private getName(type: PermissionNodeAction) {

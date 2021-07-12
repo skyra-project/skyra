@@ -1,5 +1,7 @@
 import { GuildEntity, PermissionNodeAction, PermissionsNode } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { createGuild, createGuildMember, createRole, createUser, roleData } from '#mocks/MockInstances';
+import { UserError } from '@sapphire/framework';
 import type { Guild } from 'discord.js';
 
 describe('PermissionNodeManager', () => {
@@ -18,13 +20,19 @@ describe('PermissionNodeManager', () => {
 	}
 
 	describe('run', () => {
-		// TODO
+		// TODO: Test with no nodes
+		// TODO: Test with non-applicable nodes
+		// TODO: Test with user nodes
+		// TODO: Test with role nodes
 	});
 
 	describe('has', () => {
 		test('GIVEN a guild with no roles THEN returns false', () => {
 			expect(entity.permissionNodes.has('1')).toBe(false);
 		});
+
+		// TODO: Test with entry but no refresh
+		// TODO: Test with entry and refresh
 	});
 
 	describe('add', () => {
@@ -45,12 +53,15 @@ describe('PermissionNodeManager', () => {
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: user.id, allow: ['ping', 'balance'], deny: [] }]);
 			});
+
+			// TODO: Test with existing command in same action type
+			// TODO: Test with existing command in opposite action type
 		});
 
 		describe('member', () => {
-			const member = createGuildMember();
-
 			test('GIVEN a GuildMember with no node THEN creates new one', () => {
+				const member = createGuildMember({}, guild);
+
 				entity.permissionNodes.add(member, 'ping', PermissionNodeAction.Deny);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
@@ -58,12 +69,17 @@ describe('PermissionNodeManager', () => {
 			});
 
 			test('GIVEN a GuildMember with a node THEN modifies existing one', () => {
+				const member = createGuildMember({}, guild);
+
 				entity.permissionNodes.add(member, 'ping', PermissionNodeAction.Deny);
 				entity.permissionNodes.add(member, 'balance', PermissionNodeAction.Deny);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: member.id, allow: [], deny: ['ping', 'balance'] }]);
 			});
+
+			// TODO: Test with existing command in same action type
+			// TODO: Test with existing command in opposite action type
 		});
 
 		describe('role', () => {
@@ -83,34 +99,87 @@ describe('PermissionNodeManager', () => {
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([{ id: role.id, allow: ['ping'], deny: ['balance'] }]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([]);
 			});
+
+			// TODO: Test with existing command in same action type
+			// TODO: Test with existing command in opposite action type
 		});
 	});
 
 	describe('remove', () => {
 		describe('user', () => {
-			// TODO
+			// TODO: Test with no node
+			// TODO: Test with only one command (auto-reset)
+			// TODO: Test with two or more commands
 		});
 
 		describe('member', () => {
-			// TODO
+			// TODO: Test with no node
+			// TODO: Test with only one command (auto-reset)
+			// TODO: Test with two or more commands
 		});
 
 		describe('role', () => {
-			// TODO
+			// TODO: Test with no node
+			// TODO: Test with only one command (auto-reset)
+			// TODO: Test with two or more commands
 		});
 	});
 
 	describe('reset', () => {
 		describe('user', () => {
-			// TODO
+			const user = createUser();
+
+			test('GIVEN an empty node THEN throws error', () => {
+				try {
+					entity.permissionNodes.reset(user);
+					fail();
+				} catch (error: unknown) {
+					const casted = error as UserError;
+
+					expect(casted).toBeInstanceOf(UserError);
+					expect(casted.identifier).toBe(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+					expect((casted.context as { target: typeof user }).target).toBe(user);
+				}
+			});
+
+			// TODO: Test with existing node
 		});
 
 		describe('member', () => {
-			// TODO
+			test('GIVEN an empty node THEN throws error', () => {
+				const member = createGuildMember({}, guild);
+
+				try {
+					entity.permissionNodes.reset(member);
+					fail();
+				} catch (error: unknown) {
+					const casted = error as UserError;
+
+					expect(casted).toBeInstanceOf(UserError);
+					expect(casted.identifier).toBe(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+					expect((casted.context as { target: typeof member }).target).toBe(member);
+				}
+			});
+
+			// TODO: Test with existing node
 		});
 
 		describe('role', () => {
-			// TODO
+			test('GIVEN an empty node THEN throws error', () => {
+				const role = createGuildMember({}, guild);
+				try {
+					entity.permissionNodes.reset(role);
+					fail();
+				} catch (error: unknown) {
+					const casted = error as UserError;
+
+					expect(casted).toBeInstanceOf(UserError);
+					expect(casted.identifier).toBe(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+					expect((casted.context as { target: typeof role }).target).toBe(role);
+				}
+			});
+
+			// TODO: Test with existing node
 		});
 	});
 
@@ -141,5 +210,7 @@ describe('PermissionNodeManager', () => {
 			expect(sorted[2]).toEqual([roleContributor.id, { allow: new Set(), deny: new Set(['ping']) }]);
 			expect(sorted[3]).toEqual([roleSubscriber.id, { allow: new Set(), deny: new Set(['balance']) }]);
 		});
+
+		// TODO: Test with auto-removal
 	});
 });

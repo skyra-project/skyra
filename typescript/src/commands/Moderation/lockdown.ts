@@ -64,7 +64,9 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Create the timeout
-		const timeout = duration ? setAccurateTimeout(() => floatPromise(this._unlock(message, args.t, role, channel, allowed)), duration) : null;
+		const timeout = duration
+			? setAccurateTimeout(() => floatPromise(this.performUnlock(message, args.t, role, channel, allowed)), duration)
+			: null;
 		message.guild.security.lockdowns.add(role, channel, { allowed, timeout });
 	}
 
@@ -76,10 +78,10 @@ export class UserCommand extends SkyraCommand {
 		const entry = this.getLock(role, channel);
 		if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
 		if (entry.timeout) clearAccurateTimeout(entry.timeout);
-		return this._unlock(message, args.t, role, channel, entry.allowed);
+		return this.performUnlock(message, args.t, role, channel, entry.allowed);
 	}
 
-	private async _unlock(message: GuildMessage, t: TFunction, role: Role, channel: TextChannel, allowed: boolean | null) {
+	private async performUnlock(message: GuildMessage, t: TFunction, role: Role, channel: TextChannel, allowed: boolean | null) {
 		channel.guild.security.lockdowns.remove(role, channel);
 
 		const overwrites = channel.permissionOverwrites.get(role.id);

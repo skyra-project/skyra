@@ -8,10 +8,13 @@ export function setAccurateTimeout<T extends readonly any[]>(fn: (...args: T) =>
 		fn,
 		cb(...args: T) {
 			const remaining = end - Date.now();
-			if (remaining < 1) fn(...args);
-			// @ts-expect-error: discord.js's typings are wrong
-			// eslint-disable-next-line @typescript-eslint/unbound-method
-			else context.timeout = container.client.setTimeout(context.cb, delay, ...args);
+			if (remaining < 1) {
+				fn(...args);
+			} else {
+				// @ts-expect-error: discord.js's typings are wrong
+				// eslint-disable-next-line @typescript-eslint/unbound-method
+				context.timeout = container.client.setTimeout(context.cb, delay, ...args);
+			}
 		},
 		stop() {
 			clearAccurateTimeout(context);

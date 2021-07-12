@@ -89,7 +89,7 @@ namespace Skyra.Notifications
 				return Result.FromError();
 			}
 
-			var exists = await _database.SubscriptionExistsAsync(channelUrl);
+			var exists = await _database.SubscriptionExistsAsync(youtubeChannelId);
 
 			if (exists.Value)
 			{

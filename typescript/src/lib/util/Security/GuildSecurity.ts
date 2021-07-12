@@ -1,10 +1,6 @@
-import type { PreciseTimeout } from '#utils/PreciseTimeout';
+import { LockdownManager } from '#lib/structures';
 import type { Guild } from 'discord.js';
 import { ModerationActions } from './ModerationActions';
-
-export interface LockdownEntry {
-	timeout: PreciseTimeout | null;
-}
 
 /**
  * @version 3.0.0
@@ -23,7 +19,7 @@ export class GuildSecurity {
 	/**
 	 * The lockdowns map
 	 */
-	public lockdowns: Map<string, LockdownEntry> = new Map();
+	public lockdowns = new LockdownManager();
 
 	public constructor(guild: Guild) {
 		this.guild = guild;

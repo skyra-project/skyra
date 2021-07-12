@@ -20,6 +20,7 @@ namespace Skyra.Database
 		{
 		}
 
+		public virtual DbSet<Asset> Assets { get; set; }
 		public virtual DbSet<Banner> Banners { get; set; }
 		public virtual DbSet<Client> Clients { get; set; }
 		public virtual DbSet<Giveaway> Giveaways { get; set; }

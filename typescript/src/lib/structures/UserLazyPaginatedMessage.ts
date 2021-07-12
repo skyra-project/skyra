@@ -56,7 +56,11 @@ export class UserLazyPaginatedMessage extends LazyPaginatedMessage {
 	}
 
 	public addPageEmbed(cb: MessageEmbed | ((builder: MessageEmbed) => MessageEmbed)): this {
-		return this.addPage({ embed: typeof cb === 'function' ? cb(new MessageEmbed()) : cb });
+		return this.addPage(() => ({ embed: typeof cb === 'function' ? cb(new MessageEmbed()) : cb }));
+	}
+
+	public addAsyncPageEmbed(cb: MessageEmbed | ((builder: MessageEmbed) => Promise<MessageEmbed>)): this {
+		return this.addPage(async () => ({ embed: typeof cb === 'function' ? await cb(new MessageEmbed()) : cb }));
 	}
 
 	/**

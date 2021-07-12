@@ -58,7 +58,11 @@ export const enum Emojis {
 	Shiny = '<:shiny:612364146792726539>',
 	Star = '<:Star:736337719982030910>',
 	StarEmpty = '<:StarEmpty:736337232738254849>',
-	StarHalf = '<:StarHalf:736337529900499034>'
+	StarHalf = '<:StarHalf:736337529900499034>',
+	/** This is the default Twemoji, uploaded as a custom emoji because iOS and Android do not render the emoji properly */
+	MaleSignEmoji = '<:2642:845772713770614874>',
+	/** This is the default Twemoji, uploaded as a custom emoji because iOS and Android do not render the emoji properly */
+	FemaleSignEmoji = '<:2640:845772713729720320>'
 }
 
 export namespace ConnectFourConstants {

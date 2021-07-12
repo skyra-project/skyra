@@ -299,7 +299,10 @@ export const getSpriteKey = ({
 	return 'sprite';
 };
 
-export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
+export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(
+	query: string,
+	variables: PokemonQueryVariables<R>
+): Promise<PokemonResponse<R>> {
 	try {
 		return fetch<PokemonResponse<R>>(
 			envParseString('GRAPHQL_POKEMON_URL'),
@@ -316,7 +319,6 @@ export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(que
 			FetchResultTypes.JSON
 		);
 	} catch {
-		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
 		throw new UserError({ identifier: LanguageKeys.System.QueryFail });
 	}
 }

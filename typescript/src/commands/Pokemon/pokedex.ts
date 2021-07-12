@@ -11,6 +11,7 @@ import {
 	parseBulbapediaURL,
 	resolveColour
 } from '#utils/APIs/Pokemon';
+import { Emojis } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
@@ -33,7 +34,6 @@ enum BaseStats {
 	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
-	permissions: ['EMBED_LINKS'],
 	strategyOptions: { flags: ['shiny', 'back'] }
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
@@ -82,7 +82,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			return 'Genderless';
 		}
 
-		return `${genderRatio.male} ♂ | ${genderRatio.female} ♀`;
+		return `${genderRatio.male} ${Emojis.MaleSignEmoji} | ${genderRatio.female} ${Emojis.FemaleSignEmoji}`;
 	}
 
 	/**

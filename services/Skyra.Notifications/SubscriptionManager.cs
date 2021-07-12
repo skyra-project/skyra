@@ -95,7 +95,7 @@ namespace Skyra.Notifications
 			{
 				// we already have an active subscription, just need to add this guild to the sub
 				await _database.AddYoutubeSubscriptionAsync(youtubeChannelId,youtubeChannelName, guildId);
-				await _database.UpdateYoutubeSubscriptionSettingsAsync(guildId, message, youtubeChannelId);
+				await _database.UpdateYoutubeSubscriptionSettingsAsync(guildId, message, discordNotificationChannelId);
 				_logger.LogInformation("Added a subscription to {YoutubeChannelId} for {GuildId}", youtubeChannelId, guildId);
 			}
 			else

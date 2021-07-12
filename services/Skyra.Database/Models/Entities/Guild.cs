@@ -748,7 +748,7 @@ namespace Skyra.Database.Models.Entities
 		public string YoutubeNotificationChannel { get; set; } = null!;
 
 		[Required]
-		[Column("notifications.youtube.message", TypeName = "character varying(19)")]
+		[Column("notifications.youtube.message")]
 		public string YoutubeNotificationMessage { get; set; } = null!;
 
 		[Required]

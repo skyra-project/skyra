@@ -15,6 +15,7 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 type DurationDisplay = (time: number) => string;
 
 @ApplyOptions<SkyraCommand.Options>({
+	aliases: ['hd', 'ho'],
 	bucket: 2,
 	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
@@ -24,6 +25,12 @@ type DurationDisplay = (time: number) => string;
 	subCommands: ['details', { input: 'overview', default: true }]
 })
 export class UserCommand extends SkyraCommand {
+	public run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+		if (context.commandName === 'hd') return this.details(message, args);
+		if (context.commandName === 'ho') return this.overview(message, args);
+		return super.run(message, args, context);
+	}
+
 	public async overview(message: GuildMessage, args: SkyraCommand.Args) {
 		const target = args.finished ? message.author : await args.pick('userName');
 		const logs = await message.guild.moderation.fetch(target.id);

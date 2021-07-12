@@ -10,8 +10,8 @@ using Skyra.Database;
 namespace Skyra.Database.Migrations
 {
     [DbContext(typeof(SkyraDbContext))]
-    [Migration("20210502160754_V04_JoinAndLeaveMessageAutoDelete")]
-    partial class V04_JoinAndLeaveMessageAutoDelete
+    [Migration("20210620165914_YoutubeNotifications_Final")]
+    partial class YoutubeNotifications_Final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace Skyra.Database.Migrations
                 .HasPostgresEnum(null, "rpg_item_type_enum", new[] { "Weapon", "Shield", "Disposable", "Special" })
                 .HasAnnotation("Relational:Collation", "en_US.utf8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.Banner", b =>
@@ -160,6 +160,22 @@ namespace Skyra.Database.Migrations
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("id");
+
+                    b.Property<string>("AfkPrefix")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("afk.prefix");
+
+                    b.Property<bool>("AfkPrefixForce")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("afk.prefix-force")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<string>("AfkRole")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("afk.role");
 
                     b.Property<string>("BirthdayChannel")
                         .HasMaxLength(19)
@@ -1313,6 +1329,16 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("trigger.includes")
                         .HasDefaultValueSql("'[]'::jsonb");
 
+                    b.Property<string>("YoutubeNotificationChannel")
+                        .IsRequired()
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("notifications.youtube.channel");
+
+                    b.Property<string>("YoutubeNotificationMessage")
+                        .IsRequired()
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("notifications.youtube.message");
+
                     b.Property<string>("rolesInitialBots")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
@@ -2157,6 +2183,33 @@ namespace Skyra.Database.Migrations
                         .HasDatabaseName("ix_user_spouses_user_user_id_1");
 
                     b.ToTable("user_spouses_user");
+                });
+
+            modelBuilder.Entity("Skyra.Database.Models.Entities.YoutubeSubscription", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(24)
+                        .HasColumnType("character varying(24)")
+                        .HasColumnName("id");
+
+                    b.Property<string[]>("AlreadySeenIds")
+                        .IsRequired()
+                        .HasColumnType("character varying(11)[]")
+                        .HasColumnName("already_seen_ids");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<string[]>("GuildIds")
+                        .IsRequired()
+                        .HasColumnType("character varying(19)[]")
+                        .HasColumnName("guild_ids");
+
+                    b.HasKey("Id")
+                        .HasName("pk_youtube_subscription");
+
+                    b.ToTable("youtube_subscription");
                 });
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.RpgBattle", b =>

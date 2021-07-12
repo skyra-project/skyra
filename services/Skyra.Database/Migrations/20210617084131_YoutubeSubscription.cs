@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Skyra.Database.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class YoutubeSubscription : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,9 @@ namespace Skyra.Database.Migrations
                     language = table.Column<string>(type: "text", nullable: false, defaultValueSql: "'en-US'::character varying"),
                     disablenaturalprefix = table.Column<bool>(name: "disable-natural-prefix", type: "boolean", nullable: false, defaultValueSql: "false"),
                     disabledcommands = table.Column<string[]>(name: "disabled-commands", type: "character varying(32)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
+                    afkrole = table.Column<string>(name: "afk.role", type: "character varying(19)", maxLength: 19, nullable: true),
+                    afkprefix = table.Column<string>(name: "afk.prefix", type: "character varying(32)", maxLength: 32, nullable: true),
+                    afkprefixforce = table.Column<bool>(name: "afk.prefix-force", type: "boolean", nullable: false, defaultValueSql: "false"),
                     customcommands = table.Column<string>(name: "custom-commands", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     permissionsusers = table.Column<string>(name: "permissions.users", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     permissionsroles = table.Column<string>(name: "permissions.roles", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
@@ -109,7 +112,9 @@ namespace Skyra.Database.Migrations
                     eventsmessageedit = table.Column<bool>(name: "events.message-edit", type: "boolean", nullable: false, defaultValueSql: "false"),
                     eventstwemojireactions = table.Column<bool>(name: "events.twemoji-reactions", type: "boolean", nullable: false, defaultValueSql: "false"),
                     messagesfarewell = table.Column<string>(name: "messages.farewell", type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    messagesfarewellautodelete = table.Column<long>(name: "messages.farewell-auto-delete", type: "bigint", nullable: true),
                     messagesgreeting = table.Column<string>(name: "messages.greeting", type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    messagesgreetingautodelete = table.Column<long>(name: "messages.greeting-auto-delete", type: "bigint", nullable: true),
                     messagesjoindm = table.Column<string>(name: "messages.join-dm", type: "character varying(1500)", maxLength: 1500, nullable: true),
                     messagesignorechannels = table.Column<string[]>(name: "messages.ignore-channels", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     messagesannouncementembed = table.Column<bool>(name: "messages.announcement-embed", type: "boolean", nullable: false, defaultValueSql: "false"),
@@ -127,6 +132,8 @@ namespace Skyra.Database.Migrations
                     rolesadmin = table.Column<string[]>(name: "roles.admin", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     rolesauto = table.Column<string>(name: "roles.auto", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     rolesinitial = table.Column<string>(name: "roles.initial", type: "character varying(19)", maxLength: 19, nullable: true),
+                    rolesinitialhumans = table.Column<string>(name: "roles.initial-humans", type: "character varying(19)", maxLength: 19, nullable: true),
+                    rolesinitialbots = table.Column<string>(name: "roles.initial-bots", type: "character varying(19)", maxLength: 19, nullable: true),
                     rolesmoderator = table.Column<string[]>(name: "roles.moderator", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     rolesmuted = table.Column<string>(name: "roles.muted", type: "character varying(19)", maxLength: 19, nullable: true),
                     rolesrestrictedreaction = table.Column<string>(name: "roles.restricted-reaction", type: "character varying(19)", maxLength: 19, nullable: true),
@@ -221,8 +228,10 @@ namespace Skyra.Database.Migrations
                     nomentionspammentionsallowed = table.Column<short>(name: "no-mention-spam.mentions-allowed", type: "smallint", nullable: false, defaultValueSql: "20"),
                     nomentionspamtimeperiod = table.Column<int>(name: "no-mention-spam.time-period", type: "integer", nullable: false, defaultValueSql: "8"),
                     socialenabled = table.Column<bool>(name: "social.enabled", type: "boolean", nullable: false, defaultValueSql: "true"),
-                    socialachieve = table.Column<bool>(name: "social.achieve", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    socialachievemessage = table.Column<string>(name: "social.achieve-message", type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    socialachieverole = table.Column<string>(name: "social.achieve-role", type: "text", nullable: true),
+                    socialachievelevel = table.Column<string>(name: "social.achieve-level", type: "text", nullable: true),
+                    socialachievechannel = table.Column<string>(name: "social.achieve-channel", type: "character varying(19)", maxLength: 19, nullable: true),
+                    socialachievemultiple = table.Column<short>(name: "social.achieve-multiple", type: "smallint", nullable: false, defaultValueSql: "1"),
                     socialmultiplier = table.Column<decimal>(name: "social.multiplier", type: "numeric(53)", precision: 53, nullable: false, defaultValueSql: "1"),
                     socialignoredchannels = table.Column<string[]>(name: "social.ignored-channels", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     socialignoredroles = table.Column<string[]>(name: "social.ignored-roles", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
@@ -439,6 +448,19 @@ namespace Skyra.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_user", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "youtube_subscription",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    expires_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    guild_ids = table.Column<string[]>(type: "character varying(19)[]", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_youtube_subscription", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -805,6 +827,9 @@ namespace Skyra.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "user_spouses_user");
+
+            migrationBuilder.DropTable(
+                name: "youtube_subscription");
 
             migrationBuilder.DropTable(
                 name: "rpg_user");

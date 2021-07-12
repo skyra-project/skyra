@@ -11,18 +11,30 @@ namespace Skyra.Shared.Results
 
 		public T? Value { get; }
 
-		public new static Result<T> FromSuccess() => new(default, ResultStatus.Success);
+		public new static Result<T> FromSuccess()
+		{
+			return new Result<T>(default, ResultStatus.Success);
+		}
 
-		public static Result<T> FromSuccess(T value) => new(value, ResultStatus.Success);
+		public static Result<T> FromSuccess(T value)
+		{
+			return new Result<T>(value, ResultStatus.Success);
+		}
 
 		public static Result<T> FromError(ResultStatus status = ResultStatus.Error, T? value = default)
-			=> new(value, status, new Exception($"Error: {status.ToString()}"));
+		{
+			return new Result<T>(value, status, new Exception($"Error: {status.ToString()}"));
+		}
 
 		public static Result<T> FromError(Exception exception, ResultStatus status = ResultStatus.Error,
 			T? value = default)
-			=> new(value, status, exception);
+		{
+			return new Result<T>(value, status, exception);
+		}
 
 		public static Result<T> FromError(string message, ResultStatus status = ResultStatus.Error, T? value = default)
-			=> new(value, status, new Exception(message));
+		{
+			return new Result<T>(value, status, new Exception(message));
+		}
 	}
 }

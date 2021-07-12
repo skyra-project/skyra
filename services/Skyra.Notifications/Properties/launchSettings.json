@@ -1,0 +1,9 @@
+﻿{
+  "profiles": {
+    "Skyra.Notifications": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": false
+    }
+  }
+}

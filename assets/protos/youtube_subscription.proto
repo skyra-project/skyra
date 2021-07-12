@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option csharp_namespace = "Skyra.Grpc.Services";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "shared.proto";
+
+package YoutubeSubscription;
+
+service YoutubeSubscription {
+  rpc ManageSubscription(SubscriptionManageRequest) returns (Result);
+  rpc GetSubscriptions(google.protobuf.Empty) returns (SubscriptionResponse);
+  rpc UpdateSubscriptionSettings(NotificationSettingsUpdate) returns (Result);
+  rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionNotification);
+}
+
+enum Action {
+  Subscribe = 0;
+  Unsubscribe = 1;
+}
+
+message SubscriptionManageRequest {
+  string ChannelUrl = 1;
+  string GuildId = 2;
+  string NotificationMessage = 3;
+  string GuildChannelId = 4;
+  Action Type = 5;
+}
+
+message SubscriptionResponse {
+  repeated Subscription Subscriptions = 1;
+}
+
+message Subscription {
+  string ChannelId = 1;
+  string ChannelTitle = 2;
+  repeated string GuildIds = 3;
+}
+
+message SubscriptionNotification {
+  string VideoId = 1;
+  string VideoTitle = 2;
+  string ThumbnailUrl = 3;
+  string ChannelName = 4;
+  google.protobuf.Timestamp PublishedAt = 5;
+  repeated NotificationChannel Channels = 6;
+}
+
+message NotificationChannel {
+  string GuildId = 1;
+  string ChannelId = 2;
+  string Message = 3;
+}
+
+message NotificationSettingsUpdate {
+  string Message = 1;
+  string Channel = 2;
+  string GuildId = 3;
+}

@@ -13,7 +13,7 @@ namespace Skyra.IntegrationTests.Grpc
 		{
 			// arrange
 			var channel = GetChannel();
-			var client = new Member.MemberClient(channel);
+			var client = new MemberService();
 			const string guildId = "1";
 			const string userId = "1";
 

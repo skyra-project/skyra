@@ -9,8 +9,6 @@ import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role, User } from 'discord.js';
 import type { IBaseManager } from '../base/IBaseManager';
 
-const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
-
 export const enum PermissionNodeAction {
 	Allow,
 	Deny
@@ -132,9 +130,9 @@ export class PermissionNodeManager implements IBaseManager {
 		this.sorted = sorted;
 
 		// Delete redundant entries
-		if (pendingToRemove.length) {
+		if (pendingToRemove.size) {
 			for (const removedItem of pendingToRemove) {
-				const removedIndex = nodes.findIndex((element) => element.id === removedItem.id);
+				const removedIndex = nodes.findIndex((element) => element.id === removedItem);
 				if (removedIndex !== -1) nodes.splice(removedIndex, 1);
 			}
 		}
@@ -176,23 +174,51 @@ export class PermissionNodeManager implements IBaseManager {
 		return null;
 	}
 
-	private generateSorted(rawNodes: readonly PermissionsNode[]) {
-		const sortedRoles = [...this.#settings.guild.roles.cache.values()].sort(sort);
-		const nodes = rawNodes.slice();
+	private generateSorted(nodes: readonly PermissionsNode[]) {
+		const [pendingToRemove, sortedRoles] = this.getSortedRoles(nodes);
 
 		const sortedNodes: PermissionsNode[] = [];
-		for (const sortedRole of sortedRoles) {
-			const index = nodes.findIndex((node) => node.id === sortedRole.id);
-			if (index === -1) continue;
+		for (const sortedRole of sortedRoles.values()) {
+			const node = nodes.find((node) => node.id === sortedRole.id);
+			if (node === undefined) continue;
 
-			sortedNodes.push(nodes[index]);
-			nodes.splice(index, 1);
+			sortedNodes.push(node);
 		}
 
 		return {
 			pendingToAdd: sortedNodes,
-			pendingToRemove: nodes
+			pendingToRemove
 		};
+	}
+
+	private getSortedRoles(rawNodes: readonly PermissionsNode[]) {
+		const ids = new Set(rawNodes.map((rawNode) => rawNode.id));
+
+		// I know we should never rely on private methods, however, `Guild#_sortedRoles`
+		// exists in v13 and is called every time the `Role#position` getter is called,
+		// so to avoid doing a very expensive call for each role, we will call this once
+		// and then handle whatever it returns. This has a cost of O(n * log(n)), which is
+		// pretty good. For 255 role permission nodes, this would do 1,413 checks.
+		//
+		// An alternative is to filter, then map the roles by their position, but that has
+		// a cost of O(n) * O(n * log(n)), which is really bad, with a total amount of
+		// 360,320 checks.
+		//
+		// Although that's also theoretical, `Guild#_sortedRoles` calls `Util.discordSort`
+		// with the role cache, which besides checking for positions, also does up to 4
+		// string operations (`String#slice()` and `Number(string)` in each), which is
+		// already a performance killer.
+		//
+		// eslint-disable-next-line @typescript-eslint/dot-notation
+		const roles = this.#settings.guild['_sortedRoles']()
+			// Set#delete returns `true` when the entry exists, so we will use this
+			// to automatically sweep the valid entries and leave the invalid ones out
+			.filter((role) => ids.delete(role.id));
+
+		// Guild#_sortedRoles sorts in the inverse order, so we need to turn it into an array and reverse it:
+		const reversed = [...roles.values()].reverse();
+
+		return [ids, reversed] as const;
 	}
 
 	private getName(type: PermissionNodeAction) {

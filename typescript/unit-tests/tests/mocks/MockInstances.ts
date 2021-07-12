@@ -2,11 +2,36 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
-import { APIChannel, APIGuild, APIRole, ChannelType, GuildFeature } from 'discord-api-types/v6';
-import { Guild, Role, TextChannel } from 'discord.js';
+import { APIChannel, APIGuildMember, APIUser, APIGuild, APIRole, ChannelType, GuildFeature } from 'discord-api-types/v6';
+import { User, Guild, GuildMember, Role, TextChannel } from 'discord.js';
 import { resolve } from 'path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
+
+export const userData: APIUser = {
+	id: '266624760782258186',
+	username: 'Skyra',
+	discriminator: '7023',
+	avatar: '09b52e547fa797c47c7877cd10eb6ba8'
+};
+
+export function createUser(data: Partial<APIUser> = {}) {
+	return new User(client, { ...userData, ...data });
+}
+
+export const guildMemberData: APIGuildMember = {
+	user: userData,
+	deaf: false,
+	mute: false,
+	nick: null,
+	roles: [],
+	premium_since: null,
+	joined_at: '2019-02-03T21:57:10.354Z'
+};
+
+export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
+	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user } }, g);
+}
 
 export const roleData: APIRole = {
 	id: '254360814063058944',
@@ -21,7 +46,9 @@ export const roleData: APIRole = {
 };
 
 export function createRole(data: Partial<APIRole> = {}, g: Guild = guild) {
-	return new Role(client, { ...roleData, ...data }, g);
+	const role = new Role(client, { ...roleData, ...data }, g);
+	g.roles.cache.set(role.id, role);
+	return role;
 }
 
 export const guildData: APIGuild = {

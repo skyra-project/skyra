@@ -42,12 +42,16 @@ export function ensure(content: string) {
 	}
 }
 
-export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Awaited<string> {
+export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, allowedMentions: Set<string>): Awaited<string> {
 	if (!argLessTypes.has(type) && args.finished) throw new MissingArgumentsError(args, type);
 
 	switch (type) {
 		case 'author':
 			return args.message.author.toString();
+		case 'author.mention': {
+			allowedMentions.add(args.message.author.id);
+			return args.message.author.toString();
+		}
 		case 'author.id':
 			return args.message.author.id;
 		case 'author.name':
@@ -92,6 +96,13 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type): Aw
 		case 'member':
 		case 'user':
 			return args.pick('member').then((member) => member.toString());
+		case 'member.mention':
+		case 'user.mention': {
+			return args.pick('member').then((member) => {
+				allowedMentions.add(member.id);
+				return member.toString();
+			});
+		}
 		case 'member.displayName':
 		case 'user.displayName':
 			return args.pick('member').then((member) => member.displayName);

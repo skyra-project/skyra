@@ -179,13 +179,14 @@ export class UserCommand extends SkyraCommand {
 		const tag = getFromID(id, tags);
 		if (tag === null) return null;
 
+		const allowedMentions = new Set<string>();
 		const iterator = tag.content.run();
 		let result = iterator.next();
-		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type));
+		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type, allowedMentions));
 
 		return tag.embed
 			? message.send(new MessageEmbed().setDescription(result.value.trim()).setColor(tag.color))
-			: message.send(result.value.trim(), { allowedMentions: { users: [], roles: [] } });
+			: message.send(result.value.trim(), { allowedMentions: { users: [...allowedMentions], roles: [] } });
 	}
 
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {

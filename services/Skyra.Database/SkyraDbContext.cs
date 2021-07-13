@@ -121,18 +121,6 @@ namespace Skyra.Database
 
 				entity.Property(e => e.EventsBanRemove).HasDefaultValueSql("false");
 
-				entity.Property(e => e.EventsMemberAdd).HasDefaultValueSql("false");
-
-				entity.Property(e => e.EventsMemberRemove).HasDefaultValueSql("false");
-
-				entity.Property(e => e.EventsMemberNicknameUpdate).HasDefaultValueSql("false");
-
-				entity.Property(e => e.EventsMemberRoleUpdate).HasDefaultValueSql("false");
-
-				entity.Property(e => e.EventsMessageDelete).HasDefaultValueSql("false");
-
-				entity.Property(e => e.EventsMessageEdit).HasDefaultValueSql("false");
-
 				entity.Property(e => e.EventsTwemojiReactions).HasDefaultValueSql("false");
 
 				entity.Property(e => e.EventsMemberUsernameUpdate).HasDefaultValueSql("false");

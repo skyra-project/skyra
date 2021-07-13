@@ -1,10 +1,3 @@
 export const BanAdd = 'eventsBanAdd';
 export const BanRemove = 'eventsBanRemove';
-export const MemberAdd = 'eventsMemberAdd';
-export const MemberRemove = 'eventsMemberRemove';
-export const MemberNickNameUpdate = 'eventsMemberNickNameUpdate';
-export const MemberUserNameUpdate = 'eventsMemberUserNameUpdate';
-export const MemberRoleUpdate = 'eventsMemberRoleUpdate';
-export const MessageDelete = 'eventsMessageDelete';
-export const MessageEdit = 'eventsMessageEdit';
 export const Twemoji = 'eventsTwemojiReactions';

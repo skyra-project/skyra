@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { DbSet, SettingsManager } from '#lib/database';
+import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
@@ -8,17 +8,20 @@ import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
-import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
 import type { PieceContextExtras } from '@sapphire/pieces';
+import type { Nullish } from '@sapphire/utilities';
 import type { Image } from 'canvas';
 import type {
 	APIMessage,
 	APIMessageContentResolvable,
+	Guild,
 	GuildChannel,
 	Message,
 	MessageAdditions,
+	MessageEmbed,
 	MessageExtendablesAskOptions,
 	MessageOptions,
 	NewsChannel,
@@ -113,6 +116,7 @@ declare module '@sapphire/framework' {
 	}
 
 	interface SapphireClient {
+		emit(event: Events.Error, error: Error): boolean;
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
 		emit(
@@ -124,6 +128,14 @@ declare module '@sapphire/framework' {
 			content: string
 		): boolean;
 		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
+		emit(
+			event: Events.GuildMessageLog,
+			guild: Guild,
+			channelId: string | Nullish,
+			key: keyof GuildEntity,
+			makeMessage: () => Promise<MessageEmbed> | MessageEmbed
+		): boolean;
+		emit(event: Events.ReactionBlocked, data: LLRCData, emoji: string): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
 		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
 		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;

@@ -73,15 +73,6 @@ export namespace ConnectFourConstants {
 	export const Reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as readonly string[];
 }
 
-export const enum MessageLogsEnum {
-	Message,
-	NSFWMessage,
-	Image,
-	Moderation,
-	Member,
-	Reaction
-}
-
 export const helpUsagePostProcessor: PostProcessorModule = {
 	type: 'postProcessor',
 	name: 'helpUsagePostProcessor',

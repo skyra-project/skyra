@@ -4,15 +4,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/moderation';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from '@sapphire/framework';
-import { hasAtLeastOneKeyInMap, PickByValue } from '@sapphire/utilities';
+import { hasAtLeastOneKeyInMap, Nullish, PickByValue } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
-type ArgumentType = [LLRCData, string];
+type ArgumentType = [data: LLRCData, reaction: string, channelId: string | Nullish];
 
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> {
@@ -25,9 +24,10 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		const [enabled, blockedReactions, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings((settings) => [
+		const [enabled, blockedReactions, channelId, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.Reactions.Enabled],
 			settings[GuildSettings.Selfmod.Reactions.Blocked],
+			settings[GuildSettings.Channels.Logs.Moderation],
 			settings[GuildSettings.Channels.Ignore.ReactionAdd],
 			settings[GuildSettings.Selfmod.Reactions.SoftAction],
 			settings[GuildSettings.Selfmod.Reactions.HardAction],
@@ -39,7 +39,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 		const member = await data.guild.members.fetch(data.userID);
 		if (member.user.bot || (await this.hasPermissions(member))) return;
 
-		const args = [data, emoji] as const;
+		const args = [data, emoji, channelId] as const;
 		const preProcessed = await this.preProcess(args);
 		if (preProcessed === null) return;
 
@@ -92,7 +92,13 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	}
 
 	protected onLog(args: Readonly<ArgumentType>) {
-		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
+		this.context.client.emit(
+			Events.GuildMessageLog,
+			args[0].guild,
+			args[2],
+			GuildSettings.Channels.Logs.Moderation,
+			this.onLogMessage.bind(this, args)
+		);
 	}
 
 	private async hasPermissions(member: GuildMember) {

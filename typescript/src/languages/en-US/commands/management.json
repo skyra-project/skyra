@@ -84,8 +84,10 @@
 	"setIgnoreChannelsSet": "Ignoring all command input from {{channel}} now.",
 	"setIgnoreChannelsRemoved": "Listening all command input from {{channel}} now.",
 	"setImageLogsSet": "Successfully set the image logs channel to {{channel}}.",
-	"setMemberLogsSet": "Successfully set the member logs channel to {{channel}}.",
-	"setMessageLogsSet": "Successfully set the message logs channel to {{channel}}.",
+	"setMemberAddLogsSet": "Successfully set the member add logs channel to {{channel}}.",
+	"setMemberRemoveLogsSet": "Successfully set the member remove logs channel to {{channel}}.",
+	"setMessageUpdateLogsSet": "Successfully set the message update logs channel to {{channel}}.",
+	"setMessageDeleteLogsSet": "Successfully set the message delete logs channel to {{channel}}.",
 	"setModLogsSet": "Successfully set the mod logs channel to {{channel}}.",
 	"setPrefixSet": "Successfully set the prefix to `{{prefix}}`. Use `{{prefix}}setPrefix NewPrefix` to change it again.",
 	"stickyRolesNotExists": "The user {{user}} does not have any sticky roles or does not have the specified one.",
@@ -342,12 +344,12 @@
 			"here"
 		]
 	},
-	"setMemberLogsDescription": "Set the member logs channel.",
-	"setMemberLogsExtended": {
+	"setMemberAddLogsDescription": "Set the member add logs channel.",
+	"setMemberAddLogsExtended": {
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: \"Member Join\" and \"Member Leave\".\nIf a muted user joins, it will send a special \"Muted Member Join\" event.\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.member-add` and `events.member-remove`.\nFor roles, you would enable `events.member-nickname-change` and/or `events.member-role-update` via the `config` command.",
+		"extendedHelp": "This command helps you setting up the member add log channel, which will send messages each time a user joins.\nIf a muted user joins, it will send a special \"Muted Member Join\" event.",
 		"explainedUsage": [
 			[
 				"channel",
@@ -357,21 +359,58 @@
 		"examples": [
 			"#member-logs",
 			"here"
-		]
+		],
+		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra."
 	},
-	"setMessageLogsDescription": "Set the message logs channel.",
-	"setMessageLogsExtended": {
+	"setMemberRemoveLogsDescription": "Set the member remove logs channel.",
+	"setMemberRemoveLogsExtended": {
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: \"Message Delete\", \"Message Edit\", and \"Message Prune\".\nAll messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nYou also need to individually set the \"events\" you want to listen: `events.message-delete` and `events.message-edit` via the `config` command.",
+		"extendedHelp": "This command helps you setting up the member remove log channel, which will send messages each time a user leaves, is kicked, or banned.\nIn the case of the last two, it will send a special \"User Kicked\" or \"User Banned\" event.",
 		"explainedUsage": [
 			[
 				"channel",
 				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
 			]
 		],
-		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of servers and the amount of times I can fetch them in a period of time.",
+		"examples": [
+			"#member-logs",
+			"here"
+		],
+		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra."
+	},
+	"setMessageUpdateLogsDescription": "Set the message update logs channel.",
+	"setMessageUpdateLogsExtended": {
+		"usages": [
+			"here/TextChannel"
+		],
+		"extendedHelp": "This command helps you setting up the message update log channel, which will send messages each time a message is updated.",
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.",
+		"examples": [
+			"#message-logs",
+			"here"
+		]
+	},
+	"setMessageDeleteLogsDescription": "Set the message delete logs channel.",
+	"setMessageDeleteLogsExtended": {
+		"usages": [
+			"here/TextChannel"
+		],
+		"extendedHelp": "This command helps you setting up the message delete log channel, which will send messages each time a message is deleted.",
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nDue to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of servers and the amount of times I can fetch them in a period of time.",
 		"examples": [
 			"#message-logs",
 			"here"

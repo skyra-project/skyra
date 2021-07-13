@@ -3,7 +3,6 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
@@ -19,10 +18,11 @@ export class UserEvent extends Event {
 	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public async run(data: LLRCData, emoji: string) {
-		const [allowList, channel, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await data.guild.readSettings(
+		const key = GuildSettings.Channels.Logs.Reaction;
+		const [allowList, channelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await data.guild.readSettings(
 			(settings) => [
 				settings[GuildSettings.Selfmod.Reactions.Allowed],
-				settings[GuildSettings.Channels.Logs.Reaction],
+				settings[key],
 				settings[GuildSettings.Events.Twemoji],
 				settings[GuildSettings.Messages.IgnoreChannels],
 				settings[GuildSettings.Channels.Ignore.ReactionAdd],
@@ -34,7 +34,7 @@ export class UserEvent extends Event {
 		if (allowList.includes(emoji)) return;
 
 		this.context.client.emit(Events.ReactionBlocked, data, emoji);
-		if (!channel || (!twemojiEnabled && data.emoji.id === null)) return;
+		if (!channelId || (!twemojiEnabled && data.emoji.id === null)) return;
 
 		if (ignoreChannels.includes(data.channel.id)) return;
 		if (ignoreReactionAdd.some((id) => id === data.channel.id || data.channel.parentID === id)) return;
@@ -45,7 +45,7 @@ export class UserEvent extends Event {
 		const user = await this.context.client.users.fetch(data.userID);
 		if (user.bot) return;
 
-		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, data.guild, channelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

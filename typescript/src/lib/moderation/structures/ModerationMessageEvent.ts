@@ -2,10 +2,9 @@ import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
-import type { Awaited, PickByValue } from '@sapphire/utilities';
+import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
@@ -40,13 +39,14 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [filter, adder, language] = await message.guild.readSettings((settings) => [
+		const [channelId, filter, adder, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Channels.Logs.Moderation],
 			settings[this.softPunishmentPath],
 			settings.adders[this.hardPunishmentPath.adder],
 			settings.getLanguage()
 		]);
 		const bitField = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(message, language, bitField, preProcessed);
+		this.processSoftPunishment(message, channelId, language, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
@@ -60,7 +60,13 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		}
 	}
 
-	protected processSoftPunishment(message: GuildMessage, language: TFunction, bitField: SelfModeratorBitField, preProcessed: T) {
+	protected processSoftPunishment(
+		message: GuildMessage,
+		channelId: string | Nullish,
+		language: TFunction,
+		bitField: SelfModeratorBitField,
+		preProcessed: T
+	) {
 		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
 			floatPromise(this.onDelete(message, language, preProcessed) as any);
 		}
@@ -70,7 +76,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		}
 
 		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
-			floatPromise(this.onLog(message, language, preProcessed) as any);
+			floatPromise(this.onLog(message, channelId, language, preProcessed) as any);
 		}
 	}
 
@@ -160,11 +166,12 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		unlock();
 	}
 
-	protected onLog(message: GuildMessage, language: TFunction, value: T): Awaited<void> {
+	protected onLog(message: GuildMessage, channelId: string | Nullish, language: TFunction, value: T): Awaited<void> {
 		this.context.client.emit(
 			Events.GuildMessageLog,
-			MessageLogsEnum.Moderation,
 			message.guild,
+			channelId,
+			GuildSettings.Channels.Logs.Moderation,
 			this.onLogMessage.bind(this, message, language, value)
 		);
 	}

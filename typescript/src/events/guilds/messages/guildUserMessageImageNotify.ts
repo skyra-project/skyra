@@ -3,7 +3,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -27,13 +26,14 @@ export class UserEvent extends Event {
 		// If the message was edited, do not repost:
 		if (message.editedTimestamp) return;
 
-		const [logChannel, ignoredChannels] = await message.guild.readSettings([
-			GuildSettings.Channels.Logs.Image,
-			GuildSettings.Channels.Ignore.All
+		const key = GuildSettings.Channels.Logs.Image;
+		const [channelId, ignoredChannels, t] = await message.guild.readSettings((settings) => [
+			settings[key],
+			settings[GuildSettings.Channels.Ignore.All],
+			settings.getLanguage()
 		]);
-		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
+		if (channelId === null || ignoredChannels.includes(message.channel.id)) return;
 
-		const t = await message.fetchT();
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
 
@@ -63,7 +63,7 @@ export class UserEvent extends Event {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
+				this.context.client.emit(Events.GuildMessageLog, message.guild, channelId, key, () =>
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(

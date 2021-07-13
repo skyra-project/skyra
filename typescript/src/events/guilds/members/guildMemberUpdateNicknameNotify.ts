@@ -2,7 +2,6 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { GuildMember, MessageEmbed } from 'discord.js';
@@ -11,20 +10,16 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })
 export class UserEvent extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
-		const [enabled, t] = await next.guild.readSettings((settings) => [
-			settings[GuildSettings.Events.MemberNickNameUpdate],
-			settings.getLanguage()
-		]);
-		// Retrieve whether or not nickname logs should be sent from Guild Settings and
-		// whether or not the nicknames are identical.
-		if (!enabled) return;
+		const key = GuildSettings.Channels.Logs.MemberNickNameUpdate;
+		const [channelId, t] = await next.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		if (!channelId) return;
 
 		// Send the Nickname log
 		const prevNickname = previous.nickname;
 		const nextNickname = next.nickname;
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
-			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, next.guild, channelId, key, () =>
 				new MessageEmbed()
 					.setColor(Colors.Yellow)
 					.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

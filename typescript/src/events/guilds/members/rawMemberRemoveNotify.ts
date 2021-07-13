@@ -2,7 +2,6 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -13,8 +12,9 @@ import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 @ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
 export class UserEvent extends Event {
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
-		const [enabled, t] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
-		if (!enabled) return;
+		const key = GuildSettings.Channels.Logs.MemberRemove;
+		const [channelId, t] = await guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		if (!channelId) return;
 
 		const isModerationAction = await this.isModerationAction(guild, user);
 
@@ -27,7 +27,7 @@ export class UserEvent extends Event {
 			: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
-		this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+		this.context.client.emit(Events.GuildMessageLog, guild, channelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))

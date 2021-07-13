@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const [sqlScript, connection] = await Promise.all([
 	readFile(resolve(__dirname, 'SetMigrations.sql'), { encoding: 'utf-8' }),
-	typeorm.createConnection(config)
+	typeorm.createConnection({ ...config, logging: true })
 ]);
 
 await connection.query(sqlScript);

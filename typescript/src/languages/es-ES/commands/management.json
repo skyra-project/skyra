@@ -84,8 +84,10 @@
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
 	"setImageLogsSet": "",
-	"setMemberLogsSet": "",
-	"setMessageLogsSet": "",
+	"setMemberAddLogsSet": "",
+	"setMemberRemoveLogsSet": "",
+	"setMessageUpdateLogsSet": "",
+	"setMessageDeleteLogsSet": "",
 	"setModLogsSet": "",
 	"setPrefixSet": "",
 	"stickyRolesNotExists": "",
@@ -342,10 +344,10 @@
 			"here"
 		]
 	},
-	"setMemberLogsDescription": "Establece el canal de registros de miembros.",
-	"setMemberLogsExtended": {
+	"setMemberAddLogsDescription": "",
+	"setMemberAddLogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
@@ -355,26 +357,63 @@
 			]
 		],
 		"examples": [
-			"#registro-de-miembros",
-			"here"
-		]
+			"",
+			""
+		],
+		"reminder": ""
 	},
-	"setMessageLogsDescription": "Establece el canal de registros de mensajes.",
-	"setMessageLogsExtended": {
+	"setMemberRemoveLogsDescription": "",
+	"setMemberRemoveLogsExtended": {
 		"usages": [
-			"here/CanalDeTexto"
+			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"canal",
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"setMessageUpdateLogsDescription": "",
+	"setMessageUpdateLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
 				""
 			]
 		],
 		"reminder": "",
 		"examples": [
-			"#registro-de-mensajes",
-			"here"
+			"",
+			""
+		]
+	},
+	"setMessageDeleteLogsDescription": "",
+	"setMessageDeleteLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
 		]
 	},
 	"setmodlogsDescription": "",

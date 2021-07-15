@@ -1,175 +1,93 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Skyra.Database.Migrations
 {
-    public partial class V06_EventsModernization : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "events.member-add",
-                table: "guilds");
+	public partial class V06_EventsModernization : Migration
+	{
+		private readonly string[] _oldChannelKeys = {
+			"channels.logs.member",
+			"channels.logs.message",
+			"channels.logs.nsfw-message"
+		};
 
-            migrationBuilder.DropColumn(
-                name: "events.member-nickname-update",
-                table: "guilds");
+		private readonly string[] _oldEventKeys = {
+			"events.member-add",
+			"events.member-remove",
+			"events.member-nickname-update",
+			"events.member-username-update",
+			"events.member-role-update",
+			"events.message-delete",
+			"events.message-edit"
+		};
 
-            migrationBuilder.DropColumn(
-                name: "events.member-remove",
-                table: "guilds");
+		private readonly string[] _newKeys = {
+			"channels.logs.member-add",
+			"channels.logs.member-remove",
+			"channels.logs.member-nickname-update",
+			"channels.logs.member-username-update",
+			"channels.logs.member-roles-update",
+			"channels.logs.message-delete",
+			"channels.logs.message-delete-nsfw",
+			"channels.logs.message-update",
+			"channels.logs.message-update-nsfw"
+		};
 
-            migrationBuilder.DropColumn(
-                name: "events.member-role-update",
-                table: "guilds");
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			foreach (var key in _newKeys)
+			{
+				migrationBuilder.AddColumn<string>(
+					name: key,
+					table: "guilds",
+					type: "character varying(19)",
+					maxLength: 19,
+					nullable: true);
+			}
 
-            migrationBuilder.DropColumn(
-                name: "events.message-delete",
-                table: "guilds");
+			foreach (var key in _oldChannelKeys)
+			{
+				migrationBuilder.DropColumn(
+					name: key,
+					table: "guilds");
+			}
 
-            migrationBuilder.DropColumn(
-                name: "events.message-edit",
-                table: "guilds");
+			foreach (var key in _oldEventKeys)
+			{
+				migrationBuilder.DropColumn(
+					name: key,
+					table: "guilds");
+			}
+		}
 
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.nsfw-message",
-                table: "guilds",
-                newName: "channels.logs.message-update-nsfw");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			foreach (var key in _oldEventKeys)
+			{
+				migrationBuilder.AddColumn<bool>(
+					name: key,
+					table: "guilds",
+					type: "boolean",
+					nullable: false,
+					defaultValueSql: "false");
+			}
 
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.message",
-                table: "guilds",
-                newName: "channels.logs.message-update");
+			foreach (var key in _oldChannelKeys)
+			{
+				migrationBuilder.AddColumn<string>(
+					name: key,
+					table: "guilds",
+					type: "character varying(19)",
+					maxLength: 19,
+					nullable: true);
+			}
 
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.member",
-                table: "guilds",
-                newName: "channels.logs.message-delete-nsfw");
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-add",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-nickname-update",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-remove",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-roles-update",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-username-update",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "channels.logs.message-delete",
-                table: "guilds",
-                type: "character varying(19)",
-                maxLength: 19,
-                nullable: true);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "channels.logs.member-add",
-                table: "guilds");
-
-            migrationBuilder.DropColumn(
-                name: "channels.logs.member-nickname-update",
-                table: "guilds");
-
-            migrationBuilder.DropColumn(
-                name: "channels.logs.member-remove",
-                table: "guilds");
-
-            migrationBuilder.DropColumn(
-                name: "channels.logs.member-roles-update",
-                table: "guilds");
-
-            migrationBuilder.DropColumn(
-                name: "channels.logs.member-username-update",
-                table: "guilds");
-
-            migrationBuilder.DropColumn(
-                name: "channels.logs.message-delete",
-                table: "guilds");
-
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.message-update-nsfw",
-                table: "guilds",
-                newName: "channels.logs.nsfw-message");
-
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.message-update",
-                table: "guilds",
-                newName: "channels.logs.message");
-
-            migrationBuilder.RenameColumn(
-                name: "channels.logs.message-delete-nsfw",
-                table: "guilds",
-                newName: "channels.logs.member");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.member-add",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.member-nickname-update",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.member-remove",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.member-role-update",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.message-delete",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "events.message-edit",
-                table: "guilds",
-                type: "boolean",
-                nullable: false,
-                defaultValueSql: "false");
-        }
-    }
+			foreach (var key in _newKeys)
+			{
+				migrationBuilder.DropColumn(
+					name: key,
+					table: "guilds");
+			}
+		}
+	}
 }

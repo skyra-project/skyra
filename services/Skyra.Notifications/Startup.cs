@@ -44,7 +44,6 @@ namespace Skyra.Notifications
 				{
 					options.AddSentry(options => options.Dsn = dnsUrl);
 				}
-
 			});
 		}
 

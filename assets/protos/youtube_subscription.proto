@@ -22,7 +22,7 @@ enum Action {
 message SubscriptionManageRequest {
   string ChannelUrl = 1;
   string GuildId = 2;
-  optional string NotificationMessage = 3;
+  string NotificationMessage = 3;
   string GuildChannelId = 4;
   Action Type = 5;
 }

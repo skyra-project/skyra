@@ -84,8 +84,10 @@
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
 	"setImageLogsSet": "",
-	"setMemberLogsSet": "",
-	"setMessageLogsSet": "",
+	"setMemberAddLogsSet": "",
+	"setMemberRemoveLogsSet": "",
+	"setMessageUpdateLogsSet": "",
+	"setMessageDeleteLogsSet": "",
 	"setModLogsSet": "",
 	"setPrefixSet": "",
 	"stickyRolesNotExists": "",
@@ -342,32 +344,69 @@
 			""
 		]
 	},
-	"setMemberLogsDescription": "",
-	"setMemberLogsExtended": {
+	"setMemberAddLogsDescription": "",
+	"setMemberAddLogsExtended": {
 		"usages": [
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
 				""
 			]
 		],
 		"examples": [
 			"",
 			""
-		]
+		],
+		"reminder": ""
 	},
-	"setMessageLogsDescription": "",
-	"setMessageLogsExtended": {
+	"setMemberRemoveLogsDescription": "",
+	"setMemberRemoveLogsExtended": {
 		"usages": [
 			""
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"канал",
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"setMessageUpdateLogsDescription": "",
+	"setMessageUpdateLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"setMessageDeleteLogsDescription": "",
+	"setMessageDeleteLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
 				""
 			]
 		],

@@ -6,13 +6,13 @@ import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'di
 export class UserEvent extends Event {
 	public async run(
 		guild: Guild,
-		channelId: string | Nullish,
+		logChannelId: string | Nullish,
 		key: PickByValue<GuildEntity, string | Nullish>,
 		makeMessage: () => Promise<MessageEmbed> | MessageEmbed
 	) {
 		if (isNullish(channelId)) return;
 
-		const channel = guild.channels.cache.get(channelId) as TextChannel;
+		const channel = guild.channels.cache.get(logChannelId) as TextChannel;
 		if (!channel) {
 			await guild.writeSettings([[key, null]]);
 			return;

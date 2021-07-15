@@ -68,25 +68,49 @@ namespace Skyra.Database.Models.Entities
 		[StringLength(19)]
 		public string? ChannelsSpam { get; set; }
 
-		[Column("channels.logs.member")]
-		[StringLength(19)]
-		public string? ChannelsLogsMember { get; set; }
-
-		[Column("channels.logs.message")]
-		[StringLength(19)]
-		public string? ChannelsLogsMessage { get; set; }
-
 		[Column("channels.logs.moderation")]
 		[StringLength(19)]
 		public string? ChannelsLogsModeration { get; set; }
 
-		[Column("channels.logs.nsfw-message")]
-		[StringLength(19)]
-		public string? ChannelsLogsNsfwMessage { get; set; }
-
 		[Column("channels.logs.image")]
 		[StringLength(19)]
 		public string? ChannelsLogsImage { get; set; }
+
+		[Column("channels.logs.member-add")]
+		[StringLength(19)]
+		public string? ChannelsLogsMemberAdd { get; set; }
+
+		[Column("channels.logs.member-remove")]
+		[StringLength(19)]
+		public string? ChannelsLogsMemberRemove { get; set; }
+
+		[Column("channels.logs.member-nickname-update")]
+		[StringLength(19)]
+		public string? ChannelsLogsMemberNickNameUpdate { get; set; }
+
+		[Column("channels.logs.member-username-update")]
+		[StringLength(19)]
+		public string? ChannelsLogsMemberUserNameUpdate { get; set; }
+
+		[Column("channels.logs.member-roles-update")]
+		[StringLength(19)]
+		public string? ChannelsLogsMemberRoleUpdate { get; set; }
+
+		[Column("channels.logs.message-delete")]
+		[StringLength(19)]
+		public string? ChannelsLogsMessageDelete { get; set; }
+
+		[Column("channels.logs.message-delete-nsfw")]
+		[StringLength(19)]
+		public string? ChannelsLogsMessageDeleteNsfw { get; set; }
+
+		[Column("channels.logs.message-update")]
+		[StringLength(19)]
+		public string? ChannelsLogsMessageUpdate { get; set; }
+
+		[Column("channels.logs.message-update-nsfw")]
+		[StringLength(19)]
+		public string? ChannelsLogsMessageUpdateNsfw { get; set; }
 
 		[Column("channels.logs.prune")]
 		[StringLength(19)]
@@ -171,30 +195,6 @@ namespace Skyra.Database.Models.Entities
 		[Required]
 		[Column("events.ban-remove")]
 		public bool EventsBanRemove { get; set; }
-
-		[Required]
-		[Column("events.member-add")]
-		public bool EventsMemberAdd { get; set; }
-
-		[Required]
-		[Column("events.member-remove")]
-		public bool EventsMemberRemove { get; set; }
-
-		[Required]
-		[Column("events.member-nickname-update")]
-		public bool EventsMemberNicknameUpdate { get; set; }
-
-		[Required]
-		[Column("events.member-role-update")]
-		public bool EventsMemberRoleUpdate { get; set; }
-
-		[Required]
-		[Column("events.message-delete")]
-		public bool EventsMessageDelete { get; set; }
-
-		[Required]
-		[Column("events.message-edit")]
-		public bool EventsMessageEdit { get; set; }
 
 		[Required]
 		[Column("events.twemoji-reactions")]

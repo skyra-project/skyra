@@ -1,29 +1,18 @@
-import { GuildSettings } from '#lib/database';
-import { MessageLogsEnum } from '#utils/constants';
+import type { GuildEntity } from '#lib/database';
 import { Event } from '@sapphire/framework';
+import { isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 
-const TYPES = {
-	[MessageLogsEnum.Member]: GuildSettings.Channels.Logs.Member,
-	[MessageLogsEnum.Message]: GuildSettings.Channels.Logs.Message,
-	[MessageLogsEnum.Image]: GuildSettings.Channels.Logs.Image,
-	[MessageLogsEnum.Moderation]: GuildSettings.Channels.Logs.Moderation,
-	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.Logs.NSFWMessage,
-	[MessageLogsEnum.Reaction]: GuildSettings.Channels.Logs.Reaction
-} as const;
-
 export class UserEvent extends Event {
-	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
-		const key = TYPES[type];
-		if (!key) {
-			this.context.client.logger.warn(`[EVENT] GuildMessageLog: Unknown type '${type}'`);
-			return;
-		}
+	public async run(
+		guild: Guild,
+		logChannelId: string | Nullish,
+		key: PickByValue<GuildEntity, string | Nullish>,
+		makeMessage: () => Promise<MessageEmbed> | MessageEmbed
+	) {
+		if (isNullish(logChannelId)) return;
 
-		const id = await guild.readSettings(key);
-		if (!id) return;
-
-		const channel = guild.channels.cache.get(id) as TextChannel;
+		const channel = guild.channels.cache.get(logChannelId) as TextChannel;
 		if (!channel) {
 			await guild.writeSettings([[key, null]]);
 			return;
@@ -38,8 +27,8 @@ export class UserEvent extends Event {
 		} catch (error) {
 			this.context.client.logger.fatal(
 				error instanceof DiscordAPIError || error instanceof HTTPError
-					? `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
-					: `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`
+					? `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
+					: `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`
 			);
 		}
 	}

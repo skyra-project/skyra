@@ -80,25 +80,49 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'channels.farewell', nullable: true, length: 19 })
 	public channelsFarewell?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Member, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.logs.member', nullable: true, length: 19 })
-	public channelsLogsMember?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Message, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.logs.message', nullable: true, length: 19 })
-	public channelsLogsMessage?: string | null;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Moderation, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.logs.moderation', nullable: true, length: 19 })
 	public channelsLogsModeration?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.NsfwMessage, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.logs.nsfw-message', nullable: true, length: 19 })
-	public channelsLogsNsfwMessage?: string | null;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Image, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.logs.image', nullable: true, length: 19 })
 	public channelsLogsImage?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberAdd, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member-add', nullable: true, length: 19 })
+	public channelsLogsMemberAdd?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberRemove, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member-remove', nullable: true, length: 19 })
+	public channelsLogsMemberRemove?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberNickNameUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member-nickname-update', nullable: true, length: 19 })
+	public channelsLogsMemberNickNameUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberUserNameUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member-username-update', nullable: true, length: 19 })
+	public channelsLogsMemberUserNameUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberRoleUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.member-roles-update', nullable: true, length: 19 })
+	public channelsLogsMemberRolesUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MessageDelete, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.message-delete', nullable: true, length: 19 })
+	public channelsLogsMessageDelete?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MessageDeleteNsfw, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.message-delete-nsfw', nullable: true, length: 19 })
+	public channelsLogsMessageDeleteNsfw?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MessageUpdate, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.message-update', nullable: true, length: 19 })
+	public channelsLogsMessageUpdate?: string | null;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MessageUpdateNsfw, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.message-update-nsfw', nullable: true, length: 19 })
+	public channelsLogsMessageUpdateNsfw?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Prune, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.logs.prune', nullable: true, length: 19 })
@@ -185,34 +209,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsBanRemove })
 	@Column('boolean', { name: 'events.ban-remove', default: false })
 	public eventsBanRemove = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberAdd })
-	@Column('boolean', { name: 'events.member-add', default: false })
-	public eventsMemberAdd = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberRemove })
-	@Column('boolean', { name: 'events.member-remove', default: false })
-	public eventsMemberRemove = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberNickNameUpdate })
-	@Column('boolean', { name: 'events.member-nickname-update', default: false })
-	public eventsMemberNickNameUpdate = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberUserNameUpdate })
-	@Column('boolean', { name: 'events.member-username-update', default: false })
-	public eventsMemberUserNameUpdate = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberRoleUpdate })
-	@Column('boolean', { name: 'events.member-role-update', default: false })
-	public eventsMemberRoleUpdate = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMessageDelete })
-	@Column('boolean', { name: 'events.message-delete', default: false })
-	public eventsMessageDelete = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMessageEdit })
-	@Column('boolean', { name: 'events.message-edit', default: false })
-	public eventsMessageEdit = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsTwemojiReactions })
 	@Column('boolean', { name: 'events.twemoji-reactions', default: false })

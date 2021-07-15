@@ -3,7 +3,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { filter, map } from '#utils/iterator';
 import { Event } from '@sapphire/framework';
 import { Guild, MessageEmbed, User } from 'discord.js';
@@ -25,14 +24,14 @@ export class UserEvent extends Event {
 	}
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
-		const [enabled, language] = await guild.readSettings((settings) => [
-			settings[GuildSettings.Events.MemberUserNameUpdate],
+		const [logChannelId, language] = await guild.readSettings((settings) => [
+			settings[GuildSettings.Channels.Logs.MemberUserNameUpdate],
 			settings.getLanguage()
 		]);
 
-		if (enabled) {
+		if (logChannelId) {
 			// Send the Username log
-			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, guild, logChannelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
 				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
 			);
 		}

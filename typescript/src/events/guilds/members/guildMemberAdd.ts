@@ -2,7 +2,6 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { MessageLogsEnum } from '#utils/constants';
 import { floatPromise } from '#utils/util';
 import { Event } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
@@ -22,14 +21,19 @@ export class UserEvent extends Event {
 		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted
-		const [roleID, t] = await member.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
-		if (roleID && stickyRoles.includes(roleID)) {
+		const key = GuildSettings.Channels.Logs.MemberAdd;
+		const [logChannelId, roleId, t] = await member.guild.readSettings((settings) => [
+			settings[key],
+			settings[GuildSettings.Roles.Muted],
+			settings.getLanguage()
+		]);
+		if (roleId && stickyRoles.includes(roleId)) {
 			// Handle mute
-			const role = member.guild.roles.cache.get(roleID);
+			const role = member.guild.roles.cache.get(roleId);
 			floatPromise(role ? member.roles.add(role) : member.guild.writeSettings([[GuildSettings.Roles.Muted, null]]));
 
 			// Handle log
-			this.context.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
+			this.context.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
 				new MessageEmbed()
 					.setColor(Colors.Amber)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

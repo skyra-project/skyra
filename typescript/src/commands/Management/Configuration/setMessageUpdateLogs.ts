@@ -4,9 +4,9 @@ import { ChannelConfigurationCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ChannelConfigurationCommand.Options>({
-	description: LanguageKeys.Commands.Management.SetMemberLogsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetMemberLogsExtended,
-	responseKey: LanguageKeys.Commands.Management.SetMemberLogsSet,
-	settingsKey: GuildSettings.Channels.Logs.Member
+	description: LanguageKeys.Commands.Management.SetMessageUpdateLogsDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetMessageUpdateLogsExtended,
+	responseKey: LanguageKeys.Commands.Management.SetMessageUpdateLogsSet,
+	settingsKey: GuildSettings.Channels.Logs.MessageUpdate
 })
 export class UserChannelConfigurationCommand extends ChannelConfigurationCommand {}

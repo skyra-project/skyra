@@ -15,7 +15,9 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		return (await message.guild.readSettings(GuildSettings.Events.MemberRemove)) ? { unlock: message.guild.moderation.createLock() } : null;
+		return (await message.guild.readSettings(GuildSettings.Channels.Logs.MemberRemove))
+			? { unlock: message.guild.moderation.createLock() }
+			: null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

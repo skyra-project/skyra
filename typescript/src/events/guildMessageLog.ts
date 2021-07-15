@@ -10,7 +10,7 @@ export class UserEvent extends Event {
 		key: PickByValue<GuildEntity, string | Nullish>,
 		makeMessage: () => Promise<MessageEmbed> | MessageEmbed
 	) {
-		if (isNullish(channelId)) return;
+		if (isNullish(logChannelId)) return;
 
 		const channel = guild.channels.cache.get(logChannelId) as TextChannel;
 		if (!channel) {

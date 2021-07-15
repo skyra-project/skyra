@@ -84,8 +84,10 @@
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
 	"setImageLogsSet": "",
-	"setMemberLogsSet": "",
-	"setMessageLogsSet": "",
+	"setMemberAddLogsSet": "",
+	"setMemberRemoveLogsSet": "",
+	"setMessageUpdateLogsSet": "",
+	"setMessageDeleteLogsSet": "",
 	"setModLogsSet": "",
 	"setPrefixSet": "",
 	"stickyRolesNotExists": "",
@@ -342,8 +344,8 @@
 			""
 		]
 	},
-	"setMemberLogsDescription": "",
-	"setMemberLogsExtended": {
+	"setMemberAddLogsDescription": "",
+	"setMemberAddLogsExtended": {
 		"usages": [
 			""
 		],
@@ -357,10 +359,47 @@
 		"examples": [
 			"",
 			""
+		],
+		"reminder": ""
+	},
+	"setMemberRemoveLogsDescription": "",
+	"setMemberRemoveLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"setMessageUpdateLogsDescription": "",
+	"setMessageUpdateLogsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			""
 		]
 	},
-	"setMessageLogsDescription": "",
-	"setMessageLogsExtended": {
+	"setMessageDeleteLogsDescription": "",
+	"setMessageDeleteLogsExtended": {
 		"usages": [
 			""
 		],

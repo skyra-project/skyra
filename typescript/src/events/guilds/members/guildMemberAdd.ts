@@ -22,7 +22,7 @@ export class UserEvent extends Event {
 
 		// Handle the case the user is muted
 		const key = GuildSettings.Channels.Logs.MemberAdd;
-		const [channelId, roleId, t] = await member.guild.readSettings((settings) => [
+		const [logChannelId, roleId, t] = await member.guild.readSettings((settings) => [
 			settings[key],
 			settings[GuildSettings.Roles.Muted],
 			settings.getLanguage()
@@ -33,7 +33,7 @@ export class UserEvent extends Event {
 			floatPromise(role ? member.roles.add(role) : member.guild.writeSettings([[GuildSettings.Roles.Muted, null]]));
 
 			// Handle log
-			this.context.client.emit(Events.GuildMessageLog, member.guild, channelId, key, () =>
+			this.context.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
 				new MessageEmbed()
 					.setColor(Colors.Amber)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

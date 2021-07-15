@@ -105,8 +105,8 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	public channelsLogsMemberUserNameUpdate?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MemberRoleUpdate, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.logs.member-role-update', nullable: true, length: 19 })
-	public channelsLogsMemberRoleUpdate?: string | null;
+	@Column('varchar', { name: 'channels.logs.member-roles-update', nullable: true, length: 19 })
+	public channelsLogsMemberRolesUpdate?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.MessageDelete, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.logs.message-delete', nullable: true, length: 19 })

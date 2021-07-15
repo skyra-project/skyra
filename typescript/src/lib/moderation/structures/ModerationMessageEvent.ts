@@ -39,14 +39,14 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [channelId, filter, adder, language] = await message.guild.readSettings((settings) => [
+		const [logChannelId, filter, adder, language] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Logs.Moderation],
 			settings[this.softPunishmentPath],
 			settings.adders[this.hardPunishmentPath.adder],
 			settings.getLanguage()
 		]);
 		const bitField = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(message, channelId, language, bitField, preProcessed);
+		this.processSoftPunishment(message, logChannelId, language, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
@@ -62,7 +62,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 
 	protected processSoftPunishment(
 		message: GuildMessage,
-		channelId: string | Nullish,
+		logChannelId: string | Nullish,
 		language: TFunction,
 		bitField: SelfModeratorBitField,
 		preProcessed: T
@@ -76,7 +76,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		}
 
 		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
-			floatPromise(this.onLog(message, channelId, language, preProcessed) as any);
+			floatPromise(this.onLog(message, logChannelId, language, preProcessed) as any);
 		}
 	}
 
@@ -166,11 +166,11 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		unlock();
 	}
 
-	protected onLog(message: GuildMessage, channelId: string | Nullish, language: TFunction, value: T): Awaited<void> {
+	protected onLog(message: GuildMessage, logChannelId: string | Nullish, language: TFunction, value: T): Awaited<void> {
 		this.context.client.emit(
 			Events.GuildMessageLog,
 			message.guild,
-			channelId,
+			logChannelId,
 			GuildSettings.Channels.Logs.Moderation,
 			this.onLogMessage.bind(this, message, language, value)
 		);

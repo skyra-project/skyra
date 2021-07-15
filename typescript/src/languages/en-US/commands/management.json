@@ -349,7 +349,7 @@
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the member add log channel, which will send messages each time a user joins.\nIf a muted user joins, it will send a special \"Muted Member Join\" event.",
+		"extendedHelp": "This command helps you setting up the member add log channel, which will receive a message each time a user joins.\nIf a muted user joins, it will send a special \"Muted Member Joined\" event.",
 		"explainedUsage": [
 			[
 				"channel",
@@ -367,11 +367,11 @@
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the member remove log channel, which will send messages each time a user leaves, is kicked, or banned.\nIn the case of the last two, it will send a special \"User Kicked\" or \"User Banned\" event.",
+		"extendedHelp": "This command helps you setting up the member remove log channel, which will receive a message each time a user leaves, is kicked, or is banned.\nIn the case of the last two, it will send a special \"User Kicked\" or \"User Banned\" event.",
 		"explainedUsage": [
 			[
 				"channel",
-				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to configure the channel this command was used in."
 			]
 		],
 		"examples": [
@@ -385,11 +385,11 @@
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the message update log channel, which will send messages each time a message is updated.",
+		"extendedHelp": "This command helps you setting up the message update log channel, which will receive a message each time a message is edited.",
 		"explainedUsage": [
 			[
 				"channel",
-				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to configure the channel this command was used in."
 			]
 		],
 		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.",
@@ -403,14 +403,14 @@
 		"usages": [
 			"here/TextChannel"
 		],
-		"extendedHelp": "This command helps you setting up the message delete log channel, which will send messages each time a message is deleted.",
+		"extendedHelp": "This command helps you setting up the message delete log channel, which will receive a message each time a message is deleted.",
 		"explainedUsage": [
 			[
 				"channel",
-				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to configure the channel this command was used in."
 			]
 		],
-		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nDue to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of servers and the amount of times I can fetch them in a period of time.",
+		"reminder": "All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.\nDue to Discord limitations, Skyra cannot know who deleted a message.",
 		"examples": [
 			"#message-logs",
 			"here"

@@ -7,7 +7,7 @@ import { IMAGE_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Event, EventOptions } from '@sapphire/framework';
-import { isNumber } from '@sapphire/utilities';
+import { isNullish, isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { extname } from 'path';
 import { URL } from 'url';
@@ -27,12 +27,12 @@ export class UserEvent extends Event {
 		if (message.editedTimestamp) return;
 
 		const key = GuildSettings.Channels.Logs.Image;
-		const [channelId, ignoredChannels, t] = await message.guild.readSettings((settings) => [
+		const [logChannelId, ignoredChannels, t] = await message.guild.readSettings((settings) => [
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.All],
 			settings.getLanguage()
 		]);
-		if (channelId === null || ignoredChannels.includes(message.channel.id)) return;
+		if (isNullish(logChannelId) || ignoredChannels.includes(message.channel.id)) return;
 
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
@@ -63,7 +63,7 @@ export class UserEvent extends Event {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.context.client.emit(Events.GuildMessageLog, message.guild, channelId, key, () =>
+				this.context.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(

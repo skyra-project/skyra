@@ -4,6 +4,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -11,8 +12,8 @@ import type { TFunction } from 'i18next';
 export class UserEvent extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const key = GuildSettings.Channels.Logs.MemberRoleUpdate;
-		const [channelId, t] = await next.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (!channelId) return;
+		const [logChannelId, t] = await next.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		if (isNullish(logChannelId)) return;
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and
 		// whether or not the roles are the same.
@@ -36,7 +37,7 @@ export class UserEvent extends Event {
 		const { user } = next;
 
 		// Set the Role change log
-		this.context.client.emit(Events.GuildMessageLog, next.guild, channelId, key, () =>
+		this.context.client.emit(Events.GuildMessageLog, next.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

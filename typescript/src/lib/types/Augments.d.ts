@@ -12,7 +12,7 @@ import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingRea
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
 import type { PieceContextExtras } from '@sapphire/pieces';
-import type { Nullish } from '@sapphire/utilities';
+import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { Image } from 'canvas';
 import type {
 	APIMessage,
@@ -132,7 +132,7 @@ declare module '@sapphire/framework' {
 			event: Events.GuildMessageLog,
 			guild: Guild,
 			channelId: string | Nullish,
-			key: keyof GuildEntity,
+			key: PickByValue<GuildEntity, string | Nullish>,
 			makeMessage: () => Promise<MessageEmbed> | MessageEmbed
 		): boolean;
 		emit(event: Events.ReactionBlocked, data: LLRCData, emoji: string): boolean;

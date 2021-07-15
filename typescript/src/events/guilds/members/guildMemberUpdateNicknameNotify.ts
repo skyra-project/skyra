@@ -4,6 +4,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -11,15 +12,15 @@ import type { TFunction } from 'i18next';
 export class UserEvent extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const key = GuildSettings.Channels.Logs.MemberNickNameUpdate;
-		const [channelId, t] = await next.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (!channelId) return;
+		const [logChannelId, t] = await next.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		if (isNullish(logChannelId)) return;
 
 		// Send the Nickname log
 		const prevNickname = previous.nickname;
 		const nextNickname = next.nickname;
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
-			this.context.client.emit(Events.GuildMessageLog, next.guild, channelId, key, () =>
+			this.context.client.emit(Events.GuildMessageLog, next.guild, logChannelId, key, () =>
 				new MessageEmbed()
 					.setColor(Colors.Yellow)
 					.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

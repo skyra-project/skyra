@@ -67,7 +67,7 @@ namespace Skyra.Database.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "channels.logs.member-role-update",
+                name: "channels.logs.member-roles-update",
                 table: "guilds",
                 type: "character varying(19)",
                 maxLength: 19,
@@ -103,7 +103,7 @@ namespace Skyra.Database.Migrations
                 table: "guilds");
 
             migrationBuilder.DropColumn(
-                name: "channels.logs.member-role-update",
+                name: "channels.logs.member-roles-update",
                 table: "guilds");
 
             migrationBuilder.DropColumn(

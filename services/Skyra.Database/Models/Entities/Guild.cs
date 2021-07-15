@@ -92,7 +92,7 @@ namespace Skyra.Database.Models.Entities
 		[StringLength(19)]
 		public string? ChannelsLogsMemberUserNameUpdate { get; set; }
 
-		[Column("channels.logs.member-role-update")]
+		[Column("channels.logs.member-roles-update")]
 		[StringLength(19)]
 		public string? ChannelsLogsMemberRoleUpdate { get; set; }
 

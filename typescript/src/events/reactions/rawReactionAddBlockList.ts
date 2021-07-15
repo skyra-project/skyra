@@ -24,22 +24,24 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		const [enabled, blockedReactions, channelId, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings((settings) => [
-			settings[GuildSettings.Selfmod.Reactions.Enabled],
-			settings[GuildSettings.Selfmod.Reactions.Blocked],
-			settings[GuildSettings.Channels.Logs.Moderation],
-			settings[GuildSettings.Channels.Ignore.ReactionAdd],
-			settings[GuildSettings.Selfmod.Reactions.SoftAction],
-			settings[GuildSettings.Selfmod.Reactions.HardAction],
-			settings.adders[this.hardPunishmentPath.adder]
-		]);
+		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings(
+			(settings) => [
+				settings[GuildSettings.Selfmod.Reactions.Enabled],
+				settings[GuildSettings.Selfmod.Reactions.Blocked],
+				settings[GuildSettings.Channels.Logs.Moderation],
+				settings[GuildSettings.Channels.Ignore.ReactionAdd],
+				settings[GuildSettings.Selfmod.Reactions.SoftAction],
+				settings[GuildSettings.Selfmod.Reactions.HardAction],
+				settings.adders[this.hardPunishmentPath.adder]
+			]
+		);
 
 		if (!enabled || blockedReactions.length === 0 || ignoredChannels.includes(data.channel.id)) return;
 
 		const member = await data.guild.members.fetch(data.userID);
 		if (member.user.bot || (await this.hasPermissions(member))) return;
 
-		const args = [data, emoji, channelId] as const;
+		const args = [data, emoji, logChannelId] as const;
 		const preProcessed = await this.preProcess(args);
 		if (preProcessed === null) return;
 

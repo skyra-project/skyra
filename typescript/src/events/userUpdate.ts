@@ -24,14 +24,14 @@ export class UserEvent extends Event {
 	}
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
-		const [channelId, language] = await guild.readSettings((settings) => [
+		const [logChannelId, language] = await guild.readSettings((settings) => [
 			settings[GuildSettings.Channels.Logs.MemberUserNameUpdate],
 			settings.getLanguage()
 		]);
 
-		if (channelId) {
+		if (logChannelId) {
 			// Send the Username log
-			this.context.client.emit(Events.GuildMessageLog, guild, channelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
+			this.context.client.emit(Events.GuildMessageLog, guild, logChannelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
 				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
 			);
 		}

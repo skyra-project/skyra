@@ -6,14 +6,14 @@ import { Events } from '#lib/types/Enums';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
-import { cutText } from '@sapphire/utilities';
+import { cutText, isNullish } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMessageDelete })
 export class UserEvent extends Event {
 	public async run(message: GuildMessage) {
 		const key = GuildSettings.Channels.Logs[message.channel.nsfw ? 'MessageDeleteNsfw' : 'MessageDelete'];
-		const [ignoredChannels, channelId, ignoredDeletes, ignoredAll, t] = await message.guild.readSettings((settings) => [
+		const [ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.MessageDelete],
@@ -21,12 +21,12 @@ export class UserEvent extends Event {
 			settings.getLanguage()
 		]);
 
-		if (!channelId) return;
+		if (isNullish(logChannelId)) return;
 		if (ignoredChannels.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 		if (ignoredDeletes.some((id) => id === message.channel.id && message.channel.parentID === id)) return;
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 
-		this.context.client.emit(Events.GuildMessageLog, message.guild, channelId, key, () =>
+		this.context.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(

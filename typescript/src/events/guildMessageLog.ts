@@ -1,10 +1,15 @@
 import type { GuildEntity } from '#lib/database';
 import { Event } from '@sapphire/framework';
-import { isNullish, Nullish } from '@sapphire/utilities';
+import { isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 
 export class UserEvent extends Event {
-	public async run(guild: Guild, channelId: string | Nullish, key: keyof GuildEntity, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
+	public async run(
+		guild: Guild,
+		channelId: string | Nullish,
+		key: PickByValue<GuildEntity, string | Nullish>,
+		makeMessage: () => Promise<MessageEmbed> | MessageEmbed
+	) {
 		if (isNullish(channelId)) return;
 
 		const channel = guild.channels.cache.get(channelId) as TextChannel;

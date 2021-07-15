@@ -6,6 +6,7 @@ import { TypeCodes } from '#utils/moderationConstants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 
@@ -13,8 +14,8 @@ import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 export class UserEvent extends Event {
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const key = GuildSettings.Channels.Logs.MemberRemove;
-		const [channelId, t] = await guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
-		if (!channelId) return;
+		const [logChannelId, t] = await guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		if (isNullish(logChannelId)) return;
 
 		const isModerationAction = await this.isModerationAction(guild, user);
 
@@ -27,7 +28,7 @@ export class UserEvent extends Event {
 			: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
-		this.context.client.emit(Events.GuildMessageLog, guild, channelId, key, () =>
+		this.context.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))

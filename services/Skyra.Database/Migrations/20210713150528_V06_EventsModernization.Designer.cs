@@ -288,7 +288,7 @@ namespace Skyra.Database.Migrations
                     b.Property<string>("ChannelsLogsMemberRoleUpdate")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-role-update");
+                        .HasColumnName("channels.logs.member-roles-update");
 
                     b.Property<string>("ChannelsLogsMemberUserNameUpdate")
                         .HasMaxLength(19)

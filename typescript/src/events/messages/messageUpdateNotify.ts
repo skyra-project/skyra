@@ -7,6 +7,7 @@ import { Events } from '#lib/types/Enums';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import { diffWordsWithSpace } from 'diff';
 import type { Message } from 'discord.js';
 
@@ -16,7 +17,7 @@ export class UserEvent extends Event {
 		if (!message.guild || old.content === message.content || message.author.bot) return;
 
 		const key = GuildSettings.Channels.Logs[message.channel.nsfw ? 'MessageUpdateNsfw' : 'MessageUpdate'];
-		const [ignoredChannels, channelId, ignoredEdits, ignoredAll, t] = await message.guild.readSettings((settings) => [
+		const [ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.MessageEdit],
@@ -24,12 +25,12 @@ export class UserEvent extends Event {
 			settings.getLanguage()
 		]);
 
-		if (!channelId) return;
+		if (isNullish(logChannelId)) return;
 		if (ignoredChannels.includes(message.channel.id)) return;
 		if (ignoredEdits.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 
-		this.context.client.emit(Events.GuildMessageLog, message.guild, channelId, key, () =>
+		this.context.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new SkyraEmbed()
 				.setColor(Colors.Amber)
 				.setAuthor(

@@ -20,7 +20,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 		'channels.logs.member-remove',
 		'channels.logs.member-nickname-update',
 		'channels.logs.member-username-update',
-		'channels.logs.member-role-update',
+		'channels.logs.member-roles-update',
 		'channels.logs.message-delete',
 		'channels.logs.message-delete-nsfw',
 		'channels.logs.message-update',
@@ -59,7 +59,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 				newEntry['channels.logs.member-remove'],
 				newEntry['channels.logs.member-nickname-update'],
 				newEntry['channels.logs.member-username-update'],
-				newEntry['channels.logs.member-role-update'],
+				newEntry['channels.logs.member-roles-update'],
 				newEntry['channels.logs.message-delete'],
 				newEntry['channels.logs.message-delete-nsfw'],
 				newEntry['channels.logs.message-update'],
@@ -74,7 +74,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 					"channels.logs.member-remove" = $3,
 					"channels.logs.member-nickname-update" = $4,
 					"channels.logs.member-username-update" = $5,
-					"channels.logs.member-role-update" = $6,
+					"channels.logs.member-roles-update" = $6,
 					"channels.logs.message-delete" = $7,
 					"channels.logs.message-delete-nsfw" = $8,
 					"channels.logs.message-update" = $9,
@@ -105,7 +105,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 				"channels.logs.member-remove",
 				"channels.logs.member-nickname-update",
 				"channels.logs.member-username-update",
-				"channels.logs.member-role-update",
+				"channels.logs.member-roles-update",
 				"channels.logs.message-delete",
 				"channels.logs.message-delete-nsfw",
 				"channels.logs.message-update",
@@ -116,7 +116,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 				"channels.logs.member-remove" IS NOT NULL OR
 				"channels.logs.member-nickname-update" IS NOT NULL OR
 				"channels.logs.member-username-update" IS NOT NULL OR
-				"channels.logs.member-role-update" IS NOT NULL OR
+				"channels.logs.member-roles-update" IS NOT NULL OR
 				"channels.logs.message-delete" IS NOT NULL OR
 				"channels.logs.message-delete-nsfw" IS NOT NULL OR
 				"channels.logs.message-update" IS NOT NULL OR
@@ -169,7 +169,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 			'channels.logs.member-remove': entry['events.member-remove'] ? entry['channels.logs.member'] : null,
 			'channels.logs.member-nickname-update': entry['events.member-nickname-update'] ? entry['channels.logs.member'] : null,
 			'channels.logs.member-username-update': entry['events.member-username-update'] ? entry['channels.logs.member'] : null,
-			'channels.logs.member-role-update': entry['events.member-role-update'] ? entry['channels.logs.member'] : null,
+			'channels.logs.member-roles-update': entry['events.member-role-update'] ? entry['channels.logs.member'] : null,
 			'channels.logs.message-delete': entry['events.message-delete'] ? entry['channels.logs.message'] : null,
 			'channels.logs.message-delete-nsfw': entry['events.message-delete'] ? entry['channels.logs.nsfw-message'] : null,
 			'channels.logs.message-update': entry['events.message-edit'] ? entry['channels.logs.message'] : null,
@@ -183,7 +183,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 			'channels.logs.member':
 				entry['channels.logs.member-add'] ??
 				entry['channels.logs.member-remove'] ??
-				entry['channels.logs.member-role-update'] ??
+				entry['channels.logs.member-roles-update'] ??
 				entry['channels.logs.member-nickname-update'] ??
 				entry['channels.logs.member-username-update'],
 			'channels.logs.message': entry['channels.logs.message-update'] ?? entry['channels.logs.message-delete'],
@@ -192,7 +192,7 @@ export class V54EventsModernization1626169505546 implements MigrationInterface {
 			'events.member-remove': !isNullish(entry['channels.logs.member-remove']),
 			'events.member-nickname-update': !isNullish(entry['channels.logs.member-nickname-update']),
 			'events.member-username-update': !isNullish(entry['channels.logs.member-username-update']),
-			'events.member-role-update': !isNullish(entry['channels.logs.member-role-update']),
+			'events.member-role-update': !isNullish(entry['channels.logs.member-roles-update']),
 			'events.message-delete': !isNullish(entry['channels.logs.message-delete'] ?? entry['channels.logs.message-delete-nsfw']),
 			'events.message-edit': !isNullish(entry['channels.logs.message-update'] ?? entry['channels.logs.message-update-nsfw'])
 		};
@@ -219,7 +219,7 @@ interface NewEntry {
 	'channels.logs.member-remove': string | Nullish;
 	'channels.logs.member-nickname-update': string | Nullish;
 	'channels.logs.member-username-update': string | Nullish;
-	'channels.logs.member-role-update': string | Nullish;
+	'channels.logs.member-roles-update': string | Nullish;
 	'channels.logs.message-delete': string | Nullish;
 	'channels.logs.message-delete-nsfw': string | Nullish;
 	'channels.logs.message-update': string | Nullish;

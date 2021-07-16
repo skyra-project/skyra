@@ -106,7 +106,7 @@ export class Leaderboard {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		timeout.run().then(() => {
 			this.kTimeouts.guilds.delete(guild);
-			this.local.get(guild)!.clear();
+			this.local.get(guild)?.clear();
 			this.local.delete(guild);
 		});
 	}

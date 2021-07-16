@@ -116,7 +116,8 @@
 			"add User Integer",
 			"remove User Integer",
 			"set User Integer",
-			"reset User"
+			"reset User",
+			"reset --all"
 		],
 		"extendedHelp": "This command allows for updating other members' points.",
 		"explainedUsage": [
@@ -145,7 +146,8 @@
 			"set @kyra 40000",
 			"add @kyra 2400",
 			"remove @kyra 3000",
-			"reset @kyra"
+			"reset @kyra",
+			"reset --all"
 		]
 	},
 	"bannerDescription": "Configure the banner for your profile.",

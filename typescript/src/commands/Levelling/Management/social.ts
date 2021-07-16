@@ -12,7 +12,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text', 'news'],
-	subCommands: ['add', 'remove', 'set', 'reset']
+	subCommands: ['add', 'remove', 'set', 'reset'],
+	strategyOptions: { flags: ['all'] }
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
@@ -91,9 +92,25 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+		if (args.getFlags('all')) return this.resetAll(message, args);
+
 		const user = await args.pick('userName');
 		const { members } = this.context.db;
 		await members.delete({ userID: user.id, guildID: message.guild.id });
 		return message.send(args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username }));
+	}
+
+	private async resetAll(message: GuildMessage, args: SkyraCommand.Args) {
+		const confirmed = await message.ask(args.t(LanguageKeys.Commands.Social.SocialResetAllPrompt));
+		if (confirmed === null) this.error(LanguageKeys.Commands.Social.SocialResetAllTimeOut);
+		if (!confirmed) this.error(LanguageKeys.Commands.Social.SocialResetAllAborted);
+
+		const { members } = this.context.db;
+		const result = await members.delete({ guildID: message.guild.id });
+		if (!result.affected) this.error(LanguageKeys.Commands.Social.SocialResetAllEmpty);
+
+		// Delete the local leaderboard entry since it's all set to 0 at this point.
+		this.context.client.leaderboard.local.delete(message.guild.id);
+		return message.send(args.t(LanguageKeys.Commands.Social.SocialResetAllSuccess, { count: result.affected }));
 	}
 }

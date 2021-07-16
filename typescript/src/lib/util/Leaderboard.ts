@@ -17,12 +17,12 @@ export class Leaderboard {
 	/**
 	 * The cached global leaderboard
 	 */
-	private readonly kUsers = new Collection<string, LeaderboardUser>();
+	public readonly global = new Collection<string, LeaderboardUser>();
 
 	/**
 	 * The cached collection for local leaderboards
 	 */
-	private readonly kGuilds = new Collection<string, Collection<string, LeaderboardUser>>();
+	public readonly local = new Collection<string, Collection<string, LeaderboardUser>>();
 
 	/**
 	 * The timeouts object
@@ -47,13 +47,13 @@ export class Leaderboard {
 	public async fetch(guild?: string) {
 		if (guild) {
 			if (this.kTempPromises.guilds.has(guild)) await this.kTempPromises.guilds.get(guild);
-			else if (!this.kGuilds.has(guild)) await this.syncMembers(guild);
-			return this.kGuilds.get(guild)!;
+			else if (!this.local.has(guild)) await this.syncMembers(guild);
+			return this.local.get(guild)!;
 		}
 
 		if (this.kTempPromises.users) await this.kTempPromises.users;
-		else if (this.kUsers.size === 0) await this.syncUsers();
-		return this.kUsers;
+		else if (this.global.size === 0) await this.syncUsers();
+		return this.global;
 	}
 
 	/**
@@ -106,8 +106,8 @@ export class Leaderboard {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		timeout.run().then(() => {
 			this.kTimeouts.guilds.delete(guild);
-			this.kGuilds.get(guild)!.clear();
-			this.kGuilds.delete(guild);
+			this.local.get(guild)!.clear();
+			this.local.delete(guild);
 		});
 	}
 
@@ -123,11 +123,11 @@ export class Leaderboard {
 			.getRawMany<{ user_id: string; points: number }>();
 
 		// Clear the leaderboards for said guild
-		if (this.kGuilds.has(guild)) this.kGuilds.get(guild)!.clear();
-		else this.kGuilds.set(guild, new Collection());
+		if (this.local.has(guild)) this.local.get(guild)!.clear();
+		else this.local.set(guild, new Collection());
 
 		// Get the store and initialize the position number, then save all entries
-		const store = this.kGuilds.get(guild)!;
+		const store = this.local.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
 			store.set(entry.user_id, { points: entry.points, position: ++i });
@@ -152,7 +152,7 @@ export class Leaderboard {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.kTimeouts.users.run().then(() => {
 			this.kTimeouts.users = null;
-			this.kUsers.clear();
+			this.global.clear();
 		});
 	}
 
@@ -168,11 +168,11 @@ export class Leaderboard {
 			.getRawMany<{ id: string; points: number }>();
 
 		// Get the store and initialize the position number, then save all entries
-		this.kUsers.clear();
+		this.global.clear();
 
 		let i = 0;
 		for (const entry of data) {
-			this.kUsers.set(entry.id, { points: entry.points, position: ++i });
+			this.global.set(entry.id, { points: entry.points, position: ++i });
 		}
 
 		this.kTempPromises.users = null;

@@ -93,7 +93,7 @@ export class UserCommand extends SkyraCommand {
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
-					gameMessage = (await message.channel.send(text)) as GuildMessage;
+					gameMessage = (await message.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
 					}

@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
-		return message.channel.send({ files: [{ attachment, name: 'goodNight.png' }] });
+		return message.send({ files: [{ attachment, name: 'goodNight.png' }] });
 	}
 
 	public async generate(message: Message, user: User) {

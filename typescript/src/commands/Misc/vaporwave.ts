@@ -15,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 
 		let output = '';
 		for (let i = 0; i < input.length; i++) output += input[i] === ' ' ? ' ' : String.fromCharCode(input.charCodeAt(i) + 0xfee0);
-		return message.channel.send(args.t(LanguageKeys.Commands.Misc.VaporwaveOutput, { str: output }), {
+		return message.send(args.t(LanguageKeys.Commands.Misc.VaporwaveOutput, { str: output }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}

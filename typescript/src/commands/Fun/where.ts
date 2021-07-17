@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(user, message.author);
-		return message.channel.send(args.t(LanguageKeys.Commands.Fun.WhereMessage, { user: user.username }), {
+		return message.send(args.t(LanguageKeys.Commands.Fun.WhereMessage, { user: user.username }), {
 			files: [{ attachment, name: 'where.png' }],
 			allowedMentions: { users: [], roles: [] }
 		});

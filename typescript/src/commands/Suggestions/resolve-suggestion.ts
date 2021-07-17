@@ -75,12 +75,12 @@ export class UserCommand extends SkyraCommand {
 			try {
 				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
-				await message.channel.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
+				await message.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
 			}
 		}
 
 		if (shouldRePostSuggestion) {
-			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
+			await suggestionData.message.send(messageContent, { embed: newEmbed });
 		} else if (suggestionData.message.author.id === process.env.CLIENT_ID) {
 			await suggestionData.message.edit(newEmbed);
 		}

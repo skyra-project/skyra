@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 		if (horizontal) chars = this.flipHorizontal(chars);
 		if (vertical) chars = this.flipVertical(chars);
 
-		return message.channel.send(args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') }), {
+		return message.send(args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') }), {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}

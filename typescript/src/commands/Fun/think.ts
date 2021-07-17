@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(user, message.author);
-		return message.channel.send(args.t(LanguageKeys.Commands.Fun.ThinkMessage, { user: user.username }), {
+		return message.send(args.t(LanguageKeys.Commands.Fun.ThinkMessage, { user: user.username }), {
 			files: [{ attachment, name: 'think.png' }],
 			allowedMentions: { users: [], roles: [] }
 		});

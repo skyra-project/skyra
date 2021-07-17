@@ -39,10 +39,10 @@ export class UserMusicCommand extends MusicCommand {
 			// Connect to Lavalink and join the voice channel
 			await audio.connect(channel.id);
 		} catch {
-			return message.channel.send(args.t(LanguageKeys.Commands.Music.JoinFailed));
+			return message.send(args.t(LanguageKeys.Commands.Music.JoinFailed));
 		}
 
-		return message.channel.send(args.t(LanguageKeys.Commands.Music.JoinSuccess, { channel: `<#${channel.id}>` }));
+		return message.send(args.t(LanguageKeys.Commands.Music.JoinSuccess, { channel: `<#${channel.id}>` }));
 	}
 
 	private resolvePermissions(message: GuildMessage, voiceChannel: VoiceChannel): void {

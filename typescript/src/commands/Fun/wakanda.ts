@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const userAvatar = await fetchAvatar(user);
 		const attachment = await this.generateImage(userAvatar);
 
-		return message.channel.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
+		return message.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
 	}
 
 	public async onLoad() {

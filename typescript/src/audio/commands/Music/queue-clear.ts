@@ -15,6 +15,6 @@ export class UserMusicCommand extends MusicCommand {
 		const { audio } = message.guild;
 		const count = await audio.count();
 		await audio.clearTracks();
-		return message.channel.send(args.t(LanguageKeys.Commands.Music.ClearSuccess, { count }));
+		return message.send(args.t(LanguageKeys.Commands.Music.ClearSuccess, { count }));
 	}
 }

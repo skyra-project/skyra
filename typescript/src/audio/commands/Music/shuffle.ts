@@ -15,6 +15,6 @@ export class UserMusicCommand extends MusicCommand {
 		await audio.shuffleTracks();
 
 		const amount = await audio.count();
-		await message.channel.send(args.t(LanguageKeys.Commands.Music.ShuffleSuccess, { amount }));
+		await message.send(args.t(LanguageKeys.Commands.Music.ShuffleSuccess, { amount }));
 	}
 }

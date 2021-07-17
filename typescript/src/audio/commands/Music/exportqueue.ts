@@ -22,7 +22,7 @@ export class UserCommand extends MusicCommand {
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.channel.send(args.t(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
+		return message.send(args.t(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
 			files: [{ attachment: Buffer.from(data), name: `${name}-${Date.now()}.squeue` }]
 		});
 	}

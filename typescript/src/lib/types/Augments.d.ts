@@ -2,6 +2,7 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import type { ModelStore } from '#lib/grpc';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
@@ -79,6 +80,7 @@ declare module '@sapphire/pieces' {
 	interface PieceContextExtras {
 		afk: Redis;
 		db: DbSet;
+		grpc: ModelStore;
 		schedule: ScheduleManager;
 		workers: WorkerManager;
 	}

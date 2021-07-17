@@ -132,7 +132,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		});
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPageEmbed((template) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
+		for (let i = 0; i < pages; i++) display.addPageEmbed((embed) => embed.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await sendLoadingMessage(message, t);
 		await display.start(response as GuildMessage, message.author);

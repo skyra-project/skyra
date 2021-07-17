@@ -100,13 +100,13 @@ export class UserCommand extends SkyraCommand {
 		const durationDisplay = (value: number) => args.t(LanguageKeys.Globals.DurationValue, { value });
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPageEmbed((template) => {
+			display.addPageEmbed((embed) => {
 				for (const entry of page) {
 					const { name, value } = this.displayModerationLogFromModerators(usernames, durationDisplay, entry);
-					template.addField(name, value);
+					embed.addField(name, value);
 				}
 
-				return template;
+				return embed;
 			});
 		}
 

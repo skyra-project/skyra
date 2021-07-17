@@ -34,7 +34,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const item of items) {
-			display.addPageEmbed((embed: MessageEmbed) => {
+			display.addPageEmbed((embed) => {
 				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
 
 				const imageUrl = this.getImageUrl(item);

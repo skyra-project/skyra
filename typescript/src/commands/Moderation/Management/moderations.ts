@@ -75,13 +75,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPageEmbed((template) => {
+			display.addPageEmbed((embed) => {
 				for (const entry of page) {
 					const { name, value } = format(entry);
-					template.addField(name, value);
+					embed.addField(name, value);
 				}
 
-				return template;
+				return embed;
 			});
 		}
 

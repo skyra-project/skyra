@@ -80,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 			10
 		);
 
-		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
+		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 		await display.start(response as GuildMessage, message.author);
 		return response;
 	}

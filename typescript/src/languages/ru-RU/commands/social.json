@@ -19,6 +19,12 @@
 	"socialRemove_plural": "",
 	"socialUnchanged": "",
 	"socialReset": "",
+	"socialResetAllPrompt": "",
+	"socialResetAllTimeOut": "",
+	"socialResetAllAborted": "",
+	"socialResetAllEmpty": "",
+	"socialResetAllSuccess": "",
+	"socialResetAllSuccess_plural": "",
 	"bannerMissing": "",
 	"bannerNotexists": "",
 	"bannerUserlistEmpty": "",
@@ -110,6 +116,7 @@
 			"",
 			"",
 			"",
+			"",
 			""
 		],
 		"extendedHelp": "",
@@ -129,9 +136,14 @@
 			[
 				"",
 				""
+			],
+			[
+				"",
+				""
 			]
 		],
 		"examples": [
+			"",
 			"",
 			"",
 			"",

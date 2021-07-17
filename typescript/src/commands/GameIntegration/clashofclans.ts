@@ -118,8 +118,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		for (const clan of clans) {
 			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);
-			display.addPageEmbed((builder) =>
-				builder
+			display.addPageEmbed((embed) =>
+				embed
 					.setThumbnail(clan.badgeUrls.large)
 					.setTitle(`${clan.tag} - ${clan.name}`)
 					.setURL(

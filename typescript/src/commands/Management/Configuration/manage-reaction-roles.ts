@@ -117,7 +117,7 @@ export class UserCommand extends SkyraCommand {
 
 		for (const bulk of chunk(reactionRoles, 15)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
-			display.addPageEmbed((template) => template.setDescription(serialized));
+			display.addPageEmbed((embed) => embed.setDescription(serialized));
 		}
 
 		await display.start(response as GuildMessage, message.author);

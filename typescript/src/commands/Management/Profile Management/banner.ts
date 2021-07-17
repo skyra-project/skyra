@@ -115,8 +115,8 @@ export class UserCommand extends SkyraCommand {
 				title: banner.title
 			});
 
-			display.addPageEmbed((template) =>
-				template
+			display.addPageEmbed((embed) =>
+				embed
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`)
@@ -142,8 +142,8 @@ export class UserCommand extends SkyraCommand {
 		for (const id of banners) {
 			const banner = UserCommand.banners.get(id);
 			if (banner) {
-				display.addPageEmbed((template) =>
-					template
+				display.addPageEmbed((embed) =>
+					embed
 						.setImage(`${CDN_URL}${banner.id}.png`)
 						.setTitle(banner.title)
 						.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`)

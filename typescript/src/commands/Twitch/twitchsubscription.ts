@@ -215,7 +215,7 @@ export class UserCommand extends SkyraCommand {
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await this.context.db.fetchColor(message))
 		});
-		for (const page of pages) display.addPageEmbed((template) => template.setDescription(page.join('\n')));
+		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 
 		// Start the display and return the message.
 		await display.start(response as GuildMessage, message.author);

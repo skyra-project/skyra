@@ -128,8 +128,8 @@ export class UserCommand extends SkyraCommand {
 
 		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
-			display.addPageEmbed((template: MessageEmbed) =>
-				template
+			display.addPageEmbed((embed) =>
+				embed //
 					.setTitle(`${category} Commands`)
 					.setDescription(commands.map(this.formatCommand.bind(this, language, prefix, true)).join('\n'))
 			);

@@ -19,6 +19,12 @@
 	"socialRemove_plural": "{{GREENTICK}} Successfully removed {{count}} points from {{user}}. Current amount: {{amount}}.",
 	"socialUnchanged": "{{REDCROSS}} The user {{user}} already had the given amount of points, no update was needed.",
 	"socialReset": "{{GREENTICK}} The user {{user}} got his points removed.",
+	"socialResetAllPrompt": "Are you sure you want to reset the points from all the members? This operation is irreversible.",
+	"socialResetAllTimeOut": "I did not get an answer in time, re-run this command again once you decide what to do!",
+	"socialResetAllAborted": "Got it! The operation has been cancelled.",
+	"socialResetAllEmpty": "{{REDCROSS}} The scoreboard for this server is empty.",
+	"socialResetAllSuccess": "Successfully reset the points of {{count}} member.",
+	"socialResetAllSuccess_plural": "Successfully reset the points of {{count}} members.",
 	"bannerMissing": "You must specify a banner id to {{type}}.",
 	"bannerNotexists": "This banner id does not exist. Please check `{{prefix}}banner list` for a list of banners you can buy.",
 	"bannerUserlistEmpty": "You did not buy a banner yet. Check `{{prefix}}banner list` for a list of banners you can buy.",
@@ -110,7 +116,8 @@
 			"add User Integer",
 			"remove User Integer",
 			"set User Integer",
-			"reset User"
+			"reset User",
+			"reset --all"
 		],
 		"extendedHelp": "This command allows for updating other members' points.",
 		"explainedUsage": [
@@ -128,14 +135,19 @@
 			],
 			[
 				"reset <user>",
-				"Resets all pointss from the user."
+				"Resets all points from the user."
+			],
+			[
+				"reset --all",
+				"Resets the server's scoreboard."
 			]
 		],
 		"examples": [
 			"set @kyra 40000",
 			"add @kyra 2400",
 			"remove @kyra 3000",
-			"reset @kyra"
+			"reset @kyra",
+			"reset --all"
 		]
 	},
 	"bannerDescription": "Configure the banner for your profile.",

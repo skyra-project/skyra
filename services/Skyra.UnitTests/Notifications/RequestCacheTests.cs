@@ -38,6 +38,7 @@ namespace Skyra.UnitTests.Notifications
 			cache.AddRequest(id, isSubscription);
 			var _ = cache.GetRequest(id, isSubscription);
 			var result = cache.GetRequest(id, isSubscription);
+
 			// assert
 
 			Assert.IsFalse(result);
@@ -58,6 +59,7 @@ namespace Skyra.UnitTests.Notifications
 			cache.AddRequest(id, isSubscription);
 			var _ = cache.GetRequest(id, isSubscription, false);
 			var result = cache.GetRequest(id, isSubscription);
+			
 			// assert
 
 			Assert.IsTrue(result);

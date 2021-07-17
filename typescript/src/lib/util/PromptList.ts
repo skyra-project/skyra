@@ -27,7 +27,7 @@ async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
 	const t = await message.fetchT();
-	const responseMessage = await message.channel.send(
+	const responseMessage = await message.send(
 		t(LanguageKeys.PromptList.MultipleChoice, {
 			list: codeblock,
 			count: possibles

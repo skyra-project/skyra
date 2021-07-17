@@ -38,6 +38,6 @@ export class UserMusicCommand extends MusicCommand {
 		const track = await audio.player.node.decode(entry!.track);
 
 		await audio.moveTracks(index, 0);
-		await message.channel.send(args.t(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
+		await message.send(args.t(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
 	}
 }

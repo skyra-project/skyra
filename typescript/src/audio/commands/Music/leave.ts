@@ -23,6 +23,6 @@ export class UserMusicCommand extends MusicCommand {
 		// If --removeall or --ra was provided then also clear the queue
 		if (args.getFlags(...flags)) await audio.clear();
 
-		return message.channel.send(args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelID}>` }));
+		return message.send(args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelID}>` }));
 	}
 }

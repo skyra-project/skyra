@@ -33,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const output = await this.showProfile(message, scope, user, args.t);
-		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
+		return message.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {

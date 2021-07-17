@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		const weatherDescription = this.getWeatherDescription(current, base);
 
 		const attachment = await this.draw(weatherDescription, place, current, resolved);
-		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
+		return message.send({ files: [{ attachment, name: 'weather.png' }] });
 	}
 
 	private shouldUseImperial(args: SkyraCommand.Args) {

@@ -57,12 +57,12 @@ export class UserCommand extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
+					return message.send(args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
-					return message.channel.send(args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
+					if (!winner) return message.send(args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
+					return message.send(args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
 		} catch (error) {
 			this.#channels.delete(message.channel.id);

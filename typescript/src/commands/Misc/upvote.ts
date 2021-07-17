@@ -10,6 +10,6 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {
-		return message.channel.send(args.t(LanguageKeys.Commands.Misc.UpvoteMessage));
+		return message.send(args.t(LanguageKeys.Commands.Misc.UpvoteMessage));
 	}
 }

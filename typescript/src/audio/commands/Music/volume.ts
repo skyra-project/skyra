@@ -21,7 +21,7 @@ export class UserMusicCommand extends MusicCommand {
 
 		// If no argument was given
 		if (newVolume === null || newVolume === previousVolume) {
-			return message.channel.send(args.t(LanguageKeys.Commands.Music.VolumeSuccess, { volume: previousVolume }));
+			return message.send(args.t(LanguageKeys.Commands.Music.VolumeSuccess, { volume: previousVolume }));
 		}
 
 		const channel = audio.voiceChannel!;

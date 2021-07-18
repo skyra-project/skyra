@@ -1530,10 +1530,10 @@
   resolved "https://registry.yarnpkg.com/@sapphire/ratelimits/-/ratelimits-1.2.3.tgz#9a613d4b922aa00d1bd3b937b3fcbe9bea6b2ced"
   integrity sha512-lxkQ+K2nWQLDX8vGFD5G4g7MYeAm8Ft4mRZmhUl8hsjuGIUlxJhHdgFdy07samrSrW3y3ky644yNyZP6BzvrOg==
 
-"@sapphire/snowflake@^1.3.5":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.3.5.tgz#ae9374549051dd703510414c879188d7a063f4c3"
-  integrity sha512-2Egzm5GWvgAVgCGuhTQ2dbamQsPbze09EF8ABTZcxBxd9b8thHTpA7e3EOAh8OZdF0Ex8VrFKBC4uKd/Nh1i0w==
+"@sapphire/snowflake@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-2.0.0.tgz#cc97a0649393f144289ba21d3005a2ba942d37b5"
+  integrity sha512-gPSOQKmEWeuif2ftmW7gyToCnOoqpDqTSNrxX7HsoMwGNLtrT9p5DHcQolkBg5CEK3ooDFy5DNEFKUshQU7vyQ==
 
 "@sapphire/stopwatch@^1.1.4":
   version "1.1.4"

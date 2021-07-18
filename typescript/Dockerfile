@@ -68,4 +68,4 @@ RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./packag
 
 USER node
 
-CMD [ "dumb-init", "yarn", "start", "--enable-source-maps"]
+CMD [ "dumb-init", "yarn", "start", "--enable-source-maps", "--max-old-space-size=4096"]

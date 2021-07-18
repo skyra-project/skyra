@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -22,7 +22,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, args.t, entries);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -45,7 +45,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
 		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const song of entries) {
 			display.addPageEmbed((embed) =>

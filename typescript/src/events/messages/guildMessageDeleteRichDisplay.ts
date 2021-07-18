@@ -1,4 +1,4 @@
-import { UserLazyPaginatedMessage, UserPaginatedMessage } from '#lib/structures';
+import { SkyraLazyPaginatedMessage, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -7,7 +7,7 @@ import { Event, EventOptions } from '@sapphire/framework';
 @ApplyOptions<EventOptions>({ event: Events.GuildMessageDelete })
 export class UserEvent extends Event {
 	public run(message: GuildMessage) {
-		UserPaginatedMessage.messages.get(message.id)?.collector?.stop();
-		UserLazyPaginatedMessage.messages.get(message.id)?.collector?.stop();
+		SkyraPaginatedMessage.messages.get(message.id)?.collector?.stop();
+		SkyraLazyPaginatedMessage.messages.get(message.id)?.collector?.stop();
 	}
 }

@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
 import { sendLoadingMessage } from '#utils/util';
@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, args.t, entries);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -88,7 +88,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
 		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);

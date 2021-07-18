@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -24,7 +24,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (countries.length === 0) this.error(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, args.t, countries);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -39,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const country of countries) {
 			display.addPageEmbed((embed) =>

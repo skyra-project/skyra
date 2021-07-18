@@ -1,6 +1,6 @@
 import { GuildSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
@@ -25,7 +25,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	private display: UserPaginatedMessage = null!;
+	private display: SkyraPaginatedMessage = null!;
 
 	@requiresPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
@@ -104,7 +104,7 @@ export class UserCommand extends SkyraCommand {
 	public async onLoad() {
 		const { banners } = this.context.db;
 		const entries = await banners.find();
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
 		for (const banner of entries) {
 			UserCommand.banners.set(banner.id, {
 				author: banner.authorID,
@@ -138,7 +138,7 @@ export class UserCommand extends SkyraCommand {
 		const banners = new Set(user.profile.banners);
 		if (!banners.size) this.error(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const id of banners) {
 			const banner = UserCommand.banners.get(id);
 			if (banner) {
@@ -154,9 +154,9 @@ export class UserCommand extends SkyraCommand {
 		return this.runDisplay(message, t, display);
 	}
 
-	private async runDisplay(message: GuildMessage, t: TFunction, display: UserPaginatedMessage) {
+	private async runDisplay(message: GuildMessage, t: TFunction, display: SkyraPaginatedMessage) {
 		const response = await sendLoadingMessage(message, t);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 

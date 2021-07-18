@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
@@ -45,7 +45,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const typeMatchups = await this.fetchAPI(types);
 
 		const display = await this.buildDisplay(message, types, typeMatchups, t);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -89,7 +89,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
 		].join(' | ');
 
-		return new UserPaginatedMessage({
+		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message)) //
 				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //

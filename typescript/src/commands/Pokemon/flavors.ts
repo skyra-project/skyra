@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
@@ -32,7 +32,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			this.error(LanguageKeys.Commands.Pokemon.FlavorNoFlavors, { pokemon: toTitleCase(pokemonData.species) });
 		}
 
-		await this.buildDisplay(pokemonData, { backSprite, shinySprite }).start(response as GuildMessage, message.author);
+		await this.buildDisplay(pokemonData, { backSprite, shinySprite }).run(response, message.author);
 		return response;
 	}
 
@@ -49,7 +49,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private buildDisplay(pokemonData: DexDetails, getSpriteParams: GetPokemonSpriteParameters) {
 		const spriteToGet = getSpriteKey(getSpriteParams);
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)

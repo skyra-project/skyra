@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
@@ -22,7 +22,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const moveData = await this.fetchAPI(move);
 
 		const display = await this.buildDisplay(message, moveData, args.t);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -46,7 +46,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			`[Smogon](${moveData.smogonPage})`
 		].join(' | ');
 
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)

@@ -1,7 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LongWidthSpace } from '#utils/constants';
@@ -57,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 		if (entries.size === 0) this.error(LanguageKeys.Commands.Misc.AfkNoEntries);
 
 		const entriesPerPage = 20;
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setAuthor(message.guild.name, message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined)
 				.setTitle(args.t(LanguageKeys.Commands.Misc.AfkListTitle))
@@ -72,7 +72,7 @@ export class UserCommand extends SkyraCommand {
 			i += entriesPerPage;
 		}
 
-		return display.start(message);
+		return display.run(message);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {

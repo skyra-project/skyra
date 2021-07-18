@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -21,12 +21,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const usernames = chunk(await Promise.all(spouses.map((user) => this.fetchUser(user))), 20);
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const usernameChunk of usernames) {
 			display.addPageEmbed((embed) => embed.setDescription(args.t(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk })));
 		}
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 

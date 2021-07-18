@@ -1,7 +1,6 @@
 import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { Time } from '#utils/constants';
 import { requiresGuildContext, requiresPermissions } from '#utils/decorators';
@@ -63,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 		if (!tasks.length) return message.send(args.t(LanguageKeys.Commands.Social.RemindMeListEmpty));
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -81,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 		);
 
 		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 

@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { sendLoadingMessage } from '#utils/util';
@@ -40,7 +40,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = await this.buildClanDisplay(message, t, clanData);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -114,7 +114,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildClanDisplay(message: GuildMessage, t: TFunction, clans: ClashOfClans.Clan[]) {
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const clan of clans) {
 			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);

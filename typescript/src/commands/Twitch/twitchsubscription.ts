@@ -7,7 +7,7 @@ import {
 } from '#lib/database';
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -210,7 +210,7 @@ export class UserCommand extends SkyraCommand {
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await this.context.db.fetchColor(message))
@@ -218,7 +218,7 @@ export class UserCommand extends SkyraCommand {
 		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 
 		// Start the display and return the message.
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 

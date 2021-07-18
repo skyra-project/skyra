@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -27,15 +27,15 @@ export class UserCommand extends SkyraCommand {
 
 		if (message.channel.permissionsFor(message.guild.me!)!.has(paginatedMessagePermissions)) {
 			const display = await this.buildDisplay(args, roles, color);
-			return display.start(message);
+			return display.run(message);
 		}
 
 		return message.send(await this.getSummary(args, roles, color));
 	}
 
-	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<UserPaginatedMessage> {
+	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<SkyraPaginatedMessage> {
 		const guild = args.message.guild!;
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
 				.setColor(color)
 				.setThumbnail(guild.iconURL({ size: 256, format: 'png', dynamic: true })!)

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { LearnMethodTypesReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
@@ -34,7 +34,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const movesList = args.nextSplit();
 		const learnsetData = await this.fetchAPI(pokemon, movesList, generation, { backSprite, shinySprite });
 
-		await this.buildDisplay(learnsetData, generation, movesList, t, { backSprite, shinySprite }).start(response as GuildMessage, message.author);
+		await this.buildDisplay(learnsetData, generation, movesList, t, { backSprite, shinySprite }).run(response, message.author);
 		return response;
 	}
 
@@ -66,7 +66,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		getSpriteParams: GetPokemonSpriteParameters
 	) {
 		const spriteToGet = getSpriteKey(getSpriteParams);
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))
 				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)

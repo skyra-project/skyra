@@ -1,6 +1,6 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -124,7 +124,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		const user = this.context.client.user!;
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -135,7 +135,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (let i = 0; i < pages; i++) display.addPageEmbed((embed) => embed.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await sendLoadingMessage(message, t);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 }

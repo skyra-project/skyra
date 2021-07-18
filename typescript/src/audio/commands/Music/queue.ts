@@ -1,6 +1,6 @@
 import { MusicCommand, Queue, requireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { UserPaginatedMessage } from '#lib/structures';
+import { SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ZeroWidthSpace } from '#utils/constants';
 import { sendLoadingMessage, showSeconds } from '#utils/util';
@@ -25,7 +25,7 @@ export class UserMusicCommand extends MusicCommand {
 		const template = new MessageEmbed()
 			.setColor(await this.context.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
-		const queueDisplay = new UserPaginatedMessage({ template });
+		const queueDisplay = new SkyraPaginatedMessage({ template });
 
 		const { audio } = message.guild;
 		const current = await audio.nowPlaying();
@@ -72,7 +72,7 @@ export class UserMusicCommand extends MusicCommand {
 
 		if (queueDisplay.pages.length) {
 			// Run the display
-			await queueDisplay.start(response as GuildMessage, message.author);
+			await queueDisplay.run(response, message.author);
 			return response;
 		}
 

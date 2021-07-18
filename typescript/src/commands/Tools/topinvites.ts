@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Emojis } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -28,12 +28,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (topTen.length === 0) this.error(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
 		const display = await this.buildDisplay(message, args.t, topTen);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, invites: NonNullableInvite[]) {
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await this.context.db.fetchColor(message))

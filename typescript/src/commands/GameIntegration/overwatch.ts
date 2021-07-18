@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
@@ -35,7 +35,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 
 		const display = await this.buildDisplay(message, args.t, overwatchData, player, platform);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -74,7 +74,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			totalGamesWon: overwatchData.gamesWon
 		});
 
-		return new UserPaginatedMessage({
+		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)

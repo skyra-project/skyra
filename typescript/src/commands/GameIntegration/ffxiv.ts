@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Character, ClassJob, ClassSubcategory, GuildMessage, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
@@ -29,7 +29,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const characterDetails = await this.fetchCharacter(name, args.getOption('server') ?? undefined);
 		const display = await this.buildCharacterDisplay(message, t, characterDetails.Character);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -41,7 +41,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const itemDetails = await this.fetchItems(item);
 		const display = await this.buildItemDisplay(message, t, itemDetails);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 
 		return response;
 	}
@@ -75,7 +75,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
@@ -136,7 +136,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 
 		for (const item of items) {
 			display.addPageEmbed((embed) =>

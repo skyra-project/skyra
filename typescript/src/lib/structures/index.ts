@@ -7,5 +7,5 @@ export * from './InviteStore';
 export * from './managers';
 export * from './preconditions';
 export * from './SettingsMenu';
-export * from './UserLazyPaginatedMessage';
-export * from './UserPaginatedMessage';
+export * from './SkyraLazyPaginatedMessage';
+export * from './SkyraPaginatedMessage';

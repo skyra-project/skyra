@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -26,7 +26,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const result = await this.fetchApi(input);
 		const display = await this.buildDisplay(result, message, args.t);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -38,7 +38,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);
 
-		const display = new UserPaginatedMessage({ template });
+		const display = new SkyraPaginatedMessage({ template });
 
 		for (const result of results.definitions) {
 			const definition = this.content(result.definition);

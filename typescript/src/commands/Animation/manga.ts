@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { sendLoadingMessage } from '#utils/util';
@@ -30,7 +30,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = await this.buildDisplay(entries, args.t, message);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Animation.MangaEmbedData);
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setFooter(' - © kitsu.io')
 		});
 
@@ -112,6 +112,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}
+
 		return display;
 	}
 }

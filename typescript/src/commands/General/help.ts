@@ -1,7 +1,6 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
@@ -108,7 +107,7 @@ export class UserCommand extends SkyraCommand {
 		const display = await this.buildDisplay(message, args.t, prefix);
 		if (index !== null) display.setIndex(index);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -126,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new UserPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((embed) =>
 				embed //

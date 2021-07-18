@@ -1,6 +1,6 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, UserPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { requiresPermissions } from '#utils/decorators';
@@ -86,7 +86,7 @@ export class UserCommand extends SkyraCommand {
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const user = this.context.client.user!;
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -110,7 +110,7 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 

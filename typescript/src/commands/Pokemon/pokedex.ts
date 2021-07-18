@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import {
@@ -47,7 +47,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), { backSprite, shinySprite });
 
-		await this.buildDisplay(pokeDetails, t, { backSprite, shinySprite }).start(response as GuildMessage, message.author);
+		await this.buildDisplay(pokeDetails, t, { backSprite, shinySprite }).run(response, message.author);
 		return response;
 	}
 
@@ -178,7 +178,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, spriteToGet }: PokemonToDisplayArgs) {
-		return new UserPaginatedMessage({
+		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
@@ -211,7 +211,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			`[Serebii](https://www.serebii.net/pokedex/000.shtml)`
 		].join(' | ');
 
-		return new UserPaginatedMessage({
+		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${zalgo(toTitleCase(pokeDetails.species))}`, CdnUrls.Pokedex)
@@ -251,7 +251,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			`[Smogon](${pokeDetails.smogonPage})`
 		].join(' | ');
 
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)

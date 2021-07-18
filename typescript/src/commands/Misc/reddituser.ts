@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { sendLoadingMessage } from '#utils/util';
@@ -31,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		comments.sort((a, b) => b.score - a.score);
 
 		const display = await this.buildDisplay(message, about, comments, posts, t);
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -52,7 +52,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
 		const complexityLevels = t(LanguageKeys.Commands.Misc.RedditUserComplexityLevels);
 
-		return new UserPaginatedMessage({
+		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(fieldsData.overviewFor)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)

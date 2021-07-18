@@ -1,6 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
 import { sendLoadingMessage, wrap } from '#utils/util';
@@ -29,7 +29,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const fortniteUser = await this.fetchAPI(user, platform);
 		const display = await this.buildDisplay(message, args.t, fortniteUser);
 
-		await display.start(response as GuildMessage, message.author);
+		await display.run(response, message.author);
 		return response;
 	}
 
@@ -55,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		t: TFunction,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
-		const display = new UserPaginatedMessage({
+		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))

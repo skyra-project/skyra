@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, UserLazyPaginatedMessage } from '#lib/structures';
+import { PaginatedMessageCommand, SkyraLazyPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { LongWidthSpace } from '#utils/constants';
 import { skip, take } from '#utils/iterator';
@@ -27,13 +27,18 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1, maximum: Math.ceil(list.size / 10) });
 		const { position } = list.get(message.author.id) ?? { position: list.size + 1 };
 		const display = await this.buildDisplay(args, list, index - 1, position);
-		return display.run(message.author, message.channel);
+		return display.run(message);
 	}
 
-	private async buildDisplay(args: PaginatedMessageCommand.Args, list: LeaderboardUsers, index: number, position: number) {
+	private async buildDisplay(
+		args: PaginatedMessageCommand.Args,
+		list: LeaderboardUsers,
+		index: number,
+		position: number
+	): Promise<SkyraLazyPaginatedMessage> {
 		const footerText = args.t(LanguageKeys.Commands.Social.ScoreboardFooter, { position, total: list.size });
 		const footerIcon = args.message.author.displayAvatarURL({ format: 'png', size: 64, dynamic: true });
-		const display = new UserLazyPaginatedMessage({
+		const display = new SkyraLazyPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.context.db.fetchColor(args.message))
 				.setTitle(args.t(LanguageKeys.Commands.Social.LeaderboardHeader, { guild: args.message.guild!.name }))

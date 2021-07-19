@@ -1,4 +1,4 @@
-import { GuildSettings, StarboardEntity } from '#lib/database';
+import { GuildSettings, readSettings, StarboardEntity } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
@@ -53,7 +53,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 * Get the Starboard channel
 	 */
 	public async getStarboardChannel() {
-		const channelID = await this.guild.readSettings(GuildSettings.Starboard.Channel);
+		const channelID = await readSettings(this.guild, GuildSettings.Starboard.Channel);
 		if (isNullish(channelID)) return null;
 		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}
@@ -62,7 +62,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 * Get the minimum amount of stars
 	 */
 	public getMinimumStars() {
-		return this.guild.readSettings(GuildSettings.Starboard.Minimum);
+		return readSettings(this.guild, GuildSettings.Starboard.Minimum);
 	}
 
 	/**

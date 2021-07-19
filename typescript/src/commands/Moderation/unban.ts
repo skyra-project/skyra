@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -33,7 +33,7 @@ export class UserModerationCommand extends ModerationCommand {
 
 		return {
 			bans,
-			unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
+			unlock: (await readSettings(message.guild, GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
 		};
 	}
 

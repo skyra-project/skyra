@@ -1,4 +1,4 @@
-import { GuildSettings, PermissionNodeAction, PermissionsNode } from '#lib/database';
+import { GuildSettings, PermissionNodeAction, PermissionsNode, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -35,7 +35,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const command = await args.pick('commandMatch', { owners: false });
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings.permissionNodes.add(target, command, action);
 		});
 
@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings.permissionNodes.remove(target, command, action);
 		});
 
@@ -61,7 +61,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings.permissionNodes.reset(target);
 		});
 
@@ -80,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = await message.guild.readSettings(key);
+		const nodes = await readSettings(message.guild, key);
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
@@ -88,7 +88,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async showAll(message: GuildMessage, args: SkyraCommand.Args) {
-		const [users, roles] = await message.guild.readSettings([GuildSettings.Permissions.Users, GuildSettings.Permissions.Roles]);
+		const [users, roles] = await readSettings(message.guild, [GuildSettings.Permissions.Users, GuildSettings.Permissions.Roles]);
 		const [fUsers, fRoles] = await Promise.all([this.formatPermissionNodes(args, users, false), this.formatPermissionNodes(args, roles, true)]);
 		const total = fUsers.concat(fRoles);
 		if (total.length === 0) this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);

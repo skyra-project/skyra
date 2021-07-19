@@ -1,4 +1,4 @@
-import { configurableKeys, GuildEntity, GuildSettings } from '#lib/database';
+import { configurableKeys, GuildEntity, GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -17,7 +17,11 @@ import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const suggestionsChannelID = await message.guild.readSettings(GuildSettings.Suggestions.Channel);
+		const [suggestionsChannelID, upVoteEmoji, downVoteEmoji] = await readSettings(message.guild, [
+			GuildSettings.Suggestions.Channel,
+			GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji,
+			GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji
+		]);
 
 		const suggestionsChannel = this.context.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
 		if (!suggestionsChannel) {
@@ -32,10 +36,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const { author, content, image } = await this.resolveArguments(args);
-		const [[upVoteEmoji, downVoteEmoji], [suggestions, currentSuggestionId]] = await Promise.all([
-			message.guild.readSettings([GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji]),
-			this.getCurrentSuggestionID(message.guild.id)
-		]);
+		const [suggestions, currentSuggestionId] = await this.getCurrentSuggestionID(message.guild.id);
 
 		// Post the suggestion
 		const embed = new MessageEmbed()
@@ -77,7 +78,7 @@ export class UserCommand extends SkyraCommand {
 			if (emoji === defaultEmoji) throw error;
 
 			await message.react(defaultEmoji);
-			await message.guild.writeSettings([[path, defaultEmoji]]);
+			await writeSettings(message.guild, [[path, defaultEmoji]]);
 		}
 	}
 

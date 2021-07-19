@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ConnectFourConstants, Time } from '#utils/constants';
 import { resolveEmoji } from '#utils/util';
+import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
 import { BaseReactionGame } from '../base/BaseReactionGame';
+import { Emojis } from './lib/constants';
 
 export enum Cell {
 	Empty,
@@ -286,20 +287,20 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 	}
 
 	private static readonly emojis = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'].map(resolveEmoji) as readonly string[];
-	private static readonly players = [ConnectFourConstants.Emojis.PlayerOne, ConnectFourConstants.Emojis.PlayerTwo] as const;
+	private static readonly players = [Emojis.PlayerOne, Emojis.PlayerTwo] as const;
 
 	private static renderCell(cell: Cell) {
 		switch (cell) {
 			case Cell.Empty:
-				return ConnectFourConstants.Emojis.Empty;
+				return Emojis.Empty;
 			case Cell.PlayerOne:
-				return ConnectFourConstants.Emojis.PlayerOne;
+				return Emojis.PlayerOne;
 			case Cell.PlayerTwo:
-				return ConnectFourConstants.Emojis.PlayerTwo;
+				return Emojis.PlayerTwo;
 			case Cell.WinnerPlayerOne:
-				return ConnectFourConstants.Emojis.WinnerOne;
+				return Emojis.WinnerOne;
 			case Cell.WinnerPlayerTwo:
-				return ConnectFourConstants.Emojis.WinnerTwo;
+				return Emojis.WinnerTwo;
 		}
 	}
 }

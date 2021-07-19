@@ -1,4 +1,4 @@
-import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
+import { AdderKey, GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -39,7 +39,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [logChannelId, filter, adder, language] = await message.guild.readSettings((settings) => [
+		const [logChannelId, filter, adder, language] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.Moderation],
 			settings[this.softPunishmentPath],
 			settings.adders[this.hardPunishmentPath.adder],
@@ -81,7 +81,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 	}
 
 	protected async processHardPunishment(message: GuildMessage, language: TFunction, points: number, maximum: number) {
-		const [action, duration] = await message.guild.readSettings([this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
+		const [action, duration] = await readSettings(message.guild, [this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
 		switch (action) {
 			case SelfModeratorHardActionFlags.Warning:
 				await this.onWarning(message, language, points, maximum, duration);
@@ -182,7 +182,8 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaited<MessageEmbed>;
 
 	private checkPreRun(message: GuildMessage) {
-		return message.guild.readSettings(
+		return readSettings(
+			message.guild,
 			(settings) =>
 				settings[this.keyEnabled] &&
 				this.checkMessageChannel(settings, message.channel as TextChannel) &&

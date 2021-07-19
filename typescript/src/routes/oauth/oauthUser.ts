@@ -1,8 +1,8 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
-import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { ApiRequest, ApiResponse, HttpCodes, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
+import { Time } from '@sapphire/time-utilities';
 import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
 import { stringify } from 'querystring';
 

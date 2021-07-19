@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
@@ -20,7 +20,8 @@ export class UserEvent extends Event {
 
 	public async run(data: LLRCData, emoji: string) {
 		const key = GuildSettings.Channels.Logs.Reaction;
-		const [allowList, logChannelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await data.guild.readSettings(
+		const [allowList, logChannelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await readSettings(
+			data.guild,
 			(settings) => [
 				settings[GuildSettings.Selfmod.Reactions.Allowed],
 				settings[key],

@@ -1,4 +1,4 @@
-import { GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -16,7 +16,7 @@ export class UserModerationCommand extends ModerationCommand {
 		const caseID = await args.pick('case');
 		const reason = await args.rest('string');
 
-		const [autoDelete, messageDisplay, reasonDisplay] = await message.guild.readSettings([
+		const [autoDelete, messageDisplay, reasonDisplay] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModerationAutoDelete,
 			GuildSettings.Messages.ModerationMessageDisplay,
 			GuildSettings.Messages.ModerationReasonDisplay

@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { DMMessage, GuildMessage } from '#lib/types';
 import { Event, Events } from '@sapphire/framework';
@@ -15,7 +15,7 @@ export default class extends Event<Events.MentionPrefixOnly> {
 	}
 
 	private async guild(message: GuildMessage) {
-		const [prefix, disabled, t] = await message.guild.readSettings((settings) => [
+		const [prefix, disabled, t] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Prefix],
 			settings[GuildSettings.DisabledChannels],
 			settings.getLanguage()

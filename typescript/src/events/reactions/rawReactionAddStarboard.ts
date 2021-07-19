@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { snowflakeAge } from '#utils/util';
@@ -12,7 +12,7 @@ export class UserEvent extends Event {
 	public async run(data: LLRCData, emojiID: string) {
 		if (data.channel.nsfw) return;
 
-		const [channel, ignoreChannels, emoji, selfStar, maximumAge] = await data.guild.readSettings([
+		const [channel, ignoreChannels, emoji, selfStar, maximumAge] = await readSettings(data.guild, [
 			GuildSettings.Starboard.Channel,
 			GuildSettings.Starboard.IgnoreChannels,
 			GuildSettings.Starboard.Emoji,
@@ -31,7 +31,7 @@ export class UserEvent extends Event {
 
 		const starboardChannel = data.guild.channels.cache.get(channel) as TextChannel | undefined;
 		if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
-			await data.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
+			await writeSettings(data.guild, [[GuildSettings.Starboard.Channel, null]]);
 			return;
 		}
 

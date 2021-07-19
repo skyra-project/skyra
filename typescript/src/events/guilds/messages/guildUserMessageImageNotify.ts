@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
@@ -27,7 +27,7 @@ export class UserEvent extends Event {
 		if (message.editedTimestamp) return;
 
 		const key = GuildSettings.Channels.Logs.Image;
-		const [logChannelId, ignoredChannels, t] = await message.guild.readSettings((settings) => [
+		const [logChannelId, ignoredChannels, t] = await readSettings(message.guild, (settings) => [
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.All],
 			settings.getLanguage()

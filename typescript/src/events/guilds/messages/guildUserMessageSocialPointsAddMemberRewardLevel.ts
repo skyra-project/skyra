@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Difference, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -18,7 +18,7 @@ export class UserEvent extends Event {
 		if (previousLevel === nextLevel) return;
 
 		const points = difference.next;
-		const information = await message.guild.readSettings((settings) => this.getInformation(settings));
+		const information = await readSettings(message.guild, (settings) => this.getInformation(settings));
 		if (!information.announce) return;
 		if (nextLevel % information.multiple !== 0) return;
 
@@ -49,7 +49,7 @@ export class UserEvent extends Event {
 		const channel = channels.get(channelID) as TextChannel | NewsChannel | undefined;
 		if (channel !== undefined) return channel;
 
-		await message.guild.writeSettings([[GuildSettings.Social.AchieveChannel, null]]);
+		await writeSettings(message.guild, [[GuildSettings.Social.AchieveChannel, null]]);
 		return message.channel;
 	}
 

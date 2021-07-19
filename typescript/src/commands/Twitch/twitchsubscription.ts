@@ -3,7 +3,9 @@ import {
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,
 	NotificationsStreamTwitch,
-	TwitchStreamSubscriptionEntity
+	readSettings,
+	TwitchStreamSubscriptionEntity,
+	writeSettings
 } from '#lib/database';
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -11,12 +13,12 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Time } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Store } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { chunk } from '@sapphire/utilities';
 import { Guild, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -56,7 +58,7 @@ export class UserCommand extends SkyraCommand {
 			status
 		};
 
-		await message.guild.writeSettings(async (settings) => {
+		await writeSettings(message.guild, async (settings) => {
 			// then retrieve the index of the entry if the guild already subscribed to them.
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
@@ -100,7 +102,7 @@ export class UserCommand extends SkyraCommand {
 		const channel = await args.pick('channelName');
 		const status = await args.pick(UserCommand.status);
 
-		await message.guild.writeSettings(async (settings) => {
+		await writeSettings(message.guild, async (settings) => {
 			// then retrieve the index of the entry if the guild already subscribed to them.
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
@@ -143,7 +145,7 @@ export class UserCommand extends SkyraCommand {
 
 		// If the streamer was not defined, reset all entries and purge all entries.
 		if (streamer === null) {
-			const [entries] = await message.guild.writeSettings((settings) => {
+			const [entries] = await writeSettings(message.guild, (settings) => {
 				const entries = settings[this.#kSettingsKey].reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
 				if (entries === 0) this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetEmpty);
 
@@ -177,7 +179,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		/** Remove the subscription for the specified streaming, returning the length of {@link NotificationsStreamsTwitchStreamer} for this entry */
-		const entries = await message.guild.writeSettings((settings) => {
+		const entries = await writeSettings(message.guild, (settings) => {
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
 			if (subscriptionIndex === -1) this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetStreamerNotSubscribed);
@@ -200,7 +202,7 @@ export class UserCommand extends SkyraCommand {
 		const streamer = args.finished ? null : await args.pick(UserCommand.streamer);
 		const { t } = args;
 
-		const guildSubscriptions = await message.guild.readSettings(this.#kSettingsKey);
+		const guildSubscriptions = await readSettings(message.guild, this.#kSettingsKey);
 
 		// Create the response message.
 		const response = await sendLoadingMessage(message, t);

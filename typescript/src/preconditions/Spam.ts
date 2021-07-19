@@ -1,23 +1,24 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RateLimitManager } from '#lib/structures';
 import { AsyncPreconditionResult, Precondition } from '@sapphire/framework';
+import { RateLimitManager } from '@sapphire/ratelimits';
+import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
 
 export class UserPrecondition extends Precondition {
-	private readonly ratelimit = new RateLimitManager(30000, 1);
+	private readonly ratelimit = new RateLimitManager(Time.Second * 30, 1);
 
 	public async run(message: Message): AsyncPreconditionResult {
 		if (message.guild === null) return this.ok();
 
-		const channelID = await message.guild.readSettings(GuildSettings.Channels.Spam);
+		const channelID = await readSettings(message.guild, GuildSettings.Channels.Spam);
 		if (!channelID || channelID === message.channel.id) return this.ok();
 
 		if (message.member!.isOwner() || (await message.member!.isModerator())) return this.ok();
 
 		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {
-			await message.guild.writeSettings([[GuildSettings.Channels.Spam, null]]);
+			await writeSettings(message.guild, [[GuildSettings.Channels.Spam, null]]);
 			return this.ok();
 		}
 

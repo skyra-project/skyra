@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? null : await args.pick('userName');
 		const timespan = args.finished ? null : await args.pick('timespan');
 
-		const minimum = await message.guild.readSettings(GuildSettings.Starboard.Minimum);
+		const minimum = await readSettings(message.guild, GuildSettings.Starboard.Minimum);
 
 		const { starboards } = this.context.db;
 		const qb = starboards
@@ -102,7 +102,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async handleRandom(message: GuildMessage, user: User | null, t: TFunction): Promise<Message | Message[]> {
-		const [minimum, starboardChannelID] = await message.guild.readSettings([GuildSettings.Starboard.Minimum, GuildSettings.Starboard.Channel]);
+		const [minimum, starboardChannelID] = await readSettings(message.guild, [GuildSettings.Starboard.Minimum, GuildSettings.Starboard.Channel]);
 
 		// If there is no configured starboard channel, return no stars
 		if (!starboardChannelID) return message.send(t(LanguageKeys.Commands.Starboard.StarNoChannel));
@@ -129,7 +129,7 @@ export class UserCommand extends SkyraCommand {
 		// If there is no configured starboard channel, return no stars
 		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
-			await message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
+			await writeSettings(message.guild, [[GuildSettings.Starboard.Channel, null]]);
 			return message.send(t(LanguageKeys.Commands.Starboard.StarNoChannel));
 		}
 

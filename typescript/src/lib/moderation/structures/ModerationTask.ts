@@ -1,4 +1,4 @@
-import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task } from '#lib/database';
 import type { SchemaKeys } from '#utils/moderationConstants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import type { Guild, User } from 'discord.js';
@@ -27,7 +27,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		return {
 			moderator: null,
 			send:
-				(await guild.readSettings(GuildSettings.Messages.ModerationDM)) &&
+				(await readSettings(guild, GuildSettings.Messages.ModerationDM)) &&
 				(await this.context.db.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}

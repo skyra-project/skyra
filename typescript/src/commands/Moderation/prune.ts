@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -150,12 +150,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
-		const channelID = await message.guild.readSettings(GuildSettings.Channels.Logs.Prune);
+		const channelID = await readSettings(message.guild, GuildSettings.Channels.Logs.Prune);
 		if (isNullish(channelID)) return;
 
 		const channel = message.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (typeof channel === 'undefined') {
-			await message.guild.writeSettings([[GuildSettings.Channels.Logs.Prune, null]]);
+			await writeSettings(message.guild, [[GuildSettings.Channels.Logs.Prune, null]]);
 			return;
 		}
 

@@ -1,9 +1,11 @@
 import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings/functions';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { err, ok, Result, Store, UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
+import { Time } from '@sapphire/time-utilities';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -23,7 +25,7 @@ import {
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
-import { BrandingColors, Time, ZeroWidthSpace } from './constants';
+import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
 
 export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
@@ -92,7 +94,7 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * @param message The message instance to check with
  */
 export async function announcementCheck(message: GuildMessage) {
-	const [announcementID] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Subscriber]]);
+	const [announcementID] = await readSettings(message.guild, (settings) => [settings[GuildSettings.Roles.Subscriber]]);
 	if (!announcementID) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
 	const role = message.guild.roles.cache.get(announcementID);

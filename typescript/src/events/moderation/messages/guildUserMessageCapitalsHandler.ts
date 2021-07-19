@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -27,7 +27,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		if (message.content.length === 0) return null;
 
-		const [minimumCapitals, maximumCapitals] = await message.guild.readSettings([
+		const [minimumCapitals, maximumCapitals] = await readSettings(message.guild, [
 			GuildSettings.Selfmod.Capitals.Minimum,
 			GuildSettings.Selfmod.Capitals.Maximum
 		]);

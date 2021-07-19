@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toChannelsArray } from '#utils/bits';
@@ -26,7 +26,7 @@ type Features = readonly GuildFeatures[];
 @ApplyOptions<EventOptions>({ event: Events.GuildUpdate })
 export class UserEvent extends Event<Events.GuildUpdate> {
 	public async run(previous: Guild, next: Guild) {
-		const [channelID, t] = await next.readSettings((settings) => [
+		const [channelID, t] = await readSettings(next, (settings) => [
 			settings[GuildSettings.Channels.Logs.ServerUpdate], //
 			settings.getLanguage()
 		]);
@@ -34,7 +34,7 @@ export class UserEvent extends Event<Events.GuildUpdate> {
 
 		const channel = next.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.writeSettings([[GuildSettings.Channels.Logs.ServerUpdate, null]]);
+			await writeSettings(next, [[GuildSettings.Channels.Logs.ServerUpdate, null]]);
 			return;
 		}
 

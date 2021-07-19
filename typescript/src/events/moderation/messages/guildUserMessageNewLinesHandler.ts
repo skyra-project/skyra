@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -25,7 +25,7 @@ const NEW_LINE = '\n';
 })
 export class UserModerationMessageEvent extends ModerationMessageEvent {
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
-		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
+		const threshold = await readSettings(message.guild, GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
 
 		const content = getContent(message);

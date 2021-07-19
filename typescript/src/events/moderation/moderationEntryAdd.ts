@@ -1,4 +1,4 @@
-import { GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
 import { SchemaKeys } from '#utils/moderationConstants';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Event } from '@sapphire/framework';
@@ -17,7 +17,7 @@ export class UserEvent extends Event {
 		try {
 			await resolveOnErrorCodes(channel.send(messageEmbed), RESTJSONErrorCodes.MissingAccess, RESTJSONErrorCodes.MissingPermissions);
 		} catch (error) {
-			await entry.guild.writeSettings([[GuildSettings.Channels.Logs.Moderation, null]]);
+			await writeSettings(entry.guild, [[GuildSettings.Channels.Logs.Moderation, null]]);
 		}
 	}
 

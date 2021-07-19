@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaGroup, isSchemaKey, remove, reset, SchemaKey, set } from '#lib/database';
+import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
-		const output = await message.guild.readSettings((settings) => {
+		const output = await readSettings(message.guild, (settings) => {
 			return schemaValue.display(settings, args.t);
 		});
 
@@ -46,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await message.guild.writeSettings(async (settings) => {
+		const response = await writeSettings(message.guild, async (settings) => {
 			await set(settings, schemaKey, args);
 			return schemaKey.display(settings, args.t);
 		});
@@ -58,7 +58,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await message.guild.writeSettings(async (settings) => {
+		const response = await writeSettings(message.guild, async (settings) => {
 			await remove(settings, schemaKey, args);
 			return schemaKey.display(settings, args.t);
 		});
@@ -70,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await message.guild.writeSettings(async (settings) => {
+		const response = await writeSettings(message.guild, async (settings) => {
 			reset(settings, schemaKey);
 			return schemaKey.display(settings, args.t);
 		});

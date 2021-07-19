@@ -3,8 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
-import { Emojis, Time } from '#utils/constants';
+import { Emojis } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { Time } from '@sapphire/time-utilities';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

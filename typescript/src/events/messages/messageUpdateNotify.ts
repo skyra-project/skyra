@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -17,7 +17,7 @@ export class UserEvent extends Event {
 		if (!message.guild || old.content === message.content || message.author.bot) return;
 
 		const key = GuildSettings.Channels.Logs[message.channel.nsfw ? 'MessageUpdateNsfw' : 'MessageUpdate'];
-		const [ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await message.guild.readSettings((settings) => [
+		const [ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.MessageEdit],

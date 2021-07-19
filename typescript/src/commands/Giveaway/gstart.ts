@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { Permissions, TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^(\d+)w$/i;

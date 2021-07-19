@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings, StickyRole } from '#lib/database';
+import { GuildSettings, readSettings, StickyRole, writeSettings } from '#lib/database';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 
@@ -15,7 +15,7 @@ export class StickyRoleManager {
 	}
 
 	public async get(userID: string): Promise<readonly string[]> {
-		const entries = await this.#guild.readSettings(GuildSettings.StickyRoles);
+		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
 		return entries.find((entry) => entry.user === userID)?.roles ?? [];
 	}
 
@@ -26,7 +26,7 @@ export class StickyRoleManager {
 
 	public async fetch(userID: string): Promise<readonly string[]> {
 		// 1.0. If the entry does not exist, return empty array
-		const entries = await this.#guild.readSettings(GuildSettings.StickyRoles);
+		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
 		const entry = entries.find((entry) => entry.user === userID);
 		if (isNullish(entry)) return [];
 
@@ -44,7 +44,7 @@ export class StickyRoleManager {
 		}
 
 		// 3.0.b. Make a clone with the userID and the fixed roles array:
-		return this.#guild.writeSettings((settings) => {
+		return writeSettings(this.#guild, (settings) => {
 			const index = settings[GuildSettings.StickyRoles].findIndex((entry) => entry.user === userID);
 			if (index === -1) return [];
 
@@ -56,8 +56,8 @@ export class StickyRoleManager {
 		});
 	}
 
-	public async add(userID: string, roleID: string): Promise<readonly string[]> {
-		return this.#guild.writeSettings((settings) => {
+	public add(userID: string, roleID: string): Promise<readonly string[]> {
+		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 
@@ -84,8 +84,8 @@ export class StickyRoleManager {
 		});
 	}
 
-	public async remove(userID: string, roleID: string): Promise<readonly string[]> {
-		return this.#guild.writeSettings((settings) => {
+	public remove(userID: string, roleID: string): Promise<readonly string[]> {
+		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 
@@ -113,7 +113,7 @@ export class StickyRoleManager {
 	}
 
 	public clear(userID: string): Promise<readonly string[]> {
-		return this.#guild.writeSettings((settings) => {
+		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 

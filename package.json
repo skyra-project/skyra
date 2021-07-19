@@ -16,6 +16,7 @@
 		"#lib/customCommands": "./typescript/dist/lib/customCommands/index.js",
 		"#lib/database": "./typescript/dist/lib/database/index.js",
 		"#lib/database/keys": "./typescript/dist/lib/database/keys/index.js",
+		"#lib/database/settings": "./typescript/dist/lib/database/settings/index.js",
 		"#lib/discord": "./typescript/dist/lib/discord/index.js",
 		"#lib/env": "./typescript/dist/lib/env/index.js",
 		"#lib/grpc": "./typescript/dist/lib/grpc/index.js",

@@ -1,4 +1,4 @@
-import type { GuildEntity } from '#lib/database';
+import { GuildEntity, readSettings } from '#lib/database';
 import { Event } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
 import type { Guild, MessageEmbed } from 'discord.js';
@@ -37,7 +37,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	}
 
 	protected async onWarning(guild: Guild, userID: string) {
-		const duration = await guild.readSettings(this.hardPunishmentPath.actionDuration);
+		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.warning({
 				userID,
@@ -59,7 +59,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	}
 
 	protected async onMute(guild: Guild, userID: string) {
-		const duration = await guild.readSettings(this.hardPunishmentPath.actionDuration);
+		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.mute({
 				userID,
@@ -84,7 +84,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	}
 
 	protected async onBan(guild: Guild, userID: string) {
-		const duration = await guild.readSettings(this.hardPunishmentPath.actionDuration);
+		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 
 		await this.createActionAndSend(guild, () =>
 			guild.security.actions.ban(

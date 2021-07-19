@@ -1,4 +1,5 @@
 import type { GuildEntity } from '#lib/database';
+import { writeSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -27,7 +28,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(ChannelConfigurationCommand.hereOrTextChannelResolver);
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			// If it's the same value, throw:
 			if (settings[this.settingsKey] === channel.id) {
 				this.error(LanguageKeys.Misc.ConfigurationEquals);

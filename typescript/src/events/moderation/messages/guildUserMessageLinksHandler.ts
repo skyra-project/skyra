@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -30,7 +30,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 
 		let match: RegExpExecArray | null = null;
 
-		const allowed = await message.guild.readSettings(GuildSettings.Selfmod.Links.Allowed);
+		const allowed = await readSettings(message.guild, GuildSettings.Selfmod.Links.Allowed);
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
 			if (this.kAllowedDomains.test(hostname)) continue;

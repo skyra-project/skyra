@@ -9,6 +9,7 @@ import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { readSettings, writeSettings } from '../settings';
 
 export const kColors = [
 	0xffe3af, 0xffe0a5, 0xffdd9c, 0xffdb92, 0xffd889, 0xffd57f, 0xffd275, 0xffcf6b, 0xffcc61, 0xffca57, 0xffc74c, 0xffc440, 0xffc133, 0xffbe23,
@@ -167,12 +168,12 @@ export class StarboardEntity extends BaseEntity {
 	public async downloadStarMessage(): Promise<void> {
 		if (!this.starMessageID) return;
 
-		const channelID = await this.#message.guild.readSettings(GuildSettings.Starboard.Channel);
+		const channelID = await readSettings(this.#message.guild, GuildSettings.Starboard.Channel);
 		if (isNullish(channelID)) return;
 
 		const channel = this.#message.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (isNullish(channel)) {
-			await this.#message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
+			await writeSettings(this.#message.guild, [[GuildSettings.Starboard.Channel, null]]);
 			return;
 		}
 
@@ -190,7 +191,7 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public async downloadUserList(): Promise<void> {
 		try {
-			const [emoji, selfStar] = await this.#message.guild.readSettings([GuildSettings.Starboard.Emoji, GuildSettings.Starboard.SelfStar]);
+			const [emoji, selfStar] = await readSettings(this.#message.guild, [GuildSettings.Starboard.Emoji, GuildSettings.Starboard.SelfStar]);
 			this.#users = await fetchReactionUsers(this.#message.channel.id, this.#message.id, emoji);
 
 			// Remove the author's star if self star is disabled:
@@ -240,7 +241,7 @@ export class StarboardEntity extends BaseEntity {
 	 * Edits the message or sends a new one if it does not exist, includes full error handling
 	 */
 	private async updateStarMessage(): Promise<void> {
-		const [minimum, channelID, t] = await this.#message.guild.readSettings((settings) => [
+		const [minimum, channelID, t] = await readSettings(this.#message.guild, (settings) => [
 			settings[GuildSettings.Starboard.Minimum],
 			settings[GuildSettings.Starboard.Channel],
 			settings.getLanguage()

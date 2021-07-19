@@ -1,5 +1,5 @@
 import { MusicCommand, QueueEntry } from '#lib/audio';
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
@@ -44,7 +44,7 @@ export class UserMusicCommand extends MusicCommand {
 	private async process(message: GuildMessage, remainingUserEntries: number, tracks: Track[]) {
 		if (remainingUserEntries === 0) return empty<QueueEntry>();
 
-		const [maximumDuration, allowStreams] = await message.guild.readSettings([
+		const [maximumDuration, allowStreams] = await readSettings(message.guild, [
 			GuildSettings.Music.MaximumDuration,
 			GuildSettings.Music.AllowStreams
 		]);

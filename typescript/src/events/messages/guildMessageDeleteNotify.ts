@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
@@ -13,7 +13,7 @@ import { MessageEmbed } from 'discord.js';
 export class UserEvent extends Event {
 	public async run(message: GuildMessage) {
 		const key = GuildSettings.Channels.Logs[message.channel.nsfw ? 'MessageDeleteNsfw' : 'MessageDelete'];
-		const [ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await message.guild.readSettings((settings) => [
+		const [ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[key],
 			settings[GuildSettings.Channels.Ignore.MessageDelete],

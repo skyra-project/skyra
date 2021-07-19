@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { count, filter, map, take } from '#utils/iterator';
@@ -34,7 +34,7 @@ export class UserArgument extends Argument<string[]> {
 		const tracks = await message.guild.audio.tracks();
 		const { id } = message.author;
 		const entries = count(tracks.values(), (track) => track.author === id);
-		const maximum = await message.guild.readSettings(GuildSettings.Music.MaximumEntriesPerUser);
+		const maximum = await readSettings(message.guild, GuildSettings.Music.MaximumEntriesPerUser);
 		return Math.max(0, maximum - entries);
 	}
 
@@ -164,7 +164,7 @@ export class UserArgument extends Argument<string[]> {
 	private async filter(message: GuildMessage, remaining: number, tracks: Track[]): Promise<string[]> {
 		if (await message.member.isDJ()) return [...map(take(tracks.values(), remaining), (track) => track.track)];
 
-		const [maximumDuration, allowStreams] = await message.guild.readSettings([
+		const [maximumDuration, allowStreams] = await readSettings(message.guild, [
 			GuildSettings.Music.MaximumDuration,
 			GuildSettings.Music.AllowStreams
 		]);

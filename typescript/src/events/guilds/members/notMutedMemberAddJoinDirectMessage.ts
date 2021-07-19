@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/util';
@@ -22,7 +22,7 @@ export class UserEvent extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 
 	public async run(member: GuildMember) {
-		const [messagesJoinDM, language] = await member.guild.readSettings((settings) => [
+		const [messagesJoinDM, language] = await readSettings(member, (settings) => [
 			settings[GuildSettings.Messages.JoinDM],
 			settings.getLanguage()
 		]);

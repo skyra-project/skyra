@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,7 +10,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<EventOptions>({ event: Events.EmojiCreate })
 export class UserEvent extends Event<Events.EmojiCreate> {
 	public async run(next: GuildEmoji) {
-		const [channelID, t] = await next.guild.readSettings((settings) => [
+		const [channelID, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.EmojiCreate],
 			settings.getLanguage()
 		]);
@@ -18,7 +18,7 @@ export class UserEvent extends Event<Events.EmojiCreate> {
 
 		const channel = next.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.guild.writeSettings([[GuildSettings.Channels.Logs.EmojiCreate, null]]);
+			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.EmojiCreate, null]]);
 			return;
 		}
 

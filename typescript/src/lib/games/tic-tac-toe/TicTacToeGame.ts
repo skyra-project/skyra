@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Time } from '#utils/constants';
+import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';

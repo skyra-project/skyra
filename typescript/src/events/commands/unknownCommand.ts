@@ -1,5 +1,5 @@
 import { getFromID } from '#lib/customCommands';
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Event, Events, UnknownCommandPayload } from '@sapphire/framework';
 
@@ -7,7 +7,7 @@ export class UserEvent extends Event<Events.UnknownCommand> {
 	public async run({ message, commandPrefix, commandName }: UnknownCommandPayload) {
 		if (!message.guild) return null;
 
-		const [disabledChannels, tags, aliases] = await message.guild.readSettings([
+		const [disabledChannels, tags, aliases] = await readSettings(message.guild, [
 			GuildSettings.DisabledChannels,
 			GuildSettings.CustomCommands,
 			GuildSettings.Trigger.Alias

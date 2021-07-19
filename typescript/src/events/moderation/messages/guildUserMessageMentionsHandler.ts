@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +11,7 @@ export class UserEvent extends Event {
 		if (!isNullishOrZero(message.editedTimestamp)) return;
 		if (await message.member.isModerator()) return;
 
-		const [enabled, globalIgnore, alerts, ratelimits] = await message.guild.readSettings((settings) => [
+		const [enabled, globalIgnore, alerts, ratelimits] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Selfmod.NoMentionSpam.Enabled],
 			settings[GuildSettings.Selfmod.IgnoreChannels],
 			settings[GuildSettings.Selfmod.NoMentionSpam.Alerts],

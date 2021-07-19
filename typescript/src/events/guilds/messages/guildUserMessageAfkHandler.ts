@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -35,7 +35,7 @@ export class UserEvent extends Event {
 		// Remove and notify the user:
 		await this.context.afk.del(`afk:${message.guild.id}:${message.author.id}`);
 
-		const [prefix, roleID, t] = await message.guild.readSettings((settings) => [
+		const [prefix, roleID, t] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Afk.Prefix],
 			settings[GuildSettings.Afk.Role],
 			settings.getLanguage()
@@ -68,7 +68,7 @@ export class UserEvent extends Event {
 
 		const role = message.guild.roles.cache.get(roleID);
 		if (role === undefined) {
-			await message.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			await writeSettings(message.guild, [[GuildSettings.Afk.Role, null]]);
 			return;
 		}
 

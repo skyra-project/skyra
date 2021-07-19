@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -16,7 +16,7 @@ import type { TFunction } from 'i18next';
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await message.guild.readSettings([
+		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await readSettings(message.guild, [
 			GuildSettings.Roles.Public,
 			GuildSettings.Roles.UniqueRoleSets,
 			GuildSettings.Roles.RemoveInitial,
@@ -83,7 +83,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (actualInitialRole && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(actualInitialRole)) {
-				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.context.client.logger.fatal(error));
+				await writeSettings(message.guild, [[GuildSettings.Roles.Initial, null]]).catch((error) => this.context.client.logger.fatal(error));
 			} else if (message.member!.roles.cache.has(actualInitialRole)) {
 				memberRoles.delete(actualInitialRole);
 			}
@@ -116,7 +116,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await message.guild.writeSettings([[GuildSettings.Roles.Public, [...allRoles]]]);
+			await writeSettings(message.guild, [[GuildSettings.Roles.Public, [...allRoles]]]);
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system

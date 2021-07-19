@@ -1,4 +1,5 @@
 import { getDateFormat, getGuildMemberBirthday, monthOfYearContainsDay, nextBirthday, removeYear, TaskBirthdayData, yearIsLeap } from '#lib/birthday';
+import { readSettings } from '#lib/database';
 import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
@@ -16,7 +17,7 @@ import { isNullish, Nullish } from '@sapphire/utilities';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
-		const [birthdayRole, birthdayChannel, birthdayMessage] = await message.guild.readSettings([
+		const [birthdayRole, birthdayChannel, birthdayMessage] = await readSettings(message.guild, [
 			Birthday.Role,
 			Birthday.Channel,
 			Birthday.Message

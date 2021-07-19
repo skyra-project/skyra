@@ -1,7 +1,7 @@
 import { api } from '#lib/discord/Api';
-import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
 import Collection from '@discordjs/collection';
+import { Time } from '@sapphire/time-utilities';
 import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import type { Client } from 'discord.js';
 

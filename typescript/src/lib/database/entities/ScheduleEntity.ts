@@ -84,7 +84,7 @@ export class ScheduleEntity extends BaseEntity {
 	}
 
 	public get task() {
-		return Store.injectedContext.client.settings.tasks.get(this.taskID) ?? null;
+		return Store.injectedContext.settings.tasks.get(this.taskID) ?? null;
 	}
 
 	public get running() {

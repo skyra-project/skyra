@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
@@ -31,7 +31,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 	public async run(previous: Channel, next: Channel) {
 		if (isDMChannel(next)) return;
 
-		const [channelID, t] = await next.guild.readSettings((settings) => [
+		const [channelID, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelUpdate],
 			settings.getLanguage()
 		]);
@@ -39,7 +39,7 @@ export class UserEvent extends Event<Events.ChannelUpdate> {
 
 		const channel = next.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.guild.writeSettings([[GuildSettings.Channels.Logs.ChannelUpdate, null]]);
+			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.ChannelUpdate, null]]);
 			return;
 		}
 

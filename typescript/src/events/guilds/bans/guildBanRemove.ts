@@ -1,11 +1,11 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { TypeCodes } from '#utils/moderationConstants';
 import { Event } from '@sapphire/framework';
 import type { Guild, User } from 'discord.js';
 
 export class UserEvent extends Event {
 	public async run(guild: Guild, user: User) {
-		if (!guild.available || !(await guild.readSettings(GuildSettings.Events.BanRemove))) return;
+		if (!guild.available || !(await readSettings(guild, GuildSettings.Events.BanRemove))) return;
 		await guild.moderation.waitLock();
 		await guild.moderation
 			.create({

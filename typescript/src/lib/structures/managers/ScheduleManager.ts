@@ -2,16 +2,12 @@
 import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
 import { Store } from '@sapphire/framework';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
-import type { Client } from 'discord.js';
+
+const container = Store.injectedContext;
 
 export class ScheduleManager {
-	public readonly client: Client;
 	public queue: ScheduleEntity[] = [];
 	#interval: NodeJS.Timer | null = null;
-
-	public constructor(client: Client) {
-		this.client = client;
-	}
 
 	public async init() {
 		const { schedules } = Store.injectedContext.db;
@@ -22,7 +18,7 @@ export class ScheduleManager {
 	}
 
 	public async add(taskID: string, timeResolvable: TimeResolvable, options: ScheduleManagerAddOptions = {}) {
-		if (!this.client.settings.tasks.has(taskID)) throw new Error(`The task '${taskID}' does not exist.`);
+		if (!container.settings.tasks.has(taskID)) throw new Error(`The task '${taskID}' does not exist.`);
 
 		const [time, cron] = this._resolveTime(timeResolvable);
 		const entry = new ScheduleEntity();
@@ -138,7 +134,7 @@ export class ScheduleManager {
 				entry.resume();
 			}
 		} catch (error) {
-			this.client.logger.fatal(error);
+			container.logger.fatal(error);
 
 			// Rollback transaction
 			await queryRunner.rollbackTransaction();
@@ -165,8 +161,11 @@ export class ScheduleManager {
 	 * Sets the interval when needed
 	 */
 	private _checkInterval(): void {
-		if (!this.queue.length) this._clearInterval();
-		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule?.interval ?? 5000);
+		if (!this.queue.length) {
+			this._clearInterval();
+		} else if (!this.#interval) {
+			this.#interval = TimerManager.setInterval(this.execute.bind(this), container.client.options.schedule?.interval ?? 5000);
+		}
 	}
 
 	/**

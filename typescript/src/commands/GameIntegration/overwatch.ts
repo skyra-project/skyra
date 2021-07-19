@@ -4,11 +4,11 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
-import { Time } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';

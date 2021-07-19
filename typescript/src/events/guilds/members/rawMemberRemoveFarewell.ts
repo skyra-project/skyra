@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -23,7 +23,7 @@ export class UserEvent extends Event {
 	private readonly kTransformMessageRegExp = /%(?:MEMBER(?:NAME|TAG|(?:_(?:POSITION|HIGHEST_ROLE(?:NAME)?)))?|GUILD)%/g;
 
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
-		const [channelID, content, timer, t] = await guild.readSettings((settings) => [
+		const [channelID, content, timer, t] = await readSettings(guild, (settings) => [
 			settings[GuildSettings.Channels.Farewell],
 			settings[GuildSettings.Messages.Farewell],
 			settings[GuildSettings.Messages.FarewellAutoDelete],
@@ -39,7 +39,7 @@ export class UserEvent extends Event {
 			return;
 		}
 
-		return guild.writeSettings([[GuildSettings.Channels.Farewell, null]]);
+		return writeSettings(guild, [[GuildSettings.Channels.Farewell, null]]);
 	}
 
 	private transformMessage(t: TFunction, guild: Guild, member: GuildMember | null, user: APIUser, content: string) {

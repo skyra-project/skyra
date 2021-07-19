@@ -2,11 +2,11 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { Time } from '#utils/constants';
 import { requiresGuildContext, requiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { chunk, cutText } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 

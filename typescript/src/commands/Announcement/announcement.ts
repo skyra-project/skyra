@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const announcement = await args.rest('string', { max: 1950 });
 
-		const [channelID, embedEnabled] = await message.guild.readSettings([
+		const [channelID, embedEnabled] = await readSettings(message.guild, [
 			GuildSettings.Channels.Announcements,
 			GuildSettings.Messages.AnnouncementEmbed
 		]);

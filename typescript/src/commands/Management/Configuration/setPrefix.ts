@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -17,7 +17,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const prefix = await args.pick('string', { minimum: 1, maximum: 10 });
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			// If it's the same value, throw:
 			if (settings[GuildSettings.Prefix] === prefix) {
 				this.error(LanguageKeys.Misc.ConfigurationEquals);

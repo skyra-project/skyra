@@ -10,16 +10,6 @@ export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'w
 export const ZeroWidthSpace = '\u200B';
 export const LongWidthSpace = '\u3000';
 
-export const enum Time {
-	Millisecond = 1,
-	Second = 1000,
-	Minute = 1000 * 60,
-	Hour = 1000 * 60 * 60,
-	Day = 1000 * 60 * 60 * 24,
-	Month = 1000 * 60 * 60 * 24 * (365 / 12),
-	Year = 1000 * 60 * 60 * 24 * 365
-}
-
 export const enum BrawlStarsEmojis {
 	Trophy = '<:bstrophy:742083351891935353>',
 	PowerPlay = '<:powerplay:746370227377405993>',
@@ -59,18 +49,6 @@ export const enum Emojis {
 	Star = '<:Star:736337719982030910>',
 	StarEmpty = '<:StarEmpty:736337232738254849>',
 	StarHalf = '<:StarHalf:736337529900499034>'
-}
-
-export namespace ConnectFourConstants {
-	export const enum Emojis {
-		Empty = '<:Empty:352403997606412289>',
-		PlayerOne = '<:PlayerONE:352403997300359169>',
-		PlayerTwo = '<:PlayerTWO:352404081974968330>',
-		WinnerOne = '<:PlayerONEWin:352403997761601547>',
-		WinnerTwo = '<:PlayerTWOWin:352403997958602752>'
-	}
-
-	export const Reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as readonly string[];
 }
 
 export const helpUsagePostProcessor: PostProcessorModule = {

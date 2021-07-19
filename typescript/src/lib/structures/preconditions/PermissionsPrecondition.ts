@@ -1,3 +1,4 @@
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -28,7 +29,7 @@ export abstract class PermissionsPrecondition extends Precondition {
 
 		// If it should skip, go directly to handle:
 		if (await this.shouldRun(message, command)) {
-			const nodes = await message.guild.readSettings((settings) => settings.permissionNodes);
+			const nodes = await readSettings(message.guild, (settings) => settings.permissionNodes);
 			const result = nodes.run(message.member, command);
 			if (result) return this.ok();
 			if (result === false) return this.error({ identifier: LanguageKeys.Preconditions.PermissionNodes });

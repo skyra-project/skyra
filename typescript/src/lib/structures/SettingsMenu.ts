@@ -1,12 +1,13 @@
-import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '#lib/database';
+import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { BrandingColors, Time, ZeroWidthSpace } from '#utils/constants';
+import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '#utils/util';
 import { Store } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
@@ -88,7 +89,7 @@ export class SettingsMenu {
 			description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.name }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 
-			const [value, serialized, language] = await this.message.guild.readSettings((settings) => {
+			const [value, serialized, language] = await readSettings(this.message.guild, (settings) => {
 				const language = settings.getLanguage();
 				const key = this.schema as SchemaKey;
 				return [settings[key.property], key.display(settings, language), language];
@@ -218,7 +219,7 @@ export class SettingsMenu {
 	private async tryUpdate(action: UpdateType, args: SkyraArgs | null = null, value: unknown = null) {
 		try {
 			const key = this.schema as SchemaKey;
-			const [oldValue, skipped] = await this.message.guild.writeSettings(async (settings) => {
+			const [oldValue, skipped] = await writeSettings(this.message.guild, async (settings) => {
 				const oldValue = deepClone(settings[key.property]);
 
 				switch (action) {

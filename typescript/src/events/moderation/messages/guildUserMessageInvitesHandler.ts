@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -75,7 +75,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	private async fetchIfAllowedInvite(message: GuildMessage, code: string) {
-		const [ignoredCodes, ignoredGuilds] = await message.guild.readSettings([
+		const [ignoredCodes, ignoredGuilds] = await readSettings(message.guild, [
 			GuildSettings.Selfmod.Invites.IgnoredCodes,
 			GuildSettings.Selfmod.Invites.IgnoredGuilds
 		]);

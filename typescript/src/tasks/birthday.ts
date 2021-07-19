@@ -1,5 +1,5 @@
 import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
-import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import type { GuildMember, TextChannel, User } from 'discord.js';
@@ -29,7 +29,7 @@ export class UserTask extends Task {
 		const member = await guild.members.fetch(data.userID);
 		if (!member) return null;
 
-		const [birthdayRole, birthdayChannel, birthdayMessage, t] = await guild.readSettings((settings) => [
+		const [birthdayRole, birthdayChannel, birthdayMessage, t] = await readSettings(guild, (settings) => [
 			settings[GuildSettings.Birthday.Role],
 			settings[GuildSettings.Birthday.Channel],
 			settings[GuildSettings.Birthday.Message],
@@ -63,7 +63,7 @@ export class UserTask extends Task {
 
 		// If the role doesn't exist anymore, reset:
 		if (!role) {
-			await member.guild.writeSettings([[GuildSettings.Birthday.Role, null]]);
+			await writeSettings(member, [[GuildSettings.Birthday.Role, null]]);
 			return PartResult.Invalid;
 		}
 
@@ -88,7 +88,7 @@ export class UserTask extends Task {
 
 		// If the channel doesn't exist anymore, reset:
 		if (!channel) {
-			await member.guild.writeSettings([[GuildSettings.Birthday.Channel, null]]);
+			await writeSettings(member, [[GuildSettings.Birthday.Channel, null]]);
 			return PartResult.Invalid;
 		}
 

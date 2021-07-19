@@ -1,4 +1,4 @@
-import { GuildSettings, RolesAuto } from '#lib/database';
+import { GuildSettings, RolesAuto, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -24,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 		const role = await args.pick('roleName');
 		const points = await this.parseLevel(args);
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const roles = settings[GuildSettings.Roles.Auto];
 
 			if (roles.length && roles.some((entry) => entry.id === role.id)) {
@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName');
 
-		const roleEntry = await message.guild.writeSettings((settings) => {
+		const roleEntry = await writeSettings(message.guild, (settings) => {
 			const roles = settings[GuildSettings.Roles.Auto];
 			const roleIndex = roles.findIndex((entry) => entry.id === role.id);
 
@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 		const role = await args.pick('roleName');
 		const points = await this.parseLevel(args);
 
-		const autoRole = await message.guild.writeSettings((settings) => {
+		const autoRole = await writeSettings(message.guild, (settings) => {
 			const autoRoles = settings[GuildSettings.Roles.Auto];
 			const roleIndex = autoRoles.findIndex((entry) => entry.id === role.id);
 
@@ -88,7 +88,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async show(message: GuildMessage) {
-		const output = await message.guild.writeSettings((settings) => {
+		const output = await writeSettings(message.guild, (settings) => {
 			const autoRoles = settings[GuildSettings.Roles.Auto];
 
 			if (!autoRoles.length) this.error(LanguageKeys.Commands.Social.AutoRoleListEmpty);

@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, floatPromise } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
@@ -129,7 +130,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			// A member who isn't a server owner is not allowed to moderate somebody with higher role than them:
-			if (!message.member.isGuildOwner() && targetHighestRolePosition >= message.member.roles.highest.position) {
+			if (!isGuildOwner(message.member) && targetHighestRolePosition >= message.member.roles.highest.position) {
 				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
 			}
 		}

@@ -1,6 +1,7 @@
 import { getFromID } from '#lib/customCommands';
 import { GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
+import { isModerator } from '#utils/functions';
 import { Event, Events, UnknownCommandPayload } from '@sapphire/framework';
 
 export class UserEvent extends Event<Events.UnknownCommand> {
@@ -14,7 +15,7 @@ export class UserEvent extends Event<Events.UnknownCommand> {
 		]);
 
 		if (tags.length === 0 && aliases.length === 0) return null;
-		if (disabledChannels.includes(message.channel.id) && !(await message.member!.isModerator())) return null;
+		if (disabledChannels.includes(message.channel.id) && !(await isModerator(message.member!))) return null;
 
 		const name = commandName.toLowerCase();
 

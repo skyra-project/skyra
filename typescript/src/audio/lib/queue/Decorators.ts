@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { createFunctionInhibitor } from '#utils/decorators';
+import { isDJ } from '#utils/functions';
 
 export function requireMusicPlaying(): MethodDecorator {
 	return createFunctionInhibitor(
@@ -25,7 +26,7 @@ export function requireSongPresent(): MethodDecorator {
 
 export function requireDj(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.member.isDJ(),
+		(message: GuildMessage) => isDJ(message.member),
 		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicDjMember)
 	);
 }

@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { DMMessage, GuildMessage } from '#lib/types';
+import { isModerator } from '#utils/functions';
 import { Event, Events } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 
@@ -21,7 +22,7 @@ export default class extends Event<Events.MentionPrefixOnly> {
 			settings.getLanguage()
 		]);
 
-		if (disabled.includes(message.channel.id) && !(await message.member.isModerator())) return;
+		if (disabled.includes(message.channel.id) && !(await isModerator(message.member))) return;
 		return message.send(t(LanguageKeys.Misc.PrefixReminder, { prefix }));
 	}
 }

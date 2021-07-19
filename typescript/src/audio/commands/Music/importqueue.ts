@@ -3,6 +3,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
+import { isDJ } from '#utils/functions';
 import { empty, filter, map, take } from '#utils/iterator';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -50,7 +51,7 @@ export class UserMusicCommand extends MusicCommand {
 		]);
 
 		const filtered = filter(tracks.values(), (track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration);
-		const taken = take(filtered, (await message.member.isDJ()) ? maximumExportQueueSize : remainingUserEntries);
+		const taken = take(filtered, (await isDJ(message.member)) ? maximumExportQueueSize : remainingUserEntries);
 		return map(taken, (track) => ({ author: message.author.id, track: track.track }));
 	}
 }

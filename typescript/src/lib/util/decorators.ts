@@ -6,6 +6,7 @@ import { createMethodDecorator } from '@sapphire/decorators';
 import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Awaited, UserError } from '@sapphire/framework';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
+import { isAdmin, isModerator, isOwner } from './functions';
 
 /**
  * The inhibitor interface
@@ -77,7 +78,7 @@ export const requiresLevel = (
 ): MethodDecorator => {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => {
-			if (message.member.isOwner()) return true;
+			if (isOwner(message.member)) return true;
 
 			switch (level) {
 				case PermissionLevels.BotOwner:
@@ -85,9 +86,9 @@ export const requiresLevel = (
 				case PermissionLevels.ServerOwner:
 					return message.author.id === message.guild.ownerID;
 				case PermissionLevels.Administrator:
-					return message.member.isAdmin();
+					return isAdmin(message.member);
 				case PermissionLevels.Moderator:
-					return message.member.isModerator();
+					return isModerator(message.member);
 				case PermissionLevels.Everyone:
 					return true;
 			}

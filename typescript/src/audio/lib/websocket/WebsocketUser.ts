@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import { isDJ } from '#utils/functions';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Store } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -67,7 +68,7 @@ export class WebsocketUser {
 		}
 
 		// Check for the member's permissions:
-		if (!(await member.isDJ())) return;
+		if (!(await isDJ(member))) return;
 
 		switch (message.data.music_action) {
 			case MusicActions.Clear: {

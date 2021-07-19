@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { isNullishOrZero } from '@sapphire/utilities';
 export class UserEvent extends Event {
 	public async run(message: GuildMessage) {
 		if (!isNullishOrZero(message.editedTimestamp)) return;
-		if (await message.member.isModerator()) return;
+		if (await isModerator(message.member)) return;
 
 		const [enabled, globalIgnore, alerts, ratelimits] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Selfmod.NoMentionSpam.Enabled],

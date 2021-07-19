@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { SuggestionData } from '#lib/types/definitions/Suggestion';
 import { PermissionLevels } from '#lib/types/Enums';
+import { isAdmin } from '#utils/functions';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Store } from '@sapphire/framework';
@@ -98,7 +99,7 @@ export class UserCommand extends SkyraCommand {
 	private async getAuthor(message: GuildMessage, hideAuthor: boolean, args: SkyraCommand.Args) {
 		if (args.getFlags('show-author', 'showAuthor')) return message.author.tag;
 		if (args.getFlags('hide-author', 'hideAuthor') || hideAuthor) {
-			return (await message.member.isAdmin())
+			return (await isAdmin(message.member))
 				? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorAdmin)
 				: args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorModerator);
 		}

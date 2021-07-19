@@ -2,6 +2,7 @@ import { AdderKey, GuildEntity, GuildSettings, readSettings } from '#lib/databas
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { isModerator } from '#utils/functions';
 import { floatPromise } from '#utils/util';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
@@ -34,7 +35,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 		const shouldRun = await this.checkPreRun(message);
 		if (!shouldRun) return;
 
-		if (await message.member.isModerator()) return;
+		if (await isModerator(message.member)) return;
 
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;

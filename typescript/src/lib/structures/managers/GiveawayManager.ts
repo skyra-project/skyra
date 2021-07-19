@@ -4,7 +4,7 @@ import type { Client } from 'discord.js';
 
 export class GiveawayManager {
 	public readonly client: Client;
-	public readonly queue: Array<GiveawayEntity> = [];
+	public readonly queue: GiveawayEntity[] = [];
 	private interval: NodeJS.Timer | null = null;
 
 	public constructor(client: Client) {

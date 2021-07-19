@@ -1,4 +1,5 @@
-import { GuildEntity, writeSettings } from '#lib/database';
+import type { GuildEntity } from '#lib/database';
+import { writeSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';

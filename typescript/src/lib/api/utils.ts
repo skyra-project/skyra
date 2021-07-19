@@ -1,10 +1,10 @@
-import { readSettings } from '#lib/database';
 import * as GuildSettings from '#lib/database/keys/settings/All';
+import { readSettings } from '#lib/database/settings';
 import type { SkyraCommand } from '#lib/structures';
-import { RateLimitManager } from '#lib/structures/external/ratelimit/RateLimitManager';
 import { createFunctionInhibitor } from '#utils/decorators';
 import { Store } from '@sapphire/pieces';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
+import { RateLimitManager } from '@sapphire/ratelimits';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
@@ -21,9 +21,14 @@ export const authenticated = () =>
 		(_request: ApiRequest, response: ApiResponse) => response.error(HttpCodes.Unauthorized)
 	);
 
-export function ratelimit(bucket: number, cooldown: number, auth = false) {
-	const manager = new RateLimitManager(cooldown, bucket);
-	const xRateLimitLimit = bucket;
+/**
+ * @param time The amount of milliseconds for the ratelimits from this manager to expire.
+ * @param limit The amount of times a {@link RateLimit} can drip before it's limited.
+ * @param auth Whether or not this should be auth-limited
+ */
+export function ratelimit(time: number, limit: number, auth = false) {
+	const manager = new RateLimitManager(limit, time);
+	const xRateLimitLimit = time;
 	return createFunctionInhibitor(
 		(request: ApiRequest, response: ApiResponse) => {
 			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;

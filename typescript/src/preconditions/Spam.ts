@@ -1,11 +1,12 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RateLimitManager } from '#lib/structures';
 import { AsyncPreconditionResult, Precondition } from '@sapphire/framework';
+import { RateLimitManager } from '@sapphire/ratelimits';
+import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
 
 export class UserPrecondition extends Precondition {
-	private readonly ratelimit = new RateLimitManager(30000, 1);
+	private readonly ratelimit = new RateLimitManager(Time.Second * 30, 1);
 
 	public async run(message: Message): AsyncPreconditionResult {
 		if (message.guild === null) return this.ok();

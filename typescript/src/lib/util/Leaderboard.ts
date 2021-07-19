@@ -1,7 +1,7 @@
 import Collection from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import type { Client } from 'discord.js';
-import { Time } from './constants';
 import { PreciseTimeout } from './PreciseTimeout';
 
 /**

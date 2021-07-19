@@ -1,8 +1,8 @@
 import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
-import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { Store } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { isNullish, StrictRequired } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';

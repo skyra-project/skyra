@@ -1,9 +1,9 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { RateLimitManager } from '#lib/structures';
-import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { Store } from '@sapphire/framework';
+import { RateLimitManager } from '@sapphire/ratelimits';
+import { Time } from '@sapphire/time-utilities';
 import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
 import type { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';

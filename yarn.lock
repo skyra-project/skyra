@@ -1553,6 +1553,13 @@
   resolved "https://registry.yarnpkg.com/@sapphire/ratelimits/-/ratelimits-1.2.5.tgz#61e8e72c7ec37c67b958fcb324c892673dc68197"
   integrity sha512-X/yQPgTqCerZuQokivQE2d+waW5shemZWrH/b4elWTFPWpp3PMJTqfvFQxcYi8z8WjnUzL9vESh7czbvW/mpuA==
 
+"@sapphire/ratelimits@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/ratelimits/-/ratelimits-2.0.0.tgz#2e8fc6986542acb3bf25fb975b0111fd1896c3e2"
+  integrity sha512-WJjj4tSH/n0/2c5fGcAwf80Vr+3uIJQF1VCO2C3Rsl5Lci30Pr46NHeC0L0tCSWRj6o3CtARmzzjw3RjhtK9aQ==
+  dependencies:
+    "@sapphire/time-utilities" "^1.3.7"
+
 "@sapphire/snowflake@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-2.0.0.tgz#cc97a0649393f144289ba21d3005a2ba942d37b5"

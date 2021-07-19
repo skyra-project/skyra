@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
-import { Time } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

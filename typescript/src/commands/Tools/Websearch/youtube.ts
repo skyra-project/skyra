@@ -1,10 +1,10 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Time } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { Time } from '@sapphire/time-utilities';
 import { Message, Permissions } from 'discord.js';
 import { URL } from 'url';
 
@@ -92,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 			await sent.reactions.removeAll();
 		});
 
-		llrc.setTime(Time.Second * 60);
+		llrc.setTime(Time.Minute);
 	}
 
 	private getLink(result: YouTubeResultOkItem) {

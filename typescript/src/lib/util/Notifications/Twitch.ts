@@ -1,4 +1,4 @@
-import { RateLimitManager } from '#lib/structures';
+import { RateLimitManager } from '@sapphire/ratelimits';
 import type {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
@@ -6,11 +6,11 @@ import type {
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
-import { Time } from '#utils/constants';
 import { enumerable } from '#utils/util';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { createHmac } from 'crypto';
+import { Time } from '@sapphire/time-utilities';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',

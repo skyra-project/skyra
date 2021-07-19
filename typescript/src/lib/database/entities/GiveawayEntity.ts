@@ -4,8 +4,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { Time } from '#utils/constants';
-import { fetchReactionUsers, resolveEmoji } from '#utils/util';
+import { fetchReactionUsers } from '#utils/util';
+import { Time } from '@sapphire/time-utilities';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
@@ -20,7 +20,7 @@ const enum States {
 }
 
 export const kRawEmoji = '🎉';
-export const kEmoji = resolveEmoji(kRawEmoji)!;
+export const kEmoji = encodeURIComponent(kRawEmoji);
 export const kGiveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownMessage,
 	RESTJSONErrorCodes.UnknownChannel,

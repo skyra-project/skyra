@@ -1,5 +1,5 @@
 import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
-import { RateLimitManager } from '#lib/structures';
+import { RateLimitManager } from '@sapphire/ratelimits';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';

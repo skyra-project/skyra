@@ -1,17 +1,18 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { isGuildMessage } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandSuccessPayload, Event, EventOptions } from '@sapphire/framework';
 
 @ApplyOptions<EventOptions>({ event: Events.CommandSuccess })
 export class UserEvent extends Event<Events.CommandSuccess> {
 	public async run({ message }: CommandSuccessPayload) {
-		if (!message.guild) return;
+		if (!isGuildMessage(message)) return;
 
-		const commandAutodelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
-		const commandAutodeleteEntry = commandAutodelete.find(([id]) => id === message.channel.id);
-		if (commandAutodeleteEntry && message.deletable) {
-			await message.nuke(commandAutodeleteEntry[1]);
+		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
+		const commandAutoDeleteEntry = commandAutoDelete.find(([id]) => id === message.channel.id);
+		if (commandAutoDeleteEntry && message.deletable) {
+			await message.nuke(commandAutoDeleteEntry[1]);
 		}
 	}
 }

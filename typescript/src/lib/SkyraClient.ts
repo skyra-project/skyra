@@ -2,6 +2,7 @@ import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
+import { isGuildMessage } from '#utils/common';
 import { SapphireClient, Store } from '@sapphire/framework';
 import type { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
@@ -127,8 +128,8 @@ export class SkyraClient extends SapphireClient {
 	 * @param message The message that gives context.
 	 */
 	public fetchPrefix = async (message: Message) => {
-		if (!message.guild) return [process.env.CLIENT_PREFIX, ''] as readonly string[];
-		return readSettings(message.guild, GuildSettings.Prefix);
+		if (isGuildMessage(message)) return readSettings(message.guild, GuildSettings.Prefix);
+		return [process.env.CLIENT_PREFIX, ''] as readonly string[];
 	};
 
 	/**

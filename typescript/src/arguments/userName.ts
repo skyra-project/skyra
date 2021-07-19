@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { isGuildMessage } from '#utils/common';
 import { SnowflakeRegex, UserOrMemberMentionRegex } from '@sapphire/discord.js-utilities';
 import { Argument, ArgumentContext, Identifiers } from '@sapphire/framework';
 import type { User } from 'discord.js';
@@ -11,7 +12,7 @@ export class UserArgument extends Argument<User> {
 
 	public async run(parameter: string, context: ArgumentContext<User>) {
 		const message = context.message as GuildMessage;
-		if (!message.guild) return this.user.run(parameter, context);
+		if (!isGuildMessage(message)) return this.user.run(parameter, context);
 
 		const user = await this.resolveUser(message, parameter);
 		if (user) return this.ok(user);

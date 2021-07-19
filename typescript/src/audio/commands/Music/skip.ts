@@ -2,6 +2,7 @@ import { MusicCommand, Queue, requireSameVoiceChannel, requireSongPresent } from
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
+import { canManage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -38,7 +39,7 @@ export class UserMusicCommand extends MusicCommand {
 	}
 
 	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {
-		return (await message.member.canManage(voiceChannel)) ? null : message.resolveKey(LanguageKeys.Commands.Music.SkipPermissions);
+		return (await canManage(message.member, voiceChannel)) ? null : message.resolveKey(LanguageKeys.Commands.Music.SkipPermissions);
 	}
 
 	private async canSkipWithoutForce(message: GuildMessage, t: TFunction, audio: Queue, listeners: number): Promise<string | null> {

@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { isDJ } from '#utils/functions';
 import { count, filter, map, take } from '#utils/iterator';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, Argument, ArgumentContext } from '@sapphire/framework';
@@ -162,7 +163,7 @@ export class UserArgument extends Argument<string[]> {
 	 * @param tracks The downloaded tracks to filter.
 	 */
 	private async filter(message: GuildMessage, remaining: number, tracks: Track[]): Promise<string[]> {
-		if (await message.member.isDJ()) return [...map(take(tracks.values(), remaining), (track) => track.track)];
+		if (await isDJ(message.member)) return [...map(take(tracks.values(), remaining), (track) => track.track)];
 
 		const [maximumDuration, allowStreams] = await readSettings(message.guild, [
 			GuildSettings.Music.MaximumDuration,

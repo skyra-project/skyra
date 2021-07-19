@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
+import { isAdmin } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -84,7 +85,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async resolveArguments(args: SkyraCommand.Args): Promise<ResolvedArguments> {
 		// If the user is not an administrator, they cannot create suggestions on behalf of other users:
-		if (!(await args.message.member!.isAdmin())) return this.resolveStringContent(args);
+		if (!(await isAdmin(args.message.member!))) return this.resolveStringContent(args);
 
 		// Administrator fallback, try message, then fallback to rest string if it fails:
 		try {

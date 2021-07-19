@@ -30,7 +30,9 @@
 		"#lib/i18n/languageKeys": "./typescript/dist/lib/i18n/languageKeys/index.js",
 		"#root/*": "./typescript/dist/*.js",
 		"#languages": "./typescript/dist/languages/index.js",
-		"#utils/*": "./typescript/dist/lib/util/*.js"
+		"#utils/*": "./typescript/dist/lib/util/*.js",
+		"#utils/common": "./typescript/dist/lib/util/common/index.js",
+		"#utils/functions": "./typescript/dist/lib/util/functions/index.js"
 	},
 	"scripts": {
 		"start": "node ./typescript/dist/Skyra.js",

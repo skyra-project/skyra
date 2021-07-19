@@ -1,9 +1,9 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { isGuildMessage } from '#utils/common';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
@@ -13,8 +13,8 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })
 export class UserEvent extends Event {
-	public async run(old: Message, message: GuildMessage) {
-		if (!message.guild || old.content === message.content || message.author.bot) return;
+	public async run(old: Message, message: Message) {
+		if (!isGuildMessage(message) || old.content === message.content || message.author.bot) return;
 
 		const key = GuildSettings.Channels.Logs[message.channel.nsfw ? 'MessageUpdateNsfw' : 'MessageUpdate'];
 		const [ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await readSettings(message.guild, (settings) => [

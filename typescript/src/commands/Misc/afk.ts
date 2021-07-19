@@ -6,6 +6,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LongWidthSpace } from '#utils/constants';
 import { requiresLevel } from '#utils/decorators';
+import { isGuildOwner } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -111,7 +112,7 @@ export class UserCommand extends SkyraCommand {
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) return;
 
 		// If the target member is the guild owner, skip:
-		if (member.isGuildOwner()) return;
+		if (isGuildOwner(member)) return;
 
 		// If the target member has higher role hierarchy than Skyra, skip:
 		if (member.roles.highest.position >= me.roles.highest.position) return;
@@ -253,7 +254,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async handleClearNickName(member: GuildMember, name: string) {
 		// If the target member is the guild's owner, return:
-		if (member.isGuildOwner()) return;
+		if (isGuildOwner(member)) return;
 
 		const me = member.guild.me!;
 

@@ -2,6 +2,7 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -146,7 +147,7 @@ export class UserCommand extends SkyraCommand {
 			// Fetch the member for level measuring purposes
 			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
-			return !(await member.isModerator());
+			return !(await isModerator(member));
 		} catch {
 			return true;
 		}

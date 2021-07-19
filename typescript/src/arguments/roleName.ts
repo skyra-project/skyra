@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { isGuildMessage } from '#utils/common';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { RoleMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
 import { Argument, ArgumentContext } from '@sapphire/framework';
@@ -11,7 +12,7 @@ export class UserArgument extends Argument<Role> {
 
 	public async run(parameter: string, context: RoleArgumentContext) {
 		const { message } = context;
-		if (!message.guild) return this.role.run(parameter, context);
+		if (!isGuildMessage(message)) return this.role.run(parameter, context);
 
 		const resolvedRole = this.resolveRole(parameter, message.guild);
 		if (resolvedRole) return this.ok(resolvedRole);

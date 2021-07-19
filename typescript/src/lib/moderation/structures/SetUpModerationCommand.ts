@@ -1,6 +1,7 @@
 import { GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { isAdmin } from '#utils/functions';
 import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import type { Argument, PieceContext } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
@@ -35,7 +36,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 		if (role) return undefined;
 
 		// If there
-		if (!(await message.member!.isAdmin())) {
+		if (!(await isAdmin(message.member!))) {
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 

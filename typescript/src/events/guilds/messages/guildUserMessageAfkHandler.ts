@@ -3,6 +3,7 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { isGuildOwner } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -47,7 +48,7 @@ export class UserEvent extends Event {
 
 	private async removeNickName(message: GuildMessage, oldName: string, prefix: string | Nullish, t: TFunction) {
 		// If the target member is the guild's owner, return:
-		if (message.member.isGuildOwner()) return;
+		if (isGuildOwner(message.member)) return;
 
 		const me = message.guild.me!;
 

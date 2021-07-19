@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { isGuildMessage } from '#utils/common';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
 import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
@@ -12,7 +13,7 @@ export class UserArgument extends Argument<GuildChannel> {
 	}
 
 	public async run(parameter: string, { message, minimum, context, filter }: ChannelArgumentContext) {
-		if (!message.guild) return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelMissingGuild, context });
+		if (!isGuildMessage(message)) return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelMissingGuild, context });
 		filter = this.getFilter(message.author, filter);
 
 		const resChannel = this.resolveChannel(parameter, message.guild);

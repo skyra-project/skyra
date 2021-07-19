@@ -2,6 +2,7 @@ import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { isAdmin, isGuildOwner } from '#utils/functions';
 import {
 	AsyncPreconditionResult,
 	Identifiers,
@@ -47,9 +48,9 @@ export abstract class PermissionsPrecondition extends Precondition {
 		// Bot-owner commands cannot be modified:
 		if (command.permissionLevel === PermissionLevels.BotOwner) return false;
 		// If the author is owner of the guild, skip:
-		if (message.member.isGuildOwner()) return false;
+		if (isGuildOwner(message.member)) return false;
 		// If the author is administrator of the guild, skip:
-		if (await message.member.isAdmin()) return false;
+		if (await isAdmin(message.member)) return false;
 		// In any other case, permission nodes should always run:
 		return true;
 	}

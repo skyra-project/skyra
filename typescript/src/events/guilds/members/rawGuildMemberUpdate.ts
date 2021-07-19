@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { floatPromise } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -31,7 +31,7 @@ export class UserEvent extends Event {
 	private async handleRoleSets(guild: Guild, data: Readonly<GatewayGuildMemberUpdateDispatch['d']>) {
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = await guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
+		const allRoleSets = await readSettings(guild, GuildSettings.Roles.UniqueRoleSets);
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {

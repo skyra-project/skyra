@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import { RateLimitManager } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -12,7 +12,7 @@ export class UserEvent extends Event {
 	private readonly rateLimits = new RateLimitManager(Time.Minute, 1);
 
 	public async run(message: GuildMessage) {
-		const [enabled, multiplier] = await message.guild.readSettings((settings) => [
+		const [enabled, multiplier] = await readSettings(message.guild, (settings) => [
 			this.isEnabled(message, settings),
 			settings[GuildSettings.Social.Multiplier]
 		]);

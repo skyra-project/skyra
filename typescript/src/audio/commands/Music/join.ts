@@ -1,5 +1,5 @@
 import { MusicCommand, Queue, requireUserInVoiceChannel } from '#lib/audio';
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -62,7 +62,7 @@ export class UserMusicCommand extends MusicCommand {
 	}
 
 	private async checkAllowedChannel(message: GuildMessage, voiceChannel: VoiceChannel): Promise<void> {
-		const allowedChannels = await message.guild.readSettings(GuildSettings.Music.AllowedVoiceChannels);
+		const allowedChannels = await readSettings(message.guild, GuildSettings.Music.AllowedVoiceChannels);
 		if (allowedChannels.length === 0) return;
 		if (allowedChannels.includes(voiceChannel.id)) return;
 		this.error(LanguageKeys.Commands.Music.JoinVoiceNotAllowed, { channel: voiceChannel.toString() });

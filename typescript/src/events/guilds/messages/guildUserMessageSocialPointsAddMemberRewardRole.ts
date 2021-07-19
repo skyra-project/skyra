@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, RolesAuto } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings, RolesAuto, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Difference, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
@@ -19,7 +19,7 @@ export class UserEvent extends Event {
 		if (!message.guild.me!.permissions.has(FLAGS.MANAGE_ROLES)) return;
 
 		const points = difference.next;
-		const information = await message.guild.readSettings((settings) => this.getInformation(settings, points));
+		const information = await readSettings(message.guild, (settings) => this.getInformation(settings, points));
 		if (information === null) return;
 
 		const role = await this.ensureRole(message, points, information.role);
@@ -67,7 +67,7 @@ export class UserEvent extends Event {
 		const role = roles.get(autoRole.id);
 		if (role !== undefined) return role;
 
-		const fallbackAutoRole = await message.guild.writeSettings((settings) => {
+		const fallbackAutoRole = await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.Roles.Auto] = settings[GuildSettings.Roles.Auto].filter((entry) => roles.has(entry.id));
 			return this.getNextRole(settings, points);
 		});
@@ -82,7 +82,7 @@ export class UserEvent extends Event {
 		const channel = channels.get(channelID) as TextChannel | NewsChannel | undefined;
 		if (channel !== undefined) return channel;
 
-		await message.guild.writeSettings([[GuildSettings.Social.AchieveChannel, null]]);
+		await writeSettings(message.guild, [[GuildSettings.Social.AchieveChannel, null]]);
 		return message.channel;
 	}
 

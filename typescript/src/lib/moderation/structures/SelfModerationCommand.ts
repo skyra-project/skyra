@@ -1,4 +1,4 @@
-import { AdderKey, configurableKeys, GuildEntity } from '#lib/database';
+import { AdderKey, configurableKeys, GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -100,7 +100,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 		let value = (await this.getValue(args, type)) as unknown;
 
 		const key = this.getProperty(type)!;
-		const t = await message.guild.writeSettings((settings) => {
+		const t = await writeSettings(message.guild, (settings) => {
 			Reflect.set(settings, key, value);
 			return settings.getLanguage();
 		});
@@ -126,7 +126,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	}
 
 	protected async show(message: GuildMessage) {
-		const [enabled, softAction, hardAction, hardActionDuration, adder, t] = await message.guild.readSettings((settings) => [
+		const [enabled, softAction, hardAction, hardActionDuration, adder, t] = await readSettings(message.guild, (settings) => [
 			settings[this.keyEnabled],
 			settings[this.keySoftAction],
 			settings[this.keyHardAction],
@@ -181,7 +181,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 				this.error(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
 			}
 
-			const previousSoftAction = await args.message.guild!.readSettings(this.keySoftAction);
+			const previousSoftAction = await readSettings(args.message.guild!, this.keySoftAction);
 			return SelfModerationCommand.toggle(previousSoftAction, softAction);
 		}
 

@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -11,7 +11,7 @@ import { GuildMember, MessageEmbed } from 'discord.js';
 export class UserEvent extends Event {
 	public async run(member: GuildMember) {
 		const key = GuildSettings.Channels.Logs.MemberAdd;
-		const [logChannelId, t] = await member.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		const [logChannelId, t] = await readSettings(member, (settings) => [settings[key], settings.getLanguage()]);
 		if (isNullish(logChannelId)) return;
 
 		this.context.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>

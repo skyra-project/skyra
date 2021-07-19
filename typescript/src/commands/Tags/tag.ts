@@ -1,5 +1,5 @@
 import { getFromID, InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
-import { CustomCommand, GuildSettings } from '#lib/database';
+import { CustomCommand, GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		const id = (await args.pick('string')).toLowerCase();
 		const content = await args.rest('string');
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 			if (tags.some((command) => command.id === id)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
@@ -47,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
@@ -65,7 +65,7 @@ export class UserCommand extends SkyraCommand {
 		const input = (await args.pick('string')).toLowerCase();
 		let output = (await args.pick('string')).toLowerCase();
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 
 			// Get destination tag:
@@ -104,7 +104,7 @@ export class UserCommand extends SkyraCommand {
 		const previous = (await args.pick('string')).toLowerCase();
 		const next = (await args.pick('string')).toLowerCase();
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 
 			// Get previous tag:
@@ -125,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 
 	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.CustomCommands].length = 0;
 		});
 
@@ -137,7 +137,7 @@ export class UserCommand extends SkyraCommand {
 		const id = (await args.pick('string')).toLowerCase();
 		const content = await args.rest('string');
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
@@ -153,7 +153,7 @@ export class UserCommand extends SkyraCommand {
 	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get tags, prefix, and language
-		const [tags, prefix] = await message.guild.readSettings([GuildSettings.CustomCommands, GuildSettings.Prefix]);
+		const [tags, prefix] = await readSettings(message.guild, [GuildSettings.CustomCommands, GuildSettings.Prefix]);
 		if (!tags.length) this.error(LanguageKeys.Commands.Tags.TagListEmpty);
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -175,7 +175,7 @@ export class UserCommand extends SkyraCommand {
 	@requiresPermissions(['EMBED_LINKS'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
-		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
+		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);
 		const tag = getFromID(id, tags);
 		if (tag === null) return null;
 
@@ -191,7 +191,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
-		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
+		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);
 		const tag = getFromID(id, tags);
 		return tag ? message.send(codeBlock('md', tag.content.toString()), { allowedMentions: { users: [], roles: [] } }) : null;
 	}

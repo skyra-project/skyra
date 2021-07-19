@@ -1,4 +1,4 @@
-import { CommandMatcher, GuildEntity, GuildSettings } from '#lib/database';
+import { CommandMatcher, GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import type { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -16,7 +16,7 @@ export class UserPrecondition extends Precondition {
 	}
 
 	private async runGuild(message: GuildMessage, command: Command, context: Precondition.Context): Precondition.AsyncResult {
-		const disabled = await message.guild.readSettings((settings) => this.checkGuildDisabled(settings, message, command as SkyraCommand));
+		const disabled = await readSettings(message.guild, (settings) => this.checkGuildDisabled(settings, message, command as SkyraCommand));
 		if (disabled) {
 			const isModerator = await message.member.isModerator();
 			if (!isModerator) return this.error({ context: { ...context, silent: true } });

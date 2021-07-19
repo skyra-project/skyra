@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -21,7 +21,7 @@ export class UserEvent extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 
 	public async run(member: GuildMember) {
-		const [channelID, content, timer, t] = await member.guild.readSettings((settings) => [
+		const [channelID, content, timer, t] = await readSettings(member, (settings) => [
 			settings[GuildSettings.Channels.Greeting],
 			settings[GuildSettings.Messages.Greeting],
 			settings[GuildSettings.Messages.GreetingAutoDelete],
@@ -38,7 +38,7 @@ export class UserEvent extends Event {
 			return;
 		}
 
-		return member.guild.writeSettings([[GuildSettings.Channels.Greeting, null]]);
+		return writeSettings(member, [[GuildSettings.Channels.Greeting, null]]);
 	}
 
 	private transformMessage(str: string, t: TFunction, guild: Guild, user: User) {

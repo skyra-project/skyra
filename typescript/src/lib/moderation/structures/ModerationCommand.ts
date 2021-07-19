@@ -1,4 +1,4 @@
-import { GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
@@ -41,7 +41,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
-		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason] = await message.guild.readSettings([
+		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModerationAutoDelete,
 			GuildSettings.Messages.ModerationMessageDisplay,
 			GuildSettings.Messages.ModerationReasonDisplay
@@ -138,7 +138,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 
 	protected async getTargetDM(message: GuildMessage, args: Args, target: User): Promise<ModerationActionsSendOptions> {
-		const [nameDisplay, enabledDM] = await message.guild.readSettings([
+		const [nameDisplay, enabledDM] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModeratorNameDisplay,
 			GuildSettings.Messages.ModerationDM
 		]);

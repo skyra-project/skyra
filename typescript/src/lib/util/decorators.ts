@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
 import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
-import { UserError } from '@sapphire/framework';
+import { Awaited, UserError } from '@sapphire/framework';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
 
 /**
@@ -14,7 +14,7 @@ export interface Inhibitor {
 	/**
 	 * The arguments passed to the class' method
 	 */
-	(...args: any[]): boolean | Promise<boolean>;
+	(...args: any[]): Awaited<boolean>;
 }
 
 /**

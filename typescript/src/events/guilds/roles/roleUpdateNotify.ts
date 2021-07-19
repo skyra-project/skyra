@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
@@ -12,15 +12,12 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<EventOptions>({ event: Events.RoleUpdate })
 export class UserEvent extends Event<Events.RoleUpdate> {
 	public async run(previous: Role, next: Role) {
-		const [channelID, t] = await next.guild.readSettings((settings) => [
-			settings[GuildSettings.Channels.Logs.RoleUpdate],
-			settings.getLanguage()
-		]);
+		const [channelID, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleUpdate], settings.getLanguage()]);
 		if (isNullish(channelID)) return;
 
 		const channel = next.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.guild.writeSettings([[GuildSettings.Channels.Logs.RoleUpdate, null]]);
+			await writeSettings(next, [[GuildSettings.Channels.Logs.RoleUpdate, null]]);
 			return;
 		}
 

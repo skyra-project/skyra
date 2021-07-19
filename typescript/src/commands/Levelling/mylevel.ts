@@ -1,4 +1,4 @@
-import { GuildSettings, RolesAuto } from '#lib/database';
+import { GuildSettings, readSettings, RolesAuto } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 		const { members } = this.context.db;
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		const memberPoints = memberSettings?.points ?? 0;
-		const roles = await message.guild.readSettings(GuildSettings.Roles.Auto);
+		const roles = await readSettings(message.guild, GuildSettings.Roles.Auto);
 		const nextRole = this.getLatestRole(memberPoints, roles);
 		const title = nextRole
 			? `\n${args.t(LanguageKeys.Commands.Social.MyLevelNext, {

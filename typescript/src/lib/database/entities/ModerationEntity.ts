@@ -19,6 +19,7 @@ import { Duration } from '@sapphire/time-utilities';
 import { isNullishOrZero, isNumber, NonNullObject, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { readSettings } from '../settings';
 import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
@@ -312,7 +313,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
-		const [prefix, t] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+		const [prefix, t] = await readSettings(manager.guild, (settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
 		const descriptionData: ModerationManagerDescriptionData = {
 			type: this.title,

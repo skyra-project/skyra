@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -15,7 +15,7 @@ export class UserEvent extends Event {
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = await channel.guild.readSettings((settings) =>
+		const roleEntry = await readSettings(channel, (settings) =>
 			settings[GuildSettings.ReactionRoles].find(
 				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
 			)

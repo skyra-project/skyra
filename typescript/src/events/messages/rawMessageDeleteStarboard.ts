@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -26,7 +26,7 @@ export class UserEvent extends Event {
 			const [result] = results.raw;
 
 			// Get channel
-			const channel = await guild.readSettings(GuildSettings.Starboard.Channel);
+			const channel = await readSettings(guild, GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			if (result && result.star_message_id) {

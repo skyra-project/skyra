@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Time } from '#utils/constants';
 import { resolveOnErrorCodes } from '#utils/util';
@@ -30,7 +30,7 @@ export class UserEvent extends Event {
 				.execute();
 
 			// Get channel
-			const channel = await guild.readSettings(GuildSettings.Starboard.Channel);
+			const channel = await readSettings(guild, GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			const filteredResults: string[] = [];

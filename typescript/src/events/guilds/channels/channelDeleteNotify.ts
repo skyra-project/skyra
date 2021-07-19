@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -17,7 +17,7 @@ export class UserEvent extends Event<Events.ChannelDelete> {
 	public async run(next: Channel) {
 		if (isDMChannel(next)) return;
 
-		const [channelID, t] = await next.guild.readSettings((settings) => [
+		const [channelID, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelDelete],
 			settings.getLanguage()
 		]);
@@ -25,7 +25,7 @@ export class UserEvent extends Event<Events.ChannelDelete> {
 
 		const channel = next.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (channel === undefined) {
-			await next.guild.writeSettings([[GuildSettings.Channels.Logs.ChannelDelete, null]]);
+			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.ChannelDelete, null]]);
 			return;
 		}
 

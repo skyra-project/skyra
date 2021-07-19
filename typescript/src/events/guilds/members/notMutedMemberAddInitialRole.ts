@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
@@ -7,7 +7,7 @@ import type { GuildMember } from 'discord.js';
 @ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
 export class UserEvent extends Event {
 	public async run(member: GuildMember) {
-		const [initial, initialHumans, initialBots] = await member.guild.readSettings([
+		const [initial, initialHumans, initialBots] = await readSettings(member, [
 			GuildSettings.Roles.Initial,
 			GuildSettings.Roles.InitialHumans,
 			GuildSettings.Roles.InitialBots
@@ -22,6 +22,6 @@ export class UserEvent extends Event {
 			return member.roles.add(role);
 		}
 
-		return member.guild.writeSettings([[GuildSettings.Roles.Initial, null]]);
+		return writeSettings(member, [[GuildSettings.Roles.Initial, null]]);
 	}
 }

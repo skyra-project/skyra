@@ -1,4 +1,4 @@
-import { CommandMatcher, GuildSettings } from '#lib/database';
+import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -19,7 +19,7 @@ export class UserEvent extends Event<Events.MessageDeleteBulk> {
 		// If the auto-delete behavior cannot be customized, delete all:
 		if (!this.canBeCustomized(first)) return this.deleteAll(messages);
 
-		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await first.guild.readSettings([
+		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await readSettings(first.guild, [
 			GuildSettings.Messages.AutoDelete.IgnoredAll,
 			GuildSettings.Messages.AutoDelete.IgnoredChannels,
 			GuildSettings.Messages.AutoDelete.IgnoredCommands,

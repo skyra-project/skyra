@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = await this.askForRole(message, args, context);
 			if (role.success) {
-				await message.guild.writeSettings([[GuildSettings.Roles.Muted, role.value.id]]);
+				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
 				if (message.reactable) return message.react(resolveEmoji(Emojis.GreenTick)!);
 				return message.send(
 					t(LanguageKeys.Commands.Admin.ConfUpdated, {

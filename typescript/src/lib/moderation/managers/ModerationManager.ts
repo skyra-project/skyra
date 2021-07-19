@@ -1,4 +1,4 @@
-import { GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
@@ -51,7 +51,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 * The channel where messages have to be sent.
 	 */
 	public async fetchChannel() {
-		const channelID = await this.guild.readSettings(GuildSettings.Channels.Logs.Moderation);
+		const channelID = await readSettings(this.guild, GuildSettings.Channels.Logs.Moderation);
 		if (isNullish(channelID)) return null;
 		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}

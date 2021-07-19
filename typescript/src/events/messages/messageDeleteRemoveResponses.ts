@@ -1,4 +1,4 @@
-import { CommandMatcher, GuildSettings } from '#lib/database';
+import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -30,7 +30,7 @@ export class UserEvent extends Event {
 	private async shouldBeIgnored(message: Message): Promise<boolean> {
 		if (!this.canBeCustomized(message)) return false;
 
-		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await message.guild.readSettings([
+		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await readSettings(message.guild, [
 			GuildSettings.Messages.AutoDelete.IgnoredAll,
 			GuildSettings.Messages.AutoDelete.IgnoredChannels,
 			GuildSettings.Messages.AutoDelete.IgnoredCommands,

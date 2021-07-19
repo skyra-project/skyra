@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
@@ -29,7 +29,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		const regExp = await message.guild.readSettings((settings) => settings.wordFilterRegExp);
+		const regExp = await readSettings(message.guild, (settings) => settings.wordFilterRegExp);
 		if (regExp === null) return null;
 
 		const result = await this.context.workers.send({ type: IncomingType.RunRegExp, regExp, content }, 500);

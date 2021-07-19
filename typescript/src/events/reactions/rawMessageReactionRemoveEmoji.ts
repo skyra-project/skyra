@@ -1,3 +1,4 @@
+import { readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
 import { compareEmoji } from '#utils/util';
@@ -14,7 +15,7 @@ export class UserEvent extends Event {
 		const guild = this.context.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
-		const [emoji, channel] = await guild.readSettings((settings) => [settings.starboardEmoji, settings.starboardChannel]);
+		const [emoji, channel] = await readSettings(guild, (settings) => [settings.starboardEmoji, settings.starboardChannel]);
 		if (!compareEmoji(emoji, data.emoji)) return;
 
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);

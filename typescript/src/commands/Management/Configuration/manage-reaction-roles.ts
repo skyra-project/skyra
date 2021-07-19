@@ -1,4 +1,4 @@
-import { GuildSettings, ReactionRole } from '#lib/database';
+import { GuildSettings, ReactionRole, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -33,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 				role: role.id
 			};
 
-			await message.guild.writeSettings((settings) => {
+			await writeSettings(message.guild, (settings) => {
 				settings[GuildSettings.ReactionRoles].push(reactionRole);
 			});
 
@@ -58,7 +58,7 @@ export class UserCommand extends SkyraCommand {
 			channel: reaction.channel.id,
 			role: role.id
 		};
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.ReactionRoles].push(reactionRole);
 		});
 
@@ -70,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 		const role = await args.pick('roleName');
 		const messageID = await args.pick('snowflake');
 
-		const reactionRole = await message.guild.writeSettings((settings) => {
+		const reactionRole = await writeSettings(message.guild, (settings) => {
 			const reactionRoles = settings[GuildSettings.ReactionRoles];
 
 			const reactionRoleIndex = reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageID && entry.role === role.id);
@@ -91,7 +91,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const reactionRoles = settings[GuildSettings.ReactionRoles];
 
 			if (reactionRoles.length === 0) {
@@ -106,7 +106,7 @@ export class UserCommand extends SkyraCommand {
 
 	@requiresPermissions('EMBED_LINKS')
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
-		const reactionRoles = await message.guild.readSettings(GuildSettings.ReactionRoles);
+		const reactionRoles = await readSettings(message.guild, GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
 			this.error(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}

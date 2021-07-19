@@ -1,4 +1,4 @@
-import { GuildSettings, TriggerIncludes } from '#lib/database';
+import { GuildSettings, readSettings, TriggerIncludes, writeSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +11,7 @@ export class UserEvent extends Event {
 		// Triggers should not run on edits:
 		if (message.editedTimestamp) return;
 
-		const triggers = await message.guild.readSettings(GuildSettings.Trigger.Includes);
+		const triggers = await readSettings(message.guild, GuildSettings.Trigger.Includes);
 		if (triggers.length <= 0) return;
 
 		const content = message.content.toLowerCase();
@@ -33,7 +33,7 @@ export class UserEvent extends Event {
 			if (error.code === RESTJSONErrorCodes.ReactionWasBlocked) return;
 			// The emoji has been deleted or the bot is not in the list of allowed bots
 			if (error.code === RESTJSONErrorCodes.UnknownEmoji) {
-				await message.guild.writeSettings((settings) => {
+				await writeSettings(message.guild, (settings) => {
 					const triggerIndex = settings[GuildSettings.Trigger.Includes].findIndex((element) => element === trigger);
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);
 				});

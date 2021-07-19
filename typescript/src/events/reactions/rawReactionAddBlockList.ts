@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/moderation';
@@ -24,7 +24,8 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings(
+		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await readSettings(
+			data.guild,
 			(settings) => [
 				settings[GuildSettings.Selfmod.Reactions.Enabled],
 				settings[GuildSettings.Selfmod.Reactions.Blocked],
@@ -58,7 +59,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	}
 
 	protected async preProcess([data, emoji]: Readonly<ArgumentType>) {
-		return (await data.guild.readSettings(GuildSettings.Selfmod.Reactions.Blocked)).includes(emoji) ? 1 : null;
+		return (await readSettings(data.guild, GuildSettings.Selfmod.Reactions.Blocked)).includes(emoji) ? 1 : null;
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
@@ -104,7 +105,7 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 	}
 
 	private async hasPermissions(member: GuildMember) {
-		const roles = await member.guild.readSettings(GuildSettings.Roles.Moderator);
+		const roles = await readSettings(member, GuildSettings.Roles.Moderator);
 		return roles.length === 0 ? member.permissions.has(Permissions.FLAGS.BAN_MEMBERS) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 	}
 }

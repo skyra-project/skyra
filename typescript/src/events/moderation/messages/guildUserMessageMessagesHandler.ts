@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -26,7 +26,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		// Retrieve the threshold
-		const [threshold, queueSize] = await message.guild.readSettings([
+		const [threshold, queueSize] = await readSettings(message.guild, [
 			GuildSettings.Selfmod.Messages.Maximum,
 			GuildSettings.Selfmod.Messages.QueueSize
 		]);

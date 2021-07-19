@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, UniqueRoleSet } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings, UniqueRoleSet, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 		const roles = await args.repeat('roleName');
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			// The set does exist so we want to only REMOVE provided roles from it
 			// Create a new array that we can use to overwrite the existing one in settings
 			settings[GuildSettings.Roles.UniqueRoleSets] = settings[GuildSettings.Roles.UniqueRoleSets].map((set) =>
@@ -40,19 +40,19 @@ export class UserCommand extends SkyraCommand {
 		const [name, sets] = await Promise.all([
 			args.pick('string').catch(() => null),
 			// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-			message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets)
+			readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets)
 		]);
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetResetEmpty);
 
 		if (!name) {
-			await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, []]]);
+			await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, []]]);
 			return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetResetAll));
 		}
 
 		const arrayIndex = sets.findIndex((set) => set.name === name);
 		if (arrayIndex === -1) this.error(LanguageKeys.Commands.Admin.RoleSetResetNotExists, { name });
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.Roles.UniqueRoleSets].splice(arrayIndex, 1);
 		});
 
@@ -64,7 +64,7 @@ export class UserCommand extends SkyraCommand {
 		const name = await args.pick('string');
 
 		// Get all role sets from settings and check if there is an existing set with the name provided by the user
-		const sets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
+		const sets = await readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets);
 		const set = sets.find((set) => set.name === name);
 
 		// If this role set does not exist we have to create it
@@ -85,14 +85,14 @@ export class UserCommand extends SkyraCommand {
 			return { name, roles: newRoles };
 		});
 
-		await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, newSets]]);
+		await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, newSets]]);
 		return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetUpdated, { name }));
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get all rolesets from settings
-		const sets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
+		const sets = await readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets);
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 
 		const list = await this.handleList(message, args, sets);
@@ -128,12 +128,12 @@ export class UserCommand extends SkyraCommand {
 		if (changed) {
 			// If after cleaning up, all sets end up empty, reset and return error:
 			if (list.length === 0) {
-				await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, []]]);
+				await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, []]]);
 				this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 			}
 
 			// Else, clean up:
-			await message.guild.writeSettings((settings) => this.cleanRoleSets(message, settings));
+			await writeSettings(message.guild, (settings) => this.cleanRoleSets(message, settings));
 		}
 
 		return list;
@@ -151,7 +151,7 @@ export class UserCommand extends SkyraCommand {
 		const roles = await args.repeat('roleName');
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const created = await message.guild.writeSettings((settings) => {
+		const created = await writeSettings(message.guild, (settings) => {
 			const allRoleSets = settings[GuildSettings.Roles.UniqueRoleSets];
 			const roleSet = allRoleSets.some((set) => set.name === name);
 

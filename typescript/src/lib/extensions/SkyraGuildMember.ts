@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import { OWNERS } from '#root/config';
-import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
+import { Awaited, hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
 
@@ -30,20 +30,20 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 		return null;
 	}
 
-	public async isDJ() {
+	public isDJ(): Awaited<boolean> {
 		return (
 			this.isGuildOwner() ||
 			this.isOnlyListener() ||
-			this.guild.readSettings((settings) => this.checkDj(settings) || this.checkModerator(settings) || this.checkAdministrator(settings))
+			readSettings(this, (settings) => this.checkDj(settings) || this.checkModerator(settings) || this.checkAdministrator(settings))
 		);
 	}
 
-	public async isModerator() {
-		return this.isGuildOwner() || this.guild.readSettings((settings) => this.checkModerator(settings) || this.checkAdministrator(settings));
+	public isModerator(): Awaited<boolean> {
+		return this.isGuildOwner() || readSettings(this, (settings) => this.checkModerator(settings) || this.checkAdministrator(settings));
 	}
 
-	public async isAdmin() {
-		return this.isGuildOwner() || this.guild.readSettings((settings) => this.checkAdministrator(settings));
+	public isAdmin(): Awaited<boolean> {
+		return this.isGuildOwner() || readSettings(this, (settings) => this.checkAdministrator(settings));
 	}
 
 	public isGuildOwner() {
@@ -102,9 +102,9 @@ declare module 'discord.js' {
 		fetchRank(): Promise<number>;
 		isGuildOwner(): boolean;
 		isOnlyListener(): boolean;
-		isDJ(): Promise<boolean>;
-		isModerator(): Promise<boolean>;
-		isAdmin(): Promise<boolean>;
+		isDJ(): Awaited<boolean>;
+		isModerator(): Awaited<boolean>;
+		isAdmin(): Awaited<boolean>;
 		isOwner(): boolean;
 		canManage(channel: VoiceChannel): Promise<boolean>;
 

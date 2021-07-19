@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 		const channel = await args.pick('textChannelName');
 		const time = await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute * 2 });
 
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutoDelete.findIndex(([id]) => id === channel.id);
 			const value: readonly [string, number] = [channel.id, time];
@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutoDelete.findIndex(([id]) => id === channel.id);
 
@@ -52,12 +52,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
-		await message.guild.writeSettings([[GuildSettings.CommandAutoDelete, []]]);
+		await writeSettings(message.guild, [[GuildSettings.CommandAutoDelete, []]]);
 		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset));
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
-		const commandAutoDelete = await message.guild.readSettings(GuildSettings.CommandAutoDelete);
+		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
 		if (!commandAutoDelete.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];

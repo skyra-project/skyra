@@ -1,3 +1,4 @@
+import { readSettings } from '#lib/database';
 import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -92,7 +93,7 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * @param message The message instance to check with
  */
 export async function announcementCheck(message: GuildMessage) {
-	const [announcementID] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Subscriber]]);
+	const [announcementID] = await readSettings(message.guild, (settings) => [settings[GuildSettings.Roles.Subscriber]]);
 	if (!announcementID) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
 	const role = message.guild.roles.cache.get(announcementID);

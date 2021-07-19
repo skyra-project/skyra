@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
@@ -22,7 +22,7 @@ export class UserEvent extends Event {
 
 		// Handle the case the user is muted
 		const key = GuildSettings.Channels.Logs.MemberAdd;
-		const [logChannelId, roleId, t] = await member.guild.readSettings((settings) => [
+		const [logChannelId, roleId, t] = await readSettings(member, (settings) => [
 			settings[key],
 			settings[GuildSettings.Roles.Muted],
 			settings.getLanguage()
@@ -30,7 +30,7 @@ export class UserEvent extends Event {
 		if (roleId && stickyRoles.includes(roleId)) {
 			// Handle mute
 			const role = member.guild.roles.cache.get(roleId);
-			floatPromise(role ? member.roles.add(role) : member.guild.writeSettings([[GuildSettings.Roles.Muted, null]]));
+			floatPromise(role ? member.roles.add(role) : writeSettings(member, [[GuildSettings.Roles.Muted, null]]));
 
 			// Handle log
 			this.context.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>

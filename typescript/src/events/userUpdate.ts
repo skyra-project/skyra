@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
@@ -24,7 +24,7 @@ export class UserEvent extends Event {
 	}
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
-		const [logChannelId, language] = await guild.readSettings((settings) => [
+		const [logChannelId, language] = await readSettings(guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.MemberUserNameUpdate],
 			settings.getLanguage()
 		]);

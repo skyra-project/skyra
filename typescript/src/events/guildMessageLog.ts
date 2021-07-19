@@ -1,4 +1,4 @@
-import type { GuildEntity } from '#lib/database';
+import { GuildEntity, writeSettings } from '#lib/database';
 import { Event } from '@sapphire/framework';
 import { isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
@@ -14,7 +14,7 @@ export class UserEvent extends Event {
 
 		const channel = guild.channels.cache.get(logChannelId) as TextChannel;
 		if (!channel) {
-			await guild.writeSettings([[key, null]]);
+			await writeSettings(guild, [[key, null]]);
 			return;
 		}
 

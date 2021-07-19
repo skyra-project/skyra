@@ -1,4 +1,4 @@
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { floatPromise } from '#utils/util';
@@ -21,7 +21,7 @@ export class UserEvent extends Event {
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
-			const [allSubscriptions, t] = await guild.readSettings((settings) => [
+			const [allSubscriptions, t] = await readSettings(guild, (settings) => [
 				settings[GuildSettings.Notifications.Stream.Twitch.Streamers],
 				settings.getLanguage()
 			]);

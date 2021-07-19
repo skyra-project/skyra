@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
 			const indexOfChannel = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
@@ -40,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
 			const indexOfChannel = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
 			const entryIndex = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
-		const disabledCommandsChannels = await message.guild.readSettings(GuildSettings.DisabledCommandChannels);
+		const disabledCommandsChannels = await readSettings(message.guild, GuildSettings.DisabledCommandChannels);
 
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 		if (entry?.commands.length) {

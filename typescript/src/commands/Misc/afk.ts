@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
@@ -91,7 +91,7 @@ export class UserCommand extends SkyraCommand {
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
 
-		const [prefix, force, roleID] = await message.guild.readSettings((settings) => [
+		const [prefix, force, roleID] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Afk.Prefix] ?? args.t(LanguageKeys.Commands.Misc.AfkPrefix),
 			settings[GuildSettings.Afk.PrefixForce],
 			settings[GuildSettings.Afk.Role]
@@ -125,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 
 		const role = member.guild.roles.cache.get(roleID);
 		if (role === undefined) {
-			await member.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			await writeSettings(member, [[GuildSettings.Afk.Role, null]]);
 			return;
 		}
 
@@ -324,7 +324,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getRole(member: GuildMember) {
-		const roleID = await member.guild.readSettings(GuildSettings.Afk.Role);
+		const roleID = await readSettings(member, GuildSettings.Afk.Role);
 		return this.handleRole(member, roleID);
 	}
 
@@ -333,7 +333,7 @@ export class UserCommand extends SkyraCommand {
 
 		const role = member.guild.roles.cache.get(roleID);
 		if (role === undefined) {
-			await member.guild.writeSettings([[GuildSettings.Afk.Role, null]]);
+			await writeSettings(member, [[GuildSettings.Afk.Role, null]]);
 			return null;
 		}
 

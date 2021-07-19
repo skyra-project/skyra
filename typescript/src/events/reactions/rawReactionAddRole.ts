@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -7,7 +7,7 @@ import { Event, EventOptions } from '@sapphire/framework';
 @ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export class UserEvent extends Event {
 	public async run(parsed: LLRCData, emoji: string) {
-		const [roleEntry, allRoleSets] = await parsed.guild.readSettings((settings) => [
+		const [roleEntry, allRoleSets] = await readSettings(parsed.guild, (settings) => [
 			settings[GuildSettings.ReactionRoles].find(
 				(entry) => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true)
 			),
@@ -25,7 +25,7 @@ export class UserEvent extends Event {
 			memberRoles.delete(parsed.guild.id);
 
 			for (const set of allRoleSets) {
-				// If the set doesnt have the role being added to the user skip
+				// If the set doesn't have the role being added to the user skip
 				if (!set.roles.includes(roleEntry.role)) continue;
 				// For every role that the user has check if it is in this set and remove it
 				for (const id of memberRoles) if (set.roles.includes(id)) memberRoles.delete(id);

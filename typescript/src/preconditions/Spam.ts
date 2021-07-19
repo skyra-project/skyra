@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RateLimitManager } from '#lib/structures';
 import { AsyncPreconditionResult, Precondition } from '@sapphire/framework';
@@ -10,14 +10,14 @@ export class UserPrecondition extends Precondition {
 	public async run(message: Message): AsyncPreconditionResult {
 		if (message.guild === null) return this.ok();
 
-		const channelID = await message.guild.readSettings(GuildSettings.Channels.Spam);
+		const channelID = await readSettings(message.guild, GuildSettings.Channels.Spam);
 		if (!channelID || channelID === message.channel.id) return this.ok();
 
 		if (message.member!.isOwner() || (await message.member!.isModerator())) return this.ok();
 
 		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {
-			await message.guild.writeSettings([[GuildSettings.Channels.Spam, null]]);
+			await writeSettings(message.guild, [[GuildSettings.Channels.Spam, null]]);
 			return this.ok();
 		}
 

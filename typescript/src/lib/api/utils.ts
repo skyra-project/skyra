@@ -1,3 +1,4 @@
+import { readSettings } from '#lib/database';
 import * as GuildSettings from '#lib/database/keys/settings/All';
 import type { SkyraCommand } from '#lib/structures';
 import { RateLimitManager } from '#lib/structures/external/ratelimit/RateLimitManager';
@@ -53,7 +54,7 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 export async function canManage(guild: Guild, member: GuildMember): Promise<boolean> {
 	if (guild.ownerID === member.id) return true;
 
-	const [roles, pnodes] = await guild.readSettings((settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
+	const [roles, pnodes] = await readSettings(guild, (settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
 
 	return isAdmin(member, roles) && (pnodes.run(member, Store.injectedContext.stores.get('commands').get('conf') as SkyraCommand) ?? true);
 }

@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { Unlock } from '#utils/moderationConstants';
@@ -16,7 +16,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		const [banAdd, banRemove] = await message.guild.readSettings([GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
+		const [banAdd, banRemove] = await readSettings(message.guild, [GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
 		return banAdd || banRemove ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 

@@ -52,7 +52,6 @@ declare module 'discord.js' {
 		readonly leaderboard: Leaderboard;
 		readonly llrCollectors: Set<LongLivingReactionCollector>;
 		readonly schedules: ScheduleManager;
-		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
 		readonly version: string;
 		readonly webhookError: Webhook | null;
@@ -82,6 +81,7 @@ declare module '@sapphire/pieces' {
 		db: DbSet;
 		grpc: ModelStore;
 		schedule: ScheduleManager;
+		settings: SettingsManager;
 		workers: WorkerManager;
 	}
 }

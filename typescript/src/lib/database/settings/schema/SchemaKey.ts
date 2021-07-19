@@ -9,6 +9,8 @@ import { isNullish, NonNullObject } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import type { SchemaGroup } from './SchemaGroup';
 
+const container = Store.injectedContext;
+
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**
 	 * The i18n key for the configuration key.
@@ -84,12 +86,8 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.dashboardOnly = options.dashboardOnly ?? false;
 	}
 
-	public get client() {
-		return Store.injectedContext.client;
-	}
-
 	public get serializer(): Serializer<GuildEntity[K]> {
-		const value = this.client.settings.serializers.get(this.type);
+		const value = container.settings.serializers.get(this.type);
 		if (typeof value === 'undefined') throw new Error(`The serializer for '${this.type}' does not exist.`);
 		return value as Serializer<GuildEntity[K]>;
 	}

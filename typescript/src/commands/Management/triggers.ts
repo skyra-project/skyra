@@ -1,4 +1,4 @@
-import { GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
+import { GuildSettings, readSettings, TriggerAlias, TriggerIncludes, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		const type = await args.pick(UserCommand.type);
 		const input = (await args.pick('string')).toLowerCase();
 		const output = type === Type.Alias ? (await args.pick('command')).name : await args.pick('emoji');
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const key = this.getListName(type);
 
 			const list = settings[key];
@@ -45,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const type = await args.pick(UserCommand.type);
 		const input = (await args.pick('string')).toLowerCase();
-		await message.guild.writeSettings((settings) => {
+		await writeSettings(message.guild, (settings) => {
 			const key = this.getListName(type);
 
 			const list = settings[key];
@@ -60,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 
 	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage) {
-		const [aliases, includes] = await message.guild.readSettings([GuildSettings.Trigger.Alias, GuildSettings.Trigger.Includes]);
+		const [aliases, includes] = await readSettings(message.guild, [GuildSettings.Trigger.Alias, GuildSettings.Trigger.Includes]);
 
 		const output: string[] = [];
 		for (const alias of aliases) {

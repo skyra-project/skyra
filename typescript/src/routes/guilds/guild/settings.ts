@@ -1,5 +1,5 @@
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
-import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
+import { configurableKeys, GuildEntity, isSchemaKey, readSettings, SerializerUpdateContext, writeSettings } from '#lib/database';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -22,7 +22,7 @@ export class UserRoute extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
-		return guild.readSettings((settings) => response.json(settings));
+		return readSettings(guild, (settings) => response.json(settings));
 	}
 
 	@authenticated()
@@ -46,7 +46,7 @@ export class UserRoute extends Route {
 		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(HttpCodes.BadRequest);
 
 		try {
-			const settings = await guild.writeSettings(async (settings) => {
+			const settings = await writeSettings(guild, async (settings) => {
 				const pairs = await this.validateAll(settings, guild, entries);
 
 				for (const [key, value] of pairs) {

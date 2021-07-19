@@ -7,7 +7,7 @@ export class UserEvent extends Event {
 	public run(data: GatewayGuildDeleteDispatch['d']) {
 		if (data.unavailable) return;
 
-		this.context.client.settings.guilds.delete(data.id);
+		this.context.settings.guilds.delete(data.id);
 		this.context.client.audio?.queues.delete(data.id);
 	}
 }

@@ -8,6 +8,7 @@ import { TimerManager } from '@sapphire/time-utilities';
 import { Message, Webhook } from 'discord.js';
 import Redis from 'ioredis';
 import { join } from 'path';
+import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { envIsDefined, envParseBoolean, envParseInteger, envParseString } from './env';
 import './extensions';
@@ -38,12 +39,6 @@ export class SkyraClient extends SapphireClient {
 	 */
 	@enumerable(false)
 	public schedules: ScheduleManager;
-
-	/**
-	 * The settings manager
-	 */
-	@enumerable(false)
-	public settings: SettingsManager = new SettingsManager(this);
 
 	/**
 	 * The webhook to use for the error event
@@ -81,8 +76,10 @@ export class SkyraClient extends SapphireClient {
 		// Workers
 		this.context.workers = new WorkerManager();
 
+		this.context.settings = new SettingsManager(this);
+
 		// Analytics
-		this.schedules = new ScheduleManager(this);
+		this.schedules = new ScheduleManager();
 		this.context.schedule = this.schedules;
 
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
@@ -131,7 +128,7 @@ export class SkyraClient extends SapphireClient {
 	 */
 	public fetchPrefix = async (message: Message) => {
 		if (!message.guild) return [process.env.CLIENT_PREFIX, ''] as readonly string[];
-		return (await message.guild?.readSettings(GuildSettings.Prefix)) ?? process.env.CLIENT_PREFIX;
+		return readSettings(message.guild, GuildSettings.Prefix);
 	};
 
 	/**
@@ -139,6 +136,6 @@ export class SkyraClient extends SapphireClient {
 	 * @param message The message that gives context.
 	 */
 	public fetchLanguage = (message: I18nContext) => {
-		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
+		return message.guild ? readSettings(message.guild, GuildSettings.Language) : 'en-US';
 	};
 }

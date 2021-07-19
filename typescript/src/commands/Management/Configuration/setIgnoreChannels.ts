@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
-		const [oldLength, newLength] = await message.guild.writeSettings((settings) => {
+		const [oldLength, newLength] = await writeSettings(message.guild, (settings) => {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];
 			const oldLength = ignoredChannels.length;
 

@@ -1,4 +1,4 @@
-import { GuildSettings, UserEntity } from '#lib/database';
+import { GuildSettings, readSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -131,7 +131,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async userList(message: GuildMessage, t: TFunction) {
-		const prefix = await message.guild.readSettings(GuildSettings.Prefix);
+		const prefix = await readSettings(message.guild, GuildSettings.Prefix);
 
 		const { users } = this.context.db;
 		const user = await users.ensureProfile(message.author.id);

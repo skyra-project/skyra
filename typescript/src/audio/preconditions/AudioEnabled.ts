@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Identifiers, Precondition } from '@sapphire/framework';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
@@ -11,7 +11,7 @@ export class UserPrecondition extends Precondition {
 			return this.error({ identifier: Identifiers.PreconditionGuildOnly });
 		}
 
-		const allowedRoles = await message.guild.readSettings(GuildSettings.Music.AllowedRoles);
+		const allowedRoles = await readSettings(message.guild, GuildSettings.Music.AllowedRoles);
 		if (allowedRoles.length === 0) return this.ok();
 		if (hasAtLeastOneKeyInMap(message.member!.roles.cache, allowedRoles)) return this.ok();
 

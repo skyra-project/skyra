@@ -1,4 +1,4 @@
-import { GuildSettings, SuggestionEntity } from '#lib/database';
+import { GuildSettings, readSettings, SuggestionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		const action = await args.pick(UserCommand.action);
 		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.rest('string');
 
-		const [shouldDM, shouldHideAuthor, shouldRePostSuggestion] = await message.guild.readSettings([
+		const [shouldDM, shouldHideAuthor, shouldRePostSuggestion] = await readSettings(message.guild, [
 			GuildSettings.Suggestions.OnAction.DM,
 			GuildSettings.Suggestions.OnAction.HideAuthor,
 			GuildSettings.Suggestions.OnAction.RePostMessage
@@ -107,7 +107,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static suggestion = Args.make<SuggestionData>(async (parameter, { args, argument, message }) => {
 		// Validate the suggestions channel ID
-		const channelID = await message.guild!.readSettings(GuildSettings.Suggestions.Channel);
+		const channelID = await readSettings(message.guild!, GuildSettings.Suggestions.Channel);
 		if (!channelID) {
 			return Args.error({
 				argument,

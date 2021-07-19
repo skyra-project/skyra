@@ -1,3 +1,4 @@
+import { writeSettings } from '#lib/database';
 import { Event } from '@sapphire/framework';
 import type { Role } from 'discord.js';
 
@@ -5,7 +6,7 @@ export class UserEvent extends Event {
 	public run(role: Role) {
 		if (!role.guild.available) return;
 
-		return role.guild.writeSettings((settings) => {
+		return writeSettings(role, (settings) => {
 			for (const stickyRole of settings.stickyRoles) {
 				stickyRole.roles = stickyRole.roles.filter((srr) => srr !== role.id);
 			}
@@ -48,7 +49,7 @@ export class UserEvent extends Event {
 			if (settings.rolesRestrictedVoice === role.id) settings.rolesRestrictedVoice = null;
 			if (settings.rolesSubscriber === role.id) settings.rolesSubscriber = null;
 
-			if (this.context.client.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
+			if (this.context.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
 				settings.permissionNodes.refresh();
 			}
 		});

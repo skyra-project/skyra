@@ -2,6 +2,7 @@ export * from './base/IBaseEntity';
 export * from './base/IBaseManager';
 export * from './base/SettingsCollection';
 export * from './ConfigurableKey';
+export * from './functions';
 export * from './schema/SchemaGroup';
 export * from './schema/SchemaKey';
 export * from './SettingsManager';

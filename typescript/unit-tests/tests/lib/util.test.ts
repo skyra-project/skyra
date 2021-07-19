@@ -1,7 +1,7 @@
 import { client } from '#mocks/MockInstances';
-import { Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
+import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import {

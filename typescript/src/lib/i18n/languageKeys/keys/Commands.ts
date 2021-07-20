@@ -14,6 +14,7 @@ export * as Management from './commands/Management';
 export * as Misc from './commands/Misc';
 export * as Moderation from './commands/Moderation';
 export * as Music from './commands/Music';
+export * as Notifications from './commands/Notifications';
 export * as Pokemon from './commands/Pokemon';
 export * as Starboard from './commands/Starboard';
 export * as Suggestions from './commands/Suggestions';

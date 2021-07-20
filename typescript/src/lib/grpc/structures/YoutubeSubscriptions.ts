@@ -17,8 +17,8 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 		return this.makeCall<YoutubeSubscriptionHandler.Result>((cb) => this.client.manageSubscription(query, cb));
 	}
 
-	public getSubscriptions() {
-		const query = new Empty();
+	public getSubscriptions(options: YoutubeSubscriptionHandler.SubscriptionsQuery) {
+		const query = new YoutubeSubscription.GetSubscriptionsQuery().setGuildId(options.guildId);
 		return this.makeCall<YoutubeSubscriptionHandler.SubscriptionResult>((cb) => this.client.getSubscriptions(query, cb));
 	}
 
@@ -31,7 +31,7 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 	}
 
 	public subscriptionNotifications() {
-		return this.makeStream<YoutubeSubscription.Subscription>(this.client.subscriptionNotifications(new Empty()));
+		return this.makeStream<YoutubeSubscriptionHandler.SubscriptionNotificationResult>(this.client.subscriptionNotifications(new Empty()));
 	}
 }
 
@@ -39,8 +39,10 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 export namespace YoutubeSubscriptionHandler {
 	export type NotificationManageQuery = YoutubeSubscription.SubscriptionManageQuery.AsObject;
 	export type NotificationUpdateQuery = YoutubeSubscription.NotificationSettingsUpdateQuery.AsObject;
+	export type SubscriptionsQuery = YoutubeSubscription.GetSubscriptionsQuery.AsObject;
 	export type Result = Shared.Result.AsObject;
-	export type SubscriptionResult = YoutubeSubscription.SubscriptionResult.AsObject;
+	export type SubscriptionResult = YoutubeSubscription.SubscriptionListResult.AsObject;
 	export type Subscription = YoutubeSubscription.Subscription.AsObject;
 	export type SubscriptionNotificationResult = YoutubeSubscription.SubscriptionNotificationResult.AsObject;
+	export const { Action } = YoutubeSubscription;
 }

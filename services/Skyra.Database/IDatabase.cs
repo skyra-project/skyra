@@ -79,6 +79,7 @@ namespace Skyra.Database
 		Task<Result> AddYoutubeSubscriptionAsync(string channelId, string channelTitle, string guildId);
 		Task<Result> AddYoutubeSubscriptionAsync(string channelId, string channelName, string guildId, DateTime expiresAt);
 		Task<Result> UpdateYoutubeSubscriptionSettingsAsync(string guildId, string? message, string? channel);
+		Task<Result<YoutubeSubscription[]>> GetSubscriptionsAsync(string guildId);
 		Task<Result<YoutubeSubscription[]>> GetSubscriptionsAsync();
 		Task<Result<YoutubeSubscription>> GetSubscriptionAsync(string channelId);
 		Task<Result> AddSeenVideoAsync(string channelId, string videoId);

@@ -1352,9 +1352,21 @@ namespace Skyra.Database
 
 		public async Task<Result<YoutubeSubscription[]>> GetSubscriptionsAsync()
 		{
-			if (await _context.YoutubeSubscriptions.AnyAsync())
+			var subscriptions = _context.YoutubeSubscriptions;
+
+			if (await subscriptions.AnyAsync())
 			{
-				return Result<YoutubeSubscription[]>.FromSuccess(_context.YoutubeSubscriptions.ToArray());
+				return Result<YoutubeSubscription[]>.FromSuccess(subscriptions.ToArray());
+			}
+			return Result<YoutubeSubscription[]>.FromSuccess(Array.Empty<YoutubeSubscription>());
+		}
+
+		public async Task<Result<YoutubeSubscription[]>> GetSubscriptionsAsync(string guildId)
+		{
+			var subscriptions = _context.YoutubeSubscriptions.Where(sub => sub.GuildIds.Contains(guildId));
+			if (await subscriptions.AnyAsync())
+			{
+				return Result<YoutubeSubscription[]>.FromSuccess(subscriptions.ToArray());
 			}
 
 			return Result<YoutubeSubscription[]>.FromSuccess(Array.Empty<YoutubeSubscription>());

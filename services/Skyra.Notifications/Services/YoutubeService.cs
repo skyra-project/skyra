@@ -30,9 +30,9 @@ namespace Skyra.Notifications.Services
 			_logger = logger;
 		}
 
-		public override async Task<SubscriptionResult> GetSubscriptions(Empty request, ServerCallContext _)
+		public override async Task<SubscriptionResult> GetSubscriptions(GetSubscriptionsQuery request, ServerCallContext _)
 		{
-			var subscriptions = await _database.GetSubscriptionsAsync();
+			var subscriptions = await _database.GetSubscriptionsAsync(request.GuildId);
 
 			// lord I hate google sometimes
 

@@ -113,8 +113,7 @@ export class UserCommand extends SkyraCommand {
 					// Delete the previous message, and if stopped, send stop.
 					await gameMessage.nuke();
 					if (!verification) {
-						message.channel.postable ? await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
-						return;
+						return message.channel.postable ? message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
 					}
 				}
 				if (game.bloodbath) game.bloodbath = false;
@@ -124,7 +123,7 @@ export class UserCommand extends SkyraCommand {
 			// The match finished with one remaining player
 			await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
 		} catch (error) {
-			this.context.logger.error(error);
+			throw error;
 		} finally {
 			game.llrc.end();
 		}

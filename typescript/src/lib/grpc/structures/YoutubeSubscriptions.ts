@@ -24,7 +24,7 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 	// }
 
 	public updateSubscriptionSettings(options: YoutubeSubscriptionHandler.NotificationUpdateRequest) {
-		const query = new YoutubeSubscription.NotificationSettingsUpdate()
+		const query = new YoutubeSubscription.NotificationSettingsUpdateQuery()
 			.setMessage(options.message)
 			.setGuildId(options.guildId)
 			.setChannel(options.channel);
@@ -39,9 +39,9 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace YoutubeSubscriptionHandler {
 	export type SubscriptionManageQuery = YoutubeSubscription.SubscriptionManageQuery.AsObject;
-	export type NotificationUpdateRequest = YoutubeSubscription.NotificationSettingsUpdate.AsObject;
+	export type NotificationUpdateRequest = YoutubeSubscription.NotificationSettingsUpdateQuery.AsObject;
 	export type Result = Shared.Result.AsObject;
 	export type SubscriptionResult = YoutubeSubscription.SubscriptionResult.AsObject;
 	export type Subscription = YoutubeSubscription.Subscription.AsObject;
-	export type SubscriptionNotificationStream = YoutubeSubscription.SubscriptionNotification.AsObject;
+	export type SubscriptionNotificationResult = YoutubeSubscription.SubscriptionNotificationResult.AsObject;
 }

@@ -15,45 +15,45 @@ service YoutubeSubscription {
 }
 
 enum Action {
-  Subscribe = 0;
-  Unsubscribe = 1;
+  subscribe = 0;
+  unsubscribe = 1;
 }
 
 message SubscriptionManageRequest {
-  string ChannelUrl = 1;
-  string GuildId = 2;
-  string NotificationMessage = 3;
-  string GuildChannelId = 4;
-  Action Type = 5;
+  string channel_url = 1;
+  string guild_id = 2;
+  string notification_message = 3;
+  string guild_channel_id = 4;
+  Action type = 5;
 }
 
 message SubscriptionResponse {
-  repeated Subscription Subscriptions = 1;
+  repeated Subscription subscriptions = 1;
 }
 
 message Subscription {
-  string ChannelId = 1;
-  string ChannelTitle = 2;
-  repeated string GuildIds = 3;
+  string channel_id = 1;
+  string channel_title = 2;
+  repeated string guild_ids = 3;
 }
 
 message SubscriptionNotification {
-  string VideoId = 1;
-  string VideoTitle = 2;
-  string ThumbnailUrl = 3;
-  string ChannelName = 4;
-  google.protobuf.Timestamp PublishedAt = 5;
-  repeated NotificationChannel Channels = 6;
+  string video_id = 1;
+  string video_title = 2;
+  string thumbnail_url = 3;
+  string channel_name = 4;
+  google.protobuf.Timestamp published_at = 5;
+  repeated NotificationChannel channels = 6;
 }
 
 message NotificationChannel {
-  string GuildId = 1;
-  string ChannelId = 2;
-  string Message = 3;
+  string guild_id = 1;
+  string channel_id = 2;
+  string message = 3;
 }
 
 message NotificationSettingsUpdate {
-  string Message = 1;
-  string Channel = 2;
-  string GuildId = 3;
+  string message = 1;
+  string channel = 2;
+  string guild_id = 3;
 }

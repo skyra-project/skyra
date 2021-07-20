@@ -8,10 +8,10 @@ import "shared.proto";
 package YoutubeSubscription;
 
 service YoutubeSubscription {
-  rpc ManageSubscription(SubscriptionManageRequest) returns (Result);
-  rpc GetSubscriptions(google.protobuf.Empty) returns (SubscriptionResponse);
+  rpc ManageSubscription(SubscriptionManageQuery) returns (Result);
+  rpc GetSubscriptions(google.protobuf.Empty) returns (SubscriptionResult);
   rpc UpdateSubscriptionSettings(NotificationSettingsUpdate) returns (Result);
-  rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionNotification);
+  rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionResult);
 }
 
 enum Action {
@@ -19,7 +19,7 @@ enum Action {
   unsubscribe = 1;
 }
 
-message SubscriptionManageRequest {
+message SubscriptionManageQuery {
   string channel_url = 1;
   string guild_id = 2;
   string notification_message = 3;
@@ -27,7 +27,7 @@ message SubscriptionManageRequest {
   Action type = 5;
 }
 
-message SubscriptionResponse {
+message SubscriptionResult {
   repeated Subscription subscriptions = 1;
 }
 

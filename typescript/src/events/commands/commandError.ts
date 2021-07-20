@@ -6,6 +6,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { OWNERS } from '#root/config';
 import { O, rootFolder, ZeroWidthSpace } from '#utils/constants';
+import { sendTemporaryMessage } from '#utils/functions';
 import { Args, ArgumentError, Command, CommandErrorPayload, Event, UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import { captureException } from '@sentry/minimal';
@@ -28,7 +29,7 @@ export class UserEvent extends Event<Events.CommandError> {
 		// If the error was an AbortError or an Internal Server Error, tell the user to re-try:
 		if (error.name === 'AbortError' || error.message === 'Internal Server Error') {
 			client.logger.warn(`${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
-			return message.alert(args.t(LanguageKeys.System.DiscordAbortError));
+			return sendTemporaryMessage(message, args.t(LanguageKeys.System.DiscordAbortError));
 		}
 
 		// Extract useful information about the DiscordAPIError
@@ -46,7 +47,7 @@ export class UserEvent extends Event<Events.CommandError> {
 		// Emit where the error was emitted
 		client.logger.fatal(`[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
-			await message.alert(this.generateUnexpectedErrorMessage(args, error));
+			await sendTemporaryMessage(message, this.generateUnexpectedErrorMessage(args, error));
 		} catch (err) {
 			client.emit(Events.Error, err);
 		}
@@ -107,8 +108,8 @@ export class UserEvent extends Event<Events.CommandError> {
 		return this.alert(message, t(identifier, error.context as any));
 	}
 
-	private async alert(message: Message, content: string) {
-		return message.alert(content, { allowedMentions: { users: [message.author.id], roles: [] } });
+	private alert(message: Message, content: string) {
+		return sendTemporaryMessage(message, { content, allowedMentions: { users: [message.author.id], roles: [] } });
 	}
 
 	private async sendErrorChannel(message: Message, command: Command, parameters: string, error: Error) {

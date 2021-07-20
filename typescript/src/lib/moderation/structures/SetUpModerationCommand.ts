@@ -1,7 +1,7 @@
 import { GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { isAdmin } from '#utils/functions';
+import { isAdmin, promptConfirmation } from '#utils/functions';
 import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import type { Argument, PieceContext } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
@@ -40,11 +40,11 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 
-		if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
+		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = await this.askForRole(message, args, context);
 			if (!role.success) return this.error(role.error);
 			await writeSettings(message.guild, [[this.roleKey, role.value.id]]);
-		} else if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
+		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await message.guild.security.actions.restrictionSetup(message, this.setUpKey);
 			await message.send(t(LanguageKeys.Commands.Moderation.Success));
 		} else {

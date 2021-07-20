@@ -2,8 +2,10 @@ import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { floatPromise } from '#utils/common';
+import { deleteMessage } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
-import { floatPromise, getImage } from '#utils/util';
+import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ModerationCommand.Options>({
@@ -32,7 +34,7 @@ export class UserModerationCommand extends ModerationCommand {
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (autoDelete) {
-			if (message.deletable) floatPromise(message.nuke());
+			if (message.deletable) floatPromise(deleteMessage(message));
 		}
 
 		if (messageDisplay) {

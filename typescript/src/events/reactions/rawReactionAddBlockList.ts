@@ -4,10 +4,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HardPunishment, ModerationEvent, SelfModeratorBitField } from '#lib/moderation';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { floatPromise } from '#utils/common';
+import { deleteMessage } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { floatPromise, twemoji } from '#utils/util';
+import { twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { EventOptions } from '@sapphire/framework';
+import { Time } from '@sapphire/time-utilities';
 import { hasAtLeastOneKeyInMap, Nullish, PickByValue } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
@@ -74,7 +77,9 @@ export class UserModerationEvent extends ModerationEvent<ArgumentType, unknown> 
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
-			data.channel.sendTranslated(LanguageKeys.Events.Reactions.Filter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
+			data.channel
+				.sendTranslated(LanguageKeys.Events.Reactions.Filter, [{ user: `<@${data.userID}>` }])
+				.then((message) => deleteMessage(message, Time.Second * 15))
 		);
 	}
 

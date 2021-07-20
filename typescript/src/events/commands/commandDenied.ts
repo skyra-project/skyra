@@ -1,5 +1,6 @@
 import { translate } from '#lib/i18n/translate';
 import type { Events } from '#lib/types/Enums';
+import { sendTemporaryMessage } from '#utils/functions';
 import { CommandDeniedPayload, Event, UserError } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 
@@ -13,7 +14,7 @@ export class UserEvent extends Event<Events.CommandDenied> {
 		return this.alert(message, await message.resolveKey(identifier, { message, command, ...(error.context as any) }));
 	}
 
-	private async alert(message: Message, content: string) {
-		return message.alert(content, { allowedMentions: { users: [message.author.id], roles: [] } });
+	private alert(message: Message, content: string) {
+		return sendTemporaryMessage(message, { content, allowedMentions: { users: [message.author.id], roles: [] } });
 	}
 }

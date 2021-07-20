@@ -3,26 +3,13 @@ import { readSettings } from '#lib/database/settings/functions';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { err, ok, Result, Store, UserError } from '@sapphire/framework';
+import { err, ok, Result, UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
-import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
+import { isNumber, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
-import type { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
-import {
-	Channel,
-	DiscordAPIError,
-	Guild,
-	GuildChannel,
-	ImageSize,
-	ImageURLOptions,
-	Message,
-	MessageEmbed,
-	Permissions,
-	Role,
-	User,
-	UserResolvable
-} from 'discord.js';
+import type { APIUser } from 'discord-api-types/v6';
+import { Channel, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
@@ -522,10 +509,6 @@ export function pickRandom<T>(array: readonly T[]): T {
 	return array[Math.floor(Math.random() * length)];
 }
 
-export function floatPromise(promise: Awaited<unknown>) {
-	if (isThenable(promise)) promise.catch((error: Error) => Store.injectedContext.client.logger.fatal(error));
-}
-
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
 	if (typeof path === 'string') path = path.split('.');
 
@@ -535,15 +518,6 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 		if (value === null || value === undefined) return value;
 	}
 	return value;
-}
-
-export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly RESTJSONErrorCodes[]) {
-	try {
-		return await promise;
-	} catch (error) {
-		if (error instanceof DiscordAPIError && codes.includes(error.code)) return null;
-		throw error;
-	}
 }
 
 export function cast<T>(value: unknown): T {

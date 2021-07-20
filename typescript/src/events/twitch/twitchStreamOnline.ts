@@ -2,8 +2,8 @@ import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } fr
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
+import { floatPromise } from '#utils/common';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
-import { floatPromise } from '#utils/util';
 import { Event } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';

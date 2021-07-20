@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -31,7 +32,10 @@ export class UserCommand extends SkyraCommand {
 				this.error(LanguageKeys.Commands.Social.PayMissingMoney, { needed: money, has: currencyBeforePrompt });
 			}
 
-			const accepted = await message.ask(args.t(LanguageKeys.Commands.Social.PayPrompt, { user: user.username, amount: money }));
+			const accepted = await promptConfirmation(
+				message,
+				args.t(LanguageKeys.Commands.Social.PayPrompt, { user: user.username, amount: money })
+			);
 			if (!accepted) return this.denyPayment(args.t);
 
 			await users.manager.transaction(async (em) => {

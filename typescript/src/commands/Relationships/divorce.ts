@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { floatPromise, resolveOnErrorCodes } from '#utils/util';
+import { floatPromise, resolveOnErrorCodes } from '#utils/common';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import type { Message } from 'discord.js';
@@ -21,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 			if (!entry) return message.send(args.t(LanguageKeys.Commands.Social.DivorceNotTaken));
 
 			// Ask the user if they're sure
-			const accept = await message.ask(args.t(LanguageKeys.Commands.Social.DivorcePrompt));
+			const accept = await promptConfirmation(message, args.t(LanguageKeys.Commands.Social.DivorcePrompt));
 			if (!accept) return message.send(args.t(LanguageKeys.Commands.Social.DivorceCancel));
 
 			// Remove the spouse

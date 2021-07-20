@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import { resolveOnErrorCodes } from '#utils/common';
 import { isDJ } from '#utils/functions';
-import { resolveOnErrorCodes } from '#utils/util';
 import { Store } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import type WebSocket from 'ws';

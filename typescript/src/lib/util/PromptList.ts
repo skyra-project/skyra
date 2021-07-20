@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import { deleteMessage } from './functions';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };
 const kAttempts = 5;
@@ -13,7 +14,7 @@ const kAttempts = 5;
  */
 export async function prompt(message: Message, entries: PromptListResolvable) {
 	const n = await ask(message, [...resolve(entries, 10)]);
-	await Promise.all(message.responses.map((response) => response.nuke().catch(() => null)));
+	await Promise.all(message.responses.map((response) => deleteMessage(response).catch(() => null)));
 	return n;
 }
 
@@ -48,7 +49,7 @@ async function ask(message: Message, list: readonly string[]) {
 			.then((responses) => (responses.size ? responses.first()! : null));
 
 		if (response) {
-			if (response.deletable) response.nuke().catch(() => null);
+			if (response.deletable) deleteMessage(response).catch(() => null);
 			if (abortOptions.includes(response.content.toLowerCase())) throw new UserError({ identifier: LanguageKeys.PromptList.Aborted });
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {

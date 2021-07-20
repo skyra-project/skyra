@@ -3,9 +3,11 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { floatPromise } from '#utils/common';
 import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
+import { deleteMessage } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { floatPromise, pickRandom } from '#utils/util';
+import { pickRandom } from '#utils/util';
 import { Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { deepClone } from '@sapphire/utilities';
@@ -143,7 +145,7 @@ export class SettingsMenu {
 			else this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
 
-		if (!this.errorMessage) floatPromise(message.nuke());
+		if (!this.errorMessage) floatPromise(deleteMessage(message));
 		await this._renderResponse();
 	}
 

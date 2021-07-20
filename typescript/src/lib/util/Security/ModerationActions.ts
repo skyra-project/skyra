@@ -2,8 +2,9 @@ import { GuildEntity, GuildSettings, ModerationEntity, readSettings, writeSettin
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
+import { resolveOnErrorCodes } from '#utils/common';
+import { promptConfirmation } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
-import { resolveOnErrorCodes } from '#utils/util';
 import { UserError } from '@sapphire/framework';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -659,7 +660,8 @@ export class ModerationActions {
 		});
 
 		if (
-			await message.ask(
+			await promptConfirmation(
+				message,
 				t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupAsk, {
 					role: role.name,
 					channels: this.manageableChannelCount,

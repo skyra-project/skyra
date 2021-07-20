@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
@@ -47,11 +48,11 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	protected onDelete(message: GuildMessage) {
-		return message.nuke();
+		return deleteMessage(message);
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Events.Moderation.Messages.MessageFilter, { user: message.author.toString() }));
+		return sendTemporaryMessage(message, t(LanguageKeys.Events.Moderation.Messages.MessageFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {

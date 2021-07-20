@@ -2,6 +2,7 @@ import type { ClientEntity, DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
@@ -44,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 			if (remaining > GRACE_PERIOD) return message.send(args.t(LanguageKeys.Commands.Social.DailyTime, { time: remaining }));
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(args.t(LanguageKeys.Commands.Social.DailyGrace, { remaining }));
+			const accepted = await promptConfirmation(message, args.t(LanguageKeys.Commands.Social.DailyGrace, { remaining }));
 			if (!accepted) return message.send(args.t(LanguageKeys.Commands.Social.DailyGraceDenied));
 
 			// The user accepted the grace period

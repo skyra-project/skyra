@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
+import { deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -13,7 +14,7 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		if (message.deletable) await message.nuke().catch(() => null);
+		if (message.deletable) await deleteMessage(message).catch(() => null);
 
 		return message.send(
 			new MessageEmbed()

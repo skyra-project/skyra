@@ -3,7 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageEvent } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
-import { floatPromise } from '#utils/util';
+import { floatPromise } from '#utils/common';
+import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
@@ -48,7 +49,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
-		floatPromise(message.nuke());
+		floatPromise(deleteMessage(message));
 		if (value > 25 && (await this.context.db.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) })
@@ -57,7 +58,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Events.Moderation.Messages.CapsFilter, { user: message.author.toString() }));
+		return sendTemporaryMessage(message, t(LanguageKeys.Events.Moderation.Messages.CapsFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {

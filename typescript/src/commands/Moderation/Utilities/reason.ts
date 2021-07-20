@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
+import { sendTemporaryMessage } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
@@ -42,14 +43,13 @@ export class UserCommand extends SkyraCommand {
 			this.context.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
-		return message.alert(
-			args
-				.t(LanguageKeys.Commands.Moderation.ReasonUpdated, {
-					entries: cases,
-					newReason: reason,
-					count: cases.length
-				})
-				.join('\n')
+		return sendTemporaryMessage(
+			message,
+			args.t(LanguageKeys.Commands.Moderation.ReasonUpdated, {
+				entries: cases,
+				newReason: reason,
+				count: cases.length
+			})
 		);
 	}
 }

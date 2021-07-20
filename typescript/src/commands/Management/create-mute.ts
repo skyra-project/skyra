@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis } from '#utils/constants';
+import { promptConfirmation } from '#utils/functions';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Argument, err, Result, UserError } from '@sapphire/framework';
@@ -26,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		const { t } = args;
 
-		if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
+		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = await this.askForRole(message, args, context);
 			if (role.success) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
@@ -38,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 					})
 				);
 			}
-		} else if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
+		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await message.guild.security.actions.muteSetup(message);
 			await message.send(t(LanguageKeys.Commands.Moderation.Success));
 		} else {

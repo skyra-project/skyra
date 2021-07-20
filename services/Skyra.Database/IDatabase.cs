@@ -89,5 +89,6 @@ namespace Skyra.Database
 		Task<Result> UpdateSubscriptionTimerAsync(string key, DateTime resubTime);
 		Task<Result> UpdateChannelNameAsync(string id, string name);
 		Task<bool> IsSubscribedAsync(string guildId, string channelId);
+		Task<Result> UnsubscribeFromAllAsync(string guildId);
 	}
 }

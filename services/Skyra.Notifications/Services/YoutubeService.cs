@@ -76,6 +76,16 @@ namespace Skyra.Notifications.Services
 			};
 		}
 
+		public override async Task<Result> UnsubscribeFromAll(UnsubscribeFromAllQuery request, ServerCallContext context)
+		{
+			var result = await _subscriptionManager.UnsubscribeAllAsync(request.GuildId);
+
+			return new Result
+			{
+				Status = result.Success ? Status.Success : Status.Failed
+			};
+		}
+
 		public override async Task SubscriptionNotifications(Empty request, IServerStreamWriter<SubscriptionNotificationResult> responseStream, ServerCallContext context)
 		{
 			while (true)

@@ -1468,6 +1468,17 @@ namespace Skyra.Database
 			return subscription is not null && subscription.GuildIds.Contains(guildId);
 		}
 
+		public async Task<Result> UnsubscribeFromAllAsync(string guildId)
+		{
+			var subscriptions = _context.YoutubeSubscriptions
+				.Where(subscription => subscription.GuildIds.Contains(guildId));
+
+			foreach (var sub in subscriptions)
+			{
+				await RemoveSubscriptionAsync(sub.Id, guildId);
+			}
+		}
+
 		/// <inheritdoc />
 		public void Dispose()
 		{

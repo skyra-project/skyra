@@ -12,6 +12,7 @@ service YoutubeSubscription {
   rpc GetSubscriptions(GetSubscriptionsQuery) returns (SubscriptionListResult);
   rpc UpdateSubscriptionSettings(NotificationSettingsUpdateQuery) returns (Result);
   rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionNotificationResult);
+  rpc UnsubscribeFromAll(UnsubscribeFromAllQuery) returns (Result);
 }
 
 enum Action {
@@ -60,4 +61,8 @@ message NotificationSettingsUpdateQuery {
   string message = 1;
   string discord_channel_id = 2;
   string guild_id = 3;
+}
+
+message UnsubscribeFromAllQuery {
+  string guild_id = 1;
 }

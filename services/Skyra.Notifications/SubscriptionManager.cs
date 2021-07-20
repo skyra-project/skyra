@@ -153,6 +153,11 @@ namespace Skyra.Notifications
 			return Result.FromSuccess();
 		}
 
+		public Task<Result> UnsubscribeAllAsync(string guildId)
+		{
+			return _database.UnsubscribeFromAllAsync(guildId);
+		}
+
 		private async Task<(string?, string?)> GetChannelInfoAsync(string channelUrl)
 		{
 			var document = await _browsingContext.OpenAsync(channelUrl);

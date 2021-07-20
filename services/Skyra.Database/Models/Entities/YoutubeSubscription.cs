@@ -10,7 +10,7 @@ namespace Skyra.Database.Models.Entities
 		[Key]
 		[Column("id")]
 		[StringLength(24)]
-		public string Id { get; set; }
+		public string Id { get; set; } = null!;
 
 		[Required]
 		[Column("already_seen_ids", TypeName = "character varying(11)[]")]

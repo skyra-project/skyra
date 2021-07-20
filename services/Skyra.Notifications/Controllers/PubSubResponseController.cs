@@ -40,7 +40,7 @@ namespace Skyra.Notifications.Controllers
 			var challenge = Request.Query["hub.challenge"];
 			var queryParams = HttpUtility.ParseQueryString(new Uri(topic).Query);
 
-			var channelId = queryParams["channel_id"];
+			var channelId = queryParams["channel_id"]!;
 			var isSubscription = mode == "subscribe";
 			// TODO: why is this not logging the lease time correctly?
 			_logger.LogInformation("Received Authentication request with challenge {Challenge} for topic {Topic} ({Mode})",
@@ -60,7 +60,7 @@ namespace Skyra.Notifications.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Notify()
 		{
-			var elements = await GetElementsAsync();
+			var elements = (await GetElementsAsync()).ToArray();
 
 			var entry = elements.FirstOrDefault(element => element.Name.LocalName == "entry");
 
@@ -122,7 +122,7 @@ namespace Skyra.Notifications.Controllers
 			return Ok();
 		}
 
-		private static (DateTime published, string? channelId, string? title, string? videoId) GetMetadata(XElement? entry)
+		private static (DateTime published, string channelId, string title, string videoId) GetMetadata(XElement entry)
 		{
 			var published = DateTime.Parse(entry.Elements().First(element => element.Name.LocalName == "published").Value);
 			var channelId = entry.Elements().First(element => element.Name.LocalName == "channelId").Value;
@@ -131,7 +131,7 @@ namespace Skyra.Notifications.Controllers
 			return (published, channelId, title, videoId);
 		}
 
-		private async Task<IEnumerable<XElement>?> GetElementsAsync()
+		private async Task<IEnumerable<XElement>> GetElementsAsync()
 		{
 			var reader = new StreamReader(Request.Body);
 			var text = await reader.ReadToEndAsync();

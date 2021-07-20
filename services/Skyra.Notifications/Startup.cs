@@ -42,7 +42,7 @@ namespace Skyra.Notifications
 
 				if (dnsUrl is not null)
 				{
-					options.AddSentry(options => options.Dsn = dnsUrl);
+					options.AddSentry(sentryOptions => sentryOptions.Dsn = dnsUrl);
 				}
 			});
 		}

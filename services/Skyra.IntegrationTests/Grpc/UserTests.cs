@@ -282,7 +282,6 @@ namespace Skyra.IntegrationTests.Grpc
 		public async Task UserClient_ResetPoints_ToUserThatDoesNotExist_RemovesAllPoints()
 		{
 			// arrange
-			var amount = Rng.Next();
 
 			var channel = GetChannel();
 			var client = new User.UserClient(channel);

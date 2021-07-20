@@ -7,6 +7,7 @@ enum Status {
   Failed = 1;
   NotFound = 2;
   JsonParseError = 3;
+  AlreadySet = 4;
 }
 
 message Result {

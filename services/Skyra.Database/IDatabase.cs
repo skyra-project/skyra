@@ -88,5 +88,6 @@ namespace Skyra.Database
 		Task<Result<(string, string)[]>> ExecuteSqlAsync(string query);
 		Task<Result> UpdateSubscriptionTimerAsync(string key, DateTime resubTime);
 		Task<Result> UpdateChannelNameAsync(string id, string name);
+		Task<bool> IsSubscribedAsync(string guildId, string channelId);
 	}
 }

@@ -35,17 +35,25 @@ namespace Skyra.Notifications.Services
 			var subscriptions = await _database.GetSubscriptionsAsync(request.GuildId);
 
 			var response = new SubscriptionListResult();
-			foreach (var sub in subscriptions.Value)
+
+			if (subscriptions.Success)
 			{
-				var subscription = new Subscription
+				foreach (var sub in subscriptions.Value!)
 				{
-					YoutubeChannelId = sub.Id,
-					YoutubeChannelTitle = sub.ChannelTitle
-				};
-				response.Subscriptions.Add(subscription);
+					var subscription = new Subscription
+					{
+						YoutubeChannelId = sub.Id,
+						YoutubeChannelTitle = sub.ChannelTitle
+					};
+					response.Subscriptions.Add(subscription);
+				}
+				response.Status = Status.Success;
+			}
+			else
+			{
+				response.Status = Status.Failed;
 			}
 
-			response.Status = Status.Success;
 			return response;
 		}
 
@@ -83,6 +91,12 @@ namespace Skyra.Notifications.Services
 
 				var notificationSubscription = await database.GetSubscriptionAsync(notification.ChannelId);
 
+				if (!notificationSubscription.Success)
+				{
+					_logger.LogError("Did not get success status from retrieving database subscriptions");
+					continue;
+				}
+
 				var channels = new NotificationChannel[notificationSubscription.Value.GuildIds.Length];
 
 				for (var index = 0; index < notificationSubscription.Value.GuildIds.Length; index++)
@@ -117,6 +131,24 @@ namespace Skyra.Notifications.Services
 
 		private async Task<Result> HandleSubscription(string channelUrl, string guildId, string message, string guildChannelId)
 		{
+			var isAlreadySubscribed = await _subscriptionManager.IsSubscribedAsync(guildId, channelUrl);
+
+			if (!isAlreadySubscribed.Success)
+			{
+				return new Result
+				{
+					Status = Status.Failed
+				};
+			}
+
+			if (isAlreadySubscribed.Value)
+			{
+				return new Result
+				{
+					Status = Status.AlreadySet
+				};
+			}
+
 			var result = await _subscriptionManager.SubscribeAsync(channelUrl, guildId, message, guildChannelId);
 
 			var resultMessage = result.Success ? "succeeded" : "failed";

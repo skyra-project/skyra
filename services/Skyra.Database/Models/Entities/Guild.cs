@@ -284,11 +284,11 @@ namespace Skyra.Database.Models.Entities
 
 		[Column("roles.initial-humans")]
 		[StringLength(19)]
-		public string? rolesInitialHumans { get; set; }
+		public string? RolesInitialHumans { get; set; }
 
 		[Column("roles.initial-bots")]
 		[StringLength(19)]
-		public string? rolesInitialBots { get; set; }
+		public string? RolesInitialBots { get; set; }
 
 		[Required]
 		[Column("roles.moderator", TypeName = "character varying(19)[]")]

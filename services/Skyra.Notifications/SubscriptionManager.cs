@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using AngleSharp;
@@ -22,21 +20,14 @@ namespace Skyra.Notifications
 		private readonly ILogger<SubscriptionManager> _logger;
 		private readonly PubSubClient _pubSubClient;
 		private readonly Timer _resubTimer;
-		private HttpClient _httpClient;
 
-		private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
-		{
-			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-		};
+		private Dictionary<string, DateTime> _resubscribeTimes = new Dictionary<string, DateTime>();
 
-		private Dictionary<string, DateTime> _resubscribeTimes;
-
-		public SubscriptionManager(PubSubClient pubSubClient, ILogger<SubscriptionManager> logger, IDatabase database, HttpClient httpClient, IBrowsingContext browsingContext)
+		public SubscriptionManager(PubSubClient pubSubClient, ILogger<SubscriptionManager> logger, IDatabase database, IBrowsingContext browsingContext)
 		{
 			_pubSubClient = pubSubClient;
 			_logger = logger;
 			_database = database;
-			_httpClient = httpClient;
 			_browsingContext = browsingContext;
 
 			var timerInterval = int.Parse(Environment.GetEnvironmentVariable("RESUB_TIMER_INTERVAL") ?? "60");
@@ -71,13 +62,31 @@ namespace Skyra.Notifications
 		public async Task StartAsync()
 		{
 			var currentSubscriptions = await _database.GetSubscriptionsAsync();
-			_resubscribeTimes = currentSubscriptions.Value.ToDictionary(sub => sub.Id, sub => sub.ExpiresAt);
+
+			if (!currentSubscriptions.Success)
+			{
+				throw new InvalidOperationException("Could not retrieve current subscriptions from the database.");
+			}
+
+			_resubscribeTimes = currentSubscriptions.Value!.ToDictionary(sub => sub.Id, sub => sub.ExpiresAt);
 			_resubTimer.Start();
 		}
 
 		public Task<Result> UpdateSubscriptionSettingsAsync(string guildId, string? channel, string? message)
 		{
 			return _database.UpdateYoutubeSubscriptionSettingsAsync(guildId, channel, message);
+		}
+
+		public async Task<Result<bool>> IsSubscribedAsync(string guildId, string channelUrl)
+		{
+			var (id, _) = await GetChannelInfoAsync(channelUrl);
+
+			if (id is null)
+			{
+				return Result<bool>.FromError();
+			}
+
+			return Result<bool>.FromSuccess(await _database.IsSubscribedAsync(guildId, id));
 		}
 
 		public async Task<Result> SubscribeAsync(string channelUrl, string guildId, string message, string discordNotificationChannelId)

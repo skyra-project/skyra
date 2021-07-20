@@ -1462,6 +1462,12 @@ namespace Skyra.Database
 			return Result.FromSuccess();
 		}
 
+		public async Task<bool> IsSubscribedAsync(string guildId, string channelId)
+		{
+			var subscription = await _context.YoutubeSubscriptions.FindAsync(channelId);
+			return subscription is not null && subscription.GuildIds.Contains(guildId);
+		}
+
 		/// <inheritdoc />
 		public void Dispose()
 		{

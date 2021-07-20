@@ -97,7 +97,7 @@ namespace Skyra.Notifications.Services
 					continue;
 				}
 
-				var channels = new NotificationChannel[notificationSubscription.Value.GuildIds.Length];
+				var channels = new NotificationChannel[notificationSubscription.Value!.GuildIds.Length];
 
 				for (var index = 0; index < notificationSubscription.Value.GuildIds.Length; index++)
 				{
@@ -106,7 +106,7 @@ namespace Skyra.Notifications.Services
 					channels[index] = new NotificationChannel
 					{
 						GuildId = guildId,
-						DiscordChannelId = guild.Value.YoutubeNotificationChannel,
+						DiscordChannelId = guild.Value!.YoutubeNotificationChannel,
 						Content = guild.Value.YoutubeNotificationMessage
 					};
 				}

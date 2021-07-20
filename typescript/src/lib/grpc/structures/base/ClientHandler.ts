@@ -7,12 +7,25 @@ import { Result, Status } from '../../generated/shared_pb';
 import { ResponseError } from '../errors/ResponseError';
 
 export abstract class ClientHandler<C extends Client = Client> {
+	public available = false;
 	public abstract readonly client: C;
 
 	public waitForReady() {
 		return new Promise<void>((resolve, reject) => {
-			this.client.waitForReady(Date.now() + 5000, (error) => (error ? reject(error) : resolve()));
+			this.client.waitForReady(Date.now() + 5000, (error) => {
+				if (error) {
+					return reject(error);
+				}
+
+				this.available = true;
+				resolve();
+			});
 		});
+	}
+
+	public close() {
+		this.available = false;
+		this.client.close();
 	}
 
 	protected makeCall<T extends Result.AsObject = Result.AsObject>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {

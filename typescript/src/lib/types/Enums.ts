@@ -1,4 +1,5 @@
 export const enum Events {
+	Ready = 'ready',
 	AnalyticsSync = 'analyticsSync',
 	Error = 'error',
 	PreMessageParsed = 'preMessageParsed',
@@ -90,7 +91,8 @@ export const enum Events {
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
-	UserMessage = 'userMessage'
+	UserMessage = 'userMessage',
+	YoutubeNotification = 'youtubeNotification'
 }
 
 export const enum PermissionLevels {

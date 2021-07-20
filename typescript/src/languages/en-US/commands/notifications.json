@@ -27,7 +27,7 @@
 	},
 	"youtubeSubscribeSuccess": "Successfully subscribed to <{{url}}>!",
 	"youtubeSubscribeFailed": "I was not able to create a subscription for <{{url}}>, check that the channel really exists, or contact my developers at <https://join.skyra.pw> if the problem persists.",
-	"youtubeSubscribeDefaultContent": "{{channel.name}} posted a new video! {{video}}",
+	"youtubeSubscribeDefaultContent": "{channel.name} posted a new video! {video}",
 	"youtubeUnsubscribeDescription": "Unsubscribe from a YouTube channel.",
 	"youtubeUnsubscribeExtended": {
 		"usages": [

@@ -72,7 +72,7 @@ namespace Skyra.Notifications.Services
 			};
 		}
 
-		public override async Task SubscriptionNotifications(Empty request, IServerStreamWriter<SubscriptionNotification> responseStream, ServerCallContext context)
+		public override async Task SubscriptionNotifications(Empty request, IServerStreamWriter<SubscriptionNotificationResult> responseStream, ServerCallContext context)
 		{
 			while (true)
 			{
@@ -101,7 +101,7 @@ namespace Skyra.Notifications.Services
 					};
 				}
 
-				var subscriptionNotification = new SubscriptionNotification
+				var subscriptionNotification = new SubscriptionNotificationResult
 				{
 					VideoId = notification.VideoId,
 					VideoTitle = notification.Title,

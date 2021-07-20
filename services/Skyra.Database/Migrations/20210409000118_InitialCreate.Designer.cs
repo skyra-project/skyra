@@ -10,8 +10,8 @@ using Skyra.Database;
 namespace Skyra.Database.Migrations
 {
     [DbContext(typeof(SkyraDbContext))]
-    [Migration("20210617084131_YoutubeSubscription")]
-    partial class YoutubeSubscription
+    [Migration("20210409000118_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace Skyra.Database.Migrations
                 .HasPostgresEnum(null, "rpg_item_type_enum", new[] { "Weapon", "Shield", "Disposable", "Special" })
                 .HasAnnotation("Relational:Collation", "en_US.utf8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.Banner", b =>
@@ -160,22 +160,6 @@ namespace Skyra.Database.Migrations
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("id");
-
-                    b.Property<string>("AfkPrefix")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnName("afk.prefix");
-
-                    b.Property<bool>("AfkPrefixForce")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("afk.prefix-force")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<string>("AfkRole")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("afk.role");
 
                     b.Property<string>("BirthdayChannel")
                         .HasMaxLength(19)
@@ -472,18 +456,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("messages.farewell");
 
-                    b.Property<long?>("MessagesFarewellAutoDelete")
-                        .HasColumnType("bigint")
-                        .HasColumnName("messages.farewell-auto-delete");
-
                     b.Property<string>("MessagesGreeting")
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("messages.greeting");
-
-                    b.Property<long?>("MessagesGreetingAutoDelete")
-                        .HasColumnType("bigint")
-                        .HasColumnName("messages.greeting-auto-delete");
 
                     b.Property<string[]>("MessagesIgnoreChannels")
                         .IsRequired()
@@ -1186,24 +1162,16 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.reactions.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string>("SocialAchieveChannel")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("social.achieve-channel");
-
-                    b.Property<string>("SocialAchieveLevel")
-                        .HasColumnType("text")
-                        .HasColumnName("social.achieve-level");
-
-                    b.Property<short>("SocialAchieveMultiple")
+                    b.Property<bool>("SocialAchieve")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
-                        .HasColumnName("social.achieve-multiple")
-                        .HasDefaultValueSql("1");
+                        .HasColumnType("boolean")
+                        .HasColumnName("social.achieve")
+                        .HasDefaultValueSql("false");
 
-                    b.Property<string>("SocialAchieveRole")
-                        .HasColumnType("text")
-                        .HasColumnName("social.achieve-role");
+                    b.Property<string>("SocialAchieveMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("social.achieve-message");
 
                     b.Property<bool?>("SocialEnabled")
                         .IsRequired()
@@ -1328,16 +1296,6 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("trigger.includes")
                         .HasDefaultValueSql("'[]'::jsonb");
-
-                    b.Property<string>("rolesInitialBots")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("roles.initial-bots");
-
-                    b.Property<string>("rolesInitialHumans")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("roles.initial-humans");
 
                     b.HasKey("Id")
                         .HasName("pk_guilds");
@@ -2173,28 +2131,6 @@ namespace Skyra.Database.Migrations
                         .HasDatabaseName("ix_user_spouses_user_user_id_1");
 
                     b.ToTable("user_spouses_user");
-                });
-
-            modelBuilder.Entity("Skyra.Database.Models.Entities.YoutubeSubscription", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(11)
-                        .HasColumnType("character varying(11)")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("expires_at");
-
-                    b.Property<string[]>("GuildIds")
-                        .IsRequired()
-                        .HasColumnType("character varying(19)[]")
-                        .HasColumnName("guild_ids");
-
-                    b.HasKey("Id")
-                        .HasName("pk_youtube_subscription");
-
-                    b.ToTable("youtube_subscription");
                 });
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.RpgBattle", b =>

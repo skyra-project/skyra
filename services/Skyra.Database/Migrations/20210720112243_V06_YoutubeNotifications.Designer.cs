@@ -10,8 +10,8 @@ using Skyra.Database;
 namespace Skyra.Database.Migrations
 {
     [DbContext(typeof(SkyraDbContext))]
-    [Migration("20210620165914_YoutubeNotifications_Final")]
-    partial class YoutubeNotifications_Final
+    [Migration("20210720112243_V06_YoutubeNotifications")]
+    partial class V06_YoutubeNotifications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace Skyra.Database.Migrations
                 .HasPostgresEnum(null, "rpg_item_type_enum", new[] { "Weapon", "Shield", "Disposable", "Special" })
                 .HasAnnotation("Relational:Collation", "en_US.utf8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.Banner", b =>
@@ -270,25 +270,55 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.image");
 
-                    b.Property<string>("ChannelsLogsMember")
+                    b.Property<string>("ChannelsLogsMemberAdd")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member");
+                        .HasColumnName("channels.logs.member-add");
 
-                    b.Property<string>("ChannelsLogsMessage")
+                    b.Property<string>("ChannelsLogsMemberNickNameUpdate")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.message");
+                        .HasColumnName("channels.logs.member-nickname-update");
+
+                    b.Property<string>("ChannelsLogsMemberRemove")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.member-remove");
+
+                    b.Property<string>("ChannelsLogsMemberRoleUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.member-roles-update");
+
+                    b.Property<string>("ChannelsLogsMemberUserNameUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.member-username-update");
+
+                    b.Property<string>("ChannelsLogsMessageDelete")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.message-delete");
+
+                    b.Property<string>("ChannelsLogsMessageDeleteNsfw")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.message-delete-nsfw");
+
+                    b.Property<string>("ChannelsLogsMessageUpdate")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.message-update");
+
+                    b.Property<string>("ChannelsLogsMessageUpdateNsfw")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.message-update-nsfw");
 
                     b.Property<string>("ChannelsLogsModeration")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.moderation");
-
-                    b.Property<string>("ChannelsLogsNsfwMessage")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.nsfw-message");
 
                     b.Property<string>("ChannelsLogsPrune")
                         .HasMaxLength(19)
@@ -378,46 +408,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("events.ban-remove")
                         .HasDefaultValueSql("false");
 
-                    b.Property<bool>("EventsMemberAdd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.member-add")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<bool>("EventsMemberNicknameUpdate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.member-nickname-update")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<bool>("EventsMemberRemove")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.member-remove")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<bool>("EventsMemberRoleUpdate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.member-role-update")
-                        .HasDefaultValueSql("false");
-
                     b.Property<bool>("EventsMemberUsernameUpdate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasColumnName("events.member-username-update")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<bool>("EventsMessageDelete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.message-delete")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<bool>("EventsMessageEdit")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("events.message-edit")
                         .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsTwemojiReactions")
@@ -1330,13 +1324,11 @@ namespace Skyra.Database.Migrations
                         .HasDefaultValueSql("'[]'::jsonb");
 
                     b.Property<string>("YoutubeNotificationChannel")
-                        .IsRequired()
                         .HasColumnType("character varying(19)")
                         .HasColumnName("notifications.youtube.channel");
 
                     b.Property<string>("YoutubeNotificationMessage")
-                        .IsRequired()
-                        .HasColumnType("character varying(19)")
+                        .HasColumnType("text")
                         .HasColumnName("notifications.youtube.message");
 
                     b.Property<string>("rolesInitialBots")
@@ -2196,6 +2188,11 @@ namespace Skyra.Database.Migrations
                         .IsRequired()
                         .HasColumnType("character varying(11)[]")
                         .HasColumnName("already_seen_ids");
+
+                    b.Property<string>("ChannelTitle")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("channel_title");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp without time zone")

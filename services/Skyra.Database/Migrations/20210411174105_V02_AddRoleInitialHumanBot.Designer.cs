@@ -10,8 +10,8 @@ using Skyra.Database;
 namespace Skyra.Database.Migrations
 {
     [DbContext(typeof(SkyraDbContext))]
-    [Migration("20210713150528_V06_EventsModernization")]
-    partial class V06_EventsModernization
+    [Migration("20210411174105_V02_AddRoleInitialHumanBot")]
+    partial class V02_AddRoleInitialHumanBot
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace Skyra.Database.Migrations
                 .HasPostgresEnum(null, "rpg_item_type_enum", new[] { "Weapon", "Shield", "Disposable", "Special" })
                 .HasAnnotation("Relational:Collation", "en_US.utf8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Skyra.Database.Models.Entities.Banner", b =>
@@ -161,22 +161,6 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(19)")
                         .HasColumnName("id");
 
-                    b.Property<string>("AfkPrefix")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnName("afk.prefix");
-
-                    b.Property<bool>("AfkPrefixForce")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("afk.prefix-force")
-                        .HasDefaultValueSql("false");
-
-                    b.Property<string>("AfkRole")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("afk.role");
-
                     b.Property<string>("BirthdayChannel")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
@@ -270,55 +254,25 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.image");
 
-                    b.Property<string>("ChannelsLogsMemberAdd")
+                    b.Property<string>("ChannelsLogsMember")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-add");
+                        .HasColumnName("channels.logs.member");
 
-                    b.Property<string>("ChannelsLogsMemberNickNameUpdate")
+                    b.Property<string>("ChannelsLogsMessage")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-nickname-update");
-
-                    b.Property<string>("ChannelsLogsMemberRemove")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-remove");
-
-                    b.Property<string>("ChannelsLogsMemberRoleUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-roles-update");
-
-                    b.Property<string>("ChannelsLogsMemberUserNameUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.member-username-update");
-
-                    b.Property<string>("ChannelsLogsMessageDelete")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.message-delete");
-
-                    b.Property<string>("ChannelsLogsMessageDeleteNsfw")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.message-delete-nsfw");
-
-                    b.Property<string>("ChannelsLogsMessageUpdate")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.message-update");
-
-                    b.Property<string>("ChannelsLogsMessageUpdateNsfw")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("channels.logs.message-update-nsfw");
+                        .HasColumnName("channels.logs.message");
 
                     b.Property<string>("ChannelsLogsModeration")
                         .HasMaxLength(19)
                         .HasColumnType("character varying(19)")
                         .HasColumnName("channels.logs.moderation");
+
+                    b.Property<string>("ChannelsLogsNsfwMessage")
+                        .HasMaxLength(19)
+                        .HasColumnType("character varying(19)")
+                        .HasColumnName("channels.logs.nsfw-message");
 
                     b.Property<string>("ChannelsLogsPrune")
                         .HasMaxLength(19)
@@ -408,10 +362,46 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("events.ban-remove")
                         .HasDefaultValueSql("false");
 
+                    b.Property<bool>("EventsMemberAdd")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.member-add")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool>("EventsMemberNicknameUpdate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.member-nickname-update")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool>("EventsMemberRemove")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.member-remove")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool>("EventsMemberRoleUpdate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.member-role-update")
+                        .HasDefaultValueSql("false");
+
                     b.Property<bool>("EventsMemberUsernameUpdate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasColumnName("events.member-username-update")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool>("EventsMessageDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.message-delete")
+                        .HasDefaultValueSql("false");
+
+                    b.Property<bool>("EventsMessageEdit")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasColumnName("events.message-edit")
                         .HasDefaultValueSql("false");
 
                     b.Property<bool>("EventsTwemojiReactions")
@@ -466,18 +456,10 @@ namespace Skyra.Database.Migrations
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("messages.farewell");
 
-                    b.Property<long?>("MessagesFarewellAutoDelete")
-                        .HasColumnType("bigint")
-                        .HasColumnName("messages.farewell-auto-delete");
-
                     b.Property<string>("MessagesGreeting")
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("messages.greeting");
-
-                    b.Property<long?>("MessagesGreetingAutoDelete")
-                        .HasColumnType("bigint")
-                        .HasColumnName("messages.greeting-auto-delete");
 
                     b.Property<string[]>("MessagesIgnoreChannels")
                         .IsRequired()
@@ -1180,24 +1162,16 @@ namespace Skyra.Database.Migrations
                         .HasColumnName("selfmod.reactions.threshold-maximum")
                         .HasDefaultValueSql("10");
 
-                    b.Property<string>("SocialAchieveChannel")
-                        .HasMaxLength(19)
-                        .HasColumnType("character varying(19)")
-                        .HasColumnName("social.achieve-channel");
-
-                    b.Property<string>("SocialAchieveLevel")
-                        .HasColumnType("text")
-                        .HasColumnName("social.achieve-level");
-
-                    b.Property<short>("SocialAchieveMultiple")
+                    b.Property<bool>("SocialAchieve")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
-                        .HasColumnName("social.achieve-multiple")
-                        .HasDefaultValueSql("1");
+                        .HasColumnType("boolean")
+                        .HasColumnName("social.achieve")
+                        .HasDefaultValueSql("false");
 
-                    b.Property<string>("SocialAchieveRole")
-                        .HasColumnType("text")
-                        .HasColumnName("social.achieve-role");
+                    b.Property<string>("SocialAchieveMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("social.achieve-message");
 
                     b.Property<bool?>("SocialEnabled")
                         .IsRequired()

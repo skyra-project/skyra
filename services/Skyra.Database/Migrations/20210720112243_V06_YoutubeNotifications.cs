@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Skyra.Database.Migrations
 {
-    public partial class YoutubeSubscription : Migration
+    public partial class V06_YoutubeNotifications : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,11 +78,17 @@ namespace Skyra.Database.Migrations
                     channelsgreeting = table.Column<string>(name: "channels.greeting", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelsfarewell = table.Column<string>(name: "channels.farewell", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelsspam = table.Column<string>(name: "channels.spam", type: "character varying(19)", maxLength: 19, nullable: true),
-                    channelslogsmember = table.Column<string>(name: "channels.logs.member", type: "character varying(19)", maxLength: 19, nullable: true),
-                    channelslogsmessage = table.Column<string>(name: "channels.logs.message", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelslogsmoderation = table.Column<string>(name: "channels.logs.moderation", type: "character varying(19)", maxLength: 19, nullable: true),
-                    channelslogsnsfwmessage = table.Column<string>(name: "channels.logs.nsfw-message", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelslogsimage = table.Column<string>(name: "channels.logs.image", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmemberadd = table.Column<string>(name: "channels.logs.member-add", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmemberremove = table.Column<string>(name: "channels.logs.member-remove", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmembernicknameupdate = table.Column<string>(name: "channels.logs.member-nickname-update", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmemberusernameupdate = table.Column<string>(name: "channels.logs.member-username-update", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmemberrolesupdate = table.Column<string>(name: "channels.logs.member-roles-update", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmessagedelete = table.Column<string>(name: "channels.logs.message-delete", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmessagedeletensfw = table.Column<string>(name: "channels.logs.message-delete-nsfw", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmessageupdate = table.Column<string>(name: "channels.logs.message-update", type: "character varying(19)", maxLength: 19, nullable: true),
+                    channelslogsmessageupdatensfw = table.Column<string>(name: "channels.logs.message-update-nsfw", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelslogsprune = table.Column<string>(name: "channels.logs.prune", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelslogsreaction = table.Column<string>(name: "channels.logs.reaction", type: "character varying(19)", maxLength: 19, nullable: true),
                     channelslogsrolecreate = table.Column<string>(name: "channels.logs.role-create", type: "character varying(19)", maxLength: 19, nullable: true),
@@ -104,12 +110,6 @@ namespace Skyra.Database.Migrations
                     disabledcommandschannels = table.Column<string>(name: "disabled-commands-channels", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     eventsbanadd = table.Column<bool>(name: "events.ban-add", type: "boolean", nullable: false, defaultValueSql: "false"),
                     eventsbanremove = table.Column<bool>(name: "events.ban-remove", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmemberadd = table.Column<bool>(name: "events.member-add", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmemberremove = table.Column<bool>(name: "events.member-remove", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmembernicknameupdate = table.Column<bool>(name: "events.member-nickname-update", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmemberroleupdate = table.Column<bool>(name: "events.member-role-update", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmessagedelete = table.Column<bool>(name: "events.message-delete", type: "boolean", nullable: false, defaultValueSql: "false"),
-                    eventsmessageedit = table.Column<bool>(name: "events.message-edit", type: "boolean", nullable: false, defaultValueSql: "false"),
                     eventstwemojireactions = table.Column<bool>(name: "events.twemoji-reactions", type: "boolean", nullable: false, defaultValueSql: "false"),
                     messagesfarewell = table.Column<string>(name: "messages.farewell", type: "character varying(2000)", maxLength: 2000, nullable: true),
                     messagesfarewellautodelete = table.Column<long>(name: "messages.farewell-auto-delete", type: "bigint", nullable: true),
@@ -250,6 +250,8 @@ namespace Skyra.Database.Migrations
                     musicallowedvoicechannels = table.Column<string[]>(name: "music.allowed-voice-channels", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     musicallowedroles = table.Column<string[]>(name: "music.allowed-roles", type: "character varying(19)[]", nullable: false, defaultValueSql: "ARRAY[]::character varying[]"),
                     notificationsstreamstwitchstreamers = table.Column<string>(name: "notifications.streams.twitch.streamers", type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
+                    notificationsyoutubechannel = table.Column<string>(name: "notifications.youtube.channel", type: "character varying(19)", nullable: true),
+                    notificationsyoutubemessage = table.Column<string>(name: "notifications.youtube.message", type: "text", nullable: true),
                     suggestionsemojisupvote = table.Column<string>(name: "suggestions.emojis.upvote", type: "character varying(128)", maxLength: 128, nullable: false, defaultValueSql: "':ArrowT:694594285487652954'::character varying"),
                     suggestionsemojisdownvote = table.Column<string>(name: "suggestions.emojis.downvote", type: "character varying(128)", maxLength: 128, nullable: false, defaultValueSql: "':ArrowB:694594285269680179'::character varying"),
                     suggestionschannel = table.Column<string>(name: "suggestions.channel", type: "character varying(19)", maxLength: 19, nullable: true),
@@ -454,9 +456,11 @@ namespace Skyra.Database.Migrations
                 name: "youtube_subscription",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    id = table.Column<string>(type: "character varying(24)", maxLength: 24, nullable: false),
+                    already_seen_ids = table.Column<string[]>(type: "character varying(11)[]", nullable: false),
                     expires_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    guild_ids = table.Column<string[]>(type: "character varying(19)[]", nullable: false)
+                    guild_ids = table.Column<string[]>(type: "character varying(19)[]", nullable: false),
+                    channel_title = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

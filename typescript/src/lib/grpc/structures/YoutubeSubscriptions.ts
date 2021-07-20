@@ -7,9 +7,9 @@ import { ClientHandler } from './base/ClientHandler';
 export class YoutubeSubscriptionHandler extends ClientHandler {
 	public readonly client = new YoutubeSubscriptionClient(ClientHandler.address, ClientHandler.getCredentials());
 
-	public manageSubscription(options: YoutubeSubscriptionHandler.SubscriptionManageQuery) {
+	public manageSubscription(options: YoutubeSubscriptionHandler.NotificationManageQuery) {
 		const query = new YoutubeSubscription.SubscriptionManageQuery()
-			.setChannelUrl(options.channelUrl)
+			.setYoutubeChannelUrl(options.youtubeChannelUrl)
 			.setGuildId(options.guildId)
 			.setNotificationMessage(options.notificationMessage)
 			.setGuildChannelId(options.guildChannelId)
@@ -17,17 +17,16 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 		return this.makeCall<YoutubeSubscriptionHandler.Result>((cb) => this.client.manageSubscription(query, cb));
 	}
 
-	// TODO: Uncomment once `SubscriptionResult` gets `status`.
-	// public getSubscriptions() {
-	// 	const query = new Empty();
-	// 	return this.makeCall<YoutubeSubscriptionHandler.SubscriptionResult>((cb) => this.client.getSubscriptions(query, cb));
-	// }
+	public getSubscriptions() {
+		const query = new Empty();
+		return this.makeCall<YoutubeSubscriptionHandler.SubscriptionResult>((cb) => this.client.getSubscriptions(query, cb));
+	}
 
-	public updateSubscriptionSettings(options: YoutubeSubscriptionHandler.NotificationUpdateRequest) {
+	public updateSubscriptionSettings(options: YoutubeSubscriptionHandler.NotificationUpdateQuery) {
 		const query = new YoutubeSubscription.NotificationSettingsUpdateQuery()
 			.setMessage(options.message)
 			.setGuildId(options.guildId)
-			.setChannel(options.channel);
+			.setDiscordChannelId(options.discordChannelId);
 		return this.makeCall<YoutubeSubscriptionHandler.Result>((cb) => this.client.updateSubscriptionSettings(query, cb));
 	}
 
@@ -38,8 +37,8 @@ export class YoutubeSubscriptionHandler extends ClientHandler {
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace YoutubeSubscriptionHandler {
-	export type SubscriptionManageQuery = YoutubeSubscription.SubscriptionManageQuery.AsObject;
-	export type NotificationUpdateRequest = YoutubeSubscription.NotificationSettingsUpdateQuery.AsObject;
+	export type NotificationManageQuery = YoutubeSubscription.SubscriptionManageQuery.AsObject;
+	export type NotificationUpdateQuery = YoutubeSubscription.NotificationSettingsUpdateQuery.AsObject;
 	export type Result = Shared.Result.AsObject;
 	export type SubscriptionResult = YoutubeSubscription.SubscriptionResult.AsObject;
 	export type Subscription = YoutubeSubscription.Subscription.AsObject;

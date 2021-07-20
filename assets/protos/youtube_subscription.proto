@@ -28,8 +28,8 @@ message SubscriptionManageQuery {
 }
 
 message SubscriptionResult {
-  repeated Subscription subscriptions = 1;
-  Status status = 2;
+  Status status = 1;
+  repeated Subscription subscriptions = 2;
 }
 
 message Subscription {

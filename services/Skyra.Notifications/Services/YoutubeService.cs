@@ -30,13 +30,13 @@ namespace Skyra.Notifications.Services
 			_logger = logger;
 		}
 
-		public override async Task<SubscriptionResponse> GetSubscriptions(Empty request, ServerCallContext _)
+		public override async Task<SubscriptionResult> GetSubscriptions(Empty request, ServerCallContext _)
 		{
 			var subscriptions = await _database.GetSubscriptionsAsync();
 
 			// lord I hate google sometimes
 
-			var response = new SubscriptionResponse();
+			var response = new SubscriptionResult();
 			foreach (var sub in subscriptions.Value)
 			{
 				var subscription = new Subscription
@@ -53,7 +53,7 @@ namespace Skyra.Notifications.Services
 			return response;
 		}
 
-		public override Task<Result> ManageSubscription(SubscriptionManageRequest request, ServerCallContext _)
+		public override Task<Result> ManageSubscription(SubscriptionManageQuery request, ServerCallContext _)
 		{
 			return request.Type switch
 			{

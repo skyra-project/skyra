@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { cleanMentions, floatPromise } from '#utils/util';
+import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, isFunction } from '@sapphire/utilities';
@@ -94,7 +94,7 @@ export class UserCommand extends SkyraCommand {
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
-					gameMessage = (await message.send(text)) as GuildMessage;
+					gameMessage = (await message.channel.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
 					}
@@ -111,9 +111,10 @@ export class UserCommand extends SkyraCommand {
 					});
 
 					// Delete the previous message, and if stopped, send stop.
-					floatPromise(gameMessage.nuke());
+					await gameMessage.nuke();
 					if (!verification) {
-						return message.channel.postable ? message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+						message.channel.postable ? await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+						return;
 					}
 				}
 				if (game.bloodbath) game.bloodbath = false;
@@ -121,7 +122,9 @@ export class UserCommand extends SkyraCommand {
 			}
 
 			// The match finished with one remaining player
-			return message.send(args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
+			await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
+		} catch (error) {
+			this.context.logger.error(error);
 		} finally {
 			game.llrc.end();
 		}

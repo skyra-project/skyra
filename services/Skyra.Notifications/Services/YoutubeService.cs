@@ -30,13 +30,11 @@ namespace Skyra.Notifications.Services
 			_logger = logger;
 		}
 
-		public override async Task<SubscriptionResult> GetSubscriptions(GetSubscriptionsQuery request, ServerCallContext _)
+		public override async Task<SubscriptionListResult> GetSubscriptions(GetSubscriptionsQuery request, ServerCallContext _)
 		{
 			var subscriptions = await _database.GetSubscriptionsAsync(request.GuildId);
 
-			// lord I hate google sometimes
-
-			var response = new SubscriptionResult();
+			var response = new SubscriptionListResult();
 			foreach (var sub in subscriptions.Value)
 			{
 				var subscription = new Subscription
@@ -44,9 +42,6 @@ namespace Skyra.Notifications.Services
 					YoutubeChannelId = sub.Id,
 					YoutubeChannelTitle = sub.ChannelTitle
 				};
-
-				subscription.GuildIds.AddRange(sub.GuildIds);
-
 				response.Subscriptions.Add(subscription);
 			}
 

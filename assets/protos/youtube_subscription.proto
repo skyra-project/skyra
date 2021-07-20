@@ -9,7 +9,7 @@ package YoutubeSubscription;
 
 service YoutubeSubscription {
   rpc ManageSubscription(SubscriptionManageQuery) returns (Result);
-  rpc GetSubscriptions(GetSubscriptionsQuery) returns (SubscriptionResult);
+  rpc GetSubscriptions(GetSubscriptionsQuery) returns (SubscriptionListResult);
   rpc UpdateSubscriptionSettings(NotificationSettingsUpdateQuery) returns (Result);
   rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionNotificationResult);
 }
@@ -27,20 +27,14 @@ message SubscriptionManageQuery {
   Action type = 5;
 }
 
-message SubscriptionResult {
-  Status status = 1;
-  repeated Subscription subscriptions = 2;
-}
-
 message Subscription {
   string youtube_channel_id = 1;
   string youtube_channel_title = 2;
-  repeated string guild_ids = 3;
 }
 
 message SubscriptionListResult {
-  string youtube_channel_id = 1;
-  string youtube_channel_title = 2;
+  Status status = 1;
+  repeated Subscription Subscriptions = 2;
 }
 
 message SubscriptionNotificationResult {

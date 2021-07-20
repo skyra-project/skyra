@@ -113,7 +113,8 @@ export class UserCommand extends SkyraCommand {
 					// Delete the previous message, and if stopped, send stop.
 					await gameMessage.nuke();
 					if (!verification) {
-						return message.channel.postable ? message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+						message.channel.postable ? await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+						return;
 					}
 				}
 				if (game.bloodbath) game.bloodbath = false;

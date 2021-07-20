@@ -29,6 +29,7 @@ message SubscriptionManageQuery {
 
 message SubscriptionResult {
   repeated Subscription subscriptions = 1;
+  Status status = 2;
 }
 
 message Subscription {
@@ -49,7 +50,7 @@ message SubscriptionNotificationResult {
 message NotificationChannel {
   string guild_id = 1;
   string channel_id = 2;
-  string message = 3;
+  string content = 3;
 }
 
 message NotificationSettingsUpdateQuery {

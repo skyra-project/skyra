@@ -50,6 +50,7 @@ namespace Skyra.Notifications.Services
 				response.Subscriptions.Add(subscription);
 			}
 
+			response.Status = Status.Success;
 			return response;
 		}
 
@@ -97,7 +98,7 @@ namespace Skyra.Notifications.Services
 					{
 						GuildId = guildId,
 						ChannelId = guild.Value.YoutubeNotificationChannel,
-						Message = guild.Value.YoutubeNotificationMessage
+						Content = guild.Value.YoutubeNotificationMessage
 					};
 				}
 

@@ -10,8 +10,8 @@ package YoutubeSubscription;
 service YoutubeSubscription {
   rpc ManageSubscription(SubscriptionManageQuery) returns (Result);
   rpc GetSubscriptions(google.protobuf.Empty) returns (SubscriptionResult);
-  rpc UpdateSubscriptionSettings(NotificationSettingsUpdate) returns (Result);
-  rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionResult);
+  rpc UpdateSubscriptionSettings(NotificationSettingsUpdateQuery) returns (Result);
+  rpc SubscriptionNotifications(google.protobuf.Empty) returns (stream SubscriptionNotificationResult);
 }
 
 enum Action {
@@ -37,7 +37,7 @@ message Subscription {
   repeated string guild_ids = 3;
 }
 
-message SubscriptionNotification {
+message SubscriptionNotificationResult {
   string video_id = 1;
   string video_title = 2;
   string thumbnail_url = 3;
@@ -52,7 +52,7 @@ message NotificationChannel {
   string message = 3;
 }
 
-message NotificationSettingsUpdate {
+message NotificationSettingsUpdateQuery {
   string message = 1;
   string channel = 2;
   string guild_id = 3;

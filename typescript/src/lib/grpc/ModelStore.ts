@@ -8,10 +8,10 @@ export class ModelStore {
 	public async start() {
 		if (!envParseBoolean('GRPC_ENABLED')) return this.destroy();
 
-		await Promise.all([
-			this.members.waitForReady(), //
-			this.youtubeSubscriptions.waitForReady()
-		]);
+		const promises = [];
+		if (envParseBoolean('GRPC_SOCIAL_ENABLED')) promises.push(this.members.waitForReady());
+		if (envParseBoolean('GRPC_YOUTUBE_ENABLED')) promises.push(this.youtubeSubscriptions.waitForReady());
+		if (promises.length) await Promise.all(promises);
 	}
 
 	public destroy() {

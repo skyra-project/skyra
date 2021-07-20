@@ -1,0 +1,56 @@
+{
+	"youtubeSubscribeDescription": "Subscribe to a YouTube channel.",
+	"youtubeSubscribeExtended": {
+		"usages": [
+			"YouTubeChannel",
+			"YouTubeChannel Channel",
+			"YouTubeChannel Channel Content"
+		],
+		"explainedUsage": [
+			[
+				"YouTubeChannel",
+				"A link to a YouTube channel."
+			],
+			[
+				"Channel",
+				"The channel to post at, or the message's channel if none."
+			],
+			[
+				"Content",
+				"The message to send in the channel, defaults to `$t(commands/notifications:youtubeSubscribeDefaultContent)`."
+			]
+		],
+		"examples": [
+			"https://www.youtube.com/user/PewDiePie",
+			"https://www.youtube.com/channel/UCl_vAxZpvbO-PFXdDu7EdHw {{channel}} posted a new video! {{video}}"
+		]
+	},
+	"youtubeSubscribeSuccess": "Successfully subscribed to <{{url}}>!",
+	"youtubeSubscribeFailed": "I was not able to create a subscription for <{{url}}>, check that the channel really exists, or contact my developers at <https://join.skyra.pw> if the problem persists.",
+	"youtubeSubscribeDefaultContent": "{{channel.name}} posted a new video! {{video}}",
+	"youtubeUnsubscribeDescription": "Unsubscribe from a YouTube channel.",
+	"youtubeUnsubscribeExtended": {
+		"usages": [
+			"YouTubeChannel"
+		],
+		"explainedUsage": [
+			[
+				"YouTubeChannel",
+				"A link to a YouTube channel."
+			]
+		],
+		"examples": [
+			"https://www.youtube.com/user/PewDiePie",
+			"https://www.youtube.com/channel/UCl_vAxZpvbO-PFXdDu7EdHw"
+		]
+	},
+	"youtubeUnsubscribeSuccess": "Successfully unsubscribed from <{{url}}>!",
+	"youtubeUnsubscribeFailed": "I failed to unsubscribe from <{{url}}>, you were not subscribed or the channel never existed. Please contact my developers at <https://join.skyra.pw> if the problem persists.",
+	"youtubeInvalidChannel": "I was not able to parse `{{url}}` to a YouTube channel, please make sure you're passing the right link.",
+	"youtubeSubscriptionsDescription": "List all subscriptions for the server.",
+	"youtubeSubscriptionsExtended": {
+		"extendedHelp": "You create subscriptions with the `youtube-subscribe` command, and unsubscribe from them with the `youtube-unsubscribe` command. Check their respective help pages for more information."
+	},
+	"youtubeSubscriptionsFailed": "I was not able to find the subscriptions for your server, please try again later or contact my developers at <https://join.skyra.pw> if the problem persists.",
+	"youtubeSubscriptionsEmpty": "This server is not subscribed to any channel, who will be the first?"
+}

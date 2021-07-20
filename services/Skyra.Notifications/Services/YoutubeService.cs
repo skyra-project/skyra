@@ -41,8 +41,8 @@ namespace Skyra.Notifications.Services
 			{
 				var subscription = new Subscription
 				{
-					ChannelId = sub.Id,
-					ChannelTitle = sub.ChannelTitle
+					YoutubeChannelId = sub.Id,
+					YoutubeChannelTitle = sub.ChannelTitle
 				};
 
 				subscription.GuildIds.AddRange(sub.GuildIds);
@@ -58,15 +58,15 @@ namespace Skyra.Notifications.Services
 		{
 			return request.Type switch
 			{
-				Action.Subscribe => HandleSubscription(request.ChannelUrl, request.GuildId, request.NotificationMessage, request.GuildChannelId),
-				Action.Unsubscribe => HandleUnsubscription(request.ChannelUrl, request.GuildId),
+				Action.Subscribe => HandleSubscription(request.YoutubeChannelUrl, request.GuildId, request.NotificationMessage, request.GuildChannelId),
+				Action.Unsubscribe => HandleUnsubscription(request.YoutubeChannelUrl, request.GuildId),
 				_ => throw new ArgumentOutOfRangeException()
 			};
 		}
 
 		public override async Task<Result> UpdateSubscriptionSettings(NotificationSettingsUpdateQuery request, ServerCallContext context)
 		{
-			var updated = await _database.UpdateYoutubeSubscriptionSettingsAsync(request.GuildId, request.Message, request.Channel);
+			var updated = await _database.UpdateYoutubeSubscriptionSettingsAsync(request.GuildId, request.Message, request.DiscordChannelId);
 			return new Result
 			{
 				Status = updated.Success ? Status.Success : Status.Failed
@@ -97,7 +97,7 @@ namespace Skyra.Notifications.Services
 					channels[index] = new NotificationChannel
 					{
 						GuildId = guildId,
-						ChannelId = guild.Value.YoutubeNotificationChannel,
+						DiscordChannelId = guild.Value.YoutubeNotificationChannel,
 						Content = guild.Value.YoutubeNotificationMessage
 					};
 				}
@@ -107,7 +107,7 @@ namespace Skyra.Notifications.Services
 					VideoId = notification.VideoId,
 					VideoTitle = notification.Title,
 					PublishedAt = notification.PublishedAt.ToUniversalTime().ToTimestamp(),
-					ChannelName = notification.ChannelName,
+					YoutubeChannelName = notification.ChannelName,
 					ThumbnailUrl = notification.ThumbnailUrl
 				};
 

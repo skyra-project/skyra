@@ -20,7 +20,7 @@ enum Action {
 }
 
 message SubscriptionManageQuery {
-  string channel_url = 1;
+  string youtube_channel_url = 1;
   string guild_id = 2;
   string notification_message = 3;
   string guild_channel_id = 4;
@@ -33,8 +33,8 @@ message SubscriptionResult {
 }
 
 message Subscription {
-  string channel_id = 1;
-  string channel_title = 2;
+  string youtube_channel_id = 1;
+  string youtube_channel_title = 2;
   repeated string guild_ids = 3;
 }
 
@@ -42,19 +42,19 @@ message SubscriptionNotificationResult {
   string video_id = 1;
   string video_title = 2;
   string thumbnail_url = 3;
-  string channel_name = 4;
+  string youtube_channel_name = 4;
   google.protobuf.Timestamp published_at = 5;
   repeated NotificationChannel channels = 6;
 }
 
 message NotificationChannel {
   string guild_id = 1;
-  string channel_id = 2;
+  string discord_channel_id = 2;
   string content = 3;
 }
 
 message NotificationSettingsUpdateQuery {
   string message = 1;
-  string channel = 2;
+  string discord_channel_id = 2;
   string guild_id = 3;
 }

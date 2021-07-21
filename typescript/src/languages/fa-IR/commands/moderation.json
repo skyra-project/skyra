@@ -65,14 +65,8 @@
 	"pruneLogMessage": "",
 	"pruneLogMessage_plural": "",
 	"reasonNotExists": "",
-	"reasonUpdated": [
-		"",
-		""
-	],
-	"reasonUpdated_plural": [
-		"",
-		""
-	],
+	"reasonUpdated": "",
+	"reasonUpdated_plural": "",
 	"toggleModerationDmToggledEnabled": "",
 	"toggleModerationDmToggledDisabled": "",
 	"unbanMissingPermission": "",

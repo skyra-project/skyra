@@ -80,7 +80,7 @@
 		"@favware/graphql-pokemon": "^5.5.9",
 		"@sapphire/eslint-config": "^3.2.3",
 		"@sapphire/prettier-config": "^1.1.6",
-		"@sapphire/ts-config": "^2.3.2",
+		"@sapphire/ts-config": "^3.0.0",
 		"@types/backoff": "^2.5.2",
 		"@types/diff": "^5.0.1",
 		"@types/google-protobuf": "^3.15.3",

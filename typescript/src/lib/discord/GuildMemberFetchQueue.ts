@@ -1,6 +1,7 @@
-import { enumerable } from '#utils/util';
+import { Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import type { Client } from 'discord.js';
+
+const container = Store.injectedContext;
 
 /**
  * Represents a {@link GuildMemberFetchQueue.shards} entry.
@@ -21,10 +22,9 @@ const kMaximumQueriesPerMinute = 90;
 
 export class GuildMemberFetchQueue {
 	/**
-	 * The client that instantiated this class.
+	 * The interval
 	 */
-	@enumerable(false)
-	private readonly client: Client;
+	public interval = setInterval(() => this.fetch(), Time.Minute).unref();
 
 	/**
 	 * The shard queues.
@@ -32,12 +32,10 @@ export class GuildMemberFetchQueue {
 	private readonly shards = new Map<number, GuildMemberFetchQueueShardEntry>();
 
 	/**
-	 * Constructs a GuildMemberFetchQueue instance.
-	 * @param client The client that instantiated this class.
+	 * Destroys the instance
 	 */
-	public constructor(client: Client) {
-		this.client = client;
-		this.client.setInterval(() => this.fetch(), Time.Minute);
+	public destroy() {
+		clearInterval(this.interval);
 	}
 
 	/**
@@ -89,7 +87,7 @@ export class GuildMemberFetchQueue {
 		// There must be less than 100 entries being fetched from the same shard, and at least one entry pending:
 		while (entry.fetching < kMaximumQueriesPerMinute && entry.pending.length > 0) {
 			const guildID = entry.pending.shift()!;
-			const guild = this.client.guilds.cache.get(guildID);
+			const guild = container.client.guilds.cache.get(guildID);
 
 			// If there is no guild, it's unavailable, skip it.
 			if (!guild?.available) continue;
@@ -99,7 +97,7 @@ export class GuildMemberFetchQueue {
 
 			guild.members
 				.fetch()
-				.catch((error) => this.client.logger.error(error))
+				.catch((error) => container.logger.error(error))
 				.finally(() => --entry.fetching);
 
 			entry.fetching++;

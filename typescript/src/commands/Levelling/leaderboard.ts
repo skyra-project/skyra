@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraLazyPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { skip, take } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
-import { skip, take } from '#utils/iterator';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';

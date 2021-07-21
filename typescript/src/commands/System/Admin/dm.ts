@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
+import { safeWrapPromise } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
-import { wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message, MessageOptions } from 'discord.js';
 
@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];
 
-		const { success } = await wrap(user.send(content, options));
+		const { success } = await safeWrapPromise(user.send(content, options));
 
 		const responseContent = success ? `Message successfully sent to ${user}` : `I am sorry, I could not send the message to ${user}`;
 		return sendTemporaryMessage(message, responseContent);

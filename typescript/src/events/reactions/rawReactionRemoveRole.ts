@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { isTextBasedChannel, resolveEmoji } from '#utils/util';
+import { isGuildBasedChannel } from '#utils/functions';
+import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import type { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
@@ -10,7 +11,7 @@ import type { TextChannel } from 'discord.js';
 export class UserEvent extends Event {
 	public async run(channel: TextChannel, data: GatewayMessageReactionRemoveDispatch['d']) {
 		// If the channel is not a text channel then stop processing
-		if (!isTextBasedChannel(channel)) return;
+		if (!isGuildBasedChannel(channel)) return;
 
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;

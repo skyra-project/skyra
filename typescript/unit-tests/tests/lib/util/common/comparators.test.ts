@@ -1,6 +1,6 @@
-import { andMix } from '#utils/comparators';
+import { andMix } from '#utils/common';
 
-describe('comparators', () => {
+describe('util common comparators', () => {
 	describe('andMix', () => {
 		test('GIVEN two callbacks AND passing value THEN passes test', () => {
 			const a = jest.fn((v: number) => v > 0);

@@ -2,7 +2,7 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
-import { differenceBitField } from '#utils/comparators';
+import { differenceBitField } from '#utils/common/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';

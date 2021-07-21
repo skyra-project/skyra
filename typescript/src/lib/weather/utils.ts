@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { safeWrapPromise } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
-import { wrap } from '#utils/util';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Store, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
@@ -131,7 +131,7 @@ export async function getData(query: string, lang: string): Promise<Weather> {
 	url.searchParams.append('format', 'j1');
 	url.searchParams.append('lang', lang);
 
-	const result = await wrap<string, QueryError>(fetch(url, FetchResultTypes.Text));
+	const result = await safeWrapPromise<string, QueryError>(fetch(url, FetchResultTypes.Text));
 	if (result.success) {
 		const { value } = result;
 		// JSON object:

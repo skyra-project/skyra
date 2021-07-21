@@ -1,5 +1,5 @@
 import { envParseString } from '#lib/env';
-import { createReferPromise } from '#utils/util';
+import { createReferPromise } from '#utils/common';
 import { Client, credentials, ServiceError } from '@grpc/grpc-js';
 import type { Message } from 'google-protobuf';
 import { Result, Status } from '../../generated/shared_pb';

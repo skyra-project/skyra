@@ -1,11 +1,9 @@
 import { envParseBoolean } from '#lib/env';
 import { Tags } from '#lib/types/AnalyticsSchema';
-import { enumerable } from '#utils/util';
 import type { Point } from '@influxdata/influxdb-client';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 
 export abstract class AnalyticsEvent extends Event {
-	@enumerable(false)
 	public tags: [Tags, string][] = [];
 
 	public constructor(context: PieceContext, options?: EventOptions) {

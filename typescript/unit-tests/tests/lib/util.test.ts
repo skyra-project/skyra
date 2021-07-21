@@ -1,22 +1,8 @@
-import { client } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
-import { Image } from 'canvas';
-import {
-	CategoryChannel,
-	DMChannel,
-	Guild,
-	Message,
-	MessageAttachment,
-	MessageEmbed,
-	NewsChannel,
-	StoreChannel,
-	TextChannel,
-	VoiceChannel
-} from 'discord.js';
-import { createReadStream } from 'fs';
+import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { resolve } from 'path';
@@ -75,20 +61,6 @@ describe('Utils', () => {
 
 		test('GIVEN duration of number THEN returns seconds', () => {
 			expect(utils.showSeconds(Number(Time.Second))).toEqual('00:01');
-		});
-	});
-
-	describe('streamToBuffer', () => {
-		test('GIVEN path to file THEN converts to Buffer', async () => {
-			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
-			const readStream = createReadStream(filePath);
-			const buffer = await utils.streamToBuffer(readStream);
-
-			const image = new Image();
-			image.src = buffer;
-
-			expect(image.width).toBe(32);
-			expect(image.height).toBe(32);
 		});
 	});
 
@@ -243,24 +215,6 @@ describe('Utils', () => {
 
 		test('GIVEN positive integer over 10 THEN returns level 10 (😍)', () => {
 			expect(utils.oneToTen(11)).toStrictEqual({ color: 5362927, emoji: '😍' });
-		});
-	});
-
-	describe('iteratorAt', () => {
-		function* generate() {
-			for (let i = 0; i < 100; ++i) yield i;
-		}
-
-		test('GIVEN 0 THEN give first element', () => {
-			expect(utils.iteratorAt(generate(), 0)).toBe(0);
-		});
-
-		test('GIVEN 5 THEN give fifth element', () => {
-			expect(utils.iteratorAt(generate(), 5)).toBe(5);
-		});
-
-		test('GIVEN negative number THEN give first element', () => {
-			expect(utils.iteratorAt(generate(), -1)).toBe(null);
 		});
 	});
 
@@ -750,40 +704,6 @@ describe('Utils', () => {
 				one
 				two
 			}`);
-		});
-	});
-
-	describe('isTextBasedChannel', () => {
-		const mockGuild = new Guild(client, {});
-
-		test('GIVEN DM Channel THEN returns false', () => {
-			const mockDMChannel = new DMChannel(client, { type: 1 });
-			expect(utils.isTextBasedChannel(mockDMChannel)).toBe(false);
-		});
-
-		test('GIVEN CategoryChannel THEN returns false', () => {
-			const mockCategoryChanenl = new CategoryChannel(mockGuild, { type: 4 });
-			expect(utils.isTextBasedChannel(mockCategoryChanenl)).toBe(false);
-		});
-
-		test('GIVEN VoiceChannel THEN returns false', () => {
-			const mockVoiceChannel = new VoiceChannel(mockGuild, { type: 2 });
-			expect(utils.isTextBasedChannel(mockVoiceChannel)).toBe(false);
-		});
-
-		test('GIVEN StoreChannel THEN returns false', () => {
-			const mockStoreChannel = new StoreChannel(mockGuild, { type: 6 });
-			expect(utils.isTextBasedChannel(mockStoreChannel)).toBe(false);
-		});
-
-		test('GIVEN TextChannel THEN returns true', () => {
-			const mockTextChannel = new TextChannel(mockGuild, { type: 0 });
-			expect(utils.isTextBasedChannel(mockTextChannel)).toBe(true);
-		});
-
-		test('GIVEN NewsChannel THEN returns true', () => {
-			const mockNewschannel = new NewsChannel(mockGuild, { type: 5 });
-			expect(utils.isTextBasedChannel(mockNewschannel)).toBe(true);
 		});
 	});
 

@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
-import { andMix, BooleanFn } from '#utils/comparators';
+import { andMix, BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';

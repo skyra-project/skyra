@@ -1,8 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { isGuildMessage } from '#utils/common';
+import { isGuildMessage, safeWrapPromise } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
-import { wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
@@ -16,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 		const content = args.t(this.extendedHelp).extendedHelp!;
 
 		if (isGuildMessage(message)) {
-			const { success } = await wrap(message.author.send(content));
+			const { success } = await safeWrapPromise(message.author.send(content));
 			const responseContent = args.t(success ? LanguageKeys.Commands.System.DmSent : LanguageKeys.Commands.System.DmNotSent);
 			await sendTemporaryMessage(message, responseContent);
 		} else {

@@ -1,4 +1,4 @@
-import { bidirectionalReplace } from '#utils/comparators';
+import { bidirectionalReplace } from '#utils/common/comparators';
 
 export const kWordStartBoundary = String.raw`(?<=^|\W)`;
 export const kWordEndBoundary = String.raw`(?=$|\W)`;

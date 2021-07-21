@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
-import { differenceMap } from '#utils/comparators';
+import { differenceMap } from '#utils/common/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions, Events } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';

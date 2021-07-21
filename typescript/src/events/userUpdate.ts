@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { filter, map } from '#utils/iterator';
+import { filter, map } from '#utils/common';
 import { Event } from '@sapphire/framework';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';

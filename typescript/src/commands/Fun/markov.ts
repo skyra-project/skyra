@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { iteratorAt } from '#utils/common';
 import { Markov, WordBank } from '#utils/External/markov';
-import { getAllContent, iteratorAt, sendLoadingMessage } from '#utils/util';
+import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';

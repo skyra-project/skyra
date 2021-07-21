@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { isGuildBasedChannel } from '#utils/functions';
+import { canReadMessages, isGuildBasedChannel } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +11,7 @@ import type { TextChannel } from 'discord.js';
 export class UserEvent extends Event {
 	public run(raw: GatewayMessageReactionAddDispatch['d']) {
 		const channel = this.context.client.channels.cache.get(raw.channel_id) as TextChannel | undefined;
-		if (!channel || !isGuildBasedChannel(channel) || !channel.readable) return;
+		if (!channel || !isGuildBasedChannel(channel) || !canReadMessages(channel)) return;
 
 		const data: LLRCData = {
 			channel,

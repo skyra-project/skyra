@@ -2,7 +2,7 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { deleteMessage, isModerator } from '#utils/functions';
+import { canSendMessages, deleteMessage, isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -89,8 +89,8 @@ export class UserCommand extends SkyraCommand {
 
 				// Ask for the user to proceed:
 				for (const text of texts) {
-					// If the channel is not postable, break:
-					if (!message.channel.postable) return;
+					// If the we can not longer send messages to the channel, break:
+					if (!canSendMessages(message.channel)) return;
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
@@ -113,7 +113,7 @@ export class UserCommand extends SkyraCommand {
 					// Delete the previous message, and if stopped, send stop.
 					await deleteMessage(gameMessage);
 					if (!verification) {
-						message.channel.postable ? await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
+						if (canSendMessages(message.channel)) await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop));
 						return;
 					}
 				}

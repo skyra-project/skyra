@@ -2,7 +2,7 @@ import { MusicCommand, requireMusicPlaying, requireSameVoiceChannel, requireSkyr
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { canManage } from '#utils/functions';
+import { canManage, getListeners } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
@@ -26,7 +26,7 @@ export class UserMusicCommand extends MusicCommand {
 		}
 
 		const channel = audio.voiceChannel!;
-		if (channel.listeners.length >= 4 && !(await canManage(message.member, channel))) {
+		if (getListeners(channel).length >= 4 && !(await canManage(message.member, channel))) {
 			this.error(LanguageKeys.Preconditions.MusicDjMember);
 		}
 

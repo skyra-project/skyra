@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
+import { canReact } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
@@ -24,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName').catch(() => message.author);
 		const attachment = await this.generate(user);
 		const response = await message.send({ files: [{ attachment, name: 'F.png' }] });
-		if (response.reactable) await response.react('🇫');
+		if (canReact(response)) await response.react('🇫');
 		return response;
 	}
 

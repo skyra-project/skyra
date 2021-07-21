@@ -1,5 +1,6 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { canSendMessages } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { snowflakeAge } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -30,7 +31,7 @@ export class UserEvent extends Event {
 		if (ignoreChannels.includes(data.channel.id)) return;
 
 		const starboardChannel = data.guild.channels.cache.get(channel) as TextChannel | undefined;
-		if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
+		if (typeof starboardChannel === 'undefined' || !canSendMessages(starboardChannel)) {
 			await writeSettings(data.guild, [[GuildSettings.Starboard.Channel, null]]);
 			return;
 		}

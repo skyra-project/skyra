@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { map } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
-import { promptConfirmation } from '#utils/functions';
+import { canSendMessages, promptConfirmation } from '#utils/functions';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -41,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 		const channel = message.guild.channels.cache.get(channelID) as TextChannel;
 		if (!channel) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		if (!channel.postable) this.error(LanguageKeys.System.ChannelNotPostable);
+		if (!canSendMessages(channel)) this.error(LanguageKeys.System.ChannelNotPostable);
 
 		const role = await announcementCheck(message);
 		const header = args.t(LanguageKeys.Commands.Announcement.AnnouncementHeader, { role: role.toString() });

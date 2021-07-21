@@ -1,6 +1,7 @@
 import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
 import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { canSendMessages } from '#utils/functions';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import type { GuildMember, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -93,7 +94,7 @@ export class UserTask extends Task {
 		}
 
 		// If the channel is postable, send the message:
-		if (channel.postable) {
+		if (canSendMessages(channel)) {
 			await channel.send(this.transformMessage(content, member.user, getAge(data), t));
 		}
 

@@ -1,20 +1,23 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { getSnipedMessage } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
 	permissions: ['EMBED_LINKS'],
-	runIn: ['text']
+	permissionLevel: PermissionLevels.Moderator,
+	runIn: ['text', 'news']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const { sniped } = message.channel as TextChannel;
+		const sniped = getSnipedMessage(message.channel);
 		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()

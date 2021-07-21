@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
-import { deleteMessage } from '#utils/functions';
+import { canSendMessages, deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
@@ -32,8 +32,8 @@ export class UserEvent extends Event {
 		]);
 		if (!channelID || !content) return;
 
-		const channel = guild.channels.cache.get(channelID) as TextChannel;
-		if (channel && channel.postable) {
+		const channel = guild.channels.cache.get(channelID) as TextChannel | undefined;
+		if (channel && canSendMessages(channel)) {
 			const messageContent = this.transformMessage(t, guild, member, user, content);
 			const message = await channel.send(messageContent, { allowedMentions: { users: [], roles: [] } });
 			if (!isNullishOrZero(timer)) await deleteMessage(message, timer);

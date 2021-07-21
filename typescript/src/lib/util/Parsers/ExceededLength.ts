@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
+import { canSendAttachments } from '#utils/functions';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -14,7 +15,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 
 	switch (options.sendAs) {
 		case 'file': {
-			if (message.channel.attachable) {
+			if (canSendAttachments(message.channel)) {
 				const output = t(LanguageKeys.System.ExceededLengthOutputFile);
 				return message.send([output, typeFooter, timeTaken].filter(Boolean), {
 					files: [
@@ -88,7 +89,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: T
 	const _options = ['none', 'abort'];
 	if (options.canLogToConsole) _options.push('log');
 
-	if (message.channel.attachable) _options.push('file');
+	if (canSendAttachments(message.channel)) _options.push('file');
 	if (!options.hastebinUnavailable) _options.push('hastebin');
 	let _choice: { content: string };
 	do {

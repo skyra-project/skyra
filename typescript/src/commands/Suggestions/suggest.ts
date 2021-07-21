@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
-import { isAdmin } from '#utils/functions';
+import { canSendMessages, isAdmin } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
 		}
 
-		if (!suggestionsChannel.postable) {
+		if (!canSendMessages(suggestionsChannel)) {
 			this.error(LanguageKeys.Commands.Suggestions.SuggestNoPermissions, {
 				username: message.author.username,
 				channel: message.channel.toString()

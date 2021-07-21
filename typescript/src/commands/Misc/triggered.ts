@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { streamToBuffer } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar, streamToBuffer } from '#utils/util';
+import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';

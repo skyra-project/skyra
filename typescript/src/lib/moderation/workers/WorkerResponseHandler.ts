@@ -1,4 +1,4 @@
-import { createReferPromise, ReferredPromise } from '#utils/util';
+import { createReferPromise, ReferredPromise } from '#utils/common';
 import { TimerManager } from '@sapphire/time-utilities';
 import { TimeoutError } from './errors';
 import type { OutgoingPayload } from './types';

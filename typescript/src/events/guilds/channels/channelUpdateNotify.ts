@@ -2,7 +2,7 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
-import { differenceBitField, differenceMap } from '#utils/comparators';
+import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isDMChannel } from '@sapphire/discord.js-utilities';

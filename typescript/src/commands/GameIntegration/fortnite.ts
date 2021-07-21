@@ -3,7 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
-import { sendLoadingMessage, wrap } from '#utils/util';
+import { safeWrapPromise } from '#utils/common';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
@@ -34,7 +35,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async fetchAPI(user: string, platform: PlatformUnion) {
-		const result = await wrap(
+		const result = await safeWrapPromise(
 			fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
 				{ headers: { 'TRN-Api-Key': process.env.FORTNITE_TOKEN } },

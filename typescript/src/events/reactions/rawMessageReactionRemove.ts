@@ -1,5 +1,5 @@
 import { Events } from '#lib/types/Enums';
-import { isTextBasedChannel } from '#utils/util';
+import { isGuildBasedChannel } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
@@ -9,7 +9,7 @@ import type { TextChannel } from 'discord.js';
 export class UserEvent extends Event {
 	public run(data: GatewayMessageReactionRemoveDispatch['d']) {
 		const channel = this.context.client.channels.cache.get(data.channel_id) as TextChannel;
-		if (!channel || !channel.readable || !isTextBasedChannel(channel)) return;
+		if (!channel || !channel.readable || !isGuildBasedChannel(channel)) return;
 		this.context.client.emit(Events.RawReactionRemove, channel, data);
 	}
 }

@@ -1,3 +1,32 @@
+export function iteratorAt<T>(iterator: IterableIterator<T>, position: number): T | null {
+	if (position < 0) return null;
+
+	let result: IteratorResult<T> | null = null;
+	while (position-- > 0) {
+		result = iterator.next();
+		if (result.done) return null;
+	}
+
+	result = iterator.next();
+	return result.done ? null : result.value;
+}
+
+export function iteratorRange<T>(iterator: IterableIterator<T>, position: number, offset: number) {
+	let result: IteratorResult<T> | null = null;
+	while (position-- > 0) {
+		result = iterator.next();
+		if (result.done) return [];
+	}
+
+	const results: T[] = [];
+	while (offset-- > 0) {
+		result = iterator.next();
+		if (result.done) return results;
+		results.push(result.value);
+	}
+	return results;
+}
+
 export function* reverse<T>(array: readonly T[]): IterableIterator<T> {
 	for (let i = array.length - 1; i >= 0; i--) {
 		yield array[i];

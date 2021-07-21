@@ -3,6 +3,7 @@ import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
+import { enumerable } from '@sapphire/decorators';
 import { SapphireClient, Store } from '@sapphire/framework';
 import type { I18nContext } from '@sapphire/plugin-i18next';
 import { TimerManager } from '@sapphire/time-utilities';
@@ -17,7 +18,6 @@ import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
-import { enumerable } from './util/util';
 
 export class SkyraClient extends SapphireClient {
 	@enumerable(false)
@@ -60,7 +60,7 @@ export class SkyraClient extends SapphireClient {
 	public readonly analytics: AnalyticsData | null;
 
 	@enumerable(false)
-	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue(this);
+	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue();
 
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
@@ -119,6 +119,7 @@ export class SkyraClient extends SapphireClient {
 
 	public async destroy() {
 		await this.context.workers.destroy();
+		this.guildMemberFetchQueue.destroy();
 		TimerManager.destroy();
 		return super.destroy();
 	}

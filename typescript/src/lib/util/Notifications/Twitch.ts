@@ -6,11 +6,11 @@ import type {
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
-import { enumerable } from '#utils/util';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { createHmac } from 'crypto';
 import { Time } from '@sapphire/time-utilities';
+import { enumerable } from '@sapphire/decorators';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',

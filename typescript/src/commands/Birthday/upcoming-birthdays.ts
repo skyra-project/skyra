@@ -2,7 +2,7 @@ import { BirthdayScheduleEntity, getAge, getGuildBirthdays } from '#lib/birthday
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { reduce } from '#utils/iterator';
+import { reduce } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';

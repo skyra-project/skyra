@@ -3,13 +3,13 @@ import { readSettings } from '#lib/database/settings/functions';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { err, ok, Result, UserError } from '@sapphire/framework';
+import { UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import type { APIUser } from 'discord-api-types/v6';
-import { Channel, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
+import { Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
@@ -38,12 +38,6 @@ const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
-export interface ReferredPromise<T> {
-	promise: Promise<T>;
-	resolve(value?: T): void;
-	reject(error?: Error): void;
-}
-
 export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;
 }
@@ -64,16 +58,6 @@ export function showSeconds(duration: number): string {
 export function snowflakeAge(snowflake: string | bigint) {
 	const { timestamp } = DiscordSnowflake.deconstruct(snowflake);
 	return Math.max(Date.now() - Number(timestamp), 0);
-}
-
-/**
- * Read a stream and resolve to a buffer
- * @param stream The readable stream to read
- */
-export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
-	const data: Buffer[] = [];
-	for await (const buffer of stream) data.push(buffer as Buffer);
-	return Buffer.concat(data);
 }
 
 /**
@@ -153,35 +137,6 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	return ONE_TO_TEN.get(level);
 }
 
-export function iteratorAt<T>(iterator: IterableIterator<T>, position: number): T | null {
-	if (position < 0) return null;
-
-	let result: IteratorResult<T> | null = null;
-	while (position-- > 0) {
-		result = iterator.next();
-		if (result.done) return null;
-	}
-
-	result = iterator.next();
-	return result.done ? null : result.value;
-}
-
-export function iteratorRange<T>(iterator: IterableIterator<T>, position: number, offset: number) {
-	let result: IteratorResult<T> | null = null;
-	while (position-- > 0) {
-		result = iterator.next();
-		if (result.done) return [];
-	}
-
-	const results: T[] = [];
-	while (offset-- > 0) {
-		result = iterator.next();
-		if (result.done) return results;
-		results.push(result.value);
-	}
-	return results;
-}
-
 export interface Payload {
 	avatar: string | null;
 	username: string | null;
@@ -216,14 +171,6 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 	}
 
 	return payload;
-}
-
-export async function wrap<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
-	try {
-		return ok(await promise);
-	} catch (error) {
-		return err(error);
-	}
 }
 
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
@@ -364,21 +311,6 @@ export function getDisplayAvatar(id: string, user: User | APIUser, options: Imag
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
 	return `${ROOT}/avatars/${id}/${user.avatar}.${format}${size}`;
-}
-
-/**
- * Create a referred promise
- */
-export function createReferPromise<T>(): ReferredPromise<T> {
-	let resolve: (value: T) => void;
-	let reject: (error?: Error) => void;
-	const promise: Promise<T> = new Promise((res, rej) => {
-		resolve = res;
-		reject = rej;
-	});
-
-	// noinspection JSUnusedAssignment
-	return { promise, resolve: resolve!, reject: reject! };
 }
 
 /**
@@ -525,26 +457,6 @@ export function cast<T>(value: unknown): T {
 }
 
 /**
- * @enumerable decorator that sets the enumerable property of a class field to false.
- * @param value
- */
-export function enumerable(value: boolean) {
-	return (target: unknown, key: string) => {
-		Object.defineProperty(target, key, {
-			enumerable: value,
-			set(this: unknown, val: unknown) {
-				Object.defineProperty(this, key, {
-					configurable: true,
-					enumerable: value,
-					value: val,
-					writable: true
-				});
-			}
-		});
-	};
-}
-
-/**
  * Validates that a user has VIEW_CHANNEL permissions to a channel
  * @param channel The TextChannel to check
  * @param user The user for which to check permission
@@ -581,15 +493,6 @@ export function gql(...args: any[]): string {
 		if (Reflect.has(args, idx + 1)) acc += args[idx + 1];
 		return acc;
 	}, '');
-}
-
-/**
- * Checks whether a channel is either a guild text channel, guild news channel or guild store channel
- * This ensures the channel is *not* a DM / group DM / unknown / something else
- * @param channel The channel to validate
- */
-export function isTextBasedChannel(channel: Channel) {
-	return channel.type === 'text' || channel.type === 'news';
 }
 
 /**

@@ -1,4 +1,4 @@
-import { iteratorAt } from '#utils/util';
+import { iteratorAt } from '#utils/common';
 import { pickByWeights } from './pickByWeights';
 
 export class Markov {

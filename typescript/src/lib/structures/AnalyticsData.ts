@@ -1,10 +1,8 @@
 import { envParseBoolean, envParseString } from '#lib/env';
 import { parseAnalytics } from '#root/config';
-import { enumerable } from '#utils/util';
 import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 
 export class AnalyticsData {
-	@enumerable(false)
 	public influx: InfluxDB | null = envParseBoolean('INFLUX_ENABLED') ? new InfluxDB(parseAnalytics()) : null;
 
 	public writeApi!: WriteApi;

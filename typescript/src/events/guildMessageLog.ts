@@ -1,4 +1,5 @@
 import { GuildEntity, writeSettings } from '#lib/database';
+import { canSendMessages } from '#utils/functions';
 import { Event } from '@sapphire/framework';
 import { isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
@@ -19,7 +20,7 @@ export class UserEvent extends Event {
 		}
 
 		// Don't post if it's not possible
-		if (!channel.postable) return;
+		if (!canSendMessages(channel)) return;
 
 		const processed = await makeMessage();
 		try {

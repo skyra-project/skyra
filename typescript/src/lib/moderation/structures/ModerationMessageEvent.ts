@@ -3,7 +3,7 @@ import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
-import { isModerator } from '#utils/functions';
+import { canSendMessages, isModerator } from '#utils/functions';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
@@ -72,7 +72,7 @@ export abstract class ModerationMessageEvent<T = unknown> extends Event {
 			floatPromise(this.onDelete(message, language, preProcessed) as any);
 		}
 
-		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && message.channel.postable) {
+		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && canSendMessages(message.channel)) {
 			floatPromise(this.onAlert(message, language, preProcessed) as any);
 		}
 

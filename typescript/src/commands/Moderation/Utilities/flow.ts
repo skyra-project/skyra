@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { canReadMessages } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -15,7 +16,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = args.finished ? message.channel : await args.pick('textChannelName');
-		if (!channel.readable) this.error(LanguageKeys.Misc.ChannelNotReadable);
+		if (!canReadMessages(channel)) this.error(LanguageKeys.Misc.ChannelNotReadable);
 
 		const messages = await channel.messages.fetch({ limit: 100, before: message.id });
 		const minimum = message.createdTimestamp - 60000;

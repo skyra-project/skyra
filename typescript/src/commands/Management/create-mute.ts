@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis } from '#utils/constants';
-import { promptConfirmation } from '#utils/functions';
+import { canReact, promptConfirmation } from '#utils/functions';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Argument, err, Result, UserError } from '@sapphire/framework';
@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 			const role = await this.askForRole(message, args, context);
 			if (role.success) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
-				if (message.reactable) return message.react(resolveEmoji(Emojis.GreenTick)!);
+				if (canReact(message)) return message.react(resolveEmoji(Emojis.GreenTick)!);
 				return message.send(
 					t(LanguageKeys.Commands.Admin.ConfUpdated, {
 						key: GuildSettings.Roles.Muted,

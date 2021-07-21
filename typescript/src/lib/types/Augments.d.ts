@@ -190,7 +190,6 @@ declare module 'i18next' {
 
 declare module '@sapphire/plugin-i18next' {
 	export interface I18nextMessageImplementation {
-		reactable: boolean;
 		fetchLanguage(): Promise<string>;
 		prompt(content: string, time?: number): Promise<Message>;
 		readonly responses: readonly Message[];

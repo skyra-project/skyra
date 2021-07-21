@@ -2,7 +2,7 @@ import { MusicCommand, Queue, requireSameVoiceChannel, requireSongPresent } from
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { canManage } from '#utils/functions';
+import { canManage, getListenerCount } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -21,7 +21,7 @@ export class UserMusicCommand extends MusicCommand {
 		const { audio } = message.guild;
 		const { voiceChannel } = audio;
 
-		const listeners = voiceChannel?.listeners.length ?? 0;
+		const listeners = getListenerCount(voiceChannel);
 		const arg = args.nextMaybe();
 		const shouldForce = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 		if (listeners >= 4) {

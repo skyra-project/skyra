@@ -6,7 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
 import { andMix, BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
-import { sendTemporaryMessage } from '#utils/functions';
+import { canSendAttachments, sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { metadata, TypeCodes } from '#utils/moderationConstants';
 import { getImageUrl } from '#utils/util';
@@ -161,7 +161,7 @@ export class UserCommand extends SkyraCommand {
 			return;
 		}
 
-		if (channel.attachable) {
+		if (canSendAttachments(channel)) {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
 

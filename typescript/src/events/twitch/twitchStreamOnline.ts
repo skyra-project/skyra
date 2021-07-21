@@ -4,6 +4,7 @@ import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch'
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { floatPromise } from '#utils/common';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { canSendMessages } from '#utils/functions';
 import { Event } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
@@ -54,7 +55,7 @@ export class UserEvent extends Event {
 
 				// Retrieve the channel, then check if it exists or if it's postable.
 				const channel = guild.channels.cache.get(subscription.channel) as TextChannel | undefined;
-				if (typeof channel === 'undefined' || !channel.postable) continue;
+				if (channel === undefined || !canSendMessages(channel)) continue;
 
 				// Construct a message embed and send it.
 				floatPromise(channel.send(this.buildEmbed(this.transformTextToObject(data, game), t)));

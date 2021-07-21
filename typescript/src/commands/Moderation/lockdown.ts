@@ -3,6 +3,7 @@ import { LockdownManager, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
+import { canSendMessages } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Permissions, Role, TextChannel } from 'discord.js';
@@ -59,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 		// If they can send, begin locking
 		const response = await message.send(args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
-		if (message.channel.postable) {
+		if (canSendMessages(message.channel)) {
 			await response.edit(args.t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
 		}
 
@@ -95,7 +96,7 @@ export class UserCommand extends SkyraCommand {
 			await overwrites.update({ SEND_MESSAGES: allowed });
 		}
 
-		if (message.channel.postable) {
+		if (canSendMessages(message.channel)) {
 			await message.send(t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
 		}
 	}

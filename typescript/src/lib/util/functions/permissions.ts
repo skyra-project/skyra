@@ -4,6 +4,7 @@ import { readSettings } from '#lib/database/settings';
 import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { GuildMember, Permissions, VoiceChannel } from 'discord.js';
+import { getListeners } from './channels';
 
 export function isDJ(member: GuildMember) {
 	return (
@@ -29,7 +30,7 @@ export function isOnlyListener(member: GuildMember) {
 	const { voiceChannel } = member.guild.audio;
 	if (voiceChannel === null) return false;
 
-	const { listeners } = voiceChannel;
+	const listeners = getListeners(voiceChannel);
 	return listeners.length === 1 && listeners[0] === member.id;
 }
 
@@ -37,8 +38,8 @@ export function isOwner(member: GuildMember) {
 	return OWNERS.includes(member.id);
 }
 
-export async function canManage(member: GuildMember, channel: VoiceChannel) {
-	const { listeners } = channel;
+export async function canManage(member: GuildMember, voiceChannel: VoiceChannel) {
+	const listeners = getListeners(voiceChannel);
 	const { id } = member;
 
 	// If the member is the only listener, they receive full permissions on them.

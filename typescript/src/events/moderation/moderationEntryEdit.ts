@@ -1,5 +1,6 @@
 import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
 import { resolveOnErrorCodes } from '#utils/common';
+import { canSendEmbeds } from '#utils/functions';
 import { SchemaKeys } from '#utils/moderationConstants';
 import { Event } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -23,7 +24,7 @@ export class UserEvent extends Event {
 		if (entry.equals(old)) return;
 
 		const channel = await entry.fetchChannel();
-		if (channel === null || !channel.postable || !channel.embedable) return;
+		if (channel === null || !canSendEmbeds(channel)) return;
 
 		const messageEmbed = await entry.prepareEmbed();
 		const previous = this.fetchModerationLogMessage(entry, channel);

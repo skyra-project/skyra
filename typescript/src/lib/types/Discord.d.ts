@@ -1,8 +1,8 @@
-import type { GuildBasedChannelTypes } from '#utils/functions';
-import type { DMChannel, Guild, GuildMember, Message, NewsChannel, TextChannel } from 'discord.js';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
+import type { DMChannel, Guild, GuildMember, Message, TextChannel } from 'discord.js';
 
 export interface GuildMessage extends Message {
-	channel: GuildBasedChannelTypes;
+	channel: GuildTextBasedChannelTypes;
 	readonly guild: Guild;
 	readonly member: GuildMember;
 }

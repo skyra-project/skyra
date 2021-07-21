@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings, TriggerIncludes, writeSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { canReact } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -17,7 +18,7 @@ export class UserEvent extends Event {
 		const content = message.content.toLowerCase();
 		const entry = triggers.find((trigger) => content.includes(trigger.input));
 		if (entry && entry.action === 'react') {
-			if (message.reactable) {
+			if (canReact(message)) {
 				await this.tryReact(message, entry);
 			}
 		}

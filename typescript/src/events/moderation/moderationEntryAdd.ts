@@ -1,6 +1,6 @@
 import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
+import { resolveOnErrorCodes } from '#utils/common';
 import { SchemaKeys } from '#utils/moderationConstants';
-import { resolveOnErrorCodes } from '#utils/util';
 import { Event } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 

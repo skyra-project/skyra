@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
+import { deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
@@ -34,7 +35,7 @@ export class UserEvent extends Event {
 		if (channel && channel.postable) {
 			const messageContent = this.transformMessage(content, t, member.guild, member.user);
 			const message = await channel.send(messageContent, { allowedMentions: { users: [member.id], roles: [] } });
-			if (!isNullishOrZero(timer)) await message.nuke(timer);
+			if (!isNullishOrZero(timer)) await deleteMessage(message);
 			return;
 		}
 

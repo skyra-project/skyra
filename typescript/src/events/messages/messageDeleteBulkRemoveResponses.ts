@@ -1,6 +1,7 @@
 import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { deleteMessage, getCommand } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
@@ -41,7 +42,7 @@ export class UserEvent extends Event<Events.MessageDeleteBulk> {
 
 			// Delete all responses:
 			for (const response of message.responses) {
-				await response.nuke();
+				await deleteMessage(response);
 			}
 		}
 	}
@@ -55,7 +56,7 @@ export class UserEvent extends Event<Events.MessageDeleteBulk> {
 		if (hasAtLeastOneKeyInMap(message.member.roles.cache, ignoredRoles)) return true;
 
 		// Check for ignored commands:
-		const { command } = message;
+		const command = getCommand(message);
 		if (command !== null && CommandMatcher.matchAny(ignoredCommands, command)) return true;
 
 		return false;
@@ -64,7 +65,7 @@ export class UserEvent extends Event<Events.MessageDeleteBulk> {
 	private async deleteAll(messages: MessageCollection) {
 		for (const message of messages.values()) {
 			for (const response of message.responses) {
-				await response.nuke();
+				await deleteMessage(response);
 			}
 		}
 	}

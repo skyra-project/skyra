@@ -3,7 +3,7 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { isGuildOwner } from '#utils/functions';
+import { isGuildOwner, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -43,7 +43,7 @@ export class UserEvent extends Event {
 		]);
 
 		await Promise.all([this.removeNickName(message, entry.name, prefix, t), this.removeRole(message, roleID)]);
-		await message.alert(t(LanguageKeys.Events.Messages.AfkRemove, { user: message.author.toString() }), Time.Second * 10);
+		await sendTemporaryMessage(message, t(LanguageKeys.Events.Messages.AfkRemove, { user: message.author.toString() }), Time.Second * 10);
 	}
 
 	private async removeNickName(message: GuildMessage, oldName: string, prefix: string | Nullish, t: TFunction) {

@@ -1,5 +1,6 @@
 import { AudioEvent } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { IncomingEventTrackStuckPayload } from '@skyra/audio';
 
@@ -22,6 +23,6 @@ export class UserAudioEvent extends AudioEvent {
 
 		// Send the message and automatically delete it once the threshold is reached.
 		const response = await channel.sendTranslated(LanguageKeys.MusicManager.Stuck, [{ milliseconds: payload.thresholdMs }]);
-		await response.nuke(payload.thresholdMs);
+		await deleteMessage(response, payload.thresholdMs);
 	}
 }

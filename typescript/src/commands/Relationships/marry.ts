@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { SISTER_CLIENTS } from '#root/config';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
 import type { User } from 'discord.js';
@@ -54,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
+				const answer = await promptConfirmation(message, t(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
 				if (!answer)
 					return message.send(
 						t(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, {
@@ -63,11 +64,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
+				const answer = await promptConfirmation(message, t(LanguageKeys.Commands.Social.MarryTaken, { count: targetSpouses.length }));
 				if (!answer) return message.send(t(LanguageKeys.Commands.Social.MarryMultipleCancel));
 			}
 
-			const answer = await message.ask(t(LanguageKeys.Commands.Social.MarryPetition, { author, user }), undefined, { target: user });
+			const answer = await promptConfirmation(message, {
+				content: t(LanguageKeys.Commands.Social.MarryPetition, { author, user }),
+				target: user
+			});
 			if (answer === null) return message.send(t(LanguageKeys.Commands.Social.MarryNoReply));
 			if (!answer) return message.send(t(LanguageKeys.Commands.Social.MarryDenied));
 

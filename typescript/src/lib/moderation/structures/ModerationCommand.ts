@@ -3,9 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { isGuildOwner } from '#utils/functions';
+import { floatPromise } from '#utils/common';
+import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
-import { cast, floatPromise } from '#utils/util';
+import { cast } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
@@ -68,7 +69,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (shouldAutoDelete) {
-			if (message.deletable) floatPromise(message.nuke());
+			if (message.deletable) floatPromise(deleteMessage(message));
 		}
 
 		if (shouldDisplayMessage) {

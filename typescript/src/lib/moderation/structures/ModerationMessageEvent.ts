@@ -2,8 +2,8 @@ import { AdderKey, GuildEntity, GuildSettings, readSettings } from '#lib/databas
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { floatPromise } from '#utils/common';
 import { isModerator } from '#utils/functions';
-import { floatPromise } from '#utils/util';
 import { Event, EventOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed, TextChannel } from 'discord.js';

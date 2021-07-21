@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
+import { promptConfirmation } from '#utils/functions';
 import { map } from '#utils/iterator';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -55,7 +56,8 @@ export class UserCommand extends SkyraCommand {
 
 	private async ask(message: GuildMessage, t: TFunction, header: string, announcement: string) {
 		try {
-			return message.ask(t(LanguageKeys.Commands.Announcement.AnnouncementPrompt), {
+			return promptConfirmation(message, {
+				content: t(LanguageKeys.Commands.Announcement.AnnouncementPrompt),
 				embed: this.buildEmbed(announcement, header)
 			});
 		} catch {

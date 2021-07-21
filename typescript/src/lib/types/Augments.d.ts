@@ -23,7 +23,6 @@ import type {
 	Message,
 	MessageAdditions,
 	MessageEmbed,
-	MessageExtendablesAskOptions,
 	MessageOptions,
 	NewsChannel,
 	Role,
@@ -194,11 +193,6 @@ declare module '@sapphire/plugin-i18next' {
 		reactable: boolean;
 		fetchLanguage(): Promise<string>;
 		prompt(content: string, time?: number): Promise<Message>;
-		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean | null>;
-		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean | null>;
-		alert(content: string, timer?: number): Promise<Message>;
-		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
-		nuke(time?: number): Promise<Message>;
 		readonly responses: readonly Message[];
 		send(
 			content:

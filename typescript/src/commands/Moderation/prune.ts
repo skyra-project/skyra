@@ -3,11 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { floatPromise } from '#utils/common';
 import { andMix, BooleanFn } from '#utils/comparators';
 import { formatMessage } from '#utils/formatters';
+import { sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { metadata, TypeCodes } from '#utils/moderationConstants';
-import { floatPromise, getImageUrl } from '#utils/util';
+import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -94,7 +96,7 @@ export class UserCommand extends SkyraCommand {
 		if (silent) return null;
 
 		const content = args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit });
-		return message.alert(content, Time.Second * 10);
+		return sendTemporaryMessage(message, content, Time.Second * 10);
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {

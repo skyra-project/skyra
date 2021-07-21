@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
+import { promptConfirmation } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandContext } from '@sapphire/framework';
@@ -167,7 +168,7 @@ export class UserCommand extends SkyraCommand {
 			.setImage(`${CDN_URL}${banner.id}.png`)
 			.setTimestamp();
 
-		return message.ask({ embed });
+		return promptConfirmation(message, { embed });
 	}
 
 	private static readonly banners: Map<string, BannerCache> = new Map();

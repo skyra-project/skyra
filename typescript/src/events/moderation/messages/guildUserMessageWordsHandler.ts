@@ -5,7 +5,9 @@ import { ModerationMessageEvent } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
-import { floatPromise, getContent } from '#utils/util';
+import { floatPromise } from '#utils/common';
+import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
+import { getContent } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
@@ -37,7 +39,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
-		floatPromise(message.nuke());
+		floatPromise(deleteMessage(message));
 		if (message.content.length > 25 && (await this.context.db.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) })
@@ -46,7 +48,7 @@ export class UserModerationMessageEvent extends ModerationMessageEvent {
 	}
 
 	protected onAlert(message: GuildMessage, t: TFunction) {
-		return message.alert(t(LanguageKeys.Events.Moderation.Messages.WordFilter, { user: message.author.toString() }));
+		return sendTemporaryMessage(message, t(LanguageKeys.Events.Moderation.Messages.WordFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, results: FilterResults) {

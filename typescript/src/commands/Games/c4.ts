@@ -4,6 +4,7 @@ import { ConnectFourHumanController } from '#lib/games/connect-four/ConnectFourH
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { User } from 'discord.js';
 
@@ -45,14 +46,13 @@ export class UserCommand extends SkyraCommand {
 		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 
-		const response = await message.ask(
-			args.t(LanguageKeys.Commands.Games.C4Prompt, {
+		const response = await promptConfirmation(message, {
+			content: args.t(LanguageKeys.Commands.Games.C4Prompt, {
 				challenger: message.author.toString(),
 				challengee: user.toString()
 			}),
-			undefined,
-			{ target: user }
-		);
+			target: user
+		});
 
 		if (response) return new ConnectFourHumanController(user.username, user.id);
 		this.error(LanguageKeys.Commands.Games.GamesPromptDeny);

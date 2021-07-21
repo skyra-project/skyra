@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -101,7 +102,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async resetAll(message: GuildMessage, args: SkyraCommand.Args) {
-		const confirmed = await message.ask(args.t(LanguageKeys.Commands.Social.SocialResetAllPrompt));
+		const confirmed = await promptConfirmation(message, args.t(LanguageKeys.Commands.Social.SocialResetAllPrompt));
 		if (confirmed === null) this.error(LanguageKeys.Commands.Social.SocialResetAllTimeOut);
 		if (!confirmed) this.error(LanguageKeys.Commands.Social.SocialResetAllAborted);
 

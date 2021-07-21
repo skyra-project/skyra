@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { MessageOptions } from 'discord.js';
 
@@ -14,7 +15,7 @@ import type { MessageOptions } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		if (message.deletable) message.nuke().catch(() => null);
+		if (message.deletable) deleteMessage(message).catch(() => null);
 
 		const channel = await args.pick('textOrNewsChannelName').catch(() => message.channel);
 		const content = await args.rest('string').catch(() => '');
@@ -29,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 		if (attachment) options.files = [{ attachment }];
 
 		await channel.send(content, options);
-		if (channel !== message.channel) await message.alert(`Message successfully sent to ${channel}`);
+		if (channel !== message.channel) await sendTemporaryMessage(message, `Message successfully sent to ${channel}`);
 
 		return message;
 	}

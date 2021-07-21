@@ -1,5 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { isGuildMessage } from '#utils/common';
+import { sendTemporaryMessage } from '#utils/functions';
+import { wrap } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
@@ -10,12 +13,14 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		try {
-			const extended = args.t(this.extendedHelp).extendedHelp!;
-			const response = await message.author.send(extended);
-			return message.channel.type === 'text' ? await message.alert(args.t(LanguageKeys.Commands.System.DmSent)) : response;
-		} catch {
-			return message.channel.type === 'text' ? null : message.alert(args.t(LanguageKeys.Commands.System.DmNotSent));
+		const content = args.t(this.extendedHelp).extendedHelp!;
+
+		if (isGuildMessage(message)) {
+			const { success } = await wrap(message.author.send(content));
+			const responseContent = args.t(success ? LanguageKeys.Commands.System.DmSent : LanguageKeys.Commands.System.DmNotSent);
+			await sendTemporaryMessage(message, responseContent);
+		} else {
+			await message.send(content);
 		}
 	}
 }

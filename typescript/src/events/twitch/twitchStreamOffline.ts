@@ -1,7 +1,7 @@
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
-import { floatPromise } from '#utils/util';
+import { floatPromise } from '#utils/common';
 import { Event } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';

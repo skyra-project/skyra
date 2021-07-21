@@ -2,7 +2,7 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { isModerator } from '#utils/functions';
+import { deleteMessage, isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -111,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 					});
 
 					// Delete the previous message, and if stopped, send stop.
-					await gameMessage.nuke();
+					await deleteMessage(gameMessage);
 					if (!verification) {
 						message.channel.postable ? await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
 						return;

@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
-import { resolveOnErrorCodes } from '#utils/util';
+import { resolveOnErrorCodes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, EventOptions } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';

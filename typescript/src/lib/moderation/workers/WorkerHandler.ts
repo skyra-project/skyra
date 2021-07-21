@@ -85,6 +85,7 @@ export class WorkerHandler {
 	 * Terminates the internal worker.
 	 */
 	public async destroy() {
+		this.response.destroy();
 		await this.worker.terminate();
 	}
 

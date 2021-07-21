@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
 import { Store } from '@sapphire/framework';
-import { Cron, TimerManager } from '@sapphire/time-utilities';
+import { Cron } from '@sapphire/time-utilities';
 
 const container = Store.injectedContext;
 
 export class ScheduleManager {
 	public queue: ScheduleEntity[] = [];
-	#interval: NodeJS.Timer | null = null;
+	private interval: NodeJS.Timer | null = null;
+
+	public destroy() {
+		this._clearInterval();
+	}
 
 	public async init() {
 		const { schedules } = Store.injectedContext.db;
@@ -151,9 +155,9 @@ export class ScheduleManager {
 	 * Clear the current interval
 	 */
 	private _clearInterval(): void {
-		if (this.#interval) {
-			TimerManager.clearInterval(this.#interval);
-			this.#interval = null;
+		if (this.interval) {
+			clearInterval(this.interval);
+			this.interval = null;
 		}
 	}
 
@@ -163,8 +167,8 @@ export class ScheduleManager {
 	private _checkInterval(): void {
 		if (!this.queue.length) {
 			this._clearInterval();
-		} else if (!this.#interval) {
-			this.#interval = TimerManager.setInterval(this.execute.bind(this), container.client.options.schedule?.interval ?? 5000);
+		} else if (!this.interval) {
+			this.interval = setInterval(this.execute.bind(this), container.client.options.schedule?.interval ?? 5000).unref();
 		}
 	}
 

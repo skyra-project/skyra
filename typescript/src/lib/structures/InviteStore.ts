@@ -3,18 +3,15 @@ import { resolveOnErrorCodes } from '#utils/common';
 import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';
-import type { Client } from 'discord.js';
 
 export class InviteStore extends Collection<string, InviteCodeEntry> {
-	private readonly client: Client;
+	private readonly interval = setInterval(() => {
+		const deleteAt = Date.now() - Time.Minute * 15;
+		this.sweep((value) => value.fetchedAt < deleteAt);
+	}, Time.Minute).unref();
 
-	public constructor(client: Client) {
-		super();
-		this.client = client;
-		this.client.setInterval(() => {
-			const deleteAt = Date.now() - Time.Minute * 15;
-			this.sweep((value) => value.fetchedAt < deleteAt);
-		}, Time.Minute);
+	public destroy() {
+		clearInterval(this.interval);
 	}
 
 	public async fetch(code: string) {

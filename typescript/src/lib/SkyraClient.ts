@@ -1,12 +1,11 @@
 import { QueueClient, WebsocketHandler } from '#lib/audio';
-import { GuildSettings, SettingsManager } from '#lib/database';
+import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
 import { enumerable } from '@sapphire/decorators';
 import { SapphireClient, Store } from '@sapphire/framework';
 import type { I18nContext } from '@sapphire/plugin-i18next';
-import { TimerManager } from '@sapphire/time-utilities';
 import { Message, Webhook } from 'discord.js';
 import Redis from 'ioredis';
 import { join } from 'path';
@@ -51,7 +50,7 @@ export class SkyraClient extends SapphireClient {
 	 * The invite store
 	 */
 	@enumerable(false)
-	public invites: InviteStore = new InviteStore(this);
+	public invites: InviteStore = new InviteStore();
 
 	@enumerable(false)
 	public readonly audio: QueueClient | null;
@@ -120,7 +119,9 @@ export class SkyraClient extends SapphireClient {
 	public async destroy() {
 		await this.context.workers.destroy();
 		this.guildMemberFetchQueue.destroy();
-		TimerManager.destroy();
+		this.invites.destroy();
+		this.schedules.destroy();
+		UserRepository.destroy();
 		return super.destroy();
 	}
 

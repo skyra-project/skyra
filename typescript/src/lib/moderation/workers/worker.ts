@@ -1,4 +1,3 @@
-import { TimerManager } from '@sapphire/time-utilities';
 import { remove as removeConfusables } from 'confusables';
 import { isMainThread, parentPort } from 'worker_threads';
 import { IncomingPayload, IncomingRunRegExpPayload, IncomingType, OutgoingPayload, OutgoingType } from './types';
@@ -11,7 +10,7 @@ function post(message: OutgoingPayload) {
 
 post({ type: OutgoingType.Heartbeat });
 
-TimerManager.setInterval(() => post({ type: OutgoingType.Heartbeat }), 45000);
+setInterval(() => post({ type: OutgoingType.Heartbeat }), 45000).unref();
 
 parentPort.on('message', (message: IncomingPayload) => post(handleMessage(message)));
 

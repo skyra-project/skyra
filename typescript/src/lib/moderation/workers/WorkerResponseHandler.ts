@@ -1,5 +1,4 @@
 import { createReferPromise, ReferredPromise } from '#utils/common';
-import { TimerManager } from '@sapphire/time-utilities';
 import { TimeoutError } from './errors';
 import type { OutgoingPayload } from './types';
 
@@ -7,6 +6,10 @@ export class WorkerResponseHandler {
 	private id = -1;
 	private handler: ReferredPromise<OutgoingPayload> | null = null;
 	private timer: NodeJS.Timeout | null = null;
+
+	public destroy() {
+		this.clearTimeout();
+	}
 
 	public timeout(delay: number | null) {
 		if (delay === null) {
@@ -19,7 +22,7 @@ export class WorkerResponseHandler {
 		}
 
 		this.clearTimeout();
-		this.timer = TimerManager.setTimeout(() => this.reject(id, new TimeoutError()), delay);
+		this.timer = setTimeout(() => this.reject(id, new TimeoutError()), delay).unref();
 		return true;
 	}
 
@@ -50,7 +53,7 @@ export class WorkerResponseHandler {
 
 	private clearTimeout() {
 		if (this.timer) {
-			TimerManager.clearTimeout(this.timer);
+			clearTimeout(this.timer);
 			this.timer = null;
 
 			return true;

@@ -5,7 +5,6 @@ import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
 import Collection from '@discordjs/collection';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { Store } from '@sapphire/pieces';
-import { TimerManager } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
@@ -117,12 +116,16 @@ export class UserRepository extends Repository<UserEntity> {
 		}
 	}
 
-	private static queues = new Collection<string, AsyncQueue>();
-}
+	private static interval = setInterval(() => {
+		UserRepository.queues.sweep((value) => value.remaining === 0);
+	}, 60000).unref();
 
-TimerManager.setInterval(() => {
-	UserRepository['queues'].sweep((value) => value.remaining === 0);
-}, 60000);
+	private static queues = new Collection<string, AsyncQueue>();
+
+	public static destroy() {
+		if (UserRepository.interval) clearInterval(UserRepository.interval);
+	}
+}
 
 interface RawSpouseEntry {
 	user_id_1: string;

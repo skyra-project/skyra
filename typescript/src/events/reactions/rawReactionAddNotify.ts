@@ -70,6 +70,11 @@ export class UserEvent extends Event {
 		);
 	}
 
+	public onUnload() {
+		super.onUnload();
+		if (this.kTimerSweeper) clearInterval(this.kTimerSweeper);
+	}
+
 	protected async retrieveCount(data: LLRCData, emoji: string) {
 		const id = `${data.messageID}.${emoji}`;
 
@@ -98,14 +103,14 @@ export class UserEvent extends Event {
 		this.kSyncCache.delete(id);
 
 		if (this.kTimerSweeper === null) {
-			this.kTimerSweeper = this.context.client.setInterval(() => {
+			this.kTimerSweeper = setInterval(() => {
 				const now = Date.now();
 				this.kCountCache.sweep((entry) => entry.sweepAt < now);
 				if (this.kTimerSweeper !== null && this.kCountCache.size === 0) {
-					this.context.client.clearInterval(this.kTimerSweeper);
+					clearInterval(this.kTimerSweeper);
 					this.kTimerSweeper = null;
 				}
-			}, 5000);
+			}, 5000).unref();
 		}
 
 		return count;

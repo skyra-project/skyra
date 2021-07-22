@@ -77,10 +77,10 @@ export class UserCommand extends SkyraCommand {
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);
 		else this.kInternalCache.set(channel, markov);
-		this.context.client.setTimeout(
+		setTimeout(
 			() => (user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel)),
 			this.kInternalCacheTTL
-		);
+		).unref();
 		return markov;
 	}
 
@@ -95,7 +95,7 @@ export class UserCommand extends SkyraCommand {
 				messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
 			}
 			this.kInternalMessageCache.set(channel, messageBank);
-			this.context.client.setTimeout(() => this.kInternalMessageCache.delete(channel), this.kInternalMessageCacheTTL);
+			setTimeout(() => this.kInternalMessageCache.delete(channel), this.kInternalMessageCacheTTL).unref();
 		} else {
 			messageBank = cachedMessageBank;
 		}

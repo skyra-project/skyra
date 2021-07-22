@@ -11,9 +11,8 @@ export function setAccurateTimeout<T extends readonly any[]>(fn: (...args: T) =>
 			if (remaining < 1) {
 				fn(...args);
 			} else {
-				// @ts-expect-error: discord.js's typings are wrong
 				// eslint-disable-next-line @typescript-eslint/unbound-method
-				context.timeout = container.client.setTimeout(context.cb, delay, ...args);
+				context.timeout = setTimeout(context.cb, delay, ...args).unref();
 			}
 		},
 		stop() {
@@ -21,9 +20,8 @@ export function setAccurateTimeout<T extends readonly any[]>(fn: (...args: T) =>
 		}
 	};
 
-	// @ts-expect-error: discord.js's typings are wrong
 	// eslint-disable-next-line @typescript-eslint/unbound-method
-	context.timeout = container.client.setTimeout(context.cb, delay, ...args);
+	context.timeout = setTimeout(context.cb, delay, ...args).unref();
 	return context;
 }
 

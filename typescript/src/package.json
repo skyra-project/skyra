@@ -52,7 +52,7 @@
 		"colorette": "^1.2.2",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",
-		"discord-api-types": "^0.18.1",
+		"discord-api-types": "^0.20.2",
 		"discord.js": "^12.5.3",
 		"dotenv-cra": "^3.0.1",
 		"gifencoder": "^2.0.1",

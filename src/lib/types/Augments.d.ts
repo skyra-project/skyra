@@ -14,7 +14,7 @@ import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
 import type { PieceContextExtras } from '@sapphire/pieces';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
-import type { Image } from 'canvas';
+import type { Image } from 'canvas-constructor/skia';
 import type {
 	APIMessage,
 	APIMessageContentResolvable,

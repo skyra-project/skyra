@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ExtendedArgument, ExtendedArgumentContext, ExtendedArgumentOptions } from '@sapphire/framework';
-import type { Image } from 'canvas';
+import type { Image } from 'canvas-constructor/skia';
 import type { User } from 'discord.js';
 
 @ApplyOptions<ExtendedArgumentOptions<'userName'>>({ baseArgument: 'userName' })

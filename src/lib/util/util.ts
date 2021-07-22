@@ -7,7 +7,7 @@ import { UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
-import { Image, loadImage } from 'canvas';
+import { Image, resolveImage } from 'canvas-constructor/skia';
 import type { APIUser } from 'discord-api-types/v6';
 import { Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -209,7 +209,7 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await loadImage(url);
+		return await resolveImage(url);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

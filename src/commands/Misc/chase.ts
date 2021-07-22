@@ -4,8 +4,7 @@ import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
@@ -49,12 +48,12 @@ export class UserCommand extends SkyraCommand {
 				.printCircularImage(chaserAvatar, 0, 0, 25)
 
 				// Draw the buffer
-				.toBufferAsync()
+				.png()
 		);
 	}
 
 	public async onLoad() {
-		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
+		this.KTemplate = await resolveImage(join(assetsFolder, './images/memes/chase.png'));
 	}
 
 	private resolve(message: Message, possibleTarget: User) {

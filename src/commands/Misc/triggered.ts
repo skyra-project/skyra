@@ -4,11 +4,10 @@ import { streamToBuffer } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas, rgba } from 'canvas-constructor';
+import { GifEncoder } from '@skyra/gifenc';
+import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
-import GIFEncoder = require('gifencoder');
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -35,25 +34,23 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(user: User) {
-		const encoder = new GIFEncoder(350, 393);
+		const encoder = new GifEncoder(350, 393);
 		const canvas = new Canvas(350, 393);
 
 		const userAvatar = await fetchAvatar(user, 512);
 
 		const stream = encoder.createReadStream();
-		encoder.start();
-		encoder.setRepeat(0);
-		encoder.setDelay(50);
-		encoder.setQuality(100);
+		encoder.setRepeat(0).setDelay(50).setQuality(100).start();
 
 		for (const [x, y] of COORDINATES) {
-			encoder.addFrame(
-				canvas
-					.printImage(userAvatar, x, y, 400, 400)
-					.printImage(this.kTemplate, 0, 340, 350, 53)
-					.setColor(rgba(255, 100, 0, 0.4))
-					.printRectangle(0, 0, 350, 350)['context']
-			);
+			const frame = canvas
+				.printImage(userAvatar, x, y, 400, 400)
+				.printImage(this.kTemplate, 0, 340, 350, 53)
+				.setColor(rgba(255, 100, 0, 0.4))
+				.printRectangle(0, 0, 350, 350)
+				.getImageData().data;
+
+			encoder.addFrame(frame);
 		}
 
 		encoder.finish();
@@ -62,6 +59,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/triggered.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/triggered.png'));
 	}
 }

@@ -3,9 +3,9 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
+import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
 import type { User } from 'discord.js';
 import { join } from 'path';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const secondUser = args.finished ? this.randomUser(message, firstUser) : await args.pick('userName');
 
 		// Get the avatars and sync the author's settings for dark mode preference
-		const [avatarFirstUser, avatarSecondUser] = await Promise.all([this.fetchAvatar(firstUser), this.fetchAvatar(secondUser)]);
+		const [avatarFirstUser, avatarSecondUser] = await Promise.all([fetchAvatar(firstUser), fetchAvatar(secondUser)]);
 
 		const { users } = this.context.db;
 		const settings = await users.ensureProfile(message.author.id);
@@ -43,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 			.printImage(this.heartIcon, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
-			.toBufferAsync();
+			.png();
 
 		// Return the lovely message
 		const data = args.t(LanguageKeys.Commands.Misc.ShipData, {
@@ -57,9 +57,9 @@ export class UserCommand extends SkyraCommand {
 	/** Initialize the light and dark theme templates and the heart icon */
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
-			loadImage(join(socialFolder, 'heart.png'))
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).png().then(resolveImage),
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).png().then(resolveImage),
+			resolveImage(join(socialFolder, 'heart.png'))
 		]);
 	}
 
@@ -74,19 +74,6 @@ export class UserCommand extends SkyraCommand {
 		const alphabeticalCharactersOnlyName = deconfusedName.replace(this.kRemoveSymbolsRegex, '');
 
 		return alphabeticalCharactersOnlyName;
-	}
-
-	/**
-	 * Fetches avatar as Buffer for a user
-	 * @details Loosely based on fetchAvatar from utils, but customized for ship to account for not having a User object.
-	 * @param user The user to fetch the avatar for
-	 */
-	private async fetchAvatar(user: User): Promise<Image> {
-		try {
-			return await loadImage(user.displayAvatarURL({ size: 64, format: 'png', dynamic: true }));
-		} catch (error) {
-			this.error(LanguageKeys.System.QueryFail);
-		}
 	}
 
 	private randomUser(message: GuildMessage, firstUser?: User): User {

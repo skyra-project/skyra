@@ -3,8 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
@@ -27,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
 	}
 
 	private async generate(author: User, text: string) {
@@ -48,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 				.printWrappedText(text, 311, 375, 340)
 
 				// Render
-				.toBufferAsync()
+				.png()
 		);
 	}
 }

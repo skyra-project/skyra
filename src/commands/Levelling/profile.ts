@@ -6,8 +6,7 @@ import { cdnFolder } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
@@ -51,14 +50,14 @@ export class UserCommand extends SkyraCommand {
 		/* Global leaderboard */
 		const rank = await (scope === Scope.Local ? fetchLocalRank(user, message.guild!) : fetchGlobalRank(user));
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			loadImage(join(THEMES_FOLDER, `${settings.profile.bannerProfile}.png`)),
+			resolveImage(join(THEMES_FOLDER, `${settings.profile.bannerProfile}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
 		const title = t(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
-			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
+			const badges = await Promise.all(settings.profile.publicBadges.map((name) => resolveImage(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock : this.lightThemeDock, 600, 0, 100, 391);
 			let position = 20;
@@ -114,14 +113,13 @@ export class UserCommand extends SkyraCommand {
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)
-				.toBufferAsync()
+				.png()
 		);
 	}
 
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.lightThemeDock, this.darkThemeDock] = await Promise.all([
 			new Canvas(640, 391)
-				.setAntialiasing('subpixel')
 				.setShadowColor('rgba(0, 0, 0, 0.7)')
 				.setShadowBlur(7)
 				.setColor('#FFFFFF')
@@ -133,10 +131,9 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#E8E8E8')
 				.printRoundedRectangle(226, 351, 366, 11, 4)
-				.toBufferAsync()
-				.then(loadImage),
+				.png()
+				.then(resolveImage),
 			new Canvas(640, 391)
-				.setAntialiasing('subpixel')
 				.setShadowColor('rgba(0, 0, 0, 0.7)')
 				.setShadowBlur(7)
 				.setColor('#202225')
@@ -148,26 +145,24 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#2C2F33')
 				.printRoundedRectangle(226, 351, 366, 11, 4)
-				.toBufferAsync()
-				.then(loadImage),
+				.png()
+				.then(resolveImage),
 			new Canvas(100, 391)
-				.setAntialiasing('subpixel')
 				.setShadowColor('rgba(0, 0, 0, 0.7)')
 				.setShadowBlur(7)
 				.setColor('#E8E8E8')
 				.createRoundedPath(10, 10, 80, 371, 8)
 				.fill()
-				.toBufferAsync()
-				.then(loadImage),
+				.png()
+				.then(resolveImage),
 			new Canvas(100, 391)
-				.setAntialiasing('subpixel')
 				.setShadowColor('rgba(0, 0, 0, 0.7)')
 				.setShadowBlur(7)
 				.setColor('#272A2E')
 				.createRoundedPath(10, 10, 80, 371, 8)
 				.fill()
-				.toBufferAsync()
-				.then(loadImage)
+				.png()
+				.then(resolveImage)
 		]);
 	}
 }

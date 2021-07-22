@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RGB, SkyraCommand } from '#lib/structures';
 import { hexConcat, luminance } from '#utils/Color';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Canvas, rgb } from 'canvas-constructor';
+import { Canvas, rgb } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 
 /* Color limiter */
@@ -53,7 +53,7 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('16px FiraSans')
 			.setColor(rgb(thisLum, thisLum, thisLum))
 			.printText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
-			.toBufferAsync();
+			.png();
 	}
 
 	public processFrame(ctx: Canvas, x: number, y: number, red: number, green: number, blue: number) {

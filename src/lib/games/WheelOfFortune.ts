@@ -5,8 +5,7 @@ import { socialFolder } from '#utils/constants';
 import { UserError } from '@sapphire/framework';
 import { Store } from '@sapphire/pieces';
 import { roundNumber } from '@sapphire/utilities';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
@@ -151,7 +150,7 @@ export class WheelOfFortune {
 			)
 		);
 
-		return canvas.toBufferAsync();
+		return canvas.png();
 	}
 
 	/** The Wheel of Fortune multipliers */
@@ -175,10 +174,10 @@ export class WheelOfFortune {
 
 	public static async init() {
 		const [winIcons, loseIcons, arrows, shiny] = await Promise.all([
-			loadImage(join(socialFolder, 'wof-win-icons.png')),
-			loadImage(join(socialFolder, 'wof-lose-icons.png')),
-			loadImage(join(socialFolder, 'wof-arrows.png')),
-			loadImage(join(socialFolder, 'shiny-icon.png'))
+			resolveImage(join(socialFolder, 'wof-win-icons.png')),
+			resolveImage(join(socialFolder, 'wof-lose-icons.png')),
+			resolveImage(join(socialFolder, 'wof-arrows.png')),
+			resolveImage(join(socialFolder, 'shiny-icon.png'))
 		]);
 
 		WheelOfFortune.images.LOSE_ICONS = loseIcons;

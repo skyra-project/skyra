@@ -209,14 +209,39 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - name: Download Coverage report
+      - name: Download NodeJS Unit Test Coverage report
         uses: actions/download-artifact@v2
         with:
+          name: nodejs-coverage
           path: coverage/
+      - name: Download DotNet Unit Test Coverage report
+        uses: actions/download-artifact@v2
+        with:
+          name: dotnet-coverage-unit
+          path: services/Skyra.UnitTests/TestResults/
+      - name: Download DotNet IT Coverage report
+        uses: actions/download-artifact@v2
+        with:
+          name: dotnet-coverage-integration
+          path: services/Skyra.IntegrationTests/TestResults/
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: services/Skyra.UnitTests/TestResults/
+          flags: dotnet-unit
+          fail_ci_if_error: true
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: services/Skyra.IntegrationTests/TestResults/
+          flags: dotnet-it
+          fail_ci_if_error: true
       - name: Codecov Upload
         uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: coverage/
-          flags: dotnet,nodejs
+          flags: nodejs-unit
           fail_ci_if_error: true

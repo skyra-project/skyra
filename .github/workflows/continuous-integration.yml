@@ -225,14 +225,14 @@ jobs:
           name: dotnet-coverage-integration
           path: services/Skyra.IntegrationTests/TestResults/
       - name: Codecov Upload
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: services/Skyra.UnitTests/TestResults/
           flags: dotnet-unit
           fail_ci_if_error: true
       - name: Codecov Upload
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: services/Skyra.IntegrationTests/TestResults/

@@ -1,11 +1,14 @@
 flag_management:
   individual_flags:
-    - name: dotnet
+    - name: dotnet-unit
       carryforward: true
       paths:
-        - coverage/dotnet-coverage-unit
-        - coverage/dotnet-coverage-integration
-    - name: nodejs
+        - services/Skyra.UnitTests/TestResults/
+    - name: dotnet-it
       carryforward: true
       paths:
-        - coverage/nodejs-coverage
+        - services/Skyra.IntegrationTests/TestResults/
+    - name: nodejs-unit
+      carryforward: true
+      paths:
+        - coverage/

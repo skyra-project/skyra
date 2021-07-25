@@ -587,5 +587,89 @@
 			]
 		]
 	},
-	"youtubeNotfound": ""
+	"youtubeNotfound": "",
+	"starWarsDescription": "",
+	"starWarsExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"starWarsNoResult": "",
+	"starWarsPeopleTitles": {
+		"films": {
+			"characters": "",
+			"creationDate": "",
+			"director": "",
+			"episodeId": "",
+			"planets": "",
+			"producer": "",
+			"releaseDate": "",
+			"species": "",
+			"starships": "",
+			"vehicles": ""
+		},
+		"people": {
+			"appearedInFilms": "",
+			"eyeColour": "",
+			"gender": "",
+			"hairColour": "",
+			"height": "",
+			"homeWorld": "",
+			"mass": "",
+			"ownedStarShips": "",
+			"ownedVehicles": "",
+			"skinColour": "",
+			"species": "",
+			"yearOfBirth": ""
+		},
+		"starships": {
+			"amountOfPassengers": "",
+			"cargoCapacity": "",
+			"class": "",
+			"consumables": "",
+			"costInCredits": "",
+			"crew": "",
+			"films": "",
+			"length": "",
+			"manufacturer": "",
+			"maximumAtmospheringSpeed": "",
+			"megalightsTravelSpeed": "",
+			"model": "",
+			"pilots": ""
+		},
+		"planets": {
+			"appearedInFilms": "",
+			"averageSentientPopulation": "",
+			"climate": "",
+			"diameter": "",
+			"orbitalPeriod": "",
+			"rotationPeriod": "",
+			"surfaceWaterPercentage": "",
+			"terrain": ""
+		}
+	}
 }

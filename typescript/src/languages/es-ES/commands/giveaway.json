@@ -102,35 +102,35 @@
 		]
 	},
 	"giveawayRerollInvalid": "O bien el identificador del mensaje no existe o no hay ningún sorteo terminado.",
-	"giveawayEndDescription": "",
+	"giveawayEndDescription": "Termina un sorteo en curso.",
 	"giveawayEndExtended": {
 		"usages": [
-			"",
-			"",
-			""
+			"Canal Mensaje",
+			"Mensaje",
+			"Enlace"
 		],
 		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"Canal Mensaje",
+				"Un canal y el identificador de un mensaje."
 			],
 			[
-				"",
-				""
+				"Mensaje",
+				"Un identificador de mensaje de este canal."
 			],
 			[
-				"",
-				""
+				"Enlace",
+				"Un enlace a un mensaje en este servidor."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"#sorteos 739417065466888262",
+			"739417065466888262",
+			"https://discord.com/channels/254360814063058944/739242237489315869/739417065466888261"
 		]
 	},
-	"giveawayEndMessageNotMine": "",
-	"giveawayEndMessageNotActive": "",
-	"giveawayEnd": ""
+	"giveawayEndMessageNotMine": "Lo siento, ¡pero eso no parece un sorteo que esté siendo gestionado por mí!",
+	"giveawayEndMessageNotActive": "El mensaje que me ha dado parece que puede ser un sorteo, pero no lo estoy manejando. Si quieres volver a lanzar un sorteo ya finalizado, por favor ejecuta `greroll`.",
+	"giveawayEnd": "¡Finalizado con éxito el sorteo en <{{url}}>!"
 }

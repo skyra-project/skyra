@@ -2,7 +2,6 @@ import type { Queue } from '#lib/audio';
 import { ModerationManager, StickyRoleManager } from '#lib/moderation';
 import { StarboardManager } from '#lib/structures';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
-import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Structures } from 'discord.js';
 
 export class SkyraGuild extends Structures.get('Guild') {
@@ -23,7 +22,6 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly stickyRoles: StickyRoleManager;
-		_patch(data: GatewayGuildCreateDispatch['d'] & { shardID: number }): void;
 	}
 }
 

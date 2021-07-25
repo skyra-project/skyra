@@ -163,3 +163,12 @@ export async function promptConfirmation(message: Message, options: string | Pro
 	const response = (await message.send(options)) as Message;
 	return canReact(response) ? promptConfirmationReaction(message, response, options) : promptConfirmationMessage(message, response, options);
 }
+
+export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = Time.Minute): Promise<string | null> {
+	// The cast is for mismatching overloads:
+	const response = (await message.channel.send(sendOptions as any)) as Message;
+	const responses = await message.channel.awaitMessages((msg) => msg.author === message.author, { time, max: 1 });
+	floatPromise(deleteMessage(response));
+
+	return responses.size === 0 ? null : responses.first()!.content;
+}

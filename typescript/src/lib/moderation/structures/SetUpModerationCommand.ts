@@ -1,7 +1,7 @@
 import { GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { isAdmin, promptConfirmation } from '#utils/functions';
+import { isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
 import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import type { Argument, PieceContext } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
@@ -55,11 +55,11 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 
 	protected async askForRole(message: GuildMessage, args: SetUpModerationCommand.Args, context: SetUpModerationCommand.Context) {
-		const response = await message.prompt(args.t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName), 30000).catch(() => null);
-		if (response === null) return this.error(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNoMessage);
+		const result = await promptForMessage(message, args.t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName));
+		if (result === null) this.error(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNoMessage);
 
 		const argument = this.role;
-		return argument.run(response.content, { args, argument, command: this, commandContext: context, message });
+		return argument.run(result, { args, argument, command: this, commandContext: context, message });
 	}
 }
 

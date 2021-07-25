@@ -228,20 +228,4 @@ jobs:
         uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: services/Skyra.UnitTests/TestResults/
-          flags: dotnet-unit
-          fail_ci_if_error: true
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v2.0.2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: services/Skyra.IntegrationTests/TestResults/
-          flags: dotnet-it
-          fail_ci_if_error: true
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v2.0.2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: coverage/
-          flags: nodejs-unit
           fail_ci_if_error: true

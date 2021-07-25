@@ -1,0 +1,200 @@
+{
+	"filmDescription": "",
+	"filmExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"filmQueryFail": "",
+	"filmEmbedTitles": {
+		"characters": "",
+		"creationDate": "",
+		"director": "",
+		"episodeId": "",
+		"planets": "",
+		"producers": "",
+		"releaseDate": "",
+		"species": "",
+		"starships": "",
+		"vehicles": ""
+	},
+	"peopleDescription": "",
+	"peopleExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"peopleQueryFail": "",
+	"peopleEmbedTitles": {
+		"appearedInFilms": "",
+		"eyeColours": "",
+		"gender": "",
+		"hairColours": "",
+		"height": "",
+		"homeworld": "",
+		"mass": "",
+		"ownedStarShips": "",
+		"ownedVehicles": "",
+		"skinColours": "",
+		"species": "",
+		"yearOfBirth": ""
+	},
+	"planetsDescription": "",
+	"planetsExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"planetsQueryFail": "",
+	"planetsEmbedTitles": {
+		"appearedInFilms": "",
+		"averageSentientPopulation": "",
+		"climates": "",
+		"diameter": "",
+		"gravity": "",
+		"gravityBody": "",
+		"orbitalPeriod": "",
+		"residents": "",
+		"rotationPeriod": "",
+		"surfaceWaterPercentage": "",
+		"terrains": ""
+	},
+	"speciesDescription": "",
+	"speciesExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"speciesQueryFail": "",
+	"speciesEmbedTitles": {
+		"appearedInFilms": "",
+		"averageHeight": "",
+		"averageLifespan": "",
+		"classification": "",
+		"designation": "",
+		"eyeColours": "",
+		"hairColours": "",
+		"homeworld": "",
+		"knownPeopleOfSpecies": "",
+		"language": "",
+		"skinColours": ""
+	},
+	"starshipDescription": "",
+	"starshipExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"starshipQueryFail": "",
+	"starshipEmbedTitles": {
+		"amountOfPassengers": "",
+		"appearedInFilms": "",
+		"cargoCapacity": "",
+		"consumables": "",
+		"costInCredits": "",
+		"crew": "",
+		"hyperdriveRating": "",
+		"length": "",
+		"manufacturers": "",
+		"maximumAtmospheringSpeed": "",
+		"megalightsTravelSpeed": "",
+		"model": "",
+		"pilots": "",
+		"starshipClass": ""
+	},
+	"vehiclesDescription": "",
+	"vehiclesExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"vehiclesQueryFail": "",
+	"vehiclesEmbedTitles": {
+		"amountOfPassengers": "",
+		"appearedInFilms": "",
+		"cargoCapacity": "",
+		"consumables": "",
+		"costInCredits": "",
+		"crew": "",
+		"length": "",
+		"manufacturers": "",
+		"maximumAtmospheringSpeed": "",
+		"model": "",
+		"pilots": "",
+		"vehicleClass": ""
+	}
+}

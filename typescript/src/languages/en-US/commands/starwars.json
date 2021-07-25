@@ -31,8 +31,8 @@
 		"starships": "Starships in this film",
 		"vehicles": "Vehicles in this film"
 	},
-	"peopleDescription": "Get data for any given character in Star Wars",
-	"peopleExtended": {
+	"personDescription": "Get data for any given character in Star Wars",
+	"personExtended": {
 		"usages": [
 			"Person"
 		],
@@ -50,8 +50,8 @@
 		],
 		"reminder": "At the moment only data on the first 6 movies is available. Data in movies 7 through 9 and spin-offs might be added in the future."
 	},
-	"peopleQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{person}}` is actually a person in Star Wars?",
-	"peopleEmbedTitles": {
+	"personQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{person}}` is actually a person in Star Wars?",
+	"personEmbedTitles": {
 		"appearedInFilms": "Appeared in these films",
 		"eyeColours": "Eye colors",
 		"gender": "Gender",
@@ -65,8 +65,8 @@
 		"species": "Species",
 		"yearOfBirth": "Year of birth"
 	},
-	"planetsDescription": "Get data for any given planet in Star Wars",
-	"planetsExtended": {
+	"planetDescription": "Get data for any given planet in Star Wars",
+	"planetExtended": {
 		"usages": [
 			"Planet"
 		],
@@ -83,8 +83,8 @@
 		],
 		"reminder": "At the moment only data on the first 6 movies is available. Data in movies 7 through 9 and spin-offs might be added in the future."
 	},
-	"planetsQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{planet}}` is actually a planet in Star Wars?",
-	"planetsEmbedTitles": {
+	"planetQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{planet}}` is actually a planet in Star Wars?",
+	"planetEmbedTitles": {
 		"appearedInFilms": "Appeared in these films",
 		"averageSentientPopulation": "Average of sentient inhabitants",
 		"climates": "Climates",
@@ -164,8 +164,8 @@
 		"pilots": "People who have piloted this ship",
 		"starshipClass": "Class of starship"
 	},
-	"vehiclesDescription": "Get data for any given vehicle in Star Wars",
-	"vehiclesExtended": {
+	"vehicleDescription": "Get data for any given vehicle in Star Wars",
+	"vehicleExtended": {
 		"usages": [
 			"Vehicle"
 		],
@@ -182,8 +182,8 @@
 		],
 		"reminder": "At the moment only data on the first 6 movies is available. Data in movies 7 through 9 and spin-offs might be added in the future."
 	},
-	"vehiclesQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{vehicle}}` is actually a vehicle in Star Wars?",
-	"vehiclesEmbedTitles": {
+	"vehicleQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{vehicle}}` is actually a vehicle in Star Wars?",
+	"vehicleEmbedTitles": {
 		"amountOfPassengers": "Amount of passengers",
 		"appearedInFilms": "Appeared in films",
 		"cargoCapacity": "Cargo capacity",

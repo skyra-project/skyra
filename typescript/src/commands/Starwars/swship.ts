@@ -38,7 +38,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					const description = [];
 
 					if (result.model) {
-						description.push(`**${starshipTitles.model}**: ${result.crew}`);
+						description.push(`**${starshipTitles.model}**: ${result.model}`);
 					}
 
 					if (result.starshipClass) {
@@ -46,7 +46,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.crew) {
-						description.push(`**${starshipTitles.crew}**: ${result.crew}`);
+						description.push(`**${starshipTitles.crew}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.crew })}`);
 					}
 
 					if (result.passengers) {
@@ -74,7 +74,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.consumables) {
-						description.push(`**${starshipTitles.consumables}**: ${result.consumables}`);
+						description.push(
+							`**${starshipTitles.consumables}**: ${t(LanguageKeys.Globals.DurationValue, { value: result.consumables, precision: 1 })}`
+						);
 					}
 
 					if (result.maxAtmospheringSpeed) {

@@ -12,8 +12,8 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-person', 'star-wars-character'],
 	cooldown: 10,
-	description: LanguageKeys.Commands.StarWars.PeopleDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.PeopleExtended
+	description: LanguageKeys.Commands.StarWars.PersonDescription,
+	extendedHelp: LanguageKeys.Commands.StarWars.PersonExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
@@ -23,7 +23,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const results = await this.fetchAPI(person);
 
 		if (results.length === 0) {
-			this.error(LanguageKeys.Commands.StarWars.PeopleQueryFail, { person });
+			this.error(LanguageKeys.Commands.StarWars.PersonQueryFail, { person });
 		}
 
 		const display = new SkyraPaginatedMessage({
@@ -32,7 +32,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
-		const peopleTitles = t(LanguageKeys.Commands.StarWars.PeopleEmbedTitles);
+		const peopleTitles = t(LanguageKeys.Commands.StarWars.PersonEmbedTitles);
 
 		for (const result of results) {
 			display
@@ -137,7 +137,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 			return getFuzzyPerson;
 		} catch {
-			this.error(LanguageKeys.Commands.StarWars.PeopleQueryFail, { person });
+			this.error(LanguageKeys.Commands.StarWars.PersonQueryFail, { person });
 		}
 	}
 

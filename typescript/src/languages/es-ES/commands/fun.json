@@ -193,33 +193,33 @@
 			"Skyra"
 		]
 	},
-	"thinkDescription": "",
+	"thinkDescription": "Piensa, ¡Mark!",
 	"thinkExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
-		"extendedHelp": "",
-		"reminder": "",
+		"extendedHelp": "\"¡Piensa, Mark!\" es un meme del programa de televisión Invincible, el resto... no, eso serían spoilers.",
+		"reminder": "Este comando contiene sangre de dibujos animados, que puede no ser adecuado para todos los públicos.",
 		"examples": [
-			""
+			"Mark"
 		]
 	},
-	"thinkMessage": "",
+	"thinkMessage": "Piensa, {{user}}, ¡piensa!",
 	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
 	"wakandaExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Genera una imagen usando la plantilla [No Hacemos Eso Aquí](https://knowyourmeme.com/memes/we-dont-do-that-here) con el usuario dado."
 	},
-	"whereDescription": "",
+	"whereDescription": "¡Encontré a la persona que estábamos buscando!",
 	"whereExtended": {
 		"usages": [
-			""
+			"Usuario"
 		],
-		"extendedHelp": "",
+		"extendedHelp": "Este comando genera un meme de [Ataque a los titanes: la temporada final](https://anilist.co/anime/110277/Shingeki-no-Kyojin-The-Final-Season/), y es mejor no decirte nada, otro que esto generará un meme de ti apuntando a un usuario de tu elección.",
 		"examples": [
-			""
+			"Encanto"
 		]
 	},
-	"whereMessage": "",
+	"whereMessage": "¡He encontrado a {{user}}!",
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {
 		"usages": [

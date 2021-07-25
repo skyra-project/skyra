@@ -8,7 +8,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	aliases: ['star-wars-spieces'],
+	aliases: ['star-wars-species'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.SpeciesDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.SpeciesExtended

@@ -228,6 +228,4 @@ jobs:
         uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: dotnet-unit,dotnet-it,nodejs-unit # TODO: Remove before merge
           fail_ci_if_error: true
-          verbose: true # TODO: Remove after debugging

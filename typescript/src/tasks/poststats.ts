@@ -9,7 +9,7 @@ const header = blueBright('[POST STATS   ]');
 
 enum Lists {
 	BotListSpace = 'botlist.space',
-	BotsForDiscord = 'botsfordiscord.com',
+	Discords = 'discords.com',
 	DiscordBotList = 'discordbotlist.com',
 	TopGG = 'top.gg',
 	DiscordBotsGG = 'discord.bots.gg',
@@ -48,10 +48,10 @@ export class UserTask extends Task {
 					Lists.DiscordBotsGG
 				),
 				this.query(
-					`https://botsfordiscord.com/api/bot/${process.env.CLIENT_ID}`,
+					`https://discords.com/api/bot/${process.env.CLIENT_ID}`,
 					`{"server_count":${guilds}}`,
 					process.env.BOTS_FOR_DISCORD_TOKEN,
-					Lists.BotsForDiscord
+					Lists.Discords
 				),
 				this.query(
 					`https://discordbotlist.com/api/v1/bots/${process.env.CLIENT_ID}/stats`,

@@ -1,20 +1,20 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
-import { T, FT, EmbedTitles, Resource } from '#lib/types';
+import { EmbedTitles, FT, Resource, T } from '#lib/types';
 
 export const FilmDescription = T('commands/starwars:filmDescription');
 export const FilmExtended = T<LanguageHelpDisplayOptions>('commands/starwars:filmExtended');
 export const FilmQueryFail = FT<{ film: string }, string>('commands/starwars:filmQueryFail');
 export const FilmEmbedTitles = T<EmbedTitles[Resource.Films]>('commands/starwars:filmEmbedTitles');
 
-export const PeopleDescription = T('commands/starwars:peopleDescription');
-export const PeopleExtended = T<LanguageHelpDisplayOptions>('commands/starwars:peopleExtended');
-export const PeopleQueryFail = FT<{ person: string }, string>('commands/starwars:peopleQueryFail');
-export const PeopleEmbedTitles = T<EmbedTitles[Resource.People]>('commands/starwars:peopleEmbedTitles');
+export const PersonDescription = T('commands/starwars:personDescription');
+export const PersonExtended = T<LanguageHelpDisplayOptions>('commands/starwars:personExtended');
+export const PersonQueryFail = FT<{ person: string }, string>('commands/starwars:personQueryFail');
+export const PersonEmbedTitles = T<EmbedTitles[Resource.People]>('commands/starwars:personEmbedTitles');
 
-export const PlanetsDescription = T('commands/starwars:planetsDescription');
-export const PlanetsExtended = T<LanguageHelpDisplayOptions>('commands/starwars:planetsExtended');
-export const PlanetsQueryFail = FT<{ planets: string }, string>('commands/starwars:planetsQueryFail');
-export const PlanetsEmbedTitles = T<EmbedTitles[Resource.Planets]>('commands/starwars:planetsEmbedTitles');
+export const PlanetDescription = T('commands/starwars:planetDescription');
+export const PlanetExtended = T<LanguageHelpDisplayOptions>('commands/starwars:planetExtended');
+export const PlanetQueryFail = FT<{ planets: string }, string>('commands/starwars:planetQueryFail');
+export const PlanetEmbedTitles = T<EmbedTitles[Resource.Planets]>('commands/starwars:planetEmbedTitles');
 
 export const SpeciesDescription = T('commands/starwars:speciesDescription');
 export const SpeciesExtended = T<LanguageHelpDisplayOptions>('commands/starwars:speciesExtended');
@@ -24,9 +24,9 @@ export const SpeciesEmbedTitles = T<EmbedTitles[Resource.Species]>('commands/sta
 export const StarshipDescription = T('commands/starwars:starshipsDescription');
 export const StarshipExtended = T<LanguageHelpDisplayOptions>('commands/starwars:starshipsExtended');
 export const StarshipQueryFail = FT<{ starship: string }, string>('commands/starwars:starshipsQueryFail');
-export const StarshipEmbedTitles = T<EmbedTitles[Resource.Starships]>('commands/starwars:starshipsEmbedTitles');
+export const StarshipEmbedTitles = T<EmbedTitles[Resource.Starships]>('commands/starwars:starshipEmbedTitles');
 
-export const VehiclesDescription = T('commands/starwars:vehiclesDescription');
-export const VehiclesExtended = T<LanguageHelpDisplayOptions>('commands/starwars:vehiclesExtended');
-export const VehiclesQueryFail = FT<{ vehicle: string }, string>('commands/starwars:vehiclesQueryFail');
-export const VehiclesEmbedTitles = T<EmbedTitles[Resource.Vehicles]>('commands/starwars:vehiclesEmbedTitles');
+export const VehicleDescription = T('commands/starwars:vehicleDescription');
+export const VehicleExtended = T<LanguageHelpDisplayOptions>('commands/starwars:vehicleExtended');
+export const VehicleQueryFail = FT<{ vehicle: string }, string>('commands/starwars:vehicleQueryFail');
+export const VehicleEmbedTitles = T<EmbedTitles[Resource.Vehicles]>('commands/starwars:vehicleEmbedTitles');

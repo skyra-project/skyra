@@ -10,8 +10,8 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-vehicle', 'swvehicles', 'star-wars-vehicles'],
 	cooldown: 10,
-	description: LanguageKeys.Commands.StarWars.VehiclesDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.VehiclesExtended
+	description: LanguageKeys.Commands.StarWars.VehicleDescription,
+	extendedHelp: LanguageKeys.Commands.StarWars.VehicleExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -21,7 +21,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const results = await this.fetchAPI(vehicle);
 
 		if (results.length === 0) {
-			this.error(LanguageKeys.Commands.StarWars.VehiclesQueryFail, { vehicle });
+			this.error(LanguageKeys.Commands.StarWars.VehicleQueryFail, { vehicle });
 		}
 
 		const display = new SkyraPaginatedMessage({
@@ -30,7 +30,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
-		const vehicleTitles = t(LanguageKeys.Commands.StarWars.VehiclesEmbedTitles);
+		const vehicleTitles = t(LanguageKeys.Commands.StarWars.VehicleEmbedTitles);
 
 		for (const result of results) {
 			display
@@ -38,7 +38,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					const description = [];
 
 					if (result.model) {
-						description.push(`**${vehicleTitles.model}**: ${result.crew}`);
+						description.push(`**${vehicleTitles.model}**: ${result.model}`);
 					}
 
 					if (result.vehicleClass) {
@@ -46,7 +46,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.crew) {
-						description.push(`**${vehicleTitles.crew}**: ${result.crew}`);
+						description.push(`**${vehicleTitles.crew}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.crew })}`);
 					}
 
 					if (result.passengers) {
@@ -74,7 +74,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.consumables) {
-						description.push(`**${vehicleTitles.consumables}**: ${result.consumables}`);
+						description.push(
+							`**${vehicleTitles.consumables}**: ${t(LanguageKeys.Globals.DurationValue, { value: result.consumables, precision: 1 })}`
+						);
 					}
 
 					if (result.maxAtmospheringSpeed) {
@@ -135,7 +137,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 			return getFuzzyVehicle;
 		} catch {
-			this.error(LanguageKeys.Commands.StarWars.VehiclesQueryFail, { vehicle });
+			this.error(LanguageKeys.Commands.StarWars.VehicleQueryFail, { vehicle });
 		}
 	}
 }

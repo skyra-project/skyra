@@ -11,8 +11,8 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-planet'],
 	cooldown: 10,
-	description: LanguageKeys.Commands.StarWars.PlanetsDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.PlanetsExtended
+	description: LanguageKeys.Commands.StarWars.PlanetDescription,
+	extendedHelp: LanguageKeys.Commands.StarWars.PlanetExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
@@ -22,7 +22,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const results = await this.fetchAPI(planet);
 
 		if (results.length === 0) {
-			this.error(LanguageKeys.Commands.StarWars.PlanetsQueryFail, { planet });
+			this.error(LanguageKeys.Commands.StarWars.PlanetQueryFail, { planet });
 		}
 
 		const display = new SkyraPaginatedMessage({
@@ -31,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
-		const planetTitles = t(LanguageKeys.Commands.StarWars.PlanetsEmbedTitles);
+		const planetTitles = t(LanguageKeys.Commands.StarWars.PlanetEmbedTitles);
 
 		for (const result of results) {
 			display.addPageEmbed((embed) => {
@@ -100,7 +100,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 			return getFuzzyPlanet;
 		} catch {
-			this.error(LanguageKeys.Commands.StarWars.PlanetsQueryFail, { planet });
+			this.error(LanguageKeys.Commands.StarWars.PlanetQueryFail, { planet });
 		}
 	}
 }

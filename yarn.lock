@@ -1734,10 +1734,10 @@
   dependencies:
     graphql "^15.5.0"
 
-"@skyra/star-wars-api@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@skyra/star-wars-api/-/star-wars-api-1.0.4.tgz#763d1a8c19585ff2e7be99aa1cc5cbdd6126aece"
-  integrity sha512-UeQM7aOLwXDr180APPXQM6znYtDQDkVAOeYo6KlmulRPKe6vGjcoLGJsnzkNEhHF0yqr/HSUmiJqU52Bx6RLow==
+"@skyra/star-wars-api@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/star-wars-api/-/star-wars-api-2.0.0.tgz#196d47000f10f7a5ab55c539229838ba9ce9878f"
+  integrity sha512-KljBOBbvAEE7hIAgh4wiVDD2GPqqaspenW7k+13pIHOfOlEAPlVxge4nbOOVuJ9aQTCFKApRMm9ZVompjuTEQg==
   dependencies:
     graphql "^15.5.1"
 

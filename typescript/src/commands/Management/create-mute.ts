@@ -4,10 +4,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Emojis } from '#utils/constants';
-import { canReact, promptConfirmation } from '#utils/functions';
+import { canReact, promptConfirmation, promptForMessage } from '#utils/functions';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Argument, err, Result, UserError } from '@sapphire/framework';
+import type { Argument, Result, UserError } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { Permissions, Role } from 'discord.js';
 
@@ -50,12 +50,10 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async askForRole(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context): Promise<Result<Role, UserError>> {
-		const response = await message
-			.prompt(args.t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName), Time.Second * 30)
-			.catch(() => null);
-		if (response === null) return err(new UserError({ identifier: LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNoMessage }));
+		const result = await promptForMessage(message, args.t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName));
+		if (result === null) this.error(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNoMessage);
 
 		const argument = this.role;
-		return argument.run(response.content, { args, argument, command: this, commandContext: context, message });
+		return argument.run(result, { args, argument, command: this, commandContext: context, message });
 	}
 }

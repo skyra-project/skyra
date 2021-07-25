@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
-import { canSendAttachments } from '#utils/functions';
+import { canSendAttachments, promptForMessage } from '#utils/functions';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -91,11 +91,14 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: T
 
 	if (canSendAttachments(message.channel)) _options.push('file');
 	if (!options.hastebinUnavailable) _options.push('hastebin');
-	let _choice: { content: string };
+
+	let choice: string;
 	do {
-		_choice = await message.prompt(t(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options })).catch(() => ({ content: 'none' }));
-	} while (!_options.concat('none', 'abort').includes(_choice.content));
-	options.sendAs = _choice.content.toLowerCase();
+		const content = await promptForMessage(message, t(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }));
+		choice = content?.toLowerCase() ?? 'none';
+	} while (!_options.concat('none', 'abort').includes(choice));
+
+	options.sendAs = choice;
 }
 
 type HandleMessageData<ED extends ExtraDataPartial> = {

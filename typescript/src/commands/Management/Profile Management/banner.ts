@@ -41,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (author.money < banner.price) this.error(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
 
-		const accepted = await this.prompt(message, banner);
+		const accepted = await this.buyPrompt(message, banner);
 		if (!accepted) this.error(LanguageKeys.Commands.Social.BannerPaymentCancelled);
 
 		await users.manager.transaction(async (em) => {
@@ -161,7 +161,7 @@ export class UserCommand extends SkyraCommand {
 		return response;
 	}
 
-	private async prompt(message: GuildMessage, banner: BannerCache) {
+	private async buyPrompt(message: GuildMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
 			.setDescription([`**Title**: ${banner.title} (\`${banner.id}\`)`, `**Price**: ${banner.price}${Emojis.Shiny}`].join('\n'))

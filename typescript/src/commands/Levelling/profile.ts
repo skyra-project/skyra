@@ -1,7 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
+import { isPrivateMessage } from '#utils/common';
 import { cdnFolder } from '#utils/constants';
+import { fetchGlobalRank, fetchLocalRank } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Image, loadImage } from 'canvas';
@@ -29,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 	private darkThemeDock: Image = null!;
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const scope = args.finished ? Scope.Global : await args.pick('scope').catch(() => Scope.Global);
+		const scope = args.finished || isPrivateMessage(message) ? Scope.Global : await args.pick('scope').catch(() => Scope.Global);
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const output = await this.showProfile(message, scope, user, args.t);
@@ -47,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 364), 6);
 
 		/* Global leaderboard */
-		const rank = await user.fetchRank();
+		const rank = await (scope === Scope.Local ? fetchLocalRank(user, message.guild!) : fetchGlobalRank(user));
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
 			loadImage(join(THEMES_FOLDER, `${settings.profile.bannerProfile}.png`)),
 			fetchAvatar(user, 256)

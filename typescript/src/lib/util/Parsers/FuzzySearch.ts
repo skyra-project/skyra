@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { promptForMessage } from '#utils/functions';
 import type { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
@@ -79,13 +80,17 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length > 10) results.length = 10;
 
 		const t = await message.fetchT();
-		const { content: n } = await message.prompt(
+		const n = await promptForMessage(
+			message,
 			t(LanguageKeys.FuzzySearch.Matches, {
 				matches: results.length - 1,
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') throw new UserError({ identifier: LanguageKeys.FuzzySearch.Aborted });
+		if (n === null || n.toLowerCase() === 'abort') {
+			throw new UserError({ identifier: LanguageKeys.FuzzySearch.Aborted });
+		}
+
 		const parsed = Number(n);
 		if (!Number.isSafeInteger(parsed)) throw new UserError({ identifier: LanguageKeys.FuzzySearch.InvalidNumber });
 		if (parsed < 0 || parsed >= results.length) throw new UserError({ identifier: LanguageKeys.FuzzySearch.InvalidIndex });

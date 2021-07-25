@@ -28,20 +28,6 @@ export class SkyraUser extends Structures.get('User') {
 	public get lastMessageChannelID() {
 		return null;
 	}
-
-	public async fetchRank() {
-		const list = await this.client.leaderboard.fetch();
-
-		const rank = list.get(this.id);
-		if (!rank) return list.size;
-		return rank.position;
-	}
-}
-
-declare module 'discord.js' {
-	export interface User {
-		fetchRank(): Promise<number>;
-	}
 }
 
 Structures.extend('User', () => SkyraUser);

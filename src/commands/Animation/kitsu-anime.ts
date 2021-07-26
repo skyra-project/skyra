@@ -17,15 +17,15 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('KITSU_ID', 'KITSU_TOKEN'),
 	cooldown: 10,
-	description: LanguageKeys.Commands.Animation.KitsuMangaDescription,
-	extendedHelp: LanguageKeys.Commands.Animation.KitsuMangaExtended
+	description: LanguageKeys.Commands.Animation.KitsuAnimeDescription,
+	extendedHelp: LanguageKeys.Commands.Animation.KitsuAnimeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const mangaName = await args.rest('string');
+		const animeName = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
-		const { hits: entries } = await this.fetchAPI(mangaName);
+		const { hits: entries } = await this.fetchAPI(animeName);
 		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, args.t, message);
@@ -34,7 +34,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async fetchAPI(mangaName: string) {
+	private async fetchAPI(animeName: string) {
 		try {
 			return fetch<Kitsu.KitsuResult>(
 				API_URL,
@@ -47,8 +47,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					},
 					body: JSON.stringify({
 						params: stringify({
-							query: mangaName,
-							facetFilters: ['kind:manga'],
+							query: animeName,
+							facetFilters: ['kind:anime'],
 							hitsPerPage: 10
 						})
 					})
@@ -61,9 +61,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
-		const embedData = t(LanguageKeys.Commands.Animation.KitsuMangaEmbedData);
+		const embedData = t(LanguageKeys.Commands.Animation.KitsuAnimeEmbedData);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setFooter(' - © kitsu.io')
+			template: new MessageEmbed() //
+				.setColor(await this.context.db.fetchColor(message))
+				.setFooter(' - © kitsu.io')
 		});
 
 		for (const entry of entries) {
@@ -82,7 +84,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				entry.description?.[Object.keys(entry.description!)[0]];
 			const synopsis = description ? cutText(description.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750) : null;
 			const score = `${entry.averageRating}%`;
-			const mangaURL = `https://kitsu.io/manga/${entry.id}`;
+			const animeURL = `https://kitsu.io/anime/${entry.id}`;
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
@@ -95,21 +97,23 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			display.addPageEmbed((embed) =>
 				embed
 					.setTitle(title)
-					.setURL(mangaURL)
+					.setURL(animeURL)
 					.setDescription(
-						t(LanguageKeys.Commands.Animation.KitsuMangaOutputDescription, {
+						t(LanguageKeys.Commands.Animation.KitsuAnimeOutputDescription, {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
 							synopsis: synopsis ?? t(LanguageKeys.Commands.Animation.KitsuAnimeNoSynopsis)
 						})
 					)
-					.setThumbnail(entry.posterImage?.original || '')
-					.addField(embedData.type, t(LanguageKeys.Commands.Animation.KitsuMangaTypes)[type.toUpperCase()] || type, true)
+					.setThumbnail(entry.posterImage?.original ?? '')
+					.addField(embedData.type, t(LanguageKeys.Commands.Animation.KitsuAnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
-					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
-					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
-					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
+					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
+					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
+					.addField(embedData.ageRating, entry.ageRating, true)
+					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}
 

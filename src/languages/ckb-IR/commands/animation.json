@@ -1,0 +1,68 @@
+{
+    "kitsuAnimeDescription": "",
+    "kitsuAnimeEmbedData": {
+        "ageRating": "",
+        "episodeLength": "",
+        "episodes": "",
+        "firstAirDate": "",
+        "score": "",
+        "stillAiring": "",
+        "type": "",
+        "watchIt": ""
+    },
+    "kitsuAnimeExtended": {
+        "examples": [
+            ""
+        ],
+        "explainedUsage": [
+            [
+                "",
+                ""
+            ]
+        ],
+        "extendedHelp": ""
+    },
+    "kitsuAnimeNoSynopsis": "",
+    "kitsuAnimeOutputDescription": "",
+    "kitsuAnimeTypes": {
+        "movie": "",
+        "ova": "",
+        "special": "",
+        "tv": ""
+    },
+    "kitsuMangaDescription": "",
+    "kitsuMangaEmbedData": {
+        "ageRating": "",
+        "firstPublishDate": "",
+        "none": "",
+        "readIt": "",
+        "score": "",
+        "type": ""
+    },
+    "kitsuMangaExtended": {
+        "examples": [
+            "",
+            ""
+        ],
+        "explainedUsage": [
+            [
+                "",
+                ""
+            ]
+        ],
+        "extendedHelp": ""
+    },
+    "kitsuMangaOutputDescription": "",
+    "kitsuMangaTypes": {
+        "manga": "",
+        "manhwa": "",
+        "novel": "",
+        "oneShot": "",
+        "special": ""
+    },
+    "waifuDescription": "",
+    "waifuExtended": {
+        "extendedHelp": ""
+    },
+    "waifuFooter": ""
+}

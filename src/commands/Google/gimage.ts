@@ -10,7 +10,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
-	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
+	nsfw: true, // Google will return explicit results when searching for explicit terms, even when safe-search is on
 	description: LanguageKeys.Commands.Google.GimageDescription,
 	extendedHelp: LanguageKeys.Commands.Google.GimageExtended
 })

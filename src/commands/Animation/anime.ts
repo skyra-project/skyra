@@ -1,122 +1,165 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import type { Kitsu } from '#lib/types/definitions/Kitsu';
+import { CdnUrls } from '#lib/types/Constants';
+import { fetchAniList, getAnime } from '#utils/APIs/AniList';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
-import { MimeTypes } from '@sapphire/plugin-api';
-import { cutText } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
-import { stringify } from 'querystring';
-
-const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
+import { Time } from '@sapphire/time-utilities';
+import { cutText, filterNullish, isNullish } from '@sapphire/utilities';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { decode } from 'he';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	enabled: envIsDefined('KITSU_ID', 'KITSU_TOKEN'),
+	aliases: ['anilist'],
 	cooldown: 10,
-	description: LanguageKeys.Commands.Animation.AnimeDescription,
-	extendedHelp: LanguageKeys.Commands.Animation.AnimeExtended
+	description: LanguageKeys.Commands.Animation.AniListAnimeDescription,
+	extendedHelp: LanguageKeys.Commands.Animation.AniListAnimeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
+	private htmlEntityReplacements = {
+		i: '_',
+		em: '_',
+		var: '_',
+		b: '**',
+		br: '\n',
+		code: '```',
+		pre: '`',
+		mark: '`',
+		kbd: '`',
+		s: '~~',
+		wbr: '',
+		u: '__'
+	};
+
+	private htmlEntityRegex = /<\/?(i|b|br)>/g;
+	private excessiveNewLinesRegex = /\n{3,}/g;
+
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const animeName = await args.rest('string');
-		const response = await sendLoadingMessage(message, args.t);
+		const { t } = args;
+		const [search, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
 
-		const { hits: entries } = await this.fetchAPI(animeName);
-		if (!entries.length) this.error(LanguageKeys.System.NoResults);
+		// Get all results
+		const results = await this.fetchAPI(search);
 
-		const display = await this.buildDisplay(entries, args.t, message);
-
-		await display.run(response, message.author);
-		return response;
-	}
-
-	private async fetchAPI(animeName: string) {
-		try {
-			return fetch<Kitsu.KitsuResult>(
-				API_URL,
-				{
-					method: FetchMethods.Post,
-					headers: {
-						'Content-Type': MimeTypes.ApplicationJson,
-						'X-Algolia-API-Key': process.env.KITSU_TOKEN,
-						'X-Algolia-Application-Id': process.env.KITSU_ID
-					},
-					body: JSON.stringify({
-						params: stringify({
-							query: animeName,
-							facetFilters: ['kind:anime'],
-							hitsPerPage: 10
-						})
-					})
-				},
-				FetchResultTypes.JSON
-			);
-		} catch {
-			this.error(LanguageKeys.System.QueryFail);
+		// Ensure any results were returned
+		if (!results.pageInfo?.total || !results.media?.length) {
+			this.error(LanguageKeys.Commands.Animation.AniListAnimeQueryFail, { search });
 		}
-	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
-		const embedData = t(LanguageKeys.Commands.Animation.AnimeEmbedData);
+		// Check if the current context allows NSFW
+		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
+
+		// If the current context does not allow NSFW then filter out adult only content
+		const adultFilteredResults = nsfwEnabled ? results.media : results.media.filter((media) => !media?.isAdult);
+
+		// If we are left with no results then the there were only NSFW results so return an error
+
+		if (!adultFilteredResults?.length) {
+			this.error(LanguageKeys.Commands.Animation.AniListAnimeQueryOnlyNsfw, { search });
+		}
+
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
 				.setColor(await this.context.db.fetchColor(message))
-				.setFooter(' - © kitsu.io')
+				.setThumbnail(CdnUrls.AnilistLogo)
 		});
 
-		for (const entry of entries) {
-			const description =
-				// Prefer the synopsis
-				entry.synopsis ||
-				// Then prefer the English description
-				entry.description?.en ||
-				// Then prefer the English-us description
-				entry.description?.en_us ||
-				// Then prefer the latinized Japanese description
-				entry.description?.en_jp ||
-				// Then the description in kanji / hiragana / katakana
-				entry.description?.ja_jp ||
-				// If all fails just get the first key of the description
-				entry.description?.[Object.keys(entry.description!)[0]];
-			const synopsis = description ? cutText(description.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750) : null;
-			const score = `${entry.averageRating}%`;
-			const animeURL = `https://kitsu.io/anime/${entry.id}`;
-			const type = entry.subtype;
-			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
+		const animeTitles = t(LanguageKeys.Commands.Animation.AniListAnimeEmbedTitles);
 
-			const [englishTitle, japaneseTitle, canonicalTitle] = [
-				entry.titles.en || entry.titles.en_us,
-				entry.titles.ja_jp,
-				entry.canonicalTitle
-			].map((title) => title || t(LanguageKeys.Globals.None));
+		for (const result of adultFilteredResults) {
+			if (result) {
+				display.addPageEmbed((embed) => {
+					const [englishName, nativeName, romajiName] = [
+						result.title?.english, //
+						result.title?.native,
+						result.title?.romaji
+					].map((title) => title || t(LanguageKeys.Globals.None));
 
-			display.addPageEmbed((embed) =>
-				embed
-					.setTitle(title)
-					.setURL(animeURL)
-					.setDescription(
-						t(LanguageKeys.Commands.Animation.AnimeOutputDescription, {
-							englishTitle,
-							japaneseTitle,
-							canonicalTitle,
-							synopsis: synopsis ?? t(LanguageKeys.Commands.Animation.AnimeNoSynopsis)
-						})
-					)
-					.setThumbnail(entry.posterImage?.original ?? '')
-					.addField(embedData.type, t(LanguageKeys.Commands.Animation.AnimeTypes)[type.toUpperCase()] || type, true)
-					.addField(embedData.score, score, true)
-					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
-					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
-					.addField(embedData.ageRating, entry.ageRating, true)
-					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
-					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
-			);
+					const description = [
+						`**${animeTitles.romajiName}**: ${romajiName}`,
+						`**${animeTitles.englishName}**: ${englishName}`,
+						`**${animeTitles.nativeName}**: ${nativeName}`
+					];
+
+					if (result.countryOfOrigin) {
+						description.push(`**${animeTitles.countryOfOrigin}**: ${result.countryOfOrigin}`);
+					}
+
+					if (result.episodes) {
+						description.push(`**${animeTitles.episodes}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.episodes })}`);
+					}
+
+					if (result.duration) {
+						description.push(
+							`**${animeTitles.episodeLength}**: ${t(LanguageKeys.Globals.DurationValue, {
+								value: result.duration * Time.Minute,
+								precision: 1
+							})}`
+						);
+					}
+
+					if (!isNullish(result.isAdult)) {
+						description.push(
+							`**${animeTitles.adultContent}**: ${result.isAdult ? t(LanguageKeys.Globals.Yes) : t(LanguageKeys.Globals.No)}`
+						);
+					}
+
+					if (!isNullish(result.externalLinks)) {
+						const externalLinks = result.externalLinks
+							.map((link) => {
+								if (link?.url && link.site) {
+									return `[${link.site}](${link.url})`;
+								}
+
+								return undefined;
+							})
+							.filter(filterNullish);
+
+						description.push(`**${animeTitles.externalLinks}**: ${t(LanguageKeys.Globals.AndListValue, { value: externalLinks })}`);
+					}
+
+					if (result.description) {
+						description.push('', this.parseDescription(result.description));
+					}
+
+					if (result.siteUrl) {
+						embed.setURL(result.siteUrl);
+					}
+
+					return embed
+						.setTitle(result.title?.english ?? result.title?.romaji ?? result.title?.native) //
+						.setDescription(description.join('\n'))
+						.setImage(`https://img.anili.st/media/${result.id}`);
+				});
+			}
 		}
 
-		return display;
+		await display.run(loadingMessage, message.author);
+		return loadingMessage;
+	}
+
+	private async fetchAPI(search: string) {
+		try {
+			const {
+				data: { Page }
+			} = await fetchAniList(getAnime, { search });
+
+			return Page;
+		} catch (error) {
+			this.error(LanguageKeys.Commands.Animation.AniListAnimeQueryFail, { search });
+		}
+	}
+
+	private parseDescription(description: string) {
+		return cutText(
+			decode(
+				description.replace(
+					this.htmlEntityRegex,
+					(_, type: keyof UserPaginatedMessageCommand['htmlEntityReplacements']) => this.htmlEntityReplacements[type]
+				)
+			).replace(this.excessiveNewLinesRegex, '\n\n'),
+			750
+		);
 	}
 }

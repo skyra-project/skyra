@@ -80,6 +80,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'channels.farewell', nullable: true, length: 19 })
 	public channelsFarewell?: string | null;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.MediaOnly, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.media-only', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public channelsMediaOnly: string[] = [];
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.Moderation, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.logs.moderation', nullable: true, length: 19 })
 	public channelsLogsModeration?: string | null;

@@ -35,7 +35,7 @@ export class UserEvent extends Event {
 		if (channel && canSendMessages(channel)) {
 			const messageContent = this.transformMessage(content, t, member.guild, member.user);
 			const message = await channel.send(messageContent, { allowedMentions: { users: [member.id], roles: [] } });
-			if (!isNullishOrZero(timer)) await deleteMessage(message);
+			if (!isNullishOrZero(timer)) await deleteMessage(message, timer);
 			return;
 		}
 

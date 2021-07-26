@@ -110,7 +110,7 @@ export interface SkyraEnv {
 	TWITCH_CLIENT_ID: string;
 	TWITCH_TOKEN: string;
 	TWITCH_WEBHOOK_TOKEN: string;
-	WEBHOOK_B4D_TOKEN: string;
+	WEBHOOK_DISCORDS_TOKEN: string;
 	WEBHOOK_TOPGG_TOKEN: string;
 	WEEB_SH_TOKEN: string;
 	XIVAPI_TOKEN: string;

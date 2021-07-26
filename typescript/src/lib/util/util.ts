@@ -36,7 +36,40 @@ const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[10, { emoji: '😍', color: 0x51d4ef }]
 ]);
 
+/**
+ * Image extensions:
+ * - bmp
+ * - jpg
+ * - jpeg
+ * - png
+ * - gif
+ * - webp
+ */
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
+
+/**
+ * Audio extensions:
+ * - wav
+ * - mp3
+ * - ogg
+ */
+export const AUDIO_EXTENSION = /\.(wav|mp3|ogg)$/i;
+
+/**
+ * Video extensions:
+ * - gifv
+ * - webm
+ * - mp4
+ */
+export const VIDEO_EXTENSION = /\.(gifv|webm|mp4)$/i;
+
+/**
+ * Media extensions
+ * - ...Image extensions
+ * - ...Audio extensions
+ * - ...Video extensions
+ */
+export const MEDIA_EXTENSION = /\.(bmp|jpe?g|png|gifv?|web[pm]|wav|mp[34]|ogg)$/i;
 
 export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;

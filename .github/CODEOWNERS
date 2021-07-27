@@ -5,7 +5,6 @@
 /tsconfig.eslint.json @favna @kyranet
 
 # Just Kyra
-/assets/ @kyranet
 /LICENSE @kyranet
 
 # Just Favna

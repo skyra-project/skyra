@@ -37,6 +37,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Add problem matchers
         run: echo "::add-matcher::.github/problemMatchers/tsc.json"
       - name: Use Node.js v16
@@ -113,6 +115,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Use Node.js v16
         uses: actions/setup-node@v2
         with:
@@ -162,6 +166,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:

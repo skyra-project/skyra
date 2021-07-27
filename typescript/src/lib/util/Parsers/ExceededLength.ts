@@ -17,7 +17,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'file': {
 			if (canSendAttachments(message.channel)) {
 				const output = t(LanguageKeys.System.ExceededLengthOutputFile);
-				return message.send([output, typeFooter, timeTaken].filter(Boolean), {
+				return message.channel.send([output, typeFooter, timeTaken].filter(Boolean), {
 					files: [
 						{
 							attachment: Buffer.from(options.content ? options.content : options.result!),

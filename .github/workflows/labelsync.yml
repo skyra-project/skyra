@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          repository: 'sapphiredev/readme'
       - name: Run Label Sync
         uses: crazy-max/ghaction-github-labeler@v3
         with:

@@ -109,6 +109,12 @@ jobs:
           - 5432:5432
       grpc:
         image: ghcr.io/skyra-project/grpc:latest
+        options: >-
+          --health-cmd "nc -z localhost 8291"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 6
+          --health-start-period 5s
         env:
           POSTGRES_DB: skyra-nodejs-test
           POSTGRES_HOST: postgres
@@ -139,11 +145,6 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Run gRPC generator script
         run: yarn scripts:grpc
-      - name: Wait for Skyra.Grpc
-        run: |
-          while ! nc -z localhost 8291; do
-            sleep 0.1 # wait for 1/10 of the second before check again
-          done
       - name: Run EntityFramework migrations
         run: |
           dotnet new tool-manifest

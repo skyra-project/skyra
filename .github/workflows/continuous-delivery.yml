@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'typescript/src/**'
-      - 'typescript/Dockerfile'
+      - 'src/**'
+      - 'Dockerfile'
       - '.github/workflows/continuous-delivery.yml'
 
 jobs:
@@ -35,8 +35,6 @@ jobs:
         uses: docker/build-push-action@v2.6.1
         with:
           push: true
-          context: ./
-          file: typescript/Dockerfile
           tags: |
             skyrabot/skyra:latest
             ghcr.io/skyra-project/skyra:latest

@@ -22,7 +22,7 @@ COPY --chown=node:node package.json .
 COPY --chown=node:node tsconfig.base.json tsconfig.base.json
 COPY --chown=node:node assets/ assets/
 COPY --chown=node:node scripts/ scripts/
-COPY --chown=node:node typescript/src/ typescript/src/
+COPY --chown=node:node src/ src/
 
 RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
     && yarn install --production=false --frozen-lockfile --link-duplicates \
@@ -51,7 +51,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --chown=node:node --from=BUILDER /usr/src/app/typescript/dist typescript/dist
+COPY --chown=node:node --from=BUILDER /usr/src/app/dist dist
 
 COPY --chown=node:node yarn.lock .
 COPY --chown=node:node package.json .
@@ -59,8 +59,7 @@ COPY --chown=node:node assets/ assets/
 COPY --chown=node:node scripts/audio/ scripts/audio/
 COPY --chown=node:node scripts/build/ scripts/build/
 COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
-COPY --chown=node:node typescript/src/package.json typescript/src/package.json
-COPY --chown=node:node typescript/src/.env typescript/src/.env
+COPY --chown=node:node src/.env src/.env
 
 RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
     && yarn install --production=true --frozen-lockfile --link-duplicates \

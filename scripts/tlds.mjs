@@ -21,6 +21,6 @@ const content = source
 	})
 	.join('\n');
 
-const outputFile = new URL('../typescript/src/lib/util/Links/TLDs.ts', import.meta.url);
+const outputFile = new URL('../src/lib/util/Links/TLDs.ts', import.meta.url);
 
 void writeFile(outputFile, header + content + footer);

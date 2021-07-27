@@ -22,7 +22,7 @@ import { join } from 'path';
 // Read config:
 config({
 	debug: process.env.DOTENV_DEBUG_ENABLED ? envParseBoolean('DOTENV_DEBUG_ENABLED') : undefined,
-	path: join(rootFolder, 'typescript', 'src', '.env')
+	path: join(rootFolder, 'src', '.env')
 });
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
@@ -107,7 +107,7 @@ function parseRegExpPrefix(): RegExp | undefined {
 	return CLIENT_REGEX_PREFIX ? new RegExp(CLIENT_REGEX_PREFIX, 'i') : undefined;
 }
 
-export const PROJECT_ROOT = join(rootFolder, process.env.OVERRIDE_ROOT_PATH ?? 'typescript/dist');
+export const PROJECT_ROOT = join(rootFolder, process.env.OVERRIDE_ROOT_PATH ?? 'dist');
 export const LANGUAGE_ROOT = join(PROJECT_ROOT, 'languages');
 
 export const CLIENT_OPTIONS: ClientOptions = {

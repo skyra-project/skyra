@@ -1,8 +1,6 @@
 {
-	"extends": "../../tsconfig.base.json",
+	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
-		"target": "ES2019",
-		"noImplicitAny": false,
 		"noEmit": true,
 		"incremental": false,
 		"baseUrl": ".",
@@ -11,10 +9,11 @@
 			"#lib/audio": ["../src/audio/lib"],
 			"#lib/*": ["../src/lib/*"],
 			"#languages": ["../src/languages/index"],
-			"#mocks/*": ["./mocks/*"],
+			"#mocks/*": ["./tests/mocks/*"],
 			"#root/*": ["../src/*"]
 		}
 	},
 	"include": [".", "../src/**/*"],
+	"exclude": ["../dist/**/*"],
 	"references": [{ "path": "../src" }]
 }

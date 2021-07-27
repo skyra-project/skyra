@@ -9,19 +9,19 @@
 	},
 	"overrides": [
 		{
-			"files": ["typescript/src/commands/**/*.ts", "typescript/**/jest.config.ts"],
+			"files": ["src/commands/**/*.ts", "**/jest.config.ts"],
 			"rules": {
 				"@typescript-eslint/require-await": 0
 			}
 		},
 		{
-			"files": ["typescript/src/lib/structures/commands/*.ts"],
+			"files": ["src/lib/structures/commands/*.ts"],
 			"rules": {
 				"@typescript-eslint/no-namespace": 0
 			}
 		},
 		{
-			"files": ["typescript/src/lib/types/definitions/*.ts"],
+			"files": ["src/lib/types/definitions/*.ts"],
 			"rules": {
 				"@typescript-eslint/no-namespace": 0
 			}

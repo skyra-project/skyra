@@ -28,9 +28,7 @@ generated/
 !scripts/workerTsLoader.js
 **/*.js.map
 **/*.d.ts
-!src/**/*.d.ts
 **/*.tsbuildinfo
-!jest.config.js
 !ormconfig.js
 !babel.config.js
 

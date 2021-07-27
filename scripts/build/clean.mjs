@@ -1,8 +1,8 @@
 import { rm } from 'node:fs/promises';
 
-const typescriptFolder = new URL('../../typescript/', import.meta.url);
-const distFolder = new URL('dist/', typescriptFolder);
-const generatedFolder = new URL('src/lib/grpc/generated/', typescriptFolder);
+const rootFolder = new URL('../../', import.meta.url);
+const distFolder = new URL('dist/', rootFolder);
+const generatedFolder = new URL('src/lib/grpc/generated/', rootFolder);
 
 const options = { recursive: true, force: true };
 

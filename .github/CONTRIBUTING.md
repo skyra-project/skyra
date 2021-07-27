@@ -40,10 +40,6 @@ $ yarn lint
 
 # Run Skyra in development mode:
 $ yarn start
-
-# Run Skyra in production mode, requires
-# Lavalink and PostgreSQL to be running:
-$ yarn pm2:start
 ```
 
 ## Skyra Concept Guidelines

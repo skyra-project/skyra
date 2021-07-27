@@ -1,12 +1,5 @@
 # Security Policy
 
-## Supported Versions
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.4.1   | :white_check_mark: |
-| < 5.4   | :x:                |
-
 ## Reporting a Vulnerability
 
 If you find a vulnerability in Skyra's codebase please report it immediately.

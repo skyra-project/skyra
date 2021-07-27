@@ -19,7 +19,6 @@
 /.gqlconfig @favna
 /.prettierrc @favna
 /jest.config.ts @favna
-/pm2.ecosystem.yml @favna
 
 # Tyler & Kyra
 /services @Tylertron1998 @kyranet

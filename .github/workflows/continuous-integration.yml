@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  NodeLinting:
+  Linting:
     name: Linting NodeJS
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +31,7 @@ jobs:
       - name: Run ESLint
         run: yarn lint --fix=false
 
-  NodeBuilding:
+  Building:
     name: Building NodeJS
     runs-on: ubuntu-latest
     steps:
@@ -57,7 +57,7 @@ jobs:
       - name: Build code
         run: yarn build
 
-  NodeUnitTesting:
+  UnitTesting:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
@@ -92,7 +92,7 @@ jobs:
           name: nodejs-coverage
           path: coverage/
 
-  NodeIntegrationTesting:
+  IntegrationTesting:
     name: Integration Tests
     runs-on: ubuntu-latest
     services:
@@ -119,6 +119,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Checkout Services Project
+        uses: actions/checkout@v2
+        with:
+          repository: skyra-project/arkadia
+          path: services
       - name: Use Node.js v16
         uses: actions/setup-node@v2
         with:
@@ -150,67 +155,9 @@ jobs:
       - name: Run Integration Tests
         run: yarn test:it
 
-  DotNetCI:
-    name: Dotnet Build & Test
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: ghcr.io/skyra-project/postgres:latest
-        env:
-          POSTGRES_DB: skyra-dotnet-test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
-      - name: Restore CI Cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('services/**/packages.lock.json') }}
-      - name: Build C# code
-        run: dotnet build services
-      - name: Run C# unit tests
-        run: dotnet test services/Skyra.UnitTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
-      - name: Run C# integration tests
-        run: |
-          dotnet new tool-manifest
-          dotnet tool install dotnet-ef
-          dotnet tool run dotnet-ef database update --project services/Skyra.Database
-          dotnet run --project services/Skyra.Grpc &
-          while ! nc -z localhost 8291; do
-            sleep 0.1 # wait for 1/10 of the second before check again
-          done
-          dotnet test services/Skyra.IntegrationTests --collect:"XPlat Code Coverage" --settings services/coverlet.runsettings
-        env:
-          POSTGRES_DB: skyra-dotnet-test
-      - name: Store code coverage report (Unit Tests)
-        uses: actions/upload-artifact@v2
-        with:
-          name: dotnet-coverage-unit
-          path: services/Skyra.UnitTests/TestResults/
-      - name: Store code coverage report (Integration Tests)
-        uses: actions/upload-artifact@v2
-        with:
-          name: dotnet-coverage-integration
-          path: services/Skyra.IntegrationTests/TestResults/
-
   Upload_Coverage_Report:
     name: Upload coverage report to codecov
-    needs:
-      - DotNetCI
-      - NodeUnitTesting
+    needs: UnitTesting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
@@ -222,16 +169,6 @@ jobs:
         with:
           name: nodejs-coverage
           path: coverage/
-      - name: Download DotNet Unit Test Coverage report
-        uses: actions/download-artifact@v2
-        with:
-          name: dotnet-coverage-unit
-          path: services/Skyra.UnitTests/TestResults/
-      - name: Download DotNet IT Coverage report
-        uses: actions/download-artifact@v2
-        with:
-          name: dotnet-coverage-integration
-          path: services/Skyra.IntegrationTests/TestResults/
       - name: Codecov Upload
         uses: codecov/codecov-action@v2.0.2
         with:

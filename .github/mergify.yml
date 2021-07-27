@@ -7,14 +7,6 @@ pull_request_rules:
     actions:
       merge:
         method: squash
-  - name: Automatic Dependabot merging
-    conditions:
-      - author=dependabot[bot]
-      - base=main
-      - label~=^Meta:\ Dependencies
-    actions:
-      merge:
-        method: squash
   - name: Automatic TLD Update Merger
     conditions:
       - author=NM-EEA-Y

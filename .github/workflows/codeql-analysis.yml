@@ -1,14 +1,10 @@
-name: Code Scanning - NodeJS
+name: Code Scanning
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - services/**
   pull_request:
-    paths-ignore:
-      - services/**
 
 jobs:
   CodeQL:

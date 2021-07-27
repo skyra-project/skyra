@@ -33,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 			.printImage(this.handsImage, 0, 0, 512, 512)
 			.toBufferAsync();
 
-		return message.send({ files: [{ attachment, name: 'peepoLove.png' }] });
+		return message.channel.send({ files: [{ attachment, name: 'peepoLove.png' }] });
 	}
 
 	public async onLoad() {

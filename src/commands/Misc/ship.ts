@@ -85,7 +85,7 @@ export class UserCommand extends SkyraCommand {
 		try {
 			return await loadImage(user.displayAvatarURL({ size: 64, format: 'png', dynamic: true }));
 		} catch (error) {
-			throw `Could not download the profile avatar: ${error.response}`;
+			this.error(LanguageKeys.System.QueryFail);
 		}
 	}
 

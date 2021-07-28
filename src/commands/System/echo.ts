@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { UserError } from '@sapphire/framework';
 import type { MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -23,7 +24,10 @@ export class UserCommand extends SkyraCommand {
 		const attachment = message.attachments.size ? message.attachments.first()!.url : null;
 
 		if (!content.length && !attachment) {
-			throw 'I have no content nor attachment to send, please write something.';
+			throw new UserError({
+				identifier: `you-suck-${message.author.username}`,
+				message: 'I have no content nor attachment to send, please write something.'
+			});
 		}
 
 		const options: MessageOptions = {};

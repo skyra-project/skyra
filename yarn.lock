@@ -2694,10 +2694,10 @@ caniuse-lite@^1.0.30001219:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001247.tgz#105be7a8fb30cdd303275e769a9dfb87d4b3577a"
   integrity sha512-4rS7co+7+AoOSPRPOPUt5/GdaqZc0EsUpWk66ofE3HJTAajUK2Ss2VwoNzVN69ghg8lYYlh0an0Iy4LIHHo9UQ==
 
-canvas-constructor@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-4.1.0.tgz#450d06956fad557daede3ca36c5f42dc93916082"
-  integrity sha512-IWZ80DeKIODMnZS1ygaalM7AYaa02KeTnMzMmLhuUK/K1p+pmetMPu6ab9DAT7HsmC9H/xHMn/oSH0K/EnEbYQ==
+canvas-constructor@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-5.0.0.tgz#21b110451629a29087f40b6eaecc316ec90eea38"
+  integrity sha512-Fkxr2eEkJf6RcBiJ4broy8biQ6cvuHanbbRqfzE0McIJzmm7Esvny7Wxcl5EgymSeWAJXyykj37I0Pu4MRsOEA==
 
 canvas@^2.2.0, canvas@^2.8.0:
   version "2.8.0"

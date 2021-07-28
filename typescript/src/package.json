@@ -48,7 +48,7 @@
 		"binarytf": "^2.0.0",
 		"bufferutil": "^4.0.3",
 		"canvas": "^2.8.0",
-		"canvas-constructor": "^4.1.0",
+		"canvas-constructor": "^5.0.0",
 		"colorette": "^1.2.2",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",

@@ -13,7 +13,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'^#root/(.*)$': '<rootDir>/src/$1',
 		'^#mocks/(.*)$': '<rootDir>/tests/mocks/$1'
 	},
-	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	collectCoverageFrom: ['<rootDir>/src/lib/**/*.ts'],
 	coveragePathIgnorePatterns: [
 		'<rootDir>/src/lib/api',

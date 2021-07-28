@@ -83,7 +83,7 @@ jobs:
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: yarn --frozen-lockfile
       - name: Run gRPC generator script
-        run: yarn scripts:grpc
+        run: yarn build:grpc
       - name: Run unit tests
         run: yarn test:unit --coverage
       - name: Store code coverage report

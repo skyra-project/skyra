@@ -85,7 +85,7 @@ jobs:
       - name: Run gRPC generator script
         run: yarn build:grpc
       - name: Run unit tests
-        run: yarn test:unit --coverage
+        run: yarn test --coverage
       - name: Store code coverage report
         uses: actions/upload-artifact@v2
         with:

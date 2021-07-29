@@ -14,7 +14,7 @@ import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { gql } from '../util';
 
-const FlavorsFrament = gql`
+const FlavorsFragment = gql`
 	fragment flavors on FlavorEntry {
 		game
 		flavor
@@ -25,7 +25,7 @@ export const getPokemonDetailsByFuzzy = (params: GetPokemonSpriteParameters) => 
 	const spriteToGet = getSpriteKey(params);
 
 	return gql`
-		${FlavorsFrament}
+		${FlavorsFragment}
 
 		fragment abilities on AbilitiesEntry {
 			first
@@ -112,7 +112,7 @@ export const getPokemonFlavorTextsByFuzzy = (params: GetPokemonSpriteParameters)
 	const spriteToGet = getSpriteKey(params);
 
 	return gql`
-		${FlavorsFrament}
+		${FlavorsFragment}
 
 		fragment flavortexts on DexDetails {
 			flavorTexts {

@@ -55,7 +55,7 @@ export interface ClassMap {
 export interface CharacterResult {
 	Achievements: Achievements;
 	AchievementsPublic: boolean;
-	Character: Character;
+	Character: FFXIVCharacter;
 	FreeCompany: FreeCompany;
 	FreeCompanyMembers: FreeCompanyMember[];
 	Friends: Friend[];
@@ -137,7 +137,7 @@ interface Estate {
 	Plot: string;
 }
 
-export interface Character extends Pick<CharacterSearchResult, 'Avatar' | 'ID' | 'Lang' | 'Name' | 'Server'> {
+export interface FFXIVCharacter extends Pick<CharacterSearchResult, 'Avatar' | 'ID' | 'Lang' | 'Name' | 'Server'> {
 	ActiveClassJob: ActiveClassJob;
 	Bio: string;
 	ClassJobs: ClassJob[];

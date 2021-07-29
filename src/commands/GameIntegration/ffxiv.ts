@@ -1,7 +1,7 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { Character, ClassJob, ClassSubcategory, GuildMessage, ItemSearchResult } from '#lib/types';
+import { FFXIVCharacter, ClassJob, ClassSubcategory, GuildMessage, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return searchResult.Results;
 	}
 
-	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: Character) {
+	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: FFXIVCharacter) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,

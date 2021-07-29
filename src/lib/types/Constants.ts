@@ -1,12 +1,13 @@
 export const enum CdnUrls {
-	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
-	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
-	RevolvingHeartTwemoji = 'https://twemoji.maxcdn.com/72x72/1f49e.png',
-	OverwatchLogo = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png',
+	AnilistLogo = 'https://cdn.skyra.pw/skyra-assets/anilist.png',
 	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
-	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png',
+	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
+	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
+	OverwatchLogo = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png',
 	Pokedex = 'https://cdn.skyra.pw/skyra-assets/pokedex.png',
-	StarWarsLogo = 'https://cdn.skyra.pw/skyra-assets/star-wars-api-logo.png'
+	RevolvingHeartTwemoji = 'https://twemoji.maxcdn.com/72x72/1f49e.png',
+	StarWarsLogo = 'https://cdn.skyra.pw/skyra-assets/star-wars-api-logo.png',
+	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
 }
 
 export const enum LanguageFormatters {

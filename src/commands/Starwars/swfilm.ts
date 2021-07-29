@@ -17,7 +17,8 @@ import { MessageEmbed } from 'discord.js';
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
-		const [film, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
+		const loadingMessage = await sendLoadingMessage(message, t);
+		const film = await args.rest('string');
 
 		const results = await this.fetchAPI(film.toLowerCase());
 

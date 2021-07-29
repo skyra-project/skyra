@@ -1,3 +1,4 @@
+export * from './AniList';
 export * from './ArgumentTypes';
 export * from './BrawlStars';
 export * from './ClashOfClans';

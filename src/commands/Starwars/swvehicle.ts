@@ -16,7 +16,8 @@ import { Message, MessageEmbed } from 'discord.js';
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const { t } = args;
-		const [vehicle, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
+		const loadingMessage = await sendLoadingMessage(message, t);
+		const vehicle = await args.rest('string');
 
 		const results = await this.fetchAPI(vehicle);
 

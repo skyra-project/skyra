@@ -110,4 +110,3 @@ jobs:
         uses: codecov/codecov-action@v2.0.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true

@@ -4,17 +4,22 @@ import { FT, T } from '#lib/types';
 export const AniListAnimeDescription = T('commands/animation:aniListAnimeDescription');
 export const AniListAnimeExtended = T<LanguageHelpDisplayOptions>('commands/animation:aniListAnimeExtended');
 export const AniListAnimeQueryFail = FT<{ search: string }, string>('commands/animation:aniListAnimeQueryFail');
-export const AniListAnimeQueryOnlyNsfw = FT<{ search: string }, string>('commands/animation:aniListAnimeQueryOnlyNsfw');
-export const AniListAnimeEmbedTitles = T<{
+export const AniListMangaDescription = T('commands/animation:aniListMangaDescription');
+export const AniListMangaExtended = T<LanguageHelpDisplayOptions>('commands/animation:aniListMangaExtended');
+export const AniListMangaQueryFail = FT<{ search: string }, string>('commands/animation:aniListMangaQueryFail');
+export const AniListQueryOnlyNsfw = FT<{ search: string }, string>('commands/animation:aniListQueryOnlyNsfw');
+export const AniListEmbedTitles = T<{
 	adultContent: string;
 	countryOfOrigin: string;
 	englishName: string;
 	episodeLength: string;
 	episodes: string;
+	chapters: string;
+	volumes: string;
 	externalLinks: string;
 	nativeName: string;
 	romajiName: string;
-}>('commands/animation:aniListAnimeEmbedTitles');
+}>('commands/animation:aniListEmbedTitles');
 export const KitsuAnimeOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
 	'commands/animation:kitsuAnimeOutputDescription'
 );

@@ -2,39 +2,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { fetchAniList, getAnime } from '#utils/APIs/AniList';
+import { fetchAniList, getAnime, parseDescription } from '#utils/APIs/AniList';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
-import { cutText, filterNullish, isNullish } from '@sapphire/utilities';
+import { filterNullish, isNullish } from '@sapphire/utilities';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { decode } from 'he';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	aliases: ['anilist'],
+	aliases: ['ani-list'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Animation.AniListAnimeDescription,
 	extendedHelp: LanguageKeys.Commands.Animation.AniListAnimeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	private htmlEntityReplacements = {
-		i: '_',
-		em: '_',
-		var: '_',
-		b: '**',
-		br: '\n',
-		code: '```',
-		pre: '`',
-		mark: '`',
-		kbd: '`',
-		s: '~~',
-		wbr: '',
-		u: '__'
-	};
-
-	private htmlEntityRegex = /<\/?(i|b|br)>/g;
-	private excessiveNewLinesRegex = /\n{3,}/g;
-
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const [search, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
@@ -56,7 +37,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// If we are left with no results then the there were only NSFW results so return an error
 
 		if (!adultFilteredResults?.length) {
-			this.error(LanguageKeys.Commands.Animation.AniListAnimeQueryOnlyNsfw, { search });
+			this.error(LanguageKeys.Commands.Animation.AniListQueryOnlyNsfw, { search });
 		}
 
 		const display = new SkyraPaginatedMessage({
@@ -65,7 +46,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setThumbnail(CdnUrls.AnilistLogo)
 		});
 
-		const animeTitles = t(LanguageKeys.Commands.Animation.AniListAnimeEmbedTitles);
+		const anilistTitles = t(LanguageKeys.Commands.Animation.AniListEmbedTitles);
 
 		for (const result of adultFilteredResults) {
 			if (result) {
@@ -77,22 +58,22 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					].map((title) => title || t(LanguageKeys.Globals.None));
 
 					const description = [
-						`**${animeTitles.romajiName}**: ${romajiName}`,
-						`**${animeTitles.englishName}**: ${englishName}`,
-						`**${animeTitles.nativeName}**: ${nativeName}`
+						`**${anilistTitles.romajiName}**: ${romajiName}`,
+						`**${anilistTitles.englishName}**: ${englishName}`,
+						`**${anilistTitles.nativeName}**: ${nativeName}`
 					];
 
 					if (result.countryOfOrigin) {
-						description.push(`**${animeTitles.countryOfOrigin}**: ${result.countryOfOrigin}`);
+						description.push(`**${anilistTitles.countryOfOrigin}**: ${result.countryOfOrigin}`);
 					}
 
 					if (result.episodes) {
-						description.push(`**${animeTitles.episodes}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.episodes })}`);
+						description.push(`**${anilistTitles.episodes}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.episodes })}`);
 					}
 
 					if (result.duration) {
 						description.push(
-							`**${animeTitles.episodeLength}**: ${t(LanguageKeys.Globals.DurationValue, {
+							`**${anilistTitles.episodeLength}**: ${t(LanguageKeys.Globals.DurationValue, {
 								value: result.duration * Time.Minute,
 								precision: 1
 							})}`
@@ -101,7 +82,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 					if (!isNullish(result.isAdult)) {
 						description.push(
-							`**${animeTitles.adultContent}**: ${result.isAdult ? t(LanguageKeys.Globals.Yes) : t(LanguageKeys.Globals.No)}`
+							`**${anilistTitles.adultContent}**: ${result.isAdult ? t(LanguageKeys.Globals.Yes) : t(LanguageKeys.Globals.No)}`
 						);
 					}
 
@@ -116,11 +97,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 							})
 							.filter(filterNullish);
 
-						description.push(`**${animeTitles.externalLinks}**: ${t(LanguageKeys.Globals.AndListValue, { value: externalLinks })}`);
+						description.push(`**${anilistTitles.externalLinks}**: ${t(LanguageKeys.Globals.AndListValue, { value: externalLinks })}`);
 					}
 
 					if (result.description) {
-						description.push('', this.parseDescription(result.description));
+						description.push('', parseDescription(result.description));
 					}
 
 					if (result.siteUrl) {
@@ -149,17 +130,5 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		} catch (error) {
 			this.error(LanguageKeys.Commands.Animation.AniListAnimeQueryFail, { search });
 		}
-	}
-
-	private parseDescription(description: string) {
-		return cutText(
-			decode(
-				description.replace(
-					this.htmlEntityRegex,
-					(_, type: keyof UserPaginatedMessageCommand['htmlEntityReplacements']) => this.htmlEntityReplacements[type]
-				)
-			).replace(this.excessiveNewLinesRegex, '\n\n'),
-			750
-		);
 	}
 }

@@ -3,6 +3,8 @@ import type { Page } from '#lib/types/definitions/AniList';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
+import { cutText } from '@sapphire/utilities';
+import { decode } from 'he';
 import { gql } from '../util';
 
 const MediaFragment = gql`
@@ -14,7 +16,6 @@ const MediaFragment = gql`
 			native
 		}
 		description
-		episodes
 		isAdult
 		countryOfOrigin
 		duration
@@ -26,6 +27,34 @@ const MediaFragment = gql`
 	}
 `;
 
+/**
+ * Regex to remove excessive new lines from the Anime or Manga description
+ */
+const excessiveNewLinesRegex = /\n{3,}/g;
+
+/**
+ * Regex to remove HTML entities from the Anime or Manga description
+ */
+const htmlEntityRegex = /<\/?(i|b|br)>/g;
+
+/**
+ * Replacements for HTML entities
+ */
+const htmlEntityReplacements = Object.freeze({
+	i: '_',
+	em: '_',
+	var: '_',
+	b: '**',
+	br: '\n',
+	code: '```',
+	pre: '`',
+	mark: '`',
+	kbd: '`',
+	s: '~~',
+	wbr: '',
+	u: '__'
+} as const);
+
 export const getAnime = gql`
 	${MediaFragment}
 
@@ -36,6 +65,7 @@ export const getAnime = gql`
 			}
 			media(search: $search, type: ANIME) {
 				...MediaFragment
+				episodes
 			}
 		}
 	}
@@ -51,6 +81,8 @@ export const getManga = gql`
 			}
 			media(search: $search, type: MANGA) {
 				...MediaFragment
+				chapters
+				volumes
 			}
 		}
 	}
@@ -80,6 +112,16 @@ export async function fetchAniList(
 	} catch {
 		throw new UserError({ identifier: LanguageKeys.System.QueryFail });
 	}
+}
+
+export function parseDescription(description: string) {
+	return cutText(
+		decode(description.replace(htmlEntityRegex, (_, type: keyof typeof htmlEntityReplacements) => htmlEntityReplacements[type])).replace(
+			excessiveNewLinesRegex,
+			'\n\n'
+		),
+		500
+	);
 }
 
 interface AniListResponse {

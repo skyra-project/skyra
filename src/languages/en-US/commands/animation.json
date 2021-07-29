@@ -11,13 +11,18 @@
         ]
     },
     "aniListAnimeQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{search}}` is actually an anime?",
-    "aniListAnimeQueryOnlyNsfw": "{{REDCROSS}} I am sorry, but {{search}} only returned NSFW results which are not allowed here. Why don't you try searching that in an NSFW channel?",
-    "aniListAnimeEmbedTitles": {
+    "aniListMangaDescription": "",
+    "aniListMangaExtended": {},
+    "aniListMangaQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{search}}` is actually an manga?",
+    "aniListQueryOnlyNsfw": "{{REDCROSS}} I am sorry, but {{search}} only returned NSFW results which are not allowed here. Why don't you try searching that in an NSFW channel?",
+    "aniListEmbedTitles": {
         "adultContent": "Includes adult content",
         "countryOfOrigin": "Country of origin",
         "englishName": "English name",
         "episodeLength": "Episode length",
         "episodes": "Amount of episodes",
+        "chapters": "Amount of chapters",
+        "volumes": "Amount of volumes",
         "externalLinks": "External links",
         "nativeName": "Native name",
         "romajiName": "Romanized name"

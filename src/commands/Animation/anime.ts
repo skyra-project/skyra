@@ -18,7 +18,8 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
-		const [search, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
+		const loadingMessage = await sendLoadingMessage(message, t);
+		const search = await args.rest('string');
 
 		// Get all results
 		const results = await this.fetchAPI(search);

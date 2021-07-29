@@ -17,7 +17,8 @@ import { MessageEmbed } from 'discord.js';
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
-		const [planet, loadingMessage] = await Promise.all([args.rest('string'), sendLoadingMessage(message, t)]);
+		const loadingMessage = await sendLoadingMessage(message, t);
+		const planet = await args.rest('string');
 
 		const results = await this.fetchAPI(planet);
 

@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const rootDir = join(__dirname, '..', '..');
 const protoDirectory = join(rootDir, 'assets', 'protos');
-const generatedDirectory = join(rootDir, 'typescript', 'src', 'lib', 'grpc', 'generated');
+const generatedDirectory = join(rootDir, 'src', 'lib', 'grpc', 'generated');
 
 const print = process.env.DEBUG ? console.log : () => void 0;
 

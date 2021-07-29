@@ -1,0 +1,19 @@
+{
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"incremental": false,
+		"baseUrl": ".",
+		"paths": {
+			"#utils/*": ["../src/lib/util/*"],
+			"#lib/audio": ["../src/audio/lib"],
+			"#lib/*": ["../src/lib/*"],
+			"#languages": ["../src/languages/index"],
+			"#mocks/*": ["./tests/mocks/*"],
+			"#root/*": ["../src/*"]
+		}
+	},
+	"include": [".", "../src/**/*"],
+	"exclude": ["../dist/**/*"],
+	"references": [{ "path": "../src" }]
+}

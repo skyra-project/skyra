@@ -5,6 +5,5 @@
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": true,
 	"files.eol": "\n",
-	"powershell.codeFormatting.addWhitespaceAroundPipe": true,
-	"jestrunner.configPath": "typescript/unit-tests/jest.config.ts"
+	"powershell.codeFormatting.addWhitespaceAroundPipe": true
 }

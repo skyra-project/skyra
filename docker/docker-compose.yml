@@ -129,7 +129,6 @@ services:
   skyra:
     build:
       context: ../
-      dockerfile: typescript/Dockerfile
     container_name: skyra
     depends_on:
       - hasteserver
@@ -140,8 +139,8 @@ services:
       - saelem
       - postgres
     env_file:
-      - ../typescript/src/.env.development
-      - ../typescript/src/.env.development.local
+      - ../src/.env.development
+      - ../src/.env.development.local
     image: 'skyrabot/skyra:latest'
     networks:
       - skyra

@@ -9,7 +9,7 @@ Skyra currently has the following microservices that can be dockerized:
 -   gRPC .NET connector
     -   Service name in docker-compose: `grpc`
     -   Image used: `skyrabot/grpc:latest`
-    -   For more information see [../services/Skyra.Grpc/README.md](../services/Skyra.Grpc/README.md)
+    -   For more information see [Arkadia]
 -   GraphQL-Pokémon
     -   Service name in docker-compose: `pokedex`
     -   Image used: `favware/graphql-pokemon:latest`
@@ -67,3 +67,4 @@ Skyra currently has the following microservices that can be dockerized:
 [skyra-project/saelem]: https://github.com/skyra-project/saelem
 [skyra-project/outflux]: https://github.com/skyra-project/outflux
 [the config file]: ../src/config.ts
+[arkadia]: https://github.com/skyra-project/arkadia

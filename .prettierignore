@@ -1,2 +1,2 @@
-**/languages/**/*.json
+src/languages/**/*.json
 dist/

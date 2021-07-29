@@ -1,17 +1,17 @@
 version: '2.4'
 services:
-  grpc:
-    container_name: grpc
-    depends_on:
-      - postgres
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DB=skyra
-    image: 'skyrabot/grpc:latest'
-    networks:
-      - skyra
-    ports:
-      - '8291:80'
+  # grpc:
+  #   container_name: grpc
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - POSTGRES_HOST=postgres
+  #     - POSTGRES_DB=skyra
+  #   image: 'skyrabot/grpc:latest'
+  #   networks:
+  #     - skyra
+  #   ports:
+  #     - '8291:80'
 
   hasteserver:
     container_name: hasteserver
@@ -61,6 +61,9 @@ services:
       - influx
     environment:
       INFLUX_BASE_URL: 'http://influx:8086'
+      INFLUX_LOGIN_USERNAME: 'admin'
+      INFLUX_LOGIN_PASSWORD: 'influxadmin'
+      INFLUX_ORG_ID: 'Skyra-Project'
     image: 'skyrabot/outflux:latest'
     networks:
       - skyra

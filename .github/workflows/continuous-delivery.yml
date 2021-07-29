@@ -35,6 +35,7 @@ jobs:
         uses: docker/build-push-action@v2.6.1
         with:
           push: true
+          context: .
           tags: |
             skyrabot/skyra:latest
             ghcr.io/skyra-project/skyra:latest

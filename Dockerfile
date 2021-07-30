@@ -9,11 +9,6 @@ RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libjpeg-dev \
-    libgif-dev \
-    librsvg2-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -43,11 +38,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     dumb-init \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libjpeg-dev \
-    libgif-dev \
-    librsvg2-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

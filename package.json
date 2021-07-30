@@ -82,7 +82,7 @@
 		"async-rwlock": "^1.1.1",
 		"binarytf": "^2.0.0",
 		"bufferutil": "^4.0.3",
-		"canvas-constructor": "^5.0.1-next.3414108.0",
+		"canvas-constructor": "^5.0.1",
 		"colorette": "^1.2.2",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",

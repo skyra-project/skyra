@@ -5,6 +5,12 @@ WORKDIR /usr/src/app
 ENV NODE_ENV="development"
 ENV HUSKY=0
 
+RUN apt-get update && \
+    apt-get upgrade -y --no-install-recommends && \
+    apt-get install -y --no-install-recommends build-essential python && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY --chown=node:node yarn.lock .
 COPY --chown=node:node package.json .
 COPY --chown=node:node tsconfig.base.json tsconfig.base.json
@@ -28,8 +34,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
-    apt-get install -y --no-install-recommends \
-    dumb-init \
+    apt-get install -y --no-install-recommends build-essential python libfontconfig1 dumb-init && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

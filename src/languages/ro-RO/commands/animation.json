@@ -1,4 +1,32 @@
 {
+    "aniListAnimeDescription": "",
+    "aniListAnimeExtended": {
+        "examples": [
+            "",
+            ""
+        ],
+        "extendedHelp": "",
+        "usages": [
+            ""
+        ]
+    },
+    "aniListAnimeQueryFail": "",
+    "aniListMangaDescription": "",
+    "aniListMangaExtended": [],
+    "aniListMangaQueryFail": "",
+    "aniListQueryOnlyNsfw": "",
+    "aniListEmbedTitles": {
+        "adultContent": "",
+        "countryOfOrigin": "",
+        "englishName": "",
+        "episodeLength": "",
+        "episodes": "",
+        "chapters": "",
+        "volumes": "",
+        "externalLinks": "",
+        "nativeName": "",
+        "romajiName": ""
+    },
     "kitsuAnimeDescription": "Caută anime-ul tău preferat după titlu cu această comandă.",
     "kitsuAnimeEmbedData": {
         "ageRating": "Rating vârstă",

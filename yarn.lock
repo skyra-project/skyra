@@ -2708,10 +2708,12 @@ caniuse-lite@^1.0.30001219:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001248.tgz#26ab45e340f155ea5da2920dadb76a533cb8ebce"
   integrity sha512-NwlQbJkxUFJ8nMErnGtT0QTM2TJ33xgz4KXJSMIrjXIbDVdaYueGyjOrLKRtJC+rTiWfi6j5cnZN1NBiSBJGNw==
 
-canvas-constructor@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-5.0.0.tgz#21b110451629a29087f40b6eaecc316ec90eea38"
-  integrity sha512-Fkxr2eEkJf6RcBiJ4broy8biQ6cvuHanbbRqfzE0McIJzmm7Esvny7Wxcl5EgymSeWAJXyykj37I0Pu4MRsOEA==
+canvas-constructor@^5.0.1-next.3414108.0:
+  version "5.0.1-next.3414108.0"
+  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-5.0.1-next.3414108.0.tgz#17e12bf4bdc2e316dfc8db92d62c0a869938db93"
+  integrity sha512-fIW/3XEfP4kqjFtROC3+P7417RoFxmR+VBKvucf8wYvc9G5cjfIYn8beu2acVfoMGtvcNHujxeyZBT+w+Ll+jA==
+  dependencies:
+    tslib "^2.3.0"
 
 chalk@^1.1.1, chalk@^1.1.3, chalk@^2.0.0, chalk@^2.4.1, chalk@^2.4.2, chalk@^3.0.0, chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1:
   version "4.1.1"

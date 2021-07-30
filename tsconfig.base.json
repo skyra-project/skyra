@@ -1,7 +1,7 @@
 {
 	"extends": "@sapphire/ts-config",
 	"compilerOptions": {
-		"lib": ["esnext", "DOM"],
+		"lib": ["esnext"],
 		"target": "ESNext",
 		"removeComments": true
 	}

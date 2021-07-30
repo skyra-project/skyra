@@ -1,5 +1,5 @@
 import { streamToBuffer } from '#utils/common';
-import { Image } from 'canvas';
+import { resolveImage } from 'canvas-constructor/skia';
 import { createReadStream } from 'fs';
 import { resolve } from 'path';
 
@@ -9,9 +9,7 @@ describe('util common iterators', () => {
 			const filePath = resolve(__dirname, '..', '..', '..', 'mocks', 'image.png');
 			const readStream = createReadStream(filePath);
 			const buffer = await streamToBuffer(readStream);
-
-			const image = new Image();
-			image.src = buffer;
+			const image = await resolveImage(buffer);
 
 			expect(image.width).toBe(32);
 			expect(image.height).toBe(32);

@@ -10,7 +10,7 @@ import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { createHmac } from 'crypto';
 import { Time } from '@sapphire/time-utilities';
-import { enumerable } from '@sapphire/decorators';
+import { Enumerable } from '@sapphire/decorators';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',
@@ -29,26 +29,26 @@ export class Twitch {
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
 	public readonly BRANDING_COLOUR = 0x6441a4;
 
-	@enumerable(false)
+	@Enumerable(false)
 	private BEARER: TwitchHelixBearerToken = {
 		EXPIRE: null,
 		TOKEN: null
 	};
 
-	@enumerable(false)
-	private readonly $clientID = process.env.TWITCH_CLIENT_ID;
+	@Enumerable(false)
+	private readonly clientId = process.env.TWITCH_CLIENT_ID;
 
-	@enumerable(false)
-	private readonly $clientSecret = process.env.TWITCH_TOKEN;
+	@Enumerable(false)
+	private readonly clientSecret = process.env.TWITCH_TOKEN;
 
-	@enumerable(false)
-	private readonly $webhookSecret = process.env.TWITCH_WEBHOOK_TOKEN;
+	@Enumerable(false)
+	private readonly webhookSecret = process.env.TWITCH_WEBHOOK_TOKEN;
 
-	@enumerable(false)
+	@Enumerable(false)
 	private readonly kTwitchRequestHeaders = {
 		'Content-Type': MimeTypes.ApplicationJson,
 		Accept: MimeTypes.ApplicationJson,
-		'Client-ID': this.$clientID
+		'Client-ID': this.clientId
 	};
 
 	public streamNotificationDrip(id: string) {
@@ -74,14 +74,14 @@ export class Twitch {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>(`games?${search.join('&')}`);
 	}
 
-	public async fetchUserFollowage(userID: string, channelID: string) {
+	public async fetchUserFollowage(userId: string, channelId: string) {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(
-			`users/follows?from_id=${userID}&to_id=${channelID}`
+			`users/follows?from_id=${userId}&to_id=${channelId}`
 		);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = createHmac(algorithm, this.$webhookSecret).update(JSON.stringify(data)).digest('hex');
+		const hash = createHmac(algorithm, this.webhookSecret).update(JSON.stringify(data)).digest('hex');
 
 		return hash === signature;
 	}
@@ -93,16 +93,16 @@ export class Twitch {
 		return TOKEN;
 	}
 
-	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
+	public async subscriptionsStreamHandle(streamerId: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
 		await fetch(
 			'https://api.twitch.tv/helix/webhooks/hub',
 			{
 				body: JSON.stringify({
-					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerID}`,
+					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerId}`,
 					'hub.mode': action,
-					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
+					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerId}`,
 					'hub.lease_seconds': (9 * Time.Day) / Time.Second,
-					'hub.secret': this.$webhookSecret
+					'hub.secret': this.webhookSecret
 				}),
 				headers: {
 					...this.kTwitchRequestHeaders,
@@ -129,8 +129,8 @@ export class Twitch {
 
 	private async _generateBearerToken() {
 		const url = new URL('https://id.twitch.tv/oauth2/token');
-		url.searchParams.append('client_secret', this.$clientSecret);
-		url.searchParams.append('client_id', this.$clientID);
+		url.searchParams.append('client_secret', this.clientSecret);
+		url.searchParams.append('client_id', this.clientId);
 		url.searchParams.append('grant_type', 'client_credentials');
 		const respone = await fetch<OauthResponse>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
 		const expires = Date.now() + respone.expires_in * 1000;

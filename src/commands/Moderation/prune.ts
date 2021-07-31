@@ -14,7 +14,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -38,31 +38,28 @@ const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['purge', 'nuke', 'sweep'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.PruneDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
+	flags: [
+		...attachmentsFlags,
+		...imageFlags,
+		...authorFlags,
+		...botsFlags,
+		...humansFlags,
+		...invitesFlags,
+		...linksFlags,
+		...youFlags,
+		...pinsFlags,
+		...silentFlags
+	],
+	options: [...ageOptions, ...includesOptions],
 	permissionLevel: PermissionLevels.Moderator,
-	strategyOptions: {
-		flags: [
-			...attachmentsFlags,
-			...imageFlags,
-			...authorFlags,
-			...botsFlags,
-			...humansFlags,
-			...invitesFlags,
-			...linksFlags,
-			...youFlags,
-			...pinsFlags,
-			...silentFlags
-		],
-		options: [...ageOptions, ...includesOptions]
-	},
-	permissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get timespan(): IArgument<number> {
-		return this.context.stores.get('arguments').get('timespan') as IArgument<number>;
+		return this.container.stores.get('arguments').get('timespan') as IArgument<number>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -152,10 +149,10 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
-		const channelID = await readSettings(message.guild, GuildSettings.Channels.Logs.Prune);
-		if (isNullish(channelID)) return;
+		const channelId = await readSettings(message.guild, GuildSettings.Channels.Logs.Prune);
+		if (isNullish(channelId)) return;
 
-		const channel = message.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		const channel = message.guild.channels.cache.get(channelId) as TextChannel | undefined;
 		if (typeof channel === 'undefined') {
 			await writeSettings(message.guild, [[GuildSettings.Channels.Logs.Prune, null]]);
 			return;
@@ -165,22 +162,24 @@ export class UserCommand extends SkyraCommand {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
 
+			const authorName = `${message.author.tag} (${message.author.id})`;
+			const authorAvatar = message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true });
+			const description = t(LanguageKeys.Commands.Moderation.PruneLogMessage, {
+				channel: (message.channel as TextChannel).toString(),
+				author: message.author.toString(),
+				count: messages.size
+			});
+
+			const embed = new MessageEmbed()
+				.setAuthor(authorName, authorAvatar)
+				.setDescription(description)
+				.setColor(UserCommand.kColor)
+				.setTimestamp();
+
 			// Send the message to the prune logs channel.
-			await channel.send('', {
-				embed: new MessageEmbed()
-					.setAuthor(
-						`${message.author.tag} (${message.author.id})`,
-						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-					)
-					.setDescription(
-						t(LanguageKeys.Commands.Moderation.PruneLogMessage, {
-							channel: (message.channel as TextChannel).toString(),
-							author: message.author.toString(),
-							count: messages.size
-						})
-					)
-					.setColor(UserCommand.kColor)
-					.setTimestamp(),
+			await channel.send({
+				content: '',
+				embeds: [embed],
 				files: [this.generateAttachment(t, messages)]
 			});
 		}

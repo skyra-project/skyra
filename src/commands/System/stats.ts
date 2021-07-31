@@ -2,20 +2,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { roundNumber } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['stats', 'sts'],
-	bucket: 2,
-	cooldown: 15,
 	description: LanguageKeys.Commands.System.StatsDescription,
 	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		return message.send(await this.buildEmbed(message, args));
+		const embed = await this.buildEmbed(message, args);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
@@ -27,14 +27,14 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);
 	}
 
 	private get generalStatistics(): StatsGeneral {
-		const { client } = this.context;
+		const { client } = this.container;
 		return {
 			channels: client.channels.cache.size,
 			guilds: client.guilds.cache.size,
@@ -46,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 
 	private get uptimeStatistics(): StatsUptime {
 		return {
-			client: this.context.client.uptime!,
+			client: this.container.client.uptime!,
 			host: uptime() * 1000,
 			total: process.uptime() * 1000
 		};

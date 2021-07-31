@@ -6,12 +6,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { UserPaginatedMessageCommand as Moderations } from './moderations';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.MutesDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.MutesExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: PaginatedMessageCommand.Context) {

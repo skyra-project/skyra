@@ -1,7 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
+import { isNsfw } from '#utils/functions';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
+import { resolveKey } from '@sapphire/plugin-i18next';
 import type { Message } from 'discord.js';
 import { URL } from 'url';
 
@@ -30,8 +32,8 @@ export async function queryGoogleMapsAPI(message: Message, location: string) {
 	url.searchParams.append('key', process.env.GOOGLE_MAPS_API_TOKEN);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
-	if (status !== GoogleResponseCodes.Ok) throw await message.resolveKey(handleNotOK(status));
-	if (results.length === 0) throw await message.resolveKey(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
+	if (status !== GoogleResponseCodes.Ok) throw await resolveKey(message, handleNotOK(status));
+	if (results.length === 0) throw await resolveKey(message, LanguageKeys.Commands.Google.MessagesErrorZeroResults);
 
 	return {
 		formattedAddress: results[0].formatted_address,
@@ -43,7 +45,7 @@ export async function queryGoogleMapsAPI(message: Message, location: string) {
 
 export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: Message, type: T, query: string) {
 	try {
-		const nsfwAllowed = message.channel.type === 'text' ? message.channel.nsfw : true;
+		const nsfwAllowed = isNsfw(message.channel);
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
 		url.searchParams.append(
 			'cx',
@@ -57,7 +59,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch (err) {
 		const { error } = err.toJSON() as GoogleResultError;
-		throw await message.resolveKey(handleNotOK(error.status));
+		throw await resolveKey(message, handleNotOK(error.status));
 	}
 }
 
@@ -72,10 +74,10 @@ export function handleNotOK(status: GoogleResponseCodes): CustomGet<string, stri
 		case GoogleResponseCodes.OverQueryLimit:
 			return LanguageKeys.Commands.Google.MessagesErrorOverQueryLimit;
 		case GoogleResponseCodes.PermissionDenied:
-			Store.injectedContext.client.logger.fatal('Google::handleNotOK | Permission Denied');
+			container.logger.fatal('Google::handleNotOK | Permission Denied');
 			return LanguageKeys.Commands.Google.MessagesErrorPermissionDenied;
 		default:
-			Store.injectedContext.client.logger.fatal(`Google::handleNotOK | Unknown Error: ${status}`);
+			container.logger.fatal(`Google::handleNotOK | Unknown Error: ${status}`);
 			return LanguageKeys.Commands.Google.MessagesErrorUnknown;
 	}
 }

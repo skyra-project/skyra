@@ -8,12 +8,11 @@ import type { TFunction } from 'i18next';
 const flags = ['noperms', 'nopermissions'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.General.InviteDescription,
 	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
+	flags,
 	guarded: true,
-	permissions: ['EMBED_LINKS'],
-	strategyOptions: { flags }
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {

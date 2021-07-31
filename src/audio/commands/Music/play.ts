@@ -1,29 +1,30 @@
-import { MusicCommand, requireUserInVoiceChannel } from '#lib/audio';
+import { AudioCommand, RequireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['p'],
 	description: LanguageKeys.Commands.Music.PlayDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayExtended,
-	strategyOptions: { flags: ['import', 'sc', 'soundcloud'] }
+	flags: ['import', 'sc', 'soundcloud']
 })
-export class UserMusicCommand extends MusicCommand {
-	private get add(): MusicCommand {
-		return this.store.get('add') as MusicCommand;
+export class UserMusicCommand extends AudioCommand {
+	private get add(): AudioCommand {
+		return this.store.get('add') as AudioCommand;
 	}
 
-	private get join(): MusicCommand {
-		return this.store.get('join') as MusicCommand;
+	private get join(): AudioCommand {
+		return this.store.get('join') as AudioCommand;
 	}
 
-	@requireUserInVoiceChannel()
-	public async run(message: GuildMessage, args: MusicCommand.Args, context: MusicCommand.Context) {
+	@RequireUserInVoiceChannel()
+	public async run(message: GuildMessage, args: AudioCommand.Args, context: AudioCommand.Context) {
 		const { audio } = message.guild;
 
 		// If Skyra is not in a voice channel, join
-		if (!audio.voiceChannelID) {
+		if (!audio.voiceChannelId) {
 			await this.join.run(message, args, context);
 		}
 
@@ -36,20 +37,23 @@ export class UserMusicCommand extends MusicCommand {
 		// Retrieve the currently playing track, then check if there is at least one track to be played.
 		const current = await audio.getCurrentTrack();
 		if (!current && (await audio.count()) === 0) {
-			return message.send(args.t(LanguageKeys.Commands.Music.PlayQueueEmpty));
+			const content = args.t(LanguageKeys.Commands.Music.PlayQueueEmpty);
+			return send(message, content);
 		}
 
 		// If Skyra is already playing, send a message.
 		if (audio.playing) {
-			return message.send(args.t(LanguageKeys.Commands.Music.PlayQueuePlaying));
+			const content = args.t(LanguageKeys.Commands.Music.PlayQueuePlaying);
+			return send(message, content);
 		}
 
 		if (current && audio.paused) {
 			await audio.resume();
 			const track = await audio.player.node.decode(current.track);
-			await message.send(args.t(LanguageKeys.Commands.Music.PlayQueuePaused, { song: `<${track.uri}>` }));
+			const content = args.t(LanguageKeys.Commands.Music.PlayQueuePaused, { song: `<${track.uri}>` });
+			await send(message, content);
 		} else {
-			await audio.setTextChannelID(message.channel.id);
+			await audio.setTextChannelId(message.channel.id);
 			await audio.start();
 		}
 

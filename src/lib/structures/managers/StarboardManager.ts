@@ -1,7 +1,8 @@
 import { GuildSettings, readSettings, StarboardEntity } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import Collection from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel } from 'discord.js';
 
@@ -44,7 +45,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
 			const entry = this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
-			this.delete(entry.messageID);
+			this.delete(entry.messageId);
 		}
 		return super.set(key, value);
 	}
@@ -53,9 +54,9 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 * Get the Starboard channel
 	 */
 	public async getStarboardChannel() {
-		const channelID = await readSettings(this.guild, GuildSettings.Starboard.Channel);
-		if (isNullish(channelID)) return null;
-		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
+		const channelId = await readSettings(this.guild, GuildSettings.Starboard.Channel);
+		if (isNullish(channelId)) return null;
+		return (this.guild.channels.cache.get(channelId) ?? null) as TextChannel | null;
 	}
 
 	/**
@@ -68,29 +69,29 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	/**
 	 * Fetch a StarboardMessage entry
 	 * @param channel The text channel the message was sent
-	 * @param messageID The message id
+	 * @param messageId The message id
 	 */
-	public async fetch(channel: TextChannel, messageID: string): Promise<StarboardEntity | null> {
+	public async fetch(channel: GuildTextBasedChannelTypes, messageId: string): Promise<StarboardEntity | null> {
 		// If a key already exists, return it:
-		const entry = super.get(messageID);
+		const entry = super.get(messageId);
 		if (entry) return entry;
 
 		// If a key is already synchronising, return the pending promise:
-		const previousPending = this.syncMap.get(messageID);
+		const previousPending = this.syncMap.get(messageId);
 		if (previousPending) return previousPending;
 
 		// Start a new synchronization and return the promise:
-		const newPending = this.fetchEntry(channel, messageID).finally(() => this.syncMap.delete(messageID));
-		this.syncMap.set(messageID, newPending);
+		const newPending = this.fetchEntry(channel, messageId).finally(() => this.syncMap.delete(messageId));
+		this.syncMap.set(messageId, newPending);
 		return newPending;
 	}
 
-	private async fetchEntry(channel: TextChannel, messageID: string): Promise<StarboardEntity | null> {
-		const message = (await channel.messages.fetch(messageID).catch(() => null)) as GuildMessage | null;
+	private async fetchEntry(channel: GuildTextBasedChannelTypes, messageId: string): Promise<StarboardEntity | null> {
+		const message = (await channel.messages.fetch(messageId).catch(() => null)) as GuildMessage | null;
 		if (!message) return null;
 
-		const { starboards } = Store.injectedContext.db;
-		const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });
+		const { starboards } = container.db;
+		const previous = await starboards.findOne({ where: { guildId: this.guild.id, messageId } });
 		if (previous) {
 			previous.init(this, message);
 			await previous.downloadStarMessage();
@@ -98,7 +99,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		}
 
 		const star = previous ?? new StarboardEntity().init(this, message);
-		this.set(messageID, star);
+		this.set(messageId, star);
 
 		await star.downloadUserList();
 		return star.enabled ? star : null;

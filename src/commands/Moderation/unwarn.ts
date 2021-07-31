@@ -15,7 +15,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async run(message: GuildMessage, args: ModerationCommand.Args) {
-		const caseID = await args.pick('case');
+		const caseId = await args.pick('case');
 		const reason = await args.rest('string');
 
 		const [autoDelete, messageDisplay, reasonDisplay] = await readSettings(message.guild, [
@@ -24,7 +24,7 @@ export class UserModerationCommand extends ModerationCommand {
 			GuildSettings.Messages.ModerationReasonDisplay
 		]);
 
-		const modlog = await message.guild.moderation.fetch(caseID);
+		const modlog = await message.guild.moderation.fetch(caseId);
 		if (!modlog || !modlog.isType(TypeCodes.Warning)) {
 			this.error(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
@@ -43,7 +43,7 @@ export class UserModerationCommand extends ModerationCommand {
 				originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
 				{
 					count: 1,
-					range: unwarnLog.caseID,
+					range: unwarnLog.caseId,
 					users: [`\`${user.tag}\``],
 					reason: originalReason
 				}
@@ -57,12 +57,12 @@ export class UserModerationCommand extends ModerationCommand {
 	public async handle(message: GuildMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
 		return message.guild.security.actions.unWarning(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
-			context.modlog.caseID,
+			context.modlog.caseId,
 			await this.getTargetDM(message, context.args, context.target)
 		);
 	}

@@ -12,10 +12,9 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.FlavorsExtended,
-	strategyOptions: { flags: ['shiny', 'back'] }
+	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

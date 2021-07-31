@@ -4,18 +4,17 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PermissionsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -35,11 +34,10 @@ export class UserCommand extends SkyraCommand {
 			}
 		}
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
-				.setDescription(list.join('\n'))
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
+			.setDescription(list.join('\n'));
+		return send(message, { embeds: [embed] });
 	}
 }

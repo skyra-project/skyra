@@ -1,10 +1,12 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, Permissions } from 'discord.js';
 import { URL } from 'url';
 
@@ -19,7 +21,6 @@ const EMOJIS = {
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('GOOGLE_API_TOKEN'),
 	aliases: ['yt'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.YouTubeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended
 })
@@ -37,10 +38,10 @@ export class UserCommand extends SkyraCommand {
 
 		if (!results.length) this.error(LanguageKeys.Commands.Tools.YouTubeNotFound);
 
-		const sent = await message.send(this.getLink(results[0]));
+		const sent = await send(message, this.getLink(results[0]));
 
 		// if Skyra doesn't have permissions for an LLRC, we fallback to the first link
-		if (!message.guild?.me?.permissionsIn(message.channel).has(kPermissions)) return;
+		if (!message.guild?.me?.permissionsIn(message.channel as GuildTextBasedChannelTypes).has(kPermissions)) return;
 
 		for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
 
@@ -48,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		const llrc = new LongLivingReactionCollector();
 
 		llrc.setListener(async (reaction: LLRCData) => {
-			if (reaction.messageID !== sent.id || reaction.userID !== message.author.id) return;
+			if (reaction.messageId !== sent.id || reaction.userId !== message.author.id) return;
 
 			switch (reaction.emoji.name) {
 				case EMOJIS.next:
@@ -66,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 						for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
 					}
 					await sent.edit(this.getLink(results[index]));
-					await sent.reactions.cache.get(EMOJIS.next)?.users.remove(reaction.userID);
+					await sent.reactions.cache.get(EMOJIS.next)?.users.remove(reaction.userId);
 					break;
 
 				case EMOJIS.previous:
@@ -79,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 
 					if (!sent.reactions.cache.has(EMOJIS.next)) await sent.react(EMOJIS.next);
 					await sent.edit(this.getLink(results[index]));
-					await sent.reactions.cache.get(EMOJIS.previous)?.users.remove(reaction.userID);
+					await sent.reactions.cache.get(EMOJIS.previous)?.users.remove(reaction.userId);
 					break;
 
 				case EMOJIS.stop:
@@ -108,7 +109,7 @@ export class UserCommand extends SkyraCommand {
 				output = `https://youtu.be/${result.id.videoId}`;
 				break;
 			default: {
-				this.context.client.logger.fatal(`YouTube -> Returned incompatible kind '${result.id.kind}'.`);
+				this.container.logger.fatal(`YouTube -> Returned incompatible kind '${result.id.kind}'.`);
 				throw 'I found an incompatible kind of result...';
 			}
 		}
@@ -129,11 +130,11 @@ export interface YouTubeResultOk {
 export interface YouTubeResultOkItem {
 	kind: string;
 	etag: string;
-	id: YouTubeResultOkID;
+	id: YouTubeResultOkId;
 	snippet: YouTubeResultOkSnippet;
 }
 
-export interface YouTubeResultOkID {
+export interface YouTubeResultOkId {
 	kind: string;
 	playlistId?: string;
 	channelId?: string;

@@ -15,16 +15,16 @@ import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envParseBoolean('REDIS_ENABLED'),
-	cooldown: 20,
+	cooldownDelay: 20,
 	description: LanguageKeys.Commands.Misc.AfkDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.AfkExtended,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['ignore', 'reset', 'clear', 'list', 'show', { input: 'set', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	public async ignore(message: GuildMessage, args: SkyraCommand.Args) {
 		const key = this.getKey(message.member);
-		const raw = await this.context.afk.get(key);
+		const raw = await this.container.afk.get(key);
 		if (raw === null) this.error(LanguageKeys.Commands.Misc.AfkNotSetSelf);
 
 		const channel = args.finished ? message.channel : await args.pick('textOrNewsChannelName');
@@ -62,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 			template: new MessageEmbed()
 				.setAuthor(message.guild.name, message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined)
 				.setTitle(args.t(LanguageKeys.Commands.Misc.AfkListTitle))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setFooter(` - ${args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size })}`)
 				.setTimestamp()
 		});
@@ -82,7 +82,7 @@ export class UserCommand extends SkyraCommand {
 		return message.send(
 			new MessageEmbed()
 				.setAuthor(`${entry.name} (${member.id})`, member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setDescription(entry.content)
 				.setFooter(args.t(LanguageKeys.Commands.Misc.AfkShowFooter))
 				.setTimestamp()
@@ -92,14 +92,14 @@ export class UserCommand extends SkyraCommand {
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
 
-		const [prefix, force, roleID] = await readSettings(message.guild, (settings) => [
+		const [prefix, force, roleId] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Afk.Prefix] ?? args.t(LanguageKeys.Commands.Misc.AfkPrefix),
 			settings[GuildSettings.Afk.PrefixForce],
 			settings[GuildSettings.Afk.Role]
 		]);
 		const name = this.removeAfkPrefix(message.member.displayName, prefix);
 
-		await Promise.all([this.addNickName(message.member, name, prefix, force), this.addRole(message.member, roleID)]);
+		await Promise.all([this.addNickName(message.member, name, prefix, force), this.addRole(message.member, roleId)]);
 		await this.saveAfkMessage(message.member, name, content);
 
 		return message.send(args.t(LanguageKeys.Commands.Misc.AfkSet));
@@ -121,10 +121,10 @@ export class UserCommand extends SkyraCommand {
 		await member.setNickname(`${prefix} ${name}`.slice(0, 32));
 	}
 
-	private async addRole(member: GuildMember, roleID: string | Nullish) {
-		if (isNullish(roleID)) return;
+	private async addRole(member: GuildMember, roleId: string | Nullish) {
+		if (isNullish(roleId)) return;
 
-		const role = member.guild.roles.cache.get(roleID);
+		const role = member.guild.roles.cache.get(roleId);
 		if (role === undefined) {
 			await writeSettings(member, [[GuildSettings.Afk.Role, null]]);
 			return;
@@ -164,7 +164,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async handleResetAfk(args: SkyraCommand.Args, member: GuildMember, targetIsSelf: boolean) {
 		const key = this.getKey(member);
-		const raw = await this.context.afk.get(key);
+		const raw = await this.container.afk.get(key);
 		if (raw === null) {
 			this.error(targetIsSelf ? LanguageKeys.Commands.Misc.AfkNotSetSelf : LanguageKeys.Commands.Misc.AfkNotSet, { user: member.toString() });
 		}
@@ -197,7 +197,7 @@ export class UserCommand extends SkyraCommand {
 		const entries = await this.fetchEntries(template);
 		if (entries.size === 0) this.error(LanguageKeys.Commands.Misc.AfkNoEntries);
 
-		const roleID = await this.getRole(message.member);
+		const roleId = await this.getRole(message.member);
 		await message.send(args.t(LanguageKeys.Commands.Misc.AfkClearAllStarting, { count: entries.size }));
 		let i = 0;
 		let failed = 0;
@@ -206,8 +206,8 @@ export class UserCommand extends SkyraCommand {
 		const members = message.guild.members.cache;
 		for (const [id, value] of entries) {
 			const member = members.get(id.slice(idOffset));
-			if (member === undefined) await this.context.afk.del(id);
-			else await this.handleClearAfkWithEntry(member, id, value, roleID).catch(() => ++failed);
+			if (member === undefined) await this.container.afk.del(id);
+			else await this.handleClearAfkWithEntry(member, id, value, roleId).catch(() => ++failed);
 
 			if (++i % 10 === 0) {
 				const percentage = (i / entries.size) * 100;
@@ -220,7 +220,7 @@ export class UserCommand extends SkyraCommand {
 
 		// We're done!
 		const embed = new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.AfkClearAllTitle))
 			.setDescription(totalLine + failedLine);
 		return message.send(null, embed);
@@ -228,27 +228,27 @@ export class UserCommand extends SkyraCommand {
 
 	private async handleClearAfk(member: GuildMember, targetIsSelf: boolean) {
 		const key = this.getKey(member);
-		const raw = await this.context.afk.get(key);
+		const raw = await this.container.afk.get(key);
 		if (raw === null) {
 			this.error(targetIsSelf ? LanguageKeys.Commands.Misc.AfkNotSetSelf : LanguageKeys.Commands.Misc.AfkNotSet, { user: member.toString() });
 		}
 
-		const roleID = await this.getRole(member);
-		return this.handleClearAfkWithEntry(member, key, JSON.parse(raw), roleID);
+		const roleId = await this.getRole(member);
+		return this.handleClearAfkWithEntry(member, key, JSON.parse(raw), roleId);
 	}
 
-	private async handleClearAfkWithEntry(member: GuildMember, key: string, value: AfkEntry, roleID: string | null) {
-		await this.context.afk.del(key);
+	private async handleClearAfkWithEntry(member: GuildMember, key: string, value: AfkEntry, roleId: string | null) {
+		await this.container.afk.del(key);
 		await this.handleClearNickName(member, value.name);
-		await this.handleClearRole(member, roleID);
+		await this.handleClearRole(member, roleId);
 	}
 
-	private async handleClearRole(member: GuildMember, roleID: string | null) {
-		if (roleID === null) return;
+	private async handleClearRole(member: GuildMember, roleId: string | null) {
+		if (roleId === null) return;
 
 		const { roles } = member;
-		if (roles.cache.has(roleID)) {
-			await roles.remove(roleID);
+		if (roles.cache.has(roleId)) {
+			await roles.remove(roleId);
 		}
 	}
 
@@ -278,7 +278,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchEntry(member: GuildMember, targetIsSelf: boolean): Promise<[string, AfkEntry]> {
 		const key = this.getKey(member);
-		const raw = await this.context.afk.get(key);
+		const raw = await this.container.afk.get(key);
 		if (raw === null) {
 			this.error(targetIsSelf ? LanguageKeys.Commands.Misc.AfkNotSetSelf : LanguageKeys.Commands.Misc.AfkNotSet, { user: member.toString() });
 		}
@@ -292,7 +292,7 @@ export class UserCommand extends SkyraCommand {
 		const keys = await this.fetchKeys(template);
 		if (keys.length === 0) return values;
 
-		const rawValues = await this.context.afk.mget(...keys);
+		const rawValues = await this.container.afk.mget(...keys);
 
 		const keyIterator = keys.values();
 		const offset = fullKeys ? 0 : template.length - 1;
@@ -306,7 +306,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchKeys(template: string) {
 		const users = new Set<string>();
-		const cache = this.context.afk;
+		const cache = this.container.afk;
 
 		let cursor = '0';
 		do {
@@ -325,14 +325,14 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getRole(member: GuildMember) {
-		const roleID = await readSettings(member, GuildSettings.Afk.Role);
-		return this.handleRole(member, roleID);
+		const roleId = await readSettings(member, GuildSettings.Afk.Role);
+		return this.handleRole(member, roleId);
 	}
 
-	private async handleRole(member: GuildMember, roleID: string | Nullish) {
-		if (isNullish(roleID)) return null;
+	private async handleRole(member: GuildMember, roleId: string | Nullish) {
+		if (isNullish(roleId)) return null;
 
-		const role = member.guild.roles.cache.get(roleID);
+		const role = member.guild.roles.cache.get(roleId);
 		if (role === undefined) {
 			await writeSettings(member, [[GuildSettings.Afk.Role, null]]);
 			return null;
@@ -350,7 +350,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private insert(key: string, value: AfkEntry) {
-		return this.context.afk.psetex(key, Time.Day, JSON.stringify(value));
+		return this.container.afk.psetex(key, Time.Day, JSON.stringify(value));
 	}
 
 	private static readonly all = Args.make<true>(async (parameter, { argument, args }) => {

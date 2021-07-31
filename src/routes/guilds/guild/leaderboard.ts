@@ -8,10 +8,10 @@ import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from
 export class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildID = request.params.guild;
+		const guildId = request.params.guild;
 
-		const { client } = this.context;
-		const guild = client.guilds.cache.get(guildID);
+		const { client } = this.container;
+		const guild = client.guilds.cache.get(guildId);
 		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const limit = Reflect.has(request.query, 'limit') ? Number(request.query.limit) : 10;
@@ -20,7 +20,7 @@ export class UserRoute extends Route {
 		const after = Reflect.has(request.query, 'after') ? Number(request.query.after) : 1;
 		if (!Number.isInteger(after) || after <= 0 || after > 2500 - limit) return response.error(HttpCodes.BadRequest);
 
-		const leaderboard = await client.leaderboard.fetch(guildID);
+		const leaderboard = await client.leaderboard.fetch(guildId);
 		const results = iteratorRange(leaderboard.entries(), after - 1, limit);
 
 		return response.json(fetchAllLeaderBoardEntries(guild, results));

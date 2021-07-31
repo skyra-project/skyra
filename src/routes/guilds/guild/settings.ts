@@ -12,9 +12,9 @@ export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildID = request.params.guild;
+		const guildId = request.params.guild;
 
-		const guild = this.context.client.guilds.cache.get(guildID);
+		const guild = this.container.client.guilds.cache.get(guildId);
 		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
@@ -34,7 +34,7 @@ export class UserRoute extends Route {
 			return response.status(HttpCodes.BadRequest).json(['Invalid body.']);
 		}
 
-		const guild = this.context.client.guilds.cache.get(requestBody.guild_id);
+		const guild = this.container.client.guilds.cache.get(requestBody.guild_id);
 		if (!guild) return response.status(HttpCodes.BadRequest).json(['Guild not found.']);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);

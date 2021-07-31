@@ -17,7 +17,6 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ow'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
@@ -76,7 +75,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)
 				.setTitle(embedData.title)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)

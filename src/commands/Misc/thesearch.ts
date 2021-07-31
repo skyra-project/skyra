@@ -7,11 +7,9 @@ import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.TheSearchDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TheSearchExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

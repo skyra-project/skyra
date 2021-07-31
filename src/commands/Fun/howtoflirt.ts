@@ -24,11 +24,9 @@ const imageCoordinates = [
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pants'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -45,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const images = await Promise.all([fetchAvatar(message.author, 128), fetchAvatar(user, 128)]);

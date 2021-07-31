@@ -9,7 +9,7 @@ export class UserSerializer extends Serializer<string> {
 			return this.errorFromArgument(args, result.error);
 		}
 
-		if (result.value.type === 'text' || result.value.type === 'category') {
+		if (result.value.type === 'GUILD_TEXT' || result.value.type === 'GUILD_CATEGORY') {
 			return this.ok(result.value.id);
 		}
 

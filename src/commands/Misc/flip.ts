@@ -8,14 +8,13 @@ const horizontalOptions = ['h', 'horizontal', 'x'];
 const verticalOptions = ['v', 'vertical', 'y'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.FlipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FlipExtended,
-	strategyOptions: { options: [...horizontalOptions, ...verticalOptions] }
+	options: [...horizontalOptions, ...verticalOptions]
 })
 export class UserCommand extends SkyraCommand {
 	private get boolean(): Argument<boolean> {
-		return this.context.stores.get('arguments').get('boolean') as Argument<boolean>;
+		return this.container.stores.get('arguments').get('boolean') as Argument<boolean>;
 	}
 
 	public async run(message: Message, args: SkyraCommand.Args) {

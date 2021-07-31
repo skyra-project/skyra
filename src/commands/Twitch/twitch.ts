@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -10,7 +11,7 @@ import type { TFunction } from 'i18next';
 	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -21,23 +22,22 @@ export class UserCommand extends SkyraCommand {
 		if (channelData.length === 0) this.error(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		const channel = channelData[0];
 
-		const { total: followersTotal } = await this.context.client.twitch.fetchUserFollowage('', channel.id);
+		const { total: followersTotal } = await this.container.client.twitch.fetchUserFollowage('', channel.id);
 
 		const titles = t(LanguageKeys.Commands.Twitch.TwitchTitles);
 		const affiliateStatus = this.parseAffiliateProgram(t, channel.broadcaster_type);
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(this.context.client.twitch.BRANDING_COLOUR)
-				.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
-				.setTitle(titles.clickToVisit)
-				.setURL(`https://twitch.tv/${channel.login}`)
-				.setDescription(channel.description)
-				.setThumbnail(channel.profile_image_url)
-				.addField(titles.followers, t(LanguageKeys.Globals.NumberValue, { value: followersTotal }), true)
-				.addField(titles.views, t(LanguageKeys.Globals.NumberValue, { value: channel.view_count }), true)
-				.addField(titles.partner, affiliateStatus ? affiliateStatus : t(LanguageKeys.Commands.Twitch.TwitchPartnershipWithoutAffiliate))
-		);
+		const embed = new MessageEmbed()
+			.setColor(this.container.client.twitch.BRANDING_COLOUR)
+			.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
+			.setTitle(titles.clickToVisit)
+			.setURL(`https://twitch.tv/${channel.login}`)
+			.setDescription(channel.description)
+			.setThumbnail(channel.profile_image_url)
+			.addField(titles.followers, t(LanguageKeys.Globals.NumberValue, { value: followersTotal }), true)
+			.addField(titles.views, t(LanguageKeys.Globals.NumberValue, { value: channel.view_count }), true)
+			.addField(titles.partner, affiliateStatus ? affiliateStatus : t(LanguageKeys.Commands.Twitch.TwitchPartnershipWithoutAffiliate));
+		return send(message, { embeds: [embed] });
 	}
 
 	private parseAffiliateProgram(t: TFunction, type: 'affiliate' | 'partner' | '') {
@@ -55,7 +55,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchUsers(usernames: string[]) {
 		try {
-			return await this.context.client.twitch.fetchUsers([], usernames);
+			return await this.container.client.twitch.fetchUsers([], usernames);
 		} catch {
 			this.error(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		}

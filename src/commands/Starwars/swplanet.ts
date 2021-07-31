@@ -10,7 +10,6 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-planet'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.PlanetDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.PlanetExtended
 })
@@ -28,7 +27,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 

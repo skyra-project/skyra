@@ -3,19 +3,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import { codeBlock } from '@sapphire/utilities';
-import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcad'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -62,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 
 		const list: string[] = [];
 		for (const entry of commandAutoDelete) {
-			const channel = this.context.client.channels.cache.get(entry[0]) as TextChannel;
+			const channel = this.container.client.channels.cache.get(entry[0]) as GuildTextBasedChannelTypes;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: entry[1] * Time.Second })}`);
 		}
 		if (!list.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);

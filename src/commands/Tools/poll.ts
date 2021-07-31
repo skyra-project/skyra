@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 const NUMBER_OPTS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
@@ -9,10 +10,10 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['spoll'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Tools.PollDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PollExtended,
-	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS']
+	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -27,6 +28,7 @@ export class UserCommand extends SkyraCommand {
 			await response.react(emoji);
 		}
 
-		await message.send(options.map((option, i) => `${emojis[i]} → *${option}*`).join('\n'), { allowedMentions: { users: [], roles: [] } });
+		const content = options.map((option, i) => `${emojis[i]} → *${option}*`).join('\n');
+		await send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 }

@@ -9,10 +9,9 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Management.RolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RolesExtended,
-	permissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES']
+	requiredClientPermissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
@@ -83,7 +82,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (actualInitialRole && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(actualInitialRole)) {
-				await writeSettings(message.guild, [[GuildSettings.Roles.Initial, null]]).catch((error) => this.context.client.logger.fatal(error));
+				await writeSettings(message.guild, [[GuildSettings.Roles.Initial, null]]).catch((error) => this.container.logger.fatal(error));
 			} else if (message.member!.roles.cache.has(actualInitialRole)) {
 				memberRoles.delete(actualInitialRole);
 			}
@@ -106,10 +105,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async list(message: GuildMessage, t: TFunction, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
-		for (const roleID of publicRoles) {
-			const role = message.guild.roles.cache.get(roleID);
+		for (const roleId of publicRoles) {
+			const role = message.guild.roles.cache.get(roleId);
 			if (role) roles.push(role.name);
-			else remove.push(roleID);
+			else remove.push(roleId);
 		}
 
 		// Automatic role deletion
@@ -123,10 +122,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
-		const user = this.context.client.user!;
+		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});

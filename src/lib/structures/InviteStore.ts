@@ -2,7 +2,7 @@ import { api } from '#lib/discord/Api';
 import { resolveOnErrorCodes } from '#utils/common';
 import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
-import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v9';
 
 export class InviteStore extends Collection<string, InviteCodeEntry> {
 	private readonly interval = setInterval(() => {
@@ -28,7 +28,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 		const resolved: InviteCodeEntry = {
 			valid: true,
 			code,
-			guildID: Reflect.get(data, 'guild')?.id ?? null,
+			guildId: Reflect.get(data, 'guild')?.id ?? null,
 			fetchedAt: Date.now()
 		};
 		this.set(code, resolved);
@@ -47,5 +47,5 @@ export interface InviteCodeInvalidEntry {
 export interface InviteCodeValidEntry {
 	valid: true;
 	code: string;
-	guildID: string | null;
+	guildId: string | null;
 }

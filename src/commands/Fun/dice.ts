@@ -6,7 +6,6 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['roll'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.DiceExtended,
 	spam: true

@@ -8,12 +8,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { remove as removeConfusables } from 'confusables';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 5,
 	description: LanguageKeys.Commands.Management.FilterDescription,
 	extendedHelp: LanguageKeys.Commands.Management.FilterExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -75,7 +73,7 @@ export class UserCommand extends SkyraCommand {
 		if (regExp === null) return false;
 
 		try {
-			const result = await this.context.workers.send({ type: IncomingType.RunRegExp, content, regExp });
+			const result = await this.container.workers.send({ type: IncomingType.RunRegExp, content, regExp });
 			return result.type === OutgoingType.RegExpMatch;
 		} catch {
 			return false;

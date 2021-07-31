@@ -13,7 +13,7 @@ export class UserArgument extends Argument<string> {
 	}
 
 	private isAllowed(resolved: string, context: CommandArgumentContext): boolean {
-		const command = this.context.stores.get('commands').get(resolved) as SkyraCommand | undefined;
+		const command = this.container.stores.get('commands').get(resolved) as SkyraCommand | undefined;
 		if (command === undefined) return true;
 
 		if (command.permissionLevel !== PermissionLevels.BotOwner) return true;

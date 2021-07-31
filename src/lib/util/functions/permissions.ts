@@ -23,7 +23,7 @@ export function isAdmin(member: GuildMember) {
 }
 
 export function isGuildOwner(member: GuildMember) {
-	return member.id === member.guild.ownerID;
+	return member.id === member.guild.ownerId;
 }
 
 export function isOnlyListener(member: GuildMember) {

@@ -3,27 +3,28 @@ import { SkyraCommand } from '#lib/structures';
 import { floatPromise, resolveOnErrorCodes } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.DivorceDescription,
 	extendedHelp: LanguageKeys.Commands.Social.DivorceExtended,
-	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		if (user === message.author) this.error(LanguageKeys.Commands.Social.DivorceSelf);
 
-		const { users } = this.context.db;
-		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
-			const entry = await users.fetchSpouse(authorID, targetID);
-			if (!entry) return message.send(args.t(LanguageKeys.Commands.Social.DivorceNotTaken));
+		const { users } = this.container.db;
+		return users.lock([message.author.id, user.id], async (authorId, targetId) => {
+			const entry = await users.fetchSpouse(authorId, targetId);
+			if (!entry) this.error(LanguageKeys.Commands.Social.DivorceNotTaken);
 
 			// Ask the user if they're sure
 			const accept = await promptConfirmation(message, args.t(LanguageKeys.Commands.Social.DivorcePrompt));
-			if (!accept) return message.send(args.t(LanguageKeys.Commands.Social.DivorceCancel));
+			if (!accept) this.error(LanguageKeys.Commands.Social.DivorceCancel);
 
 			// Remove the spouse
 			await users.deleteSpouse(entry);
@@ -35,7 +36,9 @@ export class UserCommand extends SkyraCommand {
 					RESTJSONErrorCodes.CannotSendMessagesToThisUser
 				)
 			);
-			return message.send(args.t(LanguageKeys.Commands.Social.DivorceSuccess, { user: user.toString() }));
+
+			const content = args.t(LanguageKeys.Commands.Social.DivorceSuccess, { user: user.toString() });
+			return send(message, content);
 		});
 	}
 }

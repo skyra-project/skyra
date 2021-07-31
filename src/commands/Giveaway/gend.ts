@@ -11,8 +11,8 @@ import type { Message } from 'discord.js';
 	description: LanguageKeys.Commands.Giveaway.GiveawayEndDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayEndExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -20,8 +20,8 @@ export class UserCommand extends SkyraCommand {
 		const target = await args.pick('message', { channel });
 		if (!this.validateMessage(target)) this.error(LanguageKeys.Commands.Giveaway.GiveawayEndMessageNotMine);
 
-		const entries = this.context.client.giveaways.queue;
-		const entryIndex = entries.findIndex((entry) => entry.messageID === target.id);
+		const entries = this.container.client.giveaways.queue;
+		const entryIndex = entries.findIndex((entry) => entry.messageId === target.id);
 		if (entryIndex === -1) this.error(LanguageKeys.Commands.Giveaway.GiveawayEndMessageNotActive);
 
 		const [entry] = entries.splice(entryIndex, 1);

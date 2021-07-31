@@ -1,9 +1,7 @@
-import { err, ok, Result, Store } from '@sapphire/framework';
-import { isThenable, Awaited } from '@sapphire/utilities';
-import type { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { container, err, ok, Result } from '@sapphire/framework';
+import { Awaited, isThenable } from '@sapphire/utilities';
+import type { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError } from 'discord.js';
-
-const container = Store.injectedContext;
 
 export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly RESTJSONErrorCodes[]) {
 	try {

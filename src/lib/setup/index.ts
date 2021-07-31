@@ -5,7 +5,7 @@ import '#root/config';
 // Import everything else:
 import '#utils/Sanitizer/initClean';
 import '@sapphire/plugin-api/register';
-import '@sapphire/plugin-i18next/register-discordjs';
+import '@sapphire/plugin-i18next/register';
 import '@sapphire/plugin-logger/register';
 import './Canvas';
 import './Grpc';

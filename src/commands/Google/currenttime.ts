@@ -10,10 +10,9 @@ import { URL } from 'url';
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('TIMEZONEDB_TOKEN'),
 	aliases: ['ctime'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -31,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 		const titles = t(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled });
 		return message.send(
 			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
 				.setDescription(
 					[

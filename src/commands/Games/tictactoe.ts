@@ -11,11 +11,10 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ttt'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Games.TicTacToeDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
-	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();

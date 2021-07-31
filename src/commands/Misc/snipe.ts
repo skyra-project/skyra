@@ -11,9 +11,9 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
-			.setColor(await this.context.db.fetchColor(sniped))
+			.setColor(await this.container.db.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);
 

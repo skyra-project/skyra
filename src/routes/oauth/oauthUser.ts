@@ -19,7 +19,7 @@ export class UserRoute extends Route {
 		if (requestBody.action === 'SYNC_USER') {
 			if (!request.auth) return response.error(HttpCodes.Unauthorized);
 
-			const auth = this.context.server.auth!;
+			const auth = this.container.server.auth!;
 
 			// If the token expires in a day, refresh
 			let authToken = request.auth.token;
@@ -41,7 +41,7 @@ export class UserRoute extends Route {
 			try {
 				return response.json(await auth.fetchData(authToken));
 			} catch (error) {
-				this.context.client.logger.fatal(error);
+				this.container.logger.fatal(error);
 				return response.error(HttpCodes.InternalServerError);
 			}
 		}
@@ -50,9 +50,9 @@ export class UserRoute extends Route {
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {
-		const { client, server } = this.context;
+		const { logger, server } = this.container;
 		try {
-			client.logger.debug(`Refreshing Token for ${id}`);
+			logger.debug(`Refreshing Token for ${id}`);
 			return await fetch<RESTPostOAuth2AccessTokenResult>(
 				'https://discord.com/api/v8/oauth2/token',
 				{
@@ -72,7 +72,7 @@ export class UserRoute extends Route {
 				FetchResultTypes.JSON
 			);
 		} catch (error) {
-			client.logger.fatal(error);
+			logger.fatal(error);
 			return null;
 		}
 	}

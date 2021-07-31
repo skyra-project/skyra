@@ -1,10 +1,27 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { UserError } from '@sapphire/framework';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import { GuildChannel, Message, Permissions, VoiceChannel } from 'discord.js';
+import {
+	CategoryChannel,
+	DMChannel,
+	GuildChannel,
+	Message,
+	NewsChannel,
+	Permissions,
+	StageChannel,
+	StoreChannel,
+	TextChannel,
+	ThreadChannel,
+	VoiceChannel
+} from 'discord.js';
 
+export type ChannelTypes = CategoryChannel | DMChannel | NewsChannel | StageChannel | StoreChannel | TextChannel | ThreadChannel | VoiceChannel;
 export type TextBasedChannelTypes = Message['channel'];
-// TODO: v13 | Add StageChannel
-export type VoiceBasedChannelTypes = VoiceChannel;
-export type GuildTextBasedChannelTypes = Extract<TextBasedChannelTypes, GuildChannel>;
+export type VoiceBasedChannelTypes = VoiceChannel | StageChannel;
+export type NonThreadGuildTextBasedChannelTypes = Extract<TextBasedChannelTypes, GuildChannel>;
+export type GuildTextBasedChannelTypes = NonThreadGuildTextBasedChannelTypes | ThreadChannel;
+
+export type ChannelTypeString = ChannelTypes['type'] | 'UNKNOWN';
 
 /**
  * Determines whether or not a channel comes from a guild.
@@ -13,6 +30,32 @@ export type GuildTextBasedChannelTypes = Extract<TextBasedChannelTypes, GuildCha
  */
 export function isGuildBasedChannel(channel: TextBasedChannelTypes): channel is GuildTextBasedChannelTypes {
 	return Reflect.has(channel, 'guild');
+}
+
+export function isNsfw(channel: TextBasedChannelTypes): boolean {
+	switch (channel.type) {
+		case 'DM':
+			return false;
+		case 'GUILD_TEXT':
+		case 'GUILD_NEWS':
+			return channel.nsfw;
+		case 'GUILD_NEWS_THREAD':
+		case 'GUILD_PUBLIC_THREAD':
+		case 'GUILD_PRIVATE_THREAD':
+			// `ThreadChannel#parent` returns `null` only when the cache is
+			// incomplete, which is never the case in Skyra.
+			return channel.parent!.nsfw;
+	}
+}
+
+/**
+ * Asserts a text-based channel is not a thread channel.
+ * @param channel The channel to assert.
+ * @returns The thread channel.
+ */
+export function assertNonThread<T extends TextBasedChannelTypes>(channel: T): Exclude<T, ThreadChannel> {
+	if (channel.isThread()) throw new UserError({ identifier: LanguageKeys.Assertions.ExpectedNonThreadChannel, context: { channel } });
+	return channel as Exclude<T, ThreadChannel>;
 }
 
 const canReadMessagesPermissions = new Permissions(['VIEW_CHANNEL']);

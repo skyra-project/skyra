@@ -8,10 +8,9 @@ import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 15,
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
-	permissions: ['ATTACH_FILES']
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

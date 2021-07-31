@@ -7,12 +7,12 @@ const header = blueBright('[TWITCH SUB-UPDATE]');
 
 export class UserTask extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
-		const { client } = this.context;
+		const { client, logger, db } = this.container;
 		// If we're running in developer mode then just exit early
 		if (client.dev) return { type: ResponseType.Finished };
 
 		// Retrieve all the Twitch subscriptions
-		const { twitchStreamSubscriptions } = this.context.db;
+		const { twitchStreamSubscriptions } = db;
 		const allSubscriptions = await twitchStreamSubscriptions.find();
 
 		// If there are no subscriptions then just exit early
@@ -36,7 +36,7 @@ export class UserTask extends Task {
 				updatedSubscriptionIds.push(subscription.id);
 
 				// Queue the updating by pushing the promise into the promises array
-				promises.push(client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(client.logger.fatal));
+				promises.push(client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(logger.fatal.bind(logger)));
 			}
 		}
 
@@ -45,7 +45,7 @@ export class UserTask extends Task {
 		await this.updateEntries(updatedSubscriptionIds, twitchStreamSubscriptions);
 
 		// ST = Subscriptions Total; SU = Subscriptions Updated
-		client.logger.trace(`${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubscriptionIds.length} [SU] ]`);
+		logger.trace(`${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubscriptionIds.length} [SU] ]`);
 
 		return null;
 	}

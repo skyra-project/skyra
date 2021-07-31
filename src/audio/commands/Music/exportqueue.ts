@@ -1,4 +1,4 @@
-import { MusicCommand, QueueEntry, requireQueueNotEmpty } from '#lib/audio';
+import { AudioCommand, QueueEntry, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { map, prependIfNotNull, take } from '#utils/common';
@@ -7,17 +7,17 @@ import { serialize } from 'binarytf';
 
 export const maximumExportQueueSize = 100;
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['eq'],
-	cooldown: 10,
+	cooldownLimit: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
-	permissions: ['ATTACH_FILES'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['ATTACH_FILES'],
+	runIn: ['GUILD_ANY']
 })
-export class UserCommand extends MusicCommand {
-	@requireQueueNotEmpty()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserCommand extends AudioCommand {
+	@RequireQueueNotEmpty()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const { audio, name } = message.guild;
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));

@@ -9,11 +9,9 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pepelove'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

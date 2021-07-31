@@ -1,7 +1,8 @@
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { noop } from '@sapphire/utilities';
-import type { Client, Guild, TextChannel, User } from 'discord.js';
+import type { Guild, User } from 'discord.js';
+import type { GuildTextBasedChannelTypes } from './functions';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
@@ -14,11 +15,7 @@ export class LongLivingReactionCollector {
 	public constructor(listener: LongLivingReactionCollectorListener | null = null, endListener: (() => void) | null = null) {
 		this.listener = listener;
 		this.endListener = endListener;
-		this.client.llrCollectors.add(this);
-	}
-
-	public get client(): Client {
-		return Store.injectedContext.client;
+		container.client.llrCollectors.add(this);
 	}
 
 	public setListener(listener: LongLivingReactionCollectorListener | null) {
@@ -32,7 +29,7 @@ export class LongLivingReactionCollector {
 	}
 
 	public get ended(): boolean {
-		return !this.client.llrCollectors.has(this);
+		return !container.client.llrCollectors.has(this);
 	}
 
 	public send(reaction: LLRCData): void {
@@ -47,7 +44,7 @@ export class LongLivingReactionCollector {
 	}
 
 	public end() {
-		if (!this.client.llrCollectors.delete(this)) return this;
+		if (!container.client.llrCollectors.delete(this)) return this;
 
 		if (this._timer) {
 			clearTimeout(this._timer);
@@ -93,9 +90,9 @@ export interface LLRCDataEmoji {
 }
 
 export interface LLRCData {
-	channel: TextChannel;
+	channel: GuildTextBasedChannelTypes;
 	emoji: LLRCDataEmoji;
 	guild: Guild;
-	messageID: string;
-	userID: string;
+	messageId: string;
+	userId: string;
 }

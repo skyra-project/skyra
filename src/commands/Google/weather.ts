@@ -25,12 +25,11 @@ const kelvin = ['kelvin', 'k'];
 const imperialCountries = ['US', 'LR', 'MM'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 60,
+	cooldownDelay: 30,
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
-	permissions: ['ATTACH_FILES'],
-	strategyOptions: { flags: [...imperial, ...metric, ...kelvin] }
+	flags: [...imperial, ...metric, ...kelvin],
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

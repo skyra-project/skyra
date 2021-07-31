@@ -2,11 +2,11 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { NonNullObject, roundNumber } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -14,10 +14,9 @@ import { URL } from 'url';
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('CRYPTOCOMPARE_TOKEN'),
 	aliases: ['currency', 'money', 'exchange'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.PriceDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -25,12 +24,12 @@ export class UserCommand extends SkyraCommand {
 		const fromCurrency = await args.pick('string');
 		const toCurrencies = await args.repeat('string');
 
-		const { t } = args;
-		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+		await sendLoadingMessage(message, args.t);
 
 		const result = await this.fetchAPI(fromCurrency, toCurrencies);
 
-		return message.send(await this.buildEmbed(message, t, result, fromCurrency, amount));
+		const embed = await this.buildEmbed(message, args.t, result, fromCurrency, amount);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI(fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
@@ -62,7 +61,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(t(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}

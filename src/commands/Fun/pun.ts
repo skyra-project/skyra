@@ -6,7 +6,6 @@ import { MimeTypes } from '@sapphire/plugin-api';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.PunDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,
 	spam: true

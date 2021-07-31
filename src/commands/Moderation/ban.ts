@@ -11,9 +11,9 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.BanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.BanExtended,
 	optionalDuration: true,
-	requiredMember: false,
-	permissions: ['BAN_MEMBERS'],
-	strategyOptions: { options: ['d', 'day', 'days'] }
+	options: ['d', 'day', 'days'],
+	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
@@ -23,8 +23,8 @@ export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.ban(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				duration: context.duration,
 				imageURL: getImage(message),
 				reason: context.reason

@@ -1,10 +1,10 @@
 import { ModelStore } from '#lib/grpc';
-import { Store } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 
-Store.injectedContext.grpc = new ModelStore();
+container.grpc = new ModelStore();
 
 declare module '@sapphire/pieces' {
-	interface PieceContextExtras {
+	interface Container {
 		grpc: ModelStore;
 	}
 }

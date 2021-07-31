@@ -1,4 +1,4 @@
-import { MusicCommand, Queue, requireSameVoiceChannel, requireSongPresent } from '#lib/audio';
+import { AudioCommand, Queue, RequireSameVoiceChannel, RequireSongPresent } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
@@ -9,15 +9,15 @@ import type { TFunction } from 'i18next';
 
 const flags = ['force'];
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.SkipDescription,
 	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
-	strategyOptions: { flags }
+	flags
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireSongPresent()
-	@requireSameVoiceChannel()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	@RequireSongPresent()
+	@RequireSameVoiceChannel()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const { audio } = message.guild;
 		const { voiceChannel } = audio;
 
@@ -34,7 +34,7 @@ export class UserMusicCommand extends MusicCommand {
 
 		const track = await audio.getCurrentTrack();
 		await audio.next({ skipped: true });
-		this.context.client.emit(Events.MusicSongSkipNotify, message, track);
+		this.container.client.emit(Events.MusicSongSkipNotify, message, track);
 		return null;
 	}
 

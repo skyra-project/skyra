@@ -1,6 +1,3 @@
-import { Store } from '@sapphire/framework';
-
-const container = Store.injectedContext;
 export function setAccurateTimeout<T extends readonly any[]>(fn: (...args: T) => void, delay: number, ...args: T) {
 	const end = Date.now() + delay;
 	const context: AccurateTimeout<T> = {
@@ -26,7 +23,7 @@ export function setAccurateTimeout<T extends readonly any[]>(fn: (...args: T) =>
 }
 
 export function clearAccurateTimeout<T extends readonly any[]>(context: AccurateTimeout<T>) {
-	container.client.clearTimeout(context.timeout);
+	clearTimeout(context.timeout);
 }
 
 export interface AccurateTimeout<T extends readonly any[] = readonly any[]> {

@@ -117,7 +117,7 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, all
 	}
 }
 
-export function getFromID(name: string, tags: CustomCommand[]): CustomCommand | null {
+export function getFromId(name: string, tags: CustomCommand[]): CustomCommand | null {
 	for (const tag of tags) {
 		if (tag.id === name) return tag;
 		if (tag.aliases.includes(name)) return tag;

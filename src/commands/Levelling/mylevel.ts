@@ -5,19 +5,17 @@ import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 15,
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 
-		const { members } = this.context.db;
-		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
+		const { members } = this.container.db;
+		const memberSettings = await members.findOne({ where: { userId: user.id, guildId: message.guild.id } });
 		const memberPoints = memberSettings?.points ?? 0;
 		const roles = await readSettings(message.guild, GuildSettings.Roles.Auto);
 		const nextRole = this.getLatestRole(memberPoints, roles);

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { Events } from '#lib/types/Enums';
 import { map, reverse } from '#utils/common';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
-import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
+import type { Guild, VoiceChannel } from 'discord.js';
 import type { QueueStore } from './QueueStore';
 
 const kExpireTime = Time.Day * 2;
@@ -56,16 +57,16 @@ interface QueueKeys {
 export class Queue {
 	public readonly keys: QueueKeys;
 
-	public constructor(public readonly store: QueueStore, public readonly guildID: string) {
+	public constructor(public readonly store: QueueStore, public readonly guildId: string) {
 		this.keys = {
-			next: `skyra.a.${this.guildID}.n`,
-			position: `skyra.a.${this.guildID}.p`,
-			current: `skyra.a.${this.guildID}.c`,
-			skips: `skyra.a.${this.guildID}.s`,
-			systemPause: `skyra.a.${this.guildID}.sp`,
-			replay: `skyra.a.${this.guildID}.r`,
-			volume: `skyra.a.${this.guildID}.v`,
-			text: `skyra.a.${this.guildID}.t`
+			next: `skyra.a.${this.guildId}.n`,
+			position: `skyra.a.${this.guildId}.p`,
+			current: `skyra.a.${this.guildId}.c`,
+			skips: `skyra.a.${this.guildId}.s`,
+			systemPause: `skyra.a.${this.guildId}.sp`,
+			replay: `skyra.a.${this.guildId}.r`,
+			volume: `skyra.a.${this.guildId}.v`,
+			text: `skyra.a.${this.guildId}.t`
 		};
 	}
 
@@ -74,7 +75,7 @@ export class Queue {
 	}
 
 	public get player(): Player {
-		return this.store.client.players.get(this.guildID);
+		return this.store.client.players.get(this.guildId);
 	}
 
 	public get playing(): boolean {
@@ -86,15 +87,15 @@ export class Queue {
 	}
 
 	public get guild(): Guild {
-		return this.client.guilds.cache.get(this.guildID)!;
+		return this.client.guilds.cache.get(this.guildId)!;
 	}
 
 	public get voiceChannel(): VoiceChannel | null {
-		const id = this.voiceChannelID;
+		const id = this.voiceChannelId;
 		return id ? (this.guild.channels.cache.get(id) as VoiceChannel) ?? null : null;
 	}
 
-	public get voiceChannelID(): string | null {
+	public get voiceChannelId(): string | null {
 		return this.player.voiceState?.channel_id ?? null;
 	}
 
@@ -239,11 +240,11 @@ export class Queue {
 
 	/**
 	 * Connects to a voice channel.
-	 * @param channelID The [[VoiceChannel]] to connect to.
+	 * @param channelId The [[VoiceChannel]] to connect to.
 	 */
-	public async connect(channelID: string): Promise<void> {
-		await this.player.join(channelID, { deaf: true });
-		this.client.emit(Events.MusicConnect, this, channelID);
+	public async connect(channelId: string): Promise<void> {
+		await this.player.join(channelId, { deaf: true });
+		this.client.emit(Events.MusicConnect, this, channelId);
 	}
 
 	/**
@@ -251,49 +252,49 @@ export class Queue {
 	 */
 	public async leave(): Promise<void> {
 		await this.player.leave();
-		await this.setTextChannelID(null);
+		await this.setTextChannelId(null);
 		this.client.emit(Events.MusicLeave, this);
 	}
 
-	public async getTextChannel(): Promise<TextChannel | null> {
-		const id = await this.getTextChannelID();
+	public async getTextChannel(): Promise<GuildTextBasedChannelTypes | null> {
+		const id = await this.getTextChannelId();
 		if (id === null) return null;
 
 		const channel = this.guild.channels.cache.get(id) ?? null;
 		if (channel === null) {
-			await this.setTextChannelID(null);
+			await this.setTextChannelId(null);
 			return null;
 		}
 
-		return channel as TextChannel;
+		return channel as GuildTextBasedChannelTypes;
 	}
 
 	/**
 	 * Gets the text channel from cache.
 	 */
-	public getTextChannelID(): Promise<string | null> {
+	public getTextChannelId(): Promise<string | null> {
 		return this.store.redis.get(this.keys.text);
 	}
 
 	/**
 	 * Unsets the notifications channel.
 	 */
-	public setTextChannelID(channelID: null): Promise<null>;
+	public setTextChannelId(channelId: null): Promise<null>;
 
 	/**
 	 * Sets a text channel to send notifications to.
-	 * @param channelID The text channel to set.
+	 * @param channelId The text channel to set.
 	 */
-	public async setTextChannelID(channelID: string): Promise<string>;
-	public async setTextChannelID(channelID: string | null): Promise<string | null> {
-		if (channelID === null) {
+	public async setTextChannelId(channelId: string): Promise<string>;
+	public async setTextChannelId(channelId: string | null): Promise<string | null> {
+		if (channelId === null) {
 			await this.store.redis.del(this.keys.text);
 		} else {
-			await this.store.redis.set(this.keys.text, channelID);
+			await this.store.redis.set(this.keys.text, channelId);
 			await this.refresh();
 		}
 
-		return channelID;
+		return channelId;
 	}
 
 	/**

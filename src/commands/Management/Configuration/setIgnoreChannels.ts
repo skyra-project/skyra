@@ -3,17 +3,15 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, IArgument, Store } from '@sapphire/framework';
-import type { NewsChannel, TextChannel } from 'discord.js';
+import { Args, container, IArgument } from '@sapphire/framework';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -23,10 +21,10 @@ export class UserCommand extends SkyraCommand {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];
 			const oldLength = ignoredChannels.length;
 
-			const channelID = (channel as TextChannel).id;
-			const index = ignoredChannels.indexOf(channelID);
+			const channelId = channel.id;
+			const index = ignoredChannels.indexOf(channelId);
 			if (index === -1) {
-				ignoredChannels.push(channelID);
+				ignoredChannels.push(channelId);
 			} else {
 				ignoredChannels.splice(index, 1);
 			}
@@ -47,11 +45,8 @@ export class UserCommand extends SkyraCommand {
 		);
 	}
 
-	private static hereOrTextChannelResolver = Args.make<TextChannel | NewsChannel>((argument, context) => {
-		if (argument === 'here') return Args.ok(context.message.channel as TextChannel);
-		return (Store.injectedContext.stores.get('arguments').get('textOrNewsChannelName') as IArgument<TextChannel | NewsChannel>).run(
-			argument,
-			context
-		);
+	private static hereOrTextChannelResolver = Args.make<GuildTextBasedChannelTypes>((argument, context) => {
+		if (argument === 'here') return Args.ok(context.message.channel as GuildTextBasedChannelTypes);
+		return (container.stores.get('arguments').get('textOrNewsChannelName') as IArgument<GuildTextBasedChannelTypes>).run(argument, context);
 	});
 }

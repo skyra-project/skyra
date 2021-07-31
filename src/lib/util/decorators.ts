@@ -84,7 +84,7 @@ export const requiresLevel = (
 				case PermissionLevels.BotOwner:
 					return false;
 				case PermissionLevels.ServerOwner:
-					return message.author.id === message.guild.ownerID;
+					return message.author.id === message.guild.ownerId;
 				case PermissionLevels.Administrator:
 					return isAdmin(message.member);
 				case PermissionLevels.Moderator:

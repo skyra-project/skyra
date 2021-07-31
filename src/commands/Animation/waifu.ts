@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 /**
@@ -15,19 +16,18 @@ const kMaximum = 100000;
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animation.WaifuDescription,
 	extendedHelp: LanguageKeys.Commands.Animation.WaifuExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;
-		return message.send(
-			new MessageEmbed()
-				.setTitle('→')
-				.setURL(url)
-				.setColor(await this.context.db.fetchColor(message))
-				.setImage(getImageUrl(url) ?? 'https://i.imgur.com/vKUeMoH.png')
-				.setFooter(args.t(LanguageKeys.Commands.Animation.WaifuFooter))
-				.setTimestamp()
-		);
+		const embed = new MessageEmbed()
+			.setTitle('→')
+			.setURL(url)
+			.setColor(await this.container.db.fetchColor(message))
+			.setImage(getImageUrl(url) ?? 'https://i.imgur.com/vKUeMoH.png')
+			.setFooter(args.t(LanguageKeys.Commands.Animation.WaifuFooter))
+			.setTimestamp();
+		return send(message, { embeds: [embed] });
 	}
 }

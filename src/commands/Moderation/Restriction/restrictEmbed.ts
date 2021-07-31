@@ -12,7 +12,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Moderation.RestrictEmbedExtended,
 	optionalDuration: true,
 	requiredMember: true,
-	permissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: ['MANAGE_ROLES'],
 	roleKey: GuildSettings.Roles.RestrictedEmbed,
 	setUpKey: ModerationSetupRestriction.Embed
 })
@@ -20,8 +20,8 @@ export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
 		return message.guild.security.actions.restrictEmbed(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

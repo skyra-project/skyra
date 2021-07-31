@@ -6,12 +6,10 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.SetPrefixDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetPrefixExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	aliases: ['prefix']
 })
 export class UserCommand extends SkyraCommand {

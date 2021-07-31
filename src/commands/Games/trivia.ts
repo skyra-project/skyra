@@ -5,15 +5,14 @@ import { pickRandom, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
+import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
-	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -42,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
-			const collector = new MessageCollector(message.channel as TextChannel | DMChannel, filter, { time: duration });
+			const collector = new MessageCollector(message.channel, filter, { time: duration });
 
 			let winner: User | null = null;
 			// users who have already participated
@@ -66,7 +65,7 @@ export class UserCommand extends SkyraCommand {
 				});
 		} catch (error) {
 			this.#channels.delete(message.channel.id);
-			this.context.client.logger.fatal(error);
+			this.container.logger.fatal(error);
 			this.error(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}

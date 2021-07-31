@@ -14,10 +14,10 @@ const allFormat = ['format', 'formatted', 'all-format', 'all-formatted'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['source', 'msg-source', 'message-source'],
-	strategyOptions: { options: ['output', 'output-to'], flags: [...allPlain, ...allFormat] },
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.ContentDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ContentExtended
+	extendedHelp: LanguageKeys.Commands.Tools.ContentExtended,
+	flags: [...allPlain, ...allFormat],
+	options: ['output', 'output-to']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

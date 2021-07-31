@@ -1,4 +1,4 @@
-import { MusicCommand, QueueEntry } from '#lib/audio';
+import { AudioCommand, QueueEntry } from '#lib/audio';
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
@@ -11,14 +11,14 @@ import type { Track } from '@skyra/audio';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['iq'],
-	cooldown: 30,
+	cooldownDelay: 30,
 	description: LanguageKeys.Commands.Music.ImportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const url = message.attachments.first()?.url ?? (await args.pick('hyperlink')).href;
 		const raw = await this.fetchRawData(url);
 
@@ -30,7 +30,7 @@ export class UserMusicCommand extends MusicCommand {
 		const added = await audio.add(...tracks);
 		if (added === 0) this.error(LanguageKeys.MusicManager.TooManySongs);
 
-		this.context.client.emit(Events.MusicAddNotify, message, tracks);
+		this.container.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
 	private async fetchRawData(url: string) {

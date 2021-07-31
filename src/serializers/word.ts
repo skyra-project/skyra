@@ -27,7 +27,7 @@ export class UserSerializer extends Serializer<string> {
 		if (regExp === null) return false;
 
 		try {
-			const result = await this.context.workers.send({ type: IncomingType.RunRegExp, content, regExp });
+			const result = await this.container.workers.send({ type: IncomingType.RunRegExp, content, regExp });
 			return result.type === OutgoingType.RegExpMatch;
 		} catch {
 			return false;

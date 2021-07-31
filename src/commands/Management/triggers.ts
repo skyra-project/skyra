@@ -17,11 +17,10 @@ const enum Type {
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['trigger'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Management.TriggersDescription,
 	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -74,7 +73,7 @@ export class UserCommand extends SkyraCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 		});
 
 		for (const page of chunk(output, 10)) {

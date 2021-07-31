@@ -8,11 +8,9 @@ import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.HugDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.HugExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -25,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		const [hugged, hugger] = await Promise.all([fetchAvatar(user, 256), fetchAvatar(message.author, 256)]);
 

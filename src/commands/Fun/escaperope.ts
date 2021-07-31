@@ -7,8 +7,6 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['escape'],
-	bucket: 2,
-	cooldown: 60,
 	description: LanguageKeys.Commands.Fun.EscapeRopeDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
@@ -18,7 +16,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)
 				.setDescription(args.t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))
 				.setAuthor(

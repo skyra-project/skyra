@@ -7,22 +7,20 @@ import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.SocialDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
+	flags: ['all'],
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
-	subCommands: ['add', 'remove', 'set', 'reset'],
-	strategyOptions: { flags: ['all'] }
+	runIn: ['GUILD_ANY'],
+	subCommands: ['add', 'remove', 'set', 'reset']
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 1, maximum: 1000000 });
 
-		const { members } = this.context.db;
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
+		const { members } = this.container.db;
+		const settings = await members.findOne({ where: { userId: user.id, guildId: message.guild.id } });
 		if (settings) {
 			const newAmount = settings.points + amount;
 			settings.points = newAmount;
@@ -32,8 +30,8 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const created = new MemberEntity();
-		created.userID = user.id;
-		created.guildID = message.guild.id;
+		created.userId = user.id;
+		created.guildId = message.guild.id;
 		created.points = amount;
 		await members.insert(created);
 
@@ -44,8 +42,8 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 1, maximum: 100000000 });
 
-		const { members } = this.context.db;
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
+		const { members } = this.container.db;
+		const settings = await members.findOne({ where: { userId: user.id, guildId: message.guild.id } });
 		if (!settings) this.error(LanguageKeys.Commands.Social.SocialMemberNotExists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
@@ -59,8 +57,8 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const amount = await args.pick('integer', { minimum: 0, maximum: 1000000 });
 
-		const { members } = this.context.db;
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
+		const { members } = this.container.db;
+		const settings = await members.findOne({ where: { userId: user.id, guildId: message.guild.id } });
 		let oldValue = 0;
 		if (settings) {
 			oldValue = settings.points;
@@ -68,8 +66,8 @@ export class UserCommand extends SkyraCommand {
 			await settings.save();
 		} else {
 			const created = new MemberEntity();
-			created.userID = user.id;
-			created.guildID = message.guild.id;
+			created.userId = user.id;
+			created.guildId = message.guild.id;
 			created.points = amount;
 			await members.insert(created);
 		}
@@ -96,8 +94,8 @@ export class UserCommand extends SkyraCommand {
 		if (args.getFlags('all')) return this.resetAll(message, args);
 
 		const user = await args.pick('userName');
-		const { members } = this.context.db;
-		await members.delete({ userID: user.id, guildID: message.guild.id });
+		const { members } = this.container.db;
+		await members.delete({ userId: user.id, guildId: message.guild.id });
 		return message.send(args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username }));
 	}
 
@@ -106,12 +104,12 @@ export class UserCommand extends SkyraCommand {
 		if (confirmed === null) this.error(LanguageKeys.Commands.Social.SocialResetAllTimeOut);
 		if (!confirmed) this.error(LanguageKeys.Commands.Social.SocialResetAllAborted);
 
-		const { members } = this.context.db;
-		const result = await members.delete({ guildID: message.guild.id });
+		const { members } = this.container.db;
+		const result = await members.delete({ guildId: message.guild.id });
 		if (!result.affected) this.error(LanguageKeys.Commands.Social.SocialResetAllEmpty);
 
 		// Delete the local leaderboard entry since it's all set to 0 at this point.
-		this.context.client.leaderboard.local.delete(message.guild.id);
+		this.container.client.leaderboard.local.delete(message.guild.id);
 		return message.send(args.t(LanguageKeys.Commands.Social.SocialResetAllSuccess, { count: result.affected }));
 	}
 }

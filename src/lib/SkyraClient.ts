@@ -3,9 +3,9 @@ import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
-import { enumerable } from '@sapphire/decorators';
-import { SapphireClient, Store } from '@sapphire/framework';
-import type { I18nContext } from '@sapphire/plugin-i18next';
+import { Enumerable } from '@sapphire/decorators';
+import { container, SapphireClient } from '@sapphire/framework';
+import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { Message, Webhook } from 'discord.js';
 import Redis from 'ioredis';
 import { join } from 'path';
@@ -19,83 +19,83 @@ import type { LongLivingReactionCollector } from './util/LongLivingReactionColle
 import { Twitch } from './util/Notifications/Twitch';
 
 export class SkyraClient extends SapphireClient {
-	@enumerable(false)
+	@Enumerable(false)
 	public dev = process.env.NODE_ENV !== 'production';
 
 	/**
 	 * The loaded Leaderboard singleton instance
 	 */
-	@enumerable(false)
+	@Enumerable(false)
 	public leaderboard: Leaderboard = new Leaderboard(this);
 
 	/**
 	 * The Giveaway manager
 	 */
-	@enumerable(false)
-	public giveaways: GiveawayManager = new GiveawayManager(this);
+	@Enumerable(false)
+	public giveaways: GiveawayManager = new GiveawayManager();
 
 	/**
 	 * The Schedule manager
 	 */
-	@enumerable(false)
+	@Enumerable(false)
 	public schedules: ScheduleManager;
 
 	/**
 	 * The webhook to use for the error event
 	 */
-	@enumerable(false)
+	@Enumerable(false)
 	public webhookError: Webhook | null = WEBHOOK_ERROR ? new Webhook(this, WEBHOOK_ERROR) : null;
 
 	/**
 	 * The invite store
 	 */
-	@enumerable(false)
+	@Enumerable(false)
 	public invites: InviteStore = new InviteStore();
 
-	@enumerable(false)
+	@Enumerable(false)
 	public readonly audio: QueueClient | null;
 
-	@enumerable(false)
+	@Enumerable(false)
 	public readonly analytics: AnalyticsData | null;
 
-	@enumerable(false)
+	@Enumerable(false)
 	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue();
 
-	@enumerable(false)
+	@Enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
-	@enumerable(false)
+	@Enumerable(false)
 	public twitch: Twitch = new Twitch();
 
-	@enumerable(false)
+	@Enumerable(false)
 	public websocket = new WebsocketHandler();
 
 	public constructor() {
 		super(CLIENT_OPTIONS);
 
 		// Workers
-		this.context.workers = new WorkerManager();
+		container.workers = new WorkerManager();
 
-		this.context.settings = new SettingsManager(this);
+		container.settings = new SettingsManager(this);
 
 		// Analytics
 		this.schedules = new ScheduleManager();
-		this.context.schedule = this.schedules;
+		container.schedule = this.schedules;
 
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 
 		if (envParseBoolean('AUDIO_ENABLED')) {
-			this.audio = new QueueClient(this.options.audio!, (guildID, packet) => {
-				const guild = this.guilds.cache.get(guildID);
+			this.audio = new QueueClient(this.options.audio!, (guildId, packet) => {
+				const guild = this.guilds.cache.get(guildId);
 				return Promise.resolve(guild?.shard.send(packet));
 			});
-			this.stores.registerUserDirectories(join(__dirname, '..', 'audio'));
+			this.stores.registerPath(join(__dirname, '..', 'audio'));
 		} else {
 			this.audio = null;
 		}
 
 		if (envIsDefined('REDIS_AFK_DB') && envParseBoolean('REDIS_ENABLED')) {
-			Store.injectedContext.afk = new Redis({
+			container.afk = new Redis({
 				host: envParseString('REDIS_HOST'),
 				port: envParseInteger('REDIS_PORT'),
 				db: envParseInteger('REDIS_AFK_DB'),
@@ -105,19 +105,15 @@ export class SkyraClient extends SapphireClient {
 		}
 	}
 
-	public get context() {
-		return Store.injectedContext;
-	}
-
 	public async login(token?: string) {
-		await this.context.workers.start();
+		await container.workers.start();
 		const loginResponse = await super.login(token);
 		await this.schedules.init();
 		return loginResponse;
 	}
 
 	public async destroy() {
-		await this.context.workers.destroy();
+		await container.workers.destroy();
 		this.guildMemberFetchQueue.destroy();
 		this.invites.destroy();
 		this.schedules.destroy();
@@ -138,7 +134,7 @@ export class SkyraClient extends SapphireClient {
 	 * Retrieves the language key for the message.
 	 * @param message The message that gives context.
 	 */
-	public fetchLanguage = (message: I18nContext) => {
+	public fetchLanguage = (message: InternationalizationContext) => {
 		return message.guild ? readSettings(message.guild, GuildSettings.Language) : 'en-US';
 	};
 }

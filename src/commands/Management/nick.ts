@@ -7,12 +7,12 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['nickname'],
-	cooldown: 30,
+	cooldownDelay: 30,
 	description: LanguageKeys.Commands.Management.NickDescription,
 	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['CHANGE_NICKNAME'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['CHANGE_NICKNAME'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

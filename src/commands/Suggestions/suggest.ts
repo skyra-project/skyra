@@ -6,25 +6,25 @@ import { BrandingColors } from '#utils/constants';
 import { canSendMessages, isAdmin } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const [suggestionsChannelID, upVoteEmoji, downVoteEmoji] = await readSettings(message.guild, [
+		const [suggestionsChannelId, upVoteEmoji, downVoteEmoji] = await readSettings(message.guild, [
 			GuildSettings.Suggestions.Channel,
 			GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji,
 			GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji
 		]);
 
-		const suggestionsChannel = this.context.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
+		const suggestionsChannel = this.container.client.channels.cache.get(suggestionsChannelId ?? '') as TextChannel | undefined;
 		if (!suggestionsChannel) {
 			this.error(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
 		}
@@ -36,32 +36,33 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		const { author, content, image } = await this.resolveArguments(args);
-		const [suggestions, currentSuggestionId] = await this.getCurrentSuggestionID(message.guild.id);
+		const { author, suggestionContent, image } = await this.resolveArguments(args);
+		const [suggestions, currentSuggestionId] = await this.getCurrentSuggestionId(message.guild.id);
 
 		// Post the suggestion
 		const embed = new MessageEmbed()
 			.setColor(BrandingColors.Primary)
 			.setAuthor(`${author.tag} (${author.id})`, author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }))
 			.setTitle(args.t(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
-			.setDescription(content);
+			.setDescription(suggestionContent);
 		if (image !== null) embed.setImage(image);
 
-		const suggestionsMessage = (await (suggestionsChannel as TextChannel).send(embed)) as GuildMessage;
+		const suggestionsMessage = (await suggestionsChannel.send({ embeds: [embed] })) as GuildMessage;
 
 		// Commit the suggestion to the DB
 		await suggestions.insert({
 			id: currentSuggestionId + 1,
-			authorID: author.id,
-			guildID: message.guild.id,
-			messageID: suggestionsMessage.id
+			authorId: author.id,
+			guildId: message.guild.id,
+			messageId: suggestionsMessage.id
 		});
 
 		// Add the up-vote/down-vote reactions
 		await this.react(suggestionsMessage, upVoteEmoji, GuildSettings.Suggestions.VotingEmojis.UpVoteEmoji);
 		await this.react(suggestionsMessage, downVoteEmoji, GuildSettings.Suggestions.VotingEmojis.DownVoteEmoji);
 
-		return message.send(args.t(LanguageKeys.Commands.Suggestions.SuggestSuccess, { channel: suggestionsChannel.toString() }));
+		const content = args.t(LanguageKeys.Commands.Suggestions.SuggestSuccess, { channel: suggestionsChannel.toString() });
+		return send(message, content);
 	}
 
 	private async react(message: GuildMessage, emoji: string, path: keyof GuildEntity) {
@@ -90,7 +91,7 @@ export class UserCommand extends SkyraCommand {
 		// Administrator fallback, try message, then fallback to rest string if it fails:
 		try {
 			const message = await args.pick('message');
-			return { author: message.author, content: message.content, image: getImage(message) };
+			return { author: message.author, suggestionContent: message.content, image: getImage(message) };
 		} catch {
 			return this.resolveStringContent(args);
 		}
@@ -98,11 +99,11 @@ export class UserCommand extends SkyraCommand {
 
 	private async resolveStringContent(args: SkyraCommand.Args): Promise<ResolvedArguments> {
 		const suggestion = await args.rest('string');
-		return { author: args.message.author, content: suggestion, image: getImage(args.message) };
+		return { author: args.message.author, suggestionContent: suggestion, image: getImage(args.message) };
 	}
 
-	private async getCurrentSuggestionID(guildID: string) {
-		const { suggestions } = this.context.db;
+	private async getCurrentSuggestionId(guildId: string) {
+		const { suggestions } = this.container.db;
 
 		// Retrieve the ID for the latest suggestion
 		const [{ max }] = (await suggestions.query(
@@ -111,7 +112,7 @@ export class UserCommand extends SkyraCommand {
 			FROM "${suggestions.metadata.tableName}"
 			WHERE guild_id = $1;
 		`,
-			[guildID]
+			[guildId]
 		)) as [MaxQuery];
 
 		return [suggestions, max ?? 0] as const;
@@ -124,6 +125,6 @@ interface MaxQuery {
 
 interface ResolvedArguments {
 	author: User;
-	content: string;
+	suggestionContent: string;
 	image: string | null;
 }

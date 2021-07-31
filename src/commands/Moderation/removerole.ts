@@ -9,13 +9,12 @@ import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['rro'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.RemoveRoleDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
-	requiredMember: true,
 	optionalDuration: true,
-	permissions: ['MANAGE_ROLES'],
-	permissionLevel: PermissionLevels.Administrator
+	permissionLevel: PermissionLevels.Administrator,
+	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
 	protected async resolveOverloads(args: ModerationCommand.Args) {
@@ -30,8 +29,8 @@ export class UserModerationCommand extends ModerationCommand {
 	protected async handle(message: GuildMessage, context: HandledCommandContext & { role: Role }) {
 		return message.guild.security.actions.removeRole(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

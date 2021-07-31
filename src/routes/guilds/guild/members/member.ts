@@ -8,17 +8,17 @@ export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildID = request.params.guild;
+		const guildId = request.params.guild;
 
-		const guild = this.context.client.guilds.cache.get(guildID);
+		const guild = this.container.client.guilds.cache.get(guildId);
 		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const memberAuthor = await guild.members.fetch(request.auth!.id).catch(() => null);
 		if (!memberAuthor) return response.error(HttpCodes.BadRequest);
 		if (!(await canManage(guild, memberAuthor))) return response.error(HttpCodes.Forbidden);
 
-		const memberID = request.params.member;
-		const member = await guild.members.fetch(memberID).catch(() => null);
+		const memberId = request.params.member;
+		const member = await guild.members.fetch(memberId).catch(() => null);
 		return member ? response.json(flattenMember(member)) : response.error(HttpCodes.NotFound);
 	}
 }

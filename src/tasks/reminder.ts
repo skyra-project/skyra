@@ -1,14 +1,14 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { resolveOnErrorCodes } from '#utils/common';
 import { Timestamp } from '@sapphire/time-utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 
 export class UserTask extends Task {
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
 		// Fetch the user to send the message to
-		const user = await resolveOnErrorCodes(this.context.client.users.fetch(data.user), RESTJSONErrorCodes.UnknownUser);
+		const user = await resolveOnErrorCodes(this.container.client.users.fetch(data.user), RESTJSONErrorCodes.UnknownUser);
 
 		if (user) {
 			await resolveOnErrorCodes(

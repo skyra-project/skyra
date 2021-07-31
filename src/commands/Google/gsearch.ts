@@ -9,7 +9,6 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Google.GsearchDescription,
 	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended
 })
@@ -31,7 +30,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, items: GoogleCSEItem[]) {
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const item of items) {
 			display.addPageEmbed((embed) => {

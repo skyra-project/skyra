@@ -9,17 +9,15 @@ import { Time } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
+const flags = ['remind', 'reminder', 'remindme'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rep'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
-	runIn: ['text', 'news'],
-	spam: true,
-	strategyOptions: { flags: REMINDER_FLAGS }
+	flags,
+	runIn: ['GUILD_ANY'],
+	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -45,8 +43,8 @@ export class UserCommand extends SkyraCommand {
 			await em.save([settings.target!, settings.author]);
 		});
 
-		if (args.getFlags(...REMINDER_FLAGS)) {
-			await this.context.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
+		if (args.getFlags(...flags)) {
+			await this.container.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
 				data: {
 					content: args.t(LanguageKeys.Commands.Social.ReputationAvailable),
 					user: message.author.id
@@ -72,12 +70,12 @@ export class UserCommand extends SkyraCommand {
 		return t(LanguageKeys.Commands.Social.ReputationsSelf, { points: settings.author.reputations });
 	}
 
-	private async downloadSettings(authorID: string, targetID: string | null): Promise<Settings> {
-		const { users } = this.context.db;
+	private async downloadSettings(authorId: string, targetId: string | null): Promise<Settings> {
+		const { users } = this.container.db;
 		return {
 			users,
-			author: await users.ensureProfileAndCooldowns(authorID),
-			target: targetID && targetID !== authorID ? await users.ensureProfile(targetID) : null
+			author: await users.ensureProfileAndCooldowns(authorId),
+			target: targetId && targetId !== authorId ? await users.ensureProfile(targetId) : null
 		};
 	}
 

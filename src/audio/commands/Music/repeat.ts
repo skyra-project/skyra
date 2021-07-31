@@ -1,19 +1,19 @@
-import { MusicCommand, requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '#lib/audio';
+import { AudioCommand, RequireMusicPlaying, RequireSameVoiceChannel, RequireSkyraInVoiceChannel, RequireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['replay', 'loop', 'loopsong'],
 	description: LanguageKeys.Commands.Music.RepeatDescription,
 	extendedHelp: LanguageKeys.Commands.Music.RepeatExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireUserInVoiceChannel()
-	@requireSkyraInVoiceChannel()
-	@requireSameVoiceChannel()
-	@requireMusicPlaying()
+export class UserMusicCommand extends AudioCommand {
+	@RequireUserInVoiceChannel()
+	@RequireSkyraInVoiceChannel()
+	@RequireSameVoiceChannel()
+	@RequireMusicPlaying()
 	public async run(message: GuildMessage) {
 		const { audio } = message.guild;
 
@@ -21,6 +21,6 @@ export class UserMusicCommand extends MusicCommand {
 		const current = await message.guild.audio.getReplay();
 		await audio.setReplay(!current);
 
-		this.context.client.emit(Events.MusicReplayUpdateNotify, message, !current);
+		this.container.client.emit(Events.MusicReplayUpdateNotify, message, !current);
 	}
 }

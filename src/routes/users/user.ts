@@ -8,7 +8,7 @@ export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const { client } = this.context;
+		const { client } = this.container;
 		const user = await client.users.fetch(request.auth!.id).catch(() => null);
 		if (user === null) return response.error(HttpCodes.InternalServerError);
 

@@ -13,11 +13,9 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lvl', 'rank'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -33,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {
-		const { members, users } = this.context.db;
+		const { members, users } = this.container.db;
 		const settings = await users.ensureProfile(user.id);
 		const { level, points } = scope === Scope.Local && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 

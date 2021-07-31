@@ -9,11 +9,9 @@ import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.SlapDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SlapExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -59,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 	private resolve(message: Message, possibleTarget: User) {
 		const targetSelf = possibleTarget.id === message.author.id;
 		if (targetSelf) {
-			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.context.client.user! };
+			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.container.client.user! };
 			this.error(LanguageKeys.Commands.Misc.CannotTargetOwner);
 		}
 

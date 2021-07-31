@@ -24,6 +24,6 @@ export interface DateWithOptionalYear {
 export type BirthdayScheduleEntity = ScheduleEntity & { data: TaskBirthdayData };
 
 export interface TaskBirthdayData extends DateWithOptionalYear, Record<string, unknown> {
-	userID: string;
-	guildID: string;
+	userId: string;
+	guildId: string;
 }

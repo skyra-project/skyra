@@ -5,10 +5,9 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.XkcdDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.XkcdExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -22,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setImage(comic.img)
 				.setTitle(comic.title)
 				.setURL(`https://xkcd.com/${comicNumber}/`)

@@ -8,15 +8,15 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['vk'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
-	requiredMember: true,
-	permissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
+	requiredClientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.voiceKick(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
@@ -26,7 +26,7 @@ export class UserModerationCommand extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.channelID) throw context.args.t(LanguageKeys.Commands.Moderation.GuildMemberNotVoicechannel);
+		if (member && !member.voice.channelId) throw context.args.t(LanguageKeys.Commands.Moderation.GuildMemberNotVoicechannel);
 		return member;
 	}
 }

@@ -1,4 +1,4 @@
-import { MusicCommand, requireMusicPlaying } from '#lib/audio';
+import { AudioCommand, RequireMusicPlaying } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
@@ -7,17 +7,17 @@ import type { TrackInfo } from '@skyra/audio';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
 	permissions: ['EMBED_LINKS']
 })
-export class UserMusicCommand extends MusicCommand {
+export class UserMusicCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
-	@requireMusicPlaying()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+	@RequireMusicPlaying()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const { audio } = message.guild;
 
 		const entry = await audio.getCurrentTrack();

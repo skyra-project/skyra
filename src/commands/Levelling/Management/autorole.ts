@@ -11,12 +11,11 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['autoroles', 'levelrole', 'lvlrole'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.AutoRoleDescription,
 	extendedHelp: LanguageKeys.Commands.Social.AutoRoleExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: ['MANAGE_ROLES'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['MANAGE_ROLES'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'update', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -1,6 +1,6 @@
 import { envParseInteger } from '#lib/env';
 import Collection from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { ApiRequest, CookieStore } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
 import WebSocket, { Server } from 'ws';
@@ -19,12 +19,12 @@ export class WebsocketHandler {
 
 	private handleConnection(ws: WebSocket, request: ApiRequest) {
 		// Read SKYRA_AUTH cookie
-		const cookies = new CookieStore(request, null!, process.env.NODE_ENV === 'production', Store.injectedContext.server.auth?.domainOverwrite);
+		const cookies = new CookieStore(request, null!, process.env.NODE_ENV === 'production', container.server.auth?.domainOverwrite);
 		const auth = cookies.get('SKYRA_AUTH');
 		if (!auth) return ws.close(CloseCodes.Unauthorized);
 
 		// Decrypt and validate
-		const authData = Store.injectedContext.server.auth!.decrypt(auth);
+		const authData = container.server.auth!.decrypt(auth);
 		if (!isObject(authData) || !authData.id || !authData.token) return ws.close(CloseCodes.Unauthorized);
 
 		// Retrieve the user ID

@@ -9,11 +9,9 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['heal', 'healing'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.INeedHealingDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.INeedHealingExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -26,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		const [healer, healed] = await Promise.all([fetchAvatar(message.author, 128), fetchAvatar(user, 128)]);
 

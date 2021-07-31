@@ -8,16 +8,15 @@ import { Time } from '@sapphire/time-utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.PopDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PopExtended,
-	strategyOptions: { options: ['x', 'width', 'y', 'height', 'l', 'length'] }
+	options: ['x', 'width', 'y', 'height', 'l', 'length']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 	private get integer(): Argument<number> {
-		return this.context.stores.get('arguments').get('integer') as Argument<number>;
+		return this.container.stores.get('arguments').get('integer') as Argument<number>;
 	}
 
 	public async run(message: Message, args: SkyraCommand.Args) {

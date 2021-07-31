@@ -1,3 +1,4 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/skyra-project/wardrobe.git
+	branch = main

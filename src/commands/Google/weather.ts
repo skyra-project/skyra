@@ -12,8 +12,10 @@ import {
 	ResolvedConditions,
 	ValueWrapper
 } from '#lib/weather';
+import { seconds } from '#utils/common';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 
@@ -25,12 +27,11 @@ const kelvin = ['kelvin', 'k'];
 const imperialCountries = ['US', 'LR', 'MM'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 60,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
-	permissions: ['ATTACH_FILES'],
-	strategyOptions: { flags: [...imperial, ...metric, ...kelvin] }
+	flags: [...imperial, ...metric, ...kelvin],
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -49,7 +50,7 @@ export class UserCommand extends SkyraCommand {
 		const weatherDescription = this.getWeatherDescription(current, base);
 
 		const attachment = await this.draw(weatherDescription, place, current, resolved);
-		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
+		return send(message, { files: [{ attachment, name: 'weather.png' }] });
 	}
 
 	private shouldUseImperial(args: SkyraCommand.Args) {

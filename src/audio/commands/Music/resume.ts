@@ -1,20 +1,21 @@
-import { MusicCommand, requireMusicPaused, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '#lib/audio';
+import { AudioCommand, RequireMusicPaused, RequireSameVoiceChannel, RequireSkyraInVoiceChannel, RequireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.ResumeDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ResumeExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireUserInVoiceChannel()
-	@requireSkyraInVoiceChannel()
-	@requireSameVoiceChannel()
-	@requireMusicPaused()
+export class UserMusicCommand extends AudioCommand {
+	@RequireUserInVoiceChannel()
+	@RequireSkyraInVoiceChannel()
+	@RequireSameVoiceChannel()
+	@RequireMusicPaused()
 	public async run(message: GuildMessage) {
-		await message.guild.audio.resume();
-		this.context.client.emit(Events.MusicSongResumeNotify, message);
+		await getAudio(message.guild).resume();
+		this.container.client.emit(Events.MusicSongResumeNotify, message);
 	}
 }

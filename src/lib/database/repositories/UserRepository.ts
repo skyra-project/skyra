@@ -4,7 +4,7 @@ import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegr
 import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
 import Collection from '@discordjs/collection';
 import { AsyncQueue } from '@sapphire/async-queue';
-import { Store } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import type { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
@@ -56,7 +56,7 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async fetchIntegration<T>(gameName: string, user: User): Promise<UserGameIntegrationEntity<T>> {
-		const { userGameIntegrations } = Store.injectedContext.db;
+		const { userGameIntegrations } = container.db;
 		let gameIntegration = (await userGameIntegrations.findOne({
 			where: {
 				user: {

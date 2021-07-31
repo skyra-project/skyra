@@ -3,6 +3,7 @@ import { PaginatedMessageCommand, SkyraLazyPaginatedMessage } from '#lib/structu
 import type { GuildMessage } from '#lib/types';
 import { skip, take } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -12,16 +13,14 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['lb', 'top', 'scoreboard', 'sb'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	spam: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		const list = await this.context.client.leaderboard.fetch(message.guild.id);
+		const list = await this.container.client.leaderboard.fetch(message.guild.id);
 		if (list.size === 0) this.error(LanguageKeys.Commands.Social.LeaderboardNoEntries);
 
 		const index = args.finished ? 1 : await args.pick('integer', { minimum: 1, maximum: Math.ceil(list.size / 10) });
@@ -40,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const footerIcon = args.message.author.displayAvatarURL({ format: 'png', size: 64, dynamic: true });
 		const display = new SkyraLazyPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(args.message))
+				.setColor(await this.container.db.fetchColor(args.message))
 				.setTitle(args.t(LanguageKeys.Commands.Social.LeaderboardHeader, { guild: args.message.guild!.name }))
 				.setFooter(` - ${footerText}`, footerIcon)
 				.setTimestamp()
@@ -62,10 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const [id, value] of take(skip(list.entries(), index * 10), 10)) {
 			const displayName = members.get(id)?.displayName;
 			const name = displayName ? `**${displayName}**` : args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
-			lines.push(
-				`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`,
-				`${LongWidthSpace}└─ ${args.t(LanguageKeys.Globals.NumberValue, { value: value.points })}`
-			);
+			lines.push(`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`, `${LongWidthSpace}└─ ${formatNumber(args.t, value.points)}`);
 		}
 
 		return new MessageEmbed().setDescription(lines.join('\n'));

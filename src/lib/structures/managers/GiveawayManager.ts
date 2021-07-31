@@ -1,22 +1,16 @@
-import { GiveawayEntity, GiveawayEntityData } from '#lib/database';
-import { Store } from '@sapphire/framework';
-import type { Client } from 'discord.js';
+import { GiveawayEntity, GiveawayEntityData } from '#lib/database/entities';
+import { container } from '@sapphire/framework';
 
 export class GiveawayManager {
-	public readonly client: Client;
 	public readonly queue: GiveawayEntity[] = [];
 	private interval: NodeJS.Timer | null = null;
 
-	public constructor(client: Client) {
-		this.client = client;
-	}
-
 	public async init() {
-		const { giveaways } = Store.injectedContext.db;
+		const { giveaways } = container.db;
 		const qb = giveaways.createQueryBuilder().select();
-		if (this.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...this.client.guilds.cache.keys()] });
+		if (container.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...container.client.guilds.cache.keys()] });
 
-		for (const entry of await qb.getMany()) this.insert(entry.setup(this).resume());
+		for (const entry of await qb.getMany()) this.insert(entry.resume());
 		this.check();
 	}
 
@@ -37,13 +31,13 @@ export class GiveawayManager {
 	}
 
 	public add(data: PartialGiveawayData) {
-		const giveaway = new GiveawayEntity(data).setup(this);
+		const giveaway = new GiveawayEntity(data);
 		this.insert(giveaway);
 		return giveaway;
 	}
 
 	public async create(data: GiveawayCreateData) {
-		const giveaway = new GiveawayEntity({ ...data, messageID: null }).setup(this);
+		const giveaway = new GiveawayEntity({ ...data, messageId: null });
 		await giveaway.insert();
 		this.insert(giveaway);
 		this.check();
@@ -58,7 +52,7 @@ export class GiveawayManager {
 			if (giveaway.finished) await giveaway.remove();
 			else this.insert(giveaway);
 		} catch (error) {
-			this.client.logger.fatal(error);
+			container.logger.fatal(error);
 		}
 	}
 
@@ -80,5 +74,5 @@ export class GiveawayManager {
 	}
 }
 
-export type GiveawayCreateData = Omit<GiveawayEntityData, 'messageID'>;
-export type PartialGiveawayData = GiveawayCreateData & { messageID: string | null };
+export type GiveawayCreateData = Omit<GiveawayEntityData, 'messageId'>;
+export type PartialGiveawayData = GiveawayCreateData & { messageId: string | null };

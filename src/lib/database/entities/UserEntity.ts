@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Events } from '#lib/types/Enums';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import {
 	AfterInsert,
 	AfterLoad,
@@ -65,10 +65,6 @@ export class UserEntity extends BaseEntity {
 		return Math.floor(0.2 * Math.sqrt(this.points));
 	}
 
-	private get client() {
-		return Store.injectedContext.client;
-	}
-
 	@AfterLoad()
 	protected entityLoad() {
 		this.#money = this.money;
@@ -78,7 +74,7 @@ export class UserEntity extends BaseEntity {
 	@AfterUpdate()
 	protected entityUpdate() {
 		if (this.#money !== null && this.money !== this.#money) {
-			this.client.emit(Events.MoneyTransaction, this, this.money - this.#money, this.#money);
+			container.client.emit(Events.MoneyTransaction, this, this.money - this.#money, this.#money);
 			this.#money = this.money;
 		}
 	}

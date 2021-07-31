@@ -1,28 +1,28 @@
-import { MusicCommand, QueueEntry } from '#lib/audio';
+import { AudioCommand, QueueEntry } from '#lib/audio';
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { empty, filter, map, take } from '#utils/common';
-import { isDJ } from '#utils/functions';
+import { empty, filter, map, seconds, take } from '#utils/common';
+import { getAudio, isDJ } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import type { Track } from '@skyra/audio';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['iq'],
-	cooldown: 30,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Music.ImportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const url = message.attachments.first()?.url ?? (await args.pick('hyperlink')).href;
 		const raw = await this.fetchRawData(url);
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const decodedTracks = await audio.player.node.decode(raw);
 		const tracks = [...(await this.process(message, 100, decodedTracks))];
 
@@ -30,7 +30,7 @@ export class UserMusicCommand extends MusicCommand {
 		const added = await audio.add(...tracks);
 		if (added === 0) this.error(LanguageKeys.MusicManager.TooManySongs);
 
-		this.context.client.emit(Events.MusicAddNotify, message, tracks);
+		this.container.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
 	private async fetchRawData(url: string) {

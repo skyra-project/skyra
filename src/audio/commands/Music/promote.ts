@@ -1,32 +1,34 @@
 import {
-	MusicCommand,
-	requireDj,
-	requireQueueNotEmpty,
-	requireSameVoiceChannel,
-	requireSkyraInVoiceChannel,
-	requireUserInVoiceChannel
+	AudioCommand,
+	RequireDj,
+	RequireQueueNotEmpty,
+	RequireSameVoiceChannel,
+	RequireSkyraInVoiceChannel,
+	RequireUserInVoiceChannel
 } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.PromoteDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireDj()
-	@requireQueueNotEmpty()
-	@requireUserInVoiceChannel()
-	@requireSkyraInVoiceChannel()
-	@requireSameVoiceChannel()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	@RequireDj()
+	@RequireQueueNotEmpty()
+	@RequireUserInVoiceChannel()
+	@RequireSkyraInVoiceChannel()
+	@RequireSameVoiceChannel()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		let index = await args.pick('integer', { minimum: 1 });
 
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const length = await audio.count();
 		if (index >= length) {
 			this.error(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
@@ -38,6 +40,8 @@ export class UserMusicCommand extends MusicCommand {
 		const track = await audio.player.node.decode(entry!.track);
 
 		await audio.moveTracks(index, 0);
-		await message.send(args.t(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
+
+		const content = args.t(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri });
+		await send(message, content);
 	}
 }

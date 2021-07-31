@@ -16,7 +16,6 @@ const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/nc
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('NINTENDO_ID', 'NINTENDO_TOKEN'),
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EshopDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended
 })
@@ -62,7 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: EShopHit[]) {
 		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);

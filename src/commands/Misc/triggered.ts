@@ -1,13 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { streamToBuffer } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { GifEncoder } from '@skyra/gifenc';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
+import { buffer } from 'stream/consumers';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -17,11 +18,9 @@ const COORDINATES: readonly [number, number][] = [
 ];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -30,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName').catch(() => message.author);
 		const attachment = await this.generate(user);
-		return message.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
+		return send(message, { files: [{ attachment, name: 'triggered.gif' }] });
 	}
 
 	public async generate(user: User) {
@@ -55,7 +54,7 @@ export class UserCommand extends SkyraCommand {
 
 		encoder.finish();
 
-		return streamToBuffer(stream);
+		return buffer(stream);
 	}
 
 	public async onLoad() {

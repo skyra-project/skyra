@@ -6,28 +6,28 @@ import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Developers.YarnDescription,
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		const pkg = encodeURIComponent((await args.rest('cleanString')).replaceAll(' ', '-').toLowerCase());
 		const { t } = args;
-		const response = await sendLoadingMessage(message, t);
+		await sendLoadingMessage(message, t);
 
 		const result = await this.fetchApi(pkg);
 
 		if (result.time && Reflect.has(result.time, 'unpublished')) this.error(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
 
-		const dataEmbed = await this.buildEmbed(result, message, t, context);
-		return response.edit(undefined, dataEmbed);
+		const embed = await this.buildEmbed(result, message, t, context);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchApi(pkg: string) {
@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 					: `https://www.npmjs.com/package/${result.name}`
 			)
 			.setThumbnail(CdnUrls.NodeJSLogo)
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(
 				cutText(
 					[

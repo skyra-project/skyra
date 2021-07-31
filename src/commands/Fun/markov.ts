@@ -6,26 +6,26 @@ import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
+import { GuildTextBasedChannelTypes, isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
-import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
+import { send } from '@skyra/editable-commands';
+import { Message, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
-	runIn: ['text', 'news'],
-	permissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;
-	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
-	private readonly kInternalMessageCache = new WeakMap<TextChannel, Collection<string, Message>>();
+	private readonly kInternalCache = new WeakMap<GuildTextBasedChannelTypes, Markov>();
+	private readonly kInternalMessageCache = new WeakMap<GuildTextBasedChannelTypes, Collection<string, Message>>();
 	private readonly kInternalMessageCacheTTL = 120000;
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
@@ -33,26 +33,27 @@ export class UserCommand extends SkyraCommand {
 	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
-		if (channel.nsfw && !message.channel.nsfw) {
+		const channel = await args.pick('textChannelName').catch(() => message.channel as GuildTextBasedChannelTypes);
+		if (isNsfwChannel(channel) && !isNsfwChannel(message.channel)) {
 			return this.error(LanguageKeys.Commands.Fun.MarkovNsfwChannel, { channel: channel.toString() });
 		}
 		const username = args.finished ? undefined : await args.pick('userName');
 
 		// Send loading message
-		const response = await sendLoadingMessage(message, args.t);
+		await sendLoadingMessage(message, args.t);
 
 		// Process the chain
-		return response.edit(await this.kProcess(message, args.t, await this.retrieveMarkov(username, channel)));
+		const embed = await this.kProcess(message, args.t, await this.retrieveMarkov(username, channel));
+		return send(message, { embeds: [embed] });
 	}
 
 	public async onLoad() {
 		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
-		this.kProcess = this.context.client.dev ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
+		this.kProcess = this.container.client.dev ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 
 	private async processRelease(message: GuildMessage, _: TFunction, markov: Markov) {
-		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await this.context.db.fetchColor(message));
+		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await this.container.db.fetchColor(message));
 	}
 
 	private async processDevelopment(message: GuildMessage, t: TFunction, markov: Markov) {
@@ -62,11 +63,11 @@ export class UserCommand extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setFooter(t(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
-	private async retrieveMarkov(user: User | undefined, channel: TextChannel) {
+	private async retrieveMarkov(user: User | undefined, channel: GuildTextBasedChannelTypes) {
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
@@ -84,7 +85,7 @@ export class UserCommand extends SkyraCommand {
 		return markov;
 	}
 
-	private async fetchMessages(channel: TextChannel, user: User | undefined) {
+	private async fetchMessages(channel: GuildTextBasedChannelTypes, user: User | undefined) {
 		let messageBank: Collection<string, Message>;
 
 		// Check the cache first to speed up and reduce API queries

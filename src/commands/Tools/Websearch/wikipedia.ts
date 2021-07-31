@@ -3,16 +3,16 @@ import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wiki'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -35,7 +35,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setTitle(pageInformation.title)
 			.setURL(pageUrl)
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
 			.setFooter('© Wikipedia');
@@ -51,7 +51,7 @@ export class UserCommand extends SkyraCommand {
 			embed.setImage(imageUrl);
 		}
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchText(input: string) {

@@ -6,20 +6,19 @@ import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
+const flags = ['remind', 'reminder', 'remindme'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rep'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
-	runIn: ['text', 'news'],
-	spam: true,
-	strategyOptions: { flags: REMINDER_FLAGS }
+	flags,
+	runIn: ['GUILD_ANY'],
+	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -33,10 +32,14 @@ export class UserCommand extends SkyraCommand {
 		const now = date.getTime();
 		const timeReputation = settings.author.cooldowns.reputation?.getTime();
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.send(args.t(LanguageKeys.Commands.Social.ReputationTime, { remaining: timeReputation + Time.Day - now }));
+			const content = args.t(LanguageKeys.Commands.Social.ReputationTime, { remaining: timeReputation + Time.Day - now });
+			return send(message, content);
 		}
 
-		if (!user) return message.send(args.t(LanguageKeys.Commands.Social.ReputationUsable));
+		if (!user) {
+			const content = args.t(LanguageKeys.Commands.Social.ReputationUsable);
+			return send(message, content);
+		}
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await settings.users.manager.transaction(async (em) => {
@@ -45,8 +48,8 @@ export class UserCommand extends SkyraCommand {
 			await em.save([settings.target!, settings.author]);
 		});
 
-		if (args.getFlags(...REMINDER_FLAGS)) {
-			await this.context.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
+		if (args.getFlags(...flags)) {
+			await this.container.schedule.add(Schedules.Reminder, date.getTime() + Time.Day, {
 				data: {
 					content: args.t(LanguageKeys.Commands.Social.ReputationAvailable),
 					user: message.author.id
@@ -54,13 +57,16 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		return message.send(args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() }));
+		const content = args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() });
+		return send(message, content);
 	}
 
 	private async check(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await this.getUser(args);
 		const settings = await this.downloadSettings(message.author.id, user.id);
-		return message.send(this.handleCheck(args.t, user, settings));
+
+		const content = this.handleCheck(args.t, user, settings);
+		return send(message, content);
 	}
 
 	private handleCheck(t: TFunction, user: User, settings: Settings) {
@@ -72,12 +78,12 @@ export class UserCommand extends SkyraCommand {
 		return t(LanguageKeys.Commands.Social.ReputationsSelf, { points: settings.author.reputations });
 	}
 
-	private async downloadSettings(authorID: string, targetID: string | null): Promise<Settings> {
-		const { users } = this.context.db;
+	private async downloadSettings(authorId: string, targetId: string | null): Promise<Settings> {
+		const { users } = this.container.db;
 		return {
 			users,
-			author: await users.ensureProfileAndCooldowns(authorID),
-			target: targetID && targetID !== authorID ? await users.ensureProfile(targetID) : null
+			author: await users.ensureProfileAndCooldowns(authorId),
+			target: targetId && targetId !== authorId ? await users.ensureProfile(targetId) : null
 		};
 	}
 

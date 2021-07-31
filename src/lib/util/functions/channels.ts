@@ -1,62 +1,17 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { GuildTextBasedChannelTypes, TextBasedChannelTypes, VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { UserError } from '@sapphire/framework';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import { GuildChannel, Message, Permissions, VoiceChannel } from 'discord.js';
-
-export type TextBasedChannelTypes = Message['channel'];
-// TODO: v13 | Add StageChannel
-export type VoiceBasedChannelTypes = VoiceChannel;
-export type GuildTextBasedChannelTypes = Extract<TextBasedChannelTypes, GuildChannel>;
+import type { Message, ThreadChannel } from 'discord.js';
 
 /**
- * Determines whether or not a channel comes from a guild.
- * @param channel The channel to test.
- * @returns Whether or not the channel is guild-based.
+ * Asserts a text-based channel is not a thread channel.
+ * @param channel The channel to assert.
+ * @returns The thread channel.
  */
-export function isGuildBasedChannel(channel: TextBasedChannelTypes): channel is GuildTextBasedChannelTypes {
-	return Reflect.has(channel, 'guild');
-}
-
-const canReadMessagesPermissions = new Permissions(['VIEW_CHANNEL']);
-
-/**
- * Determines whether or not we can send messages in a given channel.
- * @param channel The channel to test the permissions from.
- * @returns Whether or not we can send messages in the specified channel.
- */
-export function canReadMessages(channel: TextBasedChannelTypes): boolean {
-	return isGuildBasedChannel(channel) ? channel.permissionsFor(channel.guild.me!)!.has(canReadMessagesPermissions) : true;
-}
-
-const canSendMessagesPermissions = new Permissions([canReadMessagesPermissions, 'SEND_MESSAGES']);
-
-/**
- * Determines whether or not we can send messages in a given channel.
- * @param channel The channel to test the permissions from.
- * @returns Whether or not we can send messages in the specified channel.
- */
-export function canSendMessages(channel: TextBasedChannelTypes): boolean {
-	return isGuildBasedChannel(channel) ? channel.permissionsFor(channel.guild.me!)!.has(canSendMessagesPermissions) : true;
-}
-
-const canSendEmbedsPermissions = new Permissions([canSendMessagesPermissions, 'EMBED_LINKS']);
-
-/**
- * Determines whether or not we can send embeds in a given channel.
- * @param channel The channel to test the permissions from.
- * @returns Whether or not we can send embeds in the specified channel.
- */
-export function canSendEmbeds(channel: TextBasedChannelTypes): boolean {
-	return isGuildBasedChannel(channel) ? channel.permissionsFor(channel.guild.me!)!.has(canSendEmbedsPermissions) : true;
-}
-
-const canSendAttachmentsPermissions = new Permissions([canSendMessagesPermissions, 'ATTACH_FILES']);
-
-/**
- * Determines whether or not we can send attachments in a given channel.
- * @param channel The channel to test the permissions from.
- * @returns Whether or not we can send attachments in the specified channel.
- */
-export function canSendAttachments(channel: TextBasedChannelTypes): boolean {
-	return isGuildBasedChannel(channel) ? channel.permissionsFor(channel.guild.me!)!.has(canSendAttachmentsPermissions) : true;
+export function assertNonThread<T extends TextBasedChannelTypes>(channel: T): Exclude<T, ThreadChannel> {
+	if (channel.isThread()) throw new UserError({ identifier: LanguageKeys.Assertions.ExpectedNonThreadChannel, context: { channel } });
+	return channel as Exclude<T, ThreadChannel>;
 }
 
 export function getListeners(channel: VoiceBasedChannelTypes | Nullish): string[] {

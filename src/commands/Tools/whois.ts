@@ -3,9 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { months } from '#utils/common';
 import { Emojis } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -14,19 +15,18 @@ const { FLAGS } = Permissions;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['userinfo', 'uinfo', 'user'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
-	private readonly kKeyPermissions: [PermissionString, number][] = [
+	private readonly kKeyPermissions: [PermissionString, bigint][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
 		['KICK_MEMBERS', FLAGS.KICK_MEMBERS],
 		['MANAGE_CHANNELS', FLAGS.MANAGE_CHANNELS],
-		['MANAGE_EMOJIS', FLAGS.MANAGE_EMOJIS],
+		['MANAGE_EMOJIS_AND_STICKERS', FLAGS.MANAGE_EMOJIS_AND_STICKERS],
 		['MANAGE_GUILD', FLAGS.MANAGE_GUILD],
 		['MANAGE_MESSAGES', FLAGS.MANAGE_MESSAGES],
 		['MANAGE_NICKNAMES', FLAGS.MANAGE_NICKNAMES],
@@ -38,7 +38,9 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
-		return message.send(member ? this.member(args.t, member) : this.user(args.t, user));
+
+		const embed = member ? this.member(args.t, member) : this.user(args.t, user);
+		return send(message, { embeds: [embed] });
 	}
 
 	private user(t: TFunction, user: User) {
@@ -50,7 +52,7 @@ export class UserCommand extends SkyraCommand {
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 			.setDescription(this.getUserInformation(user))
 			.addField(titles.createdAt, fields.createdAt)
-			.setFooter(fields.footer, this.context.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(fields.footer, this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 	}
 
@@ -68,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 			.setDescription(this.getUserInformation(member.user, this.getBoostIcon(member.premiumSinceTimestamp)))
 			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown, true)
 			.addField(titles.createdAt, fields.createdAt, true)
-			.setFooter(fields.footer, this.context.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(fields.footer, this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
 		this.applyMemberRoles(t, member, embed);
@@ -112,14 +114,14 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private getBoostEmoji(duration: number): string {
-		if (duration >= Time.Month * 24) return Emojis.BoostLevel9;
-		if (duration >= Time.Month * 18) return Emojis.BoostLevel8;
-		if (duration >= Time.Month * 15) return Emojis.BoostLevel7;
-		if (duration >= Time.Month * 12) return Emojis.BoostLevel6;
-		if (duration >= Time.Month * 9) return Emojis.BoostLevel5;
-		if (duration >= Time.Month * 6) return Emojis.BoostLevel4;
-		if (duration >= Time.Month * 3) return Emojis.BoostLevel3;
-		if (duration >= Time.Month * 2) return Emojis.BoostLevel2;
+		if (duration >= months(24)) return Emojis.BoostLevel9;
+		if (duration >= months(18)) return Emojis.BoostLevel8;
+		if (duration >= months(15)) return Emojis.BoostLevel7;
+		if (duration >= months(12)) return Emojis.BoostLevel6;
+		if (duration >= months(9)) return Emojis.BoostLevel5;
+		if (duration >= months(6)) return Emojis.BoostLevel4;
+		if (duration >= months(3)) return Emojis.BoostLevel3;
+		if (duration >= months(2)) return Emojis.BoostLevel2;
 		return Emojis.BoostLevel1;
 	}
 }

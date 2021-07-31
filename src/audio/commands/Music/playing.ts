@@ -1,30 +1,33 @@
-import { MusicCommand, requireMusicPlaying } from '#lib/audio';
+import { AudioCommand, RequireMusicPlaying } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TrackInfo } from '@skyra/audio';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
-export class UserMusicCommand extends MusicCommand {
+export class UserMusicCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
-	@requireMusicPlaying()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
-		const { audio } = message.guild;
+	@RequireMusicPlaying()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
+		const audio = getAudio(message.guild);
 
 		const entry = await audio.getCurrentTrack();
 		if (!entry) this.error(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
-		return message.send(this.getMessageEmbed(args.t, track));
+		const embed = this.getMessageEmbed(args.t, track);
+		return send(message, { embeds: [embed] });
 	}
 
 	private getMessageEmbed(t: TFunction, track: TrackInfo): MessageEmbed {

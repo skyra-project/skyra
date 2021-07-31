@@ -4,15 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcc'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandChannelDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandChannelExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -34,7 +33,8 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandChannelAdd, { channel: channel.toString(), command: command.name }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandChannelAdd, { channel: channel.toString(), command: command.name });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -60,9 +60,8 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		return message.send(
-			args.t(LanguageKeys.Commands.Management.ManageCommandChannelRemove, { channel: channel.toString(), command: command.name })
-		);
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandChannelRemove, { channel: channel.toString(), command: command.name });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -78,7 +77,8 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.DisabledCommandChannels].splice(entryIndex, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandChannelReset, { channel: channel.toString() }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandChannelReset, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
@@ -86,15 +86,14 @@ export class UserCommand extends SkyraCommand {
 		const disabledCommandsChannels = await readSettings(message.guild, GuildSettings.DisabledCommandChannels);
 
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
-		if (entry?.commands.length) {
-			return message.send(
-				args.t(LanguageKeys.Commands.Management.ManageCommandChannelShow, {
-					channel: channel.toString(),
-					commands: `\`${entry.commands.join('` | `')}\``
-				})
-			);
+		if (!entry?.commands.length) {
+			this.error(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
 		}
 
-		this.error(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandChannelShow, {
+			channel: channel.toString(),
+			commands: `\`${entry.commands.join('` | `')}\``
+		});
+		return send(message, content);
 	}
 }

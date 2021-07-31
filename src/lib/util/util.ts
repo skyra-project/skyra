@@ -7,9 +7,22 @@ import { UserError } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Image, resolveImage } from 'canvas-constructor/skia';
-import type { APIUser } from 'discord-api-types/v6';
-import { Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
+import type { APIUser } from 'discord-api-types/v9';
+import {
+	AllowedImageSize,
+	Guild,
+	GuildChannel,
+	ImageURLOptions,
+	Message,
+	MessageEmbed,
+	Permissions,
+	Role,
+	ThreadChannel,
+	User,
+	UserResolvable
+} from 'discord.js';
 import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
@@ -99,10 +112,10 @@ export function snowflakeAge(snowflake: string | bigint) {
  * @param message The message instance to check with
  */
 export async function announcementCheck(message: GuildMessage) {
-	const [announcementID] = await readSettings(message.guild, (settings) => [settings[GuildSettings.Roles.Subscriber]]);
-	if (!announcementID) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
+	const [announcementId] = await readSettings(message.guild, (settings) => [settings[GuildSettings.Roles.Subscriber]]);
+	if (!announcementId) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
-	const role = message.guild.roles.cache.get(announcementID);
+	const role = message.guild.roles.cache.get(announcementId);
 	if (!role) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
 
 	if (role.position >= message.guild.me!.roles.highest.position) throw new UserError({ identifier: LanguageKeys.System.HighestRole });
@@ -207,7 +220,7 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 	return payload;
 }
 
-export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
+export async function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
 		return await resolveImage(url);
@@ -216,15 +229,15 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Im
 	}
 }
 
-export async function fetchReactionUsers(channelID: string, messageID: string, reaction: string) {
+export async function fetchReactionUsers(channelId: string, messageId: string, reaction: string) {
 	const users: Set<string> = new Set();
 	let rawUsers: APIUser[] = [];
 
 	// Fetch loop, to get +100 users
 	do {
 		rawUsers = await api()
-			.channels(channelID)
-			.messages(messageID)
+			.channels(channelId)
+			.messages(messageId)
 			.reactions(reaction)
 			.get<APIUser[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
 		for (const user of rawUsers) users.add(user.id);
@@ -360,9 +373,9 @@ export function getDisplayAvatar(id: string, user: User | APIUser, options: Imag
 export function parseRange(input: string): number[] {
 	const set = new Set<number>();
 	for (const subset of input.split(',')) {
-		const [, smin, smax] = /(\d+) *\.{2,} *(\d+)/.exec(subset) || [subset, subset, subset];
-		let min = Number(smin);
-		let max = Number(smax);
+		const [, stringMin, stringMax] = /(\d+) *\.{2,} *(\d+)/.exec(subset) || [subset, subset, subset];
+		let min = Number(stringMin);
+		let max = Number(stringMax);
 		if (min > max) [max, min] = [min, max];
 
 		for (let i = Math.max(1, min); i <= max; ++i) set.add(i);
@@ -497,15 +510,15 @@ export function cast<T>(value: unknown): T {
  * @returns Whether the user has access to the channel
  * @example validateChannelAccess(channel, message.author)
  */
-export function validateChannelAccess(channel: GuildChannel, user: UserResolvable) {
+export function validateChannelAccess(channel: GuildChannel | ThreadChannel, user: UserResolvable) {
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
 }
 
 export function getHighestRole(guild: Guild, roles: readonly string[]) {
 	let highest: Role | null = null;
 	let position = 0;
-	for (const roleID of roles) {
-		const role = guild.roles.cache.get(roleID);
+	for (const roleId of roles) {
+		const role = guild.roles.cache.get(roleId);
 		if (typeof role === 'undefined') continue;
 		if (role.position > position) {
 			highest = role;
@@ -518,7 +531,7 @@ export function getHighestRole(guild: Guild, roles: readonly string[]) {
 
 /**
  * Fake GraphQL tag that just returns everything passed in as a single combined string
- * @remark used to trick the GraphQL parser into treating some code as GraphQL parseable data for syntax checking
+ * @remark used to trick the GraphQL parser into treating some code as GraphQL parsable data for syntax checking
  * @param gqlData data to pass off as GraphQL code
  */
 export function gql(...args: any[]): string {
@@ -544,8 +557,10 @@ export const shuffle = <T>(array: T[]): T[] => {
 
 export const random = (num: number) => Math.floor(Math.random() * num);
 
-export const sendLoadingMessage = (message: GuildMessage | Message, t: TFunction): Promise<typeof message> =>
-	message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T, t: TFunction): Promise<T> => {
+	const embed = new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary);
+	return send(message, { embeds: [embed] }) as Promise<T>;
+};
 
 /**
  * Gets the base language from an i18n code.

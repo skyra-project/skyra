@@ -33,7 +33,6 @@ const kPokemonTypes = new Set([
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['matchup', 'weakness', 'advantage'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.TypeDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended
 })
@@ -91,7 +90,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message)) //
+				.setColor(await this.container.db.fetchColor(message)) //
 				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
 		})
 			.addPageEmbed((embed) =>

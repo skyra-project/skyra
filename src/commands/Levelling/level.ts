@@ -2,8 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { cdnFolder } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -13,11 +15,9 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lvl', 'rank'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -29,11 +29,11 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const output = await this.showProfile(message, scope, user, args.t);
-		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
+		return send(message, { files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {
-		const { members, users } = this.context.db;
+		const { members, users } = this.container.db;
 		const settings = await users.ensureProfile(user.id);
 		const { level, points } = scope === Scope.Local && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 
@@ -72,14 +72,14 @@ export class UserCommand extends SkyraCommand {
 				// Draw the information
 				.setTextAlign('right')
 				.printText(t(LanguageKeys.Globals.NumberCompactValue, { value: points }), 606, 73)
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: nextLevel - points }), 606, 131)
+				.printText(formatNumber(t, nextLevel - points), 606, 131)
 
 				// Draw the level
 				.setTextAlign('center')
 				.setTextFont('35px RobotoLight')
 				.printText(title.level, 268, 73)
 				.setTextFont('45px RobotoRegular')
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: level }), 268, 128)
+				.printText(formatNumber(t, level), 268, 128)
 
 				// Draw the avatar
 				.save()

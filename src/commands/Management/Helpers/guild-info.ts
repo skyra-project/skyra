@@ -4,25 +4,25 @@ import type { GuildMessage } from '#lib/types';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
-const roleMention = (role: Role) => role.toString();
+const roleMention = (role: Role): string => role.toString();
 const roleLimit = 15;
 
 const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['server-info'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const color = await this.context.db.fetchColor(message);
+		const color = await this.container.db.fetchColor(message);
 		const roles = this.getRoles(args);
 
 		if (message.channel.permissionsFor(message.guild.me!)!.has(paginatedMessagePermissions)) {
@@ -30,7 +30,8 @@ export class UserCommand extends SkyraCommand {
 			return display.run(message);
 		}
 
-		return message.send(await this.getSummary(args, roles, color));
+		const embed = await this.getSummary(args, roles, color);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<SkyraPaginatedMessage> {
@@ -51,12 +52,14 @@ export class UserCommand extends SkyraCommand {
 		if (roles.length > roleLimit) {
 			for (const batch of chunk(roles, 20)) {
 				if (batch.length <= 10) {
-					display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention)));
+					display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention).join('\n')));
 				} else {
 					const left = batch.slice(0, 10);
 					const right = batch.slice(10);
 					display.addPageEmbed((embed) =>
-						embed.addField(ZeroWidthSpace, left.map(roleMention), true).addField(ZeroWidthSpace, right.map(roleMention), true)
+						embed
+							.addField(ZeroWidthSpace, left.map(roleMention).join('\n'), true)
+							.addField(ZeroWidthSpace, right.map(roleMention).join('\n'), true)
 					);
 				}
 			}
@@ -132,7 +135,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async getSummaryMembers(args: SkyraCommand.Args): Promise<string> {
 		const guild = args.message.guild!;
-		const owner = await this.context.client.users.fetch(guild.ownerID);
+		const owner = await this.container.client.users.fetch(guild.ownerId);
 
 		return args.t(LanguageKeys.Commands.Management.GuildInfoMembers, { memberCount: guild.memberCount, owner });
 	}
@@ -144,18 +147,18 @@ export class UserCommand extends SkyraCommand {
 		let vChannels = 0;
 		let cChannels = 0;
 		for (const channel of guild.channels.cache.values()) {
-			if (channel.type === 'text' || channel.type === 'news') tChannels++;
-			else if (channel.type === 'voice') vChannels++;
-			else if (channel.type === 'category') cChannels++;
+			if (channel.type === 'GUILD_TEXT' || channel.type === 'GUILD_NEWS') tChannels++;
+			else if (channel.type === 'GUILD_VOICE' || channel.type === 'GUILD_STAGE_VOICE') vChannels++;
+			else if (channel.type === 'GUILD_CATEGORY') cChannels++;
 		}
 
 		return args.t(LanguageKeys.Commands.Management.GuildInfoChannels, {
 			text: tChannels,
 			voice: vChannels,
 			categories: cChannels,
-			afkChannelText: guild.afkChannelID
+			afkChannelText: guild.afkChannelId
 				? args.t(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
-						afkChannel: guild.afkChannelID,
+						afkChannel: guild.afkChannelId,
 						afkTime: guild.afkTimeout / 60
 				  })
 				: `**${args.t(LanguageKeys.Globals.None)}**`
@@ -166,7 +169,6 @@ export class UserCommand extends SkyraCommand {
 		const guild = args.message.guild!;
 		return args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 			size: guild.roles.cache.size,
-			region: guild.region,
 			createdAt: guild.createdTimestamp,
 			verificationLevel: guild.verificationLevel
 		});

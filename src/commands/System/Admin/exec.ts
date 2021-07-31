@@ -2,17 +2,19 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getHaste } from '#utils/APIs/Hastebin';
+import { safeWrapPromise } from '#utils/common';
 import { exec } from '#utils/Promisified/exec';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock } from '@sapphire/utilities';
-import { Message, MessageAttachment } from 'discord.js';
+import { send } from '@skyra/editable-commands';
+import type { Message, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['execute'],
 	description: LanguageKeys.Commands.System.ExecDescription,
 	extendedHelp: LanguageKeys.Commands.System.ExecExtended,
 	permissionLevel: PermissionLevels.BotOwner,
-	strategyOptions: { options: ['timeout'] }
+	options: ['timeout']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -27,8 +29,18 @@ export class UserCommand extends SkyraCommand {
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
 		const joined = [output, outerr].join('\n') || 'No output';
 
-		return message.send(
-			joined.length > 2000 ? await getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined
-		);
+		const options = await this.getOptions(joined);
+		return send(message, options);
+	}
+
+	private async getOptions(content: string): Promise<MessageOptions> {
+		if (content.length <= 2000) return { content };
+
+		const urlResult = await safeWrapPromise(getHaste(content));
+		if (urlResult.success) return { content: urlResult.value };
+
+		const attachment = Buffer.from(content);
+		const name = 'output.txt';
+		return { files: [{ attachment, name }] };
 	}
 }

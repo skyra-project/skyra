@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getVehicles } from '#utils/APIs/StarWars';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -9,7 +10,6 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-vehicle', 'swvehicles', 'star-wars-vehicles'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.VehicleDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.VehicleExtended
 })
@@ -27,7 +27,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
@@ -47,31 +47,23 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.crew) {
-						description.push(`**${vehicleTitles.crew}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.crew })}`);
+						description.push(`**${vehicleTitles.crew}**: ${formatNumber(t, result.crew)}`);
 					}
 
 					if (result.passengers) {
-						description.push(
-							`**${vehicleTitles.amountOfPassengers}**: ${t(LanguageKeys.Globals.NumberValue, {
-								value: result.passengers
-							})}`
-						);
+						description.push(`**${vehicleTitles.amountOfPassengers}**: ${formatNumber(t, result.passengers)}`);
 					}
 
 					if (result.length) {
-						description.push(`**${vehicleTitles.length}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.length })}`);
+						description.push(`**${vehicleTitles.length}**: ${formatNumber(t, result.length)}`);
 					}
 
 					if (result.costInCredits) {
-						description.push(
-							`**${vehicleTitles.costInCredits}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.costInCredits })}`
-						);
+						description.push(`**${vehicleTitles.costInCredits}**: ${formatNumber(t, result.costInCredits)}`);
 					}
 
 					if (result.cargoCapacity) {
-						description.push(
-							`**${vehicleTitles.cargoCapacity}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.cargoCapacity })}`
-						);
+						description.push(`**${vehicleTitles.cargoCapacity}**: ${formatNumber(t, result.cargoCapacity)}`);
 					}
 
 					if (result.consumables) {
@@ -81,11 +73,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.maxAtmospheringSpeed) {
-						description.push(
-							`**${vehicleTitles.maximumAtmospheringSpeed}**: ${t(LanguageKeys.Globals.NumberValue, {
-								value: result.maxAtmospheringSpeed
-							})}`
-						);
+						description.push(`**${vehicleTitles.maximumAtmospheringSpeed}**: ${formatNumber(t, result.maxAtmospheringSpeed)}`);
 					}
 
 					if (result.manufacturers?.length) {

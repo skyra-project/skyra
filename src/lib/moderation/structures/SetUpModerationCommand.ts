@@ -1,10 +1,11 @@
 import { GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
+import { getSecurity, isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
 import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import type { Argument, PieceContext } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import type { Role } from 'discord.js';
 import { ModerationCommand } from './ModerationCommand';
 
@@ -19,7 +20,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 
 	private get role() {
-		return this.context.stores.get('arguments').get('role') as Argument<Role>;
+		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
 	public async run(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null> {
@@ -45,8 +46,10 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 			if (!role.success) return this.error(role.error);
 			await writeSettings(message.guild, [[this.roleKey, role.value.id]]);
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
-			await message.guild.security.actions.restrictionSetup(message, this.setUpKey);
-			await message.send(t(LanguageKeys.Commands.Moderation.Success));
+			await getSecurity(message.guild).actions.restrictionSetup(message, this.setUpKey);
+
+			const content = t(LanguageKeys.Commands.Moderation.Success);
+			await send(message, content);
 		} else {
 			this.error(LanguageKeys.Commands.Management.CommandHandlerAborted);
 		}

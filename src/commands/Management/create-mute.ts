@@ -3,25 +3,26 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { minutes } from '#utils/common';
 import { Emojis } from '#utils/constants';
-import { canReact, promptConfirmation, promptForMessage } from '#utils/functions';
+import { canReact, getSecurity, promptConfirmation, promptForMessage } from '#utils/functions';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument, Result, UserError } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: Time.Minute * 5,
+	cooldownDelay: minutes(5),
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
-	runIn: ['text', 'news']
+	requiredClientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get role() {
-		return this.context.stores.get('arguments').get('role') as Argument<Role>;
+		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
@@ -32,18 +33,21 @@ export class UserCommand extends SkyraCommand {
 			if (role.success) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
 				if (canReact(message)) return message.react(resolveEmoji(Emojis.GreenTick)!);
-				return message.send(
-					t(LanguageKeys.Commands.Admin.ConfUpdated, {
-						key: GuildSettings.Roles.Muted,
-						response: role.value.name
-					})
-				);
+
+				const content = t(LanguageKeys.Commands.Admin.ConfUpdated, {
+					key: GuildSettings.Roles.Muted,
+					response: role.value.name
+				});
+				return send(message, content);
 			}
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
-			await message.guild.security.actions.muteSetup(message);
-			await message.send(t(LanguageKeys.Commands.Moderation.Success));
+			await getSecurity(message.guild).actions.muteSetup(message);
+
+			const content = t(LanguageKeys.Commands.Moderation.Success);
+			await send(message, content);
 		} else {
-			await message.send(t(LanguageKeys.Commands.Management.CommandHandlerAborted));
+			const content = t(LanguageKeys.Commands.Management.CommandHandlerAborted);
+			await send(message, content);
 		}
 
 		return null;

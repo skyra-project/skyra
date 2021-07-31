@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
+import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,21 +11,21 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['sb'],
 	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
-	requiredMember: false,
-	permissions: ['BAN_MEMBERS'],
-	strategyOptions: { options: ['d', 'day', 'days'] }
+	options: ['d', 'day', 'days'],
+	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
 		const [banAdd, banRemove] = await readSettings(message.guild, [GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
-		return banAdd || banRemove ? { unlock: message.guild.moderation.createLock() } : null;
+		return banAdd || banRemove ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild.security.actions.softBan(
+		return getSecurity(message.guild).actions.softBan(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				duration: context.duration,
 				reason: context.reason,
 				imageURL: getImage(message)

@@ -1,4 +1,4 @@
-import type { PartialResponseValue } from '#lib/database';
+import type { PartialResponseValue } from '#lib/database/entities';
 import { Piece, PieceOptions } from '@sapphire/framework';
 import type { Awaited } from '@sapphire/utilities';
 

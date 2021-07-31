@@ -2,25 +2,24 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { canSendMessages, deleteMessage, isModerator } from '#utils/functions';
+import { minutes } from '#utils/common';
+import { deleteMessage, isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { chunk, isFunction } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],
-	cooldown: 0,
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
-	permissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news'],
-	strategyOptions: {
-		flags: ['autofill', 'autoskip']
-	}
+	flags: ['autofill', 'autoskip'],
+	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
@@ -93,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 					if (!canSendMessages(message.channel)) return;
 
 					// Refresh the LLRC's timer, send new message with new reactions:
-					game.llrc.setTime(Time.Minute * 2);
+					game.llrc.setTime(minutes(2));
 					gameMessage = (await message.channel.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
@@ -113,7 +112,10 @@ export class UserCommand extends SkyraCommand {
 					// Delete the previous message, and if stopped, send stop.
 					await deleteMessage(gameMessage);
 					if (!verification) {
-						if (canSendMessages(message.channel)) await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesStop));
+						if (canSendMessages(message.channel)) {
+							const content = args.t(LanguageKeys.Commands.Games.HungerGamesStop);
+							await send(message, content);
+						}
 						return;
 					}
 				}
@@ -122,7 +124,8 @@ export class UserCommand extends SkyraCommand {
 			}
 
 			// The match finished with one remaining player
-			await message.send(args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string }));
+			const content = args.t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value as string });
+			await send(message, content);
 		} catch (error) {
 			throw error;
 		} finally {
@@ -135,20 +138,20 @@ export class UserCommand extends SkyraCommand {
 		if (!gameMessage) return true;
 
 		// If the message reacted is not the game's, inhibit
-		if (reaction.messageID !== gameMessage.id) return true;
+		if (reaction.messageId !== gameMessage.id) return true;
 
 		// If the emoji reacted is not valid, inhibit
 		if (!this.kEmojis.includes(reaction.emoji.id ?? reaction.emoji.name!)) return true;
 
 		// If the user who reacted is the author, don't inhibit
-		if (reaction.userID === message.author.id) return false;
+		if (reaction.userId === message.author.id) return false;
 
 		// Don't listen to herself
-		if (reaction.userID === process.env.CLIENT_ID) return true;
+		if (reaction.userId === process.env.CLIENT_ID) return true;
 
 		try {
 			// Fetch the member for level measuring purposes
-			const member = await message.guild.members.fetch(reaction.userID);
+			const member = await message.guild.members.fetch(reaction.userId);
 			// Check if the user is a moderator
 			return !(await isModerator(member));
 		} catch {

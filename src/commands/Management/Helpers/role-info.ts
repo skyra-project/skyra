@@ -4,15 +4,15 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.RoleInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RoleInfoExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -28,18 +28,17 @@ export class UserCommand extends SkyraCommand {
 					.join('\n')
 			: args.t(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(role.color || BrandingColors.Secondary)
-				.setTitle(`${role.name} [${role.id}]`)
-				.setDescription(
-					args.t(LanguageKeys.Commands.Management.RoleInfoData, {
-						role,
-						hoisted: args.t(role.hoist ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
-						mentionable: args.t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)
-					})
-				)
-				.addField(roleInfoTitles.PERMISSIONS, permissions)
-		);
+		const description = args.t(LanguageKeys.Commands.Management.RoleInfoData, {
+			role,
+			hoisted: args.t(role.hoist ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
+			mentionable: args.t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)
+		});
+
+		const embed = new MessageEmbed()
+			.setColor(role.color || BrandingColors.Secondary)
+			.setTitle(`${role.name} [${role.id}]`)
+			.setDescription(description)
+			.addField(roleInfoTitles.PERMISSIONS, permissions);
+		return send(message, { embeds: [embed] });
 	}
 }

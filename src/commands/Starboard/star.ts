@@ -3,7 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -11,11 +13,10 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: [],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Starboard.StarDescription,
 	extendedHelp: LanguageKeys.Commands.Starboard.StarExtended,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['top', { input: 'random', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -30,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 
 		const minimum = await readSettings(message.guild, GuildSettings.Starboard.Minimum);
 
-		const { starboards } = this.context.db;
+		const { starboards } = this.container.db;
 		const qb = starboards
 			.createQueryBuilder()
 			.select()
@@ -42,7 +43,9 @@ export class UserCommand extends SkyraCommand {
 		if (user) qb.andWhere('user_id = :user', { user: user.id });
 
 		const starboardMessages = await qb.getMany();
-		if (starboardMessages.length === 0) return message.send(args.t(LanguageKeys.Commands.Starboard.StarNoStars));
+		if (starboardMessages.length === 0) {
+			this.error(LanguageKeys.Commands.Starboard.StarNoStars);
+		}
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
@@ -51,63 +54,67 @@ export class UserCommand extends SkyraCommand {
 		const minimumPostedAt = timespan ? Date.now() - timespan : null;
 		for (const starboardMessage of starboardMessages) {
 			if (minimumPostedAt !== null) {
-				const postedAt = this.decodeSnowflake(starboardMessage.starMessageID!);
+				const postedAt = this.decodeSnowflake(starboardMessage.starMessageId!);
 				if (postedAt < minimumPostedAt) continue;
 			}
-			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
+			const url = this.makeStarLink(starboardMessage.guildId, starboardMessage.channelId, starboardMessage.messageId);
 			const maskedUrl = `[${args.t(LanguageKeys.Misc.JumpTo)}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
-			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
+			topReceivers.set(starboardMessage.userId, (topReceivers.get(starboardMessage.userId) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
 		}
 
-		if (totalStars === 0) return message.send(args.t(LanguageKeys.Commands.Starboard.StarNoStars));
+		if (totalStars === 0) {
+			this.error(LanguageKeys.Commands.Starboard.StarNoStars);
+		}
 
 		const totalMessages = topMessages.length;
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 		const topThreeReceivers = [...topReceivers].sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(Colors.Amber)
-				.addField(
-					args.t(LanguageKeys.Commands.Starboard.StarStats),
-					args.t(LanguageKeys.Commands.Starboard.StarStatsDescription, {
-						messages: args.t(LanguageKeys.Commands.Starboard.StarMessages, { count: totalMessages }),
-						stars: args.t(LanguageKeys.Commands.Starboard.Stars, { count: totalStars })
-					})
-				)
-				.addField(
-					args.t(LanguageKeys.Commands.Starboard.StarTopStarred),
-					topThreeMessages.map(([mID, stars], index) =>
-						args.t(LanguageKeys.Commands.Starboard.StarTopStarredDescription, {
-							medal: MEDALS[index],
-							id: mID,
-							count: stars
-						})
-					)
-				)
-				.addField(
-					args.t(LanguageKeys.Commands.Starboard.StarTopReceivers),
-					topThreeReceivers.map(([uID, stars], index) =>
-						args.t(LanguageKeys.Commands.Starboard.StarTopReceiversDescription, {
-							medal: MEDALS[index],
-							id: uID,
-							count: stars
-						})
-					)
-				)
-				.setTimestamp()
-		);
+		const statsDescription = args.t(LanguageKeys.Commands.Starboard.StarStatsDescription, {
+			messages: args.t(LanguageKeys.Commands.Starboard.StarMessages, { count: totalMessages }),
+			stars: args.t(LanguageKeys.Commands.Starboard.Stars, { count: totalStars })
+		});
+
+		const embedTopStarred = topThreeMessages
+			.map(([messageId, stars], index) =>
+				args.t(LanguageKeys.Commands.Starboard.StarTopStarredDescription, {
+					medal: MEDALS[index],
+					id: messageId,
+					count: stars
+				})
+			)
+			.join('\n');
+
+		const embedTopReceivers = topThreeReceivers
+			.map(([userId, stars], index) =>
+				args.t(LanguageKeys.Commands.Starboard.StarTopReceiversDescription, {
+					medal: MEDALS[index],
+					id: userId,
+					count: stars
+				})
+			)
+			.join('\n');
+
+		const embed = new MessageEmbed()
+			.setColor(Colors.Amber)
+			.addField(args.t(LanguageKeys.Commands.Starboard.StarStats), statsDescription)
+			.addField(args.t(LanguageKeys.Commands.Starboard.StarTopStarred), embedTopStarred)
+			.addField(args.t(LanguageKeys.Commands.Starboard.StarTopReceivers), embedTopReceivers)
+			.setTimestamp();
+		return send(message, { embeds: [embed] });
 	}
 
 	private async handleRandom(message: GuildMessage, user: User | null, t: TFunction): Promise<Message | Message[]> {
-		const [minimum, starboardChannelID] = await readSettings(message.guild, [GuildSettings.Starboard.Minimum, GuildSettings.Starboard.Channel]);
+		const [minimum, starboardChannelId] = await readSettings(message.guild, [GuildSettings.Starboard.Minimum, GuildSettings.Starboard.Channel]);
 
 		// If there is no configured starboard channel, return no stars
-		if (!starboardChannelID) return message.send(t(LanguageKeys.Commands.Starboard.StarNoChannel));
+		if (!starboardChannelId) {
+			this.error(LanguageKeys.Commands.Starboard.StarNoChannel);
+		}
 
-		const { starboards } = this.context.db;
+		const { starboards } = this.container.db;
 		const qb = starboards
 			.createQueryBuilder()
 			.select()
@@ -121,20 +128,22 @@ export class UserCommand extends SkyraCommand {
 		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
 		// If there is no starboard message, return no stars
-		if (!starboardData) return message.send(t(LanguageKeys.Commands.Starboard.StarNoStars));
+		if (!starboardData) {
+			this.error(LanguageKeys.Commands.Starboard.StarNoStars);
+		}
 
 		// Set up the starboard entry
-		starboardData.setup(message.guild.starboard);
+		starboardData.setup(getStarboard(message.guild));
 
 		// If there is no configured starboard channel, return no stars
-		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
+		const starboardChannel = message.guild.channels.cache.get(starboardChannelId) as TextChannel;
 		if (!starboardChannel) {
 			await writeSettings(message.guild, [[GuildSettings.Starboard.Channel, null]]);
-			return message.send(t(LanguageKeys.Commands.Starboard.StarNoChannel));
+			this.error(LanguageKeys.Commands.Starboard.StarNoChannel);
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
-		const starredMessageChannel = message.guild.channels.cache.get(starboardData.channelID) as TextChannel;
+		const starredMessageChannel = message.guild.channels.cache.get(starboardData.channelId) as TextChannel;
 		if (!starredMessageChannel) {
 			await starboardData.remove();
 			return this.handleRandom(message, user, t);
@@ -142,20 +151,20 @@ export class UserCommand extends SkyraCommand {
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
 		// moderator, therefore delete it from database and search another
-		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
+		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageId!).catch(() => null);
 		if (!starredMessage) {
 			await starboardData.remove();
 			return this.handleRandom(message, user, t);
 		}
 
-		return message.send(starredMessage.content, starredMessage.embeds[0]);
+		return send(message, { content: starredMessage.content, embeds: starredMessage.embeds });
 	}
 
 	private decodeSnowflake(snowflake: string) {
 		return (BigInt(snowflake) >> 22n) + 1420070400000n;
 	}
 
-	private makeStarLink(guildID: string, channeLID: string, messageID: string) {
-		return `https://discord.com/channels/${guildID}/${channeLID}/${messageID}`;
+	private makeStarLink(guildId: string, channelId: string, messageId: string) {
+		return `https://discord.com/channels/${guildId}/${channelId}/${messageId}`;
 	}
 }

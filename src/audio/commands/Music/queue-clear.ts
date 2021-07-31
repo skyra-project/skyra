@@ -1,20 +1,24 @@
-import { MusicCommand, requireDj, requireQueueNotEmpty } from '#lib/audio';
+import { AudioCommand, RequireDj, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['qc', 'clear'],
 	description: LanguageKeys.Commands.Music.ClearDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireQueueNotEmpty()
-	@requireDj()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
-		const { audio } = message.guild;
+export class UserMusicCommand extends AudioCommand {
+	@RequireQueueNotEmpty()
+	@RequireDj()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
+		const audio = getAudio(message.guild);
 		const count = await audio.count();
 		await audio.clearTracks();
-		return message.send(args.t(LanguageKeys.Commands.Music.ClearSuccess, { count }));
+
+		const content = args.t(LanguageKeys.Commands.Music.ClearSuccess, { count });
+		return send(message, content);
 	}
 }

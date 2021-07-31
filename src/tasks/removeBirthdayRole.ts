@@ -1,5 +1,5 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
-import { Time } from '@sapphire/time-utilities';
+import { seconds } from '#utils/common';
 import { Permissions } from 'discord.js';
 
 export class UserTask extends Task {
@@ -7,12 +7,12 @@ export class UserTask extends Task {
 
 	public async run(data: RemoveBirthdayRoleData): Promise<PartialResponseValue | null> {
 		// Get and check the guild:
-		const guild = this.context.client.guilds.cache.get(data.guildID);
+		const guild = this.container.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 30 seconds later.
-		if (!guild.available) return { type: ResponseType.Delay, value: Time.Second * 30 };
+		if (!guild.available) return { type: ResponseType.Delay, value: seconds(30) };
 
 		// Get and check the member:
 		const member = await guild.members.fetch(data.userID);
@@ -29,10 +29,10 @@ export class UserTask extends Task {
 			} catch (error) {
 				if (error.name === 'AbortError') {
 					// Retry again in 5 seconds if something bad happened
-					return { type: ResponseType.Delay, value: Time.Second * 5 };
+					return { type: ResponseType.Delay, value: seconds(5) };
 				}
 
-				this.context.logger.fatal(error);
+				this.container.logger.fatal(error);
 			}
 		}
 

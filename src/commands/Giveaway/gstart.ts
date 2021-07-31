@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -13,12 +14,12 @@ const options = ['winners'];
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	runIn: ['text', 'news'],
-	strategyOptions: { options }
+	options,
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get integer(): IArgument<number> {
-		return this.context.stores.get('arguments').get('integer') as IArgument<number>;
+		return this.container.stores.get('arguments').get('integer') as IArgument<number>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -29,17 +30,17 @@ export class UserCommand extends SkyraCommand {
 		const allowedRoles = await this.getAllowedRoles(args);
 		const time = await args.pick('time');
 		const offset = time.getTime() - Date.now();
-		if (offset < 9500) this.error(LanguageKeys.Giveaway.Time);
+		if (offset < seconds(9.5)) this.error(LanguageKeys.Giveaway.Time);
 		if (offset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 
 		const winners = await this.getWinners(args);
 		const title = await args.rest('string', { maximum: 256 });
 
-		await this.context.client.giveaways.create({
+		await this.container.client.giveaways.create({
 			allowedRoles,
-			channelID: channel.id,
+			channelId: channel.id,
 			endsAt: new Date(time.getTime() + 500),
-			guildID: message.guild.id,
+			guildId: message.guild.id,
 			minimum: 1,
 			minimumWinners: winners,
 			title

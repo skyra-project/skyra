@@ -1,7 +1,5 @@
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-
-const container = Store.injectedContext;
 
 /**
  * Represents a {@link GuildMemberFetchQueue.shards} entry.
@@ -40,33 +38,33 @@ export class GuildMemberFetchQueue {
 
 	/**
 	 * Adds a guild to the fetch queue.
-	 * @param shardID The shard id of the guild.
-	 * @param guildID The guild id to queue.
+	 * @param shardId The shard id of the guild.
+	 * @param guildId The guild id to queue.
 	 * @note This method is to be called on `GUILD_CREATE` raw event.
 	 */
-	public add(shardID: number, guildID: string) {
-		const entry = this.shards.get(shardID);
+	public add(shardId: number, guildId: string) {
+		const entry = this.shards.get(shardId);
 		if (entry) {
-			entry.pending.push(guildID);
+			entry.pending.push(guildId);
 		} else {
-			this.shards.set(shardID, {
+			this.shards.set(shardId, {
 				fetching: 0,
-				pending: [guildID]
+				pending: [guildId]
 			});
 		}
 	}
 
 	/**
 	 * Removes a guild from the fetch queue.
-	 * @param shardID The shard id of the guild.
-	 * @param guildID The guild id to queue.
+	 * @param shardId The shard id of the guild.
+	 * @param guildId The guild id to queue.
 	 * @note This method is to be called on `GUILD_DELETE` raw event.
 	 */
-	public remove(shardID: number, guildID: string) {
-		const entry = this.shards.get(shardID);
+	public remove(shardId: number, guildId: string) {
+		const entry = this.shards.get(shardId);
 		if (!entry) return;
 
-		const index = entry.pending.indexOf(guildID);
+		const index = entry.pending.indexOf(guildId);
 		if (index === -1) return;
 
 		entry.pending.splice(index, 1);
@@ -86,8 +84,8 @@ export class GuildMemberFetchQueue {
 	private fetchShard(entry: GuildMemberFetchQueueShardEntry) {
 		// There must be less than 100 entries being fetched from the same shard, and at least one entry pending:
 		while (entry.fetching < kMaximumQueriesPerMinute && entry.pending.length > 0) {
-			const guildID = entry.pending.shift()!;
-			const guild = container.client.guilds.cache.get(guildID);
+			const guildId = entry.pending.shift()!;
+			const guild = container.client.guilds.cache.get(guildId);
 
 			// If there is no guild, it's unavailable, skip it.
 			if (!guild?.available) continue;

@@ -1,17 +1,16 @@
-import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database';
+import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
-import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
+import { floatPromise, minutes } from '#utils/common';
+import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { pickRandom } from '#utils/util';
-import { Store } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { sendLoadingMessage } from '#utils/util';
+import { container } from '@sapphire/framework';
 import { deepClone } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import * as Lexure from 'lexure';
@@ -19,7 +18,7 @@ import { SkyraArgs } from './commands/parsers/SkyraArgs';
 import type { SkyraCommand } from './commands/SkyraCommand';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
-const TIMEOUT = Time.Minute * 15;
+const TIMEOUT = minutes(15);
 
 const enum UpdateType {
 	Set,
@@ -54,14 +53,14 @@ export class SettingsMenu {
 	}
 
 	public async init(context: SkyraCommand.Context): Promise<void> {
-		this.response = (await this.message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.t(LanguageKeys.System.Loading)))
-		)) as GuildMessage;
+		this.response = await sendLoadingMessage(this.message, this.t);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector().setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
 		this.llrc.setTime(TIMEOUT);
-		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author!.id === this.message.author.id);
-		this.messageCollector.on('collect', (msg) => this.onMessage(msg, context));
+		this.messageCollector = this.response.channel.createMessageCollector({
+			filter: (msg) => msg.author!.id === this.message.author.id
+		});
+		this.messageCollector.on('collect', (msg) => this.onMessage(msg as GuildMessage, context));
 		await this._renderResponse();
 	}
 
@@ -109,7 +108,7 @@ export class SettingsMenu {
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
-			.setColor(await Store.injectedContext.db.fetchColor(this.message))
+			.setColor(await container.db.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
 			.setFooter(parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();
@@ -131,7 +130,7 @@ export class SettingsMenu {
 			}
 		} else {
 			//                                                                                                            parser context
-			const conf = Store.injectedContext.stores.get('commands').get('conf') as SkyraCommand;
+			const conf = container.stores.get('commands').get('conf') as SkyraCommand;
 			// eslint-disable-next-line @typescript-eslint/dot-notation
 			const lexureParser = new Lexure.Parser(conf['lexer'].setInput(message.content).lex());
 			const lexureArgs = new Lexure.Args(lexureParser.parse());
@@ -150,12 +149,12 @@ export class SettingsMenu {
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
-		if (reaction.userID !== this.message.author.id) return;
+		if (reaction.userId !== this.message.author.id) return;
 		this.llrc?.setTime(TIMEOUT);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc?.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			floatPromise(this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
+			floatPromise(this._removeReactionFromUser(EMOJIS.BACK, reaction.userId));
 			if (this.schema.parent) {
 				this.schema = this.schema.parent;
 				this.oldValue = undefined;
@@ -164,13 +163,13 @@ export class SettingsMenu {
 		}
 	}
 
-	private async _removeReactionFromUser(reaction: string, userID: string) {
+	private async _removeReactionFromUser(reaction: string, userId: string) {
 		if (!this.response) return;
 		try {
 			return await api()
 				.channels(this.message.channel.id)
 				.messages(this.response.id)
-				.reactions(encodeURIComponent(reaction), userID === this.message.client.user!.id ? '@me' : userID)
+				.reactions(encodeURIComponent(reaction), userId === this.message.client.user!.id ? '@me' : userId)
 				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
@@ -207,7 +206,8 @@ export class SettingsMenu {
 	private async _renderResponse() {
 		if (!this.response) return;
 		try {
-			await this.response.edit(await this.render());
+			const embed = await this.render();
+			await this.response.edit({ embeds: [embed] });
 		} catch (error) {
 			if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
 				this.response = null;
@@ -270,11 +270,11 @@ export class SettingsMenu {
 	private stop(): void {
 		if (this.response) {
 			if (this.response.reactions.cache.size) {
-				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.Error, error));
+				floatPromise(this.response.reactions.removeAll());
 			}
-			this.response
-				.edit(this.t(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
-				.catch((error) => this.message.client.emit(Events.Error, error));
+
+			const content = this.t(LanguageKeys.Commands.Admin.ConfMenuSaved);
+			floatPromise(this.response.edit({ content, embeds: [] }));
 		}
 
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();

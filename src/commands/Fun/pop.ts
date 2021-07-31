@@ -1,27 +1,27 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Colors } from '#lib/types/Constants';
+import { minutes, seconds } from '#utils/common';
 import { random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.PopDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PopExtended,
-	strategyOptions: { options: ['x', 'width', 'y', 'height', 'l', 'length'] }
+	options: ['x', 'width', 'y', 'height', 'l', 'length']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 	private get integer(): Argument<number> {
-		return this.context.stores.get('arguments').get('integer') as Argument<number>;
+		return this.container.stores.get('arguments').get('integer') as Argument<number>;
 	}
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const time = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second * 10, maximum: Time.Minute * 2 });
+		const time = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(10), maximum: minutes(2) });
 		const [width, height, length] = await Promise.all([
 			this.parseOption(args, ['x', 'width'], 8, 1, 10),
 			this.parseOption(args, ['y', 'height'], 3, 1, 8),
@@ -38,8 +38,9 @@ export class UserCommand extends SkyraCommand {
 			.setDescription(board)
 			.setTimestamp();
 
-		await message.send(embed);
-		const winners = await message.channel.awaitMessages((message: Message) => !message.author.bot && message.content === solution, {
+		await send(message, { embeds: [embed] });
+		const winners = await message.channel.awaitMessages({
+			filter: (message: Message) => !message.author.bot && message.content === solution,
 			max: 1,
 			time
 		});
@@ -51,8 +52,8 @@ export class UserCommand extends SkyraCommand {
 			embed.setColor(Colors.Green).setTitle(args.t(LanguageKeys.Commands.Fun.PopTitleWinner, { value }));
 		}
 
-		const unmasked = board.replaceAll('||', '').replaceAll('``', '');
-		await message.send(embed.setDescription(unmasked));
+		embed.setDescription(board.replaceAll('||', '').replaceAll('``', ''));
+		await send(message, { embeds: [embed] });
 	}
 
 	private generatePop(length: number) {

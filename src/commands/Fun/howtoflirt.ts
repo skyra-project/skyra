@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
@@ -24,11 +25,9 @@ const imageCoordinates = [
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pants'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -37,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
-		return message.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
+		return send(message, { files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}
 
 	public async onLoad() {
@@ -45,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const images = await Promise.all([fetchAvatar(message.author, 128), fetchAvatar(user, 128)]);

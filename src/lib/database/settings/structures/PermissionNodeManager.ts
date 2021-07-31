@@ -33,8 +33,8 @@ export class PermissionNodeManager implements IBaseManager {
 		return this.runUser(member, command) ?? this.runRole(member, command);
 	}
 
-	public has(roleID: string) {
-		return this.sorted.has(roleID);
+	public has(roleId: string) {
+		return this.sorted.has(roleId);
 	}
 
 	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
@@ -149,9 +149,9 @@ export class PermissionNodeManager implements IBaseManager {
 	private runUser(member: GuildMember, command: SkyraCommand) {
 		// Assume sorted data
 		const permissionNodeRoles = this.#settings.permissionsUsers;
-		const memberID = member.id;
+		const memberId = member.id;
 		for (const node of permissionNodeRoles) {
-			if (node.id !== memberID) continue;
+			if (node.id !== memberId) continue;
 			if (matchAny(node.allow, command)) return true;
 			if (matchAny(node.deny, command)) return false;
 		}

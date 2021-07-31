@@ -3,8 +3,11 @@ import { writeSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Args, IArgument, PieceContext, Store } from '@sapphire/framework';
+import { seconds } from '#utils/common';
+import { assertNonThread } from '#utils/functions';
+import { Args, container, IArgument, PieceContext } from '@sapphire/framework';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import type { TextChannel } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -14,10 +17,10 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 
 	public constructor(context: PieceContext, options: ChannelConfigurationCommand.Options) {
 		super(context, {
-			bucket: 2,
-			cooldown: 10,
+			cooldownDelay: seconds(10),
+			cooldownLimit: 2,
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			...options
 		});
 
@@ -38,12 +41,13 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 			settings[this.settingsKey] = channel.id;
 		});
 
-		return message.send(args.t(this.responseKey, { channel: channel.toString() }));
+		const content = args.t(this.responseKey, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	private static hereOrTextChannelResolver = Args.make<TextChannel>((argument, context) => {
-		if (argument === 'here') return Args.ok(context.message.channel as TextChannel);
-		return (Store.injectedContext.stores.get('arguments').get('textChannelName') as IArgument<TextChannel>).run(argument, context);
+		if (argument === 'here') return Args.ok(assertNonThread(context.message.channel) as TextChannel);
+		return (container.stores.get('arguments').get('textChannelName') as IArgument<TextChannel>).run(argument, context);
 	});
 }
 

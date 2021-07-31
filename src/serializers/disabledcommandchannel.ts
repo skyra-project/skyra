@@ -4,7 +4,7 @@ import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<DisabledCommandChannel> {
 	public async parse(args: Serializer.Args) {
-		const channel = await args.pickResult('textChannel');
+		const channel = await args.pickResult('guildTextChannel');
 		if (!channel.success) return this.errorFromArgument(args, channel.error);
 
 		const commands = await args.repeatResult('command');
@@ -19,12 +19,12 @@ export class UserSerializer extends Serializer<DisabledCommandChannel> {
 			throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
 
-		if (channel.type !== 'text') {
+		if (channel.type !== 'GUILD_TEXT') {
 			throw t(LanguageKeys.Serializers.InvalidChannel, { name: entry.name });
 		}
 
 		for (const command of value.commands) {
-			if (!this.context.stores.get('commands').has(command)) {
+			if (!this.container.stores.get('commands').has(command)) {
 				throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 		}

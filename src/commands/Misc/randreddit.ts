@@ -3,9 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
-import type { TextChannel } from 'discord.js';
+import { send } from '@skyra/editable-commands';
 
 const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const kTitleBlockList = /nsfl/i;
@@ -13,7 +14,6 @@ const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rand', 'rand-reddit', 'reddit'],
-	cooldown: 3,
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
 })
@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
-		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
+		const nsfwEnabled = isNsfwChannel(message.channel);
 		const posts = nsfwEnabled
 			? data.children.filter((child) => !kTitleBlockList.test(child.data.title))
 			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));
@@ -36,14 +36,13 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.send(
-			args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
-				title: post.title,
-				author: post.author,
-				url: post.spoiler ? `||${post.url}||` : post.url
-			}),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+
+		const content = args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
+			title: post.title,
+			author: post.author,
+			url: post.spoiler ? `||${post.url}||` : post.url
+		});
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async fetchData(reddit: string) {

@@ -3,6 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import type { MoveEntry } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +12,6 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended
 })
@@ -48,7 +48,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
 		})
@@ -60,14 +60,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				return embed
 					.addField(embedTranslations.types, moveData.type, true)
 					.addField(embedTranslations.basePower, moveData.basePower, true)
-					.addField(embedTranslations.pp, moveData.pp, true)
+					.addField(embedTranslations.pp, formatNumber(t, moveData.pp), true)
 					.addField(embedTranslations.accuracy, `${moveData.accuracy}%`, true)
 					.addField(externalResources, externalSources);
 			})
 			.addPageEmbed((embed) =>
 				embed
 					.addField(embedTranslations.category, moveData.category, true)
-					.addField(embedTranslations.priority, moveData.priority, true)
+					.addField(embedTranslations.priority, formatNumber(t, moveData.priority), true)
 					.addField(embedTranslations.target, moveData.target, true)
 					.addField(embedTranslations.contestCondition, moveData.contestType ?? embedTranslations.none, true)
 					.addField(externalResources, externalSources)
@@ -76,8 +76,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// If the move has zMovePower or maxMovePower then squeeze it in between as a page
 		if (moveData.zMovePower || moveData.maxMovePower) {
 			display.addPageEmbed((embed) => {
-				if (moveData.maxMovePower) embed.addField(embedTranslations.maxMovePower, moveData.maxMovePower);
-				if (moveData.zMovePower) embed.addField(embedTranslations.zMovePower, moveData.zMovePower);
+				if (moveData.maxMovePower) {
+					embed.addField(embedTranslations.maxMovePower, formatNumber(t, moveData.maxMovePower));
+				}
+				if (moveData.zMovePower) {
+					embed.addField(embedTranslations.zMovePower, formatNumber(t, moveData.zMovePower));
+				}
 
 				embed.addField(externalResources, externalSources);
 				return embed;

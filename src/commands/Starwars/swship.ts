@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getStarship } from '#utils/APIs/StarWars';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -9,7 +10,6 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-space-ship', 'swship', 'star-wars-ship'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.StarshipDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.StarshipExtended
 })
@@ -27,7 +27,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
@@ -47,31 +47,23 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.crew) {
-						description.push(`**${starshipTitles.crew}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.crew })}`);
+						description.push(`**${starshipTitles.crew}**: ${formatNumber(t, result.crew)}`);
 					}
 
 					if (result.passengers) {
-						description.push(
-							`**${starshipTitles.amountOfPassengers}**: ${t(LanguageKeys.Globals.NumberValue, {
-								value: result.passengers
-							})}`
-						);
+						description.push(`**${starshipTitles.amountOfPassengers}**: ${formatNumber(t, result.passengers)}`);
 					}
 
 					if (result.length) {
-						description.push(`**${starshipTitles.length}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.length })}`);
+						description.push(`**${starshipTitles.length}**: ${formatNumber(t, result.length)}`);
 					}
 
 					if (result.costInCredits) {
-						description.push(
-							`**${starshipTitles.costInCredits}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.costInCredits })}`
-						);
+						description.push(`**${starshipTitles.costInCredits}**: ${formatNumber(t, result.costInCredits)}`);
 					}
 
 					if (result.cargoCapacity) {
-						description.push(
-							`**${starshipTitles.cargoCapacity}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.cargoCapacity })}`
-						);
+						description.push(`**${starshipTitles.cargoCapacity}**: ${formatNumber(t, result.cargoCapacity)}`);
 					}
 
 					if (result.consumables) {
@@ -81,33 +73,21 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.maxAtmospheringSpeed) {
-						description.push(
-							`**${starshipTitles.maximumAtmospheringSpeed}**: ${t(LanguageKeys.Globals.NumberValue, {
-								value: result.maxAtmospheringSpeed
-							})}`
-						);
+						description.push(`**${starshipTitles.maximumAtmospheringSpeed}**: ${formatNumber(t, result.maxAtmospheringSpeed)}`);
 					}
 
 					if (result.hyperdriveRating) {
-						description.push(
-							`**${starshipTitles.hyperdriveRating}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.hyperdriveRating })}`
-						);
+						description.push(`**${starshipTitles.hyperdriveRating}**: ${formatNumber(t, result.hyperdriveRating)}`);
 					}
 
 					if (result.MGLT) {
-						description.push(
-							`**${starshipTitles.megalightsTravelSpeed}**: ${t(LanguageKeys.Globals.NumberValue, {
-								value: result.MGLT
-							})}`
-						);
+						description.push(`**${starshipTitles.megalightsTravelSpeed}**: ${formatNumber(t, result.MGLT)}`);
 					}
 
 					if (result.manufacturers?.length) {
-						description.push(
-							`**${starshipTitles.manufacturers}**: ${t(LanguageKeys.Globals.AndListValue, {
-								value: result.manufacturers.map(toTitleCase)
-							})}`
-						);
+						`**${starshipTitles.manufacturers}**: ${t(LanguageKeys.Globals.AndListValue, {
+							value: result.manufacturers.map(toTitleCase)
+						})}`;
 					}
 
 					return embed

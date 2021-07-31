@@ -2,23 +2,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CustomSearchType, GoogleCSEItem, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/APIs/Google';
-import { BrandingColors } from '#utils/constants';
-import { getImageUrl, pickRandom } from '#utils/util';
+import { getImageUrl, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Google.GsearchDescription,
 	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const query = (await args.rest('string')).replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+');
-		const { t } = args;
 		const [response, { items }] = await Promise.all([
-			message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
+			sendLoadingMessage(message, args.t),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
@@ -31,7 +28,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, items: GoogleCSEItem[]) {
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const item of items) {
 			display.addPageEmbed((embed) => {

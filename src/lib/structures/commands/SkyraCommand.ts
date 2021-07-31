@@ -1,9 +1,12 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import type { CustomGet } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Awaited, CommandContext, PermissionsPrecondition, PieceContext, PreconditionEntryResolvable, UserError } from '@sapphire/framework';
+import { OWNERS } from '#root/config';
+import { seconds } from '#utils/common';
+import { CommandContext, PieceContext, PreconditionContainerArray, UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
-import type { Message, PermissionResolvable } from 'discord.js';
+import type { Message } from 'discord.js';
 import * as Lexure from 'lexure';
 import { sep } from 'path';
 import { SkyraArgs } from './parsers/SkyraArgs';
@@ -23,7 +26,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	public readonly fullCategory: readonly string[];
 
 	public constructor(context: PieceContext, options: SkyraCommand.Options) {
-		super(context, SkyraCommand.resolvePreConditions(context, options));
+		super(context, { cooldownDelay: seconds(10), cooldownLimit: 2, cooldownFilteredUsers: OWNERS, generateDashLessAliases: true, ...options });
 
 		this.guarded = options.guarded ?? false;
 		this.hidden = options.hidden ?? false;
@@ -59,95 +62,63 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	public async preParse(message: Message, parameters: string, context: CommandContext): Promise<SkyraCommand.Args> {
 		const parser = new Lexure.Parser(this.lexer.setInput(parameters).lex()).setUnorderedStrategy(this.strategy);
 		const args = new Lexure.Args(parser.parse());
-		return new SkyraArgs(message, this, args, context, await message.fetchT());
-	}
-
-	public run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context): Awaited<unknown> {
-		if (!this.subCommands) throw new Error(`The command ${this.name} does not have a 'run' method and does not support sub-commands.`);
-		return this.subCommands.run({ message, args, context, command: this });
+		return new SkyraArgs(message, this, args, context, await fetchT(message));
 	}
 
 	protected error(identifier: string | UserError, context?: unknown): never {
 		throw typeof identifier === 'string' ? new UserError({ identifier, context }) : identifier;
 	}
 
-	protected static resolvePreConditions(context: PieceContext, options: SkyraCommand.Options): SkyraCommand.Options {
-		options.generateDashLessAliases ??= true;
-
-		const preconditions = (options.preconditions ??= []) as PreconditionEntryResolvable[];
-
-		if (options.nsfw) preconditions.push('NSFW');
-		if (options.spam) preconditions.push('Spam');
-		if (options.permissions) preconditions.push(new PermissionsPrecondition(options.permissions));
-
-		const runInPreCondition = this.resolveRunInPreCondition(context, options.runIn);
-		if (runInPreCondition !== null) preconditions.push(runInPreCondition);
-
-		preconditions.push(this.resolvePermissionLevelPreCondition(context, options.permissionLevel));
-
-		if (options.bucket && options.cooldown) {
-			preconditions.push({ name: 'Cooldown', context: { limit: options.bucket, delay: options.cooldown } });
-		}
-
-		return options;
+	protected parseConstructorPreConditions(options: SkyraCommand.Options): void {
+		super.parseConstructorPreConditions(options);
+		this.parseConstructorPreConditionsSpam(options);
+		this.parseConstructorPreConditionsPermissionLevel(options);
 	}
 
-	protected static resolvePermissionLevelPreCondition(context: PieceContext, permissionLevel?: PermissionLevels): PreconditionEntryResolvable {
-		switch (permissionLevel ?? PermissionLevels.Everyone) {
+	protected parseConstructorPreConditionsSpam(options: SkyraCommand.Options): void {
+		if (options.spam) this.preconditions.append('Spam');
+	}
+
+	protected parseConstructorPreConditionsPermissionLevel(options: SkyraCommand.Options): void {
+		if (options.permissionLevel === PermissionLevels.BotOwner) {
+			this.preconditions.append('BotOwner');
+			return;
+		}
+
+		const container = new PreconditionContainerArray(['BotOwner'], this.preconditions);
+		switch (options.permissionLevel ?? PermissionLevels.Everyone) {
 			case PermissionLevels.Everyone:
-				return ['BotOwner', 'Everyone'];
+				container.append('Everyone');
+				break;
 			case PermissionLevels.Moderator:
-				return ['BotOwner', 'Moderator'];
+				container.append('Moderator');
+				break;
 			case PermissionLevels.Administrator:
-				return ['BotOwner', 'Administrator'];
+				container.append('Administrator');
+				break;
 			case PermissionLevels.ServerOwner:
-				return ['BotOwner', 'ServerOwner'];
-			case PermissionLevels.BotOwner:
-				return 'BotOwner';
+				container.append('ServerOwner');
+				break;
 			default:
 				throw new Error(
-					`SkyraCommand[${context.name}]: "permissionLevel" was specified as an invalid permission level (${permissionLevel}).`
+					`SkyraCommand[${this.name}]: "permissionLevel" was specified as an invalid permission level (${options.permissionLevel}).`
 				);
 		}
-	}
 
-	protected static resolveRunInPreCondition(context: PieceContext, runIn?: SkyraCommand.RunInOption[]): PreconditionEntryResolvable | null {
-		runIn = [...new Set(runIn ?? (['text', 'news', 'dm'] as const))];
-
-		// If all channels are allowed, do not add a precondition:
-		if (runIn.length === 3) return null;
-		if (runIn.length === 0) throw new Error(`SkyraCommand[${context.name}]: "runIn" was specified as an empty array.`);
-
-		const array: string[] = [];
-		if (runIn.includes('dm')) array.push('DMOnly');
-
-		const hasText = runIn.includes('text');
-		const hasNews = runIn.includes('news');
-		if (hasText && hasNews) array.push('GuildOnly');
-		else if (hasText) array.push('TextOnly');
-		else if (hasNews) array.push('NewsOnly');
-
-		return array;
+		this.preconditions.append(container);
 	}
 }
 
 export namespace SkyraCommand {
-	export type RunInOption = 'text' | 'news' | 'dm';
-
 	/**
 	 * The SkyraCommand Options
 	 */
 	export type Options = SubCommandPluginCommand.Options & {
-		bucket?: number;
-		cooldown?: number;
 		description: CustomGet<string, string>;
 		extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
 		guarded?: boolean;
 		hidden?: boolean;
-		nsfw?: boolean;
 		permissionLevel?: number;
-		permissions?: PermissionResolvable;
-		runIn?: RunInOption[];
 		spam?: boolean;
 	};
 

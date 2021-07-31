@@ -4,13 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rs'],
 	description: LanguageKeys.Commands.Admin.RoleSetDescription,
 	extendedHelp: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', 'list', { input: 'auto', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -33,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 			);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetRemoved, { name, roles: roles.map((role) => role.name) }));
+		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetRemoved, { name, roles: roles.map((role) => role.name) }));
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -46,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (!name) {
 			await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, []]]);
-			return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetResetAll));
+			return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetAll));
 		}
 
 		const arrayIndex = sets.findIndex((set) => set.name === name);
@@ -56,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.Roles.UniqueRoleSets].splice(arrayIndex, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetResetGroup, { name }));
+		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetGroup, { name }));
 	}
 
 	// This subcommand will run if a user doesn't type add or remove. The bot will then add AND remove based on whether that role is in the set already.
@@ -86,7 +87,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, newSets]]);
-		return message.send(args.t(LanguageKeys.Commands.Admin.RoleSetUpdated, { name }));
+		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetUpdated, { name }));
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.
@@ -96,7 +97,7 @@ export class UserCommand extends SkyraCommand {
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 
 		const list = await this.handleList(message, args, sets);
-		return message.send(list);
+		return send(message, list.join('\n'));
 	}
 
 	private async handleList(message: GuildMessage, args: SkyraCommand.Args, sets: UniqueRoleSet[]) {
@@ -165,17 +166,18 @@ export class UserCommand extends SkyraCommand {
 			// Create a new array that we can use to overwrite the existing one in settings
 			const sets = allRoleSets.map((set) => {
 				if (set.name !== name) return set;
-				const finalRoleIDs = [...set.roles];
-				for (const role of roles) if (!finalRoleIDs.includes(role.id)) finalRoleIDs.push(role.id);
+				const finalRoles = [...set.roles];
+				for (const role of roles) if (!finalRoles.includes(role.id)) finalRoles.push(role.id);
 
-				return { name, roles: finalRoleIDs };
+				return { name, roles: finalRoles };
 			});
 			settings[GuildSettings.Roles.UniqueRoleSets] = sets;
 
 			return false;
 		});
 
-		return message.send(
+		return send(
+			message,
 			args.t(created ? LanguageKeys.Commands.Admin.RoleSetCreated : LanguageKeys.Commands.Admin.RoleSetAdded, {
 				name,
 				roles: roles.map((role) => role.name)

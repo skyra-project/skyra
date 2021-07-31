@@ -9,10 +9,9 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['emojis'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.EmotesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmotesExtended,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
@@ -39,7 +38,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, animatedEmojis: string[][], staticEmojis: string[][]) {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(
 					[`${message.guild.emojis.cache.size}`, `${t(LanguageKeys.Commands.Tools.EmotesTitle)}`, `${message.guild.name}`].join(' '),
 					message.guild.iconURL({ format: 'png' })!

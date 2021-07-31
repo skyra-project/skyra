@@ -7,23 +7,25 @@ export const ResolveSuggestionActions = FT<{ author: string }, { accept: string;
 export const ResolveSuggestionActionsDms = FT<{ author: string; guild: string }, { accept: string; consider: string; deny: string }>(
 	'commands/suggestion:resolveSuggestionActionsDms'
 );
-export const ResolveSuggestionAuthorAdmin = T<string>('commands/suggestion:resolveSuggestionAuthorAdmin');
-export const ResolveSuggestionAuthorModerator = T<string>('commands/suggestion:resolveSuggestionAuthorModerator');
-export const ResolveSuggestionDefaultComment = T<string>('commands/suggestion:resolveSuggestionDefaultComment');
-export const ResolveSuggestionDescription = T<string>('commands/suggestion:resolveSuggestionDescription');
-export const ResolveSuggestionDmFail = T<string>('commands/suggestion:resolveSuggestionDmFail');
+export const ResolveSuggestionTooManyFields = T('commands/suggestion:resolveSuggestionTooManyFields');
+export const ResolveSuggestionTooManyCharacters = FT<{ maximum: number; amount: number }>('commands/suggestion:resolveSuggestionTooManyCharacters');
+export const ResolveSuggestionAuthorAdmin = T('commands/suggestion:resolveSuggestionAuthorAdmin');
+export const ResolveSuggestionAuthorModerator = T('commands/suggestion:resolveSuggestionAuthorModerator');
+export const ResolveSuggestionDefaultComment = T('commands/suggestion:resolveSuggestionDefaultComment');
+export const ResolveSuggestionDescription = T('commands/suggestion:resolveSuggestionDescription');
+export const ResolveSuggestionDmFail = T('commands/suggestion:resolveSuggestionDmFail');
 export const ResolveSuggestionExtended = T<LanguageHelpDisplayOptions>('commands/suggestion:resolveSuggestionExtended');
-export const ResolveSuggestionIDNotFound = T<string>('commands/suggestion:resolveSuggestionIdNotFound');
-export const ResolveSuggestionInvalidID = T<string>('commands/suggestion:resolveSuggestionInvalidId');
+export const ResolveSuggestionIdNotFound = T('commands/suggestion:resolveSuggestionIdNotFound');
+export const ResolveSuggestionInvalidId = T('commands/suggestion:resolveSuggestionInvalidId');
 export const ResolveSuggestionInvalidAction = FT<{ parameter: string; possibles: readonly string[] }, string>(
 	'commands/suggestion:resolveSuggestionInvalidAction'
 );
-export const ResolveSuggestionMessageNotFound = T<string>('commands/suggestion:resolveSuggestionMessageNotFound');
+export const ResolveSuggestionMessageNotFound = T('commands/suggestion:resolveSuggestionMessageNotFound');
 export const ResolveSuggestionSuccess = FT<{ id: number; actionText: string }, string>('commands/suggestion:resolveSuggestionSuccess');
-export const ResolveSuggestionSuccessAcceptedText = T<string>('commands/suggestion:resolveSuggestionSuccessAcceptedText');
-export const ResolveSuggestionSuccessConsideredText = T<string>('commands/suggestion:resolveSuggestionSuccessConsideredText');
-export const ResolveSuggestionSuccessDeniedText = T<string>('commands/suggestion:resolveSuggestionSuccessDeniedText');
-export const SuggestDescription = T<string>('commands/suggestion:suggestDescription');
+export const ResolveSuggestionSuccessAcceptedText = T('commands/suggestion:resolveSuggestionSuccessAcceptedText');
+export const ResolveSuggestionSuccessConsideredText = T('commands/suggestion:resolveSuggestionSuccessConsideredText');
+export const ResolveSuggestionSuccessDeniedText = T('commands/suggestion:resolveSuggestionSuccessDeniedText');
+export const SuggestDescription = T('commands/suggestion:suggestDescription');
 export const SuggestExtended = T<LanguageHelpDisplayOptions>('commands/suggestion:suggestExtended');
 export const SuggestNoPermissions = FT<{ username: string; channel: string }, string>('commands/suggestion:suggestNopermissions');
 export const SuggestNoSetup = FT<{ username: string }, string>('commands/suggestion:suggestNoSetup');

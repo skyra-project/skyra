@@ -16,7 +16,6 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('KITSU_ID', 'KITSU_TOKEN'),
-	cooldown: 10,
 	description: LanguageKeys.Commands.Animation.KitsuMangaDescription,
 	extendedHelp: LanguageKeys.Commands.Animation.KitsuMangaExtended
 })
@@ -63,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Animation.KitsuMangaEmbedData);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setFooter(' - © kitsu.io')
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setFooter(' - © kitsu.io')
 		});
 
 		for (const entry of entries) {

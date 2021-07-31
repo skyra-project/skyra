@@ -1,4 +1,5 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
+import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';
@@ -11,24 +12,24 @@ interface BodyData {
 @ApplyOptions<RouteOptions>({ name: 'userSettings', route: 'users/@me/settings' })
 export class UserRoute extends Route {
 	@authenticated()
-	@ratelimit(5, 1000, true)
+	@ratelimit(seconds(1), 5, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const user = await users.ensureProfile(request.auth!.id);
 
 		return response.json(user);
 	}
 
 	@authenticated()
-	@ratelimit(2, 1000, true)
+	@ratelimit(seconds(1), 2, true)
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { data: BodyData };
 
-		const { users } = this.context.db;
-		const userID = request.auth!.id;
+		const { users } = this.container.db;
+		const userId = request.auth!.id;
 
 		try {
-			const newSettings = await users.lock([userID], async (id) => {
+			const newSettings = await users.lock([userId], async (id) => {
 				const user = await users.ensureProfile(id);
 
 				if (requestBody.data.darkTheme) {
@@ -46,7 +47,7 @@ export class UserRoute extends Route {
 
 			return response.json({ newSettings });
 		} catch (errors) {
-			this.context.client.logger.error(`[${userID}] failed user settings update:\n${inspect(errors)}`);
+			this.container.logger.error(`[${userId}] failed user settings update:\n${inspect(errors)}`);
 
 			return response.error(HttpCodes.InternalServerError);
 		}

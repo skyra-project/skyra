@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { promptForMessage } from '#utils/functions';
-import type { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { decode, jaroWinkler } from '../External/jaro-winkler';
@@ -10,11 +10,11 @@ type FuzzySearchAccess<V> = (value: V) => string;
 type FuzzySearchFilter<V> = (value: V) => boolean;
 
 export class FuzzySearch<K extends string, V> {
-	private readonly kCollection: Collection<K, V>;
+	private readonly kCollection: Map<K, V>;
 	private readonly kAccess: FuzzySearchAccess<V>;
 	private readonly kFilter: FuzzySearchFilter<V>;
 
-	public constructor(collection: Collection<K, V>, access: FuzzySearchAccess<V>, filter: FuzzySearchFilter<V> = () => true) {
+	public constructor(collection: Map<K, V>, access: FuzzySearchAccess<V>, filter: FuzzySearchFilter<V> = () => true) {
 		this.kCollection = collection;
 		this.kAccess = access;
 		this.kFilter = filter;
@@ -79,7 +79,7 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
-		const t = await message.fetchT();
+		const t = await fetchT(message);
 		const n = await promptForMessage(
 			message,
 			t(LanguageKeys.FuzzySearch.Matches, {

@@ -3,17 +3,16 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { getImage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pepelove'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -32,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 			.printImage(this.handsImage, 0, 0, 512, 512)
 			.png();
 
-		return message.channel.send({ files: [{ attachment, name: 'peepoLove.png' }] });
+		return send(message, { files: [{ attachment, name: 'peepoLove.png' }] });
 	}
 
 	public async onLoad() {

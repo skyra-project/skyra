@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
 import { Events } from '#lib/types/Enums';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
 
@@ -42,7 +42,7 @@ export class ScheduleEntity extends BaseEntity {
 	 * The name of the Task this scheduled task will run
 	 */
 	@Column('varchar')
-	public taskID!: string;
+	public taskId!: string;
 
 	/**
 	 * The Date when this scheduled task ends
@@ -84,7 +84,7 @@ export class ScheduleEntity extends BaseEntity {
 	}
 
 	public get task() {
-		return Store.injectedContext.settings.tasks.get(this.taskID) ?? null;
+		return container.settings.tasks.get(this.taskId) ?? null;
 	}
 
 	public get running() {
@@ -100,7 +100,7 @@ export class ScheduleEntity extends BaseEntity {
 		try {
 			response = (await task.run({ ...(this.data ?? {}), id: this.id })) as PartialResponseValue | null;
 		} catch (error) {
-			Store.injectedContext.client.emit(Events.TaskError, error, { piece: task, entity: this });
+			container.client.emit(Events.TaskError, error, { piece: task, entity: this });
 		}
 
 		this.#running = false;

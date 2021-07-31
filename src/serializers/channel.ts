@@ -4,11 +4,11 @@ import { Awaited, isNullish } from '@sapphire/utilities';
 import type { Channel } from 'discord.js';
 
 @ApplyOptions<Serializer.Options>({
-	aliases: ['textChannel', 'voiceChannel', 'categoryChannel']
+	aliases: ['guildTextChannel', 'guildVoiceChannel', 'guildCategoryChannel']
 })
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args, { entry }: SerializerUpdateContext) {
-		const result = await args.pickResult(entry.type as 'textChannel' | 'voiceChannel' | 'categoryChannel');
+		const result = await args.pickResult(entry.type as 'guildTextChannel' | 'guildVoiceChannel' | 'guildCategoryChannel');
 		return result.success ? this.ok(result.value.id) : this.errorFromArgument(args, result.error);
 	}
 
@@ -30,11 +30,11 @@ export class UserSerializer extends Serializer<string> {
 		if (isNullish(Reflect.get(channel, 'guild'))) return false;
 		switch (type) {
 			case 'textChannel':
-				return channel.type === 'text' || channel.type === 'news';
+				return channel.type === 'GUILD_TEXT' || channel.type === 'GUILD_NEWS';
 			case 'voiceChannel':
-				return channel.type === 'voice';
+				return channel.type === 'GUILD_VOICE';
 			case 'categoryChannel':
-				return channel.type === 'category';
+				return channel.type === 'GUILD_CATEGORY';
 		}
 
 		return false;

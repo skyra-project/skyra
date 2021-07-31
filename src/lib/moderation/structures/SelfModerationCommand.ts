@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { PieceContext } from '@sapphire/framework';
 import { codeBlock, PickByValue } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
@@ -86,9 +87,8 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 export abstract class SelfModerationCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
 		super(context, {
-			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			...options
 		});
 	}
@@ -122,7 +122,8 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 				break;
 		}
 
-		return message.send(SelfModerationCommand.getLanguageKey(t, type, value));
+		const content = SelfModerationCommand.getLanguageKey(t, type, value);
+		return send(message, content);
 	}
 
 	protected async show(message: GuildMessage) {
@@ -136,26 +137,23 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 		]);
 
 		const [yes, no] = [t(LanguageKeys.Arguments.BoolEnabled), t(LanguageKeys.Arguments.BoolDisabled)];
-		return message.send(
-			codeBlock(
-				'prolog',
-				t(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
-					kEnabled: enabled ? yes : no,
-					kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
-					kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
-					kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-					kHardAction: t(SelfModerationCommand.displayHardAction(hardAction)),
-					hardActionDurationText: hardActionDuration
-						? t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration })
-						: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent),
-					thresholdMaximumText: adder?.maximum ? adder.maximum : t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-					thresholdDurationText: adder?.duration
-						? t(LanguageKeys.Globals.DurationValue, { value: adder.duration })
-						: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-					joinArrays: '\n'
-				})
-			)
-		);
+		const codeBlockContent = t(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
+			kEnabled: enabled ? yes : no,
+			kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
+			kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
+			kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
+			kHardAction: t(SelfModerationCommand.displayHardAction(hardAction)),
+			hardActionDurationText: hardActionDuration
+				? t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration })
+				: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent),
+			thresholdMaximumText: adder?.maximum ? adder.maximum : t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+			thresholdDurationText: adder?.duration
+				? t(LanguageKeys.Globals.DurationValue, { value: adder.duration })
+				: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+			joinArrays: '\n'
+		});
+		const content = codeBlock('prolog', codeBlockContent);
+		return send(message, content);
 	}
 
 	private getAction(args: SkyraCommand.Args) {

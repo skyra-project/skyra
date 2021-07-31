@@ -12,7 +12,7 @@ export class BannerEntity extends BaseEntity {
 	public title!: string;
 
 	@Column('varchar', { length: 19 })
-	public authorID!: string;
+	public authorId!: string;
 
 	@Column('integer')
 	public price!: number;

@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { safeWrapPromise } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
-import { Store, UserError } from '@sapphire/framework';
+import { container, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import { cyan, gray, red } from 'colorette';
@@ -147,7 +147,7 @@ export async function getData(query: string, lang: string): Promise<Weather> {
 		}
 
 		// Log the error and return unknown error:
-		Store.injectedContext.logger.error(`[${cyan('WEATHER')}]: Unknown Error Body Received: ${gray(value)}`);
+		container.logger.error(`[${cyan('WEATHER')}]: Unknown Error Body Received: ${gray(value)}`);
 		throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError, context: { query } });
 	}
 
@@ -158,7 +158,7 @@ export async function getData(query: string, lang: string): Promise<Weather> {
 	if (error.code === 503) throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherServiceUnavailable, context: { query } });
 
 	// Log the error and return unknown error:
-	Store.injectedContext.logger.error(`[${cyan('WEATHER')}]: Unknown Error Code Received: ${red(error.code.toString())} - ${gray(error.body)}`);
+	container.logger.error(`[${cyan('WEATHER')}]: Unknown Error Code Received: ${red(error.code.toString())} - ${gray(error.body)}`);
 	throw new UserError({ identifier: LanguageKeys.Commands.Google.WeatherUnknownError, context: { query } });
 }
 

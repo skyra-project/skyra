@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { minutes } from '#utils/common';
 import { resolveEmoji } from '#utils/util';
-import { Time } from '@sapphire/time-utilities';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
@@ -25,7 +25,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 	private winner: readonly [number, number][] | null = null;
 
 	public constructor(message: Message, playerA: BaseController<number>, playerB: BaseController<number>, turn = ConnectFourGame.getTurn()) {
-		super(message, playerA, playerB, ConnectFourGame.emojis, Time.Minute * 5, turn);
+		super(message, playerA, playerB, ConnectFourGame.emojis, minutes(5), turn);
 	}
 
 	public get finished() {

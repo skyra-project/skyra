@@ -5,15 +5,15 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmojiRegex } from '@sapphire/discord.js-utilities';
 import { Args } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['add-emoji'],
-	cooldown: 10,
-	runIn: ['text', 'news'],
-	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['MANAGE_EMOJIS'],
 	description: LanguageKeys.Commands.Tools.CreateEmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.CreateEmojiExtended
+	extendedHelp: LanguageKeys.Commands.Tools.CreateEmojiExtended,
+	permissionLevel: PermissionLevels.Moderator,
+	requiredClientPermissions: ['MANAGE_EMOJIS_AND_STICKERS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -24,7 +24,8 @@ export class UserCommand extends SkyraCommand {
 
 		try {
 			const emoji = await message.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'png'}`, name);
-			return message.send(args.t(LanguageKeys.Commands.Tools.CreateEmojiSuccess, { emoji: emoji.toString() }));
+			const content = args.t(LanguageKeys.Commands.Tools.CreateEmojiSuccess, { emoji: emoji.toString() });
+			return send(message, content);
 		} catch {
 			return this.error(LanguageKeys.Commands.Tools.CreateEmojiInvalidEmoji);
 		}

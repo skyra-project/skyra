@@ -8,6 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -23,7 +24,6 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('CLASH_OF_CLANS_TOKEN'),
 	aliases: ['coc'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.ClashOfClansExtended,
 	subCommands: ['player', { input: 'clan', default: true }]
@@ -48,7 +48,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { t } = args;
 		const player = await args.pick(UserPaginatedMessageCommand.playerTagResolver);
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(t, player, ClashOfClansFetchCategories.PLAYERS);
-		return message.send(await this.buildPlayerEmbed(message, t, playerData));
+
+		const embed = await this.buildPlayerEmbed(message, t, playerData);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI<C extends ClashOfClansFetchCategories>(t: TFunction, query: string, category: ClashOfClansFetchCategories) {
@@ -82,7 +84,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayerEmbedTitles);
 
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setThumbnail(player.league?.iconUrls?.medium ?? '')
 			.setAuthor(
 				`${player.tag} - ${player.name}`,
@@ -114,7 +116,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildClanDisplay(message: GuildMessage, t: TFunction, clans: ClashOfClans.Clan[]) {
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const clan of clans) {
 			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);

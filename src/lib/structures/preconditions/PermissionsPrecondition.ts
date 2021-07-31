@@ -1,4 +1,4 @@
-import { readSettings } from '#lib/database';
+import { readSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';

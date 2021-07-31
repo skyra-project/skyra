@@ -15,7 +15,7 @@ import {
 } from '#lib/birthday';
 import { ScheduleEntity } from '#lib/database';
 import { ScheduleManager } from '#lib/structures';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 
 describe('Birthday', () => {
@@ -143,14 +143,14 @@ describe('Birthday', () => {
 	});
 
 	describe('tasks', () => {
-		Store.injectedContext.schedule = new ScheduleManager(null!);
+		container.schedule = new ScheduleManager();
 
 		let i = 0;
 		const create = (data: TaskBirthdayData) => {
 			const entity = new ScheduleEntity();
 			entity.id = i++;
 			entity.time = new Date();
-			entity.taskID = 'birthday';
+			entity.taskId = 'birthday';
 			entity.recurring = null;
 			entity.data = data;
 			entity.catchUp = true;
@@ -158,23 +158,23 @@ describe('Birthday', () => {
 			return entity;
 		};
 
-		Store.injectedContext.schedule.queue.push(create({ guildID: '1', userID: '1', day: 21, month: 9, year: 1998 }));
-		Store.injectedContext.schedule.queue.push(create({ guildID: '2', userID: '2', day: 18, month: 2, year: 1996 }));
+		container.schedule.queue.push(create({ guildId: '1', userId: '1', day: 21, month: 9, year: 1998 }));
+		container.schedule.queue.push(create({ guildId: '2', userId: '2', day: 18, month: 2, year: 1996 }));
 
 		{
 			const entity = new ScheduleEntity();
 			entity.id = i++;
 			entity.time = new Date();
-			entity.taskID = 'poststats';
+			entity.taskId = 'poststats';
 			entity.recurring = null;
 			entity.data = {};
 			entity.catchUp = true;
-			Store.injectedContext.schedule.queue.push(entity);
+			container.schedule.queue.push(entity);
 		}
 
-		Store.injectedContext.schedule.queue.push(create({ guildID: '1', userID: '3', day: 21, month: 2, year: 1995 }));
-		Store.injectedContext.schedule.queue.push(create({ guildID: '2', userID: '4', day: 31, month: 8, year: 1969 }));
-		Store.injectedContext.schedule.queue.push(create({ guildID: '1', userID: '5', day: 15, month: 5, year: 1964 }));
+		container.schedule.queue.push(create({ guildId: '1', userId: '3', day: 21, month: 2, year: 1995 }));
+		container.schedule.queue.push(create({ guildId: '2', userId: '4', day: 31, month: 8, year: 1969 }));
+		container.schedule.queue.push(create({ guildId: '1', userId: '5', day: 15, month: 5, year: 1964 }));
 
 		describe('isBirthdayTask', () => {
 			test('GIVEN a birthday schedule entity THEN returns true', () => {
@@ -183,7 +183,7 @@ describe('Birthday', () => {
 
 			test('GIVEN a non-birthday schedule entity THEN returns false', () => {
 				const entity = new ScheduleEntity();
-				entity.taskID = 'poststats';
+				entity.taskId = 'poststats';
 				expect(isBirthdayTask(entity)).toBe(false);
 			});
 		});
@@ -196,35 +196,35 @@ describe('Birthday', () => {
 		});
 
 		describe('getGuildBirthdays', () => {
-			test('GIVEN guildID 1 THEN returns 3 entries', () => {
+			test('GIVEN guildId 1 THEN returns 3 entries', () => {
 				const entries = [...getGuildBirthdays('1')];
 				expect(entries.map((entry) => entry.id)).toStrictEqual([0, 3, 5]);
 			});
 
-			test('GIVEN guildID 2 THEN returns 2 entries', () => {
+			test('GIVEN guildId 2 THEN returns 2 entries', () => {
 				const entries = [...getGuildBirthdays('2')];
 				expect(entries.map((entry) => entry.id)).toStrictEqual([1, 4]);
 			});
 
-			test('GIVEN guildID 3 THEN returns no entries', () => {
+			test('GIVEN guildId 3 THEN returns no entries', () => {
 				const entries = [...getGuildBirthdays('3')];
 				expect(entries).toStrictEqual([]);
 			});
 		});
 
 		describe('getGuildMemberBirthday', () => {
-			test('GIVEN guildID 1 WHEN userID is 1 THEN returns non-null', () => {
+			test('GIVEN guildId 1 WHEN userId is 1 THEN returns non-null', () => {
 				const entry = getGuildMemberBirthday('1', '1');
 				expect(entry).not.toBeNull();
 				expect(entry!.id).toBe(0);
 			});
 
-			test('GIVEN guildID 1 WHEN userID is 2 THEN returns null', () => {
+			test('GIVEN guildId 1 WHEN userId is 2 THEN returns null', () => {
 				const entry = getGuildMemberBirthday('1', '2');
 				expect(entry).toBeNull();
 			});
 
-			test('GIVEN guildID 3 WHEN userID is 1 THEN returns null', () => {
+			test('GIVEN guildId 3 WHEN userId is 1 THEN returns null', () => {
 				const entry = getGuildMemberBirthday('3', '1');
 				expect(entry).toBeNull();
 			});

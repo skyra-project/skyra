@@ -1,20 +1,23 @@
-import { MusicCommand, Queue, requireUserInVoiceChannel } from '#lib/audio';
+import { AudioCommand, Queue, RequireUserInVoiceChannel } from '#lib/audio';
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Permissions, VoiceChannel } from 'discord.js';
+import type { VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { send } from '@skyra/editable-commands';
+import { Permissions } from 'discord.js';
 
 const { FLAGS } = Permissions;
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['connect'],
 	description: LanguageKeys.Commands.Music.JoinDescription,
 	extendedHelp: LanguageKeys.Commands.Music.JoinExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireUserInVoiceChannel()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	@RequireUserInVoiceChannel()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		// Get the voice channel the member is in
 		const { channel } = message.member.voice;
 
@@ -24,7 +27,7 @@ export class UserMusicCommand extends MusicCommand {
 		// Check if the channel is allowed
 		await this.checkAllowedChannel(message, channel);
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 
 		// Check if the bot is already playing in this guild
 		this.checkSkyraPlaying(audio, channel);
@@ -32,20 +35,22 @@ export class UserMusicCommand extends MusicCommand {
 		// Ensure Skyra has the correct permissions to play music
 		this.resolvePermissions(message, channel);
 
-		// Set the ChannelID to the current channel
-		await audio.setTextChannelID(message.channel.id);
+		// Set the ChannelId to the current channel
+		await audio.setTextChannelId(message.channel.id);
 
 		try {
 			// Connect to Lavalink and join the voice channel
 			await audio.connect(channel.id);
 		} catch {
-			return message.send(args.t(LanguageKeys.Commands.Music.JoinFailed));
+			const content = args.t(LanguageKeys.Commands.Music.JoinFailed);
+			return send(message, content);
 		}
 
-		return message.send(args.t(LanguageKeys.Commands.Music.JoinSuccess, { channel: `<#${channel.id}>` }));
+		const content = args.t(LanguageKeys.Commands.Music.JoinSuccess, { channel: `<#${channel.id}>` });
+		return send(message, content);
 	}
 
-	private resolvePermissions(message: GuildMessage, voiceChannel: VoiceChannel): void {
+	private resolvePermissions(message: GuildMessage, voiceChannel: VoiceBasedChannelTypes): void {
 		const permissions = voiceChannel.permissionsFor(message.guild.me!)!;
 
 		// Administrators can join voice channels even if they are full
@@ -54,14 +59,14 @@ export class UserMusicCommand extends MusicCommand {
 		if (!permissions.has(FLAGS.SPEAK)) this.error(LanguageKeys.Commands.Music.JoinVoiceNoSpeak);
 	}
 
-	private checkSkyraPlaying(audio: Queue, voiceChannel: VoiceChannel): void {
-		const selfVoiceChannel = audio.player.playing ? audio.voiceChannelID : null;
+	private checkSkyraPlaying(audio: Queue, voiceChannel: VoiceBasedChannelTypes): void {
+		const selfVoiceChannel = audio.player.playing ? audio.voiceChannelId : null;
 		if (selfVoiceChannel === null) return;
 
 		this.error(voiceChannel.id === selfVoiceChannel ? LanguageKeys.Commands.Music.JoinVoiceSame : LanguageKeys.Commands.Music.JoinVoiceDifferent);
 	}
 
-	private async checkAllowedChannel(message: GuildMessage, voiceChannel: VoiceChannel): Promise<void> {
+	private async checkAllowedChannel(message: GuildMessage, voiceChannel: VoiceBasedChannelTypes): Promise<void> {
 		const allowedChannels = await readSettings(message.guild, GuildSettings.Music.AllowedVoiceChannels);
 		if (allowedChannels.length === 0) return;
 		if (allowedChannels.includes(voiceChannel.id)) return;

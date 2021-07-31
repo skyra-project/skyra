@@ -7,18 +7,17 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { GuildMember, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pnodes', 'pnode'],
-	bucket: 2,
-	cooldown: 10,
 	permissionLevel: PermissionLevels.Administrator,
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
@@ -39,7 +38,8 @@ export class UserCommand extends SkyraCommand {
 			settings.permissionNodes.add(target, command, action);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesAdd));
+		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesAdd);
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -53,7 +53,8 @@ export class UserCommand extends SkyraCommand {
 			settings.permissionNodes.remove(target, command, action);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesRemove));
+		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesRemove);
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -65,12 +66,13 @@ export class UserCommand extends SkyraCommand {
 			settings.permissionNodes.reset(target);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.PermissionNodesReset));
+		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesReset);
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.finished ? await this.showAll(message, args) : await this.showOne(message, args);
-		return message.send(content, { allowedMentions: { users: [], roles: [] } });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async showOne(message: GuildMessage, args: SkyraCommand.Args) {
@@ -134,10 +136,10 @@ export class UserCommand extends SkyraCommand {
 		if (message.member!.id === target.id) return false;
 
 		// If the target is the owner, always block
-		if (message.guild.ownerID === target.id) return false;
+		if (message.guild.ownerId === target.id) return false;
 
 		// If the author is the owner, always allow
-		if (message.author.id === message.guild.ownerID) return true;
+		if (message.author.id === message.guild.ownerId) return true;
 
 		// Check hierarchy role positions, allow when greater, block otherwise
 		const targetPosition = target instanceof Role ? target.position : target.roles.highest.position;

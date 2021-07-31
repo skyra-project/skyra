@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -14,7 +15,6 @@ import { URL } from 'url';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),
 	aliases: ['show', 'tvdb', 'tv'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ShowsDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ShowsExtended
 })
@@ -58,30 +58,29 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, shows: Tmdb.TmdbSeriesList['results']) {
 		const titles = t(LanguageKeys.Commands.Tools.ShowsTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.ShowsData);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		const showData = await Promise.all(shows.map((show) => this.fetchShowData(show.id)));
 
 		for (const show of showData) {
-			display.addPageEmbed((embed) =>
-				embed
+			display.addPageEmbed((embed) => {
+				const episodeRuntime = show.episode_run_time.length
+					? `${t(LanguageKeys.Globals.DurationValue, { value: show.episode_run_time[0] * 60 * 1000 })}`
+					: fieldsData.variableRuntime;
+				const userScore = typeof show.vote_average === 'number' ? formatNumber(t, show.vote_average) : fieldsData.unknownUserScore;
+
+				return embed
 					.setTitle(show.name)
 					.setURL(`https://www.themoviedb.org/tv/${show.id}`)
 					.setImage(`https://image.tmdb.org/t/p/original${show.backdrop_path}`)
 					.setThumbnail(`https://image.tmdb.org/t/p/original${show.poster_path}`)
 					.setDescription(cutText(show.overview, 750))
-					.addField(
-						titles.episodeRuntime,
-						show.episode_run_time.length
-							? `${t(LanguageKeys.Globals.DurationValue, { value: show.episode_run_time[0] * 60 * 1000 })}`
-							: fieldsData.variableRuntime,
-						true
-					)
-					.addField(titles.userScore, show.vote_average ? show.vote_average : fieldsData.unknownUserScore, true)
+					.addField(titles.episodeRuntime, episodeRuntime, true)
+					.addField(titles.userScore, userScore, true)
 					.addField(titles.status, show.status, true)
 					.addField(titles.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: new Date(show.first_air_date).getTime() }), true)
-					.addField(titles.genres, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres)
-			);
+					.addField(titles.genres, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres);
+			});
 		}
 
 		return display;

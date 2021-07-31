@@ -2,46 +2,48 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { resolveKey } from '@sapphire/plugin-i18next';
 import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ub'],
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
-	requiredMember: false,
-	permissions: ['BAN_MEMBERS']
+	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {
-		const bans = await message.guild
-			.fetchBans()
+		const bans = await message.guild.bans
+			.fetch()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => null);
 
 		// If the fetch failed, throw an error saying that the fetch failed:
 		if (bans === null) {
-			throw await message.resolveKey(LanguageKeys.System.FetchBansFail);
+			throw await resolveKey(message, LanguageKeys.System.FetchBansFail);
 		}
 
 		// If there were no bans, throw an error saying that the ban list is empty:
 		if (bans.length === 0) {
-			throw await message.resolveKey(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+			throw await resolveKey(message, LanguageKeys.Commands.Moderation.GuildBansEmpty);
 		}
 
 		return {
 			bans,
-			unlock: (await readSettings(message.guild, GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
+			unlock: (await readSettings(message.guild, GuildSettings.Events.BanRemove)) ? getModeration(message.guild).createLock() : null
 		};
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild.security.actions.unBan(
+		return getSecurity(message.guild).actions.unBan(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

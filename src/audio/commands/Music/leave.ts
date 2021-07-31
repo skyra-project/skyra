@@ -1,21 +1,23 @@
-import { MusicCommand, requireDj, requireSkyraInVoiceChannel } from '#lib/audio';
+import { AudioCommand, RequireDj, RequireSkyraInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 const flags = ['removeall', 'ra'];
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.LeaveDescription,
 	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,
-	strategyOptions: { flags }
+	flags
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireSkyraInVoiceChannel()
-	@requireDj()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
-		const { audio } = message.guild;
-		const channelID = audio.voiceChannelID!;
+export class UserMusicCommand extends AudioCommand {
+	@RequireSkyraInVoiceChannel()
+	@RequireDj()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
+		const audio = getAudio(message.guild);
+		const channelId = audio.voiceChannelId!;
 
 		// Do a full leave and disconnect
 		await audio.leave();
@@ -23,6 +25,7 @@ export class UserMusicCommand extends MusicCommand {
 		// If --removeall or --ra was provided then also clear the queue
 		if (args.getFlags(...flags)) await audio.clear();
 
-		return message.send(args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelID}>` }));
+		const content = args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelId}>` });
+		return send(message, content);
 	}
 }

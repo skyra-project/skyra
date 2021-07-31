@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import type { BaseController } from './BaseController';
 import { BaseGame } from './BaseGame';
@@ -27,10 +28,10 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 
 	protected async onStart(): Promise<unknown> {
 		try {
-			this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
+			this.message = await sendLoadingMessage(this.message, this.t);
 			for (const reaction of this.reactions) await this.message.react(reaction);
 		} catch {
-			await this.message.send(this.t(LanguageKeys.Misc.UnexpectedIssue)).catch((error) => this.client.emit(Events.Error, error));
+			await send(this.message, this.t(LanguageKeys.Misc.UnexpectedIssue)).catch((error) => this.client.emit(Events.Error, error));
 		}
 
 		return super.onStart();

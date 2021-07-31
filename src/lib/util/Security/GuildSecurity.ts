@@ -7,7 +7,7 @@ import { ModerationActions } from './ModerationActions';
  */
 export class GuildSecurity {
 	/**
-	 * The SkyraGuild instance which manages this instance
+	 * The {@link Guild} instance which manages this instance
 	 */
 	public guild: Guild;
 

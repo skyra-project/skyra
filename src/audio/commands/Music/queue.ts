@@ -1,4 +1,4 @@
-import { MusicCommand, Queue, requireQueueNotEmpty } from '#lib/audio';
+import { AudioCommand, Queue, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
@@ -10,20 +10,20 @@ import type { TrackInfo } from '@skyra/audio';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
 	permissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireQueueNotEmpty()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	@RequireQueueNotEmpty()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
 		// Generate the pages with 5 songs each
 		const template = new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
 		const queueDisplay = new SkyraPaginatedMessage({ template });
 
@@ -101,13 +101,13 @@ export class UserMusicCommand extends MusicCommand {
 		return accumulator;
 	}
 
-	private async fetchRequesterName(message: GuildMessage, t: TFunction, userID: string): Promise<string> {
+	private async fetchRequesterName(message: GuildMessage, t: TFunction, userId: string): Promise<string> {
 		try {
-			return (await message.guild.members.fetch(userID)).displayName;
+			return (await message.guild.members.fetch(userId)).displayName;
 		} catch {}
 
 		try {
-			return (await this.context.client.users.fetch(userID)).username;
+			return (await this.container.client.users.fetch(userId)).username;
 		} catch {}
 
 		return t(LanguageKeys.Serializers.UnknownUser);

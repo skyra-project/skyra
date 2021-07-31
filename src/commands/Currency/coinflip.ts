@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -12,11 +13,9 @@ const enum CoinType {
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['cf'],
-	bucket: 2,
-	cooldown: 7,
 	description: LanguageKeys.Commands.Games.CoinFlipDescription,
 	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
@@ -28,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 		if (guess === null) return this.noGuess(message, args.t);
 		if (wager === 'cashless') return this.cashless(message, args.t, guess);
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 
@@ -41,52 +40,51 @@ export class UserCommand extends SkyraCommand {
 		settings.money += won ? wager : -wager;
 		await settings.save();
 
-		const [title, description] = won
+		const [titleKey, descriptionKey] = won
 			? ([LanguageKeys.Commands.Games.CoinFlipWinTitle, LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager] as const)
 			: ([LanguageKeys.Commands.Games.CoinFlipLoseTitle, LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager] as const);
+		const title = args.t(titleKey);
+		const description = args.t(descriptionKey, { result: args.t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result], wager });
 
-		return message.send(
-			(await this.buildEmbed(message, result))
-				.setTitle(args.t(title))
-				.setDescription(args.t(description, { result: args.t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result], wager }))
-		);
+		const embed = await this.buildEmbed(message, result, title, description);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async cashless(message: Message, t: TFunction, guess: CoinType) {
 		const result = this.flipCoin();
 		const won = result === guess;
 
-		return message.send(
-			(await this.buildEmbed(message, result))
-				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
-				.setDescription(
-					t(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
-					})
-				)
-		);
+		const title = t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle);
+		const description = t(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
+			result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+		});
+
+		const embed = await this.buildEmbed(message, result, title, description);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async noGuess(message: Message, t: TFunction) {
 		const result = this.flipCoin();
 
-		return message.send(
-			(await this.buildEmbed(message, result)) //
-				.setTitle(t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
-				.setDescription(
-					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, { result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result] })
-				)
-		);
+		const title = t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle);
+		const description = t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
+			result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+		});
+
+		const embed = await this.buildEmbed(message, result, title, description);
+		return send(message, { embeds: [embed] });
 	}
 
 	private flipCoin() {
 		return Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
 	}
 
-	private async buildEmbed(message: Message, result: CoinType) {
+	private async buildEmbed(message: Message, result: CoinType, title: string, description: string) {
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
-			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`);
+			.setColor(await this.container.db.fetchColor(message))
+			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`)
+			.setTitle(title)
+			.setDescription(description);
 	}
 
 	private static coinTypeResolver: IArgument<CoinType | null> = Args.make((parameter, { argument, args }) => {

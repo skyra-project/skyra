@@ -9,9 +9,9 @@ export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildID = request.params.guild;
+		const guildId = request.params.guild;
 
-		const guild = this.context.client.guilds.cache.get(guildID);
+		const guild = this.container.client.guilds.cache.get(guildId);
 		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
@@ -19,7 +19,7 @@ export class UserRoute extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
-		const emojis = await api().guilds(guildID).emojis.get();
+		const emojis = await api().guilds(guildId).emojis.get();
 		return response.json({ ...flattenGuild(guild), emojis });
 	}
 }

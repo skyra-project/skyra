@@ -5,18 +5,16 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setcolour'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.SetColorDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const { hex, b10 } = await args.rest('color');
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
 			user.profile.color = b10.value;

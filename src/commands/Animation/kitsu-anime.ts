@@ -16,7 +16,6 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('KITSU_ID', 'KITSU_TOKEN'),
-	cooldown: 10,
 	description: LanguageKeys.Commands.Animation.KitsuAnimeDescription,
 	extendedHelp: LanguageKeys.Commands.Animation.KitsuAnimeExtended
 })
@@ -64,7 +63,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const embedData = t(LanguageKeys.Commands.Animation.KitsuAnimeEmbedData);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setFooter(' - © kitsu.io')
 		});
 
@@ -109,7 +108,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.setThumbnail(entry.posterImage?.original ?? '')
 					.addField(embedData.type, t(LanguageKeys.Commands.Animation.KitsuAnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
-					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
+					.addField(
+						embedData.episodes,
+						entry.episodeCount ? t(LanguageKeys.Globals.NumberValue, { value: entry.episodeCount }) : embedData.stillAiring,
+						true
+					)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
 					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)

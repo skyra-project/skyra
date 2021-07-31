@@ -3,7 +3,7 @@ import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args) {
-		const result = await args.pickResult('voiceChannel');
+		const result = await args.pickResult('guildVoiceChannel');
 		return result.success ? this.ok(result.value.id) : this.errorFromArgument(args, result.error);
 	}
 

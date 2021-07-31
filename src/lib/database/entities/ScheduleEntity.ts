@@ -42,7 +42,7 @@ export class ScheduleEntity extends BaseEntity {
 	 * The name of the Task this scheduled task will run
 	 */
 	@Column('varchar')
-	public taskID!: string;
+	public taskId!: string;
 
 	/**
 	 * The Date when this scheduled task ends
@@ -84,7 +84,7 @@ export class ScheduleEntity extends BaseEntity {
 	}
 
 	public get task() {
-		return Store.injectedContext.settings.tasks.get(this.taskID) ?? null;
+		return Store.injectedContext.settings.tasks.get(this.taskId) ?? null;
 	}
 
 	public get running() {

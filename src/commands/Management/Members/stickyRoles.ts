@@ -5,13 +5,11 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: ['MANAGE_ROLES'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['MANAGE_ROLES'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

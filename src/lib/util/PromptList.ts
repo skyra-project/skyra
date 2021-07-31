@@ -1,6 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
+import { get, send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import { deleteMessage } from './functions';
 
@@ -14,7 +16,8 @@ const kAttempts = 5;
  */
 export async function prompt(message: Message, entries: PromptListResolvable) {
 	const n = await ask(message, [...resolve(entries, 10)]);
-	await Promise.all(message.responses.map((response) => deleteMessage(response).catch(() => null)));
+	const response = get(message);
+	if (response) await deleteMessage(response).catch(() => null);
 	return n;
 }
 
@@ -27,8 +30,9 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
-	const t = await message.fetchT();
-	const responseMessage = await message.send(
+	const t = await fetchT(message);
+	const responseMessage = await send(
+		message,
 		t(LanguageKeys.PromptList.MultipleChoice, {
 			list: codeblock,
 			count: possibles
@@ -42,10 +46,10 @@ async function ask(message: Message, list: readonly string[]) {
 	let attempts = 0;
 	do {
 		if (attempts !== 0) {
-			await message.send(t(LanguageKeys.PromptList.AttemptFailed, { list: codeblock, attempt: attempts, maxAttempts: kAttempts }));
+			await send(message, t(LanguageKeys.PromptList.AttemptFailed, { list: codeblock, attempt: attempts, maxAttempts: kAttempts }));
 		}
 		response = await message.channel
-			.awaitMessages(promptFilter, kPromptOptions)
+			.awaitMessages({ filter: promptFilter, ...kPromptOptions })
 			.then((responses) => (responses.size ? responses.first()! : null));
 
 		if (response) {

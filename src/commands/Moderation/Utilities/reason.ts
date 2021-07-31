@@ -7,12 +7,11 @@ import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.ReasonDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -28,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 
 		const reason = await args.rest('string');
 		const imageURL = getImage(message);
-		const { moderations } = this.context.db;
+		const { moderations } = this.container.db;
 		await moderations
 			.createQueryBuilder()
 			.update()
@@ -40,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason).setImageURL(imageURL);
-			this.context.client.emit(Events.ModerationEntryEdit, clone, entry);
+			this.container.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
 		return sendTemporaryMessage(

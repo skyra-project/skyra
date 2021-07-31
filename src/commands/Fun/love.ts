@@ -5,11 +5,9 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -32,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 
 		return message.send(
 			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
 				.setDescription(

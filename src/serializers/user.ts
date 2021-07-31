@@ -14,7 +14,7 @@ export class UserSerializer extends Serializer<string> {
 			if (!SnowflakeRegex.test(value)) throw undefined;
 
 			// Fetch the value, if it exists, it'll resolve and return true
-			await this.context.client.users.fetch(value);
+			await this.container.client.users.fetch(value);
 			return true;
 		} catch {
 			throw t(LanguageKeys.Serializers.InvalidUser, { name: entry.name });
@@ -22,6 +22,6 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public stringify(value: string) {
-		return this.context.client.users.cache.get(value)?.tag ?? value;
+		return this.container.client.users.cache.get(value)?.tag ?? value;
 	}
 }

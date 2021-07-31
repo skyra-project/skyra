@@ -10,7 +10,6 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-film', 'star-wars-movie'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.FilmDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.FilmExtended
 })
@@ -28,7 +27,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 

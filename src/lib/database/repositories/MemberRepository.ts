@@ -4,13 +4,13 @@ import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 
 @EntityRepository(MemberEntity)
 export class MemberRepository extends Repository<MemberEntity> {
-	public async ensure(userID: string, guildID: string, options: FindOneOptions<MemberEntity> = {}) {
-		const previous = await this.findOne({ where: { userID, guildID }, ...options });
+	public async ensure(userId: string, guildId: string, options: FindOneOptions<MemberEntity> = {}) {
+		const previous = await this.findOne({ where: { userId, guildId }, ...options });
 		if (previous) return previous;
 
 		const data = new MemberEntity();
-		data.userID = userID;
-		data.guildID = guildID;
+		data.userId = userId;
+		data.guildId = guildId;
 		return data;
 	}
 }

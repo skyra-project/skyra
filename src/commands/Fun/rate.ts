@@ -7,8 +7,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.RateDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.RateExtended,
 	spam: true

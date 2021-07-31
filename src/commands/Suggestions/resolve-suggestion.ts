@@ -7,8 +7,9 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
 import { isAdmin } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Store } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { Args, container } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { MessageEmbed, TextChannel } from 'discord.js';
 
 const enum SuggestionsColors {
@@ -25,13 +26,12 @@ const maximum = 2_147_483_647; // Maximum value for int32
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['resu'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Suggestions.ResolveSuggestionDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
-	strategyOptions: { flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'] },
+	flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'],
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -44,10 +44,13 @@ export class UserCommand extends SkyraCommand {
 			GuildSettings.Suggestions.OnAction.HideAuthor,
 			GuildSettings.Suggestions.OnAction.RePostMessage
 		]);
-		const [suggestion] = suggestionData.message.embeds;
 
-		let newEmbed = new MessageEmbed();
-		let messageContent = '';
+		const suggestionEmbed = new MessageEmbed(suggestionData.message.embeds[0]);
+		if (suggestionEmbed.fields.length === 25) {
+			this.error(LanguageKeys.Commands.Suggestions.ResolveSuggestionTooManyFields);
+		}
+
+		let responseContent: string;
 
 		const author = await this.getAuthor(message, shouldHideAuthor, args);
 
@@ -57,33 +60,40 @@ export class UserCommand extends SkyraCommand {
 		switch (action) {
 			case 'a':
 			case 'accept':
-				messageContent = DMActions.accept;
-				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.accept, comment);
+				responseContent = DMActions.accept;
+				suggestionEmbed.setColor(SuggestionsColors.Accepted).addField(actions.accept, comment);
 				break;
 			case 'c':
 			case 'consider':
-				messageContent = DMActions.consider;
-				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.consider, comment);
+				responseContent = DMActions.consider;
+				suggestionEmbed.setColor(SuggestionsColors.Considered).addField(actions.consider, comment);
 				break;
 			case 'd':
 			case 'deny':
-				messageContent = DMActions.deny;
-				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.deny, comment);
+				responseContent = DMActions.deny;
+				suggestionEmbed.setColor(SuggestionsColors.Denied).addField(actions.deny, comment);
 				break;
 		}
 
-		if (shouldDM && messageContent !== null) {
+		const embedMaximum = 6000;
+		const embedLength = suggestionEmbed.length;
+		if (embedLength >= embedMaximum) {
+			this.error(LanguageKeys.Commands.Suggestions.ResolveSuggestionTooManyCharacters, { maximum: embedMaximum, amount: embedLength });
+		}
+
+		if (shouldDM && responseContent !== null) {
 			try {
-				await suggestionData.author!.send(messageContent, { embed: newEmbed });
+				await suggestionData.author!.send({ content: responseContent, embeds: [suggestionEmbed] });
 			} catch {
-				await message.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
+				const content = args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail);
+				await send(message, content);
 			}
 		}
 
 		if (shouldRePostSuggestion) {
-			await suggestionData.message.send(messageContent, { embed: newEmbed });
+			await send(suggestionData.message, { content: responseContent, embeds: [suggestionEmbed] });
 		} else if (suggestionData.message.author.id === process.env.CLIENT_ID) {
-			await suggestionData.message.edit(newEmbed);
+			await suggestionData.message.edit({ embeds: [suggestionEmbed] });
 		}
 
 		const actionText =
@@ -93,7 +103,8 @@ export class UserCommand extends SkyraCommand {
 				? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
 				: args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
 
-		return message.send(args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, { id: suggestionData.id, actionText }));
+		const content = args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, { id: suggestionData.id, actionText });
+		return send(message, content);
 	}
 
 	private async getAuthor(message: GuildMessage, hideAuthor: boolean, args: SkyraCommand.Args) {
@@ -108,8 +119,8 @@ export class UserCommand extends SkyraCommand {
 
 	private static suggestion = Args.make<SuggestionData>(async (parameter, { args, argument, message }) => {
 		// Validate the suggestions channel ID
-		const channelID = await readSettings(message.guild!, GuildSettings.Suggestions.Channel);
-		if (!channelID) {
+		const channelId = await readSettings(message.guild!, GuildSettings.Suggestions.Channel);
+		if (!channelId) {
 			return Args.error({
 				argument,
 				parameter,
@@ -121,8 +132,8 @@ export class UserCommand extends SkyraCommand {
 		let suggestionData: SuggestionEntity | undefined;
 		if (args.t(LanguageKeys.Arguments.CaseLatestOptions).includes(parameter.toLowerCase())) {
 			// Retrieve latest entry
-			const { suggestions } = Store.injectedContext.db;
-			suggestionData = await suggestions.findOne({ order: { id: 'DESC' }, where: { guildID: message.guild!.id } });
+			const { suggestions } = container.db;
+			suggestionData = await suggestions.findOne({ order: { id: 'DESC' }, where: { guildId: message.guild!.id } });
 		} else {
 			// Validate the suggestion number
 			const id = Number(parameter);
@@ -130,28 +141,28 @@ export class UserCommand extends SkyraCommand {
 				return Args.error({
 					argument,
 					parameter,
-					identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID,
+					identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidId,
 					context: { minimum, maximum }
 				});
 			}
 
 			// Retrieve the suggestion data
-			const { suggestions } = Store.injectedContext.db;
-			suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
+			const { suggestions } = container.db;
+			suggestionData = await suggestions.findOne({ id, guildId: message.guild!.id });
 		}
 
 		if (!suggestionData) {
-			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound });
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionIdNotFound });
 		}
 
-		const channel = message.client.channels.cache.get(channelID) as TextChannel;
-		const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
+		const channel = message.client.channels.cache.get(channelId) as TextChannel;
+		const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageId), RESTJSONErrorCodes.UnknownMessage);
 		if (suggestionMessage === null) {
 			await suggestionData.remove();
 			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Suggestions.ResolveSuggestionMessageNotFound });
 		}
 
-		const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
+		const suggestionAuthor = await message.client.users.fetch(suggestionData.authorId).catch(() => null);
 		return Args.ok({ message: suggestionMessage, author: suggestionAuthor, id: suggestionData.id });
 	});
 

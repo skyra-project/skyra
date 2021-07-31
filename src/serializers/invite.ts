@@ -8,8 +8,8 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
-		const invite = await this.context.client.invites.fetch(value);
-		if (invite === null || !Reflect.has(invite, 'guildID')) {
+		const invite = await this.container.client.invites.fetch(value);
+		if (invite === null || !Reflect.has(invite, 'guildId')) {
 			throw t(LanguageKeys.Serializers.InvalidInvite, { name: entry.name });
 		}
 

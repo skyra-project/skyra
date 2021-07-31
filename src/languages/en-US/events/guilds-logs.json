@@ -116,7 +116,6 @@
 	"serverUpdatePublicUpdatesChannelAdded": "• **Public Updates Channel**: Not Set → {{value}}",
 	"serverUpdatePublicUpdatesChannelRemoved": "• **Public Updates Channel**: {{value}} → Not Set",
 	"serverUpdatePublicUpdatesChannel": "• **Public Updates Channel**: {{previous}} → {{next}}",
-	"serverUpdateRegion": "• **Region**: `{{previous}}` → `{{next}}`",
 	"serverUpdateRulesChannelAdded": "• **Rules Channel**: Not Set → {{value}}",
 	"serverUpdateRulesChannelRemoved": "• **Rules Channel**: {{value}} → Not Set",
 	"serverUpdateRulesChannel": "• **Rules Channel**: {{previous}} → {{next}}",

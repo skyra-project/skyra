@@ -8,8 +8,8 @@ import type { Guild, GuildChannel, User } from 'discord.js';
 
 export class UserArgument extends Argument<GuildChannel> {
 	public resolveChannel(query: string, guild: Guild) {
-		const channelID = ChannelMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
-		return (channelID !== null && guild.channels.cache.get(channelID[1])) ?? null;
+		const channelId = ChannelMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
+		return (channelId !== null && guild.channels.cache.get(channelId[1])) ?? null;
 	}
 
 	public async run(parameter: string, { message, minimum, context, filter }: ChannelArgumentContext) {

@@ -39,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const country of countries) {
 			display.addPageEmbed((embed) =>

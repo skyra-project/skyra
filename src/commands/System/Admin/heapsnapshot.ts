@@ -27,6 +27,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import { writeHeapSnapshot } from 'v8';
 
@@ -37,11 +38,11 @@ import { writeHeapSnapshot } from 'v8';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
-		await message.send('Capturing HEAP Snapshot. This may take a while...');
+		await send(message, 'Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)
 		const filename = writeHeapSnapshot();
 
-		return message.send(`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
+		return send(message, `Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
 	}
 }

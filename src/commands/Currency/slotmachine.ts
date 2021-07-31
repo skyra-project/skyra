@@ -2,19 +2,18 @@ import { Slotmachine } from '#lib/games/Slotmachine';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['slot', 'slots', 'slotmachines'],
-	bucket: 2,
-	cooldown: 7,
 	description: LanguageKeys.Commands.Games.SlotMachineDescription,
 	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
-	permissions: ['ATTACH_FILES']
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const wager = await args.pick('shinyWager');
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
@@ -23,8 +22,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const [attachment, amount] = await new Slotmachine(message, wager, settings).run();
-		return message.send(args.t(LanguageKeys.Commands.Games.BalanceDifference, { previous: balance, next: amount }), {
-			files: [{ attachment, name: 'slots.png' }]
-		});
+		const content = args.t(LanguageKeys.Commands.Games.BalanceDifference, { previous: balance, next: amount });
+		return send(message, { content, files: [{ attachment, name: 'slots.png' }] });
 	}
 }

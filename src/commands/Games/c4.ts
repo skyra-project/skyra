@@ -10,12 +10,11 @@ import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
-	cooldown: 0,
 	description: LanguageKeys.Commands.Games.C4Description,
 	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
-	permissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news'],
-	strategyOptions: { flags: ['easy', 'medium', 'hard'] }
+	flags: ['easy', 'medium', 'hard'],
+	requiredClientPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly channels = new Set<string>();

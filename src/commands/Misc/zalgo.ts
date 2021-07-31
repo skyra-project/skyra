@@ -5,7 +5,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Misc.ZalgoDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ZalgoExtended,
 	spam: true

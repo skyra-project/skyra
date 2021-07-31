@@ -1,6 +1,6 @@
 import type { ScheduleEntity } from '#lib/database';
 import { filter, first } from '#utils/common';
-import { Store } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { BirthdayScheduleEntity, DateWithOptionalYear, Month } from './types';
 
 /**
@@ -36,22 +36,22 @@ export function yearIsLeap(year: number) {
  * Determines whether or not a task is a birthday task.
  */
 export function isBirthdayTask(task: ScheduleEntity): task is BirthdayScheduleEntity {
-	return task.taskID === 'birthday';
+	return task.taskId === 'birthday';
 }
 
 /**
  * Gets all birthdays from the schedule's queue. This reads the data from {@link Store.injectedContext.schedule}.
  */
 export function getBirthdays(): IterableIterator<BirthdayScheduleEntity> {
-	return filter(Store.injectedContext.schedule.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
+	return filter(container.schedule.queue.values(), isBirthdayTask) as IterableIterator<BirthdayScheduleEntity>;
 }
 
 /**
  * Gets all birthdays from the schedule's queue and filters them by the guild ID.
  * @see getBirthdays
  */
-export function getGuildBirthdays(guildID: string): IterableIterator<BirthdayScheduleEntity> {
-	return filter(getBirthdays(), (task) => task.data.guildID === guildID);
+export function getGuildBirthdays(guildId: string): IterableIterator<BirthdayScheduleEntity> {
+	return filter(getBirthdays(), (task) => task.data.guildId === guildId);
 }
 
 /**
@@ -59,8 +59,8 @@ export function getGuildBirthdays(guildID: string): IterableIterator<BirthdaySch
  * @see getGuildBirthdays
  * @returns A {@link BirthdayScheduleEntity} if one was found, `null` otherwise.
  */
-export function getGuildMemberBirthday(guildID: string, userID: string): BirthdayScheduleEntity | null {
-	return first(filter(getGuildBirthdays(guildID), (task) => task.data.userID === userID));
+export function getGuildMemberBirthday(guildId: string, userId: string): BirthdayScheduleEntity | null {
+	return first(filter(getGuildBirthdays(guildId), (task) => task.data.userId === userId));
 }
 
 /**

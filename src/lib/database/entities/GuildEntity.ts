@@ -1,7 +1,7 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { create } from '#utils/Security/RegexCreator';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { Time } from '@sapphire/time-utilities';
 import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
@@ -855,19 +855,15 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#words: readonly string[] = [];
 
-	public get client() {
-		return Store.injectedContext.client;
-	}
-
 	public get guild() {
-		return this.client.guilds.cache.get(this.id)!;
+		return container.client.guilds.cache.get(this.id)!;
 	}
 
 	/**
 	 * Gets the [[Language]] for this entity.
 	 */
 	public getLanguage(): TFunction {
-		return this.client.i18n.fetchT(this.language);
+		return container.i18n.getT(this.language);
 	}
 
 	/**

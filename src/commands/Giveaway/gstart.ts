@@ -13,12 +13,12 @@ const options = ['winners'];
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
-	runIn: ['text', 'news'],
-	strategyOptions: { options }
+	options,
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get integer(): IArgument<number> {
-		return this.context.stores.get('arguments').get('integer') as IArgument<number>;
+		return this.container.stores.get('arguments').get('integer') as IArgument<number>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -35,7 +35,7 @@ export class UserCommand extends SkyraCommand {
 		const winners = await this.getWinners(args);
 		const title = await args.rest('string', { maximum: 256 });
 
-		await this.context.client.giveaways.create({
+		await this.container.client.giveaways.create({
 			allowedRoles,
 			channelID: channel.id,
 			endsAt: new Date(time.getTime() + 500),

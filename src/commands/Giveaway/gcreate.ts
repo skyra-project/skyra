@@ -2,10 +2,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
+import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { Permissions, TextChannel } from 'discord.js';
+import { Permissions } from 'discord.js';
 
 const kWinnersArgRegex = /^(\d+)w$/i;
 const options = ['winners'];
@@ -14,16 +15,16 @@ const options = ['winners'];
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
-	runIn: ['text', 'news'],
-	strategyOptions: { options }
+	options,
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get integer(): IArgument<number> {
-		return this.context.stores.get('arguments').get('integer') as IArgument<number>;
+		return this.container.stores.get('arguments').get('integer') as IArgument<number>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
+		const channel = await args.pick('textChannelName').catch(() => message.channel as GuildTextBasedChannelTypes);
 		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
 		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
 
@@ -41,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 		if (durationOffset > Time.Year || scheduleOffset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 
 		// This creates an single time task to start the giveaway
-		await this.context.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
+		await this.container.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
 				allowedRoles,
 				channelID: channel.id,

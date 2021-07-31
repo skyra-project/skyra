@@ -12,12 +12,10 @@ import { Guild, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageReactionRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -48,13 +46,13 @@ export class UserCommand extends SkyraCommand {
 		await message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt));
 
 		const reaction = await LongLivingReactionCollector.collectOne({
-			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild.id
+			filter: (reaction) => reaction.userId === message.author.id && reaction.guild.id === message.guild.id
 		});
 		if (!reaction) this.error(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);
 
 		const reactionRole: ReactionRole = {
 			emoji: resolveEmoji(reaction.emoji)!,
-			message: reaction.messageID,
+			message: reaction.messageId,
 			channel: reaction.channel.id,
 			role: role.id
 		};
@@ -68,12 +66,12 @@ export class UserCommand extends SkyraCommand {
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName');
-		const messageID = await args.pick('snowflake');
+		const messageId = await args.pick('snowflake');
 
 		const reactionRole = await writeSettings(message.guild, (settings) => {
 			const reactionRoles = settings[GuildSettings.ReactionRoles];
 
-			const reactionRoleIndex = reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageID && entry.role === role.id);
+			const reactionRoleIndex = reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageId && entry.role === role.id);
 
 			if (reactionRoleIndex === -1) this.error(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
 
@@ -113,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const bulk of chunk(reactionRoles, 15)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');

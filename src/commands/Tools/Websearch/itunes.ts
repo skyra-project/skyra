@@ -9,7 +9,6 @@ import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.ITunesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ITunesExtended
 })
@@ -45,7 +44,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
 		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const song of entries) {
 			display.addPageEmbed((embed) =>
@@ -57,8 +56,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
-					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: new Date(song.releaseDate).getTime() }), true)
-					.addField(titles.numberOfTracksInCollection, song.trackCount, true)
+					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: Date.parse(song.releaseDate) }), true)
+					.addField(titles.numberOfTracksInCollection, t(LanguageKeys.Globals.NumberValue, { value: song.trackCount }), true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)
 			);

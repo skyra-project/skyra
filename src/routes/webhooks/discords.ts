@@ -9,7 +9,7 @@ export class UserRoute extends Route {
 
 		const body = request.body as Body;
 		try {
-			const { users } = this.context.db;
+			const { users } = this.container.db;
 			await users.lock([body.user], async (id) => {
 				const user = await users.ensure(id);
 
@@ -19,7 +19,7 @@ export class UserRoute extends Route {
 
 			return response.noContent();
 		} catch (error) {
-			this.context.client.logger.error(error);
+			this.container.logger.error(error);
 			return response.error(error.message ?? 'Unknown error');
 		}
 	}

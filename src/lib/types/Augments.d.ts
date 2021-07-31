@@ -5,7 +5,7 @@ import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { ModelStore } from '#lib/grpc';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
-import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
+import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
 import type { Leaderboard } from '#utils/Leaderboard';
@@ -15,25 +15,8 @@ import type { Piece, Store } from '@sapphire/framework';
 import type { PieceContextExtras } from '@sapphire/pieces';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { Image } from 'canvas-constructor/skia';
-import type {
-	APIMessage,
-	APIMessageContentResolvable,
-	Guild,
-	GuildChannel,
-	Message,
-	MessageAdditions,
-	MessageEmbed,
-	MessageOptions,
-	NewsChannel,
-	Role,
-	Snowflake,
-	SplitOptions,
-	StringResolvable,
-	TextChannel,
-	User,
-	VoiceChannel
-} from 'discord.js';
-import { Redis } from 'ioredis';
+import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User, VoiceChannel } from 'discord.js';
+import type { Redis } from 'ioredis';
 import type { TaskErrorPayload } from './definitions';
 import type { Scope } from './definitions/ArgumentTypes';
 import type { MessageAcknowledgeable } from './Discord';
@@ -75,7 +58,7 @@ declare module 'discord.js' {
 }
 
 declare module '@sapphire/pieces' {
-	interface PieceContextExtras {
+	interface Container {
 		afk: Redis;
 		db: DbSet;
 		grpc: ModelStore;
@@ -114,6 +97,16 @@ declare module '@sapphire/framework' {
 		time: Date;
 		timespan: number;
 		userName: User;
+	}
+
+	interface Preconditions {
+		Administrator: never;
+		BotOwner: never;
+		DJ: never;
+		Everyone: never;
+		Moderator: never;
+		ServerOwner: never;
+		Spam: never;
 	}
 
 	interface SapphireClient {
@@ -185,41 +178,5 @@ declare module 'i18next' {
 			defaultValue: TReturn,
 			options?: TOptions<TArgs>
 		): TReturn;
-	}
-}
-
-declare module '@sapphire/plugin-i18next' {
-	export interface I18nextMessageImplementation {
-		fetchLanguage(): Promise<string>;
-		readonly responses: readonly Message[];
-		send(
-			content:
-				| APIMessageContentResolvable
-				| (MessageOptions & {
-						split?: false;
-				  })
-				| MessageAdditions
-		): Promise<Message>;
-		send(
-			options: MessageOptions & {
-				split: true | SplitOptions;
-			}
-		): Promise<Message[]>;
-		send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
-		send(
-			content: StringResolvable,
-			options:
-				| (MessageOptions & {
-						split?: false;
-				  })
-				| MessageAdditions
-		): Promise<Message>;
-		send(
-			content: StringResolvable,
-			options: MessageOptions & {
-				split: true | SplitOptions;
-			}
-		): Promise<Message[]>;
-		send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
 	}
 }

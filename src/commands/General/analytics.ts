@@ -10,10 +10,9 @@ import { Message, MessageAttachment } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envParseBoolean('INFLUX_ENABLED'),
 	aliases: ['growth'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.General.GrowthDescription,
 	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
-	permissions: ['ATTACH_FILES']
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	private nextRefresh = Date.now();

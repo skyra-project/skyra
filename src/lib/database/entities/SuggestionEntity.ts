@@ -6,11 +6,11 @@ export class SuggestionEntity extends BaseEntity {
 	public id!: number;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public guildID!: string;
+	public guildId!: string;
 
 	@Column('varchar', { length: 19 })
-	public messageID!: string;
+	public messageId!: string;
 
 	@Column('varchar', { length: 19 })
-	public authorID!: string;
+	public authorId!: string;
 }

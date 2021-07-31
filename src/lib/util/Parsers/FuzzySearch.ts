@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { promptForMessage } from '#utils/functions';
 import type { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { decode, jaroWinkler } from '../External/jaro-winkler';
@@ -79,7 +80,7 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
-		const t = await message.fetchT();
+		const t = await fetchT(message);
 		const n = await promptForMessage(
 			message,
 			t(LanguageKeys.FuzzySearch.Matches, {

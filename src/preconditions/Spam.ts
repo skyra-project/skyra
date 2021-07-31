@@ -13,12 +13,12 @@ export class UserPrecondition extends Precondition {
 	public async run(message: Message): AsyncPreconditionResult {
 		if (!isGuildMessage(message)) return this.ok();
 
-		const channelID = await readSettings(message.guild, GuildSettings.Channels.Spam);
-		if (!channelID || channelID === message.channel.id) return this.ok();
+		const channelId = await readSettings(message.guild, GuildSettings.Channels.Spam);
+		if (!channelId || channelId === message.channel.id) return this.ok();
 
 		if (isOwner(message.member) || (await isModerator(message.member))) return this.ok();
 
-		const channel = message.guild.channels.cache.get(channelID);
+		const channel = message.guild.channels.cache.get(channelId);
 		if (!channel) {
 			await writeSettings(message.guild, [[GuildSettings.Channels.Spam, null]]);
 			return this.ok();

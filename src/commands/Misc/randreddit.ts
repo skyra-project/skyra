@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
+import { isNsfw } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
-import type { TextChannel } from 'discord.js';
 
 const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const kTitleBlockList = /nsfl/i;
@@ -13,7 +13,6 @@ const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rand', 'rand-reddit', 'reddit'],
-	cooldown: 3,
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
 })
@@ -26,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
-		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
+		const nsfwEnabled = isNsfw(message.channel);
 		const posts = nsfwEnabled
 			? data.children.filter((child) => !kTitleBlockList.test(child.data.title))
 			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));

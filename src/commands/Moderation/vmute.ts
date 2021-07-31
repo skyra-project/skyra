@@ -9,15 +9,15 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.VmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,
 	optionalDuration: true,
-	requiredMember: true,
-	permissions: ['MUTE_MEMBERS']
+	requiredClientPermissions: ['MUTE_MEMBERS'],
+	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.voiceMute(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

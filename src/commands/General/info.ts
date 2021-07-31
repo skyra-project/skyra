@@ -5,7 +5,6 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bot-info'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.General.InfoDescription,
 	extendedHelp: LanguageKeys.Commands.General.InfoExtended
 })

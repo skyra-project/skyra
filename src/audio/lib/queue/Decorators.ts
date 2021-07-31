@@ -2,59 +2,60 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { createFunctionInhibitor } from '#utils/decorators';
 import { isDJ } from '#utils/functions';
+import { sendLocalized } from '@sapphire/plugin-i18next';
 
-export function requireMusicPlaying(): MethodDecorator {
+export function RequireMusicPlaying(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => message.guild.audio.playing,
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicNotPlaying)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicNotPlaying)
 	);
 }
 
-export function requireMusicPaused(): MethodDecorator {
+export function RequireMusicPaused(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => message.guild.audio.paused,
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicPaused)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicPaused)
 	);
 }
 
-export function requireSongPresent(): MethodDecorator {
+export function RequireSongPresent(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => message.guild.audio.getCurrentTrack().then((value) => value !== null),
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicNothingPlaying)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicNothingPlaying)
 	);
 }
 
-export function requireDj(): MethodDecorator {
+export function RequireDj(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => isDJ(message.member),
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicDjMember)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicDjMember)
 	);
 }
 
-export function requireQueueNotEmpty(): MethodDecorator {
+export function RequireQueueNotEmpty(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => message.guild.audio.canStart(),
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicQueueEmpty)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicQueueEmpty)
 	);
 }
 
-export function requireUserInVoiceChannel(): MethodDecorator {
+export function RequireUserInVoiceChannel(): MethodDecorator {
 	return createFunctionInhibitor(
 		(message: GuildMessage) => message.member.voice.channel !== null,
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicUserVoiceChannel)
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicUserVoiceChannel)
 	);
 }
 
-export function requireSkyraInVoiceChannel(): MethodDecorator {
+export function RequireSkyraInVoiceChannel(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.guild.audio.voiceChannelID !== null,
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicBotVoiceChannel)
+		(message: GuildMessage) => message.guild.audio.voiceChannelId !== null,
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicBotVoiceChannel)
 	);
 }
 
-export function requireSameVoiceChannel(): MethodDecorator {
+export function RequireSameVoiceChannel(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.member.voice.channelID === message.guild.audio.voiceChannelID,
-		(message: GuildMessage) => message.sendTranslated(LanguageKeys.Preconditions.MusicBothVoiceChannel)
+		(message: GuildMessage) => message.member.voice.channelId === message.guild.audio.voiceChannelId,
+		(message: GuildMessage) => sendLocalized(message, LanguageKeys.Preconditions.MusicBothVoiceChannel)
 	);
 }

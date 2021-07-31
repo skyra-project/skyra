@@ -11,8 +11,8 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Moderation.MuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.MuteExtended,
 	optionalDuration: true,
+	requiredClientPermissions: ['MANAGE_ROLES'],
 	requiredMember: true,
-	permissions: ['MANAGE_ROLES'],
 	roleKey: GuildSettings.Roles.Muted,
 	setUpKey: ModerationSetupRestriction.All
 })
@@ -20,8 +20,8 @@ export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
 		return message.guild.security.actions.mute(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

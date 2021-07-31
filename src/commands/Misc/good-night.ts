@@ -9,11 +9,9 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gn', 'night'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.GoodNightDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.GoodNightExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -26,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		const [kisser, child] = await Promise.all([fetchAvatar(message.author, 256), fetchAvatar(user, 256)]);
 

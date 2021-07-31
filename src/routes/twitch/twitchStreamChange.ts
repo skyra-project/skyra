@@ -33,7 +33,7 @@ export class UserRoute extends Route {
 		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "x-hub-signature" header');
 
 		const [algo, sig] = xHubSignature.toString().split('=', 2);
-		const { client } = this.context;
+		const { client } = this.container;
 		if (!client.twitch.checkSignature(algo, sig, request.body)) return response.forbidden('Invalid Hub signature');
 
 		const id = request.params.id as string;

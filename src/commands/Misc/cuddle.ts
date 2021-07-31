@@ -8,11 +8,9 @@ import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.CuddleDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.CuddleExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -25,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async generate(message: Message, user: User) {
-		if (user.id === message.author.id) user = this.context.client.user!;
+		if (user.id === message.author.id) user = this.container.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const [man, woman] = await Promise.all([fetchAvatar(message.author, 256), fetchAvatar(user, 256)]);

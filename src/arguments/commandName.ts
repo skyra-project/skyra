@@ -7,7 +7,7 @@ import { Argument, ArgumentContext, Command } from '@sapphire/framework';
 
 export class UserArgument extends Argument<Command> {
 	public async run(parameter: string, context: CommandArgumentContext) {
-		const commands = this.context.stores.get('commands');
+		const commands = this.container.stores.get('commands');
 		const found = commands.get(parameter.toLowerCase()) as SkyraCommand | undefined;
 		if (found) {
 			return this.isAllowed(found, context) ? this.ok(found) : this.error({ parameter, identifier: LanguageKeys.Arguments.Command, context });

@@ -14,20 +14,20 @@ export class StickyRoleManager {
 		this.#guild = guild;
 	}
 
-	public async get(userID: string): Promise<readonly string[]> {
+	public async get(userId: string): Promise<readonly string[]> {
 		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
-		return entries.find((entry) => entry.user === userID)?.roles ?? [];
+		return entries.find((entry) => entry.user === userId)?.roles ?? [];
 	}
 
-	public async has(userID: string, roleID: string): Promise<boolean> {
-		const roles = await this.get(userID);
-		return roles.includes(roleID);
+	public async has(userId: string, roleId: string): Promise<boolean> {
+		const roles = await this.get(userId);
+		return roles.includes(roleId);
 	}
 
-	public async fetch(userID: string): Promise<readonly string[]> {
+	public async fetch(userId: string): Promise<readonly string[]> {
 		// 1.0. If the entry does not exist, return empty array
 		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
-		const entry = entries.find((entry) => entry.user === userID);
+		const entry = entries.find((entry) => entry.user === userId);
 		if (isNullish(entry)) return [];
 
 		// 2.0. Read the entry and clean the roles:
@@ -39,16 +39,16 @@ export class StickyRoleManager {
 		// 2.2. If the roles are changed and leds to an empty array:
 		if (roles.length === 0) {
 			// 3.0.a. Then delete the entry from the settings:
-			await this.clear(userID);
+			await this.clear(userId);
 			return roles;
 		}
 
-		// 3.0.b. Make a clone with the userID and the fixed roles array:
+		// 3.0.b. Make a clone with the userId and the fixed roles array:
 		return writeSettings(this.#guild, (settings) => {
-			const index = settings[GuildSettings.StickyRoles].findIndex((entry) => entry.user === userID);
+			const index = settings[GuildSettings.StickyRoles].findIndex((entry) => entry.user === userId);
 			if (index === -1) return [];
 
-			const clone: StickyRole = { user: userID, roles };
+			const clone: StickyRole = { user: userId, roles };
 			settings[GuildSettings.StickyRoles][index] = clone;
 
 			// 4.0. Return the updated roles:
@@ -56,25 +56,25 @@ export class StickyRoleManager {
 		});
 	}
 
-	public add(userID: string, roleID: string): Promise<readonly string[]> {
+	public add(userId: string, roleId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 
 			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userID);
+			const index = entries.findIndex((entry) => entry.user === userId);
 
 			// 2.0. If the entry does not exist:
 			if (index === -1) {
 				// 3.0.a. Proceed to create a new sticky roles entry:
-				const entry: StickyRole = { user: userID, roles: [roleID] };
+				const entry: StickyRole = { user: userId, roles: [roleId] };
 				entries.push(entry);
 				return entry.roles;
 			}
 
 			// 3.0.b. Otherwise read the previous entry and patch it by adding the role:
 			const entry = entries[index];
-			const roles = [...this.addRole(roleID, entry.roles)];
+			const roles = [...this.addRole(roleId, entry.roles)];
 
 			// 3.1.b. Otherwise patch it:
 			entries[index] = { user: entry.user, roles };
@@ -84,20 +84,20 @@ export class StickyRoleManager {
 		});
 	}
 
-	public remove(userID: string, roleID: string): Promise<readonly string[]> {
+	public remove(userId: string, roleId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 
 			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userID);
+			const index = entries.findIndex((entry) => entry.user === userId);
 
 			// 1.1. If the index is negative, return empty array, as the entry does not exist:
 			if (index === -1) return [];
 
 			// 2.0. Read the previous entry and patch it by removing the role:
 			const entry = entries[index];
-			const roles = [...this.removeRole(roleID, entry.roles)];
+			const roles = [...this.removeRole(roleId, entry.roles)];
 
 			if (roles.length === 0) {
 				// 3.1.a. Then delete the entry from the settings:
@@ -112,13 +112,13 @@ export class StickyRoleManager {
 		});
 	}
 
-	public clear(userID: string): Promise<readonly string[]> {
+	public clear(userId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
 			const entries = settings[GuildSettings.StickyRoles];
 
 			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userID);
+			const index = entries.findIndex((entry) => entry.user === userId);
 
 			// 1.1. If the index is negative, return empty array, as the entry does not exist:
 			if (index === -1) return [];
@@ -134,22 +134,22 @@ export class StickyRoleManager {
 		});
 	}
 
-	private *addRole(roleID: string, roleIDs: readonly string[]) {
+	private *addRole(roleId: string, roleIds: readonly string[]) {
 		const emitted = new Set<string>();
-		for (const role of this.cleanRoles(roleIDs)) {
+		for (const role of this.cleanRoles(roleIds)) {
 			if (emitted.has(role)) continue;
 
 			emitted.add(role);
 			yield role;
 		}
 
-		if (!emitted.has(roleID)) yield roleID;
+		if (!emitted.has(roleId)) yield roleId;
 	}
 
-	private *removeRole(roleID: string, roleIDs: readonly string[]) {
+	private *removeRole(roleId: string, roleIds: readonly string[]) {
 		const emitted = new Set<string>();
-		for (const role of this.cleanRoles(roleIDs)) {
-			if (role === roleID) continue;
+		for (const role of this.cleanRoles(roleIds)) {
+			if (role === roleId) continue;
 			if (emitted.has(role)) continue;
 
 			emitted.add(role);
@@ -157,10 +157,10 @@ export class StickyRoleManager {
 		}
 	}
 
-	private *cleanRoles(roleIDs: readonly string[]) {
+	private *cleanRoles(roleIds: readonly string[]) {
 		const { roles } = this.#guild;
-		for (const roleID of roleIDs) {
-			if (roles.cache.has(roleID)) yield roleID;
+		for (const roleId of roleIds) {
+			if (roles.cache.has(roleId)) yield roleId;
 		}
 	}
 }

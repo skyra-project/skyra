@@ -5,14 +5,14 @@ import type { GuildMessage } from '#lib/types';
 import { reduce } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['upbday', 'birthdays'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 
 		if (schedules.length === 0) this.error(LanguageKeys.Commands.Misc.UpcomingBirthdaysNone, { prefix: context.commandPrefix });
 		const embed = new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
 		for (const [time, users] of schedules.slice(-10).reverse()) {
@@ -43,12 +43,12 @@ export class UserCommand extends SkyraCommand {
 						const calculatedAge = getAge(schedule.data, { now: time });
 						const age = calculatedAge === null ? args.t(LanguageKeys.Globals.Unknown) : calculatedAge + 1;
 
-						return `<@${schedule.data.userID}> (${age})`;
+						return `<@${schedule.data.userId}> (${age})`;
 					})
 					.join('\n')
 			);
 		}
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 }

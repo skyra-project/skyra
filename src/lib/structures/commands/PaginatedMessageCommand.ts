@@ -5,12 +5,15 @@ import { SkyraCommand } from './SkyraCommand';
 export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: PaginatedMessageCommand.Options) {
 		super(context, {
+			cooldownDelay: 15,
+			cooldownLimit: 2,
+
 			// Merge in all given options
 			...options,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			// Add all requiredPermissions set in the command, along with the permissions required for PaginatedMessage
-			permissions: [
-				...((options.permissions as PermissionResolvable[] | undefined) ?? []),
+			requiredClientPermissions: [
+				...((options.requiredClientPermissions as PermissionResolvable[] | undefined) ?? []),
 				'ADD_REACTIONS',
 				'MANAGE_MESSAGES',
 				'EMBED_LINKS',

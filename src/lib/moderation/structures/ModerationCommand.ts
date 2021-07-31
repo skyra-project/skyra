@@ -24,11 +24,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
-			strategyOptions: { flags: ['no-author', 'authored'] },
+			cooldownDelay: 8,
+			cooldownLimit: 2,
+			flags: ['no-author', 'authored'],
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			...options
 		});
 
@@ -76,8 +78,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			const output: string[] = [];
 			if (processed.length) {
 				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
-				const sorted = processed.sort((a, b) => a.log.caseID - b.log.caseID);
-				const cases = sorted.map(({ log }) => log.caseID);
+				const sorted = processed.sort((a, b) => a.log.caseId - b.log.caseId);
+				const cases = sorted.map(({ log }) => log.caseId);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
@@ -147,7 +149,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		return {
 			moderator: args.getFlags('no-author') ? null : args.getFlags('no-authored') || nameDisplay ? message.author : null,
-			send: enabledDM && (await this.context.db.fetchModerationDirectMessageEnabled(target.id))
+			send: enabledDM && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 

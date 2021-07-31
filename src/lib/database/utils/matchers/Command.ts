@@ -1,6 +1,5 @@
 import type { SkyraCommand } from '#lib/structures';
-import type { CommandStore } from '@sapphire/framework';
-import { Store } from '@sapphire/pieces';
+import { CommandStore, container } from '@sapphire/framework';
 
 function getNameSpaceDetails(name: string): readonly [string | null, string] {
 	const index = name.indexOf('.');
@@ -98,7 +97,7 @@ export function resolve(name: string): string | null {
 	// If it's an empty string, or has more than three parts, it is invalid:
 	if (parts.length === 0 || parts.length > 3) return null;
 
-	const commands = Store.injectedContext.stores.get('commands');
+	const commands = container.stores.get('commands');
 
 	// Handle `${command}`:
 	if (parts.length === 1) return commands.get(name.toLowerCase())?.name ?? null;

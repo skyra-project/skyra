@@ -3,11 +3,11 @@ import { Argument, ArgumentContext } from '@sapphire/framework';
 
 export class UserArgument extends Argument<Date> {
 	private get date() {
-		return this.context.stores.get('arguments').get('date') as Argument<Date>;
+		return this.container.stores.get('arguments').get('date') as Argument<Date>;
 	}
 
 	private get duration() {
-		return this.context.stores.get('arguments').get('duration') as Argument<Date>;
+		return this.container.stores.get('arguments').get('duration') as Argument<Date>;
 	}
 
 	public async run(parameter: string, context: ArgumentContext<Date>) {

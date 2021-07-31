@@ -1,13 +1,13 @@
 import type { SkyraCommand } from '#lib/structures';
 import { floatPromise, isGuildMessage, resolveOnErrorCodes } from '#utils/common';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { AwaitMessagesOptions, AwaitReactionsOptions, Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'timers/promises';
 import { canSendMessages } from './channels';
 
-const container = Store.injectedContext;
 const messageCommands = new WeakMap<Message, SkyraCommand>();
 
 /**
@@ -98,7 +98,7 @@ export async function deleteMessage(message: Message, time = 0): Promise<Message
 export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = Time.Minute): Promise<Message> {
 	if (typeof options === 'string') options = { content: options };
 
-	const response = (await message.send(options)) as Message;
+	const response = (await send(message, options)) as Message;
 	floatPromise(deleteMessage(response, timer));
 	return response;
 }
@@ -129,9 +129,8 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 	await response.react(PromptConfirmationReactions.Yes);
 	await response.react(PromptConfirmationReactions.No);
 
-	const target = container.client.users.resolveID(options.target ?? message.author)!;
-	const reactionOptions: AwaitReactionsOptions = { time: Time.Minute, max: 1 };
-	const reactions = await response.awaitReactions((__, user) => user.id === target, reactionOptions);
+	const target = container.client.users.resolveId(options.target ?? message.author)!;
+	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: Time.Minute, max: 1 });
 
 	// Remove all reactions if the user has permissions to do so
 	if (canRemoveAllReactions(response)) {
@@ -143,9 +142,8 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 
 const promptConfirmationMessageRegExp = /^y|yes?|yeah?$/i;
 async function promptConfirmationMessage(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
-	const target = container.client.users.resolveID(options.target ?? message.author)!;
-	const reactionOptions: AwaitMessagesOptions = { time: Time.Minute, max: 1 };
-	const messages = await response.channel.awaitMessages((message) => message.author.id === target, reactionOptions);
+	const target = container.client.users.resolveId(options.target ?? message.author)!;
+	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: Time.Minute, max: 1 });
 
 	return messages.size === 0 ? null : promptConfirmationMessageRegExp.test(messages.first()!.content);
 }
@@ -160,15 +158,13 @@ export async function promptConfirmation(message: Message, options: string | Pro
 	if (typeof options === 'string') options = { content: options };
 
 	// TODO: v13 | Switch to buttons only when available.
-	const response = (await message.send(options)) as Message;
+	const response = await send(message, options);
 	return canReact(response) ? promptConfirmationReaction(message, response, options) : promptConfirmationMessage(message, response, options);
 }
 
 export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = Time.Minute): Promise<string | null> {
-	// The cast is for mismatching overloads:
-	// TODO: v13 | Remove typecast
-	const response = (await message.channel.send(sendOptions as any)) as Message;
-	const responses = await message.channel.awaitMessages((msg) => msg.author === message.author, { time, max: 1 });
+	const response = await message.channel.send(sendOptions);
+	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));
 
 	return responses.size === 0 ? null : responses.first()!.content;

@@ -13,8 +13,6 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('OWLBOT_TOKEN'),
 	aliases: ['def', 'definition', 'defination', 'dictionary'],
-	bucket: 2,
-	cooldown: 20,
 	description: LanguageKeys.Commands.Tools.DefineDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.DefineExtended
 })
@@ -33,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(results: OwlbotResultOk, message: GuildMessage, t: TFunction) {
 		const template = new MessageEmbed()
 			.setTitle(toTitleCase(results.word))
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setFooter(' - Powered by Owlbot');
 
 		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);

@@ -15,6 +15,6 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public stringify(value: string) {
-		return (this.context.stores.get('commands').get(value) || { name: value }).name;
+		return (this.container.stores.get('commands').get(value) || { name: value }).name;
 	}
 }

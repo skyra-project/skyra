@@ -9,6 +9,7 @@ import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, cutText } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
@@ -16,12 +17,10 @@ type DurationDisplay = (time: number) => string;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hd', 'ho'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['details', { input: 'overview', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -58,23 +57,22 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
-		return message.send(
-			new MessageEmbed()
-				.setColor(COLORS[index])
-				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setFooter(
-					args.t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
-						warnings,
-						mutes,
-						kicks,
-						bans,
-						warningsText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
-						mutesText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
-						kicksText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
-						bansText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
-					})
-				)
-		);
+		const footer = args.t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
+			warnings,
+			mutes,
+			kicks,
+			bans,
+			warningsText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
+			mutesText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
+			kicksText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
+			bansText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
+		});
+
+		const embed = new MessageEmbed()
+			.setColor(COLORS[index])
+			.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(footer);
+		return send(message, { embeds: [embed] });
 	}
 
 	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -85,10 +83,10 @@ export class UserCommand extends SkyraCommand {
 		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
-		const user = this.context.client.user!;
+		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
@@ -119,13 +117,13 @@ export class UserCommand extends SkyraCommand {
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
-		const formattedModerator = users.get(entry.moderatorID!);
+		const formattedModerator = users.get(entry.moderatorId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
 		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formatter = expiredTime || appealOrInvalidated ? '~~' : '';
 
 		return {
-			name: `\`${entry.caseID}\` | ${entry.title}`,
+			name: `\`${entry.caseId}\` | ${entry.title}`,
 			value: `${formatter}Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}${formatter}`
 		};
 	}
@@ -133,7 +131,7 @@ export class UserCommand extends SkyraCommand {
 	private async fetchAllModerators(entries: Collection<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.moderatorID!;
+			const id = entry.moderatorId!;
 			if (!moderators.has(id)) moderators.set(id, (await entry.fetchModerator()).username);
 		}
 		return moderators;

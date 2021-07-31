@@ -11,11 +11,10 @@ import type { User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
-	permissions: ['ATTACH_FILES'],
-	runIn: ['news', 'text']
+	requiredClientPermissions: ['ATTACH_FILES'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
@@ -30,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([fetchAvatar(firstUser), fetchAvatar(secondUser)]);
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const settings = await users.ensureProfile(message.author.id);
 
 		// Build up the ship canvas

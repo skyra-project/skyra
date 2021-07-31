@@ -4,27 +4,25 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['viewbday'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const task = getGuildMemberBirthday(message.guild.id, user.id);
+		const content = task
+			? (args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, {
+					birthDate: task.time.getTime(),
+					user: user.toString()
+			  }) as string)
+			: (args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix }) as string);
 
-		return message.send(
-			task
-				? (args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, {
-						birthDate: task.time.getTime(),
-						user: user.toString()
-				  }) as string)
-				: (args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix }) as string),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 }

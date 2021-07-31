@@ -6,7 +6,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
 
@@ -14,8 +14,8 @@ import { FetchError } from 'node-fetch';
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	permissions: ['READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
-				this.context.client.emit(Events.Error, error);
+				this.container.client.emit(Events.Error, error);
 			}
 			return [];
 		}

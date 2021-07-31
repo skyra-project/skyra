@@ -17,11 +17,9 @@ const COORDINATES: readonly [number, number][] = [
 ];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

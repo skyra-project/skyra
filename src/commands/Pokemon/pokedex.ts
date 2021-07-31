@@ -31,10 +31,9 @@ enum BaseStats {
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
-	strategyOptions: { flags: ['shiny', 'back'] }
+	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

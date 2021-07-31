@@ -11,7 +11,6 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended
 })
@@ -48,7 +47,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
 		})
@@ -60,14 +59,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				return embed
 					.addField(embedTranslations.types, moveData.type, true)
 					.addField(embedTranslations.basePower, moveData.basePower, true)
-					.addField(embedTranslations.pp, moveData.pp, true)
+					.addField(embedTranslations.pp, t(LanguageKeys.Globals.NumberValue, { value: moveData.pp }), true)
 					.addField(embedTranslations.accuracy, `${moveData.accuracy}%`, true)
 					.addField(externalResources, externalSources);
 			})
 			.addPageEmbed((embed) =>
 				embed
 					.addField(embedTranslations.category, moveData.category, true)
-					.addField(embedTranslations.priority, moveData.priority, true)
+					.addField(embedTranslations.priority, t(LanguageKeys.Globals.NumberValue, { value: moveData.priority }), true)
 					.addField(embedTranslations.target, moveData.target, true)
 					.addField(embedTranslations.contestCondition, moveData.contestType ?? embedTranslations.none, true)
 					.addField(externalResources, externalSources)
@@ -76,8 +75,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// If the move has zMovePower or maxMovePower then squeeze it in between as a page
 		if (moveData.zMovePower || moveData.maxMovePower) {
 			display.addPageEmbed((embed) => {
-				if (moveData.maxMovePower) embed.addField(embedTranslations.maxMovePower, moveData.maxMovePower);
-				if (moveData.zMovePower) embed.addField(embedTranslations.zMovePower, moveData.zMovePower);
+				if (moveData.maxMovePower) {
+					embed.addField(embedTranslations.maxMovePower, t(LanguageKeys.Globals.NumberValue, { value: moveData.maxMovePower }));
+				}
+				if (moveData.zMovePower) {
+					embed.addField(embedTranslations.zMovePower, t(LanguageKeys.Globals.NumberValue, { value: moveData.zMovePower }));
+				}
 
 				embed.addField(externalResources, externalSources);
 				return embed;

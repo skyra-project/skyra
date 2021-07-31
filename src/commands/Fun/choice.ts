@@ -5,8 +5,6 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['choose', 'choise', 'pick'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChoiceExtended,
 	spam: true

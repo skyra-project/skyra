@@ -17,12 +17,10 @@ const CDN_URL = CdnUrls.BannersBasePath;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
-	permissions: ['MANAGE_MESSAGES'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['MANAGE_MESSAGES'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -30,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 
 	@requiresPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const banner = await args.pick(UserCommand.banner);
 
 		const author = await users.ensureProfile(message.author.id);
@@ -66,7 +64,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
@@ -81,7 +79,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const banner = await args.pick(UserCommand.banner);
 
 		await users.lock([message.author.id], async (id) => {
@@ -103,12 +101,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		const { banners } = this.context.db;
+		const { banners } = this.container.db;
 		const entries = await banners.find();
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
 		for (const banner of entries) {
 			UserCommand.banners.set(banner.id, {
-				author: banner.authorID,
+				author: banner.authorId,
 				authorName: null,
 				id: banner.id,
 				group: banner.group,
@@ -134,12 +132,12 @@ export class UserCommand extends SkyraCommand {
 	private async userList(message: GuildMessage, t: TFunction) {
 		const prefix = await readSettings(message.guild, GuildSettings.Prefix);
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const user = await users.ensureProfile(message.author.id);
 		const banners = new Set(user.profile.banners);
 		if (!banners.size) this.error(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 		for (const id of banners) {
 			const banner = UserCommand.banners.get(id);
 			if (banner) {

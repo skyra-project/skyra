@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { resolveOnErrorCodes } from '#utils/common';
 import { isDJ } from '#utils/functions';
-import { Store } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { container } from '@sapphire/framework';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type WebSocket from 'ws';
 import {
 	CloseCodes,
@@ -23,20 +23,16 @@ export class WebsocketUser {
 	public connection: WebSocket;
 
 	#handler: WebsocketHandler;
-	#userID: string;
+	#userId: string;
 
-	public constructor(handler: WebsocketHandler, connection: WebSocket, userID: string) {
+	public constructor(handler: WebsocketHandler, connection: WebSocket, userId: string) {
 		this.#handler = handler;
-		this.#userID = userID;
+		this.#userId = userId;
 		this.connection = connection;
 
 		// Set up the event listeners
 		this.connection.on(WebSocketEvents.Message, this.onMessage.bind(this));
 		this.connection.once(WebSocketEvents.Close, this.onClose.bind(this));
-	}
-
-	public get client() {
-		return Store.injectedContext.client;
 	}
 
 	public send(message: OutgoingWebSocketMessage) {
@@ -52,7 +48,7 @@ export class WebsocketUser {
 		if (!message.data.music_action || !message.data.guild_id || !this.musicSubscriptions.subscribed(message.data.guild_id)) return;
 
 		// Check for the existence of the guild:
-		const guild = this.client.guilds.cache.get(message.data.guild_id);
+		const guild = container.client.guilds.cache.get(message.data.guild_id);
 		if (!guild) {
 			this.musicSubscriptions.unsubscribe(message.data.guild_id);
 			this.send({ action: OutgoingWebSocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
@@ -60,7 +56,7 @@ export class WebsocketUser {
 		}
 
 		// Check for the existence of the member:
-		const member = await resolveOnErrorCodes(guild.members.fetch(this.#userID), RESTJSONErrorCodes.UnknownMember);
+		const member = await resolveOnErrorCodes(guild.members.fetch(this.#userId), RESTJSONErrorCodes.UnknownMember);
 		if (!member) {
 			this.musicSubscriptions.unsubscribe(message.data.guild_id);
 			this.send({ action: OutgoingWebSocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
@@ -125,14 +121,14 @@ export class WebsocketUser {
 		if (message.data.subscription_name === SubscriptionName.Music) {
 			if (!message.data.guild_id) return;
 
-			const guild = this.client.guilds.cache.get(message.data.guild_id);
+			const guild = container.client.guilds.cache.get(message.data.guild_id);
 			if (!guild) return;
 
 			this.musicSubscriptions.subscribe({ id: guild.id });
 
 			const { audio } = guild;
 			const [tracks, status, volume] = await Promise.all([audio.decodedTracks(), audio.nowPlaying(), audio.getVolume()]);
-			const voiceChannel = audio.voiceChannelID;
+			const voiceChannel = audio.voiceChannelId;
 			this.send({ action: OutgoingWebSocketAction.MusicSync, data: { id: message.data.guild_id, tracks, status, volume, voiceChannel } });
 		}
 	}
@@ -150,7 +146,7 @@ export class WebsocketUser {
 				try {
 					return this.handleMusicMessage(message);
 				} catch (err) {
-					return this.client.logger.fatal(err);
+					return container.logger.fatal(err);
 				}
 			}
 			case IncomingWebSocketAction.SubscriptionUpdate: {
@@ -173,6 +169,6 @@ export class WebsocketUser {
 		this.connection.removeAllListeners(WebSocketEvents.Message);
 
 		// Only remove if the instance set is the same as this instance
-		if (this.#handler.users.get(this.#userID) === this) this.#handler.users.delete(this.#userID);
+		if (this.#handler.users.get(this.#userId) === this) this.#handler.users.delete(this.#userId);
 	}
 }

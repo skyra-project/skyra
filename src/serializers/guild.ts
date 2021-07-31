@@ -8,7 +8,7 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
-		const guild = this.context.client.guilds.cache.get(value);
+		const guild = this.container.client.guilds.cache.get(value);
 		if (!guild) {
 			throw t(LanguageKeys.Serializers.InvalidGuild, { name: entry.name });
 		}
@@ -17,6 +17,6 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public stringify(value: string) {
-		return (this.context.client.guilds.cache.get(value) || { name: value }).name;
+		return (this.container.client.guilds.cache.get(value) || { name: value }).name;
 	}
 }

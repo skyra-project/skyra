@@ -1,6 +1,7 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { isGuildMessage } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
 import { requiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
@@ -8,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, Store } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { Collection, Message, MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import { Collection, Message, MessageEmbed, Permissions } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
@@ -36,8 +37,8 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 	aliases: ['commands', 'cmd', 'cmds'],
 	description: LanguageKeys.Commands.General.HelpDescription,
 	extendedHelp: LanguageKeys.Commands.General.HelpExtended,
-	guarded: true,
-	strategyOptions: { flags: ['cat', 'categories', 'all'] }
+	flags: ['cat', 'categories', 'all'],
+	guarded: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
@@ -66,9 +67,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private canRunPaginatedMessage(message: Message) {
-		return (
-			message.guild !== null && (message.channel as TextChannel).permissionsFor(this.context.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE)
-		);
+		return isGuildMessage(message) && message.channel.permissionsFor(this.container.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE);
 	}
 
 	private async categories(message: Message, args: SkyraCommand.Args) {
@@ -125,7 +124,7 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((embed) =>
 				embed //
@@ -157,9 +156,9 @@ export class UserCommand extends SkyraCommand {
 			footerName: command.name,
 			titleDescription: args.t(command.description)
 		});
-		const user = this.context.client.user!;
+		const user = this.container.client.user!;
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(data.footer)

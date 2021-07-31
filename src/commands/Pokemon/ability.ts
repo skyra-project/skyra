@@ -4,14 +4,14 @@ import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['abilities', 'pokeability'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -21,24 +21,23 @@ export class UserCommand extends SkyraCommand {
 		const abilityDetails = await this.fetchAPI(ability.toLowerCase());
 		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 
+		const externalResources = [
+			`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
+			`[Serebii](${abilityDetails.serebiiPage})`,
+			`[Smogon](${abilityDetails.smogonPage})`
+		].join(' | ');
+
 		const embed = new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setAuthor(`${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
 			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
-			.addField(
-				t(LanguageKeys.System.PokedexExternalResource),
-				[
-					`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
-					`[Serebii](${abilityDetails.serebiiPage})`,
-					`[Smogon](${abilityDetails.smogonPage})`
-				].join(' | ')
-			);
+			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);
 
 		if (abilityDetails.isFieldAbility) {
 			embed.spliceFields(0, 0, { name: embedTitles.fieldEffectTitle, value: abilityDetails.isFieldAbility, inline: false });
 		}
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI(ability: string) {

@@ -1,7 +1,7 @@
 import type { GuildMessage } from '#lib/types';
 import { client, textChannel } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
-import { APIMessage, EmbedType } from 'discord-api-types/v6';
+import { APIMessage, EmbedType } from 'discord-api-types/v9';
 import { Message } from 'discord.js';
 
 describe('formatters', () => {

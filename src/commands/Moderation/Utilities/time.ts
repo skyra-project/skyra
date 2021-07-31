@@ -7,28 +7,28 @@ import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Permissions, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.TimeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const cancel = await args.pick(UserCommand.cancel).catch(() => false);
-		const caseID = await args.pick('case');
+		const caseId = await args.pick('case');
 
-		const entry = await message.guild.moderation.fetch(caseID);
+		const entry = await message.guild.moderation.fetch(caseId);
 		if (!entry) this.error(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
 		if (!cancel && entry.temporaryType) this.error(LanguageKeys.Commands.Moderation.TimeTimed);
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
-		const task = this.context.schedule.queue.find(
-			(tk) => tk.data && tk.data[SchemaKeys.Case] === entry.caseID && tk.data[SchemaKeys.Guild] === entry.guild.id
+		const task = this.container.schedule.queue.find(
+			(tk) => tk.data && tk.data[SchemaKeys.Case] === entry.caseId && tk.data[SchemaKeys.Guild] === entry.guild.id
 		)!;
 
 		if (cancel) {
@@ -37,10 +37,10 @@ export class UserCommand extends SkyraCommand {
 			await message.guild.moderation.fetchChannelMessages();
 			await entry.edit({
 				duration: null,
-				moderatorID: message.author.id
+				moderatorId: message.author.id
 			});
 
-			return message.send(args.t(LanguageKeys.Commands.Moderation.TimeAborted, { title: entry.title }));
+			this.error(LanguageKeys.Commands.Moderation.TimeAborted, { title: entry.title });
 		}
 
 		if (entry.appealType || entry.invalidated) {
@@ -57,9 +57,11 @@ export class UserCommand extends SkyraCommand {
 		await message.guild.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
-			moderatorID: message.author.id
+			moderatorId: message.author.id
 		});
-		return message.send(args.t(LanguageKeys.Commands.Moderation.TimeScheduled, { title: entry.title, user, time: duration! }));
+
+		const content = args.t(LanguageKeys.Commands.Moderation.TimeScheduled, { title: entry.title, user, time: duration! });
+		return send(message, content);
 	}
 
 	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {

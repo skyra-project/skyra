@@ -12,16 +12,16 @@ import { Time } from '@sapphire/time-utilities';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: Time.Minute * 5,
+	cooldownDelay: Time.Minute * 5,
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
-	runIn: ['text', 'news']
+	requiredClientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private get role() {
-		return this.context.stores.get('arguments').get('role') as Argument<Role>;
+		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {

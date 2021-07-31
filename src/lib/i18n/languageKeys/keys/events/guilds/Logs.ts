@@ -1,7 +1,7 @@
 import { Difference, FT, T, Value, Values } from '#lib/types';
-import type { DefaultMessageNotifications, ExplicitContentFilterLevel, VerificationLevel } from 'discord.js';
+import type { DefaultMessageNotificationLevel, ExplicitContentFilterLevel, VerificationLevel } from 'discord.js';
 
-type Notifications = DefaultMessageNotifications | number;
+type Notifications = DefaultMessageNotificationLevel | number;
 
 export const ChannelCreate = T('events/guilds-logs:channelCreate');
 export const ChannelCreateParent = FT<Value>('events/guilds-logs:channelCreateParent');
@@ -106,7 +106,6 @@ export const ServerUpdatePremiumTier = FT<Difference<number>>('events/guilds-log
 export const ServerUpdatePublicUpdatesChannelAdded = FT<Value>('events/guilds-logs:serverUpdatePublicUpdatesChannelAdded');
 export const ServerUpdatePublicUpdatesChannelRemoved = FT<Value>('events/guilds-logs:serverUpdatePublicUpdatesChannelRemoved');
 export const ServerUpdatePublicUpdatesChannel = FT<Difference>('events/guilds-logs:serverUpdatePublicUpdatesChannel');
-export const ServerUpdateRegion = FT<Difference>('events/guilds-logs:serverUpdateRegion');
 export const ServerUpdateRulesChannelAdded = FT<Value>('events/guilds-logs:serverUpdateRulesChannelAdded');
 export const ServerUpdateRulesChannelRemoved = FT<Value>('events/guilds-logs:serverUpdateRulesChannelRemoved');
 export const ServerUpdateRulesChannel = FT<Difference>('events/guilds-logs:serverUpdateRulesChannel');

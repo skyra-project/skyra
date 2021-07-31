@@ -3,15 +3,15 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getAnime, parseDescription } from '#utils/APIs/AniList';
+import { isNsfw } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import { filterNullish, isNullish } from '@sapphire/utilities';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ani-list'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Animation.AniListAnimeDescription,
 	extendedHelp: LanguageKeys.Commands.Animation.AniListAnimeExtended
 })
@@ -30,7 +30,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 
 		// Check if the current context allows NSFW
-		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
+		const nsfwEnabled = isNsfw(message.channel);
 
 		// If the current context does not allow NSFW then filter out adult only content
 		const adultFilteredResults = nsfwEnabled ? results.media : results.media.filter((media) => !media?.isAdult);
@@ -43,7 +43,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.AnilistLogo)
 		});
 
@@ -110,7 +110,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					return embed
-						.setTitle(result.title?.english ?? result.title?.romaji ?? result.title?.native) //
+						.setTitle(result.title?.english ?? result.title?.romaji ?? result.title?.native ?? '') //
 						.setDescription(description.join('\n'))
 						.setImage(`https://img.anili.st/media/${result.id}`);
 				});

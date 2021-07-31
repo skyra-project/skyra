@@ -86,9 +86,8 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 export abstract class SelfModerationCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
 		super(context, {
-			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			...options
 		});
 	}

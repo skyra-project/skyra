@@ -4,13 +4,13 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { announcementCheck } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 15,
 	description: LanguageKeys.Commands.Announcement.SubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.SubscribeExtended,
-	permissions: ['MANAGE_ROLES'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['MANAGE_ROLES'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -33,6 +33,6 @@ export class UserCommand extends SkyraCommand {
 
 		await message.member.roles.set([...memberRolesSet]);
 
-		return message.send(args.t(LanguageKeys.Commands.Announcement.SubscribeSuccess, { role: role.name }));
+		return send(message, args.t(LanguageKeys.Commands.Announcement.SubscribeSuccess, { role: role.name }));
 	}
 }

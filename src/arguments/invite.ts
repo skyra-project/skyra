@@ -10,8 +10,8 @@ export class UserArgument extends Argument<string> {
 		}
 
 		const { code } = parsed.groups!;
-		const invite = await this.context.client.invites.fetch(code);
-		if (invite === null || !Reflect.has(invite, 'guildID')) {
+		const invite = await this.container.client.invites.fetch(code);
+		if (invite === null || !Reflect.has(invite, 'guildId')) {
 			return this.error({ parameter, identifier: LanguageKeys.Arguments.Invite, context });
 		}
 

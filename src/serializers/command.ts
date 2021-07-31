@@ -9,12 +9,12 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
-		const command = this.context.stores.get('commands').has(value);
+		const command = this.container.stores.get('commands').has(value);
 		if (!command) throw t(LanguageKeys.Serializers.InvalidCommand, { name: entry.name });
 		return true;
 	}
 
 	public stringify(value: string) {
-		return (this.context.stores.get('commands').get(value) || { name: value }).name;
+		return (this.container.stores.get('commands').get(value) || { name: value }).name;
 	}
 }

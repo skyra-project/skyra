@@ -1,16 +1,16 @@
-import { MusicCommand, requireQueueNotEmpty } from '#lib/audio';
+import { AudioCommand, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
-@ApplyOptions<MusicCommand.Options>({
+@ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.RemoveDescription,
 	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended
 })
-export class UserMusicCommand extends MusicCommand {
-	@requireQueueNotEmpty()
-	public async run(message: GuildMessage, args: MusicCommand.Args) {
+export class UserMusicCommand extends AudioCommand {
+	@RequireQueueNotEmpty()
+	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		let index = await args.pick('integer', { minimum: 1 });
 
 		// Minus one as user input is 1-based while the code is 0-based:
@@ -29,6 +29,6 @@ export class UserMusicCommand extends MusicCommand {
 
 		// Remove the song from the queue.
 		await audio.removeAt(index);
-		this.context.client.emit(Events.MusicRemoveNotify, message, entry);
+		this.container.client.emit(Events.MusicRemoveNotify, message, entry);
 	}
 }

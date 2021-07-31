@@ -6,12 +6,10 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

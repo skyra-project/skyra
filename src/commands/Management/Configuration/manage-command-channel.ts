@@ -7,12 +7,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcc'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandChannelDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandChannelExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

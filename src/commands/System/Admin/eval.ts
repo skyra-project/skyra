@@ -16,12 +16,10 @@ import { inspect } from 'util';
 	aliases: ['ev'],
 	description: LanguageKeys.Commands.System.EvalDescription,
 	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
+	flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden', 'sql'],
+	options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth'],
 	permissionLevel: PermissionLevels.BotOwner,
-	quotes: [],
-	strategyOptions: {
-		flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden', 'sql'],
-		options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth']
-	}
+	quotes: []
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
@@ -36,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 		const { success, result, time, type } = executeSql ? await this.sql(code) : await this.timedEval(message, args, code, flagTime);
 
 		if (args.getFlags('silent')) {
-			if (!success && result && cast<Error>(result).stack) this.context.client.logger.fatal(cast<Error>(result).stack);
+			if (!success && result && cast<Error>(result).stack) this.container.logger.fatal(cast<Error>(result).stack);
 			return null;
 		}
 
@@ -132,7 +130,7 @@ export class UserCommand extends SkyraCommand {
 		let type: Type;
 
 		try {
-			result = await this.context.db.connection.query(sql);
+			result = await this.container.db.connection.query(sql);
 			time = stopwatch.toString();
 			type = new Type(result);
 			success = true;

@@ -10,11 +10,9 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pray'],
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.FDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

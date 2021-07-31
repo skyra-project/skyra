@@ -6,6 +6,6 @@ import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire
 export class UserRoute extends Route {
 	@ratelimit(2, 2500)
 	public [methods.GET](_: ApiRequest, response: ApiResponse) {
-		return response.json([...this.context.client.i18n.languages.keys()]);
+		return response.json([...this.container.i18n.languages.keys()]);
 	}
 }

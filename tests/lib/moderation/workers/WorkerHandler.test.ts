@@ -17,7 +17,7 @@ describe('WorkerHandler', () => {
 		expect(handler.remaining).toBe(0);
 		expect(handler.lastHeartBeat).toBe(0);
 		expect(handler['id']).toBe(0);
-		expect(handler['threadID']).toBe(-1);
+		expect(handler['threadId']).toBe(-1);
 		expect(handler['online']).toBe(false);
 		expect(handler['worker'].listenerCount('message')).toBe(1);
 		expect(handler['worker'].listenerCount('online')).toBe(1);
@@ -36,7 +36,7 @@ describe('WorkerHandler', () => {
 		expect(handleExit).not.toHaveBeenCalled();
 		expect(terminate).not.toHaveBeenCalled();
 
-		expect(handler['threadID']).not.toBe(-1);
+		expect(handler['threadId']).not.toBe(-1);
 		expect(handler['online']).toBe(true);
 		expect(handler['worker'].listenerCount('message')).toBe(1);
 		expect(handler['worker'].listenerCount('online')).toBe(0);

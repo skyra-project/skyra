@@ -5,11 +5,12 @@ import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { map } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
-import { canSendMessages, promptConfirmation } from '#utils/functions';
+import { canSendMessages, GuildTextBasedChannelTypes, promptConfirmation } from '#utils/functions';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
+import { send } from '@skyra/editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { DiscordAPIError, MessageEmbed, MessageOptions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const flags = ['excludeMentions', 'em'];
@@ -17,14 +18,14 @@ const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['announce'],
-	bucket: 6,
-	cooldown: 30,
+	cooldownLimit: 6,
+	cooldownDelay: 30,
 	description: LanguageKeys.Commands.Announcement.AnnouncementDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: ['ADD_REACTIONS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
-	runIn: ['text', 'news'],
-	strategyOptions: { flags }
+	requiredClientPermissions: ['ADD_REACTIONS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+	runIn: ['GUILD_ANY'],
+	flags
 })
 export class UserCommand extends SkyraCommand {
 	private readonly messages: WeakMap<GuildMessage, GuildMessage> = new WeakMap();
@@ -32,13 +33,13 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const announcement = await args.rest('string', { max: 1950 });
 
-		const [channelID, embedEnabled] = await readSettings(message.guild, [
+		const [channelId, embedEnabled] = await readSettings(message.guild, [
 			GuildSettings.Channels.Announcements,
 			GuildSettings.Messages.AnnouncementEmbed
 		]);
-		if (!channelID) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channelId) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		const channel = message.guild.channels.cache.get(channelID) as TextChannel;
+		const channel = message.guild.channels.cache.get(channelId) as GuildTextBasedChannelTypes;
 		if (!channel) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
 		if (!canSendMessages(channel)) this.error(LanguageKeys.System.ChannelNotPostable);
@@ -48,17 +49,17 @@ export class UserCommand extends SkyraCommand {
 
 		if (await this.ask(message, args.t, header, announcement)) {
 			await this.send(message, embedEnabled, channel, role, header, announcement, args);
-			return message.send(args.t(LanguageKeys.Commands.Announcement.AnnouncementSuccess));
+			return send(message, args.t(LanguageKeys.Commands.Announcement.AnnouncementSuccess));
 		}
 
-		return message.send(args.t(LanguageKeys.Commands.Announcement.AnnouncementCancelled));
+		return send(message, args.t(LanguageKeys.Commands.Announcement.AnnouncementCancelled));
 	}
 
 	private async ask(message: GuildMessage, t: TFunction, header: string, announcement: string) {
 		try {
 			return promptConfirmation(message, {
 				content: t(LanguageKeys.Commands.Announcement.AnnouncementPrompt),
-				embed: this.buildEmbed(announcement, header)
+				embeds: [this.buildEmbed(announcement, header)]
 			});
 		} catch {
 			return false;
@@ -68,7 +69,7 @@ export class UserCommand extends SkyraCommand {
 	private async send(
 		message: GuildMessage,
 		embedEnabled: boolean,
-		channel: TextChannel,
+		channel: GuildTextBasedChannelTypes,
 		role: Role,
 		header: string,
 		announcement: string,
@@ -87,33 +88,34 @@ export class UserCommand extends SkyraCommand {
 				? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, { header, mentions })
 				: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, { header })
 			: `${header}:\n${announcement}`;
-		const options = {
+		const options: MessageOptions = {
+			content,
 			allowedMentions: {
 				users: this.trim([...detailedMentions.users]),
 				roles: this.trim(detailedMentions.roles.has(role.id) ? [...detailedMentions.roles] : [role.id, ...detailedMentions.roles])
 			},
-			embed: embedEnabled ? this.buildEmbed(announcement) : undefined
+			embeds: embedEnabled ? [this.buildEmbed(announcement)] : undefined
 		};
 
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
 		if (previous) {
 			try {
-				const resultMessage = await previous.edit(content, options);
-				this.context.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
+				const resultMessage = await previous.edit(options);
+				this.container.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
-					const resultMessage = await channel.send(content, options);
-					this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
+					const resultMessage = await channel.send(options);
+					this.container.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage as GuildMessage);
 				} else {
-					this.context.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
+					this.container.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
 					throw error;
 				}
 			}
 		} else {
-			const resultMessage = await channel.send(content, options);
-			this.context.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
+			const resultMessage = await channel.send(options);
+			this.container.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage as GuildMessage);
 		}
 

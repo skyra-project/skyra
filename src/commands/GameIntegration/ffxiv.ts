@@ -1,7 +1,7 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { FFXIVCharacter, ClassJob, ClassSubcategory, GuildMessage, ItemSearchResult } from '#lib/types';
+import { ClassJob, ClassSubcategory, FFXIVCharacter, GuildMessage, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -12,12 +12,9 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('XIVAPI_TOKEN'),
 	aliases: ['finalfantasy'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
-	strategyOptions: {
-		options: ['server']
-	},
+	options: ['server'],
 	subCommands: ['item', { input: 'character', default: true }]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
@@ -77,7 +74,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
 		}).addPageEmbed((embed) =>
 			embed
@@ -136,7 +133,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const item of items) {
 			display.addPageEmbed((embed) =>

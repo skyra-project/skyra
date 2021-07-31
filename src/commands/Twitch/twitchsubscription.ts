@@ -17,9 +17,10 @@ import { requiresPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Store } from '@sapphire/framework';
+import { Args, container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Guild, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { EntityManager } from 'typeorm';
@@ -35,8 +36,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -47,14 +48,13 @@ export class UserCommand extends SkyraCommand {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const status = await args.pick(UserCommand.status);
-		const content = await args.rest('string').catch(() => null);
 		const entry: Entry = {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content ?? null,
+			message: await args.rest('string').catch(() => null),
 			status
 		};
 
@@ -70,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 				// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 				// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
 				if (await this.upsertSubscription(message.guild, streamer)) {
-					await this.context.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
+					await this.container.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
 				}
 			} else {
 				// Retrieve the subscription.
@@ -87,14 +87,13 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		return message.send(
-			args.t(
-				status === NotificationsStreamsTwitchEventStatus.Offline
-					? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
-					: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
-				{ name: streamer.display_name, channel: channel.toString() }
-			)
+		const content = args.t(
+			status === NotificationsStreamsTwitchEventStatus.Offline
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
+			{ name: streamer.display_name, channel: channel.toString() }
 		);
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -130,14 +129,13 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		return message.send(
-			args.t(
-				status === NotificationsStreamsTwitchEventStatus.Offline
-					? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
-					: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
-				{ name: streamer.display_name, channel: channel.toString() }
-			)
+		const content = args.t(
+			status === NotificationsStreamsTwitchEventStatus.Offline
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
+			{ name: streamer.display_name, channel: channel.toString() }
 		);
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -154,7 +152,7 @@ export class UserCommand extends SkyraCommand {
 			});
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
-			const { twitchStreamSubscriptions } = this.context.db;
+			const { twitchStreamSubscriptions } = this.container.db;
 			await twitchStreamSubscriptions.manager.transaction(async (em) => {
 				const entries = await this.getSubscriptions(em, message.guild.id);
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
@@ -175,7 +173,8 @@ export class UserCommand extends SkyraCommand {
 				await em.save(toUpdate);
 			});
 
-			return message.send(args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccess, { count: entries }));
+			const content = args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccess, { count: entries });
+			return send(message, content);
 		}
 
 		/** Remove the subscription for the specified streaming, returning the length of {@link NotificationsStreamsTwitchStreamer} for this entry */
@@ -192,9 +191,9 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		await this.removeSubscription(message.guild, streamer);
-		return message.send(
-			args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess, { name: streamer.display_name, count: entries })
-		);
+
+		const content = args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess, { name: streamer.display_name, count: entries });
+		return send(message, content);
 	}
 
 	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -215,7 +214,7 @@ export class UserCommand extends SkyraCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 		});
 		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 
@@ -245,7 +244,7 @@ export class UserCommand extends SkyraCommand {
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map((subscriptions) => subscriptions[0]);
-		const profiles = await this.context.client.twitch.fetchUsers(ids, []);
+		const profiles = await this.container.client.twitch.fetchUsers(ids, []);
 		const names = new Map<string, string>();
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
@@ -270,7 +269,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async upsertSubscription(guild: Guild, streamer: Streamer) {
-		const { twitchStreamSubscriptions } = this.context.db;
+		const { twitchStreamSubscriptions } = this.container.db;
 		const results = await twitchStreamSubscriptions
 			.createQueryBuilder()
 			.insert()
@@ -287,7 +286,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async removeSubscription(guild: Guild, streamer: Streamer) {
-		const { twitchStreamSubscriptions } = this.context.db;
+		const { twitchStreamSubscriptions } = this.container.db;
 		const subscription = await twitchStreamSubscriptions.findOne({ id: streamer.id });
 		if (!subscription) return;
 
@@ -297,7 +296,7 @@ export class UserCommand extends SkyraCommand {
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
 		if (subscription.guildIds.length === 1) {
 			await subscription.remove();
-			await this.context.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
+			await this.container.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
 		} else {
 			subscription.guildIds.splice(index, 1);
 			await subscription.save();
@@ -306,7 +305,7 @@ export class UserCommand extends SkyraCommand {
 
 	private static streamer = Args.make<Streamer>(async (parameter, { argument }) => {
 		try {
-			const { data } = await Store.injectedContext.client.twitch.fetchUsers([], [parameter]);
+			const { data } = await container.client.twitch.fetchUsers([], [parameter]);
 			if (data.length > 0) return Args.ok(data[0]);
 			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound });
 		} catch {

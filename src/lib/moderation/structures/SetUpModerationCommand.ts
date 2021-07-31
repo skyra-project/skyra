@@ -19,7 +19,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 
 	private get role() {
-		return this.context.stores.get('arguments').get('role') as Argument<Role>;
+		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
 	public async run(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null> {

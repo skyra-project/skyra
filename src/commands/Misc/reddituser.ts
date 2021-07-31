@@ -16,7 +16,6 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['redditor'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.RedditUserDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.RedditUserExtended
 })
@@ -56,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setTitle(fieldsData.overviewFor)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(about.icon_img)
 				.setFooter(` • ${fieldsData.dataAvailableFor}`)
 		})

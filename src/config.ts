@@ -13,8 +13,8 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import type { APIWebhook } from 'discord-api-types/v6';
-import type { ActivityType, ClientOptions, DefaultMessageNotifications, ExplicitContentFilterLevel, PresenceData } from 'discord.js';
+import type { APIWebhook } from 'discord-api-types/v9';
+import { ActivitiesOptions, ActivityType, ClientOptions, DefaultMessageNotificationLevel, ExplicitContentFilterLevel, Options } from 'discord.js';
 import { config } from 'dotenv-cra';
 import i18next, { FormatFunction } from 'i18next';
 import { join } from 'path';
@@ -92,14 +92,16 @@ function parseApi(): ServerOptions | undefined {
 	};
 }
 
-function parsePresenceActivity(): PresenceData['activity'] | undefined {
+function parsePresenceActivity(): ActivitiesOptions[] {
 	const { CLIENT_PRESENCE_NAME } = process.env;
-	if (!CLIENT_PRESENCE_NAME) return undefined;
+	if (!CLIENT_PRESENCE_NAME) return [];
 
-	return {
-		name: CLIENT_PRESENCE_NAME,
-		type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ActivityType
-	};
+	return [
+		{
+			name: CLIENT_PRESENCE_NAME,
+			type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ActivityType
+		}
+	];
 }
 
 function parseRegExpPrefix(): RegExp | undefined {
@@ -112,31 +114,30 @@ export const LANGUAGE_ROOT = join(PROJECT_ROOT, 'languages');
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: parseAudio(),
-	ws: {
-		intents: [
-			'GUILDS',
-			'GUILD_MEMBERS',
-			'GUILD_BANS',
-			'GUILD_EMOJIS',
-			'GUILD_VOICE_STATES',
-			'GUILD_MESSAGES',
-			'GUILD_MESSAGE_REACTIONS',
-			'DIRECT_MESSAGES',
-			'DIRECT_MESSAGE_REACTIONS'
-		]
-	},
-	messageCacheLifetime: 900,
-	messageCacheMaxSize: 300,
-	messageSweepInterval: 180,
-	defaultPrefix: envParseString('CLIENT_PREFIX'),
-	presence: { activity: parsePresenceActivity() },
-	regexPrefix: parseRegExpPrefix(),
-	restTimeOffset: 0,
-	schedule: { interval: 5000 },
+	allowedMentions: { users: [], roles: [] },
 	api: parseApi(),
 	caseInsensitiveCommands: true,
 	caseInsensitivePrefixes: true,
-	loadDefaultErrorEvents: false,
+	defaultPrefix: envParseString('CLIENT_PREFIX'),
+	intents: [
+		'GUILDS',
+		'GUILD_MEMBERS',
+		'GUILD_BANS',
+		'GUILD_EMOJIS_AND_STICKERS',
+		'GUILD_VOICE_STATES',
+		'GUILD_MESSAGES',
+		'GUILD_MESSAGE_REACTIONS',
+		'DIRECT_MESSAGES',
+		'DIRECT_MESSAGE_REACTIONS'
+	],
+	loadDefaultErrorListeners: false,
+	makeCache: Options.cacheWithLimits({ MessageManager: 300 }),
+	messageCacheLifetime: 900,
+	messageSweepInterval: 180,
+	presence: { activities: parsePresenceActivity() },
+	regexPrefix: parseRegExpPrefix(),
+	restTimeOffset: 0,
+	schedule: { interval: 5000 },
 	nms: {
 		everyone: 5,
 		role: 2
@@ -241,10 +242,10 @@ export const CLIENT_OPTIONS: ClientOptions = {
 							}
 						}
 						case LanguageFormatters.MessageNotifications: {
-							switch (value as DefaultMessageNotifications | number) {
-								case 'ALL':
+							switch (value as DefaultMessageNotificationLevel) {
+								case 'ALL_MESSAGES':
 									return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
-								case 'MENTIONS':
+								case 'ONLY_MENTIONS':
 									return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
 								default:
 									return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });

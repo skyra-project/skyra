@@ -7,7 +7,7 @@ export class UserTask extends Task {
 
 	public async run(data: RemoveBirthdayRoleData): Promise<PartialResponseValue | null> {
 		// Get and check the guild:
-		const guild = this.context.client.guilds.cache.get(data.guildID);
+		const guild = this.container.client.guilds.cache.get(data.guildID);
 		if (!guild) return null;
 
 		// If the guild is not available, re-schedule the task by creating
@@ -32,7 +32,7 @@ export class UserTask extends Task {
 					return { type: ResponseType.Delay, value: Time.Second * 5 };
 				}
 
-				this.context.logger.fatal(error);
+				this.container.logger.fatal(error);
 			}
 		}
 

@@ -3,15 +3,15 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 15,
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
-	permissions: ['ATTACH_FILES']
+	requiredClientPermissions: ['ATTACH_FILES']
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
@@ -21,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 		const userAvatar = await fetchAvatar(user);
 		const attachment = await this.generateImage(userAvatar);
 
-		return message.channel.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
+		return send(message, { files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
 	}
 
 	public async onLoad() {

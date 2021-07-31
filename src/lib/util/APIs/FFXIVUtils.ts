@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CharacterResult, CharacterSearchResult, ClassMap, ClassSubcategory, ItemSearchResult, SearchResponse } from '#lib/types';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
-import { MimeTypes } from '@sapphire/plugin-api';
 import { UserError } from '@sapphire/framework';
+import { MimeTypes } from '@sapphire/plugin-api';
 import { toTitleCase } from '@sapphire/utilities';
 import { URL } from 'url';
 

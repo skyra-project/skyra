@@ -3,21 +3,22 @@ import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['doggo', 'puppy'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.DogDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.DogExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message) {
-		const [color, image] = await Promise.all([this.context.db.fetchColor(message), this.fetchImage()]);
+		const [color, image] = await Promise.all([this.container.db.fetchColor(message), this.fetchImage()]);
 
-		return message.send(new MessageEmbed().setColor(color).setImage(image!).setTimestamp());
+		const embed = new MessageEmbed().setColor(color).setImage(image!).setTimestamp();
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchImage() {

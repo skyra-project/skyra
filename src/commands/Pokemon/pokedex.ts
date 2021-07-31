@@ -2,7 +2,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import {
 	fetchGraphQLPokemon,
 	getPokemonDetailsByFuzzy,
@@ -11,7 +10,7 @@ import {
 	parseBulbapediaURL,
 	resolveColour
 } from '#utils/APIs/Pokemon';
-import { Emojis } from '#utils/constants';
+import { CdnUrls, Emojis } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
@@ -31,10 +30,9 @@ enum BaseStats {
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
-	strategyOptions: { flags: ['shiny', 'back'] }
+	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

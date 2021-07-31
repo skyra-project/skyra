@@ -1,9 +1,9 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { hours, minutes, years } from '#utils/common';
 import { create } from '#utils/Security/RegexCreator';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { RateLimitManager } from '@sapphire/ratelimits';
-import { Time } from '@sapphire/time-utilities';
 import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
 import type { Sentence } from '@skyra/tags';
 import type { TFunction } from 'i18next';
@@ -222,7 +222,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'messages.farewell', nullable: true, length: 2000 })
 	public messagesFarewell?: string | null;
 
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesFarewellAutoDelete, minimum: 0, maximum: Time.Minute * 15 })
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesFarewellAutoDelete, minimum: 0, maximum: minutes(15) })
 	@Column('bigint', { name: 'messages.farewell-auto-delete', nullable: true, transformer: kBigIntTransformer })
 	public messagesFarewellAutoDelete?: number | null = null;
 
@@ -230,7 +230,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'messages.greeting', nullable: true, length: 2000 })
 	public messagesGreeting?: string | null;
 
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesGreetingAutoDelete, minimum: 0, maximum: Time.Minute * 15 })
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesGreetingAutoDelete, minimum: 0, maximum: minutes(15) })
 	@Column('bigint', { name: 'messages.greeting-auto-delete', nullable: true, transformer: kBigIntTransformer })
 	public messagesGreetingAutoDelete?: number | null = null;
 
@@ -379,7 +379,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.attachments.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodAttachmentsHardActionDuration: number | null = null;
@@ -388,7 +388,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.attachments.threshold-maximum', default: 10 })
 	public selfmodAttachmentsThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.attachments.threshold-duration', default: 60000 })
 	public selfmodAttachmentsThresholdDuration = 60000;
 
@@ -425,7 +425,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.capitals.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodCapitalsHardActionDuration: number | null = null;
@@ -434,7 +434,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.capitals.threshold-maximum', default: 10 })
 	public selfmodCapitalsThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.capitals.threshold-duration', default: 60000 })
 	public selfmodCapitalsThresholdDuration = 60000;
 
@@ -467,7 +467,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.links.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodLinksHardActionDuration: number | null = null;
@@ -476,7 +476,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.links.threshold-maximum', default: 10 })
 	public selfmodLinksThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.links.threshold-duration', default: 60000 })
 	public selfmodLinksThresholdDuration = 60000;
 
@@ -513,7 +513,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.messages.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodMessagesHardActionDuration: number | null = null;
@@ -522,7 +522,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.messages.threshold-maximum', default: 10 })
 	public selfmodMessagesThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.messages.threshold-duration', default: 60000 })
 	public selfmodMessagesThresholdDuration = 60000;
 
@@ -555,7 +555,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.newlines.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodNewlinesHardActionDuration: number | null = null;
@@ -564,7 +564,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.newlines.threshold-maximum', default: 10 })
 	public selfmodNewlinesThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.newlines.threshold-duration', default: 60000 })
 	public selfmodNewlinesThresholdDuration = 60000;
 
@@ -601,7 +601,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.invites.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodInvitesHardActionDuration: number | null = null;
@@ -610,7 +610,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.invites.threshold-maximum', default: 10 })
 	public selfmodInvitesThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.invites.threshold-duration', default: 60000 })
 	public selfmodInvitesThresholdDuration = 60000;
 
@@ -643,7 +643,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.filter.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodFilterHardActionDuration: number | null = null;
@@ -652,7 +652,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.filter.threshold-maximum', default: 10 })
 	public selfmodFilterThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.filter.threshold-duration', default: 60000 })
 	public selfmodFilterThresholdDuration = 60000;
 
@@ -693,7 +693,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		type: 'timespan',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		minimum: 0,
-		maximum: Time.Year * 5
+		maximum: years(5)
 	})
 	@Column('bigint', { name: 'selfmod.reactions.hard-action-duration', nullable: true, transformer: kBigIntTransformer })
 	public selfmodReactionsHardActionDuration: number | null = null;
@@ -702,7 +702,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.reactions.threshold-maximum', default: 10 })
 	public selfmodReactionsThresholdMaximum = 10;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: Time.Minute * 5 })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, minimum: 0, maximum: minutes(5) })
 	@Column('integer', { name: 'selfmod.reactions.threshold-duration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
 
@@ -778,7 +778,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'starboard.self-star', default: false })
 	public starboardSelfStar = false;
 
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.StarboardMaximumAge, minimum: 0, maximum: Time.Year * 5 })
+	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.StarboardMaximumAge, minimum: 0, maximum: years(5) })
 	@Column('bigint', { name: 'starboard.maximum-age', nullable: true, transformer: kBigIntTransformer })
 	public starboardMaximumAge: number | null = null;
 
@@ -792,9 +792,9 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'music.default-volume', default: 100 })
 	public musicDefaultVolume = 100;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumDuration, minimum: 0, maximum: Time.Hour * 12 })
-	@Column('integer', { name: 'music.maximum-duration', default: Time.Hour * 2 })
-	public musicMaximumDuration = Time.Hour * 2;
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumDuration, minimum: 0, maximum: hours(12) })
+	@Column('integer', { name: 'music.maximum-duration', default: hours(2) })
+	public musicMaximumDuration = hours(2);
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumEntriesPerUser, minimum: 1, maximum: 250 })
 	@Column('smallint', { name: 'music.maximum-entries-per-user', default: 100 })
@@ -811,9 +811,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowedRoles, type: 'role' })
 	@Column('varchar', { name: 'music.allowed-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public musicAllowedRoles: string[] = [];
-
-	@Column('jsonb', { name: 'notifications.streams.twitch.streamers', default: () => "'[]'::JSONB" })
-	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
@@ -855,19 +852,15 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#words: readonly string[] = [];
 
-	public get client() {
-		return Store.injectedContext.client;
-	}
-
 	public get guild() {
-		return this.client.guilds.cache.get(this.id)!;
+		return container.client.guilds.cache.get(this.id)!;
 	}
 
 	/**
 	 * Gets the [[Language]] for this entity.
 	 */
 	public getLanguage(): TFunction {
-		return this.client.i18n.fetchT(this.language);
+		return container.i18n.getT(this.language);
 	}
 
 	/**
@@ -917,45 +910,58 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 }
 
 export interface PermissionsNode {
-	id: string;
 	allow: string[];
+
 	deny: string[];
+
+	id: string;
 }
 
 export interface CustomCommand {
-	id: string;
-	embed: boolean;
-	color: number;
 	aliases: string[];
+
+	color: number;
+
 	content: Sentence;
+
+	embed: boolean;
+
+	id: string;
 }
 
 export type CommandAutoDelete = readonly [string, number];
 
 export interface DisabledCommandChannel {
 	channel: string;
+
 	commands: string[];
 }
 
 export interface StickyRole {
-	user: string;
 	roles: string[];
+
+	user: string;
 }
 
 export interface ReactionRole {
-	role: string;
-	emoji: string;
-	message: string | null;
 	channel: string;
+
+	emoji: string;
+
+	message: string | null;
+
+	role: string;
 }
 
 export interface RolesAuto {
 	id: string;
+
 	points: number;
 }
 
 export interface TriggerAlias {
 	input: string;
+
 	output: string;
 }
 
@@ -965,22 +971,6 @@ export interface TriggerIncludes extends TriggerAlias {
 
 export interface UniqueRoleSet {
 	name: string;
+
 	roles: readonly string[];
 }
-
-export const enum NotificationsStreamsTwitchEventStatus {
-	Online,
-	Offline
-}
-
-export interface NotificationsStreamsTwitchStreamer {
-	channel: string;
-	author: string;
-	message: string | null;
-	status: NotificationsStreamsTwitchEventStatus;
-	gamesBlacklist: readonly string[];
-	gamesWhitelist: readonly string[];
-	createdAt: number;
-}
-
-export type NotificationsStreamTwitch = [string, readonly NotificationsStreamsTwitchStreamer[]];

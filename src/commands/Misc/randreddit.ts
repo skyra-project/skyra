@@ -2,23 +2,26 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
-import type { TextChannel } from 'discord.js';
+import { send } from '@sapphire/plugin-editable-commands';
 
-const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
-const kTitleBlockList = /nsfl/i;
-const kUsernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
+const subredditBlocklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
+const subredditTitleBlocklist = /nsfl/i;
+const subredditNameRegex = /^(?:\/?r\/)?[A-Za-z0-9_-]*$/;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rand', 'rand-reddit', 'reddit'],
-	cooldown: 3,
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+		await sendLoadingMessage(message, args.t);
+
 		const reddit = await args.pick(UserCommand.reddit);
 		const { kind, data } = await this.fetchData(reddit);
 
@@ -26,31 +29,30 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
-		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
+		const nsfwEnabled = isNsfwChannel(message.channel);
 		const posts = nsfwEnabled
-			? data.children.filter((child) => !kTitleBlockList.test(child.data.title))
-			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));
+			? data.children.filter((child) => !subredditTitleBlocklist.test(child.data.title))
+			: data.children.filter((child) => !child.data.over_18 && !subredditTitleBlocklist.test(child.data.title));
 
 		if (posts.length === 0) {
 			this.error(nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw);
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.send(
-			args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
-				title: post.title,
-				author: post.author,
-				url: post.spoiler ? `||${post.url}||` : post.url
-			}),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+
+		const content = args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
+			title: post.title,
+			author: post.author,
+			url: post.spoiler ? `||${post.url}||` : post.url
+		});
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async fetchData(reddit: string) {
 		try {
 			return await fetch<Reddit.Response<'posts'>>(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON);
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error as QueryError);
 		}
 	}
 
@@ -82,11 +84,13 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static reddit = Args.make<string>((parameter, { argument }) => {
-		if (!kUsernameRegex.test(parameter)) {
+		if (!subredditNameRegex.test(parameter)) {
 			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditInvalidArgument });
 		}
 
-		if (kBlockList.test(parameter)) return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditBanned });
+		if (subredditBlocklist.test(parameter)) {
+			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Misc.RandRedditBanned });
+		}
 
 		return Args.ok(parameter.toLowerCase());
 	});

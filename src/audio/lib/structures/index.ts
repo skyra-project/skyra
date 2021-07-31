@@ -1,2 +1,2 @@
-export * from './AudioEvent';
-export * from './MusicCommand';
+export * from './AudioCommand';
+export * from './AudioListener';

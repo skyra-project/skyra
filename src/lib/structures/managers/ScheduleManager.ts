@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database';
-import { Store } from '@sapphire/framework';
+import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database/entities';
+import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
-
-const container = Store.injectedContext;
 
 export class ScheduleManager {
 	public queue: ScheduleEntity[] = [];
@@ -14,19 +12,19 @@ export class ScheduleManager {
 	}
 
 	public async init() {
-		const { schedules } = Store.injectedContext.db;
+		const { schedules } = container.db;
 		const entries = await schedules.find();
 
 		for (const entry of entries) this._insert(entry.setup(this).resume());
 		this._checkInterval();
 	}
 
-	public async add(taskID: string, timeResolvable: TimeResolvable, options: ScheduleManagerAddOptions = {}) {
-		if (!container.settings.tasks.has(taskID)) throw new Error(`The task '${taskID}' does not exist.`);
+	public async add(taskId: string, timeResolvable: TimeResolvable, options: ScheduleManagerAddOptions = {}) {
+		if (!container.settings.tasks.has(taskId)) throw new Error(`The task '${taskId}' does not exist.`);
 
 		const [time, cron] = this._resolveTime(timeResolvable);
 		const entry = new ScheduleEntity();
-		entry.taskID = taskID;
+		entry.taskId = taskId;
 		entry.time = time;
 		entry.recurring = cron;
 		entry.catchUp = options.catchUp ?? true;
@@ -38,14 +36,14 @@ export class ScheduleManager {
 		return entry;
 	}
 
-	public async remove(entityOrID: ScheduleEntity | number) {
-		if (typeof entityOrID === 'number') {
-			entityOrID = this.queue.find((entity) => entity.id === entityOrID)!;
-			if (!entityOrID) return false;
+	public async remove(entityOrId: ScheduleEntity | number) {
+		if (typeof entityOrId === 'number') {
+			entityOrId = this.queue.find((entity) => entity.id === entityOrId)!;
+			if (!entityOrId) return false;
 		}
 
-		await entityOrID.pause().remove();
-		this._remove(entityOrID);
+		await entityOrId.pause().remove();
+		this._remove(entityOrId);
 		this._checkInterval();
 		return true;
 	}
@@ -82,7 +80,7 @@ export class ScheduleManager {
 	}
 
 	private async _handleResponses(responses: readonly ResponseValue[]) {
-		const { connection } = Store.injectedContext.db;
+		const { connection } = container.db;
 		const queryRunner = connection.createQueryRunner();
 		await queryRunner.connect();
 		await queryRunner.startTransaction();

@@ -37,12 +37,12 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 		}
 
 		// The owner cannot have allows nor denies
-		if (target.id === guild.ownerID) {
+		if (target.id === guild.ownerId) {
 			throw t(LanguageKeys.Serializers.PermissionNodeSecurityOwner);
 		}
 
 		// Check all commands
-		const commands = this.context.stores.get('commands');
+		const commands = this.container.stores.get('commands');
 		const checked = new Set<string>();
 		for (const allowed of value.allow) {
 			if (checked.has(allowed)) throw t(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });

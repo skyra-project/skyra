@@ -4,12 +4,10 @@ import type { Serializer, SerializerUpdateContext } from '#lib/database/settings
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { CustomGet } from '#lib/types';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { isNullish, NonNullObject } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import type { SchemaGroup } from './SchemaGroup';
-
-const container = Store.injectedContext;
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**

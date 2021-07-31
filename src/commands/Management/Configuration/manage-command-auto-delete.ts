@@ -3,25 +3,24 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { minutes, seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
-import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcad'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
-		const time = await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute * 2 });
+		const time = await args.pick('timespan', { minimum: seconds(1), maximum: minutes(2) });
 
 		await writeSettings(message.guild, (settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
@@ -32,7 +31,8 @@ export class UserCommand extends SkyraCommand {
 			else commandAutoDelete[index] = value;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -48,12 +48,15 @@ export class UserCommand extends SkyraCommand {
 			commandAutoDelete.splice(index, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await writeSettings(message.guild, [[GuildSettings.CommandAutoDelete, []]]);
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset));
+
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset);
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
@@ -62,12 +65,12 @@ export class UserCommand extends SkyraCommand {
 
 		const list: string[] = [];
 		for (const entry of commandAutoDelete) {
-			const channel = this.context.client.channels.cache.get(entry[0]) as TextChannel;
-			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: entry[1] * Time.Second })}`);
+			const channel = this.container.client.channels.cache.get(entry[0]) as GuildTextBasedChannelTypes;
+			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: seconds(entry[1]) })}`);
 		}
 		if (!list.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
-		return message.send(
-			args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) })
-		);
+
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) });
+		return send(message, content);
 	}
 }

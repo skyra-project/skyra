@@ -5,15 +5,16 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { getSnipedMessage } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -22,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
-			.setColor(await this.context.db.fetchColor(sniped))
+			.setColor(await this.container.db.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);
 
@@ -31,6 +32,6 @@ export class UserCommand extends SkyraCommand {
 		const image = getImage(sniped);
 		if (image !== null) embed.setImage(image);
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 }

@@ -1,12 +1,13 @@
 import type { GuildMessage } from '#lib/types';
-import { client, textChannel } from '#mocks/MockInstances';
+import { client } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
-import { APIMessage, EmbedType } from 'discord-api-types/v6';
+import { container } from '@sapphire/framework';
+import { APIMessage, EmbedType } from 'discord-api-types/v9';
 import { Message } from 'discord.js';
 
 describe('formatters', () => {
 	describe('formatMessage', () => {
-		beforeAll(() => client.i18n.init());
+		beforeAll(() => container.i18n.init());
 
 		function createMessage(data: Partial<APIMessage> = {}): GuildMessage {
 			const messageData: APIMessage = {
@@ -34,11 +35,11 @@ describe('formatters', () => {
 				flags: 0
 			};
 
-			return new Message(client, { ...messageData, ...data }, textChannel) as GuildMessage;
+			return new Message(client, { ...messageData, ...data }) as GuildMessage;
 		}
 
 		function t() {
-			return client.i18n.fetchT('en-US');
+			return container.i18n.getT('en-US');
 		}
 
 		function join(...parts: string[]) {

@@ -2,20 +2,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 const horizontalOptions = ['h', 'horizontal', 'x'];
 const verticalOptions = ['v', 'vertical', 'y'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.FlipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FlipExtended,
-	strategyOptions: { options: [...horizontalOptions, ...verticalOptions] }
+	options: [...horizontalOptions, ...verticalOptions]
 })
 export class UserCommand extends SkyraCommand {
 	private get boolean(): Argument<boolean> {
-		return this.context.stores.get('arguments').get('boolean') as Argument<boolean>;
+		return this.container.stores.get('arguments').get('boolean') as Argument<boolean>;
 	}
 
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -26,9 +26,8 @@ export class UserCommand extends SkyraCommand {
 		if (horizontal) chars = this.flipHorizontal(chars);
 		if (vertical) chars = this.flipVertical(chars);
 
-		return message.send(args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private convert(content: string) {
@@ -119,5 +118,6 @@ export class UserCommand extends SkyraCommand {
 		['⁅', '⁆']
 	]);
 
+	// @ts-expect-error (2816) loading order demands the use of "this"
 	private static readonly flipsFlipped = new Map([...this.flips.entries()].map(([key, value]) => [value, key]));
 }

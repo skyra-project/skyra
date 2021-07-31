@@ -3,21 +3,20 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 15,
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 
-		const { members } = this.context.db;
-		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
+		const { members } = this.container.db;
+		const memberSettings = await members.findOne({ where: { userId: user.id, guildId: message.guild.id } });
 		const memberPoints = memberSettings?.points ?? 0;
 		const roles = await readSettings(message.guild, GuildSettings.Roles.Auto);
 		const nextRole = this.getLatestRole(memberPoints, roles);
@@ -28,11 +27,11 @@ export class UserCommand extends SkyraCommand {
 			  })}`
 			: '';
 
-		return message.send(
+		const content =
 			user.id === message.author.id
 				? args.t(LanguageKeys.Commands.Social.MyLevelSelf, { points: memberPoints, next: title })
-				: args.t(LanguageKeys.Commands.Social.MyLevel, { points: memberPoints, next: title, user: user.username })
-		);
+				: args.t(LanguageKeys.Commands.Social.MyLevel, { points: memberPoints, next: title, user: user.username });
+		return send(message, content);
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

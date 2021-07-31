@@ -7,6 +7,6 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public isValid(value: string): Awaited<boolean> {
-		return this.context.client.i18n.languages.has(value);
+		return this.container.i18n.languages.has(value);
 	}
 }

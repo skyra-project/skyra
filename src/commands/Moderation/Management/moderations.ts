@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
@@ -18,8 +19,6 @@ const enum Type {
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['moderation'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
@@ -50,16 +49,15 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const target = args.finished ? null : await args.pick('userName');
 
 		const response = await sendLoadingMessage(message, args.t);
-		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
-			this.getFilter(action, target)
-		);
+		const moderation = getModeration(message.guild);
+		const entries = (await (target ? moderation.fetch(target.id) : moderation.fetch())).filter(this.getFilter(action, target));
 
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty, { prefix });
 
-		const user = this.context.client.user!;
+		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
@@ -94,13 +92,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
-		const formattedModerator = users.get(entry.moderatorID!);
+		const formattedModerator = users.get(entry.moderatorId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
 		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {
-			name: `\`${entry.caseID}\`${displayName ? ` | ${entry.title}` : ''}`,
+			name: `\`${entry.caseId}\`${displayName ? ` | ${entry.title}` : ''}`,
 			value: `${formatter}Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}${formatter}`
 		};
 	}
@@ -110,13 +108,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
-		const formattedUser = users.get(entry.userID!);
+		const formattedUser = users.get(entry.userId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
 		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {
-			name: `\`${entry.caseID}\`${displayName ? ` | ${entry.title}` : ''}`,
+			name: `\`${entry.caseId}\`${displayName ? ` | ${entry.title}` : ''}`,
 			value: `${formatter}Moderator: **${formattedUser}**.\n${formattedReason}${formattedDuration}${formatter}`
 		};
 	}
@@ -124,7 +122,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchAllUsers(entries: Collection<number, ModerationEntity>) {
 		const users = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.userID!;
+			const id = entry.userId!;
 			if (!users.has(id)) users.set(id, (await entry.fetchUser()).username);
 		}
 		return users;
@@ -133,7 +131,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async fetchAllModerators(entries: Collection<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.moderatorID!;
+			const id = entry.moderatorId!;
 			if (!moderators.has(id)) moderators.set(id, (await entry.fetchModerator()).username);
 		}
 		return moderators;
@@ -144,16 +142,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			case Type.Mute:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+							entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userId === target.id
 					: (entry: ModerationEntity) => entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
 			case Type.Warning:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+							entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userId === target.id
 					: (entry: ModerationEntity) => entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
 			case Type.All:
 				return target
-					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userId === target.id
 					: (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType;
 		}
 	}

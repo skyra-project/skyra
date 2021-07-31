@@ -116,7 +116,6 @@
 	"serverUpdatePublicUpdatesChannelAdded": "**Canal de Actualizaciones Públicas**: No Establecido → {{value}}",
 	"serverUpdatePublicUpdatesChannelRemoved": "• **Canal de Actualizaciones Públicas**: {{value}} → No Establecido",
 	"serverUpdatePublicUpdatesChannel": "**Canal de Actualizaciones Públicas**: {{previous}} → {{next}}",
-	"serverUpdateRegion": "• **Región**: `{{previous}}` → `{{next}}`",
 	"serverUpdateRulesChannelAdded": "• **Canal de Reglas**: No Establecido → {{value}}",
 	"serverUpdateRulesChannelRemoved": "• **Canal de Reglas**: {{value}} → No Establecido",
 	"serverUpdateRulesChannel": "• **Canal de Reglas**: {{previous}} → {{next}}",

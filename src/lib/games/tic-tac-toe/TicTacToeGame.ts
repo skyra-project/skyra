@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Time } from '@sapphire/time-utilities';
+import { minutes } from '#utils/common';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
@@ -9,7 +9,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 	public readonly board = new Uint8Array(9);
 
 	public constructor(message: Message, playerA: BaseController<number>, playerB: BaseController<number>, turn = TicTacToeGame.getTurn()) {
-		super(message, playerA, playerB, TicTacToeGame.kEmojis, Time.Minute * 5, turn);
+		super(message, playerA, playerB, TicTacToeGame.kEmojis, minutes(5), turn);
 	}
 
 	public get finished() {

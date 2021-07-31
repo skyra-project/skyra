@@ -2,13 +2,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import { hours, minutes, seconds } from '#utils/common';
+import { CdnUrls } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -17,7 +18,6 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ow'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
@@ -60,9 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				(r) => r
 			)
 				.mapValues((rating) => {
-					return `**${toTitleCase(rating.role)}:** ${
-						typeof rating.level === 'number' ? t(LanguageKeys.Globals.NumberValue, { value: rating.level }) : rating.level
-					}`;
+					return `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? formatNumber(t, rating.level) : rating.level}`;
 				})
 				.values()
 		).join('\n');
@@ -76,7 +74,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)
 				.setTitle(embedData.title)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
@@ -201,12 +199,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			case 0:
 				return 0;
 			case 1:
-				return Number(parts[0]) * Time.Second;
+				return seconds(Number(parts[0]));
 			case 2:
-				return Number(parts[0]) * Time.Minute + Number(parts[1]) * Time.Second;
+				return minutes(Number(parts[0])) + seconds(Number(parts[1]));
 			case 3:
 			default:
-				return Number(parts[0]) * Time.Hour + Number(parts[1]) * Time.Minute + Number(parts[2]) * Time.Second;
+				return hours(Number(parts[0])) + minutes(Number(parts[1])) + seconds(Number(parts[2]));
 		}
 	}
 }

@@ -4,10 +4,10 @@ import { kBigIntTransformer } from '../utils/Transformers';
 @Entity('member', { schema: 'public' })
 export class MemberEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
-	public guildID!: string;
+	public guildId!: string;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public userID!: string;
+	public userId!: string;
 
 	@Column('bigint', { default: 0, transformer: kBigIntTransformer })
 	public points = 0;

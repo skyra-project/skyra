@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -12,10 +13,11 @@ import type { Message } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		await message.send(args.t(LanguageKeys.Commands.System.Reboot)).catch((err) => this.context.client.emit(Events.Error, err));
+		const content = args.t(LanguageKeys.Commands.System.Reboot);
+		await send(message, content).catch((error) => this.container.logger.fatal(error));
 
 		if (envParseBoolean('INFLUX_ENABLED')) {
-			const { client } = this.context;
+			const { client } = this.container;
 			try {
 				client.emit(
 					Events.AnalyticsSync,

@@ -3,10 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
-import { deleteMessage } from '#utils/functions';
+import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],
@@ -15,7 +16,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async run(message: GuildMessage, args: ModerationCommand.Args) {
-		const caseID = await args.pick('case');
+		const caseId = await args.pick('case');
 		const reason = await args.rest('string');
 
 		const [autoDelete, messageDisplay, reasonDisplay] = await readSettings(message.guild, [
@@ -24,7 +25,7 @@ export class UserModerationCommand extends ModerationCommand {
 			GuildSettings.Messages.ModerationReasonDisplay
 		]);
 
-		const modlog = await message.guild.moderation.fetch(caseID);
+		const modlog = await getModeration(message.guild).fetch(caseId);
 		if (!modlog || !modlog.isType(TypeCodes.Warning)) {
 			this.error(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
@@ -43,26 +44,27 @@ export class UserModerationCommand extends ModerationCommand {
 				originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
 				{
 					count: 1,
-					range: unwarnLog.caseID,
+					range: unwarnLog.caseId,
 					users: [`\`${user.tag}\``],
 					reason: originalReason
 				}
 			);
-			return message.send(content) as Promise<GuildMessage>;
+
+			return send(message, content) as Promise<GuildMessage>;
 		}
 
 		return null;
 	}
 
 	public async handle(message: GuildMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
-		return message.guild.security.actions.unWarning(
+		return getSecurity(message.guild).actions.unWarning(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
-			context.modlog.caseID,
+			context.modlog.caseId,
 			await this.getTargetDM(message, context.args, context.target)
 		);
 	}

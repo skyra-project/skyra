@@ -1,0 +1,3 @@
+{
+	"expectedNonThreadChannel": "Expected a regular text channel, but I received a thread named {{channel}} instead."
+}

@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getPlanet } from '#utils/APIs/StarWars';
+import { CdnUrls } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -10,7 +11,6 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-planet'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.StarWars.PlanetDescription,
 	extendedHelp: LanguageKeys.Commands.StarWars.PlanetExtended
 })
@@ -28,7 +28,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(CdnUrls.StarWarsLogo)
 		});
 
@@ -39,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				const description = [];
 
 				if (result.diameter) {
-					description.push(`**${planetTitles.diameter}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.diameter })}`);
+					description.push(`**${planetTitles.diameter}**: ${formatNumber(t, result.diameter)}`);
 				}
 
 				if (result.population) {

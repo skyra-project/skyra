@@ -1,9 +1,8 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CanvasColors } from '#lib/types/Constants';
-import { socialFolder } from '#utils/constants';
-import { UserError } from '@sapphire/framework';
-import { Store } from '@sapphire/pieces';
+import { CanvasColors, socialFolder } from '#utils/constants';
+import { container, UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { roundNumber } from '@sapphire/utilities';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
@@ -83,7 +82,7 @@ export class WheelOfFortune {
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
 
-		const t = await this.message.fetchT();
+		const t = await fetchT(this.message);
 		if (lost && final < 0) {
 			throw new UserError({ identifier: LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney });
 		}
@@ -96,7 +95,7 @@ export class WheelOfFortune {
 
 	/** The boost */
 	private async fetchBoost() {
-		const { clients } = Store.injectedContext.db;
+		const { clients } = container.db;
 		const settings = await clients.ensure();
 
 		return (

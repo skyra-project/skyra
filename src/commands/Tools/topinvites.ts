@@ -10,18 +10,17 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['topinvs'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
-	permissions: ['MANAGE_GUILD']
+	requiredClientPermissions: ['MANAGE_GUILD']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
-		const invites = await message.guild.fetchInvites();
+		const invites = await message.guild.invites.fetch();
 		const topTen = invites
-			.filter((invite) => invite.uses! > 0 && invite.inviter !== null)
+			.filter((invite) => (invite.uses ?? 0) > 0 && invite.inviter !== null)
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
@@ -36,7 +35,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 		});
 		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 

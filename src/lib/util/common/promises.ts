@@ -1,9 +1,7 @@
-import { err, ok, Result, Store } from '@sapphire/framework';
-import { isThenable, Awaited } from '@sapphire/utilities';
-import type { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { container, err, ok, Result } from '@sapphire/framework';
+import { Awaited, isThenable } from '@sapphire/utilities';
+import type { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError } from 'discord.js';
-
-const container = Store.injectedContext;
 
 export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly RESTJSONErrorCodes[]) {
 	try {
@@ -16,16 +14,6 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 
 export function floatPromise(promise: Awaited<unknown>) {
 	if (isThenable(promise)) promise.catch((error: Error) => container.logger.fatal(error));
-}
-
-/**
- * Read a stream and resolve to a buffer.
- * @param stream The readable stream to read
- */
-export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
-	const data: Buffer[] = [];
-	for await (const buffer of stream) data.push(buffer as Buffer);
-	return Buffer.concat(data);
 }
 
 export interface ReferredPromise<T> {
@@ -60,6 +48,6 @@ export async function safeWrapPromise<T, E = Error>(promise: Promise<T>): Promis
 	try {
 		return ok(await promise);
 	} catch (error) {
-		return err(error);
+		return err(error as E);
 	}
 }

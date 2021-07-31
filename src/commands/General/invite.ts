@@ -2,25 +2,26 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const flags = ['noperms', 'nopermissions'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.General.InviteDescription,
 	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
+	flags,
 	guarded: true,
-	permissions: ['EMBED_LINKS'],
-	strategyOptions: { flags }
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {
 		const arg = args.nextMaybe();
 		const shouldNotAddPermissions = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 
-		return message.send(this.getEmbed(args.t, shouldNotAddPermissions));
+		const embed = this.getEmbed(args.t, shouldNotAddPermissions);
+		return send(message, { embeds: [embed] });
 	}
 
 	private getEmbed(t: TFunction, shouldNotAddPermissions: boolean): MessageEmbed {

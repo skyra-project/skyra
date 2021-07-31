@@ -23,7 +23,6 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('TWITCH_CLIENT_ID'),
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended
 })
@@ -74,7 +73,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					method: FetchMethods.Post,
 					headers: {
 						...this.igdbRequestHeaders,
-						Authorization: `Bearer ${await this.context.client.twitch.fetchBearer()}`
+						Authorization: `Bearer ${await this.container.client.twitch.fetchBearer()}`
 					},
 					body: `search: "${game}"; ${this.commonQuery};`
 				},
@@ -88,7 +87,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
 		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);
@@ -96,7 +95,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 			display.addPageEmbed((embed) =>
 				embed
-					.setTitle(game.name)
+					.setTitle(game.name ?? '')
 					.setURL(game.url || '')
 					.setThumbnail(coverImg)
 					.setDescription(

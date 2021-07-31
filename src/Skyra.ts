@@ -1,8 +1,8 @@
-import '#lib/setup';
 import { DbSet } from '#lib/database';
+import '#lib/setup';
 import { SkyraClient } from '#lib/SkyraClient';
 import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
@@ -30,18 +30,18 @@ async function main() {
 
 	try {
 		// Wait for gRPC to connect
-		await Store.injectedContext.grpc.start();
+		await container.grpc.start();
 
 		// Connect to the Database
-		Store.injectedContext.db = await DbSet.connect();
+		container.db = await DbSet.connect();
 
 		// Login to the Discord gateway
 		await client.login();
 	} catch (error) {
-		client.logger.error(error);
+		container.logger.error(error);
 		client.destroy();
 		process.exit(1);
 	}
 }
 
-main().catch(client.logger.error.bind(client.logger));
+main().catch(container.logger.error.bind(container.logger));

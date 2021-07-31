@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
-import { PermissionLevels } from '#lib/types/Enums';
+import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
@@ -9,16 +9,15 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['w', 'warning'],
 	description: LanguageKeys.Commands.Moderation.WarnDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.WarnExtended,
-	permissionLevel: PermissionLevels.Moderator,
-	requiredMember: true,
-	optionalDuration: true
+	optionalDuration: true,
+	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild.security.actions.warning(
+		return getSecurity(message.guild).actions.warning(
 			{
-				userID: context.target.id,
-				moderatorID: message.author.id,
+				userId: context.target.id,
+				moderatorId: message.author.id,
 				reason: context.reason,
 				imageURL: getImage(message),
 				duration: context.duration

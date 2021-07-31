@@ -1,7 +1,7 @@
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 
 export function api() {
-	return Reflect.get(Store.injectedContext.client, 'api') as Api;
+	return Reflect.get(container.client, 'api') as Api;
 }
 
 interface Api {
@@ -14,7 +14,7 @@ interface Api {
 }
 
 interface ApiChannels {
-	(channelID: string): ApiChannelsChannel;
+	(channelId: string): ApiChannelsChannel;
 }
 
 /**
@@ -110,7 +110,7 @@ interface ApiChannelsChannelMessages {
 	 */
 	'bulk-delete': ApiChannelsChannelMessagesBulkDelete;
 
-	(messageID: string): ApiChannelsChannelMessagesMessage;
+	(messageId: string): ApiChannelsChannelMessagesMessage;
 }
 
 /**
@@ -154,8 +154,8 @@ interface ApiChannelsChannelMessagesMessageReactions {
 	delete: ApiMethods['delete'];
 
 	(emoji: string): ApiChannelsChannelMessagesMessageReactionsEmoji;
-	(emoji: string, userID: '@me'): ApiChannelsChannelMessagesMessageReactionsEmojiMe;
-	(emoji: string, userID: string): ApiChannelsChannelMessagesMessageReactionsEmojiUser;
+	(emoji: string, userId: '@me'): ApiChannelsChannelMessagesMessageReactionsEmojiMe;
+	(emoji: string, userId: string): ApiChannelsChannelMessagesMessageReactionsEmojiUser;
 }
 
 /**
@@ -175,12 +175,12 @@ interface ApiChannelsChannelMessagesMessageReactionsEmoji {
 	 */
 	delete: ApiMethods['delete'];
 
-	(userID: '@me'): ApiChannelsChannelMessagesMessageReactionsEmojiMe;
-	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiMe>>(userID: '@me', key: T): ApiChannelsChannelMessagesMessageReactionsEmojiMe[T];
+	(userId: '@me'): ApiChannelsChannelMessagesMessageReactionsEmojiMe;
+	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiMe>>(userId: '@me', key: T): ApiChannelsChannelMessagesMessageReactionsEmojiMe[T];
 
-	(userID: string): ApiChannelsChannelMessagesMessageReactionsEmojiUser;
+	(userId: string): ApiChannelsChannelMessagesMessageReactionsEmojiUser;
 	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiUser>>(
-		userID: string,
+		userId: string,
 		key: T
 	): ApiChannelsChannelMessagesMessageReactionsEmojiUser[T];
 }
@@ -232,7 +232,7 @@ interface ApiChannelsChannelMessagesBulkDelete {
 }
 
 interface ApiChannelsChannelPermissions {
-	(permissionID: string): ApiChannelsChannelPermissionsPermission;
+	(permissionId: string): ApiChannelsChannelPermissionsPermission;
 }
 
 /**
@@ -300,7 +300,7 @@ interface ApiChannelsChannelPins {
 	 */
 	get: ApiMethods['get'];
 
-	(messageID: string): ApiChannelsChannelPinsMessage;
+	(messageId: string): ApiChannelsChannelPinsMessage;
 }
 
 /**
@@ -348,9 +348,9 @@ interface ApiGuilds {
 	 */
 	post: ApiMethods['post'];
 
-	(guildID: string): ApiGuildsGuild;
-	<T extends R<ApiGuildsGuild>>(guildID: string, key: T): ApiGuildsGuild[T];
-	<T extends R<ApiGuildsGuild>, S extends R<ApiGuildsGuild[T]>>(guildID: string, key: T, subKey: S): ApiGuildsGuild[T][S];
+	(guildId: string): ApiGuildsGuild;
+	<T extends R<ApiGuildsGuild>>(guildId: string, key: T): ApiGuildsGuild[T];
+	<T extends R<ApiGuildsGuild>, S extends R<ApiGuildsGuild[T]>>(guildId: string, key: T, subKey: S): ApiGuildsGuild[T][S];
 }
 
 /**
@@ -487,11 +487,11 @@ interface ApiGuildsGuildMembers {
 
 	search: APiGuildsGuildMembersFetch;
 
-	(memberID: '@me'): ApiGuildsGuildMembersMe;
-	<T extends R<ApiGuildsGuildMembersMe>>(memberID: '@me', key: T): ApiGuildsGuildMembersMe[T];
+	(memberId: '@me'): ApiGuildsGuildMembersMe;
+	<T extends R<ApiGuildsGuildMembersMe>>(memberId: '@me', key: T): ApiGuildsGuildMembersMe[T];
 
-	(memberID: string): ApiGuildsGuildMembersMember;
-	<T extends R<ApiGuildsGuildMembersMember>>(memberID: string, key: T): ApiGuildsGuildMembersMember[T];
+	(memberId: string): ApiGuildsGuildMembersMember;
+	<T extends R<ApiGuildsGuildMembersMember>>(memberId: string, key: T): ApiGuildsGuildMembersMember[T];
 }
 
 /**
@@ -531,7 +531,7 @@ interface ApiGuildsGuildMembersMember {
 }
 
 interface ApiGuildsGuildMembersMemberRoles {
-	(roleID: string): ApiGuildsGuildMembersMemberRolesRole;
+	(roleId: string): ApiGuildsGuildMembersMemberRolesRole;
 }
 
 /**
@@ -583,7 +583,7 @@ interface ApiGuildsGuildBans {
 	 */
 	get: ApiMethods['get'];
 
-	(userID: string): ApiGuildsGuildBansUser;
+	(userId: string): ApiGuildsGuildBansUser;
 }
 
 /**
@@ -636,7 +636,7 @@ interface ApiGuildsGuildRoles {
 	 */
 	patch: ApiMethods['patch'];
 
-	(roleID: string): ApiGuildsGuildRolesRole;
+	(roleId: string): ApiGuildsGuildRolesRole;
 }
 
 /**
@@ -719,8 +719,8 @@ interface ApiGuildsGuildIntegrations {
 	 */
 	patch: ApiMethods['patch'];
 
-	(integrationID: string): ApiGuildsGuildIntegrationsIntegration;
-	<T extends R<ApiGuildsGuildIntegrationsIntegration>>(integrationID: string, key: T): ApiGuildsGuildIntegrationsIntegration[T];
+	(integrationId: string): ApiGuildsGuildIntegrationsIntegration;
+	<T extends R<ApiGuildsGuildIntegrationsIntegration>>(integrationId: string, key: T): ApiGuildsGuildIntegrationsIntegration[T];
 }
 
 /**
@@ -854,7 +854,7 @@ interface ApiGuildsGuildAuditLogs {
 }
 
 interface ApiInvites {
-	(inviteID: string): ApiInvitesInvite;
+	(inviteId: string): ApiInvitesInvite;
 }
 
 /**
@@ -878,11 +878,11 @@ interface ApiInvitesInvite {
 interface ApiUsers {
 	'@me': ApiUsersMe;
 
-	(userID: '@me'): ApiUsersMe;
-	<T extends R<ApiUsersMe>>(userID: '@me', key: T): ApiUsersMe[T];
-	<T extends R<ApiUsersMe>, S extends R<ApiUsersMe[T]>>(userID: '@me', key: T, subKey: S): ApiUsersMe[T][S];
+	(userId: '@me'): ApiUsersMe;
+	<T extends R<ApiUsersMe>>(userId: '@me', key: T): ApiUsersMe[T];
+	<T extends R<ApiUsersMe>, S extends R<ApiUsersMe[T]>>(userId: '@me', key: T, subKey: S): ApiUsersMe[T][S];
 
-	(userID: string): ApiUsersUser;
+	(userId: string): ApiUsersUser;
 }
 
 /**
@@ -942,7 +942,7 @@ interface ApiUsersMeGuilds {
 	/**
 	 * Guild-related endpoints.
 	 */
-	(guildID: string): ApiUsersMeGuildsGuild;
+	(guildId: string): ApiUsersMeGuildsGuild;
 }
 
 /**
@@ -1001,7 +1001,7 @@ interface ApiWebhooks {
 	/**
 	 * Access to a webhook by its ID.
 	 */
-	(webhookID: string): ApiWebhooksWebhook;
+	(webhookId: string): ApiWebhooksWebhook;
 }
 
 /**

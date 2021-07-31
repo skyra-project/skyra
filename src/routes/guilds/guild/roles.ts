@@ -1,16 +1,17 @@
 import { flattenRole } from '#lib/api/ApiTransformers';
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
+import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/roles' })
 export class UserRoute extends Route {
 	@authenticated()
-	@ratelimit(2, 5000, true)
+	@ratelimit(seconds(5), 2, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildID = request.params.guild;
+		const guildId = request.params.guild;
 
-		const guild = this.context.client.guilds.cache.get(guildID);
+		const guild = this.container.client.guilds.cache.get(guildId);
 		if (!guild) return response.error(HttpCodes.BadRequest);
 
 		const member = await guild.members.fetch(request.auth!.id).catch(() => null);

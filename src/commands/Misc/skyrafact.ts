@@ -1,24 +1,24 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['aifact', 'botfact'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.SkyraFactDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SkyraFactExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setTitle(args.t(LanguageKeys.Commands.Misc.SkyraFactTitle))
-				.setDescription(this.getLine(args))
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(args.t(LanguageKeys.Commands.Misc.SkyraFactTitle))
+			.setDescription(this.getLine(args));
+
+		return send(message, { embeds: [embed] });
 	}
 
 	private getLine(args: SkyraCommand.Args) {

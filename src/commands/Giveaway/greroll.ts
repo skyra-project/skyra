@@ -2,11 +2,12 @@ import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { Colors } from '#utils/constants';
 import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { send } from '@sapphire/plugin-editable-commands';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
 
@@ -14,8 +15,8 @@ import { FetchError } from 'node-fetch';
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	permissions: ['READ_MESSAGE_HISTORY'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -30,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		const content = winners
 			? args.t(LanguageKeys.Giveaway.EndedMessage, { winners: winners.map((winner) => `<@!${winner}>`), title: title! })
 			: args.t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
-		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
+		return send(message, { content, allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
 	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined) {
@@ -67,7 +68,7 @@ export class UserCommand extends SkyraCommand {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
-				this.context.client.emit(Events.Error, error);
+				this.container.client.emit(Events.Error, error);
 			}
 			return [];
 		}

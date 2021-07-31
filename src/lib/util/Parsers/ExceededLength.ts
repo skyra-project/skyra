@@ -1,6 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
-import { canSendAttachments, promptForMessage } from '#utils/functions';
+import { promptForMessage } from '#utils/functions';
+import { canSendAttachments } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -9,7 +13,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 	message: Message,
 	options: HandleMessageData<ED>
 ): Promise<Message | Message[] | null> {
-	const t = await message.fetchT();
+	const t = await fetchT(message);
 	const typeFooter = options.footer ? t(LanguageKeys.System.ExceededLengthOutputType, { type: options.footer }) : undefined;
 	const timeTaken = options.time ? t(LanguageKeys.System.ExceededLengthOutputTime, { time: options.time }) : undefined;
 
@@ -17,14 +21,11 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'file': {
 			if (canSendAttachments(message.channel)) {
 				const output = t(LanguageKeys.System.ExceededLengthOutputFile);
-				return message.channel.send([output, typeFooter, timeTaken].filter(Boolean), {
-					files: [
-						{
-							attachment: Buffer.from(options.content ? options.content : options.result!),
-							name: options.targetId ? `${options.targetId}.txt` : 'output.txt'
-						}
-					]
-				});
+				const content = [output, typeFooter, timeTaken].filter(Boolean).join('\n');
+
+				const attachment = Buffer.from(options.content ? options.content : options.result!);
+				const name = options.targetId ? `${options.targetId}.txt` : 'output.txt';
+				return send(message, { content, files: [{ attachment, name }] });
 			}
 
 			await getTypeOutput(message, t, options);
@@ -38,7 +39,9 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 
 			if (options.url) {
 				const hastebinUrl = t(LanguageKeys.System.ExceededLengthOutputHastebin, { url: options.url });
-				return message.send([hastebinUrl, typeFooter, timeTaken].filter(Boolean));
+
+				const content = [hastebinUrl, typeFooter, timeTaken].filter(Boolean).join('\n');
+				return send(message, content);
 			}
 
 			options.hastebinUnavailable = true;
@@ -49,9 +52,11 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'console':
 		case 'log': {
 			if (options.canLogToConsole) {
-				message.client.logger.info(options.result);
+				container.logger.info(options.result);
 				const output = t(LanguageKeys.System.ExceededLengthOutputConsole);
-				return message.send([output, typeFooter, timeTaken].filter(Boolean));
+
+				const content = [output, typeFooter, timeTaken].filter(Boolean).join('\n');
+				return send(message, content);
 			}
 			await getTypeOutput(message, t, options);
 			return handleMessage(message, options);
@@ -66,21 +71,20 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			}
 
 			if (options.content) {
-				return message.send(options.content, { code: 'md' });
+				const content = codeBlock('md', options.content);
+				return send(message, content);
 			}
 
 			if (options.success) {
 				const parsedOutput = t(LanguageKeys.System.ExceededLengthOutput, { output: codeBlock(options.language!, options.result!) });
-				return message.send([parsedOutput, typeFooter, timeTaken].filter(Boolean));
+
+				const content = [parsedOutput, typeFooter, timeTaken].filter(Boolean).join('\n');
+				return send(message, content);
 			}
 
-			return message.send(
-				t(LanguageKeys.Commands.System.EvalError, {
-					time: options.time!,
-					output: codeBlock(options.language ?? 'ts', options.result!),
-					type: options.footer!
-				})
-			);
+			const output = codeBlock(options.language ?? 'ts', options.result!);
+			const content = t(LanguageKeys.Commands.System.EvalError, { time: options.time!, output, type: options.footer! });
+			return send(message, content);
 		}
 	}
 }

@@ -1,54 +1,47 @@
-import { RateLimitManager } from '@sapphire/ratelimits';
-import type {
+import {
+	TwitchEventSubResult,
+	TwitchEventSubTypes,
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
+	TwitchHelixOauth2Result,
 	TwitchHelixResponse,
+	TwitchHelixStreamsResult,
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
+import { Enumerable, EnumerableMethod } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
-import { createHmac } from 'crypto';
+import { RateLimitManager } from '@sapphire/ratelimits';
 import { Time } from '@sapphire/time-utilities';
-import { enumerable } from '@sapphire/decorators';
-
-export const enum TwitchHooksAction {
-	Subscribe = 'subscribe',
-	Unsubscribe = 'unsubscribe'
-}
-
-export interface OauthResponse {
-	access_token: string;
-	refresh_token: string;
-	scope: string;
-	expires_in: number;
-}
+import { createHmac } from 'crypto';
+import { URL } from 'url';
 
 export class Twitch {
 	public readonly ratelimitsStreams = new RateLimitManager(Time.Minute * 3000, 1);
-	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
+	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix';
 	public readonly BRANDING_COLOUR = 0x6441a4;
 
-	@enumerable(false)
+	@Enumerable(false)
 	private BEARER: TwitchHelixBearerToken = {
 		EXPIRE: null,
 		TOKEN: null
 	};
 
-	@enumerable(false)
-	private readonly $clientID = process.env.TWITCH_CLIENT_ID;
+	@Enumerable(false)
+	private readonly clientId = process.env.TWITCH_CLIENT_ID;
 
-	@enumerable(false)
-	private readonly $clientSecret = process.env.TWITCH_TOKEN;
+	@Enumerable(false)
+	private readonly clientSecret = process.env.TWITCH_TOKEN;
 
-	@enumerable(false)
-	private readonly $webhookSecret = process.env.TWITCH_WEBHOOK_TOKEN;
+	@Enumerable(false)
+	private readonly eventSubSecret = process.env.TWITCH_EVENTSUB_SECRET;
 
-	@enumerable(false)
+	@Enumerable(false)
 	private readonly kTwitchRequestHeaders = {
 		'Content-Type': MimeTypes.ApplicationJson,
 		Accept: MimeTypes.ApplicationJson,
-		'Client-ID': this.$clientID
+		'Client-ID': this.clientId
 	};
 
 	public streamNotificationDrip(id: string) {
@@ -60,28 +53,42 @@ export class Twitch {
 		}
 	}
 
-	public async fetchUsers(ids: readonly string[] = [], logins: readonly string[] = []) {
+	public async fetchUsers(ids: Iterable<string> = [], logins: Iterable<string> = []) {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const login of logins) search.push(`login=${encodeURIComponent(login)}`);
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUsersSearchResult>>(`users?${search.join('&')}`);
 	}
 
-	public async fetchGame(ids: readonly string[] = [], names: readonly string[] = []) {
-		const search: string[] = [];
-		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
-		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
-		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>(`games?${search.join('&')}`);
+	public async fetchStream(broadcasterUserId: string): Promise<TwitchHelixStreamsResult | null> {
+		const search = `user_id=${encodeURIComponent(broadcasterUserId)}`;
+		const streamResult = await this._performApiGETRequest<TwitchHelixResponse<TwitchHelixStreamsResult>>(`streams?${search}`);
+		const streamData = streamResult.data?.[0];
+
+		if (streamData) {
+			const gameSearch = `id=${encodeURIComponent(streamData.game_id)}`;
+			const gameResult = await this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult>>(`games?${gameSearch}`);
+			const gameData = gameResult.data?.[0];
+
+			if (gameData) {
+				return {
+					...streamData,
+					game_box_art_url: gameData.box_art_url
+				};
+			}
+		}
+
+		return streamData ?? null;
 	}
 
-	public async fetchUserFollowage(userID: string, channelID: string) {
+	public async fetchUserFollowage(userId: string, channelId: string) {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(
-			`users/follows?from_id=${userID}&to_id=${channelID}`
+			`users/follows?from_id=${userId}&to_id=${channelId}`
 		);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = createHmac(algorithm, this.$webhookSecret).update(JSON.stringify(data)).digest('hex');
+		const hash = createHmac(algorithm, this.eventSubSecret).update(data).digest('hex');
 
 		return hash === signature;
 	}
@@ -93,16 +100,27 @@ export class Twitch {
 		return TOKEN;
 	}
 
-	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
-		await fetch(
-			'https://api.twitch.tv/helix/webhooks/hub',
+	/**
+	 * Adds a new Twitch subscription
+	 */
+	public async subscriptionsStreamHandle(
+		streamerId: string,
+		subscriptionType: TwitchEventSubTypes = TwitchEventSubTypes.StreamOnline
+	): Promise<string> {
+		const subscription = await fetch<TwitchHelixResponse<TwitchEventSubResult>>(
+			`${this.BASE_URL_HELIX}/eventsub/subscriptions`,
 			{
 				body: JSON.stringify({
-					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerID}`,
-					'hub.mode': action,
-					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
-					'hub.lease_seconds': (9 * Time.Day) / Time.Second,
-					'hub.secret': this.$webhookSecret
+					type: subscriptionType,
+					version: '1',
+					condition: {
+						broadcaster_user_id: streamerId
+					},
+					transport: {
+						method: 'webhook',
+						callback: process.env.TWITCH_CALLBACK,
+						secret: this.eventSubSecret
+					}
 				}),
 				headers: {
 					...this.kTwitchRequestHeaders,
@@ -110,13 +128,42 @@ export class Twitch {
 				},
 				method: FetchMethods.Post
 			},
+			FetchResultTypes.JSON
+		);
+
+		return subscription.data[0].id;
+	}
+
+	/**
+	 * Removes a Twitch subscription based on its ID
+	 * @param subscriptionId the ID to remove
+	 */
+	public async removeSubscription(subscriptionId: string): Promise<void> {
+		const url = new URL(`${this.BASE_URL_HELIX}/eventsub/subscriptions`);
+		url.searchParams.append('id', subscriptionId);
+
+		await fetch<TwitchHelixResponse<TwitchEventSubResult>>(
+			url,
+			{
+				headers: {
+					...this.kTwitchRequestHeaders,
+					Authorization: `Bearer ${await this.fetchBearer()}`
+				},
+				method: FetchMethods.Delete
+			},
 			FetchResultTypes.Result
 		);
 	}
 
+	@EnumerableMethod(false)
+	// @ts-expect-error This is a convenience function for eval-ling
+	private async getCurrentTwitchSubscriptions(): Promise<TwitchHelixResponse<TwitchEventSubResult>> {
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchEventSubResult>>('eventsub/subscriptions');
+	}
+
 	private async _performApiGETRequest<T>(path: string): Promise<T> {
 		return fetch<T>(
-			`${this.BASE_URL_HELIX}${path}`,
+			`${this.BASE_URL_HELIX}/${path}`,
 			{
 				headers: {
 					...this.kTwitchRequestHeaders,
@@ -129,12 +176,12 @@ export class Twitch {
 
 	private async _generateBearerToken() {
 		const url = new URL('https://id.twitch.tv/oauth2/token');
-		url.searchParams.append('client_secret', this.$clientSecret);
-		url.searchParams.append('client_id', this.$clientID);
+		url.searchParams.append('client_secret', this.clientSecret);
+		url.searchParams.append('client_id', this.clientId);
 		url.searchParams.append('grant_type', 'client_credentials');
-		const respone = await fetch<OauthResponse>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
-		const expires = Date.now() + respone.expires_in * 1000;
-		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
-		return respone.access_token;
+		const response = await fetch<TwitchHelixOauth2Result>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
+		const expires = Date.now() + response.expires_in * 1000;
+		this.BEARER = { TOKEN: response.access_token, EXPIRE: expires };
+		return response.access_token;
 	}
 }

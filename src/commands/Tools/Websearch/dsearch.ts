@@ -3,15 +3,15 @@ import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['duckduckgo'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
 			.setDescription(body.AbstractText)
@@ -42,10 +42,10 @@ export class UserCommand extends SkyraCommand {
 		if (thumbnail !== undefined) embed.setThumbnail(thumbnail);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(args.t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text);
+			embed.addField(args.t(LanguageKeys.Commands.Tools.DuckDuckGoLookAlso), body.RelatedTopics[0].Text ?? '');
 		}
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 
 	private handleFetchError(error: Error) {

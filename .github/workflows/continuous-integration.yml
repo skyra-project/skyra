@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-16-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies if Cache Miss
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
       - name: Run ESLint
         run: yarn lint --fix=false
 
@@ -53,7 +53,7 @@ jobs:
           key: ${{ runner.os }}-16-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies if Cache Miss
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
       - name: Build code
         run: yarn build
 
@@ -69,9 +69,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-      - name: Setup Global Dependencies
-        run: |
-          yarn global add node-gyp node-pre-gyp
       - name: Restore CI Cache
         uses: actions/cache@v2.1.6
         id: cache-restore
@@ -80,7 +77,7 @@ jobs:
           key: ${{ runner.os }}-16-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies if Cache Miss
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
       - name: Run gRPC generator script
         run: yarn build:grpc
       - name: Run unit tests

@@ -1,3 +1,4 @@
+import { fetchT } from '@sapphire/plugin-i18next';
 import type { Client, Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import type { BaseController } from './BaseController';
@@ -38,7 +39,7 @@ export abstract class BaseGame<T> {
 	}
 
 	public async run() {
-		this.t = await this.message.fetchT();
+		this.t = await fetchT(this.message);
 		await this.onStart();
 
 		while (true) {

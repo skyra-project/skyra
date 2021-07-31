@@ -1,4 +1,12 @@
 {
+	"bunnyDescription": "Let me show you an image of an adorable floofy bunbun ❤.",
+	"bunnyExtended": {
+		"extendedHelp": "This command gives a random image from [bunnies.io](https://www.bunnies.io)."
+	},
+	"bunnyEmbedData": {
+		"title": "Click here if the image fails to load",
+		"source": "source"
+	},
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
 		"extendedHelp": "You know cats are very curious, right? They certainly have a lot of fun and weird facts.\nWith this command you will get a random fact."

@@ -5,6 +5,7 @@ import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { GuildMember, Permissions, VoiceChannel } from 'discord.js';
 import { getListeners } from './channels';
+import { getAudio } from './guild';
 
 export function isDJ(member: GuildMember) {
 	return (
@@ -23,11 +24,11 @@ export function isAdmin(member: GuildMember) {
 }
 
 export function isGuildOwner(member: GuildMember) {
-	return member.id === member.guild.ownerID;
+	return member.id === member.guild.ownerId;
 }
 
 export function isOnlyListener(member: GuildMember) {
-	const { voiceChannel } = member.guild.audio;
+	const { voiceChannel } = getAudio(member);
 	if (voiceChannel === null) return false;
 
 	const listeners = getListeners(voiceChannel);
@@ -48,7 +49,8 @@ export async function canManage(member: GuildMember, voiceChannel: VoiceChannel)
 	// If the member is a DJ, queues are always manageable for them.
 	if (await isDJ(member)) return true;
 
-	const [current, tracks] = await Promise.all([member.guild.audio.getCurrentTrack(), member.guild.audio.tracks()]);
+	const audio = getAudio(member);
+	const [current, tracks] = await Promise.all([audio.getCurrentTrack(), audio.tracks()]);
 
 	// If the current song and all queued songs are requested by the author, the queue is still manageable.
 	if ((current ? current.author === id : true) && tracks.every((track) => track.author === id)) return true;

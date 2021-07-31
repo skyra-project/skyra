@@ -7,11 +7,10 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokesprite', 'pokeimage'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.SpriteDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.SpriteExtended,
-	permissions: ['EMBED_LINKS'],
-	strategyOptions: { flags: ['shiny', 'back'] }
+	flags: ['shiny', 'back'],
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -25,7 +24,8 @@ export class UserCommand extends SkyraCommand {
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), { backSprite, shinySprite });
 		const spriteToGet = getSpriteKey({ backSprite, shinySprite });
 
-		return response.edit(pokeDetails[spriteToGet], { embed: null });
+		const content = pokeDetails[spriteToGet];
+		return response.edit({ content, embeds: [] });
 	}
 
 	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {

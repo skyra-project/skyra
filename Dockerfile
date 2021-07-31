@@ -1,58 +1,61 @@
-FROM node:16-buster-slim as BUILDER
+# ================ #
+#    Base Stage    #
+# ================ #
+
+FROM node:16-buster-slim as base
 
 WORKDIR /usr/src/app
 
-ENV NODE_ENV="development"
 ENV HUSKY=0
+ENV CI=true
 
 RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
-    apt-get install -y --no-install-recommends build-essential python && \
+    apt-get install -y --no-install-recommends build-essential python3 libfontconfig1 dumb-init && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --chown=node:node yarn.lock .
 COPY --chown=node:node package.json .
-COPY --chown=node:node tsconfig.base.json tsconfig.base.json
 COPY --chown=node:node assets/ assets/
+COPY --chown=node:node .yarnrc.yml .
+COPY --chown=node:node .yarn/ .yarn/
+
+RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json
+
+ENTRYPOINT ["dumb-init", "--"]
+
+# ================ #
+#   Builder Stage  #
+# ================ #
+
+FROM base as builder
+
+ENV NODE_ENV="development"
+
+COPY --chown=node:node tsconfig.base.json tsconfig.base.json
 COPY --chown=node:node scripts/ scripts/
 COPY --chown=node:node src/ src/
 
-RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
-    && yarn install --production=false --frozen-lockfile --link-duplicates \
-    && yarn build
+RUN yarn install --immutable
+RUN yarn run build
 
 # ================ #
 #   Runner Stage   #
 # ================ #
 
-FROM node:16-buster-slim AS RUNNER
+FROM base AS runner
 
 ENV NODE_ENV="production"
 ENV NODE_OPTIONS="--max_old_space_size=4096"
 
-WORKDIR /usr/src/app
-
-RUN apt-get update && \
-    apt-get upgrade -y --no-install-recommends && \
-    apt-get install -y --no-install-recommends build-essential python libfontconfig1 dumb-init && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --chown=node:node --from=BUILDER /usr/src/app/dist dist
-
-COPY --chown=node:node yarn.lock .
-COPY --chown=node:node package.json .
-COPY --chown=node:node assets/ assets/
 COPY --chown=node:node scripts/audio/ scripts/audio/
-COPY --chown=node:node scripts/build/ scripts/build/
 COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
 COPY --chown=node:node src/.env src/.env
+COPY --chown=node:node --from=builder /usr/src/app/dist dist
 
-RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./package.json \
-    && yarn install --production=true --frozen-lockfile --link-duplicates \
-    && yarn cache clean
+RUN yarn workspaces focus --all --production
 
 USER node
 
-CMD [ "dumb-init", "yarn", "start"]
+CMD [ "yarn", "run", "start"]

@@ -2,16 +2,16 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['kittenfact'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Animal.CatfactDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.CatfactExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -19,12 +19,11 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setTitle(args.t(LanguageKeys.Commands.Animal.CatfactTitle))
-				.setDescription(fact)
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(args.t(LanguageKeys.Commands.Animal.CatfactTitle))
+			.setDescription(fact);
+		return send(message, { embeds: [embed] });
 	}
 
 	public async onLoad() {

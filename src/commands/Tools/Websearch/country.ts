@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
@@ -39,7 +40,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(message: GuildMessage, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const country of countries) {
 			display.addPageEmbed((embed) =>
@@ -54,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 						[
 							`${fieldsData.overview.officialName}: ${country.altSpellings[2] ?? country.name}`,
 							`${fieldsData.overview.capital}: ${country.capital}`,
-							`${fieldsData.overview.population}: ${t(LanguageKeys.Globals.NumberValue, { value: country.population })}`
+							`${fieldsData.overview.population}: ${formatNumber(t, country.population)}`
 						].join('\n')
 					)
 					.addField(titles.LANGUAGES, country.languages.map(mapNativeName).join('\n'))
@@ -62,9 +63,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 						titles.OTHER,
 						[
 							`${fieldsData.other.demonym}: ${country.demonym}`,
-							country.area
-								? `${fieldsData.other.area}: ${t(LanguageKeys.Globals.NumberValue, { value: country.area })} km${SuperScriptTwo}`
-								: null,
+							country.area ? `${fieldsData.other.area}: ${formatNumber(t, country.area)} km${SuperScriptTwo}` : null,
 							`${fieldsData.other.currencies}: ${t(LanguageKeys.Globals.AndListValue, { value: country.currencies.map(mapCurrency) })}`
 						]
 							.filter(Boolean)

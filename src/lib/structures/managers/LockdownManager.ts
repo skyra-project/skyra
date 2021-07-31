@@ -1,5 +1,6 @@
 import type { AccurateTimeout } from '#utils/Timers';
-import { Collection, NewsChannel, Role, TextChannel } from 'discord.js';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { Collection, Role } from 'discord.js';
 
 export class LockdownManager extends Collection<string, Collection<string, LockdownManager.Entry>> {
 	public add(role: Role, channel: LockdownManager.Channel, value: LockdownManager.Entry) {
@@ -65,7 +66,7 @@ export class LockdownManager extends Collection<string, Collection<string, Lockd
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace LockdownManager {
-	export type Channel = TextChannel | NewsChannel;
+	export type Channel = GuildTextBasedChannelTypes;
 	export interface Entry {
 		allowed: boolean | null;
 		timeout: AccurateTimeout | null;

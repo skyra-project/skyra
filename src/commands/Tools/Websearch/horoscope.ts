@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
@@ -5,6 +6,7 @@ import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Days, Sunsigns } from '@skyra/saelem';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -13,11 +15,11 @@ const kRandomSunSign = createPick(kSunSigns);
 const kDays = ['yesterday', 'tomorrow', 'today'];
 
 @ApplyOptions<SkyraCommand.Options>({
+	enabled: envIsDefined('SAELEM_URL'),
 	aliases: ['saelem'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -34,14 +36,14 @@ export class UserCommand extends SkyraCommand {
 			mood,
 			rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
 		});
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setDescription(prediction)
-				.setTitle(titles.dailyHoroscope)
-				.setTimestamp(new Date(date))
-				.addField(titles.metadataTitle, titles.metadata)
-		);
+
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setDescription(prediction)
+			.setTitle(titles.dailyHoroscope)
+			.setTimestamp(new Date(date))
+			.addField(titles.metadataTitle, titles.metadata.join('\n'));
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI(sunsign: Sunsigns, day: Days) {

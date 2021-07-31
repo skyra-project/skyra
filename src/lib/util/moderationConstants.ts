@@ -1,4 +1,4 @@
-import { Colors } from '#lib/types/Constants';
+import { Colors } from '#utils/constants';
 
 /* eslint-disable no-multi-spaces */
 export const enum TypeVariation {
@@ -180,10 +180,10 @@ export interface ModerationManagerDescriptionData {
 	type: string;
 	userName: string;
 	userDiscriminator: string;
-	userID: string;
+	userId: string;
 	reason: string | null;
 	prefix: string;
-	caseID: number;
+	caseId: number;
 	formattedDuration: string;
 }
 

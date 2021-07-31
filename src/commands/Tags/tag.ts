@@ -1,24 +1,26 @@
-import { getFromID, InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
+import { getFromId, InvalidTypeError, parseAndValidate, parseParameter } from '#lib/customCommands';
 import { CustomCommand, GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
-import { requiresLevel, requiresPermissions } from '#utils/decorators';
+import { RequiresLevel } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
-import { ApplyOptions } from '@sapphire/decorators';
+import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['tags', 'custom-command', 'copy-pasta'],
 	description: LanguageKeys.Commands.Tags.TagDescription,
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
-	runIn: ['text', 'news'],
-	strategyOptions: { flags: ['embed'], options: ['color', 'colour'] },
-	permissions: ['MANAGE_MESSAGES'],
+	flags: ['embed'],
+	options: ['color', 'colour'],
+	requiredClientPermissions: ['MANAGE_MESSAGES'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['add', 'alias', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -26,24 +28,23 @@ export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
-		const content = await args.rest('string');
+		const commandContent = await args.rest('string');
 
 		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 			if (tags.some((command) => command.id === id)) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
-			tags.push(this.createTag(args, id, content));
+			tags.push(this.createTag(args, id, commandContent));
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(commandContent, 500) });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 
@@ -55,12 +56,11 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Tags.TagRemoved, { name: id });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async alias(message: GuildMessage, args: SkyraCommand.Args) {
 		const input = (await args.pick('string')).toLowerCase();
 		let output = (await args.pick('string')).toLowerCase();
@@ -69,13 +69,13 @@ export class UserCommand extends SkyraCommand {
 			const tags = settings[GuildSettings.CustomCommands];
 
 			// Get destination tag:
-			const destinationTag = getFromID(output, tags);
+			const destinationTag = getFromId(output, tags);
 			if (destinationTag === null) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: output });
 
 			output = destinationTag.id;
 
 			// Get source tag, if any exists:
-			const sourceTag = getFromID(input, tags);
+			const sourceTag = getFromId(input, tags);
 			if (sourceTag === null) {
 				destinationTag.aliases.push(input);
 				return;
@@ -94,12 +94,11 @@ export class UserCommand extends SkyraCommand {
 			destinationTag.aliases.push(input);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagAlias, { input, output }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Tags.TagAlias, { input, output });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async rename(message: GuildMessage, args: SkyraCommand.Args) {
 		const previous = (await args.pick('string')).toLowerCase();
 		const next = (await args.pick('string')).toLowerCase();
@@ -112,45 +111,44 @@ export class UserCommand extends SkyraCommand {
 			if (tag === undefined) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: previous });
 
 			// Check if a tag with the name exists:
-			if (getFromID(next, tags) !== null) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
+			if (getFromId(next, tags) !== null) this.error(LanguageKeys.Commands.Tags.TagExists, { tag: next });
 
 			// Rename tag:
 			tag.id = next;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagRenamed, { name: next, previous }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Tags.TagRenamed, { name: next, previous });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.CustomCommands].length = 0;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagReset));
+		const content = args.t(LanguageKeys.Commands.Tags.TagReset);
+		return send(message, content);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async edit(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
-		const content = await args.rest('string');
+		const commandContent = await args.rest('string');
 
 		await writeSettings(message.guild, (settings) => {
 			const tags = settings[GuildSettings.CustomCommands];
 			const tagIndex = tags.findIndex((command) => command.id === id);
 			if (tagIndex === -1) this.error(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
-			tags[tagIndex] = this.createTag(args, id, content, tags[tagIndex].aliases);
+			tags[tagIndex] = this.createTag(args, id, commandContent, tags[tagIndex].aliases);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(commandContent, 500) });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get tags, prefix, and language
 		const [tags, prefix] = await readSettings(message.guild, [GuildSettings.CustomCommands, GuildSettings.Prefix]);
@@ -159,7 +157,7 @@ export class UserCommand extends SkyraCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		// Get prefix and display all tags
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {
@@ -172,28 +170,24 @@ export class UserCommand extends SkyraCommand {
 		return response;
 	}
 
-	@requiresPermissions(['EMBED_LINKS'])
+	@RequiresClientPermissions(['EMBED_LINKS'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);
-		const tag = getFromID(id, tags);
+		const tag = getFromId(id, tags);
 		if (tag === null) return null;
 
-		const allowedMentions = new Set<string>();
-		const iterator = tag.content.run();
-		let result = iterator.next();
-		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type, allowedMentions));
-
-		return tag.embed
-			? message.send(new MessageEmbed().setDescription(result.value.trim()).setColor(tag.color))
-			: message.send(result.value.trim(), { allowedMentions: { users: [...allowedMentions], roles: [] } });
+		return send(message, await this.getShowOptions(args, tag));
 	}
 
 	public async source(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);
-		const tag = getFromID(id, tags);
-		return tag ? message.send(codeBlock('md', tag.content.toString()), { allowedMentions: { users: [], roles: [] } }) : null;
+		const tag = getFromId(id, tags);
+		if (tag === null) return null;
+
+		const content = codeBlock('md', tag.content.toString());
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private createTag(args: SkyraCommand.Args, id: string, content: string, aliases: string[] = []): CustomCommand {
@@ -281,5 +275,20 @@ export class UserCommand extends SkyraCommand {
 		if (this.#kHexLessRegex.test(color)) color = `#${color}`;
 
 		return parseColour(color)?.b10.value ?? 0;
+	}
+
+	private async getShowOptions(args: SkyraCommand.Args, tag: CustomCommand): Promise<MessageOptions> {
+		const allowedMentions = new Set<string>();
+		const iterator = tag.content.run();
+		let result = iterator.next();
+		while (!result.done) result = iterator.next(await parseParameter(args, result.value.type as InvalidTypeError.Type, allowedMentions));
+
+		const content = result.value.trim();
+		if (tag.embed) {
+			const embed = new MessageEmbed().setDescription(content).setColor(tag.color);
+			return { embeds: [embed] };
+		}
+
+		return { content, allowedMentions: { users: [...allowedMentions], roles: [] } };
 	}
 }

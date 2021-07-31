@@ -2,8 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 
@@ -31,10 +30,10 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('19px FamilyFriends')
 			.createRectangleClip(61, 335, 156, 60)
 			.printWrappedText(text, 143, 360, 156)
-			.toBufferAsync();
+			.png();
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 }

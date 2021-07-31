@@ -25,8 +25,6 @@ To run Skyra locally a few steps should be taken.
 1. Scroll down to the tokens section.
 1. At this section enter your own bot's API token at `DISCORD_TOKEN`.
 1. Fill in any other API keys you have / want to fill in.
-1. Follow the [installation instructions for node-canvas](https://github.com/Automattic/node-canvas/blob/master/Readme.md#installation).
-    - Note: In case of using WSL then follow the Windows instructions.
 1. Install project dependencies with `yarn install`.
 1. Start Skyra in development mode with `yarn dev`.
 
@@ -62,7 +60,6 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 [node.js]: https://nodejs.org/en/download/
 [yarn]: https://classic.yarnpkg.com/en/docs/install
 [docker]: https://www.docker.com
-[installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/main/Readme.md#installation
 [oop paradigms]: https://en.wikipedia.org/wiki/Object-oriented_programming
 [discord bot best practices]: https://github.com/meew0/discord-bot-best-practices
 [`.env.development`]: /src/.env.development

@@ -14,7 +14,7 @@ import {
 } from '#lib/weather';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Canvas } from 'canvas-constructor';
+import { Canvas } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 
 const imperial = ['fahrenheit', 'f', 'imperial', 'i'];
@@ -120,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 				// Weather Name
 				.printResponsiveText(weatherDescription, columns[1].left, rows[1].center, columns[2].right - columns[1].left)
 
-				.toBufferAsync()
+				.png()
 		);
 	}
 

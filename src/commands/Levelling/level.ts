@@ -4,8 +4,7 @@ import { Scope } from '#lib/types';
 import { cdnFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas, rgba } from 'canvas-constructor';
+import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
@@ -44,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			loadImage(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
+			resolveImage(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
@@ -86,14 +85,13 @@ export class UserCommand extends SkyraCommand {
 				.save()
 				.printCircularImage(imgAvatarSRC, 103, 87, 71)
 				.restore()
-				.toBufferAsync()
+				.png()
 		);
 	}
 
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate] = await Promise.all([
 			new Canvas(640, 174)
-				.setAntialiasing('subpixel')
 				.setShadowColor(rgba(0, 0, 0, 0.7))
 				.setShadowBlur(7)
 				.setColor('#FFFFFF')
@@ -105,10 +103,9 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#E8E8E8')
 				.printRoundedRectangle(340, 85, 267, 11, 4)
-				.toBufferAsync()
-				.then(loadImage),
+				.png()
+				.then(resolveImage),
 			new Canvas(640, 174)
-				.setAntialiasing('subpixel')
 				.setShadowColor(rgba(0, 0, 0, 0.7))
 				.setShadowBlur(7)
 				.setColor('#202225')
@@ -120,8 +117,8 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#2C2F33')
 				.printRoundedRectangle(340, 85, 267, 11, 4)
-				.toBufferAsync()
-				.then(loadImage)
+				.png()
+				.then(resolveImage)
 		]);
 	}
 }

@@ -3,8 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
@@ -42,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/howtoflirt.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, '/images/memes/howtoflirt.png'));
 	}
 
 	private async generate(message: Message, user: User) {
@@ -67,6 +66,6 @@ export class UserCommand extends SkyraCommand {
 					}
 				}
 			})
-			.toBufferAsync();
+			.png();
 	}
 }

@@ -3,8 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 
@@ -26,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
+		this.kTemplate = await resolveImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
 	}
 
 	private generateImage(avatar: Image) {
@@ -36,6 +35,6 @@ export class UserCommand extends SkyraCommand {
 			.translate(316, 115)
 			.rotate(radians(10))
 			.printCircularImage(avatar, 0, 0, 65)
-			.toBufferAsync();
+			.png();
 	}
 }

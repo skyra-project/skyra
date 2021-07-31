@@ -4,8 +4,7 @@ import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { UserError } from '@sapphire/framework';
 import { Store } from '@sapphire/pieces';
-import { Image, loadImage } from 'canvas';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
@@ -155,7 +154,7 @@ export class Slotmachine {
 			)
 		);
 
-		return canvas.toBufferAsync();
+		return canvas.png();
 	}
 
 	/** The boost */
@@ -202,7 +201,10 @@ export class Slotmachine {
 	};
 
 	public static async init(): Promise<void> {
-		const [icon, shiny] = await Promise.all([loadImage(join(socialFolder, 'sm-icons.png')), loadImage(join(socialFolder, 'shiny-icon.png'))]);
+		const [icon, shiny] = await Promise.all([
+			resolveImage(join(socialFolder, 'sm-icons.png')),
+			resolveImage(join(socialFolder, 'shiny-icon.png'))
+		]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;
 	}

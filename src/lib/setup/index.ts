@@ -1,5 +1,6 @@
 // Config must be the first to be loaded, as it sets the env:
 import 'reflect-metadata';
+import 'source-map-support/register';
 import '#root/config';
 
 // Import everything else:

@@ -39,12 +39,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --chown=node:node --from=BUILDER /usr/src/app/dist dist
+COPY --chown=node:node --from=BUILDER /usr/src/app/assets assets
+COPY --chown=node:node --from=BUILDER /usr/src/app/yarn.lock yarn.lock
+COPY --chown=node:node --from=BUILDER /usr/src/app/package.json package.json
 
-COPY --chown=node:node yarn.lock .
-COPY --chown=node:node package.json .
-COPY --chown=node:node assets/ assets/
 COPY --chown=node:node scripts/audio/ scripts/audio/
-COPY --chown=node:node scripts/build/ scripts/build/
 COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
 COPY --chown=node:node src/.env src/.env
 
@@ -54,4 +53,4 @@ RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./packag
 
 USER node
 
-CMD [ "dumb-init", "yarn", "start", "--enable-source-maps", "--max-old-space-size=4096"]
+CMD [ "dumb-init", "yarn", "start", "--max-old-space-size=4096"]

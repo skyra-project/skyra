@@ -6,6 +6,7 @@ import { isNsfw } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 
 const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const kTitleBlockList = /nsfl/i;
@@ -35,14 +36,13 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.send(
-			args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
-				title: post.title,
-				author: post.author,
-				url: post.spoiler ? `||${post.url}||` : post.url
-			}),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+
+		const content = args.t(LanguageKeys.Commands.Misc.RandRedditMessage, {
+			title: post.title,
+			author: post.author,
+			url: post.spoiler ? `||${post.url}||` : post.url
+		});
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async fetchData(reddit: string) {

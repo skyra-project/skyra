@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
 import { cdnFolder } from '#utils/constants';
-import { fetchGlobalRank, fetchLocalRank } from '#utils/functions';
+import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
@@ -100,14 +100,14 @@ export class UserCommand extends SkyraCommand {
 				.printText(rank.toString(), 594, 276)
 				.printText(t(LanguageKeys.Commands.Social.ProfileMoney, { money: settings.money, vault: settings.profile.vault }), 594, 229)
 				.printText(t(LanguageKeys.Globals.NumberCompactValue, { value: settings.reputations }), 594, 181)
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: points }), 594, 346)
+				.printText(formatNumber(t, points), 594, 346)
 
 				// Level
 				.setTextAlign('center')
 				.setTextFont('30px RobotoLight')
 				.printText(title.level, 576, 58)
 				.setTextFont('40px RobotoRegular')
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: level }), 576, 100)
+				.printText(formatNumber(t, level), 576, 100)
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)

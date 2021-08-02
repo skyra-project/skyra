@@ -71,7 +71,7 @@ export function createFunctionInhibitor(inhibitor: Inhibitor, fallback: Fallback
  * @param thrownError The error to be thrown. This gets assigned as the `identifier` property for a {@link UserError}
  * @param userErrorOptions Additional options to pass to the thrown {@link UserError}
  */
-export const requiresLevel = (
+export const RequiresLevel = (
 	level: PermissionLevels,
 	thrownError: string,
 	userErrorOptions?: Omit<UserError.Options, 'identifier'>
@@ -105,7 +105,7 @@ const ServerOnlyPermissions = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES
  * @remark This decorator makes the decorated function asynchronous.
  * @param permissionsResolvable Permissions that the method should have.
  */
-export const requiresPermissions = (...permissionsResolvable: PermissionResolvable[]): MethodDecorator => {
+export const RequiresPermissions = (...permissionsResolvable: PermissionResolvable[]): MethodDecorator => {
 	const resolved = new Permissions(permissionsResolvable);
 	return createFunctionInhibitor((message: Message, args: SkyraArgs) => {
 		if (isDMChannel(message.channel) && resolved.has(ServerOnlyPermissions)) {
@@ -134,7 +134,7 @@ export const requiresPermissions = (...permissionsResolvable: PermissionResolvab
  * @since 1.0.0
  * @param fallback The fallback value passed to `createFunctionInhibitor`
  */
-export function requiresGuildContext(fallback: Fallback = (): void => undefined): MethodDecorator {
+export function RequiresGuildContext(fallback: Fallback = (): void => undefined): MethodDecorator {
 	return createFunctionInhibitor((message: Message) => message.guild !== null, fallback);
 }
 
@@ -143,6 +143,6 @@ export function requiresGuildContext(fallback: Fallback = (): void => undefined)
  * @since 1.0.0
  * @param fallback The fallback value passed to `createFunctionInhibitor`
  */
-export function requiresDMContext(fallback: Fallback = (): void => undefined): MethodDecorator {
+export function RequiresDMContext(fallback: Fallback = (): void => undefined): MethodDecorator {
 	return createFunctionInhibitor((message: Message) => message.guild === null, fallback);
 }

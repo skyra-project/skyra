@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -66,10 +67,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				const runTime = movie.runtime
 					? t(LanguageKeys.Globals.DurationValue, { value: movie.runtime * 60 * 1000 })
 					: fieldsData.movieInProduction;
-				const userScore =
-					typeof movie.vote_average === 'number'
-						? t(LanguageKeys.Globals.NumberValue, { value: movie.vote_average })
-						: fieldsData.movieInProduction;
+				const userScore = typeof movie.vote_average === 'number' ? formatNumber(t, movie.vote_average) : fieldsData.movieInProduction;
 				const releaseDate = movie.release_date
 					? t(LanguageKeys.Globals.DateValue, { value: Date.parse(movie.release_date) })
 					: t(LanguageKeys.Globals.Unknown);

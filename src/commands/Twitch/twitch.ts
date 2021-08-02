@@ -2,6 +2,7 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
@@ -34,8 +35,8 @@ export class UserCommand extends SkyraCommand {
 			.setURL(`https://twitch.tv/${channel.login}`)
 			.setDescription(channel.description)
 			.setThumbnail(channel.profile_image_url)
-			.addField(titles.followers, t(LanguageKeys.Globals.NumberValue, { value: followersTotal }), true)
-			.addField(titles.views, t(LanguageKeys.Globals.NumberValue, { value: channel.view_count }), true)
+			.addField(titles.followers, formatNumber(t, followersTotal), true)
+			.addField(titles.views, formatNumber(t, channel.view_count), true)
 			.addField(titles.partner, affiliateStatus ? affiliateStatus : t(LanguageKeys.Commands.Twitch.TwitchPartnershipWithoutAffiliate));
 		return send(message, { embeds: [embed] });
 	}

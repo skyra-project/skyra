@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { BrawlStars } from '#lib/types/definitions/BrawlStars';
 import { BrawlStarsEmojis, Emojis } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
@@ -94,7 +95,6 @@ export class UserCommand extends SkyraCommand {
 	private async buildPlayerEmbed(message: Message, t: TFunction, player: BrawlStars.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedFields);
-		const digitFormat = (value: number) => t(LanguageKeys.Globals.NumberValue, { value });
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) ?? (await this.container.db.fetchColor(message)))
@@ -103,16 +103,16 @@ export class UserCommand extends SkyraCommand {
 			.addField(
 				titles.trophies,
 				[
-					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${digitFormat(player.trophies)}`,
-					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${digitFormat(player.highestTrophies)}`
+					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${formatNumber(t, player.trophies)}`,
+					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${formatNumber(t, player.highestTrophies)}`
 				].join('\n')
 			)
 			.addField(
 				titles.exp,
 				[
-					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${digitFormat(player.expPoints)})`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${digitFormat(player.powerPlayPoints ?? 0)}`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${digitFormat(player.highestPowerPlayPoints ?? 0)}`
+					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${formatNumber(t, player.expPoints)})`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${formatNumber(t, player.powerPlayPoints ?? 0)}`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${formatNumber(t, player.highestPowerPlayPoints ?? 0)}`
 				].join('\n')
 			)
 			.addField(
@@ -127,9 +127,9 @@ export class UserCommand extends SkyraCommand {
 			.addField(
 				titles.gamesModes,
 				[
-					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${digitFormat(player['3vs3Victories'])}`,
-					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${digitFormat(player.soloVictories)}`,
-					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${digitFormat(player.duoVictories)}`
+					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${formatNumber(t, player['3vs3Victories'])}`,
+					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${formatNumber(t, player.soloVictories)}`,
+					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${formatNumber(t, player.duoVictories)}`
 				].join('\n')
 			)
 			.addField(
@@ -148,20 +148,19 @@ export class UserCommand extends SkyraCommand {
 	private async buildClubEmbed(message: Message, t: TFunction, club: BrawlStars.Club) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedFields);
-		const digitFormat = (value: number) => t(LanguageKeys.Globals.NumberValue, { value });
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
-			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${digitFormat(member.trophies)})`;
+			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${formatNumber(t, member.trophies)})`;
 		const president = club.members.find((member) => member.role === 'president');
 
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(`${club.name} - ${club.tag}`)
 			.setURL(`https://brawlstats.com/club/${club.tag.substr(1)}`)
-			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(club.trophies)}`)
-			.addField(titles.averageTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(averageTrophies)}`)
-			.addField(titles.requiredTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(club.requiredTrophies)}+`)
+			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${formatNumber(t, club.trophies)}`)
+			.addField(titles.averageTrophies, `${BrawlStarsEmojis.Trophy} ${formatNumber(t, averageTrophies)}`)
+			.addField(titles.requiredTrophies, `${BrawlStarsEmojis.Trophy} ${formatNumber(t, club.requiredTrophies)}+`)
 			.addField(titles.members, `${club.members.length} / ${kMaxMembers}`)
 			.addField(titles.type, club.type)
 			.addField(titles.president, president?.name || fields.noPresident)

@@ -4,6 +4,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -59,9 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				(r) => r
 			)
 				.mapValues((rating) => {
-					return `**${toTitleCase(rating.role)}:** ${
-						typeof rating.level === 'number' ? t(LanguageKeys.Globals.NumberValue, { value: rating.level }) : rating.level
-					}`;
+					return `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? formatNumber(t, rating.level) : rating.level}`;
 				})
 				.values()
 		).join('\n');

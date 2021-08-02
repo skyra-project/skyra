@@ -1,5 +1,5 @@
 import { RolesAuto, Serializer, SerializerUpdateContext } from '#lib/database';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { formatNumber } from '#utils/functions';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<RolesAuto> {
@@ -22,7 +22,7 @@ export class UserSerializer extends Serializer<RolesAuto> {
 	}
 
 	public stringify(value: RolesAuto, { t }: SerializerUpdateContext): string {
-		return `[${value.id} -> ${t(LanguageKeys.Globals.NumberValue, { value: value.points })}]`;
+		return `[${value.id} -> ${formatNumber(t, value.points)}]`;
 	}
 
 	public equals(left: RolesAuto, right: RolesAuto): boolean {

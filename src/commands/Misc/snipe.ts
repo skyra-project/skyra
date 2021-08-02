@@ -5,6 +5,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { getSnipedMessage } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -31,6 +32,6 @@ export class UserCommand extends SkyraCommand {
 		const image = getImage(sniped);
 		if (image !== null) embed.setImage(image);
 
-		return message.send(embed);
+		return send(message, { embeds: [embed] });
 	}
 }

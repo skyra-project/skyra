@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -21,11 +22,10 @@ export class UserCommand extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(b10.value)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(args.t(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
-		);
+		const embed = new MessageEmbed()
+			.setColor(b10.value)
+			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setDescription(args.t(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }));
+		return send(message, { embeds: [embed] });
 	}
 }

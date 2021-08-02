@@ -5,6 +5,7 @@ import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
 import type { User } from 'discord.js';
@@ -50,7 +51,9 @@ export class UserCommand extends SkyraCommand {
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
 		});
-		return message.send([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
+
+		const content = `${data.title}\n${data.description}`;
+		return send(message, { content, files: [{ attachment, name: 'ship.png' }] });
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */

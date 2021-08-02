@@ -4,6 +4,7 @@ import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
@@ -22,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
-		return message.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
+		return send(message, { files: [{ attachment, name: 'deletThis.png' }] });
 	}
 
 	public async generate(message: Message, possibleTarget: User) {

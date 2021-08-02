@@ -1,8 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, writeSettings } from '#lib/database';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Difference, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
+import { formatNumber, GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullishOrEmpty } from '@sapphire/utilities';
@@ -81,9 +80,9 @@ export class UserListener extends Listener {
 				case 'guild.id':
 					return member.guild.id;
 				case 'points':
-					return t(LanguageKeys.Globals.NumberValue, { value: points });
+					return formatNumber(t, points);
 				case 'level':
-					return t(LanguageKeys.Globals.NumberValue, { value: this.getLevelFromPoints(points) });
+					return formatNumber(t, this.getLevelFromPoints(points));
 				default:
 					return match;
 			}

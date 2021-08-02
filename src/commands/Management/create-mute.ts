@@ -9,6 +9,7 @@ import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument, Result, UserError } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -32,18 +33,21 @@ export class UserCommand extends SkyraCommand {
 			if (role.success) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
 				if (canReact(message)) return message.react(resolveEmoji(Emojis.GreenTick)!);
-				return message.send(
-					t(LanguageKeys.Commands.Admin.ConfUpdated, {
-						key: GuildSettings.Roles.Muted,
-						response: role.value.name
-					})
-				);
+
+				const content = t(LanguageKeys.Commands.Admin.ConfUpdated, {
+					key: GuildSettings.Roles.Muted,
+					response: role.value.name
+				});
+				return send(message, content);
 			}
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await message.guild.security.actions.muteSetup(message);
-			await message.send(t(LanguageKeys.Commands.Moderation.Success));
+
+			const content = t(LanguageKeys.Commands.Moderation.Success);
+			await send(message, content);
 		} else {
-			await message.send(t(LanguageKeys.Commands.Management.CommandHandlerAborted));
+			const content = t(LanguageKeys.Commands.Management.CommandHandlerAborted);
+			await send(message, content);
 		}
 
 		return null;

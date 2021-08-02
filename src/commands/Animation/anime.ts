@@ -3,7 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getAnime, parseDescription } from '#utils/APIs/AniList';
-import { isNsfw } from '#utils/functions';
+import { formatNumber, isNsfw } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
@@ -69,7 +69,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.episodes) {
-						description.push(`**${anilistTitles.episodes}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.episodes })}`);
+						description.push(`**${anilistTitles.episodes}**: ${formatNumber(t, result.episodes)}`);
 					}
 
 					if (result.duration) {

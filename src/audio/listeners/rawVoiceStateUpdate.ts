@@ -1,6 +1,6 @@
 import { AudioListener } from '#lib/audio';
 import { ApplyOptions } from '@sapphire/decorators';
-import { GatewayDispatchEvents, GatewayVoiceState } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayVoiceState } from 'discord-api-types/v9';
 
 @ApplyOptions<AudioListener.Options>({ event: GatewayDispatchEvents.VoiceStateUpdate, emitter: 'ws' })
 export class UserAudioListener extends AudioListener {

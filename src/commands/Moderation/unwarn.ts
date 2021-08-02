@@ -7,6 +7,7 @@ import { deleteMessage } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],
@@ -48,7 +49,8 @@ export class UserModerationCommand extends ModerationCommand {
 					reason: originalReason
 				}
 			);
-			return message.send(content) as Promise<GuildMessage>;
+
+			return send(message, content) as Promise<GuildMessage>;
 		}
 
 		return null;

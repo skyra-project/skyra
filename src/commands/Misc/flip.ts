@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 const horizontalOptions = ['h', 'horizontal', 'x'];
@@ -25,9 +26,8 @@ export class UserCommand extends SkyraCommand {
 		if (horizontal) chars = this.flipHorizontal(chars);
 		if (vertical) chars = this.flipVertical(chars);
 
-		return message.send(args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Misc.FlipOutput, { value: chars.join('') });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private convert(content: string) {

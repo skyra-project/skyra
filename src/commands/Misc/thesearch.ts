@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
@@ -18,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const text = await args.rest('string');
 		const attachment = await this.generate(text);
-		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
+		return send(message, { files: [{ attachment, name: 'TheSearch.png' }] });
 	}
 
 	public generate(text: string) {

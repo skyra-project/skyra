@@ -2,12 +2,13 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { requiresGuildContext, requiresPermissions } from '#utils/decorators';
+import { RequiresGuildContext, RequiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, cutText } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
@@ -49,15 +50,19 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.RemindMeCreate, { id: task.id.toString() }));
+		const content = args.t(LanguageKeys.Commands.Social.RemindMeCreate, { id: task.id.toString() });
+		return send(message, content);
 	}
 
-	@requiresGuildContext((message: Message, args: SkyraCommand.Args) => message.send(args.t(LanguageKeys.Preconditions.GuildOnly)))
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresGuildContext((message: Message, args: SkyraCommand.Args) => send(message, args.t(LanguageKeys.Preconditions.GuildOnly)))
+	@RequiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: Message, args: SkyraCommand.Args) {
 		const { client } = this.container;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
-		if (!tasks.length) return message.send(args.t(LanguageKeys.Commands.Social.RemindMeListEmpty));
+		if (!tasks.length) {
+			const content = args.t(LanguageKeys.Commands.Social.RemindMeListEmpty);
+			return send(message, content);
+		}
 		const response = await sendLoadingMessage(message, args.t);
 
 		const display = new SkyraPaginatedMessage({
@@ -87,24 +92,21 @@ export class UserCommand extends SkyraCommand {
 		const { id } = task;
 		await task.delete();
 
-		return message.send(args.t(LanguageKeys.Commands.Social.RemindMeDelete, { remainingDuration: task.time.getTime() - Date.now(), id }));
+		const content = args.t(LanguageKeys.Commands.Social.RemindMeDelete, { remainingDuration: task.time.getTime() - Date.now(), id });
+		return send(message, content);
 	}
 
-	@requiresPermissions(['EMBED_LINKS'])
+	@RequiresPermissions(['EMBED_LINKS'])
 	public async show(message: Message, args: SkyraCommand.Args) {
 		const task = await args.pick(UserCommand.task);
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(
-					`${message.author.tag} (${message.author.id})`,
-					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-				)
-				.setDescription(task.data.content)
-				.setFooter(args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
-				.setTimestamp(task.time)
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setDescription(task.data.content)
+			.setFooter(args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
+			.setTimestamp(task.time);
+		return send(message, { embeds: [embed] });
 	}
 
 	private static action = Args.make<Actions>((parameter, { argument }) => {

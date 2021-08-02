@@ -4,6 +4,8 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -99,7 +101,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (unmanageable.length) output.push(t(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
 		if (removedRoles.length) output.push(t(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
 		if (addedRoles.length) output.push(t(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
-		return message.send(output.join('\n'));
+
+		const content = output.join('\n');
+		return send(message, content);
 	}
 
 	private async list(message: GuildMessage, t: TFunction, publicRoles: readonly string[]) {
@@ -130,8 +134,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});
 
-		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPageEmbed((embed) => embed.setDescription(roles.slice(i * 10, i * 10 + 10)));
+		for (const page of chunk(roles, 10)) {
+			display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
+		}
 
 		const response = await sendLoadingMessage(message, t);
 		await display.run(response, message.author);

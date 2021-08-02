@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -18,10 +19,10 @@ export class UserCommand extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.send(
-			args.t(
-				updated.profile.darkTheme ? LanguageKeys.Commands.Social.ToggleDarkModeEnabled : LanguageKeys.Commands.Social.ToggleDarkModeDisabled
-			)
-		);
+		const contentKey = updated.profile.darkTheme
+			? LanguageKeys.Commands.Social.ToggleDarkModeEnabled
+			: LanguageKeys.Commands.Social.ToggleDarkModeDisabled;
+		const content = args.t(contentKey);
+		return send(message, content);
 	}
 }

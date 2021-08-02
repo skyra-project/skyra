@@ -1,7 +1,7 @@
 import { envParseString } from '#lib/env';
 import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
-import { Store } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'events';
 import { join } from 'path';
@@ -116,7 +116,7 @@ export class WorkerHandler {
 			const worker = `[${yellow('W')}]`;
 			const thread = cyan(this.threadId.toString(16));
 			const exit = code === 0 ? green('0') : red(code.toString());
-			Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+			container.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
 		}
 	}
 
@@ -128,7 +128,7 @@ export class WorkerHandler {
 		if (WorkerHandler.logsEnabled) {
 			const worker = `[${cyan('W')}]`;
 			const thread = cyan(this.threadId.toString(16));
-			Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+			container.logger.info(`${worker} - Thread ${thread} is now ready.`);
 		}
 	}
 

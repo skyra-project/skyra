@@ -4,10 +4,11 @@ import type { GuildMessage } from '#lib/types';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
-const roleMention = (role: Role) => role.toString();
+const roleMention = (role: Role): string => role.toString();
 const roleLimit = 15;
 
 const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
@@ -29,7 +30,8 @@ export class UserCommand extends SkyraCommand {
 			return display.run(message);
 		}
 
-		return message.send(await this.getSummary(args, roles, color));
+		const embed = await this.getSummary(args, roles, color);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<SkyraPaginatedMessage> {
@@ -50,12 +52,14 @@ export class UserCommand extends SkyraCommand {
 		if (roles.length > roleLimit) {
 			for (const batch of chunk(roles, 20)) {
 				if (batch.length <= 10) {
-					display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention)));
+					display.addPageEmbed((embed) => embed.addField(ZeroWidthSpace, batch.map(roleMention).join('\n')));
 				} else {
 					const left = batch.slice(0, 10);
 					const right = batch.slice(10);
 					display.addPageEmbed((embed) =>
-						embed.addField(ZeroWidthSpace, left.map(roleMention), true).addField(ZeroWidthSpace, right.map(roleMention), true)
+						embed
+							.addField(ZeroWidthSpace, left.map(roleMention).join('\n'), true)
+							.addField(ZeroWidthSpace, right.map(roleMention).join('\n'), true)
 					);
 				}
 			}
@@ -165,7 +169,6 @@ export class UserCommand extends SkyraCommand {
 		const guild = args.message.guild!;
 		return args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 			size: guild.roles.cache.size,
-			region: guild.region,
 			createdAt: guild.createdTimestamp,
 			verificationLevel: guild.verificationLevel
 		});

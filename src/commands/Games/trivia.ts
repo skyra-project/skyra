@@ -1,7 +1,7 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { pickRandom, shuffle } from '#utils/util';
+import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(args.t(LanguageKeys.System.Loading)));
+			await sendLoadingMessage(message, args.t);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean

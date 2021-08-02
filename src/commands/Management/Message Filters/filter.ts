@@ -5,6 +5,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { remove as removeConfusables } from 'confusables';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -28,7 +29,8 @@ export class UserCommand extends SkyraCommand {
 			words.push(word);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.FilterAdded, { word }));
+		const content = args.t(LanguageKeys.Commands.Management.FilterAdded, { word });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -45,19 +47,24 @@ export class UserCommand extends SkyraCommand {
 			words.splice(index, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.FilterRemoved, { word }));
+		const content = args.t(LanguageKeys.Commands.Management.FilterRemoved, { word });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await writeSettings(message.guild, [[GuildSettings.Selfmod.Filter.Raw, []]]);
-		return message.send(args.t(LanguageKeys.Commands.Management.FilterReset));
+
+		const content = args.t(LanguageKeys.Commands.Management.FilterReset);
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const raw = await readSettings(message.guild, GuildSettings.Selfmod.Filter.Raw);
-		return raw.length
-			? message.send(args.t(LanguageKeys.Commands.Management.FilterShow, { words: `\`${raw.join('`, `')}\`` }))
-			: message.send(args.t(LanguageKeys.Commands.Management.FilterShowEmpty));
+
+		const content = raw.length
+			? args.t(LanguageKeys.Commands.Management.FilterShow, { words: `\`${raw.join('`, `')}\`` })
+			: args.t(LanguageKeys.Commands.Management.FilterShowEmpty);
+		return send(message, content);
 	}
 
 	private async getWord(args: SkyraCommand.Args) {

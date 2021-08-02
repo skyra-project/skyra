@@ -37,9 +37,9 @@ export class UserCommand extends SkyraCommand {
 
 		await this.container.client.giveaways.create({
 			allowedRoles,
-			channelID: channel.id,
+			channelId: channel.id,
 			endsAt: new Date(time.getTime() + 500),
-			guildID: message.guild.id,
+			guildId: message.guild.id,
 			minimum: 1,
 			minimumWinners: winners,
 			title

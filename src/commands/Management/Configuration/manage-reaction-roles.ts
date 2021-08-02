@@ -8,6 +8,7 @@ import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector'
 import { displayEmoji, resolveEmoji, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Guild, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -35,15 +36,14 @@ export class UserCommand extends SkyraCommand {
 				settings[GuildSettings.ReactionRoles].push(reactionRole);
 			});
 
-			return message.send(
-				args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, {
-					emoji: displayEmoji(reactionRole.emoji),
-					channel: channel!.toString()
-				})
-			);
+			const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, {
+				emoji: displayEmoji(reactionRole.emoji),
+				channel: channel!.toString()
+			});
+			return send(message, content);
 		}
 
-		await message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt));
+		await send(message, args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt));
 
 		const reaction = await LongLivingReactionCollector.collectOne({
 			filter: (reaction) => reaction.userId === message.author.id && reaction.guild.id === message.guild.id
@@ -61,7 +61,8 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		const url = `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`;
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesAdd, { emoji: displayEmoji(reactionRole.emoji), url }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAdd, { emoji: displayEmoji(reactionRole.emoji), url });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -85,7 +86,8 @@ export class UserCommand extends SkyraCommand {
 			? `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`
 			: `<#${reactionRole.channel}>`;
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesRemove, { emoji: displayEmoji(reactionRole.emoji), url }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesRemove, { emoji: displayEmoji(reactionRole.emoji), url });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -99,7 +101,8 @@ export class UserCommand extends SkyraCommand {
 			reactionRoles.length = 0;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageReactionRolesReset));
+		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesReset);
+		return send(message, content);
 	}
 
 	@RequiresPermissions('EMBED_LINKS')

@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
@@ -24,8 +25,9 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.Starboard.Emoji] = emoji;
 		});
 
-		return message.send(
-			args.t(LanguageKeys.Commands.Management.SetStarboardEmojiSet, { emoji: emoji.startsWith('%') ? decodeURIComponent(emoji) : `<${emoji}>` })
-		);
+		const content = args.t(LanguageKeys.Commands.Management.SetStarboardEmojiSet, {
+			emoji: emoji.startsWith('%') ? decodeURIComponent(emoji) : `<${emoji}>`
+		});
+		return send(message, content);
 	}
 }

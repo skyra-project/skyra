@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
-	permissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserMusicCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

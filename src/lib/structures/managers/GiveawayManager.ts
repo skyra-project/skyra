@@ -10,7 +10,7 @@ export class GiveawayManager {
 		const qb = giveaways.createQueryBuilder().select();
 		if (container.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...container.client.guilds.cache.keys()] });
 
-		for (const entry of await qb.getMany()) this.insert(entry.setup(this).resume());
+		for (const entry of await qb.getMany()) this.insert(entry.resume());
 		this.check();
 	}
 
@@ -31,13 +31,13 @@ export class GiveawayManager {
 	}
 
 	public add(data: PartialGiveawayData) {
-		const giveaway = new GiveawayEntity(data).setup(this);
+		const giveaway = new GiveawayEntity(data);
 		this.insert(giveaway);
 		return giveaway;
 	}
 
 	public async create(data: GiveawayCreateData) {
-		const giveaway = new GiveawayEntity({ ...data, messageId: null }).setup(this);
+		const giveaway = new GiveawayEntity({ ...data, messageId: null });
 		await giveaway.insert();
 		this.insert(giveaway);
 		this.check();

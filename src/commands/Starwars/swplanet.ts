@@ -3,6 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getPlanet } from '#utils/APIs/StarWars';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -38,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				const description = [];
 
 				if (result.diameter) {
-					description.push(`**${planetTitles.diameter}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.diameter })}`);
+					description.push(`**${planetTitles.diameter}**: ${formatNumber(t, result.diameter)}`);
 				}
 
 				if (result.population) {

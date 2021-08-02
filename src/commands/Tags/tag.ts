@@ -5,7 +5,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
-import { requiresLevel, requiresPermissions } from '#utils/decorators';
+import { RequiresLevel, RequiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const commandContent = await args.rest('string');
@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 
@@ -60,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async alias(message: GuildMessage, args: SkyraCommand.Args) {
 		const input = (await args.pick('string')).toLowerCase();
 		let output = (await args.pick('string')).toLowerCase();
@@ -98,7 +98,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async rename(message: GuildMessage, args: SkyraCommand.Args) {
 		const previous = (await args.pick('string')).toLowerCase();
 		const next = (await args.pick('string')).toLowerCase();
@@ -121,7 +121,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await writeSettings(message.guild, (settings) => {
 			settings[GuildSettings.CustomCommands].length = 0;
@@ -131,7 +131,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async edit(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const commandContent = await args.rest('string');
@@ -148,7 +148,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get tags, prefix, and language
 		const [tags, prefix] = await readSettings(message.guild, [GuildSettings.CustomCommands, GuildSettings.Prefix]);
@@ -170,7 +170,7 @@ export class UserCommand extends SkyraCommand {
 		return response;
 	}
 
-	@requiresPermissions(['EMBED_LINKS'])
+	@RequiresPermissions(['EMBED_LINKS'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);

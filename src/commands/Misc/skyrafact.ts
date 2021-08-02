@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -12,12 +13,12 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setTitle(args.t(LanguageKeys.Commands.Misc.SkyraFactTitle))
-				.setDescription(this.getLine(args))
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(args.t(LanguageKeys.Commands.Misc.SkyraFactTitle))
+			.setDescription(this.getLine(args));
+
+		return send(message, { embeds: [embed] });
 	}
 
 	private getLine(args: SkyraCommand.Args) {

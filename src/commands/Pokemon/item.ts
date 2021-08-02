@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
@@ -37,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 			.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
 			.setThumbnail(itemDetails.sprite)
 			.setDescription(itemDetails.desc)
-			.addField(embedTranslations.generationIntroduced, t(LanguageKeys.Globals.NumberValue, { value: itemDetails.generationIntroduced }), true)
+			.addField(embedTranslations.generationIntroduced, formatNumber(t, itemDetails.generationIntroduced), true)
 			.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);
 		return send(message, { embeds: [embed] });

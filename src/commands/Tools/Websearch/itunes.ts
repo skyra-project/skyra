@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -57,7 +58,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
 					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: Date.parse(song.releaseDate) }), true)
-					.addField(titles.numberOfTracksInCollection, t(LanguageKeys.Globals.NumberValue, { value: song.trackCount }), true)
+					.addField(titles.numberOfTracksInCollection, formatNumber(t, song.trackCount), true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)
 			);

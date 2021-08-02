@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
@@ -108,11 +109,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.setThumbnail(entry.posterImage?.original ?? '')
 					.addField(embedData.type, t(LanguageKeys.Commands.Animation.KitsuAnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
-					.addField(
-						embedData.episodes,
-						entry.episodeCount ? t(LanguageKeys.Globals.NumberValue, { value: entry.episodeCount }) : embedData.stillAiring,
-						true
-					)
+					.addField(embedData.episodes, entry.episodeCount ? formatNumber(t, entry.episodeCount) : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
 					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)

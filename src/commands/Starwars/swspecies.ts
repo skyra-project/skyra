@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getSpecies } from '#utils/APIs/StarWars';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -42,15 +43,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.averageHeight) {
-						description.push(
-							`**${speciesTitles.averageHeight}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.averageHeight })}`
-						);
+						description.push(`**${speciesTitles.averageHeight}**: ${formatNumber(t, result.averageHeight)}`);
 					}
 
 					if (result.averageLifespan) {
-						description.push(
-							`**${speciesTitles.averageLifespan}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.averageLifespan })}`
-						);
+						description.push(`**${speciesTitles.averageLifespan}**: ${formatNumber(t, result.averageLifespan)}`);
 					}
 
 					if (result.classification) {

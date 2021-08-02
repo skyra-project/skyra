@@ -3,7 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getManga, parseDescription } from '#utils/APIs/AniList';
-import { isNsfw } from '#utils/functions';
+import { formatNumber, isNsfw } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
@@ -69,11 +69,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					}
 
 					if (result.chapters) {
-						description.push(`**${anilistTitles.chapters}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.chapters })}`);
+						description.push(`**${anilistTitles.chapters}**: ${formatNumber(t, result.chapters)}`);
 					}
 
 					if (result.volumes) {
-						description.push(`**${anilistTitles.volumes}**: ${t(LanguageKeys.Globals.NumberValue, { value: result.volumes })}`);
+						description.push(`**${anilistTitles.volumes}**: ${formatNumber(t, result.volumes)}`);
 					}
 
 					if (result.duration) {

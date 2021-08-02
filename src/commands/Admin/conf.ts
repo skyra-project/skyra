@@ -4,7 +4,7 @@ import { SettingsMenu, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { filter, map } from '#utils/common';
-import { requiresPermissions } from '#utils/decorators';
+import { RequiresPermissions } from '#utils/decorators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
@@ -19,7 +19,7 @@ import { send } from '@skyra/editable-commands';
 	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public menu(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		return new SettingsMenu(message, args.t).init(context);
 	}

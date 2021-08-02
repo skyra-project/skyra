@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -62,14 +63,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.addPageEmbed((embed) =>
 				embed
 					.setDescription(fieldsData.joinedReddit)
-					.addField(titles.linkKarma, about.link_karma, true)
-					.addField(titles.commentKarma, about.comment_karma, true)
-					.addField(titles.totalComments, comments.length, true)
-					.addField(titles.totalSubmissions, posts.length, true)
+					.addField(titles.linkKarma, formatNumber(t, about.link_karma), true)
+					.addField(titles.commentKarma, formatNumber(t, about.comment_karma), true)
+					.addField(titles.totalComments, formatNumber(t, comments.length), true)
+					.addField(titles.totalSubmissions, formatNumber(t, posts.length), true)
 					.addField(titles.commentControversiality, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
 					.addField(titles.textComplexity, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
-					.addField(titles.awardGiving, about.awarder_karma, true)
-					.addField(titles.awardReceiving, about.awardee_karma, true)
+					.addField(titles.awardGiving, formatNumber(t, about.awarder_karma), true)
+					.addField(titles.awardReceiving, formatNumber(t, about.awardee_karma), true)
 			)
 			.addPageEmbed((embed) =>
 				embed

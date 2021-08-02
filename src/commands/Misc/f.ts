@@ -4,6 +4,7 @@ import { assetsFolder } from '#utils/constants';
 import { canReact } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
@@ -21,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName').catch(() => message.author);
 		const attachment = await this.generate(user);
-		const response = await message.channel.send({ files: [{ attachment, name: 'F.png' }] });
+		const response = await send(message, { files: [{ attachment, name: 'F.png' }] });
 		if (canReact(response)) await response.react('🇫');
 		return response;
 	}

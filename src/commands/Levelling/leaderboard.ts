@@ -60,10 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const [id, value] of take(skip(list.entries(), index * 10), 10)) {
 			const displayName = members.get(id)?.displayName;
 			const name = displayName ? `**${displayName}**` : args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
-			lines.push(
-				`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`,
-				`${LongWidthSpace}└─ ${args.t(LanguageKeys.Globals.NumberValue, { value: value.points })}`
-			);
+			lines.push(`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`, `${LongWidthSpace}└─ ${formatNumber(t, value.points)}`);
 		}
 
 		return new MessageEmbed().setDescription(lines.join('\n'));

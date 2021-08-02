@@ -13,7 +13,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { requiresPermissions } from '#utils/decorators';
+import { RequiresPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -196,7 +196,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const streamer = args.finished ? null : await args.pick(UserCommand.streamer);
 		const { t } = args;

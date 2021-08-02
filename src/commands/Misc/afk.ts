@@ -5,12 +5,13 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LongWidthSpace } from '#utils/constants';
-import { requiresLevel } from '#utils/decorators';
+import { RequiresLevel } from '#utils/decorators';
 import { isGuildOwner } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, isNullish, Nullish } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -33,12 +34,15 @@ export class UserCommand extends SkyraCommand {
 		if (index === -1) {
 			value.channels.push(channel.id);
 			await this.insert(key, value);
-			return message.send(args.t(LanguageKeys.Commands.Misc.AfkAddedIgnoredChannel, { channel: channel.toString() }));
+
+			const content = args.t(LanguageKeys.Commands.Misc.AfkAddedIgnoredChannel, { channel: channel.toString() });
+			return send(message, content);
 		}
 
 		value.channels.splice(index, 1);
 		await this.insert(key, value);
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkRemovedIgnoredChannel, { channel: channel.toString() }));
+		const content = args.t(LanguageKeys.Commands.Misc.AfkRemovedIgnoredChannel, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	public reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -52,7 +56,7 @@ export class UserCommand extends SkyraCommand {
 		return allResult.success ? this.clearAll(message, args) : this.clearUser(message, args);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelList)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelList)
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		const entries = await this.fetchEntries(this.getTemplate(message.member), false);
 		if (entries.size === 0) this.error(LanguageKeys.Commands.Misc.AfkNoEntries);
@@ -79,18 +83,18 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const member = args.finished ? message.member : await args.pick('member');
 		const [, entry] = await this.fetchEntry(member, message.member === member);
-		return message.send(
-			new MessageEmbed()
-				.setAuthor(`${entry.name} (${member.id})`, member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }))
-				.setColor(await this.container.db.fetchColor(message))
-				.setDescription(entry.content)
-				.setFooter(args.t(LanguageKeys.Commands.Misc.AfkShowFooter))
-				.setTimestamp()
-		);
+
+		const embed = new MessageEmbed()
+			.setAuthor(`${entry.name} (${member.id})`, member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }))
+			.setColor(await this.container.db.fetchColor(message))
+			.setDescription(entry.content)
+			.setFooter(args.t(LanguageKeys.Commands.Misc.AfkShowFooter))
+			.setTimestamp();
+		return send(message, { embeds: [embed] });
 	}
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
-		const content = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
+		const afkContent = args.finished ? args.t(LanguageKeys.Commands.Misc.AfkDefault) : await args.rest('string', { maximum: 100 });
 
 		const [prefix, force, roleId] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Afk.Prefix] ?? args.t(LanguageKeys.Commands.Misc.AfkPrefix),
@@ -100,9 +104,10 @@ export class UserCommand extends SkyraCommand {
 		const name = this.removeAfkPrefix(message.member.displayName, prefix);
 
 		await Promise.all([this.addNickName(message.member, name, prefix, force), this.addRole(message.member, roleId)]);
-		await this.saveAfkMessage(message.member, name, content);
+		await this.saveAfkMessage(message.member, name, afkContent);
 
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkSet));
+		const content = args.t(LanguageKeys.Commands.Misc.AfkSet);
+		return send(message, content);
 	}
 
 	private async addNickName(member: GuildMember, name: string, prefix: string, force: boolean) {
@@ -150,16 +155,20 @@ export class UserCommand extends SkyraCommand {
 
 	private async resetSelf(message: GuildMessage, args: SkyraCommand.Args) {
 		await this.handleResetAfk(args, message.member, true);
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkResetSelf));
+
+		const content = args.t(LanguageKeys.Commands.Misc.AfkResetSelf);
+		return send(message, content);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelResetUser)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelResetUser)
 	private async resetUser(message: GuildMessage, args: SkyraCommand.Args) {
 		const member = await args.pick('member');
 		if (member.id === message.member.id) return this.resetSelf(message, args);
 
 		await this.handleResetAfk(args, member, false);
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkReset, { user: member.toString() }), { allowedMentions: { roles: [], users: [] } });
+
+		const content = args.t(LanguageKeys.Commands.Misc.AfkReset, { user: member.toString() });
+		return send(message, { content, allowedMentions: { roles: [], users: [] } });
 	}
 
 	private async handleResetAfk(args: SkyraCommand.Args, member: GuildMember, targetIsSelf: boolean) {
@@ -179,26 +188,30 @@ export class UserCommand extends SkyraCommand {
 
 	private async clearSelf(message: GuildMessage, args: SkyraCommand.Args) {
 		await this.handleClearAfk(message.member, true);
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkClearSelf));
+
+		const content = args.t(LanguageKeys.Commands.Misc.AfkClearSelf);
+		return send(message, content);
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelClearUser)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelClearUser)
 	private async clearUser(message: GuildMessage, args: SkyraCommand.Args) {
 		const member = await args.pick('member');
 		if (member.id === message.member.id) return this.clearSelf(message, args);
 
 		await this.handleClearAfk(member, false);
-		return message.send(args.t(LanguageKeys.Commands.Misc.AfkClear, { user: member.toString() }), { allowedMentions: { roles: [], users: [] } });
+
+		const content = args.t(LanguageKeys.Commands.Misc.AfkClear, { user: member.toString() });
+		return send(message, { content, allowedMentions: { roles: [], users: [] } });
 	}
 
-	@requiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelClearAll)
+	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Misc.AfkPermissionLevelClearAll)
 	private async clearAll(message: GuildMessage, args: SkyraCommand.Args) {
 		const template = this.getTemplate(message.member);
 		const entries = await this.fetchEntries(template);
 		if (entries.size === 0) this.error(LanguageKeys.Commands.Misc.AfkNoEntries);
 
 		const roleId = await this.getRole(message.member);
-		await message.send(args.t(LanguageKeys.Commands.Misc.AfkClearAllStarting, { count: entries.size }));
+		await send(message, args.t(LanguageKeys.Commands.Misc.AfkClearAllStarting, { count: entries.size }));
 		let i = 0;
 		let failed = 0;
 
@@ -211,7 +224,8 @@ export class UserCommand extends SkyraCommand {
 
 			if (++i % 10 === 0) {
 				const percentage = (i / entries.size) * 100;
-				await message.send(args.t(LanguageKeys.Commands.Misc.AfkClearAllProgress, { count: i, percentage: Math.round(percentage) }));
+				const content = args.t(LanguageKeys.Commands.Misc.AfkClearAllProgress, { count: i, percentage: Math.round(percentage) });
+				await send(message, content);
 			}
 		}
 
@@ -223,7 +237,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.AfkClearAllTitle))
 			.setDescription(totalLine + failedLine);
-		return message.send(null, embed);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async handleClearAfk(member: GuildMember, targetIsSelf: boolean) {

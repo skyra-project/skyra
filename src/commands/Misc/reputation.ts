@@ -6,6 +6,7 @@ import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -31,10 +32,14 @@ export class UserCommand extends SkyraCommand {
 		const now = date.getTime();
 		const timeReputation = settings.author.cooldowns.reputation?.getTime();
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.send(args.t(LanguageKeys.Commands.Social.ReputationTime, { remaining: timeReputation + Time.Day - now }));
+			const content = args.t(LanguageKeys.Commands.Social.ReputationTime, { remaining: timeReputation + Time.Day - now });
+			return send(message, content);
 		}
 
-		if (!user) return message.send(args.t(LanguageKeys.Commands.Social.ReputationUsable));
+		if (!user) {
+			const content = args.t(LanguageKeys.Commands.Social.ReputationUsable);
+			return send(message, content);
+		}
 		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await settings.users.manager.transaction(async (em) => {
@@ -52,13 +57,16 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		return message.send(args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() }));
+		const content = args.t(LanguageKeys.Commands.Social.ReputationGive, { user: user.toString() });
+		return send(message, content);
 	}
 
 	private async check(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await this.getUser(args);
 		const settings = await this.downloadSettings(message.author.id, user.id);
-		return message.send(this.handleCheck(args.t, user, settings));
+
+		const content = this.handleCheck(args.t, user, settings);
+		return send(message, content);
 	}
 
 	private handleCheck(t: TFunction, user: User, settings: Settings) {

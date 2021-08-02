@@ -1,6 +1,7 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@skyra/editable-commands';
@@ -97,8 +98,8 @@ export class UserCommand extends SkyraCommand {
 		return new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(description)
-			.addField(accountMoney, t(LanguageKeys.Globals.NumberValue, { value: money }), true)
-			.addField(accountVault, t(LanguageKeys.Globals.NumberValue, { value: vault }), true);
+			.addField(accountMoney, formatNumber(t, money), true)
+			.addField(accountVault, formatNumber(t, vault), true);
 	}
 
 	private static all = Args.make<boolean>((parameter, { argument }) => {

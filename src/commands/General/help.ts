@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { isGuildMessage } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
-import { requiresPermissions } from '#utils/decorators';
+import { RequiresPermissions } from '#utils/decorators';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
@@ -94,7 +94,7 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	@requiresPermissions(PERMISSIONS_PAGINATED_MESSAGE)
+	@RequiresPermissions(PERMISSIONS_PAGINATED_MESSAGE)
 	private async display(message: Message, args: SkyraCommand.Args, index: number | null, context: SkyraCommand.Context) {
 		const prefix = this.getCommandPrefix(context);
 
@@ -136,7 +136,7 @@ export class UserCommand extends SkyraCommand {
 		return display.setIdle(Time.Minute * 10);
 	}
 
-	@requiresPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')
+	@RequiresPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')
 	private async buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
 		const builderData = args.t(LanguageKeys.System.HelpTitles);
 

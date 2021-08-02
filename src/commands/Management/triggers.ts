@@ -3,11 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { requiresPermissions } from '#utils/decorators';
+import { RequiresPermissions } from '#utils/decorators';
 import { displayEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { chunk } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 const enum Type {
@@ -38,7 +39,8 @@ export class UserCommand extends SkyraCommand {
 			list.push(this.format(type, input, output) as any);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.TriggersAdd));
+		const content = args.t(LanguageKeys.Commands.Management.TriggersAdd);
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -54,10 +56,11 @@ export class UserCommand extends SkyraCommand {
 			list.splice(index, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.TriggersRemove));
+		const content = args.t(LanguageKeys.Commands.Management.TriggersRemove);
+		return send(message, content);
 	}
 
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage) {
 		const [aliases, includes] = await readSettings(message.guild, [GuildSettings.Trigger.Alias, GuildSettings.Trigger.Includes]);
 
@@ -77,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		for (const page of chunk(output, 10)) {
-			display.addPageEmbed((embed) => embed.setDescription(page));
+			display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 		}
 
 		return display.run(message);

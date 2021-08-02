@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
-import { GatewayDispatchEvents, GatewayGuildCreateDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayGuildCreateDispatch } from 'discord-api-types/v9';
 
 @ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.GuildCreate, emitter: 'ws' })
 export class UserListener extends Listener {

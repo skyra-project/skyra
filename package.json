@@ -87,7 +87,7 @@
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",
 		"discord-api-types": "^0.22.0",
-		"discord.js": "^13.0.0-dev.t1627732975.331a9d3",
+		"discord.js": "^13.0.0-dev.t1627906063.6e0ea02",
 		"dotenv-cra": "^3.0.1",
 		"grpc_tools_node_protoc_ts": "^5.3.0",
 		"he": "^1.2.0",

@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
@@ -17,7 +18,9 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const role = await args.pick('roleName');
 		await message.guild.stickyRoles.add(user.id, role.id);
-		return message.send(args.t(LanguageKeys.Commands.Management.StickyRolesAdd, { user: user.username }));
+
+		const content = args.t(LanguageKeys.Commands.Management.StickyRolesAdd, { user: user.username });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -27,7 +30,9 @@ export class UserCommand extends SkyraCommand {
 
 		const role = await args.pick('roleName');
 		await message.guild.stickyRoles.remove(user.id, role.id);
-		return message.send(args.t(LanguageKeys.Commands.Management.StickyRolesRemove, { user: user.username }));
+
+		const content = args.t(LanguageKeys.Commands.Management.StickyRolesRemove, { user: user.username });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -36,7 +41,9 @@ export class UserCommand extends SkyraCommand {
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		await message.guild.stickyRoles.clear(user.id);
-		return message.send(args.t(LanguageKeys.Commands.Management.StickyRolesReset, { user: user.username }));
+
+		const content = args.t(LanguageKeys.Commands.Management.StickyRolesReset, { user: user.username });
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
@@ -46,8 +53,11 @@ export class UserCommand extends SkyraCommand {
 
 		const roles = message.guild.roles.cache;
 		const names = sticky.map((role) => roles.get(role)!.name);
-		return message.send(
-			args.t(LanguageKeys.Commands.Management.StickyRolesShowSingle, { user: user.username, roles: names.map((name) => `\`${name}\``) })
-		);
+
+		const content = args.t(LanguageKeys.Commands.Management.StickyRolesShowSingle, {
+			user: user.username,
+			roles: names.map((name) => `\`${name}\``)
+		});
+		return send(message, content);
 	}
 }

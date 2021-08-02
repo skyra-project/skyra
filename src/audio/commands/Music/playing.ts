@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserMusicCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;

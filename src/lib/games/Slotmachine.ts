@@ -2,8 +2,8 @@ import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors } from '#lib/types/Constants';
 import { socialFolder } from '#utils/constants';
-import { UserError } from '@sapphire/framework';
-import { Store } from '@sapphire/pieces';
+import { container, UserError } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -103,7 +103,7 @@ export class Slotmachine {
 		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
-		const t = await this.message.fetchT();
+		const t = await fetchT(this.message);
 		if (amount < 0) throw new UserError({ identifier: LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney });
 
 		this.settings.money += lost ? -this.bet : winnings;
@@ -159,7 +159,7 @@ export class Slotmachine {
 
 	/** The boost */
 	private async fetchBoost() {
-		const { clients } = Store.injectedContext.db;
+		const { clients } = container.db;
 		const settings = await clients.ensure();
 
 		return (

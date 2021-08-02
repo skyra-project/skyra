@@ -7,6 +7,7 @@ import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
 import { codeBlock } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcad'],
@@ -30,7 +31,8 @@ export class UserCommand extends SkyraCommand {
 			else commandAutoDelete[index] = value;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -46,12 +48,15 @@ export class UserCommand extends SkyraCommand {
 			commandAutoDelete.splice(index, 1);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() }));
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		await writeSettings(message.guild, [[GuildSettings.CommandAutoDelete, []]]);
-		return message.send(args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset));
+
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset);
+		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
@@ -64,8 +69,8 @@ export class UserCommand extends SkyraCommand {
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: entry[1] * Time.Second })}`);
 		}
 		if (!list.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
-		return message.send(
-			args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) })
-		);
+
+		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, { codeblock: codeBlock('asciidoc', list.join('\n')) });
+		return send(message, content);
 	}
 }

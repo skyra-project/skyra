@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -18,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 					Accept: MimeTypes.ApplicationJson
 				}
 			});
-			return message.send(joke);
+			return send(message, joke);
 		} catch {
 			this.error(LanguageKeys.Commands.Fun.PunError);
 		}

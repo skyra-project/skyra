@@ -6,6 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, container, IArgument } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
@@ -32,17 +33,10 @@ export class UserCommand extends SkyraCommand {
 			return [oldLength, ignoredChannels.length];
 		});
 
-		return message.send(
-			args.t(
-				oldLength < newLength
-					? LanguageKeys.Commands.Management.SetIgnoreChannelsSet
-					: LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved,
-
-				{
-					channel: channel.toString()
-				}
-			)
-		);
+		const contentKey =
+			oldLength < newLength ? LanguageKeys.Commands.Management.SetIgnoreChannelsSet : LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved;
+		const content = args.t(contentKey, { channel: channel.toString() });
+		return send(message, content);
 	}
 
 	private static hereOrTextChannelResolver = Args.make<GuildTextBasedChannelTypes>((argument, context) => {

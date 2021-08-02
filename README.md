@@ -1,9 +1,15 @@
+<div align="center">
+
+<img src="https://github.com/NM-EEA-Y.png" width="15%" alt="Skyra Logo">
+
 # Skyra [![Discord](https://discord.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
 [![codecov](https://codecov.io/gh/skyra-project/skyra/branch/main/graph/badge.svg?token=DYhRX6ailX)](https://codecov.io/gh/skyra-project/skyra)
 [![Status](https://top.gg/api/widget/status/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
 [![Servers](https://top.gg/api/widget/servers/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
 [![Upvotes](https://top.gg/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
+  
+</div>
 
 ## Developing on Skyra
 

@@ -14,7 +14,15 @@ import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { APIWebhook } from 'discord-api-types/v9';
-import { ActivitiesOptions, ActivityType, ClientOptions, DefaultMessageNotificationLevel, ExplicitContentFilterLevel, Options } from 'discord.js';
+import {
+	ActivitiesOptions,
+	ActivityType,
+	ClientOptions,
+	DefaultMessageNotificationLevel,
+	ExplicitContentFilterLevel,
+	LimitedCollection,
+	Options
+} from 'discord.js';
 import { config } from 'dotenv-cra';
 import i18next, { FormatFunction } from 'i18next';
 import { join } from 'path';
@@ -131,9 +139,15 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		'DIRECT_MESSAGE_REACTIONS'
 	],
 	loadDefaultErrorListeners: false,
-	makeCache: Options.cacheWithLimits({ MessageManager: 300 }),
-	messageCacheLifetime: 900,
-	messageSweepInterval: 180,
+	makeCache: Options.cacheWithLimits({
+		MessageManager: {
+			sweepInterval: 180,
+			sweepFilter: LimitedCollection.filterByLifetime({
+				lifetime: 900,
+				getComparisonTimestamp: (m) => m.editedTimestamp ?? m.createdTimestamp
+			})
+		}
+	}),
 	presence: { activities: parsePresenceActivity() },
 	regexPrefix: parseRegExpPrefix(),
 	restTimeOffset: 0,

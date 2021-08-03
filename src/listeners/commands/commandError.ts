@@ -7,7 +7,7 @@ import { OWNERS } from '#root/config';
 import { O, rootFolder, ZeroWidthSpace } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
 import { Args, ArgumentError, Command, CommandErrorPayload, Events, Listener, UserError } from '@sapphire/framework';
-import { codeBlock } from '@sapphire/utilities';
+import { codeBlock, cutText } from '@sapphire/utilities';
 import { captureException } from '@sentry/minimal';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
@@ -95,7 +95,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		const argument = error.argument.name;
 		const identifier = translate(error.identifier);
 		const parameter = error.parameter.replaceAll('`', '῾');
-		return this.alert(message, t(identifier, { ...error, ...(error.context as O), argument, parameter }));
+		return this.alert(message, t(identifier, { ...error, ...(error.context as O), argument, parameter: cutText(parameter, 1800) }));
 	}
 
 	private userError(message: Message, t: TFunction, error: UserError) {

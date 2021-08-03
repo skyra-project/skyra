@@ -95,7 +95,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		const argument = error.argument.name;
 		const identifier = translate(error.identifier);
 		const parameter = error.parameter.replaceAll('`', '῾');
-		return this.alert(message, t(identifier, { ...error, ...(error.context as O), argument, parameter: cutText(parameter, 1800) }));
+		return this.alert(message, t(identifier, { ...error, ...(error.context as O), argument, parameter: cutText(parameter, 50) }));
 	}
 
 	private userError(message: Message, t: TFunction, error: UserError) {

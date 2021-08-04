@@ -75,7 +75,7 @@
 		"@skyra/ai": "^1.2.0",
 		"@skyra/audio": "next",
 		"@skyra/char": "^1.0.2",
-		"@skyra/editable-commands": "next",
+		"@skyra/editable-commands": "^2.0.0",
 		"@skyra/gifenc": "^1.0.0",
 		"@skyra/saelem": "^3.0.9",
 		"@skyra/tags": "^1.1.3",

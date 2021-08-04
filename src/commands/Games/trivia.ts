@@ -41,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
-			const collector = new MessageCollector(message.channel, filter, { time: duration });
+			const collector = new MessageCollector(message.channel, { filter, time: duration });
 
 			let winner: User | null = null;
 			// users who have already participated

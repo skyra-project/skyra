@@ -14,6 +14,7 @@ import {
 } from '#lib/weather';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 
@@ -48,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		const weatherDescription = this.getWeatherDescription(current, base);
 
 		const attachment = await this.draw(weatherDescription, place, current, resolved);
-		return message.channel.send({ files: [{ attachment, name: 'weather.png' }] });
+		return send(message, { files: [{ attachment, name: 'weather.png' }] });
 	}
 
 	private shouldUseImperial(args: SkyraCommand.Args) {

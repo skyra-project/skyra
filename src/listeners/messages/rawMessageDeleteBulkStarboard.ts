@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
+import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v9';
@@ -9,7 +10,7 @@ import type { DiscordAPIError, Guild } from 'discord.js';
 @ApplyOptions<ListenerOptions>({ event: Events.RawMessageDeleteBulk })
 export class UserListener extends Listener {
 	public async run(guild: Guild, data: GatewayMessageDeleteBulkDispatch['d']): Promise<void> {
-		for (const id of data.ids) guild.starboard.delete(id);
+		for (const id of data.ids) getStarboard(guild).delete(id);
 
 		// Delete entries from starboard if it exists
 		const { starboards } = this.container.db;

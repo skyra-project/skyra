@@ -2,14 +2,17 @@ import { AudioListener } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { MessageAcknowledgeable } from '#lib/types';
 import { pickRandom } from '#utils/util';
+import { fetchT } from '@sapphire/plugin-i18next';
 
 export class UserAudioListener extends AudioListener {
-	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {
-		await channel.send(next > 200 ? await this.getExtremeVolume(channel, next) : await this.getRegularVolume(channel, previous, next));
+	public async run(acknowledgeable: MessageAcknowledgeable, previous: number, next: number) {
+		const content =
+			next > 200 ? await this.getExtremeVolume(acknowledgeable, next) : await this.getRegularVolume(acknowledgeable, previous, next);
+		await this.reply(acknowledgeable, content);
 	}
 
-	private async getExtremeVolume(channel: MessageAcknowledgeable, volume: number): Promise<string> {
-		const t = await channel.guild.fetchT();
+	private async getExtremeVolume(acknowledgeable: MessageAcknowledgeable, volume: number): Promise<string> {
+		const t = await fetchT(acknowledgeable);
 		return t(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 			emoji: '📢',
 			text: pickRandom(t(LanguageKeys.Commands.Music.VolumeChangedTexts)),
@@ -17,8 +20,8 @@ export class UserAudioListener extends AudioListener {
 		});
 	}
 
-	private async getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): Promise<string> {
-		const t = await channel.guild.fetchT();
+	private async getRegularVolume(acknowledgeable: MessageAcknowledgeable, previous: number, next: number): Promise<string> {
+		const t = await fetchT(acknowledgeable);
 		return t(LanguageKeys.Commands.Music.VolumeChanged, {
 			emoji: this.getEmoji(previous, next),
 			volume: next

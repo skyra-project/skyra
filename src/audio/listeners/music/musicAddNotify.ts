@@ -1,23 +1,22 @@
 import { AudioListener, QueueEntry } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { MessageAcknowledgeable } from '#lib/types';
+import { getAudio } from '#utils/functions';
+import { fetchT, TFunction } from '@sapphire/plugin-i18next';
 
 export class UserAudioListener extends AudioListener {
-	public async run(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]) {
-		await channel.send(tracks.length === 1 ? await this.getSingleTrackContent(channel, tracks) : await this.getPlayListContent(channel, tracks), {
-			allowedMentions: { users: [], roles: [] }
-		});
+	public async run(acknowledgeable: MessageAcknowledgeable, tracks: readonly QueueEntry[]) {
+		const t = await fetchT(acknowledgeable.guild);
+		const content = tracks.length === 1 ? await this.getSingleTrackContent(t, acknowledgeable, tracks) : this.getPlayListContent(t, tracks);
+		await this.reply(acknowledgeable, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	private async getSingleTrackContent(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): Promise<string> {
-		const [track, t] = await Promise.all([channel.guild.audio.player.node.decode(tracks[0].track), channel.guild.fetchT()]);
+	private async getSingleTrackContent(t: TFunction, acknowledgeable: MessageAcknowledgeable, tracks: readonly QueueEntry[]): Promise<string> {
+		const track = await getAudio(acknowledgeable.guild).player.node.decode(tracks[0].track);
 		return t(LanguageKeys.Commands.Music.AddSong, { title: track.title });
 	}
 
-	private async getPlayListContent(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): Promise<string> {
-		const t = await channel.guild.fetchT();
-		return t(LanguageKeys.Commands.Music.AddPlaylist, {
-			songs: t(LanguageKeys.Commands.Music.AddPlaylistSongs, { count: tracks.length })
-		});
+	private getPlayListContent(t: TFunction, tracks: readonly QueueEntry[]): string {
+		return t(LanguageKeys.Commands.Music.AddPlaylist, { songs: t(LanguageKeys.Commands.Music.AddPlaylistSongs, { count: tracks.length }) });
 	}
 }

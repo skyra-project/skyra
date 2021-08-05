@@ -252,7 +252,8 @@ export class StarboardEntity extends BaseEntity {
 		const content = `${this.emoji} **${this.stars}** ${this.#message.channel}`;
 		if (this.#starMessage) {
 			try {
-				await this.#starMessage.edit(content, this.getEmbed(t));
+				const embed = this.getEmbed(t);
+				await this.#starMessage.edit({ content, embeds: [embed] });
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
@@ -266,8 +267,9 @@ export class StarboardEntity extends BaseEntity {
 		const channel = this.#message.guild.channels.cache.get(channelId) as GuildTextBasedChannelTypes | undefined;
 		if (!channel) return;
 
+		const embed = this.getEmbed(t);
 		const promise = channel
-			.send(content, this.getEmbed(t))
+			.send({ content, embeds: [embed] })
 			.then((message) => {
 				this.#starMessage = message as GuildMessage;
 				this.starMessageId = message.id;

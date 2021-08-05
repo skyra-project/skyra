@@ -4,6 +4,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { RequiresPermissions } from '#utils/decorators';
+import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
@@ -32,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async overview(message: GuildMessage, args: SkyraCommand.Args) {
 		const target = args.finished ? message.author : await args.pick('userName');
-		const logs = await message.guild.moderation.fetch(target.id);
+		const logs = await getModeration(message.guild).fetch(target.id);
 		let warnings = 0;
 		let mutes = 0;
 		let kicks = 0;
@@ -80,7 +81,7 @@ export class UserCommand extends SkyraCommand {
 		const target = args.finished ? message.author : await args.pick('userName');
 		const response = await sendLoadingMessage(message, args.t);
 
-		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
+		const entries = (await getModeration(message.guild).fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const user = this.container.client.user!;

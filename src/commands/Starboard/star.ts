@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
@@ -132,7 +133,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Set up the starboard entry
-		starboardData.setup(message.guild.starboard);
+		starboardData.setup(getStarboard(message.guild));
 
 		// If there is no configured starboard channel, return no stars
 		const starboardChannel = message.guild.channels.cache.get(starboardChannelId) as TextChannel;

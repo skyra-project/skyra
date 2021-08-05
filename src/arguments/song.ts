@@ -2,9 +2,10 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { count, filter, map, take } from '#utils/common';
-import { isDJ } from '#utils/functions';
+import { getAudio, isDJ } from '#utils/functions';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, Argument, ArgumentContext } from '@sapphire/framework';
+import { resolveKey } from '@sapphire/plugin-i18next';
 import { parseURL } from '@sapphire/utilities';
 import { LoadType, Track } from '@skyra/audio';
 import { deserialize } from 'binarytf';
@@ -32,7 +33,7 @@ export class UserArgument extends Argument<string[]> {
 	 * @param message The message that ran the argument.
 	 */
 	private async getUserRemainingEntries(message: GuildMessage): Promise<number> {
-		const tracks = await message.guild.audio.tracks();
+		const tracks = await getAudio(message.guild).tracks();
 		const { id } = message.author;
 		const entries = count(tracks.values(), (track) => track.author === id);
 		const maximum = await readSettings(message.guild, GuildSettings.Music.MaximumEntriesPerUser);
@@ -47,9 +48,9 @@ export class UserArgument extends Argument<string[]> {
 	private async parseAttachment(message: GuildMessage, binary: Uint8Array): Promise<Track[]> {
 		try {
 			const tracks = deserialize<string[]>(binary);
-			return await message.guild.audio.player.node.decode(tracks);
+			return await getAudio(message.guild).player.node.decode(tracks);
 		} catch {
-			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueError);
+			throw await resolveKey(message, LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 
@@ -62,7 +63,7 @@ export class UserArgument extends Argument<string[]> {
 		try {
 			return await fetch(url, FetchResultTypes.Buffer);
 		} catch {
-			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueNotFound);
+			throw await resolveKey(message, LanguageKeys.MusicManager.ImportQueueNotFound);
 		}
 	}
 
@@ -132,13 +133,13 @@ export class UserArgument extends Argument<string[]> {
 	private async downloadResults(message: GuildMessage, remainingUserEntries: number, search: string): Promise<string[]> {
 		try {
 			// Load the data from the node:
-			const response = await message.guild.audio.player.node.load(search);
+			const response = await getAudio(message.guild).player.node.load(search);
 
 			// No matches: throw.
-			if (response.loadType === LoadType.NoMatches) throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
+			if (response.loadType === LoadType.NoMatches) throw await resolveKey(message, LanguageKeys.MusicManager.FetchNoMatches);
 
 			// Load failed: throw.
-			if (response.loadType === LoadType.LoadFailed) throw await message.resolveKey(LanguageKeys.MusicManager.FetchLoadFailed);
+			if (response.loadType === LoadType.LoadFailed) throw await resolveKey(message, LanguageKeys.MusicManager.FetchLoadFailed);
 
 			// Loaded playlist: filter all tracks.
 			if (response.loadType === LoadType.PlaylistLoaded) return this.filter(message, remainingUserEntries, response.tracks);

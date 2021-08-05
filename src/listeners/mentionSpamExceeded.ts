@@ -2,6 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { Listener } from '@sapphire/framework';
 
@@ -13,7 +14,8 @@ export class UserListener extends Listener {
 			settings.getLanguage()
 		]);
 
-		const lock = message.guild.moderation.createLock();
+		const moderation = getModeration(message.guild);
+		const lock = moderation.createLock();
 		try {
 			await message.guild.members
 				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Events.NoMentionSpam.Footer) })
@@ -24,7 +26,7 @@ export class UserListener extends Listener {
 			nms.delete(message.author.id);
 
 			const reason = t(LanguageKeys.Events.NoMentionSpam.ModerationLog, { threshold });
-			await message.guild.moderation
+			await moderation
 				.create({
 					userId: message.author.id,
 					moderatorId: process.env.CLIENT_ID,

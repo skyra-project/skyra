@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -15,7 +16,8 @@ export class UserCommand extends SkyraCommand {
 
 		const words = await this.filterWords(options);
 		const word = words[Math.floor(Math.random() * words.length)];
-		return message.send(args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word }));
+		const content = args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word });
+		return send(message, content);
 	}
 
 	private async filterWords(words: string[]) {

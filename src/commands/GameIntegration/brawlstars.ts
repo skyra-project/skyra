@@ -7,6 +7,8 @@ import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
+import { isNullishOrEmpty } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -73,7 +75,8 @@ export class UserCommand extends SkyraCommand {
 			await bsData.save();
 		}
 
-		return message.send(await this.buildPlayerEmbed(message, args.t, playerData));
+		const embed = await this.buildPlayerEmbed(message, args.t, playerData);
+		return send(message, { embeds: [embed] });
 	}
 
 	public async club(message: Message, args: SkyraCommand.Args) {
@@ -89,15 +92,17 @@ export class UserCommand extends SkyraCommand {
 			await bsData.save();
 		}
 
-		return message.send(await this.buildClubEmbed(message, args.t, clubData));
+		const embed = await this.buildClubEmbed(message, args.t, clubData);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async buildPlayerEmbed(message: Message, t: TFunction, player: BrawlStars.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedFields);
 
+		const color = isNullishOrEmpty(player.nameColor) ? await this.container.db.fetchColor(message) : Number(player.nameColor.substr(4));
 		return new MessageEmbed()
-			.setColor(player.nameColor?.substr(4) ?? (await this.container.db.fetchColor(message)))
+			.setColor(color)
 			.setTitle(`${player.name} - ${player.tag}`)
 			.setURL(`https://brawlstats.com/profile/${player.tag.substr(1)}`)
 			.addField(

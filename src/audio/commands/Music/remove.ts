@@ -2,6 +2,7 @@ import { AudioCommand, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<AudioCommand.Options>({
@@ -16,7 +17,7 @@ export class UserMusicCommand extends AudioCommand {
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const count = await audio.count();
 		if (index >= count) {
 			this.error(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {

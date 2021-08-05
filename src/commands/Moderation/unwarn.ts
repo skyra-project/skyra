@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
-import { deleteMessage } from '#utils/functions';
+import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -25,7 +25,7 @@ export class UserModerationCommand extends ModerationCommand {
 			GuildSettings.Messages.ModerationReasonDisplay
 		]);
 
-		const modlog = await message.guild.moderation.fetch(caseId);
+		const modlog = await getModeration(message.guild).fetch(caseId);
 		if (!modlog || !modlog.isType(TypeCodes.Warning)) {
 			this.error(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
@@ -57,7 +57,7 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	public async handle(message: GuildMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
-		return message.guild.security.actions.unWarning(
+		return getSecurity(message.guild).actions.unWarning(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

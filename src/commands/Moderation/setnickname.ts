@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
@@ -24,7 +25,7 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	protected async handle(message: GuildMessage, context: HandledCommandContext & { nickname: string }) {
-		return message.guild.security.actions.setNickname(
+		return getSecurity(message.guild).actions.setNickname(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

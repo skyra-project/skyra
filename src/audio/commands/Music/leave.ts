@@ -1,7 +1,9 @@
 import { AudioCommand, RequireDj, RequireSkyraInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 const flags = ['removeall', 'ra'];
 
@@ -14,7 +16,7 @@ export class UserMusicCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireDj()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const channelId = audio.voiceChannelId!;
 
 		// Do a full leave and disconnect
@@ -23,6 +25,7 @@ export class UserMusicCommand extends AudioCommand {
 		// If --removeall or --ra was provided then also clear the queue
 		if (args.getFlags(...flags)) await audio.clear();
 
-		return message.send(args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelId}>` }));
+		const content = args.t(LanguageKeys.Commands.Music.LeaveSuccess, { channel: `<#${channelId}>` });
+		return send(message, content);
 	}
 }

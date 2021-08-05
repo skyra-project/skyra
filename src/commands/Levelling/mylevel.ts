@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
@@ -26,11 +27,11 @@ export class UserCommand extends SkyraCommand {
 			  })}`
 			: '';
 
-		return message.send(
+		const content =
 			user.id === message.author.id
 				? args.t(LanguageKeys.Commands.Social.MyLevelSelf, { points: memberPoints, next: title })
-				: args.t(LanguageKeys.Commands.Social.MyLevel, { points: memberPoints, next: title, user: user.username })
-		);
+				: args.t(LanguageKeys.Commands.Social.MyLevel, { points: memberPoints, next: title, user: user.username });
+		return send(message, content);
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

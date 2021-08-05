@@ -4,9 +4,9 @@ import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
 import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
 import { Argument, ArgumentContext } from '@sapphire/framework';
-import type { Guild, GuildChannel, User } from 'discord.js';
+import type { Guild, GuildChannel, ThreadChannel, User } from 'discord.js';
 
-export class UserArgument extends Argument<GuildChannel> {
+export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 	public resolveChannel(query: string, guild: Guild) {
 		const channelId = ChannelMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
 		return (channelId !== null && guild.channels.cache.get(channelId[1])) ?? null;
@@ -24,14 +24,15 @@ export class UserArgument extends Argument<GuildChannel> {
 		return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannel, context });
 	}
 
-	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {
+	private getFilter(author: User, filter?: (entry: GuildChannel | ThreadChannel) => boolean) {
 		const clientUser = author.client.user!;
 		return typeof filter === 'undefined'
-			? (entry: GuildChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)
-			: (entry: GuildChannel) => filter(entry) && validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser);
+			? (entry: GuildChannel | ThreadChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)
+			: (entry: GuildChannel | ThreadChannel) =>
+					filter(entry) && validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser);
 	}
 }
 
-interface ChannelArgumentContext extends ArgumentContext<GuildChannel> {
-	filter?: (entry: GuildChannel) => boolean;
+interface ChannelArgumentContext extends ArgumentContext<GuildChannel | ThreadChannel> {
+	filter?: (entry: GuildChannel | ThreadChannel) => boolean;
 }

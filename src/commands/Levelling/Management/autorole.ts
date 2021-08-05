@@ -5,7 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Identifiers } from '@sapphire/framework';
-import { deepClone } from '@sapphire/utilities';
+import { codeBlock, deepClone } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -35,9 +36,8 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.Roles.Auto] = sorted;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleAdd, { role: role.toString(), points }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Social.AutoRoleAdd, { role: role.toString(), points });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -57,9 +57,8 @@ export class UserCommand extends SkyraCommand {
 			return roleEntry;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleRemove, { role: role.toString(), before: roleEntry.points }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Social.AutoRoleRemove, { role: role.toString(), before: roleEntry.points });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	public async update(message: GuildMessage, args: SkyraCommand.Args) {
@@ -81,9 +80,8 @@ export class UserCommand extends SkyraCommand {
 			return autoRoles[roleIndex];
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role: role.toString(), points, before: autoRole.points }), {
-			allowedMentions: { users: [], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Social.AutoRoleUpdate, { role: role.toString(), points, before: autoRole.points });
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	public async show(message: GuildMessage) {
@@ -109,7 +107,8 @@ export class UserCommand extends SkyraCommand {
 			return output;
 		});
 
-		return message.send(output.join('\n'), { allowedMentions: { users: [], roles: [] }, code: 'http' });
+		const content = codeBlock('http', output.join('\n'));
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async parseLevel(args: SkyraCommand.Args) {

@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -14,14 +15,14 @@ import { Message, MessageEmbed } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setTitle(args.t(LanguageKeys.Commands.Fun.NorrisOutput))
-				.setURL(data.url)
-				.setThumbnail(data.icon_url)
-				.setDescription(data.value)
-		);
+
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(args.t(LanguageKeys.Commands.Fun.NorrisOutput))
+			.setURL(data.url)
+			.setThumbnail(data.icon_url)
+			.setDescription(data.value);
+		return send(message, { embeds: [embed] });
 	}
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { resolveOnErrorCodes } from '#utils/common';
-import { isDJ } from '#utils/functions';
+import { getAudio, isDJ } from '#utils/functions';
 import { container } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type WebSocket from 'ws';
@@ -66,37 +66,38 @@ export class WebsocketUser {
 		// Check for the member's permissions:
 		if (!(await isDJ(member))) return;
 
+		const audio = getAudio(guild);
 		switch (message.data.music_action) {
 			case MusicActions.Clear: {
-				await guild.audio.clear();
+				await audio.clear();
 				break;
 			}
 			case MusicActions.ClearTracks: {
-				await guild.audio.clearTracks();
+				await audio.clearTracks();
 				break;
 			}
 			case MusicActions.ShuffleTracks: {
-				await guild.audio.shuffleTracks();
+				await audio.shuffleTracks();
 				break;
 			}
 			case MusicActions.SetVolume: {
-				if (typeof message.data.volume === 'number') await guild.audio.setVolume(message.data.volume);
+				if (typeof message.data.volume === 'number') await audio.setVolume(message.data.volume);
 				break;
 			}
 			case MusicActions.DeleteSong: {
-				if (typeof message.data.track_position === 'number') await guild.audio.removeAt(message.data.track_position);
+				if (typeof message.data.track_position === 'number') await audio.removeAt(message.data.track_position);
 				break;
 			}
 			case MusicActions.SkipSong: {
-				await guild.audio.next().catch(() => null);
+				await audio.next().catch(() => null);
 				break;
 			}
 			case MusicActions.PauseSong: {
-				await guild.audio.pause().catch(() => null);
+				await audio.pause().catch(() => null);
 				break;
 			}
 			case MusicActions.ResumePlaying: {
-				await guild.audio.resume().catch(() => null);
+				await audio.resume().catch(() => null);
 				break;
 			}
 			case MusicActions.AddSong: {
@@ -126,7 +127,7 @@ export class WebsocketUser {
 
 			this.musicSubscriptions.subscribe({ id: guild.id });
 
-			const { audio } = guild;
+			const audio = getAudio(guild);
 			const [tracks, status, volume] = await Promise.all([audio.decodedTracks(), audio.nowPlaying(), audio.getVolume()]);
 			const voiceChannel = audio.voiceChannelId;
 			this.send({ action: OutgoingWebSocketAction.MusicSync, data: { id: message.data.guild_id, tracks, status, volume, voiceChannel } });

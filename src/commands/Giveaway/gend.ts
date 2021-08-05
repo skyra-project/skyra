@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -29,7 +30,8 @@ export class UserCommand extends SkyraCommand {
 		await entry.render();
 		await entry.remove();
 
-		return message.send(args.t(LanguageKeys.Commands.Giveaway.GiveawayEnd, { url: target.url }));
+		const content = args.t(LanguageKeys.Commands.Giveaway.GiveawayEnd, { url: target.url });
+		return send(message, content);
 	}
 
 	/**

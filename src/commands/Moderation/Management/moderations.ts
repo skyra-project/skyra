@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
@@ -48,9 +49,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const target = args.finished ? null : await args.pick('userName');
 
 		const response = await sendLoadingMessage(message, args.t);
-		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
-			this.getFilter(action, target)
-		);
+		const moderation = getModeration(message.guild);
+		const entries = (await (target ? moderation.fetch(target.id) : moderation.fetch())).filter(this.getFilter(action, target));
 
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty, { prefix });
 

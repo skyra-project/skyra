@@ -1,6 +1,7 @@
 import { AudioCommand, RequireUserInVoiceChannel } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 
@@ -21,7 +22,7 @@ export class UserMusicCommand extends AudioCommand {
 
 	@RequireUserInVoiceChannel()
 	public async run(message: GuildMessage, args: AudioCommand.Args, context: AudioCommand.Context) {
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 
 		// If Skyra is not in a voice channel, join
 		if (!audio.voiceChannelId) {
@@ -31,7 +32,7 @@ export class UserMusicCommand extends AudioCommand {
 		if (!args.finished) {
 			// If there are songs or a queue, add them
 			await this.add.run(message, args, context);
-			if (message.guild.audio.playing) return;
+			if (audio.playing) return;
 		}
 
 		// Retrieve the currently playing track, then check if there is at least one track to be played.

@@ -2,6 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -34,12 +35,12 @@ export class UserModerationCommand extends ModerationCommand {
 
 		return {
 			bans,
-			unlock: (await readSettings(message.guild, GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
+			unlock: (await readSettings(message.guild, GuildSettings.Events.BanRemove)) ? getModeration(message.guild).createLock() : null
 		};
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild.security.actions.unBan(
+		return getSecurity(message.guild).actions.unBan(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

@@ -2,8 +2,10 @@ import { AudioCommand, Queue, RequireSameVoiceChannel, RequireSongPresent } from
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { canManage, getListenerCount } from '#utils/functions';
+import { canManage, getAudio, getListenerCount } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { resolveKey } from '@sapphire/plugin-i18next';
+import { send } from '@skyra/editable-commands';
 import type { VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,7 +20,7 @@ export class UserMusicCommand extends AudioCommand {
 	@RequireSongPresent()
 	@RequireSameVoiceChannel()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const { voiceChannel } = audio;
 
 		const listeners = getListenerCount(voiceChannel);
@@ -29,7 +31,7 @@ export class UserMusicCommand extends AudioCommand {
 				? await this.canSkipWithForce(message, voiceChannel!)
 				: await this.canSkipWithoutForce(message, args.t, audio, listeners);
 
-			if (response !== null) return message.send(response);
+			if (response !== null) return send(message, response);
 		}
 
 		const track = await audio.getCurrentTrack();
@@ -39,7 +41,7 @@ export class UserMusicCommand extends AudioCommand {
 	}
 
 	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {
-		return (await canManage(message.member, voiceChannel)) ? null : message.resolveKey(LanguageKeys.Commands.Music.SkipPermissions);
+		return (await canManage(message.member, voiceChannel)) ? null : resolveKey(message, LanguageKeys.Commands.Music.SkipPermissions);
 	}
 
 	private async canSkipWithoutForce(message: GuildMessage, t: TFunction, audio: Queue, listeners: number): Promise<string | null> {

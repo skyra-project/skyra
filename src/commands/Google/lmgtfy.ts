@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -16,15 +17,9 @@ export class UserCommand extends SkyraCommand {
 		const url = new URL('https://letmegooglethat.com/');
 		url.searchParams.append('q', query);
 
-		return message.send(
-			new MessageEmbed() //
-				.setColor(color) //
-				.setDescription(
-					args.t(
-						LanguageKeys.Commands.Google.LmgtfyClick,
-						{ link: url } //
-					)
-				)
-		);
+		const embed = new MessageEmbed() //
+			.setColor(color) //
+			.setDescription(args.t(LanguageKeys.Commands.Google.LmgtfyClick, { link: url }));
+		return send(message, { embeds: [embed] });
 	}
 }

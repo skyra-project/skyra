@@ -2,7 +2,7 @@ import { AudioCommand, Queue, RequireUserInVoiceChannel } from '#lib/audio';
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
-import type { VoiceBasedChannelTypes } from '#utils/functions';
+import { getAudio, VoiceBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
@@ -26,7 +26,7 @@ export class UserMusicCommand extends AudioCommand {
 		// Check if the channel is allowed
 		await this.checkAllowedChannel(message, channel);
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 
 		// Check if the bot is already playing in this guild
 		this.checkSkyraPlaying(audio, channel);

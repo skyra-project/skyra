@@ -3,7 +3,7 @@ import { LockdownManager, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
-import { assertNonThread, canSendMessages, NonThreadGuildTextBasedChannelTypes } from '#utils/functions';
+import { assertNonThread, canSendMessages, getSecurity, NonThreadGuildTextBasedChannelTypes } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
@@ -74,7 +74,7 @@ export class UserCommand extends SkyraCommand {
 		const timeout = duration
 			? setAccurateTimeout(() => floatPromise(this.performUnlock(message, args.t, role, channel, allowed)), duration)
 			: null;
-		message.guild.security.lockdowns.add(role, channel, { allowed, timeout });
+		getSecurity(message.guild).lockdowns.add(role, channel, { allowed, timeout });
 	}
 
 	private isAllowed(role: Role, channel: NonThreadGuildTextBasedChannelTypes): boolean | null {
@@ -95,7 +95,7 @@ export class UserCommand extends SkyraCommand {
 		channel: NonThreadGuildTextBasedChannelTypes,
 		allowed: boolean | null
 	) {
-		channel.guild.security.lockdowns.remove(role, channel);
+		getSecurity(channel.guild).lockdowns.remove(role, channel);
 
 		const overwrites = channel.permissionOverwrites.cache.get(role.id);
 		if (overwrites === undefined) return;
@@ -115,7 +115,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private getLock(role: Role, channel: NonThreadGuildTextBasedChannelTypes): LockdownManager.Entry | null {
-		const entry = channel.guild.security.lockdowns.get(channel.id)?.get(role.id);
+		const entry = getSecurity(channel.guild).lockdowns.get(channel.id)?.get(role.id);
 		if (entry) return entry;
 
 		const permissions = channel.permissionOverwrites.cache.get(role.id)?.deny.has(Permissions.FLAGS.SEND_MESSAGES);

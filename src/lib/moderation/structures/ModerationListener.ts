@@ -1,4 +1,5 @@
 import { GuildEntity, readSettings } from '#lib/database';
+import { getModeration, getSecurity } from '#utils/functions';
 import { Listener } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
 import type { Guild, MessageEmbed } from 'discord.js';
@@ -39,7 +40,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected async onWarning(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			guild.security.actions.warning({
+			getSecurity(guild).actions.warning({
 				userId,
 				moderatorId: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.',
@@ -50,7 +51,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 
 	protected async onKick(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
-			guild.security.actions.kick({
+			getSecurity(guild).actions.kick({
 				userId,
 				moderatorId: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.'
@@ -61,7 +62,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected async onMute(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			guild.security.actions.mute({
+			getSecurity(guild).actions.mute({
 				userId,
 				moderatorId: process.env.CLIENT_ID,
 				reason: '[Auto-Moderation] Threshold Reached.',
@@ -72,7 +73,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 
 	protected async onSoftBan(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
-			guild.security.actions.softBan(
+			getSecurity(guild).actions.softBan(
 				{
 					userId,
 					moderatorId: process.env.CLIENT_ID,
@@ -87,7 +88,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 
 		await this.createActionAndSend(guild, () =>
-			guild.security.actions.ban(
+			getSecurity(guild).actions.ban(
 				{
 					userId,
 					moderatorId: process.env.CLIENT_ID,
@@ -100,7 +101,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	}
 
 	protected async createActionAndSend(guild: Guild, performAction: () => unknown): Promise<void> {
-		const unlock = guild.moderation.createLock();
+		const unlock = getModeration(guild).createLock();
 		await performAction();
 		unlock();
 	}

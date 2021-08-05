@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
+import { getStickyRoles } from '#utils/functions';
 import { Listener } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
@@ -17,7 +18,7 @@ export class UserListener extends Listener {
 	private async handleStickyRoles(member: GuildMember) {
 		if (!member.guild.me!.permissions.has(FLAGS.MANAGE_ROLES)) return false;
 
-		const stickyRoles = await member.guild.stickyRoles.fetch(member.id);
+		const stickyRoles = await getStickyRoles(member).fetch(member.id);
 		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted

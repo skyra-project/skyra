@@ -6,6 +6,7 @@ import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
 
 const kWinnersArgRegex = /^(\d+)w$/i;
@@ -55,7 +56,8 @@ export class UserCommand extends SkyraCommand {
 			catchUp: true
 		});
 
-		return message.send(args.t(LanguageKeys.Giveaway.Scheduled, { scheduledTime: scheduleOffset }));
+		const content = args.t(LanguageKeys.Giveaway.Scheduled, { scheduledTime: scheduleOffset });
+		return send(message, content);
 	}
 
 	private async getAllowedRoles(args: SkyraCommand.Args): Promise<string[]> {

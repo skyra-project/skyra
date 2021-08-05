@@ -6,6 +6,7 @@ import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
@@ -30,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		const content = winners
 			? args.t(LanguageKeys.Giveaway.EndedMessage, { winners: winners.map((winner) => `<@!${winner}>`), title: title! })
 			: args.t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
-		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
+		return send(message, { content, allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
 	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined) {

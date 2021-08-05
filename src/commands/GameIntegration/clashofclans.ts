@@ -8,6 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -47,7 +48,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { t } = args;
 		const player = await args.pick(UserPaginatedMessageCommand.playerTagResolver);
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(t, player, ClashOfClansFetchCategories.PLAYERS);
-		return message.send(await this.buildPlayerEmbed(message, t, playerData));
+
+		const embed = await this.buildPlayerEmbed(message, t, playerData);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI<C extends ClashOfClansFetchCategories>(t: TFunction, query: string, category: ClashOfClansFetchCategories) {

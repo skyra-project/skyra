@@ -13,7 +13,7 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import type { APIWebhook } from 'discord-api-types/v9';
+import { APIWebhook, WebhookType } from 'discord-api-types/v9';
 import {
 	ActivitiesOptions,
 	ActivityType,
@@ -299,17 +299,19 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	}
 };
 
-function parseWebhookError(): Partial<APIWebhook> | null {
+function parseWebhookError(): APIWebhook | null {
 	const { WEBHOOK_ERROR_TOKEN } = process.env;
 	if (!WEBHOOK_ERROR_TOKEN) return null;
 
 	return {
+		application_id: null,
 		avatar: envParseString('WEBHOOK_ERROR_AVATAR'),
 		channel_id: envParseString('WEBHOOK_ERROR_CHANNEL'),
 		guild_id: envParseString('WEBHOOK_ERROR_GUILD'),
 		id: envParseString('WEBHOOK_ERROR_ID'),
 		name: envParseString('WEBHOOK_ERROR_NAME'),
-		token: WEBHOOK_ERROR_TOKEN
+		token: WEBHOOK_ERROR_TOKEN,
+		type: WebhookType.Incoming
 	};
 }
 

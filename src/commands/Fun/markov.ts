@@ -9,6 +9,7 @@ import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -39,10 +40,11 @@ export class UserCommand extends SkyraCommand {
 		const username = args.finished ? undefined : await args.pick('userName');
 
 		// Send loading message
-		const response = await sendLoadingMessage(message, args.t);
+		await sendLoadingMessage(message, args.t);
 
 		// Process the chain
-		return response.edit(await this.kProcess(message, args.t, await this.retrieveMarkov(username, channel)));
+		const embed = await this.kProcess(message, args.t, await this.retrieveMarkov(username, channel));
+		return send(message, { embeds: [embed] });
 	}
 
 	public async onLoad() {

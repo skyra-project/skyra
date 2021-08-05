@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
-import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
+import { MessageAttachment, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
 import { extname } from 'path';
 import { URL } from 'url';
 
@@ -63,8 +63,8 @@ export class UserListener extends Listener {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
-					new MessageEmbed()
+				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {
+					const embed = new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(
 							`${message.author.tag} (${message.author.id})`,
@@ -72,10 +72,11 @@ export class UserListener extends Listener {
 						)
 						.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
-						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)
-						.setTimestamp()
-				);
+						.setTimestamp();
+
+					return { embeds: [embed], files: [new MessageAttachment(buffer, filename)] };
+				});
 			} catch (error) {
 				this.container.logger.fatal(`ImageLogs[${error}] ${url}`);
 			}

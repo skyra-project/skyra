@@ -2,7 +2,6 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isDMChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { CategoryChannel, MessageEmbed, NewsChannel, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
@@ -13,8 +12,6 @@ type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChan
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelDelete })
 export class UserListener extends Listener<typeof Events.ChannelDelete> {
 	public async run(next: GuildBasedChannel) {
-		if (isDMChannel(next)) return;
-
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelDelete],
 			settings.getLanguage()

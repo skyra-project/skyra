@@ -4,32 +4,20 @@ import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { LongWidthSpace } from '#utils/constants';
+import type { GuildBasedChannelTypes, NonThreadGuildBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isDMChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
-import {
-	CategoryChannel,
-	DMChannel,
-	GuildChannel,
-	MessageEmbed,
-	NewsChannel,
-	PermissionOverwrites,
-	StoreChannel,
-	TextChannel,
-	VoiceChannel
-} from 'discord.js';
+import { DMChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-// TODO: DMChannel is not emitted in Discord v8, whenever we update to discord.js v13, this should be removed.
-type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
-type Channel = DMChannel | GuildBasedChannel;
+type ChannelType = DMChannel | GuildChannel;
 
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelUpdate })
 export class UserListener extends Listener<typeof Events.ChannelUpdate> {
-	public async run(previous: Channel, next: Channel) {
-		if (isDMChannel(next)) return;
+	public async run(previous: ChannelType, next: ChannelType) {
+		if (next.type === 'DM') return;
 
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelUpdate],
@@ -43,7 +31,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			return;
 		}
 
-		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannel, next)];
+		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannelTypes, next as GuildBasedChannelTypes)];
 		if (changes.length === 0) return;
 
 		const embed = new MessageEmbed()
@@ -55,8 +43,14 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 		await channel.send({ embeds: [embed] });
 	}
 
-	private *differenceChannel(t: TFunction, previous: GuildBasedChannel, next: GuildBasedChannel) {
+	private *differenceChannel(t: TFunction, previous: GuildBasedChannelTypes, next: GuildBasedChannelTypes) {
+		const isThread = next.isThread();
+
 		yield* this.differenceGuildChannel(t, previous, next);
+		if (!isThread) {
+			yield* this.differencePositions(t, previous as NonThreadGuildBasedChannelTypes, next as NonThreadGuildBasedChannelTypes);
+		}
+
 		if (previous.type !== next.type) return;
 
 		switch (next.type) {
@@ -76,10 +70,12 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			// No Op
 		}
 
-		yield* this.differencePermissionOverwrites(t, previous, next);
+		if (isThread) {
+			yield* this.differencePermissionOverwrites(t, previous as NonThreadGuildBasedChannelTypes, next as NonThreadGuildBasedChannelTypes);
+		}
 	}
 
-	private *differenceGuildChannel(t: TFunction, previous: GuildChannel, next: GuildChannel) {
+	private *differenceGuildChannel(t: TFunction, previous: GuildBasedChannelTypes, next: GuildBasedChannelTypes) {
 		if (previous.name !== next.name) {
 			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateName, { previous: previous.name, next: next.name });
 		}
@@ -94,16 +90,18 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			}
 		}
 
-		if (previous.position !== next.position) {
-			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdatePosition, { previous: previous.position, next: next.position });
-		}
-
 		if (previous.type !== next.type) {
 			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateType, { previous: previous.type, next: next.type });
 		}
 	}
 
-	private *differencePermissionOverwrites(t: TFunction, previous: GuildChannel, next: GuildChannel) {
+	private *differencePositions(t: TFunction, previous: NonThreadGuildBasedChannelTypes, next: NonThreadGuildBasedChannelTypes) {
+		if (previous.position !== next.position) {
+			yield t(LanguageKeys.Events.Guilds.Logs.ChannelUpdatePosition, { previous: previous.position, next: next.position });
+		}
+	}
+
+	private *differencePermissionOverwrites(t: TFunction, previous: NonThreadGuildBasedChannelTypes, next: NonThreadGuildBasedChannelTypes) {
 		const previousPermissions = previous.permissionOverwrites.cache;
 		const nextPermissions = next.permissionOverwrites.cache;
 

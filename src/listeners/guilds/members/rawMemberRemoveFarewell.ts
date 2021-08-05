@@ -1,8 +1,9 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
-import { canSendMessages, deleteMessage } from '#utils/functions';
+import { deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v9';

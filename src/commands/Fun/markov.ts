@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { iteratorAt } from '#utils/common';
 import { Markov, WordBank } from '#utils/External/markov';
-import { GuildTextBasedChannelTypes, isNsfw } from '#utils/functions';
 import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
+import { GuildTextBasedChannelTypes, isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as GuildTextBasedChannelTypes);
-		if (isNsfw(channel) && !isNsfw(message.channel)) {
+		if (isNsfwChannel(channel) && !isNsfwChannel(message.channel)) {
 			return this.error(LanguageKeys.Commands.Fun.MarkovNsfwChannel, { channel: channel.toString() });
 		}
 		const username = args.finished ? undefined : await args.pick('userName');

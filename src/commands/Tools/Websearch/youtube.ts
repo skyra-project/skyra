@@ -1,9 +1,9 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';

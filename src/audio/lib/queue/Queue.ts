@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { Events } from '#lib/types/Enums';
 import { map, reverse } from '#utils/common';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';

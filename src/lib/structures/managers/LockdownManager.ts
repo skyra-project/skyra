@@ -1,5 +1,5 @@
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import type { AccurateTimeout } from '#utils/Timers';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Collection, Role } from 'discord.js';
 
 export class LockdownManager extends Collection<string, Collection<string, LockdownManager.Entry>> {

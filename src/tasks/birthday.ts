@@ -1,7 +1,7 @@
 import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
 import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { canSendMessages } from '#utils/functions';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import type { GuildMember, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';

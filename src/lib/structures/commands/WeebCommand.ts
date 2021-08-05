@@ -1,7 +1,7 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { isNsfw } from '#utils/functions';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import type { PieceContext } from '@sapphire/framework';
 import { send } from '@skyra/editable-commands';
@@ -43,7 +43,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		const user = this.requireUser ? await args.pick('userName') : null;
 		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
-		query.searchParams.append('nsfw', String(isNsfw(message.channel)));
+		query.searchParams.append('nsfw', String(isNsfwChannel(message.channel)));
 
 		const { t } = args;
 		const { url } = await this.fetch(query);

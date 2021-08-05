@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
-import { isNsfw } from '#utils/functions';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { container } from '@sapphire/framework';
 import { resolveKey } from '@sapphire/plugin-i18next';
@@ -45,7 +45,7 @@ export async function queryGoogleMapsAPI(message: Message, location: string) {
 
 export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: Message, type: T, query: string) {
 	try {
-		const nsfwAllowed = isNsfw(message.channel);
+		const nsfwAllowed = isNsfwChannel(message.channel);
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
 		url.searchParams.append(
 			'cx',

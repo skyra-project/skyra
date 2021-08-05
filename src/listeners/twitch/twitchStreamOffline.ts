@@ -2,7 +2,7 @@ import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } fr
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { floatPromise } from '#utils/common';
-import { canSendMessages } from '#utils/functions';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';

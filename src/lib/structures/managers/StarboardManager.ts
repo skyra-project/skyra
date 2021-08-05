@@ -1,7 +1,9 @@
-import { GuildSettings, readSettings, StarboardEntity } from '#lib/database';
+import { StarboardEntity } from '#lib/database/entities';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings';
 import type { GuildMessage } from '#lib/types';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import Collection from '@discordjs/collection';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { Client, Guild, TextChannel } from 'discord.js';

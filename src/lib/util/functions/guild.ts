@@ -1,5 +1,5 @@
-import { ModerationManager, StickyRoleManager } from '#lib/moderation';
-import { StarboardManager } from '#lib/structures';
+import { ModerationManager, StickyRoleManager } from '#lib/moderation/managers';
+import { StarboardManager } from '#lib/structures/managers';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import { container } from '@sapphire/framework';
 import type { Guild, GuildResolvable } from 'discord.js';

@@ -1,8 +1,9 @@
 import { Events } from '#lib/types/Enums';
-import { canReadMessages, isGuildBasedChannel } from '#utils/functions';
+import { isGuildBasedChannel } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { canReadMessages } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionAddDispatch } from 'discord-api-types/v9';
 import type { TextChannel } from 'discord.js';

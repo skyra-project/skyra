@@ -12,7 +12,6 @@ import { join } from 'path';
 import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { envIsDefined, envParseBoolean, envParseInteger, envParseString } from './env';
-import './extensions';
 import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';

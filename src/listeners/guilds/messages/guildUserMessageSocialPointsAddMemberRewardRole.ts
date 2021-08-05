@@ -1,8 +1,9 @@
 import { GuildEntity, GuildSettings, readSettings, RolesAuto, writeSettings } from '#lib/database';
 import type { Difference, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { formatNumber, GuildTextBasedChannelTypes } from '#utils/functions';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullishOrEmpty } from '@sapphire/utilities';
 import { GuildMember, Permissions, Role } from 'discord.js';

@@ -1,4 +1,4 @@
-import type { ChannelTypeString } from '#utils/functions';
+import type { ChannelTypeString } from '@sapphire/discord.js-utilities';
 import type {
 	Channel,
 	DMChannel,

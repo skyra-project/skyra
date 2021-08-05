@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
-import { isNsfw } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { send } from '@skyra/editable-commands';
@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
-		const nsfwEnabled = isNsfw(message.channel);
+		const nsfwEnabled = isNsfwChannel(message.channel);
 		const posts = nsfwEnabled
 			? data.children.filter((child) => !kTitleBlockList.test(child.data.title))
 			: data.children.filter((child) => !child.data.over_18 && !kTitleBlockList.test(child.data.title));

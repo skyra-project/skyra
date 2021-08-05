@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
-import { canSendAttachments, promptForMessage } from '#utils/functions';
+import { promptForMessage } from '#utils/functions';
+import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';

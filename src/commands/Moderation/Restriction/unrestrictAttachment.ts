@@ -1,6 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
+import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
@@ -15,7 +16,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 })
 export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return message.guild.security.actions.unRestrictAttachment(
+		return getSecurity(message.guild).actions.unRestrictAttachment(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

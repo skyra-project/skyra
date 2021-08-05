@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationData, ModerationTask } from '#lib/moderation';
+import { getSecurity } from '#utils/functions';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { Guild, Permissions } from 'discord.js';
 
@@ -9,7 +10,7 @@ export class UserModerationTask extends ModerationTask {
 		if (!me.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return null;
 
 		const t = await fetchT(guild);
-		await guild.security.actions.unWarning(
+		await getSecurity(guild).actions.unWarning(
 			{
 				moderatorId: process.env.CLIENT_ID,
 				userId: data.userID,

@@ -2,6 +2,7 @@ import { AudioCommand, RequireMusicPaused, RequireSameVoiceChannel, RequireSkyra
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<AudioCommand.Options>({
@@ -14,7 +15,7 @@ export class UserMusicCommand extends AudioCommand {
 	@RequireSameVoiceChannel()
 	@RequireMusicPaused()
 	public async run(message: GuildMessage) {
-		await message.guild.audio.resume();
+		await getAudio(message.guild).resume();
 		this.container.client.emit(Events.MusicSongResumeNotify, message);
 	}
 }

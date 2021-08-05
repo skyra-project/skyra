@@ -10,7 +10,19 @@ import { isNumber, parseURL } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import type { APIUser } from 'discord-api-types/v9';
-import { Guild, GuildChannel, ImageSize, ImageURLOptions, Message, MessageEmbed, Permissions, Role, User, UserResolvable } from 'discord.js';
+import {
+	Guild,
+	GuildChannel,
+	ImageSize,
+	ImageURLOptions,
+	Message,
+	MessageEmbed,
+	Permissions,
+	Role,
+	ThreadChannel,
+	User,
+	UserResolvable
+} from 'discord.js';
 import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
@@ -497,7 +509,7 @@ export function cast<T>(value: unknown): T {
  * @returns Whether the user has access to the channel
  * @example validateChannelAccess(channel, message.author)
  */
-export function validateChannelAccess(channel: GuildChannel, user: UserResolvable) {
+export function validateChannelAccess(channel: GuildChannel | ThreadChannel, user: UserResolvable) {
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
 }
 

@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { empty, filter, map, take } from '#utils/common';
-import { isDJ } from '#utils/functions';
+import { getAudio, isDJ } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import type { Track } from '@skyra/audio';
@@ -22,7 +22,7 @@ export class UserMusicCommand extends AudioCommand {
 		const url = message.attachments.first()?.url ?? (await args.pick('hyperlink')).href;
 		const raw = await this.fetchRawData(url);
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const decodedTracks = await audio.player.node.decode(raw);
 		const tracks = [...(await this.process(message, 100, decodedTracks))];
 

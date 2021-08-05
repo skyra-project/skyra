@@ -5,6 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -21,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: Message) {
 		if (this.attachment && this.nextRefresh >= Date.now()) {
-			return message.send(this.attachment);
+			return send(message, { files: [this.attachment] });
 		}
 
 		const image = await (this.pendingPromise ??= this.getOutfluxImage().finally(() => {
@@ -30,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		this.nextRefresh = Date.now() + Time.Hour * 12;
 		this.attachment = new MessageAttachment(image, 'growth.png');
 
-		return message.send(this.attachment);
+		return send(message, { files: [this.attachment] });
 	}
 
 	private async getOutfluxImage() {

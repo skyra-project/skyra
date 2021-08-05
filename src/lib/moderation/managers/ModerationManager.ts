@@ -36,10 +36,6 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 */
 	private readonly _locks: ReferredPromise<void>[] = [];
 
-	public get client() {
-		return this.guild.client;
-	}
-
 	private get db() {
 		return container.db;
 	}

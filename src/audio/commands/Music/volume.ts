@@ -2,8 +2,9 @@ import { AudioCommand, RequireMusicPlaying, RequireSameVoiceChannel, RequireSkyr
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { canManage, getListeners } from '#utils/functions';
+import { canManage, getAudio, getListeners } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['vol'],
@@ -16,13 +17,14 @@ export class UserMusicCommand extends AudioCommand {
 	@RequireSameVoiceChannel()
 	@RequireMusicPlaying()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const newVolume = args.finished ? null : await args.pick('integer', { minimum: 0, maximum: 300 });
 		const previousVolume = await audio.getVolume();
 
 		// If no argument was given
 		if (newVolume === null || newVolume === previousVolume) {
-			return message.send(args.t(LanguageKeys.Commands.Music.VolumeSuccess, { volume: previousVolume }));
+			const content = args.t(LanguageKeys.Commands.Music.VolumeSuccess, { volume: previousVolume });
+			return send(message, content);
 		}
 
 		const channel = audio.voiceChannel!;

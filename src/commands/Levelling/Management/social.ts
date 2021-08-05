@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.SocialDescription,
@@ -26,7 +27,8 @@ export class UserCommand extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.send(args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount: newAmount, count: amount }));
+			const content = args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount: newAmount, count: amount });
+			return send(message, content);
 		}
 
 		const created = new MemberEntity();
@@ -35,7 +37,8 @@ export class UserCommand extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.send(args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount, count: amount }));
+		const content = args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount, count: amount });
+		return send(message, content);
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
@@ -50,7 +53,8 @@ export class UserCommand extends SkyraCommand {
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.send(args.t(LanguageKeys.Commands.Social.SocialRemove, { user: user.username, amount: newAmount, count: amount }));
+		const content = args.t(LanguageKeys.Commands.Social.SocialRemove, { user: user.username, amount: newAmount, count: amount });
+		return send(message, content);
 	}
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args) {
@@ -75,19 +79,11 @@ export class UserCommand extends SkyraCommand {
 		const variation = amount - oldValue;
 		if (variation === 0) return args.t(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
 
-		return message.send(
+		const content =
 			variation > 0
-				? args.t(LanguageKeys.Commands.Social.SocialAdd, {
-						user: user.username,
-						amount,
-						count: variation
-				  })
-				: args.t(LanguageKeys.Commands.Social.SocialRemove, {
-						user: user.username,
-						amount,
-						count: -variation
-				  })
-		);
+				? args.t(LanguageKeys.Commands.Social.SocialAdd, { user: user.username, amount, count: variation })
+				: args.t(LanguageKeys.Commands.Social.SocialRemove, { user: user.username, amount, count: -variation });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -96,7 +92,9 @@ export class UserCommand extends SkyraCommand {
 		const user = await args.pick('userName');
 		const { members } = this.container.db;
 		await members.delete({ userId: user.id, guildId: message.guild.id });
-		return message.send(args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username }));
+
+		const content = args.t(LanguageKeys.Commands.Social.SocialReset, { user: user.username });
+		return send(message, content);
 	}
 
 	private async resetAll(message: GuildMessage, args: SkyraCommand.Args) {
@@ -110,6 +108,8 @@ export class UserCommand extends SkyraCommand {
 
 		// Delete the local leaderboard entry since it's all set to 0 at this point.
 		this.container.client.leaderboard.local.delete(message.guild.id);
-		return message.send(args.t(LanguageKeys.Commands.Social.SocialResetAllSuccess, { count: result.affected }));
+
+		const content = args.t(LanguageKeys.Commands.Social.SocialResetAllSuccess, { count: result.affected });
+		return send(message, content);
 	}
 }

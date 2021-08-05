@@ -1,10 +1,12 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { floatPromise } from '#utils/common';
 import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
@@ -36,7 +38,8 @@ export class UserCommand extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.send(this.buildQuestionEmbed(args.t, data, possibleAnswers));
+			const questionEmbed = this.buildQuestionEmbed(args.t, data, possibleAnswers);
+			await send(message, { embeds: [questionEmbed] });
 			const filter = (msg: Message) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
@@ -56,12 +59,15 @@ export class UserCommand extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.send(args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
+					floatPromise(send(message, args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt })));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.send(args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
-					return message.send(args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
+
+					const content = winner
+						? args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer })
+						: args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer });
+					floatPromise(send(message, content));
 				});
 		} catch (error) {
 			this.#channels.delete(message.channel.id);

@@ -1,6 +1,7 @@
 import { readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
+import { getStarboard } from '#utils/functions';
 import { compareEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -18,7 +19,7 @@ export class UserListener extends Listener {
 		const [emoji, channel] = await readSettings(guild, (settings) => [settings.starboardEmoji, settings.starboardChannel]);
 		if (!compareEmoji(emoji, data.emoji)) return;
 
-		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
+		getStarboard(guild).delete(`${data.channel_id}-${data.message_id}`);
 
 		// Delete entry from starboard if it exists
 		try {

@@ -4,6 +4,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import { ClassJob, ClassSubcategory, FFXIVCharacter, GuildMessage, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmbedField, MessageEmbed } from 'discord.js';
@@ -143,7 +144,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.setThumbnail(`${FFXIV_BASE_URL}${item.Icon}`)
 					.addField(titles.kind, item.ItemKind.Name, true)
 					.addField(titles.category, item.ItemSearchCategory.Name || titles.none, true)
-					.addField(titles.levelEquip, item.LevelEquip, true)
+					.addField(titles.levelEquip, formatNumber(t, item.LevelEquip), true)
 			);
 		}
 

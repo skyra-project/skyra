@@ -1,5 +1,8 @@
 import { envParseBoolean } from '#lib/env';
+import type { MessageAcknowledgeable } from '#lib/types';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
+import { send } from '@skyra/editable-commands';
+import { Message, MessageOptions, WebhookMessageOptions } from 'discord.js';
 import type { OutgoingWebSocketMessage } from '../websocket/Shared';
 
 interface AudioBroadcastCallback {
@@ -9,6 +12,10 @@ interface AudioBroadcastCallback {
 export abstract class AudioListener extends Listener {
 	public constructor(context: PieceContext, options: AudioListener.Options = {}) {
 		super(context, { ...options, enabled: envParseBoolean('AUDIO_ENABLED') });
+	}
+
+	public reply(acknowledgeable: MessageAcknowledgeable, options: string | MessageOptions | WebhookMessageOptions) {
+		return acknowledgeable instanceof Message ? send(acknowledgeable, options) : acknowledgeable.send(options);
 	}
 
 	public *getWebSocketListenersFor(guildId: string) {

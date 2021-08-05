@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -19,16 +20,15 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Fun.XkcdNotFound);
 		});
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setImage(comic.img)
-				.setTitle(comic.title)
-				.setURL(`https://xkcd.com/${comicNumber}/`)
-				.setFooter(`XKCD | ${comic.num}`)
-				.setDescription(comic.alt)
-				.setTimestamp(this.getTime(comic.year, comic.month, comic.day))
-		);
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setImage(comic.img)
+			.setTitle(comic.title)
+			.setURL(`https://xkcd.com/${comicNumber}/`)
+			.setFooter(`XKCD | ${comic.num}`)
+			.setDescription(comic.alt)
+			.setTimestamp(this.getTime(comic.year, comic.month, comic.day));
+		return send(message, { embeds: [embed] });
 	}
 
 	private getTime(year: string, month: string, day: string) {

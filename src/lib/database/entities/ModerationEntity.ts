@@ -69,7 +69,6 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public setup(manager: ModerationManager) {
-		this.#client = manager.client;
 		this.#manager = manager;
 		this.guildId = manager.guild.id;
 		return this;

@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Time } from '@sapphire/time-utilities';
@@ -27,7 +28,7 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	protected async handle(message: GuildMessage, context: HandledCommandContext & { role: Role }) {
-		return message.guild.security.actions.removeRole(
+		return getSecurity(message.guild).actions.removeRole(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

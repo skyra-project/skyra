@@ -5,6 +5,7 @@ import { random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -37,8 +38,9 @@ export class UserCommand extends SkyraCommand {
 			.setDescription(board)
 			.setTimestamp();
 
-		await message.send(embed);
-		const winners = await message.channel.awaitMessages((message: Message) => !message.author.bot && message.content === solution, {
+		await send(message, { embeds: [embed] });
+		const winners = await message.channel.awaitMessages({
+			filter: (message: Message) => !message.author.bot && message.content === solution,
 			max: 1,
 			time
 		});
@@ -50,8 +52,8 @@ export class UserCommand extends SkyraCommand {
 			embed.setColor(Colors.Green).setTitle(args.t(LanguageKeys.Commands.Fun.PopTitleWinner, { value }));
 		}
 
-		const unmasked = board.replaceAll('||', '').replaceAll('``', '');
-		await message.send(embed.setDescription(unmasked));
+		embed.setDescription(board.replaceAll('||', '').replaceAll('``', ''));
+		await send(message, { embeds: [embed] });
 	}
 
 	private generatePop(length: number) {

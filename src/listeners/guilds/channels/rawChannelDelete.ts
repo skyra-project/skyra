@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { resolveOnErrorCodes } from '#utils/common';
+import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
@@ -14,8 +15,10 @@ export class UserListener extends Listener {
 
 		const guild = this.container.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.id)) return;
-		for (const [key, value] of guild.starboard.entries()) {
-			if (data.id === value.channelId) guild.starboard.delete(key);
+
+		const starboard = getStarboard(guild);
+		for (const [key, value] of starboard.entries()) {
+			if (data.id === value.channelId) starboard.delete(key);
 		}
 
 		// Delete entries from starboard if it exists

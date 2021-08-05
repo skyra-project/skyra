@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 
@@ -16,7 +17,9 @@ import { send } from '@skyra/editable-commands';
 export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const caseId = await args.pick('case');
-		const entry = await message.guild.moderation.fetch(caseId);
+
+		const moderation = getModeration(message.guild);
+		const entry = await moderation.fetch(caseId);
 		if (entry) {
 			const embed = await entry.prepareEmbed();
 			return send(message, { embeds: [embed] });
@@ -26,11 +29,13 @@ export class UserCommand extends SkyraCommand {
 
 	public async delete(message: GuildMessage, args: SkyraCommand.Args) {
 		const caseId = await args.pick('case');
-		const entry = await message.guild.moderation.fetch(caseId);
+
+		const moderation = getModeration(message.guild);
+		const entry = await moderation.fetch(caseId);
 		if (!entry) this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
 
 		entry.remove();
-		message.guild.moderation.delete(entry.caseId);
+		moderation.delete(entry.caseId);
 
 		const content = args.t(LanguageKeys.Commands.Moderation.CaseDeleted, { case: entry.caseId });
 		return send(message, content);

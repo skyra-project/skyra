@@ -1,9 +1,11 @@
 import { AudioCommand, RequireMusicPlaying } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
+import { getAudio } from '#utils/functions';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TrackInfo } from '@skyra/audio';
+import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,13 +20,14 @@ export class UserMusicCommand extends AudioCommand {
 
 	@RequireMusicPlaying()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 
 		const entry = await audio.getCurrentTrack();
 		if (!entry) this.error(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
-		return message.send(this.getMessageEmbed(args.t, track));
+		const embed = this.getMessageEmbed(args.t, track);
+		return send(message, { embeds: [embed] });
 	}
 
 	private getMessageEmbed(t: TFunction, track: TrackInfo): MessageEmbed {

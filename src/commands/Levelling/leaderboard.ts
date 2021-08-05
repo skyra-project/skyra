@@ -3,6 +3,7 @@ import { PaginatedMessageCommand, SkyraLazyPaginatedMessage } from '#lib/structu
 import type { GuildMessage } from '#lib/types';
 import { skip, take } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -60,7 +61,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const [id, value] of take(skip(list.entries(), index * 10), 10)) {
 			const displayName = members.get(id)?.displayName;
 			const name = displayName ? `**${displayName}**` : args.t(LanguageKeys.Commands.Social.LeaderboardUnknownUser, { user: id });
-			lines.push(`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`, `${LongWidthSpace}└─ ${formatNumber(t, value.points)}`);
+			lines.push(`❯ \`${value.position.toString().padStart(pad, ' ')}\`: ${name}`, `${LongWidthSpace}└─ ${formatNumber(args.t, value.points)}`);
 		}
 
 		return new MessageEmbed().setDescription(lines.join('\n'));

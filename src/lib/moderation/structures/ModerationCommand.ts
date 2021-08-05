@@ -9,6 +9,7 @@ import type { ModerationActionsSendOptions } from '#utils/Security/ModerationAct
 import { cast } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
+import { send } from '@skyra/editable-commands';
 import type { User } from 'discord.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -94,7 +95,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			// Else send the message as usual.
-			return message.send(output.join('\n'));
+			const content = output.join('\n');
+			return send(message, content);
 		}
 
 		return null;

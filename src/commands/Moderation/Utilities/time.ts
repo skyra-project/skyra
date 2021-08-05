@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getModeration, getSecurity } from '#utils/functions';
 import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -21,7 +22,8 @@ export class UserCommand extends SkyraCommand {
 		const cancel = await args.pick(UserCommand.cancel).catch(() => false);
 		const caseId = await args.pick('case');
 
-		const entry = await message.guild.moderation.fetch(caseId);
+		const moderation = getModeration(message.guild);
+		const entry = await moderation.fetch(caseId);
 		if (!entry) this.error(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
 		if (!cancel && entry.temporaryType) this.error(LanguageKeys.Commands.Moderation.TimeTimed);
 
@@ -34,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 		if (cancel) {
 			if (!task) this.error(LanguageKeys.Commands.Moderation.TimeNotScheduled);
 
-			await message.guild.moderation.fetchChannelMessages();
+			await moderation.fetchChannelMessages();
 			await entry.edit({
 				duration: null,
 				moderatorId: message.author.id
@@ -54,7 +56,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const duration = await args.rest('timespan', { minimum: Time.Second, maximum: Time.Year * 5 });
-		await message.guild.moderation.fetchChannelMessages();
+		await moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
 			moderatorId: message.author.id
@@ -108,7 +110,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
 		}
 
-		if (!(await message.guild.security.actions.userIsBanned(user))) {
+		if (!(await getSecurity(message.guild).actions.userIsBanned(user))) {
 			this.error(LanguageKeys.Commands.Moderation.GuildBansNotFound);
 		}
 	}
@@ -118,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
-		if (!(await message.guild.security.actions.userIsMuted(user))) {
+		if (!(await getSecurity(message.guild).actions.userIsMuted(user))) {
 			this.error(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
 		}
 	}
@@ -128,7 +130,7 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
 		}
 
-		if (!(await message.guild.security.actions.userIsVoiceMuted(user))) {
+		if (!(await getSecurity(message.guild).actions.userIsVoiceMuted(user))) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		}
 	}

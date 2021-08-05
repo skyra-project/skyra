@@ -2,6 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -49,9 +50,10 @@ export class UserListener extends Listener {
 	}
 
 	private async isModerationAction(guild: Guild, user: GatewayGuildMemberRemoveDispatch['d']['user']): Promise<IsModerationAction> {
-		await guild.moderation.waitLock();
+		const moderation = getModeration(guild);
+		await moderation.waitLock();
 
-		const latestLogForUser = guild.moderation.getLatestLogForUser(user.id);
+		const latestLogForUser = moderation.getLatestLogForUser(user.id);
 
 		if (latestLogForUser === null) {
 			return {

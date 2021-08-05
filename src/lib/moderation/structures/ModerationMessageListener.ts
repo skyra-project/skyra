@@ -3,7 +3,7 @@ import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
-import { canSendMessages, GuildTextBasedChannelTypes, isModerator } from '#utils/functions';
+import { canSendMessages, getModeration, getSecurity, GuildTextBasedChannelTypes, isModerator } from '#utils/functions';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
 import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed } from 'discord.js';
@@ -104,7 +104,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild.security.actions.warning({
+			getSecurity(message.guild).actions.warning({
 				userId: message.author.id,
 				moderatorId: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
@@ -115,7 +115,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild.security.actions.kick({
+			getSecurity(message.guild).actions.kick({
 				userId: message.author.id,
 				moderatorId: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
@@ -125,7 +125,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild.security.actions.mute({
+			getSecurity(message.guild).actions.mute({
 				userId: message.author.id,
 				moderatorId: process.env.CLIENT_ID,
 				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
@@ -136,7 +136,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onSoftBan(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild.security.actions.softBan(
+			getSecurity(message.guild).actions.softBan(
 				{
 					userId: message.author.id,
 					moderatorId: process.env.CLIENT_ID,
@@ -149,7 +149,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild.security.actions.ban(
+			getSecurity(message.guild).actions.ban(
 				{
 					userId: message.author.id,
 					moderatorId: process.env.CLIENT_ID,
@@ -162,7 +162,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	protected async createActionAndSend(message: GuildMessage, performAction: () => unknown): Promise<void> {
-		const unlock = message.guild.moderation.createLock();
+		const unlock = getModeration(message.guild).createLock();
 		await performAction();
 		unlock();
 	}

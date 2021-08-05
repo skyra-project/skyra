@@ -4,6 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/APIs/Google';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
@@ -28,20 +29,18 @@ export class UserCommand extends SkyraCommand {
 		);
 
 		const titles = t(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled });
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
-				.setDescription(
-					[
-						`**${titles.currentTime}**: ${timeData.formatted.split(' ')[1]}`,
-						`**${titles.currentDate}**: ${timeData.formatted.split(' ')[0]}`,
-						`**${titles.country}**: ${timeData.countryName}`,
-						`**${titles.gmsOffset}**: ${t(LanguageKeys.Globals.DurationValue, { value: timeData.gmtOffset * 1000 })}`,
-						`${titles.dst}`
-					].join('\n')
-				)
-		);
+		const description = [
+			`**${titles.currentTime}**: ${timeData.formatted.split(' ')[1]}`,
+			`**${titles.currentDate}**: ${timeData.formatted.split(' ')[0]}`,
+			`**${titles.country}**: ${timeData.countryName}`,
+			`**${titles.gmsOffset}**: ${t(LanguageKeys.Globals.DurationValue, { value: timeData.gmtOffset * 1000 })}`,
+			`${titles.dst}`
+		].join('\n');
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
+			.setDescription(description);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI(lat: number, lng: number) {

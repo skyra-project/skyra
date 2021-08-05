@@ -98,6 +98,7 @@ declare module '@sapphire/framework' {
 	}
 
 	interface Preconditions {
+		AudioEnabled: never;
 		Administrator: never;
 		BotOwner: never;
 		DJ: never;
@@ -130,29 +131,29 @@ declare module '@sapphire/framework' {
 		emit(event: Events.ReactionBlocked, data: LLRCData, emoji: string): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
 		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
-		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
+		emit(event: Events.MusicAddNotify, acknowledgeable: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
 		emit(event: Events.MusicFinish, queue: Queue): boolean;
-		emit(event: Events.MusicFinishNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicFinishNotify, acknowledgeable: MessageAcknowledgeable): boolean;
 		emit(event: Events.MusicLeave, queue: Queue): boolean;
 		emit(event: Events.MusicPrune, queue: Queue): boolean;
 		emit(event: Events.MusicQueueSync, queue: Queue): boolean;
 		emit(event: Events.MusicRemove, queue: Queue): boolean;
-		emit(event: Events.MusicRemoveNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicRemoveNotify, acknowledgeable: MessageAcknowledgeable, entry: QueueEntry): boolean;
 		emit(event: Events.MusicReplayUpdate, queue: Queue, repeating: boolean): boolean;
-		emit(event: Events.MusicReplayUpdateNotify, channel: MessageAcknowledgeable, repeating: boolean): boolean;
+		emit(event: Events.MusicReplayUpdateNotify, acknowledgeable: MessageAcknowledgeable, repeating: boolean): boolean;
 		emit(event: Events.MusicSongPause, queue: Queue): boolean;
-		emit(event: Events.MusicSongPauseNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicSongPauseNotify, acknowledgeable: MessageAcknowledgeable): boolean;
 		emit(event: Events.MusicSongPlay, queue: Queue, status: NP): boolean;
-		emit(event: Events.MusicSongPlayNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicSongPlayNotify, acknowledgeable: MessageAcknowledgeable, entry: QueueEntry): boolean;
 		emit(event: Events.MusicSongReplay, queue: Queue, status: NP): boolean;
 		emit(event: Events.MusicSongResume, queue: Queue): boolean;
-		emit(event: Events.MusicSongResumeNotify, channel: MessageAcknowledgeable): boolean;
+		emit(event: Events.MusicSongResumeNotify, acknowledgeable: MessageAcknowledgeable): boolean;
 		emit(event: Events.MusicSongSeekUpdate, queue: Queue): boolean;
-		emit(event: Events.MusicSongSeekUpdateNotify, channel: MessageAcknowledgeable, time: number): boolean;
+		emit(event: Events.MusicSongSeekUpdateNotify, acknowledgeable: MessageAcknowledgeable, time: number): boolean;
 		emit(event: Events.MusicSongSkip, queue: Queue): boolean;
-		emit(event: Events.MusicSongSkipNotify, channel: MessageAcknowledgeable, entry: QueueEntry): boolean;
+		emit(event: Events.MusicSongSkipNotify, acknowledgeable: MessageAcknowledgeable, entry: QueueEntry): boolean;
 		emit(event: Events.MusicSongVolumeUpdate, queue: Queue, next: number): boolean;
-		emit(event: Events.MusicSongVolumeUpdateNotify, channel: MessageAcknowledgeable, previous: number, next: number): boolean;
+		emit(event: Events.MusicSongVolumeUpdateNotify, acknowledgeable: MessageAcknowledgeable, previous: number, next: number): boolean;
 		emit(event: Events.MusicVoiceChannelJoin, queue: Queue, voiceChannel: VoiceChannel): boolean;
 		emit(event: Events.MusicVoiceChannelLeave, queue: Queue): boolean;
 		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;

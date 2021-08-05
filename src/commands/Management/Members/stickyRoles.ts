@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getStickyRoles } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
 
@@ -17,7 +18,9 @@ export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const role = await args.pick('roleName');
-		await message.guild.stickyRoles.add(user.id, role.id);
+
+		const stickyRoles = getStickyRoles(message.guild);
+		await stickyRoles.add(user.id, role.id);
 
 		const content = args.t(LanguageKeys.Commands.Management.StickyRolesAdd, { user: user.username });
 		return send(message, content);
@@ -25,11 +28,13 @@ export class UserCommand extends SkyraCommand {
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
-		const roles = await message.guild.stickyRoles.fetch(user.id);
+
+		const stickyRoles = getStickyRoles(message.guild);
+		const roles = await stickyRoles.fetch(user.id);
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		const role = await args.pick('roleName');
-		await message.guild.stickyRoles.remove(user.id, role.id);
+		await stickyRoles.remove(user.id, role.id);
 
 		const content = args.t(LanguageKeys.Commands.Management.StickyRolesRemove, { user: user.username });
 		return send(message, content);
@@ -37,10 +42,12 @@ export class UserCommand extends SkyraCommand {
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
-		const roles = await message.guild.stickyRoles.fetch(user.id);
+
+		const stickyRoles = getStickyRoles(message.guild);
+		const roles = await stickyRoles.fetch(user.id);
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
-		await message.guild.stickyRoles.clear(user.id);
+		await stickyRoles.clear(user.id);
 
 		const content = args.t(LanguageKeys.Commands.Management.StickyRolesReset, { user: user.username });
 		return send(message, content);
@@ -48,7 +55,9 @@ export class UserCommand extends SkyraCommand {
 
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
-		const sticky = await message.guild.stickyRoles.fetch(user.id);
+
+		const stickyRoles = getStickyRoles(message.guild);
+		const sticky = await stickyRoles.fetch(user.id);
 		if (!sticky.length) this.error(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
 
 		const roles = message.guild.roles.cache;

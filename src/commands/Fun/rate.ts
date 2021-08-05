@@ -4,6 +4,7 @@ import { OWNERS } from '#root/config';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { oneToTen } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -35,9 +36,12 @@ export class UserCommand extends SkyraCommand {
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.send(
-			args.t(LanguageKeys.Commands.Fun.RateOutput, { author: message.author.username, userToRate: rateableThing, rate, emoji: ratewaifu }),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+		const content = args.t(LanguageKeys.Commands.Fun.RateOutput, {
+			author: message.author.username,
+			userToRate: rateableThing,
+			rate,
+			emoji: ratewaifu
+		});
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 }

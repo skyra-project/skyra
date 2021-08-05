@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
+import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -17,11 +18,11 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		return (await readSettings(message.guild, GuildSettings.Events.BanAdd)) ? { unlock: message.guild.moderation.createLock() } : null;
+		return (await readSettings(message.guild, GuildSettings.Events.BanAdd)) ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild.security.actions.ban(
+		return getSecurity(message.guild).actions.ban(
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,

@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { canSendMessages, isNsfw } from '#utils/functions';
+import { canSendMessages, getStarboard, isNsfw } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { snowflakeAge } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -37,7 +37,7 @@ export class UserListener extends Listener {
 		}
 
 		// Process the starboard
-		const { starboard } = data.guild;
+		const starboard = getStarboard(data.guild);
 		const sMessage = await starboard.fetch(data.channel, data.messageId);
 		if (sMessage) await sMessage.increment(data.userId, selfStar);
 	}

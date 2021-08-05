@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
+import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v9';
@@ -14,7 +15,7 @@ export class UserListener extends Listener {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
-		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
+		getStarboard(guild).delete(`${data.channel_id}-${data.message_id}`);
 
 		// Delete entry from starboard if it exists
 		try {

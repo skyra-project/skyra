@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { sendTemporaryMessage } from '#utils/functions';
+import { getModeration, sendTemporaryMessage } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
@@ -20,7 +20,8 @@ export class UserCommand extends SkyraCommand {
 			.then((value) => [value])
 			.catch(() => args.pick('range', { maximum: 50 }));
 
-		const entries = await message.guild.moderation.fetch(cases);
+		const moderation = getModeration(message.guild);
+		const entries = await moderation.fetch(cases);
 		if (!entries.size) {
 			this.error(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: cases.length });
 		}
@@ -35,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 			.andWhere('case_id IN (:...ids)', { ids: [...entries.keys()] })
 			.set({ reason, imageURL })
 			.execute();
-		await message.guild.moderation.fetchChannelMessages();
+		await moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason).setImageURL(imageURL);

@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { ZeroWidthSpace } from '#utils/constants';
+import { getAudio } from '#utils/functions';
 import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
@@ -27,7 +28,7 @@ export class UserMusicCommand extends AudioCommand {
 			.setTitle(args.t(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }));
 		const queueDisplay = new SkyraPaginatedMessage({ template });
 
-		const { audio } = message.guild;
+		const audio = getAudio(message.guild);
 		const current = await audio.nowPlaying();
 		const tracks = await this.getTrackInformation(audio);
 
@@ -77,7 +78,7 @@ export class UserMusicCommand extends AudioCommand {
 		}
 
 		// Just send the template as a regular embed as there are no pages to display
-		return response.edit(undefined, queueDisplay.template);
+		return response.edit(queueDisplay.template);
 	}
 
 	private async generateTrackField(message: GuildMessage, t: TFunction, position: number, entry: DecodedQueueEntry) {

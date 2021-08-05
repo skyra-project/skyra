@@ -38,7 +38,7 @@ export const enum Events {
 	LavalinkWebsocketClosed = 'lavalinkWebsocketClosed',
 	MentionSpamExceeded = 'mentionSpamExceeded',
 	MentionSpamWarning = 'mentionSpamWarning',
-	Message = 'message',
+	MessageCreate = 'messageCreate',
 	MessageDelete = 'messageDelete',
 	MessageDeleteBulk = 'messageDeleteBulk',
 	MessageUpdate = 'messageUpdate',

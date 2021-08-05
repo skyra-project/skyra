@@ -6,6 +6,7 @@ import { cdnFolder } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@skyra/editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -32,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const output = await this.showProfile(message, scope, user, args.t);
-		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
+		return send(message, { files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {

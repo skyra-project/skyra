@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Args, container, IArgument } from '@sapphire/framework';
 import { send } from '@skyra/editable-commands';
 

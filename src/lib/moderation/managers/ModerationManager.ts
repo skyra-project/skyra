@@ -1,8 +1,8 @@
 import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { createReferPromise, floatPromise, ReferredPromise } from '#utils/common';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { cast } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { isNullish, StrictRequired } from '@sapphire/utilities';

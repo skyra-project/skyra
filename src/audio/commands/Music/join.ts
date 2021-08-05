@@ -2,8 +2,9 @@ import { AudioCommand, Queue, RequireUserInVoiceChannel } from '#lib/audio';
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
-import { getAudio, VoiceBasedChannelTypes } from '#utils/functions';
+import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
 

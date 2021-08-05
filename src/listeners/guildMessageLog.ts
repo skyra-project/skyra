@@ -1,5 +1,5 @@
 import { GuildEntity, writeSettings } from '#lib/database';
-import { canSendMessages } from '#utils/functions';
+import { canSendEmbeds } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { Awaited, isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
@@ -20,7 +20,7 @@ export class UserListener extends Listener {
 		}
 
 		// Don't post if it's not possible
-		if (!canSendMessages(channel)) return;
+		if (!canSendEmbeds(channel)) return;
 
 		const processed = await makeMessage();
 		const options: MessageOptions = processed instanceof MessageEmbed ? { embeds: [processed] } : processed;

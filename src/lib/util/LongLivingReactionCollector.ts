@@ -1,8 +1,8 @@
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { noop } from '@sapphire/utilities';
 import type { Guild, User } from 'discord.js';
-import type { GuildTextBasedChannelTypes } from './functions';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 

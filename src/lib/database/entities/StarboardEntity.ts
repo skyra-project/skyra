@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import type { GuildMessage } from '#lib/types';
-import type { GuildTextBasedChannelTypes } from '#utils/functions';
 import { fetchReactionUsers, getImage } from '#utils/util';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { cutText, debounce, isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';

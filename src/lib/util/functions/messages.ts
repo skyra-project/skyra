@@ -1,12 +1,12 @@
 import type { SkyraCommand } from '#lib/structures';
 import { floatPromise, isGuildMessage, resolveOnErrorCodes } from '#utils/common';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'timers/promises';
-import { canSendMessages } from './channels';
 
 const messageCommands = new WeakMap<Message, SkyraCommand>();
 

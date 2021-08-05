@@ -3,9 +3,10 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getAnime, parseDescription } from '#utils/APIs/AniList';
-import { formatNumber, isNsfw } from '#utils/functions';
+import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Time } from '@sapphire/time-utilities';
 import { filterNullish, isNullish } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -30,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 
 		// Check if the current context allows NSFW
-		const nsfwEnabled = isNsfw(message.channel);
+		const nsfwEnabled = isNsfwChannel(message.channel);
 
 		// If the current context does not allow NSFW then filter out adult only content
 		const adultFilteredResults = nsfwEnabled ? results.media : results.media.filter((media) => !media?.isAdult);

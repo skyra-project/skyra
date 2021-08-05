@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
-import { isNsfw } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { cutText, isNullish } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -13,7 +13,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<ListenerOptions>({ event: Events.GuildMessageDelete })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
-		const key = GuildSettings.Channels.Logs[isNsfw(message.channel) ? 'MessageDeleteNsfw' : 'MessageDelete'];
+		const key = GuildSettings.Channels.Logs[isNsfwChannel(message.channel) ? 'MessageDeleteNsfw' : 'MessageDelete'];
 		const [ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await readSettings(message.guild, (settings) => [
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[key],

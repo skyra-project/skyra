@@ -16,6 +16,8 @@ import {
 } from 'discord.js';
 
 export type ChannelTypes = CategoryChannel | DMChannel | NewsChannel | StageChannel | StoreChannel | TextChannel | ThreadChannel | VoiceChannel;
+export type NonThreadGuildBasedChannelTypes = Extract<ChannelTypes, GuildChannel>;
+export type GuildBasedChannelTypes = NonThreadGuildBasedChannelTypes | ThreadChannel;
 export type TextBasedChannelTypes = Message['channel'];
 export type VoiceBasedChannelTypes = VoiceChannel | StageChannel;
 export type NonThreadGuildTextBasedChannelTypes = Extract<TextBasedChannelTypes, GuildChannel>;

@@ -1,15 +1,15 @@
 import { GuildEntity, writeSettings } from '#lib/database';
 import { canSendMessages } from '#utils/functions';
 import { Listener } from '@sapphire/framework';
-import { isNullish, Nullish, PickByValue } from '@sapphire/utilities';
-import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
+import { Awaited, isNullish, Nullish, PickByValue } from '@sapphire/utilities';
+import { DiscordAPIError, Guild, HTTPError, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
 
 export class UserListener extends Listener {
 	public async run(
 		guild: Guild,
 		logChannelId: string | Nullish,
 		key: PickByValue<GuildEntity, string | Nullish>,
-		makeMessage: () => Promise<MessageEmbed> | MessageEmbed
+		makeMessage: () => Awaited<MessageEmbed | MessageOptions>
 	) {
 		if (isNullish(logChannelId)) return;
 
@@ -23,8 +23,9 @@ export class UserListener extends Listener {
 		if (!canSendMessages(channel)) return;
 
 		const processed = await makeMessage();
+		const options: MessageOptions = processed instanceof MessageEmbed ? { embeds: [processed] } : processed;
 		try {
-			await channel.send({ embeds: [processed] });
+			await channel.send(options);
 		} catch (error) {
 			this.container.logger.fatal(
 				error instanceof DiscordAPIError || error instanceof HTTPError

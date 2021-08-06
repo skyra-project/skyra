@@ -63,11 +63,6 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		return new SkyraArgs(message, this, args, context, await fetchT(message));
 	}
 
-	public run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context): Awaited<unknown> {
-		if (!this.subCommands) throw new Error(`The command ${this.name} does not have a 'run' method and does not support sub-commands.`);
-		return this.subCommands.run({ message, args, context, command: this });
-	}
-
 	protected error(identifier: string | UserError, context?: unknown): never {
 		throw typeof identifier === 'string' ? new UserError({ identifier, context }) : identifier;
 	}

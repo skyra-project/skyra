@@ -3,9 +3,10 @@ import type { SkyraArgs } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { createMethodDecorator } from '@sapphire/decorators';
-import { isDMChannel, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
+import { isDMChannel } from '@sapphire/discord.js-utilities';
 import { Awaited, UserError } from '@sapphire/framework';
 import { Message, PermissionResolvable, Permissions } from 'discord.js';
+import { isGuildMessage } from './common';
 import { isAdmin, isModerator, isOwner } from './functions';
 
 /**
@@ -112,8 +113,8 @@ export const RequiresPermissions = (...permissionsResolvable: PermissionResolvab
 			throw new UserError({ identifier: LanguageKeys.Preconditions.SubCommandGuildOnly });
 		}
 
-		if (isGuildBasedChannel(message.channel)) {
-			const missingPermissions = message.channel.permissionsFor(message.guild!.me!)!.missing(resolved);
+		if (isGuildMessage(message)) {
+			const missingPermissions = message.channel.permissionsFor(message.guild.me!).missing(resolved);
 
 			if (missingPermissions.length) {
 				throw new UserError({

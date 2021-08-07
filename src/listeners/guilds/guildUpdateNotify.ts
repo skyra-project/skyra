@@ -106,7 +106,7 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 		}
 
 		if (previous.preferredLocale !== next.preferredLocale) {
-			yield this.displayPreferredLocale(t, previous.preferredLocale, next.preferredLocale);
+			yield this.displayPreferredLocale(t, previous.preferredLocale ?? null, next.preferredLocale ?? null);
 		}
 
 		if (previous.premiumSubscriptionCount !== next.premiumSubscriptionCount) {
@@ -227,7 +227,9 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateOwner, { previous: `<@${previous}>`, next: `<@${next}>` });
 	}
 
-	private displayPreferredLocale(t: TFunction, previous: string, next: string): string {
+	private displayPreferredLocale(t: TFunction, previous: string | null, next: string | null): string {
+		if (previous === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePreferredLocaleAdded, { value: next! });
+		if (next === null) return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePreferredLocaleRemoved, { value: previous! });
 		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdatePreferredLocale, { previous, next });
 	}
 

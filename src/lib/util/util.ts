@@ -11,9 +11,9 @@ import { send } from '@skyra/editable-commands';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import type { APIUser } from 'discord-api-types/v9';
 import {
+	AllowedImageSize,
 	Guild,
 	GuildChannel,
-	ImageSize,
 	ImageURLOptions,
 	Message,
 	MessageEmbed,
@@ -219,7 +219,7 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 	return payload;
 }
 
-export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
+export async function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
 		return await resolveImage(url);

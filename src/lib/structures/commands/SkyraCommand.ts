@@ -1,7 +1,7 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import type { CustomGet } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Awaited, CommandContext, PieceContext, PreconditionContainerArray, UserError } from '@sapphire/framework';
+import { CommandContext, PieceContext, PreconditionContainerArray, UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
 import type { Message } from 'discord.js';

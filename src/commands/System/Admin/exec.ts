@@ -34,7 +34,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getOptions(content: string): Promise<MessageOptions> {
-		// TODO: Check if we can send 4000 characters
 		if (content.length <= 2000) return { content };
 
 		const urlResult = await safeWrapPromise(getHaste(content));

@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
-import { ImageSize, Message, MessageEmbed } from 'discord.js';
+import { AllowedImageSize, Message, MessageEmbed } from 'discord.js';
 
-const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
+const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['a', 'av', 'ava'],
@@ -28,9 +28,9 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { embeds: [embed] });
 	}
 
-	private resolveSize(size: string): ImageSize {
+	private resolveSize(size: string): AllowedImageSize {
 		const sizeNum = Number(size);
 		if (Number.isNaN(sizeNum) || !VALID_SIZES.includes(sizeNum)) return 2048;
-		return sizeNum as ImageSize;
+		return sizeNum as AllowedImageSize;
 	}
 }

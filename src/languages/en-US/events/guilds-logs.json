@@ -108,6 +108,8 @@
 	"serverUpdateMfaRemoved": "• **Removed Multi-Factor Authentication**",
 	"serverUpdateName": "• **Name**: `{{previous}}` → `{{next}}`",
 	"serverUpdateOwner": "• **Owner**: {{previous}} → {{next}}",
+	"serverUpdatePreferredLocaleAdded": "• **Preferred Locale**: Not Set → `{{value}}`",
+	"serverUpdatePreferredLocaleRemoved": "• **Preferred Locale**: `{{value}}` → Not Set",
 	"serverUpdatePreferredLocale": "• **Preferred Locale**: `{{previous}}` → `{{next}}`",
 	"serverUpdatePremiumSubscriptionCountAdded": "• **Boosters**: Not Set → `{{value, number}}`",
 	"serverUpdatePremiumSubscriptionCountRemoved": "• **Boosters**: `{{value, number}}` → Not Set",

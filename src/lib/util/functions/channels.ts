@@ -1,21 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { ChannelTypes, GuildTextBasedChannelTypes, TextBasedChannelTypes, VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import type { GuildTextBasedChannelTypes, TextBasedChannelTypes, VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { UserError } from '@sapphire/framework';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import type { GuildChannel, Message, ThreadChannel } from 'discord.js';
-
-// TODO: Port those back to utilities
-export type NonThreadGuildBasedChannelTypes = Extract<ChannelTypes, GuildChannel>;
-export type GuildBasedChannelTypes = NonThreadGuildBasedChannelTypes | ThreadChannel;
-
-/**
- * Determines whether or not a channel comes from a guild.
- * @param channel The channel to test.
- * @returns Whether or not the channel is guild-based.
- */
-export function isGuildBasedChannel(channel: TextBasedChannelTypes): channel is GuildTextBasedChannelTypes {
-	return Reflect.has(channel, 'guild');
-}
+import type { Message, ThreadChannel } from 'discord.js';
 
 /**
  * Asserts a text-based channel is not a thread channel.

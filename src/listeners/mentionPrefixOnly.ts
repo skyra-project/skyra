@@ -1,9 +1,8 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { DMMessage, GuildMessage } from '#lib/types';
-import { isModerator } from '#utils/functions';
+import { isModerator, sendLocalizedMessage } from '#utils/functions';
 import { Events, Listener } from '@sapphire/framework';
-import { sendLocalized } from '@sapphire/plugin-i18next';
 import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 
@@ -13,8 +12,8 @@ export default class extends Listener<typeof Events.MentionPrefixOnly> {
 	}
 
 	private async dm(message: DMMessage) {
-		const prefix = await this.container.client.fetchPrefix(message);
-		return sendLocalized(message, { keys: LanguageKeys.Misc.PrefixReminder, formatOptions: { prefix } });
+		const prefix = (await this.container.client.fetchPrefix(message)) as string;
+		return sendLocalizedMessage(message, { key: LanguageKeys.Misc.PrefixReminder, formatOptions: { prefix } });
 	}
 
 	private async guild(message: GuildMessage) {

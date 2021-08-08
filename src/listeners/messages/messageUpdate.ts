@@ -13,7 +13,7 @@ export class UserListener extends Listener {
 		// If the message was sent by the system, return:
 		if (message.system) return;
 
-		// If the messaage was sent by a bot, return:
+		// If the message was sent by a bot, return:
 		if (message.author.bot) return;
 
 		// Run the message parser.

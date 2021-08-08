@@ -83,7 +83,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 			return;
 		}
 
-		const container = new PreconditionContainerArray(['BotOwner']);
+		const container = new PreconditionContainerArray(['BotOwner'], this.preconditions);
 		switch (options.permissionLevel ?? PermissionLevels.Everyone) {
 			case PermissionLevels.Everyone:
 				container.append('Everyone');

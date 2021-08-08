@@ -1,8 +1,11 @@
 import type { SkyraCommand } from '#lib/structures';
+import type { CustomFunctionGet, CustomGet } from '#lib/types';
 import { floatPromise, isGuildMessage, resolveOnErrorCodes } from '#utils/common';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
+import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
 import { Time } from '@sapphire/time-utilities';
+import type { NonNullObject } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
@@ -102,6 +105,60 @@ export async function sendTemporaryMessage(message: Message, options: string | M
 	floatPromise(deleteMessage(response, timer));
 	return response;
 }
+
+/**
+ * Send an editable localized message using `key`.
+ * @param message The message to reply to.
+ * @param key The key to be used when resolving.
+ * @example
+ * ```typescript
+ * await sendLocalizedMessage(message, LanguageKeys.Commands.General.Ping);
+ * // ➡ "Pinging..."
+ * ```
+ */
+export function sendLocalizedMessage(message: Message, key: LocalizedSimpleKey): Promise<Message>;
+/**
+ * Send an editable localized message using an object.
+ * @param message The message to reply to.
+ * @param options The options to be sent, requiring at least `key` to be passed.
+ * @example
+ * ```typescript
+ * await sendLocalizedMessage(message, {
+ * 	key: LanguageKeys.Commands.General.Ping
+ * });
+ * // ➡ "Pinging..."
+ * ```
+ * @example
+ * ```typescript
+ * const latency = 42;
+ *
+ * await sendLocalizedMessage(message, {
+ * 	key: LanguageKeys.Commands.General.PingPong,
+ * 	formatOptions: { latency }
+ * });
+ * // ➡ "Pong! Current latency is 42ms."
+ * ```
+ */
+export function sendLocalizedMessage<TArgs>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
+export async function sendLocalizedMessage(message: Message, options: LocalizedSimpleKey | LocalizedMessageOptions) {
+	if (typeof options === 'string') options = { key: options };
+
+	const content = await resolveKey(message, options.key, options.formatOptions);
+	return send(message, { ...options, content });
+}
+
+type LocalizedSimpleKey = CustomGet<string, string>;
+type LocalizedMessageOptions<TArgs extends StringMap = NonNullObject> = Omit<MessageOptions, 'content'> &
+	(
+		| {
+				key: LocalizedSimpleKey;
+				formatOptions?: TOptions<TArgs>;
+		  }
+		| {
+				key: CustomFunctionGet<string, TArgs, string>;
+				formatOptions: TOptions<TArgs>;
+		  }
+	);
 
 /**
  * The prompt confirmation options.

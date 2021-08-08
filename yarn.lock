@@ -1751,10 +1751,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.2.tgz#77496673c07f6dbe88fc22854f0e445f80f57444"
   integrity sha512-ihfYzGrSwd1WDa/9QnjM1lwPIBg1FyTnMZrZijIEbdZ8XKU0Ja+H0pz/Dxv1XUAgAVH69uYaPOr6RGqdySDZNg==
 
-"@skyra/editable-commands@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@skyra/editable-commands/-/editable-commands-2.0.0.tgz#7e0cd8cd13a5e16b3f3eea2918743e0e3a6c2630"
-  integrity sha512-bqWAeUWbrjUY/uhxlLU5ho1jaYN7ZkxNwGn05lRWmxEedJkx2xgnAl5Cw3kwrSM3QS2sAsNiZN95z8KuxBkavg==
+"@skyra/editable-commands@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@skyra/editable-commands/-/editable-commands-2.1.0.tgz#5c26b8716e99a4f7c48468dbda4f9a1603d69754"
+  integrity sha512-J2ok13AxditPel4pUknKFpLQDW7hF6Dchc8JnetGKlOJrHqy+j4/UJ+Qf46KgX/zsPcRB4Q5ydZIHAq4XNtK8g==
 
 "@skyra/gifenc@^1.0.0":
   version "1.0.0"

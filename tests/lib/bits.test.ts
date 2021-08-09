@@ -12,44 +12,43 @@ describe('Bits', () => {
 		});
 
 		test('GIVEN various permissions THEN returns an array of their names', () => {
-			const value = Number(PermissionFlagsBits.ADD_REACTIONS | PermissionFlagsBits.CONNECT | PermissionFlagsBits.MANAGE_ROLES);
+			const value = PermissionFlagsBits.AddReactions | PermissionFlagsBits.Connect | PermissionFlagsBits.ManageRoles;
 			expect(toPermissionsArray(value)).toStrictEqual(['ADD_REACTIONS', 'CONNECT', 'MANAGE_ROLES']);
 		});
 
 		test('GIVEN all permissions THEN returns an array with all the names', () => {
-			const value = Number(
-				PermissionFlagsBits.CREATE_INSTANT_INVITE |
-					PermissionFlagsBits.KICK_MEMBERS |
-					PermissionFlagsBits.BAN_MEMBERS |
-					PermissionFlagsBits.ADMINISTRATOR |
-					PermissionFlagsBits.MANAGE_CHANNELS |
-					PermissionFlagsBits.MANAGE_GUILD |
-					PermissionFlagsBits.ADD_REACTIONS |
-					PermissionFlagsBits.VIEW_AUDIT_LOG |
-					PermissionFlagsBits.PRIORITY_SPEAKER |
-					PermissionFlagsBits.STREAM |
-					PermissionFlagsBits.VIEW_CHANNEL |
-					PermissionFlagsBits.SEND_MESSAGES |
-					PermissionFlagsBits.SEND_TTS_MESSAGES |
-					PermissionFlagsBits.MANAGE_MESSAGES |
-					PermissionFlagsBits.EMBED_LINKS |
-					PermissionFlagsBits.ATTACH_FILES |
-					PermissionFlagsBits.READ_MESSAGE_HISTORY |
-					PermissionFlagsBits.MENTION_EVERYONE |
-					PermissionFlagsBits.USE_EXTERNAL_EMOJIS |
-					PermissionFlagsBits.VIEW_GUILD_INSIGHTS |
-					PermissionFlagsBits.CONNECT |
-					PermissionFlagsBits.SPEAK |
-					PermissionFlagsBits.MUTE_MEMBERS |
-					PermissionFlagsBits.DEAFEN_MEMBERS |
-					PermissionFlagsBits.MOVE_MEMBERS |
-					PermissionFlagsBits.USE_VAD |
-					PermissionFlagsBits.CHANGE_NICKNAME |
-					PermissionFlagsBits.MANAGE_NICKNAMES |
-					PermissionFlagsBits.MANAGE_ROLES |
-					PermissionFlagsBits.MANAGE_WEBHOOKS |
-					PermissionFlagsBits.MANAGE_EMOJIS
-			);
+			const value =
+				PermissionFlagsBits.CreateInstantInvite |
+				PermissionFlagsBits.KickMembers |
+				PermissionFlagsBits.BanMembers |
+				PermissionFlagsBits.Administrator |
+				PermissionFlagsBits.ManageChannels |
+				PermissionFlagsBits.ManageGuild |
+				PermissionFlagsBits.AddReactions |
+				PermissionFlagsBits.ViewAuditLog |
+				PermissionFlagsBits.PrioritySpeaker |
+				PermissionFlagsBits.Stream |
+				PermissionFlagsBits.ViewChannel |
+				PermissionFlagsBits.SendMessages |
+				PermissionFlagsBits.SendTTSMessages |
+				PermissionFlagsBits.ManageMessages |
+				PermissionFlagsBits.EmbedLinks |
+				PermissionFlagsBits.AttachFiles |
+				PermissionFlagsBits.ReadMessageHistory |
+				PermissionFlagsBits.MentionEveryone |
+				PermissionFlagsBits.UseExternalEmojis |
+				PermissionFlagsBits.ViewGuildInsights |
+				PermissionFlagsBits.Connect |
+				PermissionFlagsBits.Speak |
+				PermissionFlagsBits.MuteMembers |
+				PermissionFlagsBits.DeafenMembers |
+				PermissionFlagsBits.MoveMembers |
+				PermissionFlagsBits.UseVAD |
+				PermissionFlagsBits.ChangeNickname |
+				PermissionFlagsBits.ManageNicknames |
+				PermissionFlagsBits.ManageRoles |
+				PermissionFlagsBits.ManageWebhooks |
+				PermissionFlagsBits.ManageEmojisAndStickers;
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CREATE_INSTANT_INVITE',
 				'KICK_MEMBERS',
@@ -96,16 +95,15 @@ describe('Bits', () => {
 		});
 
 		test('GIVEN various flags THEN returns an array of their flags', () => {
-			const value = Number(GuildSystemChannelFlags.SUPPRESS_JOIN_NOTIFICATIONS | GuildSystemChannelFlags.SUPPRESS_PREMIUM_SUBSCRIPTIONS);
+			const value = GuildSystemChannelFlags.SuppressJoinNotifications | GuildSystemChannelFlags.SuppressPremiumSubscriptions;
 			expect(toChannelsArray(value)).toStrictEqual(['WELCOME_MESSAGE_DISABLED', 'BOOST_MESSAGE_DISABLED']);
 		});
 
 		test('GIVEN all flags THEN returns an array with all the flags', () => {
-			const value = Number(
-				GuildSystemChannelFlags.SUPPRESS_JOIN_NOTIFICATIONS |
-					GuildSystemChannelFlags.SUPPRESS_PREMIUM_SUBSCRIPTIONS |
-					GuildSystemChannelFlags.SUPPRESS_GUILD_REMINDER_NOTIFICATIONS
-			);
+			const value =
+				GuildSystemChannelFlags.SuppressJoinNotifications |
+				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
+				GuildSystemChannelFlags.SuppressGuildReminderNotifications;
 			expect(toChannelsArray(value)).toStrictEqual(['WELCOME_MESSAGE_DISABLED', 'BOOST_MESSAGE_DISABLED', 'REMINDER_MESSAGE_DISABLED']);
 		});
 	});

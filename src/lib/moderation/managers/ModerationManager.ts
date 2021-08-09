@@ -1,4 +1,6 @@
-import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
+import { ModerationEntity } from '#lib/database/entities';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings';
 import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';

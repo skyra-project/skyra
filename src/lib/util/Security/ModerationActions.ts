@@ -1,4 +1,6 @@
-import { GuildEntity, GuildSettings, ModerationEntity, readSettings, writeSettings } from '#lib/database';
+import type { GuildEntity, ModerationEntity } from '#lib/database/entities';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';

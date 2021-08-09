@@ -3,12 +3,12 @@ import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/
 
 describe('Bits', () => {
 	describe('Permissions', () => {
-		test('GIVEN permissionsFlags.size THEN returns 31', () => {
-			expect(permissionsFlags.size).toBe(31);
+		test('GIVEN permissionsFlags.size THEN returns 37', () => {
+			expect(permissionsFlags.size).toBe(37);
 		});
 
-		test('GIVEN permissionsOffset THEN returns 31', () => {
-			expect(permissionsOffset).toBe(31);
+		test('GIVEN permissionsOffset THEN returns 38', () => {
+			expect(Number(permissionsOffset)).toBe(38);
 		});
 
 		test('GIVEN various permissions THEN returns an array of their names', () => {
@@ -80,7 +80,7 @@ describe('Bits', () => {
 				'MANAGE_NICKNAMES',
 				'MANAGE_ROLES',
 				'MANAGE_WEBHOOKS',
-				'MANAGE_EMOJIS'
+				'MANAGE_EMOJIS_AND_STICKERS'
 			]);
 		});
 	});
@@ -96,7 +96,7 @@ describe('Bits', () => {
 
 		test('GIVEN various flags THEN returns an array of their flags', () => {
 			const value = GuildSystemChannelFlags.SuppressJoinNotifications | GuildSystemChannelFlags.SuppressPremiumSubscriptions;
-			expect(toChannelsArray(value)).toStrictEqual(['WELCOME_MESSAGE_DISABLED', 'BOOST_MESSAGE_DISABLED']);
+			expect(toChannelsArray(value)).toStrictEqual(['SUPPRESS_JOIN_NOTIFICATIONS', 'SUPPRESS_PREMIUM_SUBSCRIPTIONS']);
 		});
 
 		test('GIVEN all flags THEN returns an array with all the flags', () => {
@@ -104,7 +104,11 @@ describe('Bits', () => {
 				GuildSystemChannelFlags.SuppressJoinNotifications |
 				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
 				GuildSystemChannelFlags.SuppressGuildReminderNotifications;
-			expect(toChannelsArray(value)).toStrictEqual(['WELCOME_MESSAGE_DISABLED', 'BOOST_MESSAGE_DISABLED', 'REMINDER_MESSAGE_DISABLED']);
+			expect(toChannelsArray(value)).toStrictEqual([
+				'SUPPRESS_JOIN_NOTIFICATIONS',
+				'SUPPRESS_PREMIUM_SUBSCRIPTIONS',
+				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS'
+			]);
 		});
 	});
 });

@@ -1,6 +1,11 @@
 // Config must be the first to be loaded, as it sets the env:
 import 'reflect-metadata';
-import 'source-map-support/register';
+import sourceMapSupport from 'source-map-support';
+
+if (process.env.NODE_ENV !== 'test') {
+	sourceMapSupport.install();
+}
+
 import '#root/config';
 
 // Import everything else:

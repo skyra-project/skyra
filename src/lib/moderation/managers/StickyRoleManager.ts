@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings, readSettings, StickyRole, writeSettings } from '#lib/database';
+import type { StickyRole } from '#lib/database/entities';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings, writeSettings } from '#lib/database/settings';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 

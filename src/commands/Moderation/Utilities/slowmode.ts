@@ -2,12 +2,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
+import { hours } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import type { TextChannel } from 'discord.js';
 
-const MAXIMUM_DURATION = Time.Hour * 6;
+const MAXIMUM_DURATION = hours(6);
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sm'],

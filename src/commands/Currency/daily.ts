@@ -2,15 +2,15 @@ import type { ClientEntity, DbSet, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
+import { hours } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-const GRACE_PERIOD = Time.Hour;
-const DAILY_PERIOD = Time.Hour * 12;
+const GRACE_PERIOD = hours(1);
+const DAILY_PERIOD = hours(12);
 
 const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 

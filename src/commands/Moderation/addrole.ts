@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
@@ -22,7 +22,7 @@ export class UserModerationCommand extends ModerationCommand {
 		return {
 			targets: await args.repeat('user', { times: 10 }),
 			role: await args.pick('roleName'),
-			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
+			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: years(5) }).catch(() => null) : null,
 			reason: args.finished ? null : await args.rest('string')
 		};
 	}

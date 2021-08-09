@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -29,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 		const allowedRoles = await this.getAllowedRoles(args);
 		const time = await args.pick('time');
 		const offset = time.getTime() - Date.now();
-		if (offset < 9500) this.error(LanguageKeys.Giveaway.Time);
+		if (offset < seconds(9.5)) this.error(LanguageKeys.Giveaway.Time);
 		if (offset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 
 		const winners = await this.getWinners(args);

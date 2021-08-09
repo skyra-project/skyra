@@ -3,11 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { seconds, years } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Permissions, User } from 'discord.js';
 
@@ -55,7 +55,7 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		const duration = await args.rest('timespan', { minimum: Time.Second, maximum: Time.Year * 5 });
+		const duration = await args.rest('timespan', { minimum: seconds(1), maximum: years(5) });
 		await moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,

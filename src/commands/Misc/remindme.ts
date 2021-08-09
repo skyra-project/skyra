@@ -2,11 +2,11 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
+import { minutes } from '#utils/common';
 import { RequiresGuildContext, RequiresPermissions } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { chunk, cutText } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async create(message: Message, args: SkyraCommand.Args) {
-		const duration = await args.pick('timespan', { minimum: Time.Minute });
+		const duration = await args.pick('timespan', { minimum: minutes(1) });
 		const description = args.finished
 			? args.t(LanguageKeys.Commands.Social.RemindMeCreateNoDescription)
 			: await args.rest('string', { maximum: 1024 });

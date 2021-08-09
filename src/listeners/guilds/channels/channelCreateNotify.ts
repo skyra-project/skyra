@@ -2,10 +2,10 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
+import { seconds } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -114,7 +114,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private displayRateLimitPerUser(t: TFunction, value: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateRateLimit, { value: value * Time.Second });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateRateLimit, { value: seconds(value) });
 	}
 
 	private displayBitrate(t: TFunction, value: number) {

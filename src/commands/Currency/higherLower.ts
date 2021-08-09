@@ -2,10 +2,10 @@ import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
 	private readonly kReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
-	private readonly kTimer = Time.Minute * 3;
+	private readonly kTimer = minutes(3);
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { t } = args;

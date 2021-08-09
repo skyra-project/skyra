@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/Constants';
+import { months } from '#utils/common';
 import { Emojis } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -114,14 +114,14 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private getBoostEmoji(duration: number): string {
-		if (duration >= Time.Month * 24) return Emojis.BoostLevel9;
-		if (duration >= Time.Month * 18) return Emojis.BoostLevel8;
-		if (duration >= Time.Month * 15) return Emojis.BoostLevel7;
-		if (duration >= Time.Month * 12) return Emojis.BoostLevel6;
-		if (duration >= Time.Month * 9) return Emojis.BoostLevel5;
-		if (duration >= Time.Month * 6) return Emojis.BoostLevel4;
-		if (duration >= Time.Month * 3) return Emojis.BoostLevel3;
-		if (duration >= Time.Month * 2) return Emojis.BoostLevel2;
+		if (duration >= months(24)) return Emojis.BoostLevel9;
+		if (duration >= months(18)) return Emojis.BoostLevel8;
+		if (duration >= months(15)) return Emojis.BoostLevel7;
+		if (duration >= months(12)) return Emojis.BoostLevel6;
+		if (duration >= months(9)) return Emojis.BoostLevel5;
+		if (duration >= months(6)) return Emojis.BoostLevel4;
+		if (duration >= months(3)) return Emojis.BoostLevel3;
+		if (duration >= months(2)) return Emojis.BoostLevel2;
 		return Emojis.BoostLevel1;
 	}
 }

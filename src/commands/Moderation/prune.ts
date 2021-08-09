@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { days, floatPromise, seconds } from '#utils/common';
 import { andMix, BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
@@ -13,7 +13,6 @@ import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, IArgument } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
@@ -94,7 +93,7 @@ export class UserCommand extends SkyraCommand {
 		if (silent) return null;
 
 		const content = args.t(LanguageKeys.Commands.Moderation.PruneAlert, { count: filteredKeys.length, total: limit });
-		return sendTemporaryMessage(message, content, Time.Second * 10);
+		return sendTemporaryMessage(message, content, seconds(10));
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
@@ -133,7 +132,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async getAge(args: SkyraCommand.Args) {
 		const parameter = args.getOption(...ageOptions);
-		if (parameter === null) return Time.Day * 14;
+		if (parameter === null) return days(14);
 
 		const argument = this.timespan;
 		const optionResult = await argument.run(parameter, {
@@ -143,7 +142,7 @@ export class UserCommand extends SkyraCommand {
 			commandContext: args.commandContext,
 			message: args.message,
 			minimum: 0,
-			maximum: Time.Day * 14
+			maximum: days(14)
 		});
 		if (optionResult.success) return optionResult.value;
 		throw optionResult.error;

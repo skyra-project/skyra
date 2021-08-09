@@ -4,6 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { seconds } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
 import { RequiresLevel } from '#utils/decorators';
 import { isGuildOwner } from '#utils/functions';
@@ -16,7 +17,7 @@ import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envParseBoolean('REDIS_ENABLED'),
-	cooldownDelay: 20,
+	cooldownDelay: seconds(20),
 	description: LanguageKeys.Commands.Misc.AfkDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.AfkExtended,
 	runIn: ['GUILD_ANY'],

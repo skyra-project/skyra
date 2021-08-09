@@ -1,13 +1,12 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { isGuildMessage, isPrivateMessage, safeWrapPromise } from '#utils/common';
+import { isGuildMessage, isPrivateMessage, minutes, safeWrapPromise } from '#utils/common';
 import { RequiresPermissions } from '#utils/decorators';
 import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Collection, Message, MessageEmbed, Permissions, Util } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -140,7 +139,7 @@ export class UserCommand extends SkyraCommand {
 			);
 		}
 
-		return display.setIdle(Time.Minute * 10);
+		return display.setIdle(minutes(10));
 	}
 
 	@RequiresPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')

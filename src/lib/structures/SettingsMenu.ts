@@ -3,13 +3,12 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sendLoadingMessage } from '#utils/util';
 import { container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
@@ -19,7 +18,7 @@ import { SkyraArgs } from './commands/parsers/SkyraArgs';
 import type { SkyraCommand } from './commands/SkyraCommand';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
-const TIMEOUT = Time.Minute * 15;
+const TIMEOUT = minutes(15);
 
 const enum UpdateType {
 	Set,

@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { seconds } from '#utils/common';
 import { Argument, ArgumentContext } from '@sapphire/framework';
-import { Duration, Time } from '@sapphire/time-utilities';
+import { Duration } from '@sapphire/time-utilities';
 
 export class UserArgument extends Argument<number> {
 	public run(parameter: string, context: ArgumentContext) {
@@ -22,8 +23,8 @@ export class UserArgument extends Argument<number> {
 	}
 
 	private parseParameter(parameter: string): number {
-		const seconds = Number(parameter);
-		if (!Number.isNaN(seconds)) return seconds * Time.Second;
+		const number = Number(parameter);
+		if (!Number.isNaN(number)) return seconds(number);
 
 		const duration = new Duration(parameter).offset;
 		if (!Number.isNaN(duration)) return duration;

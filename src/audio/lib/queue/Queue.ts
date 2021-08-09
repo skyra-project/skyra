@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { Events } from '#lib/types/Enums';
-import { map, reverse } from '#utils/common';
+import { days, map, reverse } from '#utils/common';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, VoiceChannel } from 'discord.js';
 import type { QueueStore } from './QueueStore';
 
-const kExpireTime = Time.Day * 2;
+const kExpireTime = days(2);
 
 export interface QueueEntry {
 	author: string;

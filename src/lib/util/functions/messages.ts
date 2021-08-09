@@ -1,10 +1,9 @@
 import type { SkyraCommand } from '#lib/structures';
 import type { CustomFunctionGet, CustomGet } from '#lib/types';
-import { floatPromise, isGuildMessage, resolveOnErrorCodes } from '#utils/common';
+import { floatPromise, isGuildMessage, minutes, resolveOnErrorCodes } from '#utils/common';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
-import { Time } from '@sapphire/time-utilities';
 import type { NonNullObject } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
@@ -98,7 +97,7 @@ export async function deleteMessage(message: Message, time = 0): Promise<Message
  * @param timer The timer in which the message should be deleted, using {@link deleteMessage}.
  * @returns The response message.
  */
-export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = Time.Minute): Promise<Message> {
+export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = minutes(1)): Promise<Message> {
 	if (typeof options === 'string') options = { content: options };
 
 	const response = (await send(message, options)) as Message;
@@ -172,7 +171,7 @@ export interface PromptConfirmationMessageOptions extends MessageOptions {
 
 	/**
 	 * The time for the confirmation to run.
-	 * @default Time.Minute
+	 * @default minutes(1)
 	 */
 	time?: number;
 }
@@ -187,7 +186,7 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 	await response.react(PromptConfirmationReactions.No);
 
 	const target = container.client.users.resolveId(options.target ?? message.author)!;
-	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: Time.Minute, max: 1 });
+	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: minutes(1), max: 1 });
 
 	// Remove all reactions if the user has permissions to do so
 	if (canRemoveAllReactions(response)) {
@@ -200,7 +199,7 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 const promptConfirmationMessageRegExp = /^y|yes?|yeah?$/i;
 async function promptConfirmationMessage(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
 	const target = container.client.users.resolveId(options.target ?? message.author)!;
-	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: Time.Minute, max: 1 });
+	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: minutes(1), max: 1 });
 
 	return messages.size === 0 ? null : promptConfirmationMessageRegExp.test(messages.first()!.content);
 }
@@ -219,7 +218,7 @@ export async function promptConfirmation(message: Message, options: string | Pro
 	return canReact(response) ? promptConfirmationReaction(message, response, options) : promptConfirmationMessage(message, response, options);
 }
 
-export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = Time.Minute): Promise<string | null> {
+export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = minutes(1)): Promise<string | null> {
 	const response = await message.channel.send(sendOptions);
 	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));

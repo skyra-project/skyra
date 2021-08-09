@@ -4,12 +4,12 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import { hours, minutes, seconds } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { Collection, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -199,12 +199,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			case 0:
 				return 0;
 			case 1:
-				return Number(parts[0]) * Time.Second;
+				return seconds(Number(parts[0]));
 			case 2:
-				return Number(parts[0]) * Time.Minute + Number(parts[1]) * Time.Second;
+				return minutes(Number(parts[0])) + seconds(Number(parts[1]));
 			case 3:
 			default:
-				return Number(parts[0]) * Time.Hour + Number(parts[1]) * Time.Minute + Number(parts[2]) * Time.Second;
+				return hours(Number(parts[0])) + minutes(Number(parts[1])) + seconds(Number(parts[2]));
 		}
 	}
 }

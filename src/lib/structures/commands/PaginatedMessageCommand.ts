@@ -1,3 +1,4 @@
+import { seconds } from '#utils/common';
 import type { CommandContext, PieceContext } from '@sapphire/framework';
 import type { PermissionResolvable } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
@@ -5,7 +6,7 @@ import { SkyraCommand } from './SkyraCommand';
 export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: PaginatedMessageCommand.Options) {
 		super(context, {
-			cooldownDelay: 15,
+			cooldownDelay: seconds(15),
 			cooldownLimit: 2,
 
 			// Merge in all given options

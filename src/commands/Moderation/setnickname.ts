@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
@@ -19,7 +19,7 @@ export class UserModerationCommand extends ModerationCommand {
 		return {
 			targets: await args.repeat('user', { times: 10 }),
 			nickname: args.finished ? null : await args.pick('string'),
-			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: Time.Year * 5 }).catch(() => null) : null,
+			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: years(5) }).catch(() => null) : null,
 			reason: args.finished ? null : await args.rest('string')
 		};
 	}

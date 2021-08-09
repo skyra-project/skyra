@@ -1,10 +1,9 @@
 import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
-import { createReferPromise, floatPromise, ReferredPromise } from '#utils/common';
+import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish, StrictRequired } from '@sapphire/utilities';
 import { DiscordAPIError, Guild } from 'discord.js';
 import { In } from 'typeorm';
@@ -71,7 +70,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	public getLatestLogForUser(userId: string) {
 		if (this.size === 0) return null;
 
-		const minimumTime = Date.now() - 15 * Time.Second;
+		const minimumTime = Date.now() - seconds(15);
 		return this.reduce<ModerationEntity | null>(
 			(prev, curr) =>
 				curr.userId === userId

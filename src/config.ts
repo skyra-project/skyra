@@ -12,6 +12,7 @@ import { Emojis, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
+import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import { APIWebhook, WebhookType } from 'discord-api-types/v9';
 import {
@@ -21,10 +22,12 @@ import {
 	DefaultMessageNotificationLevel,
 	ExplicitContentFilterLevel,
 	LimitedCollection,
-	Options
+	Options,
+	Permissions,
+	PermissionString
 } from 'discord.js';
 import { config } from 'dotenv-cra';
-import i18next, { FormatFunction } from 'i18next';
+import i18next, { FormatFunction, InterpolationOptions } from 'i18next';
 import { join } from 'path';
 
 // Read config:
@@ -120,6 +123,129 @@ function parseRegExpPrefix(): RegExp | undefined {
 export const PROJECT_ROOT = join(rootFolder, process.env.OVERRIDE_ROOT_PATH ?? 'dist');
 export const LANGUAGE_ROOT = join(PROJECT_ROOT, 'languages');
 
+function parseInternationalizationDefaultVariablesPermissions() {
+	const keys = Object.keys(Permissions.FLAGS) as readonly PermissionString[];
+	const entries = keys.map((key) => [key, key] as const);
+
+	return Object.fromEntries(entries) as Readonly<Record<PermissionString, PermissionString>>;
+}
+
+function parseInternationalizationDefaultVariables() {
+	return {
+		TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
+		VERSION: process.env.CLIENT_VERSION,
+		LOADING: Emojis.Loading,
+		SHINY: Emojis.Shiny,
+		GREENTICK: Emojis.GreenTick,
+		REDCROSS: Emojis.RedCross,
+		DEFAULT_PREFIX: process.env.CLIENT_PREFIX,
+		CLIENT_ID: process.env.CLIENT_ID,
+		...parseInternationalizationDefaultVariablesPermissions()
+	};
+}
+
+function parseInternationalizationInterpolation(): InterpolationOptions {
+	return {
+		escapeValue: false,
+		defaultVariables: parseInternationalizationDefaultVariables(),
+		format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
+			switch (format as LanguageFormatters) {
+				case LanguageFormatters.AndList: {
+					return getHandler(language!).listAnd.format(value as string[]);
+				}
+				case LanguageFormatters.OrList: {
+					return getHandler(language!).listOr.format(value as string[]);
+				}
+				case LanguageFormatters.Permissions: {
+					return i18next.t(`permissions:${value}`, { ...options, lng: language });
+				}
+				case LanguageFormatters.PermissionsAndList: {
+					return getHandler(language!).listAnd.format(
+						(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
+					);
+				}
+				case LanguageFormatters.HumanLevels: {
+					return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
+				}
+				case LanguageFormatters.ToTitleCase: {
+					return toTitleCase(value);
+				}
+				case LanguageFormatters.ExplicitContentFilter: {
+					switch (value as ExplicitContentFilterLevel) {
+						case 'DISABLED':
+							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterDisabled, { ...options, lng: language });
+						case 'MEMBERS_WITHOUT_ROLES':
+							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterMembersWithoutRoles, { ...options, lng: language });
+						case 'ALL_MEMBERS':
+							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterAllMembers, { ...options, lng: language });
+						default:
+							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
+					}
+				}
+				case LanguageFormatters.MessageNotifications: {
+					switch (value as DefaultMessageNotificationLevel) {
+						case 'ALL_MESSAGES':
+							return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
+						case 'ONLY_MENTIONS':
+							return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
+						default:
+							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
+					}
+				}
+				case LanguageFormatters.CodeBlock: {
+					return codeBlock('', value);
+				}
+				case LanguageFormatters.JsCodeBlock: {
+					return codeBlock('js', value);
+				}
+				case LanguageFormatters.Number: {
+					return getHandler(language!).number.format(value as number);
+				}
+				case LanguageFormatters.NumberCompact: {
+					return getHandler(language!).numberCompact.format(value as number);
+				}
+				case LanguageFormatters.Ordinal: {
+					return getHandler(language!).ordinal(value as number);
+				}
+				case LanguageFormatters.Duration: {
+					return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
+				}
+				case LanguageFormatters.Date:
+					return getHandler(language!).date.format(value as number);
+				case LanguageFormatters.DateFull:
+					return getHandler(language!).dateFull.format(value as number);
+				case LanguageFormatters.DateTime: {
+					return getHandler(language!).dateTime.format(value as number);
+				}
+				default:
+					return value as string;
+			}
+		}
+	};
+}
+
+function parseInternationalizationOptions(): InternationalizationOptions {
+	return {
+		defaultMissingKey: 'default',
+		defaultNS: 'globals',
+		defaultLanguageDirectory: LANGUAGE_ROOT,
+		i18next: (_: string[], languages: string[]) => ({
+			supportedLngs: languages,
+			preload: languages,
+			returnObjects: true,
+			returnEmptyString: false,
+			returnNull: false,
+			load: 'all',
+			lng: 'en-US',
+			fallbackLng: 'en-US',
+			defaultNS: 'globals',
+			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
+			initImmediate: false,
+			interpolation: parseInternationalizationInterpolation()
+		})
+	};
+}
+
 export const CLIENT_OPTIONS: ClientOptions = {
 	audio: parseAudio(),
 	allowedMentions: { users: [], roles: [] },
@@ -140,6 +266,8 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	],
 	loadDefaultErrorListeners: false,
 	makeCache: Options.cacheWithLimits({
+		// TODO: Uncomment this with v13.1.0
+		// ...Options.defaultMakeCacheSettings,
 		MessageManager: {
 			sweepInterval: 180,
 			sweepFilter: LimitedCollection.filterByLifetime({
@@ -148,6 +276,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 			})
 		}
 	}),
+	partials: ['CHANNEL'],
 	presence: { activities: parsePresenceActivity() },
 	regexPrefix: parseRegExpPrefix(),
 	restTimeOffset: 0,
@@ -159,144 +288,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	logger: {
 		level: envParseString('NODE_ENV') === 'production' ? LogLevel.Info : LogLevel.Debug
 	},
-	i18n: {
-		defaultMissingKey: 'default',
-		defaultNS: 'globals',
-		defaultLanguageDirectory: LANGUAGE_ROOT,
-		i18next: (_: string[], languages: string[]) => ({
-			supportedLngs: languages,
-			preload: languages,
-			returnObjects: true,
-			returnEmptyString: false,
-			returnNull: false,
-			load: 'all',
-			lng: 'en-US',
-			fallbackLng: 'en-US',
-			defaultNS: 'globals',
-			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
-			initImmediate: false,
-			interpolation: {
-				escapeValue: false,
-				defaultVariables: {
-					TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
-					VERSION: process.env.CLIENT_VERSION,
-					LOADING: Emojis.Loading,
-					SHINY: Emojis.Shiny,
-					GREENTICK: Emojis.GreenTick,
-					REDCROSS: Emojis.RedCross,
-					DEFAULT_PREFIX: process.env.CLIENT_PREFIX,
-					CLIENT_ID: process.env.CLIENT_ID,
-					/* Permissions */
-					ADD_REACTIONS: 'ADD_REACTIONS',
-					ADMINISTRATOR: 'ADMINISTRATOR',
-					ATTACH_FILES: 'ATTACH_FILES',
-					BAN_MEMBERS: 'BAN_MEMBERS',
-					CHANGE_NICKNAME: 'CHANGE_NICKNAME',
-					CONNECT: 'CONNECT',
-					CREATE_INSTANT_INVITE: 'CREATE_INSTANT_INVITE',
-					DEAFEN_MEMBERS: 'DEAFEN_MEMBERS',
-					EMBED_LINKS: 'EMBED_LINKS',
-					KICK_MEMBERS: 'KICK_MEMBERS',
-					MANAGE_CHANNELS: 'MANAGE_CHANNELS',
-					MANAGE_EMOJIS: 'MANAGE_EMOJIS',
-					MANAGE_GUILD: 'MANAGE_GUILD',
-					MANAGE_MESSAGES: 'MANAGE_MESSAGES',
-					MANAGE_NICKNAMES: 'MANAGE_NICKNAMES',
-					MANAGE_ROLES: 'MANAGE_ROLES',
-					MANAGE_WEBHOOKS: 'MANAGE_WEBHOOKS',
-					MENTION_EVERYONE: 'MENTION_EVERYONE',
-					MOVE_MEMBERS: 'MOVE_MEMBERS',
-					MUTE_MEMBERS: 'MUTE_MEMBERS',
-					PRIORITY_SPEAKER: 'PRIORITY_SPEAKER',
-					READ_MESSAGE_HISTORY: 'READ_MESSAGE_HISTORY',
-					REQUEST_TO_SPEAK: 'REQUEST_TO_SPEAK',
-					SEND_MESSAGES: 'SEND_MESSAGES',
-					SEND_TTS_MESSAGES: 'SEND_TTS_MESSAGES',
-					SPEAK: 'SPEAK',
-					STREAM: 'STREAM',
-					USE_APPLICATION_COMMANDS: 'USE_APPLICATION_COMMANDS',
-					USE_EXTERNAL_EMOJIS: 'USE_EXTERNAL_EMOJIS',
-					USE_VAD: 'USE_VAD',
-					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
-					VIEW_CHANNEL: 'VIEW_CHANNEL',
-					VIEW_GUILD_INSIGHTS: 'VIEW_GUILD_INSIGHTS'
-				},
-				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
-					switch (format as LanguageFormatters) {
-						case LanguageFormatters.AndList: {
-							return getHandler(language!).listAnd.format(value as string[]);
-						}
-						case LanguageFormatters.OrList: {
-							return getHandler(language!).listOr.format(value as string[]);
-						}
-						case LanguageFormatters.Permissions: {
-							return i18next.t(`permissions:${value}`, { ...options, lng: language });
-						}
-						case LanguageFormatters.PermissionsAndList: {
-							return getHandler(language!).listAnd.format(
-								(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
-							);
-						}
-						case LanguageFormatters.HumanLevels: {
-							return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
-						}
-						case LanguageFormatters.ToTitleCase: {
-							return toTitleCase(value);
-						}
-						case LanguageFormatters.ExplicitContentFilter: {
-							switch (value as ExplicitContentFilterLevel) {
-								case 'DISABLED':
-									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterDisabled, { ...options, lng: language });
-								case 'MEMBERS_WITHOUT_ROLES':
-									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterMembersWithoutRoles, { ...options, lng: language });
-								case 'ALL_MEMBERS':
-									return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterAllMembers, { ...options, lng: language });
-								default:
-									return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-							}
-						}
-						case LanguageFormatters.MessageNotifications: {
-							switch (value as DefaultMessageNotificationLevel) {
-								case 'ALL_MESSAGES':
-									return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
-								case 'ONLY_MENTIONS':
-									return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
-								default:
-									return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-							}
-						}
-						case LanguageFormatters.CodeBlock: {
-							return codeBlock('', value);
-						}
-						case LanguageFormatters.JsCodeBlock: {
-							return codeBlock('js', value);
-						}
-						case LanguageFormatters.Number: {
-							return getHandler(language!).number.format(value as number);
-						}
-						case LanguageFormatters.NumberCompact: {
-							return getHandler(language!).numberCompact.format(value as number);
-						}
-						case LanguageFormatters.Ordinal: {
-							return getHandler(language!).ordinal(value as number);
-						}
-						case LanguageFormatters.Duration: {
-							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
-						}
-						case LanguageFormatters.Date:
-							return getHandler(language!).date.format(value as number);
-						case LanguageFormatters.DateFull:
-							return getHandler(language!).dateFull.format(value as number);
-						case LanguageFormatters.DateTime: {
-							return getHandler(language!).dateTime.format(value as number);
-						}
-						default:
-							return value as string;
-					}
-				}
-			}
-		})
-	}
+	i18n: parseInternationalizationOptions()
 };
 
 function parseWebhookError(): APIWebhook | null {

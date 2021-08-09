@@ -1,11 +1,10 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
-import { resolveOnErrorCodes } from '#utils/common';
+import { days, resolveOnErrorCodes } from '#utils/common';
 import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import { Time } from '@sapphire/time-utilities';
 import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v9';
 
 @ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.ChannelDelete, emitter: 'ws' })
@@ -46,7 +45,7 @@ export class UserListener extends Listener {
 			// Filter messages, bulk-messages only work for messages that are younger than 14 days.
 			const oldMessages: string[] = [];
 			const newMessages: string[] = [];
-			const oldDate = Date.now() - Time.Day * 14;
+			const oldDate = Date.now() - days(14);
 			for (const result of filteredResults) {
 				const snowflake = DiscordSnowflake.deconstruct(result);
 				const timestamp = Number(snowflake.timestamp);

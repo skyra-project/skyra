@@ -2,10 +2,10 @@
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
+import { minutes, seconds } from '#utils/common';
 import { fetchReactionUsers } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { Time } from '@sapphire/time-utilities';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
@@ -96,7 +96,7 @@ export class GiveawayEntity extends BaseEntity {
 	private get state() {
 		const { remaining } = this;
 		if (remaining <= 0) return States.Finished;
-		if (remaining < Time.Second * 20) return States.LastChance;
+		if (remaining < seconds(20)) return States.LastChance;
 		return States.Running;
 	}
 
@@ -227,13 +227,13 @@ export class GiveawayEntity extends BaseEntity {
 
 	private calculateNextRefresh() {
 		const { remaining } = this;
-		if (remaining < Time.Second * 5) return Date.now() + Time.Second;
-		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - Time.Second * 6, Time.Second * 5);
-		if (remaining < Time.Minute * 2) return Date.now() + Time.Second * 15;
-		if (remaining < Time.Minute * 5) return Date.now() + Time.Second * 20;
-		if (remaining < Time.Minute * 15) return Date.now() + Time.Minute;
-		if (remaining < Time.Minute * 30) return Date.now() + Time.Minute * 2;
-		return Date.now() + Time.Minute * 5;
+		if (remaining < seconds(5)) return Date.now() + seconds(1);
+		if (remaining < seconds(30)) return Date.now() + Math.min(remaining - seconds(6), seconds(5));
+		if (remaining < minutes(2)) return Date.now() + seconds(15);
+		if (remaining < minutes(5)) return Date.now() + seconds(20);
+		if (remaining < minutes(15)) return Date.now() + minutes(1);
+		if (remaining < minutes(30)) return Date.now() + minutes(2);
+		return Date.now() + minutes(5);
 	}
 
 	private async pickWinners() {

@@ -1,4 +1,3 @@
-import { RateLimitManager } from '@sapphire/ratelimits';
 import type {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
@@ -6,11 +5,13 @@ import type {
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
+import { days } from '#utils/common';
+import { Enumerable } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
-import { createHmac } from 'crypto';
+import { RateLimitManager } from '@sapphire/ratelimits';
 import { Time } from '@sapphire/time-utilities';
-import { Enumerable } from '@sapphire/decorators';
+import { createHmac } from 'crypto';
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',
@@ -101,7 +102,7 @@ export class Twitch {
 					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerId}`,
 					'hub.mode': action,
 					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerId}`,
-					'hub.lease_seconds': (9 * Time.Day) / Time.Second,
+					'hub.lease_seconds': days(9) / Time.Second,
 					'hub.secret': this.webhookSecret
 				}),
 				headers: {

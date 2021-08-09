@@ -3,12 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import type { User } from 'discord.js';
 
@@ -25,7 +24,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
-			cooldownDelay: 8,
+			cooldownDelay: seconds(8),
 			cooldownLimit: 2,
 			flags: ['no-author', 'authored'],
 			optionalDuration: false,
@@ -169,7 +168,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (args.finished) return null;
 		if (!this.optionalDuration) return null;
 
-		const result = await args.pickResult('timespan', { minimum: 0, maximum: Time.Year * 5 });
+		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
 		if (result.success) return result.value;
 		if (result.error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
 		throw result.error;

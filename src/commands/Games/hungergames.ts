@@ -2,12 +2,12 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { deleteMessage, isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
-import { Time } from '@sapphire/time-utilities';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import type { TFunction } from 'i18next';
@@ -92,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 					if (!canSendMessages(message.channel)) return;
 
 					// Refresh the LLRC's timer, send new message with new reactions:
-					game.llrc.setTime(Time.Minute * 2);
+					game.llrc.setTime(minutes(2));
 					gameMessage = (await message.channel.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);

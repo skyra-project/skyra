@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { SISTER_CLIENTS } from '#root/config';
+import { seconds } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandContext } from '@sapphire/framework';
@@ -10,7 +11,7 @@ import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
-	cooldownDelay: 30,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Social.MarryDescription,
 	extendedHelp: LanguageKeys.Commands.Social.MarryExtended
 })

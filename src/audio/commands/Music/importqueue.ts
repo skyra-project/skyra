@@ -3,7 +3,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
-import { empty, filter, map, take } from '#utils/common';
+import { empty, filter, map, seconds, take } from '#utils/common';
 import { getAudio, isDJ } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -13,7 +13,7 @@ import { maximumExportQueueSize } from './exportqueue';
 
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['iq'],
-	cooldownDelay: 30,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Music.ImportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended
 })

@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Colors } from '#lib/types/Constants';
+import { minutes, seconds } from '#utils/common';
 import { random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -21,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const time = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second * 10, maximum: Time.Minute * 2 });
+		const time = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(10), maximum: minutes(2) });
 		const [width, height, length] = await Promise.all([
 			this.parseOption(args, ['x', 'width'], 8, 1, 10),
 			this.parseOption(args, ['y', 'height'], 3, 1, 8),

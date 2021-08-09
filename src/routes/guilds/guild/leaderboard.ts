@@ -1,12 +1,12 @@
 import { ratelimit } from '#lib/api/utils';
-import { iteratorRange } from '#utils/common';
+import { iteratorRange, seconds } from '#utils/common';
 import { fetchAllLeaderBoardEntries } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 
 @ApplyOptions<RouteOptions>({ name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' })
 export class UserRoute extends Route {
-	@ratelimit(2, 2500)
+	@ratelimit(seconds(5), 2)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const guildId = request.params.guild;
 

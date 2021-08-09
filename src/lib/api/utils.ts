@@ -26,8 +26,8 @@ export const authenticated = () =>
  * @param limit The amount of times a {@link RateLimit} can drip before it's limited.
  * @param auth Whether or not this should be auth-limited
  */
-export function ratelimit(time: number, limit: number, auth = false) {
-	const manager = new RateLimitManager(limit, time);
+export function ratelimit(time: number, limit = 1, auth = false) {
+	const manager = new RateLimitManager(time, limit);
 	const xRateLimitLimit = time;
 	return createFunctionInhibitor(
 		(request: ApiRequest, response: ApiResponse) => {

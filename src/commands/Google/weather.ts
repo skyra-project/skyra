@@ -12,6 +12,7 @@ import {
 	ResolvedConditions,
 	ValueWrapper
 } from '#lib/weather';
+import { seconds } from '#utils/common';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@skyra/editable-commands';
@@ -26,7 +27,7 @@ const kelvin = ['kelvin', 'k'];
 const imperialCountries = ['US', 'LR', 'MM'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldownDelay: 30,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	flags: [...imperial, ...metric, ...kelvin],

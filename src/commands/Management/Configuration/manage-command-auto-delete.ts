@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { minutes, seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Time } from '@sapphire/time-utilities';
 import { codeBlock } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 
@@ -20,7 +20,7 @@ import { send } from '@skyra/editable-commands';
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName');
-		const time = await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute * 2 });
+		const time = await args.pick('timespan', { minimum: seconds(1), maximum: minutes(2) });
 
 		await writeSettings(message.guild, (settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
@@ -66,7 +66,7 @@ export class UserCommand extends SkyraCommand {
 		const list: string[] = [];
 		for (const entry of commandAutoDelete) {
 			const channel = this.container.client.channels.cache.get(entry[0]) as GuildTextBasedChannelTypes;
-			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: entry[1] * Time.Second })}`);
+			if (channel) list.push(`${channel.name.padEnd(26)} :: ${args.t(LanguageKeys.Globals.DurationValue, { value: seconds(entry[1]) })}`);
 		}
 		if (!list.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 

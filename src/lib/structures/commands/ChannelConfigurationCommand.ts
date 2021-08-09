@@ -3,6 +3,7 @@ import { writeSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { seconds } from '#utils/common';
 import { assertNonThread } from '#utils/functions';
 import { Args, container, IArgument, PieceContext } from '@sapphire/framework';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
@@ -16,8 +17,8 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 
 	public constructor(context: PieceContext, options: ChannelConfigurationCommand.Options) {
 		super(context, {
+			cooldownDelay: seconds(10),
 			cooldownLimit: 2,
-			cooldownDelay: 10,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['GUILD_ANY'],
 			...options

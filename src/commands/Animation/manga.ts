@@ -3,11 +3,11 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getManga, parseDescription } from '#utils/APIs/AniList';
+import { minutes } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
-import { Time } from '@sapphire/time-utilities';
 import { filterNullish, isNullish } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 
@@ -80,7 +80,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.duration) {
 						description.push(
 							`**${anilistTitles.episodeLength}**: ${t(LanguageKeys.Globals.DurationValue, {
-								value: result.duration * Time.Minute,
+								value: minutes(result.duration),
 								precision: 1
 							})}`
 						);

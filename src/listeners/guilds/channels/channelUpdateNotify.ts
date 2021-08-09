@@ -2,12 +2,12 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
+import { seconds } from '#utils/common';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildBasedChannelTypes, NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import { DMChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -210,9 +210,9 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	}
 
 	private displayRateLimitPerUser(t: TFunction, previous: number, next: number) {
-		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitAdded, { value: next * Time.Second });
-		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitRemoved, { value: previous * Time.Second });
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimit, { previous: previous * Time.Second, next: next * Time.Second });
+		if (previous === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitAdded, { value: seconds(next) });
+		if (next === 0) return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimitRemoved, { value: seconds(previous) });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateRateLimit, { previous: seconds(previous), next: seconds(next) });
 	}
 
 	private displayBitrate(t: TFunction, previous: number, next: number) {

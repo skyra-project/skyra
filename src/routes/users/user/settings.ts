@@ -1,4 +1,5 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
+import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { inspect } from 'util';
@@ -11,7 +12,7 @@ interface BodyData {
 @ApplyOptions<RouteOptions>({ name: 'userSettings', route: 'users/@me/settings' })
 export class UserRoute extends Route {
 	@authenticated()
-	@ratelimit(5, 1000, true)
+	@ratelimit(seconds(1), 5, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const { users } = this.container.db;
 		const user = await users.ensureProfile(request.auth!.id);
@@ -20,7 +21,7 @@ export class UserRoute extends Route {
 	}
 
 	@authenticated()
-	@ratelimit(2, 1000, true)
+	@ratelimit(seconds(1), 2, true)
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { data: BodyData };
 

@@ -1,8 +1,8 @@
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { noop } from '@sapphire/utilities';
 import type { Guild, User } from 'discord.js';
+import { minutes } from './common';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
@@ -57,7 +57,7 @@ export class LongLivingReactionCollector {
 		return this;
 	}
 
-	public static collectOne({ filter = () => true, time = Time.Minute * 5 }: LLRCCollectOneOptions = {}) {
+	public static collectOne({ filter = () => true, time = minutes(5) }: LLRCCollectOneOptions = {}) {
 		return new Promise<LLRCData | null>((resolve) => {
 			const llrc = new LongLivingReactionCollector(
 				(reaction) => {

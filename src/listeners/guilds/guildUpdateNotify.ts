@@ -2,10 +2,10 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#lib/types/Constants';
 import { toChannelsArray } from '#utils/bits';
+import { seconds } from '#utils/common';
 import { differenceArray, differenceBitField } from '#utils/common/comparators';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish } from '@sapphire/utilities';
 import {
 	DefaultMessageNotificationLevel,
@@ -161,7 +161,7 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 	}
 
 	private displayAfkTimeout(t: TFunction, previous: number, next: number): string {
-		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateAfkTimeout, { previous: previous * Time.Second, next: next * Time.Second });
+		return t(LanguageKeys.Events.Guilds.Logs.ServerUpdateAfkTimeout, { previous: seconds(previous), next: seconds(next) });
 	}
 
 	private displayBanner(t: TFunction, previous: string | null, next: string | null): string {

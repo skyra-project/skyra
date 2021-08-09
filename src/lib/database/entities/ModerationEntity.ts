@@ -3,6 +3,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import { Events } from '#lib/types/Enums';
+import { minutes, years } from '#utils/common';
 import {
 	metadata,
 	ModerationManagerDescriptionData,
@@ -27,7 +28,7 @@ export class ModerationEntity extends BaseEntity {
 	#manager: ModerationManager = null!;
 	#moderator: User | null = null;
 	#user: User | null = null;
-	#timeout = Date.now() + Time.Minute * 15;
+	#timeout = Date.now() + minutes(15);
 
 	@PrimaryColumn('integer')
 	public caseId = -1;
@@ -359,7 +360,7 @@ export class ModerationEntity extends BaseEntity {
 			if (typeof duration === 'number' && (duration <= 0 || duration > Time.Year)) duration = null;
 
 			if (isNumber(duration)) {
-				if (duration < 0 || duration > Time.Year * 5) {
+				if (duration < 0 || duration > years(5)) {
 					throw new UserError({
 						identifier: LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent,
 						context: { duration }

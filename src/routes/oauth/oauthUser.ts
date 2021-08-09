@@ -1,4 +1,5 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
+import { minutes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { ApiRequest, ApiResponse, HttpCodes, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -9,7 +10,7 @@ import { stringify } from 'querystring';
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export class UserRoute extends Route {
 	@authenticated()
-	@ratelimit(2, Time.Minute * 5, true)
+	@ratelimit(minutes(5), 2, true)
 	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (typeof requestBody.action !== 'string') {

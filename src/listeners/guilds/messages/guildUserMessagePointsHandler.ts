@@ -1,15 +1,15 @@
 import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { minutes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { RateLimitManager } from '@sapphire/ratelimits';
-import { Time } from '@sapphire/time-utilities';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 
 @ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
-	private readonly rateLimits = new RateLimitManager(Time.Minute, 1);
+	private readonly rateLimits = new RateLimitManager(minutes(1), 1);
 
 	public async run(message: GuildMessage) {
 		const [enabled, multiplier] = await readSettings(message.guild, (settings) => [

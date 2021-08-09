@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { map } from '#utils/common';
+import { map, seconds } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
@@ -20,7 +20,7 @@ const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['announce'],
 	cooldownLimit: 6,
-	cooldownDelay: 30,
+	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Announcement.AnnouncementDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,

@@ -13,12 +13,12 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
+import { days } from '#utils/common';
 import { RequiresPermissions } from '#utils/decorators';
 import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { chunk } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Guild, MessageEmbed } from 'discord.js';
@@ -276,7 +276,7 @@ export class UserCommand extends SkyraCommand {
 			.values({
 				id: streamer.id,
 				isStreaming: false,
-				expiresAt: new Date(Date.now() + Time.Day * 8),
+				expiresAt: new Date(Date.now() + days(8)),
 				guildIds: [guild.id]
 			})
 			.onConflict(/* sql */ `(id) DO UPDATE SET guild_ids = ARRAY_CAT(twitch_stream_subscription.guild_ids, ARRAY['${guild.id}']::VARCHAR[])`)

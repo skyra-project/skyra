@@ -1,10 +1,10 @@
 import { envParseBoolean, envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { hours } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageAttachment } from 'discord.js';
 
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const image = await (this.pendingPromise ??= this.getOutfluxImage().finally(() => {
 			this.pendingPromise = null;
 		}));
-		this.nextRefresh = Date.now() + Time.Hour * 12;
+		this.nextRefresh = Date.now() + hours(12);
 		this.attachment = new MessageAttachment(image, 'growth.png');
 
 		return send(message, { files: [this.attachment] });

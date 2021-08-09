@@ -1,11 +1,10 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { floatPromise } from '#utils/common';
+import { floatPromise, minutes, seconds } from '#utils/common';
 import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
@@ -24,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 		const category = await args.pick(UserCommand.category).catch(() => CATEGORIES.general);
 		const questionType = await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
-		const duration = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
+		const duration = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(1), maximum: minutes(1) });
 
 		if (this.#channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.TriviaActiveGame);
 		this.#channels.add(message.channel.id);

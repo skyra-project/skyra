@@ -3,11 +3,11 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { seconds } from '#utils/common';
 import { isGuildOwner, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { Time } from '@sapphire/time-utilities';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<ListenerOptions>({ enabled: envParseBoolean('REDIS_ENABLED'), event: Events.GuildUserMessage })
 export class UserListener extends Listener {
-	private readonly threshold = Time.Second * 30;
+	private readonly threshold = seconds(30);
 
 	public async run(message: GuildMessage) {
 		await this.removeAfk(message);
@@ -45,7 +45,7 @@ export class UserListener extends Listener {
 		]);
 
 		await Promise.all([this.removeNickName(message, entry.name, prefix, t), this.removeRole(message, roleId)]);
-		await sendTemporaryMessage(message, t(LanguageKeys.Events.Messages.AfkRemove, { user: message.author.toString() }), Time.Second * 10);
+		await sendTemporaryMessage(message, t(LanguageKeys.Events.Messages.AfkRemove, { user: message.author.toString() }), seconds(10));
 	}
 
 	private async removeNickName(message: GuildMessage, oldName: string, prefix: string | Nullish, t: TFunction) {

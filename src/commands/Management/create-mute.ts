@@ -3,17 +3,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { minutes } from '#utils/common';
 import { Emojis } from '#utils/constants';
 import { canReact, getSecurity, promptConfirmation, promptForMessage } from '#utils/functions';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument, Result, UserError } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { send } from '@skyra/editable-commands';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldownDelay: Time.Minute * 5,
+	cooldownDelay: minutes(5),
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,

@@ -1,7 +1,7 @@
 import Collection from '@discordjs/collection';
 import { container } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import type { Client } from 'discord.js';
+import { minutes } from './common';
 import { PreciseTimeout } from './PreciseTimeout';
 
 /**
@@ -100,7 +100,7 @@ export class Leaderboard {
 		await promise;
 
 		// Set the timeout for the refresh
-		const timeout = new PreciseTimeout(Time.Minute * 10);
+		const timeout = new PreciseTimeout(minutes(10));
 		this.kTimeouts.guilds.set(guild, timeout);
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -147,7 +147,7 @@ export class Leaderboard {
 		this.clearUsers();
 
 		// Set the timeout for the refresh
-		this.kTimeouts.users = new PreciseTimeout(Time.Minute * 15);
+		this.kTimeouts.users = new PreciseTimeout(minutes(15));
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.kTimeouts.users.run().then(() => {

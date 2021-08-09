@@ -1,5 +1,6 @@
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { configurableKeys, GuildEntity, isSchemaKey, readSettings, SerializerUpdateContext, writeSettings } from '#lib/database';
+import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
@@ -10,7 +11,7 @@ export class UserRoute extends Route {
 	private readonly kBlockList: string[] = ['commandUses'];
 
 	@authenticated()
-	@ratelimit(2, 5000, true)
+	@ratelimit(seconds(5), 2, true)
 	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
 		const guildId = request.params.guild;
 
@@ -26,7 +27,7 @@ export class UserRoute extends Route {
 	}
 
 	@authenticated()
-	@ratelimit(2, 1000, true)
+	@ratelimit(seconds(1), 2, true)
 	public async [methods.PATCH](request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { guild_id: string; data: [string, unknown][] | undefined };
 

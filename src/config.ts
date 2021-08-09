@@ -8,6 +8,7 @@ import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LanguageFormatters } from '#lib/types/Constants';
 import { getHandler } from '#root/languages/index';
+import { GuildSettings, readSettings } from '#lib/database';
 import { Emojis, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
@@ -229,6 +230,12 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 		defaultMissingKey: 'default',
 		defaultNS: 'globals',
 		defaultLanguageDirectory: LANGUAGE_ROOT,
+		fetchLanguage: async ({ guild }) => {
+			if (!guild) return 'en-US';
+
+			const [language] = await readSettings(guild, [GuildSettings.Language]);
+			return language;
+		},
 		i18next: (_: string[], languages: string[]) => ({
 			supportedLngs: languages,
 			preload: languages,

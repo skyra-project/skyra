@@ -3,7 +3,7 @@
 		{
 			"type": "pwa-node",
 			"request": "launch",
-			"runtimeArgs": ["run-script", "start"],
+			"runtimeArgs": ["run-script", "start", "--preserve-symlinks"],
 			"name": "Debugger",
 			"runtimeExecutable": "npm",
 			"skipFiles": ["<node_internals>/**", "node_modules/tslib/**"],

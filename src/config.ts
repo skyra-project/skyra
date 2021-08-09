@@ -230,11 +230,10 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 		defaultMissingKey: 'default',
 		defaultNS: 'globals',
 		defaultLanguageDirectory: LANGUAGE_ROOT,
-		fetchLanguage: async ({ guild }) => {
+		fetchLanguage: ({ guild }) => {
 			if (!guild) return 'en-US';
 
-			const [language] = await readSettings(guild, [GuildSettings.Language]);
-			return language;
+			return readSettings(guild, GuildSettings.Language);
 		},
 		i18next: (_: string[], languages: string[]) => ({
 			supportedLngs: languages,

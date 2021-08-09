@@ -1,18 +1,5 @@
 version: '2.4'
 services:
-  # grpc:
-  #   container_name: grpc
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     - POSTGRES_HOST=postgres
-  #     - POSTGRES_DB=skyra
-  #   image: 'skyrabot/grpc:latest'
-  #   networks:
-  #     - skyra
-  #   ports:
-  #     - '8291:80'
-
   hasteserver:
     container_name: hasteserver
     depends_on:

@@ -1,4 +1,4 @@
-import { GiveawayEntity, GiveawayEntityData } from '#lib/database';
+import { GiveawayEntity, GiveawayEntityData } from '#lib/database/entities';
 import { container } from '@sapphire/framework';
 
 export class GiveawayManager {

@@ -10,7 +10,6 @@ export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'w
 export const ZeroWidthSpace = '\u200B';
 export const LongWidthSpace = '\u3000';
 
-// TODO(favna): Replace with `formatEmoji` from @discordjs/builders
 export const enum BrawlStarsEmojis {
 	Trophy = '<:bstrophy:742083351891935353>',
 	PowerPlay = '<:powerplay:746370227377405993>',
@@ -23,7 +22,6 @@ export const enum BrawlStarsEmojis {
 	ChampionshipChallenge = '<:bschallenge:746373277726801971>'
 }
 
-// TODO(favna): Replace with `formatEmoji` from @discordjs/builders
 export const enum Emojis {
 	ArrowB = '<:ArrowB:694594285269680179>',
 	ArrowBL = '<:ArrowBL:694594285118685259>',

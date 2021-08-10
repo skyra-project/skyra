@@ -3,12 +3,13 @@ process.env.NODE_ENV ??= 'development';
 
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import type { QueueClientOptions } from '#lib/audio';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LanguageFormatters } from '#lib/types/Constants';
 import { getHandler } from '#root/languages/index';
-import { GuildSettings, readSettings } from '#lib/database';
 import { Emojis, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';

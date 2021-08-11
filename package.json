@@ -125,7 +125,7 @@
 		"@types/he": "^1.1.2",
 		"@types/i18next-fs-backend": "^1.0.1",
 		"@types/ioredis": "^4.26.7",
-		"@types/jest": "^26.0.24",
+		"@types/jest": "^27.0.0",
 		"@types/node": "^16.4.13",
 		"@types/node-fetch": "^2.5.12",
 		"@types/pg": "^8.6.1",

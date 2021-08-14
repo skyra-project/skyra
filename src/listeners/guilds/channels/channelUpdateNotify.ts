@@ -55,16 +55,16 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 
 		switch (next.type) {
 			case 'GUILD_TEXT':
-				yield* this.differenceTextChannel(t, previous as TextChannel, next);
+				yield* this.differenceTextChannel(t, previous as TextChannel, next as TextChannel);
 				break;
 			case 'GUILD_VOICE':
-				yield* this.differenceVoiceChannel(t, previous as VoiceChannel, next);
+				yield* this.differenceVoiceChannel(t, previous as VoiceChannel, next as VoiceChannel);
 				break;
 			case 'GUILD_NEWS':
-				yield* this.differenceNewsChannel(t, previous as NewsChannel, next);
+				yield* this.differenceNewsChannel(t, previous as NewsChannel, next as NewsChannel);
 				break;
 			case 'GUILD_STORE':
-				yield* this.differenceStoreChannel(t, previous as StoreChannel, next);
+				yield* this.differenceStoreChannel(t, previous as StoreChannel, next as StoreChannel);
 				break;
 			default:
 			// No Op

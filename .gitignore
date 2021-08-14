@@ -6,6 +6,10 @@ node_modules/
 /rethinkdb_data/
 coverage/
 
+# Yarn files
+.yarn/install-state.gz
+.yarn/build-state.yml
+
 # Environment variables
 .DS_Store
 .env.local

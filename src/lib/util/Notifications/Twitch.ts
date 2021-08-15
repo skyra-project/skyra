@@ -1,33 +1,24 @@
-import type {
+import {
+	OauthResponse,
+	TwitchEventSubResult,
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
 	TwitchHelixResponse,
 	TwitchHelixUserFollowsResult,
-	TwitchHelixUsersSearchResult
+	TwitchHelixUsersSearchResult,
+	TwitchSubscriptionTypes
 } from '#lib/types/definitions/Twitch';
-import { days } from '#utils/common';
 import { Enumerable } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { Time } from '@sapphire/time-utilities';
+import { URL } from 'url';
 import { createHmac } from 'crypto';
-
-export const enum TwitchHooksAction {
-	Subscribe = 'subscribe',
-	Unsubscribe = 'unsubscribe'
-}
-
-export interface OauthResponse {
-	access_token: string;
-	refresh_token: string;
-	scope: string;
-	expires_in: number;
-}
 
 export class Twitch {
 	public readonly ratelimitsStreams = new RateLimitManager(Time.Minute * 3000, 1);
-	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
+	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix';
 	public readonly BRANDING_COLOUR = 0x6441a4;
 
 	@Enumerable(false)
@@ -43,7 +34,7 @@ export class Twitch {
 	private readonly clientSecret = process.env.TWITCH_TOKEN;
 
 	@Enumerable(false)
-	private readonly webhookSecret = process.env.TWITCH_WEBHOOK_TOKEN;
+	private readonly eventSubSecret = process.env.TWITCH_EVENTSUB_SECRET;
 
 	@Enumerable(false)
 	private readonly kTwitchRequestHeaders = {
@@ -82,7 +73,7 @@ export class Twitch {
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = createHmac(algorithm, this.webhookSecret).update(JSON.stringify(data)).digest('hex');
+		const hash = createHmac(algorithm, this.eventSubSecret).update(data).digest('hex');
 
 		return hash === signature;
 	}
@@ -94,16 +85,27 @@ export class Twitch {
 		return TOKEN;
 	}
 
-	public async subscriptionsStreamHandle(streamerId: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
-		await fetch(
-			'https://api.twitch.tv/helix/webhooks/hub',
+	/**
+	 * Adds a new Twitch subscription
+	 */
+	public async subscriptionsStreamHandle(
+		streamerId: string,
+		subscriptionType: TwitchSubscriptionTypes = TwitchSubscriptionTypes.StreamOnline
+	): Promise<string> {
+		const subscription = await fetch<TwitchHelixResponse<TwitchEventSubResult>>(
+			`${this.BASE_URL_HELIX}/eventsub/subscriptions`,
 			{
 				body: JSON.stringify({
-					'hub.callback': `${process.env.TWITCH_CALLBACK}${streamerId}`,
-					'hub.mode': action,
-					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerId}`,
-					'hub.lease_seconds': days(9) / Time.Second,
-					'hub.secret': this.webhookSecret
+					type: subscriptionType,
+					version: '1',
+					condition: {
+						broadcaster_user_id: streamerId
+					},
+					transport: {
+						method: 'webhook',
+						callback: process.env.TWITCH_CALLBACK,
+						secret: this.eventSubSecret
+					}
 				}),
 				headers: {
 					...this.kTwitchRequestHeaders,
@@ -111,13 +113,49 @@ export class Twitch {
 				},
 				method: FetchMethods.Post
 			},
+			FetchResultTypes.JSON
+		);
+
+		return subscription.data[0].id;
+	}
+
+	/**
+	 * Removes a Twitch subscription based on its ID
+	 * @param subscriptionId the ID to remove
+	 */
+	public async removeSubscription(subscriptionId: string): Promise<void> {
+		const url = new URL(`${this.BASE_URL_HELIX}/eventsub/subscriptions`);
+		url.searchParams.append('id', subscriptionId);
+
+		await fetch<TwitchHelixResponse<TwitchEventSubResult>>(
+			url,
+			{
+				headers: {
+					...this.kTwitchRequestHeaders,
+					Authorization: `Bearer ${await this.fetchBearer()}`
+				},
+				method: FetchMethods.Delete
+			},
 			FetchResultTypes.Result
 		);
 	}
 
+	// @ts-ignore This is a convenience function for debugging / eval-ling
+	private async getCurrentTwitchSubscriptions(): Promise<TwitchHelixResponse<TwitchEventSubResult>> {
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchEventSubResult>>('eventsub/subscriptions');
+	}
+
+	// @ts-ignore This is a convenience function for debugging / eval-ling
+	private async removeAllTwitchSubscriptions(): Promise<void> {
+		const allSubscriptions = await this.getCurrentTwitchSubscriptions();
+		const allSubscriptionIds = allSubscriptions.data.map((entry) => entry.id);
+
+		await Promise.all(allSubscriptionIds.map((subscriptionId) => this.removeSubscription(subscriptionId)));
+	}
+
 	private async _performApiGETRequest<T>(path: string): Promise<T> {
 		return fetch<T>(
-			`${this.BASE_URL_HELIX}${path}`,
+			`${this.BASE_URL_HELIX}/${path}`,
 			{
 				headers: {
 					...this.kTwitchRequestHeaders,

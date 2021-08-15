@@ -1,3 +1,15 @@
+export const enum TwitchSubscriptionTypes {
+	StreamOnline = 'stream.online',
+	StreamOffline = 'stream.offline'
+}
+
+export interface OauthResponse {
+	access_token: string;
+	refresh_token: string;
+	scope: string;
+	expires_in: number;
+}
+
 export interface TwitchHelixBearerToken {
 	TOKEN: string | null;
 	EXPIRE: number | null;
@@ -50,4 +62,38 @@ export interface TwitchHelixUserFollowsResult {
 	to_name: string;
 	/** In the format of YYYY-MM-DD[T]HH:mm:ssZ, so can be parsed to a Date */
 	followed_at: string;
+}
+
+export interface TwitchEventSubResult {
+	id: string;
+	status: string;
+	type: TwitchSubscriptionTypes;
+	version: string;
+	cost: number;
+	condition: {
+		broadcaster_user_id: string;
+	};
+	transport: {
+		method: string;
+		callback: string;
+	};
+	created_at: string;
+}
+
+export interface TwitchEventSubVerificationMessage {
+	challenge: string;
+	subscription: TwitchEventSubResult;
+	event: TwitchEventSubOnlineOfflineEvent;
+}
+
+export interface TwitchEventSubOnlineOfflineEvent {
+	/** Only defined when this is an Online notification */
+	id?: string;
+	broadcaster_user_id: string;
+	broadcaster_user_login: string;
+	broadcaster_user_name: string;
+	/** Only defined when this is an Online notification */
+	type?: 'live';
+	/** Only defined when this is an Online notification */
+	started_at?: `${number}${number}${number}${number}-${number}${number}-${number}${number}T${number}${number}:${number}${number}:${number}${number}.${number}${number}${number}Z`;
 }

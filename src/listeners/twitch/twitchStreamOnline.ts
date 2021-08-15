@@ -1,25 +1,32 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck TODO
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
-import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
+import { TwitchSubscriptionTypes } from '#lib/types';
+import type { TwitchEventSubOnlineOfflineEvent, TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
+import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
-import { Listener } from '@sapphire/framework';
+import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+@ApplyOptions<ListenerOptions>({
+	event: Events.TwitchStreamOnline
+})
 export class UserListener extends Listener {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
 
-	public async run(data: PostStreamBodyData, response: ApiResponse) {
+	public async run(data: TwitchEventSubOnlineOfflineEvent, response: ApiResponse) {
 		// All streams should have a game_id.
 		if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');
 
 		// Fetch the streamer, and if it could not be found, return error.
 		const { twitchStreamSubscriptions } = this.container.db;
-		const streamer = await twitchStreamSubscriptions.findOne({ id: data.user_id });
+		const streamer = await twitchStreamSubscriptions.findOne({ id: data.user_id, subscriptionType: TwitchSubscriptionTypes.StreamOnline });
 		if (!streamer) return response.error('No streamer could be found in the database.');
 
 		const {
@@ -68,7 +75,7 @@ export class UserListener extends Listener {
 		return response.ok();
 	}
 
-	private transformTextToObject(notification: PostStreamBodyData, game?: TwitchHelixGameSearchResult): TwitchOnlineEmbedData {
+	private transformTextToObject(notification: TwitchEventSubOnlineOfflineEvent, game?: TwitchHelixGameSearchResult): TwitchOnlineEmbedData {
 		return {
 			user_name: notification.user_name,
 			title: this.escapeText(notification.title),
@@ -105,7 +112,7 @@ export class UserListener extends Listener {
 	}
 }
 
-type TwitchOnlineEmbedData = Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id' | 'user_login'> &
+type TwitchOnlineEmbedData = Omit<TwitchEventSubOnlineOfflineEvent, 'id' | 'viewer_count' | 'started_at' | 'game_id' | 'user_login'> &
 	Omit<Partial<TwitchHelixGameSearchResult>, 'id' | 'name'> & {
 		viewer_count: string;
 		started_at: Date;

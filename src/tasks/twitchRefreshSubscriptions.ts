@@ -1,5 +1,4 @@
 import { PartialResponseValue, ResponseType, Task, TwitchStreamSubscriptionEntity } from '#lib/database';
-import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { blueBright } from 'colorette';
 import type { Repository } from 'typeorm';
 
@@ -36,7 +35,9 @@ export class UserTask extends Task {
 				updatedSubscriptionIds.push(subscription.id);
 
 				// Queue the updating by pushing the promise into the promises array
-				promises.push(client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(logger.fatal.bind(logger)));
+				promises.push(
+					client.twitch.subscriptionsStreamHandle(subscription.id, subscription.subscriptionType).catch(logger.fatal.bind(logger))
+				);
 			}
 		}
 

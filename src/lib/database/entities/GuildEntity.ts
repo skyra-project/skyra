@@ -979,4 +979,4 @@ export interface NotificationsStreamsTwitchStreamer {
 	createdAt: number;
 }
 
-export type NotificationsStreamTwitch = [string, readonly NotificationsStreamsTwitchStreamer[]];
+export type NotificationsStreamTwitch = [streamerId: string, data: readonly NotificationsStreamsTwitchStreamer[]];

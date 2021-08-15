@@ -1,18 +1,26 @@
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
+import { TwitchEventSubOnlineOfflineEvent, TwitchSubscriptionTypes } from '#lib/types';
+import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
+import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
-import { Listener } from '@sapphire/framework';
+import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { ApiResponse } from '@sapphire/plugin-api';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+@ApplyOptions<ListenerOptions>({
+	event: Events.TwitchStreamOffline
+})
 export class UserListener extends Listener {
-	public async run(data: PostStreamBodyData, response: ApiResponse) {
+	public async run(data: TwitchEventSubOnlineOfflineEvent, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
 		const { twitchStreamSubscriptions } = this.container.db;
-		const streamer = await twitchStreamSubscriptions.findOne({ id: data.id });
+		const streamer = await twitchStreamSubscriptions.findOne({
+			id: data.broadcaster_user_id,
+			subscriptionType: TwitchSubscriptionTypes.StreamOffline
+		});
 		if (!streamer) return response.error('No streamer could be found in the database.');
 
 		// Iterate over all the guilds that are subscribed to the streamer.

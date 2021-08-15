@@ -1,4 +1,4 @@
-import type { TwitchSubscriptionTypes } from '#lib/types';
+import type { TwitchEventSubTypes } from '#lib/types';
 import { BaseEntity, Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity('twitch_stream_subscription', { schema: 'public' })
@@ -11,7 +11,7 @@ export class TwitchStreamSubscriptionEntity extends BaseEntity {
 	public subscriptionId!: string;
 
 	@PrimaryColumn('varchar', { length: 14 })
-	public subscriptionType!: TwitchSubscriptionTypes;
+	public subscriptionType!: TwitchEventSubTypes;
 
 	@Column('timestamp without time zone')
 	public expiresAt!: Date;

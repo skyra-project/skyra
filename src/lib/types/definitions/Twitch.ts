@@ -1,19 +1,4 @@
-export const enum TwitchSubscriptionTypes {
-	StreamOnline = 'stream.online',
-	StreamOffline = 'stream.offline'
-}
-
-export interface OauthResponse {
-	access_token: string;
-	refresh_token: string;
-	scope: string;
-	expires_in: number;
-}
-
-export interface TwitchHelixBearerToken {
-	TOKEN: string | null;
-	EXPIRE: number | null;
-}
+import type { NonNullObject } from '@sapphire/utilities';
 
 export const enum TwitchHelixUserType {
 	Staff = 'staff',
@@ -28,14 +13,20 @@ export const enum TwitchHelixBroadcasterType {
 	Normal = ''
 }
 
+export interface TwitchHelixBearerToken {
+	TOKEN: string | null;
+	EXPIRE: number | null;
+}
+
 export interface TwitchHelixResponse<T> {
 	data: T[];
 }
 
-export interface TwitchHelixGameSearchResult {
-	id: string;
-	name: string;
-	box_art_url: string;
+export interface TwitchHelixOauth2Result {
+	access_token: string;
+	refresh_token: string;
+	scope: string;
+	expires_in: number;
 }
 
 export interface TwitchHelixUsersSearchResult {
@@ -64,10 +55,61 @@ export interface TwitchHelixUserFollowsResult {
 	followed_at: string;
 }
 
+export interface TwitchHelixGameSearchResult {
+	/** ID of the game. */
+	id: string;
+	/** Name of the game. */
+	name: string;
+
+	/** Template URL for the game’s box art. */
+	box_art_url: string;
+}
+
+export interface TwitchHelixStreamsResult {
+	/** Stream ID. */
+	id: string;
+	/** ID of the user who is streaming. */
+	user_id: string;
+
+	/** Login of the user who is streaming. */
+	user_login: string;
+
+	/** Display name corresponding to {@link TwitchHelixStreamsResult.user_id}. */
+	user_name: string;
+	/** ID of the game being played on the stream. */
+	game_id: string;
+	/** Name of the game being played. */
+	game_name: string;
+
+	/** Template URL for the game’s box art. */
+	game_box_art_url?: string;
+	/** Stream type: "live" or "" (in case of error). */
+	type: string;
+	/** Stream title. */
+	title: string;
+	/** Number of viewers watching the stream at the time of the query. */
+	viewer_count: number;
+	/** UTC timestamp. */
+	started_at: Date;
+	/** Stream language. A language value is either the {@linkplain https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes ISO 639-1} two-letter code for a {@linkplain https://help.twitch.tv/s/article/languages-on-twitch#streamlang supported stream language} or “other”. */
+	language: string;
+	/** Thumbnail URL of the stream. All image URLs have variable width and height. You can replace `{width}` and `{height}` with any values to get that size image */
+	thumbnail_url: string;
+	/** Shows tag IDs that apply to the stream. */
+	tag_ids: string[];
+	/** Indicates if the broadcaster has specified their channel contains mature content that may be inappropriate for younger audiences. */
+	is_mature: boolean;
+}
+
+export const enum TwitchEventSubTypes {
+	StreamOnline = 'stream.online',
+	StreamOffline = 'stream.offline'
+}
+
 export interface TwitchEventSubResult {
 	id: string;
 	status: string;
-	type: TwitchSubscriptionTypes;
+	type: TwitchEventSubTypes;
 	version: string;
 	cost: number;
 	condition: {
@@ -80,20 +122,31 @@ export interface TwitchEventSubResult {
 	created_at: string;
 }
 
-export interface TwitchEventSubVerificationMessage {
+export interface TwitchEventSubVerificationMessage<T = NonNullObject> {
 	challenge: string;
 	subscription: TwitchEventSubResult;
-	event: TwitchEventSubOnlineOfflineEvent;
+	event: TwitchEventSubEvent<T>;
 }
 
-export interface TwitchEventSubOnlineOfflineEvent {
-	/** Only defined when this is an Online notification */
-	id?: string;
+export type TwitchEventSubEvent<T = NonNullObject> = T & {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
-	/** Only defined when this is an Online notification */
-	type?: 'live';
-	/** Only defined when this is an Online notification */
-	started_at?: `${number}${number}${number}${number}-${number}${number}-${number}${number}T${number}${number}:${number}${number}:${number}${number}.${number}${number}${number}Z`;
+};
+
+export type TwitchEventSubOnlineEvent = TwitchEventSubEvent<{
+	id: string;
+	type: 'live';
+	started_at: string;
+}>;
+
+export interface TwitchOnlineEmbedData {
+	embedThumbnailUrl?: string;
+	gameName?: string;
+	language?: string;
+	startedAt: Date;
+	embedImageUrl?: string;
+	title: string;
+	userName: string;
+	viewerCount?: number;
 }

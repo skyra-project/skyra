@@ -1,4 +1,4 @@
-import { TwitchEventSubVerificationMessage, TwitchSubscriptionTypes } from '#lib/types';
+import { TwitchEventSubVerificationMessage, TwitchEventSubTypes } from '#lib/types';
 import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +11,6 @@ export class UserRoute extends Route {
 
 	// Stream Changed
 	public [methods.POST](request: ApiRequest, response: ApiResponse) {
-		console.time('request_timer');
 		// Grab the headers that we need to use for verification
 		const twitchEventSubMessageSignature = request.headers['twitch-eventsub-message-signature'];
 		const twitchEventSubMessageId = request.headers['twitch-eventsub-message-id'];
@@ -41,25 +40,25 @@ export class UserRoute extends Route {
 			return response.forbidden('Invalid Hub signature');
 		}
 
-		// Tell the Twitch API this response was OK, then continue processing the request
-		response.text((request.body as TwitchEventSubVerificationMessage).challenge);
-		console.timeEnd('request_timer');
-
 		// Destructure the properties that we need from the body
 		const {
+			challenge,
 			subscription: { type },
 			event
 		} = request.body as TwitchEventSubVerificationMessage;
 
+		// Tell the Twitch API this response was OK, then continue processing the request
+		response.text(challenge);
+
 		// If there is an event then this is an online or offline notification
 		// If there is no event this is an endpoint verification request
 		if (event) {
-			if (type === TwitchSubscriptionTypes.StreamOnline) {
+			if (type === TwitchEventSubTypes.StreamOnline) {
 				client.emit(Events.TwitchStreamHookedAnalytics, TwitchStreamStatus.Online);
-				client.emit(Events.TwitchStreamOnline, event, response);
+				client.emit(Events.TwitchStreamOnline, event);
 			} else {
 				client.emit(Events.TwitchStreamHookedAnalytics, TwitchStreamStatus.Offline);
-				client.emit(Events.TwitchStreamOffline, event, response);
+				client.emit(Events.TwitchStreamOffline, event);
 			}
 		}
 

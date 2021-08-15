@@ -11,7 +11,7 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { TwitchHelixUsersSearchResult, TwitchSubscriptionTypes } from '#lib/types/definitions/Twitch';
+import { TwitchHelixUsersSearchResult, TwitchEventSubTypes } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
 import { days } from '#utils/common';
 import { RequiresPermissions } from '#utils/decorators';
@@ -47,13 +47,13 @@ export class UserCommand extends SkyraCommand {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const status = await args.pick(UserCommand.status);
+		const customMessage = await args.rest('string').catch(() => null);
+
 		const entry: Entry = {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
-			gamesBlacklist: [],
-			gamesWhitelist: [],
-			message: await args.rest('string').catch(() => null),
+			message: customMessage,
 			status
 		};
 
@@ -66,9 +66,7 @@ export class UserCommand extends SkyraCommand {
 			if (subscriptionIndex === -1) {
 				// Resolve the correct Twitch subscription type based on arg input
 				const twitchSubscriptionType =
-					status === NotificationsStreamsTwitchEventStatus.Online
-						? TwitchSubscriptionTypes.StreamOnline
-						: TwitchSubscriptionTypes.StreamOffline;
+					status === NotificationsStreamsTwitchEventStatus.Online ? TwitchEventSubTypes.StreamOnline : TwitchEventSubTypes.StreamOffline;
 
 				// Subscribe to the streamer on the Twitch API, returning the ID of the subscription
 				const subscriptionId = await this.container.client.twitch.subscriptionsStreamHandle(streamer.id, twitchSubscriptionType);
@@ -275,12 +273,7 @@ export class UserCommand extends SkyraCommand {
 			.getMany();
 	}
 
-	private async upsertSubscription(
-		guild: Guild,
-		streamer: Streamer,
-		subscriptionId: string,
-		subscriptionType: TwitchSubscriptionTypes
-	): Promise<void> {
+	private async upsertSubscription(guild: Guild, streamer: Streamer, subscriptionId: string, subscriptionType: TwitchEventSubTypes): Promise<void> {
 		const { twitchStreamSubscriptions } = this.container.db;
 
 		await twitchStreamSubscriptions
@@ -315,6 +308,37 @@ export class UserCommand extends SkyraCommand {
 			subscription.guildIds.splice(index, 1);
 			await subscription.save();
 		}
+	}
+
+	private async removeSubscription(guild: Guild, streamer: Streamer, twitchSubscriptionType?: TwitchEventSubTypes) {
+		const { twitchStreamSubscriptions } = this.container.db;
+
+		if (twitchSubscriptionType) {
+			const subscription = await twitchStreamSubscriptions.findOne({ id: streamer.id, subscriptionType: twitchSubscriptionType });
+			if (!subscription) return;
+	
+			await this.removeOneSubscription(subscription, guild);
+		} else {
+			const subscriptions = await twitchStreamSubscriptions.find({ id: streamer.id });
+			if (!subscriptions.length) return;
+
+			await Promise.all(subscriptions.map(sub => this.removeOneSubscription(sub, guild)));
+		}
+
+	}
+
+	private async removeOneSubscription(subscription: TwitchStreamSubscriptionEntity, guild: Guild) {
+			const index = subscription.guildIds.indexOf(guild.id);
+			if (index === -1) return;
+	
+			// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
+			if (subscription.guildIds.length === 1) {
+				await subscription.remove();
+				this.container.client.twitch.removeSubscription(subscription.subscriptionId);
+			} else {
+				subscription.guildIds.splice(index, 1);
+				await subscription.save();
+			}
 	}
 
 	private static streamer = Args.make<Streamer>(async (parameter, { argument }) => {

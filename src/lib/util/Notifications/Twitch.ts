@@ -1,12 +1,13 @@
 import {
-	OauthResponse,
+	TwitchHelixOauth2Result,
 	TwitchEventSubResult,
 	TwitchHelixBearerToken,
-	TwitchHelixGameSearchResult,
 	TwitchHelixResponse,
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult,
-	TwitchSubscriptionTypes
+	TwitchEventSubTypes,
+	TwitchHelixStreamsResult,
+	TwitchHelixGameSearchResult
 } from '#lib/types/definitions/Twitch';
 import { Enumerable } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
@@ -59,11 +60,25 @@ export class Twitch {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUsersSearchResult>>(`users?${search.join('&')}`);
 	}
 
-	public async fetchGame(ids: readonly string[] = [], names: readonly string[] = []) {
-		const search: string[] = [];
-		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
-		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
-		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>(`games?${search.join('&')}`);
+	public async fetchStream(broadcasterUserId: string): Promise<TwitchHelixStreamsResult | null> {
+		const search = `user_id=${encodeURIComponent(broadcasterUserId)}`;
+		const streamResult = await this._performApiGETRequest<TwitchHelixResponse<TwitchHelixStreamsResult>>(`streams?${search}`);
+		const streamData = streamResult.data?.[0];
+
+		if (streamData) {
+			const gameSearch = `id=${encodeURIComponent(streamData.game_id)}`;
+			const gameResult = await this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult>>(`games?${gameSearch}`);
+			const gameData = gameResult.data?.[0];
+
+			if (gameData) {
+				return {
+					...streamData,
+					game_box_art_url: gameData.box_art_url
+				};
+			}
+		}
+
+		return streamData ?? null;
 	}
 
 	public async fetchUserFollowage(userId: string, channelId: string) {
@@ -90,7 +105,7 @@ export class Twitch {
 	 */
 	public async subscriptionsStreamHandle(
 		streamerId: string,
-		subscriptionType: TwitchSubscriptionTypes = TwitchSubscriptionTypes.StreamOnline
+		subscriptionType: TwitchEventSubTypes = TwitchEventSubTypes.StreamOnline
 	): Promise<string> {
 		const subscription = await fetch<TwitchHelixResponse<TwitchEventSubResult>>(
 			`${this.BASE_URL_HELIX}/eventsub/subscriptions`,
@@ -171,7 +186,7 @@ export class Twitch {
 		url.searchParams.append('client_secret', this.clientSecret);
 		url.searchParams.append('client_id', this.clientId);
 		url.searchParams.append('grant_type', 'client_credentials');
-		const respone = await fetch<OauthResponse>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
+		const respone = await fetch<TwitchHelixOauth2Result>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
 		const expires = Date.now() + respone.expires_in * 1000;
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;

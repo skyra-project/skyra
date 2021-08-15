@@ -970,12 +970,11 @@ export const enum NotificationsStreamsTwitchEventStatus {
 }
 
 export interface NotificationsStreamsTwitchStreamer {
+	streamerId: string;
 	channel: string;
 	author: string;
 	message: string | null;
 	status: NotificationsStreamsTwitchEventStatus;
-	gamesBlacklist: readonly string[];
-	gamesWhitelist: readonly string[];
 	createdAt: number;
 }
 

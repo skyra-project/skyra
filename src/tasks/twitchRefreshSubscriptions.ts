@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType, Task, TwitchStreamSubscriptionEntity } from '#lib/database';
+import { PartialResponseValue, ResponseType, Task, TwitchSubscriptionEntity } from '#lib/database';
 import { blueBright } from 'colorette';
 import type { Repository } from 'typeorm';
 
@@ -11,8 +11,8 @@ export class UserTask extends Task {
 		if (client.dev) return { type: ResponseType.Finished };
 
 		// Retrieve all the Twitch subscriptions
-		const { twitchStreamSubscriptions } = db;
-		const allSubscriptions = await twitchStreamSubscriptions.find();
+		const { twitchSubscriptions } = db;
+		const allSubscriptions = await twitchSubscriptions.find();
 
 		// If there are no subscriptions then just exit early
 		if (allSubscriptions.length === 0) return null;
@@ -25,7 +25,7 @@ export class UserTask extends Task {
 
 		// An array to keep track of the IDs of the subscriptions that were updated
 		// Used for logging and knowing which entries to update in the database
-		const updatedSubscriptionIds: string[] = [];
+		const updatedSubscriptionIds: number[] = [];
 
 		// Loop over all subscriptions
 		for (const subscription of allSubscriptions) {
@@ -36,14 +36,15 @@ export class UserTask extends Task {
 
 				// Queue the updating by pushing the promise into the promises array
 				promises.push(
-					client.twitch.subscriptionsStreamHandle(subscription.id, subscription.subscriptionType).catch(logger.fatal.bind(logger))
+					client.twitch.subscriptionsStreamHandle(subscription.streamerId, subscription.subscriptionType).catch(logger.fatal.bind(logger))
 				);
 			}
 		}
 
+		promises.unshift(this.updateEntries(updatedSubscriptionIds, twitchSubscriptions));
+
 		// Await all the promises
 		await Promise.all(promises);
-		await this.updateEntries(updatedSubscriptionIds, twitchStreamSubscriptions);
 
 		// ST = Subscriptions Total; SU = Subscriptions Updated
 		logger.trace(`${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubscriptionIds.length} [SU] ]`);
@@ -51,7 +52,7 @@ export class UserTask extends Task {
 		return null;
 	}
 
-	private updateEntries(ids: string[], repository: Repository<TwitchStreamSubscriptionEntity>) {
+	private updateEntries(ids: number[], repository: Repository<TwitchSubscriptionEntity>) {
 		const newExpireAt = new Date();
 		newExpireAt.setDate(newExpireAt.getDate() + 8);
 

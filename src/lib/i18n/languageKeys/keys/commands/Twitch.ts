@@ -23,6 +23,7 @@ export const TwitchSubscriptionAddSuccessOffline = FT<{ name: string; channel: s
 export const TwitchSubscriptionAddSuccessLive = FT<{ name: string; channel: string }, string>('commands/twitch:twitchSubscriptionAddSuccessLive');
 export const TwitchSubscriptionRemoveStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionRemoveStreamerNotSubscribed');
 export const TwitchSubscriptionRemoveEntryNotExists = T<string>('commands/twitch:twitchSubscriptionRemoveEntryNotExists');
+export const TwitchSubscriptionRemoveStreamerStatusNotMatch = T<string>('commands/twitch:twitchSubscriptionRemoveStreamerStatusNotMatch');
 export const TwitchSubscriptionRemoveSuccessOffline = FT<{ name: string; channel: string }, string>(
 	'commands/twitch:twitchSubscriptionRemoveSuccessOffline'
 );

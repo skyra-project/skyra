@@ -22,7 +22,7 @@
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
-	"twitchSubscriptionRemoveStreamerNotSubscribed": "{{REDCROSS}} Извините, вы не можете отписаться от канала, на который вы не подписаны. Пожалуйста, подпишитесь, чтобы иметь возможность отписаться.",
+	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
 	"twitchSubscriptionRemoveEntryNotExists": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",

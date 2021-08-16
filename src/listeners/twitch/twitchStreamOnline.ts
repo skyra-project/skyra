@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TwitchEventSubTypes } from '#lib/types';

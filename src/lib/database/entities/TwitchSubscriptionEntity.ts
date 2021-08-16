@@ -17,9 +17,6 @@ export class TwitchSubscriptionEntity extends BaseEntity {
 	@Column({ type: 'enum', enum: TwitchEventSubTypes })
 	public subscriptionType!: TwitchEventSubTypes;
 
-	@Column('timestamp without time zone')
-	public expiresAt!: Date;
-
 	@OneToMany(() => GuildSubscriptionEntity, (guildSubscription) => guildSubscription.subscription)
 	public guildSubscription!: GuildSubscriptionEntity[];
 }

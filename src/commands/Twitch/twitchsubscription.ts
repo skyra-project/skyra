@@ -30,7 +30,6 @@ export class UserCommand extends SkyraCommand {
 
 		// Get a potential pre-existing subscription for this streamer and subscriptionType
 		const streamerForType = await twitchSubscriptions.findOne({
-			// relations: ['guildSubscription'],
 			where: { streamerId: streamer.id, subscriptionType }
 		});
 		const guildSubscriptionsForGuild = await guildSubscriptions.find({ where: { guildId: message.guild.id, channel: channel.id } });
@@ -77,10 +76,63 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
+	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+		const streamer = await args.pick(UserCommand.streamer);
+		const channel = await args.pick('channelName');
+		const subscriptionType = await args.pick(UserCommand.status);
+
+		const { guildSubscriptions } = this.container.db;
+
+		// Get all subscriptions for the current server and channel combination
+		const guildSubscriptionForGuild = await guildSubscriptions.find({ where: { guildId: message.guild.id } });
+
+		if (guildSubscriptionForGuild.length === 0) {
+			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveOrResetEmpty);
+		}
+
+		const streamers = guildSubscriptionForGuild.filter((guildSubscription) => guildSubscription.subscription.streamerId === streamer.id);
+
+		if (!streamers.length) {
+			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveStreamerNotSubscribed, { streamer: streamer.display_name });
+		}
+
+		const statuses = streamers.filter((guildSubscription) => guildSubscription.subscription.subscriptionType === subscriptionType);
+
+		if (!statuses.length) {
+			const subscriptionTypeStatuses = args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowStatus);
+			const subscriptionTypeStatus =
+				subscriptionType === TwitchEventSubTypes.StreamOnline ? subscriptionTypeStatuses.live : subscriptionTypeStatuses.offline;
+
+			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveStreamerStatusNotMatch, {
+				streamer: streamer.display_name,
+				status: subscriptionTypeStatus
+			});
+		}
+
+		const streamerWithStatusHasChannel = statuses.some((guildSubscription) => guildSubscription.channel === channel.id);
+
+		if (!streamerWithStatusHasChannel) {
+			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveNotToProvidedChannel, { channel });
+		}
+
+		// Then if all these cases are okay we call remove
+		// Remove is calling a private method in here "removeSubscription"
+		// That method has to check if it is this removal is means no guild is subbed to this streamer any more
+		// It calls twitch api to remove the sub, otherwise only remove the guild for that streamer
+
+		const content = args.t(
+			status === TwitchEventSubTypes.StreamOnline
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline,
+			{ name: streamer.display_name, channel: channel.toString() }
+		);
+		return send(message, content);
+	}
+
 	// public async remove(message: GuildMessage, args: SkyraCommand.Args) {
-	// 	const streamer = await args.pick(UserCommand.streamer);
-	// 	const channel = await args.pick('channelName');
-	// 	const status = await args.pick(UserCommand.status);
+	// const streamer = await args.pick(UserCommand.streamer);
+	// const channel = await args.pick('channelName');
+	// const status = await args.pick(UserCommand.status);
 
 	// 	await writeSettings(message.guild, async (settings) => {
 	// 		// Retrieve the index of the entry if the guild already subscribed to them.
@@ -111,14 +163,6 @@ export class UserCommand extends SkyraCommand {
 	// 			settings[this.#settingsKey].splice(subscriptionIndexWith, 1, updated);
 	// 		}
 	// 	});
-
-	// 	const content = args.t(
-	// 		status === NotificationsStreamsTwitchEventStatus.Offline
-	// 			? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
-	// 			: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
-	// 		{ name: streamer.display_name, channel: channel.toString() }
-	// 	);
-	// 	return send(message, content);
 	// }
 
 	// public async reset(message: GuildMessage, args: SkyraCommand.Args) {
@@ -248,37 +292,6 @@ export class UserCommand extends SkyraCommand {
 	// 	}
 
 	// 	return lines;
-	// }
-
-	// private async getSubscriptions(entityManager: EntityManager, ...guildIds: string[]): Promise<TwitchStreamSubscriptionEntity[]> {
-	// 	return entityManager
-	// 		.createQueryBuilder(TwitchStreamSubscriptionEntity, 'twitchsubs')
-	// 		.where('twitchsubs.guild_ids IN (:ids)', { ids: guildIds })
-	// 		.getMany();
-	// }
-
-	// private async upsertSubscription(
-	// 	guild: Guild,
-	// 	streamer: TwitchHelixUsersSearchResult,
-	// 	subscriptionId: string,
-	// 	subscriptionType: TwitchEventSubTypes
-	// ): Promise<void> {
-	// 	const { guildTwitchNotifications: guildTwitch } = this.container.db;
-
-	// 	await twitchStreamSubscriptions
-	// 		.createQueryBuilder()
-	// 		.insert()
-	// 		.values({
-	// 			id: streamer.id,
-	// 			subscriptionId,
-	// 			subscriptionType,
-	// 			expiresAt: new Date(Date.now() + days(8)),
-	// 			guildIds: [guild.id]
-	// 		})
-	// 		.onConflict(
-	// 			/* sql */ `(id, subscription_type) DO UPDATE SET guild_ids = ARRAY_CAT(twitch_stream_subscription.guild_ids, ARRAY['${guild.id}']::VARCHAR[])`
-	// 		)
-	// 		.execute();
 	// }
 
 	// private async removeSubscription(guild: Guild, streamer: TwitchHelixUsersSearchResult) {

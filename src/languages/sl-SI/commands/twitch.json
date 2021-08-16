@@ -33,10 +33,6 @@
 	"twitchSubscriptionResetChannelSuccess": "",
 	"twitchSubscriptionResetChannelSuccess_plural": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
-	"twitchSubscriptionShowStatus": [
-		"",
-		""
-	],
 	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",

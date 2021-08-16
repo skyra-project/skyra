@@ -21,22 +21,28 @@ export const TwitchSubscriptionAddSuccessOffline = FT<{ name: string; channel: s
 	'commands/twitch:twitchSubscriptionAddSuccessOffline'
 );
 export const TwitchSubscriptionAddSuccessLive = FT<{ name: string; channel: string }, string>('commands/twitch:twitchSubscriptionAddSuccessLive');
-export const TwitchSubscriptionRemoveStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionRemoveStreamerNotSubscribed');
-export const TwitchSubscriptionRemoveEntryNotExists = T<string>('commands/twitch:twitchSubscriptionRemoveEntryNotExists');
-export const TwitchSubscriptionRemoveStreamerStatusNotMatch = T<string>('commands/twitch:twitchSubscriptionRemoveStreamerStatusNotMatch');
+export const TwitchSubscriptionRemoveStreamerNotSubscribed = FT<{ streamer: string }, string>(
+	'commands/twitch:twitchSubscriptionRemoveStreamerNotSubscribed'
+);
+export const TwitchSubscriptionRemoveNotToProvidedChannel = FT<{ channel: string }, string>(
+	'commands/twitch:twitchSubscriptionRemoveNotToProvidedChannel'
+);
+export const TwitchSubscriptionRemoveStreamerStatusNotMatch = FT<{ streamer: string; status: string }, string>(
+	'commands/twitch:twitchSubscriptionRemoveStreamerStatusNotMatch'
+);
 export const TwitchSubscriptionRemoveSuccessOffline = FT<{ name: string; channel: string }, string>(
 	'commands/twitch:twitchSubscriptionRemoveSuccessOffline'
 );
 export const TwitchSubscriptionRemoveSuccessLive = FT<{ name: string; channel: string }, string>(
 	'commands/twitch:twitchSubscriptionRemoveSuccessLive'
 );
-export const TwitchSubscriptionResetEmpty = T<string>('commands/twitch:twitchSubscriptionResetEmpty');
+export const TwitchSubscriptionRemoveOrResetEmpty = T<string>('commands/twitch:twitchSubscriptionRemoveOrResetEmpty');
 export const TwitchSubscriptionResetSuccess = FT<{ count: number }, string>('commands/twitch:twitchSubscriptionResetSuccess');
 export const TwitchSubscriptionResetStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionResetStreamerNotSubscribed');
 export const TwitchSubscriptionResetChannelSuccess = FT<{ name: string; count: number }, string>(
 	'commands/twitch:twitchSubscriptionResetChannelSuccess'
 );
 export const TwitchSubscriptionShowStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionShowStreamerNotSubscribed');
-export const TwitchSubscriptionShowStatus = T<[string, string]>('commands/twitch:twitchSubscriptionShowStatus');
+export const TwitchSubscriptionShowStatus = T<{ live: string; offline: string }>('commands/twitch:twitchSubscriptionShowStatus');
 export const TwitchSubscriptionShowEmpty = T<string>('commands/twitch:twitchSubscriptionShowEmpty');
 export const TwitchSubscriptionShowUnknownUser = T<string>('commands/twitch:twitchSubscriptionShowUnknownUser');

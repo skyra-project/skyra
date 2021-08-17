@@ -31,8 +31,6 @@
 	"twitchSubscriptionResetSuccess": "{{GREENTICK}} Success! {{count}} subscription has been removed from this server.",
 	"twitchSubscriptionResetSuccess_plural": "{{GREENTICK}} Success! {{count}} subscriptions have been removed from this server.",
 	"twitchSubscriptionResetStreamerNotSubscribed": "{{REDCROSS}} You were not subscribed to this streamer. Are you sure you specified the right one?",
-	"twitchSubscriptionResetChannelSuccess": "{{GREENTICK}} Success! Removed {{count}} subscription from the streamer {{name}}.",
-	"twitchSubscriptionResetChannelSuccess_plural": "{{GREENTICK}} Success! Removed {{count}} subscriptions from the streamer {{name}}.",
 	"twitchSubscriptionShowStreamerNotSubscribed": "{{REDCROSS}} You wanted to see all subscriptions from this streamer, but there are none!",
 	"twitchSubscriptionShowStatus": {
 		"live": "Live",

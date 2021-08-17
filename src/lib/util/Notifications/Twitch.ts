@@ -53,7 +53,7 @@ export class Twitch {
 		}
 	}
 
-	public async fetchUsers(ids: readonly string[] = [], logins: readonly string[] = []) {
+	public async fetchUsers(ids: Iterable<string> = [], logins: Iterable<string> = []) {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const login of logins) search.push(`login=${encodeURIComponent(login)}`);
@@ -186,9 +186,9 @@ export class Twitch {
 		url.searchParams.append('client_secret', this.clientSecret);
 		url.searchParams.append('client_id', this.clientId);
 		url.searchParams.append('grant_type', 'client_credentials');
-		const respone = await fetch<TwitchHelixOauth2Result>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
-		const expires = Date.now() + respone.expires_in * 1000;
-		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
-		return respone.access_token;
+		const response = await fetch<TwitchHelixOauth2Result>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
+		const expires = Date.now() + response.expires_in * 1000;
+		this.BEARER = { TOKEN: response.access_token, EXPIRE: expires };
+		return response.access_token;
 	}
 }

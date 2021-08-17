@@ -36,12 +36,9 @@ export const TwitchSubscriptionRemoveSuccessOffline = FT<{ name: string; channel
 export const TwitchSubscriptionRemoveSuccessLive = FT<{ name: string; channel: string }, string>(
 	'commands/twitch:twitchSubscriptionRemoveSuccessLive'
 );
-export const TwitchSubscriptionRemoveOrResetEmpty = T<string>('commands/twitch:twitchSubscriptionRemoveOrResetEmpty');
+export const TwitchSubscriptionNoSubscriptions = T<string>('commands/twitch:twitchSubscriptionNoSubscriptions');
 export const TwitchSubscriptionResetSuccess = FT<{ count: number }, string>('commands/twitch:twitchSubscriptionResetSuccess');
 export const TwitchSubscriptionResetStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionResetStreamerNotSubscribed');
-export const TwitchSubscriptionResetChannelSuccess = FT<{ name: string; count: number }, string>(
-	'commands/twitch:twitchSubscriptionResetChannelSuccess'
-);
 export const TwitchSubscriptionShowStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionShowStreamerNotSubscribed');
 export const TwitchSubscriptionShowStatus = T<{ live: string; offline: string }>('commands/twitch:twitchSubscriptionShowStatus');
 export const TwitchSubscriptionShowEmpty = T<string>('commands/twitch:twitchSubscriptionShowEmpty');

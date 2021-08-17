@@ -29,7 +29,7 @@ RUN sed -i 's/"prepare": "husky install .github\/husky"/"prepare": ""/' ./packag
 FROM node:16-buster-slim AS RUNNER
 
 ENV NODE_ENV="production"
-ENV NODE_OPTIONS=--max_old_space_size=4096
+ENV NODE_OPTIONS="--max_old_space_size=4096"
 
 WORKDIR /usr/src/app
 

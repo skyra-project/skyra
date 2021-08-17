@@ -155,11 +155,13 @@ export class Twitch {
 		);
 	}
 
+	// TODO(favna): Remove after fully testing Twitch
 	// @ts-ignore This is a convenience function for debugging / eval-ling
 	private async getCurrentTwitchSubscriptions(): Promise<TwitchHelixResponse<TwitchEventSubResult>> {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchEventSubResult>>('eventsub/subscriptions');
 	}
 
+	// TODO(favna): Remove after fully testing Twitch
 	// @ts-ignore This is a convenience function for debugging / eval-ling
 	private async removeAllTwitchSubscriptions(): Promise<void> {
 		const allSubscriptions = await this.getCurrentTwitchSubscriptions();

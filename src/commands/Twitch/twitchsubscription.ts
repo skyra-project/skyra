@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 		const streamerForType = await twitchSubscriptions.findOne({
 			where: { streamerId: streamer.id, subscriptionType }
 		});
-		const guildSubscriptionsForGuild = await guildSubscriptions.find({ where: { guildId: message.guild.id, channel: channel.id } });
+		const guildSubscriptionsForGuild = await guildSubscriptions.find({ where: { guildId: message.guild.id, channelId: channel.id } });
 
 		// Check if there is already a subscription for the given streamer, subscription type, and channel:
 		const alreadyHasEntry = guildSubscriptionsForGuild.some(
@@ -53,7 +53,7 @@ export class UserCommand extends SkyraCommand {
 		// Add a new entry to the "guildSubscriptionsForGuild" for streamer, subscription type, channel and message
 		const guildSubscription = new GuildSubscriptionEntity();
 		guildSubscription.guildId = message.guild.id;
-		guildSubscription.channel = channel.id;
+		guildSubscription.channelId = channel.id;
 		guildSubscription.message = customMessage ?? undefined;
 
 		if (streamerForType) {
@@ -112,7 +112,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Get all subscriptions for this streamer, status and channel
-		const streamerWithStatusHasChannel = statuses.filter((guildSubscription) => guildSubscription.channel === channel.id);
+		const streamerWithStatusHasChannel = statuses.filter((guildSubscription) => guildSubscription.channelId === channel.id);
 
 		// If there are no subscriptions configured for this channel then throw
 		if (!streamerWithStatusHasChannel.length) {
@@ -212,7 +212,7 @@ export class UserCommand extends SkyraCommand {
 
 		for (const guildSubscription of subscriptionsForStreamer) {
 			lines.push(
-				`${streamer.display_name} - ${channelMention(guildSubscription.channel)} → ${this.getSubscriptionStatus(
+				`${streamer.display_name} - ${channelMention(guildSubscription.channelId)} → ${this.getSubscriptionStatus(
 					guildSubscription.subscription.subscriptionType,
 					statuses
 				)}`
@@ -241,7 +241,7 @@ export class UserCommand extends SkyraCommand {
 			const name = names.get(guildSubscription.subscription.streamerId) ?? t(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowUnknownUser);
 
 			lines.push(
-				`${name} - ${channelMention(guildSubscription.channel)} → ${this.getSubscriptionStatus(
+				`${name} - ${channelMention(guildSubscription.channelId)} → ${this.getSubscriptionStatus(
 					guildSubscription.subscription.subscriptionType,
 					statuses
 				)}`

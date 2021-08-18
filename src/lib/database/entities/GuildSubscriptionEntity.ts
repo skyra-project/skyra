@@ -11,7 +11,7 @@ export class GuildSubscriptionEntity extends BaseEntity {
 	public subscription!: TwitchSubscriptionEntity;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public channel!: string;
+	public channelId!: string;
 
 	@Column('varchar', { nullable: true, length: 50 })
 	public message?: string;

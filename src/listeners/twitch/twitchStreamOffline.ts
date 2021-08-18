@@ -30,7 +30,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 			for (const guildSubscription of twitchSubscription.guildSubscription) {
 				if (
 					this.container.client.twitch.streamNotificationDrip(
-						`${twitchSubscription.streamerId}-${guildSubscription.channel}-${TwitchEventSubTypes.StreamOffline}`
+						`${twitchSubscription.streamerId}-${guildSubscription.channelId}-${TwitchEventSubTypes.StreamOffline}`
 					)
 				) {
 					continue;
@@ -44,7 +44,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 				const t = await fetchT(guild);
 
 				// Retrieve the channel to send the message to
-				const channel = guild.channels.cache.get(guildSubscription.channel) as TextBasedChannelTypes;
+				const channel = guild.channels.cache.get(guildSubscription.channelId) as TextBasedChannelTypes;
 				if (isNullish(channel) || !canSendMessages(channel)) {
 					continue;
 				}

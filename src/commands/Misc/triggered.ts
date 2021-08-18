@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { streamToBuffer } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,6 +8,7 @@ import { GifEncoder } from '@skyra/gifenc';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
+import { buffer } from 'stream/consumers';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -54,7 +54,7 @@ export class UserCommand extends SkyraCommand {
 
 		encoder.finish();
 
-		return streamToBuffer(stream);
+		return buffer(stream);
 	}
 
 	public async onLoad() {

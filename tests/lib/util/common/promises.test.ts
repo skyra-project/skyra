@@ -1,18 +1,20 @@
-import { streamToBuffer } from '#utils/common';
-import { resolveImage } from 'canvas-constructor/skia';
-import { createReadStream } from 'fs';
-import { resolve } from 'path';
+import { safeWrapPromise } from '#utils/common';
+import { err, ok } from '@sapphire/framework';
 
 describe('util common iterators', () => {
-	describe('streamToBuffer', () => {
-		test('GIVEN path to file THEN converts to Buffer', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'mocks', 'image.png');
-			const readStream = createReadStream(filePath);
-			const buffer = await streamToBuffer(readStream);
-			const image = await resolveImage(buffer);
+	describe('safeWrapPromise', () => {
+		test('GIVEN passing promise THEN resolves with result', async () => {
+			const value = 'Hello there';
+			const result = safeWrapPromise(Promise.resolve(value));
 
-			expect(image.width).toBe(32);
-			expect(image.height).toBe(32);
+			await expect(result).resolves.toStrictEqual(ok(value));
+		});
+
+		test('GIVEN failing promise THEN resolves with result', async () => {
+			const error = new Error('Hello there');
+			const result = safeWrapPromise(Promise.reject(error));
+
+			await expect(result).resolves.toStrictEqual(err(error));
 		});
 	});
 });

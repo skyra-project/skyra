@@ -16,16 +16,6 @@ export function floatPromise(promise: Awaited<unknown>) {
 	if (isThenable(promise)) promise.catch((error: Error) => container.logger.fatal(error));
 }
 
-/**
- * Read a stream and resolve to a buffer.
- * @param stream The readable stream to read
- */
-export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
-	const data: Buffer[] = [];
-	for await (const buffer of stream) data.push(buffer as Buffer);
-	return Buffer.concat(data);
-}
-
 export interface ReferredPromise<T> {
 	promise: Promise<T>;
 	resolve(value?: T): void;

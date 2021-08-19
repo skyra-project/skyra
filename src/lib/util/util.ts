@@ -568,7 +568,7 @@ export function countryLanguage(lang: string): string {
 }
 
 export function sanitizeInput(input: string): string {
-	return [...input].map((c) => (isLetterOrDigit(getCode(c)) ? c : '')).join();
+	return [...input].map((c) => (isLetterOrDigit(getCode(c)) ? c : '')).join('');
 }
 
 export interface UtilOneToTenEntry {

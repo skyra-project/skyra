@@ -5,6 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import { join } from 'path';
+import { sanitizeInput } from '#utils/util';
 
 @ApplyOptions<SkyraCommand.Options>({
 	bucket: 2,
@@ -18,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const text = await args.rest('string');
+		const text = sanitizeInput(await args.rest('string'));
 		const attachment = await this.generate(text);
 		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}

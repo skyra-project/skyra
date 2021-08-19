@@ -4,7 +4,7 @@ import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
 import { cdnFolder } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank } from '#utils/functions';
-import { fetchAvatar } from '#utils/util';
+import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 				// Name title
 				.setTextFont('35px RobotoRegular')
 				.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
-				.printResponsiveText(user.username, 227, 73, 306)
+				.printResponsiveText(sanitizeInput(user.username), 227, 73, 306)
 				.setTextFont('25px RobotoLight')
 				.printText(`#${user.discriminator}`, 227, 105)
 

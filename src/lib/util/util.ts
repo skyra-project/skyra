@@ -14,6 +14,7 @@ import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
+import { isLetterOrDigit, getCode } from '@skyra/char';
 
 export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
 export const kRegExpFormattedCustomEmoji = /<a?:\w{2,32}:\d{17,18}>/;
@@ -564,6 +565,10 @@ export function baseLanguage(lang: string): string {
 export function countryLanguage(lang: string): string {
 	const index = lang.lastIndexOf('-');
 	return index === -1 ? lang : lang.slice(index + 1);
+}
+
+export function sanitizeInput(input: string): string {
+	return [...input].map((c) => (isLetterOrDigit(getCode(c)) ? c : '')).join();
 }
 
 export interface UtilOneToTenEntry {

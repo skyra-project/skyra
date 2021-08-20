@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar } from '#utils/util';
+import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const text = await args.rest('string', { maximum: 50 });
+		const text = sanitizeInput(await args.rest('string', { maximum: 50 }));
 		const attachment = await this.generate(message.author, text);
 		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}

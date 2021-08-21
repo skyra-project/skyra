@@ -9,7 +9,7 @@ import {
 	TwitchHelixStreamsResult,
 	TwitchHelixGameSearchResult
 } from '#lib/types/definitions/Twitch';
-import { Enumerable } from '@sapphire/decorators';
+import { Enumerable, EnumerableMethod } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { RateLimitManager } from '@sapphire/ratelimits';
@@ -155,19 +155,10 @@ export class Twitch {
 		);
 	}
 
-	// TODO(favna): Remove after fully testing Twitch
-	// @ts-ignore This is a convenience function for debugging / eval-ling
+	@EnumerableMethod(false)
+	// @ts-expect-error This is a convenience function for eval-ling
 	private async getCurrentTwitchSubscriptions(): Promise<TwitchHelixResponse<TwitchEventSubResult>> {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchEventSubResult>>('eventsub/subscriptions');
-	}
-
-	// TODO(favna): Remove after fully testing Twitch
-	// @ts-ignore This is a convenience function for debugging / eval-ling
-	private async removeAllTwitchSubscriptions(): Promise<void> {
-		const allSubscriptions = await this.getCurrentTwitchSubscriptions();
-		const allSubscriptionIds = allSubscriptions.data.map((entry) => entry.id);
-
-		await Promise.all(allSubscriptionIds.map((subscriptionId) => this.removeSubscription(subscriptionId)));
 	}
 
 	private async _performApiGETRequest<T>(path: string): Promise<T> {

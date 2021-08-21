@@ -125,8 +125,8 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 			ON CONFLICT DO NOTHING;
 		`);
 
-		// await queryRunner.dropColumn('guilds', 'notifications.streams.twitch.streamers');
-		// await queryRunner.dropTable('twitch_stream_subscription');
+		await queryRunner.dropColumn('guilds', 'notifications.streams.twitch.streamers');
+		await queryRunner.dropTable('twitch_stream_subscription');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

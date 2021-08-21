@@ -22,7 +22,7 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 				columns: [
 					new TableColumn({
 						name: 'id',
-						type: 'integer',
+						type: 'int',
 						isPrimary: true,
 						isNullable: false,
 						isGenerated: true,

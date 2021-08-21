@@ -35,6 +35,12 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 						isNullable: false
 					}),
 					new TableColumn({
+						name: 'subscription_id',
+						type: 'varchar',
+						length: '36',
+						isNullable: false
+					}),
+					new TableColumn({
 						name: 'subscription_type',
 						type: 'twitch_subscriptions_subscription_type_enum',
 						isNullable: false
@@ -77,7 +83,7 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 						name: 'message',
 						type: 'varchar',
 						length: '50',
-						isNullable: false
+						isNullable: true
 					}),
 					new TableColumn({
 						name: 'subscription_id',
@@ -102,7 +108,7 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 		`)) as GuildColumnsOld[];
 
 		const transformedDataForTwitchSubscriptions = await this.mapOldTwitchDataToNewTwitchSubscriptions(oldTwitchSubscriptions);
-		const transformedDataForGuildSubscriptions = await this.mapOldGuildDataToNewGuildData(oldGuildData, transformedDataForTwitchSubscriptions);
+		const transformedDataForGuildSubscriptions = this.mapOldGuildDataToNewGuildData(oldGuildData, transformedDataForTwitchSubscriptions);
 
 		const stringifiedTwitchData = JSON.stringify([...transformedDataForTwitchSubscriptions.values()]).replace(/'/g, "''");
 		const stringifiedGuildData = JSON.stringify(transformedDataForGuildSubscriptions).replace(/'/g, "''");
@@ -118,10 +124,15 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 			SELECT * FROM json_populate_recordset(NULL::public."guild_subscription", '${stringifiedGuildData}')
 			ON CONFLICT DO NOTHING;
 		`);
+
+		// await queryRunner.dropColumn('guilds', 'notifications.streams.twitch.streamers');
+		// await queryRunner.dropTable('twitch_stream_subscription');
 	}
 
-	public async down(): Promise<void> {
-		// noop
+	public async down(queryRunner: QueryRunner): Promise<void> {
+		await queryRunner.dropTable('guild_subscription');
+		await queryRunner.dropTable('twitch_subscriptions');
+		await queryRunner.query(/* sql */ `drop type twitch_subscriptions_subscription_type_enum;`);
 	}
 
 	private async mapOldTwitchDataToNewTwitchSubscriptions(oldData: TwitchSubscriptionsOld[]): Promise<Map<string, TwitchSubscriptionsNew>> {
@@ -152,14 +163,14 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 		const newSubscriptions: GuildSubscriptions[] = [];
 
 		for (const guild of oldData) {
-			for (const notificationEntry of guild.notificationData) {
+			for (const notificationEntry of guild.notificationdata) {
 				const [streamerId, subscriptions] = notificationEntry;
 
 				for (const subscription of subscriptions) {
 					const newObject: GuildSubscriptions = {
 						guild_id: guild.id,
 						channel_id: subscription.channel,
-						message: subscription.message,
+						message: subscription.message || null,
 						subscription_id: transformedDataForTwitchSubscriptions.get(streamerId)!.id
 					};
 
@@ -197,7 +208,7 @@ interface GuildSubscriptions {
 
 interface GuildColumnsOld {
 	id: string;
-	notificationData: NotificationsStreamTwitch[];
+	notificationdata: NotificationsStreamTwitch[];
 }
 
 const enum NotificationsStreamsTwitchEventStatus {

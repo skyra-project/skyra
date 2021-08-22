@@ -5,9 +5,9 @@ __metadata:
   version: 4
   cacheKey: 8
 
-"0x@npm:^4.10.2":
-  version: 4.10.2
-  resolution: "0x@npm:4.10.2"
+"0x@npm:^4.11.0":
+  version: 4.11.0
+  resolution: "0x@npm:4.11.0"
   dependencies:
     ajv: ^6.9.2
     browserify: ^16.2.3
@@ -39,7 +39,7 @@ __metadata:
     which: ^1.2.4
   bin:
     0x: cmd.js
-  checksum: 076d9a9ed753eb9f11ad1260014e548d85e24a1c9e27b315717a6884b91c452d64927f63f480f384cc6bf2012936fd887bc55643f628151f047fdfe26d468a61
+  checksum: 57a5a06e54e68c812c9b796b2471b4ff3243457356fca25d0e0b19cad7838853e95b3376c1106abe106939a2b6607570d0a89714d44226948895061af38cc867
   languageName: node
   linkType: hard
 
@@ -1647,19 +1647,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client-apis@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@influxdata/influxdb-client-apis@npm:1.15.0"
+"@influxdata/influxdb-client-apis@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "@influxdata/influxdb-client-apis@npm:1.16.0"
   peerDependencies:
     "@influxdata/influxdb-client": "*"
-  checksum: b05518f95bd5817a0ef049d8cc504dff14b31c36346f15088c444fb8125e83108e2cafddc97c4e2ca7712a97a6f163e4317325f829f4cbbfc0824bc9342d56b7
+  checksum: 8997589c272b4ee70e7a98ee5ce05307253da21cb74d751f90f1a36157a90bbf0c841b7cbb1afae2cdf32263372513f196ab1b04971213af9f1119739e4696da
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@influxdata/influxdb-client@npm:1.15.0"
-  checksum: 1edc9ab2183c5fd9f25fc13c0c345ed61c4ed1be88c06816920aafd4761fdf2f4f0667a30ef33a3d259d76695ea21d114727540583c570060f6221e817b05544
+"@influxdata/influxdb-client@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "@influxdata/influxdb-client@npm:1.16.0"
+  checksum: 6e02b76498cd4683593c61c2fd8ef0248c0e037dd715cb59ee7efefc231f72d22cbc7557724bba3faecc4e6c0614e9caa7ac0dd6429290f9e2f9e02c7feb10b0
   languageName: node
   linkType: hard
 
@@ -2358,12 +2358,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/star-wars-api@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@skyra/star-wars-api@npm:2.0.0"
+"@skyra/star-wars-api@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@skyra/star-wars-api@npm:2.0.1"
   dependencies:
     graphql: ^15.5.1
-  checksum: 360674bc38c10dd10f038745b3476ee2f40fd99102a0c5e538e1d07fb7b529e64f7027ef6f4da290744b70b12b0377ffa9c0603516e2073cf13c74a019a39bee
+  checksum: febbdbf3d13ef8cb7d694d619d7602cd73bef4694343f21d59ee513fec3219a8f3a7fba1b4c49dc4d6419f2892bfb4262300f1cd80e4d416e10a44eb3af07aba
   languageName: node
   linkType: hard
 
@@ -2582,10 +2582,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:^16.6.1":
+"@types/node@npm:*, @types/node@npm:>=12.12.47":
   version: 16.6.1
   resolution: "@types/node@npm:16.6.1"
   checksum: c13aa0da0c2bf9070e521d1b537ba38f64b213dd1b8aeec66c279fc21f8c0ccaf380364f6dc2ec8f84440c4cd1460b67dfe47de2cafcb6eaf4b648817cb27dc4
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.7.1":
+  version: 16.7.1
+  resolution: "@types/node@npm:16.7.1"
+  checksum: fcf1a2c7b1f19c2201574b2110176b49c6efd824a39b2ed8ac3e6688740e2a35bef95a3334dfa345f4bd4873fd8b79d8ac8cfcc9fcd3d2f4f8f993c2c37ce4ab
   languageName: node
   linkType: hard
 
@@ -5628,7 +5635,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"grpc_tools_node_protoc_ts@npm:^5.3.1":
+"grpc_tools_node_protoc_ts@npm:^5.3.2":
   version: 5.3.2
   resolution: "grpc_tools_node_protoc_ts@npm:5.3.2"
   dependencies:
@@ -6099,9 +6106,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^4.27.7":
-  version: 4.27.7
-  resolution: "ioredis@npm:4.27.7"
+"ioredis@npm:^4.27.8":
+  version: 4.27.8
+  resolution: "ioredis@npm:4.27.8"
   dependencies:
     cluster-key-slot: ^1.1.0
     debug: ^4.3.1
@@ -6114,7 +6121,7 @@ fsevents@^2.3.2:
     redis-errors: ^1.2.0
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
-  checksum: 42c2f242b3c91202578415dc39fbc9e9ecff58f19acbd91b654cbe12877181e18dbeb6c12b3e71225a7cc928cc4e34f536953375978093c7c1a6f7417a9dfd84
+  checksum: 5c30e3c411fca10854e5804a98e5e05f34f5a52bd3226bce10d1f43c244a3705f6eebe0db21d7c7797c064da3ec0680b0c85a5f1e848fc6df970cb9133de656b
   languageName: node
   linkType: hard
 
@@ -7885,15 +7892,15 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"nock@npm:^13.1.1":
-  version: 13.1.1
-  resolution: "nock@npm:13.1.1"
+"nock@npm:^13.1.2":
+  version: 13.1.2
+  resolution: "nock@npm:13.1.2"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash.set: ^4.3.2
     propagate: ^2.0.0
-  checksum: 3acc60893d4da0848f7b1868f8d3c08fb35b90af5df7e4825be5da593f9cc7bb41388bab614058aa27be38404ff002c1073f28ee1f75ee1650694d394c9b8cdc
+  checksum: 61cf123030b86adc202887a7b6588992d751651587cd627d38af2285dde6928577694623777df4585d5838b9a1649264df3c6979983a777885ed4f98320f6e04
   languageName: node
   linkType: hard
 
@@ -9452,16 +9459,16 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"skia-canvas@npm:^0.9.23":
-  version: 0.9.23
-  resolution: "skia-canvas@npm:0.9.23"
+"skia-canvas@npm:^0.9.25":
+  version: 0.9.25
+  resolution: "skia-canvas@npm:0.9.25"
   dependencies:
     "@mapbox/node-pre-gyp": ^1.0.5
     glob: ^7.1.7
     path-browserify: ^1.0.1
     simple-get: ^4.0.0
     string-split-by: ^1.0.0
-  checksum: b29fce22e19d593432dd05857e5e04835762f8e3a8f604c370632ea4fed4927342dfc7e7576aeff15c1594a4b7cbc4a8e9d390a9774658c469ba845fba8af7cf
+  checksum: 0c2f5e2301ac68bcb3b5a5f18872219d0261ad32263941bb3e47bd3e4f7b78a2b848d48abce57635080078ca13a8abcfb169dc3dd2499bbb31246f2311eb3add
   languageName: node
   linkType: hard
 
@@ -9469,7 +9476,7 @@ fsevents@^2.3.2:
   version: 0.0.0-use.local
   resolution: "skyra@workspace:."
   dependencies:
-    0x: ^4.10.2
+    0x: ^4.11.0
     "@babel/core": ^7.15.0
     "@babel/plugin-proposal-class-properties": ^7.14.5
     "@babel/plugin-proposal-decorators": ^7.14.5
@@ -9481,8 +9488,8 @@ fsevents@^2.3.2:
     "@favware/graphql-pokemon": ^5.5.9
     "@favware/zalgo": ^3.1.2
     "@grpc/grpc-js": ^1.3.7
-    "@influxdata/influxdb-client": ^1.15.0
-    "@influxdata/influxdb-client-apis": ^1.15.0
+    "@influxdata/influxdb-client": ^1.16.0
+    "@influxdata/influxdb-client-apis": ^1.16.0
     "@sapphire/async-queue": ^1.1.4
     "@sapphire/decorators": next
     "@sapphire/discord.js-utilities": next
@@ -9509,7 +9516,7 @@ fsevents@^2.3.2:
     "@skyra/editable-commands": ^2.1.0
     "@skyra/gifenc": ^1.0.0
     "@skyra/saelem": ^3.0.9
-    "@skyra/star-wars-api": ^2.0.0
+    "@skyra/star-wars-api": ^2.0.1
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.1
@@ -9518,7 +9525,7 @@ fsevents@^2.3.2:
     "@types/i18next-fs-backend": ^1.0.1
     "@types/ioredis": ^4.26.7
     "@types/jest": ^27.0.1
-    "@types/node": ^16.6.1
+    "@types/node": ^16.7.1
     "@types/node-fetch": ^2.5.12
     "@types/pg": ^8.6.1
     "@types/skia-canvas": ^0.9.1
@@ -9538,28 +9545,28 @@ fsevents@^2.3.2:
     dotenv-cra: ^3.0.1
     eslint: ^7.32.0
     grpc-tools: ^1.11.2
-    grpc_tools_node_protoc_ts: ^5.3.1
+    grpc_tools_node_protoc_ts: ^5.3.2
     he: ^1.2.0
     husky: ^7.0.1
-    ioredis: ^4.27.7
+    ioredis: ^4.27.8
     jest: ^27.0.6
     jest-circus: ^27.0.6
     jest-mock-random: ^1.1.1
     lint-staged: ^11.1.2
-    nock: ^13.1.1
+    nock: ^13.1.2
     npm-run-all: ^4.1.5
     pg: ^8.7.1
     prettier: ^2.3.2
     pretty-quick: ^3.1.1
-    skia-canvas: ^0.9.23
+    skia-canvas: ^0.9.25
     source-map-support: ^0.5.19
-    ts-node: ^10.2.0
+    ts-node: ^10.2.1
     tslib: 1.11.2
     typeorm: 0.2.28
     typeorm-naming-strategies: ^2.0.0
     typescript: 4.3.5
     utf-8-validate: ^5.0.5
-    ws: ^8.1.0
+    ws: ^8.2.0
     zlib-sync: ^0.1.7
   languageName: unknown
   linkType: soft
@@ -10260,9 +10267,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "ts-node@npm:10.2.0"
+"ts-node@npm:^10.2.1":
+  version: 10.2.1
+  resolution: "ts-node@npm:10.2.1"
   dependencies:
     "@cspotcode/source-map-support": 0.6.1
     "@tsconfig/node10": ^1.0.7
@@ -10292,7 +10299,7 @@ fsevents@^2.3.2:
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: da767e0fd5c1b4941f0b846c3532147f31cd2ac4d66a4809358e29ed5971a4e699720bd65f9e5a585a10bc7f9c55571a8fce9e485cedce6a224dcba3869bbd3a
+  checksum: f37d2827a583c51d012cdd3d9b96629fba7a5b5dfad2c26ca48c7c89f904118924689ca56f4b9b2136217194870a76f26aae06e3490ee613b0e960f02dc96bbe
   languageName: node
   linkType: hard
 
@@ -10819,7 +10826,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.0.0, ws@npm:^8.1.0":
+"ws@npm:^8.0.0":
   version: 8.1.0
   resolution: "ws@npm:8.1.0"
   peerDependencies:
@@ -10831,6 +10838,21 @@ fsevents@^2.3.2:
     utf-8-validate:
       optional: true
   checksum: ead344f11f2b9f01646e796a7c3bcf8090be91b9b880ed705a589bde842fd1fe951862012e2ecc60538ab29220fb6c8335537f027c089afb839fd1a2584d3040
+  languageName: node
+  linkType: hard
+
+"ws@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "ws@npm:8.2.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 7cd544312a48dafcb8158c9b4e5f20986cce980d516e0ef0602665911b0e95c5e0dea2846a4bb3153a1e2c839aa3d92fb7e69dd864fe432e881eee9d4e8cf70b
   languageName: node
   linkType: hard
 

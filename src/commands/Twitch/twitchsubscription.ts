@@ -10,7 +10,7 @@ import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { chunk, isNullish, isNullishOrZero } from '@sapphire/utilities';
+import { chunk, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Guild, MessageEmbed } from 'discord.js';
 
@@ -29,7 +29,11 @@ export class UserCommand extends SkyraCommand {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const subscriptionType = await args.pick(UserCommand.status);
-		const customMessage = await args.rest('string', { maximum: 50 }).catch(() => null);
+		const customMessage = await args.rest('string', { maximum: 200 }).catch(() => null);
+
+		if (subscriptionType === TwitchEventSubTypes.StreamOffline && isNullishOrEmpty(customMessage)) {
+			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionAddMessageForOfflineRequired);
+		}
 
 		const { twitchSubscriptions, guildSubscriptions } = this.container.db;
 
@@ -124,18 +128,18 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		// Get all subscriptions for this streamer, status and channel
-		const streamerWithStatusHasChannel = statuses.filter((guildSubscription) => guildSubscription.channelId === channel.id);
+		const streamerWithStatusHasChannel = statuses.find((guildSubscription) => guildSubscription.channelId === channel.id);
 
 		// If there are no subscriptions configured for this channel then throw
-		if (!streamerWithStatusHasChannel.length) {
+		if (!streamerWithStatusHasChannel) {
 			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveNotToProvidedChannel, { channel });
 		}
 
-		// Remove the guild subscription. We always have just 1 left here so we can safely get that from the array
-		await streamerWithStatusHasChannel[0].remove();
+		// Remove the guild subscription. We always have just 1 left here.
+		await streamerWithStatusHasChannel.remove();
 
 		// Remove the subscription from the twitch API (if needed)
-		await this.removeSubscription(streamer, subscriptionType);
+		await this.removeSubscription(streamerWithStatusHasChannel.subscription.subscriptionId);
 
 		const content = args.t(
 			subscriptionType === TwitchEventSubTypes.StreamOnline
@@ -263,15 +267,14 @@ export class UserCommand extends SkyraCommand {
 		return lines;
 	}
 
-	private async removeSubscription(streamer: TwitchHelixUsersSearchResult, subscriptionType: TwitchEventSubTypes) {
+	private async removeSubscription(subscriptionId: string) {
 		const { twitchSubscriptions } = this.container.db;
 
 		// Get all subscriptions for the provided streamer and subscription type
 		const subscription = await twitchSubscriptions.findOne({
 			relations: ['guildSubscription'],
 			where: {
-				streamerId: streamer.id,
-				subscriptionType
+				subscriptionId
 			}
 		});
 

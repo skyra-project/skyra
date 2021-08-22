@@ -22,6 +22,7 @@
 	"twitchSubscriptionAddDuplicated": "{{REDCROSS}} You're already subscribed to that streamer in this channel for that status.",
 	"twitchSubscriptionAddSuccessOffline": "{{GREENTICK}} Success! Whenever {{name}} goes offline, I will post a new message in {{channel}}.",
 	"twitchSubscriptionAddSuccessLive": "{{GREENTICK}} Success! Whenever {{name}} goes live, I will post a new message in {{channel}}.",
+	"twitchSubscriptionAddMessageForOfflineRequired": "{{REDCROSS}} I'm sorry but it is required to provide a message when making an offline subscription.",
 	"twitchSubscriptionRemoveOrResetEmpty": "{{REDCROSS}} I'm sorry but you are not subscribed to any streamers, mission abort!",
 	"twitchSubscriptionRemoveStreamerNotSubscribed": "{{REDCROSS}} I'm sorry, you cannot unsubscribe from {{streamer}} because you are not subscribed to them.",
 	"twitchSubscriptionRemoveNotToProvidedChannel": "{{REDCROSS}} I'm sorry; while you're subscribed to this streamer and streaming status, their subscriptions is not posted to {{channel}}.",
@@ -106,7 +107,7 @@
 			],
 			[
 				"Content",
-				"The message to send in Discord chat. Only needed for offline notifications."
+				"The message to send in Discord chat. Required for for offline notifications, optional for online notifications."
 			]
 		],
 		"examples": [

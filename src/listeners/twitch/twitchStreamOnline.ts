@@ -58,7 +58,12 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 					}
 
 					// Construct a message embed and send it.
-					floatPromise(channel.send({ embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)] }));
+					floatPromise(
+						channel.send({
+							content: guildSubscription.message || null,
+							embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)]
+						})
+					);
 				}
 			} catch {
 				// noop, this try/catch is only here so we don't get a runtime error.

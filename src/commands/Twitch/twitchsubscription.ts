@@ -10,7 +10,7 @@ import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { chunk, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
+import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { send } from '@skyra/editable-commands';
 import { Guild, MessageEmbed } from 'discord.js';
 
@@ -66,17 +66,6 @@ export class UserCommand extends SkyraCommand {
 			// Subscribe to the streamer on the Twitch API, returning the ID of the subscription
 			const subscriptionId = await this.container.client.twitch.subscriptionsStreamHandle(streamer.id, subscriptionType);
 			const twitchSubscriptionEntity = new TwitchSubscriptionEntity();
-
-			// Retrieve the current highest ID in the database, TypeORM doesn't resolve this automatically for some reason
-			const [{ max }] = (await twitchSubscriptions.query(/* sql */ `
-				SELECT max(id)
-				FROM public.twitch_subscriptions;
-			`)) as [MaxQuery];
-
-			// If the max value is not nullish or zero then set it in the entity instance
-			if (!isNullishOrZero(max)) {
-				twitchSubscriptionEntity.id = max + 1;
-			}
 
 			twitchSubscriptionEntity.streamerId = streamer.id;
 			twitchSubscriptionEntity.subscriptionType = subscriptionType;
@@ -350,8 +339,4 @@ export class UserCommand extends SkyraCommand {
 		if (index === 0) return Args.ok(TwitchEventSubTypes.StreamOnline);
 		return Args.ok(TwitchEventSubTypes.StreamOffline);
 	});
-}
-
-interface MaxQuery {
-	max: number | null;
 }

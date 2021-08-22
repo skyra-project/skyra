@@ -1,6 +1,7 @@
-import { TwitchEventSubVerificationMessage, TwitchEventSubTypes } from '#lib/types';
+import { TwitchEventSubTypes, TwitchEventSubVerificationMessage } from '#lib/types';
 import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
+import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
@@ -28,7 +29,8 @@ export class UserRoute extends Route {
 		}
 
 		// Construct the verification signature
-		const twitchEventSubMessage = twitchEventSubMessageId + twitchEventSubMessageTimestamp + JSON.stringify(request.body);
+		const twitchEventSubMessage =
+			cast<string>(twitchEventSubMessageId) + cast<string>(twitchEventSubMessageTimestamp) + JSON.stringify(request.body);
 
 		// Split the algorithm from the signature
 		const [algorithm, signature] = twitchEventSubMessageSignature.toString().split('=', 2);
@@ -63,14 +65,6 @@ export class UserRoute extends Route {
 		}
 
 		// Store the last notification id
-		this.lastNotificationId = twitchEventSubMessageId;
-	}
-}
-
-declare module 'http' {
-	interface IncomingHttpHeaders extends NodeJS.Dict<string | string[]> {
-		'twitch-eventsub-message-signature'?: string;
-		'twitch-eventsub-message-id'?: string;
-		'twitch-eventsub-message-timestamp'?: string;
+		this.lastNotificationId = cast<string>(twitchEventSubMessageId);
 	}
 }

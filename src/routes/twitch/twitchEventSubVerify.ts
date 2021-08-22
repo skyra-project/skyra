@@ -13,9 +13,9 @@ export class UserRoute extends Route {
 	// Stream Changed
 	public [methods.POST](request: ApiRequest, response: ApiResponse) {
 		// Grab the headers that we need to use for verification
-		const twitchEventSubMessageSignature = request.headers['twitch-eventsub-message-signature'];
-		const twitchEventSubMessageId = request.headers['twitch-eventsub-message-id'];
-		const twitchEventSubMessageTimestamp = request.headers['twitch-eventsub-message-timestamp'];
+		const twitchEventSubMessageSignature = cast<string>(request.headers['twitch-eventsub-message-signature']);
+		const twitchEventSubMessageId = cast<string>(request.headers['twitch-eventsub-message-id']);
+		const twitchEventSubMessageTimestamp = cast<string>(request.headers['twitch-eventsub-message-timestamp']);
 
 		// If this notification is the same as before, then send ok back
 		if (this.lastNotificationId && this.lastNotificationId === twitchEventSubMessageId) return response.ok();
@@ -29,8 +29,7 @@ export class UserRoute extends Route {
 		}
 
 		// Construct the verification signature
-		const twitchEventSubMessage =
-			cast<string>(twitchEventSubMessageId) + cast<string>(twitchEventSubMessageTimestamp) + JSON.stringify(request.body);
+		const twitchEventSubMessage = twitchEventSubMessageId + twitchEventSubMessageTimestamp + JSON.stringify(request.body);
 
 		// Split the algorithm from the signature
 		const [algorithm, signature] = twitchEventSubMessageSignature.toString().split('=', 2);
@@ -65,6 +64,6 @@ export class UserRoute extends Route {
 		}
 
 		// Store the last notification id
-		this.lastNotificationId = cast<string>(twitchEventSubMessageId);
+		this.lastNotificationId = twitchEventSubMessageId;
 	}
 }

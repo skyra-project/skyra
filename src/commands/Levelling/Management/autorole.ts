@@ -118,7 +118,7 @@ export class UserCommand extends SkyraCommand {
 		if (result.success) return result.value;
 
 		// If it was erroneous, but it was because it wasn't a valid integer, try parsing level:
-		if (result.error.identifier === Identifiers.ArgumentInteger) return args.pick(UserCommand.level);
+		if (result.error.identifier === Identifiers.ArgumentIntegerError) return args.pick(UserCommand.level);
 
 		// It was a valid integer, but the number was out of range:
 		throw result.error;

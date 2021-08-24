@@ -13,7 +13,7 @@ export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 	}
 
 	public async run(parameter: string, { message, minimum, context, filter }: ChannelArgumentContext) {
-		if (!isGuildMessage(message)) return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelMissingGuild, context });
+		if (!isGuildMessage(message)) return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelMissingGuildError, context });
 		filter = this.getFilter(message.author, filter);
 
 		const resChannel = this.resolveChannel(parameter, message.guild);
@@ -21,7 +21,7 @@ export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 
 		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(message, parameter, minimum);
 		if (result) return this.ok(result[1]);
-		return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannel, context });
+		return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelError, context });
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel | ThreadChannel) => boolean) {

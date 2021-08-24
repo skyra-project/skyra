@@ -3,36 +3,41 @@ import { LanguageKeys } from './languageKeys';
 
 export function translate(identifier: string): string {
 	switch (identifier) {
-		case Identifiers.ArgumentBoolean:
-		case Identifiers.ArgumentCategoryChannel:
-		case Identifiers.ArgumentChannel:
-		case Identifiers.ArgumentDate:
-		case Identifiers.ArgumentDateTooSmall:
-		case Identifiers.ArgumentDateTooBig:
-		case Identifiers.ArgumentDMChannel:
-		case Identifiers.ArgumentFloat:
+		case Identifiers.ArgumentBooleanError:
+		case Identifiers.ArgumentChannelError:
+		case Identifiers.ArgumentDateError:
+		case Identifiers.ArgumentDateTooEarly:
+		case Identifiers.ArgumentDateTooFar:
+		case Identifiers.ArgumentDMChannelError:
+		case Identifiers.ArgumentFloatError:
+		case Identifiers.ArgumentFloatTooLarge:
 		case Identifiers.ArgumentFloatTooSmall:
-		case Identifiers.ArgumentFloatTooBig:
-		case Identifiers.ArgumentGuildChannel:
-		case Identifiers.ArgumentGuildChannelMissingGuild:
-		case Identifiers.ArgumentHyperlink:
-		case Identifiers.ArgumentInteger:
+		case Identifiers.ArgumentGuildCategoryChannelError:
+		case Identifiers.ArgumentGuildChannelError:
+		case Identifiers.ArgumentGuildChannelMissingGuildError:
+		case Identifiers.ArgumentGuildNewsChannelError:
+		case Identifiers.ArgumentGuildNewsThreadChannelError:
+		case Identifiers.ArgumentGuildPrivateThreadChannelError:
+		case Identifiers.ArgumentGuildPublicThreadChannelError:
+		case Identifiers.ArgumentGuildStageVoiceChannelError:
+		case Identifiers.ArgumentGuildTextChannelError:
+		case Identifiers.ArgumentGuildThreadChannelError:
+		case Identifiers.ArgumentGuildVoiceChannelError:
+		case Identifiers.ArgumentHyperlinkError:
+		case Identifiers.ArgumentIntegerError:
+		case Identifiers.ArgumentIntegerTooLarge:
 		case Identifiers.ArgumentIntegerTooSmall:
-		case Identifiers.ArgumentIntegerTooBig:
-		case Identifiers.ArgumentMember:
+		case Identifiers.ArgumentMemberError:
 		case Identifiers.ArgumentMemberMissingGuild:
-		case Identifiers.ArgumentMessage:
-		case Identifiers.ArgumentNewsChannel:
-		case Identifiers.ArgumentNumber:
+		case Identifiers.ArgumentMessageError:
+		case Identifiers.ArgumentNumberError:
+		case Identifiers.ArgumentNumberTooLarge:
 		case Identifiers.ArgumentNumberTooSmall:
-		case Identifiers.ArgumentNumberTooBig:
-		case Identifiers.ArgumentRole:
+		case Identifiers.ArgumentRoleError:
 		case Identifiers.ArgumentRoleMissingGuild:
-		case Identifiers.ArgumentStringTooShort:
 		case Identifiers.ArgumentStringTooLong:
-		case Identifiers.ArgumentTextChannel:
-		case Identifiers.ArgumentUser:
-		case Identifiers.ArgumentVoiceChannel:
+		case Identifiers.ArgumentStringTooShort:
+		case Identifiers.ArgumentUserError:
 			return `arguments:${identifier}`;
 		case Identifiers.ArgsUnavailable:
 			return LanguageKeys.Arguments.Unavailable;
@@ -43,13 +48,27 @@ export function translate(identifier: string): string {
 		case Identifiers.PreconditionCooldown:
 			return LanguageKeys.Preconditions.Cooldown;
 		case Identifiers.PreconditionDMOnly:
-			return LanguageKeys.Preconditions.DMOnly;
+			return LanguageKeys.Preconditions.DmOnly;
+		case Identifiers.PreconditionGuildNewsOnly:
+			return LanguageKeys.Preconditions.GuildNewsOnly;
+		case Identifiers.PreconditionGuildNewsThreadOnly:
+			return LanguageKeys.Preconditions.GuildNewsThreadOnly;
 		case Identifiers.PreconditionGuildOnly:
 			return LanguageKeys.Preconditions.GuildOnly;
+		case Identifiers.PreconditionGuildPrivateThreadOnly:
+			return LanguageKeys.Preconditions.GuildPrivateThreadOnly;
+		case Identifiers.PreconditionGuildPublicThreadOnly:
+			return LanguageKeys.Preconditions.GuildPublicThreadOnly;
+		case Identifiers.PreconditionGuildTextOnly:
+			return LanguageKeys.Preconditions.GuildTextOnly;
 		case Identifiers.PreconditionNSFW:
-			return LanguageKeys.Preconditions.NSFW;
-		case Identifiers.PreconditionPermissions:
-			return LanguageKeys.Preconditions.Permissions;
+			return LanguageKeys.Preconditions.Nsfw;
+		case Identifiers.PreconditionClientPermissions:
+			return LanguageKeys.Preconditions.ClientPermissions;
+		case Identifiers.PreconditionUserPermissions:
+			return LanguageKeys.Preconditions.UserPermissions;
+		case Identifiers.PreconditionThreadOnly:
+			return LanguageKeys.Preconditions.ThreadOnly;
 		default:
 			return identifier;
 	}

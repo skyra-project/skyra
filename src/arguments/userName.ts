@@ -16,11 +16,11 @@ export class UserArgument extends Argument<User> {
 
 		const user = await this.resolveUser(message, parameter);
 		if (user) return this.ok(user);
-		if (user === null) return this.error({ parameter, identifier: Identifiers.ArgumentUser, context });
+		if (user === null) return this.error({ parameter, identifier: Identifiers.ArgumentUserError, context });
 
 		const result = await this.fetchMember(message, parameter);
 		if (result) return this.ok(result.user);
-		return this.error({ parameter, identifier: LanguageKeys.Arguments.User, context });
+		return this.error({ parameter, identifier: LanguageKeys.Arguments.UserError, context });
 	}
 
 	private async resolveUser(message: GuildMessage, argument: string) {

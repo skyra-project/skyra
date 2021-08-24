@@ -12,7 +12,7 @@ export class UserArgument extends Argument<number> {
 
 		const parsed = Number(parameter);
 		if (!Number.isInteger(parsed)) {
-			return this.error({ parameter, identifier: Identifiers.ArgumentInteger, context: { ...context, minimum, maximum } });
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerError, context: { ...context, minimum, maximum } });
 		}
 
 		if (parsed < minimum) {
@@ -20,7 +20,7 @@ export class UserArgument extends Argument<number> {
 		}
 
 		if (parsed > maximum) {
-			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooBig, context: { ...context, minimum, maximum } });
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooLarge, context: { ...context, minimum, maximum } });
 		}
 
 		return this.ok(parsed);

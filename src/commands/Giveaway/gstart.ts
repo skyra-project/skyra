@@ -24,8 +24,8 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as TextChannel);
-		const missing = channel.permissionsFor(channel.guild.me!)!.missing(UserCommand.requiredPermissions);
-		if (missing.length > 0) this.error(Identifiers.PreconditionPermissions, { missing });
+		const missing = channel.permissionsFor(channel.guild.me!).missing(UserCommand.requiredPermissions);
+		if (missing.length > 0) this.error(Identifiers.PreconditionClientPermissions, { missing });
 
 		const allowedRoles = await this.getAllowedRoles(args);
 		const time = await args.pick('time');

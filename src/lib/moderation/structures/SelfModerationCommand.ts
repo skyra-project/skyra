@@ -136,7 +136,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 			settings.getLanguage()
 		]);
 
-		const [yes, no] = [t(LanguageKeys.Arguments.BoolEnabled), t(LanguageKeys.Arguments.BoolDisabled)];
+		const [yes, no] = [t(LanguageKeys.Arguments.BooleanEnabled), t(LanguageKeys.Arguments.BooleanDisabled)];
 		const codeBlockContent = t(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
 			kEnabled: enabled ? yes : no,
 			kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,

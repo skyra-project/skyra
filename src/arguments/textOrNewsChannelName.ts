@@ -4,14 +4,13 @@ import { Argument, ArgumentContext } from '@sapphire/framework';
 import type { NewsChannel, TextChannel } from 'discord.js';
 
 export class UserArgument extends Argument<TextChannel | NewsChannel> {
+	private readonly filter = orMix(isTextChannel, isNewsChannel);
+
 	public get channelName(): Argument<TextChannel | NewsChannel> {
 		return this.store.get('channelName') as Argument<TextChannel | NewsChannel>;
 	}
 
 	public run(argument: string, context: ArgumentContext<TextChannel | NewsChannel>) {
-		return this.channelName.run(argument, {
-			...context,
-			filter: orMix(isTextChannel, isNewsChannel)
-		});
+		return this.channelName.run(argument, { ...context, filter: this.filter });
 	}
 }

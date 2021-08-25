@@ -1,13 +1,13 @@
 import type { SkyraCommand } from '#lib/structures';
 import type { CustomFunctionGet, CustomGet } from '#lib/types';
-import { floatPromise, isGuildMessage, minutes, resolveOnErrorCodes } from '#utils/common';
-import { canSendMessages } from '@sapphire/discord.js-utilities';
+import { floatPromise, minutes, resolveOnErrorCodes } from '#utils/common';
+import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
 import type { NonNullObject } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
-import { Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
+import type { Message, MessageOptions, UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'timers/promises';
 
 const messageCommands = new WeakMap<Message, SkyraCommand>();
@@ -29,37 +29,6 @@ export function setCommand(message: Message, command: SkyraCommand | null) {
  */
 export function getCommand(message: Message): SkyraCommand | null {
 	return messageCommands.get(message) ?? null;
-}
-
-/**
- * Determines whether or not we can reply to a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can reply to the given message.
- */
-export function canReply(message: Message) {
-	return canSendMessages(message.channel);
-}
-
-const canReactPermissions = new Permissions(['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS']);
-
-/**
- * Determines whether or not we can react to a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can react to the given message.
- */
-export function canReact(message: Message) {
-	return isGuildMessage(message) ? message.channel.permissionsFor(message.guild.me!)!.has(canReactPermissions) : true;
-}
-
-const canRemoveAllReactionsPermissions = new Permissions(['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES']);
-
-/**
- * Determines whether or not we can remove all reactions from a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can remove all reactions from the given message.
- */
-export function canRemoveAllReactions(message: Message) {
-	return isGuildMessage(message) ? message.channel.permissionsFor(message.guild.me!)!.has(canRemoveAllReactionsPermissions) : false;
 }
 
 async function deleteMessageImmediately(message: Message): Promise<Message> {
@@ -189,7 +158,7 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: minutes(1), max: 1 });
 
 	// Remove all reactions if the user has permissions to do so
-	if (canRemoveAllReactions(response)) {
+	if (canRemoveAllReactions(response.channel)) {
 		floatPromise(response.reactions.removeAll());
 	}
 
@@ -215,7 +184,9 @@ export async function promptConfirmation(message: Message, options: string | Pro
 
 	// TODO: v13 | Switch to buttons only when available.
 	const response = await send(message, options);
-	return canReact(response) ? promptConfirmationReaction(message, response, options) : promptConfirmationMessage(message, response, options);
+	return canReact(response.channel)
+		? promptConfirmationReaction(message, response, options)
+		: promptConfirmationMessage(message, response, options);
 }
 
 export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = minutes(1)): Promise<string | null> {

@@ -1948,11 +1948,11 @@ __metadata:
   linkType: hard
 
 "@sapphire/decorators@npm:next":
-  version: 3.0.0-next.ca2a1d6f.0
-  resolution: "@sapphire/decorators@npm:3.0.0-next.ca2a1d6f.0"
+  version: 3.0.0-next.18081fac.0
+  resolution: "@sapphire/decorators@npm:3.0.0-next.18081fac.0"
   dependencies:
     tslib: 2.x
-  checksum: 5df50d599aa9bc140e590fc15c5222b8a478409e659eeaf88a0e3ff62266d8bb657405a34fa776943306bbd6b55cfe71b32f0c214477eda654188620b23bd39a
+  checksum: 529f35d9b3242f63ce7032be1020e879c8450c1162828f4c85ba851b4681dba1ad3b4ec62df7225a5bf9054837b5cadd337c346c26b2934ec945db2d918430c1
   languageName: node
   linkType: hard
 
@@ -1965,7 +1965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord-utilities@npm:^2.2.0-next.ca2a1d6f.0":
+"@sapphire/discord-utilities@npm:^2.2.0-next.18081fac.0":
   version: 2.2.0-next.fe29b118.0
   resolution: "@sapphire/discord-utilities@npm:2.2.0-next.fe29b118.0"
   dependencies:
@@ -1975,13 +1975,13 @@ __metadata:
   linkType: hard
 
 "@sapphire/discord.js-utilities@npm:next":
-  version: 3.0.0-next.ca2a1d6f.0
-  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.ca2a1d6f.0"
+  version: 3.0.0-next.18081fac.0
+  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.18081fac.0"
   dependencies:
-    "@sapphire/discord-utilities": ^2.2.0-next.ca2a1d6f.0
-    "@sapphire/time-utilities": ^1.4.0-next.ca2a1d6f.0
-    "@sapphire/utilities": ^2.1.0-next.ca2a1d6f.0
-  checksum: fd95ea91e7a1cc0441aa9eb374ef2470b10eaf04a35fa4de8d416293edbc22cf28f7fbf6a5543f54e4710ea342c751b19a15f69f4ee03c881ca232c5a9bb48cb
+    "@sapphire/discord-utilities": ^2.2.0-next.18081fac.0
+    "@sapphire/time-utilities": ^1.4.0-next.18081fac.0
+    "@sapphire/utilities": ^2.1.0-next.18081fac.0
+  checksum: 5f7eb98225adf867b58c8e575c2cfd4e8a3d7adb9f72bd4c575fe4e063884ebeb0d3c24d99516ead7523b8f24258282a1cc739a3f619e7423d030f07b26c031b
   languageName: node
   linkType: hard
 
@@ -2136,7 +2136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:^1.4.0-next.ca2a1d6f.0":
+"@sapphire/time-utilities@npm:^1.4.0-next.18081fac.0":
   version: 1.4.0-next.fe29b118.0
   resolution: "@sapphire/time-utilities@npm:1.4.0-next.fe29b118.0"
   dependencies:
@@ -2180,7 +2180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/utilities@npm:^2.1.0-next.ca2a1d6f.0, @sapphire/utilities@npm:^2.1.0-next.fe29b118.0":
+"@sapphire/utilities@npm:^2.1.0-next.18081fac.0, @sapphire/utilities@npm:^2.1.0-next.fe29b118.0":
   version: 2.1.0-next.fe29b118.0
   resolution: "@sapphire/utilities@npm:2.1.0-next.fe29b118.0"
   checksum: dd4c3102d0a3d39660ae1ff74ef25f06fdc1ab24ab3e43e027fd863b143e97f6d99d0b426661b3ddf164d6fda8ae794abb9a9eb4537666a3b9cca4c8760cc155

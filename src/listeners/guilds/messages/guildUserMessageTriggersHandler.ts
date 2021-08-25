@@ -1,8 +1,8 @@
 import { GuildSettings, readSettings, TriggerIncludes, writeSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { canReact } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { canReact } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 
@@ -18,7 +18,7 @@ export class UserListener extends Listener {
 		const content = message.content.toLowerCase();
 		const entry = triggers.find((trigger) => content.includes(trigger.input));
 		if (entry && entry.action === 'react') {
-			if (canReact(message)) {
+			if (canReact(message.channel)) {
 				await this.tryReact(message, entry);
 			}
 		}

@@ -19,8 +19,8 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {
-		const { success, value } = await safeWrapPromise(message.guild.bans.fetch());
-		const bans = success ? value?.map((ban) => ban.user.id) ?? null : null;
+		const result = await safeWrapPromise(message.guild.bans.fetch());
+		const bans = result.success ? result.value.map((ban) => ban.user.id) ?? null : null;
 
 		// If the fetch failed, throw an error saying that the fetch failed:
 		if (bans === null) {

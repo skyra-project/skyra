@@ -1647,19 +1647,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client-apis@npm:^1.16.0":
-  version: 1.16.0
-  resolution: "@influxdata/influxdb-client-apis@npm:1.16.0"
+"@influxdata/influxdb-client-apis@npm:^1.17.0":
+  version: 1.17.0
+  resolution: "@influxdata/influxdb-client-apis@npm:1.17.0"
   peerDependencies:
     "@influxdata/influxdb-client": "*"
-  checksum: 8997589c272b4ee70e7a98ee5ce05307253da21cb74d751f90f1a36157a90bbf0c841b7cbb1afae2cdf32263372513f196ab1b04971213af9f1119739e4696da
+  checksum: e1a7d8d89e8cd9206ad5169f83ba5a3a68b3eacdcc2cfaee0285ee775b54d2e50fcf8aa59b9ed9426f3fab21f93108d92aea5b8e6d2ebe904f507046e6ae96da
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client@npm:^1.16.0":
-  version: 1.16.0
-  resolution: "@influxdata/influxdb-client@npm:1.16.0"
-  checksum: 6e02b76498cd4683593c61c2fd8ef0248c0e037dd715cb59ee7efefc231f72d22cbc7557724bba3faecc4e6c0614e9caa7ac0dd6429290f9e2f9e02c7feb10b0
+"@influxdata/influxdb-client@npm:^1.17.0":
+  version: 1.17.0
+  resolution: "@influxdata/influxdb-client@npm:1.17.0"
+  checksum: abe41520a689ee9de68434303f801bfffd0baad6a2effdea2e2bcab09f68eec013bc86b2368cfb84563c8aba3f84225356e3a098155249345c1bf9aafe01a677
   languageName: node
   linkType: hard
 
@@ -1948,31 +1948,40 @@ __metadata:
   linkType: hard
 
 "@sapphire/decorators@npm:next":
-  version: 3.0.0-next.823c6b12.0
-  resolution: "@sapphire/decorators@npm:3.0.0-next.823c6b12.0"
+  version: 3.0.0-next.ca2a1d6f.0
+  resolution: "@sapphire/decorators@npm:3.0.0-next.ca2a1d6f.0"
   dependencies:
     tslib: 2.x
-  checksum: df7a9fc73c6d4fa18c67f78e7debe2fab84e1a154dc07ff09671dd7952a52ca26c792bfebf1d80b86536cb7c7e50f71d29abb16c7b481555a2b9353a7a53c17d
+  checksum: 5df50d599aa9bc140e590fc15c5222b8a478409e659eeaf88a0e3ff62266d8bb657405a34fa776943306bbd6b55cfe71b32f0c214477eda654188620b23bd39a
   languageName: node
   linkType: hard
 
-"@sapphire/discord-utilities@npm:2.2.0-next.823c6b12.0":
-  version: 2.2.0-next.823c6b12.0
-  resolution: "@sapphire/discord-utilities@npm:2.2.0-next.823c6b12.0"
+"@sapphire/discord-utilities@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@sapphire/discord-utilities@npm:2.1.5"
   dependencies:
     twemoji-parser: ^13.1.0
-  checksum: cc194f8648626eb99bb4e36eacee8792eea0abfda7f5a48454598f3c839deab0351779ea42a9a11ad58cba68928d89ddb6594c6fe8cc2b6d862a12e3b425bb01
+  checksum: 93ef35a146ab8bd5874c059906c012d5b099012efd9fe56e8cb81cd16c21e3eaa84ed7d5377014eaf692783927e4a7d11ae46699a7aa319ae002a911ea0b7e3b
   languageName: node
   linkType: hard
 
-"@sapphire/discord.js-utilities@npm:3.0.0-next.823c6b12.0":
-  version: 3.0.0-next.823c6b12.0
-  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.823c6b12.0"
+"@sapphire/discord-utilities@npm:^2.2.0-next.ca2a1d6f.0":
+  version: 2.2.0-next.fe29b118.0
+  resolution: "@sapphire/discord-utilities@npm:2.2.0-next.fe29b118.0"
   dependencies:
-    "@sapphire/discord-utilities": ^2.2.0-next.823c6b12.0
-    "@sapphire/time-utilities": ^1.4.0-next.823c6b12.0
-    "@sapphire/utilities": ^2.1.0-next.823c6b12.0
-  checksum: e532ccaf7934bcf1cab7293dfcafd17075b2dec549f5c7a9f223688efa1140558c696218b826061972549a106ec74f84af995c0550c0f53ebd0dbbd4e39a74cd
+    twemoji-parser: ^13.1.0
+  checksum: c2020d6ff65be436540c3cfcc7236d9bcba9257274c0369f210b9e2b3e49c22873aaf6da5658ba73aa5d415b834f21de1f14c88e874c75e59511ed3eebbcfe8a
+  languageName: node
+  linkType: hard
+
+"@sapphire/discord.js-utilities@npm:next":
+  version: 3.0.0-next.ca2a1d6f.0
+  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.ca2a1d6f.0"
+  dependencies:
+    "@sapphire/discord-utilities": ^2.2.0-next.ca2a1d6f.0
+    "@sapphire/time-utilities": ^1.4.0-next.ca2a1d6f.0
+    "@sapphire/utilities": ^2.1.0-next.ca2a1d6f.0
+  checksum: fd95ea91e7a1cc0441aa9eb374ef2470b10eaf04a35fa4de8d416293edbc22cf28f7fbf6a5543f54e4710ea342c751b19a15f69f4ee03c881ca232c5a9bb48cb
   languageName: node
   linkType: hard
 
@@ -2002,8 +2011,8 @@ __metadata:
   linkType: hard
 
 "@sapphire/framework@npm:next":
-  version: 2.0.0-next.506576eb.0
-  resolution: "@sapphire/framework@npm:2.0.0-next.506576eb.0"
+  version: 2.0.0-next.2d21b038.0
+  resolution: "@sapphire/framework@npm:2.0.0-next.2d21b038.0"
   dependencies:
     "@sapphire/discord-utilities": ^2.1.5
     "@sapphire/discord.js-utilities": next
@@ -2012,7 +2021,7 @@ __metadata:
     "@sapphire/utilities": ^2.0.1
     lexure: ^0.17.0
     tslib: ^2.3.1
-  checksum: 5ec5078010f22c50b200ef100e6674255dcfd88b463be1113b78c13651347243e64675077e9e6b4440107b3bc1c35614163b3c066cbd4a231d6564b83b455edc
+  checksum: 25e78e4f43b75d6c4981509316c08a4b2e6eba94c5d96e226a8725a7c6b960e4960382350e687fc2660b5f9f03e94b709ca37aa6544e1bb1aeb67d45024723cb
   languageName: node
   linkType: hard
 
@@ -2028,8 +2037,8 @@ __metadata:
   linkType: hard
 
 "@sapphire/plugin-api@npm:next":
-  version: 3.0.0-next.7a9739f.0
-  resolution: "@sapphire/plugin-api@npm:3.0.0-next.7a9739f.0"
+  version: 3.0.0-next.49bbf8e.0
+  resolution: "@sapphire/plugin-api@npm:3.0.0-next.49bbf8e.0"
   dependencies:
     "@types/node-fetch": ^2.5.12
     "@types/psl": ^1.1.0
@@ -2037,50 +2046,50 @@ __metadata:
     node-fetch: ^2.6.1
     psl: ^1.8.0
     tslib: ^2.3.1
-  checksum: c502fde3df454c1231a405f45825b0891867237b8ae1a2cc1a695c08d945216b529a390116d142dabddf7b7285d8b1333a97f34b439881e5676e17b2739c4657
+  checksum: d25b4ac2dec1577a717aba86212c7364cc634aab01b9ab65327d18558d842f6ba25d23f33f08619e5833acc11fb17075b492cb1337d93f71613bf5e67986d3bb
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-editable-commands@npm:^0.1.0-next.9af3e85.0":
-  version: 0.1.0-next.e7ca002.0
-  resolution: "@sapphire/plugin-editable-commands@npm:0.1.0-next.e7ca002.0"
+"@sapphire/plugin-editable-commands@npm:next":
+  version: 0.1.0-next.49bbf8e.0
+  resolution: "@sapphire/plugin-editable-commands@npm:0.1.0-next.49bbf8e.0"
   dependencies:
     "@skyra/editable-commands": ^2.1.0
     tslib: ^2.3.1
-  checksum: c17e12c359d99409e04bd37a97e4137c36cbf44d5227500eb906f3514501b8fd1a0328f1b3ac59c0fd2cd67cb89cbbc486d71feebfec9adbfe107479d15017d9
+  checksum: df94fd5ac8eb0b3c8e9de71f64a3883da2cde29326dbfbc6a00b72ef4421ba3e0550bb67118af8b4e2fc0f3162cb80f129fa74b16c9ee5c04d2f8e6ae13d51ab
   languageName: node
   linkType: hard
 
 "@sapphire/plugin-i18next@npm:next":
-  version: 2.0.0-next.7a9739f.0
-  resolution: "@sapphire/plugin-i18next@npm:2.0.0-next.7a9739f.0"
+  version: 2.0.0-next.49bbf8e.0
+  resolution: "@sapphire/plugin-i18next@npm:2.0.0-next.49bbf8e.0"
   dependencies:
     "@sapphire/utilities": ^2.0.1
     "@types/i18next-fs-backend": ^1.0.1
     i18next: ^19.9.2
     i18next-fs-backend: ^1.1.1
     tslib: ^2.3.1
-  checksum: e117ebe2d7ea41564ebdd20b7cef1c942345bbd9fe1f5d167d311b4b3a067a399109a8b5f97f52d7a26688d1f429208cdf2fa7a3c8e6fe60aa66bf26229c010c
+  checksum: bf6b6201e3dffa6dd15b3481b8183c454cce3534a480af2eeaa4d7a478574497863865d498ed822906ecca15add4ab935d97be132c092b4469c1459d380883f4
   languageName: node
   linkType: hard
 
 "@sapphire/plugin-logger@npm:next":
-  version: 1.0.14-next.7a9739f.0
-  resolution: "@sapphire/plugin-logger@npm:1.0.14-next.7a9739f.0"
+  version: 1.0.14-next.49bbf8e.0
+  resolution: "@sapphire/plugin-logger@npm:1.0.14-next.49bbf8e.0"
   dependencies:
     "@sapphire/time-utilities": ^1.3.8
     colorette: ^1.3.0
     tslib: ^2.3.1
-  checksum: 222bb8f703a5cd4480b19c899d965ed9aaa69dadb74147ab1a846f90b6eacae0f934ee7b3e5299e644f25de69afd3f81ef1c240b49c75ee37ca96f474f75b5e0
+  checksum: d9e809b696da5b547984c15863c8595675b88e897415de5a306daf2897f29aec43a368903256a1903c4addb6a0922bc7f0686d59fc3cd7daa1cbd1b2b27ce7dc
   languageName: node
   linkType: hard
 
 "@sapphire/plugin-subcommands@npm:next":
-  version: 2.0.0-next.7a9739f.0
-  resolution: "@sapphire/plugin-subcommands@npm:2.0.0-next.7a9739f.0"
+  version: 2.0.0-next.49bbf8e.0
+  resolution: "@sapphire/plugin-subcommands@npm:2.0.0-next.49bbf8e.0"
   dependencies:
     tslib: ^2.3.1
-  checksum: 98794824bda98bfc479bcb0a78e992453286b48e5ab7cef3365d3ac0faf62cb002abe4750f41db910bd28e3322405a489300eeefd3e1fb4d343f0da6353eabc9
+  checksum: dc9559f73061997e2aa54a5d02d10d7d38e4061f0af8891ec3492d3ca9fdc664b8b708cb28f12cc8448e18f834d2c7fcb759cf43b22b06b29d2f5335d4dfec1a
   languageName: node
   linkType: hard
 
@@ -2118,12 +2127,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:1.4.0-next.823c6b12.0":
-  version: 1.4.0-next.823c6b12.0
-  resolution: "@sapphire/time-utilities@npm:1.4.0-next.823c6b12.0"
+"@sapphire/time-utilities@npm:^1.3.8":
+  version: 1.3.8
+  resolution: "@sapphire/time-utilities@npm:1.3.8"
   dependencies:
-    "@sapphire/utilities": ^2.1.0-next.823c6b12.0
-  checksum: a016e790f3899944fdeb4cdd2429a3203d19dcc255e3ce16921f568647777443fa3225693bdb1ec5b1e4c2f7f026dafa89356eff5ffb61a4a58a786e2e9ece03
+    "@sapphire/utilities": ^2.0.1
+  checksum: 4e648574aab63a7471826c2041871043ea702ac22b29ca09ec1f589f1285b8a50e66f8761d210961c8a829865b62b77e21900b88451a83e01cb097976ea860f7
+  languageName: node
+  linkType: hard
+
+"@sapphire/time-utilities@npm:^1.4.0-next.ca2a1d6f.0":
+  version: 1.4.0-next.fe29b118.0
+  resolution: "@sapphire/time-utilities@npm:1.4.0-next.fe29b118.0"
+  dependencies:
+    "@sapphire/utilities": ^2.1.0-next.fe29b118.0
+  checksum: 49dba971a1c60943a8e6d98d4926669bc42420641dcffaadb7eabd20a342c59ad0608406b29d5ffb75e2f0efa1ed9e896ae839322a68cea029926d0fe0f8d250
   languageName: node
   linkType: hard
 
@@ -2148,10 +2166,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/utilities@npm:2.1.0-next.823c6b12.0":
-  version: 2.1.0-next.823c6b12.0
-  resolution: "@sapphire/utilities@npm:2.1.0-next.823c6b12.0"
-  checksum: f8309a82a63d489c9fc5a01ff78ebeb18e9c05d6393bf729e0635d0b0437bbe4f2d20b9f12bccac7a81b891228bf9169b57e67ab01e9d7bf6084df4c684d4ff5
+"@sapphire/utilities@npm:^1.6.0":
+  version: 1.7.0
+  resolution: "@sapphire/utilities@npm:1.7.0"
+  checksum: fe3584b94afc1ce0df8b9e8c6d82600fc82a1cc6c08af69463a164e612ac6daed83ba81a4ae4d3ea009dd7a89e357c9bf3beca23dc3742f1dc9f5f190da72868
+  languageName: node
+  linkType: hard
+
+"@sapphire/utilities@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@sapphire/utilities@npm:2.0.1"
+  checksum: 2458193fa79ccdb7ca25b463fd4c184ac8d3151b08f816e2e5c9a44675a29cc2b81e17ae57113144e6c58df6fdc4bf40b89e6d4471e203ac420dc7d84375e1c7
+  languageName: node
+  linkType: hard
+
+"@sapphire/utilities@npm:^2.1.0-next.ca2a1d6f.0, @sapphire/utilities@npm:^2.1.0-next.fe29b118.0":
+  version: 2.1.0-next.fe29b118.0
+  resolution: "@sapphire/utilities@npm:2.1.0-next.fe29b118.0"
+  checksum: dd4c3102d0a3d39660ae1ff74ef25f06fdc1ab24ab3e43e027fd863b143e97f6d99d0b426661b3ddf164d6fda8ae794abb9a9eb4537666a3b9cca4c8760cc155
   languageName: node
   linkType: hard
 
@@ -3466,7 +3498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.16.6, browserslist@npm:^4.16.7":
+"browserslist@npm:^4.16.6, browserslist@npm:^4.16.8":
   version: 4.16.8
   resolution: "browserslist@npm:4.16.8"
   dependencies:
@@ -4035,12 +4067,12 @@ __metadata:
   linkType: hard
 
 "core-js-compat@npm:^3.14.0, core-js-compat@npm:^3.16.0":
-  version: 3.16.2
-  resolution: "core-js-compat@npm:3.16.2"
+  version: 3.16.3
+  resolution: "core-js-compat@npm:3.16.3"
   dependencies:
-    browserslist: ^4.16.7
+    browserslist: ^4.16.8
     semver: 7.0.0
-  checksum: 48fc6c5f2a389e58855f7f0c77623878e78b95dad268ec25cbc38fbc98ee60d3241f4b653543252427b26e378a8cbf5e9ae323e16afe00c29c3c47b3a6a7b655
+  checksum: 8d922e42b67a3bab053b8c7b0ac232e55a06656d897e672d16b88c0c2f2f10a697d9351c29c49822eed434945c84b4a856de15d042ac26956de6420cb0fd39a3
   languageName: node
   linkType: hard
 
@@ -4690,9 +4722,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.811":
-  version: 1.3.816
-  resolution: "electron-to-chromium@npm:1.3.816"
-  checksum: caccde44ddeb9e9b609b40863e8cb27144e6d5e78e75109d1a17c043fd6583d1d9fff82d2f0bee93d20d0f959b46e33e338d5b0077df63de370b75333591d3d3
+  version: 1.3.817
+  resolution: "electron-to-chromium@npm:1.3.817"
+  checksum: 69f22403dc5a757f37aa77c75ef77028384d9e886ff15c4a74de5b88a958dafb44b7a6bfc250ac0983cdd94fd85955819496451ad88eb69ea0f56d8e5f962e1d
   languageName: node
   linkType: hard
 
@@ -5868,11 +5900,11 @@ fsevents@^2.3.2:
   linkType: hard
 
 "husky@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "husky@npm:7.0.1"
+  version: 7.0.2
+  resolution: "husky@npm:7.0.2"
   bin:
     husky: lib/bin.js
-  checksum: b2ea1460f1126ed7161779b1b89f7ec8ae66fb6723e0e9fd47c522f454f4a2ea7e31a21d6ce2eb5d32e9837d232fb0245783425c109df0adab53668f8c8d8fc8
+  checksum: 2ccfe6ddc51dc05ae8ea1e2fbb893344e93a813e00c595d6b5f5e704b7b998d6b0e2adda7c57f99b5e46a60dc07c7d860269a2ea91661c6bacef0eca8e0b8e96
   languageName: node
   linkType: hard
 
@@ -7890,23 +7922,23 @@ fsevents@^2.3.2:
   linkType: hard
 
 "nock@npm:^13.1.2":
-  version: 13.1.2
-  resolution: "nock@npm:13.1.2"
+  version: 13.1.3
+  resolution: "nock@npm:13.1.3"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash.set: ^4.3.2
     propagate: ^2.0.0
-  checksum: 61cf123030b86adc202887a7b6588992d751651587cd627d38af2285dde6928577694623777df4585d5838b9a1649264df3c6979983a777885ed4f98320f6e04
+  checksum: 9e53a1edaa804a4b1c8dfb25c46b85ce5ddda8a1ceaa804d0a7caed0de564e1eaa1ef6c590ac5b013efaf4f009e47cf7f40d96e19f23be1122d39caf619b8df9
   languageName: node
   linkType: hard
 
 "node-addon-api@npm:*":
-  version: 4.0.0
-  resolution: "node-addon-api@npm:4.0.0"
+  version: 4.1.0
+  resolution: "node-addon-api@npm:4.1.0"
   dependencies:
     node-gyp: latest
-  checksum: a296fd70e10111ed599c20d6543f890aefa36285afafd1c9930af6d6250767b16b046fe14ae65929c473461db0fe6432f81ba3c7a7f8929204a4dbcf2e239a65
+  checksum: 7aa921be140f60b18f753f2123cc036185c2ff82dda8399e95af31afcc99fa6fee93f735b44ead3fdc83cb0cfa16c186d5b7310ce0d3331e38623e0d8ce0ff0a
   languageName: node
   linkType: hard
 
@@ -9497,8 +9529,8 @@ fsevents@^2.3.2:
     "@favware/graphql-pokemon": ^5.5.9
     "@favware/zalgo": ^3.1.2
     "@grpc/grpc-js": ^1.3.7
-    "@influxdata/influxdb-client": ^1.16.0
-    "@influxdata/influxdb-client-apis": ^1.16.0
+    "@influxdata/influxdb-client": ^1.17.0
+    "@influxdata/influxdb-client-apis": ^1.17.0
     "@sapphire/async-queue": ^1.1.4
     "@sapphire/decorators": next
     "@sapphire/discord.js-utilities": next
@@ -9506,7 +9538,7 @@ fsevents@^2.3.2:
     "@sapphire/fetch": ^1.0.5
     "@sapphire/framework": next
     "@sapphire/plugin-api": next
-    "@sapphire/plugin-editable-commands": ^0.1.0-next.9af3e85.0
+    "@sapphire/plugin-editable-commands": next
     "@sapphire/plugin-i18next": next
     "@sapphire/plugin-logger": next
     "@sapphire/plugin-subcommands": next

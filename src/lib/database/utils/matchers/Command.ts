@@ -51,7 +51,7 @@ function resolveCategory(commands: CommandStore, category: string): string | nul
 	const lowerCaseCategory = category.toLowerCase();
 
 	for (const command of commands.values()) {
-		const value = (command as SkyraCommand).category;
+		const value = (command as SkyraCommand).category!;
 		if (scanned.has(value)) continue;
 		if (value.toLowerCase() === lowerCaseCategory) return value;
 		scanned.add(value);
@@ -68,9 +68,9 @@ function resolveSubCategory(commands: CommandStore, category: string, subCategor
 		const command = cmd as SkyraCommand;
 		if (command.category !== category) continue;
 
-		if (scanned.has(command.subCategory)) continue;
-		if (command.subCategory.toLowerCase() === lowerCaseSubCategory) return command.subCategory;
-		scanned.add(command.subCategory);
+		if (scanned.has(command.subCategory!)) continue;
+		if (command.subCategory!.toLowerCase() === lowerCaseSubCategory) return command.subCategory!;
+		scanned.add(command.subCategory!);
 	}
 
 	return null;

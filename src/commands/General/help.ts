@@ -41,7 +41,7 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (args.finished) {
-			if (args.getFlags('cat', 'categories')) return this.categories(message, args);
+			if (args.getFlags('cat', 'categories')) return this.helpCategories(message, args);
 			if (args.getFlags('all')) return this.all(message, args, context);
 		}
 
@@ -71,7 +71,7 @@ export class UserCommand extends SkyraCommand {
 		return isGuildMessage(message) && message.channel.permissionsFor(this.container.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE);
 	}
 
-	private async categories(message: Message, args: SkyraCommand.Args) {
+	private async helpCategories(message: Message, args: SkyraCommand.Args) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 		let i = 0;
 		const commandCategories: string[] = [];
@@ -203,9 +203,9 @@ export class UserCommand extends SkyraCommand {
 				const result = await cmd.preconditions.run(message, command, { command: null! });
 				if (!result.success) return;
 
-				const category = filtered.get(command.fullCategory.join(' → '));
+				const category = filtered.get(command.fullCategory!.join(' → '));
 				if (category) category.push(command);
-				else filtered.set(command.fullCategory.join(' → '), [command as SkyraCommand]);
+				else filtered.set(command.fullCategory!.join(' → '), [command as SkyraCommand]);
 			})
 		);
 

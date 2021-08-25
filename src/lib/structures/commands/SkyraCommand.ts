@@ -8,7 +8,6 @@ import { fetchT } from '@sapphire/plugin-i18next';
 import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
 import type { Message } from 'discord.js';
 import * as Lexure from 'lexure';
-import { sep } from 'path';
 import { SkyraArgs } from './parsers/SkyraArgs';
 
 export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.Args, SkyraCommand> {
@@ -18,13 +17,6 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	public readonly description: CustomGet<string, string>;
 	public readonly extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
 
-	/**
-	 * The full category for the command
-	 * @since 0.0.1
-	 * @type {string[]}
-	 */
-	public readonly fullCategory: readonly string[];
-
 	public constructor(context: PieceContext, options: SkyraCommand.Options) {
 		super(context, { cooldownDelay: seconds(10), cooldownLimit: 2, cooldownFilteredUsers: OWNERS, generateDashLessAliases: true, ...options });
 
@@ -33,24 +25,6 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		this.permissionLevel = options.permissionLevel ?? PermissionLevels.Everyone;
 		this.description = options.description;
 		this.extendedHelp = options.extendedHelp;
-
-		// Hack that works for Skyra as the commands are always in **/commands/**/*
-		const paths = context.path.split(sep);
-		this.fullCategory = paths.slice(paths.indexOf('commands') + 1, -1);
-	}
-
-	/**
-	 * The main category for the command
-	 */
-	public get category(): string {
-		return this.fullCategory.length > 0 ? this.fullCategory[0] : 'General';
-	}
-
-	/**
-	 * The sub category for the command
-	 */
-	public get subCategory(): string {
-		return this.fullCategory.length > 1 ? this.fullCategory[1] : 'General';
 	}
 
 	/**

@@ -2,7 +2,6 @@ import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { isGuildMessage, isPrivateMessage, minutes, safeWrapPromise } from '#utils/common';
-import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, container } from '@sapphire/framework';
@@ -106,11 +105,11 @@ export class UserCommand extends SkyraCommand {
 		const prefix = this.getCommandPrefix(context);
 
 		const content = args.t(LanguageKeys.Commands.General.HelpAllFlag, { prefix });
-		const response = await sendTemporaryMessage(message, content);
 
 		const display = await this.buildDisplay(message, args.t, prefix);
 		if (index !== null) display.setIndex(index);
 
+		const response = await send(message, content);
 		await display.run(response, message.author);
 		return response;
 	}
@@ -129,7 +128,13 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage(
+			{
+				template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+			},
+			minutes(10)
+		);
+
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((embed) =>
 				embed //
@@ -138,7 +143,7 @@ export class UserCommand extends SkyraCommand {
 			);
 		}
 
-		return display.setIdle(minutes(10));
+		return display;
 	}
 
 	@RequiresClientPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')

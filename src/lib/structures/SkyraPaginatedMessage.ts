@@ -2,8 +2,8 @@ import { minutes } from '#utils/common';
 import { PaginatedMessage, PaginatedMessageOptions } from '@sapphire/discord.js-utilities';
 
 export class SkyraPaginatedMessage extends PaginatedMessage {
-	public constructor(options: PaginatedMessageOptions = {}) {
+	public constructor(options: PaginatedMessageOptions = {}, idle = minutes(5)) {
 		super(options);
-		this.setIdle(minutes(5));
+		this.setIdle(idle);
 	}
 }

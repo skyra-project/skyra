@@ -1,9 +1,8 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Colors } from '#lib/types/Constants';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
-import { LongWidthSpace } from '#utils/constants';
+import { Colors, LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';

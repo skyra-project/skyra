@@ -1,5 +1,5 @@
 import type { ScheduleEntity, Task } from '#lib/database';
-import type { Listener, IPieceError } from '@sapphire/framework';
+import type { IPieceError, Listener } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 
 export interface CommandHandler extends Listener {

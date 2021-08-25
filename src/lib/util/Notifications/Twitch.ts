@@ -1,21 +1,21 @@
 import {
-	TwitchHelixOauth2Result,
 	TwitchEventSubResult,
-	TwitchHelixBearerToken,
-	TwitchHelixResponse,
-	TwitchHelixUserFollowsResult,
-	TwitchHelixUsersSearchResult,
 	TwitchEventSubTypes,
+	TwitchHelixBearerToken,
+	TwitchHelixGameSearchResult,
+	TwitchHelixOauth2Result,
+	TwitchHelixResponse,
 	TwitchHelixStreamsResult,
-	TwitchHelixGameSearchResult
+	TwitchHelixUserFollowsResult,
+	TwitchHelixUsersSearchResult
 } from '#lib/types/definitions/Twitch';
 import { Enumerable, EnumerableMethod } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { Time } from '@sapphire/time-utilities';
-import { URL } from 'url';
 import { createHmac } from 'crypto';
+import { URL } from 'url';
 
 export class Twitch {
 	public readonly ratelimitsStreams = new RateLimitManager(Time.Minute * 3000, 1);

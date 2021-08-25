@@ -2,7 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
-import { Colors } from '#lib/types/Constants';
+import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

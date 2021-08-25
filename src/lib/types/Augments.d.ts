@@ -12,7 +12,6 @@ import type { Leaderboard } from '#utils/Leaderboard';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
-import type { ApiResponse } from '@sapphire/plugin-api';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { Image } from 'canvas-constructor/skia';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User, VoiceChannel } from 'discord.js';

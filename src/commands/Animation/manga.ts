@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchAniList, getManga, parseDescription } from '#utils/APIs/AniList';
 import { minutes } from '#utils/common';
+import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

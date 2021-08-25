@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
+import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import type { DexDetails } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';

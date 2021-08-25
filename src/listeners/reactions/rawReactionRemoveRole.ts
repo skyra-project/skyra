@@ -1,8 +1,8 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v9';
 import type { TextChannel } from 'discord.js';

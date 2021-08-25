@@ -1,9 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchStarWarsApi, getPerson } from '#utils/APIs/StarWars';
-import { Emojis } from '#utils/constants';
+import { CdnUrls, Emojis } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';

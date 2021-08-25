@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Colors } from '#lib/types/Constants';
 import { minutes, seconds } from '#utils/common';
+import { Colors } from '#utils/constants';
 import { fetchReactionUsers } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';

@@ -5,6 +5,7 @@ import { connect } from '../database.config';
 import { BannerEntity } from '../entities/BannerEntity';
 import { GiveawayEntity } from '../entities/GiveawayEntity';
 import { GuildEntity } from '../entities/GuildEntity';
+import { GuildSubscriptionEntity } from '../entities/GuildSubscriptionEntity';
 import { ModerationEntity } from '../entities/ModerationEntity';
 import { RpgBattleEntity } from '../entities/RpgBattleEntity';
 import { RpgClassEntity } from '../entities/RpgClassEntity';
@@ -16,14 +17,13 @@ import { RpgUserItemEntity } from '../entities/RpgUserItemEntity';
 import { ScheduleEntity } from '../entities/ScheduleEntity';
 import { StarboardEntity } from '../entities/StarboardEntity';
 import { SuggestionEntity } from '../entities/SuggestionEntity';
+import { TwitchSubscriptionEntity } from '../entities/TwitchSubscriptionEntity';
 import { UserCooldownEntity } from '../entities/UserCooldownEntity';
 import { UserGameIntegrationEntity } from '../entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '../entities/UserProfileEntity';
 import { ClientRepository } from '../repositories/ClientRepository';
 import { MemberRepository } from '../repositories/MemberRepository';
 import { UserRepository } from '../repositories/UserRepository';
-import { TwitchSubscriptionEntity } from '../entities/TwitchSubscriptionEntity';
-import { GuildSubscriptionEntity } from '../entities/GuildSubscriptionEntity';
 
 export class DbSet {
 	public readonly connection: Connection;

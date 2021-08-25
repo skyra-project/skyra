@@ -1,4 +1,4 @@
-import { Colors } from '#lib/types/Constants';
+import { Colors } from '#utils/constants';
 
 /* eslint-disable no-multi-spaces */
 export const enum TypeVariation {

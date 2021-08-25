@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Colors } from '#lib/types/Constants';
 import { minutes, seconds } from '#utils/common';
+import { Colors } from '#utils/constants';
 import { random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';

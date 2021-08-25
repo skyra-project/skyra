@@ -1,8 +1,8 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
+import { Colors } from '#utils/constants';
 import { getStickyRoles } from '#utils/functions';
 import { Listener } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';

@@ -1,6 +1,6 @@
 import { TwitchEventSubTypes } from '#lib/types/definitions/Twitch';
-import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey, TableUnique } from 'typeorm';
 import { Twitch } from '#lib/util/Notifications/Twitch';
+import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey, TableUnique } from 'typeorm';
 
 export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterface {
 	private twitch = new Twitch();

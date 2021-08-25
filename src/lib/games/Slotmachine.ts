@@ -1,7 +1,6 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { CanvasColors } from '#lib/types/Constants';
-import { socialFolder } from '#utils/constants';
+import { CanvasColors, socialFolder } from '#utils/constants';
 import { container, UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';

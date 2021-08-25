@@ -1,8 +1,8 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Colors } from '#lib/types/Constants';
 import { Events } from '#lib/types/Enums';
+import { Colors } from '#utils/constants';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';

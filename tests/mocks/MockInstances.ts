@@ -30,7 +30,7 @@ export const guildMemberData: APIGuildMember = {
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
-	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user } }, g);
+	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } }, g);
 }
 
 export const roleData: APIRole = {
@@ -134,14 +134,48 @@ function addCommand(command: SkyraCommand) {
 class Command extends SkyraCommand {}
 addCommand(
 	new Command(
-		{ name: 'ping', path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'), store: commands },
-		{ description: LanguageKeys.Commands.General.PingDescription, extendedHelp: LanguageKeys.Commands.General.PingExtended, aliases: ['pong'] }
+		{
+			name: 'ping',
+			path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.General.PingDescription,
+			extendedHelp: LanguageKeys.Commands.General.PingExtended,
+			aliases: ['pong'],
+			fullCategory: ['General']
+		}
 	)
 );
 
 addCommand(
 	new Command(
-		{ name: 'balance', path: resolve('/home/skyra/commands/Social/balance.js'), store: commands },
-		{ description: LanguageKeys.Commands.Social.BalanceDescription, extendedHelp: LanguageKeys.Commands.Social.BalanceExtended, aliases: ['bal'] }
+		{
+			name: 'balance',
+			path: resolve('/home/skyra/commands/Social/balance.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.Social.BalanceDescription,
+			extendedHelp: LanguageKeys.Commands.Social.BalanceExtended,
+			aliases: ['bal'],
+			fullCategory: ['Currency']
+		}
+	)
+);
+
+addCommand(
+	new Command(
+		{
+			name: 'define',
+			path: resolve('/home/skyra/commands/Tools/Dictionary/define.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.Tools.DefineDescription,
+			extendedHelp: LanguageKeys.Commands.Tools.DefineExtended,
+			aliases: ['def', 'definition', 'defination', 'dictionary'],
+			fullCategory: ['Tools', 'Dictionary']
+		}
 	)
 );

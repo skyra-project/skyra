@@ -4,6 +4,7 @@ import { commands } from '#mocks/MockInstances';
 
 describe('CommandMatcher', () => {
 	const command = commands.get('ping') as SkyraCommand;
+	const commandWithSubCategory = commands.get('define') as SkyraCommand;
 
 	describe('match', () => {
 		test('GIVEN match-all THEN always passes test', () => {
@@ -23,7 +24,7 @@ describe('CommandMatcher', () => {
 		});
 
 		test('GIVEN namespaced match with correct category and sub-category THEN passes test', () => {
-			expect(CommandMatcher.match('General.Chat Bot Info.*', command)).toBe(true);
+			expect(CommandMatcher.match('Tools.Dictionary.*', commandWithSubCategory)).toBe(true);
 		});
 
 		test('GIVEN non-namespaced match with incorrect command name THEN fails test', () => {
@@ -47,15 +48,15 @@ describe('CommandMatcher', () => {
 		});
 
 		test('GIVEN namespaced match with correct category, correct sub-category, and correct command name THEN passes test', () => {
-			expect(CommandMatcher.match('General.Chat Bot Info.ping', command)).toBe(true);
+			expect(CommandMatcher.match('Tools.Dictionary.define', commandWithSubCategory)).toBe(true);
 		});
 
 		test('GIVEN namespaced match with correct category, correct sub-category, and correct command alias THEN passes test', () => {
-			expect(CommandMatcher.match('General.Chat Bot Info.pong', command)).toBe(true);
+			expect(CommandMatcher.match('Tools.Dictionary.def', commandWithSubCategory)).toBe(true);
 		});
 
-		test('GIVEN namespaced match with correct category, correct sub-category, and incorrect command name THEN fails test', () => {
-			expect(CommandMatcher.match('General.Chat Bot Info.eval', command)).toBe(false);
+		test('GIVEN namespaced match with correct category, and incorrect command name THEN fails test', () => {
+			expect(CommandMatcher.match('General.eval', command)).toBe(false);
 		});
 	});
 
@@ -105,71 +106,71 @@ describe('CommandMatcher', () => {
 		});
 
 		test('GIVEN correct category and command name THEN returns command name', () => {
-			expect(CommandMatcher.resolve('Social.balance')).toBe('balance');
+			expect(CommandMatcher.resolve('Currency.balance')).toBe('balance');
 		});
 
 		test('GIVEN correct category and command name in lower cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('social.balance')).toBe('balance');
+			expect(CommandMatcher.resolve('currency.balance')).toBe('balance');
 		});
 
 		test('GIVEN correct category and command name in upper cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('SOCIAL.BALANCE')).toBe('balance');
+			expect(CommandMatcher.resolve('CURRENCY.BALANCE')).toBe('balance');
 		});
 
 		test('GIVEN correct category and command alias THEN returns command name', () => {
-			expect(CommandMatcher.resolve('Social.bal')).toBe('balance');
+			expect(CommandMatcher.resolve('Currency.bal')).toBe('balance');
 		});
 
 		test('GIVEN correct category and command alias in lower cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('social.bal')).toBe('balance');
+			expect(CommandMatcher.resolve('currency.bal')).toBe('balance');
 		});
 
 		test('GIVEN correct category and command alias in upper cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('SOCIAL.BAL')).toBe('balance');
+			expect(CommandMatcher.resolve('CURRENCY.BAL')).toBe('balance');
 		});
 
 		test('GIVEN correct category and correct sub-category THEN returns category and sub-category', () => {
-			expect(CommandMatcher.resolve('General.Chat Bot Info.*')).toBe('General.Chat Bot Info.*');
+			expect(CommandMatcher.resolve('Tools.Dictionary.*')).toBe('Tools.Dictionary.*');
 		});
 
 		test('GIVEN correct category and correct sub-category in lower cases THEN returns category and sub-category', () => {
-			expect(CommandMatcher.resolve('general.chat bot info.*')).toBe('General.Chat Bot Info.*');
+			expect(CommandMatcher.resolve('tools.dictionary.*')).toBe('Tools.Dictionary.*');
 		});
 
 		test('GIVEN correct category and correct sub-category in upper cases THEN returns category and sub-category', () => {
-			expect(CommandMatcher.resolve('GENERAL.CHAT BOT INFO.*')).toBe('General.Chat Bot Info.*');
+			expect(CommandMatcher.resolve('TOOLS.DICTIONARY.*')).toBe('Tools.Dictionary.*');
 		});
 
 		test('GIVEN correct category and incorrect sub-category THEN returns null', () => {
-			expect(CommandMatcher.resolve('General.General.*')).toBe(null);
+			expect(CommandMatcher.resolve('Tools.NotDictionary.*')).toBe(null);
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command name THEN returns command name', () => {
-			expect(CommandMatcher.resolve('General.Chat Bot Info.ping')).toBe('ping');
+			expect(CommandMatcher.resolve('Tools.Dictionary.define')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command name in lower cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('general.chat bot info.ping')).toBe('ping');
+			expect(CommandMatcher.resolve('tools.dictionary.define')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command name in upper cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('GENERAL.CHAT BOT INFO.PING')).toBe('ping');
+			expect(CommandMatcher.resolve('TOOLS.DICTIONARY.DEFINE')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command alias THEN returns command name', () => {
-			expect(CommandMatcher.resolve('General.Chat Bot Info.pong')).toBe('ping');
+			expect(CommandMatcher.resolve('Tools.Dictionary.def')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command alias in lower cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('general.chat bot info.pong')).toBe('ping');
+			expect(CommandMatcher.resolve('tools.dictionary.def')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and correct command alias in upper cases THEN returns command name', () => {
-			expect(CommandMatcher.resolve('GENERAL.CHAT BOT INFO.PONG')).toBe('ping');
+			expect(CommandMatcher.resolve('TOOLS.DICTIONARY.DEF')).toBe('define');
 		});
 
 		test('GIVEN correct category, correct sub-category, and incorrect command name THEN returns null', () => {
-			expect(CommandMatcher.resolve('General.Chat Bot Info.eval')).toBe(null);
+			expect(CommandMatcher.resolve('Tools.Dictionary.eval')).toBe(null);
 		});
 
 		test('GIVEN string with too many parts THEN returns null', () => {

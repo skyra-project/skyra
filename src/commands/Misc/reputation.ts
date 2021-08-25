@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
-import { send } from '@skyra/editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

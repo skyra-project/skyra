@@ -5,8 +5,8 @@ import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReaction
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
-import { send } from '@skyra/editable-commands';
 import { Message, Permissions } from 'discord.js';
 import { URL } from 'url';
 

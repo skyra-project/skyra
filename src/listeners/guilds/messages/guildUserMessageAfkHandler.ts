@@ -7,9 +7,9 @@ import { seconds } from '#utils/common';
 import { isGuildOwner, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
 import type { TFunction } from 'i18next';
 

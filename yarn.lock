@@ -2041,6 +2041,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/plugin-editable-commands@npm:^0.1.0-next.9af3e85.0":
+  version: 0.1.0-next.e7ca002.0
+  resolution: "@sapphire/plugin-editable-commands@npm:0.1.0-next.e7ca002.0"
+  dependencies:
+    "@skyra/editable-commands": ^2.1.0
+    tslib: ^2.3.1
+  checksum: c17e12c359d99409e04bd37a97e4137c36cbf44d5227500eb906f3514501b8fd1a0328f1b3ac59c0fd2cd67cb89cbbc486d71feebfec9adbfe107479d15017d9
+  languageName: node
+  linkType: hard
+
 "@sapphire/plugin-i18next@npm:next":
   version: 2.0.0-next.7a9739f.0
   resolution: "@sapphire/plugin-i18next@npm:2.0.0-next.7a9739f.0"
@@ -9496,6 +9506,7 @@ fsevents@^2.3.2:
     "@sapphire/fetch": ^1.0.5
     "@sapphire/framework": next
     "@sapphire/plugin-api": next
+    "@sapphire/plugin-editable-commands": ^0.1.0-next.9af3e85.0
     "@sapphire/plugin-i18next": next
     "@sapphire/plugin-logger": next
     "@sapphire/plugin-subcommands": next
@@ -9512,7 +9523,6 @@ fsevents@^2.3.2:
     "@skyra/ai": ^1.2.0
     "@skyra/audio": next
     "@skyra/char": ^1.0.2
-    "@skyra/editable-commands": ^2.1.0
     "@skyra/gifenc": ^1.0.0
     "@skyra/saelem": ^3.0.9
     "@skyra/star-wars-api": ^2.0.1

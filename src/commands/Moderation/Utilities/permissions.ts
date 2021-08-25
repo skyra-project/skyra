@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];

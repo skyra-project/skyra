@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { CdnUrls } from '#lib/types/Constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,8 +19,6 @@ const enum CoinType {
 	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
-	private readonly cdnTypes = ['heads', 'tails'] as const;
-
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const guess = args.finished ? null : await args.pick(UserCommand.coinTypeResolver);
 		const wager = args.finished ? 'cashless' : await args.pick('shinyWager');
@@ -82,7 +81,7 @@ export class UserCommand extends SkyraCommand {
 	private async buildEmbed(message: Message, result: CoinType, title: string, description: string) {
 		return new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`)
+			.setThumbnail(result === CoinType.Heads ? CdnUrls.CoinHeads : CdnUrls.CoinTails)
 			.setTitle(title)
 			.setDescription(description);
 	}

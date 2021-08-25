@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
+import { get, send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import { get, send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import { deleteMessage } from './functions';
 

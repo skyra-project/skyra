@@ -7,6 +7,7 @@ import type { ModerationManagerCreateData } from '#lib/moderation';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
+import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { container, UserError } from '@sapphire/framework';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';
@@ -882,7 +883,7 @@ export class ModerationActions {
 		const options = kRoleChannelOverwriteOptions.get(dataKey)!;
 		const promises: Promise<unknown>[] = [];
 		for (const channel of this.guild.channels.cache.values()) {
-			if (channel.type === 'GUILD_CATEGORY' && channel.manageable) {
+			if (isCategoryChannel(channel) && channel.manageable) {
 				promises.push(ModerationActions.updatePermissionsForChannel(role, channel, options.category));
 			}
 		}
@@ -895,9 +896,9 @@ export class ModerationActions {
 		const promises: Promise<unknown>[] = [];
 		for (const channel of this.guild.channels.cache.values()) {
 			if (!channel.manageable) continue;
-			if (channel.type === 'GUILD_TEXT' || channel.type === 'GUILD_NEWS') {
+			if (isTextChannel(channel) || isNewsChannel(channel)) {
 				promises.push(ModerationActions.updatePermissionsForChannel(role, channel, options.text));
-			} else if (channel.type === 'GUILD_VOICE' || channel.type === 'GUILD_STAGE_VOICE') {
+			} else if (isVoiceChannel(channel) || isStageChannel(channel)) {
 				promises.push(ModerationActions.updatePermissionsForChannel(role, channel, options.voice));
 			}
 		}

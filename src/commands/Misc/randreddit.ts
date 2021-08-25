@@ -6,7 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 
 const kBlockList = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const kTitleBlockList = /nsfl/i;

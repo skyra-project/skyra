@@ -6,7 +6,7 @@ import { seconds } from '#utils/common';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { GuildBasedChannelTypes, NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { GuildBasedChannelTypes, isDMChannel, isNsfwChannel, NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { DMChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
@@ -17,7 +17,7 @@ type ChannelType = DMChannel | GuildChannel;
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelUpdate })
 export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	public async run(previous: ChannelType, next: ChannelType) {
-		if (next.type === 'DM') return;
+		if (isDMChannel(next)) return;
 
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelUpdate],
@@ -175,7 +175,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	}
 
 	private *differenceTextChannel(t: TFunction, previous: TextChannel, next: TextChannel) {
-		if (previous.nsfw !== next.nsfw) yield this.displayNsfw(t, previous.nsfw, next.nsfw);
+		if (isNsfwChannel(previous) !== isNsfwChannel(next)) yield this.displayNsfw(t, isNsfwChannel(previous), isNsfwChannel(next));
 		if (previous.topic !== next.topic) yield this.displayTopic(t, previous.topic, next.topic);
 		if (previous.rateLimitPerUser !== next.rateLimitPerUser) {
 			yield this.displayRateLimitPerUser(t, previous.rateLimitPerUser, next.rateLimitPerUser);
@@ -188,12 +188,12 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	}
 
 	private *differenceNewsChannel(t: TFunction, previous: NewsChannel, next: NewsChannel) {
-		if (previous.nsfw !== next.nsfw) yield this.displayNsfw(t, previous.nsfw, next.nsfw);
+		if (isNsfwChannel(previous) !== isNsfwChannel(next)) yield this.displayNsfw(t, isNsfwChannel(previous), isNsfwChannel(next));
 		if (previous.topic !== next.topic) yield this.displayTopic(t, previous.topic, next.topic);
 	}
 
 	private *differenceStoreChannel(t: TFunction, previous: StoreChannel, next: StoreChannel) {
-		if (previous.nsfw !== next.nsfw) yield this.displayNsfw(t, previous.nsfw, next.nsfw);
+		if (isNsfwChannel(previous) !== isNsfwChannel(next)) yield this.displayNsfw(t, isNsfwChannel(previous), isNsfwChannel(next));
 	}
 
 	private displayNsfw(t: TFunction, previous: boolean, next: boolean) {

@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { kRegExpTwemoji, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;

@@ -6,8 +6,8 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 
 const enum Type {

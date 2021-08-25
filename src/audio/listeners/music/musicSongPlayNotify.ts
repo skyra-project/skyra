@@ -5,7 +5,7 @@ import { resolveKey } from '@sapphire/plugin-i18next';
 
 export class UserAudioListener extends AudioListener {
 	public async run(acknowledgeable: MessageAcknowledgeable, entry: NowPlayingEntry) {
-		const requester = await this.container.client.users.fetch(entry.author).then((data) => data.username);
+		const { username: requester } = await this.container.client.users.fetch(entry.author);
 		const { title } = entry.info;
 
 		const content = await resolveKey(acknowledgeable, LanguageKeys.Commands.Music.PlayNext, { title, requester });

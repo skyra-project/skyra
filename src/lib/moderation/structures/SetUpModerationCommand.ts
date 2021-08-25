@@ -4,8 +4,8 @@ import type { GuildMessage } from '#lib/types';
 import { getSecurity, isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
 import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import type { Argument, PieceContext } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { PickByValue } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import type { Role } from 'discord.js';
 import { ModerationCommand } from './ModerationCommand';
 

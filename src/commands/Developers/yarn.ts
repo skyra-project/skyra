@@ -5,8 +5,8 @@ import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

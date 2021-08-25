@@ -7,9 +7,9 @@ import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { GuildTextBasedChannelTypes, isNsfwChannel } from '@sapphire/discord.js-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

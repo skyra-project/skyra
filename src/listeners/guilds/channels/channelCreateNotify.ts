@@ -5,6 +5,7 @@ import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
@@ -86,7 +87,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private *getTextChannelInformation(t: TFunction, channel: TextChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t);
+		if (isNsfwChannel(channel)) yield this.displayNsfw(t);
 		if (channel.topic) yield this.displayTopic(t, channel.topic);
 		if (channel.rateLimitPerUser) yield this.displayRateLimitPerUser(t, channel.rateLimitPerUser);
 	}
@@ -97,12 +98,12 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private *getNewsChannelInformation(t: TFunction, channel: NewsChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t);
+		if (isNsfwChannel(channel)) yield this.displayNsfw(t);
 		if (channel.topic) yield this.displayTopic(t, channel.topic);
 	}
 
 	private *getStoreChannelInformation(t: TFunction, channel: StoreChannel) {
-		if (channel.nsfw) yield this.displayNsfw(t);
+		if (isNsfwChannel(channel)) yield this.displayNsfw(t);
 	}
 
 	private displayNsfw(t: TFunction) {

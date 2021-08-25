@@ -8,8 +8,8 @@ import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReaction
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'timers/promises';
 

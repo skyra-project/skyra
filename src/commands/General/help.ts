@@ -6,7 +6,7 @@ import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, container } from '@sapphire/framework';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Collection, Message, MessageEmbed, Permissions, Util } from 'discord.js';
 import type { TFunction } from 'i18next';
 

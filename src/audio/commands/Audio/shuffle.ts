@@ -3,22 +3,21 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<AudioCommand.Options>({
-	aliases: ['qc', 'clear'],
-	description: LanguageKeys.Commands.Music.ClearDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
+	description: LanguageKeys.Commands.Music.ShuffleDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
 })
 export class UserMusicCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	@RequireDj()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
-		const count = await audio.count();
-		await audio.clearTracks();
+		await audio.shuffleTracks();
 
-		const content = args.t(LanguageKeys.Commands.Music.ClearSuccess, { count });
-		return send(message, content);
+		const amount = await audio.count();
+		const content = args.t(LanguageKeys.Commands.Music.ShuffleSuccess, { amount });
+		await send(message, content);
 	}
 }

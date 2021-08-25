@@ -6,8 +6,8 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandContext } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish, Nullish } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setbday', 'bd', 'birthday'],

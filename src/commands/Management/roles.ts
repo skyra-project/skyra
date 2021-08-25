@@ -4,8 +4,8 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 

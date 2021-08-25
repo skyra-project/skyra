@@ -1,5 +1,6 @@
 import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { isTextChannel } from '@sapphire/discord.js-utilities';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<DisabledCommandChannel> {
@@ -19,7 +20,7 @@ export class UserSerializer extends Serializer<DisabledCommandChannel> {
 			throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
 
-		if (channel.type !== 'GUILD_TEXT') {
+		if (!isTextChannel(channel)) {
 			throw t(LanguageKeys.Serializers.InvalidChannel, { name: entry.name });
 		}
 

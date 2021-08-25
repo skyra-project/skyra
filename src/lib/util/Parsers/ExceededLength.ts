@@ -3,9 +3,9 @@ import { getHaste } from '#utils/APIs/Hastebin';
 import { promptForMessage } from '#utils/functions';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 

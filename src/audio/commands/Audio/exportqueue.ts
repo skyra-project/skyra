@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { map, prependIfNotNull, take } from '#utils/common';
 import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { serialize } from 'binarytf';
 
 export const maximumExportQueueSize = 100;

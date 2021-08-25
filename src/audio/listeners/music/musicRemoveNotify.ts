@@ -6,11 +6,11 @@ import { resolveKey } from '@sapphire/plugin-i18next';
 
 export class UserAudioListener extends AudioListener {
 	public async run(acknowledgeable: MessageAcknowledgeable, entry: QueueEntry) {
-		const [title, requester] = await Promise.all([
-			getAudio(acknowledgeable.guild)
-				.player.node.decode(entry.track)
-				.then((data) => data.title),
-			this.container.client.users.fetch(entry.author).then((data) => data.username)
+		const audio = getAudio(acknowledgeable.guild);
+
+		const [{ title }, { username: requester }] = await Promise.all([
+			audio.player.node.decode(entry.track),
+			this.container.client.users.fetch(entry.author)
 		]);
 
 		const content = await resolveKey(acknowledgeable, LanguageKeys.Commands.Music.RemoveSuccess, { title, requester });

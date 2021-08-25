@@ -8,8 +8,8 @@ import { parse as parseColour } from '#utils/Color';
 import { RequiresLevel } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
 import { MessageEmbed, MessageOptions } from 'discord.js';
 

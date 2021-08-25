@@ -1,3 +1,4 @@
+import { isTextChannel } from '@sapphire/discord.js-utilities';
 import { Argument, ArgumentContext } from '@sapphire/framework';
 import type { GuildChannel, TextChannel } from 'discord.js';
 
@@ -7,6 +8,6 @@ export class UserArgument extends Argument<TextChannel> {
 	}
 
 	public run(argument: string, context: ArgumentContext<TextChannel>) {
-		return this.channelName.run(argument, { ...context, filter: (entry: GuildChannel) => entry.type === 'GUILD_TEXT' });
+		return this.channelName.run(argument, { ...context, filter: (entry: GuildChannel) => isTextChannel(entry) });
 	}
 }

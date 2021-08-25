@@ -5,8 +5,8 @@ import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Args, IArgument, Identifiers } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
-import { send } from '@skyra/editable-commands';
 import { Permissions } from 'discord.js';
 
 const kWinnersArgRegex = /^(\d+)w$/i;

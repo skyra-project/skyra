@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { canManage, getAudio, getListeners } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['vol'],

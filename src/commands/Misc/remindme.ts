@@ -6,8 +6,8 @@ import { minutes } from '#utils/common';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions, RequiresGuildContext } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {

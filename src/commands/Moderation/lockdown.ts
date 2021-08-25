@@ -7,7 +7,7 @@ import { assertNonThread, getSecurity } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, NonThreadGuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Permissions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 

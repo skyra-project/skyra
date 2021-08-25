@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isCategoryChannel, isGuildBasedChannelByGuildKey, isNewsChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { Awaited, isNullish } from '@sapphire/utilities';
 import type { Channel } from 'discord.js';
 
@@ -27,14 +28,15 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	private isValidChannel(channel: Channel, type: string): boolean {
-		if (isNullish(Reflect.get(channel, 'guild'))) return false;
+		if (!isGuildBasedChannelByGuildKey(channel)) return false;
+
 		switch (type) {
 			case 'textChannel':
-				return channel.type === 'GUILD_TEXT' || channel.type === 'GUILD_NEWS';
+				return isTextChannel(channel) || isNewsChannel(channel);
 			case 'voiceChannel':
-				return channel.type === 'GUILD_VOICE';
+				return isVoiceChannel(channel);
 			case 'categoryChannel':
-				return channel.type === 'GUILD_CATEGORY';
+				return isCategoryChannel(channel);
 		}
 
 		return false;

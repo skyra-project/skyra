@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RGB, SkyraCommand } from '#lib/structures';
 import { hexConcat, luminance } from '#utils/Color';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, rgb } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 

@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Permissions } from 'discord.js';
 
 const { FLAGS } = Permissions;

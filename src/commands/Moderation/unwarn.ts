@@ -7,7 +7,7 @@ import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],

@@ -4,8 +4,8 @@ import { Events } from '#lib/types/Enums';
 import { deleteMessage, getCommand } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
+import { get } from '@sapphire/plugin-editable-commands';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import { get } from '@skyra/editable-commands';
 import type { Collection, Message, Snowflake } from 'discord.js';
 
 type MessageCollection = Collection<Snowflake, Message>;

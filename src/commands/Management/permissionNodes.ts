@@ -6,8 +6,8 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { GuildMember, Role } from 'discord.js';
 

@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { floatPromise, resolveOnErrorCodes } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 

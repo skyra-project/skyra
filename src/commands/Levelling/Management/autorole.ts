@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Identifiers } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock, deepClone } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 

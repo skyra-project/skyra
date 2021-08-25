@@ -1,7 +1,7 @@
 import { envParseBoolean } from '#lib/env';
 import type { MessageAcknowledgeable } from '#lib/types';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageOptions, WebhookMessageOptions } from 'discord.js';
 import type { OutgoingWebSocketMessage } from '../websocket/Shared';
 

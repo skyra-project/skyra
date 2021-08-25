@@ -15,7 +15,7 @@ import {
 import { seconds } from '#utils/common';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 

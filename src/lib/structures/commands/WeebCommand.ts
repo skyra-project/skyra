@@ -4,7 +4,7 @@ import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import type { PieceContext } from '@sapphire/framework';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 import { SkyraCommand } from './SkyraCommand';

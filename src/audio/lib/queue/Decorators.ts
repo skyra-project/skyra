@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { getAudio, isDJ, sendLocalizedMessage } from '#utils/functions';
 import { createFunctionPrecondition } from '@sapphire/decorators';
+import { isNullish } from '@sapphire/utilities';
 
 export function RequireMusicPlaying(): MethodDecorator {
 	return createFunctionPrecondition(
@@ -19,10 +20,10 @@ export function RequireMusicPaused(): MethodDecorator {
 
 export function RequireSongPresent(): MethodDecorator {
 	return createFunctionPrecondition(
-		(message: GuildMessage) =>
-			getAudio(message.guild)
-				.getCurrentTrack()
-				.then((value) => value !== null),
+		async (message: GuildMessage) => {
+			const track = await getAudio(message.guild).getCurrentTrack();
+			return !isNullish(track);
+		},
 		(message: GuildMessage) => sendLocalizedMessage(message, LanguageKeys.Preconditions.MusicNothingPlaying)
 	);
 }

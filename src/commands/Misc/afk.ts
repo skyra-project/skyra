@@ -10,9 +10,9 @@ import { RequiresLevel } from '#utils/decorators';
 import { isGuildOwner } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, isNullish, Nullish } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

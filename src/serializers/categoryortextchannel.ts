@@ -1,5 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { isCategoryChannel, isTextChannel } from '@sapphire/discord.js-utilities';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
@@ -9,7 +10,7 @@ export class UserSerializer extends Serializer<string> {
 			return this.errorFromArgument(args, result.error);
 		}
 
-		if (result.value.type === 'GUILD_TEXT' || result.value.type === 'GUILD_CATEGORY') {
+		if (isTextChannel(result.value) || isCategoryChannel(result.value)) {
 			return this.ok(result.value.id);
 		}
 

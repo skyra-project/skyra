@@ -1,6 +1,8 @@
 export const enum CdnUrls {
 	AnilistLogo = 'https://cdn.skyra.pw/skyra-assets/anilist.png',
 	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
+	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
+	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',
 	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
 	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
 	OverwatchLogo = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png',

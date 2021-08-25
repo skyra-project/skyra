@@ -3,8 +3,8 @@ import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Piece, Store } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
-import { send } from '@skyra/editable-commands';
 import type { Message } from 'discord.js';
 import i18next, { TFunction } from 'i18next';
 

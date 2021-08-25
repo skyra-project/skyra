@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { AllowedImageSize, Message, MessageEmbed } from 'discord.js';
 
 const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096];

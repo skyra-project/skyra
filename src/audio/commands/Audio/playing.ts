@@ -4,8 +4,8 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { getAudio } from '#utils/functions';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { TrackInfo } from '@skyra/audio';
-import { send } from '@skyra/editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

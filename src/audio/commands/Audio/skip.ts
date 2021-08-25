@@ -4,8 +4,8 @@ import type { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';
 import { canManage, getAudio, getListenerCount } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { resolveKey } from '@sapphire/plugin-i18next';
-import { send } from '@skyra/editable-commands';
 import type { VoiceChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 

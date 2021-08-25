@@ -4,8 +4,8 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import type { PieceContext } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock, PickByValue } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 

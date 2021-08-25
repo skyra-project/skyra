@@ -4,10 +4,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { UserError } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNumber, parseURL } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
+import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import type { APIUser } from 'discord-api-types/v9';
 import {
@@ -27,7 +28,6 @@ import type { TFunction } from 'i18next';
 import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
-import { isLetterOrDigit, getCode, isWhiteSpace } from '@skyra/char';
 
 export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
 export const kRegExpFormattedCustomEmoji = /<a?:\w{2,32}:\d{17,18}>/;

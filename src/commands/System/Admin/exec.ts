@@ -5,8 +5,8 @@ import { getHaste } from '#utils/APIs/Hastebin';
 import { safeWrapPromise } from '#utils/common';
 import { exec } from '#utils/Promisified/exec';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import type { Message, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

@@ -1,4 +1,11 @@
-import type { ChannelTypeString } from '@sapphire/discord.js-utilities';
+import {
+	ChannelTypeString,
+	isDMChannel,
+	isGuildBasedChannelByGuildKey,
+	isNewsChannel,
+	isTextChannel,
+	isVoiceChannel
+} from '@sapphire/discord.js-utilities';
 import type {
 	Channel,
 	DMChannel,
@@ -125,11 +132,11 @@ export function flattenChannel(channel: GuildChannel): FlattenedGuildChannel;
 export function flattenChannel(channel: DMChannel): FlattenedDMChannel;
 export function flattenChannel(channel: Channel): FlattenedChannel;
 export function flattenChannel(channel: Channel) {
-	if (channel.type === 'GUILD_NEWS') return flattenChannelNews(channel as NewsChannel);
-	if (channel.type === 'GUILD_TEXT') return flattenChannelText(channel as TextChannel);
-	if (channel.type === 'GUILD_VOICE') return flattenChannelVoice(channel as VoiceChannel);
-	if (Reflect.has(channel, 'guild')) return flattenChannelGuild(channel as GuildChannel);
-	if (channel.type === 'DM') return flattenChannelDM(channel as DMChannel);
+	if (isNewsChannel(channel)) return flattenChannelNews(channel as NewsChannel);
+	if (isTextChannel(channel)) return flattenChannelText(channel as TextChannel);
+	if (isVoiceChannel(channel)) return flattenChannelVoice(channel as VoiceChannel);
+	if (isGuildBasedChannelByGuildKey(channel)) return flattenChannelGuild(channel as GuildChannel);
+	if (isDMChannel(channel)) return flattenChannelDM(channel as DMChannel);
 	return flattenChannelFallback(channel);
 }
 

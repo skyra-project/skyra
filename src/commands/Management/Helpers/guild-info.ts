@@ -3,8 +3,9 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { send } from '@skyra/editable-commands';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -147,9 +148,9 @@ export class UserCommand extends SkyraCommand {
 		let vChannels = 0;
 		let cChannels = 0;
 		for (const channel of guild.channels.cache.values()) {
-			if (channel.type === 'GUILD_TEXT' || channel.type === 'GUILD_NEWS') tChannels++;
-			else if (channel.type === 'GUILD_VOICE' || channel.type === 'GUILD_STAGE_VOICE') vChannels++;
-			else if (channel.type === 'GUILD_CATEGORY') cChannels++;
+			if (isTextChannel(channel) || isNewsChannel(channel)) tChannels++;
+			else if (isVoiceChannel(channel) || isStageChannel(channel)) vChannels++;
+			else if (isCategoryChannel(channel)) cChannels++;
 		}
 
 		return args.t(LanguageKeys.Commands.Management.GuildInfoChannels, {

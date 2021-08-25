@@ -6,7 +6,7 @@ import { Colors } from '#lib/types/Constants';
 import { months } from '#utils/common';
 import { Emojis } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@skyra/editable-commands';
+import { send } from '@sapphire/plugin-editable-commands';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

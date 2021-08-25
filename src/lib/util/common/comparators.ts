@@ -78,12 +78,24 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 
 export type BooleanFn<T extends readonly unknown[], R extends boolean = boolean> = (...args: T) => R;
 
-export function andMix<T extends readonly unknown[], R extends boolean>(fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
+export function andMix<T extends readonly unknown[], R extends boolean>(...fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
 	if (fns.length === 0) throw new Error('You must input at least one function.');
 	return (...args) => {
 		let ret!: R;
 		for (const fn of fns) {
 			if (!(ret = fn(...args))) break;
+		}
+
+		return ret;
+	};
+}
+
+export function orMix<T extends readonly unknown[], R extends boolean>(...fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
+	if (fns.length === 0) throw new Error('You must input at least one function.');
+	return (...args) => {
+		let ret!: R;
+		for (const fn of fns) {
+			if ((ret = fn(...args))) break;
 		}
 
 		return ret;

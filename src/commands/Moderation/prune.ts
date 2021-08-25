@@ -123,7 +123,7 @@ export class UserCommand extends SkyraCommand {
 		const includes = args.getOption(...includesOptions)?.toLowerCase();
 		if (!isNullishOrEmpty(includes)) fns.push((mes: GuildMessage) => mes.content.toLowerCase().includes(includes));
 
-		return andMix(fns);
+		return andMix(...fns);
 	}
 
 	private resolvePosition(position: Position | null) {

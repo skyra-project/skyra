@@ -17,10 +17,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const task = getGuildMemberBirthday(message.guild.id, user.id);
 		const content = task
-			? args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, {
-					birthDate: task.time.getTime(),
-					user: user.toString()
-			  })
+			? args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, { birthDate: task.time.getTime(), user: user.toString() })
 			: args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix });
 
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });

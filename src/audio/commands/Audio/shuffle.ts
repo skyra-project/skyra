@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Music.ShuffleDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	@RequireDj()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

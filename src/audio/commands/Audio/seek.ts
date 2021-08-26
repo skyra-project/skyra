@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.SeekDescription,
 	extendedHelp: LanguageKeys.Commands.Music.SeekExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireDj()
 	@RequireMusicPlaying()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

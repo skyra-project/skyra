@@ -1,10 +1,10 @@
 import {
-	AudioCommand,
-	RequireDj,
-	RequireQueueNotEmpty,
-	RequireSameVoiceChannel,
-	RequireSkyraInVoiceChannel,
-	RequireUserInVoiceChannel
+    AudioCommand,
+    RequireDj,
+    RequireQueueNotEmpty,
+    RequireSameVoiceChannel,
+    RequireSkyraInVoiceChannel,
+    RequireUserInVoiceChannel
 } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
@@ -16,7 +16,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Music.PromoteDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireDj()
 	@RequireQueueNotEmpty()
 	@RequireUserInVoiceChannel()

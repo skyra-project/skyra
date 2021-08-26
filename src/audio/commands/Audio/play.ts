@@ -11,7 +11,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	extendedHelp: LanguageKeys.Commands.Music.PlayExtended,
 	flags: ['import', 'sc', 'soundcloud']
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	private get add(): AudioCommand {
 		return this.store.get('add') as AudioCommand;
 	}

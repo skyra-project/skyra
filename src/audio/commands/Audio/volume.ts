@@ -11,7 +11,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Music.VolumeDescription,
 	extendedHelp: LanguageKeys.Commands.Music.VolumeExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()

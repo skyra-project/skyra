@@ -16,7 +16,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.PauseDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PauseExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()

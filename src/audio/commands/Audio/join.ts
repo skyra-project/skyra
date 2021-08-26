@@ -15,7 +15,7 @@ const { FLAGS } = Permissions;
 	description: LanguageKeys.Commands.Music.JoinDescription,
 	extendedHelp: LanguageKeys.Commands.Music.JoinExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		// Get the voice channel the member is in

@@ -12,7 +12,7 @@ const flags = ['removeall', 'ra'];
 	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,
 	flags
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireDj()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

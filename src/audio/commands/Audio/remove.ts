@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.RemoveDescription,
 	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		let index = await args.pick('integer', { minimum: 1 });

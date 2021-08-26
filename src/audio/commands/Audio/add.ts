@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	extendedHelp: LanguageKeys.Commands.Music.AddExtended,
 	flags: ['import', 'sc', 'soundcloud']
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const songs = await args.rest('song');

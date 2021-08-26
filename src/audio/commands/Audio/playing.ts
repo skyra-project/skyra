@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
 	requiredClientPermissions: ['EMBED_LINKS']
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
 	@RequireMusicPlaying()

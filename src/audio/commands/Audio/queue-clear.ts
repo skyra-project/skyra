@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Music.ClearDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	@RequireDj()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

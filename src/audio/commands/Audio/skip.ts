@@ -16,7 +16,7 @@ const flags = ['force'];
 	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
 	flags
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireSongPresent()
 	@RequireSameVoiceChannel()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Music.RepeatDescription,
 	extendedHelp: LanguageKeys.Commands.Music.RepeatExtended
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()

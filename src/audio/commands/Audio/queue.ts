@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
 	requiredClientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
-export class UserMusicCommand extends AudioCommand {
+export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	public async run(message: GuildMessage, args: AudioCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);

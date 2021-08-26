@@ -2688,7 +2688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^4.28.3":
+"@typescript-eslint/eslint-plugin@npm:^4.28.3, @typescript-eslint/eslint-plugin@npm:^4.29.3":
   version: 4.29.3
   resolution: "@typescript-eslint/eslint-plugin@npm:4.29.3"
   dependencies:
@@ -2725,7 +2725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^4.28.3":
+"@typescript-eslint/parser@npm:^4.28.3, @typescript-eslint/parser@npm:^4.29.3":
   version: 4.29.3
   resolution: "@typescript-eslint/parser@npm:4.29.3"
   dependencies:
@@ -9579,6 +9579,8 @@ fsevents@^2.3.2:
     "@types/skia-canvas": ^0.9.1
     "@types/source-map-support": ^0.5.4
     "@types/ws": ^7.4.7
+    "@typescript-eslint/eslint-plugin": ^4.29.3
+    "@typescript-eslint/parser": ^4.29.3
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.1.0
     binarytf: ^2.0.0

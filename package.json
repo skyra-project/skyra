@@ -133,6 +133,8 @@
 		"@types/skia-canvas": "^0.9.1",
 		"@types/source-map-support": "^0.5.4",
 		"@types/ws": "^7.4.7",
+		"@typescript-eslint/eslint-plugin": "^4.29.3",
+		"@typescript-eslint/parser": "^4.29.3",
 		"babel-plugin-const-enum": "^1.1.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.32.0",

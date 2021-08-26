@@ -272,8 +272,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	],
 	loadDefaultErrorListeners: false,
 	makeCache: Options.cacheWithLimits({
-		// TODO: Uncomment this with v13.1.0
-		// ...Options.defaultMakeCacheSettings,
+		...Options.defaultMakeCacheSettings,
 		MessageManager: {
 			sweepInterval: 180,
 			sweepFilter: LimitedCollection.filterByLifetime({

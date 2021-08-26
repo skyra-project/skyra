@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
+import { minutes } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -65,7 +66,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const show of showData) {
 			display.addPageEmbed((embed) => {
 				const episodeRuntime = show.episode_run_time.length
-					? `${t(LanguageKeys.Globals.DurationValue, { value: show.episode_run_time[0] * 60 * 1000 })}`
+					? `${t(LanguageKeys.Globals.DurationValue, { value: minutes(show.episode_run_time[0]) })}`
 					: fieldsData.variableRuntime;
 				const userScore = typeof show.vote_average === 'number' ? formatNumber(t, show.vote_average) : fieldsData.unknownUserScore;
 

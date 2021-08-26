@@ -11,13 +11,14 @@ import type { Message } from 'discord.js';
 
 const allPlain = ['all', 'all-plain', 'all-plain-text'];
 const allFormat = ['format', 'formatted', 'all-format', 'all-formatted'];
+const outputTo = ['output', 'output-to'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['source', 'msg-source', 'message-source'],
 	description: LanguageKeys.Commands.Tools.ContentDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ContentExtended,
 	flags: [...allPlain, ...allFormat],
-	options: ['output', 'output-to']
+	options: [...outputTo]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -31,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 
 		const content = escapeCodeBlock(raw);
 
-		const sendAs = args.getOption('output', 'output-to');
+		const sendAs = args.getOption(...outputTo);
 		return handleMessage(message, {
 			sendAs,
 			content,

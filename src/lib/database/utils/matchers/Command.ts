@@ -1,5 +1,6 @@
 import type { SkyraCommand } from '#lib/structures';
 import { CommandStore, container } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 
 function getNameSpaceDetails(name: string): readonly [string | null, string] {
 	const index = name.indexOf('.');
@@ -51,7 +52,8 @@ function resolveCategory(commands: CommandStore, category: string): string | nul
 	const lowerCaseCategory = category.toLowerCase();
 
 	for (const command of commands.values()) {
-		const value = (command as SkyraCommand).category!;
+		const value = command.category;
+		if (isNullish(value)) continue;
 		if (scanned.has(value)) continue;
 		if (value.toLowerCase() === lowerCaseCategory) return value;
 		scanned.add(value);
@@ -64,13 +66,15 @@ function resolveSubCategory(commands: CommandStore, category: string, subCategor
 	const scanned = new Set<string>();
 	const lowerCaseSubCategory = subCategory.toLowerCase();
 
-	for (const cmd of commands.values()) {
-		const command = cmd as SkyraCommand;
+	for (const command of commands.values()) {
 		if (command.category !== category) continue;
 
-		if (scanned.has(command.subCategory!)) continue;
-		if (command.subCategory!.toLowerCase() === lowerCaseSubCategory) return command.subCategory!;
-		scanned.add(command.subCategory!);
+		const { subCategory } = command;
+		if (isNullish(subCategory)) continue;
+
+		if (scanned.has(subCategory)) continue;
+		if (subCategory.toLowerCase() === lowerCaseSubCategory) return subCategory;
+		scanned.add(subCategory);
 	}
 
 	return null;

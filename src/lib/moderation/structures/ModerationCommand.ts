@@ -24,7 +24,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
-			cooldownDelay: seconds(8),
+			cooldownDelay: seconds(5),
 			flags: ['no-author', 'authored'],
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,

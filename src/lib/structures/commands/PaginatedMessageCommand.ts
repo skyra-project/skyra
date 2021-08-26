@@ -7,8 +7,6 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: PaginatedMessageCommand.Options) {
 		super(context, {
 			cooldownDelay: seconds(15),
-			cooldownLimit: 2,
-
 			// Merge in all given options
 			...options,
 			runIn: ['GUILD_ANY'],

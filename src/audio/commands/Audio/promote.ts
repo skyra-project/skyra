@@ -1,10 +1,10 @@
 import {
-    AudioCommand,
-    RequireDj,
-    RequireQueueNotEmpty,
-    RequireSameVoiceChannel,
-    RequireSkyraInVoiceChannel,
-    RequireUserInVoiceChannel
+	AudioCommand,
+	RequireDj,
+	RequireQueueNotEmpty,
+	RequireSameVoiceChannel,
+	RequireSkyraInVoiceChannel,
+	RequireUserInVoiceChannel
 } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';

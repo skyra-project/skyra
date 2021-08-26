@@ -747,7 +747,7 @@ export class ModerationActions {
 			const member = await this.guild.members.fetch(rawOptions.userId);
 			return this.muteUserInGuild(member, await this.getReason('mute', rawOptions.reason || null));
 		} catch (error) {
-			if (error.code === RESTJSONErrorCodes.UnknownMember)
+			if ((error as any).code === RESTJSONErrorCodes.UnknownMember)
 				throw await resolveKey(this.guild, LanguageKeys.Commands.Moderation.ActionRequiredMember);
 			throw error;
 		}
@@ -778,7 +778,7 @@ export class ModerationActions {
 				? this.unmuteUserInGuildWithoutData(member, await this.getReason('mute', options.reason, true))
 				: this.unmuteUserInGuildWithData(member, await this.getReason('mute', options.reason, true), moderationLog);
 		} catch (error) {
-			if (error.code !== RESTJSONErrorCodes.UnknownMember) throw error;
+			if ((error as any).code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}
 	}
 
@@ -875,7 +875,7 @@ export class ModerationActions {
 		try {
 			await api().guilds(this.guild.id).members(id).roles(roleId).delete();
 		} catch (error) {
-			if (error.code !== RESTJSONErrorCodes.UnknownMember) throw error;
+			if ((error as any).code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}
 	}
 

@@ -92,7 +92,7 @@ export class UserTask extends Task {
 			);
 			return green(list);
 		} catch (error) {
-			return `${red(list)} [${red(error.code)}]`;
+			return `${red(list)} [${red((error as any).code)}]`;
 		}
 	}
 

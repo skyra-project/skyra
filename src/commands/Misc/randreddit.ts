@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		try {
 			return await fetch<Reddit.Response<'posts'>>(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON);
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error as QueryError);
 		}
 	}
 

@@ -29,11 +29,11 @@ export class UserListener extends Listener {
 			await message.react(trigger.output);
 		} catch (error) {
 			// Message has been deleted
-			if (error.code === RESTJSONErrorCodes.UnknownMessage) return;
+			if ((error as any).code === RESTJSONErrorCodes.UnknownMessage) return;
 			// Attempted to react to a user who blocked the bot
-			if (error.code === RESTJSONErrorCodes.ReactionWasBlocked) return;
+			if ((error as any).code === RESTJSONErrorCodes.ReactionWasBlocked) return;
 			// The emoji has been deleted or the bot is not in the list of allowed bots
-			if (error.code === RESTJSONErrorCodes.UnknownEmoji) {
+			if ((error as any).code === RESTJSONErrorCodes.UnknownEmoji) {
 				await writeSettings(message.guild, (settings) => {
 					const triggerIndex = settings[GuildSettings.Trigger.Includes].findIndex((element) => element === trigger);
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);

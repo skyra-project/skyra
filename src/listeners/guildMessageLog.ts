@@ -30,7 +30,7 @@ export class UserListener extends Listener {
 			this.container.logger.fatal(
 				error instanceof DiscordAPIError || error instanceof HTTPError
 					? `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
-					: `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`
+					: `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: ${(error as any).message}`
 			);
 		}
 	}

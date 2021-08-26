@@ -185,7 +185,7 @@ export class SettingsMenu {
 			}
 
 			// Log any other error
-			this.message.client.emit(Events.Error, error);
+			this.message.client.emit(Events.Error, error as Error);
 		}
 	}
 
@@ -198,7 +198,7 @@ export class SettingsMenu {
 				this.response = null;
 				this.llrc?.end();
 			} else {
-				this.message.client.emit(Events.Error, error);
+				this.message.client.emit(Events.Error, error as Error);
 			}
 		}
 	}
@@ -213,7 +213,7 @@ export class SettingsMenu {
 				this.response = null;
 				this.llrc?.end();
 			} else {
-				this.message.client.emit(Events.Error, error);
+				this.message.client.emit(Events.Error, error as Error);
 			}
 		}
 	}

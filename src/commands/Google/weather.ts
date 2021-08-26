@@ -125,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 		);
 	}
 
-	private static coordinates = this.resolveCoordinates();
+	private static coordinates = UserCommand.resolveCoordinates();
 	private static resolveCoordinates(): Coordinates {
 		const width = 540;
 		const height = 260;

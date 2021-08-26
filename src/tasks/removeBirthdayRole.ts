@@ -27,7 +27,7 @@ export class UserTask extends Task {
 			try {
 				await member.roles.remove(role).catch(() => null);
 			} catch (error) {
-				if (error.name === 'AbortError') {
+				if ((error as any).name === 'AbortError') {
 					// Retry again in 5 seconds if something bad happened
 					return { type: ResponseType.Delay, value: seconds(5) };
 				}

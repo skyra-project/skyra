@@ -2585,10 +2585,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:^16.7.1":
+"@types/node@npm:*, @types/node@npm:>=12.12.47":
   version: 16.7.1
   resolution: "@types/node@npm:16.7.1"
   checksum: fcf1a2c7b1f19c2201574b2110176b49c6efd824a39b2ed8ac3e6688740e2a35bef95a3334dfa345f4bd4873fd8b79d8ac8cfcc9fcd3d2f4f8f993c2c37ce4ab
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.7.2":
+  version: 16.7.2
+  resolution: "@types/node@npm:16.7.2"
+  checksum: aef77c109e2fd93b5dc6ec0a57a0878aaaa58adf0e63d9618d67b116ad3f2a3eb2589a99deaf9fda4a0805068b2533e3d2cf8e8dc3572251c498ec3dc929a76c
   languageName: node
   linkType: hard
 
@@ -5899,7 +5906,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"husky@npm:^7.0.1":
+"husky@npm:^7.0.2":
   version: 7.0.2
   resolution: "husky@npm:7.0.2"
   bin:
@@ -9566,7 +9573,7 @@ fsevents@^2.3.2:
     "@types/i18next-fs-backend": ^1.0.1
     "@types/ioredis": ^4.26.7
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.7.2
     "@types/node-fetch": ^2.5.12
     "@types/pg": ^8.6.1
     "@types/skia-canvas": ^0.9.1
@@ -9588,7 +9595,7 @@ fsevents@^2.3.2:
     grpc-tools: ^1.11.2
     grpc_tools_node_protoc_ts: ^5.3.2
     he: ^1.2.0
-    husky: ^7.0.1
+    husky: ^7.0.2
     ioredis: ^4.27.8
     jest: ^27.0.6
     jest-circus: ^27.0.6
@@ -9605,7 +9612,7 @@ fsevents@^2.3.2:
     tslib: 1.11.2
     typeorm: 0.2.28
     typeorm-naming-strategies: ^2.0.0
-    typescript: 4.3.5
+    typescript: 4.4.2
     utf-8-validate: ^5.0.5
     ws: ^8.2.0
     zlib-sync: ^0.1.7
@@ -10506,7 +10513,17 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"typescript@4.3.5, typescript@^4.3.5":
+typescript@4.4.2:
+  version: 4.4.2
+  resolution: "typescript@npm:4.4.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 194e08e9d1971d667d6fd1a0554616b7022312a2319d70e81a64e502a265992061ee7817ed9a69b52bbabe7a9b85e7938cb8c11c433e40a516b277f8c4dacd51
+  languageName: node
+  linkType: hard
+
+typescript@^4.3.5:
   version: 4.3.5
   resolution: "typescript@npm:4.3.5"
   bin:
@@ -10516,7 +10533,17 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.3.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.4.2#~builtin<compat/typescript>":
+  version: 4.4.2
+  resolution: "typescript@patch:typescript@npm%3A4.4.2#~builtin<compat/typescript>::version=4.4.2&hash=d8b4e7"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 11d6ab6e868117908c388401e2ac06d503c5c8709115ab80ee69a1a6352c1f98471d1e595636bfe6a2d6b20b03a44df6bb2d3d198cea97c0c328968cd18d2b70
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
   version: 4.3.5
   resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"
   bin:

@@ -27,7 +27,7 @@ export abstract class ClientHandler<C extends Client = Client> {
 				}
 			});
 		} catch (error) {
-			refer.reject(error);
+			refer.reject(error as Error);
 		}
 
 		return refer.promise;

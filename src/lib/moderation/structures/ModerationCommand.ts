@@ -58,7 +58,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
-				errored.push({ error, target });
+				errored.push({ error: error as Error | string, target });
 			}
 		}
 

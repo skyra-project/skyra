@@ -48,6 +48,6 @@ export async function safeWrapPromise<T, E = Error>(promise: Promise<T>): Promis
 	try {
 		return ok(await promise);
 	} catch (error) {
-		return err(error);
+		return err(error as E);
 	}
 }

@@ -3,7 +3,8 @@ import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions, Store } from '@sapphire/framework';
+import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
@@ -122,15 +123,21 @@ ${line14}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOP
 	}
 
 	private printStoreDebugInformation() {
-		const { client, logger } = this.container;
+		const { client, logger, i18n } = this.container;
 		const stores = [...client.stores.values()];
-		const last = stores.pop()!;
 
-		for (const store of stores) logger.info(this.styleStore(store, false));
-		logger.info(this.styleStore(last, true));
+		for (const store of stores) {
+			logger.info(this.styleStore(store));
+		}
+
+		logger.info(this.styleLanguages(i18n.languages));
 	}
 
-	private styleStore(store: Store<any>, last: boolean) {
-		return gray(`${last ? '└─' : '├─'} Loaded ${this.style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
+	private styleStore(store: Store<Piece>) {
+		return gray(`├─ Loaded ${this.style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
+	}
+
+	private styleLanguages(languages: Map<string, TFunction>) {
+		return gray(`└─ Loaded ${this.style(languages.size.toString().padEnd(3, ' '))} languages.`);
 	}
 }

@@ -47,7 +47,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 
 		yield* this.differenceGuildChannel(t, previous, next);
 		if (!isThread) {
-			yield* this.differencePositions(t, previous as NonThreadGuildBasedChannelTypes, next as NonThreadGuildBasedChannelTypes);
+			yield* this.differencePositions(t, previous as NonThreadGuildBasedChannelTypes, next);
 		}
 
 		if (previous.type !== next.type) return;
@@ -69,8 +69,8 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			// No Op
 		}
 
-		if (isThread) {
-			yield* this.differencePermissionOverwrites(t, previous as NonThreadGuildBasedChannelTypes, next as NonThreadGuildBasedChannelTypes);
+		if (!isThread) {
+			yield* this.differencePermissionOverwrites(t, previous as NonThreadGuildBasedChannelTypes, next);
 		}
 	}
 

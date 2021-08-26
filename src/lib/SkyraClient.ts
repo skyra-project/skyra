@@ -3,6 +3,7 @@ import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
 import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
+import { mainFolder } from '#utils/constants';
 import { Enumerable } from '@sapphire/decorators';
 import { container, SapphireClient } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
@@ -88,7 +89,7 @@ export class SkyraClient extends SapphireClient {
 				const guild = this.guilds.cache.get(guildId);
 				return Promise.resolve(guild?.shard.send(packet));
 			});
-			this.stores.registerPath(join(__dirname, '..', 'audio'));
+			this.stores.registerPath(join(mainFolder, 'audio'));
 		} else {
 			this.audio = null;
 		}

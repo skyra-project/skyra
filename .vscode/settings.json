@@ -13,6 +13,5 @@
 		"**/.yarn": true,
 		"**/dist/": true,
 		"**/.git/": true
-	},
-	"typescript.tsdk": "node_modules\\typescript\\lib"
+	}
 }

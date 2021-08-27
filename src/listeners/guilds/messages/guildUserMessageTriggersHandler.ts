@@ -5,6 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import type { DiscordAPIError } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
@@ -29,11 +30,11 @@ export class UserListener extends Listener {
 			await message.react(trigger.output);
 		} catch (error) {
 			// Message has been deleted
-			if ((error as any).code === RESTJSONErrorCodes.UnknownMessage) return;
+			if ((error as DiscordAPIError).code === RESTJSONErrorCodes.UnknownMessage) return;
 			// Attempted to react to a user who blocked the bot
-			if ((error as any).code === RESTJSONErrorCodes.ReactionWasBlocked) return;
+			if ((error as DiscordAPIError).code === RESTJSONErrorCodes.ReactionWasBlocked) return;
 			// The emoji has been deleted or the bot is not in the list of allowed bots
-			if ((error as any).code === RESTJSONErrorCodes.UnknownEmoji) {
+			if ((error as DiscordAPIError).code === RESTJSONErrorCodes.UnknownEmoji) {
 				await writeSettings(message.guild, (settings) => {
 					const triggerIndex = settings[GuildSettings.Trigger.Includes].findIndex((element) => element === trigger);
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);

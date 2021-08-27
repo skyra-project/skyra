@@ -1,6 +1,6 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';
 import { Constants } from 'discord.js';
@@ -92,7 +92,7 @@ export class UserTask extends Task {
 			);
 			return green(list);
 		} catch (error) {
-			return `${red(list)} [${red((error as any).code)}]`;
+			return `${red(list)} [${red((error as QueryError).code.toString())}]`;
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomGet } from '#lib/types';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { container } from '@sapphire/framework';
 import { resolveKey } from '@sapphire/plugin-i18next';
 import type { Message } from 'discord.js';
@@ -58,7 +58,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch (err) {
-		const { error } = (err as any).toJSON() as GoogleResultError;
+		const { error } = (err as QueryError).toJSON() as GoogleResultError;
 		throw await resolveKey(message, handleNotOK(error.status));
 	}
 }

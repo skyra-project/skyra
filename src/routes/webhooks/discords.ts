@@ -20,7 +20,7 @@ export class UserRoute extends Route {
 			return response.noContent();
 		} catch (error) {
 			this.container.logger.error(error);
-			return response.error((error as any).message ?? 'Unknown error');
+			return response.error((error as Error).message ?? 'Unknown error');
 		}
 	}
 }

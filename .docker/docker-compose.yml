@@ -1,0 +1,150 @@
+version: '2.4'
+services:
+  hasteserver:
+    container_name: hasteserver
+    depends_on:
+      - redis
+    environment:
+      PORT: 8290
+      STORAGE_DB: 2
+      STORAGE_EXPIRE_SECONDS: 21600
+      STORAGE_HOST: redis
+      STORAGE_PASSWORD: redis
+      STORAGE_PORT: 8287
+      STORAGE_TYPE: redis
+    image: 'skyrabot/haste-server:latest'
+    networks:
+      - skyra
+    ports:
+      - '8290:8290'
+    restart: always
+
+  influx:
+    command: 'influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt'
+    container_name: influxdb
+    image: 'influxdb:2.0-alpine'
+    networks:
+      - skyra
+    ports:
+      - '8285:8086'
+    restart: always
+    volumes:
+      - 'influx-data:/var/lib/influxdb2'
+
+  lavalink:
+    container_name: lavalink
+    depends_on:
+      - redis
+    image: 'skyrabot/lavalink:latest'
+    networks:
+      - skyra
+    ports:
+      - '2333:2333'
+    restart: always
+
+  outflux:
+    container_name: outflux
+    depends_on:
+      - influx
+    environment:
+      INFLUX_BASE_URL: 'http://influx:8086'
+      INFLUX_LOGIN_USERNAME: 'admin'
+      INFLUX_LOGIN_PASSWORD: 'influxadmin'
+      INFLUX_ORG_ID: 'Skyra-Project'
+    image: 'skyrabot/outflux:latest'
+    networks:
+      - skyra
+    ports:
+      - '8286:8286'
+    restart: always
+
+  pokedex:
+    container_name: pokedex
+    image: 'favware/graphql-pokemon:latest'
+    environment:
+      PORT: 8288
+    networks:
+      - skyra
+    ports:
+      - '8288:8288'
+    restart: always
+
+  swapi:
+    container_name: star-wars-api
+    image: 'skyrabot/star-wars-api:latest'
+    networks:
+      - skyra
+    ports:
+      - '8293:8293'
+    restart: always
+
+  postgres:
+    container_name: postgres
+    image: 'skyrabot/postgres:latest'
+    networks:
+      - skyra
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - 'postgres-data:/var/lib/postgresql/data'
+
+  redis:
+    command: 'redis-server --port 8287 --requirepass redis'
+    container_name: redis
+    image: 'redis:alpine'
+    networks:
+      - skyra
+    ports:
+      - '8287:8287'
+    restart: always
+
+  saelem:
+    container_name: saelem
+    depends_on:
+      - redis
+    environment:
+      PORT: 8284
+      SAELEM_REDIS_DATABASE: 0
+      SAELEM_REDIS_HOST: redis
+      SAELEM_REDIS_PASSWORD: redis
+      SAELEM_REDIS_PORT: 8287
+    image: 'skyrabot/saelem:latest'
+    networks:
+      - skyra
+    ports:
+      - '8284:8284'
+    restart: always
+
+  skyra:
+    build:
+      context: ../
+    container_name: skyra
+    depends_on:
+      - hasteserver
+      - influx
+      - lavalink
+      - outflux
+      - redis
+      - saelem
+      - postgres
+    env_file:
+      - ../src/.env.development
+      - ../src/.env.development.local
+    image: 'skyrabot/skyra:latest'
+    networks:
+      - skyra
+    ports:
+      - '8282:8282'
+      - '7282:7282'
+    restart: always
+    tty: true
+
+volumes:
+  postgres-data:
+    external: true
+  influx-data:
+    external: true
+
+networks:
+  skyra:

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
 import { Events } from '#lib/types/Enums';
+import { minutes, years } from '#utils/common';
 import {
 	metadata,
 	ModerationManagerDescriptionData,
@@ -27,10 +28,10 @@ export class ModerationEntity extends BaseEntity {
 	#manager: ModerationManager = null!;
 	#moderator: User | null = null;
 	#user: User | null = null;
-	#timeout = Date.now() + Time.Minute * 15;
+	#timeout = Date.now() + minutes(15);
 
 	@PrimaryColumn('integer')
-	public caseID = -1;
+	public caseId = -1;
 
 	@Column('timestamp without time zone', { nullable: true, default: () => 'null' })
 	public createdAt: Date | null = null;
@@ -42,10 +43,10 @@ export class ModerationEntity extends BaseEntity {
 	public extraData: unknown[] | NonNullObject | null = null;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public guildID: string = null!;
+	public guildId: string = null!;
 
 	@Column('varchar', { length: 19, default: process.env.CLIENT_ID })
-	public moderatorID: string = process.env.CLIENT_ID;
+	public moderatorId: string = process.env.CLIENT_ID;
 
 	@Column('varchar', { nullable: true, length: 2000, default: () => 'null' })
 	public reason: string | null = null;
@@ -54,7 +55,7 @@ export class ModerationEntity extends BaseEntity {
 	public imageURL: string | null = null;
 
 	@Column('varchar', { nullable: true, length: 19, default: () => 'null' })
-	public userID: string | null = null;
+	public userId: string | null = null;
 
 	@Column('smallint')
 	public type?: number | null;
@@ -69,9 +70,8 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public setup(manager: ModerationManager) {
-		this.#client = manager.client;
 		this.#manager = manager;
-		this.guildID = manager.guild.id;
+		this.guildId = manager.guild.id;
 		return this;
 	}
 
@@ -86,8 +86,8 @@ export class ModerationEntity extends BaseEntity {
 			this.extraData === other.extraData &&
 			this.reason === other.reason &&
 			this.imageURL === other.imageURL &&
-			this.userID === other.userID &&
-			this.moderatorID === other.moderatorID
+			this.userId === other.userId &&
+			this.moderatorId === other.moderatorId
 		);
 	}
 
@@ -221,14 +221,14 @@ export class ModerationEntity extends BaseEntity {
 
 	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
-		if (this.moderatorID !== process.env.CLIENT_ID) return true;
+		if (this.moderatorId !== process.env.CLIENT_ID) return true;
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;
 		const checkSoftBan = type === TypeVariation.Ban;
 		for (const entry of this.#manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
-			if (this.userID !== entry.userID || before > entry.createdTimestamp) continue;
+			if (this.userId !== entry.userId || before > entry.createdTimestamp) continue;
 
 			// If there was a log with the same type in the last minute, do not duplicate
 			if (type === entry.typeVariation) return false;
@@ -244,19 +244,19 @@ export class ModerationEntity extends BaseEntity {
 	public get task() {
 		const { guild } = this.#manager;
 		return (
-			this.#client.schedules.queue.find((value) => value.data && value.data.caseID === this.caseID && value.data.guildID === guild.id) ?? null
+			this.#client.schedules.queue.find((value) => value.data && value.data.caseID === this.caseId && value.data.guildID === guild.id) ?? null
 		);
 	}
 
 	public async fetchUser() {
-		if (!this.userID) {
-			throw new Error('userID must be set before calling this method.');
+		if (!this.userId) {
+			throw new Error('userId must be set before calling this method.');
 		}
 
 		const previous = this.#user;
-		if (previous?.id === this.userID) return previous;
+		if (previous?.id === this.userId) return previous;
 
-		const user = await this.#client.users.fetch(this.userID);
+		const user = await this.#client.users.fetch(this.userId);
 		this.#user = user;
 		return user;
 	}
@@ -265,7 +265,7 @@ export class ModerationEntity extends BaseEntity {
 		const previous = this.#moderator;
 		if (previous) return previous;
 
-		const moderator = await this.#client.users.fetch(this.moderatorID);
+		const moderator = await this.#client.users.fetch(this.moderatorId);
 		this.#moderator = moderator;
 		return moderator;
 	}
@@ -307,7 +307,7 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public async prepareEmbed() {
-		if (!this.userID) throw new Error('A user has not been set.');
+		if (!this.userId) throw new Error('A user has not been set.');
 		const manager = this.#manager;
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
@@ -318,10 +318,10 @@ export class ModerationEntity extends BaseEntity {
 			type: this.title,
 			userName: user.username,
 			userDiscriminator: user.discriminator,
-			userID: this.userID,
+			userId: this.userId,
 			reason: this.reason,
 			prefix,
-			caseID: this.caseID,
+			caseId: this.caseId,
 			formattedDuration
 		};
 
@@ -340,7 +340,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(`${body}\n${reason}`)
 			.setFooter(
-				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
+				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);
@@ -350,7 +350,7 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public setCase(value: number) {
-		this.caseID = value;
+		this.caseId = value;
 		return this;
 	}
 
@@ -360,7 +360,7 @@ export class ModerationEntity extends BaseEntity {
 			if (typeof duration === 'number' && (duration <= 0 || duration > Time.Year)) duration = null;
 
 			if (isNumber(duration)) {
-				if (duration < 0 || duration > Time.Year * 5) {
+				if (duration < 0 || duration > years(5)) {
 					throw new UserError({
 						identifier: LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent,
 						context: { duration }
@@ -386,10 +386,10 @@ export class ModerationEntity extends BaseEntity {
 	public setModerator(value: User | string) {
 		if (value instanceof User) {
 			this.#moderator = value;
-			this.moderatorID = value.id;
-		} else if (this.moderatorID !== value) {
+			this.moderatorId = value.id;
+		} else if (this.moderatorId !== value) {
 			this.#moderator = null;
-			this.moderatorID = value;
+			this.moderatorId = value;
 		}
 		return this;
 	}
@@ -419,9 +419,9 @@ export class ModerationEntity extends BaseEntity {
 	public setUser(value: User | string) {
 		if (value instanceof User) {
 			this.#user = value;
-			this.userID = value.id;
+			this.userId = value.id;
 		} else {
-			this.userID = value;
+			this.userId = value;
 		}
 
 		return this;
@@ -429,13 +429,13 @@ export class ModerationEntity extends BaseEntity {
 
 	public async create() {
 		// If the entry was created, there is no point on re-sending
-		if (!this.userID || this.createdAt) return null;
+		if (!this.userId || this.createdAt) return null;
 		this.createdAt = new Date();
 
 		// If the entry should not send, abort creation
 		if (!this.shouldSend) return null;
 
-		this.caseID = (await this.#manager.getCurrentID()) + 1;
+		this.caseId = (await this.#manager.getCurrentId()) + 1;
 		await this.save();
 		this.#manager.insert(this);
 

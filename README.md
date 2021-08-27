@@ -1,9 +1,15 @@
+<div align="center">
+
+<img src="https://github.com/NM-EEA-Y.png" width="15%" alt="Skyra Logo">
+
 # Skyra [![Discord](https://discord.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
 [![codecov](https://codecov.io/gh/skyra-project/skyra/branch/main/graph/badge.svg?token=DYhRX6ailX)](https://codecov.io/gh/skyra-project/skyra)
 [![Status](https://top.gg/api/widget/status/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
 [![Servers](https://top.gg/api/widget/servers/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
 [![Upvotes](https://top.gg/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://top.gg/bot/266624760782258186)
+
+</div>
 
 ## Developing on Skyra
 
@@ -20,7 +26,6 @@
 -   [`Saelem`]: Horoscope API.
 -   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`].
 -   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
--   [`Skyra.gRPC`]: For interacting with the [`PostgreSQL`] database using [`.NET`] [`Entity Framework`][] over [`gRPC`].
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -142,7 +147,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`.net`]: https://docs.microsoft.com/en-gb/dotnet/
 [`entity framework`]: https://docs.microsoft.com/en-gb/ef/
 [`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
-[`grpc`]: https://grpc.io
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
 [`lavalink`]: https://github.com/freyacodes/lavalink
 [`node.js`]: https://nodejs.org/en/download/current/
@@ -150,7 +154,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`postgresql`]: https://www.postgresql.org/download/
 [`redis`]: https://redis.io
 [`saelem`]: https://github.com/skyra-project/saelem
-[`skyra.grpc`]: https://hub.docker.com/r/skyrabot/grpc
 [bitcoin]: bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
 [digitalocean]: https://www.digitalocean.com/

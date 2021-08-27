@@ -1,15 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { CdnUrls } from '#lib/types/Constants';
+import { CdnUrls } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -30,19 +29,17 @@ export class UserCommand extends SkyraCommand {
 			result = args.t(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
 		}
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
-				.setDescription(
-					[
-						`💗 **${user.tag}**`,
-						`💗 **${message.author.tag}**\n`,
-						`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
-						`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
-					].join('\n')
-				)
-		);
+		const description = [
+			`💗 **${user.tag}**`,
+			`💗 **${message.author.tag}**\n`,
+			`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
+			`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
+		].join('\n');
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
+			.setDescription(description);
+		return send(message, { embeds: [embed] });
 	}
 }

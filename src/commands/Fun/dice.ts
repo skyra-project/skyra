@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { isNumber } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['roll'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.DiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.DiceExtended,
 	spam: true
@@ -32,7 +32,8 @@ export class UserCommand extends SkyraCommand {
 
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const amountOrDice = await args.pick('integer', { minimum: 1, maximum: 1024 }).catch(() => args.rest('string'));
-		return message.send(args.t(LanguageKeys.Commands.Fun.DiceOutput, { result: await this.roll(amountOrDice) }));
+		const content = args.t(LanguageKeys.Commands.Fun.DiceOutput, { result: await this.roll(amountOrDice) });
+		return send(message, content);
 	}
 
 	private async roll(pattern: string | number) {

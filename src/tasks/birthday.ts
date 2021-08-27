@@ -1,7 +1,7 @@
 import { getAge, nextBirthday, TaskBirthdayData } from '#lib/birthday';
 import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { canSendMessages } from '#utils/functions';
+import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { isNullish, Nullish } from '@sapphire/utilities';
 import type { GuildMember, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -24,10 +24,10 @@ export class UserTask extends Task {
 	private kTransformMessageRegExp = /{age}|{age\.ordinal}|{user}|{user\.name}|{user\.tag}/g;
 
 	public async run(data: TaskBirthdayData): Promise<PartialResponseValue | null> {
-		const guild = this.context.client.guilds.cache.get(data.guildID);
+		const guild = this.container.client.guilds.cache.get(data.guildId);
 		if (!guild) return null;
 
-		const member = await guild.members.fetch(data.userID);
+		const member = await guild.members.fetch(data.userId);
 		if (!member) return null;
 
 		const [birthdayRole, birthdayChannel, birthdayMessage, t] = await readSettings(guild, (settings) => [
@@ -57,10 +57,10 @@ export class UserTask extends Task {
 		return !isNullish(birthdayRole) || (!isNullish(birthdayChannel) && !isNullish(birthdayMessage));
 	}
 
-	private async handleRole(data: TaskBirthdayData, member: GuildMember, roleID: string | Nullish): Promise<PartResult> {
-		if (isNullish(roleID)) return PartResult.NotSet;
+	private async handleRole(data: TaskBirthdayData, member: GuildMember, roleId: string | Nullish): Promise<PartResult> {
+		if (isNullish(roleId)) return PartResult.NotSet;
 
-		const role = member.guild.roles.cache.get(roleID);
+		const role = member.guild.roles.cache.get(roleId);
 
 		// If the role doesn't exist anymore, reset:
 		if (!role) {
@@ -79,13 +79,13 @@ export class UserTask extends Task {
 	private async handleMessage(
 		data: TaskBirthdayData,
 		member: GuildMember,
-		channelID: string | Nullish,
+		channelId: string | Nullish,
 		content: string | Nullish,
 		t: TFunction
 	): Promise<PartResult> {
-		if (isNullish(channelID) || isNullish(content)) return PartResult.NotSet;
+		if (isNullish(channelId) || isNullish(content)) return PartResult.NotSet;
 
-		const channel = member.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		const channel = member.guild.channels.cache.get(channelId) as TextChannel | undefined;
 
 		// If the channel doesn't exist anymore, reset:
 		if (!channel) {
@@ -105,11 +105,11 @@ export class UserTask extends Task {
 		await member.roles.add(birthdayRole);
 		const tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
-		await this.context.schedule.add('removeBirthdayRole', tomorrow, {
+		await this.container.schedule.add('removeBirthdayRole', tomorrow, {
 			data: {
-				guildID: data.guildID,
+				guildID: data.guildId,
 				roleID: birthdayRole,
-				userID: data.userID
+				userID: data.userId
 			}
 		});
 	}

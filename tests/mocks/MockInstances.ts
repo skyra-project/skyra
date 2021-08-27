@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
-import { APIChannel, APIGuildMember, APIUser, APIGuild, APIRole, ChannelType, GuildFeature } from 'discord-api-types/v6';
-import { User, Guild, GuildMember, Role, TextChannel } from 'discord.js';
+import { APIChannel, APIGuild, APIGuildMember, APIRole, APIUser, ChannelType, GuildFeature, GuildNSFWLevel } from 'discord-api-types/v9';
+import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
 import { resolve } from 'path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
@@ -30,7 +30,7 @@ export const guildMemberData: APIGuildMember = {
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
-	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user } }, g);
+	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } }, g);
 }
 
 export const roleData: APIRole = {
@@ -39,8 +39,7 @@ export const roleData: APIRole = {
 	color: 0,
 	hoist: false,
 	position: 0,
-	permissions: 104189505,
-	permissions_new: '104189505',
+	permissions: '104189505',
 	managed: false,
 	mentionable: false
 };
@@ -56,43 +55,43 @@ export const guildData: APIGuild = {
 	name: 'Skyra Lounge',
 	icon: 'a_933397e7006838cf97fe70e47605b274',
 	description: null,
-	splash: null,
 	discovery_splash: null,
-	features: [
-		GuildFeature.NEWS,
-		GuildFeature.ANIMATED_ICON,
-		GuildFeature.COMMERCE,
-		GuildFeature.WELCOME_SCREEN_ENABLED,
-		GuildFeature.INVITE_SPLASH,
-		GuildFeature.COMMUNITY
-	],
-	emojis: [],
-	banner: null,
-	owner_id: '242043489611808769',
-	application_id: null,
-	region: 'eu-central',
 	afk_channel_id: null,
 	afk_timeout: 60,
-	system_channel_id: '254360814063058944',
-	widget_enabled: true,
-	widget_channel_id: '409663610780909569',
-	verification_level: 2,
-	roles: [roleData],
+	application_id: null,
+	banner: null,
 	default_message_notifications: 1,
-	mfa_level: 1,
+	emojis: [],
 	explicit_content_filter: 2,
-	max_presences: null,
+	features: [
+		GuildFeature.News,
+		GuildFeature.AnimatedIcon,
+		GuildFeature.Commerce,
+		GuildFeature.WelcomeScreenEnabled,
+		GuildFeature.InviteSplash,
+		GuildFeature.Community
+	],
 	max_members: 100000,
+	max_presences: null,
 	max_video_channel_users: 25,
-	vanity_url_code: null,
-	premium_tier: 1,
-	premium_subscription_count: 3,
-	system_channel_flags: 0,
+	mfa_level: 1,
+	nsfw_level: GuildNSFWLevel.Default,
+	owner_id: '242043489611808769',
 	preferred_locale: 'en-US',
-	rules_channel_id: '409663610780909569',
+	premium_subscription_count: 3,
+	premium_tier: 1,
 	public_updates_channel_id: '700806874294911067',
-	embed_enabled: true,
-	embed_channel_id: '409663610780909569'
+	region: 'eu-central',
+	roles: [roleData],
+	rules_channel_id: '409663610780909569',
+	splash: null,
+	stickers: [],
+	system_channel_flags: 0,
+	system_channel_id: '254360814063058944',
+	vanity_url_code: null,
+	verification_level: 2,
+	widget_channel_id: '409663610780909569',
+	widget_enabled: true
 };
 
 export function createGuild(data: Partial<APIGuild> = {}) {
@@ -103,7 +102,7 @@ export function createGuild(data: Partial<APIGuild> = {}) {
 export const guild = createGuild();
 
 export const textChannelData: APIChannel = {
-	type: ChannelType.GUILD_TEXT,
+	type: ChannelType.GuildText,
 	id: '331027040306331648',
 	name: 'staff-testing',
 	position: 19,
@@ -135,14 +134,48 @@ function addCommand(command: SkyraCommand) {
 class Command extends SkyraCommand {}
 addCommand(
 	new Command(
-		{ name: 'ping', path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'), store: commands },
-		{ description: LanguageKeys.Commands.General.PingDescription, extendedHelp: LanguageKeys.Commands.General.PingExtended, aliases: ['pong'] }
+		{
+			name: 'ping',
+			path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.General.PingDescription,
+			extendedHelp: LanguageKeys.Commands.General.PingExtended,
+			aliases: ['pong'],
+			fullCategory: ['General']
+		}
 	)
 );
 
 addCommand(
 	new Command(
-		{ name: 'balance', path: resolve('/home/skyra/commands/Social/balance.js'), store: commands },
-		{ description: LanguageKeys.Commands.Social.BalanceDescription, extendedHelp: LanguageKeys.Commands.Social.BalanceExtended, aliases: ['bal'] }
+		{
+			name: 'balance',
+			path: resolve('/home/skyra/commands/Social/balance.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.Social.BalanceDescription,
+			extendedHelp: LanguageKeys.Commands.Social.BalanceExtended,
+			aliases: ['bal'],
+			fullCategory: ['Currency']
+		}
+	)
+);
+
+addCommand(
+	new Command(
+		{
+			name: 'define',
+			path: resolve('/home/skyra/commands/Tools/Dictionary/define.js'),
+			store: commands
+		},
+		{
+			description: LanguageKeys.Commands.Tools.DefineDescription,
+			extendedHelp: LanguageKeys.Commands.Tools.DefineExtended,
+			aliases: ['def', 'definition', 'defination', 'dictionary'],
+			fullCategory: ['Tools', 'Dictionary']
+		}
 	)
 );

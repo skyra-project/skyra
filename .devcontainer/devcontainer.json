@@ -1,6 +1,6 @@
 {
 	"name": "Node-TS PowerUser Image",
-	"image": "favware/codespaces-containers:with-node-canvas",
+	"image": "favware/codespaces-containers:base",
 
 	// VSCode settings
 	"settings": {

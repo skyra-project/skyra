@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { isGuildMessage, safeWrapPromise } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -19,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 			const responseContent = args.t(success ? LanguageKeys.Commands.System.DmSent : LanguageKeys.Commands.System.DmNotSent);
 			await sendTemporaryMessage(message, responseContent);
 		} else {
-			await message.send(content);
+			await send(message, content);
 		}
 	}
 }

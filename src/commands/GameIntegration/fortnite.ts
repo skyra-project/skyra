@@ -15,7 +15,6 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('FORTNITE_TOKEN'),
-	cooldown: 10,
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
 	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended
 })
@@ -44,7 +43,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		);
 		if (!result.success) this.error(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		if (result.value.error) {
-			this.context.logger.fatal(`Fortnite[${platform}/${user}]: ${result.value.error}`);
+			this.container.logger.fatal(`Fortnite[${platform}/${user}]: ${result.value.error}`);
 			this.error(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 
@@ -60,7 +59,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 		});
 		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 

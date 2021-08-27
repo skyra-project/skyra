@@ -10,7 +10,6 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ud', 'urbandictionary'],
-	cooldown: 15,
 	description: LanguageKeys.Commands.Tools.UrbanDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.UrbanExtended,
 	nsfw: true
@@ -37,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
-				.setColor(await this.context.db.fetchColor(message))
+				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 				.setFooter('© Urban Dictionary')
 		});

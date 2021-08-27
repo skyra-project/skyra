@@ -11,8 +11,18 @@
         ]
     },
     "aniListAnimeQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{search}}` is actually an anime?",
-    "aniListMangaDescription": "",
-    "aniListMangaExtended": {},
+    "aniListMangaDescription": "Get data for any manga on AniList.",
+    "aniListMangaExtended": {
+        "examples": [
+            "My Hero Academia",
+            "Bleach",
+            "Pokemon"
+        ],
+        "extendedHelp": "This command queries [AniList](https://anilist.co) to show data for the manga you request.",
+        "usages": [
+            "Name of Manga"
+        ]
+    },
     "aniListMangaQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{search}}` is actually an manga?",
     "aniListQueryOnlyNsfw": "{{REDCROSS}} I am sorry, but {{search}} only returned NSFW results which are not allowed here. Why don't you try searching that in an NSFW channel?",
     "aniListEmbedTitles": {

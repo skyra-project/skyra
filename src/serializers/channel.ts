@@ -1,14 +1,15 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isCategoryChannel, isGuildBasedChannelByGuildKey, isNewsChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { Awaited, isNullish } from '@sapphire/utilities';
 import type { Channel } from 'discord.js';
 
 @ApplyOptions<Serializer.Options>({
-	aliases: ['textChannel', 'voiceChannel', 'categoryChannel']
+	aliases: ['guildTextChannel', 'guildVoiceChannel', 'guildCategoryChannel']
 })
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args, { entry }: SerializerUpdateContext) {
-		const result = await args.pickResult(entry.type as 'textChannel' | 'voiceChannel' | 'categoryChannel');
+		const result = await args.pickResult(entry.type as 'guildTextChannel' | 'guildVoiceChannel' | 'guildCategoryChannel');
 		return result.success ? this.ok(result.value.id) : this.errorFromArgument(args, result.error);
 	}
 
@@ -27,14 +28,15 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	private isValidChannel(channel: Channel, type: string): boolean {
-		if (isNullish(Reflect.get(channel, 'guild'))) return false;
+		if (!isGuildBasedChannelByGuildKey(channel)) return false;
+
 		switch (type) {
 			case 'textChannel':
-				return channel.type === 'text' || channel.type === 'news';
+				return isTextChannel(channel) || isNewsChannel(channel);
 			case 'voiceChannel':
-				return channel.type === 'voice';
+				return isVoiceChannel(channel);
 			case 'categoryChannel':
-				return channel.type === 'category';
+				return isCategoryChannel(channel);
 		}
 
 		return false;

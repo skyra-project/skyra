@@ -2,16 +2,15 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { canReadMessages } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { canReadMessages } from '@sapphire/discord.js-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 15,
 	description: LanguageKeys.Commands.Moderation.FlowDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.FlowExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -22,6 +21,7 @@ export class UserCommand extends SkyraCommand {
 		const minimum = message.createdTimestamp - 60000;
 		const amount = messages.reduce((prev, curr) => (curr.createdTimestamp > minimum ? prev + 1 : prev), 0);
 
-		return message.send(args.t(LanguageKeys.Commands.Moderation.Flow, { amount }));
+		const content = args.t(LanguageKeys.Commands.Moderation.Flow, { amount });
+		return send(message, content);
 	}
 }

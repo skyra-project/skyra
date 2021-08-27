@@ -1,4 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getModeration } from '#utils/functions';
 import { Argument, ArgumentContext, Identifiers } from '@sapphire/framework';
 
 const minimum = 0;
@@ -7,11 +8,11 @@ const maximum = 2_147_483_647; // Maximum value for int32
 export class UserArgument extends Argument<number> {
 	public async run(parameter: string, context: ArgumentContext) {
 		const latest = context.args.t(LanguageKeys.Arguments.CaseLatestOptions);
-		if (latest.includes(parameter)) return this.ok(await context.message.guild!.moderation.getCurrentID());
+		if (latest.includes(parameter)) return this.ok(await getModeration(context.message.guild!).getCurrentId());
 
 		const parsed = Number(parameter);
 		if (!Number.isInteger(parsed)) {
-			return this.error({ parameter, identifier: Identifiers.ArgumentInteger, context: { ...context, minimum, maximum } });
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerError, context: { ...context, minimum, maximum } });
 		}
 
 		if (parsed < minimum) {
@@ -19,7 +20,7 @@ export class UserArgument extends Argument<number> {
 		}
 
 		if (parsed > maximum) {
-			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooBig, context: { ...context, minimum, maximum } });
+			return this.error({ parameter, identifier: Identifiers.ArgumentIntegerTooLarge, context: { ...context, minimum, maximum } });
 		}
 
 		return this.ok(parsed);

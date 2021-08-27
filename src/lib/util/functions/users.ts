@@ -1,7 +1,5 @@
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import type { UserResolvable } from 'discord.js';
-
-const container = Store.injectedContext;
 
 /**
  * Retrieves the global rank a user has.
@@ -9,7 +7,7 @@ const container = Store.injectedContext;
  * @returns The global rank the user has.
  */
 export async function fetchGlobalRank(resolvable: UserResolvable): Promise<number> {
-	const id = container.client.users.resolveID(resolvable);
+	const id = container.client.users.resolveId(resolvable);
 	if (id === null) throw new TypeError(`Cannot resolve ${resolvable} to a User.`);
 
 	const list = await container.client.leaderboard.fetch();

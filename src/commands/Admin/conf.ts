@@ -4,8 +4,8 @@ import { SettingsMenu, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { filter, map } from '#utils/common';
-import { requiresPermissions } from '#utils/decorators';
-import { ApplyOptions } from '@sapphire/decorators';
+import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -14,11 +14,11 @@ import { toTitleCase } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Admin.ConfExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public menu(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		return new SettingsMenu(message, args.t).init(context);
 	}
@@ -33,13 +33,15 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		if (isSchemaKey(schemaValue)) {
-			return message.send(args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output }), {
+			return send(message, {
+				content: args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output }),
 				allowedMentions: { users: [], roles: [] }
 			});
 		}
 
 		const title = key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '';
-		return message.send(args.t(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }), {
+		return send(message, {
+			content: args.t(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -51,7 +53,8 @@ export class UserCommand extends SkyraCommand {
 			return schemaKey.display(settings, args.t);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+		return send(message, {
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -63,7 +66,8 @@ export class UserCommand extends SkyraCommand {
 			return schemaKey.display(settings, args.t);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+		return send(message, {
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -75,7 +79,8 @@ export class UserCommand extends SkyraCommand {
 			return schemaKey.display(settings, args.t);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }), {
+		return send(message, {
+			content: args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}

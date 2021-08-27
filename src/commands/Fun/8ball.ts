@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -9,24 +10,20 @@ import type { TFunction } from 'i18next';
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.EightballDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.EightballExtended,
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const question = await args.rest('string');
+		const question = await args.rest('string', { maximum: 500 });
 
-		return message.send(
-			args.t(LanguageKeys.Commands.Fun.EightballOutput, {
-				author: message.author.toString(),
-				question,
-				response: codeBlock('', this.generator(question.toLowerCase(), args.t))
-			}),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+		const content = args.t(LanguageKeys.Commands.Fun.EightballOutput, {
+			author: message.author.toString(),
+			question,
+			response: codeBlock('', this.generator(question.toLowerCase(), args.t))
+		});
+		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
 	private generator(input: string, t: TFunction) {

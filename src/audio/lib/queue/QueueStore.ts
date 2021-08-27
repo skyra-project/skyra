@@ -1,6 +1,6 @@
 import { rootFolder } from '#utils/constants';
 import Collection from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { readFileSync } from 'fs';
 import type { KeyType, Redis } from 'ioredis';
@@ -66,11 +66,11 @@ export class QueueStore extends Collection<string, Queue> {
 	}
 
 	public async start() {
-		for (const guild of Store.injectedContext.client.guilds.cache.values()) {
-			const channelID = guild.voice?.channelID;
-			if (isNullish(channelID)) continue;
+		for (const guild of container.client.guilds.cache.values()) {
+			const { channelId } = guild.me!.voice;
+			if (isNullish(channelId)) continue;
 
-			await this.get(guild.id).player.join(channelID, { deaf: true });
+			await this.get(guild.id).player.join(channelId, { deaf: true });
 		}
 	}
 }

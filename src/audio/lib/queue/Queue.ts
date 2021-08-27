@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { Events } from '#lib/types/Enums';
-import { map, reverse } from '#utils/common';
-import { Store } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { days, map, reverse } from '#utils/common';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
-import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
+import type { Guild, VoiceChannel } from 'discord.js';
 import type { QueueStore } from './QueueStore';
 
-const kExpireTime = Time.Day * 2;
+const kExpireTime = days(2);
 
 export interface QueueEntry {
 	author: string;
@@ -56,25 +56,21 @@ interface QueueKeys {
 export class Queue {
 	public readonly keys: QueueKeys;
 
-	public constructor(public readonly store: QueueStore, public readonly guildID: string) {
+	public constructor(public readonly store: QueueStore, public readonly guildId: string) {
 		this.keys = {
-			next: `skyra.a.${this.guildID}.n`,
-			position: `skyra.a.${this.guildID}.p`,
-			current: `skyra.a.${this.guildID}.c`,
-			skips: `skyra.a.${this.guildID}.s`,
-			systemPause: `skyra.a.${this.guildID}.sp`,
-			replay: `skyra.a.${this.guildID}.r`,
-			volume: `skyra.a.${this.guildID}.v`,
-			text: `skyra.a.${this.guildID}.t`
+			next: `skyra.a.${this.guildId}.n`,
+			position: `skyra.a.${this.guildId}.p`,
+			current: `skyra.a.${this.guildId}.c`,
+			skips: `skyra.a.${this.guildId}.s`,
+			systemPause: `skyra.a.${this.guildId}.sp`,
+			replay: `skyra.a.${this.guildId}.r`,
+			volume: `skyra.a.${this.guildId}.v`,
+			text: `skyra.a.${this.guildId}.t`
 		};
 	}
 
-	public get client() {
-		return Store.injectedContext.client;
-	}
-
 	public get player(): Player {
-		return this.store.client.players.get(this.guildID);
+		return this.store.client.players.get(this.guildId);
 	}
 
 	public get playing(): boolean {
@@ -86,15 +82,15 @@ export class Queue {
 	}
 
 	public get guild(): Guild {
-		return this.client.guilds.cache.get(this.guildID)!;
+		return container.client.guilds.cache.get(this.guildId)!;
 	}
 
 	public get voiceChannel(): VoiceChannel | null {
-		const id = this.voiceChannelID;
+		const id = this.voiceChannelId;
 		return id ? (this.guild.channels.cache.get(id) as VoiceChannel) ?? null : null;
 	}
 
-	public get voiceChannelID(): string | null {
+	public get voiceChannelId(): string | null {
 		return this.player.voiceState?.channel_id ?? null;
 	}
 
@@ -108,7 +104,7 @@ export class Queue {
 		// Play next song.
 		await this.player.play(np.entry.track, { start: np.position });
 
-		this.client.emit(replaying ? Events.MusicSongReplay : Events.MusicSongPlay, this, np);
+		container.client.emit(replaying ? Events.MusicSongReplay : Events.MusicSongPlay, this, np);
 		return true;
 	}
 
@@ -127,20 +123,20 @@ export class Queue {
 		if (!tracks.length) return 0;
 		await this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
 		await this.refresh();
-		this.client.emit(Events.MusicQueueSync, this);
+		container.client.emit(Events.MusicQueueSync, this);
 		return tracks.length;
 	}
 
 	public async pause({ system = false } = {}) {
 		await this.player.pause(true);
 		await this.setSystemPaused(system);
-		this.client.emit(Events.MusicSongPause, this);
+		container.client.emit(Events.MusicSongPause, this);
 	}
 
 	public async resume() {
 		await this.player.pause(false);
 		await this.setSystemPaused(false);
-		this.client.emit(Events.MusicSongResume, this);
+		container.client.emit(Events.MusicSongResume, this);
 	}
 
 	/**
@@ -184,7 +180,7 @@ export class Queue {
 	public async setSystemPaused(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.systemPause, value ? '1' : '0');
 		await this.refresh();
-		this.client.emit(Events.MusicSongPause, this, value);
+		container.client.emit(Events.MusicSongPause, this, value);
 		return value;
 	}
 
@@ -203,7 +199,7 @@ export class Queue {
 	public async setReplay(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.replay, value ? '1' : '0');
 		await this.refresh();
-		this.client.emit(Events.MusicReplayUpdate, this, value);
+		container.client.emit(Events.MusicReplayUpdate, this, value);
 		return value;
 	}
 
@@ -224,7 +220,7 @@ export class Queue {
 		const previous = await this.store.redis.getset(this.keys.volume, value);
 		await this.refresh();
 
-		this.client.emit(Events.MusicSongVolumeUpdate, this, value);
+		container.client.emit(Events.MusicSongVolumeUpdate, this, value);
 		return { previous: previous === null ? 100 : Number(previous), next: value };
 	}
 
@@ -234,16 +230,16 @@ export class Queue {
 	 */
 	public async seek(position: number): Promise<void> {
 		await this.player.seek(position);
-		this.client.emit(Events.MusicSongSeekUpdate, this, position);
+		container.client.emit(Events.MusicSongSeekUpdate, this, position);
 	}
 
 	/**
 	 * Connects to a voice channel.
-	 * @param channelID The [[VoiceChannel]] to connect to.
+	 * @param channelId The [[VoiceChannel]] to connect to.
 	 */
-	public async connect(channelID: string): Promise<void> {
-		await this.player.join(channelID, { deaf: true });
-		this.client.emit(Events.MusicConnect, this, channelID);
+	public async connect(channelId: string): Promise<void> {
+		await this.player.join(channelId, { deaf: true });
+		container.client.emit(Events.MusicConnect, this, channelId);
 	}
 
 	/**
@@ -251,49 +247,49 @@ export class Queue {
 	 */
 	public async leave(): Promise<void> {
 		await this.player.leave();
-		await this.setTextChannelID(null);
-		this.client.emit(Events.MusicLeave, this);
+		await this.setTextChannelId(null);
+		container.client.emit(Events.MusicLeave, this);
 	}
 
-	public async getTextChannel(): Promise<TextChannel | null> {
-		const id = await this.getTextChannelID();
+	public async getTextChannel(): Promise<GuildTextBasedChannelTypes | null> {
+		const id = await this.getTextChannelId();
 		if (id === null) return null;
 
 		const channel = this.guild.channels.cache.get(id) ?? null;
 		if (channel === null) {
-			await this.setTextChannelID(null);
+			await this.setTextChannelId(null);
 			return null;
 		}
 
-		return channel as TextChannel;
+		return channel as GuildTextBasedChannelTypes;
 	}
 
 	/**
 	 * Gets the text channel from cache.
 	 */
-	public getTextChannelID(): Promise<string | null> {
+	public getTextChannelId(): Promise<string | null> {
 		return this.store.redis.get(this.keys.text);
 	}
 
 	/**
 	 * Unsets the notifications channel.
 	 */
-	public setTextChannelID(channelID: null): Promise<null>;
+	public setTextChannelId(channelId: null): Promise<null>;
 
 	/**
 	 * Sets a text channel to send notifications to.
-	 * @param channelID The text channel to set.
+	 * @param channelId The text channel to set.
 	 */
-	public async setTextChannelID(channelID: string): Promise<string>;
-	public async setTextChannelID(channelID: string | null): Promise<string | null> {
-		if (channelID === null) {
+	public async setTextChannelId(channelId: string): Promise<string>;
+	public async setTextChannelId(channelId: string | null): Promise<string | null> {
+		if (channelId === null) {
 			await this.store.redis.del(this.keys.text);
 		} else {
-			await this.store.redis.set(this.keys.text, channelID);
+			await this.store.redis.set(this.keys.text, channelId);
 			await this.refresh();
 		}
 
-		return channelID;
+		return channelId;
 	}
 
 	/**
@@ -320,7 +316,7 @@ export class Queue {
 	public async removeAt(position: number): Promise<void> {
 		await this.store.redis.lremat(this.keys.next, -position - 1);
 		await this.refresh();
-		this.client.emit(Events.MusicQueueSync, this);
+		container.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**
@@ -347,14 +343,14 @@ export class Queue {
 
 		// If there was an entry to play, refresh the state and start playing.
 		if (entry) {
-			if (skipped) this.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
+			if (skipped) container.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
 			await this.resetSkipVotes();
 			await this.refresh();
 			return this.start(false);
 		}
 
 		// We're at the end of the queue, so clear everything out.
-		this.client.emit(Events.MusicFinish, this);
+		container.client.emit(Events.MusicFinish, this);
 		return false;
 	}
 
@@ -373,7 +369,7 @@ export class Queue {
 	public async moveTracks(from: number, to: number): Promise<void> {
 		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
 		await this.refresh();
-		this.client.emit(Events.MusicQueueSync, this);
+		container.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**
@@ -382,7 +378,7 @@ export class Queue {
 	public async shuffleTracks(): Promise<void> {
 		await this.store.redis.lshuffle(this.keys.next, Date.now());
 		await this.refresh();
-		this.client.emit(Events.MusicQueueSync, this);
+		container.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**
@@ -397,7 +393,7 @@ export class Queue {
 	 */
 	public async clearTracks(): Promise<void> {
 		await this.store.redis.del(this.keys.next);
-		this.client.emit(Events.MusicQueueSync, this);
+		container.client.emit(Events.MusicQueueSync, this);
 	}
 
 	public refresh() {

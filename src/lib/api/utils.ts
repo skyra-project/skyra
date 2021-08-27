@@ -1,8 +1,8 @@
 import * as GuildSettings from '#lib/database/keys/settings/All';
 import { readSettings } from '#lib/database/settings';
 import type { SkyraCommand } from '#lib/structures';
-import { createFunctionInhibitor } from '#utils/decorators';
-import { Store } from '@sapphire/pieces';
+import { createFunctionPrecondition } from '@sapphire/decorators';
+import { container } from '@sapphire/framework';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
@@ -16,7 +16,7 @@ function isAdmin(member: GuildMember, roles: readonly string[]): boolean {
 }
 
 export const authenticated = () =>
-	createFunctionInhibitor(
+	createFunctionPrecondition(
 		(request: ApiRequest) => Boolean(request.auth?.token),
 		(_request: ApiRequest, response: ApiResponse) => response.error(HttpCodes.Unauthorized)
 	);
@@ -26,10 +26,10 @@ export const authenticated = () =>
  * @param limit The amount of times a {@link RateLimit} can drip before it's limited.
  * @param auth Whether or not this should be auth-limited
  */
-export function ratelimit(time: number, limit: number, auth = false) {
-	const manager = new RateLimitManager(limit, time);
+export function ratelimit(time: number, limit = 1, auth = false) {
+	const manager = new RateLimitManager(time, limit);
 	const xRateLimitLimit = time;
-	return createFunctionInhibitor(
+	return createFunctionPrecondition(
 		(request: ApiRequest, response: ApiResponse) => {
 			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
 			const bucket = manager.acquire(id);
@@ -57,16 +57,16 @@ export function ratelimit(time: number, limit: number, auth = false) {
 }
 
 export async function canManage(guild: Guild, member: GuildMember): Promise<boolean> {
-	if (guild.ownerID === member.id) return true;
+	if (guild.ownerId === member.id) return true;
 
 	const [roles, pnodes] = await readSettings(guild, (settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
 
-	return isAdmin(member, roles) && (pnodes.run(member, Store.injectedContext.stores.get('commands').get('conf') as SkyraCommand) ?? true);
+	return isAdmin(member, roles) && (pnodes.run(member, container.stores.get('commands').get('conf') as SkyraCommand) ?? true);
 }
 
 export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {
 	if (oauthGuild.owner) return true;
-	if (typeof guild === 'undefined') return new Permissions(Number(oauthGuild.permissions)).has(Permissions.FLAGS.MANAGE_GUILD);
+	if (typeof guild === 'undefined') return new Permissions(BigInt(oauthGuild.permissions)).has(Permissions.FLAGS.MANAGE_GUILD);
 
 	const member = await guild.members.fetch(id).catch(() => null);
 	if (!member) return false;
@@ -74,37 +74,36 @@ export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurren
 	return canManage(guild, member);
 }
 
-export async function transformGuild(client: Client, userID: string, data: RESTAPIPartialCurrentUserGuild): Promise<OauthFlattenedGuild> {
+export async function transformGuild(client: Client, userId: string, data: RESTAPIPartialCurrentUserGuild): Promise<OauthFlattenedGuild> {
 	const guild = client.guilds.cache.get(data.id);
 	const serialized: PartialOauthFlattenedGuild =
 		typeof guild === 'undefined'
 			? {
-					afkChannelID: null,
+					afkChannelId: null,
 					afkTimeout: 0,
-					applicationID: null,
+					applicationId: null,
 					approximateMemberCount: null,
 					approximatePresenceCount: null,
 					available: true,
 					banner: null,
 					channels: [],
-					defaultMessageNotifications: 'MENTIONS',
+					defaultMessageNotifications: 'ONLY_MENTIONS',
 					description: null,
-					embedEnabled: false,
+					widgetEnabled: false,
 					explicitContentFilter: 'DISABLED',
 					icon: data.icon,
 					id: data.id,
 					joinedTimestamp: null,
-					mfaLevel: 0,
+					mfaLevel: 'NONE',
 					name: data.name,
-					ownerID: data.owner ? userID : null,
+					ownerId: data.owner ? userId : null,
 					partnered: false,
 					preferredLocale: 'en-US',
 					premiumSubscriptionCount: null,
-					premiumTier: 0,
-					region: null,
+					premiumTier: 'NONE',
 					roles: [],
 					splash: null,
-					systemChannelID: null,
+					systemChannelId: null,
 					vanityURLCode: null,
 					verificationLevel: 'NONE',
 					verified: false
@@ -114,7 +113,7 @@ export async function transformGuild(client: Client, userID: string, data: RESTA
 	return {
 		...serialized,
 		permissions: data.permissions,
-		manageable: await getManageable(userID, data, guild),
+		manageable: await getManageable(userId, data, guild),
 		skyraIsIn: typeof guild !== 'undefined'
 	};
 }
@@ -122,9 +121,9 @@ export async function transformGuild(client: Client, userID: string, data: RESTA
 export async function transformOauthGuildsAndUser({ user, guilds }: LoginData): Promise<TransformedLoginData> {
 	if (!user || !guilds) return { user, guilds };
 
-	const { client } = Store.injectedContext;
-	const userID = user.id;
+	const { client } = container;
+	const userId = user.id;
 
-	const transformedGuilds = await Promise.all(guilds.map((guild) => transformGuild(client, userID, guild)));
+	const transformedGuilds = await Promise.all(guilds.map((guild) => transformGuild(client, userId, guild)));
 	return { user, transformedGuilds };
 }

@@ -1,6 +1,7 @@
 import type { CustomCommand } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
+import { formatNumber } from '#utils/functions';
 import type { Awaited } from '@sapphire/utilities';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
 import { InvalidTypeError } from './errors/InvalidTypeError';
@@ -92,7 +93,7 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, all
 		case 'role.name':
 			return args.pick('role').then((role) => role.name);
 		case 'role.position':
-			return args.pick('role').then((role) => args.t(LanguageKeys.Globals.NumberValue, { value: role.position }));
+			return args.pick('role').then((role) => formatNumber(args, role.position));
 		case 'member':
 		case 'user':
 			return args.pick('member').then((member) => member.toString());
@@ -117,7 +118,7 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, all
 	}
 }
 
-export function getFromID(name: string, tags: CustomCommand[]): CustomCommand | null {
+export function getFromId(name: string, tags: CustomCommand[]): CustomCommand | null {
 	for (const tag of tags) {
 		if (tag.id === name) return tag;
 		if (tag.aliases.includes(name)) return tag;

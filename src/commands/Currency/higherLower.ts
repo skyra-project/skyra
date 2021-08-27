@@ -2,10 +2,11 @@ import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Time } from '@sapphire/time-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -19,24 +20,22 @@ const enum HigherLowerReactions {
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hilo', 'higherlower', 'hl'],
-	bucket: 2,
-	cooldown: 7,
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
-	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
 	private readonly kReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
-	private readonly kTimer = Time.Minute * 3;
+	private readonly kTimer = minutes(3);
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { t } = args;
 		const wager = await args.pick('shinyWager');
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
@@ -46,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 		settings.money -= wager;
 		await settings.save();
 
-		const response = (await message.send(t(LanguageKeys.Commands.Games.HigherLowerLoading))) as GuildMessage;
+		const response = (await send(message, t(LanguageKeys.Commands.Games.HigherLowerLoading))) as GuildMessage;
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
@@ -67,7 +66,7 @@ export class UserCommand extends SkyraCommand {
 					try {
 						await this.end(game, message, settings);
 					} catch (error) {
-						this.context.client.logger.fatal(error);
+						this.container.logger.fatal(error);
 					}
 				}
 			),
@@ -79,28 +78,23 @@ export class UserCommand extends SkyraCommand {
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null,
-			color: await this.context.db.fetchColor(message),
+			color: await this.container.db.fetchColor(message),
 			canceledByChoice: false
 		};
 
 		while (game.running) {
 			// Send the embed
-			const {
-				title: TITLE,
-				description: DESCRIPTION,
-				footer: FOOTER
-			} = game.t(LanguageKeys.Commands.Games.HigherLowerEmbed, {
+			const fields = game.t(LanguageKeys.Commands.Games.HigherLowerEmbed, {
 				turn: game.turn,
 				number: game.number
 			});
-			await game.response.edit(
-				null,
-				new MessageEmbed() //
-					.setColor(game.color)
-					.setTitle(TITLE)
-					.setDescription(DESCRIPTION)
-					.setFooter(FOOTER)
-			);
+
+			const embed = new MessageEmbed() //
+				.setColor(game.color)
+				.setTitle(fields.title)
+				.setDescription(fields.description)
+				.setFooter(fields.footer);
+			await game.response.edit({ embeds: [embed] });
 
 			// Add the options
 			const emojis = game.turn > 1 ? this.kReactionArray : this.kFirstReactionArray;
@@ -153,40 +147,39 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async win(game: HigherLowerGameData, message: GuildMessage, settings: UserEntity) {
-		const {
-			title: TITLE,
-			description: DESCRIPTION,
-			footer: FOOTER
-		} = game.t(LanguageKeys.Commands.Games.HigherLowerWin, {
+		const fields = game.t(LanguageKeys.Commands.Games.HigherLowerWin, {
 			potentials: this.calculateWinnings(game.wager, game.turn),
 			number: game.number
 		});
-		await game.response.edit(
-			null,
-			new MessageEmbed() //
-				.setColor(game.color)
-				.setTitle(TITLE)
-				.setDescription(DESCRIPTION)
-				.setFooter(FOOTER)
-		);
+		const embed = new MessageEmbed() //
+			.setColor(game.color)
+			.setTitle(fields.title)
+			.setDescription(fields.description)
+			.setFooter(fields.footer);
+		await game.response.edit({ embeds: [embed] });
 
 		// Ask the user whether they want to continue or cashout
 		const emoji = await this.listenForReaction(game, this.kWinReactionArray);
 
 		// Decide whether we timeout, stop, or continue
 		switch (emoji) {
-			case null:
+			case null: {
 				game.llrc.end();
 				await this.cashout(message, game, settings);
 				break;
-			case HigherLowerReactions.Ok:
-				await game.response.edit(game.t(LanguageKeys.Commands.Games.HigherLowerNewRound), { embed: null });
+			}
+			case HigherLowerReactions.Ok: {
+				const content = game.t(LanguageKeys.Commands.Games.HigherLowerNewRound);
+				await game.response.edit({ content, embeds: [] });
 				break;
-			case HigherLowerReactions.Cancel:
+			}
+			case HigherLowerReactions.Cancel: {
 				await this.end(game, message, settings, true);
 				break;
-			default:
+			}
+			default: {
 				throw new Error('Unreachable.');
+			}
 		}
 
 		return emoji === HigherLowerReactions.Ok;
@@ -202,22 +195,16 @@ export class UserCommand extends SkyraCommand {
 			await settings.save();
 		}
 
-		const {
-			title: TITLE,
-			description: DESCRIPTION,
-			footer: FOOTER
-		} = game.t(LanguageKeys.Commands.Games.HigherLowerLose, {
+		const fields = game.t(LanguageKeys.Commands.Games.HigherLowerLose, {
 			number: game.number,
 			losses
 		});
-		await game.response.edit(
-			null,
-			new MessageEmbed() //
-				.setColor(game.color)
-				.setTitle(TITLE)
-				.setDescription(DESCRIPTION)
-				.setFooter(FOOTER)
-		);
+		const embed = new MessageEmbed() //
+			.setColor(game.color)
+			.setTitle(fields.title)
+			.setDescription(fields.description)
+			.setFooter(fields.footer);
+		await game.response.edit({ embeds: [embed] });
 
 		game.llrc.end();
 		return false;
@@ -232,17 +219,15 @@ export class UserCommand extends SkyraCommand {
 
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
-			const { title: TITLE, description: DESCRIPTION } = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, {
+			const fields = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, {
 				username: message.author.username
 			});
 
-			await game.response.edit(
-				null,
-				new MessageEmbed() //
-					.setColor(game.color)
-					.setTitle(TITLE)
-					.setDescription(DESCRIPTION)
-			);
+			const embed = new MessageEmbed() //
+				.setColor(game.color)
+				.setTitle(fields.title)
+				.setDescription(fields.description);
+			await game.response.edit({ embeds: [embed] });
 		}
 	}
 
@@ -254,26 +239,26 @@ export class UserCommand extends SkyraCommand {
 		settings.money += winnings;
 		await settings.save();
 
-		const { title: TITLE } = game.t(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0 });
-		const { description: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, { username: message.author.username });
-
 		// Let the user know we're done!
-		await game.response.edit(
-			null,
-			new MessageEmbed()
-				.setColor(game.color)
-				.setTitle(TITLE)
-				.setDescription(game.t(LanguageKeys.Commands.Games.HigherLowerCashout, { amount: winnings }))
-				.setFooter(FOOTER)
-		);
+		const fields = {
+			title: game.t(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0 }).title,
+			footer: game.t(LanguageKeys.Commands.Games.HigherLowerCancel, { username: message.author.username }).description
+		};
+
+		const embed = new MessageEmbed()
+			.setColor(game.color)
+			.setTitle(fields.title)
+			.setDescription(game.t(LanguageKeys.Commands.Games.HigherLowerCashout, { amount: winnings }))
+			.setFooter(fields.footer);
+		await game.response.edit({ embeds: [embed] });
 	}
 
 	private resolveCollectedEmoji(message: GuildMessage, game: HigherLowerGameData, reaction: LLRCData) {
 		// If the message reacted is not the game's, inhibit
-		if (reaction.messageID !== game.response.id) return null;
+		if (reaction.messageId !== game.response.id) return null;
 
 		// If the user who reacted was not the author, inhibit
-		if (reaction.userID !== message.author.id) return null;
+		if (reaction.userId !== message.author.id) return null;
 
 		// If the emoji reacted is not valid, inhibit
 		const emoji = resolveEmoji(reaction.emoji);

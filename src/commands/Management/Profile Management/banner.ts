@@ -2,13 +2,12 @@ import { GuildSettings, readSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
-import { BrandingColors, Emojis } from '#utils/constants';
-import { requiresPermissions } from '#utils/decorators';
+import { BrandingColors, CdnUrls, Emojis } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
-import { ApplyOptions } from '@sapphire/decorators';
+import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandContext } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -17,20 +16,18 @@ const CDN_URL = CdnUrls.BannersBasePath;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
-	permissions: ['MANAGE_MESSAGES'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['MANAGE_MESSAGES'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	private display: SkyraPaginatedMessage = null!;
 
-	@requiresPermissions(['EMBED_LINKS'])
+	@RequiresClientPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const banner = await args.pick(UserCommand.banner);
 
 		const author = await users.ensureProfile(message.author.id);
@@ -62,11 +59,12 @@ export class UserCommand extends SkyraCommand {
 			await em.save(author);
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.BannerBuy, { banner: banner.title }));
+		const content = args.t(LanguageKeys.Commands.Social.BannerBuy, { banner: banner.title });
+		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
@@ -77,11 +75,12 @@ export class UserCommand extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.BannerReset));
+		const content = args.t(LanguageKeys.Commands.Social.BannerReset);
+		return send(message, content);
 	}
 
 	public async set(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const banner = await args.pick(UserCommand.banner);
 
 		await users.lock([message.author.id], async (id) => {
@@ -93,22 +92,23 @@ export class UserCommand extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Social.BannerSet, { banner: banner.title }));
+		const content = args.t(LanguageKeys.Commands.Social.BannerSet, { banner: banner.title });
+		return send(message, content);
 	}
 
-	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const allOrUser = args.finished ? 'all' : await args.pick(UserCommand.allOrUser);
 		return allOrUser === 'all' ? this.buyList(message, args.t) : this.userList(message, args.t);
 	}
 
 	public async onLoad() {
-		const { banners } = this.context.db;
+		const { banners } = this.container.db;
 		const entries = await banners.find();
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
 		for (const banner of entries) {
 			UserCommand.banners.set(banner.id, {
-				author: banner.authorID,
+				author: banner.authorId,
 				authorName: null,
 				id: banner.id,
 				group: banner.group,
@@ -134,12 +134,12 @@ export class UserCommand extends SkyraCommand {
 	private async userList(message: GuildMessage, t: TFunction) {
 		const prefix = await readSettings(message.guild, GuildSettings.Prefix);
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const user = await users.ensureProfile(message.author.id);
 		const banners = new Set(user.profile.banners);
 		if (!banners.size) this.error(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.context.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 		for (const id of banners) {
 			const banner = UserCommand.banners.get(id);
 			if (banner) {
@@ -168,7 +168,7 @@ export class UserCommand extends SkyraCommand {
 			.setImage(`${CDN_URL}${banner.id}.png`)
 			.setTimestamp();
 
-		return promptConfirmation(message, { embed });
+		return promptConfirmation(message, { embeds: [embed] });
 	}
 
 	private static readonly banners: Map<string, BannerCache> = new Map();

@@ -63,6 +63,8 @@
 	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
 	"resolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
 	"resolveSuggestionDefaultComment": "No comment was provided.",
+	"resolveSuggestionTooManyFields": "{{REDCROSS}} I cannot add more responses, the maximum is 25, sorry!",
+	"resolveSuggestionTooManyCharacters": "{{REDCROSS}} The total amount of characters inside the embed ({{amount, number}}) with your reply surpasses {{maximum, number}} characters!",
 	"resolveSuggestionAuthorAdmin": "An administrator",
 	"resolveSuggestionAuthorModerator": "A moderator",
 	"resolveSuggestionActions": {

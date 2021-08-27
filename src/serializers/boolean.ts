@@ -16,6 +16,6 @@ export class UserSerializer extends Serializer<boolean> {
 	}
 
 	public stringify(value: boolean, { t }: SerializerUpdateContext): string {
-		return t(value ? LanguageKeys.Arguments.BoolEnabled : LanguageKeys.Arguments.BoolDisabled);
+		return t(value ? LanguageKeys.Arguments.BooleanEnabled : LanguageKeys.Arguments.BooleanDisabled);
 	}
 }

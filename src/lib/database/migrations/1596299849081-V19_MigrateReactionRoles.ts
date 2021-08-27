@@ -24,8 +24,8 @@ export class V19MigrateReactionRoles1596299849081 implements MigrationInterface 
 			}
 
 			const escaped = reactionRoles.map((value) => `'${JSON.stringify(value).replace(/'/g, "''")}'`);
-			const escapedID = entry.id.replace(/'/g, "''");
-			await queryRunner.query(/* sql */ `UPDATE public.guilds SET "reaction-roles" = ARRAY[${escaped}]::JSON[] WHERE id = '${escapedID}';`);
+			const escapedId = entry.id.replace(/'/g, "''");
+			await queryRunner.query(/* sql */ `UPDATE public.guilds SET "reaction-roles" = ARRAY[${escaped}]::JSON[] WHERE id = '${escapedId}';`);
 		}
 
 		// Drop the old columns:

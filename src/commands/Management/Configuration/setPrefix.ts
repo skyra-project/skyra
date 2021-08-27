@@ -4,14 +4,13 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Management.SetPrefixDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetPrefixExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text', 'news'],
+	runIn: ['GUILD_ANY'],
 	aliases: ['prefix']
 })
 export class UserCommand extends SkyraCommand {
@@ -27,8 +26,7 @@ export class UserCommand extends SkyraCommand {
 			settings[GuildSettings.Prefix] = prefix;
 		});
 
-		return message.send(args.t(LanguageKeys.Commands.Management.SetPrefixSet, { prefix }), {
-			allowedMentions: { users: [message.author.id], roles: [] }
-		});
+		const content = args.t(LanguageKeys.Commands.Management.SetPrefixSet, { prefix });
+		return send(message, { content, allowedMentions: { users: [message.author.id], roles: [] } });
 	}
 }

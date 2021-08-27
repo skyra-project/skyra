@@ -2,17 +2,16 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { sendTemporaryMessage } from '#utils/functions';
+import { getModeration, sendTemporaryMessage } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.ReasonDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news']
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
@@ -21,14 +20,15 @@ export class UserCommand extends SkyraCommand {
 			.then((value) => [value])
 			.catch(() => args.pick('range', { maximum: 50 }));
 
-		const entries = await message.guild.moderation.fetch(cases);
+		const moderation = getModeration(message.guild);
+		const entries = await moderation.fetch(cases);
 		if (!entries.size) {
 			this.error(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: cases.length });
 		}
 
 		const reason = await args.rest('string');
 		const imageURL = getImage(message);
-		const { moderations } = this.context.db;
+		const { moderations } = this.container.db;
 		await moderations
 			.createQueryBuilder()
 			.update()
@@ -36,11 +36,11 @@ export class UserCommand extends SkyraCommand {
 			.andWhere('case_id IN (:...ids)', { ids: [...entries.keys()] })
 			.set({ reason, imageURL })
 			.execute();
-		await message.guild.moderation.fetchChannelMessages();
+		await moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason).setImageURL(imageURL);
-			this.context.client.emit(Events.ModerationEntryEdit, clone, entry);
+			this.container.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
 		return sendTemporaryMessage(

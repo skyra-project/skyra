@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['choose', 'choise', 'pick'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChoiceExtended,
 	spam: true
@@ -17,7 +16,8 @@ export class UserCommand extends SkyraCommand {
 
 		const words = await this.filterWords(options);
 		const word = words[Math.floor(Math.random() * words.length)];
-		return message.send(args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word }));
+		const content = args.t(LanguageKeys.Commands.Fun.ChoiceOutput, { user: message.author.toString(), word });
+		return send(message, content);
 	}
 
 	private async filterWords(words: string[]) {

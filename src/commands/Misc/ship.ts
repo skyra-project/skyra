@@ -1,21 +1,20 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CanvasColors } from '#lib/types/Constants';
-import { socialFolder } from '#utils/constants';
+import { CanvasColors, socialFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
 import type { User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
-	permissions: ['ATTACH_FILES'],
-	runIn: ['news', 'text']
+	requiredClientPermissions: ['ATTACH_FILES'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
@@ -30,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([fetchAvatar(firstUser), fetchAvatar(secondUser)]);
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const settings = await users.ensureProfile(message.author.id);
 
 		// Build up the ship canvas
@@ -51,7 +50,9 @@ export class UserCommand extends SkyraCommand {
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
 		});
-		return message.send([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
+
+		const content = `${data.title}\n${data.description}`;
+		return send(message, { content, files: [{ attachment, name: 'ship.png' }] });
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */

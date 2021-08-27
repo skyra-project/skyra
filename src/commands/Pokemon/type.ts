@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import type { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -33,7 +33,6 @@ const kPokemonTypes = new Set([
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['matchup', 'weakness', 'advantage'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.TypeDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended
 })
@@ -91,7 +90,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message)) //
+				.setColor(await this.container.db.fetchColor(message)) //
 				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
 		})
 			.addPageEmbed((embed) =>

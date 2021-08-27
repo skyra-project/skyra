@@ -1,7 +1,7 @@
 import Collection from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { container } from '@sapphire/framework';
 import type { Client } from 'discord.js';
+import { minutes } from './common';
 import { PreciseTimeout } from './PreciseTimeout';
 
 /**
@@ -100,7 +100,7 @@ export class Leaderboard {
 		await promise;
 
 		// Set the timeout for the refresh
-		const timeout = new PreciseTimeout(Time.Minute * 10);
+		const timeout = new PreciseTimeout(minutes(10));
 		this.kTimeouts.guilds.set(guild, timeout);
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -112,7 +112,7 @@ export class Leaderboard {
 	}
 
 	private async createMemberSyncHandle(guild: string) {
-		const { members } = Store.injectedContext.db;
+		const { members } = container.db;
 		const data = await members
 			.createQueryBuilder()
 			.select(['user_id', 'points'])
@@ -147,7 +147,7 @@ export class Leaderboard {
 		this.clearUsers();
 
 		// Set the timeout for the refresh
-		this.kTimeouts.users = new PreciseTimeout(Time.Minute * 15);
+		this.kTimeouts.users = new PreciseTimeout(minutes(15));
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.kTimeouts.users.run().then(() => {
@@ -157,7 +157,7 @@ export class Leaderboard {
 	}
 
 	private async createUserSyncHandle() {
-		const { users } = Store.injectedContext.db;
+		const { users } = container.db;
 		// Get the sorted data from the db
 		const data = await users
 			.createQueryBuilder()

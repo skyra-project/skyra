@@ -2,33 +2,42 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.CaseDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['EMBED_LINKS'],
-	runIn: ['text', 'news'],
+	requiredClientPermissions: ['EMBED_LINKS'],
+	runIn: ['GUILD_ANY'],
 	subCommands: ['delete', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
-		const index = await args.pick('case');
-		const modlog = await message.guild.moderation.fetch(index);
-		if (modlog) return message.send(await modlog.prepareEmbed());
+		const caseId = await args.pick('case');
+
+		const moderation = getModeration(message.guild);
+		const entry = await moderation.fetch(caseId);
+		if (entry) {
+			const embed = await entry.prepareEmbed();
+			return send(message, { embeds: [embed] });
+		}
 		this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
 	}
 
 	public async delete(message: GuildMessage, args: SkyraCommand.Args) {
-		const index = await args.pick('case');
-		const modlog = await message.guild.moderation.fetch(index);
-		if (!modlog) this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
+		const caseId = await args.pick('case');
 
-		modlog.remove();
-		message.guild.moderation.delete(modlog.caseID);
+		const moderation = getModeration(message.guild);
+		const entry = await moderation.fetch(caseId);
+		if (!entry) this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
 
-		return message.send(args.t(LanguageKeys.Commands.Moderation.CaseDeleted, { case: modlog.caseID }));
+		entry.remove();
+		moderation.delete(entry.caseId);
+
+		const content = args.t(LanguageKeys.Commands.Moderation.CaseDeleted, { case: entry.caseId });
+		return send(message, content);
 	}
 }

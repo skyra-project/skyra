@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
-import { Colors } from '#lib/types/Constants';
-import { Events } from '#lib/types/Enums';
+import { minutes, seconds } from '#utils/common';
+import { Colors } from '#utils/constants';
 import { fetchReactionUsers } from '#utils/util';
-import { Time } from '@sapphire/time-utilities';
+import { container } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v6';
-import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
+import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v9';
+import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
@@ -38,12 +38,11 @@ export const kGiveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
 
 export type GiveawayEntityData = Pick<
 	GiveawayEntity,
-	'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners' | 'allowedRoles'
+	'title' | 'endsAt' | 'guildId' | 'channelId' | 'messageId' | 'minimum' | 'minimumWinners' | 'allowedRoles'
 >;
 
 @Entity('giveaway', { schema: 'public' })
 export class GiveawayEntity extends BaseEntity {
-	#client: Client = null!;
 	#paused = true;
 	#finished = false;
 	#refreshAt = 0;
@@ -56,13 +55,13 @@ export class GiveawayEntity extends BaseEntity {
 	public endsAt!: Date;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public guildID!: string;
+	public guildId!: string;
 
 	@Column('varchar', { length: 19 })
-	public channelID!: string;
+	public channelId!: string;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public messageID: string | null = null;
+	public messageId: string | null = null;
 
 	@Column('integer', { default: 1 })
 	public minimum = 1;
@@ -78,13 +77,8 @@ export class GiveawayEntity extends BaseEntity {
 		Object.assign(this, data);
 	}
 
-	public setup(manager: GiveawayManager) {
-		this.#client = manager.client;
-		return this;
-	}
-
 	public get guild() {
-		return this.#client.guilds.cache.get(this.guildID) ?? null;
+		return container.client.guilds.cache.get(this.guildId) ?? null;
 	}
 
 	public get remaining() {
@@ -102,7 +96,7 @@ export class GiveawayEntity extends BaseEntity {
 	private get state() {
 		const { remaining } = this;
 		if (remaining <= 0) return States.Finished;
-		if (remaining < Time.Second * 20) return States.LastChance;
+		if (remaining < seconds(20)) return States.LastChance;
 		return States.Running;
 	}
 
@@ -111,13 +105,13 @@ export class GiveawayEntity extends BaseEntity {
 
 		// Create the message
 		const message = (await api()
-			.channels(this.channelID)
+			.channels(this.channelId)
 			.messages.post({ data: await this.getData() })) as RESTPostAPIChannelMessageResult;
-		this.messageID = message.id;
+		this.messageId = message.id;
 		this.resume();
 
 		// Add a reaction to the message and save to database
-		await api().channels(this.channelID).messages(this.messageID).reactions(kEmoji, '@me').put();
+		await api().channels(this.channelId).messages(this.messageId).reactions(kEmoji, '@me').put();
 
 		return this.save();
 	}
@@ -140,14 +134,15 @@ export class GiveawayEntity extends BaseEntity {
 
 	public async destroy() {
 		await this.finish();
-		if (this.messageID) {
+		if (this.messageId) {
 			try {
-				await api().channels(this.channelID).messages(this.messageID).delete();
+				await api().channels(this.channelId).messages(this.messageId).delete();
 			} catch (error) {
 				if (error instanceof DiscordAPIError && kGiveawayBlockListReactionErrors.includes(error.code)) {
 					return this;
 				}
-				this.#client.emit(Events.Error, error);
+
+				container.logger.error(error);
 			}
 		}
 
@@ -162,12 +157,12 @@ export class GiveawayEntity extends BaseEntity {
 		if (data === null) return this.finish();
 
 		try {
-			await api().channels(this.channelID).messages(this.messageID!).patch({ data });
+			await api().channels(this.channelId).messages(this.messageId!).patch({ data });
 		} catch (error) {
 			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
 				await this.finish();
 			} else {
-				this.#client.emit(Events.Error, error);
+				container.logger.error(error);
 			}
 		}
 
@@ -178,7 +173,7 @@ export class GiveawayEntity extends BaseEntity {
 		const { state, guild } = this;
 		if (!guild) return null;
 
-		const t = await guild.fetchT();
+		const t = await fetchT(guild);
 		if (state === States.Finished) {
 			this.#winners = await this.pickWinners();
 			this.#finished = true;
@@ -197,10 +192,10 @@ export class GiveawayEntity extends BaseEntity {
 			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: this.title });
 		try {
 			await api()
-				.channels(this.channelID)
+				.channels(this.channelId)
 				.messages.post({ data: { content, allowed_mentions: { users: this.#winners ?? [], roles: [] } } });
 		} catch (error) {
-			this.#client.emit(Events.Error, error);
+			container.logger.error(error);
 		}
 	}
 
@@ -211,7 +206,7 @@ export class GiveawayEntity extends BaseEntity {
 			.setDescription(this.getDescription(state, t))
 			.setFooter(GiveawayEntity.getFooter(state, t))
 			.setTimestamp(this.endsAt)
-			.toJSON();
+			.toJSON() as APIEmbed;
 	}
 
 	private getDescription(state: States, t: TFunction): string {
@@ -232,13 +227,13 @@ export class GiveawayEntity extends BaseEntity {
 
 	private calculateNextRefresh() {
 		const { remaining } = this;
-		if (remaining < Time.Second * 5) return Date.now() + Time.Second;
-		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - Time.Second * 6, Time.Second * 5);
-		if (remaining < Time.Minute * 2) return Date.now() + Time.Second * 15;
-		if (remaining < Time.Minute * 5) return Date.now() + Time.Second * 20;
-		if (remaining < Time.Minute * 15) return Date.now() + Time.Minute;
-		if (remaining < Time.Minute * 30) return Date.now() + Time.Minute * 2;
-		return Date.now() + Time.Minute * 5;
+		if (remaining < seconds(5)) return Date.now() + seconds(1);
+		if (remaining < seconds(30)) return Date.now() + Math.min(remaining - seconds(6), seconds(5));
+		if (remaining < minutes(2)) return Date.now() + seconds(15);
+		if (remaining < minutes(5)) return Date.now() + seconds(20);
+		if (remaining < minutes(15)) return Date.now() + minutes(1);
+		if (remaining < minutes(30)) return Date.now() + minutes(2);
+		return Date.now() + minutes(5);
 	}
 
 	private async pickWinners() {
@@ -255,7 +250,7 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async fetchParticipants(): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(this.channelID, this.messageID!, kEmoji);
+			const users = await fetchReactionUsers(this.channelId, this.messageId!, kEmoji);
 			users.delete(process.env.CLIENT_ID);
 			return [...users];
 		} catch (error) {
@@ -263,7 +258,7 @@ export class GiveawayEntity extends BaseEntity {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants();
-				this.#client.emit(Events.Error, error);
+				container.logger.error(error);
 			}
 			return [];
 		}

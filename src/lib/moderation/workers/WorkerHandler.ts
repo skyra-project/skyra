@@ -1,7 +1,7 @@
 import { envParseString } from '#lib/env';
 import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
-import { Store } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'events';
 import { join } from 'path';
@@ -14,7 +14,7 @@ export class WorkerHandler {
 	private worker!: Worker;
 	private online!: boolean;
 	private id = 0;
-	private threadID = -1;
+	private threadId = -1;
 	private queue = new AsyncQueue();
 	private response = new WorkerResponseHandler();
 
@@ -33,7 +33,7 @@ export class WorkerHandler {
 		await this.queue.wait();
 
 		try {
-			const id = this.generateID();
+			const id = this.generateId();
 			this.worker.postMessage({ ...data, id });
 
 			const promise = this.response.define(id);
@@ -89,9 +89,9 @@ export class WorkerHandler {
 		await this.worker.terminate();
 	}
 
-	private generateID() {
+	private generateId() {
 		/* istanbul ignore if: extremely unlikely to happen, needs 9 quadrillion iterations */
-		if (this.id === WorkerHandler.maximumID) {
+		if (this.id === WorkerHandler.maximumId) {
 			return (this.id = 0);
 		}
 
@@ -114,26 +114,26 @@ export class WorkerHandler {
 		/* istanbul ignore if: logs are disabled in tests */
 		if (WorkerHandler.logsEnabled) {
 			const worker = `[${yellow('W')}]`;
-			const thread = cyan(this.threadID.toString(16));
+			const thread = cyan(this.threadId.toString(16));
 			const exit = code === 0 ? green('0') : red(code.toString());
-			Store.injectedContext.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
+			container.logger.warn(`${worker} - Thread ${thread} closed with code ${exit}.`);
 		}
 	}
 
 	private handleOnline() {
 		this.online = true;
-		this.threadID = this.worker.threadId;
+		this.threadId = this.worker.threadId;
 
 		/* istanbul ignore if: logs are disabled in tests */
 		if (WorkerHandler.logsEnabled) {
 			const worker = `[${cyan('W')}]`;
-			const thread = cyan(this.threadID.toString(16));
-			Store.injectedContext.logger.info(`${worker} - Thread ${thread} is now ready.`);
+			const thread = cyan(this.threadId.toString(16));
+			container.logger.info(`${worker} - Thread ${thread} is now ready.`);
 		}
 	}
 
 	private static readonly workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
 	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
 	private static readonly filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
-	private static readonly maximumID = Number.MAX_SAFE_INTEGER;
+	private static readonly maximumId = Number.MAX_SAFE_INTEGER;
 }

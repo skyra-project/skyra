@@ -1,8 +1,10 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -13,7 +15,7 @@ const kAll: readonly All[] = ['all', 'max', 'maximum'];
 	aliases: ['bank'],
 	description: LanguageKeys.Commands.Social.VaultDescription,
 	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
-	permissions: ['EMBED_LINKS'],
+	requiredClientPermissions: ['EMBED_LINKS'],
 	subCommands: ['deposit', { input: 'dep', output: 'deposit' }, 'withdraw', { input: 'with', output: 'withdraw' }, { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {
@@ -21,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 		const all = await args.pick(UserCommand.all).catch(() => null);
 		let coins = all === null ? await args.pick('integer', { minimum: 1 }) : null;
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -40,14 +42,15 @@ export class UserCommand extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, args.t, money, vault, coins!, true));
+		const embed = await this.buildEmbed(message, args.t, money, vault, coins!, true);
+		return send(message, { embeds: [embed] });
 	}
 
 	public async withdraw(message: Message, args: SkyraCommand.Args) {
 		const all = await args.pick(UserCommand.all).catch(() => null);
 		let coins = all === null ? await args.pick('integer', { minimum: 1 }) : null;
 
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const { money, vault } = await users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
@@ -66,13 +69,16 @@ export class UserCommand extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.send(await this.buildEmbed(message, args.t, money, vault, coins!));
+		const embed = await this.buildEmbed(message, args.t, money, vault, coins!);
+		return send(message, { embeds: [embed] });
 	}
 
 	public async show(message: Message, args: SkyraCommand.Args) {
-		const { users } = this.context.db;
+		const { users } = this.container.db;
 		const settings = await users.ensureProfile(message.author.id);
-		return message.send(await this.buildEmbed(message, args.t, settings.money, settings.profile.vault));
+
+		const embed = await this.buildEmbed(message, args.t, settings.money, settings.profile.vault);
+		return send(message, { embeds: [embed] });
 	}
 
 	private updateBalance(money: number, vault: number, settings: UserEntity) {
@@ -90,10 +96,10 @@ export class UserCommand extends SkyraCommand {
 		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;
 
 		return new MessageEmbed()
-			.setColor(await this.context.db.fetchColor(message))
+			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(description)
-			.addField(accountMoney, money, true)
-			.addField(accountVault, vault, true);
+			.addField(accountMoney, formatNumber(t, money), true)
+			.addField(accountVault, formatNumber(t, vault), true);
 	}
 
 	private static all = Args.make<boolean>((parameter, { argument }) => {

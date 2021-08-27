@@ -23,7 +23,7 @@ export class UserArgument extends Argument<Role> {
 			context.minimum
 		);
 		if (result) return this.ok(result[1]);
-		return this.error({ parameter, identifier: LanguageKeys.Arguments.Role, context });
+		return this.error({ parameter, identifier: LanguageKeys.Arguments.RoleError, context });
 	}
 
 	public resolveRole(query: string, guild: Guild) {

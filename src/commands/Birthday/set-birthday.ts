@@ -6,14 +6,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandContext } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish, Nullish } from '@sapphire/utilities';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setbday', 'bd', 'birthday'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Misc.SetBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SetBirthdayExtended,
-	runIn: ['text', 'news']
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
@@ -29,17 +29,17 @@ export class UserCommand extends SkyraCommand {
 
 		// Delete the previous birthday task, if any
 		const currentTask = getGuildMemberBirthday(message.guild.id, message.author.id);
-		if (currentTask) await this.context.schedule.remove(currentTask);
+		if (currentTask) await this.container.schedule.remove(currentTask);
 
 		const birthday = nextBirthday(date.month, date.day);
-		await this.context.schedule.add('birthday', birthday, { data: this.constructData(date, message) });
-		return message.send(args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
+		await this.container.schedule.add('birthday', birthday, { data: this.constructData(date, message) });
+		return send(message, args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
 	}
 
 	private constructData(birthDate: DateWithOptionalYear, message: GuildMessage): TaskBirthdayData {
 		return {
-			guildID: message.guild.id,
-			userID: message.author.id,
+			guildId: message.guild.id,
+			userId: message.author.id,
 			year: birthDate.year,
 			month: birthDate.month,
 			day: birthDate.day

@@ -1,11 +1,13 @@
-import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
-import { createReferPromise, floatPromise, ReferredPromise } from '#utils/common';
+import { ModerationEntity } from '#lib/database/entities';
+import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings';
+import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { Store } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/framework';
 import { isNullish, StrictRequired } from '@sapphire/utilities';
-import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
+import { DiscordAPIError, Guild } from 'discord.js';
 import { In } from 'typeorm';
 
 enum CacheActions {
@@ -35,12 +37,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 */
 	private readonly _locks: ReferredPromise<void>[] = [];
 
-	public get client() {
-		return this.guild.client;
-	}
-
 	private get db() {
-		return Store.injectedContext.db;
+		return container.db;
 	}
 
 	public constructor(guild: Guild) {
@@ -52,9 +50,9 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 * The channel where messages have to be sent.
 	 */
 	public async fetchChannel() {
-		const channelID = await readSettings(this.guild, GuildSettings.Channels.Logs.Moderation);
-		if (isNullish(channelID)) return null;
-		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
+		const channelId = await readSettings(this.guild, GuildSettings.Channels.Logs.Moderation);
+		if (isNullish(channelId)) return null;
+		return (this.guild.channels.cache.get(channelId) ?? null) as GuildTextBasedChannelTypes | null;
 	}
 
 	/**
@@ -71,13 +69,13 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		}
 	}
 
-	public getLatestLogForUser(userID: string) {
+	public getLatestLogForUser(userId: string) {
 		if (this.size === 0) return null;
 
-		const minimumTime = Date.now() - 15 * Time.Second;
+		const minimumTime = Date.now() - seconds(15);
 		return this.reduce<ModerationEntity | null>(
 			(prev, curr) =>
-				curr.userID === userID
+				curr.userId === userId
 					? prev === null
 						? curr.createdTimestamp >= minimumTime
 							? curr
@@ -101,28 +99,28 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		// Case number
 		if (typeof id === 'number') {
 			return (
-				super.get(id) || this._cache(await this.db.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None)
+				super.get(id) || this._cache(await this.db.fetchModerationEntry({ where: { guildId: this.guild.id, caseId: id } }), CacheActions.None)
 			);
 		}
 
 		// User id
 		if (typeof id === 'string') {
 			return this._count === super.size
-				? super.filter((entry) => entry.userID === id)
-				: this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id, userID: id } }), CacheActions.None);
+				? super.filter((entry) => entry.userId === id)
+				: this._cache(await this.db.fetchModerationEntries({ where: { guildId: this.guild.id, userId: id } }), CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
-			return this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: In(id) } }), CacheActions.None);
+			return this._cache(await this.db.fetchModerationEntries({ where: { guildId: this.guild.id, caseId: In(id) } }), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
-			this._cache(await this.db.fetchModerationEntries({ where: { guildID: this.guild.id } }), CacheActions.Fetch);
+			this._cache(await this.db.fetchModerationEntries({ where: { guildId: this.guild.id } }), CacheActions.Fetch);
 		}
 		return this;
 	}
 
-	public async getCurrentID() {
+	public async getCurrentId() {
 		if (this._count === null) {
 			const { moderations } = this.db;
 
@@ -180,7 +178,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		const parsedEntries = Array.isArray(entries) ? entries : [entries];
 
 		for (const entry of parsedEntries) {
-			super.set(entry.caseID, entry.setup(this));
+			super.set(entry.caseId, entry.setup(this));
 		}
 
 		if (type === CacheActions.Insert) this._count! += parsedEntries.length;
@@ -192,7 +190,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 			}, 1000);
 		}
 
-		return Array.isArray(entries) ? new Collection<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
+		return Array.isArray(entries) ? new Collection<number, ModerationEntity>(entries.map((entry) => [entry.caseId, entry])) : entries;
 	}
 
 	public static get [Symbol.species]() {
@@ -204,7 +202,7 @@ interface MaxQuery {
 	max: number | null;
 }
 
-export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL'>>;
-export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guildID'>;
-export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'moderatorID' | 'userID' | 'type'>> &
-	Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseID'>>;
+export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorId' | 'reason' | 'imageURL'>>;
+export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guildId'>;
+export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'moderatorId' | 'userId' | 'type'>> &
+	Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseId'>>;

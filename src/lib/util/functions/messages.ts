@@ -1,13 +1,15 @@
 import type { SkyraCommand } from '#lib/structures';
-import { floatPromise, isGuildMessage, resolveOnErrorCodes } from '#utils/common';
-import { Store } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { AwaitMessagesOptions, AwaitReactionsOptions, Message, MessageOptions, Permissions, UserResolvable } from 'discord.js';
+import type { CustomFunctionGet, CustomGet } from '#lib/types';
+import { floatPromise, minutes, resolveOnErrorCodes } from '#utils/common';
+import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
+import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
+import type { NonNullObject } from '@sapphire/utilities';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import type { Message, MessageOptions, UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'timers/promises';
-import { canSendMessages } from './channels';
 
-const container = Store.injectedContext;
 const messageCommands = new WeakMap<Message, SkyraCommand>();
 
 /**
@@ -27,37 +29,6 @@ export function setCommand(message: Message, command: SkyraCommand | null) {
  */
 export function getCommand(message: Message): SkyraCommand | null {
 	return messageCommands.get(message) ?? null;
-}
-
-/**
- * Determines whether or not we can reply to a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can reply to the given message.
- */
-export function canReply(message: Message) {
-	return canSendMessages(message.channel);
-}
-
-const canReactPermissions = new Permissions(['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS']);
-
-/**
- * Determines whether or not we can react to a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can react to the given message.
- */
-export function canReact(message: Message) {
-	return isGuildMessage(message) ? message.channel.permissionsFor(message.guild.me!)!.has(canReactPermissions) : true;
-}
-
-const canRemoveAllReactionsPermissions = new Permissions(['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES']);
-
-/**
- * Determines whether or not we can remove all reactions from a message.
- * @param message The message to test permissions for.
- * @returns Whether or not we can remove all reactions from the given message.
- */
-export function canRemoveAllReactions(message: Message) {
-	return isGuildMessage(message) ? message.channel.permissionsFor(message.guild.me!)!.has(canRemoveAllReactionsPermissions) : false;
 }
 
 async function deleteMessageImmediately(message: Message): Promise<Message> {
@@ -95,13 +66,67 @@ export async function deleteMessage(message: Message, time = 0): Promise<Message
  * @param timer The timer in which the message should be deleted, using {@link deleteMessage}.
  * @returns The response message.
  */
-export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = Time.Minute): Promise<Message> {
+export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = minutes(1)): Promise<Message> {
 	if (typeof options === 'string') options = { content: options };
 
-	const response = (await message.send(options)) as Message;
+	const response = (await send(message, options)) as Message;
 	floatPromise(deleteMessage(response, timer));
 	return response;
 }
+
+/**
+ * Send an editable localized message using `key`.
+ * @param message The message to reply to.
+ * @param key The key to be used when resolving.
+ * @example
+ * ```typescript
+ * await sendLocalizedMessage(message, LanguageKeys.Commands.General.Ping);
+ * // ➡ "Pinging..."
+ * ```
+ */
+export function sendLocalizedMessage(message: Message, key: LocalizedSimpleKey): Promise<Message>;
+/**
+ * Send an editable localized message using an object.
+ * @param message The message to reply to.
+ * @param options The options to be sent, requiring at least `key` to be passed.
+ * @example
+ * ```typescript
+ * await sendLocalizedMessage(message, {
+ * 	key: LanguageKeys.Commands.General.Ping
+ * });
+ * // ➡ "Pinging..."
+ * ```
+ * @example
+ * ```typescript
+ * const latency = 42;
+ *
+ * await sendLocalizedMessage(message, {
+ * 	key: LanguageKeys.Commands.General.PingPong,
+ * 	formatOptions: { latency }
+ * });
+ * // ➡ "Pong! Current latency is 42ms."
+ * ```
+ */
+export function sendLocalizedMessage<TArgs>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
+export async function sendLocalizedMessage(message: Message, options: LocalizedSimpleKey | LocalizedMessageOptions) {
+	if (typeof options === 'string') options = { key: options };
+
+	const content = await resolveKey(message, options.key, options.formatOptions);
+	return send(message, { ...options, content });
+}
+
+type LocalizedSimpleKey = CustomGet<string, string>;
+type LocalizedMessageOptions<TArgs extends StringMap = NonNullObject> = Omit<MessageOptions, 'content'> &
+	(
+		| {
+				key: LocalizedSimpleKey;
+				formatOptions?: TOptions<TArgs>;
+		  }
+		| {
+				key: CustomFunctionGet<string, TArgs, string>;
+				formatOptions: TOptions<TArgs>;
+		  }
+	);
 
 /**
  * The prompt confirmation options.
@@ -115,7 +140,7 @@ export interface PromptConfirmationMessageOptions extends MessageOptions {
 
 	/**
 	 * The time for the confirmation to run.
-	 * @default Time.Minute
+	 * @default minutes(1)
 	 */
 	time?: number;
 }
@@ -129,12 +154,11 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 	await response.react(PromptConfirmationReactions.Yes);
 	await response.react(PromptConfirmationReactions.No);
 
-	const target = container.client.users.resolveID(options.target ?? message.author)!;
-	const reactionOptions: AwaitReactionsOptions = { time: Time.Minute, max: 1 };
-	const reactions = await response.awaitReactions((__, user) => user.id === target, reactionOptions);
+	const target = container.client.users.resolveId(options.target ?? message.author)!;
+	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: minutes(1), max: 1 });
 
 	// Remove all reactions if the user has permissions to do so
-	if (canRemoveAllReactions(response)) {
+	if (canRemoveAllReactions(response.channel)) {
 		floatPromise(response.reactions.removeAll());
 	}
 
@@ -143,9 +167,8 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 
 const promptConfirmationMessageRegExp = /^y|yes?|yeah?$/i;
 async function promptConfirmationMessage(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
-	const target = container.client.users.resolveID(options.target ?? message.author)!;
-	const reactionOptions: AwaitMessagesOptions = { time: Time.Minute, max: 1 };
-	const messages = await response.channel.awaitMessages((message) => message.author.id === target, reactionOptions);
+	const target = container.client.users.resolveId(options.target ?? message.author)!;
+	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: minutes(1), max: 1 });
 
 	return messages.size === 0 ? null : promptConfirmationMessageRegExp.test(messages.first()!.content);
 }
@@ -160,15 +183,15 @@ export async function promptConfirmation(message: Message, options: string | Pro
 	if (typeof options === 'string') options = { content: options };
 
 	// TODO: v13 | Switch to buttons only when available.
-	const response = (await message.send(options)) as Message;
-	return canReact(response) ? promptConfirmationReaction(message, response, options) : promptConfirmationMessage(message, response, options);
+	const response = await send(message, options);
+	return canReact(response.channel)
+		? promptConfirmationReaction(message, response, options)
+		: promptConfirmationMessage(message, response, options);
 }
 
-export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = Time.Minute): Promise<string | null> {
-	// The cast is for mismatching overloads:
-	// TODO: v13 | Remove typecast
-	const response = (await message.channel.send(sendOptions as any)) as Message;
-	const responses = await message.channel.awaitMessages((msg) => msg.author === message.author, { time, max: 1 });
+export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = minutes(1)): Promise<string | null> {
+	const response = await message.channel.send(sendOptions);
+	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));
 
 	return responses.size === 0 ? null : responses.first()!.content;

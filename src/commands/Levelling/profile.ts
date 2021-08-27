@@ -3,9 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
 import { cdnFolder } from '#utils/constants';
-import { fetchGlobalRank, fetchLocalRank } from '#utils/functions';
+import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
 import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -16,11 +17,9 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Social.ProfileDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -34,11 +33,11 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const output = await this.showProfile(message, scope, user, args.t);
-		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
+		return send(message, { files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
 	public async showProfile(message: Message, scope: Scope, user: User, t: TFunction) {
-		const { members, users } = this.context.db;
+		const { members, users } = this.container.db;
 		const settings = await users.ensureProfile(user.id);
 		const { level, points } = scope === Scope.Local && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 
@@ -102,14 +101,14 @@ export class UserCommand extends SkyraCommand {
 				.printText(rank.toString(), 594, 276)
 				.printText(t(LanguageKeys.Commands.Social.ProfileMoney, { money: settings.money, vault: settings.profile.vault }), 594, 229)
 				.printText(t(LanguageKeys.Globals.NumberCompactValue, { value: settings.reputations }), 594, 181)
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: points }), 594, 346)
+				.printText(formatNumber(t, points), 594, 346)
 
 				// Level
 				.setTextAlign('center')
 				.setTextFont('30px RobotoLight')
 				.printText(title.level, 576, 58)
 				.setTextFont('40px RobotoRegular')
-				.printText(t(LanguageKeys.Globals.NumberValue, { value: level }), 576, 100)
+				.printText(formatNumber(t, level), 576, 100)
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)

@@ -3,17 +3,16 @@ import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['cmm'],
-	bucket: 2,
-	cooldown: 10,
 	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -22,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const text = sanitizeInput(await args.rest('string', { maximum: 50 }));
 		const attachment = await this.generate(message.author, text);
-		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
+		return send(message, { files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}
 
 	public async onLoad() {

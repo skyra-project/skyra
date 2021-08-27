@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Fun.PunDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,
 	spam: true
@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 					Accept: MimeTypes.ApplicationJson
 				}
 			});
-			return message.send(joke);
+			return send(message, joke);
 		} catch {
 			this.error(LanguageKeys.Commands.Fun.PunError);
 		}

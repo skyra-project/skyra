@@ -1,17 +1,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { CdnUrls } from '#lib/types/Constants';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { CdnUrls } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokeitem', 'bag'],
-	cooldown: 10,
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
-	permissions: ['EMBED_LINKS']
+	requiredClientPermissions: ['EMBED_LINKS']
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
@@ -24,25 +25,23 @@ export class UserCommand extends SkyraCommand {
 			availableInGen8: t(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
 
-		return message.send(
-			new MessageEmbed()
-				.setColor(await this.context.db.fetchColor(message))
-				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
-				.setThumbnail(itemDetails.sprite)
-				.setDescription(itemDetails.desc)
-				.addField(embedTranslations.generationIntroduced, itemDetails.generationIntroduced, true)
-				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
-				.addField(
-					t(LanguageKeys.System.PokedexExternalResource),
-					[
-						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
-						`[Serebii](${itemDetails.serebiiPage})`,
-						itemDetails.smogonPage ? `[Smogon](${itemDetails.smogonPage})` : undefined
-					]
-						.filter(Boolean)
-						.join(' | ')
-				)
-		);
+		const externalResources = [
+			`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
+			`[Serebii](${itemDetails.serebiiPage})`,
+			itemDetails.smogonPage ? `[Smogon](${itemDetails.smogonPage})` : undefined
+		]
+			.filter(Boolean)
+			.join(' | ');
+
+		const embed = new MessageEmbed()
+			.setColor(await this.container.db.fetchColor(message))
+			.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
+			.setThumbnail(itemDetails.sprite)
+			.setDescription(itemDetails.desc)
+			.addField(embedTranslations.generationIntroduced, formatNumber(t, itemDetails.generationIntroduced), true)
+			.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
+			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);
+		return send(message, { embeds: [embed] });
 	}
 
 	private async fetchAPI(item: string) {

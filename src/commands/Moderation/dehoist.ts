@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors } from '#utils/constants';
-import { pickRandom } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -13,19 +13,18 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['dh'],
-	cooldown: 5,
 	description: LanguageKeys.Commands.Moderation.DehoistDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
-	runIn: ['text', 'news'],
 	permissionLevel: PermissionLevels.Moderator,
-	permissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
+	requiredClientPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS'],
+	runIn: ['GUILD_ANY']
 })
 export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
-			await message.send(new MessageEmbed().setDescription(pickRandom(args.t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+			await sendLoadingMessage(message, args.t);
 			await message.guild.members.fetch();
 		}
 
@@ -33,10 +32,12 @@ export class UserCommand extends SkyraCommand {
 		const errored: ErroredChange[] = [];
 		const hoistedMembers: GuildMember[] = [];
 		for (const member of message.guild.members.cache.values()) {
-			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
+			if (member.manageable && this.shouldDeHoist(member)) hoistedMembers.push(member);
 		}
 
-		const response = await message.send(args.t(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
+		if (hoistedMembers.length > 0) {
+			await send(message, args.t(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
+		}
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
 			const member = hoistedMembers[i];
@@ -57,21 +58,18 @@ export class UserCommand extends SkyraCommand {
 
 			// update the counter every 10 dehoists
 			if ((i + 1) % 10 === 0) {
-				const dehoistPercentage = (i / hoistedMembers.length) * 100;
-				await message.send(
-					args.t(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(dehoistPercentage) })
-				);
+				const deHoistPercentage = (i / hoistedMembers.length) * 100;
+				const content = args.t(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(deHoistPercentage) });
+				await send(message, content);
 			}
 		}
 
 		// We're done!
-		return response.edit({
-			embed: await this.prepareFinalEmbed(message, args.t, counter, errored),
-			content: null
-		});
+		const embed = await this.prepareFinalEmbed(message, args.t, counter, errored);
+		return send(message, { embeds: [embed] });
 	}
 
-	private shouldDehoist(member: GuildMember) {
+	private shouldDeHoist(member: GuildMember) {
 		const { displayName } = member;
 		if (!displayName) return false;
 
@@ -81,24 +79,25 @@ export class UserCommand extends SkyraCommand {
 		return char < this.kLowestCode && (char < kLowestNumberCode || char > kHighestNumberCode);
 	}
 
-	private async prepareFinalEmbed(message: GuildMessage, t: TFunction, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+	private async prepareFinalEmbed(message: GuildMessage, t: TFunction, deHoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = t(LanguageKeys.Commands.Moderation.DehoistEmbed, {
-			dehoistedMemberCount: dehoistedMembers,
-			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
+			dehoistedMemberCount: deHoistedMembers,
+			dehoistedWithErrorsCount: deHoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
 			users: message.guild.members.cache.size
 		});
-		const embed = new MessageEmbed().setColor(await this.context.db.fetchColor(message)).setTitle(embedLanguage.title);
+		const embed = new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setTitle(embedLanguage.title);
 
 		let { description } = embedLanguage;
-		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;
-		if (dehoistedMembers > 1) description = embedLanguage.descriptionMultipleMembers;
+		if (deHoistedMembers <= 0) description = embedLanguage.descriptionNoone;
+		if (deHoistedMembers > 1) description = embedLanguage.descriptionMultipleMembers;
 		if (erroredChanges.length > 0) {
 			description = erroredChanges.length > 1 ? embedLanguage.descriptionWithMultipleErrors : embedLanguage.descriptionWithError;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.fieldErrorTitle, codeblock);
 		}
+
 		return embed.setDescription(description);
 	}
 }

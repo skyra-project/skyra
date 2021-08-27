@@ -1,19 +1,19 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { pickRandom, shuffle } from '#utils/util';
+import { floatPromise, minutes, seconds } from '#utils/common';
+import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
-import { DMChannel, Message, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
+import { send } from '@sapphire/plugin-editable-commands';
+import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
-	cooldown: 5,
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
-	permissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -23,13 +23,13 @@ export class UserCommand extends SkyraCommand {
 		const category = await args.pick(UserCommand.category).catch(() => CATEGORIES.general);
 		const questionType = await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
-		const duration = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
+		const duration = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(1), maximum: minutes(1) });
 
 		if (this.#channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.TriviaActiveGame);
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(args.t(LanguageKeys.System.Loading)));
+			await sendLoadingMessage(message, args.t);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean
@@ -37,12 +37,13 @@ export class UserCommand extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.send(this.buildQuestionEmbed(args.t, data, possibleAnswers));
+			const questionEmbed = this.buildQuestionEmbed(args.t, data, possibleAnswers);
+			await send(message, { embeds: [questionEmbed] });
 			const filter = (msg: Message) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
-			const collector = new MessageCollector(message.channel as TextChannel | DMChannel, filter, { time: duration });
+			const collector = new MessageCollector(message.channel, { filter, time: duration });
 
 			let winner: User | null = null;
 			// users who have already participated
@@ -57,16 +58,19 @@ export class UserCommand extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.send(args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
+					floatPromise(send(message, args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt })));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.send(args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
-					return message.send(args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
+
+					const content = winner
+						? args.t(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer })
+						: args.t(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer });
+					floatPromise(send(message, content));
 				});
 		} catch (error) {
 			this.#channels.delete(message.channel.id);
-			this.context.client.logger.fatal(error);
+			this.container.logger.fatal(error);
 			this.error(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}

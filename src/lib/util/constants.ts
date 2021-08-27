@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { Permissions } from 'discord.js';
 import type { PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
+export const mainFolder = join(rootFolder, 'dist');
 export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
 export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'www', 'skyra.pw', 'cdn') : join(assetsFolder, 'public');
@@ -73,3 +75,82 @@ export const enum BrandingColors {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type O = object;
+
+export const enum CdnUrls {
+	AnilistLogo = 'https://cdn.skyra.pw/skyra-assets/anilist.png',
+	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
+	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
+	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',
+	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
+	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
+	OverwatchLogo = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png',
+	Pokedex = 'https://cdn.skyra.pw/skyra-assets/pokedex.png',
+	RevolvingHeartTwemoji = 'https://twemoji.maxcdn.com/72x72/1f49e.png',
+	StarWarsLogo = 'https://cdn.skyra.pw/skyra-assets/star-wars-api-logo.png',
+	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
+}
+
+export const enum LanguageFormatters {
+	AndList = 'andList',
+	Duration = 'duration',
+	ExplicitContentFilter = 'explicitContentFilter',
+	MessageNotifications = 'messageNotifications',
+	Number = 'number',
+	NumberCompact = 'numberCompact',
+	HumanLevels = 'humanLevels',
+	InlineCodeblock = 'inlineCodeBlock',
+	CodeBlock = 'codeBlock',
+	JsCodeBlock = 'jsCodeBlock',
+	Ordinal = 'ordinal',
+	OrList = 'orList',
+	Permissions = 'permissions',
+	Random = 'random',
+	Date = 'date',
+	DateFull = 'dateFull',
+	DateTime = 'dateTime',
+	ToTitleCase = 'toTitleCase',
+	PermissionsAndList = 'permissionsAndList'
+}
+
+export const enum Databases {
+	Guild = 'guilds'
+}
+
+export const enum Colors {
+	White = 0xe7e7e8,
+	Amber = 0xffc107,
+	Amber300 = 0xffd54f,
+	Blue = 0x2196f3,
+	BlueGrey = 0x607d8b,
+	Brown = 0x795548,
+	Cyan = 0x00bcd4,
+	DeepOrange = 0xff5722,
+	DeepPurple = 0x673ab7,
+	Green = 0x4caf50,
+	Grey = 0x9e9e9e,
+	Indigo = 0x3f51b5,
+	LightBlue = 0x03a9f4,
+	LightGreen = 0x8bc34a,
+	Lime = 0xcddc39,
+	Lime300 = 0xdce775,
+	Orange = 0xff9800,
+	Pink = 0xe91e63,
+	Purple = 0x9c27b0,
+	Red = 0xf44336,
+	Red300 = 0xe57373,
+	Teal = 0x009688,
+	Yellow = 0xffeb3b,
+	Yellow300 = 0xfff176
+}
+
+export const enum CanvasColors {
+	BackgroundLight = '#FAFAFA',
+	BackgroundDark = '#212121',
+	IndicatorGreen = '#4CAF50',
+	IndicatorRed = '#F44336'
+}
+
+/**
+ * The permission flags known to DiscordJS
+ */
+export const { FLAGS: PermissionFlags } = Permissions;

@@ -4,16 +4,15 @@ import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
-	bucket: 2,
-	cooldown: 30,
 	description: LanguageKeys.Commands.Misc.SlapDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SlapExtended,
-	permissions: ['ATTACH_FILES'],
+	requiredClientPermissions: ['ATTACH_FILES'],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
@@ -23,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
-		return message.channel.send({ files: [{ attachment, name: 'slap.png' }] });
+		return send(message, { files: [{ attachment, name: 'slap.png' }] });
 	}
 
 	public async generate(message: Message, possibleTarget: User) {
@@ -59,7 +58,7 @@ export class UserCommand extends SkyraCommand {
 	private resolve(message: Message, possibleTarget: User) {
 		const targetSelf = possibleTarget.id === message.author.id;
 		if (targetSelf) {
-			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.context.client.user! };
+			if (!OWNERS.includes(message.author.id)) return { target: message.author, user: this.container.client.user! };
 			this.error(LanguageKeys.Commands.Misc.CannotTargetOwner);
 		}
 

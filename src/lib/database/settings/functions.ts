@@ -1,12 +1,10 @@
-import { Store } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import type { GuildResolvable } from 'discord.js';
 import type { GuildEntity } from '../entities/GuildEntity';
 import type { SettingsCollectionCallback } from './base/SettingsCollection';
 
 type K = keyof V;
 type V = GuildEntity;
-
-const container = Store.injectedContext;
 
 export function readSettings<K1 extends K>(guild: GuildResolvable, paths: readonly [K1]): Promise<[V[K1]]>;
 export function readSettings<K1 extends K, K2 extends K>(guild: GuildResolvable, paths: readonly [K1, K2]): Promise<[V[K1], V[K2]]>;
@@ -51,8 +49,9 @@ export function readSettings<
 export function readSettings<KX extends K>(guild: GuildResolvable, paths: readonly KX[]): Promise<V[KX][]>;
 export function readSettings<K1 extends K>(guild: GuildResolvable, path: K1): Promise<V[K1]>;
 export function readSettings<R>(guild: GuildResolvable, cb: SettingsCollectionCallback<V, R>): Promise<R>;
-export function readSettings(guild: GuildResolvable, paths: any) {
-	const resolved = container.client.guilds.resolveID(guild);
+export function readSettings(guild: GuildResolvable): Promise<V>;
+export function readSettings(guild: GuildResolvable, paths?: any) {
+	const resolved = container.client.guilds.resolveId(guild);
 	if (resolved === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
 	return container.settings.guilds.read(resolved, paths);
 }
@@ -100,7 +99,7 @@ export function writeSettings<
 export function writeSettings<KX extends K>(guild: GuildResolvable, pairs: readonly [KX, V[KX]][]): Promise<void>;
 export function writeSettings<R>(guild: GuildResolvable, cb: SettingsCollectionCallback<V, R>): Promise<R>;
 export function writeSettings(guild: GuildResolvable, paths: any) {
-	const resolved = container.client.guilds.resolveID(guild);
+	const resolved = container.client.guilds.resolveId(guild);
 	if (resolved === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
 	return container.settings.guilds.write(resolved, paths);
 }

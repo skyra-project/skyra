@@ -3,12 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast } from '#utils/util';
 import type { Args, PieceContext } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
+import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -24,11 +24,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
-			strategyOptions: { flags: ['no-author', 'authored'] },
+			cooldownDelay: seconds(5),
+			flags: ['no-author', 'authored'],
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
-			runIn: ['text', 'news'],
+			runIn: ['GUILD_ANY'],
 			...options
 		});
 
@@ -57,7 +58,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
-				errored.push({ error, target });
+				errored.push({ error: error as Error | string, target });
 			}
 		}
 
@@ -76,8 +77,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			const output: string[] = [];
 			if (processed.length) {
 				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
-				const sorted = processed.sort((a, b) => a.log.caseID - b.log.caseID);
-				const cases = sorted.map(({ log }) => log.caseID);
+				const sorted = processed.sort((a, b) => a.log.caseId - b.log.caseId);
+				const cases = sorted.map(({ log }) => log.caseId);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
@@ -92,7 +93,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			// Else send the message as usual.
-			return message.send(output.join('\n'));
+			const content = output.join('\n');
+			return send(message, content);
 		}
 
 		return null;
@@ -147,7 +149,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		return {
 			moderator: args.getFlags('no-author') ? null : args.getFlags('no-authored') || nameDisplay ? message.author : null,
-			send: enabledDM && (await this.context.db.fetchModerationDirectMessageEnabled(target.id))
+			send: enabledDM && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 
@@ -165,7 +167,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (args.finished) return null;
 		if (!this.optionalDuration) return null;
 
-		const result = await args.pickResult('timespan', { minimum: 0, maximum: Time.Year * 5 });
+		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
 		if (result.success) return result.value;
 		if (result.error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
 		throw result.error;

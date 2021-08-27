@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/keys';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import type { GuildMessage } from '#lib/types';
 import { fetchReactionUsers, getImage } from '#utils/util';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/framework';
 import { cutText, debounce, isNullish } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
+import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { readSettings, writeSettings } from '../settings';
@@ -22,7 +24,6 @@ export const kMaxColors = kColors.length - 1;
 export class StarboardEntity extends BaseEntity {
 	#users = new Set<string>();
 	#manager: StarboardManager = null!;
-	#client: Client = null!;
 	#message: GuildMessage = null!;
 	#starMessage: GuildMessage | null = null;
 	#updateStarMessage = debounce(this.updateStarMessage.bind(this), { wait: 2500, maxWait: 10000 });
@@ -31,19 +32,19 @@ export class StarboardEntity extends BaseEntity {
 	public enabled = true;
 
 	@Column('varchar', { length: 19 })
-	public userID: string = null!;
+	public userId: string = null!;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public messageID: string = null!;
+	public messageId: string = null!;
 
 	@Column('varchar', { length: 19 })
-	public channelID: string = null!;
+	public channelId: string = null!;
 
 	@PrimaryColumn('varchar', { length: 19 })
-	public guildID: string = null!;
+	public guildId: string = null!;
 
 	@Column('varchar', { nullable: true, length: 19 })
-	public starMessageID: string | null = null;
+	public starMessageId: string | null = null;
 
 	@Column('integer')
 	public stars = 0;
@@ -74,17 +75,16 @@ export class StarboardEntity extends BaseEntity {
 	}
 
 	public setup(manager: StarboardManager) {
-		this.#client = manager.client;
 		this.#manager = manager;
 	}
 
 	public init(manager: StarboardManager, message: GuildMessage) {
 		this.setup(manager);
 		this.#message = message;
-		this.messageID = message.id;
-		this.channelID = message.channel.id;
-		this.guildID = manager.guild.id;
-		this.userID = message.author.id;
+		this.messageId = message.id;
+		this.channelId = message.channel.id;
+		this.guildId = manager.guild.id;
+		this.userId = message.author.id;
 		return this;
 	}
 
@@ -144,8 +144,8 @@ export class StarboardEntity extends BaseEntity {
 			this.stars = options.stars!;
 			await this.#updateStarMessage();
 		}
-		if (options.starMessageID === null) {
-			this.starMessageID = null;
+		if (options.starMessageId === null) {
+			this.starMessageId = null;
 			this.#starMessage = null;
 		}
 
@@ -158,7 +158,7 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public remove() {
 		this.enabled = false;
-		this.#manager.delete(this.messageID);
+		this.#manager.delete(this.messageId);
 		return super.remove();
 	}
 
@@ -166,19 +166,19 @@ export class StarboardEntity extends BaseEntity {
 	 * Checks for the existence of the star message
 	 */
 	public async downloadStarMessage(): Promise<void> {
-		if (!this.starMessageID) return;
+		if (!this.starMessageId) return;
 
-		const channelID = await readSettings(this.#message.guild, GuildSettings.Starboard.Channel);
-		if (isNullish(channelID)) return;
+		const channelId = await readSettings(this.#message.guild, GuildSettings.Starboard.Channel);
+		if (isNullish(channelId)) return;
 
-		const channel = this.#message.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		const channel = this.#message.guild.channels.cache.get(channelId) as GuildTextBasedChannelTypes | undefined;
 		if (isNullish(channel)) {
 			await writeSettings(this.#message.guild, [[GuildSettings.Starboard.Channel, null]]);
 			return;
 		}
 
 		try {
-			this.#starMessage = (await channel.messages.fetch(this.starMessageID)) as GuildMessage;
+			this.#starMessage = (await channel.messages.fetch(this.starMessageId)) as GuildMessage;
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.remove();
@@ -241,43 +241,45 @@ export class StarboardEntity extends BaseEntity {
 	 * Edits the message or sends a new one if it does not exist, includes full error handling
 	 */
 	private async updateStarMessage(): Promise<void> {
-		const [minimum, channelID, t] = await readSettings(this.#message.guild, (settings) => [
+		const [minimum, channelId, t] = await readSettings(this.#message.guild, (settings) => [
 			settings[GuildSettings.Starboard.Minimum],
 			settings[GuildSettings.Starboard.Channel],
 			settings.getLanguage()
 		]);
 
-		if (this.stars < minimum || isNullish(channelID)) return;
+		if (this.stars < minimum || isNullish(channelId)) return;
 
-		const content = `${this.emoji} **${this.stars}** ${this.#message.channel as TextChannel}`;
+		const content = `${this.emoji} **${this.stars}** ${this.#message.channel}`;
 		if (this.#starMessage) {
 			try {
-				await this.#starMessage.edit(content, this.getEmbed(t));
+				const embed = this.getEmbed(t);
+				await this.#starMessage.edit({ content, embeds: [embed] });
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
-				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.edit({ starMessageID: null, enabled: false });
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.edit({ starMessageId: null, enabled: false });
 			}
 
 			return;
 		}
 
-		const channel = this.#message.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		const channel = this.#message.guild.channels.cache.get(channelId) as GuildTextBasedChannelTypes | undefined;
 		if (!channel) return;
 
+		const embed = this.getEmbed(t);
 		const promise = channel
-			.send(content, this.getEmbed(t))
+			.send({ content, embeds: [embed] })
 			.then((message) => {
 				this.#starMessage = message as GuildMessage;
-				this.starMessageID = message.id;
+				this.starMessageId = message.id;
 			})
 			.catch((error) => {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
 				// Emit to console
-				this.#client.logger.fatal(error);
+				container.logger.fatal(error);
 			})
 			.finally(() => this.#manager.syncMessageMap.delete(this));
 

@@ -5,5 +5,13 @@
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": true,
 	"files.eol": "\n",
-	"powershell.codeFormatting.addWhitespaceAroundPipe": true
+	"powershell.codeFormatting.addWhitespaceAroundPipe": true,
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"**/*.code-search": true,
+		"**/.yarn": true,
+		"**/dist/": true,
+		"**/.git/": true
+	}
 }

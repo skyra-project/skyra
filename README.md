@@ -20,12 +20,14 @@
 
 ### Optional additions
 
--   [`Lavalink`]: Audio server.
--   [`InfluxDB`]: Metrics platform.
 -   [`GraphQL-Pokemon`]: Pokemon API.
--   [`Saelem`]: Horoscope API.
--   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`].
+-   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
+-   [`InfluxDB`]: Metrics platform.
+-   [`Lavalink`]: Audio server.
 -   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
+-   [`Redis`]: Caching for [`Saelem`], queueing for [`Lavalink`], and AFK status tracking.
+-   [`Saelem`]: Horoscope API.
+-   [`Star-Wars-Api`]: Star Wars API.
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -147,6 +149,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`.net`]: https://docs.microsoft.com/en-gb/dotnet/
 [`entity framework`]: https://docs.microsoft.com/en-gb/ef/
 [`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
+[`hasteserver`]: https://github.com/skyra-project/docker-images/tree/main/haste-server
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
 [`lavalink`]: https://github.com/freyacodes/lavalink
 [`node.js`]: https://nodejs.org/en/download/current/
@@ -154,6 +157,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`postgresql`]: https://www.postgresql.org/download/
 [`redis`]: https://redis.io
 [`saelem`]: https://github.com/skyra-project/saelem
+[`star-wars-api`]: https://github.com/skyra-project/star-wars-api
 [bitcoin]: bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
 [digitalocean]: https://www.digitalocean.com/
@@ -169,8 +173,8 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [paypal]: https://donate.skyra.pw/paypal
 [paypalimage]: https://cdn.skyra.pw/gh-assets/paypal.png
 [sapphire framework]: https://github.com/sapphiredev/framework
-[sapphiredev]: https://github.com/sapphiredev
 [sapphire's website]: https://sapphirejs.dev
+[sapphiredev]: https://github.com/sapphiredev
 [set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
 [skyra invite link]: https://invite.skyra.pw
 [support server]: https://join.skyra.pw

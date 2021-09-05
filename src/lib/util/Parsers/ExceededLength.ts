@@ -23,8 +23,9 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				const output = t(LanguageKeys.System.ExceededLengthOutputFile);
 				const content = [output, typeFooter, timeTaken].filter(Boolean).join('\n');
 
+				const fileExtension = options.language ?? 'txt';
 				const attachment = Buffer.from(options.content ? options.content : options.result!);
-				const name = options.targetId ? `${options.targetId}.txt` : 'output.txt';
+				const name = options.targetId ? `${options.targetId}.${fileExtension}` : `output.${fileExtension}`;
 				return send(message, { content, files: [{ attachment, name }] });
 			}
 

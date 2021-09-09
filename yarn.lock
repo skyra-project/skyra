@@ -1543,13 +1543,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/collection@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "@discordjs/collection@npm:0.1.6"
-  checksum: a0ddf757098fa01a4d9d5812daf3c2ea88c1297618d346705e603642c2f19656188fbfb3d503ee77f2ee69e7a1c1bfe25932aec032692ee3c338335524886e05
-  languageName: node
-  linkType: hard
-
 "@discordjs/collection@npm:^0.2.1":
   version: 0.2.1
   resolution: "@discordjs/collection@npm:0.2.1"
@@ -2011,28 +2004,28 @@ __metadata:
   linkType: hard
 
 "@sapphire/framework@npm:next":
-  version: 2.0.0-next.2d21b038.0
-  resolution: "@sapphire/framework@npm:2.0.0-next.2d21b038.0"
+  version: 2.0.0-next.db6febd5.0
+  resolution: "@sapphire/framework@npm:2.0.0-next.db6febd5.0"
   dependencies:
     "@sapphire/discord-utilities": ^2.1.5
     "@sapphire/discord.js-utilities": next
-    "@sapphire/pieces": ^2.1.0
+    "@sapphire/pieces": ^3.0.0
     "@sapphire/ratelimits": ^2.0.1
     "@sapphire/utilities": ^2.0.1
     lexure: ^0.17.0
     tslib: ^2.3.1
-  checksum: 25e78e4f43b75d6c4981509316c08a4b2e6eba94c5d96e226a8725a7c6b960e4960382350e687fc2660b5f9f03e94b709ca37aa6544e1bb1aeb67d45024723cb
+  checksum: 98bf702711515b85324066417e43c9984b88598eb08b1549430800d887a58a8236b2b0dee35d39faee9cd17d39c023cab8fd71ac45716c651342a4c7d628d522
   languageName: node
   linkType: hard
 
-"@sapphire/pieces@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@sapphire/pieces@npm:2.1.0"
+"@sapphire/pieces@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@sapphire/pieces@npm:3.0.0"
   dependencies:
-    "@discordjs/collection": ^0.1.6
-    "@sapphire/utilities": ^1.6.0
-    tslib: ^2.3.0
-  checksum: cd6e51afa81e7459ee6cf90944807031e3b4d02d40f2960941026f90c63ab834e5f455cdea2884783cac5c8a6c5e1ebc3fb97dea0cda94db185e372f3615b0ac
+    "@discordjs/collection": ^0.2.1
+    "@sapphire/utilities": ^2.0.1
+    tslib: ^2.3.1
+  checksum: a63d38e4940c3e97ab78ded9877edc5b18f29060f92081b1000b6ad2d2a0b8864f680d7619c80f9a5da0a33044ba574b2d475e673691678295f6ddd314488b69
   languageName: node
   linkType: hard
 
@@ -2163,13 +2156,6 @@ __metadata:
     nan: ^2.14.2
     tslib: ^2.3.0
   checksum: 3cc0cd702bad2002cdd8dd1ca18cbf34df27a0516f25566d6ffb7a18cb17da7e0969791a66d531395b576c29263600e0ab39c403a6e90fb69a7805b188915298
-  languageName: node
-  linkType: hard
-
-"@sapphire/utilities@npm:^1.6.0":
-  version: 1.7.0
-  resolution: "@sapphire/utilities@npm:1.7.0"
-  checksum: fe3584b94afc1ce0df8b9e8c6d82600fc82a1cc6c08af69463a164e612ac6daed83ba81a4ae4d3ea009dd7a89e357c9bf3beca23dc3742f1dc9f5f190da72868
   languageName: node
   linkType: hard
 

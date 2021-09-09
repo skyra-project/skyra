@@ -43,7 +43,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		await this.sendErrorChannel(message, command, parameters, error);
 
 		// Emit where the error was emitted
-		logger.fatal(`[COMMAND] ${command.path}\n${error.stack || error.message}`);
+		logger.fatal(`[COMMAND] ${command.location.full}\n${error.stack || error.message}`);
 		try {
 			await sendTemporaryMessage(message, this.generateUnexpectedErrorMessage(args, error));
 		} catch (err) {
@@ -142,7 +142,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 	 * @param command The command to format.
 	 */
 	private getCommandLine(command: Command): string {
-		return `**Command**: ${command.path.slice(rootFolder.length)}`;
+		return `**Command**: ${command.location.full.slice(rootFolder.length)}`;
 	}
 
 	/**

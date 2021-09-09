@@ -177,11 +177,7 @@ export class UserCommand extends SkyraCommand {
 				.setTimestamp();
 
 			// Send the message to the prune logs channel.
-			await channel.send({
-				content: '',
-				embeds: [embed],
-				files: [this.generateAttachment(t, messages)]
-			});
+			await channel.send({ embeds: [embed], files: [this.generateAttachment(t, messages)] });
 		}
 	}
 

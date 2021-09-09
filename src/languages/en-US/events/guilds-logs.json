@@ -65,7 +65,7 @@
 	"roleCreateHoist": "• **Hoisted**",
 	"roleCreateMentionable": "• **Mentionable**",
 	"roleCreatePermissions": "• **With Permission**: {{values}}",
-	"roleCreatePermissions_plural": "• **With Permissions**: {{values}}",
+	"roleCreatePermissions_plural": "• **With Permissions**: {{values, andList}}",
 	"roleCreatePosition": "• **Position**: `{{value, number}}`",
 	"roleDelete": "Role Deleted",
 	"roleUpdate": "Role Updated",

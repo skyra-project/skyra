@@ -15,7 +15,7 @@ import { URL } from 'url';
 
 const kTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 
-const kTotalBrawlers = 43; // this will need updating
+const kTotalBrawlers = 50; // this will need updating
 const kMaxMembers = 100;
 
 const flags = ['s', 'save'];

@@ -14,17 +14,16 @@ import {
 	TypeVariation,
 	TypeVariationAppealNames
 } from '#utils/moderationConstants';
-import { UserError } from '@sapphire/framework';
+import { container, UserError } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
 import { isNullishOrZero, isNumber, NonNullObject, parseURL } from '@sapphire/utilities';
-import { Client, MessageEmbed, User } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { readSettings } from '../settings';
 import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
 export class ModerationEntity extends BaseEntity {
-	#client: Client = null!;
 	#manager: ModerationManager = null!;
 	#moderator: User | null = null;
 	#user: User | null = null;
@@ -244,7 +243,8 @@ export class ModerationEntity extends BaseEntity {
 	public get task() {
 		const { guild } = this.#manager;
 		return (
-			this.#client.schedules.queue.find((value) => value.data && value.data.caseID === this.caseId && value.data.guildID === guild.id) ?? null
+			container.client.schedules.queue.find((value) => value.data && value.data.caseID === this.caseId && value.data.guildID === guild.id) ??
+			null
 		);
 	}
 
@@ -256,7 +256,7 @@ export class ModerationEntity extends BaseEntity {
 		const previous = this.#user;
 		if (previous?.id === this.userId) return previous;
 
-		const user = await this.#client.users.fetch(this.userId);
+		const user = await container.client.users.fetch(this.userId);
 		this.#user = user;
 		return user;
 	}
@@ -265,7 +265,7 @@ export class ModerationEntity extends BaseEntity {
 		const previous = this.#moderator;
 		if (previous) return previous;
 
-		const moderator = await this.#client.users.fetch(this.moderatorId);
+		const moderator = await container.client.users.fetch(this.moderatorId);
 		this.#moderator = moderator;
 		return moderator;
 	}
@@ -287,7 +287,7 @@ export class ModerationEntity extends BaseEntity {
 			throw error;
 		}
 
-		this.#client.emit(Events.ModerationEntryEdit, clone, this);
+		container.client.emit(Events.ModerationEntryEdit, clone, this);
 		return this;
 	}
 
@@ -302,7 +302,7 @@ export class ModerationEntity extends BaseEntity {
 			throw error;
 		}
 
-		this.#client.emit(Events.ModerationEntryEdit, clone, this);
+		container.client.emit(Events.ModerationEntryEdit, clone, this);
 		return this;
 	}
 
@@ -341,7 +341,7 @@ export class ModerationEntity extends BaseEntity {
 			.setDescription(`${body}\n${reason}`)
 			.setFooter(
 				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),
-				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+				container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);
 
@@ -439,7 +439,7 @@ export class ModerationEntity extends BaseEntity {
 		await this.save();
 		this.#manager.insert(this);
 
-		this.#client.emit(Events.ModerationEntryAdd, this);
+		container.client.emit(Events.ModerationEntryAdd, this);
 		return this;
 	}
 

@@ -139,7 +139,7 @@
 			"<:Skyra:638508279357767680>",
 			"<a:SkyraHappy:735068843407573043>"
 		],
-		"reminder": "Make sure the bot has {{MANAGE_EMOJIS, permissions}} permissions in this server!"
+		"reminder": "Make sure the bot has {{MANAGE_EMOJIS_AND_STICKERS, permissions}} permissions in this server!"
 	},
 	"createEmojiInvalidDiscordEmoji": "I could not resolve `{{parameter}}` to a valid Discord emoji. Make sure it is from a Discord server, and not a default emoji.",
 	"createEmojiDuplicate": "An emoji named `{{name}}` already exists!",

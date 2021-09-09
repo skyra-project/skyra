@@ -100,7 +100,7 @@
 	"speciesDescription": "Get data for any given species in Star Wars",
 	"speciesExtended": {
 		"usages": [
-		   "Species" 
+		   "Species"
 		],
 		"extendedHelp": "Uses a fuzzy search on the name of the species",
 		"explainedUsage": [

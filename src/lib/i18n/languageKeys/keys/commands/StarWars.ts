@@ -21,9 +21,9 @@ export const SpeciesExtended = T<LanguageHelpDisplayOptions>('commands/starwars:
 export const SpeciesQueryFail = FT<{ species: string }, string>('commands/starwars:speciesQueryFail');
 export const SpeciesEmbedTitles = T<EmbedTitles[Resource.Species]>('commands/starwars:speciesEmbedTitles');
 
-export const StarshipDescription = T('commands/starwars:starshipsDescription');
-export const StarshipExtended = T<LanguageHelpDisplayOptions>('commands/starwars:starshipsExtended');
-export const StarshipQueryFail = FT<{ starship: string }, string>('commands/starwars:starshipsQueryFail');
+export const StarshipDescription = T('commands/starwars:starshipDescription');
+export const StarshipExtended = T<LanguageHelpDisplayOptions>('commands/starwars:starshipExtended');
+export const StarshipQueryFail = FT<{ starship: string }, string>('commands/starwars:starshipQueryFail');
 export const StarshipEmbedTitles = T<EmbedTitles[Resource.Starships]>('commands/starwars:starshipEmbedTitles');
 
 export const VehicleDescription = T('commands/starwars:vehicleDescription');

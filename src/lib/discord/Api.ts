@@ -759,8 +759,8 @@ interface ApiGuildsGuildEmojis {
 	get: ApiMethods['get'];
 
 	/**
-	 * Create a new emoji for the guild. Requires the `MANAGE_EMOJIS` permission. Returns the new emoji object on
-	 * success. Fires a Guild Emojis Update Gateway event.
+	 * Create a new emoji for the guild. Requires the `MANAGE_EMOJIS_AND_STICKERS` permission. Returns the new emoji
+	 * object on success. Fires a Guild Emojis Update Gateway event.
 	 * @url https://discord.com/developers/docs/resources/emoji#create-guild-emoji
 	 */
 	post: ApiMethods['post'];
@@ -779,15 +779,15 @@ interface ApiGuildsGuildEmojisEmoji {
 	get: ApiMethods['get'];
 
 	/**
-	 * Modify the given emoji. Requires the `MANAGE_EMOJIS` permission. Returns the updated emoji object on success.
-	 * Fires a Guild Emojis Update Gateway event.
+	 * Modify the given emoji. Requires the `MANAGE_EMOJIS_AND_STICKERS` permission. Returns the updated emoji object on
+	 * success. Fires a Guild Emojis Update Gateway event.
 	 * @url https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
-	 * Delete the given emoji. Requires the `MANAGE_EMOJIS` permission. Returns `204 No Content` on success. Fires a
-	 * Guild Emojis Update Gateway event.
+	 * Delete the given emoji. Requires the `MANAGE_EMOJIS_AND_STICKERS` permission. Returns `204 No Content` on success.
+	 * Fires a Guild Emojis Update Gateway event.
 	 * @url https://discord.com/developers/docs/resources/emoji#delete-guild-emoji
 	 */
 	delete: ApiMethods['delete'];

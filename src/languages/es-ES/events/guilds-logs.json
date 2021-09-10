@@ -65,7 +65,6 @@
 	"roleCreateHoist": "• **Mostrado por Separado**",
 	"roleCreateMentionable": "• **Mencionable**",
 	"roleCreatePermissions": "• **Con el Permiso**: {{values}}",
-	"roleCreatePermissions_plural": "• **Con los Permisos**: {{values}}",
 	"roleCreatePosition": "• **Posición**: `{{value, number}}`",
 	"roleDelete": "Rol Eliminado",
 	"roleUpdate": "Rol Actualizado",

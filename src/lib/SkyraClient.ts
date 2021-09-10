@@ -26,13 +26,13 @@ export class SkyraClient extends SapphireClient {
 	 * The loaded Leaderboard singleton instance
 	 */
 	@Enumerable(false)
-	public leaderboard: Leaderboard = new Leaderboard(this);
+	public leaderboard = new Leaderboard();
 
 	/**
 	 * The Giveaway manager
 	 */
 	@Enumerable(false)
-	public giveaways: GiveawayManager = new GiveawayManager();
+	public giveaways = new GiveawayManager();
 
 	/**
 	 * The Schedule manager
@@ -50,7 +50,7 @@ export class SkyraClient extends SapphireClient {
 	 * The invite store
 	 */
 	@Enumerable(false)
-	public invites: InviteStore = new InviteStore();
+	public invites = new InviteStore();
 
 	@Enumerable(false)
 	public readonly audio: QueueClient | null;
@@ -59,13 +59,13 @@ export class SkyraClient extends SapphireClient {
 	public readonly analytics: AnalyticsData | null;
 
 	@Enumerable(false)
-	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue();
+	public readonly guildMemberFetchQueue = new GuildMemberFetchQueue();
 
 	@Enumerable(false)
-	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
+	public llrCollectors = new Set<LongLivingReactionCollector>();
 
 	@Enumerable(false)
-	public twitch: Twitch = new Twitch();
+	public twitch = new Twitch();
 
 	@Enumerable(false)
 	public websocket = new WebsocketHandler();
@@ -76,7 +76,7 @@ export class SkyraClient extends SapphireClient {
 		// Workers
 		container.workers = new WorkerManager();
 
-		container.settings = new SettingsManager(this);
+		container.settings = new SettingsManager();
 
 		// Analytics
 		this.schedules = new ScheduleManager();

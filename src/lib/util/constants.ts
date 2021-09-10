@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { getRootData } from '@sapphire/pieces';
 import { Permissions } from 'discord.js';
 import type { PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
-export const rootFolder = join(__dirname, '..', '..', '..');
-export const mainFolder = join(rootFolder, 'dist');
+export const mainFolder = getRootData().root;
+export const rootFolder = join(mainFolder, '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
 export const cdnFolder = process.env.NODE_ENV === 'production' ? join('/var', 'www', 'skyra.pw', 'cdn') : join(assetsFolder, 'public');

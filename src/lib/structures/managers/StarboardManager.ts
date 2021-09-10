@@ -6,18 +6,13 @@ import Collection from '@discordjs/collection';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import type { Client, Guild, TextChannel } from 'discord.js';
+import type { Guild, TextChannel } from 'discord.js';
 
 /**
  * The StarboardManager class that manages the starboard channel
  * @version 4.0.0
  */
 export class StarboardManager extends Collection<string, StarboardEntity> {
-	/**
-	 * The Client instance that manages this manager
-	 */
-	public client: Client;
-
 	/**
 	 * The Guild instance that manages this manager
 	 */
@@ -35,7 +30,6 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 
 	public constructor(guild: Guild) {
 		super();
-		this.client = guild.client;
 		this.guild = guild;
 	}
 

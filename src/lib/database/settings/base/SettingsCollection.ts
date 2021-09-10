@@ -1,6 +1,5 @@
 import { Collection } from '@discordjs/collection';
 import { RWLock } from 'async-rwlock';
-import type { Client } from 'discord.js';
 import type { IBaseEntity } from './IBaseEntity';
 
 export interface SettingsCollectionCallback<T extends IBaseEntity, R> {
@@ -8,14 +7,8 @@ export interface SettingsCollectionCallback<T extends IBaseEntity, R> {
 }
 
 export abstract class SettingsCollection<T extends IBaseEntity> extends Collection<string, T> {
-	public readonly client: Client;
 	private readonly queue = new Map<string, Promise<T>>();
 	private readonly locks = new Map<string, RWLock>();
-
-	public constructor(client: Client) {
-		super();
-		this.client = client;
-	}
 
 	public delete(key: string) {
 		this.locks.delete(key);

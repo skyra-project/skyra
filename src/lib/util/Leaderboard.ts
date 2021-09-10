@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
 import { container } from '@sapphire/framework';
-import type { Client } from 'discord.js';
 import { minutes } from './common';
 import { PreciseTimeout } from './PreciseTimeout';
 
@@ -9,11 +8,6 @@ import { PreciseTimeout } from './PreciseTimeout';
  * @version 2.1.0
  */
 export class Leaderboard {
-	/**
-	 * The Client that initialized this instance
-	 */
-	public client: Client;
-
 	/**
 	 * The cached global leaderboard
 	 */
@@ -39,10 +33,6 @@ export class Leaderboard {
 		guilds: new Collection(),
 		users: null
 	};
-
-	public constructor(client: Client) {
-		this.client = client;
-	}
 
 	public async fetch(guild?: string) {
 		if (guild) {

@@ -26,14 +26,18 @@ export const kGiveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownChannel,
 	RESTJSONErrorCodes.UnknownGuild,
 	RESTJSONErrorCodes.MissingAccess,
-	RESTJSONErrorCodes.InvalidFormBodyOrContentType
+	RESTJSONErrorCodes.InvalidActionOnArchivedThread,
+	RESTJSONErrorCodes.InvalidFormBodyOrContentType,
+	RESTJSONErrorCodes.ThreadLocked
 ];
 export const kGiveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownMessage,
 	RESTJSONErrorCodes.UnknownChannel,
 	RESTJSONErrorCodes.UnknownGuild,
 	RESTJSONErrorCodes.MissingAccess,
-	RESTJSONErrorCodes.UnknownEmoji
+	RESTJSONErrorCodes.UnknownEmoji,
+	RESTJSONErrorCodes.InvalidActionOnArchivedThread,
+	RESTJSONErrorCodes.ThreadLocked
 ];
 
 export type GiveawayEntityData = Pick<

@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async lock(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName').catch(() => message.guild.roles.everyone);
-		const channel = args.finished ? (message.channel as NonThreadGuildTextBasedChannelTypes) : await args.pick('textChannelName');
+		const channel = args.finished ? assertNonThread(message.channel) : await args.pick('textChannelName');
 		const duration = args.finished ? null : await args.pick('timespan');
 		return this.handleLock(message, args, role, channel, duration);
 	}

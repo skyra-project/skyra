@@ -10,7 +10,10 @@ import type { Message, ThreadChannel } from 'discord.js';
  * @returns The thread channel.
  */
 export function assertNonThread<T extends TextBasedChannelTypes>(channel: T): Exclude<T, ThreadChannel> {
-	if (channel.isThread()) throw new UserError({ identifier: LanguageKeys.Assertions.ExpectedNonThreadChannel, context: { channel } });
+	if (channel.isThread()) {
+		throw new UserError({ identifier: LanguageKeys.Assertions.ExpectedNonThreadChannel, context: { channel: channel.toString() } });
+	}
+
 	return channel as Exclude<T, ThreadChannel>;
 }
 

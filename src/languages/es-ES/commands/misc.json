@@ -85,7 +85,6 @@
 		"",
 		""
 	],
-	"upvoteMessage": "",
 	"afkDescription": "",
 	"afkExtended": {
 		"usages": [
@@ -503,10 +502,11 @@
 			"kyra"
 		]
 	},
-	"upvoteDescription": "Obtén un enlace para votar Skyra en **Bots For Discord**",
+	"upvoteDescription": "",
 	"upvoteExtended": {
-		"extendedHelp": "Bots For Discord es un sitio web donde puedes encontrar bots increíbles para tu sitio web. Si realmente me amas, puedes ayudarme mucho votándome cada 24 horas, ¡así más usuarios podrán encontrarme!"
+		"extendedHelp": ""
 	},
+	"upvoteMessage": "",
 	"vaporwaveDescription": "",
 	"vaporwaveExtended": {
 		"usages": [

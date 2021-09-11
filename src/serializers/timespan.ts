@@ -4,7 +4,7 @@ import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<number> {
 	public async parse(args: Serializer.Args, { entry }: SerializerUpdateContext) {
-		return this.result(args, await args.pickResult(entry.type as 'timespan'));
+		return this.result(args, await args.pickResult(entry.type as 'timespan', { minimum: entry.minimum, maximum: entry.maximum }));
 	}
 
 	public isValid(value: number, context: SerializerUpdateContext): Awaited<boolean> {

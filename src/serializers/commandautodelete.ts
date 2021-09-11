@@ -1,5 +1,6 @@
 import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { seconds } from '#utils/common';
 import type { Awaited } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<CommandAutoDelete> {
@@ -7,7 +8,7 @@ export class UserSerializer extends Serializer<CommandAutoDelete> {
 		const command = await args.pickResult('command');
 		if (!command.success) return this.errorFromArgument(args, command.error);
 
-		const duration = await args.pickResult('timespan');
+		const duration = await args.pickResult('timespan', { minimum: seconds(1) });
 		if (!duration.success) return this.errorFromArgument(args, duration.error);
 
 		return this.ok([command.value.name, duration.value] as const);

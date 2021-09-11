@@ -16,7 +16,7 @@ export class UserListener extends Listener {
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = await readSettings(channel, (settings) =>
+		const roleEntry = await readSettings(channel.guild, (settings) =>
 			settings[GuildSettings.ReactionRoles].find(
 				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
 			)

@@ -48,7 +48,7 @@ export class UserTask extends Task {
 					Lists.DiscordBotsGG
 				),
 				this.query(
-					`https://discords.com/api/bot/${process.env.CLIENT_ID}`,
+					`https://discords.com/bots/api/bot/${process.env.CLIENT_ID}`,
 					`{"server_count":${guilds}}`,
 					process.env.BOTS_FOR_DISCORD_TOKEN,
 					Lists.Discords

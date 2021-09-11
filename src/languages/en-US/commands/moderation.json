@@ -179,7 +179,7 @@
 		"usages": [
 			"reset/Seconds/Duration"
 		],
-		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** and will modify the channel's ratelimit per user to any value between 0 and 120 seconds.",
+		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** and will modify the channel's ratelimit per user to any value between 0 and 6 hours.",
 		"examples": [
 			"0",
 			"reset",

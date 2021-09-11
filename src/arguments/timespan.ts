@@ -7,7 +7,7 @@ export class UserArgument extends Argument<number> {
 	public run(parameter: string, context: ArgumentContext) {
 		const duration = this.parseParameter(parameter);
 
-		if (duration < 0 || !Number.isSafeInteger(duration)) {
+		if (!Number.isSafeInteger(duration)) {
 			return this.error({ parameter, identifier: LanguageKeys.Arguments.TimeSpan, context });
 		}
 

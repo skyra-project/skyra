@@ -1,3 +1,4 @@
+import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -7,6 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
+	enabled: envIsDefined('GOOGLE_CUSTOM_SEARCH_WEB_TOKEN', 'GOOGLE_CUSTOM_SEARCH_IMAGE_TOKEN', 'GOOGLE_API_TOKEN'),
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	description: LanguageKeys.Commands.Google.GsearchDescription,
 	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended

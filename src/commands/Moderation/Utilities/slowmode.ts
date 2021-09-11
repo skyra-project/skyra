@@ -22,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		const cooldown = await args
 			.pick('reset')
 			.then(() => 0)
-			.catch(() => args.rest('timespan', { minimum: 1, maximum: MAXIMUM_DURATION }));
+			.catch(() => args.rest('timespan', { minimum: 0, maximum: MAXIMUM_DURATION }));
 
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown / 1000);

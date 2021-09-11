@@ -1,4 +1,4 @@
-import { envIsDefined } from '#lib/env';
+import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
@@ -15,7 +15,7 @@ const kRandomSunSign = createPick(kSunSigns);
 const kDays = ['yesterday', 'tomorrow', 'today'];
 
 @ApplyOptions<SkyraCommand.Options>({
-	enabled: envIsDefined('SAELEM_URL'),
+	enabled: envParseBoolean('SAELEM_ENABLED'),
 	aliases: ['saelem'],
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,

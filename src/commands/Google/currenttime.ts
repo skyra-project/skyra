@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
 @ApplyOptions<SkyraCommand.Options>({
-	enabled: envIsDefined('TIMEZONEDB_TOKEN'),
+	enabled: envIsDefined('GOOGLE_MAPS_API_TOKEN', 'TIMEZONEDB_TOKEN'),
 	aliases: ['ctime'],
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,

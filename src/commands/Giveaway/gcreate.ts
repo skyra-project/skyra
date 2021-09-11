@@ -46,9 +46,9 @@ export class UserCommand extends SkyraCommand {
 		await this.container.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
 				allowedRoles,
-				channelID: channel.id,
+				channelId: channel.id,
 				endsAt: duration.getTime() + scheduleOffset + 500,
-				guildID: message.guild.id,
+				guildId: message.guild.id,
 				minimum: 1,
 				minimumWinners: winners,
 				title

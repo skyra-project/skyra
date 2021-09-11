@@ -8,7 +8,7 @@ export class UserAudioListener extends AudioListener {
 	public async run(acknowledgeable: MessageAcknowledgeable, entry: QueueEntry) {
 		const audio = getAudio(acknowledgeable.guild);
 
-		const [{ title }, { username: requester }] = await Promise.all([
+		const [{ title }, { id: requester }] = await Promise.all([
 			audio.player.node.decode(entry.track),
 			this.container.client.users.fetch(entry.author)
 		]);

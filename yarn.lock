@@ -1598,11 +1598,11 @@ __metadata:
   linkType: hard
 
 "@favware/graphql-pokemon@npm:^5.5.9":
-  version: 5.7.0
-  resolution: "@favware/graphql-pokemon@npm:5.7.0"
+  version: 5.5.9
+  resolution: "@favware/graphql-pokemon@npm:5.5.9"
   dependencies:
     graphql: ^15.5.1
-  checksum: bd7dfc7ee4e43a5efa9bb2fbc2aedd6aba2c416b38748d7020a4e71c984430be591e4711d18852bf4d07ad9926fe9fcf5e8a77ebdda4d8ffcc33a49deb0d9492
+  checksum: 95a9316481a7b2f5f886a0b517b038e62bc970951c1280dd3ea53a32ccf33b653fcfe2c7d8764a557e8dcc4718e5e10ac264b59e749d28ecc08385bc0e7d44e8
   languageName: node
   linkType: hard
 

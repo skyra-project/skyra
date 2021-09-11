@@ -1958,11 +1958,11 @@ __metadata:
   linkType: hard
 
 "@sapphire/decorators@npm:next":
-  version: 3.0.0-next.c2ef7d8a.0
-  resolution: "@sapphire/decorators@npm:3.0.0-next.c2ef7d8a.0"
+  version: 3.0.0-next.d4982ed6.0
+  resolution: "@sapphire/decorators@npm:3.0.0-next.d4982ed6.0"
   dependencies:
     tslib: 2.x
-  checksum: 0f182500b3d82b298b93a5c001c20ff5077160a1746e9a9c297f769e551ca0408a27c0f68ec35741f58e55a774e7d10a610a5376e20ad1d09f2d6e8915b49b1f
+  checksum: a823fface4d2e17e398b9337ce8b6e16f2bfce0e5112166af47e8e95eca715549061d034cfab3a395ab9bb3c160f5e969433daaf54898ff52fc062e5f1a1fbf5
   languageName: node
   linkType: hard
 
@@ -1975,23 +1975,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord-utilities@npm:^2.2.0-next.c2ef7d8a.0":
-  version: 2.2.0-next.c2ef7d8a.0
-  resolution: "@sapphire/discord-utilities@npm:2.2.0-next.c2ef7d8a.0"
+"@sapphire/discord-utilities@npm:^2.2.0-next.d4982ed6.0":
+  version: 2.2.0-next.d4982ed6.0
+  resolution: "@sapphire/discord-utilities@npm:2.2.0-next.d4982ed6.0"
   dependencies:
     twemoji-parser: ^13.1.0
-  checksum: 517ea9361c14fbd2e5ba7dff08bfc1aa6fbaf27dfdd2b81d63d56dfb22ff71774785a5c6ead2eccde00e52e4e03b54bcf5711695e4e14fb7379fb725339961b8
+  checksum: 5bc55ce19348ef2110a9a45a0ea6cc6f8df9022c46441da0d88a488bc1daafc8366d2fdf9685b9d80a97d3284ce261f3f11bc51d5e50553cfa28ce815dc4685d
   languageName: node
   linkType: hard
 
 "@sapphire/discord.js-utilities@npm:next":
-  version: 3.0.0-next.c2ef7d8a.0
-  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.c2ef7d8a.0"
+  version: 3.0.0-next.d4982ed6.0
+  resolution: "@sapphire/discord.js-utilities@npm:3.0.0-next.d4982ed6.0"
   dependencies:
-    "@sapphire/discord-utilities": ^2.2.0-next.c2ef7d8a.0
-    "@sapphire/time-utilities": ^1.4.0-next.c2ef7d8a.0
-    "@sapphire/utilities": ^2.1.0-next.c2ef7d8a.0
-  checksum: 8b4f61a7076c1a652d59a1c03986a5c5af5851323c4fe29440d219eee86f1bb5c256854aeb80e8af947435c7909df64bc0a53a56849680fae947ba83f567a0f2
+    "@sapphire/discord-utilities": ^2.2.0-next.d4982ed6.0
+    "@sapphire/time-utilities": ^1.4.0-next.d4982ed6.0
+    "@sapphire/utilities": ^2.1.0-next.d4982ed6.0
+  checksum: c401639ea766cc7f93679e8f0344803c82ad5eef5e5ceb413255a516cd2904a6e6d299010e6cbeb41521b97ef72f11d7ede9ae1c8b7efa2f1c5e0049c5ad195b
   languageName: node
   linkType: hard
 
@@ -2146,12 +2146,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:^1.4.0-next.c2ef7d8a.0":
-  version: 1.4.0-next.c2ef7d8a.0
-  resolution: "@sapphire/time-utilities@npm:1.4.0-next.c2ef7d8a.0"
+"@sapphire/time-utilities@npm:^1.4.0-next.d4982ed6.0":
+  version: 1.4.0-next.d4982ed6.0
+  resolution: "@sapphire/time-utilities@npm:1.4.0-next.d4982ed6.0"
   dependencies:
-    "@sapphire/utilities": ^2.1.0-next.c2ef7d8a.0
-  checksum: 51d65040f3a07f173d0be6f189a9a9988a1974bd44ef61f03e8746d3a3f517287f0094f579a3f8e8e3e9bcfbb3d9b52b59a8a457bec387844d19557ad69c063d
+    "@sapphire/utilities": ^2.1.0-next.d4982ed6.0
+  checksum: 46fe17ca73d38d3fc4a69d6d433a19bfb8850a454324f5c6b538b756ae3acd69d72089710d3af1920c0feeb2315e11e712d00351c3d8daeda27b12e92aad0811
   languageName: node
   linkType: hard
 
@@ -2183,10 +2183,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/utilities@npm:^2.1.0-next.c2ef7d8a.0":
-  version: 2.1.0-next.c2ef7d8a.0
-  resolution: "@sapphire/utilities@npm:2.1.0-next.c2ef7d8a.0"
-  checksum: 03ef8f1731324cacedb455a7f67f77efa109a6882929aa49c8babfaaa4602742460d9c9fee97eaf828310c1392a8e3439457cac8b59191adcfaadae7801886ef
+"@sapphire/utilities@npm:^2.1.0-next.d4982ed6.0":
+  version: 2.1.0-next.d4982ed6.0
+  resolution: "@sapphire/utilities@npm:2.1.0-next.d4982ed6.0"
+  checksum: e2a10101a7453a995edfb64d60a21a0dddaebefc2a11ce2aa8cf2abb5a60e7ce13c013394dd658a649a806a39ab5b352d9b98c57428868d9e7d79d6deef77ab3
   languageName: node
   linkType: hard
 
@@ -2322,13 +2322,13 @@ __metadata:
   linkType: hard
 
 "@skyra/audio@npm:next":
-  version: 2.0.0-next.d7b8086.0
-  resolution: "@skyra/audio@npm:2.0.0-next.d7b8086.0"
+  version: 2.0.0-next.5a64dfa.0
+  resolution: "@skyra/audio@npm:2.0.0-next.5a64dfa.0"
   dependencies:
     backoff: ^2.5.0
-    tslib: ^2.3.0
-    ws: ^8.0.0
-  checksum: b8b69102955b8a4609e8401d12198e712ad5497c176f4f6cfaad9813e6f4f9f5e5c6a788b4e6dd62705e56df0129303b69eac1b13c79003dc992776d6c3d21ae
+    tslib: ^2.3.1
+    ws: ^8.2.0
+  checksum: 2b0644e771e023b6a6e2b22db8f21c22238dcf862b28639e6f5c624d66365a77c2098fb9ec3538e95ad696555a06fa43346344ae1314bc74e738e59792e6c75b
   languageName: node
   linkType: hard
 
@@ -11059,7 +11059,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.0.0, ws@npm:^8.2.2":
+"ws@npm:^8.2.0, ws@npm:^8.2.2":
   version: 8.2.2
   resolution: "ws@npm:8.2.2"
   peerDependencies:

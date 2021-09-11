@@ -85,7 +85,6 @@
 		"We never carry the knowledge of all the universe, there are nodes which transfer us data about the Sector we are in. The reasoning for that is because we don't have enough memory space for the knowledge from more than 2 Sectors, and there are thousands of them.",
 		"While I look physically young, I am over 97 million years old."
 	],
-	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://discords.com/bots/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
 	"afkDescription": "Set an AFK message with automatic replies!",
 	"afkExtended": {
 		"usages": [
@@ -503,11 +502,12 @@
 			"kyra"
 		]
 	},
-	"upvoteDescription": "Get a link to upvote Skyra in **Bots For Discord**",
+	"upvoteDescription": "Get a link to upvote Skyra in various bot lists",
 	"upvoteExtended": {
-		"extendedHelp": "Bots For Discord is a website where you can find amazing bots for your website. If you really love me, you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!"
+		"extendedHelp": "Bot lists are websites where you can find great bots for your server, and they come with a voting system that allows users to find the most popular one.\n\nBy voting me in them, you'll allow my discoverability to improve, and more users will be able to find me!"
 	},
-	"vaporwaveDescription": "Vapowave characters!",
+	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://discords.com/bots/bot/266624760782258186**, or **https://discordlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
+	"vaporwaveDescription": "Vaporwave characters!",
 	"vaporwaveExtended": {
 		"usages": [
 			"Content"

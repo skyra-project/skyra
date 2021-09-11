@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		const channel = args.finished ? assertNonThread(message.channel) : await args.pick('textChannelName');
 		if (this.getLock(role, channel)) return this.handleUnlock(message, args, role, channel);
 
-		const duration = args.finished ? null : await args.pick('timespan');
+		const duration = args.finished ? null : await args.pick('timespan', { minimum: 0 });
 		return this.handleLock(message, args, role, channel, duration);
 	}
 
@@ -45,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 	public async lock(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = await args.pick('roleName').catch(() => message.guild.roles.everyone);
 		const channel = args.finished ? assertNonThread(message.channel) : await args.pick('textChannelName');
-		const duration = args.finished ? null : await args.pick('timespan');
+		const duration = args.finished ? null : await args.pick('timespan', { minimum: 0 });
 		return this.handleLock(message, args, role, channel, duration);
 	}
 

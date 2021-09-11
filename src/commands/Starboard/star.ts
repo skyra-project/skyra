@@ -2,6 +2,7 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { days } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -27,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async top(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? null : await args.pick('userName');
-		const timespan = args.finished ? null : await args.pick('timespan');
+		const timespan = args.finished ? null : await args.pick('timespan', { minimum: days(1) });
 
 		const minimum = await readSettings(message.guild, GuildSettings.Starboard.Minimum);
 

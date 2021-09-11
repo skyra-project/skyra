@@ -105,6 +105,11 @@ export class UserCommand extends SkyraCommand {
 	public async onLoad() {
 		const { banners } = this.container.db;
 		const entries = await banners.find();
+		if (entries.length === 0) {
+			this.enabled = false;
+			return;
+		}
+
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(BrandingColors.Primary) });
 		for (const banner of entries) {
 			UserCommand.banners.set(banner.id, {

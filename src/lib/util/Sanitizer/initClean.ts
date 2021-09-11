@@ -2,13 +2,10 @@ import { initClean } from '#utils/Sanitizer/clean';
 import { isNullishOrEmpty } from '@sapphire/utilities';
 
 const secrets = new Set<string>();
+const suffixes = ['_KEY', '_TOKEN', '_SECRET', '_PASSWORD'];
 for (const [key, value] of Object.entries(process.env)) {
 	if (isNullishOrEmpty(value)) continue;
-
-	// _TOKEN keys
-	if (key.endsWith('_TOKEN')) secrets.add(value);
-	else if (key.endsWith('_SECRET')) secrets.add(value);
-	else if (key.endsWith('_PASSWORD')) secrets.add(value);
+	if (suffixes.some(suffix => key.endsWith(suffix))) secrets.add(value);
 }
 
 initClean([...secrets]);

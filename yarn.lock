@@ -1597,12 +1597,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@favware/graphql-pokemon@npm:^5.5.9":
-  version: 5.5.9
-  resolution: "@favware/graphql-pokemon@npm:5.5.9"
+"@favware/graphql-pokemon@npm:^5.7.1":
+  version: 5.7.1
+  resolution: "@favware/graphql-pokemon@npm:5.7.1"
   dependencies:
     graphql: ^15.5.1
-  checksum: 95a9316481a7b2f5f886a0b517b038e62bc970951c1280dd3ea53a32ccf33b653fcfe2c7d8764a557e8dcc4718e5e10ac264b59e749d28ecc08385bc0e7d44e8
+  checksum: 6b6c01c03d97eebb6a23bac0a69178c3b043c1e31d8cb25e3364ecad296ef74c5388df553b406f6086458218a1a1862a6a4ab6f293776eb423d59d893da29a68
   languageName: node
   linkType: hard
 
@@ -2322,13 +2322,13 @@ __metadata:
   linkType: hard
 
 "@skyra/audio@npm:next":
-  version: 2.0.0-next.5a64dfa.0
-  resolution: "@skyra/audio@npm:2.0.0-next.5a64dfa.0"
+  version: 2.0.0-next.d7b8086.0
+  resolution: "@skyra/audio@npm:2.0.0-next.d7b8086.0"
   dependencies:
     backoff: ^2.5.0
-    tslib: ^2.3.1
-    ws: ^8.2.0
-  checksum: 2b0644e771e023b6a6e2b22db8f21c22238dcf862b28639e6f5c624d66365a77c2098fb9ec3538e95ad696555a06fa43346344ae1314bc74e738e59792e6c75b
+    tslib: ^2.3.0
+    ws: ^8.0.0
+  checksum: b8b69102955b8a4609e8401d12198e712ad5497c176f4f6cfaad9813e6f4f9f5e5c6a788b4e6dd62705e56df0129303b69eac1b13c79003dc992776d6c3d21ae
   languageName: node
   linkType: hard
 
@@ -9633,7 +9633,7 @@ fsevents@^2.3.2:
     "@commitlint/cli": ^13.1.0
     "@commitlint/config-conventional": ^13.1.0
     "@discordjs/collection": ^0.2.1
-    "@favware/graphql-pokemon": ^5.5.9
+    "@favware/graphql-pokemon": ^5.7.1
     "@favware/zalgo": ^3.1.2
     "@grpc/grpc-js": ^1.3.7
     "@influxdata/influxdb-client": ^1.17.0
@@ -11059,7 +11059,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.2.0, ws@npm:^8.2.2":
+"ws@npm:^8.0.0, ws@npm:^8.2.2":
   version: 8.2.2
   resolution: "ws@npm:8.2.2"
   peerDependencies:

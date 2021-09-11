@@ -115,7 +115,7 @@
 		"@babel/preset-typescript": "^7.15.0",
 		"@commitlint/cli": "^13.1.0",
 		"@commitlint/config-conventional": "^13.1.0",
-		"@favware/graphql-pokemon": "^5.5.9",
+		"@favware/graphql-pokemon": "^5.7.1",
 		"@sapphire/eslint-config": "^3.2.3",
 		"@sapphire/prettier-config": "^1.1.6",
 		"@sapphire/ts-config": "^3.0.0",

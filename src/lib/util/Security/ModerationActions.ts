@@ -420,7 +420,9 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.bans(options.userId)
 			.put({
-				query: { 'delete-message-days': days },
+				data: {
+					delete_message_days: days
+				},
 				reason: moderationLog.reason
 					? t(LanguageKeys.Commands.Moderation.ActionSoftBanReason, { reason: moderationLog.reason! })
 					: t(LanguageKeys.Commands.Moderation.ActionSoftBanNoReason)
@@ -444,7 +446,9 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.bans(options.userId)
 			.put({
-				query: { 'delete-message-days': days },
+				data: {
+					delete_message_days: days
+				},
 				reason: await this.getReason('ban', moderationLog.reason)
 			});
 

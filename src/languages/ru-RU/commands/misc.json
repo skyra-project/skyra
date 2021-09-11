@@ -85,7 +85,6 @@
 		"",
 		""
 	],
-	"upvoteMessage": "",
 	"afkDescription": "",
 	"afkExtended": {
 		"usages": [
@@ -507,6 +506,7 @@
 	"upvoteExtended": {
 		"extendedHelp": ""
 	},
+	"upvoteMessage": "",
 	"vaporwaveDescription": "",
 	"vaporwaveExtended": {
 		"usages": [

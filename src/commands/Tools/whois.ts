@@ -3,9 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { months } from '#utils/common';
-import { Colors, Emojis, PermissionFlags } from '#utils/constants';
+import { Colors, Emojis } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -17,7 +18,7 @@ const { FLAGS } = Permissions;
 	aliases: ['userinfo', 'uinfo', 'user'],
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

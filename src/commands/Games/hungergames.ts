@@ -1,9 +1,9 @@
 import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { deleteMessage, isModerator } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
@@ -20,7 +20,7 @@ import { setTimeout as sleep } from 'timers/promises';
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
 	flags: ['autofill', 'autoskip'],
-	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.READ_MESSAGE_HISTORY],
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

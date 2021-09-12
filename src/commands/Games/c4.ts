@@ -4,10 +4,10 @@ import { ConnectFourHumanController } from '#lib/games/connect-four/ConnectFourH
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -15,7 +15,7 @@ import type { User } from 'discord.js';
 	description: LanguageKeys.Commands.Games.C4Description,
 	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
 	flags: ['easy', 'medium', 'hard'],
-	requiredClientPermissions: [PermissionFlags.USE_EXTERNAL_EMOJIS, PermissionFlags.ADD_REACTIONS, PermissionFlags.READ_MESSAGE_HISTORY],
+	requiredClientPermissions: [PermissionFlagsBits.UseExternalEmojis, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

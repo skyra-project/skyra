@@ -1,10 +1,10 @@
 import { TicTacToeBotController } from '#lib/games/tic-tac-toe/TicTacToeBotController';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { TicTacToeHumanController } from '#lib/games/tic-tac-toe/TicTacToeHumanController';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['ttt'],
 	description: LanguageKeys.Commands.Games.TicTacToeDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
-	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.READ_MESSAGE_HISTORY],
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

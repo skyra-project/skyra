@@ -1,16 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
-import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vk', 'vkick'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
-	requiredClientPermissions: [PermissionFlags.MANAGE_CHANNELS, PermissionFlags.MOVE_MEMBERS],
+	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.MoveMembers],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

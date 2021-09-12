@@ -2,13 +2,14 @@ import { AudioCommand, Queue, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
-import { PermissionFlags, ZeroWidthSpace } from '#utils/constants';
+import { ZeroWidthSpace } from '#utils/constants';
 import { getAudio } from '#utils/functions';
 import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
 import { MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<AudioCommand.Options>({
@@ -16,10 +17,10 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
 	requiredClientPermissions: [
-		PermissionFlags.ADD_REACTIONS,
-		PermissionFlags.MANAGE_MESSAGES,
-		PermissionFlags.EMBED_LINKS,
-		PermissionFlags.READ_MESSAGE_HISTORY
+		PermissionFlagsBits.AddReactions,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.EmbedLinks,
+		PermissionFlagsBits.ReadMessageHistory
 	]
 })
 export class UserAudioCommand extends AudioCommand {

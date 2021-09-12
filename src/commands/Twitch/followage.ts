@@ -1,16 +1,16 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.FollowageExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

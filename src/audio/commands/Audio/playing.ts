@@ -1,12 +1,12 @@
 import { AudioCommand, RequireMusicPlaying } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
-import { PermissionFlags } from '#utils/constants';
 import { getAudio } from '#utils/functions';
 import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TrackInfo } from '@skyra/audio';
+import { PermissionFlagsBits } from 'discord-api-types/v8';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
 	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserAudioCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;

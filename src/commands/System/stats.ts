@@ -1,17 +1,17 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { Message, MessageEmbed, version } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CpuInfo, cpus, uptime } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['stats', 'sts'],
 	description: LanguageKeys.Commands.System.StatsDescription,
 	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

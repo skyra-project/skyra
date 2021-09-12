@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -10,7 +10,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.System.SupportDescription,
 	extendedHelp: LanguageKeys.Commands.System.SupportExtended,
 	guarded: true,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

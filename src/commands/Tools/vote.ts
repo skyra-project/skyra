@@ -1,15 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/rest/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.VoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.VoteExtended,
-	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.READ_MESSAGE_HISTORY],
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

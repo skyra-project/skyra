@@ -5,13 +5,13 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { days, floatPromise, seconds } from '#utils/common';
 import { andMix, BooleanFn } from '#utils/common/comparators';
-import { PermissionFlags } from '#utils/constants';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { metadata, TypeCodes } from '#utils/moderationConstants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, CommandOptionsRunTypeEnum, IArgument } from '@sapphire/framework';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
@@ -55,7 +55,7 @@ const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 	],
 	options: [...ageOptions, ...includesOptions],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: [PermissionFlags.MANAGE_MESSAGES, PermissionFlags.READ_MESSAGE_HISTORY, PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

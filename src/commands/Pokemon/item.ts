@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
-import { CdnUrls, PermissionFlags } from '#utils/constants';
+import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -12,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['pokeitem', 'bag'],
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

@@ -2,8 +2,9 @@ import { kRawEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Events } from '#lib/types/Enums';
-import { Colors, PermissionFlags } from '#utils/constants';
+import { Colors } from '#utils/constants';
 import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -16,7 +17,7 @@ import { FetchError } from 'node-fetch';
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
-	requiredClientPermissions: [PermissionFlags.READ_MESSAGE_HISTORY],
+	requiredClientPermissions: [PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

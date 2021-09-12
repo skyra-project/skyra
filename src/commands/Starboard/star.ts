@@ -3,7 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { days } from '#utils/common';
-import { Colors, PermissionFlags } from '#utils/constants';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { Colors } from '#utils/constants';
 import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -17,7 +18,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 	aliases: [],
 	description: LanguageKeys.Commands.Starboard.StarDescription,
 	extendedHelp: LanguageKeys.Commands.Starboard.StarExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['top', { input: 'random', default: true }]
 })

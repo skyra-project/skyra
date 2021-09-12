@@ -1,17 +1,17 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getPokemonSprite, GetPokemonSpriteParameters, getSpriteKey } from '#utils/APIs/Pokemon';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Message } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokesprite', 'pokeimage'],
 	description: LanguageKeys.Commands.Pokemon.SpriteDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.SpriteExtended,
 	flags: ['shiny', 'back'],
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

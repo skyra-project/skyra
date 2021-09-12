@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { getStickyRoles } from '#utils/functions';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -12,7 +12,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })

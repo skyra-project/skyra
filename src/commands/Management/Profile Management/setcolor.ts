@@ -1,15 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setcolour'],
 	description: LanguageKeys.Commands.Social.SetColorDescription,
 	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

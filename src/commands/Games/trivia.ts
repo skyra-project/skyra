@@ -1,8 +1,8 @@
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { floatPromise, minutes, seconds } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
-	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.EMBED_LINKS, PermissionFlags.READ_MESSAGE_HISTORY]
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility

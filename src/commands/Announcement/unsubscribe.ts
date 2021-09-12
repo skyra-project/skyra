@@ -1,16 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { announcementCheck } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Announcement.UnsubscribeDescription,
 	extendedHelp: LanguageKeys.Commands.Announcement.UnsubscribeExtended,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

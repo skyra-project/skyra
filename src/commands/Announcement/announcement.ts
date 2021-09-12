@@ -4,13 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { map, seconds } from '#utils/common';
-import { BrandingColors, PermissionFlags } from '#utils/constants';
+import { BrandingColors } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageEmbed, MessageOptions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -26,10 +27,10 @@ const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new
 	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [
-		PermissionFlags.ADD_REACTIONS,
-		PermissionFlags.MANAGE_ROLES,
-		PermissionFlags.MANAGE_MESSAGES,
-		PermissionFlags.EMBED_LINKS
+		PermissionFlagsBits.AddReactions,
+		PermissionFlagsBits.ManageRoles,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.EmbedLinks
 	],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	flags

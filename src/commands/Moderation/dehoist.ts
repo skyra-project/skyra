@@ -2,12 +2,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -18,7 +18,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 	description: LanguageKeys.Commands.Moderation.DehoistDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: [PermissionFlags.MANAGE_NICKNAMES, PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames, PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

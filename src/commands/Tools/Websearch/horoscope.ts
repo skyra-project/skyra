@@ -2,10 +2,11 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
-import { Emojis, PermissionFlags } from '#utils/constants';
+import { Emojis } from '#utils/constants';
 import { createPick } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Days, Sunsigns } from '@skyra/saelem';
 import { Message, MessageEmbed } from 'discord.js';
@@ -19,7 +20,7 @@ const kDays = ['yesterday', 'tomorrow', 'today'];
 	aliases: ['saelem'],
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

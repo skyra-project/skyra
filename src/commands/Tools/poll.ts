@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { Message } from 'discord.js';
 
 const NUMBER_OPTS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
@@ -14,7 +14,7 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 	aliases: ['spoll'],
 	description: LanguageKeys.Commands.Tools.PollDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PollExtended,
-	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.READ_MESSAGE_HISTORY, PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

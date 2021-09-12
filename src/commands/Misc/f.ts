@@ -1,8 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
@@ -13,7 +14,7 @@ import { join } from 'path';
 	aliases: ['pray'],
 	description: LanguageKeys.Commands.Misc.FDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

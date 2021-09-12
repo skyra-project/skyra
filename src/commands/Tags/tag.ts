@@ -5,7 +5,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
-import { PermissionFlags } from '#utils/constants';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { RequiresLevel } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
@@ -21,7 +21,7 @@ import { MessageEmbed, MessageOptions } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
 	flags: ['embed'],
 	options: ['color', 'colour'],
-	requiredClientPermissions: [PermissionFlags.MANAGE_MESSAGES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageMessages],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'alias', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
 })

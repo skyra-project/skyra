@@ -1,17 +1,17 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
-import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedEmoji,
 	setUpKey: ModerationSetupRestriction.Emoji
 })

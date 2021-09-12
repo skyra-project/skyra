@@ -1,10 +1,10 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
-import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
 
@@ -14,7 +14,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Moderation.RestrictEmojiExtended,
 	optionalDuration: true,
 	requiredMember: true,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedEmoji,
 	setUpKey: ModerationSetupRestriction.Emoji
 })

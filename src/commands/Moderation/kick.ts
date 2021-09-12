@@ -1,18 +1,18 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
-import { PermissionFlags } from '#utils/constants';
 import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['k'],
 	description: LanguageKeys.Commands.Moderation.KickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.KickExtended,
-	requiredClientPermissions: [PermissionFlags.KICK_MEMBERS],
+	requiredClientPermissions: [PermissionFlagsBits.KickMembers],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

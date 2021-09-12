@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { getSnipedMessage } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
@@ -14,7 +14,7 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

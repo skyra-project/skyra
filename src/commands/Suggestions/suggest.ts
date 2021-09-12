@@ -2,8 +2,9 @@ import { configurableKeys, GuildEntity, GuildSettings, readSettings, writeSettin
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors, PermissionFlags } from '#utils/constants';
+import { BrandingColors } from '#utils/constants';
 import { isAdmin } from '#utils/functions';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
@@ -15,7 +16,7 @@ import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
 	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

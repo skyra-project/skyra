@@ -3,19 +3,19 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { safeWrapPromise } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { resolveKey } from '@sapphire/plugin-i18next';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ub'],
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
-	requiredClientPermissions: [PermissionFlags.BAN_MEMBERS],
+	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {

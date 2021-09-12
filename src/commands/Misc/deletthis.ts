@@ -1,9 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { OWNERS, SISTER_CLIENTS } from '#root/config';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
@@ -13,7 +14,7 @@ import { join } from 'path';
 	aliases: ['deletethis'],
 	description: LanguageKeys.Commands.Misc.DeletThisDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.DeletThisExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

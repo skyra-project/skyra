@@ -2,17 +2,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { getModeration, sendTemporaryMessage } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.ReasonDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

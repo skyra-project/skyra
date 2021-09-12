@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { PermissionLevels } from '#lib/types/Enums';
 import { years } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -15,7 +15,7 @@ import type { Role } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.AddRoleExtended,
 	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

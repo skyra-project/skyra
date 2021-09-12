@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { getRootData } from '@sapphire/pieces';
-import { Permissions } from 'discord.js';
 import type { PostProcessorModule } from 'i18next';
 import { join } from 'path';
 
@@ -150,8 +149,3 @@ export const enum CanvasColors {
 	IndicatorGreen = '#4CAF50',
 	IndicatorRed = '#F44336'
 }
-
-/**
- * The permission flags known to DiscordJS
- */
-export const { FLAGS: PermissionFlags } = Permissions;

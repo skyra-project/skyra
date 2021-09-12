@@ -3,12 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -25,10 +25,10 @@ const enum HigherLowerReactions {
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
 	requiredClientPermissions: [
-		PermissionFlags.ADD_REACTIONS,
-		PermissionFlags.EMBED_LINKS,
-		PermissionFlags.MANAGE_MESSAGES,
-		PermissionFlags.USE_EXTERNAL_EMOJIS
+		PermissionFlagsBits.AddReactions,
+		PermissionFlagsBits.EmbedLinks,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.UseExternalEmojis
 	],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

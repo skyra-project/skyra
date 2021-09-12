@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { OWNERS, SISTER_CLIENTS } from '#root/config';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
@@ -12,7 +13,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.SlapDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SlapExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

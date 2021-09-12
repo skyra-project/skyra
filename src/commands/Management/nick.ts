@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { seconds } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['nickname'],
@@ -14,7 +14,7 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 	description: LanguageKeys.Commands.Management.NickDescription,
 	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: [PermissionFlags.CHANGE_NICKNAME],
+	requiredClientPermissions: [PermissionFlagsBits.ChangeNickname],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

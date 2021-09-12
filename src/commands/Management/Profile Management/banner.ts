@@ -2,8 +2,9 @@ import { GuildSettings, readSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors, CdnUrls, Emojis, PermissionFlags } from '#utils/constants';
+import { BrandingColors, CdnUrls, Emojis } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -18,7 +19,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
-	requiredClientPermissions: [PermissionFlags.MANAGE_MESSAGES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageMessages],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })

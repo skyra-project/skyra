@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
@@ -12,7 +12,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.QuoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

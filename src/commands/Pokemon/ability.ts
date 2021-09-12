@@ -1,17 +1,18 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
-import { CdnUrls, PermissionFlags } from '#utils/constants';
+import { CdnUrls } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['abilities', 'pokeability'],
 	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

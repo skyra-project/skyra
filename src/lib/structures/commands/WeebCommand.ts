@@ -1,9 +1,9 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
@@ -29,7 +29,7 @@ export abstract class WeebCommand extends SkyraCommand {
 
 	protected constructor(context: PieceContext, options: WeebCommand.Options) {
 		super(context, {
-			requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+			requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			...options,
 			enabled: envIsDefined('WEEB_SH_TOKEN')

@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { kRegExpTwemoji, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
@@ -14,7 +14,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	aliases: ['emote'],
 	description: LanguageKeys.Commands.Tools.EmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

@@ -2,12 +2,12 @@ import { AudioCommand, QueueEntry, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types/Discord';
 import { map, prependIfNotNull, take } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { getAudio } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { serialize } from 'binarytf';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 export const maximumExportQueueSize = 100;
 
@@ -16,7 +16,7 @@ export const maximumExportQueueSize = 100;
 	cooldownLimit: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends AudioCommand {

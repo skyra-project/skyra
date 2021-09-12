@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum, Identifiers } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock, deepClone } from '@sapphire/utilities';
 
@@ -16,7 +16,7 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 	description: LanguageKeys.Commands.Social.AutoRoleDescription,
 	extendedHelp: LanguageKeys.Commands.Social.AutoRoleExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'update', { input: 'show', default: true }]
 })

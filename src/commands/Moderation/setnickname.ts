@@ -2,17 +2,17 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
 	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	optionalDuration: true,
-	requiredClientPermissions: [PermissionFlags.MANAGE_NICKNAMES],
+	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

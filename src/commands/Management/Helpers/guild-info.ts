@@ -1,12 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags, ZeroWidthSpace } from '#utils/constants';
+import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -19,7 +20,7 @@ const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACT
 	aliases: ['server-info'],
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

@@ -12,8 +12,8 @@ import {
 	ResolvedConditions,
 	ValueWrapper
 } from '#lib/weather';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { seconds } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -32,7 +32,7 @@ const imperialCountries = ['US', 'LR', 'MM'];
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	flags: [...imperial, ...metric, ...kelvin],
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

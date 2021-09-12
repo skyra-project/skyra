@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
@@ -13,7 +13,7 @@ import { URL } from 'url';
 	aliases: ['wiki'],
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

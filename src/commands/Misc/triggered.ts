@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { GifEncoder } from '@skyra/gifenc';
@@ -20,7 +21,7 @@ const COORDINATES: readonly [number, number][] = [
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

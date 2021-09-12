@@ -2,10 +2,10 @@ import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { NonNullObject, roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -17,7 +17,7 @@ import { URL } from 'url';
 	aliases: ['currency', 'money', 'exchange'],
 	description: LanguageKeys.Commands.Tools.PriceDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

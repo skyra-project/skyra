@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
-import { cdnFolder, PermissionFlags } from '#utils/constants';
+import { cdnFolder } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,6 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -17,7 +18,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	aliases: ['lvl', 'rank'],
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

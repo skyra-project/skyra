@@ -2,7 +2,6 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { iteratorAt } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
@@ -12,6 +11,7 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -22,7 +22,7 @@ const kCodeZ = 'Z'.charCodeAt(0);
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS, PermissionFlags.READ_MESSAGE_HISTORY]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;

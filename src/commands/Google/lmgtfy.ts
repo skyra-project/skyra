@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 
@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['letmegooglethatforyou', 'letmegooglethat'],
 	description: LanguageKeys.Commands.Google.LmgtfyDescription,
 	extendedHelp: LanguageKeys.Commands.Google.LmgtfyExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

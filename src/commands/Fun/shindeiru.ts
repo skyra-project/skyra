@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -11,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.ShindeiruDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ShindeiruExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

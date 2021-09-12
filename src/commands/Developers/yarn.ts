@@ -1,12 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
-import { CdnUrls, PermissionFlags } from '#utils/constants';
+import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -14,7 +15,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],
 	description: LanguageKeys.Commands.Developers.YarnDescription,
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {

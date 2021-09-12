@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RGB, SkyraCommand } from '#lib/structures';
 import { hexConcat, luminance } from '#utils/Color';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, rgb } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
@@ -16,7 +16,7 @@ const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 	aliases: ['colour'],
 	description: LanguageKeys.Commands.Tools.ColorDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.ColorExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

@@ -2,9 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
-import { cdnFolder, PermissionFlags } from '#utils/constants';
+import { cdnFolder } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
 import { fetchAvatar, sanitizeInput } from '#utils/util';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
@@ -19,7 +20,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.ProfileDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

@@ -1,12 +1,12 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
-import { PermissionFlags } from '#utils/constants';
 import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['b'],
@@ -14,7 +14,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	extendedHelp: LanguageKeys.Commands.Moderation.BanExtended,
 	optionalDuration: true,
 	options: ['d', 'day', 'days'],
-	requiredClientPermissions: [PermissionFlags.BAN_MEMBERS],
+	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {

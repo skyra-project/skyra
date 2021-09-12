@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { URL } from 'url';
 
 const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
@@ -15,7 +15,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 	aliases: ['bunbun', 'rabbit'],
 	description: LanguageKeys.Commands.Animal.BunnyDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.BunnyExtended,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

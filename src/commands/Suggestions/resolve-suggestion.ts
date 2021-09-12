@@ -5,8 +5,8 @@ import type { GuildMessage } from '#lib/types';
 import type { SuggestionData } from '#lib/types/definitions/Suggestion';
 import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
-import { PermissionFlags } from '#utils/constants';
 import { isAdmin } from '#utils/functions';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -31,7 +31,7 @@ const maximum = 2_147_483_647; // Maximum value for int32
 	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
 	flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

@@ -1,8 +1,8 @@
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
 
@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	aliases: ['slot', 'slots', 'slotmachines'],
 	description: LanguageKeys.Commands.Games.SlotMachineDescription,
 	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

@@ -5,11 +5,11 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { TwitchEventSubTypes, TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
@@ -21,7 +21,7 @@ import { Guild, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
 	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })

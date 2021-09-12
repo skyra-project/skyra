@@ -2,11 +2,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { PermissionFlags, ZeroWidthSpace } from '#utils/constants';
+import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -14,7 +15,7 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.PermissionsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

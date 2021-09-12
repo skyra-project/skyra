@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder, PermissionFlags } from '#utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
@@ -12,7 +13,7 @@ import { join } from 'path';
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 	description: LanguageKeys.Commands.Misc.GoofyTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.GoofyTimeExtended,
-	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

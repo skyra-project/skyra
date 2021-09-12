@@ -22,19 +22,26 @@
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
+	"twitchSubscriptionAddMessageForOfflineRequired": "",
+	"twitchSubscriptionRemoveOrResetEmpty": "",
 	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
+	"twitchSubscriptionRemoveNotToProvidedChannel": "",
+	"twitchSubscriptionRemoveStreamerStatusNotMatch": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",
 	"twitchSubscriptionResetSuccess": "",
 	"twitchSubscriptionResetSuccess_plural": "",
 	"twitchSubscriptionResetStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
+	"twitchSubscriptionShowStatus": {
+		"live": "",
+		"offline": ""
+	},
 	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {
 		"usages": [
-			"",
 			""
 		],
 		"extendedHelp": "",
@@ -105,11 +112,11 @@
 		"examples": [
 			"",
 			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"remove kyranet #twitch online",
+			"reset kyranet",
+			"reset",
+			"show kyranet",
+			"show"
 		]
 	}
 }

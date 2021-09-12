@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import type { PieceContext } from '@sapphire/framework';
+import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock, PickByValue } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
@@ -88,7 +88,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
 		super(context, {
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['GUILD_ANY'],
+			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			...options
 		});
 	}

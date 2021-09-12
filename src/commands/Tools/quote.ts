@@ -3,15 +3,17 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.QuoteDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

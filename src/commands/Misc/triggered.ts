@@ -6,6 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { GifEncoder } from '@skyra/gifenc';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 import { buffer } from 'stream/consumers';
@@ -20,7 +21,7 @@ const COORDINATES: readonly [number, number][] = [
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

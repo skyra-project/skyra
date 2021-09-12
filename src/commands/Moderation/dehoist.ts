@@ -4,8 +4,10 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -16,8 +18,8 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 	description: LanguageKeys.Commands.Moderation.DehoistDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames, PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);

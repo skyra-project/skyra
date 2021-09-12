@@ -4,14 +4,16 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.CaseDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['delete', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

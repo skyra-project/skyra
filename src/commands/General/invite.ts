@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -13,7 +14,7 @@ const flags = ['noperms', 'nopermissions'];
 	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
 	flags,
 	guarded: true,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {

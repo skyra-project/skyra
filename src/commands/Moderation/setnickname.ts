@@ -5,13 +5,14 @@ import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
 	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	optionalDuration: true,
-	requiredClientPermissions: ['MANAGE_NICKNAMES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

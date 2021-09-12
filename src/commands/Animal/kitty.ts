@@ -5,13 +5,14 @@ import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['kitten', 'cat'],
 	description: LanguageKeys.Commands.Animal.KittyDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.KittyExtended,
-	requiredClientPermissions: ['ATTACH_FILES', 'EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

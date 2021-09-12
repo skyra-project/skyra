@@ -5,13 +5,14 @@ import { CdnUrls } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['abilities', 'pokeability'],
 	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

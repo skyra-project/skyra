@@ -3,14 +3,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { CommandContext } from '@sapphire/framework';
+import { CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['viewbday'],
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {

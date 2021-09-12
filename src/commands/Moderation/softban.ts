@@ -6,13 +6,14 @@ import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sb'],
 	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	options: ['d', 'day', 'days'],
-	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {

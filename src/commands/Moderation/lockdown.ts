@@ -7,7 +7,9 @@ import { assertNonThread, getSecurity } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, NonThreadGuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Permissions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -16,8 +18,8 @@ import type { TFunction } from 'i18next';
 	description: LanguageKeys.Commands.Moderation.LockdownDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.LockdownExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageRoles],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['lock', 'unlock', { input: 'auto', default: true }]
 })
 export class UserCommand extends SkyraCommand {

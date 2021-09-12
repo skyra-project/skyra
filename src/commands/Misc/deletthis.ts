@@ -6,6 +6,7 @@ import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
@@ -13,7 +14,7 @@ import { join } from 'path';
 	aliases: ['deletethis'],
 	description: LanguageKeys.Commands.Misc.DeletThisDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.DeletThisExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

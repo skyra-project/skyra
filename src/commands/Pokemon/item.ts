@@ -6,13 +6,14 @@ import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokeitem', 'bag'],
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

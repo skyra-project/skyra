@@ -9,12 +9,13 @@ import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { resolveKey } from '@sapphire/plugin-i18next';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ub'],
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
-	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {

@@ -4,13 +4,14 @@ import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vm'],
 	description: LanguageKeys.Commands.Moderation.VmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,
 	optionalDuration: true,
-	requiredClientPermissions: ['MUTE_MEMBERS'],
+	requiredClientPermissions: [PermissionFlagsBits.MuteMembers],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

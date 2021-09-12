@@ -6,6 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { displayEmoji, resolveEmoji, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
 import { Guild, MessageEmbed } from 'discord.js';
@@ -15,7 +16,7 @@ import { Guild, MessageEmbed } from 'discord.js';
 	description: LanguageKeys.Commands.Management.ManageReactionRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

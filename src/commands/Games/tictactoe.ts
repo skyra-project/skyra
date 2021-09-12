@@ -6,6 +6,8 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -13,8 +15,8 @@ import type { TFunction } from 'i18next';
 	aliases: ['ttt'],
 	description: LanguageKeys.Commands.Games.TicTacToeDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();

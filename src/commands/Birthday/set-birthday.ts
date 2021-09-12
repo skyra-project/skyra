@@ -5,7 +5,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, CommandContext } from '@sapphire/framework';
+import { Args, CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish, Nullish } from '@sapphire/utilities';
 
@@ -13,7 +13,7 @@ import { isNullish, Nullish } from '@sapphire/utilities';
 	aliases: ['setbday', 'bd', 'birthday'],
 	description: LanguageKeys.Commands.Misc.SetBirthdayDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SetBirthdayExtended,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {

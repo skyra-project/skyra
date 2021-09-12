@@ -4,13 +4,13 @@ import { floatPromise, resolveOnErrorCodes } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.DivorceDescription,
 	extendedHelp: LanguageKeys.Commands.Social.DivorceExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

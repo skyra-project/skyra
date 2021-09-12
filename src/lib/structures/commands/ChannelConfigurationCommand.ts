@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { assertNonThread } from '#utils/functions';
-import { Args, container, IArgument, PieceContext } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, container, IArgument, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
@@ -17,7 +17,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	public constructor(context: PieceContext, options: ChannelConfigurationCommand.Options) {
 		super(context, {
 			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['GUILD_ANY'],
+			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			...options
 		});
 

@@ -5,6 +5,7 @@ import { getImage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 
@@ -12,7 +13,7 @@ import { join } from 'path';
 	aliases: ['pepelove'],
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

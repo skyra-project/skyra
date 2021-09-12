@@ -5,6 +5,7 @@ import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/API
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
@@ -13,7 +14,7 @@ import { URL } from 'url';
 	aliases: ['ctime'],
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
 	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

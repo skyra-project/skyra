@@ -6,7 +6,9 @@ import { days } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -16,8 +18,8 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 	aliases: [],
 	description: LanguageKeys.Commands.Starboard.StarDescription,
 	extendedHelp: LanguageKeys.Commands.Starboard.StarExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['top', { input: 'random', default: true }]
 })
 export class UserCommand extends SkyraCommand {

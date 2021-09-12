@@ -2,13 +2,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['aifact', 'botfact'],
 	description: LanguageKeys.Commands.Misc.SkyraFactDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SkyraFactExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

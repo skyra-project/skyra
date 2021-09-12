@@ -7,9 +7,9 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
 import { isAdmin } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, container } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { MessageEmbed, TextChannel } from 'discord.js';
 
 const enum SuggestionsColors {
@@ -30,8 +30,8 @@ const maximum = 2_147_483_647; // Maximum value for int32
 	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
 	flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

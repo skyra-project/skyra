@@ -3,13 +3,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wof'],
 	description: LanguageKeys.Commands.Games.WheelOfFortuneDescription,
 	extendedHelp: LanguageKeys.Commands.Games.WheelOfFortuneExtended,
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

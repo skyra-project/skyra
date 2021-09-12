@@ -7,6 +7,7 @@ import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { join } from 'path';
@@ -17,7 +18,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	aliases: ['lvl', 'rank'],
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

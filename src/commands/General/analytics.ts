@@ -6,6 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -13,7 +14,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	aliases: ['growth'],
 	description: LanguageKeys.Commands.General.GrowthDescription,
 	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private nextRefresh = Date.now();

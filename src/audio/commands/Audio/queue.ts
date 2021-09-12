@@ -8,6 +8,7 @@ import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -15,7 +16,12 @@ import type { TFunction } from 'i18next';
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: [
+		PermissionFlagsBits.AddReactions,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.EmbedLinks,
+		PermissionFlagsBits.ReadMessageHistory
+	]
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

@@ -17,6 +17,7 @@ import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 const imperial = ['fahrenheit', 'f', 'imperial', 'i'];
@@ -31,7 +32,7 @@ const imperialCountries = ['US', 'LR', 'MM'];
 	description: LanguageKeys.Commands.Google.WeatherDescription,
 	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
 	flags: [...imperial, ...metric, ...kelvin],
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

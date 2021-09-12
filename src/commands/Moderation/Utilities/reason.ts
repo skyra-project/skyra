@@ -5,13 +5,15 @@ import { Events, PermissionLevels } from '#lib/types/Enums';
 import { getModeration, sendTemporaryMessage } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.ReasonDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.ReasonExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

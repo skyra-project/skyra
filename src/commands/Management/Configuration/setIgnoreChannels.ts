@@ -5,14 +5,14 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Args, container, IArgument } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, container, IArgument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
 	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

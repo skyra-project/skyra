@@ -7,7 +7,7 @@ import { seconds, years } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Permissions, User } from 'discord.js';
 
@@ -15,7 +15,7 @@ import { Permissions, User } from 'discord.js';
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.TimeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

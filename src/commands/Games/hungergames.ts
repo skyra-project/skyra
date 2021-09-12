@@ -8,8 +8,10 @@ import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReaction
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, isFunction } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'timers/promises';
 
@@ -18,8 +20,8 @@ import { setTimeout as sleep } from 'timers/promises';
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
 	flags: ['autofill', 'autoskip'],
-	requiredClientPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();

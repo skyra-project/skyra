@@ -6,7 +6,9 @@ import { minutes } from '#utils/common';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -22,8 +24,13 @@ const enum HigherLowerReactions {
 	aliases: ['hilo', 'higherlower', 'hl'],
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
 	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [
+		PermissionFlagsBits.AddReactions,
+		PermissionFlagsBits.EmbedLinks,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.UseExternalEmojis
+	],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;

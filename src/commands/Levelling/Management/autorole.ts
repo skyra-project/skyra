@@ -4,9 +4,10 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Identifiers } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, Identifiers } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock, deepClone } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -15,8 +16,8 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 	description: LanguageKeys.Commands.Social.AutoRoleDescription,
 	extendedHelp: LanguageKeys.Commands.Social.AutoRoleExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: ['MANAGE_ROLES'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'update', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -6,6 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { minutes, seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
 
@@ -14,7 +15,7 @@ import { codeBlock } from '@sapphire/utilities';
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
 	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -6,12 +6,13 @@ import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['um'],
 	description: LanguageKeys.Commands.Moderation.UnmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnmuteExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.Muted,
 	setUpKey: ModerationSetupRestriction.All
 })

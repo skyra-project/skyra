@@ -5,12 +5,13 @@ import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-voice', 'urv'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictVoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictVoiceExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedVoice,
 	setUpKey: ModerationSetupRestriction.Voice
 })

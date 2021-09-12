@@ -4,12 +4,13 @@ import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vk', 'vkick'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
-	requiredClientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.MoveMembers],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

@@ -4,17 +4,19 @@ import type { GuildMessage } from '#lib/types';
 import { CanvasColors, socialFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.ShipDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;

@@ -4,14 +4,16 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getStickyRoles } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: ['MANAGE_ROLES'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

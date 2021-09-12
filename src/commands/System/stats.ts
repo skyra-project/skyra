@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { CpuInfo, cpus, uptime } from 'os';
 
@@ -10,7 +11,7 @@ import { CpuInfo, cpus, uptime } from 'os';
 	aliases: ['stats', 'sts'],
 	description: LanguageKeys.Commands.System.StatsDescription,
 	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

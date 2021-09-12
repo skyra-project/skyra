@@ -3,12 +3,13 @@ import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.LoveDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.LoveExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

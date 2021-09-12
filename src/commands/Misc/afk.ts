@@ -9,7 +9,7 @@ import { LongWidthSpace } from '#utils/constants';
 import { RequiresLevel } from '#utils/decorators';
 import { isGuildOwner } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
 import { chunk, isNullish, Nullish } from '@sapphire/utilities';
@@ -20,7 +20,7 @@ import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 	cooldownDelay: seconds(20),
 	description: LanguageKeys.Commands.Misc.AfkDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.AfkExtended,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['ignore', 'reset', 'clear', 'list', 'show', { input: 'set', default: true }]
 })
 export class UserCommand extends SkyraCommand {

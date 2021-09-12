@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
 import type { User } from 'discord.js';
@@ -17,7 +17,7 @@ const flags = ['remind', 'reminder', 'remindme'];
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
 	flags,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

@@ -5,16 +5,18 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { getSnipedMessage } from '#utils/functions';
 import { getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

@@ -6,6 +6,7 @@ import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
@@ -14,7 +15,7 @@ import type { Role } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
 	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

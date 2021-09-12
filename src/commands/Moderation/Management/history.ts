@@ -8,6 +8,7 @@ import { TypeVariation } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -20,7 +21,7 @@ type DurationDisplay = (time: number) => string;
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['details', { input: 'overview', default: true }]
 })
 export class UserCommand extends SkyraCommand {

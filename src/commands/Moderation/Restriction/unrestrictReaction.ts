@@ -5,12 +5,13 @@ import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-reaction', 'urr'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictReactionDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictReactionExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedReaction,
 	setUpKey: ModerationSetupRestriction.Reaction
 })

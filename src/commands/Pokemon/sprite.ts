@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getPokemonSprite, GetPokemonSpriteParameters, getSpriteKey } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -10,7 +11,7 @@ import type { Message } from 'discord.js';
 	description: LanguageKeys.Commands.Pokemon.SpriteDescription,
 	extendedHelp: LanguageKeys.Commands.Pokemon.SpriteExtended,
 	flags: ['shiny', 'back'],
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

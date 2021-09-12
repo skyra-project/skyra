@@ -12,9 +12,9 @@ import { metadata, TypeCodes } from '#utils/moderationConstants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
-import { Args, IArgument } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, IArgument } from '@sapphire/framework';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -54,8 +54,8 @@ const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 	],
 	options: [...ageOptions, ...includesOptions],
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private get timespan(): IArgument<number> {

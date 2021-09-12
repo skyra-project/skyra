@@ -5,12 +5,13 @@ import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-attachment', 'ura'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictAttachmentDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictAttachmentExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedAttachment,
 	setUpKey: ModerationSetupRestriction.Attachment
 })

@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { reduce } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { CommandContext } from '@sapphire/framework';
+import { CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed } from 'discord.js';
 
@@ -12,7 +12,7 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['upbday', 'birthdays'],
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {

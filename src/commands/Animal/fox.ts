@@ -4,6 +4,7 @@ import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
@@ -12,7 +13,7 @@ const url = new URL('https://randomfox.ca/floof');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animal.FoxDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.FoxExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

@@ -47,7 +47,7 @@ RUN yarn run build
 FROM base AS runner
 
 ENV NODE_ENV="production"
-ENV NODE_OPTIONS="--max_old_space_size=4096"
+ENV NODE_OPTIONS="--enable-source-maps --max_old_space_size=4096"
 
 COPY --chown=node:node scripts/audio/ scripts/audio/
 COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js

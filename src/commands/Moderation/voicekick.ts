@@ -6,7 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommand.Options>({
-	aliases: ['vk'],
+	aliases: ['vk', 'vkick'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
 	requiredClientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],

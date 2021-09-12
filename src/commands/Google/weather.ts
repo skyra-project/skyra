@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
 		const useImperial = this.shouldUseImperial(args);
 		const base = baseLanguage(args.t.lng);
-		const data = await getData(await args.rest('string'), base);
+		const data = await getData(await args.rest('string', { minimum: 1 }), base);
 		const [current] = data.current_condition;
 
 		const resolved = useImperial

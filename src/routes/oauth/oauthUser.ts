@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { ApiRequest, ApiResponse, HttpCodes, methods, MimeTypes, Route, RouteOptions } from '@sapphire/plugin-api';
 import { Time } from '@sapphire/time-utilities';
-import type { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v8';
+import { OAuth2Routes, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v9';
 import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
@@ -55,7 +55,7 @@ export class UserRoute extends Route {
 		try {
 			logger.debug(`Refreshing Token for ${id}`);
 			return await fetch<RESTPostOAuth2AccessTokenResult>(
-				'https://discord.com/api/v8/oauth2/token',
+				OAuth2Routes.tokenURL,
 				{
 					method: 'POST',
 					body: stringify({

@@ -50,7 +50,7 @@
 		"scripts:migration": "node scripts/migrations.mjs",
 		"dockerps": "pwsh -NoLogo ./.docker/control.ps1",
 		"typeorm:schema:resync": "docker container rm -f postgres && docker volume rm postgres-data && docker volume create postgres-data && docker-compose -f ./.docker/docker-compose.yml up -d postgres && sleep 3 && yarn typeorm schema:sync",
-		"update": "yarn upgrade-interactive",
+		"update": "yarn up \"*\" -i",
 		"prepare": "husky install .github/husky"
 	},
 	"preferUnplugged": true,
@@ -91,7 +91,7 @@
 		"colorette": "^1.4.0",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",
-		"discord-api-types": "^0.22.0",
+		"discord-api-types": "^0.23.1",
 		"discord.js": "^13.1.0",
 		"dotenv-cra": "^3.0.2",
 		"grpc_tools_node_protoc_ts": "^5.3.2",
@@ -100,7 +100,7 @@
 		"pg": "^8.7.1",
 		"skia-canvas": "^0.9.25",
 		"tslib": "1.11.2",
-		"typeorm": "0.2.37",
+		"typeorm": "^0.2.37",
 		"typeorm-naming-strategies": "^2.0.0",
 		"utf-8-validate": "^5.0.5",
 		"ws": "^8.2.2",
@@ -150,11 +150,12 @@
 		"pretty-quick": "^3.1.1",
 		"ts-node": "^10.2.1",
 		"tsc-watch": "^4.5.0",
-		"typescript": "4.4.3"
+		"typescript": "^4.4.3"
 	},
 	"resolutions": {
 		"acorn": "^8.4.1",
 		"chalk": "^4.1.2",
+		"discord-api-types": "^0.23.1",
 		"diff": "^5.0.0",
 		"jest-environment-jsdom": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"jest-jasmine2": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",

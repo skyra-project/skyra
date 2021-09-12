@@ -22,19 +22,26 @@
 	"twitchSubscriptionAddDuplicated": "",
 	"twitchSubscriptionAddSuccessOffline": "",
 	"twitchSubscriptionAddSuccessLive": "",
+	"twitchSubscriptionAddMessageForOfflineRequired": "",
+	"twitchSubscriptionRemoveOrResetEmpty": "",
 	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
+	"twitchSubscriptionRemoveNotToProvidedChannel": "",
+	"twitchSubscriptionRemoveStreamerStatusNotMatch": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",
 	"twitchSubscriptionResetSuccess": "",
 	"twitchSubscriptionResetSuccess_plural": "",
 	"twitchSubscriptionResetStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
+	"twitchSubscriptionShowStatus": {
+		"live": "",
+		"offline": ""
+	},
 	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "",
 	"followageDescription": "",
 	"followageExtended": {
 		"usages": [
-			"",
 			""
 		],
 		"extendedHelp": "",

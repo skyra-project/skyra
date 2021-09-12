@@ -137,7 +137,8 @@ addCommand(
 		{
 			name: 'ping',
 			path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'),
-			store: commands
+			store: commands,
+			root: '/home/skyra/commands'
 		},
 		{
 			description: LanguageKeys.Commands.General.PingDescription,
@@ -153,7 +154,8 @@ addCommand(
 		{
 			name: 'balance',
 			path: resolve('/home/skyra/commands/Social/balance.js'),
-			store: commands
+			store: commands,
+			root: '/home/skyra/commands'
 		},
 		{
 			description: LanguageKeys.Commands.Social.BalanceDescription,
@@ -169,7 +171,8 @@ addCommand(
 		{
 			name: 'define',
 			path: resolve('/home/skyra/commands/Tools/Dictionary/define.js'),
-			store: commands
+			store: commands,
+			root: '/home/skyra/commands'
 		},
 		{
 			description: LanguageKeys.Commands.Tools.DefineDescription,

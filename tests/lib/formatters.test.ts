@@ -115,7 +115,7 @@ describe('formatters', () => {
 		});
 
 		test('GIVEN embed author with iconURL only THEN returns embed author with iconURL only', () => {
-			const message = createMessage({ embeds: [{ author: { icon_url: 'https://skyra.pw/avatars/skyra.png' } }] });
+			const message = createMessage({ embeds: [{ author: { name: '', icon_url: 'https://skyra.pw/avatars/skyra.png' } }] });
 
 			expect(formatMessage(t(), message)).toBe(
 				join(

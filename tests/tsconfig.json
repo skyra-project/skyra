@@ -9,7 +9,7 @@
 			"#lib/audio": ["../src/audio/lib"],
 			"#lib/*": ["../src/lib/*"],
 			"#languages": ["../src/languages/index"],
-			"#mocks/*": ["./tests/mocks/*"],
+			"#mocks/*": ["./mocks/*"],
 			"#root/*": ["../src/*"]
 		}
 	},

@@ -1,8 +1,8 @@
+import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
-import type { APIUser } from 'discord-api-types/v9';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
@@ -727,19 +727,19 @@ describe('Utils', () => {
 
 	describe('getDisplayAvatar', () => {
 		test('GIVEN user without avatar THEN returns base avatar', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: null
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('', user)).toEqual('https://cdn.discordapp.com/embed/avatars/1.png');
 		});
 
 		test('GIVEN user with animated avatar THEN avatar gif url', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('268792781713965056', user)).toEqual(
 				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.gif'
@@ -747,10 +747,10 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN user with static avatar THEN avatar png url', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: '09b52e547fa797c47c7877cd10eb6ba8'
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('266624760782258186', user)).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
@@ -758,10 +758,10 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN user with static avatar AND options.format=png THEN avatar png url', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: '09b52e547fa797c47c7877cd10eb6ba8'
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('266624760782258186', user, { format: 'png' })).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
@@ -769,10 +769,10 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN user with animated avatar AND options.format=gif THEN avatar png url', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('268792781713965056', user, { format: 'png' })).toEqual(
 				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.png'
@@ -780,10 +780,10 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN user with animated avatar AND options.size=2048 THEN sized avatar gif url', () => {
-			const user: APIUser = {
+			const user = createUser({
 				discriminator: '0001',
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
-			} as APIUser;
+			});
 
 			expect(utils.getDisplayAvatar('268792781713965056', user, { size: 2048 })).toEqual(
 				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.gif?size=2048'

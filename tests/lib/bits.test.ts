@@ -1,5 +1,5 @@
 import { channelFlags, channelOffset, permissionsFlags, permissionsOffset, toChannelsArray, toPermissionsArray } from '#utils/bits';
-import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v8';
+import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v9';
 
 describe('Bits', () => {
 	describe('Permissions', () => {

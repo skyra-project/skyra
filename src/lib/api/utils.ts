@@ -6,7 +6,7 @@ import { container } from '@sapphire/framework';
 import { ApiRequest, ApiResponse, HttpCodes, LoginData } from '@sapphire/plugin-api';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v8';
+import type { RESTAPIPartialCurrentUserGuild } from 'discord-api-types/v9';
 import { Client, Guild, GuildMember, Permissions } from 'discord.js';
 import { flattenGuild } from './ApiTransformers';
 import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginData } from './types';

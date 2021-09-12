@@ -14,7 +14,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ub'],
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnbanExtended,
 	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })

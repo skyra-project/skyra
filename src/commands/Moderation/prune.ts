@@ -39,7 +39,7 @@ const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['purge', 'nuke', 'sweep'],
 	description: LanguageKeys.Commands.Moderation.PruneDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.PruneExtended,
 	flags: [
 		...attachmentsFlags,
 		...imageFlags,

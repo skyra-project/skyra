@@ -19,7 +19,7 @@ const kDays = ['yesterday', 'tomorrow', 'today'];
 	enabled: envParseBoolean('SAELEM_ENABLED'),
 	aliases: ['saelem'],
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.HoroscopeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

@@ -18,7 +18,7 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	aliases: ['dailies'],
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Social.DailyDescription,
-	extendedHelp: LanguageKeys.Commands.Social.DailyExtended,
+	detailedDescription: LanguageKeys.Commands.Social.DailyExtended,
 	spam: true,
 	flags: REMINDER_FLAGS
 })

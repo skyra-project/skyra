@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetPrefixDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetPrefixExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetPrefixExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	aliases: ['prefix']

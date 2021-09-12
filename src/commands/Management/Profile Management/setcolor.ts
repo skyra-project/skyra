@@ -8,7 +8,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setcolour'],
 	description: LanguageKeys.Commands.Social.SetColorDescription,
-	extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
+	detailedDescription: LanguageKeys.Commands.Social.SetColorExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

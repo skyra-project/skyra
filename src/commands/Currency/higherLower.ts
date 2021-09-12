@@ -23,7 +23,7 @@ const enum HigherLowerReactions {
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hilo', 'higherlower', 'hl'],
 	description: LanguageKeys.Commands.Games.HigherLowerDescription,
-	extendedHelp: LanguageKeys.Commands.Games.HigherLowerExtended,
+	detailedDescription: LanguageKeys.Commands.Games.HigherLowerExtended,
 	requiredClientPermissions: [
 		PermissionFlagsBits.AddReactions,
 		PermissionFlagsBits.EmbedLinks,

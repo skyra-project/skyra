@@ -11,7 +11,7 @@ const flags = ['noperms', 'nopermissions'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.General.InviteDescription,
-	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
+	detailedDescription: LanguageKeys.Commands.General.InviteExtended,
 	flags,
 	guarded: true,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]

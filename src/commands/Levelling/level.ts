@@ -17,7 +17,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lvl', 'rank'],
 	description: LanguageKeys.Commands.Social.LevelDescription,
-	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
+	detailedDescription: LanguageKeys.Commands.Social.LevelExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

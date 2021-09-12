@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['emojis'],
 	description: LanguageKeys.Commands.Tools.EmotesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.EmotesExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.EmotesExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

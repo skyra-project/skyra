@@ -11,7 +11,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['kittenfact'],
 	description: LanguageKeys.Commands.Animal.CatfactDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.CatfactExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.CatfactExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

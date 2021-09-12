@@ -8,7 +8,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['p'],
 	description: LanguageKeys.Commands.Music.PlayDescription,
-	extendedHelp: LanguageKeys.Commands.Music.PlayExtended,
+	detailedDescription: LanguageKeys.Commands.Music.PlayExtended,
 	flags: ['import', 'sc', 'soundcloud']
 })
 export class UserAudioCommand extends AudioCommand {

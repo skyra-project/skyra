@@ -13,7 +13,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	enabled: envParseBoolean('INFLUX_ENABLED'),
 	aliases: ['growth'],
 	description: LanguageKeys.Commands.General.GrowthDescription,
-	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
+	detailedDescription: LanguageKeys.Commands.General.GrowthExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

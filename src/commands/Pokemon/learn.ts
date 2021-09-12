@@ -17,7 +17,7 @@ const kPokemonGenerations = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['learnset', 'learnall'],
 	description: LanguageKeys.Commands.Pokemon.LearnDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.LearnExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.LearnExtended,
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

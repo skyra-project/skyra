@@ -13,7 +13,7 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['spoll'],
 	description: LanguageKeys.Commands.Tools.PollDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.PollExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.PollExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

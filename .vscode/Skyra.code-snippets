@@ -17,7 +17,7 @@
 			"@ApplyOptions<SkyraCommand.Options>({",
 			"\tcooldown: 10,",
 			"\tdescription: LanguageKeys.Commands.$1.${TM_FILENAME_BASE/(.{1})/${1:/upcase}/}Description,",
-			"\textendedHelp: LanguageKeys.Commands.$1.${TM_FILENAME_BASE/(.{1})/${1:/upcase}/}Extended,",
+			"\tdetailedDescription: LanguageKeys.Commands.$1.${TM_FILENAME_BASE/(.{1})/${1:/upcase}/}Extended,",
 			"\tpermissions: [$2],",
 			"})",
 			"export class UserCommand extends SkyraCommand {",

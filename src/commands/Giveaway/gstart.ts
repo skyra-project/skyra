@@ -13,7 +13,7 @@ const options = ['winners'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveaway'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayDescription,
-	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayExtended,
+	detailedDescription: LanguageKeys.Commands.Giveaway.GiveawayExtended,
 	options,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

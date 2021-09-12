@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rs'],
 	description: LanguageKeys.Commands.Admin.RoleSetDescription,
-	extendedHelp: LanguageKeys.Commands.Admin.RoleSetExtended,
+	detailedDescription: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', 'list', { input: 'auto', default: true }]

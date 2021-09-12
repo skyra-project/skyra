@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-person', 'star-wars-character'],
 	description: LanguageKeys.Commands.StarWars.PersonDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.PersonExtended
+	detailedDescription: LanguageKeys.Commands.StarWars.PersonExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

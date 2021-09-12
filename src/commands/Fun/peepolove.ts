@@ -12,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pepelove'],
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.PeepoLoveExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.PeepoLoveExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

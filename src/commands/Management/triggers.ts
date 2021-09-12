@@ -18,7 +18,7 @@ const enum Type {
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['trigger'],
 	description: LanguageKeys.Commands.Management.TriggersDescription,
-	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,
+	detailedDescription: LanguageKeys.Commands.Management.TriggersExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', { input: 'show', default: true }]

@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Announcement.SubscribeDescription,
-	extendedHelp: LanguageKeys.Commands.Announcement.SubscribeExtended,
+	detailedDescription: LanguageKeys.Commands.Announcement.SubscribeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

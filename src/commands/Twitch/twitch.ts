@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.TwitchDescription,
-	extendedHelp: LanguageKeys.Commands.Twitch.TwitchExtended,
+	detailedDescription: LanguageKeys.Commands.Twitch.TwitchExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

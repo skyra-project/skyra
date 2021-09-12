@@ -15,7 +15,7 @@ import { maximumExportQueueSize } from './exportqueue';
 	aliases: ['iq'],
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Music.ImportQueueDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended
+	detailedDescription: LanguageKeys.Commands.Music.ImportQueueExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	public async run(message: GuildMessage, args: AudioCommand.Args) {

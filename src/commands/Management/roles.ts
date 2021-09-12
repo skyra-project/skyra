@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	description: LanguageKeys.Commands.Management.RolesDescription,
-	extendedHelp: LanguageKeys.Commands.Management.RolesExtended,
+	detailedDescription: LanguageKeys.Commands.Management.RolesExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.QuoteDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.QuoteExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

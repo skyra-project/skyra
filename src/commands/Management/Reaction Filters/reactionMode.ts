@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['reaction-mode', 'r-mode'],
 	description: LanguageKeys.Commands.Management.ReactionModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.ReactionModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.ReactionModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'reactions';

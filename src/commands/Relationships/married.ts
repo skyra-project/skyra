@@ -8,7 +8,7 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Social.MarriedDescription,
-	extendedHelp: LanguageKeys.Commands.Social.MarriedExtended
+	detailedDescription: LanguageKeys.Commands.Social.MarriedExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

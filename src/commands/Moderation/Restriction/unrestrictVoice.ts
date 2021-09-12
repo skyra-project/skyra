@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-voice', 'urv'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictVoiceDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictVoiceExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictVoiceExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedVoice,
 	setUpKey: ModerationSetupRestriction.Voice

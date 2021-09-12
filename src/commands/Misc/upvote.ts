@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['updoot'],
 	description: LanguageKeys.Commands.Misc.UpvoteDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.UpvoteExtended
+	detailedDescription: LanguageKeys.Commands.Misc.UpvoteExtended
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {

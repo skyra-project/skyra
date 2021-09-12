@@ -42,8 +42,7 @@
 	"followageDescription": "Check how long a Twitch user has been following a channel.",
 	"followageExtended": {
 		"usages": [
-			"Username",
-			"Channelname"
+			"Username ChannelName"
 		],
 		"extendedHelp": "Useful if you want to flex how long you've been a fan of your favorite Twitch streamer",
 		"explainedUsage": [
@@ -52,7 +51,7 @@
 				"The name of the Twitch user to check."
 			],
 			[
-				"Channelname",
+				"ChannelName",
 				"The name of the Twitch channel to check."
 			]
 		],

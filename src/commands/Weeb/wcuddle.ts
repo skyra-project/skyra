@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.CuddleDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.CuddleExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.CuddleExtended,
 	queryType: 'cuddle',
 	responseName: LanguageKeys.Commands.Weeb.Cuddle,
 	requireUser: true

@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.LickDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.LickExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.LickExtended,
 	queryType: 'lick',
 	responseName: LanguageKeys.Commands.Weeb.Lick,
 	requireUser: true

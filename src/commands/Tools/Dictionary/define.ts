@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	enabled: envIsDefined('OWLBOT_TOKEN'),
 	aliases: ['def', 'definition', 'defination', 'dictionary'],
 	description: LanguageKeys.Commands.Tools.DefineDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.DefineExtended
+	detailedDescription: LanguageKeys.Commands.Tools.DefineExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

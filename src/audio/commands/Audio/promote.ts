@@ -14,7 +14,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.PromoteDescription,
-	extendedHelp: LanguageKeys.Commands.Music.PromoteExtended
+	detailedDescription: LanguageKeys.Commands.Music.PromoteExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireDj()

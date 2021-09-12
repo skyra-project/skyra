@@ -10,7 +10,7 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.PopDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.PopExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.PopExtended,
 	options: ['x', 'width', 'y', 'height', 'l', 'length']
 })
 export class UserCommand extends SkyraCommand {

@@ -11,7 +11,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.CuddleDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.CuddleExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.CuddleExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

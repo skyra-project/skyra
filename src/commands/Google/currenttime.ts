@@ -13,7 +13,7 @@ import { URL } from 'url';
 	enabled: envIsDefined('GOOGLE_MAPS_API_TOKEN', 'TIMEZONEDB_TOKEN'),
 	aliases: ['ctime'],
 	description: LanguageKeys.Commands.Google.CurrentTimeDescription,
-	extendedHelp: LanguageKeys.Commands.Google.CurrentTimeExtended,
+	detailedDescription: LanguageKeys.Commands.Google.CurrentTimeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

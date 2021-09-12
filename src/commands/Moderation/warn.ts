@@ -8,7 +8,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['w', 'warning'],
 	description: LanguageKeys.Commands.Moderation.WarnDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.WarnExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.WarnExtended,
 	optionalDuration: true,
 	requiredMember: true
 })

@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['attachment-mode', 'attachments-mode', 'att-mode', 'manageAttachment', 'manageattachment'],
 	description: LanguageKeys.Commands.Management.AttachmentsModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.AttachmentsModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.AttachmentsModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'attachments';

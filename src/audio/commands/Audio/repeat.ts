@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['replay', 'loop', 'loopsong'],
 	description: LanguageKeys.Commands.Music.RepeatDescription,
-	extendedHelp: LanguageKeys.Commands.Music.RepeatExtended
+	detailedDescription: LanguageKeys.Commands.Music.RepeatExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()

@@ -7,7 +7,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.ShuffleDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
+	detailedDescription: LanguageKeys.Commands.Music.ShuffleExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

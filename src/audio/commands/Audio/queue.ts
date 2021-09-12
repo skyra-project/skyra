@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
-	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
+	detailedDescription: LanguageKeys.Commands.Music.QueueExtended,
 	requiredClientPermissions: [
 		PermissionFlagsBits.AddReactions,
 		PermissionFlagsBits.ManageMessages,

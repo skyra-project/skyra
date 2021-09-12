@@ -8,7 +8,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['qc', 'clear'],
 	description: LanguageKeys.Commands.Music.ClearDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
+	detailedDescription: LanguageKeys.Commands.Music.ClearExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['capitals-mode', 'caps-mode'],
 	description: LanguageKeys.Commands.Management.CapitalsModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.CapitalsModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.CapitalsModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'capitals';

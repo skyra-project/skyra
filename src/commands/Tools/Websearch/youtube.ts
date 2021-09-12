@@ -22,7 +22,7 @@ const EMOJIS = {
 	enabled: envIsDefined('GOOGLE_API_TOKEN'),
 	aliases: ['yt'],
 	description: LanguageKeys.Commands.Tools.YouTubeDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended
+	detailedDescription: LanguageKeys.Commands.Tools.YouTubeExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

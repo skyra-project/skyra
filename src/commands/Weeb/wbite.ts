@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.BiteDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.BiteExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.BiteExtended,
 	queryType: 'bite',
 	responseName: LanguageKeys.Commands.Weeb.Bite,
 	requireUser: true

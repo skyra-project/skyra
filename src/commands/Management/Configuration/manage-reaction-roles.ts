@@ -14,7 +14,7 @@ import { Guild, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	description: LanguageKeys.Commands.Management.ManageReactionRolesDescription,
-	extendedHelp: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
+	detailedDescription: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]

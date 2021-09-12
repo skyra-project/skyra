@@ -8,7 +8,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['aifact', 'botfact'],
 	description: LanguageKeys.Commands.Misc.SkyraFactDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.SkyraFactExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.SkyraFactExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

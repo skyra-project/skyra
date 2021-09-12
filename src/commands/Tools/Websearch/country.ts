@@ -14,7 +14,7 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Tools.CountryDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.CountryExtended
+	detailedDescription: LanguageKeys.Commands.Tools.CountryExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

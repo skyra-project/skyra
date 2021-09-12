@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['newline-mode', 'nl-mode'],
 	description: LanguageKeys.Commands.Management.NewlineModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.NewlineModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.NewlineModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'newlines';

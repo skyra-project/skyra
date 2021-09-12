@@ -7,7 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.AddDescription,
-	extendedHelp: LanguageKeys.Commands.Music.AddExtended,
+	detailedDescription: LanguageKeys.Commands.Music.AddExtended,
 	flags: ['import', 'sc', 'soundcloud']
 })
 export class UserAudioCommand extends AudioCommand {

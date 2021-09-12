@@ -12,7 +12,7 @@ import { isNullish, Nullish } from '@sapphire/utilities';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['setbday', 'bd', 'birthday'],
 	description: LanguageKeys.Commands.Misc.SetBirthdayDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.SetBirthdayExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.SetBirthdayExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

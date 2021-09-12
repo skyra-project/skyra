@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['word-filter-mode'],
 	description: LanguageKeys.Commands.Management.FilterModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.FilterModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.FilterModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'words';

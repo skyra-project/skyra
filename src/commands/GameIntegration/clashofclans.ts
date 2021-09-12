@@ -25,7 +25,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 	enabled: envIsDefined('CLASH_OF_CLANS_TOKEN'),
 	aliases: ['coc'],
 	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.ClashOfClansExtended,
+	detailedDescription: LanguageKeys.Commands.GameIntegration.ClashOfClansExtended,
 	subCommands: ['player', { input: 'clan', default: true }]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

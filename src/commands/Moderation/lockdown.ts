@@ -16,7 +16,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lock', 'unlock'],
 	description: LanguageKeys.Commands.Moderation.LockdownDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.LockdownExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.LockdownExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],

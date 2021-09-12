@@ -9,7 +9,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vm'],
 	description: LanguageKeys.Commands.Moderation.VmuteDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.VmuteExtended,
 	optionalDuration: true,
 	requiredClientPermissions: [PermissionFlagsBits.MuteMembers],
 	requiredMember: true

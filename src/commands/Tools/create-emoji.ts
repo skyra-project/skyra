@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['add-emoji'],
 	description: LanguageKeys.Commands.Tools.CreateEmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.CreateEmojiExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.CreateEmojiExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageEmojisAndStickers],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

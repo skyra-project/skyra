@@ -15,7 +15,7 @@ const kAll: readonly All[] = ['all', 'max', 'maximum'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bank'],
 	description: LanguageKeys.Commands.Social.VaultDescription,
-	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
+	detailedDescription: LanguageKeys.Commands.Social.VaultExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	subCommands: ['deposit', { input: 'dep', output: 'deposit' }, 'withdraw', { input: 'with', output: 'withdraw' }, { input: 'show', default: true }]
 })

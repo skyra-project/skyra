@@ -12,7 +12,7 @@ import type { Role } from 'discord.js';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['rro'],
 	description: LanguageKeys.Commands.Moderation.RemoveRoleDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
 	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

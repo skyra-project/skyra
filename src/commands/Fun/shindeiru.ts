@@ -11,7 +11,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.ShindeiruDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.ShindeiruExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.ShindeiruExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

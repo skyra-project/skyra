@@ -16,7 +16,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['dh'],
 	description: LanguageKeys.Commands.Moderation.DehoistDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.DehoistExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.DehoistExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames, PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

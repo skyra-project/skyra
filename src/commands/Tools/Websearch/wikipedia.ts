@@ -12,7 +12,7 @@ import { URL } from 'url';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wiki'],
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.WikipediaExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

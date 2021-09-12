@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ChannelConfigurationCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetImageLogsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetImageLogsExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetImageLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetImageLogsSet,
 	settingsKey: GuildSettings.Channels.Logs.Image
 })

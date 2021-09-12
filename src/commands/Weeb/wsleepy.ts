@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.SleepyDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.SleepyExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.SleepyExtended,
 	queryType: 'sleepy',
 	responseName: LanguageKeys.Commands.Weeb.Sleepy
 })

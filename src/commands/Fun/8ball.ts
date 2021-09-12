@@ -11,7 +11,7 @@ const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What'
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.EightballDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.EightballExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.EightballExtended,
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

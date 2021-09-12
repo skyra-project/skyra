@@ -17,7 +17,7 @@ import { URL } from 'url';
 	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),
 	aliases: ['movie', 'tmdb'],
 	description: LanguageKeys.Commands.Tools.MoviesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.MoviesExtended
+	detailedDescription: LanguageKeys.Commands.Tools.MoviesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

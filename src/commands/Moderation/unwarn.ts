@@ -12,7 +12,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uw', 'unwarning'],
 	description: LanguageKeys.Commands.Moderation.UnwarnDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnwarnExtended
+	detailedDescription: LanguageKeys.Commands.Moderation.UnwarnExtended
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async run(message: GuildMessage, args: ModerationCommand.Args) {

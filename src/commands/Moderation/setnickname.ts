@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
 	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	optionalDuration: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageNicknames],
 	requiredMember: true

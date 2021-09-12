@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ChannelConfigurationCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetMessageDeleteLogsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetMessageDeleteLogsExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetMessageDeleteLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetMessageDeleteLogsSet,
 	settingsKey: GuildSettings.Channels.Logs.MessageDelete
 })

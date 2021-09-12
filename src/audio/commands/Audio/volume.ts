@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['vol'],
 	description: LanguageKeys.Commands.Music.VolumeDescription,
-	extendedHelp: LanguageKeys.Commands.Music.VolumeExtended
+	detailedDescription: LanguageKeys.Commands.Music.VolumeExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()

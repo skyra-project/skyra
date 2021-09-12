@@ -14,7 +14,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.ShipDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.ShipExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.ShipExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

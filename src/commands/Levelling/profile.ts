@@ -19,7 +19,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.ProfileDescription,
-	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
+	detailedDescription: LanguageKeys.Commands.Social.ProfileExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

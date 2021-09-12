@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['escape'],
 	description: LanguageKeys.Commands.Fun.EscapeRopeDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.EscapeRopeExtended
+	detailedDescription: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

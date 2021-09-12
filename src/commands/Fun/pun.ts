@@ -8,7 +8,7 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.PunDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.PunExtended,
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

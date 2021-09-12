@@ -13,7 +13,7 @@ import type { User } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['connect-four'],
 	description: LanguageKeys.Commands.Games.C4Description,
-	extendedHelp: LanguageKeys.Commands.Games.C4Extended,
+	detailedDescription: LanguageKeys.Commands.Games.C4Extended,
 	flags: ['easy', 'medium', 'hard'],
 	requiredClientPermissions: [PermissionFlagsBits.UseExternalEmojis, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

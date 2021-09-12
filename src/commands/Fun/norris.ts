@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['chucknorris'],
 	description: LanguageKeys.Commands.Fun.NorrisDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.NorrisExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.NorrisExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

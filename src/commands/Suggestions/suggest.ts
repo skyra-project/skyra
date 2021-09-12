@@ -14,7 +14,7 @@ import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
-	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
+	detailedDescription: LanguageKeys.Commands.Suggestions.SuggestExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

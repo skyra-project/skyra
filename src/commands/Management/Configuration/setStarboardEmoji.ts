@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetStarboardEmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetStarboardEmojiExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

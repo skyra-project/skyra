@@ -16,7 +16,7 @@ import { URL } from 'url';
 	enabled: envIsDefined('CRYPTOCOMPARE_TOKEN'),
 	aliases: ['currency', 'money', 'exchange'],
 	description: LanguageKeys.Commands.Tools.PriceDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.PriceExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

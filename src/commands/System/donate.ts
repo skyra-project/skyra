@@ -8,12 +8,12 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.System.DonateDescription,
-	extendedHelp: LanguageKeys.Commands.System.DonateExtended,
+	detailedDescription: LanguageKeys.Commands.System.DonateExtended,
 	guarded: true
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {
-		const content = args.t(this.extendedHelp).extendedHelp!;
+		const content = args.t(this.detailedDescription).extendedHelp!;
 
 		if (isGuildMessage(message)) {
 			const { success } = await safeWrapPromise(message.author.send(content));

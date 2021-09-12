@@ -10,7 +10,7 @@ import type { MessageOptions } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['talk'],
 	description: LanguageKeys.Commands.System.EchoDescription,
-	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
+	detailedDescription: LanguageKeys.Commands.System.EchoExtended,
 	permissionLevel: PermissionLevels.BotOwner,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

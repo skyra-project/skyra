@@ -11,7 +11,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ud', 'urbandictionary'],
 	description: LanguageKeys.Commands.Tools.UrbanDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.UrbanExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.UrbanExtended,
 	nsfw: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

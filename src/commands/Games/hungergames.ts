@@ -18,7 +18,7 @@ import { setTimeout as sleep } from 'timers/promises';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],
 	description: LanguageKeys.Commands.Games.HungerGamesDescription,
-	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
+	detailedDescription: LanguageKeys.Commands.Games.HungerGamesExtended,
 	flags: ['autofill', 'autoskip'],
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

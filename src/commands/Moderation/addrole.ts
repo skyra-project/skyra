@@ -12,7 +12,7 @@ import type { Role } from 'discord.js';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ar'],
 	description: LanguageKeys.Commands.Moderation.AddRoleDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.AddRoleExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.AddRoleExtended,
 	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

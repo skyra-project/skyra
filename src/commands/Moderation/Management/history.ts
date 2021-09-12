@@ -19,7 +19,7 @@ type DurationDisplay = (time: number) => string;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hd', 'ho'],
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['details', { input: 'overview', default: true }]

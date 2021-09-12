@@ -14,7 +14,7 @@ const MAXIMUM_DURATION = hours(6);
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sm'],
 	description: LanguageKeys.Commands.Moderation.SlowmodeDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageChannels],
 	runIn: [CommandOptionsRunTypeEnum.GuildText]

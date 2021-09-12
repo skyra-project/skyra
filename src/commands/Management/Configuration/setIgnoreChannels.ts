@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

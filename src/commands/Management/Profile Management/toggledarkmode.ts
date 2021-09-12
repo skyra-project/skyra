@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
 	description: LanguageKeys.Commands.Social.ToggleDarkModeDescription,
-	extendedHelp: LanguageKeys.Commands.Social.ToggleDarkModeExtended
+	detailedDescription: LanguageKeys.Commands.Social.ToggleDarkModeExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

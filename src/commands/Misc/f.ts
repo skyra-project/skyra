@@ -13,7 +13,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pray'],
 	description: LanguageKeys.Commands.Misc.FDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.FExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

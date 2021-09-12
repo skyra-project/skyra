@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<WeebCommand.Options>({
 	aliases: ['wsalute'],
 	description: LanguageKeys.Commands.Weeb.GreetDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.GreetExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.GreetExtended,
 	queryType: 'greet',
 	responseName: LanguageKeys.Commands.Weeb.Greet,
 	requireUser: true

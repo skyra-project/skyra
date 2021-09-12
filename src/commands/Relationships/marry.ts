@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Social.MarryDescription,
-	extendedHelp: LanguageKeys.Commands.Social.MarryExtended
+	detailedDescription: LanguageKeys.Commands.Social.MarryExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: CommandContext) {

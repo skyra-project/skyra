@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.ThumbsUpDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.ThumbsUpExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.ThumbsUpExtended,
 	queryType: 'thumbsup',
 	responseName: LanguageKeys.Commands.Weeb.ThumbsUp
 })

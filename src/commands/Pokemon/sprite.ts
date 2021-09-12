@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokesprite', 'pokeimage'],
 	description: LanguageKeys.Commands.Pokemon.SpriteDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.SpriteExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.SpriteExtended,
 	flags: ['shiny', 'back'],
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })

@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.NekoDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.NekoExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.NekoExtended,
 	queryType: 'neko',
 	responseName: LanguageKeys.Commands.Weeb.Neko
 })

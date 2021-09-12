@@ -12,7 +12,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.SlapDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.SlapExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.SlapExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

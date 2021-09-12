@@ -16,7 +16,7 @@ const kMaximum = 100000;
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animation.WaifuDescription,
-	extendedHelp: LanguageKeys.Commands.Animation.WaifuExtended,
+	detailedDescription: LanguageKeys.Commands.Animation.WaifuExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

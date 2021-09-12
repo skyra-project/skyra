@@ -24,7 +24,7 @@ function isIgdbCompany(company: unknown): company is Company {
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('TWITCH_CLIENT_ID'),
 	description: LanguageKeys.Commands.Tools.IgdbDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended
+	detailedDescription: LanguageKeys.Commands.Tools.IgdbExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private readonly urlRegex = /https?:/i;

@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.DivorceDescription,
-	extendedHelp: LanguageKeys.Commands.Social.DivorceExtended,
+	detailedDescription: LanguageKeys.Commands.Social.DivorceExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {

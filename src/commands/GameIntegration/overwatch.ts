@@ -19,7 +19,7 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['ow'],
 	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended
+	detailedDescription: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

@@ -9,7 +9,7 @@ const flags = ['removeall', 'ra'];
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.LeaveDescription,
-	extendedHelp: LanguageKeys.Commands.Music.LeaveExtended,
+	detailedDescription: LanguageKeys.Commands.Music.LeaveExtended,
 	flags
 })
 export class UserAudioCommand extends AudioCommand {

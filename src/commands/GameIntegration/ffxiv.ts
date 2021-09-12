@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 	enabled: envIsDefined('XIVAPI_TOKEN'),
 	aliases: ['finalfantasy'],
 	description: LanguageKeys.Commands.GameIntegration.FFXIVDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
+	detailedDescription: LanguageKeys.Commands.GameIntegration.FFXIVExtended,
 	options: ['server'],
 	subCommands: ['item', { input: 'character', default: true }]
 })

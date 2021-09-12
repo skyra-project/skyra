@@ -14,7 +14,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['manga-list'],
 	description: LanguageKeys.Commands.Animation.AniListMangaDescription,
-	extendedHelp: LanguageKeys.Commands.Animation.AniListMangaExtended
+	detailedDescription: LanguageKeys.Commands.Animation.AniListMangaExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

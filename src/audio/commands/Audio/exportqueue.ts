@@ -15,7 +15,7 @@ export const maximumExportQueueSize = 100;
 	aliases: ['eq'],
 	cooldownLimit: 10,
 	description: LanguageKeys.Commands.Music.ExportQueueDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
+	detailedDescription: LanguageKeys.Commands.Music.ExportQueueExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

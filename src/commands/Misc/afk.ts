@@ -19,7 +19,7 @@ import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 	enabled: envParseBoolean('REDIS_ENABLED'),
 	cooldownDelay: seconds(20),
 	description: LanguageKeys.Commands.Misc.AfkDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.AfkExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.AfkExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['ignore', 'reset', 'clear', 'list', 'show', { input: 'set', default: true }]
 })

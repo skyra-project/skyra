@@ -18,7 +18,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	description: LanguageKeys.Commands.Social.BannerDescription,
-	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
+	detailedDescription: LanguageKeys.Commands.Social.BannerExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageMessages],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]

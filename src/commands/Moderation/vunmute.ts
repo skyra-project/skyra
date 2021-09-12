@@ -9,7 +9,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['uvm', 'vum', 'unvmute'],
 	description: LanguageKeys.Commands.Moderation.VunmuteDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.VunmuteExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.VunmuteExtended,
 	requiredClientPermissions: [PermissionFlagsBits.MuteMembers],
 	requiredMember: true
 })

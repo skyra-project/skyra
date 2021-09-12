@@ -18,7 +18,7 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('KITSU_ID', 'KITSU_TOKEN'),
 	description: LanguageKeys.Commands.Animation.KitsuAnimeDescription,
-	extendedHelp: LanguageKeys.Commands.Animation.KitsuAnimeExtended
+	detailedDescription: LanguageKeys.Commands.Animation.KitsuAnimeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

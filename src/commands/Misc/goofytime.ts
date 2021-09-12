@@ -12,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 	description: LanguageKeys.Commands.Misc.GoofyTimeDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.GoofyTimeExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.GoofyTimeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

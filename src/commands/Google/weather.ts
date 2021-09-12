@@ -30,7 +30,7 @@ const imperialCountries = ['US', 'LR', 'MM'];
 @ApplyOptions<SkyraCommand.Options>({
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Google.WeatherDescription,
-	extendedHelp: LanguageKeys.Commands.Google.WeatherExtended,
+	detailedDescription: LanguageKeys.Commands.Google.WeatherExtended,
 	flags: [...imperial, ...metric, ...kelvin],
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })

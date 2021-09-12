@@ -13,7 +13,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],
 	description: LanguageKeys.Commands.Misc.SnipeDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.SnipeExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.SnipeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

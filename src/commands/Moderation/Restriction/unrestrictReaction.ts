@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-reaction', 'urr'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictReactionDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictReactionExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictReactionExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedReaction,
 	setUpKey: ModerationSetupRestriction.Reaction

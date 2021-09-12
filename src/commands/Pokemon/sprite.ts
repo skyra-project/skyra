@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { fetchGraphQLPokemon, getPokemonSprite, GetPokemonSpriteParameters, getSpriteKey } from '#utils/APIs/Pokemon';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

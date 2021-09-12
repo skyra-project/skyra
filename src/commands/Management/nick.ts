@@ -6,7 +6,7 @@ import { seconds } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['nickname'],

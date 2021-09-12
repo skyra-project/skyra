@@ -7,7 +7,7 @@ import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoic
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;

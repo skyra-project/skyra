@@ -6,7 +6,7 @@ import { ZeroWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];

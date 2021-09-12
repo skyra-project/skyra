@@ -4,7 +4,7 @@ import { kRegExpTwemoji, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;

@@ -7,7 +7,7 @@ import type { GuildMessage } from '#lib/types';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

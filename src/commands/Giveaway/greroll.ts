@@ -8,8 +8,7 @@ import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
 

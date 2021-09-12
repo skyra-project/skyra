@@ -14,8 +14,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, CommandOptionsRunTypeEnum, IArgument } from '@sapphire/framework';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 

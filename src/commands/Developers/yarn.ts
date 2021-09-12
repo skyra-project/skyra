@@ -7,7 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

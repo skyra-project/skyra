@@ -12,7 +12,7 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

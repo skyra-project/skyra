@@ -11,7 +11,7 @@ import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'timers/promises';
 

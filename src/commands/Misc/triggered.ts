@@ -6,7 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { GifEncoder } from '@skyra/gifenc';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 import { buffer } from 'stream/consumers';

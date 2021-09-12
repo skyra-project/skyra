@@ -8,7 +8,7 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
 import { join } from 'path';
 

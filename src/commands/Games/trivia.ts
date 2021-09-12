@@ -6,7 +6,7 @@ import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';

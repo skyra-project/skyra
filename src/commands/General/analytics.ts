@@ -6,7 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageAttachment } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

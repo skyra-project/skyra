@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, NonThreadGuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Permissions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 

@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 /**

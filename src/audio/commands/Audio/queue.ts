@@ -8,7 +8,7 @@ import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { chunk } from '@sapphire/utilities';
 import type { TrackInfo } from '@skyra/audio';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

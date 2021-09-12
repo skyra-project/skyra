@@ -5,7 +5,7 @@ import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 import { SkyraCommand } from './SkyraCommand';

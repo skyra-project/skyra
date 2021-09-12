@@ -11,8 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageEmbed, MessageOptions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 

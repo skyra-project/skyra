@@ -6,7 +6,7 @@ import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['um'],

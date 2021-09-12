@@ -4,9 +4,9 @@ import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['duckduckgo'],

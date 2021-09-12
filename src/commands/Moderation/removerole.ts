@@ -4,9 +4,9 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({

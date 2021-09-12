@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { floatPromise, resolveOnErrorCodes } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 

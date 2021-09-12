@@ -4,9 +4,9 @@ import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { Message, User } from 'discord.js';
 import { join } from 'path';
 

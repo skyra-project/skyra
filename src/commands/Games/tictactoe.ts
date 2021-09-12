@@ -1,5 +1,4 @@
 import { TicTacToeBotController } from '#lib/games/tic-tac-toe/TicTacToeBotController';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { TicTacToeHumanController } from '#lib/games/tic-tac-toe/TicTacToeHumanController';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -8,6 +7,7 @@ import type { GuildMessage } from '#lib/types';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
 

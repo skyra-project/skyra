@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { getImage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { Message } from 'discord.js';
 import { join } from 'path';
 

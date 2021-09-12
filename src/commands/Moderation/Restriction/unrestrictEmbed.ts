@@ -4,8 +4,8 @@ import { SetUpModerationCommand } from '#lib/moderation';
 import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-embed', 'ure'],

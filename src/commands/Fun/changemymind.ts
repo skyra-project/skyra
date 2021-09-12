@@ -5,8 +5,8 @@ import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
-import type { Message, User } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import type { Message, User } from 'discord.js';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({

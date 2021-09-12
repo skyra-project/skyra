@@ -2,11 +2,11 @@ import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
 import { getSecurity } from '#utils/functions';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['m'],

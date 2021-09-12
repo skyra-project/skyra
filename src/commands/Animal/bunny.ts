@@ -5,8 +5,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty } from '@sapphire/utilities';
-import { Message, MessageEmbed } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
+import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'url';
 
 const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');

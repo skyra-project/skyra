@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { RGB, SkyraCommand } from '#lib/structures';
 import { hexConcat, luminance } from '#utils/Color';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, rgb } from 'canvas-constructor/skia';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { Message } from 'discord.js';
 
 /* Color limiter */

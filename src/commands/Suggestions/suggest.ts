@@ -4,12 +4,12 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
 import { isAdmin } from '#utils/functions';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, MessageEmbed, TextChannel, User } from 'discord.js';
 

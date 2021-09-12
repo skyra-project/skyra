@@ -4,11 +4,11 @@ import type { GuildMessage } from '#lib/types';
 import { CanvasColors, socialFolder } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import type { User } from 'discord.js';
 import { join } from 'path';
 

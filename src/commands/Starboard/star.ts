@@ -17,7 +17,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: [],
 	description: LanguageKeys.Commands.Starboard.StarDescription,
-	extendedHelp: LanguageKeys.Commands.Starboard.StarExtended,
+	detailedDescription: LanguageKeys.Commands.Starboard.StarExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['top', { input: 'random', default: true }]

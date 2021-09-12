@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['np', 'nowplaying'],
 	description: LanguageKeys.Commands.Music.PlayingDescription,
-	extendedHelp: LanguageKeys.Commands.Music.PlayingExtended,
+	detailedDescription: LanguageKeys.Commands.Music.PlayingExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserAudioCommand extends AudioCommand {

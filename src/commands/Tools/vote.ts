@@ -8,7 +8,7 @@ import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Tools.VoteDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.VoteExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.VoteExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

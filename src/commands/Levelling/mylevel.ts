@@ -8,7 +8,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
-	extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
+	detailedDescription: LanguageKeys.Commands.Social.MyLevelExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })

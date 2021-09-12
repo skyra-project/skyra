@@ -15,7 +15,7 @@ import { inspect } from 'util';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ev'],
 	description: LanguageKeys.Commands.System.EvalDescription,
-	extendedHelp: LanguageKeys.Commands.System.EvalExtended,
+	detailedDescription: LanguageKeys.Commands.System.EvalExtended,
 	flags: ['async', 'no-timeout', 'json', 'silent', 'log', 'showHidden', 'hidden', 'sql'],
 	options: ['wait', 'lang', 'language', 'output', 'output-to', 'depth'],
 	permissionLevel: PermissionLevels.BotOwner,

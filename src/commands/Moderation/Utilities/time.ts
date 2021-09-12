@@ -13,7 +13,7 @@ import { Permissions, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.TimeExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.TimeExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

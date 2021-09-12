@@ -9,7 +9,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vk', 'vkick'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.VoiceKickExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.MoveMembers],
 	requiredMember: true
 })

@@ -8,7 +8,7 @@ import type { UserPaginatedMessageCommand as Moderations } from './moderations';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.WarningsDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.WarningsExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.WarningsExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

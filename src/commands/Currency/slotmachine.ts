@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['slot', 'slots', 'slotmachines'],
 	description: LanguageKeys.Commands.Games.SlotMachineDescription,
-	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
+	detailedDescription: LanguageKeys.Commands.Games.SlotMachineExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

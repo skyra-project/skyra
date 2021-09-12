@@ -12,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gn', 'night'],
 	description: LanguageKeys.Commands.Misc.GoodNightDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.GoodNightExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.GoodNightExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

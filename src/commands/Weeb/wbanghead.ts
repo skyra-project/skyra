@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.BangHeadDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.BangHeadExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.BangHeadExtended,
 	queryType: 'banghead',
 	responseName: LanguageKeys.Commands.Weeb.BangHead
 })

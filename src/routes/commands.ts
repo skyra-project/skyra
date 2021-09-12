@@ -25,7 +25,7 @@ export class UserRoute extends Route {
 		return {
 			category: command.category,
 			description: t(command.description),
-			extendedHelp: t(command.extendedHelp, { replace: { prefix: process.env.CLIENT_PREFIX }, postProcess: 'helpUsagePostProcessor' }),
+			extendedHelp: t(command.detailedDescription, { replace: { prefix: process.env.CLIENT_PREFIX }, postProcess: 'helpUsagePostProcessor' }),
 			guarded: command.guarded,
 			name: command.name,
 			permissionLevel: command.permissionLevel,

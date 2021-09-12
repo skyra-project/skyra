@@ -8,7 +8,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['support-server', 'server'],
 	description: LanguageKeys.Commands.System.SupportDescription,
-	extendedHelp: LanguageKeys.Commands.System.SupportExtended,
+	detailedDescription: LanguageKeys.Commands.System.SupportExtended,
 	guarded: true,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })

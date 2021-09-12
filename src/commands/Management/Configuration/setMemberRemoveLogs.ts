@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ChannelConfigurationCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetMemberRemoveLogsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetMemberRemoveLogsExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetMemberRemoveLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetMemberRemoveLogsSet,
 	settingsKey: GuildSettings.Channels.Logs.MemberRemove
 })

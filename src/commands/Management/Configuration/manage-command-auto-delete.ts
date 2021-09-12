@@ -13,7 +13,7 @@ import { codeBlock } from '@sapphire/utilities';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcad'],
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
-	extendedHelp: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
+	detailedDescription: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]

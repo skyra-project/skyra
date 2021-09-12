@@ -13,7 +13,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['deletethis'],
 	description: LanguageKeys.Commands.Misc.DeletThisDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.DeletThisExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.DeletThisExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

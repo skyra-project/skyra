@@ -15,7 +15,7 @@ const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['colour'],
 	description: LanguageKeys.Commands.Tools.ColorDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ColorExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.ColorExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

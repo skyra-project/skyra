@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pong'],
 	description: LanguageKeys.Commands.General.PingDescription,
-	extendedHelp: LanguageKeys.Commands.General.PingExtended
+	detailedDescription: LanguageKeys.Commands.General.PingExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

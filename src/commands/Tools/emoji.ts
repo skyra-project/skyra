@@ -13,7 +13,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['emote'],
 	description: LanguageKeys.Commands.Tools.EmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.EmojiExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

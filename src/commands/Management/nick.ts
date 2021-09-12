@@ -12,7 +12,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 	aliases: ['nickname'],
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Management.NickDescription,
-	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
+	detailedDescription: LanguageKeys.Commands.Management.NickExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ChangeNickname],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

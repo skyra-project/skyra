@@ -10,7 +10,7 @@ const verticalOptions = ['v', 'vertical', 'y'];
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.FlipDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.FlipExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.FlipExtended,
 	options: [...horizontalOptions, ...verticalOptions]
 })
 export class UserCommand extends SkyraCommand {

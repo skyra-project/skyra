@@ -11,7 +11,7 @@ import { remove as removeConfusables } from 'confusables';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.FilterDescription,
-	extendedHelp: LanguageKeys.Commands.Management.FilterExtended,
+	detailedDescription: LanguageKeys.Commands.Management.FilterExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]

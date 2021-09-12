@@ -8,7 +8,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['letmegooglethatforyou', 'letmegooglethat'],
 	description: LanguageKeys.Commands.Google.LmgtfyDescription,
-	extendedHelp: LanguageKeys.Commands.Google.LmgtfyExtended,
+	detailedDescription: LanguageKeys.Commands.Google.LmgtfyExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

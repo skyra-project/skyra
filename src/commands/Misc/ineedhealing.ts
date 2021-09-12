@@ -12,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['heal', 'healing'],
 	description: LanguageKeys.Commands.Misc.INeedHealingDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.INeedHealingExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.INeedHealingExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

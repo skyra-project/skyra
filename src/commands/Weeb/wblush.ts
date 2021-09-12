@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.BlushDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.BlushExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.BlushExtended,
 	queryType: 'blush',
 	responseName: LanguageKeys.Commands.Weeb.Blush
 })

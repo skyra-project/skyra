@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['topinvs'],
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.TopInvitesExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageGuild]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<ChannelConfigurationCommand.Options>({
 	description: LanguageKeys.Commands.Management.SetMemberAddLogsDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetMemberAddLogsExtended,
+	detailedDescription: LanguageKeys.Commands.Management.SetMemberAddLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetMemberAddLogsSet,
 	settingsKey: GuildSettings.Channels.Logs.MemberAdd
 })

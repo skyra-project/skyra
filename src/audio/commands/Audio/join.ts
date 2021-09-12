@@ -13,7 +13,7 @@ const { FLAGS } = Permissions;
 @ApplyOptions<AudioCommand.Options>({
 	aliases: ['connect'],
 	description: LanguageKeys.Commands.Music.JoinDescription,
-	extendedHelp: LanguageKeys.Commands.Music.JoinExtended
+	detailedDescription: LanguageKeys.Commands.Music.JoinExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()

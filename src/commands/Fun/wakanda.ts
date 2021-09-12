@@ -11,7 +11,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.WakandaExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

@@ -17,7 +17,7 @@ const { FLAGS } = Permissions;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['userinfo', 'uinfo', 'user'],
 	description: LanguageKeys.Commands.Tools.WhoisDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.WhoisExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.WhoisExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

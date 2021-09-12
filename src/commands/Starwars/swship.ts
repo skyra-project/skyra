@@ -11,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-space-ship', 'swship', 'star-wars-ship'],
 	description: LanguageKeys.Commands.StarWars.StarshipDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.StarshipExtended
+	detailedDescription: LanguageKeys.Commands.StarWars.StarshipExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

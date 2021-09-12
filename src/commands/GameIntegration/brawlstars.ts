@@ -57,7 +57,7 @@ export interface BrawlStarsGIData {
 	enabled: envIsDefined('BRAWL_STARS_TOKEN'),
 	aliases: ['bs'],
 	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
+	detailedDescription: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
 	flags,
 	subCommands: [{ input: 'player', default: true }, 'club']
 })

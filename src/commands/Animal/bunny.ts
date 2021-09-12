@@ -14,7 +14,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bunbun', 'rabbit'],
 	description: LanguageKeys.Commands.Animal.BunnyDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.BunnyExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.BunnyExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

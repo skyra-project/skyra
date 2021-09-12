@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['k'],
 	description: LanguageKeys.Commands.Moderation.KickDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.KickExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.KickExtended,
 	requiredClientPermissions: [PermissionFlagsBits.KickMembers],
 	requiredMember: true
 })

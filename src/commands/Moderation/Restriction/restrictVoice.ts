@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restricted-voice', 'rv'],
 	description: LanguageKeys.Commands.Moderation.RestrictVoiceDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RestrictVoiceExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RestrictVoiceExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

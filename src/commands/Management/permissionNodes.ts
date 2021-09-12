@@ -15,7 +15,7 @@ import { GuildMember, Role } from 'discord.js';
 	aliases: ['pnodes', 'pnode'],
 	permissionLevel: PermissionLevels.Administrator,
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
-	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
+	detailedDescription: LanguageKeys.Commands.Management.PermissionNodesExtended,
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

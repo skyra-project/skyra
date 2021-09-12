@@ -27,7 +27,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rmm', 'remind', 'reminder', 'reminders'],
 	description: LanguageKeys.Commands.Social.RemindMeDescription,
-	extendedHelp: LanguageKeys.Commands.Social.RemindMeExtended
+	detailedDescription: LanguageKeys.Commands.Social.RemindMeExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

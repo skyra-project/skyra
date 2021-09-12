@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['invites-mode', 'inv-mode'],
 	description: LanguageKeys.Commands.Management.InviteModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.InviteModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.InviteModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'invites';

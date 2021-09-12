@@ -20,7 +20,7 @@ const kCodeZ = 'Z'.charCodeAt(0);
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.MarkovExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory]
 })

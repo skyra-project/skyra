@@ -15,7 +15,7 @@ const options = ['winners'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
-	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
+	detailedDescription: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
 	options,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

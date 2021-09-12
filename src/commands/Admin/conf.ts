@@ -12,7 +12,7 @@ import { toTitleCase } from '@sapphire/utilities';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
 	description: LanguageKeys.Commands.Admin.ConfDescription,
-	extendedHelp: LanguageKeys.Commands.Admin.ConfExtended,
+	detailedDescription: LanguageKeys.Commands.Admin.ConfExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],

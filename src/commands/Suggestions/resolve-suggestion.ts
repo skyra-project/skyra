@@ -27,7 +27,7 @@ const maximum = 2_147_483_647; // Maximum value for int32
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['resu'],
 	description: LanguageKeys.Commands.Suggestions.ResolveSuggestionDescription,
-	extendedHelp: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
+	detailedDescription: LanguageKeys.Commands.Suggestions.ResolveSuggestionExtended,
 	flags: ['show-author', 'showAuthor', 'hide-author', 'hideAuthor'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],

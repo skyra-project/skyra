@@ -11,7 +11,7 @@ import { URL } from 'url';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['duckduckgo'],
 	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

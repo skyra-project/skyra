@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.DanceDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.DanceExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.DanceExtended,
 	queryType: 'dance',
 	responseName: LanguageKeys.Commands.Weeb.Dance
 })

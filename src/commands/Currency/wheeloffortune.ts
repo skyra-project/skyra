@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['wof'],
 	description: LanguageKeys.Commands.Games.WheelOfFortuneDescription,
-	extendedHelp: LanguageKeys.Commands.Games.WheelOfFortuneExtended,
+	detailedDescription: LanguageKeys.Commands.Games.WheelOfFortuneExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {

@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-film', 'star-wars-movie'],
 	description: LanguageKeys.Commands.StarWars.FilmDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.FilmExtended
+	detailedDescription: LanguageKeys.Commands.StarWars.FilmExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

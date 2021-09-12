@@ -16,7 +16,7 @@ const outputTo = ['output', 'output-to'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['source', 'msg-source', 'message-source'],
 	description: LanguageKeys.Commands.Tools.ContentDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ContentExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.ContentExtended,
 	flags: [...allPlain, ...allFormat],
 	options: [...outputTo]
 })

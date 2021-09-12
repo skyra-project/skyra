@@ -19,7 +19,7 @@ const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACT
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['server-info'],
 	description: LanguageKeys.Commands.Management.GuildInfoDescription,
-	extendedHelp: LanguageKeys.Commands.Management.GuildInfoExtended,
+	detailedDescription: LanguageKeys.Commands.Management.GuildInfoExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['link-mode', 'lmode', 'linkfilter', 'extlinks', 'externallinks'],
 	description: LanguageKeys.Commands.Management.LinkModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.LinkModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.LinkModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'links';

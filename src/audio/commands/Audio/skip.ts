@@ -13,7 +13,7 @@ const flags = ['force'];
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.SkipDescription,
-	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
+	detailedDescription: LanguageKeys.Commands.Music.SkipExtended,
 	flags
 })
 export class UserAudioCommand extends AudioCommand {

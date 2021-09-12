@@ -7,7 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.RemoveDescription,
-	extendedHelp: LanguageKeys.Commands.Music.RemoveExtended
+	detailedDescription: LanguageKeys.Commands.Music.RemoveExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

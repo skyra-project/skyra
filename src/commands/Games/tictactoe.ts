@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ttt'],
 	description: LanguageKeys.Commands.Games.TicTacToeDescription,
-	extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
+	detailedDescription: LanguageKeys.Commands.Games.TicTacToeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

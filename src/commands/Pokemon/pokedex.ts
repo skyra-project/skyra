@@ -31,7 +31,7 @@ enum BaseStats {
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	description: LanguageKeys.Commands.Pokemon.PokedexDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.PokedexExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.PokedexExtended,
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

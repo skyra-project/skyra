@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['upbday', 'birthdays'],
 	description: LanguageKeys.Commands.Misc.UpcomingBirthdaysDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.UpcomingBirthdaysExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

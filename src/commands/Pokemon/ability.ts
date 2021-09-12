@@ -11,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['abilities', 'pokeability'],
 	description: LanguageKeys.Commands.Pokemon.AbilityDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.AbilityExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.AbilityExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

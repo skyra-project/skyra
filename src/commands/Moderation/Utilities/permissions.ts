@@ -13,7 +13,7 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.PermissionsExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.PermissionsExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

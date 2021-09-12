@@ -16,7 +16,7 @@ const subredditNameRegex = /^(?:\/?r\/)?[A-Za-z0-9_-]*$/;
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rand', 'rand-reddit', 'reddit'],
 	description: LanguageKeys.Commands.Misc.RandRedditDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.RandRedditExtended
+	detailedDescription: LanguageKeys.Commands.Misc.RandRedditExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

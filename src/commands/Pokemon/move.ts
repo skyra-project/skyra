@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Pokemon.MoveDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.MoveExtended
+	detailedDescription: LanguageKeys.Commands.Pokemon.MoveExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

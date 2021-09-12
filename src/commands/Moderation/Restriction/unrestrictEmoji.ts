@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedEmoji,
 	setUpKey: ModerationSetupRestriction.Emoji

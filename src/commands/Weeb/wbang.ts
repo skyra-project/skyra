@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.BangDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.BangExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.BangExtended,
 	queryType: 'bang',
 	responseName: LanguageKeys.Commands.Weeb.Bang,
 	requireUser: true

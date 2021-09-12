@@ -15,7 +15,7 @@ const flags = ['remind', 'reminder', 'remindme'];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rep'],
 	description: LanguageKeys.Commands.Social.ReputationDescription,
-	extendedHelp: LanguageKeys.Commands.Social.ReputationExtended,
+	detailedDescription: LanguageKeys.Commands.Social.ReputationExtended,
 	flags,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true

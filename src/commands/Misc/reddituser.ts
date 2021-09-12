@@ -18,7 +18,7 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['redditor'],
 	description: LanguageKeys.Commands.Misc.RedditUserDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.RedditUserExtended
+	detailedDescription: LanguageKeys.Commands.Misc.RedditUserExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

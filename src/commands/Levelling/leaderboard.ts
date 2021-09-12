@@ -15,7 +15,7 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['lb', 'top', 'scoreboard', 'sb'],
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
-	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
+	detailedDescription: LanguageKeys.Commands.Social.LeaderboardExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })

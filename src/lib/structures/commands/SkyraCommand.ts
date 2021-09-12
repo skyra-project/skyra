@@ -15,7 +15,6 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	public readonly hidden: boolean;
 	public readonly permissionLevel: PermissionLevels;
 	public readonly description: CustomGet<string, string>;
-	public readonly extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
 
 	public constructor(context: PieceContext, options: SkyraCommand.Options) {
 		super(context, { cooldownDelay: seconds(10), cooldownLimit: 2, cooldownFilteredUsers: OWNERS, generateDashLessAliases: true, ...options });
@@ -24,7 +23,6 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 		this.hidden = options.hidden ?? false;
 		this.permissionLevel = options.permissionLevel ?? PermissionLevels.Everyone;
 		this.description = options.description;
-		this.extendedHelp = options.extendedHelp;
 	}
 
 	/**
@@ -83,13 +81,17 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	}
 }
 
+export interface SkyraCommand {
+	detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
+}
+
 export namespace SkyraCommand {
 	/**
 	 * The SkyraCommand Options
 	 */
 	export type Options = SubCommandPluginCommand.Options & {
 		description: CustomGet<string, string>;
-		extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
+		detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
 		guarded?: boolean;
 		hidden?: boolean;
 		permissionLevel?: number;

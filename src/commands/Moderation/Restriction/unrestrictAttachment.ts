@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-attachment', 'ura'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictAttachmentDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictAttachmentExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictAttachmentExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedAttachment,
 	setUpKey: ModerationSetupRestriction.Attachment

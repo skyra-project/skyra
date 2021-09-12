@@ -7,7 +7,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
 	description: LanguageKeys.Commands.Moderation.ToggleModerationDmDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
+	detailedDescription: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

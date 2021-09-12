@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restricted-reaction', 'rr'],
 	description: LanguageKeys.Commands.Moderation.RestrictReactionDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RestrictReactionExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RestrictReactionExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

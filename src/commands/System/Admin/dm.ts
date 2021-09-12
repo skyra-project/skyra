@@ -8,7 +8,7 @@ import type { Message, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.System.DmDescription,
-	extendedHelp: LanguageKeys.Commands.System.DmExtended,
+	detailedDescription: LanguageKeys.Commands.System.DmExtended,
 	permissionLevel: PermissionLevels.BotOwner,
 	quotes: []
 })

@@ -12,7 +12,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.ChaseDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.ChaseExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.ChaseExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

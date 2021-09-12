@@ -16,7 +16,7 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('FORTNITE_TOKEN'),
 	description: LanguageKeys.Commands.GameIntegration.FortniteDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.FortniteExtended
+	detailedDescription: LanguageKeys.Commands.GameIntegration.FortniteExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';

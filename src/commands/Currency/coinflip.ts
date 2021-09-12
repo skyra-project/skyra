@@ -16,7 +16,7 @@ const enum CoinType {
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['cf'],
 	description: LanguageKeys.Commands.Games.CoinFlipDescription,
-	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
+	detailedDescription: LanguageKeys.Commands.Games.CoinFlipExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

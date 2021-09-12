@@ -20,7 +20,7 @@ const COORDINATES: readonly [number, number][] = [
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.TriggeredExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

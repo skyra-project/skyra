@@ -14,7 +14,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],
 	description: LanguageKeys.Commands.Developers.YarnDescription,
-	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,
+	detailedDescription: LanguageKeys.Commands.Developers.YarnExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

@@ -12,7 +12,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-planet'],
 	description: LanguageKeys.Commands.StarWars.PlanetDescription,
-	extendedHelp: LanguageKeys.Commands.StarWars.PlanetExtended
+	detailedDescription: LanguageKeys.Commands.StarWars.PlanetExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

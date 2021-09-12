@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['m'],
 	description: LanguageKeys.Commands.Moderation.MuteDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.MuteExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.MuteExtended,
 	optionalDuration: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	requiredMember: true,

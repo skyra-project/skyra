@@ -13,7 +13,7 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Games.TriviaDescription,
-	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
+	detailedDescription: LanguageKeys.Commands.Games.TriviaExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {

@@ -8,7 +8,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.ResetBirthdayDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.ResetBirthdayExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.ResetBirthdayExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

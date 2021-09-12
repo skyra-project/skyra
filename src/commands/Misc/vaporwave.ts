@@ -6,7 +6,7 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.VaporwaveDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.VaporwaveExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.VaporwaveExtended,
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

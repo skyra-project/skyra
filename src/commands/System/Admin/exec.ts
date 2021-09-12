@@ -12,7 +12,7 @@ import type { Message, MessageOptions } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['execute'],
 	description: LanguageKeys.Commands.System.ExecDescription,
-	extendedHelp: LanguageKeys.Commands.System.ExecExtended,
+	detailedDescription: LanguageKeys.Commands.System.ExecExtended,
 	permissionLevel: PermissionLevels.BotOwner,
 	options: ['timeout']
 })

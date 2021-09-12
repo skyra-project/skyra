@@ -10,7 +10,7 @@ import { MessageEmbed } from 'discord.js';
 	aliases: ['googleimage', 'img'],
 	nsfw: true, // Google will return explicit results when searching for explicit terms, even when safe-search is on
 	description: LanguageKeys.Commands.Google.GimageDescription,
-	extendedHelp: LanguageKeys.Commands.Google.GimageExtended
+	detailedDescription: LanguageKeys.Commands.Google.GimageExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

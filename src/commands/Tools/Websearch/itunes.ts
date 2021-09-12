@@ -11,7 +11,7 @@ import { URL } from 'url';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Tools.ITunesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ITunesExtended
+	detailedDescription: LanguageKeys.Commands.Tools.ITunesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

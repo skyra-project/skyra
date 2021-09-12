@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.SmugDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.SmugExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.SmugExtended,
 	queryType: 'smug',
 	responseName: LanguageKeys.Commands.Weeb.Smug
 })

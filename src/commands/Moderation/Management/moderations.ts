@@ -20,7 +20,7 @@ const enum Type {
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['moderation'],
 	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	subCommands: [
 		{ input: 'mute', output: 'mutes' },

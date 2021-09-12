@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restrict-external-emoji', 'restricted-emoji', 'restricted-external-emoji', 'ree', 'restrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.RestrictEmojiDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RestrictEmojiExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RestrictEmojiExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

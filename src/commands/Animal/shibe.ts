@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animal.ShibeDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.ShibeExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.ShibeExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

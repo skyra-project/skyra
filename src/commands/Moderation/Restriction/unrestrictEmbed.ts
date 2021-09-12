@@ -10,7 +10,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['un-restricted-embed', 'ure'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmbedDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmbedExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictEmbedExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.RestrictedEmbed,
 	setUpKey: ModerationSetupRestriction.Embed

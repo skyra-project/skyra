@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.PayDescription,
-	extendedHelp: LanguageKeys.Commands.Social.PayExtended,
+	detailedDescription: LanguageKeys.Commands.Social.PayExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })

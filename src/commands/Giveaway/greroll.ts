@@ -15,7 +15,7 @@ import { FetchError } from 'node-fetch';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['gr', 'groll'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayRerollDescription,
-	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
+	detailedDescription: LanguageKeys.Commands.Giveaway.GiveawayRerollExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

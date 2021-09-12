@@ -12,7 +12,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pokeitem', 'bag'],
 	description: LanguageKeys.Commands.Pokemon.ItemDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.ItemExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.ItemExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

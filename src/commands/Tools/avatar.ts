@@ -10,7 +10,7 @@ const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096];
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['a', 'av', 'ava'],
 	description: LanguageKeys.Commands.Tools.AvatarDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.AvatarExtended,
+	detailedDescription: LanguageKeys.Commands.Tools.AvatarExtended,
 	options: ['size'],
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })

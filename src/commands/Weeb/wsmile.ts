@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.SmileDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.SmileExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.SmileExtended,
 	queryType: 'smile',
 	responseName: LanguageKeys.Commands.Weeb.Smile
 })

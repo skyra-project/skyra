@@ -18,7 +18,7 @@ import { MessageEmbed, MessageOptions } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['tags', 'custom-command', 'copy-pasta'],
 	description: LanguageKeys.Commands.Tags.TagDescription,
-	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
+	detailedDescription: LanguageKeys.Commands.Tags.TagExtended,
 	flags: ['embed'],
 	options: ['color', 'colour'],
 	requiredClientPermissions: [PermissionFlagsBits.ManageMessages],

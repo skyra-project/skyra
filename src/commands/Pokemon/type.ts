@@ -34,7 +34,7 @@ const kPokemonTypes = new Set([
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	description: LanguageKeys.Commands.Pokemon.TypeDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.TypeExtended
+	detailedDescription: LanguageKeys.Commands.Pokemon.TypeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

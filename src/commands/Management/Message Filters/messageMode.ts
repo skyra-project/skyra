@@ -7,7 +7,7 @@ import type { PickByValue } from '@sapphire/utilities';
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['message-mode', 'msg-mode', 'm-mode'],
 	description: LanguageKeys.Commands.Management.MessageModeDescription,
-	extendedHelp: LanguageKeys.Commands.Management.MessageModeExtended
+	detailedDescription: LanguageKeys.Commands.Management.MessageModeExtended
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'messages';

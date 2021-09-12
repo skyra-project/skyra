@@ -11,7 +11,7 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.WhereDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.WhereExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.WhereExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

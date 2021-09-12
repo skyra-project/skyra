@@ -23,7 +23,7 @@ const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new
 	cooldownLimit: 6,
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Announcement.AnnouncementDescription,
-	extendedHelp: LanguageKeys.Commands.Announcement.AnnouncementExtended,
+	detailedDescription: LanguageKeys.Commands.Announcement.AnnouncementExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [
 		PermissionFlagsBits.AddReactions,

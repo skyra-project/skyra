@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['mcc'],
 	description: LanguageKeys.Commands.Management.ManageCommandChannelDescription,
-	extendedHelp: LanguageKeys.Commands.Management.ManageCommandChannelExtended,
+	detailedDescription: LanguageKeys.Commands.Management.ManageCommandChannelExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]

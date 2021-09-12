@@ -16,7 +16,7 @@ import { Permissions, Role } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	cooldownDelay: minutes(5),
 	description: LanguageKeys.Commands.Management.CreateMuteDescription,
-	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
+	detailedDescription: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

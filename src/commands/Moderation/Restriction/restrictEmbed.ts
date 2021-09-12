@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restricted-embed', 're'],
 	description: LanguageKeys.Commands.Moderation.RestrictEmbedDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RestrictEmbedExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RestrictEmbedExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

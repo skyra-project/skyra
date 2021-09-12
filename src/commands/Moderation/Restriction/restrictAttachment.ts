@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restricted-attachment', 'ra'],
 	description: LanguageKeys.Commands.Moderation.RestrictAttachmentDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.RestrictAttachmentExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.RestrictAttachmentExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],

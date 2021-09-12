@@ -11,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['kitten', 'cat'],
 	description: LanguageKeys.Commands.Animal.KittyDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.KittyExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.KittyExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

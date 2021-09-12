@@ -17,7 +17,7 @@ const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/nc
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('NINTENDO_ID', 'NINTENDO_TOKEN'),
 	description: LanguageKeys.Commands.Tools.EshopDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended
+	detailedDescription: LanguageKeys.Commands.Tools.EshopExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

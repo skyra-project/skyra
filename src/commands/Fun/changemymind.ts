@@ -12,7 +12,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['cmm'],
 	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

@@ -13,7 +13,7 @@ import { MessageEmbed } from 'discord.js';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
-	extendedHelp: LanguageKeys.Commands.Pokemon.FlavorsExtended,
+	detailedDescription: LanguageKeys.Commands.Pokemon.FlavorsExtended,
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

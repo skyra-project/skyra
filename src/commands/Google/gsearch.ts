@@ -11,7 +11,7 @@ import { MessageEmbed } from 'discord.js';
 	enabled: envIsDefined('GOOGLE_CUSTOM_SEARCH_WEB_TOKEN', 'GOOGLE_CUSTOM_SEARCH_IMAGE_TOKEN', 'GOOGLE_API_TOKEN'),
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	description: LanguageKeys.Commands.Google.GsearchDescription,
-	extendedHelp: LanguageKeys.Commands.Google.GsearchExtended
+	detailedDescription: LanguageKeys.Commands.Google.GsearchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

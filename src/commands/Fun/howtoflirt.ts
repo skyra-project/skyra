@@ -27,7 +27,7 @@ const imageCoordinates = [
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['pants'],
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
+	detailedDescription: LanguageKeys.Commands.Fun.HowToFlirtExtended,
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
 	spam: true
 })

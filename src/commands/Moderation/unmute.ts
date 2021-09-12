@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['um'],
 	description: LanguageKeys.Commands.Moderation.UnmuteDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.UnmuteExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.UnmuteExtended,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	roleKey: GuildSettings.Roles.Muted,
 	setUpKey: ModerationSetupRestriction.All

@@ -12,7 +12,7 @@ const url = new URL('https://randomfox.ca/floof');
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animal.FoxDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.FoxExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.FoxExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

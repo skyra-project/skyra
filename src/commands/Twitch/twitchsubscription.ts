@@ -19,7 +19,7 @@ import { Guild, MessageEmbed } from 'discord.js';
 	enabled: envIsDefined('TWITCH_CALLBACK', 'TWITCH_CLIENT_ID', 'TWITCH_TOKEN', 'TWITCH_EVENTSUB_SECRET'),
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
-	extendedHelp: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
+	detailedDescription: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],

@@ -7,7 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<AudioCommand.Options>({
 	description: LanguageKeys.Commands.Music.ResumeDescription,
-	extendedHelp: LanguageKeys.Commands.Music.ResumeExtended
+	detailedDescription: LanguageKeys.Commands.Music.ResumeExtended
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()

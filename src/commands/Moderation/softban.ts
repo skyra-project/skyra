@@ -11,7 +11,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sb'],
 	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	options: ['d', 'day', 'days'],
 	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false

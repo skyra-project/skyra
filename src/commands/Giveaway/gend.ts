@@ -12,7 +12,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ge', 'giveaway-end'],
 	description: LanguageKeys.Commands.Giveaway.GiveawayEndDescription,
-	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayEndExtended,
+	detailedDescription: LanguageKeys.Commands.Giveaway.GiveawayEndExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ReadMessageHistory],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

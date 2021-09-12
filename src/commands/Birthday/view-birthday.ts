@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['viewbday'],
 	description: LanguageKeys.Commands.Misc.ViewBirthdayDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
+	detailedDescription: LanguageKeys.Commands.Misc.ViewBirthdayExtended,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {

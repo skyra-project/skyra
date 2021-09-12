@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.TickleDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.TickleExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.TickleExtended,
 	queryType: 'tickle',
 	responseName: LanguageKeys.Commands.Weeb.Tickle,
 	requireUser: true

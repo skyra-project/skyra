@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.FlowDescription,
-	extendedHelp: LanguageKeys.Commands.Moderation.FlowExtended,
+	detailedDescription: LanguageKeys.Commands.Moderation.FlowExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })

@@ -10,7 +10,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['doggo', 'puppy'],
 	description: LanguageKeys.Commands.Animal.DogDescription,
-	extendedHelp: LanguageKeys.Commands.Animal.DogExtended,
+	detailedDescription: LanguageKeys.Commands.Animal.DogExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	spam: true
 })

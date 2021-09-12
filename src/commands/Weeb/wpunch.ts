@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<WeebCommand.Options>({
 	description: LanguageKeys.Commands.Weeb.PunchDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.PunchExtended,
+	detailedDescription: LanguageKeys.Commands.Weeb.PunchExtended,
 	queryType: 'punch',
 	responseName: LanguageKeys.Commands.Weeb.Punch,
 	requireUser: true

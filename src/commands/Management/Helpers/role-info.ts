@@ -11,7 +11,7 @@ import { MessageEmbed, Permissions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.RoleInfoDescription,
-	extendedHelp: LanguageKeys.Commands.Management.RoleInfoExtended,
+	detailedDescription: LanguageKeys.Commands.Management.RoleInfoExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]

@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_TOKEN'),
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,
-	extendedHelp: LanguageKeys.Commands.Twitch.FollowageExtended,
+	detailedDescription: LanguageKeys.Commands.Twitch.FollowageExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

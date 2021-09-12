@@ -33,7 +33,7 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['commands', 'cmd', 'cmds'],
 	description: LanguageKeys.Commands.General.HelpDescription,
-	extendedHelp: LanguageKeys.Commands.General.HelpExtended,
+	detailedDescription: LanguageKeys.Commands.General.HelpExtended,
 	flags: ['cat', 'categories', 'all'],
 	guarded: true
 })
@@ -159,7 +159,7 @@ export class UserCommand extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = args.t(command.extendedHelp, { replace: { prefix: prefixUsed }, postProcess: 'helpUsagePostProcessor' });
+		const extendedHelpData = args.t(command.detailedDescription, { replace: { prefix: prefixUsed }, postProcess: 'helpUsagePostProcessor' });
 		const extendedHelp = builder.display(command.name, this.formatAliases(args.t, command.aliases), extendedHelpData, prefixUsed);
 
 		const data = args.t(LanguageKeys.Commands.General.HelpData, {

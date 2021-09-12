@@ -10,7 +10,7 @@ import { CpuInfo, cpus, uptime } from 'os';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['stats', 'sts'],
 	description: LanguageKeys.Commands.System.StatsDescription,
-	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
+	detailedDescription: LanguageKeys.Commands.System.StatsExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {

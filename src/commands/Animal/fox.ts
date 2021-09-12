@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -12,7 +13,7 @@ const url = new URL('https://randomfox.ca/floof');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animal.FoxDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.FoxExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

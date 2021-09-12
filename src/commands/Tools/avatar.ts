@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { AllowedImageSize, Message, MessageEmbed } from 'discord.js';
@@ -11,7 +12,7 @@ const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096];
 	description: LanguageKeys.Commands.Tools.AvatarDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.AvatarExtended,
 	options: ['size'],
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

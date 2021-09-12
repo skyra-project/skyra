@@ -2,16 +2,18 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionFlags } from '#utils/constants';
 import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.CaseDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.CaseExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['delete', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

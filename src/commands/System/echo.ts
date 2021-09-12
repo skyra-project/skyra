@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { UserError } from '@sapphire/framework';
+import { CommandOptionsRunTypeEnum, UserError } from '@sapphire/framework';
 import type { MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -12,7 +12,7 @@ import type { MessageOptions } from 'discord.js';
 	description: LanguageKeys.Commands.System.EchoDescription,
 	extendedHelp: LanguageKeys.Commands.System.EchoExtended,
 	permissionLevel: PermissionLevels.BotOwner,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

@@ -2,7 +2,7 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
-import { Emojis } from '#utils/constants';
+import { Emojis, PermissionFlags } from '#utils/constants';
 import { createPick } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -19,7 +19,7 @@ const kDays = ['yesterday', 'tomorrow', 'today'];
 	aliases: ['saelem'],
 	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

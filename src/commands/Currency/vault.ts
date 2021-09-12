@@ -1,6 +1,7 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -15,7 +16,7 @@ const kAll: readonly All[] = ['all', 'max', 'maximum'];
 	aliases: ['bank'],
 	description: LanguageKeys.Commands.Social.VaultDescription,
 	extendedHelp: LanguageKeys.Commands.Social.VaultExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
 	subCommands: ['deposit', { input: 'dep', output: 'deposit' }, 'withdraw', { input: 'with', output: 'withdraw' }, { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

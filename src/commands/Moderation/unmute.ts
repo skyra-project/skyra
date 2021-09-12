@@ -1,6 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand, SetUpModerationCommand } from '#lib/moderation';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';
@@ -11,7 +12,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['um'],
 	description: LanguageKeys.Commands.Moderation.UnmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnmuteExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
 	roleKey: GuildSettings.Roles.Muted,
 	setUpKey: ModerationSetupRestriction.All
 })

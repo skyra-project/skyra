@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -10,7 +11,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['doggo', 'puppy'],
 	description: LanguageKeys.Commands.Animal.DogDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.DogExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

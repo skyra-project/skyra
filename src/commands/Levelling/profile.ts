@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
-import { cdnFolder } from '#utils/constants';
+import { cdnFolder, PermissionFlags } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
 import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -19,7 +19,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.ProfileDescription,
 	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

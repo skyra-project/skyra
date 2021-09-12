@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
@@ -17,7 +17,7 @@ import { GuildMember, Role } from 'discord.js';
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {

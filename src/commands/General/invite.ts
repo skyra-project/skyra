@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { BrandingColors } from '#utils/constants';
+import { BrandingColors, PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
@@ -13,7 +13,7 @@ const flags = ['noperms', 'nopermissions'];
 	extendedHelp: LanguageKeys.Commands.General.InviteExtended,
 	flags,
 	guarded: true,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
 })
 export class UserCommand extends SkyraCommand {
 	public run(message: Message, args: SkyraCommand.Args) {

@@ -5,6 +5,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { remove as removeConfusables } from 'confusables';
 
@@ -12,7 +13,7 @@ import { remove as removeConfusables } from 'confusables';
 	description: LanguageKeys.Commands.Management.FilterDescription,
 	extendedHelp: LanguageKeys.Commands.Management.FilterExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +12,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Moderation.SetNicknameDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SetNicknameExtended,
 	optionalDuration: true,
-	requiredClientPermissions: ['MANAGE_NICKNAMES'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_NICKNAMES],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,7 +10,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['vk', 'vkick'],
 	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
-	requiredClientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_CHANNELS, PermissionFlags.MOVE_MEMBERS],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

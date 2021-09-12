@@ -3,7 +3,9 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
 import { hours } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TextChannel } from 'discord.js';
 
@@ -14,8 +16,8 @@ const MAXIMUM_DURATION = hours(6);
 	description: LanguageKeys.Commands.Moderation.SlowmodeDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.SlowmodeExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['MANAGE_CHANNELS'],
-	runIn: ['GUILD_TEXT']
+	requiredClientPermissions: [PermissionFlags.MANAGE_CHANNELS],
+	runIn: [CommandOptionsRunTypeEnum.GuildText]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

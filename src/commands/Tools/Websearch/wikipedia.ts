@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -12,7 +13,7 @@ import { URL } from 'url';
 	aliases: ['wiki'],
 	description: LanguageKeys.Commands.Tools.WikipediaDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.WikipediaExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

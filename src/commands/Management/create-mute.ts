@@ -9,7 +9,7 @@ import { getSecurity, promptConfirmation, promptForMessage } from '#utils/functi
 import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
-import type { Argument, Result, UserError } from '@sapphire/framework';
+import { Argument, CommandOptionsRunTypeEnum, Result, UserError } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Permissions, Role } from 'discord.js';
 
@@ -19,7 +19,7 @@ import { Permissions, Role } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private get role() {

@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { kRegExpTwemoji, twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -13,7 +14,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	aliases: ['emote'],
 	description: LanguageKeys.Commands.Tools.EmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.EmojiExtended,
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

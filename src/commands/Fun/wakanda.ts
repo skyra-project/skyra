@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
+import { assetsFolder, PermissionFlags } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -11,7 +11,7 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.WakandaDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.WakandaExtended,
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

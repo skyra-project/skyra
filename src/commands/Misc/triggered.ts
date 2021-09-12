@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
+import { assetsFolder, PermissionFlags } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -20,7 +20,7 @@ const COORDINATES: readonly [number, number][] = [
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

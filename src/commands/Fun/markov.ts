@@ -2,11 +2,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { iteratorAt } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, sendLoadingMessage } from '#utils/util';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { GuildTextBasedChannelTypes, isNsfwChannel } from '@sapphire/discord.js-utilities';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { cutText } from '@sapphire/utilities';
@@ -19,8 +21,8 @@ const kCodeZ = 'Z'.charCodeAt(0);
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.MarkovDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
-	runIn: ['GUILD_ANY'],
-	requiredClientPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS, PermissionFlags.READ_MESSAGE_HISTORY]
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;

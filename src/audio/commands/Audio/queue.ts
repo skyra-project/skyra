@@ -2,7 +2,7 @@ import { AudioCommand, Queue, RequireQueueNotEmpty } from '#lib/audio';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
-import { ZeroWidthSpace } from '#utils/constants';
+import { PermissionFlags, ZeroWidthSpace } from '#utils/constants';
 import { getAudio } from '#utils/functions';
 import { sendLoadingMessage, showSeconds } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -15,7 +15,12 @@ import type { TFunction } from 'i18next';
 	aliases: ['q', 'playing-time', 'pt'],
 	description: LanguageKeys.Commands.Music.QueueDescription,
 	extendedHelp: LanguageKeys.Commands.Music.QueueExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: [
+		PermissionFlags.ADD_REACTIONS,
+		PermissionFlags.MANAGE_MESSAGES,
+		PermissionFlags.EMBED_LINKS,
+		PermissionFlags.READ_MESSAGE_HISTORY
+	]
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()

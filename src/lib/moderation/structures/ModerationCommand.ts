@@ -7,7 +7,7 @@ import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast } from '#utils/util';
-import type { Args, PieceContext } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
@@ -29,7 +29,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
-			runIn: ['GUILD_ANY'],
+			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			...options
 		});
 

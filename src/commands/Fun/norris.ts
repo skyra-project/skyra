@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -9,7 +10,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['chucknorris'],
 	description: LanguageKeys.Commands.Fun.NorrisDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.NorrisExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

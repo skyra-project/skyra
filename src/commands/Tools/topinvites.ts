@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Emojis } from '#utils/constants';
+import { Emojis, PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { NonNullableProperties } from '@sapphire/utilities';
@@ -12,7 +12,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['topinvs'],
 	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
-	requiredClientPermissions: ['MANAGE_GUILD']
+	requiredClientPermissions: [PermissionFlags.MANAGE_GUILD]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

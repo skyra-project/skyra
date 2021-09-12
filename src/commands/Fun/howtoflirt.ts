@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
+import { assetsFolder, PermissionFlags } from '#utils/constants';
 import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -27,7 +27,7 @@ const imageCoordinates = [
 	aliases: ['pants'],
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.HowToFlirtExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

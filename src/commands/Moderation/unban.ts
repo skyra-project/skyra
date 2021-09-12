@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { safeWrapPromise } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
@@ -14,7 +15,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['ub'],
 	description: LanguageKeys.Commands.Moderation.UnbanDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
-	requiredClientPermissions: ['BAN_MEMBERS'],
+	requiredClientPermissions: [PermissionFlags.BAN_MEMBERS],
 	requiredMember: false
 })
 export class UserModerationCommand extends ModerationCommand {

@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -12,7 +13,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.PayDescription,
 	extendedHelp: LanguageKeys.Commands.Social.PayExtended,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

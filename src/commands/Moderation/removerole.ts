@@ -3,6 +3,7 @@ import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { years } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -14,7 +15,7 @@ import type { Role } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
 	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

@@ -7,6 +7,7 @@ import { formatNumber } from '#utils/functions';
 import type { LeaderboardUser } from '#utils/Leaderboard';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 
 type LeaderboardUsers = Collection<string, LeaderboardUser>;
@@ -15,7 +16,7 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 	aliases: ['lb', 'top', 'scoreboard', 'sb'],
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LeaderboardExtended,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	spam: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {

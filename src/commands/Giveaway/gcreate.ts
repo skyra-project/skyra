@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Args, IArgument, Identifiers } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum, IArgument, Identifiers } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
 import { Permissions } from 'discord.js';
@@ -17,7 +17,7 @@ const options = ['winners'];
 	description: LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription,
 	extendedHelp: LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended,
 	options,
-	runIn: ['GUILD_ANY']
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	private get integer(): IArgument<number> {

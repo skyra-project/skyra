@@ -2,6 +2,7 @@ import { envParseBoolean, envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { hours } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -13,7 +14,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	aliases: ['growth'],
 	description: LanguageKeys.Commands.General.GrowthDescription,
 	extendedHelp: LanguageKeys.Commands.General.GrowthExtended,
-	requiredClientPermissions: ['ATTACH_FILES']
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES]
 })
 export class UserCommand extends SkyraCommand {
 	private nextRefresh = Date.now();

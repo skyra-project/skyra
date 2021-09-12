@@ -2,9 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { EmojiRegex } from '@sapphire/discord.js-utilities';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -12,8 +13,8 @@ import { send } from '@sapphire/plugin-editable-commands';
 	description: LanguageKeys.Commands.Tools.CreateEmojiDescription,
 	extendedHelp: LanguageKeys.Commands.Tools.CreateEmojiExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['MANAGE_EMOJIS_AND_STICKERS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlags.MANAGE_EMOJIS_AND_STICKERS],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

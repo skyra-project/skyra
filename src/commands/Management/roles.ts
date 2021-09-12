@@ -2,6 +2,7 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -13,7 +14,7 @@ import type { TFunction } from 'i18next';
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	description: LanguageKeys.Commands.Management.RolesDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RolesExtended,
-	requiredClientPermissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES']
+	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES, PermissionFlags.MANAGE_MESSAGES]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

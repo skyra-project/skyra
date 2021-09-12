@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,7 +10,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['uvm', 'vum', 'unvmute'],
 	description: LanguageKeys.Commands.Moderation.VunmuteDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.VunmuteExtended,
-	requiredClientPermissions: ['MUTE_MEMBERS'],
+	requiredClientPermissions: [PermissionFlags.MUTE_MEMBERS],
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {

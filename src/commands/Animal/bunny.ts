@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { PermissionFlags } from '#utils/constants';
 import { getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -14,7 +15,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 	aliases: ['bunbun', 'rabbit'],
 	description: LanguageKeys.Commands.Animal.BunnyDescription,
 	extendedHelp: LanguageKeys.Commands.Animal.BunnyExtended,
-	requiredClientPermissions: ['EMBED_LINKS'],
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

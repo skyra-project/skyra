@@ -2,8 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { BrandingColors } from '#utils/constants';
+import { BrandingColors, PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { MessageEmbed, Permissions } from 'discord.js';
 
@@ -11,8 +12,8 @@ import { MessageEmbed, Permissions } from 'discord.js';
 	description: LanguageKeys.Commands.Management.RoleInfoDescription,
 	extendedHelp: LanguageKeys.Commands.Management.RoleInfoExtended,
 	permissionLevel: PermissionLevels.Moderator,
-	requiredClientPermissions: ['EMBED_LINKS'],
-	runIn: ['GUILD_ANY']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {

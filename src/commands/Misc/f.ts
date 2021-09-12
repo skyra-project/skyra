@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
+import { assetsFolder, PermissionFlags } from '#utils/constants';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
@@ -13,7 +13,7 @@ import { join } from 'path';
 	aliases: ['pray'],
 	description: LanguageKeys.Commands.Misc.FDescription,
 	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

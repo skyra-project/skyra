@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { CdnUrls } from '#utils/constants';
+import { CdnUrls, PermissionFlags } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, IArgument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -16,7 +16,7 @@ const enum CoinType {
 	aliases: ['cf'],
 	description: LanguageKeys.Commands.Games.CoinFlipDescription,
 	extendedHelp: LanguageKeys.Commands.Games.CoinFlipExtended,
-	requiredClientPermissions: ['EMBED_LINKS']
+	requiredClientPermissions: [PermissionFlags.EMBED_LINKS]
 })
 export class UserCommand extends SkyraCommand {
 	public async run(message: Message, args: SkyraCommand.Args) {

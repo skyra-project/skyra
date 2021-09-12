@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { displayEmoji } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
-import { Args } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -20,7 +20,7 @@ const enum Type {
 	description: LanguageKeys.Commands.Management.TriggersDescription,
 	extendedHelp: LanguageKeys.Commands.Management.TriggersExtended,
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

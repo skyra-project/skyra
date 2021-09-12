@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
+import { assetsFolder, PermissionFlags } from '#utils/constants';
 import { fetchAvatar, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -12,7 +12,7 @@ import { join } from 'path';
 	aliases: ['cmm'],
 	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
 	extendedHelp: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

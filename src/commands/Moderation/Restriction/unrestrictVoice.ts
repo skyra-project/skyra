@@ -1,6 +1,7 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
+import { PermissionFlags } from '#utils/constants';
 import { getSecurity } from '#utils/functions';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -10,7 +11,7 @@ import type { ArgumentTypes } from '@sapphire/utilities';
 	aliases: ['un-restricted-voice', 'urv'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictVoiceDescription,
 	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictVoiceExtended,
-	requiredClientPermissions: ['MANAGE_ROLES'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_ROLES],
 	roleKey: GuildSettings.Roles.RestrictedVoice,
 	setUpKey: ModerationSetupRestriction.Voice
 })

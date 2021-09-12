@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -12,7 +13,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	extendedHelp: LanguageKeys.Commands.Social.SocialExtended,
 	flags: ['all'],
 	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['GUILD_ANY'],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'remove', 'set', 'reset']
 })
 export class UserCommand extends SkyraCommand {

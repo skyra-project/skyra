@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
-import { cdnFolder } from '#utils/constants';
+import { cdnFolder, PermissionFlags } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -17,7 +17,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	aliases: ['lvl', 'rank'],
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
-	requiredClientPermissions: ['ATTACH_FILES'],
+	requiredClientPermissions: [PermissionFlags.ATTACH_FILES],
 	spam: true
 })
 export class UserCommand extends SkyraCommand {

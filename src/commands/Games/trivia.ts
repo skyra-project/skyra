@@ -2,6 +2,7 @@ import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { floatPromise, minutes, seconds } from '#utils/common';
+import { PermissionFlags } from '#utils/constants';
 import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -13,7 +14,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Games.TriviaDescription,
 	extendedHelp: LanguageKeys.Commands.Games.TriviaExtended,
-	requiredClientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+	requiredClientPermissions: [PermissionFlags.ADD_REACTIONS, PermissionFlags.EMBED_LINKS, PermissionFlags.READ_MESSAGE_HISTORY]
 })
 export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility

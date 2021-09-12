@@ -5,9 +5,11 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { parse as parseColour } from '#utils/Color';
+import { PermissionFlags } from '#utils/constants';
 import { RequiresLevel } from '#utils/decorators';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { Identifiers, ParserUnexpectedTokenError, PartType, UserError } from '@skyra/tags';
@@ -19,8 +21,8 @@ import { MessageEmbed, MessageOptions } from 'discord.js';
 	extendedHelp: LanguageKeys.Commands.Tags.TagExtended,
 	flags: ['embed'],
 	options: ['color', 'colour'],
-	requiredClientPermissions: ['MANAGE_MESSAGES'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_MESSAGES],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['add', 'alias', 'remove', 'edit', 'rename', 'source', 'list', 'reset', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

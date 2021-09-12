@@ -2,11 +2,11 @@ import { GuildSettings, readSettings, UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors, CdnUrls, Emojis } from '#utils/constants';
+import { BrandingColors, CdnUrls, Emojis, PermissionFlags } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
-import { Args, CommandContext } from '@sapphire/framework';
+import { Args, CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -18,8 +18,8 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	description: LanguageKeys.Commands.Social.BannerDescription,
 	extendedHelp: LanguageKeys.Commands.Social.BannerExtended,
-	requiredClientPermissions: ['MANAGE_MESSAGES'],
-	runIn: ['GUILD_ANY'],
+	requiredClientPermissions: [PermissionFlags.MANAGE_MESSAGES],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: ['buy', 'reset', 'set', { input: 'show', default: true }]
 })
 export class UserCommand extends SkyraCommand {

@@ -231,7 +231,6 @@ function flattenChannelThread(channel: ThreadChannel): FlattenedThreadChannel {
 		createdTimestamp: channel.createdTimestamp,
 		guildId: channel.guildId,
 		name: channel.name,
-		parent: channel.parent ? flattenChannel(channel.parent) : null,
 		parentId: channel.parentId,
 		rateLimitPerUser: channel.rateLimitPerUser
 	};
@@ -293,8 +292,6 @@ export interface FlattenedThreadChannel extends Pick<FlattenedGuildChannel, 'id'
 	guildId: string;
 
 	name: string;
-
-	parent: ReturnType<typeof flattenChannel> | null;
 
 	parentId: string | null;
 

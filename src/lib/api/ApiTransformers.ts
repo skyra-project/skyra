@@ -232,6 +232,8 @@ function flattenChannelThread(channel: ThreadChannel): FlattenedThreadChannel {
 		guildId: channel.guildId,
 		name: channel.name,
 		parentId: channel.parentId,
+		permissionOverwrites: [...(channel.parent?.permissionOverwrites.cache.entries() ?? [])],
+		rawPosition: channel.parent?.rawPosition ?? null,
 		rateLimitPerUser: channel.rateLimitPerUser
 	};
 }
@@ -295,7 +297,11 @@ export interface FlattenedThreadChannel extends Pick<FlattenedGuildChannel, 'id'
 
 	parentId: string | null;
 
+	permissionOverwrites: [string, PermissionOverwrites][];
+
 	rateLimitPerUser: number | null;
+
+	rawPosition: number | null;
 
 	type: ThreadChannelTypes;
 }

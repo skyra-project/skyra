@@ -1,6 +1,7 @@
 name: Continuous Delivery
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -8,6 +9,7 @@ on:
       - 'src/**'
       - 'Dockerfile'
       - '.github/workflows/continuous-delivery.yml'
+      - 'package.json'
 
 jobs:
   PublishSkyra:

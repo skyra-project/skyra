@@ -149,7 +149,7 @@ export interface GoogleCSEItem {
 	htmlTitle: string;
 	kind: string;
 	link: string;
-	snippet: string;
+	snippet?: string;
 	title: string;
 	pagemap?: {
 		cse_image?: GoogleCSEImage[];

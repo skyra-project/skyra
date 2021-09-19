@@ -4,22 +4,23 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import {
 	fetchGraphQLPokemon,
-	getPokemonDetailsByFuzzy,
+	getFuzzyPokemon,
 	GetPokemonSpriteParameters,
 	getSpriteKey,
 	parseBulbapediaURL,
 	resolveColour
 } from '#utils/APIs/Pokemon';
 import { CdnUrls, Emojis } from '#utils/constants';
+import { formatNumber } from '#utils/functions';
+import { formatBoolean } from '#utils/functions/booleans';
 import { sendLoadingMessage } from '#utils/util';
-import type { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
-import { zalgo } from '@favware/zalgo';
+import type { Abilities, EvYields, Gender, Pokemon, Stats } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
-import { toTitleCase } from '@sapphire/utilities';
+import { filterNullish, isNullish, toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-enum BaseStats {
+enum StatsEnum {
 	hp = 'HP',
 	attack = 'ATK',
 	defense = 'DEF',
@@ -51,8 +52,15 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy(getSpriteParams), { pokemon });
-			return data.getPokemonDetailsByFuzzy;
+			const {
+				data: { getFuzzyPokemon: result }
+			} = await fetchGraphQLPokemon<'getFuzzyPokemon'>(getFuzzyPokemon(getSpriteParams), { pokemon });
+
+			if (!result.length) {
+				this.error(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
+			}
+
+			return result[0];
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
 		}
@@ -65,7 +73,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	 * @param evoChain The current evolution chain
 	 * @param isEvo Whether this is an evolution or pre-evolution
 	 */
-	private constructEvoLink(species: DexDetails['species'], level: DexDetails['evolutionLevel'], evoChain: string, isEvo = true) {
+	private constructEvoLink(species: Pokemon['species'], level: Pokemon['evolutionLevel'], evoChain: string, isEvo = true) {
 		if (isEvo) {
 			return `${evoChain} → \`${toTitleCase(species)}\` ${level ? `(${level})` : ''}`;
 		}
@@ -75,7 +83,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	/**
 	 * Parse the gender ratios to an embeddable format
 	 */
-	private parseGenderRatio(genderRatio: GenderEntry) {
+	private parseGenderRatio(genderRatio: Gender) {
 		if (genderRatio.male === '0%' && genderRatio.female === '0%') {
 			return 'Genderless';
 		}
@@ -88,7 +96,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	 * @remark required to distinguish hidden abilities from regular abilities
 	 * @returns an array of abilities
 	 */
-	private getAbilities(abilitiesData: AbilitiesEntry): string[] {
+	private getAbilities(abilitiesData: Abilities): string[] {
 		const abilities: string[] = [];
 		for (const [type, ability] of Object.entries(abilitiesData)) {
 			if (!ability) continue;
@@ -102,20 +110,33 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	 * Parses base stats to an embeddable format
 	 * @returns an array of stats with their keys and values
 	 */
-	private getBaseStats(statsData: StatsEntry): string[] {
+	private getBaseStats(statsData: Stats): string[] {
 		const baseStats: string[] = [];
 		for (const [stat, value] of Object.entries(statsData)) {
-			baseStats.push(`${BaseStats[stat as keyof Omit<StatsEntry, '__typename'>]}: **${value}**`);
+			baseStats.push(`${StatsEnum[stat as keyof Omit<Stats, '__typename'>]}: **${value}**`);
 		}
 
 		return baseStats;
 	}
 
 	/**
+	 * Parses EV yields to an embeddable format
+	 * @returns an array of ev yields with their keys and values
+	 */
+	private getEvYields(evYieldsData: EvYields): string[] {
+		const evYields: string[] = [];
+		for (const [stat, value] of Object.entries(evYieldsData)) {
+			evYields.push(`${StatsEnum[stat as keyof Omit<EvYields, '__typename'>]}: **${value}**`);
+		}
+
+		return evYields;
+	}
+
+	/**
 	 * Parses the evolution chain to an embeddable format
 	 * @returns The evolution chain for the Pokémon
 	 */
-	private getEvoChain(pokeDetails: DexDetails): string {
+	private getEvoChain(pokeDetails: Pokemon): string {
 		// Set evochain if there are no evolutions
 		let evoChain = `**${toTitleCase(pokeDetails.species)} ${pokeDetails.evolutionLevel ? `(${pokeDetails.evolutionLevel})` : ''}**` as string;
 		if (!pokeDetails.evolutions?.length && !pokeDetails.preevolutions?.length) {
@@ -156,160 +177,168 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(pokeDetails: DexDetails, t: TFunction, getSpriteParams: GetPokemonSpriteParameters) {
+	private buildDisplay(pokeDetails: Pokemon, t: TFunction, getSpriteParams: GetPokemonSpriteParameters) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
+		const evYields = this.getEvYields(pokeDetails.evYields);
 		const evoChain = this.getEvoChain(pokeDetails);
 		const spriteToGet = getSpriteKey(getSpriteParams);
 
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
 			otherFormes: pokeDetails.otherFormes ?? [],
-			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
+			cosmeticFormes: pokeDetails.cosmeticFormes ?? [],
+			count: pokeDetails.types.length
 		});
 
-		if (pokeDetails.num < 0) {
-			return this.parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
-		} else if (pokeDetails.num === 0) {
-			return this.parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
-		}
-		return this.parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet });
+		return this.parsePokemon({ pokeDetails, abilities, baseStats, evYields, evoChain, embedTranslations, t, spriteToGet });
 	}
 
-	private parseCAPPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, spriteToGet }: PokemonToDisplayArgs) {
-		return new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setColor(resolveColour(pokeDetails.color))
-				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
-				.setThumbnail(pokeDetails[spriteToGet])
-		})
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
-					.addField(embedTranslations.abilities, abilities.join(', '), true)
-					.addField(embedTranslations.genderRatio, this.parseGenderRatio(pokeDetails.gender), true)
-					.addField(embedTranslations.evolutionaryLine, evoChain)
-					.addField(
-						embedTranslations.baseStats,
-						`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
-					)
-			)
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
-					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
-					.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true)
-					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
-			);
-	}
-
-	private parseMissingno({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet }: PokemonToDisplayArgs) {
+	private parsePokemon({
+		t,
+		pokeDetails,
+		abilities,
+		baseStats,
+		evYields,
+		evoChain,
+		embedTranslations,
+		spriteToGet
+	}: PokemonToDisplayArgs): SkyraPaginatedMessage {
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
-			`[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/MissingNo.)`,
-			`[Serebii](https://www.serebii.net/pokedex/000.shtml)`
-		].join(' | ');
-
-		return new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setColor(resolveColour(pokeDetails.color))
-				.setAuthor(`#${pokeDetails.num} - ${zalgo(toTitleCase(pokeDetails.species))}`, CdnUrls.Pokedex)
-				.setThumbnail(pokeDetails[spriteToGet])
-		})
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.types, zalgo(pokeDetails.types.join(', ')), true)
-					.addField(embedTranslations.abilities, zalgo(abilities.join(', ')), true)
-					.addField(embedTranslations.genderRatio, zalgo(this.parseGenderRatio(pokeDetails.gender)), true)
-					.addField(embedTranslations.evolutionaryLine, zalgo(evoChain))
-					.addField(
-						embedTranslations.baseStats,
-						zalgo(`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`)
-					)
-					.addField(externalResources, externalResourceData)
-			)
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.height, zalgo(`${pokeDetails.height}m`), true)
-					.addField(embedTranslations.weight, zalgo(`${pokeDetails.weight}kg`), true)
-					.addField(embedTranslations.eggGroups, zalgo(pokeDetails.eggGroups?.join(', ') || ''), true)
-					.addField(externalResources, externalResourceData)
-			)
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.flavourText, `\`(${pokeDetails.flavorTexts[0].game})\` ${zalgo(pokeDetails.flavorTexts[0].flavor)}`)
-					.addField(externalResources, externalResourceData)
-			);
-	}
-
-	private parseRegularPokemon({ pokeDetails, abilities, baseStats, evoChain, embedTranslations, t, spriteToGet }: PokemonToDisplayArgs) {
-		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
-		const externalResourceData = [
-			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
-			`[Serebii](${pokeDetails.serebiiPage})`,
-			`[Smogon](${pokeDetails.smogonPage})`
-		].join(' | ');
+			this.isMissingno(pokeDetails)
+				? '[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/MissingNo.)'
+				: `[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
+			this.isMissingno(pokeDetails) ? '[Serebii](https://www.serebii.net/pokedex/000.shtml)' : `[Serebii](${pokeDetails.serebiiPage})`,
+			this.isMissingno(pokeDetails) ? undefined : `[Smogon](${pokeDetails.smogonPage})`
+		]
+			.filter(filterNullish)
+			.join(' | ');
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(pokeDetails[spriteToGet])
-		})
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
-					.addField(embedTranslations.abilities, abilities.join(', '), true)
-					.addField(embedTranslations.genderRatio, this.parseGenderRatio(pokeDetails.gender), true)
-					.addField(embedTranslations.evolutionaryLine, evoChain)
-					.addField(
-						embedTranslations.baseStats,
-						`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
-					)
-					.addField(externalResources, externalResourceData)
-			)
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
-					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
-					.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true)
-					.addField(externalResources, externalResourceData)
-			)
-			.addPageEmbed((embed) =>
-				embed
-					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
-					.addField(embedTranslations.flavourText, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
-					.addField(externalResources, externalResourceData)
-			);
+		});
 
-		// If there are any cosmetic formes or other formes then add a page for them
-		// If the pokémon doesn't have the formes then the API will default them to `null`
-		if (pokeDetails.cosmeticFormes || pokeDetails.otherFormes) {
-			display.addPageEmbed((embed) => {
-				// If the pokémon has other formes
-				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.otherFormesTitle, embedTranslations.otherFormesList);
-				}
+		display.addPageEmbed((embed) => {
+			embed
+				.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
+				.addField(embedTranslations.abilities, t(LanguageKeys.Globals.AndListValue, { value: abilities }), true)
+				.addField(embedTranslations.genderRatio, this.parseGenderRatio(pokeDetails.gender), true)
+				.addField(embedTranslations.evolutionaryLine, evoChain)
+				.addField(
+					embedTranslations.baseStats,
+					`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
+				);
 
-				// If the pokémon has cosmetic formes
-				if (pokeDetails.cosmeticFormes) {
-					embed.addField(embedTranslations.cosmeticFormesTitle, embedTranslations.cosmeticFormesList);
-				}
-
-				// Add the external resource field
+			if (!this.isCapPokemon(pokeDetails)) {
 				embed.addField(externalResources, externalResourceData);
+			}
+
+			return embed;
+		});
+
+		display.addPageEmbed((embed) => {
+			embed
+				.addField(embedTranslations.height, `${formatNumber(t, pokeDetails.height)}m`, true)
+				.addField(embedTranslations.weight, `${formatNumber(t, pokeDetails.weight)}kg`, true);
+
+			if (this.isRegularPokemon(pokeDetails)) {
+				if (pokeDetails.levellingRate) {
+					embed.addField(embedTranslations.levellingRate, pokeDetails.levellingRate, true);
+				}
+			}
+
+			if (!this.isMissingno(pokeDetails)) {
+				embed.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true);
+			}
+
+			if (this.isRegularPokemon(pokeDetails)) {
+				embed.addField(embedTranslations.isEggObtainable, formatBoolean(t, pokeDetails.isEggObtainable), true);
+
+				if (!isNullish(pokeDetails.minimumHatchTime) && !isNullish(pokeDetails.maximumHatchTime)) {
+					embed
+						.addField(embedTranslations.minimumHatchingTime, formatNumber(t, pokeDetails.minimumHatchTime), true)
+						.addField(embedTranslations.maximumHatchTime, formatNumber(t, pokeDetails.maximumHatchTime), true);
+				}
+
+				embed.addField(externalResources, externalResourceData);
+			}
+
+			return embed;
+		});
+
+		if (!this.isMissingno(pokeDetails)) {
+			display.addPageEmbed((embed) => {
+				embed //
+					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier)
+					.addField(embedTranslations.evYields, `${evYields.join(', ')}`);
+
+				if (this.isRegularPokemon(pokeDetails)) {
+					embed.addField(externalResources, externalResourceData);
+				}
 
 				return embed;
 			});
 		}
 
+		if (!this.isCapPokemon(pokeDetails)) {
+			if (pokeDetails.flavorTexts.length) {
+				display.addPageEmbed((embed) => {
+					for (const flavor of pokeDetails.flavorTexts) {
+						embed.addField(embedTranslations.flavourText, `\`(${flavor.game})\` ${flavor.flavor}`);
+					}
+
+					return embed.addField(externalResources, externalResourceData);
+				});
+			}
+		}
+
+		if (!this.isMissingno(pokeDetails)) {
+			// If there are any cosmetic formes or other formes then add a page for them
+			// If the pokémon doesn't have the formes then the API will default them to `null`
+			if (pokeDetails.cosmeticFormes || pokeDetails.otherFormes) {
+				display.addPageEmbed((embed) => {
+					// If the pokémon has other formes
+					if (pokeDetails.otherFormes) {
+						embed.addField(embedTranslations.otherFormesTitle, embedTranslations.otherFormesList);
+					}
+
+					// If the pokémon has cosmetic formes
+					if (pokeDetails.cosmeticFormes) {
+						embed.addField(embedTranslations.cosmeticFormesTitle, embedTranslations.cosmeticFormesList);
+					}
+
+					// Add the external resource field
+					embed.addField(externalResources, externalResourceData);
+
+					return embed;
+				});
+			}
+		}
+
 		return display;
+	}
+
+	private isCapPokemon(pokeDetails: Pokemon) {
+		return pokeDetails.num < 0;
+	}
+
+	private isRegularPokemon(pokeDetails: Pokemon) {
+		return pokeDetails.num > 0;
+	}
+
+	private isMissingno(pokeDetails: Pokemon) {
+		return pokeDetails.num === 0;
 	}
 }
 
 interface PokemonToDisplayArgs {
-	pokeDetails: DexDetails;
+	pokeDetails: Pokemon;
 	abilities: string[];
 	baseStats: string[];
+	evYields: string[];
 	evoChain: string;
 	t: TFunction;
 	embedTranslations: PokedexEmbedDataReturn;

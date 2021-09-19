@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
-import type { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
+import type { Type, TypeMatchup, TypesEnum } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
@@ -48,7 +48,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async fetchAPI(types: Types[]) {
+	private async fetchAPI(types: TypesEnum[]) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
@@ -59,7 +59,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private parseEffectiveMatchup(doubleEffectiveTypes: TypeEntry['doubleEffectiveTypes'], effectiveTypes: TypeEntry['effectiveTypes']) {
+	private parseEffectiveMatchup(doubleEffectiveTypes: Type['doubleEffectiveTypes'], effectiveTypes: Type['effectiveTypes']) {
 		return doubleEffectiveTypes
 			.map((type): string => `${type} (x4)`)
 			.concat(effectiveTypes.map((type) => `${type} (x2)`))
@@ -67,7 +67,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.join(', ');
 	}
 
-	private parseResistedMatchup(doubleResistedTypes: TypeEntry['doubleResistedTypes'], resistedTypes: TypeEntry['resistedTypes']) {
+	private parseResistedMatchup(doubleResistedTypes: Type['doubleResistedTypes'], resistedTypes: Type['resistedTypes']) {
 		return doubleResistedTypes
 			.map((type): string => `${type} (x0.25)`)
 			.concat(resistedTypes.map((type) => `${type} (x0.5)`))
@@ -75,11 +75,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.join(', ');
 	}
 
-	private parseRegularMatchup(regularMatchup: TypeEntry['normalTypes'] | TypeEntry['effectlessTypes']) {
+	private parseRegularMatchup(regularMatchup: Type['normalTypes'] | Type['effectlessTypes']) {
 		return regularMatchup.map((type) => `\`${type}\``).join(', ');
 	}
 
-	private async buildDisplay(message: GuildMessage, types: Types[], typeMatchups: TypeMatchups, t: TFunction) {
+	private async buildDisplay(message: GuildMessage, types: TypesEnum[], typeMatchups: TypeMatchup, t: TFunction) {
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
@@ -147,8 +147,8 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			);
 	}
 
-	private static type = Args.make<Types[]>((parameter, { argument }) => {
-		const lowerCasedSplitArguments = parameter.toLowerCase().split(' ') as Types[];
+	private static type = Args.make<TypesEnum[]>((parameter, { argument }) => {
+		const lowerCasedSplitArguments = parameter.toLowerCase().split(' ') as TypesEnum[];
 
 		if (lowerCasedSplitArguments.length > 2)
 			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Pokemon.TypeTooManyTypes });

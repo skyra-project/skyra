@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
+import { isNullish } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

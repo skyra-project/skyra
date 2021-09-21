@@ -6,7 +6,7 @@ import { Events, PermissionLevels } from '#lib/types/Enums';
 import { map, seconds } from '#utils/common';
 import { BrandingColors } from '#utils/constants';
 import { promptConfirmation } from '#utils/functions';
-import { announcementCheck, DetailedMentionExtractionResult, extractDetailedMentions } from '#utils/util';
+import { announcementCheck, extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -16,7 +16,6 @@ import { DiscordAPIError, MessageEmbed, MessageOptions, Role } from 'discord.js'
 import type { TFunction } from 'i18next';
 
 const flags = ['excludeMentions', 'em'];
-const empty: DetailedMentionExtractionResult = { channels: new Set(), roles: new Set(), users: new Set() };
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['announce'],
@@ -86,7 +85,7 @@ export class UserCommand extends SkyraCommand {
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
-		const detailedMentions = args.getFlags(...flags) ? empty : extractDetailedMentions(announcement);
+		const detailedMentions = extractDetailedMentions(args.getFlags(...flags) ? announcement : null);
 		const mentions = [...map(detailedMentions.roles.values(), (id) => `<@&${id}>`), ...map(detailedMentions.users.values(), (id) => `<@${id}>`)];
 
 		const { t } = args;

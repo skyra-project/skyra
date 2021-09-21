@@ -7,7 +7,7 @@ import { UserError } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
-import { isNumber, parseURL } from '@sapphire/utilities';
+import { isNullishOrEmpty, isNumber, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import type { APIUser } from 'discord-api-types/v9';
@@ -430,10 +430,14 @@ export const anyMentionRegExp = /<(@[!&]?|#)(\d{17,19})>/g;
  * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`.
  * @param input The input to extract mentions from.
  */
-export function extractDetailedMentions(input: string): DetailedMentionExtractionResult {
+export function extractDetailedMentions(input: string | Nullish): DetailedMentionExtractionResult {
 	const users = new Set<string>();
 	const roles = new Set<string>();
 	const channels = new Set<string>();
+
+	if (isNullishOrEmpty(input)) {
+		return { users, roles, channels };
+	}
 
 	let result: RegExpExecArray | null;
 	while ((result = anyMentionRegExp.exec(input)) !== null) {

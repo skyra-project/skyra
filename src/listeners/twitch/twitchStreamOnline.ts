@@ -4,6 +4,7 @@ import type { TwitchEventSubOnlineEvent, TwitchHelixStreamsResult, TwitchOnlineE
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { extractDetailedMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -58,10 +59,12 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 					}
 
 					// Construct a message embed and send it.
+					const detailedMentions = extractDetailedMentions(guildSubscription.message);
 					floatPromise(
 						channel.send({
 							content: guildSubscription.message || null,
-							embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)]
+							embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)],
+							allowedMentions: { users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
 						})
 					);
 				}
@@ -88,7 +91,7 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 		const embed = new MessageEmbed()
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.userName}`)
-			.setFooter(t(LanguageKeys.Events.Twitch.EmbedFooter))
+			.setFooter(t(LanguageKeys.Events.Twitch.OfflinePostfix))
 			.setColor(this.container.client.twitch.BRANDING_COLOUR)
 			.setTimestamp(data.startedAt);
 

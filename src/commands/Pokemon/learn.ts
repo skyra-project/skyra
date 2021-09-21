@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { LearnMethodTypesReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
+import { fetchGraphQLPokemon, getFuzzyLearnset, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
-import type { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
+import type { Learnset, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
@@ -39,12 +39,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async fetchAPI(pokemon: string, moves: string[], generation: number, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy(getSpriteParams), {
+			const { data } = await fetchGraphQLPokemon<'getFuzzyLearnset'>(getFuzzyLearnset(getSpriteParams), {
 				pokemon,
 				moves,
 				generation
 			});
-			return data.getPokemonLearnsetByFuzzy;
+
+			return data.getFuzzyLearnset;
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.LearnQueryFailed, {
 				pokemon,
@@ -57,13 +58,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return t(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
 	}
 
-	private buildDisplay(
-		learnsetData: LearnsetEntry,
-		generation: number,
-		moves: string[],
-		t: TFunction,
-		getSpriteParams: GetPokemonSpriteParameters
-	) {
+	private buildDisplay(learnsetData: Learnset, generation: number, moves: string[], t: TFunction, getSpriteParams: GetPokemonSpriteParameters) {
 		const spriteToGet = getSpriteKey(getSpriteParams);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()

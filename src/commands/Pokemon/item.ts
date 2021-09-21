@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { fetchGraphQLPokemon, getFuzzyItem, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -47,8 +47,15 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchAPI(item: string) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
-			return data.getItemDetailsByFuzzy;
+			const {
+				data: { getFuzzyItem: result }
+			} = await fetchGraphQLPokemon<'getFuzzyItem'>(getFuzzyItem, { item });
+
+			if (!result.length) {
+				this.error(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
+			}
+
+			return result[0];
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}

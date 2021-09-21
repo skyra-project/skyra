@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
+import { fetchGraphQLPokemon, getFuzzyFlavorTexts, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
-import type { DexDetails } from '@favware/graphql-pokemon';
+import type { Pokemon } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
@@ -37,16 +37,23 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy(getSpriteParams), {
+			const {
+				data: { getFuzzyPokemon: result }
+			} = await fetchGraphQLPokemon<'getFuzzyPokemon'>(getFuzzyFlavorTexts(getSpriteParams), {
 				pokemon
 			});
-			return data.getPokemonDetailsByFuzzy;
+
+			if (!result.length) {
+				this.error(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
+			}
+
+			return result[0];
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 
-	private buildDisplay(pokemonData: DexDetails, getSpriteParams: GetPokemonSpriteParameters) {
+	private buildDisplay(pokemonData: Pokemon, getSpriteParams: GetPokemonSpriteParameters) {
 		const spriteToGet = getSpriteKey(getSpriteParams);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()

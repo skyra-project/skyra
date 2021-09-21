@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '#utils/APIs/Pokemon';
+import { fetchGraphQLPokemon, getFuzzyMove, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
-import type { MoveEntry } from '@favware/graphql-pokemon';
+import type { Move } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -28,14 +28,21 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async fetchAPI(move: string) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
-			return data.getMoveDetailsByFuzzy;
+			const {
+				data: { getFuzzyMove: result }
+			} = await fetchGraphQLPokemon<'getFuzzyMove'>(getFuzzyMove, { move });
+
+			if (!result.length) {
+				this.error(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
+			}
+
+			return result[0];
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, moveData: MoveEntry, t: TFunction) {
+	private async buildDisplay(message: GuildMessage, moveData: Move, t: TFunction) {
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
 			availableInGen8: t(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});

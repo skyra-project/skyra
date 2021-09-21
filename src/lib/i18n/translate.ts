@@ -1,4 +1,6 @@
+import type { SkyraArgs } from '#lib/structures';
 import { Identifiers } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { LanguageKeys } from './languageKeys';
 
 export function translate(identifier: string): string {
@@ -72,4 +74,10 @@ export function translate(identifier: string): string {
 		default:
 			return identifier;
 	}
+}
+
+export type TResolvable = SkyraArgs | TFunction;
+
+export function resolveT(t: TResolvable): TFunction {
+	return typeof t === 'function' ? t : t.t;
 }

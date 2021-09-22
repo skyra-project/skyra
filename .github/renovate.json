@@ -1,27 +1,25 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
-  "npm": {
-    "rangeStrategy": "bump",
-    "packageRules": [
-      {
-        "matchManagers": ["npm"],
-        "matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
-        "enabled": false
-      },
-      {
-			"matchManagers": ["npm"],
-			"matchPackagePatterns": ["ansi-regex"],
-      "allowedVersions": "^5"
-      },
-      {
-			"matchManagers": ["npm"],
-			"matchPackagePatterns": ["@types/node"],
-			"allowedVersions": "^2"
-      }
-    ]
-  },
-  "labels": ["Meta: Dependencies"]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:base"],
+	"npm": {
+		"rangeStrategy": "bump",
+		"packageRules": [
+			{
+				"matchManagers": ["npm"],
+				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
+				"enabled": false
+			},
+			{
+				"matchManagers": ["npm"],
+				"matchPackagePatterns": ["ansi-regex"],
+				"allowedVersions": "^5"
+			},
+			{
+				"matchManagers": ["npm"],
+				"matchPackagePatterns": ["@types/node"],
+				"allowedVersions": "^2"
+			}
+		]
+	},
+	"labels": ["Meta: Dependencies"]
 }

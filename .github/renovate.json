@@ -18,6 +18,16 @@
 				"matchManagers": ["npm"],
 				"matchPackagePatterns": ["@types/node"],
 				"allowedVersions": "^2"
+			},
+			{
+				"matchManagers": ["npm"],
+				"matchPackagePatterns": ["@sapphire"],
+        "groupName": "Sapphire Dependencies"
+			},
+			{
+				"matchManagers": ["npm"],
+				"matchPackagePatterns": ["@influxdata"],
+        "groupName": "InfluxDB Dependencies"
 			}
 		]
 	},

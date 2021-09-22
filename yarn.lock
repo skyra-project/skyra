@@ -2849,7 +2849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.4.1":
+"acorn@npm:^8.5.0":
   version: 8.5.0
   resolution: "acorn@npm:8.5.0"
   bin:

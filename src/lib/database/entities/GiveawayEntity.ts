@@ -4,6 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { fetchReactionUsers } from '#utils/util';
+import { roleMention } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
@@ -185,9 +186,10 @@ export class GiveawayEntity extends BaseEntity {
 		} else {
 			this.#refreshAt = this.calculateNextRefresh();
 		}
-		const content = GiveawayEntity.getContent(state, t);
+		const content = GiveawayEntity.getContent(state, this.allowedRoles, t);
+		const allowedMentions = GiveawayEntity.getAllowedMentions(state, this.allowedRoles);
 		const embed = this.getEmbed(state, t);
-		return { content, embed };
+		return { content, embed, allowed_mentions: allowedMentions };
 	}
 
 	private async announceWinners(t: TFunction) {
@@ -298,15 +300,27 @@ export class GiveawayEntity extends BaseEntity {
 		return filtered;
 	}
 
-	private static getContent(state: States, t: TFunction): string {
+	private static getContent(state: States, roles: string[], t: TFunction): string {
 		switch (state) {
 			case States.Finished:
 				return t(LanguageKeys.Giveaway.EndedTitle);
-			case States.LastChance:
-				return t(LanguageKeys.Giveaway.LastChanceTitle);
-			default:
-				return t(LanguageKeys.Giveaway.Title);
+			case States.LastChance: {
+				return t(roles.length ? LanguageKeys.Giveaway.LastChanceTitleWithMentions : LanguageKeys.Giveaway.LastChanceTitle, {
+					roles: roles.map((r) => roleMention(r))
+				});
+			}
+			default: {
+				return t(roles.length ? LanguageKeys.Giveaway.TitleWithMentions : LanguageKeys.Giveaway.Title, {
+					roles: roles.map((r) => roleMention(r))
+				});
+			}
 		}
+	}
+
+	private static getAllowedMentions(state: States, roles: string[]): RESTPatchAPIChannelMessageJSONBody['allowed_mentions'] {
+		if (state === States.Finished) return null;
+
+		return { roles };
 	}
 
 	private static getColor(state: States) {

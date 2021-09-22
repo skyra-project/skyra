@@ -217,11 +217,16 @@
 		"evolutionaryLine": "",
 		"baseStats": "",
 		"baseStatsTotal": "",
+		"evYields": "",
 		"flavourText": "",
 		"otherFormesTitle": "",
 		"cosmeticFormesTitle": "",
 		"otherFormesList": "",
-		"cosmeticFormesList": ""
+		"cosmeticFormesList": "",
+		"levellingRate": "",
+		"isEggObtainable": "",
+		"minimumHatchingTime": "",
+		"maximumHatchTime": ""
 	},
 	"pokedexQueryFail": "",
 	"spriteDescription": "",

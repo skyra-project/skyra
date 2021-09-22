@@ -2334,14 +2334,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/audio@npm:next":
-  version: 2.0.0-next.2576afe.0
-  resolution: "@skyra/audio@npm:2.0.0-next.2576afe.0"
+"@skyra/audio@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@skyra/audio@npm:2.0.0"
   dependencies:
     backoff: ^2.5.0
     tslib: ^2.3.1
     ws: ^8.2.2
-  checksum: acead61791aad4257715e05ca0495a09ec2e41c58a4b98a57956f3a5715a55a7bbe58209e364c4e42870aae1c329fdf91226227c9db82eff5d07362a80d698c2
+  checksum: 7d4030c6bc185ae778a7dd7f0964230dddd03868a82057f6875ab6df8de055a77c750bc6522ecb99c422b476eb702a9b926e28ab6d7ecae5a347c13fcd3eccdc
   languageName: node
   linkType: hard
 
@@ -9635,7 +9635,7 @@ fsevents@^2.3.2:
     "@sentry/integrations": ^6.12.0
     "@sentry/node": ^6.12.0
     "@skyra/ai": ^1.2.0
-    "@skyra/audio": next
+    "@skyra/audio": ^2.0.0
     "@skyra/char": ^1.0.2
     "@skyra/gifenc": ^1.0.0
     "@skyra/saelem": ^3.0.9

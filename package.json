@@ -80,7 +80,7 @@
 		"@sentry/integrations": "^6.12.0",
 		"@sentry/node": "^6.12.0",
 		"@skyra/ai": "^1.2.0",
-		"@skyra/audio": "next",
+		"@skyra/audio": "^2.0.0",
 		"@skyra/char": "^1.0.2",
 		"@skyra/gifenc": "^1.0.0",
 		"@skyra/saelem": "^3.0.9",

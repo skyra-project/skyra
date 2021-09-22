@@ -7,7 +7,9 @@
     "rangeStrategy": "bump",
     "packageRules": [
       {
-        "excludePackageNames": ["typeorm", "tslib", "colorette", "i18next"]
+        "matchManagers": ["npm"],
+        "matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
+        "enabled": false
       }
     ]
   },

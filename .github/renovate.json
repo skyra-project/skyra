@@ -8,8 +8,18 @@
     "packageRules": [
       {
         "matchManagers": ["npm"],
-        "matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next", "ansi-regex"],
+        "matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
         "enabled": false
+      },
+      {
+			"matchManagers": ["npm"],
+			"matchPackagePatterns": ["ansi-regex"],
+      "allowedVersions": "^5"
+      },
+      {
+			"matchManagers": ["npm"],
+			"matchPackagePatterns": ["@types/node"],
+			"allowedVersions": "^2"
       }
     ]
   },

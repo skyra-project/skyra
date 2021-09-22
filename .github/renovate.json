@@ -1,8 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:base", ":dependencyDashboard"],
-	"timezone": "Europe/Amsterdam",
-	"schedule": ["before 3am on Sunday"],
 	"npm": {
 		"rangeStrategy": "bump",
 		"packageRules": [

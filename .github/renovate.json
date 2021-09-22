@@ -2,39 +2,34 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:base", ":dependencyDashboard"],
 	"npm": {
-		"rangeStrategy": "bump",
-		"packageRules": [
-			{
-				"matchUpdateTypes": ["minor", "patch"],
-				"matchCurrentVersion": "!/^0/",
-				"automerge": true
-			},
-			{
-				"matchManagers": ["npm"],
-				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
-				"enabled": false
-			},
-			{
-				"matchManagers": ["npm"],
-				"matchPackagePatterns": ["ansi-regex"],
-				"allowedVersions": "^5"
-			},
-			{
-				"matchManagers": ["npm"],
-				"matchPackagePatterns": ["@types/node"],
-				"allowedVersions": "^2"
-			},
-			{
-				"matchManagers": ["npm"],
-				"matchPackagePatterns": ["@sapphire"],
-				"groupName": "Sapphire Dependencies"
-			},
-			{
-				"matchManagers": ["npm"],
-				"matchPackagePatterns": ["@influxdata"],
-				"groupName": "InfluxDB Dependencies"
-			}
-		]
+		"rangeStrategy": "bump"
 	},
-	"labels": ["Meta: Dependencies"]
+	"labels": ["Meta: Dependencies"],
+	"packageRules": [
+		{
+			"matchUpdateTypes": ["minor", "patch"],
+			"matchCurrentVersion": "!/^0/",
+			"automerge": true
+		},
+		{
+			"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
+			"enabled": false
+		},
+		{
+			"matchPackagePatterns": ["ansi-regex"],
+			"allowedVersions": "^5"
+		},
+		{
+			"matchPackagePatterns": ["@types/node-fetch"],
+			"allowedVersions": "^2"
+		},
+		{
+			"matchPackagePatterns": ["@sapphire"],
+			"groupName": "Sapphire Dependencies"
+		},
+		{
+			"matchPackagePatterns": ["@influxdata"],
+			"groupName": "InfluxDB Dependencies"
+		}
+	]
 }

@@ -1,9 +1,16 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:base"],
+	"extends": ["config:base", ":dependencyDashboard"],
+	"timezone": "Europe/Amsterdam",
+	"schedule": ["before 3am on Sunday"],
 	"npm": {
 		"rangeStrategy": "bump",
 		"packageRules": [
+			{
+				"matchUpdateTypes": ["minor", "patch"],
+				"matchCurrentVersion": "!/^0/",
+				"automerge": true
+			},
 			{
 				"matchManagers": ["npm"],
 				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
@@ -22,12 +29,12 @@
 			{
 				"matchManagers": ["npm"],
 				"matchPackagePatterns": ["@sapphire"],
-        "groupName": "Sapphire Dependencies"
+				"groupName": "Sapphire Dependencies"
 			},
 			{
 				"matchManagers": ["npm"],
 				"matchPackagePatterns": ["@influxdata"],
-        "groupName": "InfluxDB Dependencies"
+				"groupName": "InfluxDB Dependencies"
 			}
 		]
 	},

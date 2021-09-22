@@ -2,12 +2,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TwitchEventSubEvent, TwitchEventSubTypes } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
+import { extractDetailedMentions } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ListenerOptions>({
@@ -16,6 +17,7 @@ import type { TFunction } from 'i18next';
 export class UserListener extends Listener<Events.TwitchStreamOffline> {
 	public async run(data: TwitchEventSubEvent) {
 		const { twitchSubscriptions } = this.container.db;
+		const date = new Date();
 
 		const twitchSubscription = await twitchSubscriptions.findOne({
 			relations: ['guildSubscription'],
@@ -51,18 +53,20 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 
 				// Construct a message embed and send it.
 				// If the message could not be retrieved then skip this notification.
-				if (guildSubscription.message) {
-					floatPromise(channel.send({ embeds: [this.buildEmbed(guildSubscription.message, t)] }));
+				if (!isNullishOrEmpty(guildSubscription.message)) {
+					const detailedMentions = extractDetailedMentions(guildSubscription.message);
+					floatPromise(
+						channel.send({
+							content: this.buildMessage(guildSubscription.message, date, t),
+							allowedMentions: { users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
+						})
+					);
 				}
 			}
 		}
 	}
 
-	private buildEmbed(message: string, t: TFunction) {
-		return new MessageEmbed()
-			.setColor(this.container.client.twitch.BRANDING_COLOUR)
-			.setDescription(message)
-			.setFooter(t(LanguageKeys.Events.Twitch.EmbedFooter))
-			.setTimestamp();
+	private buildMessage(message: string, date: Date, t: TFunction): string {
+		return `${message} | ${time(date, TimestampStyles.ShortDateTime)} | ${t(LanguageKeys.Events.Twitch.OfflinePostfix)}`;
 	}
 }

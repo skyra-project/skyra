@@ -167,11 +167,16 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 				const [streamerId, subscriptions] = notificationEntry;
 
 				for (const subscription of subscriptions) {
+					const transformedData = transformedDataForTwitchSubscriptions.get(streamerId);
+					if (!transformedData) {
+						continue;
+					}
+
 					const newObject: GuildSubscriptions = {
 						guild_id: guild.id,
 						channel_id: subscription.channel,
 						message: subscription.message || null,
-						subscription_id: transformedDataForTwitchSubscriptions.get(streamerId)!.id
+						subscription_id: transformedData.id
 					};
 
 					newSubscriptions.push(newObject);

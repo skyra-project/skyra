@@ -31,8 +31,15 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonSprite(getSpriteParams), { pokemon });
-			return data.getPokemonDetailsByFuzzy;
+			const {
+				data: { getFuzzyPokemon: result }
+			} = await fetchGraphQLPokemon<'getFuzzyPokemon'>(getPokemonSprite(getSpriteParams), { pokemon });
+
+			if (!result.length) {
+				this.error(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
+			}
+
+			return result[0];
 		} catch {
 			this.error(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
 		}

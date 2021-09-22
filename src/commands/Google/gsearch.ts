@@ -34,7 +34,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		for (const item of items) {
 			display.addPageEmbed((embed) => {
-				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
+				embed //
+					.setTitle(item.title)
+					.setURL(item.link);
+
+				if (item.snippet) {
+					embed.setDescription(item.snippet);
+				}
 
 				const imageUrl = this.getImageUrl(item);
 				if (imageUrl) embed.setImage(imageUrl);

@@ -4,6 +4,7 @@ import {
 	isGuildBasedChannelByGuildKey,
 	isNewsChannel,
 	isTextChannel,
+	isThreadChannel,
 	isVoiceChannel
 } from '@sapphire/discord.js-utilities';
 import type {
@@ -16,6 +17,8 @@ import type {
 	PermissionOverwrites,
 	Role,
 	TextChannel,
+	ThreadChannel,
+	ThreadChannelTypes,
 	User,
 	VoiceChannel
 } from 'discord.js';
@@ -88,6 +91,7 @@ export interface FlattenedGuild
 		| 'verified'
 	> {
 	channels: FlattenedGuildChannel[];
+
 	roles: FlattenedRole[];
 }
 
@@ -110,15 +114,23 @@ export function flattenRole(role: Role): FlattenedRole {
 }
 
 export interface FlattenedRole {
-	id: string;
-	guildId: string;
-	name: string;
 	color: number;
+
+	guildId: string;
+
 	hoist: boolean;
-	rawPosition: number;
-	permissions: string;
+
+	id: string;
+
 	managed: boolean;
+
 	mentionable: boolean;
+
+	name: string;
+
+	permissions: string;
+
+	rawPosition: number;
 }
 
 // #endregion Role
@@ -130,8 +142,10 @@ export function flattenChannel(channel: TextChannel): FlattenedTextChannel;
 export function flattenChannel(channel: VoiceChannel): FlattenedVoiceChannel;
 export function flattenChannel(channel: GuildChannel): FlattenedGuildChannel;
 export function flattenChannel(channel: DMChannel): FlattenedDMChannel;
+export function flattenChannel(channel: ThreadChannel): FlattenedThreadChannel;
 export function flattenChannel(channel: Channel): FlattenedChannel;
 export function flattenChannel(channel: Channel) {
+	if (isThreadChannel(channel)) return flattenChannelThread(channel as ThreadChannel);
 	if (isNewsChannel(channel)) return flattenChannelNews(channel as NewsChannel);
 	if (isTextChannel(channel)) return flattenChannelText(channel as TextChannel);
 	if (isVoiceChannel(channel)) return flattenChannelVoice(channel as VoiceChannel);
@@ -208,6 +222,22 @@ function flattenChannelDM(channel: DMChannel): FlattenedDMChannel {
 	};
 }
 
+function flattenChannelThread(channel: ThreadChannel): FlattenedThreadChannel {
+	return {
+		id: channel.id,
+		type: channel.type,
+		archived: channel.archived ?? false,
+		archivedTimestamp: channel.archiveTimestamp,
+		createdTimestamp: channel.createdTimestamp,
+		guildId: channel.guildId,
+		name: channel.name,
+		parentId: channel.parentId,
+		permissionOverwrites: [...(channel.parent?.permissionOverwrites.cache.entries() ?? [])],
+		rawPosition: channel.parent?.rawPosition ?? null,
+		rateLimitPerUser: channel.rateLimitPerUser
+	};
+}
+
 function flattenChannelFallback(channel: Channel): FlattenedChannel {
 	return {
 		id: channel.id,
@@ -217,41 +247,88 @@ function flattenChannelFallback(channel: Channel): FlattenedChannel {
 }
 
 export interface FlattenedChannel {
-	id: string;
-	type: ChannelTypeString;
 	createdTimestamp: number;
+
+	id: string;
+
+	type: ChannelTypeString;
 }
 
 export interface FlattenedGuildChannel extends FlattenedChannel {
-	type: ChannelTypeString;
 	guildId: string;
+
 	name: string;
-	rawPosition: number;
+
 	parentId: string | null;
+
 	permissionOverwrites: [string, PermissionOverwrites][];
+
+	rawPosition: number;
+
+	type: ChannelTypeString;
 }
 
 export interface FlattenedNewsChannel extends FlattenedGuildChannel {
 	type: 'GUILD_NEWS';
-	topic: string | null;
+
 	nsfw: boolean;
+
+	topic: string | null;
 }
 
 export interface FlattenedTextChannel extends FlattenedGuildChannel {
-	type: 'GUILD_TEXT';
-	topic: string | null;
 	nsfw: boolean;
+
 	rateLimitPerUser: number;
+
+	topic: string | null;
+
+	type: 'GUILD_TEXT';
+}
+
+export interface FlattenedThreadChannel extends Pick<FlattenedGuildChannel, 'id' | 'createdTimestamp'> {
+	archived: boolean;
+
+	archivedTimestamp: number | null;
+
+	guildId: string;
+
+	name: string;
+
+	parentId: string | null;
+
+	permissionOverwrites: [string, PermissionOverwrites][];
+
+	rateLimitPerUser: number | null;
+
+	rawPosition: number | null;
+
+	type: ThreadChannelTypes;
+}
+
+export interface FlattenedNewsThreadChannel extends FlattenedChannel {
+	type: 'GUILD_NEWS_THREAD';
+}
+
+export interface FlattenedPublicThreadChannel extends FlattenedChannel {
+	type: 'GUILD_PUBLIC_THREAD';
+}
+
+export interface FlattenedPrivateThreadChannel extends FlattenedChannel {
+	type: 'GUILD_PRIVATE_THREAD';
 }
 
 export interface FlattenedVoiceChannel extends FlattenedGuildChannel {
 	type: 'GUILD_VOICE';
+
 	bitrate: number;
+
 	userLimit: number;
 }
 
 export interface FlattenedDMChannel extends FlattenedChannel {
 	type: 'DM';
+
 	recipient: string;
 }
 
@@ -270,11 +347,15 @@ export function flattenUser(user: User): FlattenedUser {
 }
 
 export interface FlattenedUser {
-	id: string;
-	bot: boolean;
-	username: string;
-	discriminator: string;
 	avatar: string | null;
+
+	bot: boolean;
+
+	discriminator: string;
+
+	id: string;
+
+	username: string;
 }
 
 // #endregion User
@@ -293,12 +374,17 @@ export function flattenMember(member: GuildMember): FlattenedMember {
 }
 
 export interface FlattenedMember {
-	id: string;
 	guildId: string;
-	user: FlattenedUser;
+
+	id: string;
+
 	joinedTimestamp: number | null;
+
 	premiumSinceTimestamp: number | null;
+
 	roles: FlattenedRole[];
+
+	user: FlattenedUser;
 }
 
 // #endregion Member

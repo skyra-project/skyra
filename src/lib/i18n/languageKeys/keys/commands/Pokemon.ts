@@ -80,30 +80,61 @@ export const TypeNotAType = FT<{ type: string }, string>('commands/pokemon:typeN
 export const TypeQueryFail = FT<{ types: string[] }, string>('commands/pokemon:typeQueryFail');
 
 export interface PokedexEmbedDataReturn {
-	types: string;
 	abilities: string;
-	genderRatio: string;
-	smogonTier: string;
-	uknownSmogonTier: string;
-	height: string;
-	weight: string;
-	eggGroups: string;
-	evolutionaryLine: string;
+
 	baseStats: string;
+
 	baseStatsTotal: string;
-	flavourText: string;
-	otherFormesTitle: string;
-	cosmeticFormesTitle: string;
-	otherFormesList: string;
+
 	cosmeticFormesList: string;
+
+	cosmeticFormesTitle: string;
+
+	eggGroups: string;
+
+	evolutionaryLine: string;
+
+	evYields: string;
+
+	flavourText: string;
+
+	genderRatio: string;
+
+	height: string;
+
+	isEggObtainable: string;
+
+	levellingRate: string;
+
+	maximumHatchTime: string;
+
+	minimumHatchingTime: string;
+
+	otherFormesList: string;
+
+	otherFormesTitle: string;
+
+	smogonTier: string;
+
+	types: string;
+
+	uknownSmogonTier: string;
+
+	weight: string;
 }
 
 export interface LearnMethodTypesReturn {
-	levelUpMoves: string;
-	eventMoves: string;
-	tutorMoves: string;
-	eggMoves: string;
-	virtualTransferMoves: string;
-	tmMoves: string;
 	dreamworldMoves: string;
+
+	eggMoves: string;
+
+	eventMoves: string;
+
+	levelUpMoves: string;
+
+	tmMoves: string;
+
+	tutorMoves: string;
+
+	virtualTransferMoves: string;
 }

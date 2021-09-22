@@ -8,7 +8,7 @@ import { roleMention } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, Snowflake } from 'discord-api-types/v9';
+import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
@@ -75,7 +75,7 @@ export class GiveawayEntity extends BaseEntity {
 	public minimumWinners = 1;
 
 	@Column('varchar', { length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public allowedRoles: Snowflake[] = [];
+	public allowedRoles: string[] = [];
 
 	public constructor(data: Partial<GiveawayEntityData> = {}) {
 		super();

@@ -305,20 +305,14 @@ export class GiveawayEntity extends BaseEntity {
 			case States.Finished:
 				return t(LanguageKeys.Giveaway.EndedTitle);
 			case States.LastChance: {
-				if (roles.length) {
-					return t(LanguageKeys.Giveaway.LastChanceTitleWithMentions, {
-						roles: roles.map((r) => roleMention(r))
-					});
-				}
-				return t(LanguageKeys.Giveaway.LastChanceTitle);
+				return t(roles.length ? LanguageKeys.Giveaway.LastChanceTitleWithMentions : LanguageKeys.Giveaway.LastChanceTitle, {
+					roles: roles.map((r) => roleMention(r))
+				});
 			}
 			default: {
-				if (roles.length) {
-					return t(LanguageKeys.Giveaway.TitleWithMentions, {
-						roles: roles.map((r) => roleMention(r))
-					});
-				}
-				return t(LanguageKeys.Giveaway.Title);
+				return t(roles.length ? LanguageKeys.Giveaway.TitleWithMentions : LanguageKeys.Giveaway.Title, {
+					roles: roles.map((r) => roleMention(r))
+				});
 			}
 		}
 	}

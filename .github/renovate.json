@@ -1,11 +1,16 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:base", ":dependencyDashboard", ":automergeMinor"],
+	"extends": ["config:base", ":dependencyDashboard"],
 	"npm": {
 		"rangeStrategy": "bump"
 	},
 	"labels": ["Meta: Dependencies"],
 	"packageRules": [
+		{
+			"matchUpdateTypes": ["minor", "patch"],
+			"matchCurrentVersion": "!/^0/",
+			"automerge": true
+		},
 		{
 			"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
 			"enabled": false

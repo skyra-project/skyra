@@ -1,35 +1,35 @@
 {
-	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:base", "helpers:pinGitHubActionDigests"],
-	"labels": ["Meta: Dependencies"],
-	"npm": {
-		"rangeStrategy": "bump",
-		"packageRules": [
-			{
-				"matchUpdateTypes": ["minor", "patch"],
-				"matchCurrentVersion": "!/^0/",
-				"automerge": true
-			},
-			{
-				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
-				"enabled": false
-			},
-			{
-				"matchPackagePatterns": ["ansi-regex"],
-				"allowedVersions": "^5"
-			},
-			{
-				"matchPackagePatterns": ["@types/node-fetch"],
-				"allowedVersions": "^2"
-			},
-			{
-				"matchPackagePatterns": ["@sapphire"],
-				"groupName": "Sapphire Dependencies"
-			},
-			{
-				"matchPackagePatterns": ["@influxdata"],
-				"groupName": "InfluxDB Dependencies"
-			}
-		]
-	}
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", "helpers:pinGitHubActionDigests"],
+  "labels": ["Meta: Dependencies"],
+  "npm": {
+    "rangeStrategy": "bump",
+    "packageRules": [
+      {
+        "matchUpdateTypes": ["minor", "patch"],
+        "matchCurrentVersion": "!/^0/",
+        "automerge": true
+      },
+      {
+        "matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
+        "enabled": false
+      },
+      {
+        "matchPackagePatterns": ["ansi-regex"],
+        "allowedVersions": "^5"
+      },
+      {
+        "matchPackagePatterns": ["@types/node-fetch"],
+        "allowedVersions": "^2"
+      },
+      {
+        "matchPackagePatterns": ["@sapphire"],
+        "groupName": "Sapphire Dependencies"
+      },
+      {
+        "matchPackagePatterns": ["@influxdata"],
+        "groupName": "InfluxDB Dependencies"
+      }
+    ]
+  }
 }

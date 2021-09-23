@@ -24,8 +24,7 @@ export const enum Tags {
 }
 
 export const enum CommandCategoryTypes {
-	Category = 'category',
-	SubCategory = 'sub_category'
+	Category = 'category'
 }
 
 export const enum EconomyValueType {

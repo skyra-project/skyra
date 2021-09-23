@@ -111,7 +111,7 @@ declare module '@sapphire/framework' {
 	interface SapphireClient {
 		emit(event: Events.Error, error: Error): boolean;
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
-		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
+		emit(event: Events.CommandUsageAnalytics, command: string, category: string): boolean;
 		emit(
 			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
 			message: Message,

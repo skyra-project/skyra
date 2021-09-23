@@ -7,6 +7,6 @@ import { CommandSuccessPayload, Listener, ListenerOptions } from '@sapphire/fram
 export class UserListener extends Listener<Events.CommandSuccess> {
 	public run(payload: CommandSuccessPayload) {
 		const command = payload.command as SkyraCommand;
-		this.container.client.emit(Events.CommandUsageAnalytics, command.name, command.category, command.subCategory);
+		this.container.client.emit(Events.CommandUsageAnalytics, command.name, command.category);
 	}
 }

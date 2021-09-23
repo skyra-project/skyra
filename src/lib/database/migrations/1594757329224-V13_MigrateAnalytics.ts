@@ -26,9 +26,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const points: Point[] = [];
 		for await (const commandUse of commandUses) {
 			if (commandUse.uses === 0) continue;
-			points.push(
-				this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id) ?? { category: 'General', subCategory: 'General' })
-			);
+			points.push(this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id) ?? { category: 'General' }));
 		}
 
 		writer.writePoints(points);
@@ -80,7 +78,6 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 			.tag(Tags.Action, Actions.Addition)
 			.tag(Tags.MigrationName, this.constructor.name)
 			.tag(CommandCategoryTypes.Category, categoryData.category)
-			.tag(CommandCategoryTypes.SubCategory, categoryData.subCategory)
 			.timestamp(this.migStart)
 			.intField(commandName.replace(/^time$/, 'case-time'), commandUsageAmount);
 	}
@@ -110,5 +107,4 @@ interface CommandUsage {
 
 interface CategoryData {
 	category: string;
-	subCategory: string;
 }

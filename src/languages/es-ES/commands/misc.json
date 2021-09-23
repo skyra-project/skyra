@@ -1,7 +1,7 @@
 {
 	"randRedditInvalidArgument": "",
 	"randRedditBanned": "Este reddit está prohibido y no debe ser usado.",
-	"randRedditFail": "No pude descargar ningún dato, ¿estás seguro/a de que escribiste correctamente el reddit?",
+	"randRedditFail": "",
 	"randRedditAllNsfw": "Todas las entradas son NSFW, los cuales no se pueden mostrar en este canal.",
 	"randRedditAllNsfl": "Todas las entradas son NSFL, los cuales no se pueden mostrar en este canal. Y... no quieres verlo.",
 	"randRedditMessage": "**{{title}}** enviado por {{author}}\n{{url}}",

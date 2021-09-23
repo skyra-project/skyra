@@ -1,7 +1,7 @@
 {
 	"randRedditInvalidArgument": "{{REDCROSS}} The name you gave was not a valid name for a subreddit.",
 	"randRedditBanned": "This reddit is banned and should not be used.",
-	"randRedditFail": "I failed to retrieve data, are you sure you wrote the reddit correctly?",
+	"randRedditFail": "{{REDCROSS}} I failed to retrieve data for that query. Are you sure that you gave me an existing (public) subreddit?",
 	"randRedditAllNsfw": "Nothing could be posted as all retrieved posts are NSFW.",
 	"randRedditAllNsfl": "Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.",
 	"randRedditMessage": "**{{title}}** submitted by {{author}}\n{{url}}",

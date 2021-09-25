@@ -2647,12 +2647,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/skia-canvas@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@types/skia-canvas@npm:0.9.1"
+"@types/skia-canvas@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@types/skia-canvas@npm:0.9.2"
   dependencies:
     "@types/node": "*"
-  checksum: 3280376f3cb0ba794cc084d9066bcfdda5d672eb8356b7f0809a46b458ab311528faa93170e8d88093aa7823c1fea6c0256e0ea90ab7ad505f60bce42add6f97
+  checksum: 555e300ed057ebc1a153008555254e0ac059fb8889f832cf635a986081ec2d542bb3a76cdf04df82954a1d9e0393339ac209d8cc98c2d3e0db32136a31eeeb5f
   languageName: node
   linkType: hard
 
@@ -9749,7 +9749,7 @@ fsevents@^2.3.2:
     "@types/node": ^16.9.1
     "@types/node-fetch": ^2.5.12
     "@types/pg": ^8.6.1
-    "@types/skia-canvas": ^0.9.1
+    "@types/skia-canvas": ^0.9.2
     "@types/tsc-watch": ^4.2.0
     "@types/ws": ^7.4.7
     "@typescript-eslint/eslint-plugin": ^4.31.2

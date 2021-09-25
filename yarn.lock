@@ -2681,6 +2681,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ws@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "@types/ws@npm:8.2.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: fb2f1cc1bc294607cf737a998a04d4eaca78b0a183905b879849c0e009f47ff4adaa6cbc7d9ac2d2ecc61652c8367e0f8bb02aab0af67a82e8c922746e96434b
+  languageName: node
+  linkType: hard
+
 "@types/yargs-parser@npm:*":
   version: 20.2.1
   resolution: "@types/yargs-parser@npm:20.2.1"
@@ -9775,7 +9784,7 @@ fsevents@^2.3.2:
     "@types/pg": ^8.6.1
     "@types/skia-canvas": ^0.9.2
     "@types/tsc-watch": ^4.2.0
-    "@types/ws": ^7.4.7
+    "@types/ws": ^8.2.0
     "@typescript-eslint/eslint-plugin": ^4.31.2
     "@typescript-eslint/parser": ^4.31.2
     async-rwlock: ^1.1.1

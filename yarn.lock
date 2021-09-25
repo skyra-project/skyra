@@ -3676,13 +3676,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bufferutil@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "bufferutil@npm:4.0.3"
+"bufferutil@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "bufferutil@npm:4.0.4"
   dependencies:
     node-gyp: latest
     node-gyp-build: ^4.2.0
-  checksum: 88f9f9277f02dd94b52003fe33135e9609a8ee5156163df21e6ea222f825ac3eaeaacae7ee8f28dca0b69dc85e705587b58df6d01615f2b66138dd0fea110d32
+  checksum: 9ccea8c9c81c5d3a02de47dfac19f4ee2d42ffa319c86d6e2d6e510dc2fad1e6a8feb1a271e1ebfd81c53c4e7da560ea8a3f59a143679264e7791b6ebcc90bec
   languageName: node
   linkType: hard
 
@@ -9790,7 +9790,7 @@ fsevents@^2.3.2:
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.1.0
     binarytf: ^2.0.0
-    bufferutil: ^4.0.3
+    bufferutil: ^4.0.4
     canvas-constructor: ^5.0.1
     colorette: ^1.4.0
     confusables: ^1.0.0

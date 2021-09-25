@@ -87,7 +87,7 @@
 		"@skyra/tags": "^1.1.3",
 		"async-rwlock": "^1.1.1",
 		"binarytf": "^2.0.0",
-		"bufferutil": "^4.0.3",
+		"bufferutil": "^4.0.4",
 		"canvas-constructor": "^5.0.1",
 		"colorette": "^1.4.0",
 		"confusables": "^1.0.0",

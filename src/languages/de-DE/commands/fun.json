@@ -55,9 +55,12 @@
 		],
 		"extendedHelp": "Die Funktionsweise dieses Commands ist einfach. Du hast einen Würfel den du __x__ mal würfelst. Jedoch kannst du die Seitenanzahl auf __y__ seiten konfigurieren. Standardmäßig hat der Würfel 6 Seiten. Du kannst ebenso die Anzahl der Würfelvorgänge konfigurieren und der Würfel wird eine zufällige Zahl zwischen 1 und der Seitenzahl würfeln. Beispielsweise einen 6 seitigen Würfel 3 mal würfeln ergibt eine Sequenz aus 3 zufälligen Zahlen zwischen 1 und 6, wie etwa: 3,1,6; Dieser command wird mit 10 antworten.",
 		"examples": [
-			"370d24",
-			"100d6",
-			"6"
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"escaperopeDescription": "Benutze das Fluchtseil aus Pokémon.",

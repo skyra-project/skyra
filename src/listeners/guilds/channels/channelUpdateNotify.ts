@@ -215,10 +215,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	}
 
 	private displayBitrate(t: TFunction, previous: number, next: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateBitrate, {
-			previous: seconds.fromMilliseconds(previous),
-			next: seconds.fromMilliseconds(next)
-		});
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateBitrate, { previous: previous / 1000, next: next / 1000 });
 	}
 
 	private displayUserLimit(t: TFunction, previous: number, next: number) {

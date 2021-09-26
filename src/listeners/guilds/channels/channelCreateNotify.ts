@@ -118,7 +118,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private displayBitrate(t: TFunction, value: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value: seconds.fromMilliseconds(value) });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value: value / 1000 });
 	}
 
 	private displayUserLimit(t: TFunction, value: number) {

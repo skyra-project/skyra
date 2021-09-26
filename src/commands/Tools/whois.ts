@@ -46,11 +46,13 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private user(t: TFunction, user: User) {
+		const userCreatedAtTimestampSeconds = seconds.fromMilliseconds(user.createdTimestamp);
+
 		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles);
 		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, {
 			user,
-			userCreatedAt: time(seconds.fromMilliseconds(user.createdTimestamp), TimestampStyles.ShortDateTime),
-			userCreatedAtOffset: time(seconds.fromMilliseconds(user.createdTimestamp), TimestampStyles.RelativeTime)
+			userCreatedAt: time(userCreatedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			userCreatedAtOffset: time(userCreatedAtTimestampSeconds, TimestampStyles.RelativeTime)
 		});
 
 		return new SkyraEmbed()
@@ -63,13 +65,16 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private member(t: TFunction, member: GuildMember) {
+		const userCreatedAtTimestampSeconds = seconds.fromMilliseconds(member.user.createdTimestamp);
+		const memberJoinedAtTimestampSeconds = seconds.fromMilliseconds(member.joinedTimestamp!);
+
 		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles);
 		const fields = t(LanguageKeys.Commands.Tools.WhoisMemberFields, {
 			member,
-			memberCreatedAt: time(seconds.fromMilliseconds(member.user.createdTimestamp), TimestampStyles.ShortDateTime),
-			memberCreatedAtOffset: time(seconds.fromMilliseconds(member.user.createdTimestamp), TimestampStyles.RelativeTime),
-			memberJoinedAt: time(seconds.fromMilliseconds(member.joinedTimestamp!), TimestampStyles.ShortDateTime),
-			memberJoinedAtOffset: time(seconds.fromMilliseconds(member.joinedTimestamp!), TimestampStyles.RelativeTime)
+			memberCreatedAt: time(userCreatedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			memberCreatedAtOffset: time(userCreatedAtTimestampSeconds, TimestampStyles.RelativeTime),
+			memberJoinedAt: time(memberJoinedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			memberJoinedAtOffset: time(memberJoinedAtTimestampSeconds, TimestampStyles.RelativeTime)
 		});
 
 		const embed = new SkyraEmbed()

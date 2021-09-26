@@ -4,6 +4,7 @@ import { Birthday } from '#lib/database/keys/settings/All';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -33,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 
 		const birthday = nextBirthday(date.month, date.day);
 		await this.container.schedule.add('birthday', birthday, { data: this.constructData(date, message) });
-		return send(message, args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: birthday.getTime() }));
+		return send(message, args.t(LanguageKeys.Commands.Misc.SetBirthdaySuccess, { nextBirthday: time(birthday, TimestampStyles.LongDate) }));
 	}
 
 	private constructData(birthDate: DateWithOptionalYear, message: GuildMessage): TaskBirthdayData {

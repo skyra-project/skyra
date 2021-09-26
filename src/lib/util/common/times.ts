@@ -1,4 +1,5 @@
 import { Time } from '@sapphire/time-utilities';
+import { roundNumber } from '@sapphire/utilities';
 
 /**
  * Converts a number of seconds to milliseconds.
@@ -8,6 +9,15 @@ import { Time } from '@sapphire/time-utilities';
 export function seconds(seconds: number): number {
 	return seconds * Time.Second;
 }
+
+/**
+ * Converts a number of milliseconds to seconds.
+ * @param milliseconds The amount of milliseconds
+ * @returns The amount of seconds `milliseconds` equals to.
+ */
+seconds.fromMilliseconds = (milliseconds: number): number => {
+	return roundNumber(milliseconds / Time.Second);
+};
 
 /**
  * Converts a number of minutes to milliseconds.

@@ -139,7 +139,7 @@ export const TopInvitesEmbedData = T<{
 	link: string;
 	createdAt: string;
 	createdAtUnknown: string;
-	expiresIn: string;
+	expiresAt: string;
 	neverExpress: string;
 	temporary: string;
 	uses: string;
@@ -167,8 +167,19 @@ export const DuckDuckGoLookAlso = T('commands/tools:duckDuckGoLookalso');
 export const DuckDuckGoPoweredBy = T('commands/tools:duckDuckGoPoweredBy');
 export const WhoisMemberTitles = T<{ joined: string; createdAt: string }>('commands/tools:whoisMemberTitles');
 export const WhoisMemberFields = FT<
-	{ member: GuildMember; createdTimestampOffset: number; joinedTimestampOffset: number },
-	{ joinedUnknown: string; joinedWithTimestamp: string; createdAt: string; footer: string }
+	{
+		member: GuildMember;
+		memberCreatedAt: string;
+		memberCreatedAtOffset: string;
+		memberJoinedAt: string;
+		memberJoinedAtOffset: string;
+	},
+	{
+		joinedUnknown: string;
+		joinedWithTimestamp: string;
+		createdAt: string;
+		footer: string;
+	}
 >('commands/tools:whoisMemberFields');
 export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
 export const WhoisMemberRoleListAndMore = FT<{ count: number }, string>('commands/tools:whoisMemberRoleListAndMore');
@@ -177,9 +188,17 @@ export const WhoisMemberPermissionsAll = T('commands/tools:whoisMemberPermission
 export const WhoisUserTitles = T<{
 	createdAt: string;
 }>('commands/tools:whoisUserTitles');
-export const WhoisUserFields = FT<{ user: User; createdTimestampOffset: number }, { createdAt: string; footer: string }>(
-	'commands/tools:whoisUserFields'
-);
+export const WhoisUserFields = FT<
+	{
+		user: User;
+		userCreatedAt: string;
+		userCreatedAtOffset: string;
+	},
+	{
+		createdAt: string;
+		footer: string;
+	}
+>('commands/tools:whoisUserFields');
 export const WikipediaDescription = T('commands/tools:wikipediaDescription');
 export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commands/tools:wikipediaExtended');
 export const YouTubeDescription = T('commands/tools:youtubeDescription');

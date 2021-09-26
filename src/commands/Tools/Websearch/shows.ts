@@ -6,6 +6,7 @@ import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { minutes } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText } from '@sapphire/utilities';
@@ -79,7 +80,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.episodeRuntime, episodeRuntime, true)
 					.addField(titles.userScore, userScore, true)
 					.addField(titles.status, show.status, true)
-					.addField(titles.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: new Date(show.first_air_date).getTime() }), true)
+					.addField(titles.firstAirDate, time(new Date(show.first_air_date), TimestampStyles.ShortDate), true)
 					.addField(titles.genres, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres);
 			});
 		}

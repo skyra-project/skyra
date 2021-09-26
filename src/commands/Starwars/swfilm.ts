@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import { fetchStarWarsApi, getFilms } from '#utils/APIs/StarWars';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
@@ -38,7 +39,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.addPageEmbed((embed) => {
 					const description = [
 						`**${filmTitles.episodeId}**: ${result.episodeId}`,
-						`**${filmTitles.releaseDate}**: ${t(LanguageKeys.Globals.DateValue, { value: new Date(result.releaseDate) })}`,
+						`**${filmTitles.releaseDate}**: ${time(new Date(result.releaseDate), TimestampStyles.ShortDate)}`,
 						`**${filmTitles.director}**: ${result.director}`,
 						`**${filmTitles.producers}**: ${t(LanguageKeys.Globals.AndListValue, { value: result.producers })}`
 					].join('\n');

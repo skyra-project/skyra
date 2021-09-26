@@ -21,7 +21,7 @@
 		"currentTime": "Текущее время",
 		"currentDate": "Текущая дата",
 		"country": "Страна",
-		"gmsOffset": "",
+		"gmtOffset": "",
 		"dst": ""
 	},
 	"currentTimeDst": "",

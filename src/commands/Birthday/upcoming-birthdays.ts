@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { reduce } from '#utils/common';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -34,13 +35,13 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Misc.UpcomingBirthdaysTitle));
 
-		for (const [time, users] of schedules.slice(-10).reverse()) {
-			const birthday = new Date(time);
+		for (const [birthdayTime, users] of schedules.slice(-10).reverse()) {
+			const birthday = new Date(birthdayTime);
 			embed.addField(
-				args.t(LanguageKeys.Globals.DateValue, { value: birthday }),
+				time(birthday, TimestampStyles.ShortDate),
 				users
 					.map((schedule) => {
-						const calculatedAge = getAge(schedule.data, { now: time });
+						const calculatedAge = getAge(schedule.data, { now: birthdayTime });
 						const age = calculatedAge === null ? args.t(LanguageKeys.Globals.Unknown) : calculatedAge + 1;
 
 						return `<@${schedule.data.userId}> (${age})`;

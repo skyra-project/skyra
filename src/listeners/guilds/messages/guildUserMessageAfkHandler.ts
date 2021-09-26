@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { seconds } from '#utils/common';
 import { isGuildOwner, sendTemporaryMessage } from '#utils/functions';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -104,9 +105,14 @@ export class UserListener extends Listener {
 		if (entries.length === 0) return;
 
 		const t = await fetchT(message);
-		const now = Date.now();
 		const content = entries
-			.map((entry) => t(LanguageKeys.Events.Messages.AfkStatus, { user: entry.name, duration: now - entry.time, content: entry.content }))
+			.map((entry) =>
+				t(LanguageKeys.Events.Messages.AfkStatus, {
+					user: entry.name,
+					duration: time(Math.floor(seconds.fromMilliseconds(entry.time)), TimestampStyles.RelativeTime),
+					content: entry.content
+				})
+			)
 			.join('\n');
 		await send(message, { content, allowedMentions: { roles: [], users: [] } });
 	}

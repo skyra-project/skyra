@@ -2,8 +2,9 @@ import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { months } from '#utils/common';
+import { months, seconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -45,8 +46,14 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private user(t: TFunction, user: User) {
+		const userCreatedAtTimestampSeconds = seconds.fromMilliseconds(user.createdTimestamp);
+
 		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles);
-		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, { user, createdTimestampOffset: Date.now() - user.createdTimestamp });
+		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, {
+			user,
+			userCreatedAt: time(userCreatedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			userCreatedAtOffset: time(userCreatedAtTimestampSeconds, TimestampStyles.RelativeTime)
+		});
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
@@ -58,11 +65,16 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private member(t: TFunction, member: GuildMember) {
+		const userCreatedAtTimestampSeconds = seconds.fromMilliseconds(member.user.createdTimestamp);
+		const memberJoinedAtTimestampSeconds = seconds.fromMilliseconds(member.joinedTimestamp!);
+
 		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles);
 		const fields = t(LanguageKeys.Commands.Tools.WhoisMemberFields, {
 			member,
-			createdTimestampOffset: Date.now() - member.user.createdTimestamp,
-			joinedTimestampOffset: Date.now() - member.joinedTimestamp!
+			memberCreatedAt: time(userCreatedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			memberCreatedAtOffset: time(userCreatedAtTimestampSeconds, TimestampStyles.RelativeTime),
+			memberJoinedAt: time(memberJoinedAtTimestampSeconds, TimestampStyles.ShortDateTime),
+			memberJoinedAtOffset: time(memberJoinedAtTimestampSeconds, TimestampStyles.RelativeTime)
 		});
 
 		const embed = new SkyraEmbed()

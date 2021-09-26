@@ -68,13 +68,16 @@ export class UserCommand extends SkyraCommand {
 				.setAuthor(message.guild.name, message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined)
 				.setTitle(args.t(LanguageKeys.Commands.Misc.AfkListTitle))
 				.setColor(await this.container.db.fetchColor(message))
-				.setFooter(` - ${args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size })}`)
+				.setFooter(args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size }))
 				.setTimestamp()
 		});
 
 		let i = 0;
 		for (const page of chunk([...entries.entries()], entriesPerPage)) {
-			display.addPageEmbed((embed) => embed.setDescription(this.generatePage(page, i)));
+			display.addPageEmbed((embed) =>
+				embed //
+					.setDescription(this.generatePage(page, i))
+			);
 			i += entriesPerPage;
 		}
 

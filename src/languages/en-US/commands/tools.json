@@ -473,7 +473,7 @@
 		"channel": "Channel",
 		"createdAt": "Date Created",
 		"createdAtUnknown": "Creation date unknown",
-		"expiresIn": "Expires in",
+		"expiresAt": "Expires At",
 		"link": "Link",
 		"neverExpress": "Never",
 		"temporary": "Temporary invite",
@@ -538,10 +538,10 @@
 		]
 	},
 	"whoisMemberFields": {
-		"createdAt": "{{member.user.createdTimestamp, dateTime}}\n{{createdTimestampOffset, duration}} ago",
+		"createdAt": "{{memberCreatedAt}}\n{{memberCreatedAtOffset}}",
 		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "Unknown",
-		"joinedWithTimestamp": "{{member.joinedTimestamp, dateTime}}\n{{joinedTimestampOffset, duration}} ago"
+		"joinedWithTimestamp": "{{memberJoinedAt}}\n{{memberJoinedAtOffset}}"
 	},
 	"whoisMemberPermissions": "Key Permissions",
 	"whoisMemberPermissionsAll": "All Permissions",
@@ -553,7 +553,7 @@
 		"joined": "Joined"
 	},
 	"whoisUserFields": {
-		"createdAt": "{{user.createdAt, dateTime}}\n{{createdTimestampOffset, duration}} ago",
+		"createdAt": "{{userCreatedAt}}\n{{userCreatedAtOffset}}",
 		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {

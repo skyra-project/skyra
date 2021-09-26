@@ -473,7 +473,7 @@
 		"channel": "Канал",
 		"createdAt": "Дата создания",
 		"createdAtUnknown": "Дата создания неизвестна",
-		"expiresIn": "",
+		"expiresAt": "",
 		"link": "Ссылка",
 		"neverExpress": "Никогда",
 		"temporary": "Временное приглашение",
@@ -538,10 +538,10 @@
 		]
 	},
 	"whoisMemberFields": {
-		"createdAt": "{{member.user.createdTimestamp, dateTime}}\n{{createdTimestampOffset, duration}} назад",
+		"createdAt": "{{memberCreatedAt}}\n{{memberCreatedAtOffset}}",
 		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "",
-		"joinedWithTimestamp": "{{member.joinedTimestamp, dateTime}}\n{{joinedTimestampOffset, duration}} назад"
+		"joinedWithTimestamp": "{{memberJoinedAt}}\n{{memberJoinedAtOffset}}"
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "Все разрешения",
@@ -553,7 +553,7 @@
 		"joined": ""
 	},
 	"whoisUserFields": {
-		"createdAt": "{{user.createdAt, dateTime}}\n{{createdTimestampOffset, duration}} назад",
+		"createdAt": "{{userCreatedAt}}\n{{userCreatedAtOffset}}",
 		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {

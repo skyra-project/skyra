@@ -36,9 +36,8 @@
 	},
 	"redditUserData": {
 		"overviewFor": "Overview for /u/{{user}}",
-		"permalink": "Permalink",
 		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
-		"joinedReddit": "Joined Reddit {{timestamp, dateTime}}"
+		"joinedReddit": "Joined Reddit at"
 	},
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",
@@ -409,7 +408,7 @@
 	"setBirthdayInvalidDay": "I could not resolve `{{parameter}}` to a valid day, the {{month, ordinal}} of {{year}} has less days than the one you have given.",
 	"setBirthdayAlreadySet": "{{REDCROSS}} Your birthdate is already set to {{birthDate}}.",
 	"setBirthdayConfirmation": "Are you sure you want to change your birthday again?",
-	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday, dateFull}}.",
+	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday}}.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [
@@ -542,7 +541,7 @@
 		]
 	},
 	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
-	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate, dateFull}}.",
+	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate}}.",
 	"upcomingBirthdaysDescription": "View the next 10 birthdays in this server.",
 	"upcomingBirthdaysTitle": "Upcoming Birthdays",
 	"upcomingBirthdaysNone": "There aren't any upcoming birthdays set! Use {{prefix}}birthday to set your birthday.",

@@ -6,7 +6,7 @@ export const CurrentTimeDst = T<string>('commands/google:currentTimeDst');
 export const CurrentTimeExtended = T<LanguageHelpDisplayOptions>('commands/google:currentTimeExtended');
 export const CurrentTimeLocationNotFound = T<string>('commands/google:currentTimeLocationNotFound');
 export const CurrentTimeNoDst = T<string>('commands/google:currentTimeNoDst');
-export const CurrentTimeTitles = FT<{ dst: string }, { currentTime: string; currentDate: string; country: string; gmsOffset: string; dst: string }>(
+export const CurrentTimeTitles = FT<{ dst: string }, { currentTime: string; currentDate: string; country: string; gmtOffset: string; dst: string }>(
 	'commands/google:currentTimeTitles'
 );
 export const GimageDescription = T<string>('commands/google:gimageDescription');

@@ -4,6 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { bold, hideLinkEmbed, hyperlink, inlineCode, time, TimestampStyles, underscore } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
@@ -43,10 +44,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		t: TFunction
 	) {
 		const titles = t(LanguageKeys.Commands.Misc.RedditUserTitles);
-		const fieldsData = t(LanguageKeys.Commands.Misc.RedditUserData, {
-			user: about.name,
-			timestamp: about.created * 1000
-		});
+		const fieldsData = t(LanguageKeys.Commands.Misc.RedditUserData, { user: about.name });
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
@@ -58,11 +56,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(about.icon_img)
-				.setFooter(` • ${fieldsData.dataAvailableFor}`)
+				.setFooter(fieldsData.dataAvailableFor)
 		})
 			.addPageEmbed((embed) =>
 				embed
-					.setDescription(fieldsData.joinedReddit)
+					.setDescription(`${fieldsData.joinedReddit} ${time(about.created, TimestampStyles.ShortDateTime)}`)
 					.addField(titles.linkKarma, formatNumber(t, about.link_karma), true)
 					.addField(titles.commentKarma, formatNumber(t, about.comment_karma), true)
 					.addField(titles.totalComments, formatNumber(t, comments.length), true)
@@ -80,30 +78,24 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.addPageEmbed((embed) =>
 				embed
 					.addField(
-						`__${titles.bestComment}__`,
-						cutText(
-							[
-								`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
-								`${t(LanguageKeys.Globals.DurationValue, { value: Date.now() - bestComment.created * 1000 })} ago`,
-								`[${fieldsData.permalink}](https://reddit.com${bestComment.permalink})`,
-								decode(bestComment.body)
-							].join('\n'),
-							1020
-						)
+						underscore(titles.bestComment),
+						cutText([this.formatCommentHeader(bestComment), decode(bestComment.body)].join('\n'), 1020)
 					)
 					.addField(
-						`__${titles.worstComment}__`,
-						cutText(
-							[
-								`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
-								`${t(LanguageKeys.Globals.DurationValue, { value: Date.now() - worstComment.created * 1000 })} ago`,
-								`[${fieldsData.permalink}](https://reddit.com${worstComment.permalink})`,
-								decode(worstComment.body)
-							].join('\n'),
-							1020
-						)
+						underscore(titles.worstComment),
+						cutText([this.formatCommentHeader(worstComment), decode(worstComment.body)].join('\n'), 1020)
 					)
 			);
+	}
+
+	private formatCommentHeader(comment: Reddit.CommentDataElement): string {
+		return [
+			hyperlink('🔗', hideLinkEmbed(`https://reddit.com${comment.permalink}`)),
+			bold(comment.score.toString()),
+			inlineCode(`/r/${comment.subreddit}`),
+			' - ',
+			time(comment.created, TimestampStyles.LongDateTime)
+		].join(' ');
 	}
 
 	private async fetchData(user: string, t: TFunction) {

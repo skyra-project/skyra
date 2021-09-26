@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 			`**${titles.currentTime}**: ${timeData.formatted.split(' ')[1]}`,
 			`**${titles.currentDate}**: ${timeData.formatted.split(' ')[0]}`,
 			`**${titles.country}**: ${timeData.countryName}`,
-			`**${titles.gmsOffset}**: ${t(LanguageKeys.Globals.DurationValue, { value: timeData.gmtOffset * 1000 })}`,
+			`**${titles.gmtOffset}**: ${t(LanguageKeys.Globals.DurationValue, { value: timeData.gmtOffset * 1000 })}`,
 			`${titles.dst}`
 		].join('\n');
 		const embed = new MessageEmbed()

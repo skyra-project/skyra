@@ -211,10 +211,6 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 				case LanguageFormatters.Duration: {
 					return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
 				}
-				case LanguageFormatters.Date:
-					return getHandler(language!).date.format(value as number);
-				case LanguageFormatters.DateFull:
-					return getHandler(language!).dateFull.format(value as number);
 				case LanguageFormatters.DateTime: {
 					return getHandler(language!).dateTime.format(value as number);
 				}

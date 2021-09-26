@@ -1,9 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { fetchStarWarsApi, getStarship } from '#utils/APIs/StarWars';
+import { seconds } from '#utils/common';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
@@ -68,7 +70,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 					if (result.consumables) {
 						description.push(
-							`**${starshipTitles.consumables}**: ${t(LanguageKeys.Globals.DurationValue, { value: result.consumables, precision: 1 })}`
+							`**${starshipTitles.consumables}**: ${time(
+								seconds.fromMilliseconds(Date.now() + result.consumables),
+								TimestampStyles.RelativeTime
+							)}`
 						);
 					}
 

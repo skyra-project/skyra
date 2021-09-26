@@ -3,9 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -14,7 +16,6 @@ import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
-type DurationDisplay = (time: number) => string;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hd', 'ho'],
@@ -95,13 +96,13 @@ export class UserCommand extends SkyraCommand {
 		// Fetch usernames
 		const usernames = await this.fetchAllModerators(entries);
 
-		// Set up the formatter
-		const durationDisplay = (value: number) => args.t(LanguageKeys.Globals.DurationValue, { value });
+		// Lock in the current time
+		const now = Date.now();
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPageEmbed((embed) => {
 				for (const entry of page) {
-					const { name, value } = this.displayModerationLogFromModerators(usernames, durationDisplay, entry);
+					const { name, value } = this.displayModerationLogFromModerators(usernames, now, entry);
 					embed.addField(name, value);
 				}
 
@@ -113,14 +114,17 @@ export class UserCommand extends SkyraCommand {
 		return response;
 	}
 
-	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, entry: ModerationEntity) {
+	private displayModerationLogFromModerators(users: Map<string, string>, now: number, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
-		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		const formattedDuration =
+			remainingTime === null || expiredTime
+				? ''
+				: `\nExpires: ${time(seconds.fromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
 		const formatter = expiredTime || appealOrInvalidated ? '~~' : '';
 
 		return {

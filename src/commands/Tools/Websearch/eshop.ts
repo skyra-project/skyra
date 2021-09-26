@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -77,7 +78,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				: t(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
 			display.addPageEmbed((embed) => {
-				const releaseDate = new Date(game.releaseDateDisplay).getTime();
+				const releaseDate = new Date(game.releaseDateDisplay);
 				return embed
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)
@@ -85,11 +86,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.setDescription(description)
 					.addField(titles.price, price, true)
 					.addField(titles.availability, game.availability[0], true)
-					.addField(
-						titles.releaseDate,
-						releaseDate ? t(LanguageKeys.Globals.DateValue, { value: releaseDate }) : game.releaseDateDisplay,
-						true
-					)
+					.addField(titles.releaseDate, releaseDate ? time(releaseDate, TimestampStyles.ShortDate) : game.releaseDateDisplay, true)
 					.addField(titles.numberOfPlayers, toTitleCase(game.numOfPlayers), true)
 					.addField(titles.platform, game.platform, true)
 					.addField(titles.nsuid, game.nsuid || 'TBD', true)

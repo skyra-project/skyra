@@ -21,7 +21,7 @@
 		"currentTime": "",
 		"currentDate": "",
 		"country": "",
-		"gmsOffset": "",
+		"gmtOffset": "",
 		"dst": ""
 	},
 	"currentTimeDst": "",

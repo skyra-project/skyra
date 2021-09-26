@@ -4,6 +4,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -104,7 +105,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 							'',
 							`**${titles.userScore}**: ${userRating}`,
 							`**${titles.ageRating}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.noAgeRatings)}`,
-							`**${titles.releaseDate}**: ${this.resolveReleaseDate(t, game.release_dates, fieldsData.noReleaseDate)}`,
+							`**${titles.releaseDate}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.noReleaseDate)}`,
 							`**${titles.genres}**: ${this.resolveGenres(game.genres, fieldsData.noGenres)}`,
 							`**${titles.developers}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.noDevelopers)}`,
 							`**${titles.platform}**: ${this.resolvePlatforms(game.platforms, fieldsData.noPlatforms)}`
@@ -151,9 +152,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.join(', ');
 	}
 
-	private resolveReleaseDate(t: TFunction, releaseDates: Game['release_dates'], fallback: string) {
+	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return t(LanguageKeys.Globals.DateValue, { value: releaseDates[0].date * 1000 });
+		return time(releaseDates[0].date, TimestampStyles.ShortDate);
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

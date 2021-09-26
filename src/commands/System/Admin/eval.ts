@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import { secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { EvalExtraData, handleMessage } from '#utils/Parsers/ExceededLength';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
@@ -59,7 +59,7 @@ export class UserCommand extends SkyraCommand {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, args, code);
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: secondsFromMilliseconds(flagTime) }),
+				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: seconds.fromMilliseconds(flagTime) }),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

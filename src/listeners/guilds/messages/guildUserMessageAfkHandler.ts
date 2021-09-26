@@ -3,7 +3,7 @@ import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { seconds, secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { isGuildOwner, sendTemporaryMessage } from '#utils/functions';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -109,7 +109,7 @@ export class UserListener extends Listener {
 			.map((entry) =>
 				t(LanguageKeys.Events.Messages.AfkStatus, {
 					user: entry.name,
-					duration: time(Math.floor(secondsFromMilliseconds(entry.time)), TimestampStyles.RelativeTime),
+					duration: time(Math.floor(seconds.fromMilliseconds(entry.time)), TimestampStyles.RelativeTime),
 					content: entry.content
 				})
 			)

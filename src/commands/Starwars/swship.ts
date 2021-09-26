@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { fetchStarWarsApi, getStarship } from '#utils/APIs/StarWars';
-import { secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
@@ -71,7 +71,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.consumables) {
 						description.push(
 							`**${starshipTitles.consumables}**: ${time(
-								secondsFromMilliseconds(Date.now() + result.consumables),
+								seconds.fromMilliseconds(Date.now() + result.consumables),
 								TimestampStyles.RelativeTime
 							)}`
 						);

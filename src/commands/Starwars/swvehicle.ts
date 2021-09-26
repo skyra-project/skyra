@@ -1,13 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { fetchStarWarsApi, getVehicles } from '#utils/APIs/StarWars';
-import { secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { roundNumber, toTitleCase } from '@sapphire/utilities';
+import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -71,7 +71,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.consumables) {
 						description.push(
 							`**${vehicleTitles.consumables}**: ${time(
-								secondsFromMilliseconds(Date.now() + result.consumables),
+								seconds.fromMilliseconds(Date.now() + result.consumables),
 								TimestampStyles.RelativeTime
 							)}`
 						);

@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
-import { seconds, secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { Colors, LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
@@ -118,7 +118,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private displayBitrate(t: TFunction, value: number) {
-		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value: secondsFromMilliseconds(value) });
+		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateBitrate, { value: seconds.fromMilliseconds(value) });
 	}
 
 	private displayUserLimit(t: TFunction, value: number) {

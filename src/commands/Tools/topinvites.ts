@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { NonNullableProperties } from '@sapphire/utilities';
+import type { NonNullableProperties } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -68,12 +68,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private resolveExpiryDate(expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
-		if (expiresTimestamp !== null && expiresTimestamp > 0) return time(secondsFromMilliseconds(expiresTimestamp), TimestampStyles.ShortDateTime);
+		if (expiresTimestamp !== null && expiresTimestamp > 0) return time(seconds.fromMilliseconds(expiresTimestamp), TimestampStyles.ShortDateTime);
 		return fallback;
 	}
 
 	private resolveCreationDate(createdTimestamp: Invite['createdTimestamp'], fallback: string) {
-		if (createdTimestamp !== null) return time(secondsFromMilliseconds(createdTimestamp), TimestampStyles.ShortDateTime);
+		if (createdTimestamp !== null) return time(seconds.fromMilliseconds(createdTimestamp), TimestampStyles.ShortDateTime);
 		return fallback;
 	}
 }

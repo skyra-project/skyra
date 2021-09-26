@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
@@ -124,7 +124,7 @@ export class UserCommand extends SkyraCommand {
 		const formattedDuration =
 			remainingTime === null || expiredTime
 				? ''
-				: `\nExpires: ${time(secondsFromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
+				: `\nExpires: ${time(seconds.fromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
 		const formatter = expiredTime || appealOrInvalidated ? '~~' : '';
 
 		return {

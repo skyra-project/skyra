@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
-import { seconds, secondsFromMilliseconds } from '#utils/common';
+import { seconds } from '#utils/common';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { Colors, LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -216,8 +216,8 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 
 	private displayBitrate(t: TFunction, previous: number, next: number) {
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelUpdateBitrate, {
-			previous: secondsFromMilliseconds(previous),
-			next: secondsFromMilliseconds(next)
+			previous: seconds.fromMilliseconds(previous),
+			next: seconds.fromMilliseconds(next)
 		});
 	}
 

@@ -3,13 +3,13 @@ import { SkyraCommand } from '#lib/structures';
 import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
-import { time, TimestampStyles } from '@discordjs/builders';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({

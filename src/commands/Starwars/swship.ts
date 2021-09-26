@@ -7,7 +7,7 @@ import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { roundNumber, toTitleCase } from '@sapphire/utilities';
+import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -71,7 +71,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.consumables) {
 						description.push(
 							`**${starshipTitles.consumables}**: ${time(
-								roundNumber(secondsFromMilliseconds(Date.now() + result.consumables)),
+								secondsFromMilliseconds(Date.now() + result.consumables),
 								TimestampStyles.RelativeTime
 							)}`
 						);

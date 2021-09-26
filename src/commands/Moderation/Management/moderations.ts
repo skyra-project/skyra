@@ -10,7 +10,7 @@ import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
-import { chunk, cutText, roundNumber } from '@sapphire/utilities';
+import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 
 const enum Type {
@@ -100,7 +100,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const formattedDuration =
 			remainingTime === null || expiredTime
 				? ''
-				: `\nExpires: ${time(roundNumber(secondsFromMilliseconds(now + remainingTime)), TimestampStyles.RelativeTime)}`;
+				: `\nExpires: ${time(secondsFromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {
@@ -119,7 +119,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const formattedDuration =
 			remainingTime === null || expiredTime
 				? ''
-				: `\nExpires: ${time(roundNumber(secondsFromMilliseconds(now + remainingTime)), TimestampStyles.RelativeTime)}`;
+				: `\nExpires: ${time(secondsFromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {

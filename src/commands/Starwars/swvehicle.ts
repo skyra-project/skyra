@@ -71,7 +71,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.consumables) {
 						description.push(
 							`**${vehicleTitles.consumables}**: ${time(
-								roundNumber(secondsFromMilliseconds(Date.now() + result.consumables)),
+								secondsFromMilliseconds(Date.now() + result.consumables),
 								TimestampStyles.RelativeTime
 							)}`
 						);

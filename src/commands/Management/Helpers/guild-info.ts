@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { chunk, roundNumber } from '@sapphire/utilities';
+import { chunk } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
@@ -174,7 +174,7 @@ export class UserCommand extends SkyraCommand {
 		const guild = args.message.guild!;
 		return args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 			size: guild.roles.cache.size,
-			createdAt: time(roundNumber(secondsFromMilliseconds(guild.createdTimestamp)), TimestampStyles.ShortDateTime),
+			createdAt: time(secondsFromMilliseconds(guild.createdTimestamp), TimestampStyles.ShortDateTime),
 			verificationLevel: guild.verificationLevel
 		});
 	}

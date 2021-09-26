@@ -61,10 +61,9 @@ export const RandRedditFail = T<string>('commands/misc:randRedditFail');
 export const RandRedditInvalidArgument = T<string>('commands/misc:randRedditInvalidArgument');
 export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commands/misc:randRedditMessage');
 export const RedditUserComplexityLevels = T<string[]>('commands/misc:redditUserComplexityLevels');
-export const RedditUserData = FT<
-	{ user: string; timestamp: number },
-	{ overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }
->('commands/misc:redditUserData');
+export const RedditUserData = FT<{ user: string }, { overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }>(
+	'commands/misc:redditUserData'
+);
 export const RedditUserDescription = T<string>('commands/misc:redditUserDescription');
 export const RedditUserExtended = T<LanguageHelpDisplayOptions>('commands/misc:redditUserExtended');
 export const RedditUserInvalidUser = FT<{ user: string }, string>('commands/misc:redditUserInvalidUser');
@@ -97,7 +96,7 @@ export const SetBirthdayInvalidMonth = FT<{ parameter: string }, string>('comman
 export const SetBirthdayInvalidDay = FT<{ parameter: string; month: number; year: number }, string>('commands/misc:setBirthdayInvalidDay');
 export const SetBirthdayAlreadySet = FT<{ birthDate: string }, string>('commands/misc:setBirthdayAlreadySet');
 export const SetBirthdayConfirmation = T<string>('commands/misc:setBirthdayConfirmation');
-export const SetBirthdaySuccess = FT<{ nextBirthday: number }, string>('commands/misc:setBirthdaySuccess');
+export const SetBirthdaySuccess = FT<{ nextBirthday: string }, string>('commands/misc:setBirthdaySuccess');
 export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
 	'commands/misc:shipData'
 );
@@ -125,8 +124,8 @@ export const VaporwaveExtended = T<LanguageHelpDisplayOptions>('commands/misc:va
 export const VaporwaveOutput = FT<{ str: string }, string>('commands/misc:vaporwaveOutput');
 export const ViewBirthdayDescription = T<string>('commands/misc:viewBirthdayDescription');
 export const ViewBirthdayExtended = T<LanguageHelpDisplayOptions>('commands/misc:viewBirthdayExtended');
-export const ViewBirthdaySet = FT<{ user: string }, string>('commands/misc:viewBirthdaySet');
-export const ViewBirthdayNotSet = FT<{ birthDate: number; user: string; prefix: string }, string>('commands/misc:viewBirthdayNotSet');
+export const ViewBirthdaySet = FT<{ birthDate: string; user: string; prefix: string }, string>('commands/misc:viewBirthdaySet');
+export const ViewBirthdayNotSet = FT<{ birthDate: string; user: string; prefix: string }, string>('commands/misc:viewBirthdayNotSet');
 export const UpcomingBirthdaysDescription = T<string>('commands/misc:upcomingBirthdaysDescription');
 export const UpcomingBirthdaysExtended = T<LanguageHelpDisplayOptions>('commands/misc:upcomingBirthdaysExtended');
 export const UpcomingBirthdaysTitle = FT<{ user: string }, string>('commands/misc:upcomingBirthdaysTitle');

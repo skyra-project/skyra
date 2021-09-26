@@ -10,6 +10,15 @@ export function seconds(seconds: number): number {
 }
 
 /**
+ * Converts a number of milliseconds to seconds.
+ * @param milliseconds The amount of milliseconds
+ * @returns The amount of seconds `milliseconds` equals to.
+ */
+export function secondsFromMilliseconds(milliseconds: number): number {
+	return milliseconds / Time.Second;
+}
+
+/**
  * Converts a number of minutes to milliseconds.
  * @param minutes The amount of minutes
  * @returns The amount of milliseconds `minutes` equals to.

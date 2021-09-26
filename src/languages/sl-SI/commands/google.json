@@ -21,7 +21,7 @@
 		"currentTime": "Trenutni Čas",
 		"currentDate": "Trenutni Datum",
 		"country": "Država",
-		"gmsOffset": "GMT Odmik",
+		"gmtOffset": "GMT Odmik",
 		"dst": ""
 	},
 	"currentTimeDst": "",

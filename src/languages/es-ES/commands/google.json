@@ -21,7 +21,7 @@
 		"currentTime": "Hora actual",
 		"currentDate": "Fecha Actual",
 		"country": "País",
-		"gmsOffset": "Desplazamiento GMT",
+		"gmtOffset": "Desplazamiento GMT",
 		"dst": "**Horario de Verano**: {{dst}}"
 	},
 	"currentTimeDst": "No están en horario de verano",

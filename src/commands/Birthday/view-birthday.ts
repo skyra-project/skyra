@@ -2,6 +2,7 @@ import { getGuildMemberBirthday } from '#lib/birthday';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -17,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const task = getGuildMemberBirthday(message.guild.id, user.id);
 		const content = task
-			? args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, { birthDate: task.time.getTime(), user: user.toString() })
+			? args.t(LanguageKeys.Commands.Misc.ViewBirthdaySet, { birthDate: time(task.time, TimestampStyles.LongDate), user: user.toString() })
 			: args.t(LanguageKeys.Commands.Misc.ViewBirthdayNotSet, { user: user.tag, prefix: context.commandPrefix });
 
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });

@@ -21,7 +21,7 @@
 		"currentTime": "वर्तमान समय",
 		"currentDate": "आज की तारीख",
 		"country": "देश",
-		"gmsOffset": "",
+		"gmtOffset": "",
 		"dst": ""
 	},
 	"currentTimeDst": "",

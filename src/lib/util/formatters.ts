@@ -14,6 +14,12 @@ function formatHeader(t: TFunction, message: GuildMessage): string {
 	return `${formatTimestamp(t, message.createdTimestamp)} ${message.system ? 'SYSTEM' : formatAuthor(message.author)}`;
 }
 
+/**
+ * Formats a timestamp using {@link Intl}
+ *
+ * This **cannot** make use of Discord's timestamp formatting as the result
+ * of this function is placed inside of a codeblock.
+ */
 function formatTimestamp(t: TFunction, timestamp: number): string {
 	return `[${t(LanguageKeys.Globals.DateTimeValue, { value: timestamp })}]`;
 }

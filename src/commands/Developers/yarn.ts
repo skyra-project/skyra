@@ -9,6 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { cutText } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
+import { time, TimestampStyles } from '@discordjs/builders';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -47,12 +48,8 @@ export class UserCommand extends SkyraCommand {
 			: null;
 
 		const author = this.parseAuthor(result.author);
-		const dateCreated = result.time
-			? t(LanguageKeys.Globals.DateValue, { value: new Date(result.time.created).getTime() })
-			: t(LanguageKeys.Globals.Unknown);
-		const dateModified = result.time
-			? t(LanguageKeys.Globals.DateValue, { value: new Date(result.time.modified).getTime() })
-			: t(LanguageKeys.Globals.Unknown);
+		const dateCreated = result.time ? time(new Date(result.time.created), TimestampStyles.ShortDate) : t(LanguageKeys.Globals.Unknown);
+		const dateModified = result.time ? time(new Date(result.time.modified), TimestampStyles.ShortDate) : t(LanguageKeys.Globals.Unknown);
 
 		const { deprecated } = latestVersion;
 		const description = cutText(result.description ?? '', 1000);

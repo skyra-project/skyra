@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { Emojis } from '#utils/constants';
+import { secondsFromMilliseconds } from '#utils/common';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { NonNullableProperties } from '@sapphire/utilities';
+import { NonNullableProperties, roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -50,11 +51,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 							`**${embedData.uses}**: ${this.resolveUses(invite.uses, invite.maxUses)}`,
 							`**${embedData.link}**: [${invite.code}](${invite.url})`,
 							`**${embedData.channel}**: ${invite.channel}`,
-							`**${embedData.temporary}**: ${invite.temporary ? Emojis.GreenTick : Emojis.RedCross}`
+							`**${embedData.temporary}**: ${t(invite.temporary ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)}`
 						].join('\n')
 					)
-					.addField(embedData.createdAt, this.resolveCreationDate(t, invite.createdTimestamp, embedData.createdAtUnknown), true)
-					.addField(embedData.expiresIn, this.resolveExpiryDate(t, invite.expiresTimestamp, embedData.neverExpress), true)
+					.addField(embedData.createdAt, this.resolveCreationDate(invite.createdTimestamp, embedData.createdAtUnknown), true)
+					.addField(embedData.expiresAt, this.resolveExpiryDate(invite.expiresTimestamp, embedData.neverExpress), true)
 			);
 		}
 
@@ -66,13 +67,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return uses;
 	}
 
-	private resolveExpiryDate(t: TFunction, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
-		if (expiresTimestamp !== null && expiresTimestamp > 0) return t(LanguageKeys.Globals.DurationValue, { value: expiresTimestamp - Date.now() });
+	private resolveExpiryDate(expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
+		if (expiresTimestamp !== null && expiresTimestamp > 0)
+			return time(roundNumber(secondsFromMilliseconds(expiresTimestamp)), TimestampStyles.ShortDateTime);
 		return fallback;
 	}
 
-	private resolveCreationDate(t: TFunction, createdTimestamp: Invite['createdTimestamp'], fallback: string) {
-		if (createdTimestamp !== null) return t(LanguageKeys.Globals.DateTimeValue, { value: createdTimestamp });
+	private resolveCreationDate(createdTimestamp: Invite['createdTimestamp'], fallback: string) {
+		if (createdTimestamp !== null) return time(roundNumber(secondsFromMilliseconds(createdTimestamp)), TimestampStyles.ShortDateTime);
 		return fallback;
 	}
 }

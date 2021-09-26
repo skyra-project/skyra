@@ -4,6 +4,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -62,7 +63,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
 		const embedData = t(LanguageKeys.Commands.Animation.KitsuMangaEmbedData);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setFooter(' - © kitsu.io')
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setFooter('© kitsu.io')
 		});
 
 		for (const entry of entries) {
@@ -107,7 +108,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(embedData.type, t(LanguageKeys.Commands.Animation.KitsuMangaTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
-					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.firstPublishDate, time(entry.startDate, TimestampStyles.ShortDate), true)
 					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}

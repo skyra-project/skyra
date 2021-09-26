@@ -1,12 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { secondsFromMilliseconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { chunk } from '@sapphire/utilities';
+import { chunk, roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
@@ -172,7 +174,7 @@ export class UserCommand extends SkyraCommand {
 		const guild = args.message.guild!;
 		return args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 			size: guild.roles.cache.size,
-			createdAt: guild.createdTimestamp,
+			createdAt: time(roundNumber(secondsFromMilliseconds(guild.createdTimestamp)), TimestampStyles.ShortDateTime),
 			verificationLevel: guild.verificationLevel
 		});
 	}

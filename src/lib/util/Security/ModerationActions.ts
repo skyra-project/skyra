@@ -725,7 +725,9 @@ export class ModerationActions {
 			reason: entry.reason,
 			duration: entry.duration
 		});
-		const embed = new MessageEmbed().setDescription(description).setFooter(t(LanguageKeys.Commands.Moderation.ModerationDmFooter));
+		const embed = new MessageEmbed() //
+			.setDescription(description)
+			.setFooter(t(LanguageKeys.Commands.Moderation.ModerationDmFooter));
 
 		if (sendOptions.moderator) {
 			embed.setAuthor(sendOptions.moderator.username, sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));

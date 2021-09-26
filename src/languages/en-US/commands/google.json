@@ -21,7 +21,7 @@
 		"currentTime": "Current Time",
 		"currentDate": "Current Date",
 		"country": "Country",
-		"gmsOffset": "GMT Offset",
+		"gmtOffset": "GMT Offset",
 		"dst": "**DST**: {{dst}}"
 	},
 	"currentTimeDst": "Does not observe DST right now",

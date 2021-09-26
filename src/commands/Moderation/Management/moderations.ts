@@ -3,12 +3,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { secondsFromMilliseconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
-import { chunk, cutText } from '@sapphire/utilities';
+import { chunk, cutText, roundNumber } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 
 const enum Type {
@@ -65,12 +67,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
 
-		// Set up the formatter
-		const durationDisplay = (value: number) => args.t(LanguageKeys.Globals.DurationValue, { value });
+		// Lock in the current time
+		const now = Date.now();
+
 		const displayName = action === Type.All;
 		const format = target
-			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)
-			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
+			? this.displayModerationLogFromModerators.bind(this, usernames, now, displayName)
+			: this.displayModerationLogFromUsers.bind(this, usernames, now, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPageEmbed((embed) => {
@@ -87,14 +90,17 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
+	private displayModerationLogFromModerators(users: Map<string, string>, now: number, displayName: boolean, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
-		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		const formattedDuration =
+			remainingTime === null || expiredTime
+				? ''
+				: `\nExpires: ${time(roundNumber(secondsFromMilliseconds(now + remainingTime)), TimestampStyles.RelativeTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {
@@ -103,14 +109,17 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		};
 	}
 
-	private displayModerationLogFromUsers(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
+	private displayModerationLogFromUsers(users: Map<string, string>, now: number, displayName: boolean, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
 		const remainingTime =
 			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedUser = users.get(entry.userId!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
-		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		const formattedDuration =
+			remainingTime === null || expiredTime
+				? ''
+				: `\nExpires: ${time(roundNumber(secondsFromMilliseconds(now + remainingTime)), TimestampStyles.RelativeTime)}`;
 		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
 
 		return {
@@ -156,5 +165,3 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 }
-
-type DurationDisplay = (time: number) => string;

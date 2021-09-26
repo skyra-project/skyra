@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types/Discord';
 import { PermissionLevels } from '#lib/types/Enums';
-import { hours } from '#utils/common';
+import { hours, secondsFromMilliseconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 			.catch(() => args.rest('timespan', { minimum: 0, maximum: MAXIMUM_DURATION }));
 
 		const channel = message.channel as TextChannel;
-		await channel.setRateLimitPerUser(cooldown / 1000);
+		await channel.setRateLimitPerUser(secondsFromMilliseconds(cooldown));
 
 		const content =
 			cooldown === 0

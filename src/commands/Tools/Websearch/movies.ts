@@ -6,6 +6,7 @@ import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { minutes } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText } from '@sapphire/utilities';
@@ -70,7 +71,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					: fieldsData.movieInProduction;
 				const userScore = typeof movie.vote_average === 'number' ? formatNumber(t, movie.vote_average) : fieldsData.movieInProduction;
 				const releaseDate = movie.release_date
-					? t(LanguageKeys.Globals.DateValue, { value: Date.parse(movie.release_date) })
+					? time(new Date(movie.release_date), TimestampStyles.ShortDate)
 					: t(LanguageKeys.Globals.Unknown);
 				const imdbPage = movie.imdb_id ? `[${fieldsData.linkClickHere}](http://www.imdb.com/title/${movie.imdb_id})` : fieldsData.none;
 

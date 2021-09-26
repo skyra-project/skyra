@@ -2,11 +2,13 @@ import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { months } from '#utils/common';
+import { months, secondsFromMilliseconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -46,7 +48,11 @@ export class UserCommand extends SkyraCommand {
 
 	private user(t: TFunction, user: User) {
 		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles);
-		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, { user, createdTimestampOffset: Date.now() - user.createdTimestamp });
+		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, {
+			user,
+			userCreatedAt: time(roundNumber(secondsFromMilliseconds(user.createdTimestamp)), TimestampStyles.ShortDateTime),
+			userCreatedAtOffset: time(roundNumber(secondsFromMilliseconds(user.createdTimestamp)), TimestampStyles.RelativeTime)
+		});
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
@@ -61,8 +67,10 @@ export class UserCommand extends SkyraCommand {
 		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles);
 		const fields = t(LanguageKeys.Commands.Tools.WhoisMemberFields, {
 			member,
-			createdTimestampOffset: Date.now() - member.user.createdTimestamp,
-			joinedTimestampOffset: Date.now() - member.joinedTimestamp!
+			memberCreatedAt: time(roundNumber(secondsFromMilliseconds(member.user.createdTimestamp)), TimestampStyles.ShortDateTime),
+			memberCreatedAtOffset: time(roundNumber(secondsFromMilliseconds(member.user.createdTimestamp)), TimestampStyles.RelativeTime),
+			memberJoinedAt: time(roundNumber(secondsFromMilliseconds(member.joinedTimestamp!)), TimestampStyles.ShortDateTime),
+			memberJoinedAtOffset: time(roundNumber(secondsFromMilliseconds(member.joinedTimestamp!)), TimestampStyles.RelativeTime)
 		});
 
 		const embed = new SkyraEmbed()

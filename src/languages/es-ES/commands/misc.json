@@ -36,9 +36,8 @@
 	},
 	"redditUserData": {
 		"overviewFor": "Resumen para /u/{{user}}",
-		"permalink": "Enlace Permanente",
 		"dataAvailableFor": "Los datos están disponibles para los últimos 1000 comentarios y envíos (limitación de Reddit)",
-		"joinedReddit": "Se unió a Reddit el {{timestamp, dateTime}}"
+		"joinedReddit": "Se unió a Reddit el"
 	},
 	"snipeEmpty": "",
 	"snipeTitle": "",

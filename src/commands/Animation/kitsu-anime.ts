@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -65,7 +66,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
 				.setColor(await this.container.db.fetchColor(message))
-				.setFooter(' - © kitsu.io')
+				.setFooter('© kitsu.io')
 		});
 
 		for (const entry of entries) {
@@ -112,7 +113,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(embedData.episodes, entry.episodeCount ? formatNumber(t, entry.episodeCount) : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
-					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.DateValue, { value: entry.startDate * 1000 }), true)
+					.addField(embedData.firstAirDate, time(entry.startDate, TimestampStyles.ShortDate), true)
 					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}

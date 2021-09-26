@@ -3,6 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MessageEmbed } from 'discord.js';
@@ -57,7 +58,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
-					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.DateValue, { value: Date.parse(song.releaseDate) }), true)
+					.addField(titles.trackReleaseDate, time(new Date(song.releaseDate), TimestampStyles.ShortDate), true)
 					.addField(titles.numberOfTracksInCollection, formatNumber(t, song.trackCount), true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)

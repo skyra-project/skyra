@@ -4,7 +4,7 @@ import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
-import { bold, hideLinkEmbed, hyperlink, inlineCode, time, TimestampStyles } from '@discordjs/builders';
+import { bold, hideLinkEmbed, hyperlink, inlineCode, time, TimestampStyles, underscore } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
@@ -78,11 +78,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.addPageEmbed((embed) =>
 				embed
 					.addField(
-						`__${titles.bestComment}__`,
+						underscore(titles.bestComment),
 						cutText([this.formatCommentHeader(bestComment), decode(bestComment.body)].join('\n'), 1020)
 					)
 					.addField(
-						`__${titles.worstComment}__`,
+						underscore(titles.worstComment),
 						cutText([this.formatCommentHeader(worstComment), decode(worstComment.body)].join('\n'), 1020)
 					)
 			);
@@ -93,9 +93,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			hyperlink('🔗', hideLinkEmbed(`https://reddit.com${comment.permalink}`)),
 			bold(comment.score.toString()),
 			inlineCode(`/r/${comment.subreddit}`),
-			'',
-			'-',
-			'',
+			' - ',
 			time(comment.created, TimestampStyles.LongDateTime)
 		].join(' ');
 	}

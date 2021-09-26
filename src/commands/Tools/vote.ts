@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
-import { RESTJSONErrorCodes } from 'discord-api-types/rest/v9';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { RESTJSONErrorCodes } from 'discord-api-types/rest/v9';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { DiscordAPIError, Message } from 'discord.js';
 

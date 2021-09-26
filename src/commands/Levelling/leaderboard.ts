@@ -42,7 +42,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(args.message))
 				.setTitle(args.t(LanguageKeys.Commands.Social.LeaderboardHeader, { guild: args.message.guild!.name }))
-				.setFooter(`${footerText}`, footerIcon)
+				.setFooter(footerText, footerIcon)
 				.setTimestamp()
 		});
 

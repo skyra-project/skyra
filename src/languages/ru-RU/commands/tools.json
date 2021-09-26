@@ -538,10 +538,10 @@
 		]
 	},
 	"whoisMemberFields": {
-		"createdAt": "{{memberCreatedAt}}\n{{memberCreatedAtOffset}}",
+		"createdAt": "",
 		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "",
-		"joinedWithTimestamp": "{{memberJoinedAt}}\n{{memberJoinedAtOffset}}"
+		"joinedWithTimestamp": ""
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "Все разрешения",
@@ -553,7 +553,7 @@
 		"joined": ""
 	},
 	"whoisUserFields": {
-		"createdAt": "{{userCreatedAt}}\n{{userCreatedAtOffset}}",
+		"createdAt": "",
 		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {

@@ -15,4 +15,4 @@ import * as colorette from 'colorette';
 import { inspect } from 'util';
 
 inspect.defaultOptions.depth = 1;
-colorette.options.enabled = true;
+colorette.createColors({ useColor: true });

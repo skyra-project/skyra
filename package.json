@@ -89,7 +89,7 @@
 		"binarytf": "^2.0.0",
 		"bufferutil": "^4.0.4",
 		"canvas-constructor": "^5.0.1",
-		"colorette": "^1.4.0",
+		"colorette": "^2.0.12",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",
 		"discord-api-types": "^0.23.1",

@@ -1,18 +1,22 @@
 import { PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveOnErrorCodes } from '#utils/common';
-import { Timestamp } from '@sapphire/time-utilities';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import i18next from 'i18next';
 
 export class UserTask extends Task {
-	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
-
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
 		// Fetch the user to send the message to
 		const user = await resolveOnErrorCodes(this.container.client.users.fetch(data.user), RESTJSONErrorCodes.UnknownUser);
 
 		if (user) {
+			const timestamp = time(new Date(), TimestampStyles.ShortDateTime);
+			const reminderHeader = i18next.t(LanguageKeys.System.ReminderHeader, { timestamp });
+
 			await resolveOnErrorCodes(
-				user.send(`⏲ Hey! You asked me on ${this.kTimestamp.displayUTC(Date.now())} to remind you:\n*${data.content}*`),
+				//
+				user.send(`${reminderHeader}\n*${data.content}*`),
 				RESTJSONErrorCodes.CannotSendMessagesToThisUser
 			);
 		}

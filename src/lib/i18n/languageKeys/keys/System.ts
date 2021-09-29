@@ -27,3 +27,4 @@ export const HelpTitles = T<{
 	examples: string;
 	reminders: string;
 }>('system:helpTitles');
+export const ReminderHeader = FT<{ timestamp: string }>('system:reminderHeader');

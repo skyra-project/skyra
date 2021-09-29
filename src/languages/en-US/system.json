@@ -42,5 +42,6 @@
 		"abort",
 		"cancel",
 		"stop"
-	]
+	],
+	"reminderHeader": "⏲ Hey there! You asked to be reminded at {{timestamp}} about:"
 }

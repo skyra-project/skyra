@@ -42,5 +42,6 @@
 		"abortar",
 		"cancelar",
 		"parar"
-	]
+	],
+	"reminderHeader": ""
 }

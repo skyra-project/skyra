@@ -42,5 +42,6 @@
 		"abort",
 		"cancel",
 		"stop"
-	]
+	],
+	"reminderHeader": ""
 }

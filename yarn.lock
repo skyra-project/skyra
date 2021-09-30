@@ -2553,12 +2553,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ioredis@npm:^4.27.4":
-  version: 4.27.4
-  resolution: "@types/ioredis@npm:4.27.4"
+"@types/ioredis@npm:^4.27.5":
+  version: 4.27.5
+  resolution: "@types/ioredis@npm:4.27.5"
   dependencies:
     "@types/node": "*"
-  checksum: d0b730e293765acb74b603ba8f9c57cc8fe1bb9cf5f2980c40f43de5500c6d65a2142af99d46af7f8c35025c3586882685c4a47197bf06b7a54573151a667823
+  checksum: d451e1327afd22c796b11377d195ade104f3429b8b995fc1f5230ab4178ac0f566b5475d5a6a59f4fc131616e8b56aac72e9d7c098e5e246f4ef0c8846572e8d
   languageName: node
   linkType: hard
 
@@ -9722,7 +9722,7 @@ fsevents@^2.3.2:
     "@types/diff": ^5.0.1
     "@types/google-protobuf": ^3.15.5
     "@types/he": ^1.1.2
-    "@types/ioredis": ^4.27.4
+    "@types/ioredis": ^4.27.5
     "@types/jest": ^27.0.2
     "@types/node": ^16.9.1
     "@types/node-fetch": ^2.5.12

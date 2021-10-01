@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -14,7 +15,11 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	description: LanguageKeys.Commands.Tools.CountryDescription,
-	detailedDescription: LanguageKeys.Commands.Tools.CountryExtended
+	detailedDescription: LanguageKeys.Commands.Tools.CountryExtended,
+	enabled: false,
+	hidden: true,
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {

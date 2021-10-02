@@ -21,7 +21,12 @@ export class V57MigrateReactionRolesToOnlyId1633184279614 implements MigrationIn
 
 	private mapReactions(guilds: GuildData[]): GuildData[] {
 		for (const guild of guilds) {
-			for (const reaction of guild.reactionRoles) {
+			for (const [rrIndex, reaction] of guild.reactionRoles.entries()) {
+				if (!reaction.emoji) {
+					guild.reactionRoles.splice(rrIndex, 1);
+					continue;
+				}
+
 				if (reaction.emoji.includes('%')) {
 					continue;
 				}

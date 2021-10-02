@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Args, CommandOptionsRunTypeEnum, IArgument, Identifiers } from '@sapphire/framework';
@@ -30,17 +31,17 @@ export class UserCommand extends SkyraCommand {
 		if (missing.length > 0) this.error(Identifiers.PreconditionClientPermissions, { missing });
 
 		const schedule = await args.pick('time');
+		const scheduleOffset = schedule.getTime() - Date.now();
 		const allowedRoles = await this.getAllowedRoles(args);
 		const duration = await args.pick('time');
-		const winners = await this.getWinners(args);
-		const title = await args.rest('string', { maximum: 256 });
-
-		// First do the checks for the giveaway itself
-		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
+		// First do the checks for the giveaway itself
 		if (durationOffset < 9500 || scheduleOffset < 9500) this.error(LanguageKeys.Giveaway.Time);
 		if (durationOffset > Time.Year || scheduleOffset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
+
+		const winners = await this.getWinners(args);
+		const title = await args.rest('string', { maximum: 256 });
 
 		// This creates an single time task to start the giveaway
 		await this.container.schedule.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
@@ -57,7 +58,7 @@ export class UserCommand extends SkyraCommand {
 			catchUp: true
 		});
 
-		const content = args.t(LanguageKeys.Giveaway.Scheduled, { scheduledTime: scheduleOffset });
+		const content = args.t(LanguageKeys.Giveaway.Scheduled, { timestamp: time(schedule, TimestampStyles.RelativeTime) });
 		return send(message, content);
 	}
 

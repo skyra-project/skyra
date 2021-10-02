@@ -90,10 +90,6 @@ export class GiveawayEntity extends BaseEntity {
 		return container.client.guilds.cache.get(this.guildId) ?? null;
 	}
 
-	public get remaining() {
-		return Math.max(this.endsAt.getTime() - Date.now(), 0);
-	}
-
 	public get endHandled() {
 		return this.#endHandled;
 	}

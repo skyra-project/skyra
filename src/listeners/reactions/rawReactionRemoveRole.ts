@@ -13,12 +13,15 @@ export class UserListener extends Listener {
 		// If the channel is not a text channel then stop processing
 		if (!isGuildBasedChannel(channel)) return;
 
-		const parsed = resolveEmoji(data.emoji);
+		const parsed = data.emoji.id ?? resolveEmoji(data.emoji);
 		if (!parsed) return;
 
 		const roleEntry = await readSettings(channel.guild, (settings) =>
 			settings[GuildSettings.ReactionRoles].find(
-				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
+				(entry) =>
+					entry.emoji === parsed && //
+					entry.channel === data.channel_id &&
+					(entry.message ? entry.message === data.message_id : true)
 			)
 		);
 		if (!roleEntry) return;

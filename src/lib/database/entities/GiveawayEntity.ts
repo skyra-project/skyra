@@ -189,7 +189,7 @@ export class GiveawayEntity extends BaseEntity {
 		const content = GiveawayEntity.getContent(state, this.allowedRoles, t);
 		// const allowedMentions = GiveawayEntity.getAllowedMentions(state, this.allowedRoles);
 		const embed = this.getEmbed(state, t);
-		return { content, embed, allowed_mentions: {} };
+		return { content, embed, allowed_mentions: { users: [], roles: [] } };
 	}
 
 	private async announceWinners(t: TFunction) {

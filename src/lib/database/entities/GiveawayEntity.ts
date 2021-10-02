@@ -187,9 +187,9 @@ export class GiveawayEntity extends BaseEntity {
 			this.#refreshAt = this.calculateNextRefresh();
 		}
 		const content = GiveawayEntity.getContent(state, this.allowedRoles, t);
-		const allowedMentions = GiveawayEntity.getAllowedMentions(state, this.allowedRoles);
+		// const allowedMentions = GiveawayEntity.getAllowedMentions(state, this.allowedRoles);
 		const embed = this.getEmbed(state, t);
-		return { content, embed, allowed_mentions: allowedMentions };
+		return { content, embed, allowed_mentions: {} };
 	}
 
 	private async announceWinners(t: TFunction) {
@@ -317,11 +317,11 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private static getAllowedMentions(state: States, roles: string[]): RESTPatchAPIChannelMessageJSONBody['allowed_mentions'] {
-		if (state === States.Finished) return null;
+	// private static getAllowedMentions(state: States, roles: string[]): RESTPatchAPIChannelMessageJSONBody['allowed_mentions'] {
+	// 	if (state === States.Finished) return null;
 
-		return { roles };
-	}
+	// 	return { roles };
+	// }
 
 	private static getColor(state: States) {
 		switch (state) {

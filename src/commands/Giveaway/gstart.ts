@@ -41,6 +41,7 @@ export class UserCommand extends SkyraCommand {
 			channelId: channel.id,
 			endsAt: new Date(time.getTime() + 500),
 			guildId: message.guild.id,
+			authorId: message.author.id,
 			minimum: 1,
 			minimumWinners: winners,
 			title

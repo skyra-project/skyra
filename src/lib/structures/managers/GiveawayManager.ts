@@ -22,7 +22,7 @@ export class GiveawayManager {
 		const now = Date.now();
 		const running: Promise<void>[] = [];
 		for (const giveaway of this.queue) {
-			if (giveaway.refreshAt > now) break;
+			if (giveaway.endsAt.getTime() > now) break;
 			running.push(this.runEntry(giveaway));
 		}
 
@@ -49,7 +49,7 @@ export class GiveawayManager {
 			this.queue.splice(index, 1);
 
 			await giveaway.render();
-			if (giveaway.finished) await giveaway.remove();
+			if (giveaway.endHandled) await giveaway.remove();
 			else this.insert(giveaway);
 		} catch (error) {
 			container.logger.fatal(error);
@@ -67,7 +67,7 @@ export class GiveawayManager {
 	}
 
 	private insert(giveaway: GiveawayEntity) {
-		const index = this.queue.findIndex((entry) => entry.refreshAt > giveaway.refreshAt);
+		const index = this.queue.findIndex((entry) => entry.endsAt.getTime() > giveaway.endsAt.getTime());
 		if (index === -1) this.queue.push(giveaway);
 		else this.queue.splice(index, 0, giveaway);
 		return this;

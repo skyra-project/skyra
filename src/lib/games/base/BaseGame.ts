@@ -66,15 +66,15 @@ export abstract class BaseGame<T> {
 	protected abstract handle(value: T, player: BaseController<T>): unknown;
 
 	protected onStart(): Promise<unknown> {
-		return this.message.edit(this.render(GameStatus.Start));
+		return this.message.edit({ content: this.render(GameStatus.Start), embeds: [], attachments: [] });
 	}
 
 	protected onUpdate(): Promise<unknown> {
-		return this.message.edit(this.render(GameStatus.Update));
+		return this.message.edit({ content: this.render(GameStatus.Update), embeds: [], attachments: [] });
 	}
 
 	protected onEnd(): Promise<unknown> {
-		return this.message.edit(this.render(GameStatus.End));
+		return this.message.edit({ content: this.render(GameStatus.End), embeds: [], attachments: [] });
 	}
 
 	protected abstract render(status: GameStatus): string;

@@ -1,6 +1,7 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { hours, minutes, years } from '#utils/common';
+import type { SerializedEmoji } from '#utils/functions';
 import { create } from '#utils/Security/RegexCreator';
 import { container } from '@sapphire/framework';
 import { RateLimitManager } from '@sapphire/ratelimits';
@@ -672,13 +673,13 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('smallint', { name: 'selfmod.reactions.maximum', default: 10 })
 	public selfmodReactionsMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsAllowed })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsAllowed, type: 'emoji' })
 	@Column('varchar', { name: 'selfmod.reactions.allowed', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodReactionsAllowed: string[] = [];
+	public selfmodReactionsAllowed: SerializedEmoji[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsBlocked })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsBlocked, type: 'emoji' })
 	@Column('varchar', { name: 'selfmod.reactions.blocked', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodReactionsBlocked: string[] = [];
+	public selfmodReactionsBlocked: SerializedEmoji[] = [];
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
 	@Column('smallint', { name: 'selfmod.reactions.soft-action', default: 0 })
@@ -764,7 +765,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'emoji' })
 	@Column('varchar', { name: 'starboard.emoji', length: 75, default: '%E2%AD%90' })
-	public starboardEmoji = '%E2%AD%90';
+	public starboardEmoji = '%E2%AD%90' as SerializedEmoji;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'starboard.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -813,12 +814,12 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	public musicAllowedRoles: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
-	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
-	public suggestionsEmojisUpVote = ':ArrowT:694594285487652954';
+	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: 's694594285487652954' })
+	public suggestionsEmojisUpVote = 's694594285487652954' as SerializedEmoji;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownVote, type: 'emoji' })
-	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: ':ArrowB:694594285269680179' })
-	public suggestionsEmojisDownVote = ':ArrowB:694594285269680179';
+	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: 's694594285269680179' })
+	public suggestionsEmojisDownVote = 's694594285269680179' as SerializedEmoji;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
@@ -946,7 +947,7 @@ export interface StickyRole {
 export interface ReactionRole {
 	channel: string;
 
-	emoji: string;
+	emoji: SerializedEmoji;
 
 	message: string | null;
 
@@ -965,8 +966,10 @@ export interface TriggerAlias {
 	output: string;
 }
 
-export interface TriggerIncludes extends TriggerAlias {
+export interface TriggerIncludes {
 	action: 'react';
+	input: string;
+	output: SerializedEmoji;
 }
 
 export interface UniqueRoleSet {

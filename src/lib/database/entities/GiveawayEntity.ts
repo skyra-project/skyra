@@ -3,6 +3,7 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
+import type { SerializedEmoji } from '#utils/functions';
 import { fetchReactionUsers } from '#utils/util';
 import { roleMention } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
@@ -20,9 +21,9 @@ const enum States {
 	Finished
 }
 
-export const kRawEmoji = '🎉';
-export const kEmoji = encodeURIComponent(kRawEmoji);
-export const kGiveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
+export const rawGiveawayEmoji = '🎉';
+export const encodedGiveawayEmoji = encodeURIComponent(rawGiveawayEmoji) as SerializedEmoji;
+export const giveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownMessage,
 	RESTJSONErrorCodes.UnknownChannel,
 	RESTJSONErrorCodes.UnknownGuild,
@@ -31,7 +32,7 @@ export const kGiveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.InvalidFormBodyOrContentType,
 	RESTJSONErrorCodes.ThreadLocked
 ];
-export const kGiveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
+export const giveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
 	RESTJSONErrorCodes.UnknownMessage,
 	RESTJSONErrorCodes.UnknownChannel,
 	RESTJSONErrorCodes.UnknownGuild,
@@ -116,7 +117,7 @@ export class GiveawayEntity extends BaseEntity {
 		this.resume();
 
 		// Add a reaction to the message and save to database
-		await api().channels(this.channelId).messages(this.messageId).reactions(kEmoji, '@me').put();
+		await api().channels(this.channelId).messages(this.messageId).reactions(encodedGiveawayEmoji, '@me').put();
 
 		return this.save();
 	}
@@ -143,7 +144,7 @@ export class GiveawayEntity extends BaseEntity {
 			try {
 				await api().channels(this.channelId).messages(this.messageId).delete();
 			} catch (error) {
-				if (error instanceof DiscordAPIError && kGiveawayBlockListReactionErrors.includes(error.code)) {
+				if (error instanceof DiscordAPIError && giveawayBlockListReactionErrors.includes(error.code)) {
 					return this;
 				}
 
@@ -164,7 +165,7 @@ export class GiveawayEntity extends BaseEntity {
 		try {
 			await api().channels(this.channelId).messages(this.messageId!).patch({ data });
 		} catch (error) {
-			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
+			if (error instanceof DiscordAPIError && giveawayBlockListEditErrors.includes(error.code)) {
 				await this.finish();
 			} else {
 				container.logger.error(error);
@@ -256,7 +257,7 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async fetchParticipants(): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(this.channelId, this.messageId!, kEmoji);
+			const users = await fetchReactionUsers(this.channelId, this.messageId!, encodedGiveawayEmoji);
 			users.delete(process.env.CLIENT_ID);
 			return [...users];
 		} catch (error) {

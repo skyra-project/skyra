@@ -1,15 +1,20 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { resolveEmojiId, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {
-	public async run(parsed: LLRCData, emoji: string) {
+	public async run(parsed: LLRCData, emoji: SerializedEmoji) {
+		const emojiId = resolveEmojiId(emoji);
 		const [roleEntry, allRoleSets] = await readSettings(parsed.guild, (settings) => [
 			settings[GuildSettings.ReactionRoles].find(
-				(entry) => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageId : true)
+				(entry) =>
+					resolveEmojiId(entry.emoji) === emojiId &&
+					entry.channel === parsed.channel.id &&
+					(entry.message ? entry.message === parsed.messageId : true)
 			),
 			settings[GuildSettings.Roles.UniqueRoleSets]
 		]);

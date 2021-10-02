@@ -1,7 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { kRegExpTwemoji, twemoji } from '#utils/util';
+import { twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { TwemojiRegex } from '@sapphire/discord-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -34,7 +35,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async twemoji(args: SkyraCommand.Args, emoji: string) {
-		if (!kRegExpTwemoji.test(emoji)) this.error(LanguageKeys.Commands.Tools.EmojiInvalid);
+		if (!TwemojiRegex.test(emoji)) this.error(LanguageKeys.Commands.Tools.EmojiInvalid);
 		const emojiCode = twemoji(emoji);
 
 		const name = `${emojiCode}.png`;

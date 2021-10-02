@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { getStarboard } from '#utils/functions';
+import { areEmojisEqual, getStarboard, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { snowflakeAge } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,7 +11,7 @@ import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {
-	public async run(data: LLRCData, emojiId: string) {
+	public async run(data: LLRCData, emojiId: SerializedEmoji) {
 		if (isNsfwChannel(data.channel)) return;
 
 		const [channel, ignoreChannels, emoji, selfStar, maximumAge] = await readSettings(data.guild, [
@@ -23,7 +23,7 @@ export class UserListener extends Listener {
 		]);
 
 		// If there is no channel, or channel is the starboard channel, or the emoji isn't the starboard one, skip:
-		if (!channel || data.channel.id === channel || emojiId !== emoji) return;
+		if (!channel || data.channel.id === channel || !areEmojisEqual(emoji, emojiId)) return;
 
 		// If the message is too old, skip:
 		if (!isNullishOrZero(maximumAge) && snowflakeAge(data.messageId) > maximumAge) return;

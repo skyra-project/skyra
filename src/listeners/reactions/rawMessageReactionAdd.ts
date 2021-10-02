@@ -1,6 +1,6 @@
 import { Events } from '#lib/types/Enums';
+import { getEmojiString } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReadMessages, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -34,7 +34,7 @@ export class UserListener extends Listener {
 			llrc.send(data);
 		}
 
-		const emoji = resolveEmoji(data.emoji);
+		const emoji = getEmojiString(data.emoji);
 		if (emoji === null) return;
 
 		this.container.client.emit(Events.RawReactionAdd, data, emoji);

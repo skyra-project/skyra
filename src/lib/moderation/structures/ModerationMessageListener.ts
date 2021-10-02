@@ -195,7 +195,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		const globalIgnore = settings[GuildSettings.Selfmod.IgnoreChannels];
 		if (globalIgnore.includes(channel.id)) return false;
 
-		const localIgnore = settings[this.ignoredChannelsPath];
+		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];
 		if (localIgnore.includes(channel.id)) return false;
 
 		return true;

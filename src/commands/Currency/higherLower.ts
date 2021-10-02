@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
+import { getEmojiReactionFormat, getEmojiString, SerializedEmoji } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -13,10 +13,10 @@ import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const enum HigherLowerReactions {
-	Higher = 'a:sarrow_up:658450971655012363',
-	Lower = 'a:sarrow_down:658452292558913536',
-	Cancel = ':redCross:637706251257511973',
-	Ok = ':greenTick:637706251253317669',
+	Higher = 'a658450971655012363',
+	Lower = 'a658452292558913536',
+	Cancel = 's637706251257511973',
+	Ok = 's637706251253317669',
 	Cashout = '%F0%9F%92%B0' // 💰
 }
 
@@ -33,10 +33,10 @@ const enum HigherLowerReactions {
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
-	private readonly kReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
-	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
-	private readonly kTimer = minutes(3);
+	private readonly firstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
+	private readonly reactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
+	private readonly winReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
+	private readonly runTime = minutes(3);
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const { t } = args;
@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 			turn: 1,
 			number: this.random(50),
 			wager,
-			emojis: this.kFirstReactionArray,
+			emojis: this.firstReactionArray,
 			callback: null,
 			color: await this.container.db.fetchColor(message),
 			canceledByChoice: false
@@ -104,7 +104,7 @@ export class UserCommand extends SkyraCommand {
 			await game.response.edit({ embeds: [embed] });
 
 			// Add the options
-			const emojis = game.turn > 1 ? this.kReactionArray : this.kFirstReactionArray;
+			const emojis = game.turn > 1 ? this.reactionArray : this.firstReactionArray;
 			const emoji = await this.listenForReaction(game, emojis);
 			if (emoji === null) break;
 
@@ -144,11 +144,11 @@ export class UserCommand extends SkyraCommand {
 
 		game.emojis = emojis;
 		for (const emoji of game.emojis) {
-			await game.response.react(emoji);
+			await game.response.react(getEmojiReactionFormat(emoji as SerializedEmoji));
 		}
 
 		return new Promise<HigherLowerReactions | null>((res) => {
-			game.llrc.setTime(this.kTimer);
+			game.llrc.setTime(this.runTime);
 			game.callback = res;
 		});
 	}
@@ -166,7 +166,7 @@ export class UserCommand extends SkyraCommand {
 		await game.response.edit({ embeds: [embed] });
 
 		// Ask the user whether they want to continue or cashout
-		const emoji = await this.listenForReaction(game, this.kWinReactionArray);
+		const emoji = await this.listenForReaction(game, this.winReactionArray);
 
 		// Decide whether we timeout, stop, or continue
 		switch (emoji) {
@@ -268,7 +268,7 @@ export class UserCommand extends SkyraCommand {
 		if (reaction.userId !== message.author.id) return null;
 
 		// If the emoji reacted is not valid, inhibit
-		const emoji = resolveEmoji(reaction.emoji);
+		const emoji = getEmojiString(reaction.emoji);
 		return emoji !== null && game.emojis.includes(emoji as HigherLowerReactions) ? (emoji as HigherLowerReactions) : null;
 	}
 

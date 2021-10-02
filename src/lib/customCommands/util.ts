@@ -1,8 +1,7 @@
 import type { CustomCommand } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
-import { formatNumber } from '#utils/functions';
-import type { Awaited } from '@sapphire/utilities';
+import { formatNumber, getEmojiString, getEmojiTextFormat } from '#utils/functions';
 import { Lexer, parse, Parser, Sentence, SentencePartType } from '@skyra/tags';
 import { InvalidTypeError } from './errors/InvalidTypeError';
 import { MissingArgumentsError } from './errors/MissingArgumentsError';
@@ -43,7 +42,7 @@ export function ensure(content: string) {
 	}
 }
 
-export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, allowedMentions: Set<string>): Awaited<string> {
+export async function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, allowedMentions: Set<string>): Promise<string> {
 	if (!argLessTypes.has(type) && args.finished) throw new MissingArgumentsError(args, type);
 
 	switch (type) {
@@ -64,7 +63,7 @@ export function parseParameter(args: SkyraArgs, type: InvalidTypeError.Type, all
 		case 'channel.name':
 			return args.pick('guildChannel').then((channel) => channel.name);
 		case 'emoji':
-			return args.pick('emoji');
+			return getEmojiTextFormat(getEmojiString(await args.pick('emoji')));
 		case 'server.id':
 		case 'guild.id':
 			return args.message.guild!.id;

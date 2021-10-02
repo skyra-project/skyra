@@ -65,137 +65,137 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('resolveEmoji', () => {
-		test('Full animated emoji', () => {
-			expect(utils.resolveEmoji('<a:emoji:123456789101213145>')).toEqual('a:emoji:123456789101213145');
-		});
+	// describe('resolveEmoji', () => {
+	// 	test('Full animated emoji', () => {
+	// 		expect(utils.resolveEmoji('<a:emoji:123456789101213145>')).toEqual('a:emoji:123456789101213145');
+	// 	});
 
-		test('Full static emoji', () => {
-			expect(utils.resolveEmoji('<:emoji:123456789101213145>')).toEqual(':emoji:123456789101213145');
-		});
+	// 	test('Full static emoji', () => {
+	// 		expect(utils.resolveEmoji('<:emoji:123456789101213145>')).toEqual(':emoji:123456789101213145');
+	// 	});
 
-		test('Partial animated emoji', () => {
-			expect(utils.resolveEmoji('a:emoji:123456789101213145')).toEqual('a:emoji:123456789101213145');
-		});
+	// 	test('Partial animated emoji', () => {
+	// 		expect(utils.resolveEmoji('a:emoji:123456789101213145')).toEqual('a:emoji:123456789101213145');
+	// 	});
 
-		test('Partial static emoji', () => {
-			expect(utils.resolveEmoji(':emoji:123456789101213145')).toEqual(':emoji:123456789101213145');
-		});
+	// 	test('Partial static emoji', () => {
+	// 		expect(utils.resolveEmoji(':emoji:123456789101213145')).toEqual(':emoji:123456789101213145');
+	// 	});
 
-		test('Box Emoji', () => {
-			expect(utils.resolveEmoji('5\u20E3')).toEqual('5%E2%83%A3');
-		});
+	// 	test('Box Emoji', () => {
+	// 		expect(utils.resolveEmoji('5\u20E3')).toEqual('5%E2%83%A3');
+	// 	});
 
-		test('Twemoji Emoji', () => {
-			expect(utils.resolveEmoji('😂')).toEqual('%F0%9F%98%82');
-		});
+	// 	test('Twemoji Emoji', () => {
+	// 		expect(utils.resolveEmoji('😂')).toEqual('%F0%9F%98%82');
+	// 	});
 
-		test('None emoji', () => {
-			expect(utils.resolveEmoji('')).toBeNull();
-		});
+	// 	test('None emoji', () => {
+	// 		expect(utils.resolveEmoji('')).toBeNull();
+	// 	});
 
-		test('GIVEN Animated Emoji Object THEN returns string references', () => {
-			const emoji: utils.EmojiObject = {
-				name: 'joy',
-				id: '123-456-789',
-				animated: true
-			};
+	// 	test('GIVEN Animated Emoji Object THEN returns string references', () => {
+	// 		const emoji: utils.EmojiObject = {
+	// 			name: 'joy',
+	// 			id: '123-456-789',
+	// 			animated: true
+	// 		};
 
-			expect(utils.resolveEmoji(emoji)).toEqual('a:joy:123-456-789');
-		});
+	// 		expect(utils.resolveEmoji(emoji)).toEqual('a:joy:123-456-789');
+	// 	});
 
-		test('GIVEN Static Emoji Object THEN returns string references', () => {
-			const emoji: utils.EmojiObject = {
-				name: 'joy',
-				id: '123-456-789',
-				animated: false
-			};
+	// 	test('GIVEN Static Emoji Object THEN returns string references', () => {
+	// 		const emoji: utils.EmojiObject = {
+	// 			name: 'joy',
+	// 			id: '123-456-789',
+	// 			animated: false
+	// 		};
 
-			expect(utils.resolveEmoji(emoji)).toEqual(':joy:123-456-789');
-		});
+	// 		expect(utils.resolveEmoji(emoji)).toEqual(':joy:123-456-789');
+	// 	});
 
-		test('GIVEN Emoji Object without ID THEN returns string references', () => {
-			const emoji: utils.EmojiObject = {
-				name: 'joy',
-				id: null,
-				animated: false
-			};
+	// 	test('GIVEN Emoji Object without ID THEN returns string references', () => {
+	// 		const emoji: utils.EmojiObject = {
+	// 			name: 'joy',
+	// 			id: null,
+	// 			animated: false
+	// 		};
 
-			expect(utils.resolveEmoji(emoji)).toEqual('joy');
-		});
-	});
+	// 		expect(utils.resolveEmoji(emoji)).toEqual('joy');
+	// 	});
+	// });
 
-	describe('displayEmoji', () => {
-		test('GIVEN custom emoji THEN returns emoji+id', () => {
-			expect(utils.displayEmoji(':emoji:123456789101213145')).toEqual('<:emoji:123456789101213145>');
-		});
+	// describe('displayEmoji', () => {
+	// 	test('GIVEN custom emoji THEN returns emoji+id', () => {
+	// 		expect(utils.displayEmoji(':emoji:123456789101213145')).toEqual('<:emoji:123456789101213145>');
+	// 	});
 
-		test('GIVEN twemoji THEN returns decoded URI Component', () => {
-			expect(utils.displayEmoji('🤖')).toEqual('🤖');
-		});
-	});
+	// 	test('GIVEN twemoji THEN returns decoded URI Component', () => {
+	// 		expect(utils.displayEmoji('🤖')).toEqual('🤖');
+	// 	});
+	// });
 
-	describe('compareEmoji', () => {
-		test('GIVEN custom emoji with Emoji string THEN returns true', () => {
-			expect(utils.compareEmoji(':emoji:123456789101213145', ':emoji:123456789101213145')).toEqual(true);
-		});
+	// describe('compareEmoji', () => {
+	// 	test('GIVEN custom emoji with Emoji string THEN returns true', () => {
+	// 		expect(utils.compareEmoji(':emoji:123456789101213145', ':emoji:123456789101213145')).toEqual(true);
+	// 	});
 
-		test('GIVEN custom emoji with non matching id THEN returns false', () => {
-			expect(utils.compareEmoji(':emoji:123456789101213145', ':emoji:541312101987654321')).toEqual(false);
-		});
+	// 	test('GIVEN custom emoji with non matching id THEN returns false', () => {
+	// 		expect(utils.compareEmoji(':emoji:123456789101213145', ':emoji:541312101987654321')).toEqual(false);
+	// 	});
 
-		test('GIVEN custom emoji with non matching name THEN returns false', () => {
-			expect(utils.compareEmoji(':emoji:123456789101213145', ':joy:123456789101213145')).toEqual(false);
-		});
+	// 	test('GIVEN custom emoji with non matching name THEN returns false', () => {
+	// 		expect(utils.compareEmoji(':emoji:123456789101213145', ':joy:123456789101213145')).toEqual(false);
+	// 	});
 
-		test('GIVEN custom emoji with EmojiObjectPartial THEN compares to matching', () => {
-			const emoji: utils.EmojiObjectPartial = {
-				name: 'joy',
-				id: '123456789101213145'
-			};
+	// 	test('GIVEN custom emoji with EmojiObjectPartial THEN compares to matching', () => {
+	// 		const emoji: utils.EmojiObjectPartial = {
+	// 			name: 'joy',
+	// 			id: '123456789101213145'
+	// 		};
 
-			expect(utils.compareEmoji(':joy:123456789101213145', emoji)).toEqual(true);
-		});
+	// 		expect(utils.compareEmoji(':joy:123456789101213145', emoji)).toEqual(true);
+	// 	});
 
-		test('GIVEN custom emoji with non matching EmojiObjectPartial THEN compares to matching', () => {
-			const emoji: utils.EmojiObjectPartial = {
-				name: 'joy',
-				id: '123456789101213145'
-			};
+	// 	test('GIVEN custom emoji with non matching EmojiObjectPartial THEN compares to matching', () => {
+	// 		const emoji: utils.EmojiObjectPartial = {
+	// 			name: 'joy',
+	// 			id: '123456789101213145'
+	// 		};
 
-			expect(utils.compareEmoji(':joy:541312101987654321', emoji)).toEqual(false);
-		});
+	// 		expect(utils.compareEmoji(':joy:541312101987654321', emoji)).toEqual(false);
+	// 	});
 
-		test('GIVEN custom emoji with non matching EmojiObjectPartial THEN compares to matching', () => {
-			const emoji: utils.EmojiObjectPartial = {
-				name: 'emoji',
-				id: '123456789101213145'
-			};
+	// 	test('GIVEN custom emoji with non matching EmojiObjectPartial THEN compares to matching', () => {
+	// 		const emoji: utils.EmojiObjectPartial = {
+	// 			name: 'emoji',
+	// 			id: '123456789101213145'
+	// 		};
 
-			expect(utils.compareEmoji(':joy:123456789101213145', emoji)).toEqual(false);
-		});
+	// 		expect(utils.compareEmoji(':joy:123456789101213145', emoji)).toEqual(false);
+	// 	});
 
-		test('GIVEN regular emoji with matching emoji THEN compares to matching', () => {
-			expect(utils.compareEmoji('%F0%9F%98%82', '😂')).toEqual(true);
-		});
+	// 	test('GIVEN regular emoji with matching emoji THEN compares to matching', () => {
+	// 		expect(utils.compareEmoji('%F0%9F%98%82', '😂')).toEqual(true);
+	// 	});
 
-		test('GIVEN regular emoji with non-matching emoji THEN compares to matching', () => {
-			expect(utils.compareEmoji('%F0%9F%98%82', '😀')).toEqual(false);
-		});
+	// 	test('GIVEN regular emoji with non-matching emoji THEN compares to matching', () => {
+	// 		expect(utils.compareEmoji('%F0%9F%98%82', '😀')).toEqual(false);
+	// 	});
 
-		test('GIVEN regular emoji with non-matching emoji THEN compares to matching', () => {
-			const emoji: utils.EmojiObjectPartial = {
-				name: 'emoji',
-				id: '123456789101213145'
-			};
+	// 	test('GIVEN regular emoji with non-matching emoji THEN compares to matching', () => {
+	// 		const emoji: utils.EmojiObjectPartial = {
+	// 			name: 'emoji',
+	// 			id: '123456789101213145'
+	// 		};
 
-			expect(utils.compareEmoji('%F0%9F%98%82', emoji)).toEqual(false);
-		});
+	// 		expect(utils.compareEmoji('%F0%9F%98%82', emoji)).toEqual(false);
+	// 	});
 
-		test('GIVEN regular emoji matching against custom emoji THEN compares to matching', () => {
-			expect(utils.compareEmoji(':emoji:541312101987654321', '😀')).toEqual(false);
-		});
-	});
+	// 	test('GIVEN regular emoji matching against custom emoji THEN compares to matching', () => {
+	// 		expect(utils.compareEmoji(':emoji:541312101987654321', '😀')).toEqual(false);
+	// 	});
+	// });
 
 	describe('oneToTen', () => {
 		test('GIVEN positive rational number THEN returns level 0 (😪)', () => {

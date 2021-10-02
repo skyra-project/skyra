@@ -3,8 +3,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { getEmojiString, getEmojiTextFormat } from '#utils/functions';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { displayEmoji, resolveEmoji, sendLoadingMessage } from '#utils/util';
+import { sendLoadingMessage } from '#utils/util';
+import { channelMention, hideLinkEmbed, hyperlink, roleMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -26,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 			const channel = await args.pick('textChannelName');
 			const emoji = await args.pick('emoji');
 			const reactionRole: ReactionRole = {
-				emoji: emoji!,
+				emoji: getEmojiString(emoji),
 				message: null,
 				channel: channel.id,
 				role: role.id
@@ -37,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 			});
 
 			const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, {
-				emoji: displayEmoji(reactionRole.emoji),
+				emoji: getEmojiTextFormat(reactionRole.emoji),
 				channel: channel!.toString()
 			});
 			return send(message, content);
@@ -48,10 +50,11 @@ export class UserCommand extends SkyraCommand {
 		const reaction = await LongLivingReactionCollector.collectOne({
 			filter: (reaction) => reaction.userId === message.author.id && reaction.guild.id === message.guild.id
 		});
+
 		if (!reaction) this.error(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);
 
 		const reactionRole: ReactionRole = {
-			emoji: resolveEmoji(reaction.emoji)!,
+			emoji: getEmojiString(reaction.emoji),
 			message: reaction.messageId,
 			channel: reaction.channel.id,
 			role: role.id
@@ -61,7 +64,10 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		const url = `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`;
-		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAdd, { emoji: displayEmoji(reactionRole.emoji), url });
+		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAdd, {
+			emoji: getEmojiTextFormat(reactionRole.emoji),
+			url
+		});
 		return send(message, content);
 	}
 
@@ -86,7 +92,10 @@ export class UserCommand extends SkyraCommand {
 			? `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`
 			: `<#${reactionRole.channel}>`;
 
-		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesRemove, { emoji: displayEmoji(reactionRole.emoji), url });
+		const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesRemove, {
+			emoji: getEmojiTextFormat(reactionRole.emoji),
+			url
+		});
 		return send(message, content);
 	}
 
@@ -114,7 +123,9 @@ export class UserCommand extends SkyraCommand {
 
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+		});
 
 		for (const bulk of chunk(reactionRoles, 15)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
@@ -126,9 +137,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private format(entry: ReactionRole, guild: Guild): string {
-		const emoji = displayEmoji(entry.emoji);
-		const role = `<@&${entry.role}>`;
-		const url = entry.message ? `[🔗](https://discord.com/channels/${guild.id}/${entry.channel}/${entry.message})` : `<#${entry.channel}>`;
+		const emoji = getEmojiTextFormat(entry.emoji);
+		const role = roleMention(entry.role);
+		const url = entry.message
+			? hyperlink('🔗', hideLinkEmbed(`https://discord.com/channels/${guild.id}/${entry.channel}/${entry.message}`))
+			: channelMention(entry.channel);
 		return `${emoji} | ${role} -> ${url}`;
 	}
 }

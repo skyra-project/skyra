@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
-import { resolveEmoji } from '#utils/util';
+import type { SerializedEmoji } from '#utils/functions';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
@@ -15,13 +15,13 @@ export enum Cell {
 	WinnerPlayerTwo
 }
 
-export const kColumns = 7;
-export const kRows = 6;
-const kRenderMargin = ' '.repeat(7);
+export const columns = 7;
+export const rows = 6;
+const renderMargin = ' '.repeat(7);
 
 export class ConnectFourGame extends BaseReactionGame<number> {
-	public readonly board = new Uint8Array(kColumns * kRows);
-	public readonly remaining = new Uint8Array(kColumns).fill(kRows);
+	public readonly board = new Uint8Array(columns * rows);
+	public readonly remaining = new Uint8Array(columns).fill(rows);
 	private winner: readonly [number, number][] | null = null;
 
 	public constructor(message: Message, playerA: BaseController<number>, playerB: BaseController<number>, turn = ConnectFourGame.getTurn()) {
@@ -70,25 +70,25 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 
 	protected renderBoard(): string {
 		const output: string[] = [];
-		for (let y = 0; y < kRows; ++y) {
+		for (let y = 0; y < rows; ++y) {
 			// Render each line
 			const line: string[] = [];
-			for (let x = 0; x < kColumns; ++x) {
+			for (let x = 0; x < columns; ++x) {
 				line.push(ConnectFourGame.renderCell(this.getAt(x, y)));
 			}
-			output.push(line.join(kRenderMargin));
+			output.push(line.join(renderMargin));
 		}
 
 		return output.join('\n');
 	}
 
 	private setAt(x: number, y: number, value: Cell) {
-		const cell = x + y * kColumns;
+		const cell = x + y * columns;
 		this.board[cell] = value;
 	}
 
 	private getAt(x: number, y: number) {
-		const cell = x + y * kColumns;
+		const cell = x + y * columns;
 		return this.board[cell];
 	}
 
@@ -131,7 +131,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		 */
 
 		let count = 0;
-		const rx = Math.min(x + 3, kColumns - 1);
+		const rx = Math.min(x + 3, columns - 1);
 		for (let lx = Math.max(x - 3, 0); lx <= rx; ++lx) {
 			if (this.getAt(lx, y) === cell) {
 				if (++count === 4) {
@@ -178,7 +178,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		 */
 
 		// If there aren't enough rows in the same column to qualify, skip early
-		if (y + 3 >= kRows) return null;
+		if (y + 3 >= rows) return null;
 
 		return this.getAt(x, y + 1) === cell && this.getAt(x, y + 2) === cell && this.getAt(x, y + 3) === cell
 			? ([
@@ -219,7 +219,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 			if (clx < 0 || cly < 0) continue;
 
 			// Watch for boundaries, if one goes to the bottom right, there cannot be more cells, we stop checking.
-			if (clx === kColumns || cly === kRows) return null;
+			if (clx === columns || cly === rows) return null;
 
 			if (this.getAt(clx, cly) === cell) {
 				if (++count === 4) {
@@ -264,10 +264,10 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		const cry = y + 3;
 		for (let clx = x - 3, cly = y + 3; clx <= crx && cly <= cry; ++clx, --cly) {
 			// Watch for boundaries, since we are going from bottom left, we might find cells in our way, we continue.
-			if (clx < 0 || cly >= kRows) continue;
+			if (clx < 0 || cly >= rows) continue;
 
 			// Watch for boundaries, if one goes to the bottom right, there cannot be more cells, we stop checking.
-			if (clx === kColumns || cly < 0) return null;
+			if (clx === columns || cly < 0) return null;
 
 			if (this.getAt(clx, cly) === cell) {
 				if (++count === 4) {
@@ -286,7 +286,8 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly emojis = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'].map(resolveEmoji) as readonly string[];
+	private static readonly emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣'].map(encodeURIComponent) as SerializedEmoji[];
+
 	private static readonly players = [Emojis.PlayerOne, Emojis.PlayerTwo] as const;
 
 	private static renderCell(cell: Cell) {

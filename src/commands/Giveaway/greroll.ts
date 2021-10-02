@@ -1,10 +1,10 @@
-import { kRawEmoji } from '#lib/database';
+import { encodedGiveawayEmoji, rawGiveawayEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
-import { cast, fetchReactionUsers, resolveEmoji } from '#utils/util';
+import { cast, fetchReactionUsers } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -20,9 +20,6 @@ import { FetchError } from 'node-fetch';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
-
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const winnerAmount = await args.pick('integer').catch(() => 1);
 		const rawTarget = args.finished ? undefined : cast<GuildMessage>(await args.pick('message'));
@@ -61,8 +58,8 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchParticipants(message: GuildMessage): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(message.channel.id, message.id, this.#kResolvedEmoji);
-			users.delete(process.env.CLIENT_ID);
+			const users = await fetchReactionUsers(message.channel.id, message.id, encodedGiveawayEmoji);
+			users.delete(this.container.client.id!);
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
@@ -81,9 +78,9 @@ export class UserCommand extends SkyraCommand {
 	private validateMessage(message: Message) {
 		return (
 			message.author !== null &&
-			message.author.id === process.env.CLIENT_ID &&
+			message.author.id === this.container.client.id &&
 			message.embeds.length === 1 &&
-			message.reactions.cache.has(kRawEmoji)
+			message.reactions.cache.has(rawGiveawayEmoji)
 		);
 	}
 

@@ -3,6 +3,7 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
+import { getEmojiId, getEmojiReactionFormat, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import Collection from '@discordjs/collection';
@@ -18,9 +19,9 @@ export class UserListener extends Listener {
 	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();
 	private kTimerSweeper: NodeJS.Timer | null = null;
 
-	public async run(data: LLRCData, emoji: string) {
+	public async run(data: LLRCData, emoji: SerializedEmoji) {
 		const key = GuildSettings.Channels.Logs.Reaction;
-		const [allowList, logChannelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await readSettings(
+		const [allowedEmojis, logChannelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await readSettings(
 			data.guild,
 			(settings) => [
 				settings[GuildSettings.Selfmod.Reactions.Allowed],
@@ -33,7 +34,8 @@ export class UserListener extends Listener {
 			]
 		);
 
-		if (allowList.includes(emoji)) return;
+		const emojiId = getEmojiId(emoji);
+		if (allowedEmojis.some((allowedEmoji) => getEmojiId(allowedEmoji) === emojiId)) return;
 
 		this.container.client.emit(Events.ReactionBlocked, data, emoji);
 		if (isNullish(logChannelId) || (!twemojiEnabled && data.emoji.id === null)) return;
@@ -75,8 +77,8 @@ export class UserListener extends Listener {
 		if (this.kTimerSweeper) clearInterval(this.kTimerSweeper);
 	}
 
-	protected async retrieveCount(data: LLRCData, emoji: string) {
-		const id = `${data.messageId}.${emoji}`;
+	protected async retrieveCount(data: LLRCData, emoji: SerializedEmoji) {
+		const id = `${data.messageId}.${getEmojiId(emoji)}`;
 
 		// Pull from sync queue, and if it exists, await
 		const sync = this.kSyncCache.get(id);
@@ -96,8 +98,8 @@ export class UserListener extends Listener {
 		return (await promise).count;
 	}
 
-	private async fetchCount(data: LLRCData, emoji: string, id: string) {
-		const users = (await api().channels(data.channel.id).messages(data.messageId).reactions(emoji).get()) as APIUser[];
+	private async fetchCount(data: LLRCData, emoji: SerializedEmoji, id: string) {
+		const users = (await api().channels(data.channel.id).messages(data.messageId).reactions(getEmojiReactionFormat(emoji)).get()) as APIUser[];
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);

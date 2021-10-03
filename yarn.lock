@@ -1625,7 +1625,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@favware/graphql-pokemon@npm:^6.0.4":
+"@favware/graphql-pokemon@npm:^6.1.0":
   version: 6.1.0
   resolution: "@favware/graphql-pokemon@npm:6.1.0"
   dependencies:
@@ -9666,7 +9666,7 @@ fsevents@^2.3.2:
     "@commitlint/config-conventional": ^13.2.0
     "@discordjs/builders": ^0.6.0
     "@discordjs/collection": ^0.2.1
-    "@favware/graphql-pokemon": ^6.0.4
+    "@favware/graphql-pokemon": ^6.1.0
     "@favware/zalgo": ^3.1.3
     "@grpc/grpc-js": ^1.3.7
     "@influxdata/influxdb-client": ^1.18.0
@@ -9748,7 +9748,7 @@ fsevents@^2.3.2:
     typeorm-naming-strategies: ^2.0.0
     typescript: ^4.4.3
     utf-8-validate: ^5.0.6
-    ws: ^8.2.2
+    ws: ^8.2.3
     zlib-sync: ^0.1.7
   languageName: unknown
   linkType: soft
@@ -11100,6 +11100,21 @@ fsevents@^2.3.2:
     utf-8-validate:
       optional: true
   checksum: 25e764c631141bdca45badc86e69437b8791e57e461f9a16c0f7cd779baf70c3fbba07ecdd9e0d34fea1155ddcf62ef165cd7f81b68ed545bc7d455c15a85fb0
+  languageName: node
+  linkType: hard
+
+"ws@npm:^8.2.3":
+  version: 8.2.3
+  resolution: "ws@npm:8.2.3"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: c869296ccb45f218ac6d32f8f614cd85b50a21fd434caf11646008eef92173be53490810c5c23aea31bc527902261fbfd7b062197eea341b26128d4be56a85e4
   languageName: node
   linkType: hard
 

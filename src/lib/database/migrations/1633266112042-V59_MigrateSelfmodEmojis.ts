@@ -9,9 +9,7 @@ export class V59MigrateSelfmodEmojis1633266112042 implements MigrationInterface 
 		const newBlockedReactionGuilds = this.upMapReactions(oldBlockedReactionsGuilds);
 
 		for (const guild of newBlockedReactionGuilds) {
-			await queryRunner.query(/* sql */ `UPDATE public."guilds" SET "selfmod.reactions.blocked" = $1::{} WHERE id = '${guild.id}';`, [
-				JSON.stringify(guild.roles)
-			]);
+			await queryRunner.query(/* sql */ `UPDATE public."guilds" SET "selfmod.reactions.blocked" = $1 WHERE id = '${guild.id}';`, [guild.roles]);
 		}
 	}
 
@@ -23,9 +21,7 @@ export class V59MigrateSelfmodEmojis1633266112042 implements MigrationInterface 
 		const newGuilds = this.downMapReactions(oldGuilds);
 
 		for (const guild of newGuilds) {
-			await queryRunner.query(/* sql */ `UPDATE public."guilds" SET "selfmod.reactions.blocked" = $1::{} WHERE id = '${guild.id}';`, [
-				JSON.stringify(guild.roles)
-			]);
+			await queryRunner.query(/* sql */ `UPDATE public."guilds" SET "selfmod.reactions.blocked" = $1 WHERE id = '${guild.id}';`, [guild.roles]);
 		}
 	}
 

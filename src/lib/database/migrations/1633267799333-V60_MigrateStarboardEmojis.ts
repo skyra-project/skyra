@@ -13,7 +13,7 @@ export class V60MigrateStarboardAndSuggestionEmojis1633267799333 implements Migr
 
 		const oldGuildData = (await queryRunner.query(/* sql */ `
             SELECT id,
-                "starboard.emoji" AS "emoji",
+                "starboard.emoji" AS "starboardEmoji",
                 "suggestions.emojis.downvote" AS "downvoteEmoji",
                 "suggestions.emojis.upvote" AS "upvoteEmoji"
             FROM public."guilds";
@@ -47,7 +47,7 @@ export class V60MigrateStarboardAndSuggestionEmojis1633267799333 implements Migr
 
 		const oldGuildData = (await queryRunner.query(/* sql */ `
             SELECT id,
-                "starboard.emoji" AS "emoji",
+                "starboard.emoji" AS "starboardEmoji",
                 "suggestions.emojis.downvote" AS "downvoteEmoji",
                 "suggestions.emojis.upvote" AS "upvoteEmoji"
             FROM public."guilds";

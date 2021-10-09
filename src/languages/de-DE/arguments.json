@@ -42,7 +42,7 @@
 	"dmChannelError": "",
 	"duration": "Ich konnte `{{parameter}}` nicht zu einer gültigen Dauer auflösen, hier sind einige der gültigen Formate:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 Stunden).\n- `20m5s` (20 Minuten und 5 Sekunden).\n- \"1w 2d 16h 40m 10s\"` (1 Woche, 2 Tage, 16 Stunden, 40 Minuten und 10 Sekunden).",
-	"emoji": "Ich konnte `{{parameter}}` nicht zu einem gültigen Emoji auflösen, bist du sicher, dass du einen gültigen twemoji benutzt hast (z.B. 🌊) oder ein Emoji (z.B. {{GREENTICK}})?",
+	"emoji": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "Der Parameter `{{parameter}}` ist zu niedrig! Er muss mindestens {{minimum}} sein!",

@@ -15,12 +15,10 @@ describe('isValidSerializedEmoji', () => {
 	});
 
 	test('GIVEN custom static emoji THEN returns false', () => {
-		// @ts-expect-error intentionally incorrect type
 		expect(isValidSerializedEmoji(staticSkyra)).toBe(false);
 	});
 
 	test('GIVEN custom animated emoji THEN returns false', () => {
-		// @ts-expect-error intentionally incorrect type
 		expect(isValidSerializedEmoji(animatedSkyraGlasses)).toBe(false);
 	});
 });

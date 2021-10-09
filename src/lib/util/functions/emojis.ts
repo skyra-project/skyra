@@ -2,16 +2,18 @@ import { formatEmoji } from '@discordjs/builders';
 import { FormattedCustomEmojiWithGroups, TwemojiRegex } from '@sapphire/discord-utilities';
 import { isNullish } from '@sapphire/utilities';
 
-export interface EmojiObject extends EmojiObjectPartial {
-	animated?: boolean;
-}
-
 interface EmojiObjectPartial {
 	name: string | null;
 	id: string | null;
 }
 
+export interface EmojiObject extends EmojiObjectPartial {
+	animated?: boolean;
+}
+
 export type SerializedEmoji = string & { __TYPE__: 'SerializedEmoji' };
+
+const customEmojiRegExp = /^[as]\d{17,19}$/;
 
 /**
  * Checks whether or not the emoji is a valid twemoji.
@@ -26,23 +28,21 @@ export function isValidTwemoji(emoji: string) {
  * {@link decodeURIComponent}.
  * @param emoji The emoji to validate.
  */
-export function isValidSerializedTwemoji(emoji: SerializedEmoji) {
+export function isValidSerializedTwemoji(emoji: string): emoji is SerializedEmoji {
 	return isValidTwemoji(decodeURIComponent(emoji));
 }
-
-const customEmojiRegExp = /^[as]\d{17,19}$/;
 
 /**
  * Checks whether or not the emoji is a valid serialized custom emoji. Checks whether it starts with either `a` or `s`,
  * followed by 17 to 19 numeric digits.
  * @param emoji The emoji to validate.
  */
-export function isValidSerializedCustomEmoji(emoji: SerializedEmoji) {
+export function isValidSerializedCustomEmoji(emoji: string): emoji is SerializedEmoji {
 	return customEmojiRegExp.test(emoji);
 }
 
-export function isValidSerializedEmoji(emoji: SerializedEmoji) {
-	return isSerializedTwemoji(emoji) ? isValidSerializedTwemoji(emoji) : isValidSerializedCustomEmoji(emoji);
+export function isValidSerializedEmoji(emoji: string): emoji is SerializedEmoji {
+	return isSerializedTwemoji(emoji as SerializedEmoji) ? isValidSerializedTwemoji(emoji) : isValidSerializedCustomEmoji(emoji);
 }
 
 /**

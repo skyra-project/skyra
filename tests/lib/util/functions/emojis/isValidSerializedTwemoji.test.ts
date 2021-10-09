@@ -2,8 +2,8 @@ import { encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSk
 import { isValidSerializedTwemoji } from '#utils/functions';
 
 describe('isValidSerializedTwemoji', () => {
-	test('GIVEN encoded twemoji THEN returns false', () => {
-		expect(isValidSerializedTwemoji(encodedBunnyTwemoji)).toBe(false);
+	test('GIVEN encoded twemoji THEN returns true', () => {
+		expect(isValidSerializedTwemoji(encodedBunnyTwemoji)).toBe(true);
 	});
 
 	test('GIVEN custom serialized static emoji THEN returns false', () => {

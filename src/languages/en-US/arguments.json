@@ -42,7 +42,7 @@
 	"dmChannelError": "I could not resolve `{{parameter}}` to a DM channel, make sure you typed its ID correctly!",
 	"duration": "I could not resolve `{{parameter}}` to a valid duration, there are some of the valid formats:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 hours).\n- `20m5s` (20 minutes and 5 seconds).\n- `\"1w 2d 16h 40m 10s\"` (1 week, 2 days, 16 hours, 40 minutes, and 10 seconds).",
-	"emoji": "I could not resolve `{{parameter}}` to a valid emoji, are you sure you used a valid twemoji (e.g. 🌊) or an emoji (e.g. {{SUCCESS}})?",
+	"emoji": "I could not resolve `{{parameter}}` to a valid emoji, are you sure you used a valid twemoji (e.g. 🌊) or an emoji (e.g. {{GREENTICK}})?",
 	"floatError": "I could not resolve `{{parameter}}` to a number!",
 	"floatTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"floatTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",

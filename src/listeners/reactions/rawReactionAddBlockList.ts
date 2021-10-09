@@ -5,7 +5,7 @@ import { HardPunishment, ModerationListener, SelfModeratorBitField } from '#lib/
 import { Events } from '#lib/types/Enums';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage } from '#utils/functions';
+import { deleteMessage, getEmojiReactionFormat, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -14,7 +14,7 @@ import { fetchT, sendLocalized } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap, Nullish, PickByValue } from '@sapphire/utilities';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
-type ArgumentType = [data: LLRCData, reaction: string, channelId: string | Nullish];
+type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
 
 @ApplyOptions<ListenerOptions>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationListener<ArgumentType, unknown> {
@@ -26,7 +26,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		adder: 'reactions'
 	};
 
-	public async run(data: LLRCData, emoji: string) {
+	public async run(data: LLRCData, emoji: SerializedEmoji) {
 		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await readSettings(
 			data.guild,
 			(settings) => [
@@ -45,8 +45,8 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const member = await data.guild.members.fetch(data.userId);
 		if (member.user.bot || (await this.hasPermissions(member))) return;
 
-		const args = [data, emoji, logChannelId] as const;
-		const preProcessed = await this.preProcess(args);
+		const args = [data, emoji, logChannelId, blockedReactions] as const;
+		const preProcessed = this.preProcess(args);
 		if (preProcessed === null) return;
 
 		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softAction));
@@ -61,8 +61,8 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		}
 	}
 
-	protected async preProcess([data, emoji]: Readonly<ArgumentType>) {
-		return (await readSettings(data.guild, GuildSettings.Selfmod.Reactions.Blocked)).includes(emoji) ? 1 : null;
+	protected preProcess([, emoji, , blockedReactions]: Readonly<ArgumentType>) {
+		return blockedReactions.includes(emoji) ? 1 : null;
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
@@ -70,7 +70,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 			api()
 				.channels(data.channel.id)
 				.messages(data.messageId)
-				.reactions(emoji, data.userId)
+				.reactions(getEmojiReactionFormat(emoji), data.userId)
 				.delete({ reason: '[MODERATION] Automatic Removal of Blocked Emoji.' })
 		);
 	}

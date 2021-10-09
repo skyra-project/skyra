@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
+import type { SerializedEmoji } from '#utils/functions';
 import type { Message } from 'discord.js';
 import type { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';
@@ -9,7 +10,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 	public readonly board = new Uint8Array(9);
 
 	public constructor(message: Message, playerA: BaseController<number>, playerB: BaseController<number>, turn = TicTacToeGame.getTurn()) {
-		super(message, playerA, playerB, TicTacToeGame.kEmojis, minutes(5), turn);
+		super(message, playerA, playerB, TicTacToeGame.emojis, minutes(5), turn);
 	}
 
 	public get finished() {
@@ -36,7 +37,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 
 	protected renderOnUpdateOrStart(): string {
 		return this.t(LanguageKeys.Commands.Games.TicTacToeTurn, {
-			icon: TicTacToeGame.kPlayer[this.turn],
+			icon: TicTacToeGame.player[this.turn],
 			player: this.player.name,
 			board: this.renderBoard()
 		});
@@ -53,7 +54,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 
 	protected renderCell(cell: number): string {
 		const value = this.board[cell];
-		return value === 0 ? decodeURIComponent(TicTacToeGame.kEmojis[cell]) : TicTacToeGame.kPlayer[value - 1];
+		return value === 0 ? decodeURIComponent(TicTacToeGame.emojis[cell]) : TicTacToeGame.player[value - 1];
 	}
 
 	private equals(a: number, b: number, c: number): boolean {
@@ -92,6 +93,6 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 		return null;
 	}
 
-	private static readonly kEmojis = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'].map(encodeURIComponent) as readonly string[];
-	private static readonly kPlayer = ['⭕', '❌'] as const;
+	private static readonly emojis = ['↖', '⬆', '↗', '⬅', '⏺', '➡️', '↙', '⬇', '↘'].map(encodeURIComponent) as SerializedEmoji[];
+	private static readonly player = ['⭕', '❌'] as const;
 }

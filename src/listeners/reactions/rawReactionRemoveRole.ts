@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { resolveEmoji } from '#utils/util';
+import { resolveEmojiId } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -13,13 +13,11 @@ export class UserListener extends Listener {
 		// If the channel is not a text channel then stop processing
 		if (!isGuildBasedChannel(channel)) return;
 
-		const parsed = data.emoji.id ?? resolveEmoji(data.emoji);
-		if (!parsed) return;
-
+		const emojiId = resolveEmojiId(data.emoji);
 		const roleEntry = await readSettings(channel.guild, (settings) =>
 			settings[GuildSettings.ReactionRoles].find(
 				(entry) =>
-					entry.emoji === parsed && //
+					resolveEmojiId(entry.emoji) === emojiId &&
 					entry.channel === data.channel_id &&
 					(entry.message ? entry.message === data.message_id : true)
 			)

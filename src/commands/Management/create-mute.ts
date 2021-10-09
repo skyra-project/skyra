@@ -5,8 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { minutes } from '#utils/common';
 import { Emojis } from '#utils/constants';
-import { getSecurity, promptConfirmation, promptForMessage } from '#utils/functions';
-import { resolveEmoji } from '#utils/util';
+import { getEmojiReactionFormat, getSecurity, promptConfirmation, promptForMessage, SerializedEmoji } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { Argument, CommandOptionsRunTypeEnum, Result, UserError } from '@sapphire/framework';
@@ -33,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 			const role = await this.askForRole(message, args, context);
 			if (role.success) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.value.id]]);
-				if (canReact(message.channel)) return message.react(resolveEmoji(Emojis.GreenTick)!);
+				if (canReact(message.channel)) return message.react(getEmojiReactionFormat(Emojis.GreenTickSerialized as SerializedEmoji));
 
 				const content = t(LanguageKeys.Commands.Admin.ConfUpdated, {
 					key: GuildSettings.Roles.Muted,

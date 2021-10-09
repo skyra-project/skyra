@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	/**
@@ -19,7 +19,7 @@ export class UserSerializer extends Serializer<string> {
 		return this.result(args, await args.pickResult('snowflake'));
 	}
 
-	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaitable<boolean> {
 		if (this.kRegExp.test(value)) {
 			const snowflake = DiscordSnowflake.deconstruct(value);
 			const timestamp = Number(snowflake.timestamp);

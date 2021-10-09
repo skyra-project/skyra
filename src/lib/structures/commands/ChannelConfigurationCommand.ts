@@ -35,7 +35,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 			}
 
 			// Else set the new value:
-			settings[this.settingsKey] = channel.id;
+			Reflect.set(settings, this.settingsKey, channel.id);
 		});
 
 		const content = args.t(this.responseKey, { channel: channel.toString() });

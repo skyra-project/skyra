@@ -8,7 +8,7 @@
 			"TextChannel Role1 Role2 Time Title",
 			"Role1 Role2 Time Title"
 		],
-		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
+		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=X`, wherein X is a number (for example 2) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
 			[
 				"TextChannel",
@@ -56,7 +56,7 @@
 			]
 		],
 		"examples": [
-			"633939404745998346",
+			"https://discord.com/channels/254360814063058944/739242237489315869/739417065466888261",
 			"5",
 			"5 633939404745998346"
 		]

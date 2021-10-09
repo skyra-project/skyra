@@ -1,6 +1,6 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	private readonly kProtocol = /^https?:\/\//;
@@ -16,7 +16,7 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaitable<boolean> {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
 			return hostname.length <= 128;

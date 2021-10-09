@@ -1,7 +1,7 @@
 import { GuildEntity, writeSettings } from '#lib/database';
 import { canSendEmbeds } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { Awaited, isNullish, Nullish, PickByValue } from '@sapphire/utilities';
+import { Awaitable, isNullish, Nullish, PickByValue } from '@sapphire/utilities';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
 
 export class UserListener extends Listener {
@@ -9,7 +9,7 @@ export class UserListener extends Listener {
 		guild: Guild,
 		logChannelId: string | Nullish,
 		key: PickByValue<GuildEntity, string | Nullish>,
-		makeMessage: () => Awaited<MessageEmbed | MessageOptions>
+		makeMessage: () => Awaitable<MessageEmbed | MessageOptions>
 	) {
 		if (isNullish(logChannelId)) return;
 

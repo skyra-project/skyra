@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isGuildBasedChannelByGuildKey, isNewsChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
-import { Awaited, isNullish } from '@sapphire/utilities';
+import { Awaitable, isNullish } from '@sapphire/utilities';
 import type { Channel } from 'discord.js';
 
 @ApplyOptions<Serializer.Options>({
@@ -13,7 +13,7 @@ export class UserSerializer extends Serializer<string> {
 		return result.success ? this.ok(result.value.id) : this.errorFromArgument(args, result.error);
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, context: SerializerUpdateContext): Awaitable<boolean> {
 		const channel = context.guild.channels.cache.get(value);
 		return !isNullish(channel) && this.isValidChannel(channel, context.entry.type);
 	}

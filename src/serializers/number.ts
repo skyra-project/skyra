@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 @ApplyOptions<Serializer.Options>({
 	aliases: ['integer', 'float']
@@ -11,7 +11,7 @@ export class UserSerializer extends Serializer<number> {
 		return this.result(args, await args.pickResult(entry.type as 'integer' | 'number' | 'float'));
 	}
 
-	public isValid(value: number, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: number, context: SerializerUpdateContext): Awaitable<boolean> {
 		switch (context.entry.type) {
 			case 'integer': {
 				if (typeof value === 'number' && Number.isInteger(value) && this.minOrMax(value, value, context)) return true;

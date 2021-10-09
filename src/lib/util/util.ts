@@ -29,13 +29,6 @@ import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
 
-export const kRegExpUnicodeBoxNumber = /^\d\u20E3$/;
-export const kRegExpFormattedCustomEmoji = /<a?:\w{2,32}:\d{17,18}>/;
-export const kRegExpParsedCustomEmoji = /a?:\w{2,32}:\d{17,18}/;
-export const kRegExpParsedFormattedCustomEmoji = /^a?:[^:]+:\d{17,19}$/;
-export const kRegExpCustomEmojiParts = /^(a?):([^:]+):(\d{17,19})$/;
-export const kRegExpTwemoji = new RegExp(TwemojiRegex, '');
-
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
 	[1, { emoji: '😪', color: 0x5b1100 }],
@@ -120,61 +113,6 @@ export async function announcementCheck(message: GuildMessage) {
 
 	if (role.position >= message.guild.me!.roles.highest.position) throw new UserError({ identifier: LanguageKeys.System.HighestRole });
 	return role;
-}
-
-export interface EmojiObject extends EmojiObjectPartial {
-	animated?: boolean;
-}
-
-export interface EmojiObjectPartial {
-	name: string | null;
-	id: string | null;
-}
-
-/**
- * Resolve an emoji
- * @param emoji The emoji to resolve
- */
-export function resolveEmoji(emoji: string | EmojiObject): string | null {
-	if (typeof emoji === 'string') {
-		if (kRegExpFormattedCustomEmoji.test(emoji)) return emoji.slice(1, -1);
-		if (kRegExpParsedCustomEmoji.test(emoji)) return emoji;
-		if (kRegExpUnicodeBoxNumber.test(emoji)) return encodeURIComponent(emoji);
-		if (kRegExpTwemoji.test(emoji)) return encodeURIComponent(emoji);
-		return null;
-	}
-
-	// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
-	return emoji.name
-		? emoji.id
-			? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}`
-			: encodeURIComponent(emoji.name)
-		: emoji.id;
-}
-
-export function displayEmoji(emoji: string): string {
-	return kRegExpParsedFormattedCustomEmoji.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
-}
-
-export function compareEmoji(emoji: string, matching: string | EmojiObjectPartial): boolean {
-	const emojiExecResult = kRegExpCustomEmojiParts.exec(emoji);
-	// emojiExecResult is only `null` when it's not a custom emoji, thus we'll compare with resolveEmoji
-	if (emojiExecResult === null) return emoji === resolveEmoji(typeof matching === 'string' ? matching : { animated: false, ...matching });
-
-	// Compare custom emoji
-	if (typeof matching === 'string') {
-		const matchingExecResult = kRegExpCustomEmojiParts.exec(matching);
-		// matchingExecResult is only `null` when it's not a custom emoji, and we're comparing against one, thus return false
-		if (matchingExecResult === null) return false;
-
-		return (
-			emojiExecResult[2] === matchingExecResult[2].replace(/~\d+/, '') && emojiExecResult[3] === matchingExecResult[3] // name
-		); // id
-	}
-
-	return (
-		emojiExecResult[2] === matching.name!.replace(/~\d+/, '') && emojiExecResult[3] === matching.id // name
-	); // id
 }
 
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {

@@ -1,4 +1,4 @@
-import { kRawEmoji } from '#lib/database';
+import { rawGiveawayEmoji } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 			message.author !== null &&
 			message.author.id === process.env.CLIENT_ID &&
 			message.embeds.length === 1 &&
-			message.reactions.cache.has(kRawEmoji)
+			message.reactions.cache.has(rawGiveawayEmoji)
 		);
 	}
 }

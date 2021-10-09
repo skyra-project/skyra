@@ -1,7 +1,7 @@
 import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isTextChannel } from '@sapphire/discord.js-utilities';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<DisabledCommandChannel> {
 	public async parse(args: Serializer.Args) {
@@ -14,7 +14,7 @@ export class UserSerializer extends Serializer<DisabledCommandChannel> {
 		return this.ok({ channel: channel.value.id, commands: commands.value.map((command) => command.name) });
 	}
 
-	public isValid(value: DisabledCommandChannel, { t, entry, guild }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: DisabledCommandChannel, { t, entry, guild }: SerializerUpdateContext): Awaitable<boolean> {
 		const channel = guild.channels.cache.get(value.channel);
 		if (!channel) {
 			throw new Error(t(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));

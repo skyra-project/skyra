@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 import { remove as removeConfusables } from 'confusables';
 
 export class UserSerializer extends Serializer<string> {
@@ -14,7 +14,7 @@ export class UserSerializer extends Serializer<string> {
 		return this.ok(word);
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, context: SerializerUpdateContext): Awaitable<boolean> {
 		const word = removeConfusables(value.toLowerCase());
 		return value === word && this.minOrMax(value, value.length, context).success;
 	}

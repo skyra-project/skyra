@@ -8,6 +8,7 @@ import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
+import type { EmojiObject } from '#utils/functions';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
@@ -76,7 +77,7 @@ declare module '@sapphire/framework' {
 		commandMatch: string;
 		commandName: SkyraCommand;
 		duration: Date;
-		emoji: string;
+		emoji: EmojiObject;
 		image: Image;
 		invite: InviteCodeValidEntry;
 		language: string;

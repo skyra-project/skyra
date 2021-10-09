@@ -1,6 +1,6 @@
 import { RolesAuto, Serializer, SerializerUpdateContext } from '#lib/database';
 import { formatNumber } from '#utils/functions';
-import { Awaited, isObject } from '@sapphire/utilities';
+import { Awaitable, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<RolesAuto> {
 	public async parse(args: Serializer.Args) {
@@ -17,7 +17,7 @@ export class UserSerializer extends Serializer<RolesAuto> {
 		return this.ok({ id: role.value.id, points: points.value });
 	}
 
-	public isValid(value: RolesAuto): Awaited<boolean> {
+	public isValid(value: RolesAuto): Awaitable<boolean> {
 		return isObject(value) && Object.keys(value).length === 2 && typeof value.id === 'string' && typeof value.points === 'number';
 	}
 

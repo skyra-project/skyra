@@ -1,7 +1,8 @@
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
+import { getEmojiString } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { cast, resolveEmoji } from '#utils/util';
+import { cast } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError } from 'discord.js';
@@ -44,7 +45,7 @@ export abstract class BaseReactionController<T> extends BaseController<T> {
 	protected abstract resolveCollectedValidity(collected: string): boolean;
 
 	protected resolveCollectedData(reaction: LLRCData): string | null {
-		return resolveEmoji(reaction.emoji);
+		return getEmojiString(reaction.emoji);
 	}
 
 	protected async removeEmoji(reaction: LLRCData, emoji: string, userId: string): Promise<void> {

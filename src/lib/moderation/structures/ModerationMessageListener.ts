@@ -6,7 +6,7 @@ import { floatPromise } from '#utils/common';
 import { getModeration, getSecurity, isModerator } from '#utils/functions';
 import { canSendMessages, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
-import type { Awaited, Nullish, PickByValue } from '@sapphire/utilities';
+import type { Awaitable, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
@@ -168,7 +168,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		unlock();
 	}
 
-	protected onLog(message: GuildMessage, logChannelId: string | Nullish, language: TFunction, value: T): Awaited<void> {
+	protected onLog(message: GuildMessage, logChannelId: string | Nullish, language: TFunction, value: T): Awaitable<void> {
 		this.container.client.emit(
 			Events.GuildMessageLog,
 			message.guild,
@@ -179,9 +179,9 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;
-	protected abstract onDelete(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
-	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaited<unknown>;
-	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaited<MessageEmbed>;
+	protected abstract onDelete(message: GuildMessage, language: TFunction, value: T): Awaitable<unknown>;
+	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaitable<unknown>;
+	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaitable<MessageEmbed>;
 
 	private checkPreRun(message: GuildMessage) {
 		return readSettings(
@@ -195,7 +195,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		const globalIgnore = settings[GuildSettings.Selfmod.IgnoreChannels];
 		if (globalIgnore.includes(channel.id)) return false;
 
-		const localIgnore = settings[this.ignoredChannelsPath];
+		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];
 		if (localIgnore.includes(channel.id)) return false;
 
 		return true;

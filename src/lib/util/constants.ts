@@ -45,6 +45,7 @@ export const enum Emojis {
 	Bot = '<:bot:764788923851079702>',
 	Frame = '<:frame:764845055356698644>',
 	GreenTick = '<:greenTick:637706251253317669>',
+	GreenTickSerialized = 's637706251253317669',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
 	Shiny = '<:shiny:612364146792726539>',

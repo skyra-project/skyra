@@ -5,7 +5,7 @@ import { translate } from '#lib/i18n/translate';
 import type { SkyraArgs } from '#lib/structures';
 import type { O } from '#utils/constants';
 import { AliasPiece, AliasPieceOptions, ArgumentError, UserError } from '@sapphire/framework';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -36,7 +36,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * Check whether or not the value is valid.
 	 * @param value The value to check.
 	 */
-	public abstract isValid(value: T, context: SerializerUpdateContext): Awaited<boolean>;
+	public abstract isValid(value: T, context: SerializerUpdateContext): Awaitable<boolean>;
 
 	/**
 	 * The stringify method to be overwritten in actual Serializers

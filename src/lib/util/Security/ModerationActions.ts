@@ -665,7 +665,7 @@ export class ModerationActions {
 			reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).`
 		});
 		const t = await writeSettings(this.guild, (settings) => {
-			settings[path] = role.id;
+			Reflect.set(settings, path, role.id);
 			return settings.getLanguage();
 		});
 

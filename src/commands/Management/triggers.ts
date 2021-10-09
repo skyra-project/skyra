@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { displayEmoji } from '#utils/util';
+import { getEmojiString, getEmojiTextFormat } from '#utils/functions';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const type = await args.pick(UserCommand.type);
 		const input = (await args.pick('string')).toLowerCase();
-		const output = type === Type.Alias ? (await args.pick('command')).name : await args.pick('emoji');
+		const output = type === Type.Alias ? (await args.pick('command')).name : getEmojiString(await args.pick('emoji'));
 		await writeSettings(message.guild, (settings) => {
 			const key = this.getListName(type);
 
@@ -67,9 +67,11 @@ export class UserCommand extends SkyraCommand {
 		for (const alias of aliases) {
 			output.push(`Alias \`${alias.input}\` -> \`${alias.output}\``);
 		}
+
 		for (const react of includes) {
-			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
+			output.push(`Reaction :: \`${react.input}\` -> ${getEmojiTextFormat(react.output)}`);
 		}
+
 		if (!output.length) this.error(LanguageKeys.Commands.Management.TriggersListEmpty);
 
 		const display = new SkyraPaginatedMessage({

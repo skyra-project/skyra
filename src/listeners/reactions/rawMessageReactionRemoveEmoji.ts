@@ -1,8 +1,7 @@
-import { readSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { Events } from '#lib/types/Enums';
-import { getStarboard } from '#utils/functions';
-import { compareEmoji } from '#utils/util';
+import { areEmojisEqual, getStarboard } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v9';
@@ -16,8 +15,8 @@ export class UserListener extends Listener {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
-		const [emoji, channel] = await readSettings(guild, (settings) => [settings.starboardEmoji, settings.starboardChannel]);
-		if (!compareEmoji(emoji, data.emoji)) return;
+		const [emoji, channel] = await readSettings(guild, [GuildSettings.Starboard.Emoji, GuildSettings.Starboard.Channel]);
+		if (!areEmojisEqual(emoji, data.emoji)) return;
 
 		getStarboard(guild).delete(`${data.channel_id}-${data.message_id}`);
 

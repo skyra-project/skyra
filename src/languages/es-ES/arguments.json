@@ -42,7 +42,7 @@
 	"dmChannelError": "",
 	"duration": "No pude resolver `{{parameter}}` a una duración válida, aquí tiene alguno de los formatos válidos:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 horas).\n- `20m5s` (20 minutos y 5 segundos).\n- `\"1w 2d 16h 40m 10s\"` (1 semana, 2 días, 16 horas, 40 minutos y 10 segundos).",
-	"emoji": "No pude resolver `{{parameter}}` a un emoji válido, ¿estás seguro de que has usado un twemoji (e.g. 🌊) o un emoji (por ejemplo, {{GREENTICK}})?",
+	"emoji": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",

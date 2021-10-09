@@ -8,7 +8,7 @@
 			"CanalDeTexto Rol1 Rol2 Tiempo Título",
 			"Rol1 Rol2 Tiempo Título"
 		],
-		"extendedHelp": "Este comando está diseñado para gestionar los sorteos. Puedes iniciarlos con este comando dándole la hora y el título.\n\nCuando se ha creado un sorteo, enviaré un mensaje y reaccionaré a éste con 🎉 para que los miembros del servidor puedan participar en él.\n\nTambién puedes pasar el modificador `--winners=X`, donde X es un número (por ejemplo 2) para cambiar el número de ganadores que un sorteo tendrá.\n\nEl máximo de ganadores posible es de 25.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Canal de Texto",
@@ -56,7 +56,7 @@
 			]
 		],
 		"examples": [
-			"633939404745998346",
+			"",
 			"5",
 			"5 633939404745998346"
 		]

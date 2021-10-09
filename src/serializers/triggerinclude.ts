@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getEmojiString } from '#utils/functions';
-import { Awaited, isObject } from '@sapphire/utilities';
+import { Awaitable, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<TriggerIncludes> {
 	public async parse(args: Serializer.Args, { t }: SerializerUpdateContext) {
@@ -18,7 +18,7 @@ export class UserSerializer extends Serializer<TriggerIncludes> {
 		return this.ok({ action: action.value as 'react', input: input.value, output: getEmojiString(output.value) });
 	}
 
-	public isValid(data: TriggerIncludes, { t }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(data: TriggerIncludes, { t }: SerializerUpdateContext): Awaitable<boolean> {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 3 &&

@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 @ApplyOptions<Serializer.Options>({
 	aliases: ['bool']
@@ -11,7 +11,7 @@ export class UserSerializer extends Serializer<boolean> {
 		return this.result(args, await args.pickResult('boolean'));
 	}
 
-	public isValid(value: boolean): Awaited<boolean> {
+	public isValid(value: boolean): Awaitable<boolean> {
 		return typeof value === 'boolean';
 	}
 

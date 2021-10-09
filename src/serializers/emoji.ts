@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getEmojiString, getEmojiTextFormat, isValidSerializedEmoji, SerializedEmoji } from '#utils/functions';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<SerializedEmoji> {
 	public async parse(args: Serializer.Args) {
@@ -10,7 +10,7 @@ export class UserSerializer extends Serializer<SerializedEmoji> {
 		return this.ok(getEmojiString(result.value));
 	}
 
-	public isValid(value: SerializedEmoji, { t, entry }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: SerializedEmoji, { t, entry }: SerializerUpdateContext): Awaitable<boolean> {
 		if (isValidSerializedEmoji(value)) return true;
 		throw new Error(t(LanguageKeys.Serializers.InvalidEmoji, { name: entry.name }));
 	}

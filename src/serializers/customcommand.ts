@@ -2,14 +2,14 @@ import { parseAndValidate } from '#lib/customCommands';
 import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<CustomCommand> {
 	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: CustomCommand, { t }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: CustomCommand, { t }: SerializerUpdateContext): Awaitable<boolean> {
 		if (typeof value.id !== 'string') {
 			throw new Error(t(LanguageKeys.Serializers.CustomCommands.InvalidId));
 		}

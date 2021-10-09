@@ -1,7 +1,7 @@
 import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { seconds } from '#utils/common';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<CommandAutoDelete> {
 	public async parse(args: Serializer.Args) {
@@ -14,7 +14,7 @@ export class UserSerializer extends Serializer<CommandAutoDelete> {
 		return this.ok([command.value.name, duration.value] as const);
 	}
 
-	public isValid(value: CommandAutoDelete): Awaited<boolean> {
+	public isValid(value: CommandAutoDelete): Awaitable<boolean> {
 		return (
 			Array.isArray(value) &&
 			value.length === 2 &&

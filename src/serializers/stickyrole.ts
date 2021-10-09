@@ -1,13 +1,13 @@
 import { Serializer, SerializerUpdateContext, StickyRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Awaited, isObject } from '@sapphire/utilities';
+import { Awaitable, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<StickyRole> {
 	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: StickyRole, { t, guild }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: StickyRole, { t, guild }: SerializerUpdateContext): Awaitable<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 2 &&

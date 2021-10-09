@@ -1,5 +1,5 @@
 import { container, err, ok, Result } from '@sapphire/framework';
-import { Awaited, isThenable } from '@sapphire/utilities';
+import { Awaitable, isThenable } from '@sapphire/utilities';
 import type { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError } from 'discord.js';
 
@@ -12,7 +12,7 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 	}
 }
 
-export function floatPromise(promise: Awaited<unknown>) {
+export function floatPromise(promise: Awaitable<unknown>) {
 	if (isThenable(promise)) promise.catch((error: Error) => container.logger.fatal(error));
 }
 

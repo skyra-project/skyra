@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { isCategoryChannel, isTextChannel } from '@sapphire/discord.js-utilities';
-import type { Awaited } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args, { t, entry }: SerializerUpdateContext) {
@@ -17,7 +17,7 @@ export class UserSerializer extends Serializer<string> {
 		return this.error(t(LanguageKeys.Serializers.InvalidChannel, { name: entry.name }));
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, context: SerializerUpdateContext): Awaitable<boolean> {
 		return context.guild.channels.cache.has(value);
 	}
 

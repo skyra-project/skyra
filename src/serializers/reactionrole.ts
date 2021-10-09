@@ -1,14 +1,14 @@
 import { ReactionRole, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getEmojiTextFormat, isValidSerializedEmoji } from '#utils/functions';
-import { Awaited, isObject } from '@sapphire/utilities';
+import { Awaitable, isObject } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<ReactionRole> {
 	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: ReactionRole, { t }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: ReactionRole, { t }: SerializerUpdateContext): Awaitable<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 4 &&

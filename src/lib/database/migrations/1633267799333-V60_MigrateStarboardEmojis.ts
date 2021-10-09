@@ -12,11 +12,11 @@ export class V60MigrateStarboardAndSuggestionEmojis1633267799333 implements Migr
 			SET DEFAULT 's694594285487652954';`);
 
 		const oldGuildData = (await queryRunner.query(/* sql */ `
-            SELECT id,
-                "starboard.emoji" AS "starboardEmoji",
-                "suggestions.emojis.downvote" AS "downvoteEmoji",
-                "suggestions.emojis.upvote" AS "upvoteEmoji"
-            FROM public."guilds";
+			SELECT id,
+				"starboard.emoji" AS "starboardEmoji",
+				"suggestions.emojis.downvote" AS "downvoteEmoji",
+				"suggestions.emojis.upvote" AS "upvoteEmoji"
+			FROM public."guilds";
 		;`)) as GuildData[];
 
 		const newGuildData = this.upMap(oldGuildData);
@@ -24,12 +24,12 @@ export class V60MigrateStarboardAndSuggestionEmojis1633267799333 implements Migr
 		for (const guild of newGuildData) {
 			await queryRunner.query(
 				/* sql */ `
-            UPDATE public."guilds"
-            SET "starboard.emoji" = $1,
-                "suggestions.emojis.downvote" = $2,
-                "suggestions.emojis.upvote" = $3
-            WHERE id = '${guild.id}';
-            `,
+			UPDATE public."guilds"
+			SET "starboard.emoji" = $1,
+				"suggestions.emojis.downvote" = $2,
+				"suggestions.emojis.upvote" = $3
+			WHERE id = '${guild.id}';
+			`,
 				[guild.starboardEmoji, guild.downvoteEmoji, guild.upvoteEmoji]
 			);
 		}
@@ -46,24 +46,24 @@ export class V60MigrateStarboardAndSuggestionEmojis1633267799333 implements Migr
 			SET DEFAULT ':ArrowT:694594285487652954';`);
 
 		const oldGuildData = (await queryRunner.query(/* sql */ `
-            SELECT id,
-                "starboard.emoji" AS "starboardEmoji",
-                "suggestions.emojis.downvote" AS "downvoteEmoji",
-                "suggestions.emojis.upvote" AS "upvoteEmoji"
-            FROM public."guilds";
-            ;`)) as GuildData[];
+			SELECT id,
+				"starboard.emoji" AS "starboardEmoji",
+				"suggestions.emojis.downvote" AS "downvoteEmoji",
+				"suggestions.emojis.upvote" AS "upvoteEmoji"
+			FROM public."guilds";
+			;`)) as GuildData[];
 
 		const newGuildData = this.downMap(oldGuildData);
 
 		for (const guild of newGuildData) {
 			await queryRunner.query(
 				/* sql */ `
-            UPDATE public."guilds"
-            SET "starboard.emoji" = $1,
-                "suggestions.emojis.downvote" = $2,
-                "suggestions.emojis.upvote" = $3
-            WHERE id = '${guild.id}';
-            `,
+			UPDATE public."guilds"
+			SET "starboard.emoji" = $1,
+				"suggestions.emojis.downvote" = $2,
+				"suggestions.emojis.upvote" = $3
+			WHERE id = '${guild.id}';
+			`,
 				[guild.starboardEmoji, guild.downvoteEmoji, guild.upvoteEmoji]
 			);
 		}

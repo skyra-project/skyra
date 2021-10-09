@@ -9,6 +9,7 @@ import { Listener, ListenerOptions } from '@sapphire/framework';
 export class UserListener extends Listener {
 	public async run(parsed: LLRCData, emoji: SerializedEmoji) {
 		const emojiId = resolveEmojiId(emoji);
+
 		const [roleEntry, allRoleSets] = await readSettings(parsed.guild, (settings) => [
 			settings[GuildSettings.ReactionRoles].find(
 				(entry) =>

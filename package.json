@@ -131,7 +131,6 @@
 		"@types/node-fetch": "^2.5.12",
 		"@types/pg": "^8.6.1",
 		"@types/skia-canvas": "^0.9.2",
-		"@types/tsc-watch": "^4.2.0",
 		"@types/ws": "^8.2.0",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
 		"@typescript-eslint/parser": "^4.33.0",

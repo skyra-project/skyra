@@ -1,8 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { safeWrapPromise } from '#utils/common';
 import { assetsFolder } from '#utils/constants';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
-import { container, UserError } from '@sapphire/framework';
+import { container, fromAsync, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import { cyan, gray, red } from 'colorette';
@@ -130,7 +129,7 @@ export async function getData(query: string, lang: string): Promise<Weather> {
 	url.searchParams.append('format', 'j1');
 	url.searchParams.append('lang', lang);
 
-	const result = await safeWrapPromise<string, QueryError>(fetch(url, FetchResultTypes.Text));
+	const result = await fromAsync<string, QueryError>(fetch(url, FetchResultTypes.Text));
 	if (result.success) {
 		const { value } = result;
 		// JSON object:

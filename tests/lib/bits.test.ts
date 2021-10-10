@@ -3,12 +3,12 @@ import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/
 
 describe('Bits', () => {
 	describe('Permissions', () => {
-		test('GIVEN permissionsFlags.size THEN returns 37', () => {
-			expect(permissionsFlags.size).toBe(37);
+		test('GIVEN permissionsFlags.size THEN returns 39', () => {
+			expect(permissionsFlags.size).toBe(39);
 		});
 
-		test('GIVEN permissionsOffset THEN returns 38', () => {
-			expect(Number(permissionsOffset)).toBe(38);
+		test('GIVEN permissionsOffset THEN returns 40', () => {
+			expect(Number(permissionsOffset)).toBe(40);
 		});
 
 		test('GIVEN various permissions THEN returns an array of their names', () => {
@@ -48,7 +48,13 @@ describe('Bits', () => {
 				PermissionFlagsBits.ManageNicknames |
 				PermissionFlagsBits.ManageRoles |
 				PermissionFlagsBits.ManageWebhooks |
-				PermissionFlagsBits.ManageEmojisAndStickers;
+				PermissionFlagsBits.ManageEmojisAndStickers |
+				PermissionFlagsBits.UseApplicationCommands |
+				PermissionFlagsBits.RequestToSpeak |
+				PermissionFlagsBits.ManageThreads |
+				PermissionFlagsBits.UsePublicThreads |
+				PermissionFlagsBits.UsePrivateThreads |
+				PermissionFlagsBits.UseExternalStickers;
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CREATE_INSTANT_INVITE',
 				'KICK_MEMBERS',
@@ -80,7 +86,13 @@ describe('Bits', () => {
 				'MANAGE_NICKNAMES',
 				'MANAGE_ROLES',
 				'MANAGE_WEBHOOKS',
-				'MANAGE_EMOJIS_AND_STICKERS'
+				'MANAGE_EMOJIS_AND_STICKERS',
+				'USE_APPLICATION_COMMANDS',
+				'REQUEST_TO_SPEAK',
+				'MANAGE_THREADS',
+				'CREATE_PUBLIC_THREADS',
+				'CREATE_PRIVATE_THREADS',
+				'USE_EXTERNAL_STICKERS'
 			]);
 		});
 	});

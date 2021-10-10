@@ -2,11 +2,11 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
-import { safeWrapPromise } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fromAsync } from '@sapphire/framework';
 import { resolveKey } from '@sapphire/plugin-i18next';
 import type { ArgumentTypes } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -20,7 +20,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {
-		const result = await safeWrapPromise(message.guild.bans.fetch());
+		const result = await fromAsync(message.guild.bans.fetch());
 		const bans = result.success ? result.value.map((ban) => ban.user.id) : null;
 
 		// If the fetch failed, throw an error saying that the fetch failed:

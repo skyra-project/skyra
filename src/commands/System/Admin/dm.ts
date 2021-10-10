@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import { safeWrapPromise } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fromAsync } from '@sapphire/framework';
 import type { Message, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 			files: attachment ? [{ attachment }] : undefined
 		};
 
-		const { success } = await safeWrapPromise(user.send(options));
+		const { success } = await fromAsync(user.send(options));
 
 		const responseContent = success ? `Message successfully sent to ${user}` : `I am sorry, I could not send the message to ${user}`;
 		return sendTemporaryMessage(message, responseContent);

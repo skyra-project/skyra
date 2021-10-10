@@ -77,11 +77,7 @@ export interface SkyraEnv {
 	HASTEBIN_GET_URL: string;
 
 	WEBHOOK_ERROR_ENABLED: BooleanString;
-	WEBHOOK_ERROR_AVATAR: string;
-	WEBHOOK_ERROR_CHANNEL: string;
-	WEBHOOK_ERROR_GUILD: string;
 	WEBHOOK_ERROR_ID: string;
-	WEBHOOK_ERROR_NAME: string;
 	WEBHOOK_ERROR_TOKEN: string;
 
 	WORKER_COUNT: IntegerString;

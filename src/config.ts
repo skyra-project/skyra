@@ -8,6 +8,7 @@ import { readSettings } from '#lib/database/settings';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { ExcludeEnum } from '#lib/types/Utils';
 import { getHandler } from '#root/languages/index';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
@@ -15,18 +16,18 @@ import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import { APIWebhook, WebhookType } from 'discord-api-types/v9';
 import {
 	ActivitiesOptions,
-	ActivityType,
 	ClientOptions,
 	DefaultMessageNotificationLevel,
 	ExplicitContentFilterLevel,
 	LimitedCollection,
 	Options,
 	Permissions,
-	PermissionString
+	PermissionString,
+	WebhookClientData
 } from 'discord.js';
+import type { ActivityTypes } from 'discord.js/typings/enums';
 import { config } from 'dotenv-cra';
 import i18next, { FormatFunction, InterpolationOptions } from 'i18next';
 import { join } from 'path';
@@ -111,7 +112,7 @@ function parsePresenceActivity(): ActivitiesOptions[] {
 	return [
 		{
 			name: CLIENT_PRESENCE_NAME,
-			type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ActivityType
+			type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ExcludeEnum<typeof ActivityTypes, 'CUSTOM'>
 		}
 	];
 }
@@ -292,19 +293,13 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	i18n: parseInternationalizationOptions()
 };
 
-function parseWebhookError(): APIWebhook | null {
+function parseWebhookError(): WebhookClientData | null {
 	const { WEBHOOK_ERROR_TOKEN } = process.env;
 	if (!WEBHOOK_ERROR_TOKEN) return null;
 
 	return {
-		application_id: null,
-		avatar: envParseString('WEBHOOK_ERROR_AVATAR'),
-		channel_id: envParseString('WEBHOOK_ERROR_CHANNEL'),
-		guild_id: envParseString('WEBHOOK_ERROR_GUILD'),
 		id: envParseString('WEBHOOK_ERROR_ID'),
-		name: envParseString('WEBHOOK_ERROR_NAME'),
-		token: WEBHOOK_ERROR_TOKEN,
-		type: WebhookType.Incoming
+		token: WEBHOOK_ERROR_TOKEN
 	};
 }
 

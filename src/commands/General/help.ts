@@ -1,10 +1,10 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { isGuildMessage, isPrivateMessage, minutes, safeWrapPromise } from '#utils/common';
+import { isGuildMessage, isPrivateMessage, minutes } from '#utils/common';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
-import { Args, container } from '@sapphire/framework';
+import { Args, container, fromAsync } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Collection, Message, MessageEmbed, Permissions, Util } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -90,7 +90,7 @@ export class UserCommand extends SkyraCommand {
 		const contents = Util.splitMessage(fullContent, { char: '\n', maxLength: 2000 });
 
 		for (const content of contents) {
-			const { success } = await safeWrapPromise(message.author.send(content));
+			const { success } = await fromAsync(message.author.send(content));
 			if (success) continue;
 
 			if (isPrivateMessage(message)) this.error(LanguageKeys.Commands.General.HelpNoDm);

@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { bold, hideLinkEmbed, hyperlink, time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -41,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async buildEmbed(result: YarnPkg.PackageJson, message: Message, t: TFunction, context: SkyraCommand.Context) {
-		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
+		const maintainers = result.maintainers.map((user) => hyperlink(user.name, hideLinkEmbed(user.url ?? `https://www.npmjs.com/~${user.name}`)));
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies
 			? this.trimArray(Object.keys(latestVersion.dependencies), t(LanguageKeys.Commands.Developers.YarnEmbedMoreText))
@@ -117,14 +117,13 @@ export class UserCommand extends SkyraCommand {
 		// If there is no author then return undefined
 		if (!author) return undefined;
 
-		// Parse the author name
-		const authorName = `**${author.name}**`;
+		// Parse the author url
 		const authorUrl = author.name.startsWith('@')
 			? // If the author is an organization then use the Organization url
 			  encodeURI(author.url ?? `https://www.npmjs.com/org/${author.name.slice(1)}`)
 			: // Otherwise use the User url
 			  encodeURI(author.url ?? `https://www.npmjs.com/~${author.name}`);
 
-		return `[${authorName}](${authorUrl})`;
+		return bold(hyperlink(author.name, hideLinkEmbed(authorUrl)));
 	}
 }

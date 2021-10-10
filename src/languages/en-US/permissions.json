@@ -6,6 +6,8 @@
 	"CHANGE_NICKNAME": "Change Nickname",
 	"CONNECT": "Connect",
 	"CREATE_INSTANT_INVITE": "Create Instant Invite",
+	"CREATE_PRIVATE_THREADS": "Create Private Threads",
+	"CREATE_PUBLIC_THREADS": "Create Public Threads",
 	"DEAFEN_MEMBERS": "Deafen Members",
 	"EMBED_LINKS": "Embed Links",
 	"KICK_MEMBERS": "Kick Members",

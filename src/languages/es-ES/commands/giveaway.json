@@ -4,7 +4,7 @@
 		"usages": [
 			"Tiempo Título",
 			"CanalDeTexto Tiempo Título",
-			"Tiempo --winners/Ganadores Título",
+			"",
 			"CanalDeTexto Rol1 Rol2 Tiempo Título",
 			"Rol1 Rol2 Tiempo Título"
 		],
@@ -23,7 +23,7 @@
 				"El tiempo que debe durar el sorteo."
 			],
 			[
-				"Ganadores",
+				"",
 				"La cantidad de ganadores, esto toma un número entero con `w` de sufijo, por ejemplo `2w` para 2 ganadores."
 			],
 			[
@@ -65,12 +65,12 @@
 	"giveawayScheduleExtended": {
 		"usages": [
 			"TiempoProgramado Tiempo Título",
-			"CanalDeTexto TiempoProgramado Tiempo Título",
-			"TiempoProgramado Tiempo --winners/Ganadores Título",
-			"CanalDeTexto TiempoProgramado Rol1 Rol2 Tiempo Título",
-			"TiempoProgramado Rol1 Rol2 Tiempo Título"
+			"",
+			"",
+			"",
+			""
 		],
-		"extendedHelp": "Este comando prepara un sorteo para comenzar en un determinado momento si no desea iniciarlo inmediatamente.\n\nPuedes pasarle el modificador `--winners=X`, donde X es un número, para permitir que varias personas ganen en el sorteo.\n\nTenga en cuenta que hay un máximo de 25 ganadores.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Canal de Texto",
@@ -82,14 +82,14 @@
 			],
 			[
 				"Roles",
-				"Una lista de roles separados por espacio que los miembros deben tener para participar, si se especificaron."
+				""
 			],
 			[
 				"Tiempo",
 				"El tiempo que debe durar el sorteo."
 			],
 			[
-				"Ganadores",
+				"",
 				"La cantidad de ganadores, esto toma un número entero con `w` de sufijo, por ejemplo `2w` para 2 ganadores."
 			],
 			[
@@ -98,7 +98,10 @@
 			]
 		],
 		"examples": [
-			"30m 6h Un abrazo de Skyra."
+			"30m 6h Un abrazo de Skyra.",
+			"",
+			"",
+			""
 		]
 	},
 	"giveawayRerollInvalid": "O bien el identificador del mensaje no existe o no hay ningún sorteo terminado.",

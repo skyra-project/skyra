@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { Time } from '@sapphire/time-utilities';
 import { Permissions } from 'discord.js';
 
-const kWinnersArgRegex = /^(\d+)w$/i;
+const winnersArgRegex = /^(\d+)w$/i;
 const options = ['winners'];
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -94,7 +94,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static winners = Args.make<number>((parameter, { argument }) => {
-		const match = kWinnersArgRegex.exec(parameter);
+		const match = winnersArgRegex.exec(parameter);
 		if (match === null) return Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
 
 		const parsed = parseInt(match[1], 10);

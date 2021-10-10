@@ -4,11 +4,11 @@
 		"usages": [
 			"Time Title",
 			"TextChannel Time Title",
-			"Time --winners/Winners Title",
+			"Time Winners Title",
 			"TextChannel Role1 Role2 Time Title",
 			"Role1 Role2 Time Title"
 		],
-		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=X`, wherein X is a number (for example 2) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
+		"extendedHelp": "This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.\n\nWhen a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.\n\nYou can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
 			[
 				"TextChannel",
@@ -23,7 +23,7 @@
 				"The time the giveaway should last."
 			],
 			[
-				"Winners",
+				"Winners (or `--winners=Xw`)",
 				"The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."
 			],
 			[
@@ -34,7 +34,7 @@
 		"examples": [
 			"6h A hug from Skyra.",
 			"60m 5w A mysterious Steam game",
-			"1d Free Discord Nitro! --winners=2"
+			"1d Free Discord Nitro! --winners=2w"
 		]
 	},
 	"giveawayRerollDescription": "Re-roll the winners from a giveaway.",
@@ -65,12 +65,12 @@
 	"giveawayScheduleExtended": {
 		"usages": [
 			"Schedule Time Title",
-			"TextChannel Schedule Time Title",
-			"Schedule Time --winners/Winners Title",
-			"TextChannel Schedule Role1 Role2 Time Title",
-			"Schedule Role1 Role2 Time Title"
+			"TextChannel Schedule Role1 Role2...RoleN Time Winners Title",
+			"Schedule Time Winners Title",
+			"TextChannel Schedule Role1 Role2...RoleN Time Title",
+			"Schedule Role1 Role2...RoleN Time Title"
 		],
-		"extendedHelp": "This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.\nYou can pass a flag of `--winners=X`, wherein X is a number, to allow multiple people to win this giveaway.\nPlease note that there is a maximum of 25 winners.",
+		"extendedHelp": "This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.\nYou can pass a flag of `--winners=Xw`, wherein X is a number, to allow multiple people to win this giveaway.\nPlease note that there is a maximum of 25 winners.",
 		"explainedUsage": [
 			[
 				"TextChannel",
@@ -82,14 +82,14 @@
 			],
 			[
 				"Roles",
-				"A list of roles separated by space members must have in order to participate, if any."
+				"A list of roles separated by space members must have in order to participate, if any. If both you are allowed to ping the specified role(s) then I will ping them as well."
 			],
 			[
 				"Time",
 				"The time the giveaway should last."
 			],
 			[
-				"Winners",
+				"Winners (or `--winners=Xw`)",
 				"The amount of winners, this takes an integer suffixed with `w`, e.g. `2w` for 2 winners."
 			],
 			[
@@ -98,7 +98,10 @@
 			]
 		],
 		"examples": [
-			"30m 6h A hug from Skyra."
+			"30m 6h A hug from Skyra.",
+			"#giveaways 20m @subscribers @patrons 10m 5w Flash giveaway! 5 lucky subscribers or patrons will win 1 month free Discord Nitro!",
+			"1h 2h 3w A month of Twitch subscription for 3 lucky winners!",
+			"#patreon-giveaways 40m @patrons 30m Get an exclusive chance to be in the next Saturday Discord Community stream!"
 		]
 	},
 	"giveawayRerollInvalid": "The message ID does not exist or there is no finished giveaway.",

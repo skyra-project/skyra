@@ -7,7 +7,7 @@ import { Args, CommandOptionsRunTypeEnum, IArgument, Identifiers } from '@sapphi
 import { Time } from '@sapphire/time-utilities';
 import { Permissions, TextChannel } from 'discord.js';
 
-const kWinnersArgRegex = /^(\d+)w$/i;
+const winnersArgRegex = /^(\d+)w$/i;
 const options = ['winners'];
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -41,6 +41,7 @@ export class UserCommand extends SkyraCommand {
 			channelId: channel.id,
 			endsAt: new Date(time.getTime() + 500),
 			guildId: message.guild.id,
+			authorId: message.author.id,
 			minimum: 1,
 			minimumWinners: winners,
 			title
@@ -79,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private static winners = Args.make<number>((parameter, { argument }) => {
-		const match = kWinnersArgRegex.exec(parameter);
+		const match = winnersArgRegex.exec(parameter);
 		if (match === null) return Args.error({ parameter, argument, identifier: LanguageKeys.Arguments.Winners });
 
 		const parsed = parseInt(match[1], 10);

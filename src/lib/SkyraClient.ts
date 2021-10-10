@@ -7,7 +7,7 @@ import { mainFolder } from '#utils/constants';
 import { Enumerable } from '@sapphire/decorators';
 import { container, SapphireClient } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
-import { Message, Webhook } from 'discord.js';
+import { Message, WebhookClient } from 'discord.js';
 import Redis from 'ioredis';
 import { join } from 'path';
 import { readSettings } from './database/settings/functions';
@@ -44,7 +44,7 @@ export class SkyraClient extends SapphireClient {
 	 * The webhook to use for the error event
 	 */
 	@Enumerable(false)
-	public webhookError: Webhook | null = WEBHOOK_ERROR ? new Webhook(this, WEBHOOK_ERROR) : null;
+	public webhookError: WebhookClient | null = WEBHOOK_ERROR ? new WebhookClient(WEBHOOK_ERROR) : null;
 
 	/**
 	 * The invite store

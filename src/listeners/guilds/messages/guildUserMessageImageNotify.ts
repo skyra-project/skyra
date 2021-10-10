@@ -60,7 +60,7 @@ export class UserListener extends Listener {
 
 			try {
 				// Download the image and send it to the image logs.
-				const buffer = await result.buffer();
+				const buffer = Buffer.from(await (await result.blob()).arrayBuffer());
 				const filename = `image${extname(url.pathname)}`;
 
 				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {

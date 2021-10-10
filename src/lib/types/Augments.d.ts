@@ -36,7 +36,7 @@ declare module 'discord.js' {
 		readonly schedules: ScheduleManager;
 		readonly twitch: Twitch;
 		readonly version: string;
-		readonly webhookError: Webhook | null;
+		readonly webhookError: WebhookClient | null;
 		readonly websocket: WebsocketHandler;
 	}
 

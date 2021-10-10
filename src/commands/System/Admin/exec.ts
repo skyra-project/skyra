@@ -2,9 +2,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getHaste } from '#utils/APIs/Hastebin';
-import { safeWrapPromise } from '#utils/common';
 import { exec } from '#utils/Promisified/exec';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fromAsync } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
 import type { Message, MessageOptions } from 'discord.js';
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 	private async getOptions(content: string): Promise<MessageOptions> {
 		if (content.length <= 2000) return { content };
 
-		const urlResult = await safeWrapPromise(getHaste(content));
+		const urlResult = await fromAsync(getHaste(content));
 		if (urlResult.success) return { content: urlResult.value };
 
 		const attachment = Buffer.from(content);

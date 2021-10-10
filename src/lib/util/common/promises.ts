@@ -1,4 +1,4 @@
-import { container, err, ok, Result } from '@sapphire/framework';
+import { container } from '@sapphire/framework';
 import { Awaitable, isThenable } from '@sapphire/utilities';
 import type { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError } from 'discord.js';
@@ -35,19 +35,4 @@ export function createReferPromise<T>(): ReferredPromise<T> {
 
 	// noinspection JSUnusedAssignment
 	return { promise, resolve: resolve!, reject: reject! };
-}
-
-/**
- * Wraps the result of a promise into a Result<T, E>, resulting on Ok<T> when successful, and Err<E> when erroneous.
- * This function's purpose is to create promises that do not reject, allowing code to be written without try/catch or
- * {@link Promise.catch} callbacks.
- * @param promise The promise to wrap into a Result<T, E>
- * @returns A promise resolving to a Result.
- */
-export async function safeWrapPromise<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
-	try {
-		return ok(await promise);
-	} catch (error) {
-		return err(error as E);
-	}
 }

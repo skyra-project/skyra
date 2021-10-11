@@ -2,6 +2,7 @@ import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { floatPromise, minutes, seconds } from '#utils/common';
+import { sendTemporaryMessage } from '#utils/functions';
 import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
@@ -59,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					floatPromise(send(message, args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt })));
+					floatPromise(sendTemporaryMessage(collected, args.t(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt })));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);

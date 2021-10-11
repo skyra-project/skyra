@@ -3,8 +3,8 @@ import { promptForMessage } from '#utils/functions';
 import { UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
+import { decodeUtf8, jaroWinkler } from '@skyra/jaro-winkler';
 import type { Message } from 'discord.js';
-import { decode, jaroWinkler } from '../External/jaro-winkler';
 
 type FuzzySearchAccess<V> = (value: V) => string;
 type FuzzySearchFilter<V> = (value: V) => boolean;
@@ -22,7 +22,7 @@ export class FuzzySearch<K extends string, V> {
 
 	public run(message: Message, query: string, threshold?: number) {
 		const lowerCaseQuery = query.toLowerCase();
-		const decodedLowerCaseQuery = decode(lowerCaseQuery);
+		const decodedLowerCaseQuery = decodeUtf8(lowerCaseQuery);
 		const results: [K, V, number][] = [];
 
 		// Adaptive threshold based on input length

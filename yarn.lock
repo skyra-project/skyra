@@ -2345,6 +2345,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skyra/jaro-winkler@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@skyra/jaro-winkler@npm:1.0.0"
+  checksum: 2fc705ec1c2e22182ec0533382c419961c3d45131eaafccafc0c764cae4a513f7b99952cca94725fd0c6c99512231b654d2413656a978fadc4db35734513b5c3
+  languageName: node
+  linkType: hard
+
 "@skyra/saelem@npm:^3.0.9":
   version: 3.0.9
   resolution: "@skyra/saelem@npm:3.0.9"
@@ -9704,6 +9711,7 @@ fsevents@^2.3.2:
     "@skyra/audio": ^2.0.0
     "@skyra/char": ^1.0.2
     "@skyra/gifenc": ^1.0.0
+    "@skyra/jaro-winkler": ^1.0.0
     "@skyra/saelem": ^3.0.9
     "@skyra/star-wars-api": ^2.0.4
     "@skyra/tags": ^1.1.3

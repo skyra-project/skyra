@@ -95,7 +95,10 @@ export class UserTask extends Task {
 
 		// If the channel is postable, send the message:
 		if (canSendMessages(channel)) {
-			await channel.send(this.transformMessage(content, member.user, getAge(data), t));
+			await channel.send({
+	 	 		content: this.transformMessage(content, member.user, getAge(data), t),
+	 	 		allowedMentions: { users: [member.id] }
+	 	 	});
 		}
 
 		return PartResult.Success;

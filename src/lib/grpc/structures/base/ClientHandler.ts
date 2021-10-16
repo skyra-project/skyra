@@ -13,7 +13,7 @@ export abstract class ClientHandler<C extends Client = Client> {
 		});
 	}
 
-	protected makeCall<T extends any = any>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
+	protected makeCall<T = any>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
 		const refer = createReferPromise<T>();
 
 		try {

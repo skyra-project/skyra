@@ -1097,11 +1097,11 @@ interface ApiWebhooksWebhookTokenGitHub {
 
 interface ApiMethods {
 	// eslint-disable-next-line @typescript-eslint/ban-types
-	get<T extends unknown>(data?: { query?: {} }): Promise<T>;
-	post<T extends unknown>(data: unknown): Promise<T>;
-	put<T extends unknown>(data?: unknown): Promise<T>;
-	patch<T extends unknown>(data: unknown): Promise<T>;
-	delete<T extends unknown>(data?: { reason?: string }): Promise<T>;
+	get<T>(data?: { query?: {} }): Promise<T>;
+	post<T>(data: unknown): Promise<T>;
+	put<T>(data?: unknown): Promise<T>;
+	patch<T>(data: unknown): Promise<T>;
+	delete<T>(data?: { reason?: string }): Promise<T>;
 }
 
 type R<T> = Exclude<keyof T, keyof ApiMethods>;

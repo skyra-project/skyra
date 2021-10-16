@@ -33,6 +33,7 @@ export const MessagesAnnouncementEmbed = T('settings:messagesAnnouncementEmbed')
 export const MusicAllowStreams = T('settings:musicAllowStreams');
 export const MusicAllowedVoiceChannels = T('settings:musicAllowedVoiceChannels');
 export const MusicAllowedRoles = T('settings:musicAllowedRoles');
+export const MusicAutoLeave = T('settings:musicAutoLeave');
 export const MusicDefaultVolume = T('settings:musicDefaultVolume');
 export const MusicMaximumDuration = T('settings:musicMaximumDuration');
 export const MusicMaximumEntriesPerUser = T('settings:musicMaximumEntriesPerUser');

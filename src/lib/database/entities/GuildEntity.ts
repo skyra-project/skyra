@@ -813,6 +813,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'music.allowed-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public musicAllowedRoles: string[] = [];
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAutoLeave })
+	@Column('boolean', { name: 'music.auto-leave', default: true })
+	public musicAutoLeave = true;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: 's694594285487652954' })
 	public suggestionsEmojisUpVote = 's694594285487652954' as SerializedEmoji;

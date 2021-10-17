@@ -25,9 +25,7 @@
 	"yarnEmbedDescriptionDeprecated": "❯ Aviso de desaprobación: **{{deprecated}}**",
 	"yarnEmbedDescriptionLatestVersion": "❯ Última versión: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ Licencia: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ Archivo principal: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Mantenedores: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "más...",
-	"yarnPackageNotFound": "Lo siento, pero no he podido encontrar ningún paquete con el nombre de `{{pkg}}` en el registro.",
-	"yarnUnpublishedPackage": "¡Qué desarrollador tonto que hizo {{pkg}}! ¡Han despublicado su paquete!"
+	"yarnPackageNotFound": "Lo siento, pero no he podido encontrar ningún paquete con el nombre de `{{pkg}}` en el registro."
 }

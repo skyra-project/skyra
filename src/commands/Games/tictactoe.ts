@@ -21,7 +21,7 @@ import type { TFunction } from 'i18next';
 export class UserCommand extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (this.channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
 
 		const user = await args.pick('userName');

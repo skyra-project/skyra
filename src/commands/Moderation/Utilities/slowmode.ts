@@ -20,7 +20,7 @@ const MAXIMUM_DURATION = hours(6);
 	runIn: [CommandOptionsRunTypeEnum.GuildText]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cooldown = await args
 			.pick('reset')
 			.then(() => 0)

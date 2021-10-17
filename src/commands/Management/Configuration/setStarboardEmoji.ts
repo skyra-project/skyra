@@ -16,7 +16,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const emoji = getEmojiString(await args.pick('emoji'));
 		await writeSettings(message.guild, (settings) => {
 			// If it's the same value, throw:

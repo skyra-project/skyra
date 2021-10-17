@@ -17,7 +17,7 @@ const { FLAGS } = Permissions;
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		// Get the voice channel the member is in
 		const { channel } = message.member.voice;
 

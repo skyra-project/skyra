@@ -18,7 +18,7 @@ import { maximumExportQueueSize } from './exportqueue';
 	detailedDescription: LanguageKeys.Commands.Music.ImportQueueExtended
 })
 export class UserAudioCommand extends AudioCommand {
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const url = message.attachments.first()?.url ?? (await args.pick('hyperlink')).href;
 		const raw = await this.fetchRawData(url);
 

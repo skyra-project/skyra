@@ -19,7 +19,7 @@ import { MessageEmbed } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const sniped = getSnipedMessage(message.channel);
 		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 

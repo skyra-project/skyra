@@ -36,7 +36,7 @@ const flags = ['excludeMentions', 'em'];
 export class UserCommand extends SkyraCommand {
 	private readonly messages: WeakMap<GuildMessage, GuildMessage> = new WeakMap();
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const announcement = await args.rest('string', { max: 1950 });
 
 		const [channelId, embedEnabled] = await readSettings(message.guild, [

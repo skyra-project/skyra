@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		const autoFilled = args.getFlags('autofill');
 		const tributes = args.finished && autoFilled ? [] : args.nextSplit({ times: 50 });
 		const autoSkip = args.getFlags('autoskip');

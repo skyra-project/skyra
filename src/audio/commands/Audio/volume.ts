@@ -16,7 +16,7 @@ export class UserAudioCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()
 	@RequireMusicPlaying()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 		const newVolume = args.finished ? null : await args.pick('integer', { minimum: 0, maximum: 300 });
 		const previousVolume = await audio.getVolume();

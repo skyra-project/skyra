@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const userName = await args.pick('string', { maximum: 20 });
 		const channelName = await args.pick('string', { maximum: 20 });
 		const { t } = args;

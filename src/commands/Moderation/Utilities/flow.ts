@@ -14,7 +14,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = args.finished ? message.channel : await args.pick('textChannelName');
 		if (!canReadMessages(channel)) this.error(LanguageKeys.Misc.ChannelNotReadable);
 

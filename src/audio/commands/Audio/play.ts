@@ -21,17 +21,17 @@ export class UserAudioCommand extends AudioCommand {
 	}
 
 	@RequireUserInVoiceChannel()
-	public async run(message: GuildMessage, args: AudioCommand.Args, context: AudioCommand.Context) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args, context: AudioCommand.Context) {
 		const audio = getAudio(message.guild);
 
 		// If Skyra is not in a voice channel, join
 		if (!audio.voiceChannelId) {
-			await this.join.run(message, args, context);
+			await this.join.messageRun(message, args, context);
 		}
 
 		if (!args.finished) {
 			// If there are songs or a queue, add them
-			await this.add.run(message, args, context);
+			await this.add.messageRun(message, args, context);
 			if (audio.playing) return;
 		}
 

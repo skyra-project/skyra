@@ -21,7 +21,7 @@ import { URL } from 'url';
 	detailedDescription: LanguageKeys.Commands.Tools.MoviesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const [movie, year = null] = (await args.rest('string')).split('y:');
 
 		const response = await sendLoadingMessage(message, args.t);

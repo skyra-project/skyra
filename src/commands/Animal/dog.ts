@@ -15,7 +15,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		const [color, image] = await Promise.all([this.container.db.fetchColor(message), this.fetchImage()]);
 
 		const embed = new MessageEmbed().setColor(color).setImage(image!).setTimestamp();

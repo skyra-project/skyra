@@ -15,7 +15,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
 		const [oldLength, newLength] = await writeSettings(message.guild, (settings) => {

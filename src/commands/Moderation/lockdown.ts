@@ -23,10 +23,10 @@ import type { TFunction } from 'i18next';
 	subCommands: ['lock', 'unlock', { input: 'auto', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	public run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (context.commandName === 'lock') return this.lock(message, args);
 		if (context.commandName === 'unlock') return this.unlock(message, args);
-		return super.run(message, args, context);
+		return super.messageRun(message, args, context);
 	}
 
 	public async auto(message: GuildMessage, args: SkyraCommand.Args) {

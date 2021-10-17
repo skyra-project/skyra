@@ -16,7 +16,7 @@ import { MessageEmbed } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const schedules = [
 			...reduce(
 				getGuildBirthdays(message.guild.id),

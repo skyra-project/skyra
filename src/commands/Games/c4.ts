@@ -21,7 +21,7 @@ import type { User } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	private readonly channels = new Set<string>();
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (this.channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
 
 		const user = await args.pick('userName');

@@ -18,7 +18,7 @@ import { Permissions, User } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cancel = await args.pick(UserCommand.cancel).catch(() => false);
 		const caseId = await args.pick('case');
 

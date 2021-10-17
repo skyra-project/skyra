@@ -13,7 +13,7 @@ import type { Message } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		if (user === message.author) this.error(LanguageKeys.Commands.Social.DivorceSelf);
 

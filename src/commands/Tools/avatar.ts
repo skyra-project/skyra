@@ -15,7 +15,7 @@ const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096];
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		if (!user.avatar) this.error(LanguageKeys.Commands.Tools.AvatarNone);
 

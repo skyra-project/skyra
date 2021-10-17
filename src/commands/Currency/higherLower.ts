@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 	private readonly winReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
 	private readonly runTime = minutes(3);
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const { t } = args;
 		const wager = await args.pick('shinyWager');
 

@@ -34,7 +34,7 @@ const imageCoordinates = [
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const attachment = await this.generate(message, user);
 		return send(message, { files: [{ attachment, name: 'HowToFlirt.png' }] });

@@ -13,7 +13,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 
 		const { members } = this.container.db;

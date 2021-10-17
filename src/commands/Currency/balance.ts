@@ -11,7 +11,7 @@ import type { Message } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		if (user.bot) this.error(LanguageKeys.Commands.Social.BalanceBots);
 

@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 	private bodyImage: Image = null!;
 	private handsImage: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const userAttachment = getImage(message);
 		const imageBuffer = userAttachment ? await resolveImage(userAttachment) : await args.pick('image');
 		const attachment = await new Canvas(512, 512)

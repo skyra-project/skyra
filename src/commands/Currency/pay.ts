@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const { money, user } = await this.resolveArguments(args);
 
 		if (message.author === user) this.error(LanguageKeys.Commands.Social.PaySelf);

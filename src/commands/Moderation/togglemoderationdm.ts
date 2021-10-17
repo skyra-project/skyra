@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	detailedDescription: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const { users } = this.container.db;
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensure(id);

@@ -62,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 		return this.container.stores.get('arguments').get('timespan') as IArgument<number>;
 	}
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const limit = await args.pick('integer', { minimum: 1, maximum: 100 });
 		const filter = await this.getFilters(args);
 		const rawPosition = args.finished ? null : await args.pick(UserCommand.position);

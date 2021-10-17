@@ -15,7 +15,7 @@ const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What'
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const question = await args.rest('string', { maximum: 500 });
 
 		const content = args.t(LanguageKeys.Commands.Fun.EightballOutput, {

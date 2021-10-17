@@ -19,7 +19,7 @@ import { join } from 'path';
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const text = sanitizeInput(await args.rest('string', { maximum: 50 }));
 		const attachment = await this.generate(message.author, text);
 		return send(message, { files: [{ attachment, name: 'ChangeMyMind.png' }] });

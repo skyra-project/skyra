@@ -37,7 +37,7 @@ import { writeHeapSnapshot } from 'v8';
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		await send(message, 'Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)

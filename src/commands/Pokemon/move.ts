@@ -16,7 +16,7 @@ import type { TFunction } from 'i18next';
 	detailedDescription: LanguageKeys.Commands.Pokemon.MoveExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const move = (await args.rest('string')).toLowerCase();
 		const response = await sendLoadingMessage(message, args.t);
 		const moveData = await this.fetchAPI(move);

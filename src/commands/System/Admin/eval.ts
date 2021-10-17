@@ -25,7 +25,7 @@ import { inspect } from 'util';
 export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const code = await args.rest('string');
 
 		const wait = args.getOption('wait');

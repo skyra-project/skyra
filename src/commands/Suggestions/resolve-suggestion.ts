@@ -34,7 +34,7 @@ const maximum = 2_147_483_647; // Maximum value for int32
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const suggestionData = await args.pick(UserCommand.suggestion);
 		const action = await args.pick(UserCommand.action);
 		const comment = args.finished ? args.t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment) : await args.rest('string');

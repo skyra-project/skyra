@@ -13,7 +13,7 @@ import { DiscordAPIError, Message } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		if (args.finished) this.error(LanguageKeys.Commands.Tools.VoteContentNeeded);
 
 		for (const reaction of ['👍', '👎', '🤷']) {

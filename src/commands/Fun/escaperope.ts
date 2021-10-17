@@ -12,7 +12,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		if (message.deletable) await deleteMessage(message).catch(() => null);
 
 		const embed = new MessageEmbed()

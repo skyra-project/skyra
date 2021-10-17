@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const scope = args.finished ? Scope.Local : await args.pick('scope').catch(() => Scope.Local);
 		const user = args.finished ? message.author : await args.pick('userName');
 

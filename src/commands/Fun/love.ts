@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();

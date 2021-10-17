@@ -20,7 +20,7 @@ import { FetchError } from 'node-fetch';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const winnerAmount = await args.pick('integer').catch(() => 1);
 		const rawTarget = args.finished ? undefined : cast<GuildMessage>(await args.pick('message'));
 		const target = await this.resolveMessage(message, rawTarget);

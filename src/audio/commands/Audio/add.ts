@@ -12,7 +12,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireUserInVoiceChannel()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const songs = await args.rest('song');
 		if (!songs || !songs.length) this.error(LanguageKeys.MusicManager.FetchNoMatches);
 

@@ -20,7 +20,7 @@ import { URL } from 'url';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const amount = await args.pick('number').catch(() => 1);
 		const fromCurrency = await args.pick('string');
 		const toCurrencies = await args.repeat('string');

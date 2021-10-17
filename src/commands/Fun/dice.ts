@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-x*])\s*(\d+)/g;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const amountOrDice = await args.pick('integer', { minimum: 1, maximum: 1024 }).catch(() => args.rest('string'));
 		const content = args.t(LanguageKeys.Commands.Fun.DiceOutput, { result: this.roll(amountOrDice) });
 		return send(message, content);

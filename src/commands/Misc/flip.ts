@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 		return this.container.stores.get('arguments').get('boolean') as Argument<boolean>;
 	}
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const [horizontal, vertical] = await Promise.all([this.parseOption(args, horizontalOptions), this.parseOption(args, verticalOptions)]);
 		if (!horizontal && !vertical) this.error(LanguageKeys.Commands.Misc.FlipDisabled);
 

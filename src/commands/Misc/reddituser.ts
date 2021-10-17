@@ -22,7 +22,7 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	detailedDescription: LanguageKeys.Commands.Misc.RedditUserExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const user = await args.pick(UserPaginatedMessageCommand.redditUser);
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);

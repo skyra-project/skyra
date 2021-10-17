@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await readSettings(message.guild, [
 			GuildSettings.Roles.Public,
 			GuildSettings.Roles.UniqueRoleSets,

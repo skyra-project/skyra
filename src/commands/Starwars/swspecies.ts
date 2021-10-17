@@ -14,7 +14,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.StarWars.SpeciesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const { t } = args;
 		const loadingMessage = await sendLoadingMessage(message, t);
 		const species = await args.rest('string');

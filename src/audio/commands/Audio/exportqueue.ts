@@ -21,7 +21,7 @@ export const maximumExportQueueSize = 100;
 })
 export class UserCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));

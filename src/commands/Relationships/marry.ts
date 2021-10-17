@@ -16,9 +16,9 @@ import type { TFunction } from 'i18next';
 	detailedDescription: LanguageKeys.Commands.Social.MarryExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: CommandContext) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args, context: CommandContext) {
 		const user = args.finished ? null : await args.pick('userName');
-		return user ? this.marry(message, args.t, user) : this.container.stores.get('commands').get('married')!.run(message, args, context);
+		return user ? this.marry(message, args.t, user) : this.container.stores.get('commands').get('married')!.messageRun(message, args, context);
 	}
 
 	private async marry(message: GuildMessage, t: TFunction, user: User) {

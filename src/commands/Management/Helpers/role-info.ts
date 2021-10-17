@@ -17,7 +17,7 @@ import { MessageEmbed, Permissions } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = args.finished ? message.member.roles.highest : await args.pick('roleName');
 		const roleInfoTitles = args.t(LanguageKeys.Commands.Management.RoleInfoTitles);
 

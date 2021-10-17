@@ -22,7 +22,7 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 	detailedDescription: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
 		const player = await args.rest('overwatchPlayer');
 		const response = await sendLoadingMessage(message, args.t);

@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async fetchApi(pkg: string) {
 		try {
-			return fetch<YarnPkg.YarnPkgResult>(
+			return await fetch<YarnPkg.YarnPkgResult>(
 				API_URL,
 				{
 					method: FetchMethods.Post,

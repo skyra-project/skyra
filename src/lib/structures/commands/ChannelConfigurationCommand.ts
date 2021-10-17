@@ -25,7 +25,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 		this.settingsKey = options.settingsKey;
 	}
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(ChannelConfigurationCommand.hereOrTextChannelResolver);
 
 		await writeSettings(message.guild, (settings) => {

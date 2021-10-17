@@ -109,6 +109,8 @@ export function getEmojiObject(emoji: string): EmojiObject | null {
  * Resolves an emoji either from a database emoji, or a Discord {@link EmojiObject}.
  */
 export function resolveEmojiId(emoji: EmojiObject | SerializedEmoji): string {
+	if (isNullish(emoji)) return '';
+
 	return typeof emoji === 'string' ? getEmojiId(emoji) : emoji.id ?? encodeURIComponent(emoji.name!);
 }
 

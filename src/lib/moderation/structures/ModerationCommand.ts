@@ -37,8 +37,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public run(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null>;
-	public async run(message: GuildMessage, args: ModerationCommand.Args) {
+	public messageRun(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null>;
+	public async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
 		const resolved = await this.resolveOverloads(args);
 		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;

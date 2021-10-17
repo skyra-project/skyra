@@ -40,7 +40,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		this.requireUser = options.requireUser ?? false;
 	}
 
-	public async run(message: GuildMessage, args: WeebCommand.Args) {
+	public async messageRun(message: GuildMessage, args: WeebCommand.Args) {
 		const user = this.requireUser ? await args.pick('userName') : null;
 		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);

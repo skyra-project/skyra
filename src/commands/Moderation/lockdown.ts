@@ -86,6 +86,7 @@ export class UserCommand extends SkyraCommand {
 		// If they can send, begin locking
 		const response = await send(message, args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channelMention(channel.id) }));
 		await channel.permissionOverwrites.set([
+			...channel.permissionOverwrites.cache.values(),
 			{
 				id: role.id,
 				allow: 0n,

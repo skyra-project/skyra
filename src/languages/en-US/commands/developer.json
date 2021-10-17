@@ -25,9 +25,7 @@
 	"yarnEmbedDescriptionDeprecated": "❯ Deprecation Notice: **{{deprecated}}**",
 	"yarnEmbedDescriptionLatestVersion": "❯ Latest version: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ License: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ Main File: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Maintainers: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "more...",
-	"yarnPackageNotFound": "I'm sorry, but I could not find any package by the name of `{{pkg}}` in the registry.",
-	"yarnUnpublishedPackage": "What a silly developer who made {{pkg}}! They unpublished it!"
+	"yarnPackageNotFound": "I'm sorry, but I could not find any package by the name of `{{pkg}}` in the registry."
 }

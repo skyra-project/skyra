@@ -25,9 +25,7 @@
 	"yarnEmbedDescriptionDeprecated": "❯ Veraltungsnotiz: **{{deprecated}}**",
 	"yarnEmbedDescriptionLatestVersion": "❯ Neueste Version: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ Lizenz: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ Hauptdatei: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Verwalter: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "mehr...",
-	"yarnPackageNotFound": "Es tut mir leid, aber ich konnte kein Paket mit dem Namen `{{pkg}}` in der Registry finden.",
-	"yarnUnpublishedPackage": "Was für ein dummer Entwickler, der {{pkg}} gemacht hat! Er hat es wieder entfernt!"
+	"yarnPackageNotFound": "Es tut mir leid, aber ich konnte kein Paket mit dem Namen `{{pkg}}` in der Registry finden."
 }

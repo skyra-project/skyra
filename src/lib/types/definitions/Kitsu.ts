@@ -1,16 +1,7 @@
+import type { AlgoliaResult } from './AlgoliaSearch';
+
 export namespace Kitsu {
-	export interface KitsuResult {
-		exhaustiveNbHits: boolean;
-		hitsPerPage: number;
-		nbHits: number;
-		nbPages: number;
-		page: number;
-		params: string;
-		processingTimeMS: number;
-		query: string;
-		queryAfterRemoval: string;
-		hits: KitsuHit[];
-	}
+	export type KitsuResult = AlgoliaResult<KitsuHit>;
 
 	export interface KitsuHit {
 		abbreviatedTitles: string[];

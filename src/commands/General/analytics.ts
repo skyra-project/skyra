@@ -21,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 	private attachment: MessageAttachment | null = null;
 	private pendingPromise: Promise<Buffer> | null = null;
 
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		if (this.attachment && this.nextRefresh >= Date.now()) {
 			return send(message, { files: [this.attachment] });
 		}

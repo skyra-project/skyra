@@ -15,7 +15,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	detailedDescription: LanguageKeys.Commands.Moderation.UnwarnExtended
 })
 export class UserModerationCommand extends ModerationCommand {
-	public async run(message: GuildMessage, args: ModerationCommand.Args) {
+	public async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
 		const caseId = await args.pick('case');
 		const reason = await args.rest('string');
 

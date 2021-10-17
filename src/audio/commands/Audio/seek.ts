@@ -13,7 +13,7 @@ export class UserAudioCommand extends AudioCommand {
 	@RequireDj()
 	@RequireMusicPlaying()
 	@RequireSameVoiceChannel()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const timespan = await args.rest('timespan', { minimum: 0 });
 		await getAudio(message.guild).seek(timespan);
 		this.container.client.emit(Events.MusicSongSeekUpdateNotify, message, timespan);

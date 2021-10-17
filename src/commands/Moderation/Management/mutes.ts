@@ -13,7 +13,7 @@ import type { UserPaginatedMessageCommand as Moderations } from './moderations';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public run(message: GuildMessage, args: PaginatedMessageCommand.Args, context: PaginatedMessageCommand.Context) {
+	public messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args, context: PaginatedMessageCommand.Context) {
 		const moderations = this.store.get('moderations') as Moderations | undefined;
 		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');
 		return moderations.mutes(message, args, context);

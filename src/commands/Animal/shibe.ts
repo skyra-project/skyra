@@ -14,7 +14,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		const urls = await fetch<[string]>('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON);
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))

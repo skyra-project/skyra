@@ -16,7 +16,7 @@ import { URL } from 'url';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const input = await args.rest('string');
 
 		const { t } = args;

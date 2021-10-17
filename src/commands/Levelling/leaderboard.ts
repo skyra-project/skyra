@@ -20,7 +20,7 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 	spam: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const list = await this.container.client.leaderboard.fetch(message.guild.id);
 		if (list.size === 0) this.error(LanguageKeys.Commands.Social.LeaderboardNoEntries);
 

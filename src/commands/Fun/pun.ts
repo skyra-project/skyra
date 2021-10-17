@@ -12,7 +12,7 @@ import type { Message } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		try {
 			const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {
 				headers: {

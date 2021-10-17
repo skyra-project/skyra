@@ -16,7 +16,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		const result = await fromAsync(fetch<AwsRandomCatResult>('https://aws.random.cat/meow', FetchResultTypes.JSON));
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))

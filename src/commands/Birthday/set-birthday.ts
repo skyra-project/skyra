@@ -17,7 +17,7 @@ import { isNullish, Nullish } from '@sapphire/utilities';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const [birthdayRole, birthdayChannel, birthdayMessage] = await readSettings(message.guild, [
 			Birthday.Role,
 			Birthday.Channel,

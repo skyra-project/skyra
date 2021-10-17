@@ -12,7 +12,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
 	@RequireDj()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 		await audio.shuffleTracks();
 

@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 	private kBoundUseUpperCase!: (wordBank: WordBank) => string;
 	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textChannelName').catch(() => message.channel as GuildTextBasedChannelTypes);
 		if (isNsfwChannel(channel) && !isNsfwChannel(message.channel)) {
 			return this.error(LanguageKeys.Commands.Fun.MarkovNsfwChannel, { channel: channel.toString() });

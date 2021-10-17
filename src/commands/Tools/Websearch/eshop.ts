@@ -21,7 +21,7 @@ const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/nc
 	detailedDescription: LanguageKeys.Commands.Tools.EshopExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const gameName = await args.rest('string');
 
 		const response = await sendLoadingMessage(message, args.t);

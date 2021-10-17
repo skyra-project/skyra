@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const animEmotes: string[] = [];

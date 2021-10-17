@@ -16,7 +16,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cases = await args
 			.pick('case')
 			.then((value) => [value])

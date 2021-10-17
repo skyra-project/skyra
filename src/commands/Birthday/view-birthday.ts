@@ -14,7 +14,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: CommandContext) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const task = getGuildMemberBirthday(message.guild.id, user.id);
 		const content = task

@@ -35,7 +35,7 @@ const imperialCountries = ['US', 'LR', 'MM'];
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const useImperial = this.shouldUseImperial(args);
 		const base = baseLanguage(args.t.lng);
 		const data = await getData(await args.rest('string', { minimum: 1 }), base);

@@ -15,7 +15,7 @@ import type { MessageOptions } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.deletable) deleteMessage(message).catch(() => null);
 
 		const channel = await args.pick('textOrNewsChannelName').catch(() => message.channel);

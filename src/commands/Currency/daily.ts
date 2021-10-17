@@ -23,7 +23,7 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	flags: REMINDER_FLAGS
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const toRemind = args.getFlags(...REMINDER_FLAGS);
 		const now = Date.now();
 

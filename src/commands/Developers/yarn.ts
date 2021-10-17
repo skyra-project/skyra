@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public async messageRun(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		const pkg = encodeURIComponent((await args.rest('cleanString')).replaceAll(' ', '-').toLowerCase());
 		const { t } = args;
 		await sendLoadingMessage(message, t);

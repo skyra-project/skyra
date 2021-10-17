@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		const { t } = args;
 
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {

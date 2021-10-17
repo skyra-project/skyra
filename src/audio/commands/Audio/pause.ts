@@ -22,7 +22,7 @@ export class UserAudioCommand extends AudioCommand {
 	@RequireSameVoiceChannel()
 	@RequireDj()
 	@RequireMusicPlaying()
-	public async run(message: GuildMessage) {
+	public async messageRun(message: GuildMessage) {
 		await getAudio(message.guild).pause();
 		this.container.client.emit(Events.MusicSongPauseNotify, message);
 	}

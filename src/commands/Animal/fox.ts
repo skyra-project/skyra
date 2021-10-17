@@ -17,7 +17,7 @@ const url = new URL('https://randomfox.ca/floof');
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message) {
+	public async messageRun(message: Message) {
 		const { image } = await fetch<FoxResultOk>(url, FetchResultTypes.JSON);
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))

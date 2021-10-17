@@ -17,7 +17,7 @@ import type { TFunction } from 'i18next';
 	requiredClientPermissions: [PermissionFlagsBits.ManageGuild]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const invites = await message.guild.invites.fetch();

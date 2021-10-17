@@ -11,7 +11,7 @@ import type { Message } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const input = await args.rest('string', { maximum: 50 });
 
 		const content = args.t(LanguageKeys.Commands.Misc.ZalgoOutput, { str: zalgo(input, { down: false, middle: true, up: false, size: 'mini' }) });

@@ -18,7 +18,7 @@ import { join } from 'path';
 export class UserCommand extends SkyraCommand {
 	private facts: readonly string[] = [];
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))

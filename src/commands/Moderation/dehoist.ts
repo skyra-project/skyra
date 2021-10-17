@@ -24,7 +24,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
 			await sendLoadingMessage(message, args.t);
 			await message.guild.members.fetch();

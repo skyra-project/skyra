@@ -13,7 +13,7 @@ import type { Message } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const { users } = this.container.db;
 		const wager = await args.pick('shinyWager');
 		const settings = await users.ensureProfile(message.author.id);

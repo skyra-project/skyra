@@ -15,7 +15,7 @@ export class UserAudioCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()
 	@RequireMusicPlaying()
-	public async run(message: GuildMessage) {
+	public async messageRun(message: GuildMessage) {
 		const audio = getAudio(message.guild);
 
 		// Toggle the repeat option with its opposite value

@@ -21,7 +21,7 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 	detailedDescription: LanguageKeys.Commands.Animation.KitsuMangaExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const mangaName = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 

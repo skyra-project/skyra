@@ -26,7 +26,7 @@ const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACT
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const color = await this.container.db.fetchColor(message);
 		const roles = this.getRoles(args);
 

@@ -15,7 +15,7 @@ import { MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.StarWars.PlanetExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const loadingMessage = await sendLoadingMessage(message, t);
 		const planet = await args.rest('string');

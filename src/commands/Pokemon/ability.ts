@@ -15,7 +15,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const ability = await args.rest('string');
 		const { t } = args;
 

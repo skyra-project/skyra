@@ -13,7 +13,7 @@ import type { Message, MessageOptions } from 'discord.js';
 	quotes: []
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('user');
 		const content = args.finished ? null : await args.rest('string');
 

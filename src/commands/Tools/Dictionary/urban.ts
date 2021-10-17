@@ -15,7 +15,7 @@ import type { TFunction } from 'i18next';
 	nsfw: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const query = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 

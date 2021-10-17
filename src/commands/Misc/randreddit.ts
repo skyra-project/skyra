@@ -19,7 +19,7 @@ const subredditNameRegex = /^(?:\/?r\/)?[A-Za-z0-9_-]*$/;
 	detailedDescription: LanguageKeys.Commands.Misc.RandRedditExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		await sendLoadingMessage(message, args.t);
 
 		const reddit = await args.pick(UserCommand.reddit);

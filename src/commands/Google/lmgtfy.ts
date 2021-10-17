@@ -12,7 +12,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const [query, color] = await Promise.all([args.rest('string'), this.container.db.fetchColor(message)]);
 
 		const url = new URL('https://letmegooglethat.com/');

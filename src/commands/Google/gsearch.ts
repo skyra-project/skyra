@@ -14,7 +14,7 @@ import { MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.Google.GsearchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const query = (await args.rest('string')).replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+');
 		const [response, { items }] = await Promise.all([
 			sendLoadingMessage(message, args.t),

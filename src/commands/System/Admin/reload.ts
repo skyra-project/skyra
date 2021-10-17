@@ -15,7 +15,7 @@ import i18next, { TFunction } from 'i18next';
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const content = await this.reloadAny(args);
 		return send(message, content);
 	}

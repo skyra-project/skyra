@@ -15,7 +15,7 @@ import { URL } from 'url';
 	detailedDescription: LanguageKeys.Commands.Tools.ITunesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const song = await args.rest('string');
 
 		const response = await sendLoadingMessage(message, args.t);

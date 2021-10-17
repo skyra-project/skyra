@@ -19,7 +19,7 @@ const flags = ['force'];
 export class UserAudioCommand extends AudioCommand {
 	@RequireSongPresent()
 	@RequireSameVoiceChannel()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 		const { voiceChannel } = audio;
 

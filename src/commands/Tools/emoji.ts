@@ -18,7 +18,7 @@ const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const emoji = await args.pick('string');
 
 		const { content, name, attachment } = REG_EMOJI.test(emoji) ? this.builtinEmoji(args, emoji) : await this.twemoji(args, emoji);

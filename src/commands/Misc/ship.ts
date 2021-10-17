@@ -24,7 +24,7 @@ export class UserCommand extends SkyraCommand {
 	private darkThemeTemplate: Image = null!;
 	private heartIcon: Image = null!;
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const firstUser = args.finished ? this.randomUser(message) : await args.pick('userName');
 		const secondUser = args.finished ? this.randomUser(message, firstUser) : await args.pick('userName');
 

@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const input = await args.rest('string');
 
 		let output = '';

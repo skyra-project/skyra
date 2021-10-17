@@ -15,7 +15,7 @@ const flags = ['removeall', 'ra'];
 export class UserAudioCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireDj()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 		const channelId = audio.voiceChannelId!;
 

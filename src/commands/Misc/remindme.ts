@@ -30,7 +30,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	detailedDescription: LanguageKeys.Commands.Social.RemindMeExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const action = args.finished ? Actions.List : await args.pick(UserCommand.action).catch(() => Actions.Create);
 		return this[action](message, args);
 	}

@@ -27,7 +27,7 @@ const COORDINATES: readonly [number, number][] = [
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName').catch(() => message.author);
 		const attachment = await this.generate(user);
 		return send(message, { files: [{ attachment, name: 'triggered.gif' }] });

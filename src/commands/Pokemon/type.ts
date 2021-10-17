@@ -37,7 +37,7 @@ const kPokemonTypes = new Set([
 	detailedDescription: LanguageKeys.Commands.Pokemon.TypeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const types = await args.rest(UserPaginatedMessageCommand.type);
 		const response = await sendLoadingMessage(message, t);

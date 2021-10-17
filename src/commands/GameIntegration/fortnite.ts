@@ -20,7 +20,7 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
 		const user = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);

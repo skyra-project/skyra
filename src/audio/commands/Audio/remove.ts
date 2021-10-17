@@ -11,7 +11,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		let index = await args.pick('integer', { minimum: 1 });
 
 		// Minus one as user input is 1-based while the code is 0-based:

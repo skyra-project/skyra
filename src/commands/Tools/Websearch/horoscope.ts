@@ -23,7 +23,7 @@ const kDays = ['yesterday', 'tomorrow', 'today'];
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const sign = await args.pick(UserCommand.sunsign);
 		const day = args.finished ? Days.Today : await args.pick(UserCommand.day);
 

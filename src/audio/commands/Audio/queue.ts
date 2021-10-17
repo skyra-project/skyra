@@ -25,7 +25,7 @@ import type { TFunction } from 'i18next';
 })
 export class UserAudioCommand extends AudioCommand {
 	@RequireQueueNotEmpty()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const response = await sendLoadingMessage(message, args.t);
 
 		// Generate the pages with 5 songs each

@@ -17,7 +17,7 @@ import { join } from 'path';
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName').catch(() => message.author);
 		const userAvatar = await fetchAvatar(user);
 		const attachment = await this.generateImage(userAvatar);

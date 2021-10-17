@@ -13,7 +13,7 @@ import type { Message } from 'discord.js';
 	guarded: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const content = args.t(this.detailedDescription).extendedHelp!;
 
 		if (isGuildMessage(message)) {

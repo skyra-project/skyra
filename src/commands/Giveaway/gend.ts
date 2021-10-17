@@ -18,7 +18,7 @@ import type { Message } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick('textOrNewsChannelName').catch(() => message.channel);
 		const target = await args.pick('message', { channel });
 		if (!this.validateMessage(target)) this.error(LanguageKeys.Commands.Giveaway.GiveawayEndMessageNotMine);

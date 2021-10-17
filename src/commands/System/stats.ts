@@ -14,7 +14,7 @@ import { CpuInfo, cpus, uptime } from 'os';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const embed = await this.buildEmbed(message, args);
 		return send(message, { embeds: [embed] });
 	}

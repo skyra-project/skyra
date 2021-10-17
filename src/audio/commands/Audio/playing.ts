@@ -20,7 +20,7 @@ export class UserAudioCommand extends AudioCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
 	@RequireMusicPlaying()
-	public async run(message: GuildMessage, args: AudioCommand.Args) {
+	public async messageRun(message: GuildMessage, args: AudioCommand.Args) {
 		const audio = getAudio(message.guild);
 
 		const entry = await audio.getCurrentTrack();

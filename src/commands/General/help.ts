@@ -38,7 +38,7 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 	guarded: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public async messageRun(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (args.finished) {
 			if (args.getFlags('cat', 'categories')) return this.helpCategories(message, args);
 			if (args.getFlags('all')) return this.all(message, args, context);

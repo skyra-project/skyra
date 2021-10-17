@@ -21,7 +21,7 @@ const flags = ['remind', 'reminder', 'remindme'];
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const check = await args.pick(UserCommand.check).catch(() => false);
 		if (check) return this.check(message, args);
 

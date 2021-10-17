@@ -21,7 +21,7 @@ export class UserCommand extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const category = await args.pick(UserCommand.category).catch(() => CATEGORIES.general);
 		const questionType = await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);

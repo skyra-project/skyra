@@ -17,7 +17,7 @@ import { MessageEmbed } from 'discord.js';
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async run(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 

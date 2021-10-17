@@ -19,7 +19,7 @@ const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const { hex, hsl, rgb } = await args.rest('color');
 
 		const diff = await args.pick('integer', { minimum: 0, maximum: 255 }).catch(() => 10);

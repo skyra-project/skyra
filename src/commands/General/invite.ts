@@ -17,7 +17,7 @@ const flags = ['noperms', 'nopermissions'];
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public run(message: Message, args: SkyraCommand.Args) {
+	public messageRun(message: Message, args: SkyraCommand.Args) {
 		const arg = args.nextMaybe();
 		const shouldNotAddPermissions = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
 

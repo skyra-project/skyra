@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.Social.ToggleDarkModeExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const { users } = this.container.db;
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);

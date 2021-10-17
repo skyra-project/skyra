@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 		return this.container.stores.get('arguments').get('integer') as Argument<number>;
 	}
 
-	public async run(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const time = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(10), maximum: minutes(2) });
 		const [width, height, length] = await Promise.all([
 			this.parseOption(args, ['x', 'width'], 8, 1, 10),

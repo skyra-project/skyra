@@ -14,7 +14,7 @@ export class UserAudioCommand extends AudioCommand {
 	@RequireSkyraInVoiceChannel()
 	@RequireSameVoiceChannel()
 	@RequireMusicPaused()
-	public async run(message: GuildMessage) {
+	public async messageRun(message: GuildMessage) {
 		await getAudio(message.guild).resume();
 		this.container.client.emit(Events.MusicSongResumeNotify, message);
 	}

@@ -29,7 +29,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 
 	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context) {
-		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
+		// If the command messageRun is not this one (potentially help command) or the guild is null, return with no error.
 		const [id, t] = await readSettings(message.guild, (settings) => [settings[this.roleKey], settings.getLanguage()]);
 
 		// Verify for role existence.

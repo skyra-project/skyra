@@ -93,7 +93,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 		});
 	}
 
-	public async run(message: GuildMessage, args: SkyraCommand.Args) {
+	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const type = this.getAction(args);
 		if (type === AKeys.Show) return this.show(message);
 

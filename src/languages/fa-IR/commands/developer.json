@@ -25,9 +25,7 @@
 	"yarnEmbedDescriptionDeprecated": "❯ اعلامیه پشتیبانی: **{{deprecated}}**",
 	"yarnEmbedDescriptionLatestVersion": "❯ اخرین ورژن: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ لایسنس: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ فایل اصلی: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ برنامه نویس ها: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "بیشتر...",
-	"yarnPackageNotFound": "متاسفانه، بسته ای با نام `{{pkg}}` پیدا نشد.",
-	"yarnUnpublishedPackage": "چه برنامه نویس احمقی این بسته {{pkg}} رو نوشته، اصن انتشار داده نشده!"
+	"yarnPackageNotFound": "متاسفانه، بسته ای با نام `{{pkg}}` پیدا نشد."
 }

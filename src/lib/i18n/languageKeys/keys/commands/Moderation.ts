@@ -128,6 +128,7 @@ export const LockdownLocking = FT<{ channel: string }, string>('commands/moderat
 export const LockdownLocked = FT<{ channel: string }, string>('commands/moderation:lockdownLocked');
 export const LockdownUnlocked = FT<{ channel: string }, string>('commands/moderation:lockdownUnlocked');
 export const LockdownOpen = FT<{ channel: string }, string>('commands/moderation:lockdownOpen');
+export const LockdownMissingPermissions = FT<{ channel: string }>('commands/moderation:lockdownMissingPermissions');
 export const MuteMuted = T('commands/moderation:muteMuted');
 export const MuteUserNotMuted = T('commands/moderation:muteUserNotMuted');
 export const RestrictLowlevel = T('commands/moderation:restrictLowlevel');

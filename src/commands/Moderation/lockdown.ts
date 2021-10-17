@@ -5,12 +5,13 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
 import { assertNonThread, getSecurity } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
+import { channelMention } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, NonThreadGuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Permissions, Role } from 'discord.js';
+import { PermissionOverwriteOptions, Permissions, Role } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -23,6 +24,16 @@ import type { TFunction } from 'i18next';
 	subCommands: ['lock', 'unlock', { input: 'auto', default: true }]
 })
 export class UserCommand extends SkyraCommand {
+	private readonly permissionsToDeny =
+		PermissionFlagsBits.SendMessages |
+		PermissionFlagsBits.AddReactions |
+		PermissionFlagsBits.UsePublicThreads | // CREATE_PUBLIC_THREADS
+		PermissionFlagsBits.UsePrivateThreads | // CREATE_PRIVATE_THREADS
+		(1n << 38n); // SEND_MESSAGES_IN_THREADS
+
+	private readonly clientPermissionsToAllow =
+		PermissionFlagsBits.SendMessages | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageRoles;
+
 	public messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		if (context.commandName === 'lock') return this.lock(message, args);
 		if (context.commandName === 'unlock') return this.unlock(message, args);
@@ -61,16 +72,34 @@ export class UserCommand extends SkyraCommand {
 		// If there was a lockdown, abort lock
 		const lock = this.getLock(role, channel);
 		if (lock !== null) {
-			this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+			this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channelMention(channel.id) });
 		}
 
-		const allowed = this.isAllowed(role, channel);
+		const isAllowedToManageChannel = this.skyraIsAllowedToManageChannel(channel);
+
+		if (!isAllowedToManageChannel) {
+			this.error(LanguageKeys.Commands.Moderation.LockdownMissingPermissions, { channel: channelMention(channel.id) });
+		}
+
+		const allowed = this.roleIsAllowedToSendMessages(role, channel);
 
 		// If they can send, begin locking
-		const response = await send(message, args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
-		await channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false });
+		const response = await send(message, args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channelMention(channel.id) }));
+		await channel.permissionOverwrites.set([
+			{
+				id: role.id,
+				allow: 0n,
+				deny: this.permissionsToDeny,
+				type: 'role'
+			},
+			{
+				id: this.container.client.user!.id,
+				allow: this.clientPermissionsToAllow,
+				type: 'member'
+			}
+		]);
 		if (canSendMessages(message.channel)) {
-			await response.edit(args.t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
+			await response.edit(args.t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channelMention(channel.id) })).catch(() => null);
 		}
 
 		// Create the timeout
@@ -80,13 +109,25 @@ export class UserCommand extends SkyraCommand {
 		getSecurity(message.guild).lockdowns.add(role, channel, { allowed, timeout });
 	}
 
-	private isAllowed(role: Role, channel: NonThreadGuildTextBasedChannelTypes): boolean | null {
+	private skyraIsAllowedToManageChannel(channel: NonThreadGuildTextBasedChannelTypes): boolean | undefined {
+		const targetChannelClientPermissions = channel.permissionsFor(this.container.client.user!);
+		return targetChannelClientPermissions?.has([PermissionFlagsBits.ManageRoles | PermissionFlagsBits.ManageChannels]);
+	}
+
+	private roleIsAllowedToSendMessages(role: Role, channel: NonThreadGuildTextBasedChannelTypes): boolean | null {
 		return channel.permissionOverwrites.cache.get(role.id)?.allow.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? null;
 	}
 
 	private async handleUnlock(message: GuildMessage, args: SkyraCommand.Args, role: Role, channel: NonThreadGuildTextBasedChannelTypes) {
 		const entry = this.getLock(role, channel);
-		if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
+		if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channelMention(channel.id) });
+
+		const isAllowedToManageChannel = this.skyraIsAllowedToManageChannel(channel);
+
+		if (!isAllowedToManageChannel) {
+			this.error(LanguageKeys.Commands.Moderation.LockdownMissingPermissions, { channel: channelMention(channel.id) });
+		}
+
 		if (entry.timeout) clearAccurateTimeout(entry.timeout);
 		return this.performUnlock(message, args.t, role, channel, entry.allowed);
 	}
@@ -100,20 +141,73 @@ export class UserCommand extends SkyraCommand {
 	) {
 		getSecurity(channel.guild).lockdowns.remove(role, channel);
 
-		const overwrites = channel.permissionOverwrites.cache.get(role.id);
-		if (overwrites === undefined) return;
+		const overwritesForRole = channel.permissionOverwrites.cache.get(role.id);
+		if (overwritesForRole === undefined) return;
 
-		// If the only permission overwrite is the denied SEND_MESSAGES, clean up the entire permission; if the permission
+		// If the permission overwrite matches the permissionsToDeny, then clean up the entire permission; if the permission
 		// was denied, reset it to the default state, otherwise don't run an extra query
-		if (overwrites.allow.bitfield === 0n && overwrites.deny.bitfield === Permissions.FLAGS.SEND_MESSAGES) {
-			await overwrites.delete();
-		} else if (overwrites.deny.has(Permissions.FLAGS.SEND_MESSAGES)) {
-			await overwrites.edit({ SEND_MESSAGES: allowed });
+		if (overwritesForRole.allow.bitfield === 0n && overwritesForRole.deny.bitfield === this.permissionsToDeny) {
+			await overwritesForRole.delete();
+		} else {
+			const permissionsToAllow: PermissionOverwriteOptions = {};
+
+			// Check and assign all the permissions to allow
+			if (overwritesForRole.deny.has(PermissionFlagsBits.SendMessages)) {
+				permissionsToAllow.SEND_MESSAGES = allowed;
+			}
+
+			if (overwritesForRole.deny.has(PermissionFlagsBits.AddReactions)) {
+				permissionsToAllow.ADD_REACTIONS = allowed;
+			}
+
+			if (overwritesForRole.deny.has(PermissionFlagsBits.UsePublicThreads)) {
+				permissionsToAllow.USE_PUBLIC_THREADS = allowed;
+			}
+
+			if (overwritesForRole.deny.has(PermissionFlagsBits.UsePrivateThreads)) {
+				permissionsToAllow.USE_PRIVATE_THREADS = allowed;
+			}
+
+			if (overwritesForRole.deny.has(1n << 38n)) {
+				permissionsToAllow.SEND_MESSAGES_IN_THREADS = allowed;
+			}
+
+			// If we have any permissions to allow, then edit the overwrite
+			if (Object.keys(permissionsToAllow).length) {
+				await overwritesForRole.edit(permissionsToAllow);
+			}
 		}
 
 		if (canSendMessages(message.channel)) {
-			const content = t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() });
+			const content = t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channelMention(channel.id) });
 			await send(message, content);
+		}
+
+		const overwritesForClient = channel.permissionOverwrites.cache.get(this.container.client.user!.id);
+		if (overwritesForClient === undefined) return;
+
+		if (overwritesForClient.allow.bitfield === this.clientPermissionsToAllow) {
+			await overwritesForClient.delete();
+		} else {
+			const clientPermissionsToRemove: PermissionOverwriteOptions = {};
+
+			// Check and assign all the permissions to allow
+			if (overwritesForClient.allow.has(PermissionFlagsBits.SendMessages)) {
+				clientPermissionsToRemove.SEND_MESSAGES = allowed;
+			}
+
+			if (overwritesForClient.allow.has(PermissionFlagsBits.ManageChannels)) {
+				clientPermissionsToRemove.MANAGE_CHANNELS = allowed;
+			}
+
+			if (overwritesForClient.allow.has(PermissionFlagsBits.ManageRoles)) {
+				clientPermissionsToRemove.MANAGE_ROLES = allowed;
+			}
+
+			// If we have any permissions to allow, then edit the overwrite
+			if (Object.keys(clientPermissionsToRemove).length) {
+				await overwritesForClient.edit(clientPermissionsToRemove);
+			}
 		}
 	}
 

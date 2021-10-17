@@ -53,6 +53,7 @@
 	"lockdownLocked": "The channel {{channel}} was already locked.",
 	"lockdownUnlocked": "The channel {{channel}} was not locked.",
 	"lockdownOpen": "The lockdown for the channel {{channel}} has been released.",
+	"lockdownMissingPermissions": "{{REDCROSS}} I'm sorry, but I lack the permission to lockdown {{channel}}. I will need the **{{MANAGE_ROLES, permissions}}** and **{{MANAGE_CHANNELS, permissions}}** permissions to perform the lockdown.",
 	"muteMuted": "The target user is already muted.",
 	"muteUserNotMuted": "This user is not muted.",
 	"restrictLowlevel": "{{REDCROSS}} I'm sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set it up.",

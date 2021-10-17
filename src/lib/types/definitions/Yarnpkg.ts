@@ -1,66 +1,124 @@
+import type { AlgoliaResult } from './AlgoliaSearch';
+
 export namespace YarnPkg {
-	export interface PackageJson {
-		_id: Record<string, string>;
-		_rev: string;
-		'dist-tags': DistTags;
-		author?: Author;
-		bugs: Record<'url', string>;
-		description?: string;
-		homepage: string;
-		keywords: string[];
-		license: string;
-		maintainers: Maintainer[];
-		name: string;
-		readme: string;
-		readmeFilename: string;
-		repository: Repository;
-		time?: Record<string, string>;
-		versions: Record<string, VersionInfo>;
-	}
+	export type YarnPkgResult = AlgoliaResult<PackageData>;
 
-	export interface Author {
-		name: string;
-		url?: string;
-	}
+	export interface PackageData {
+		bin: {
+			[key: string]: string;
+		};
 
-	export interface DistTags extends Record<string, unknown> {
-		latest: string;
-	}
+		changelogFilename: string;
 
-	export interface Maintainer {
-		name: string;
-		email: string;
-		url?: string;
-	}
+		computedKeywords: string[];
 
-	export interface Repository {
-		type: RepositoryType;
-		url: string;
-	}
+		computedMetadata: unknown;
 
-	export enum RepositoryType {
-		Git = 'git',
-		Svn = 'svn'
-	}
+		created: number;
 
-	interface VersionInfo {
-		name: string;
+		dependencies: {
+			[key: string]: string;
+		};
+
+		dependents: number;
+
+		deprecated: boolean;
+
+		deprecatedReason: string | null;
+
 		description: string;
-		author: Author;
-		version: string;
-		main: string;
-		license: string;
-		homepage: string;
-		engines: Record<string, string>;
-		repository: Repository;
-		bugs: Record<'url', string>;
-		keywords: string[];
-		publishConfig: Record<string, string>;
+
+		devDependencies: {
+			[key: string]: string;
+		};
+
+		downloadsLast30Days: number;
+
+		downloadsRatio: number;
+
 		gitHead: string;
-		dist: Record<string, string>;
-		maintainers: Maintainer[];
-		directories: Record<string, string>;
-		dependencies?: Record<string, string>;
-		deprecated?: string;
+
+		githubRepo?: Partial<{
+			head: string;
+			path: string;
+			project: string;
+			user: string;
+		}>;
+
+		homage: string;
+
+		humanDependents: string;
+
+		humanDownloadsLast30Days: string;
+
+		isDeprecated: boolean;
+
+		jsDelivrHits: number;
+
+		keywords: string[];
+
+		lastCrawl: `${number}${number}${number}${number}-${number}${number}-${number}${number}T${number}${number}:${number}${number}:${number}${number}.${number}${number}${number}Z`;
+
+		lastPublisher: NpmPackageAuthor;
+
+		license: string;
+
+		modified: number;
+
+		moduleTypes: ('esm' | 'cjs')[];
+
+		name: string;
+
+		objectID: string;
+
+		originalAuthor: {
+			name: string;
+		};
+
+		owner: NpmPackageAuthor;
+
+		owners: NpmPackageAuthor[];
+
+		popular: boolean;
+
+		readme: string;
+
+		repository?: Partial<{
+			branch: string;
+			head: string;
+			host: string;
+			path: string;
+			project: string;
+			type: 'git' | 'svn';
+			url: string;
+			user: string;
+		}>;
+
+		styleTypes: string[];
+
+		tags: {
+			[key: string]: string;
+		};
+
+		types: {
+			ts: string;
+		};
+
+		version: string;
+
+		versions: {
+			latest: string;
+			[key: string]: string;
+		};
+	}
+
+	export interface NpmPackageAuthor {
+		avatar: string;
+
+		email?: string;
+
+		link: string;
+
+		name: string;
 	}
 }

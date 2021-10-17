@@ -100,14 +100,16 @@ export interface SkyraEnv {
 	KITSU_TOKEN: string;
 	NINTENDO_ID: string;
 	NINTENDO_TOKEN: string;
+	NPM_SEARCH_ID: string;
+	NPM_SEARCH_KEY: string;
 	OWLBOT_TOKEN: string;
 	SENTRY_URL: string;
 	THEMOVIEDATABASE_TOKEN: string;
 	TIMEZONEDB_TOKEN: string;
 	TOP_GG_TOKEN: string;
 	TWITCH_CLIENT_ID: string;
-	TWITCH_TOKEN: string;
 	TWITCH_EVENTSUB_SECRET: string;
+	TWITCH_TOKEN: string;
 	WEBHOOK_DISCORDS_TOKEN: string;
 	WEBHOOK_TOPGG_TOKEN: string;
 	WEEB_SH_TOKEN: string;

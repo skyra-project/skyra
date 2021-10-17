@@ -4,7 +4,7 @@
 	"explicitContentFilterAllMembers": "Todos los miembros",
 	"messageNotificationsAll": "Todos los Mensajes",
 	"messageNotificationsMentions": "Solo @menciones",
-	"SUPPRESS_JOIN_NOTIFICATIONS": "Mensajes de Bienvenida",
-	"SUPPRESS_PREMIUM_SUBSCRIPTIONS": "Mensajes de Mejoras del Servidor",
-	"SUPPRESS_GUILD_REMINDER_NOTIFICATIONS": "Mensajes de Consejos de Configuración del Servidor"
+	"WELCOME_MESSAGE_DISABLED": "Mensajes de Bienvenida",
+	"BOOST_MESSAGE_DISABLED": "Mensajes de Mejoras del Servidor",
+	"REMINDER_MESSAGE_DISABLED": "Mensajes de Consejos de Configuración del Servidor"
 }

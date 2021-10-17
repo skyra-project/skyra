@@ -25,9 +25,7 @@
 	"yarnEmbedDescriptionDeprecated": "",
 	"yarnEmbedDescriptionLatestVersion": "❯ Последняя версия: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ Лицензия: **{{license}}**",
-	"yarnEmbedDescriptionMainFile": "❯ Основной файл: **{{mainFile}}**",
 	"yarnEmbedDescriptionMaintainers": "❯ Сопровождающие: **{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "",
-	"yarnPackageNotFound": "Простите, но мне не удалось найти в реестре пакет с названием `{{pkg}}`.",
-	"yarnUnpublishedPackage": ""
+	"yarnPackageNotFound": "Простите, но мне не удалось найти в реестре пакет с названием `{{pkg}}`."
 }

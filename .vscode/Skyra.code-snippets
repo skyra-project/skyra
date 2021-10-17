@@ -21,7 +21,7 @@
 			"\tpermissions: [$2],",
 			"})",
 			"export class UserCommand extends SkyraCommand {",
-			"\tpublic async run(message: Message, args: SkyraCommand.Args) {",
+			"\tpublic async messageRun(message: Message, args: SkyraCommand.Args) {",
 			"\t\treturn $3;",
 			"\t}",
 			"}",

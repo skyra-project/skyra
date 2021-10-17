@@ -23,9 +23,9 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 		return this.container.stores.get('arguments').get('role') as Argument<Role>;
 	}
 
-	public async run(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null> {
+	public async messageRun(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null> {
 		await this.inhibit(message, args, context);
-		return super.run(message, args, context);
+		return super.messageRun(message, args, context);
 	}
 
 	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context) {

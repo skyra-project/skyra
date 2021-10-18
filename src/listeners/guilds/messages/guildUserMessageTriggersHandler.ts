@@ -1,6 +1,7 @@
 import { GuildSettings, readSettings, TriggerIncludes, writeSettings } from '#lib/database';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { getEmojiReactionFormat } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -27,7 +28,7 @@ export class UserListener extends Listener {
 
 	private async tryReact(message: GuildMessage, trigger: TriggerIncludes) {
 		try {
-			await message.react(trigger.output);
+			await message.react(getEmojiReactionFormat(trigger.output));
 		} catch (error) {
 			// Message has been deleted
 			if ((error as DiscordAPIError).code === RESTJSONErrorCodes.UnknownMessage) return;

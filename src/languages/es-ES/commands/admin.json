@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} no puede ser deshabilitado.",
-	"confUpdated": "Se actualizó correctamente la clave **{{key}}**: {{response}}",
+	"confUpdated": "",
 	"confGetNoExt": "La clave **{{key}}** parece no existir.",
 	"confGet": "El valor para la clave **{{key}}** es: `{{value}}`",
 	"confReset": "La clave **{{key}}** ha sido restablecida a: `{{value}}`",

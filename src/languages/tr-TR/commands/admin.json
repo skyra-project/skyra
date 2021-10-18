@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} devre dışı bırakılamaz.",
-	"confUpdated": "Anahtar başarıyla güncellendi **{{key}}**: `{{response}}`",
+	"confUpdated": "Anahtar başarıyla güncellendi **{{key}}**: {{response}}",
 	"confGetNoExt": "**{{key}}** anahtarı mevcut görünmüyor.",
 	"confGet": "**{{key}}** anahtarının değeri: `{{value}}`",
 	"confReset": "**{{key}}** anahtarı şuna sıfırlandı: `{{value}}`",

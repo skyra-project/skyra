@@ -3,7 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { isValidCustomEmoji, isValidSerializedTwemoji, isValidTwemoji } from '#lib/util/functions/emojis';
 import { filter, map } from '#utils/common';
+import { inlineCode } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -55,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return send(message, {
-			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }),
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -68,7 +70,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return send(message, {
-			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }),
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
@@ -84,6 +86,10 @@ export class UserCommand extends SkyraCommand {
 			content: args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }),
 			allowedMentions: { users: [], roles: [] }
 		});
+	}
+
+	private getTextResponse(response: string) {
+		return isValidCustomEmoji(response) || isValidSerializedTwemoji(response) || isValidTwemoji(response) ? response : inlineCode(response);
 	}
 
 	private async fetchKey(args: SkyraCommand.Args) {

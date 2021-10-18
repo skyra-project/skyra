@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",
-	"confUpdated": "**{{key}}** is succesvol bijgewerkt: `{{response}}`",
+	"confUpdated": "**{{key}}** is succesvol bijgewerkt: {{response}}",
 	"confGetNoExt": "De sleutel **{{key}}** lijkt niet te bestaan.",
 	"confGet": "De waarde voor **{{key}}** is: `{{value}}`",
 	"confReset": "**{{key}}** is gereset naar: `{{value}}`",

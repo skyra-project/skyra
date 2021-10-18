@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",
-	"confUpdated": "Schlüssel **{{key}}**: `{{response}} ` wurde erfolgreich aktualisiert",
+	"confUpdated": "Schlüssel **{{key}}**: {{response}} wurde erfolgreich aktualisiert",
 	"confGetNoExt": "Der Schlüssel **{{key}}** scheint nicht zu existieren.",
 	"confGet": "Der Wert für den Schlüssel **{{key}}** ist: `{{value}}`",
 	"confReset": "Der Schlüssel **{{key}}** wurde zurückgesetzt auf: `{{value}}`",

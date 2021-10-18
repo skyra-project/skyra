@@ -23,6 +23,10 @@ export function isValidTwemoji(emoji: string) {
 	return TwemojiRegex.test(emoji);
 }
 
+export function isValidCustomEmoji(emoji: string) {
+	return FormattedCustomEmojiWithGroups.test(emoji);
+}
+
 /**
  * Checks whether or not the emoji is a valid serialized twemoji. This method is an alias of {@link isValidTwemoji} with
  * {@link decodeURIComponent}.

@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors } from '#utils/constants';
-import { isAdmin } from '#utils/functions';
+import { getEmojiReactionFormat, isAdmin, SerializedEmoji } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
@@ -67,9 +67,9 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	private async react(message: GuildMessage, emoji: string, path: keyof GuildEntity) {
+	private async react(message: GuildMessage, emoji: SerializedEmoji, path: keyof GuildEntity) {
 		try {
-			await message.react(emoji);
+			await message.react(getEmojiReactionFormat(emoji));
 		} catch (error) {
 			// If it's not a DiscordAPIError, throw:
 			if (!(error instanceof DiscordAPIError)) throw error;
@@ -78,10 +78,10 @@ export class UserCommand extends SkyraCommand {
 			if (error.code !== RESTJSONErrorCodes.UnknownEmoji) throw error;
 
 			// If it's the default value, throw:
-			const defaultEmoji = configurableKeys.get(path)!.default as string;
+			const defaultEmoji = configurableKeys.get(path)!.default as SerializedEmoji;
 			if (emoji === defaultEmoji) throw error;
 
-			await message.react(defaultEmoji);
+			await message.react(getEmojiReactionFormat(defaultEmoji));
 			await writeSettings(message.guild, [[path, defaultEmoji]]);
 		}
 	}

@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
-	"confUpdated": "S-a actualizat cu succes cheia **{{key}}**: {{response}}",
+	"confUpdated": "",
 	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
 	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
 	"confReset": "Cheia **{{key}}** a fost resetată la: `{{value}}`",

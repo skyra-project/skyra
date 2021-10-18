@@ -1,6 +1,6 @@
 {
 	"confGuarded": "{{name, toTitleCase}} band nahi hona chahiye.",
-	"confUpdated": "{{key}} की सफलता पूर्वक अपडेट हो चुकी है।{{response}}",
+	"confUpdated": "",
 	"confGetNoExt": "{{key}} यह कुंजी मौजूद नहीं है।",
 	"confGet": "{{key}} इस कुंजी का मूल्य {{value}} के बराबर है।",
 	"confReset": "{{key}} कुंजी का मूल्य {{value}} के बराबर स्थापित किया गया है।",

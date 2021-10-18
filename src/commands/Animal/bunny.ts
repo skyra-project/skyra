@@ -19,7 +19,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 	spam: true
 })
 export class UserCommand extends SkyraCommand {
-	public async messa(message: Message, args: SkyraCommand.Args) {
+	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const {
 			media: { gif },
 			source: bunnySource

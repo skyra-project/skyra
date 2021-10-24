@@ -2106,9 +2106,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/framework@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@sapphire/framework@npm:2.1.1"
+"@sapphire/framework@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "@sapphire/framework@npm:2.1.3"
   dependencies:
     "@sapphire/discord-utilities": ^2.2.2
     "@sapphire/discord.js-utilities": ^3.2.2
@@ -2117,7 +2117,7 @@ __metadata:
     "@sapphire/utilities": ^3.0.4
     lexure: ^0.17.0
     tslib: ^2.3.1
-  checksum: e12326bc1923f3dd6711329f35f064217b90b7707f53f3d49985568fefc4199be75be64b0e3bdbabae98a7977ff75c75ab02533e8e3921d14a7a951a00323d73
+  checksum: 66df1d9939f69087e07185d0c325de16dcd89b7f17ccec9cd7ccd4d09eda2254cfda665f82fb16238cd31165260291bee0dc7ac3fb83d1517c0d3ec2cd835940
   languageName: node
   linkType: hard
 
@@ -9815,7 +9815,7 @@ fsevents@^2.3.2:
     "@sapphire/discord.js-utilities": ^3.2.2
     "@sapphire/eslint-config": ^4.0.1
     "@sapphire/fetch": ^2.0.2
-    "@sapphire/framework": ^2.1.1
+    "@sapphire/framework": ^2.1.3
     "@sapphire/plugin-api": ^3.0.1
     "@sapphire/plugin-editable-commands": ^1.0.1
     "@sapphire/plugin-i18next": ^2.0.1

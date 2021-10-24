@@ -52,8 +52,8 @@ describe('Bits', () => {
 				PermissionFlagsBits.UseApplicationCommands |
 				PermissionFlagsBits.RequestToSpeak |
 				PermissionFlagsBits.ManageThreads |
-				PermissionFlagsBits.UsePublicThreads |
-				PermissionFlagsBits.UsePrivateThreads |
+				PermissionFlagsBits.CreatePublicThreads |
+				PermissionFlagsBits.CreatePrivateThreads |
 				PermissionFlagsBits.UseExternalStickers;
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CREATE_INSTANT_INVITE',

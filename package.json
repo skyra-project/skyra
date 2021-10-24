@@ -93,7 +93,7 @@
 		"colorette": "^2.0.16",
 		"confusables": "^1.0.0",
 		"diff": "^5.0.0",
-		"discord-api-types": "^0.24.0",
+		"discord-api-types": "0.23.1",
 		"discord.js": "^13.2.0",
 		"dotenv-cra": "^3.0.2",
 		"grpc_tools_node_protoc_ts": "^5.3.2",
@@ -128,7 +128,7 @@
 		"@types/he": "^1.1.2",
 		"@types/ioredis": "^4.27.8",
 		"@types/jest": "^27.0.2",
-		"@types/node": "^16.11.1",
+		"@types/node": "^16.11.4",
 		"@types/pg": "^8.6.1",
 		"@types/skia-canvas": "^0.9.2",
 		"@types/ws": "^8.2.0",
@@ -154,7 +154,7 @@
 	"resolutions": {
 		"acorn": "^8.5.0",
 		"ansi-regex": "^5.0.1",
-		"discord-api-types": "^0.24.0",
+		"discord-api-types": "0.23.1",
 		"jest-environment-jsdom": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
 		"jest-jasmine2": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 	},

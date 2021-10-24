@@ -2454,12 +2454,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/star-wars-api@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@skyra/star-wars-api@npm:2.0.4"
+"@skyra/star-wars-api@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "@skyra/star-wars-api@npm:2.0.6"
   dependencies:
-    graphql: ^15.5.3
-  checksum: 8633c28984c22151ef49873f1edbb0d157e05357c1d5dbd5eabc2b4a796fa6cbedc19ed96f5fd77815c30de001f5fd488df3139ca6c0c1e89f1dc125160e9b36
+    graphql: ^15.6.1
+  checksum: f0ca5962d10d8f95c25f802860232478fe3278d92da18c038bb01c3135ecd4b4ef67363db4036e942a7d51385bea39b066867ce12c86051afdfb9a0a61eb9eae
   languageName: node
   linkType: hard
 
@@ -5849,7 +5849,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.5.0, graphql@npm:^15.5.3, graphql@npm:^15.6.1":
+"graphql@npm:^15.5.0, graphql@npm:^15.6.1":
   version: 15.6.1
   resolution: "graphql@npm:15.6.1"
   checksum: 4c6dcf385f7a87a5103fcb7640394244ae8d1d4ede521085192a1cf1e60115c4f6285d783961575d908709f7ee3e4cdd16b3f7c54eb37499c0420c6301e98968
@@ -9875,7 +9875,7 @@ fsevents@^2.3.2:
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.0.0
     "@skyra/saelem": ^3.0.9
-    "@skyra/star-wars-api": ^2.0.4
+    "@skyra/star-wars-api": ^2.0.6
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.1

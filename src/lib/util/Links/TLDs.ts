@@ -1329,7 +1329,6 @@ export const TLDs = [
 	'在线', // xn--3ds443g
 	'한국', // xn--3e0b707e
 	'ଭାରତ', // xn--3hcrj9c
-	'大众汽车', // xn--3oq18vl8pn36a
 	'点看', // xn--3pxu8k
 	'คอม', // xn--42c2d9a
 	'ভাৰত', // xn--45br5cyl

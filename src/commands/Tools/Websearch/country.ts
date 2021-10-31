@@ -1,11 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const SuperScriptTwo = '\u00B2';
@@ -18,7 +17,7 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 	enabled: false
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const countryName = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
@@ -38,7 +37,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, t: TFunction, countries: CountryResultOk) {
+	private async buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });

@@ -10,6 +10,7 @@ import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import type Collection from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 
@@ -24,6 +25,7 @@ const enum Type {
 	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
+	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subCommands: [
 		{ input: 'mute', output: 'mutes' },
 		'mutes',

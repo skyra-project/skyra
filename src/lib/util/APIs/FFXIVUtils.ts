@@ -129,6 +129,7 @@ export async function searchCharacter(name: string, server?: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);
+
 		if (server) {
 			if (FFXIVServers.includes(server.toLowerCase())) url.searchParams.append('server', toTitleCase(server));
 			else throw new UserError({ identifier: LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer });

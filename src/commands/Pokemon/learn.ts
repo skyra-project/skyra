@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { LearnMethodTypesReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { fetchGraphQLPokemon, getFuzzyLearnset, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -9,7 +8,7 @@ import type { Learnset, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const kPokemonGenerations = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
@@ -21,7 +20,7 @@ const kPokemonGenerations = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
@@ -71,6 +70,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const learnableMethods = Object.entries(learnsetData).filter(
 			([key, value]) => key.endsWith('Moves') && (value as LearnsetLevelUpMove[]).length
 		) as [keyof LearnMethodTypesReturn, LearnsetLevelUpMove[]][];
+
+		display.setSelectMenuOptions((pageIndex) => ({
+			label: learnableMethods.map(([method]) => toTitleCase(method.slice(0, method.length - 5)))[pageIndex - 1]
+		}));
 
 		if (learnableMethods.length === 0) {
 			return display.addPageEmbed((embed) =>

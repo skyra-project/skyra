@@ -1,13 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { fetchStarWarsApi, getPlanet } from '#utils/APIs/StarWars';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['star-wars-planet'],
@@ -15,7 +14,7 @@ import { MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.StarWars.PlanetExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const loadingMessage = await sendLoadingMessage(message, t);
 		const planet = await args.rest('string');

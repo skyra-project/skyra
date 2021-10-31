@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
@@ -9,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { cutText, roundNumber } from '@sapphire/utilities';
-import { Collection, MessageEmbed } from 'discord.js';
+import { Collection, Message, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
@@ -22,7 +21,7 @@ const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 	detailedDescription: LanguageKeys.Commands.Misc.RedditUserExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const user = await args.pick(UserPaginatedMessageCommand.redditUser);
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
@@ -37,7 +36,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildDisplay(
-		message: GuildMessage,
+		message: Message,
 		about: Reddit.AboutDataElement,
 		comments: Reddit.CommentDataElement[],
 		posts: Reddit.PostDataElement[],

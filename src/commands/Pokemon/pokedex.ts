@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { PokedexEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/Pokemon';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import {
 	fetchGraphQLPokemon,
 	getFuzzyPokemon,
@@ -17,7 +16,7 @@ import { sendLoadingMessage } from '#utils/util';
 import type { Abilities, EvYields, Gender, Pokemon, Stats } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { filterNullish, isNullish, toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 enum StatsEnum {
@@ -36,7 +35,7 @@ enum StatsEnum {
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 

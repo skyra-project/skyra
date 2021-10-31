@@ -1,11 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText, toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -15,7 +14,7 @@ import type { TFunction } from 'i18next';
 	nsfw: true
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const query = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
@@ -32,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: TFunction, query: string) {
+	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: Message, language: TFunction, query: string) {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)

@@ -4,10 +4,11 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { minutes } from '#utils/common';
 import { sendLoadingMessage } from '#utils/util';
-import { ApplyOptions, RequiresClientPermissions, RequiresGuildContext } from '@sapphire/decorators';
+import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
@@ -53,8 +54,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@RequiresGuildContext((message: Message, args: SkyraCommand.Args) => send(message, args.t(LanguageKeys.Preconditions.GuildOnly)))
-	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async list(message: Message, args: SkyraCommand.Args) {
 		const { client } = this.container;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
@@ -95,7 +95,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@RequiresClientPermissions(['EMBED_LINKS'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async show(message: Message, args: SkyraCommand.Args) {
 		const task = await args.pick(UserCommand.task);
 

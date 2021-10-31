@@ -97,7 +97,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const allOrUser = args.finished ? 'all' : await args.pick(UserCommand.allOrUser);
 		return allOrUser === 'all' ? this.buyList(message, args.t) : this.userList(message, args.t);

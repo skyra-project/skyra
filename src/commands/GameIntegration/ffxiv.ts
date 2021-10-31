@@ -1,13 +1,13 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { ClassJob, ClassSubcategory, FFXIVCharacter, GuildMessage, ItemSearchResult } from '#lib/types';
+import { ClassJob, ClassSubcategory, FFXIVCharacter, ItemSearchResult } from '#lib/types';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/APIs/FFXIVUtils';
 import { ZeroWidthSpace } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { EmbedField, MessageEmbed } from 'discord.js';
+import { EmbedField, Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -19,7 +19,7 @@ import type { TFunction } from 'i18next';
 	subCommands: ['item', { input: 'character', default: true }]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async character(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async character(message: Message, args: PaginatedMessageCommand.Args) {
 		const name = await args.rest('string');
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
@@ -31,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	public async item(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async item(message: Message, args: PaginatedMessageCommand.Args) {
 		const item = await args.rest('string');
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
@@ -60,7 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return searchResult.Results;
 	}
 
-	private async buildCharacterDisplay(message: GuildMessage, t: TFunction, character: FFXIVCharacter) {
+	private async buildCharacterDisplay(message: Message, t: TFunction, character: FFXIVCharacter) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -132,7 +132,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return display;
 	}
 
-	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: ItemSearchResult[]) {
+	private async buildItemDisplay(message: Message, t: TFunction, items: ItemSearchResult[]) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 

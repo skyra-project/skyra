@@ -125,41 +125,83 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 
 		// If we do not have more than 1 page then there is no reason to add message components
 		if (this.pages.length > 1) {
-			const messageComponents = await Promise.all(
-				[...this.actions.values()].map<Promise<MessageButton | MessageSelectMenu>>(async (interaction: HelpPaginatedMessageAction) => {
-					return isMessageButtonInteraction(interaction)
-						? new MessageButton(interaction)
-						: interaction.selectMenuIndex === 'set-1'
-						? new MessageSelectMenu({
-								...interaction,
-								options: await Promise.all(
-									this.pages.slice(0, 25).map(async (_, index) => ({
-										...(await this.selectMenuOptions(index + 1, {
-											author: targetUser,
-											channel,
-											guild: isGuildBasedChannel(channel) ? channel.guild : null
-										})),
-										value: index.toString(),
-										description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
-									}))
-								)
-						  })
-						: new MessageSelectMenu({
-								...interaction,
-								options: await Promise.all(
-									this.pages.slice(25).map(async (_, index) => ({
-										...(await this.selectMenuOptions(index + 1 + 25, {
-											author: targetUser,
-											channel,
-											guild: isGuildBasedChannel(channel) ? channel.guild : null
-										})),
-										value: (index + 25).toString(),
-										description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
-									}))
-								)
-						  });
-				})
-			);
+			const messageComponents: (MessageButton | MessageSelectMenu)[] = [];
+
+			for (const interaction of this.actions.values() as IterableIterator<HelpPaginatedMessageAction>) {
+				if (isMessageButtonInteraction(interaction)) {
+					messageComponents.push(new MessageButton(interaction));
+				} else if (interaction.selectMenuIndex === 'set-1') {
+					messageComponents.push(
+						new MessageSelectMenu({
+							...interaction,
+							options: await Promise.all(
+								this.pages.slice(0, 25).map(async (_, index) => ({
+									...(await this.selectMenuOptions(index + 1, {
+										author: targetUser,
+										channel,
+										guild: isGuildBasedChannel(channel) ? channel.guild : null
+									})),
+									value: index.toString(),
+									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
+								}))
+							)
+						})
+					);
+				} else if (this.pages.slice(25).length) {
+					messageComponents.push(
+						new MessageSelectMenu({
+							...interaction,
+							options: await Promise.all(
+								this.pages.slice(25).map(async (_, index) => ({
+									...(await this.selectMenuOptions(index + 1 + 25, {
+										author: targetUser,
+										channel,
+										guild: isGuildBasedChannel(channel) ? channel.guild : null
+									})),
+									value: (index + 25).toString(),
+									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
+								}))
+							)
+						})
+					);
+				}
+			}
+
+			// const messageComponents = await Promise.all(
+			// 	[...this.actions.values()].map<Promise<MessageButton | MessageSelectMenu>>(async (interaction: HelpPaginatedMessageAction) => {
+			// 		return isMessageButtonInteraction(interaction)
+			// 			? new MessageButton(interaction)
+			// 			: interaction.selectMenuIndex === 'set-1'
+			// 			? new MessageSelectMenu({
+			// 					...interaction,
+			// 					options: await Promise.all(
+			// 						this.pages.slice(0, 25).map(async (_, index) => ({
+			// 							...(await this.selectMenuOptions(index + 1, {
+			// 								author: targetUser,
+			// 								channel,
+			// 								guild: isGuildBasedChannel(channel) ? channel.guild : null
+			// 							})),
+			// 							value: index.toString(),
+			// 							description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
+			// 						}))
+			// 					)
+			// 			  })
+			// 			: new MessageSelectMenu({
+			// 					...interaction,
+			// 					options: await Promise.all(
+			// 						this.pages.slice(25).map(async (_, index) => ({
+			// 							...(await this.selectMenuOptions(index + 1 + 25, {
+			// 								author: targetUser,
+			// 								channel,
+			// 								guild: isGuildBasedChannel(channel) ? channel.guild : null
+			// 							})),
+			// 							value: (index + 25).toString(),
+			// 							description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
+			// 						}))
+			// 					)
+			// 			  });
+			// 	})
+			// );
 
 			page.components = createPartitionedMessageRow(messageComponents);
 		}
@@ -181,11 +223,16 @@ function createPartitionedMessageRow(components: (MessageButton | MessageSelectM
 	const selectMenu2 = components[6];
 
 	// Map all the components to MessageActionRows
-	return [
-		new MessageActionRow().setComponents(buttons),
-		new MessageActionRow().setComponents(selectMenu1),
-		new MessageActionRow().setComponents(selectMenu2)
+	const actionRows: MessageActionRow[] = [
+		new MessageActionRow().setComponents(buttons), //
+		new MessageActionRow().setComponents(selectMenu1)
 	];
+
+	if (selectMenu2) {
+		actionRows.push(new MessageActionRow().setComponents(selectMenu2));
+	}
+
+	return actionRows;
 }
 
 interface HelpPaginatedMessageAction extends PaginatedMessageAction {

@@ -30,7 +30,7 @@ const filterSpecialCharacters = /[^A-Z0-9]+/gi;
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async clan(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
-		const clan = (await args.rest('string')).slice(6);
+		const clan = await args.rest('string');
 		const response = await sendLoadingMessage(message, t);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(t, clan, ClashOfClansFetchCategories.CLANS);

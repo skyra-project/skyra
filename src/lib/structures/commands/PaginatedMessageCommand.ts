@@ -1,5 +1,5 @@
 import { seconds } from '#utils/common';
-import { CommandContext, CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
+import type { CommandContext, PieceContext } from '@sapphire/framework';
 import type { PermissionResolvable } from 'discord.js';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -9,15 +9,8 @@ export abstract class PaginatedMessageCommand extends SkyraCommand {
 			cooldownDelay: seconds(15),
 			// Merge in all given options
 			...options,
-			runIn: [CommandOptionsRunTypeEnum.GuildAny],
-			// Add all requiredPermissions set in the command, along with the permissions required for PaginatedMessage
-			requiredClientPermissions: [
-				...((options.requiredClientPermissions as PermissionResolvable[] | undefined) ?? []),
-				'ADD_REACTIONS',
-				'MANAGE_MESSAGES',
-				'EMBED_LINKS',
-				'READ_MESSAGE_HISTORY'
-			]
+			// Add all requiredPermissions set in the command, along EMBED_LINKS to send MessageEmbed's
+			requiredClientPermissions: [...((options.requiredClientPermissions as PermissionResolvable[] | undefined) ?? []), 'EMBED_LINKS']
 		});
 	}
 }

@@ -145,9 +145,9 @@
 		],
 		"examples": [
 			"item potion",
-			"character Laytlan Ardevon",
+			"character Yasmin Zomrhi",
 			"character Saewynn Frobisher --server=Omega",
-			"Laytlan Ardevon"
+			"Yasmin Zomrhi"
 		],
 		"reminder": "When searching for a character you can specify the server the character is playing on by including `--server=ServerName` in your message."
 	},

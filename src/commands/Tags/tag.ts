@@ -150,7 +150,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get tags, prefix, and language
 		const [tags, prefix] = await readSettings(message.guild, [GuildSettings.CustomCommands, GuildSettings.Prefix]);
@@ -172,7 +172,7 @@ export class UserCommand extends SkyraCommand {
 		return response;
 	}
 
-	@RequiresClientPermissions(['EMBED_LINKS'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const id = (await args.pick('string')).toLowerCase();
 		const tags = await readSettings(message.guild, GuildSettings.CustomCommands);

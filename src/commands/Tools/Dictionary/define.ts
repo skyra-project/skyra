@@ -1,13 +1,12 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -17,7 +16,7 @@ import type { TFunction } from 'i18next';
 	detailedDescription: LanguageKeys.Commands.Tools.DefineExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const input = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
@@ -28,7 +27,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	private async buildDisplay(results: OwlbotResultOk, message: GuildMessage, t: TFunction) {
+	private async buildDisplay(results: OwlbotResultOk, message: Message, t: TFunction) {
 		const template = new MessageEmbed()
 			.setTitle(toTitleCase(results.word))
 			.setColor(await this.container.db.fetchColor(message))

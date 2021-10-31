@@ -1,20 +1,15 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { isGuildMessage, isPrivateMessage, minutes } from '#utils/common';
+import { SkyraCommand } from '#lib/structures';
+import { HelpPaginatedMessage } from '#lib/structures/HelpPaginatedMessage';
+import { isGuildMessage, isPrivateMessage } from '#utils/common';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, container, fromAsync } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Collection, Message, MessageEmbed, Permissions, Util } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { Collection, Message, MessageEmbed, Util } from 'discord.js';
 import type { TFunction } from 'i18next';
-
-const PERMISSIONS_PAGINATED_MESSAGE = new Permissions([
-	Permissions.FLAGS.MANAGE_MESSAGES,
-	Permissions.FLAGS.ADD_REACTIONS,
-	Permissions.FLAGS.EMBED_LINKS,
-	Permissions.FLAGS.READ_MESSAGE_HISTORY
-]);
 
 /**
  * Sorts a collection alphabetically as based on the keys, rather than the values.
@@ -57,17 +52,13 @@ export class UserCommand extends SkyraCommand {
 			return send(message, { embeds: [embed] });
 		}
 
-		return this.canRunPaginatedMessage(message) ? this.display(message, args, null, context) : this.all(message, args, context);
+		return this.display(message, args, null, context);
 	}
 
 	private getCommandPrefix(context: SkyraCommand.Context): string {
 		return (context.prefix instanceof RegExp && !context.commandPrefix.endsWith(' ')) || UserOrMemberMentionRegex.test(context.commandPrefix)
 			? `${context.commandPrefix} `
 			: context.commandPrefix;
-	}
-
-	private canRunPaginatedMessage(message: Message) {
-		return isGuildMessage(message) && message.channel.permissionsFor(this.container.client.user!)!.has(PERMISSIONS_PAGINATED_MESSAGE);
 	}
 
 	private async helpCategories(message: Message, args: SkyraCommand.Args) {
@@ -100,7 +91,7 @@ export class UserCommand extends SkyraCommand {
 		if (isGuildMessage(message)) await send(message, args.t(LanguageKeys.Commands.General.HelpDm));
 	}
 
-	@RequiresClientPermissions(PERMISSIONS_PAGINATED_MESSAGE)
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	private async display(message: Message, args: SkyraCommand.Args, index: number | null, context: SkyraCommand.Context) {
 		const prefix = this.getCommandPrefix(context);
 
@@ -128,12 +119,9 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new SkyraPaginatedMessage(
-			{
-				template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
-			},
-			minutes(10)
-		);
+		const display = new HelpPaginatedMessage(language, {
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+		}).setSelectMenuOptions((pageIndex) => ({ label: commandsByCategory.at(pageIndex - 1)![0].fullCategory!.join(' → ') }));
 
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((embed) =>
@@ -146,7 +134,7 @@ export class UserCommand extends SkyraCommand {
 		return display;
 	}
 
-	@RequiresClientPermissions('EMBED_LINKS', 'READ_MESSAGE_HISTORY')
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	private async buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
 		const builderData = args.t(LanguageKeys.System.HelpTitles);
 

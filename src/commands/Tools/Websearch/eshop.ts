@@ -1,14 +1,13 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
 import { stringify } from 'querystring';
@@ -21,7 +20,7 @@ const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/nc
 	detailedDescription: LanguageKeys.Commands.Tools.EshopExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const gameName = await args.rest('string');
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -60,9 +59,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, t: TFunction, entries: EShopHit[]) {
+	private async buildDisplay(message: Message, t: TFunction, entries: EShopHit[]) {
 		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+		}).setSelectMenuOptions((pageIndex) => ({ label: entries[pageIndex - 1].title }));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);

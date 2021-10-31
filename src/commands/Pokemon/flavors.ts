@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { fetchGraphQLPokemon, getFuzzyFlavorTexts, GetPokemonSpriteParameters, getSpriteKey, resolveColour } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
@@ -8,7 +7,7 @@ import type { Pokemon } from '@favware/graphql-pokemon';
 import { zalgo } from '@favware/zalgo';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
@@ -17,7 +16,7 @@ import { MessageEmbed } from 'discord.js';
 	flags: ['shiny', 'back']
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const response = await sendLoadingMessage(message, t);
 
@@ -60,7 +59,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setColor(resolveColour(pokemonData.color))
 				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(pokemonData[spriteToGet])
-		});
+		}).setSelectMenuOptions((pageIndex) => ({ label: pokemonData.flavorTexts[pageIndex - 1].game }));
 
 		for (const { game, flavor } of pokemonData.flavorTexts) {
 			display.addPageEmbed((embed) => embed.setDescription([`**${game}**`, pokemonData.num === 0 ? zalgo(flavor) : flavor].join('\n')));

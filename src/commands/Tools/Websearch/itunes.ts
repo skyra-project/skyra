@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
@@ -15,7 +14,7 @@ import { URL } from 'url';
 	detailedDescription: LanguageKeys.Commands.Tools.ITunesExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const song = await args.rest('string');
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -44,9 +43,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
+	private async buildDisplay(message: Message, t: TFunction, entries: ItunesData[]) {
 		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+		}).setSelectMenuOptions((pageIndex) => ({
+			label: entries[pageIndex - 1].trackName
+		}));
 
 		for (const song of entries) {
 			display.addPageEmbed((embed) =>

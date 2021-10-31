@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { fetchGraphQLPokemon, getFuzzyMove, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
@@ -8,7 +7,7 @@ import { sendLoadingMessage } from '#utils/util';
 import type { Move } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
@@ -16,7 +15,7 @@ import type { TFunction } from 'i18next';
 	detailedDescription: LanguageKeys.Commands.Pokemon.MoveExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const move = (await args.rest('string')).toLowerCase();
 		const response = await sendLoadingMessage(message, args.t);
 		const moveData = await this.fetchAPI(move);
@@ -42,7 +41,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, moveData: Move, t: TFunction) {
+	private async buildDisplay(message: Message, moveData: Move, t: TFunction) {
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
 			availableInGen8: t(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});

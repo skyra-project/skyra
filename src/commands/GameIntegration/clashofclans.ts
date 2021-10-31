@@ -1,7 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import type { ClashOfClans } from '#lib/types/definitions/ClashOfClans';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,7 +8,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { URL } from 'url';
 
@@ -18,8 +17,8 @@ const enum ClashOfClansFetchCategories {
 	CLANS = 'clans'
 }
 
-const kPlayerTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
-const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
+const playerTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
+const filterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('CLASH_OF_CLANS_TOKEN'),
@@ -29,9 +28,9 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 	subCommands: ['player', { input: 'clan', default: true }]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async clan(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async clan(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
-		const clan = await args.pick('string');
+		const clan = (await args.rest('string')).slice(6);
 		const response = await sendLoadingMessage(message, t);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(t, clan, ClashOfClansFetchCategories.CLANS);
@@ -44,7 +43,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return response;
 	}
 
-	public async player(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async player(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const player = await args.pick(UserPaginatedMessageCommand.playerTagResolver);
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(t, player, ClashOfClansFetchCategories.PLAYERS);
@@ -80,7 +79,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildPlayerEmbed(message: GuildMessage, t: TFunction, player: ClashOfClans.Player) {
+	private async buildPlayerEmbed(message: Message, t: TFunction, player: ClashOfClans.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayerEmbedTitles);
 
 		return new MessageEmbed()
@@ -89,7 +88,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.setAuthor(
 				`${player.tag} - ${player.name}`,
 				player.clan?.badgeUrls.large ?? '',
-				`https://www.clashleaders.com/player/${player.name.toLowerCase().replace(kFilterSpecialCharacters, '-')}-${player.tag
+				`https://www.clashleaders.com/player/${player.name.toLowerCase().replace(filterSpecialCharacters, '-')}-${player.tag
 					.slice(1)
 					.toLowerCase()}`
 			)
@@ -115,7 +114,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			);
 	}
 
-	private async buildClanDisplay(message: GuildMessage, t: TFunction, clans: ClashOfClans.Clan[]) {
+	private async buildClanDisplay(message: Message, t: TFunction, clans: ClashOfClans.Clan[]) {
 		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
 
 		for (const clan of clans) {
@@ -125,7 +124,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.setThumbnail(clan.badgeUrls.large)
 					.setTitle(`${clan.tag} - ${clan.name}`)
 					.setURL(
-						`https://www.clashleaders.com/clan/${clan.name.toLowerCase().replace(kFilterSpecialCharacters, '-')}-${clan.tag
+						`https://www.clashleaders.com/clan/${clan.name.toLowerCase().replace(filterSpecialCharacters, '-')}-${clan.tag
 							.slice(1)
 							.toLowerCase()}`
 					)
@@ -159,7 +158,12 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	public static playerTagResolver = Args.make<string>((parameter, { argument }) => {
-		if (kPlayerTagRegex.test(parameter)) return Args.ok(parameter.startsWith('#') ? parameter : `#${parameter}`);
+		const upperCaseParameter = parameter.toUpperCase();
+
+		if (playerTagRegex.test(upperCaseParameter)) {
+			return Args.ok(upperCaseParameter.startsWith('#') ? upperCaseParameter : `#${upperCaseParameter}`);
+		}
+
 		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag });
 	});
 }

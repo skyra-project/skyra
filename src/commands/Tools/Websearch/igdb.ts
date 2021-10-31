@@ -1,7 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
@@ -9,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const API_URL = 'https://api.igdb.com/v4/games';
@@ -54,7 +53,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		'offset 0'
 	].join('; ');
 
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const game = await args.rest('string');
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -85,10 +84,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
+	private async buildDisplay(message: Message, t: TFunction, entries: Game[]) {
 		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+		}).setSelectMenuOptions((pageIndex) => ({
+			label: entries[pageIndex - 1].name ?? `${t(LanguageKeys.Globals.PaginatedMessagePage)} ${pageIndex}`
+		}));
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);

@@ -1,13 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '#utils/APIs/Pokemon';
 import { CdnUrls } from '#utils/constants';
 import { sendLoadingMessage } from '#utils/util';
 import type { Type, TypeMatchup, TypesEnum } from '@favware/graphql-pokemon';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const kPokemonTypes = new Set([
@@ -37,7 +36,7 @@ const kPokemonTypes = new Set([
 	detailedDescription: LanguageKeys.Commands.Pokemon.TypeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const { t } = args;
 		const types = await args.rest(UserPaginatedMessageCommand.type);
 		const response = await sendLoadingMessage(message, t);
@@ -79,7 +78,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return regularMatchup.map((type) => `\`${type}\``).join(', ');
 	}
 
-	private async buildDisplay(message: GuildMessage, types: TypesEnum[], typeMatchups: TypeMatchup, t: TFunction) {
+	private async buildDisplay(message: Message, types: TypesEnum[], typeMatchups: TypeMatchup, t: TFunction) {
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
@@ -93,6 +92,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setColor(await this.container.db.fetchColor(message)) //
 				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
 		})
+			.setSelectMenuOptions((pageIndex) => ({ label: [embedTranslations.offensive, embedTranslations.defensive][pageIndex - 1] }))
 			.addPageEmbed((embed) =>
 				embed
 					.addField(

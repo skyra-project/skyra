@@ -5109,9 +5109,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:^13.3.0":
-  version: 13.3.0
-  resolution: "discord.js@npm:13.3.0"
+"discord.js@npm:^13.3.1":
+  version: 13.3.1
+  resolution: "discord.js@npm:13.3.1"
   dependencies:
     "@discordjs/builders": ^0.8.1
     "@discordjs/collection": ^0.3.2
@@ -5122,7 +5122,7 @@ __metadata:
     discord-api-types: ^0.24.0
     node-fetch: ^2.6.1
     ws: ^8.2.3
-  checksum: 67aaa3b60e59a1400d514e694ed7a930b4d7abee7f06fc8e79a3a195ca0b5e67ba6086f96e0e9fcff7d9686081b79db2165f254609bd966790e9e266e43f472a
+  checksum: 944f03467063bde6be095f6953c9feea252aa37569c6776c59b964956d9643741bb561f1036ee7dedf385954567dce8a3cd3069772c6739de178dea0c4392bfb
   languageName: node
   linkType: hard
 
@@ -10228,7 +10228,7 @@ fsevents@^2.3.2:
     cz-conventional-changelog: ^3.3.0
     diff: ^5.0.0
     discord-api-types: ^0.24.0
-    discord.js: ^13.3.0
+    discord.js: ^13.3.1
     dotenv-cra: ^3.0.2
     eslint: ^8.1.0
     grpc-tools: ^1.11.2

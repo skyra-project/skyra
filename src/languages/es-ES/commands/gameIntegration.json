@@ -145,9 +145,9 @@
 		],
 		"examples": [
 			"character Laytlan Ardevon",
-			"Laytlan Ardevon",
+			"",
 			"character Saewynn Frobisher --server=Omega",
-			"Laytlan Ardevon"
+			""
 		],
 		"reminder": "Cuando buscas un personaje puedes especificar el servidor en el que está jugando el personaje incluyendo `--server=ServerName` en el mensaje."
 	},

@@ -113,11 +113,11 @@
 		],
 		"examples": [
 			"7 dragonite dragon dance",
-			"pikachu thunder bolt",
-			"pikachu thunder bolt --shiny",
-			"pikachu thunder bolt --shiny --back",
-			"pikachu thunder bolt --back",
-			"pikachu thunder bolt, thunder"
+			"",
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"learnMethodTypes": {

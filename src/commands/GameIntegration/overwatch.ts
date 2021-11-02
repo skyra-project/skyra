@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { OverwatchEmbedDataReturn } from '#lib/i18n/languageKeys/keys/commands/GameIntegration';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import type { FormattedDuration, OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
 import { hours, minutes, seconds } from '#utils/common';
 import { CdnUrls } from '#utils/constants';
@@ -11,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import { Collection, MessageEmbed } from 'discord.js';
+import { Collection, Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
@@ -22,7 +21,7 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbl', 'psn', 'pc'];
 	detailedDescription: LanguageKeys.Commands.GameIntegration.OverwatchExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
 		const player = await args.rest('overwatchPlayer');
 		const response = await sendLoadingMessage(message, args.t);
@@ -52,7 +51,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	/** Builds a PaginatedMessage for presenting Overwatch data */
-	private async buildDisplay(message: GuildMessage, t: TFunction, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
+	private async buildDisplay(message: Message, t: TFunction, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const ratings = Array.from(
 			this.ratingsToCollection(
 				overwatchData.ratings ?? [],

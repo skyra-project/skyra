@@ -1,13 +1,12 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import type { Fortnite } from '#lib/types/definitions/Fortnite';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, fromAsync, IArgument } from '@sapphire/framework';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
@@ -18,21 +17,43 @@ const VALID_PLATFORMS: PlatformUnion[] = ['xbox', 'psn', 'pc'];
 	detailedDescription: LanguageKeys.Commands.GameIntegration.FortniteExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
+	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile';
+	private parseEpicUserHandleRegex = /(?:xbl|psn)\((?<handle>.+)\)/;
 
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const platform = await args.pick(UserPaginatedMessageCommand.platformResolver).catch(() => 'pc' as const);
 		const user = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
-		const fortniteUser = await this.fetchAPI(user, platform);
+		const fortniteUser = await this.fetchAPI(this.parseUser(user, platform), this.parsePlatform(platform));
 		const display = await this.buildDisplay(message, args.t, fortniteUser);
 
 		await display.run(response, message.author);
 		return response;
 	}
 
-	private async fetchAPI(user: string, platform: PlatformUnion) {
+	private parseUser(user: string, platform: PlatformUnion): string {
+		switch (platform) {
+			case 'pc':
+				return user;
+			case 'xbox':
+				return `xbl(${user})`;
+			case 'psn':
+				return `psn(${user})`;
+		}
+	}
+
+	private parsePlatform(platform: PlatformUnion): ParsedPlatformUnion {
+		switch (platform) {
+			case 'pc':
+				return 'kbm';
+			case 'psn':
+			case 'xbox':
+				return 'gamepad';
+		}
+	}
+
+	private async fetchAPI(user: string, platform: ParsedPlatformUnion) {
 		const result = await fromAsync(
 			fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -50,15 +71,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	}
 
 	private async buildDisplay(
-		message: GuildMessage,
+		message: Message,
 		t: TFunction,
-		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
+		{ lifeTimeStats, epicUserHandle, platformName, avatar, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
+				.setTitle(t(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle: this.parseEpicUserHandle(epicUserHandle) }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await this.container.db.fetchColor(message))
+				.setThumbnail(avatar)
 		});
 		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
@@ -199,6 +221,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return display;
 	}
 
+	private parseEpicUserHandle(epicUserHandle: string): string | undefined {
+		return this.parseEpicUserHandleRegex.exec(epicUserHandle)?.groups?.handle;
+	}
+
 	private static platformResolver: IArgument<PlatformUnion> = Args.make((parameter, { argument }) => {
 		if (VALID_PLATFORMS.includes(parameter.toLowerCase() as PlatformUnion)) return Args.ok(parameter.toLowerCase() as PlatformUnion);
 		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.GameIntegration.FortniteInvalidPlatform });
@@ -206,3 +232,4 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 }
 
 type PlatformUnion = 'xbox' | 'psn' | 'pc';
+type ParsedPlatformUnion = 'kbm' | 'gamepad';

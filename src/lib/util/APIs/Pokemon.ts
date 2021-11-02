@@ -125,7 +125,7 @@ export const getFuzzyFlavorTexts = (params: GetPokemonSpriteParameters) => {
 
 	return gql`
 		query getFuzzyPokemon($pokemon: String!) {
-			getFuzzyPokemon(pokemon: $pokemon, takeFlavorTexts: 50) {
+			getFuzzyPokemon(pokemon: $pokemon, takeFlavorTexts: 25) {
 				${spriteToGet}
 				num
 				species

@@ -1,7 +1,6 @@
 import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
 import type { Kitsu } from '#lib/types/definitions/Kitsu';
 import { formatNumber } from '#utils/functions';
 import { sendLoadingMessage } from '#utils/util';
@@ -10,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { stringify } from 'querystring';
 
@@ -22,7 +21,7 @@ const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/produ
 	detailedDescription: LanguageKeys.Commands.Animation.KitsuAnimeExtended
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+	public async messageRun(message: Message, args: PaginatedMessageCommand.Args) {
 		const animeName = await args.rest('string');
 		const response = await sendLoadingMessage(message, args.t);
 
@@ -61,7 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
+	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: Message) {
 		const embedData = t(LanguageKeys.Commands.Animation.KitsuAnimeEmbedData);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //

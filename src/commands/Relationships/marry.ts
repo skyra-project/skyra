@@ -5,7 +5,7 @@ import { SISTER_CLIENTS } from '#root/config';
 import { seconds } from '#utils/common';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { CommandContext } from '@sapphire/framework';
+import { CommandContext, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -13,7 +13,8 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Social.MarryDescription,
-	detailedDescription: LanguageKeys.Commands.Social.MarryExtended
+	detailedDescription: LanguageKeys.Commands.Social.MarryExtended,
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args, context: CommandContext) {

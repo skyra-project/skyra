@@ -8,6 +8,7 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 
 const enum Type {
@@ -59,7 +60,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async show(message: GuildMessage) {
 		const [aliases, includes] = await readSettings(message.guild, [GuildSettings.Trigger.Alias, GuildSettings.Trigger.Includes]);
 

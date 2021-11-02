@@ -10,6 +10,7 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
@@ -21,7 +22,7 @@ import { toTitleCase } from '@sapphire/utilities';
 	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
 })
 export class UserCommand extends SkyraCommand {
-	@RequiresClientPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public menu(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
 		return new SettingsMenu(message, args.t).init(context);
 	}

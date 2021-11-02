@@ -1,6 +1,7 @@
 export namespace Fortnite {
 	export interface FortniteUser {
 		accountId: string;
+		avatar: string;
 		platformId: number;
 		platformName: string;
 		platformNameLong: string;

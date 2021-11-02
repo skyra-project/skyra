@@ -2381,6 +2381,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/discord.js-utilities@npm:4.1.0":
+  version: 4.1.0
+  resolution: "@sapphire/discord.js-utilities@npm:4.1.0"
+  dependencies:
+    "@sapphire/discord-utilities": ^2.2.2
+    "@sapphire/time-utilities": ^1.4.6
+    "@sapphire/utilities": ^3.0.6
+    tslib: ^2.3.1
+  checksum: a0c1e0b844157839edf27acb40239a1c173bf8368d5e58a24b86f4014cf0610ce6ef99dd60c442c6eb05ec95b70db497da51227809ba1fd209be382236f336d8
+  languageName: node
+  linkType: hard
+
 "@sapphire/discord.js-utilities@npm:^3.2.2":
   version: 3.2.2
   resolution: "@sapphire/discord.js-utilities@npm:3.2.2"
@@ -3254,7 +3266,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.5.0":
+"acorn@npm:^7.0.0":
+  version: 7.4.1
+  resolution: "acorn@npm:7.4.1"
+  bin:
+    acorn: bin/acorn
+  checksum: 1860f23c2107c910c6177b7b7be71be350db9e1080d814493fae143ae37605189504152d1ba8743ba3178d0b37269ce1ffc42b101547fdc1827078f82671e407
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.4.1, acorn@npm:^8.5.0":
   version: 8.5.0
   resolution: "acorn@npm:8.5.0"
   bin:
@@ -5088,9 +5109,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:^13.3.0":
-  version: 13.3.0
-  resolution: "discord.js@npm:13.3.0"
+"discord.js@npm:^13.3.1":
+  version: 13.3.1
+  resolution: "discord.js@npm:13.3.1"
   dependencies:
     "@discordjs/builders": ^0.8.1
     "@discordjs/collection": ^0.3.2
@@ -5101,7 +5122,7 @@ __metadata:
     discord-api-types: ^0.24.0
     node-fetch: ^2.6.1
     ws: ^8.2.3
-  checksum: 67aaa3b60e59a1400d514e694ed7a930b4d7abee7f06fc8e79a3a195ca0b5e67ba6086f96e0e9fcff7d9686081b79db2165f254609bd966790e9e266e43f472a
+  checksum: 944f03467063bde6be095f6953c9feea252aa37569c6776c59b964956d9643741bb561f1036ee7dedf385954567dce8a3cd3069772c6739de178dea0c4392bfb
   languageName: node
   linkType: hard
 
@@ -10158,7 +10179,7 @@ fsevents@^2.3.2:
     "@influxdata/influxdb-client-apis": ^1.20.0
     "@sapphire/async-queue": ^1.1.8
     "@sapphire/decorators": ^3.1.3
-    "@sapphire/discord.js-utilities": ^3.2.2
+    "@sapphire/discord.js-utilities": 4.1.0
     "@sapphire/eslint-config": ^4.0.2
     "@sapphire/fetch": ^2.0.2
     "@sapphire/framework": ^2.1.3
@@ -10207,7 +10228,7 @@ fsevents@^2.3.2:
     cz-conventional-changelog: ^3.3.0
     diff: ^5.0.0
     discord-api-types: ^0.24.0
-    discord.js: ^13.3.0
+    discord.js: ^13.3.1
     dotenv-cra: ^3.0.2
     eslint: ^8.1.0
     grpc-tools: ^1.11.2

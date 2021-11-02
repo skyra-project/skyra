@@ -10,6 +10,7 @@ import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-editable-commands/register';
 import './Canvas';
 import './Grpc';
+import './PaginatedMessage';
 
 import * as colorette from 'colorette';
 import { inspect } from 'util';

@@ -4,6 +4,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { GuildMessage } from '#lib/types';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -14,7 +15,8 @@ import type { TFunction } from 'i18next';
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	description: LanguageKeys.Commands.Management.RolesDescription,
 	detailedDescription: LanguageKeys.Commands.Management.RolesExtended,
-	requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages]
+	requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages],
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {

@@ -37,6 +37,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/lib/grpc/generated',
 		'<rootDir>/src/lib/i18n/structures/Augments.d.ts',
 		'<rootDir>/src/lib/moderation',
+		'<rootDir>/src/lib/setup/PaginatedMessage.ts',
 		'<rootDir>/src/lib/SkyraClient.ts',
 		'<rootDir>/src/lib/structures',
 		'<rootDir>/src/lib/types',

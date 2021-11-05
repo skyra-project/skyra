@@ -33,7 +33,7 @@
 	},
 	"helpDm": "📥 | La lista de comandos a los que tienes acceso ha sido enviada a tus mensajes directos.",
 	"helpNodm": "{{REDCROSS}} | Tienes los mensajes directos deshabilitados, por lo que no pude enviarte la lista de comandos.",
-	"infoBody": "Skyra {{VERSION}} es un bot multipropósito de Discord diseñado para ejecutar la mayoría de las tareas con un gran rendimiento y un constante tiempo de actividad las 24 horas al día durante los 7 días de la semana.\nElla está construida sobre el [framework Sapphire](https://sapphirejs.dev), un framework 'plug-and-play' construido sobre la [librería Discord.js](https://discord.js.org).\n\nSkyra tiene:\n• Moderación avanzada con acciones temporales incluídas\n• Gestión de anuncios\n• Totalmente configurable\n• Registros de mensajes, registros de miembros, y registros de mods\n• Multilenguaje\n• Perfiles y niveles, con tablas de clasificación y gestión social\n• Gestión de roles\n• Comandos de anime (+10)!\n• Una Pokédex completa con todos los datos que necesitarás\nY mucho más!\n\nPuedes encontrar nuestra Política de Privacidad [aquí](https://skyra.pw/privacy).",
+	"infoBody": "",
 	"infoDescription": "Proporciona información acerca de mí.",
 	"infoExtended": {
 		"extendedHelp": "Simplemente... eso :P"

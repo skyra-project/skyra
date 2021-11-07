@@ -6,8 +6,8 @@
 	},
 	"growthOutfluxError": "Failed to request growth information. Try again in a few hours.",
 	"helpAllFlag": "Displaying one category per page. Have issues with the embed? Run `{{prefix}}help --all` for a full list in DMs.",
-	"helpCommandCount": "{{count}} command",
-	"helpCommandCount_plural": "{{count}} commands",
+	"helpCommandCount_one": "{{count}} command",
+	"helpCommandCount_other": "{{count}} commands",
 	"helpData": {
 		"footer": "Command help for {{footerName}}",
 		"title": "{{titleDescription}}"

@@ -26,18 +26,18 @@
 		],
 		"extendedHelp": "This command shows a random starred message or the starboard usage and leaderboard for this server."
 	},
-	"starMessages_plural": "{{count}} messages",
-	"starMessages": "{{count}} message",
+	"starMessages_other": "{{count}} messages",
+	"starMessages_one": "{{count}} message",
 	"starNoChannel": "I'm sorry, but a starboard channel hasn't been set up.",
 	"starNostars": "There is no starred message.",
-	"stars_plural": "{{count}} stars",
-	"stars": "{{count}} star",
+	"stars_other": "{{count}} stars",
+	"stars_one": "{{count}} star",
 	"starStats": "Starboard Stats",
 	"starStatsDescription": "{{messages}} starred with a total of {{stars}}",
 	"starTopreceivers": "Top Star Receivers",
-	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} stars)",
-	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} star)",
+	"starTopreceiversDescription_other": "{{medal}}: <@{{id}}> ({{count}} stars)",
+	"starTopreceiversDescription_one": "{{medal}}: <@{{id}}> ({{count}} star)",
 	"starTopstarred": "Top Starred Posts",
-	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stars)",
-	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} star)"
+	"starTopstarredDescription_other": "{{medal}}: {{id}} ({{count}} stars)",
+	"starTopstarredDescription_one": "{{medal}}: {{id}} ({{count}} star)"
 }

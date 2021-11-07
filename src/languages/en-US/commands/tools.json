@@ -116,8 +116,8 @@
 			"population": "Population"
 		}
 	},
-	"countryTimezone": "Timezone: {{timezone.0}}",
-	"countryTimezone_plural": "Timezones: {{timezone, andList}}",
+	"countryTimezone_one": "Timezone: {{timezone.0}}",
+	"countryTimezone_other": "Timezones: {{timezone, andList}}",
 	"countryTitles": {
 		"LANGUAGES": "Languages",
 		"OTHER": "Other",
@@ -545,8 +545,8 @@
 	},
 	"whoisMemberPermissions": "Key Permissions",
 	"whoisMemberPermissionsAll": "All Permissions",
-	"whoisMemberRoles": "Role [1]",
-	"whoisMemberRoles_plural": "Roles [{{count}}]",
+	"whoisMemberRoles_one": "Role [1]",
+	"whoisMemberRoles_other": "Roles [{{count}}]",
 	"whoisMemberRoleListAndMore": "{{count}} more.",
 	"whoisMemberTitles": {
 		"createdAt": "Created At",

@@ -29,8 +29,8 @@
 	"twitchSubscriptionRemoveStreamerStatusNotMatch": "{{REDCROSS} I'm sorry, but it looks like you're not getting {{status}} notifications for {{streamer}}. We support \"online\" and \"offline\" notifications.",
 	"twitchSubscriptionRemoveSuccessOffline": "{{GREENTICK}} Success! I will no longer post messages to {{channel}} whenever {{name}} goes offline.",
 	"twitchSubscriptionRemoveSuccessLive": "{{GREENTICK}} Success! I will no longer post messages to {{channel}} whenever {{name}} goes live.",
-	"twitchSubscriptionResetSuccess": "{{GREENTICK}} Success! {{count}} subscription has been removed from this server.",
-	"twitchSubscriptionResetSuccess_plural": "{{GREENTICK}} Success! {{count}} subscriptions have been removed from this server.",
+	"twitchSubscriptionResetSuccess_one": "{{GREENTICK}} Success! {{count}} subscription has been removed from this server.",
+	"twitchSubscriptionResetSuccess_other": "{{GREENTICK}} Success! {{count}} subscriptions have been removed from this server.",
 	"twitchSubscriptionResetStreamerNotSubscribed": "{{REDCROSS}} You were not subscribed to this streamer. Are you sure you specified the right one?",
 	"twitchSubscriptionShowStreamerNotSubscribed": "{{REDCROSS}} You wanted to see all subscriptions from this streamer, but there are none!",
 	"twitchSubscriptionShowStatus": {

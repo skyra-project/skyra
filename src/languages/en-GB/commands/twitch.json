@@ -29,8 +29,8 @@
 	"twitchSubscriptionRemoveStreamerStatusNotMatch": "",
 	"twitchSubscriptionRemoveSuccessOffline": "",
 	"twitchSubscriptionRemoveSuccessLive": "",
-	"twitchSubscriptionResetSuccess": "",
-	"twitchSubscriptionResetSuccess_plural": "",
+	"twitchSubscriptionResetSuccess_one": "",
+	"twitchSubscriptionResetSuccess_other": "",
 	"twitchSubscriptionResetStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStatus": {

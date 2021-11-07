@@ -1,6 +1,7 @@
 {
 	"all": "",
-	"boolean_plural": "No pude resolver `{{parameter}}` a un booleano, los valores posibles son: {{possibles, orList}}",
+	"boolean_one": "",
+	"boolean_other": "",
 	"booleanError": "",
 	"booleanDisabled": "Desabilitado",
 	"booleanEnabled": "Habilitado",

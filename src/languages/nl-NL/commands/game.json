@@ -471,8 +471,8 @@
 		],
 		"reminder": ""
 	},
-	"hungerGamesResultDeaths": "",
-	"hungerGamesResultDeaths_plural": "",
+	"hungerGamesResultDeaths_one": "",
+	"hungerGamesResultDeaths_other": "",
 	"hungerGamesResultHeaderBloodbath": "",
 	"hungerGamesResultHeaderMoon": "",
 	"hungerGamesResultHeaderSun": "",

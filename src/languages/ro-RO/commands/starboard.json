@@ -26,18 +26,18 @@
 		],
 		"extendedHelp": ""
 	},
-	"starMessages_plural": "{{count}} mesaje",
-	"starMessages": "{{count}} mesaj",
+	"starMessages_other": "",
+	"starMessages_one": "",
 	"starNoChannel": "Îmi pare rău, dar un canal starboard nu a fost încă configurat.",
 	"starNostars": "Nu există nici un mesaj cu stele.",
-	"stars_plural": "{{count}} stele",
-	"stars": "{{count}} stea",
+	"stars_other": "",
+	"stars_one": "",
 	"starStats": "Statistici starboard",
 	"starStatsDescription": "{{messages}} mesaje cu un total de {{stars}} stele",
 	"starTopreceivers": "Receptori de top de stele",
-	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} stele)",
-	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} stea)",
+	"starTopreceiversDescription_other": "",
+	"starTopreceiversDescription_one": "",
 	"starTopstarred": "Mesaje stelate în top",
-	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stele)",
-	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} stea)"
+	"starTopstarredDescription_other": "",
+	"starTopstarredDescription_one": ""
 }

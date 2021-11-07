@@ -6,8 +6,8 @@
 	},
 	"growthOutfluxError": "No se pudo solicitar información del crecimiento. Inténtalo de nuevo en unas horas.",
 	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
-	"helpCommandCount": "{{count}} comando",
-	"helpCommandCount_plural": "{{count}} comandos",
+	"helpCommandCount_one": "",
+	"helpCommandCount_other": "",
 	"helpData": {
 		"footer": "Descripción de ayuda para {{footerName}}",
 		"title": "{{titleDescription}}"

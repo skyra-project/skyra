@@ -116,8 +116,8 @@
 			"population": "Население"
 		}
 	},
-	"countryTimezone": "Часовой пояс: {{timezone.0}}",
-	"countryTimezone_plural": "Часовые пояса: {{timezone, andList}}",
+	"countryTimezone_one": "",
+	"countryTimezone_other": "",
 	"countryTitles": {
 		"LANGUAGES": "Языки",
 		"OTHER": "",
@@ -545,8 +545,8 @@
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "Все разрешения",
-	"whoisMemberRoles": "",
-	"whoisMemberRoles_plural": "",
+	"whoisMemberRoles_one": "",
+	"whoisMemberRoles_other": "",
 	"whoisMemberRoleListAndMore": "",
 	"whoisMemberTitles": {
 		"createdAt": "",

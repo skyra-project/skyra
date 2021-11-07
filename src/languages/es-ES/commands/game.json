@@ -471,8 +471,8 @@
 		],
 		"reminder": "Puede especificar `--autoskip` para omitir automáticamente después de algún tiempo."
 	},
-	"hungerGamesResultDeaths": "**{{count}} disparo de cañón se puede escuchar en la distancia.**",
-	"hungerGamesResultDeaths_plural": "**{{count}} disparos de cañón se pueden escuchar en la distancia.**",
+	"hungerGamesResultDeaths_one": "",
+	"hungerGamesResultDeaths_other": "",
 	"hungerGamesResultHeaderBloodbath": "Baño de Sangre",
 	"hungerGamesResultHeaderMoon": "Noche {{game.turn}}",
 	"hungerGamesResultHeaderSun": "Día {{game.turn}}",

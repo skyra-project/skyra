@@ -26,18 +26,18 @@
 		],
 		"extendedHelp": "Este comando muestra un mensaje destacado aleatorio o el uso del tablero de estrellas y tabla de clasificación para este servidor."
 	},
-	"starMessages_plural": "{{count}} mensajes",
-	"starMessages": "{{count}} mensaje",
+	"starMessages_other": "",
+	"starMessages_one": "",
 	"starNoChannel": "Lo siento, pero no se ha configurado un canal de tablero de estrellas.",
 	"starNostars": "No hay ningún mensaje destacado.",
-	"stars_plural": "{{count}} estrellas",
-	"stars": "{{count}} estrella",
+	"stars_other": "",
+	"stars_one": "",
 	"starStats": "Estadísticas del Tablero de Estrellas",
 	"starStatsDescription": "{{messages}} marcados como destacado con un total de {{stars}}",
 	"starTopreceivers": "Mejores Autores de Estrellas",
-	"starTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} estrellas)",
-	"starTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} estrella)",
+	"starTopreceiversDescription_other": "",
+	"starTopreceiversDescription_one": "",
 	"starTopstarred": "Mejores Mensajes Destacados",
-	"starTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} estrellas)",
-	"starTopstarredDescription": "{{medal}}: {{id}} ({{count}} estrella)"
+	"starTopstarredDescription_other": "",
+	"starTopstarredDescription_one": ""
 }

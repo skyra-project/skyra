@@ -116,8 +116,8 @@
 			"population": ""
 		}
 	},
-	"countryTimezone": "",
-	"countryTimezone_plural": "",
+	"countryTimezone_one": "",
+	"countryTimezone_other": "",
 	"countryTitles": {
 		"LANGUAGES": "",
 		"OTHER": "",
@@ -545,8 +545,8 @@
 	},
 	"whoisMemberPermissions": "",
 	"whoisMemberPermissionsAll": "",
-	"whoisMemberRoles": "",
-	"whoisMemberRoles_plural": "",
+	"whoisMemberRoles_one": "",
+	"whoisMemberRoles_other": "",
 	"whoisMemberRoleListAndMore": "",
 	"whoisMemberTitles": {
 		"createdAt": "",

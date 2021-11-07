@@ -6,8 +6,8 @@
 	},
 	"growthOutfluxError": "",
 	"helpAllFlag": "",
-	"helpCommandCount": "",
-	"helpCommandCount_plural": "",
+	"helpCommandCount_one": "",
+	"helpCommandCount_other": "",
 	"helpData": {
 		"footer": "",
 		"title": ""

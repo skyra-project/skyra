@@ -3,8 +3,6 @@
 	"timeTooLong": "¡Oye! ¡Eso es un tiempo increíblemente largo para seguir el rastro!",
 	"endsAt": "Termina el:",
 	"title": "🎉 **SORTEO** 🎉",
-	"ended": "Ganador: {{winners, andList}}",
-	"ended_plural": "Ganadores: {{winners, andList}}",
 	"endedNoWinner": "No hay ganador...",
 	"endedAt": "Finalizado en:",
 	"endedTitle": "🎉 **SORTEO TERMINADO** 🎉",

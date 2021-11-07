@@ -1,6 +1,7 @@
 {
 	"all": "",
-	"boolean_plural": "",
+	"boolean_one": "",
+	"boolean_other": "",
 	"booleanError": "",
 	"booleanDisabled": "",
 	"booleanEnabled": "",

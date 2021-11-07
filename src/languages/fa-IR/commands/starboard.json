@@ -26,18 +26,18 @@
 		],
 		"extendedHelp": ""
 	},
-	"starMessages_plural": "",
-	"starMessages": "",
+	"starMessages_other": "",
+	"starMessages_one": "",
 	"starNoChannel": "",
 	"starNostars": "",
-	"stars_plural": "",
-	"stars": "",
+	"stars_other": "",
+	"stars_one": "",
 	"starStats": "",
 	"starStatsDescription": "",
 	"starTopreceivers": "",
-	"starTopreceiversDescription_plural": "",
-	"starTopreceiversDescription": "",
+	"starTopreceiversDescription_other": "",
+	"starTopreceiversDescription_one": "",
 	"starTopstarred": "",
-	"starTopstarredDescription_plural": "",
-	"starTopstarredDescription": ""
+	"starTopstarredDescription_other": "",
+	"starTopstarredDescription_one": ""
 }

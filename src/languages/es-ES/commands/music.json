@@ -24,16 +24,16 @@
 		]
 	},
 	"addPlaylist": "",
-	"addPlaylistSongs": "",
-	"addPlaylistSongs_plural": "",
+	"addPlaylistSongs_one": "",
+	"addPlaylistSongs_other": "",
 	"addSong": "",
 	"clearDescription": "",
 	"clearExtended": {
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"clearSuccess": "",
-	"clearSuccess_plural": "",
+	"clearSuccess_one": "",
+	"clearSuccess_other": "",
 	"exportQueueDescription": "",
 	"exportQueueExtended": {
 		"extendedHelp": "",

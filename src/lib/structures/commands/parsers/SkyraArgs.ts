@@ -53,7 +53,6 @@ export interface SkyraArgs {
 	command: SkyraCommand;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SkyraArgs {
 	export interface NextSplitOptions {
 		/**

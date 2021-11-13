@@ -44,7 +44,6 @@ export abstract class AudioListener extends Listener {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AudioListener {
 	export type Options = ListenerOptions;
 }

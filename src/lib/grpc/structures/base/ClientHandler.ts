@@ -37,7 +37,6 @@ export abstract class ClientHandler<C extends Client = Client> {
 	public static getCredentials = credentials.createInsecure;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ClientHandler {
 	export interface AsyncCall<T> {
 		(cb: (error: ServiceError | null, response: T) => unknown): void;

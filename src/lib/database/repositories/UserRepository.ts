@@ -132,7 +132,6 @@ interface RawSpouseEntry {
 	user_id_2: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UserRepository {
 	export interface UserEntityWithProfileAndCooldowns extends UserEntity {
 		profile: NonNullable<UserEntity['profile']>;

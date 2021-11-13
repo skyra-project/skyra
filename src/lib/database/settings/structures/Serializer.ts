@@ -155,7 +155,6 @@ export abstract class Serializer<T> extends AliasPiece {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Serializer {
 	export type Options = AliasPieceOptions;
 	export type Args = SkyraArgs;

@@ -64,7 +64,6 @@ export class LockdownManager extends Collection<string, Collection<string, Lockd
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace LockdownManager {
 	export type Channel = GuildTextBasedChannelTypes;
 	export interface Entry {

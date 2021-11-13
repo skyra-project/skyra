@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import { getRootData } from '@sapphire/pieces';
 import type { PostProcessorModule } from 'i18next';
 import { join } from 'path';

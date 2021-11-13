@@ -218,7 +218,6 @@ export interface HardPunishment {
 	adder: AdderKey;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ModerationMessageListener {
 	export interface Options extends ListenerOptions {
 		keyEnabled: PickByValue<GuildEntity, boolean>;

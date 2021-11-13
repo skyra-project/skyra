@@ -118,7 +118,7 @@
 		"@commitlint/cli": "^14.1.0",
 		"@commitlint/config-conventional": "^14.1.0",
 		"@favware/graphql-pokemon": "^6.2.1",
-		"@sapphire/eslint-config": "^4.0.3",
+		"@sapphire/eslint-config": "^4.0.4",
 		"@sapphire/prettier-config": "^1.2.4",
 		"@sapphire/ts-config": "^3.1.4",
 		"@skyra/star-wars-api": "^2.0.7",

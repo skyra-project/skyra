@@ -56,7 +56,6 @@ export abstract class PermissionsPrecondition extends Precondition {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PermissionsPrecondition {
 	export type Context = PreconditionContext;
 	export type Result = PreconditionResult;

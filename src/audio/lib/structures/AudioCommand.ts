@@ -13,7 +13,6 @@ export abstract class AudioCommand extends SkyraCommand {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AudioCommand {
 	/**
 	 * The AudioCommand Options

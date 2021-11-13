@@ -305,7 +305,6 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	protected abstract keyThresholdDuration: PickByValue<GuildEntity, number | null>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SelfModerationCommand {
 	/**
 	 * The SelfModerationCommand Options

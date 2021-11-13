@@ -64,7 +64,6 @@ export class InvalidTypeError extends UserError {
 	] as const;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace InvalidTypeError {
 	export type ArgLessType =
 		| 'author.id'

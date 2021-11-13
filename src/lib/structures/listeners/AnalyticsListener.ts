@@ -36,7 +36,6 @@ export abstract class AnalyticsListener extends Listener {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AnalyticsListener {
 	export type Options = Omit<ListenerOptions, 'enabled'>;
 }

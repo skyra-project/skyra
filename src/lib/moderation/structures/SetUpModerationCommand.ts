@@ -66,7 +66,6 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SetUpModerationCommand {
 	/**
 	 * The ModerationCommand Options

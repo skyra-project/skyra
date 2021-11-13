@@ -174,7 +174,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ModerationCommand {
 	/**
 	 * The ModerationCommand Options

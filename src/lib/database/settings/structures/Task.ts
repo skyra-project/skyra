@@ -10,7 +10,6 @@ export abstract class Task extends Piece {
 	public abstract run(data: unknown): Awaitable<PartialResponseValue | null>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Task {
 	export type Options = PieceOptions;
 }

@@ -4,9 +4,9 @@ import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {

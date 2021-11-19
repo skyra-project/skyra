@@ -1,8 +1,8 @@
 import { Actions, CommandCategoryTypes, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';

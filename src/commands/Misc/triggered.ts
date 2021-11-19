@@ -8,8 +8,8 @@ import { GifEncoder } from '@skyra/gifenc';
 import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
-import { join } from 'path';
-import { buffer } from 'stream/consumers';
+import { join } from 'node:path';
+import { buffer } from 'node:stream/consumers';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],

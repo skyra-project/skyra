@@ -4,7 +4,7 @@ import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import { APIChannel, APIGuild, APIGuildMember, APIRole, APIUser, ChannelType, GuildFeature, GuildNSFWLevel } from 'discord-api-types/v9';
 import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
 

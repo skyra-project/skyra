@@ -10,7 +10,7 @@ import { NonNullObject, roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envIsDefined('CRYPTOCOMPARE_TOKEN'),

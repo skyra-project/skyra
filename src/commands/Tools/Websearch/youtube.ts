@@ -7,7 +7,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
 import type { Message, MessageSelectOptionData } from 'discord.js';
 import { decode } from 'he';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('GOOGLE_API_TOKEN'),

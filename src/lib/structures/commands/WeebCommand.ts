@@ -7,7 +7,7 @@ import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {

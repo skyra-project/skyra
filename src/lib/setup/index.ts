@@ -13,7 +13,7 @@ import './Grpc';
 import './PaginatedMessage';
 
 import * as colorette from 'colorette';
-import { inspect } from 'util';
+import { inspect } from 'node:util';
 
 inspect.defaultOptions.depth = 1;
 colorette.createColors({ useColor: true });

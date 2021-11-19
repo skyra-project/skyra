@@ -11,7 +11,7 @@ import { cutText, roundNumber } from '@sapphire/utilities';
 import { Collection, Message, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const kUserNameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 

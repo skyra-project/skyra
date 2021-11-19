@@ -8,7 +8,7 @@ import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
 import type { NonNullObject } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import type { Message, MessageOptions, UserResolvable } from 'discord.js';
-import { setTimeout as sleep } from 'timers/promises';
+import { setTimeout as sleep } from 'node:timers/promises';
 
 const messageCommands = new WeakMap<Message, SkyraCommand>();
 

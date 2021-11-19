@@ -2,9 +2,9 @@ import { rootFolder } from '#utils/constants';
 import Collection from '@discordjs/collection';
 import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import type { KeyType, Redis } from 'ioredis';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { Queue } from './Queue';
 import type { QueueClient } from './QueueClient';
 

@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const enum ClashOfClansFetchCategories {
 	PLAYERS = 'players',

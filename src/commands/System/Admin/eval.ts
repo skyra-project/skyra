@@ -10,8 +10,8 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { setTimeout as sleep } from 'timers/promises';
-import { inspect } from 'util';
+import { setTimeout as sleep } from 'node:timers/promises';
+import { inspect } from 'node:util';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ev'],

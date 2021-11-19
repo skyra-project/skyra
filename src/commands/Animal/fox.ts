@@ -6,7 +6,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const url = new URL('https://randomfox.ca/floof');
 

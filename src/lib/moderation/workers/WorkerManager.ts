@@ -1,5 +1,5 @@
 import { envParseInteger } from '#lib/env';
-import { cpus } from 'os';
+import { cpus } from 'node:os';
 import type { IncomingPayload, IncomingRunRegExpPayload, NoId, OutgoingNoContentPayload, OutgoingRegExpMatchPayload } from './types';
 import { WorkerHandler } from './WorkerHandler';
 

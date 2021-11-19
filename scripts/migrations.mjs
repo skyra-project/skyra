@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import typeorm from 'typeorm';
 import dbConfig from '../dist/lib/database/database.config.js';
 

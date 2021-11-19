@@ -1,5 +1,5 @@
 import { exec } from '#utils/Promisified/exec';
-import { platform } from 'os';
+import { platform } from 'node:os';
 
 const windows = platform() === 'win32';
 const lineEndings = windows ? '\r\n' : '\n';

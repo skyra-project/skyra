@@ -11,7 +11,7 @@ import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { join } from 'path';
+import { join } from 'node:path';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');

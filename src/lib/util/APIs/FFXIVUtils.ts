@@ -4,7 +4,7 @@ import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { toTitleCase } from '@sapphire/utilities';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 export const FFXIVServers = [
 	'adamantoise',

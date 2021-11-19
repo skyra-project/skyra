@@ -1,5 +1,5 @@
 import { remove as removeConfusables } from 'confusables';
-import { isMainThread, parentPort } from 'worker_threads';
+import { isMainThread, parentPort } from 'node:worker_threads';
 import { IncomingPayload, IncomingRunRegExpPayload, IncomingType, OutgoingPayload, OutgoingType } from './types';
 
 if (isMainThread || parentPort === null) throw new Error('The Worker may only be ran via the worker_threads fork method!');

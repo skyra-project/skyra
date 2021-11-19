@@ -9,8 +9,8 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
-import { extname } from 'path';
-import { URL } from 'url';
+import { extname } from 'node:path';
+import { URL } from 'node:url';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte

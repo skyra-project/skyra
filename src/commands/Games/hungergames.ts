@@ -13,7 +13,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { TFunction } from 'i18next';
-import { setTimeout as sleep } from 'timers/promises';
+import { setTimeout as sleep } from 'node:timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['hunger-games', 'hg'],

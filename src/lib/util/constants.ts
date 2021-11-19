@@ -1,6 +1,6 @@
 import { getRootData } from '@sapphire/pieces';
 import type { PostProcessorModule } from 'i18next';
-import { join } from 'path';
+import { join } from 'node:path';
 
 export const mainFolder = getRootData().root;
 export const rootFolder = join(mainFolder, '..');

@@ -30,7 +30,7 @@ import {
 import type { ActivityTypes } from 'discord.js/typings/enums';
 import { config } from 'dotenv-cra';
 import i18next, { FormatFunction, InterpolationOptions } from 'i18next';
-import { join } from 'path';
+import { join } from 'node:path';
 
 // Read config:
 config({

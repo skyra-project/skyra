@@ -11,7 +11,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	enabled: envIsDefined('THEMOVIEDATABASE_TOKEN'),

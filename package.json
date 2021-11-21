@@ -136,7 +136,7 @@
 		"@typescript-eslint/parser": "^5.4.0",
 		"babel-plugin-const-enum": "^1.2.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.2.0",
+		"eslint": "^8.3.0",
 		"grpc-tools": "^1.11.2",
 		"husky": "^7.0.4",
 		"jest": "^27.3.1",

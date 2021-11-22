@@ -12,7 +12,7 @@ import { cutText } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { stringify } from 'querystring';
+import { stringify } from 'node:querystring';
 
 const API_URL = `https://${process.env.NPM_SEARCH_ID}-dsn.algolia.net/1/indexes/npm-search/query`;
 

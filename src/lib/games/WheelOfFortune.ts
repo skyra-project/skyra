@@ -7,7 +7,7 @@ import { roundNumber } from '@sapphire/utilities';
 import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { join } from 'path';
+import { join } from 'node:path';
 
 const enum Arrows {
 	UpDiagonalLeft = 0.2,

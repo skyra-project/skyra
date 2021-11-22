@@ -1,6 +1,6 @@
 import { assetsFolder } from '#utils/constants';
 import { registerFont } from 'canvas-constructor/skia';
-import { join } from 'path';
+import { join } from 'node:path';
 
 registerFont('RobotoRegular', [
 	join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'),

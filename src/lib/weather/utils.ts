@@ -6,8 +6,8 @@ import { tryParse } from '@sapphire/utilities';
 import { Image, resolveImage } from 'canvas-constructor/skia';
 import { cyan, gray, red } from 'colorette';
 import type { TFunction } from 'i18next';
-import { join } from 'path';
-import { URL } from 'url';
+import { join } from 'node:path';
+import { URL } from 'node:url';
 import { CurrentCondition, Weather, WeatherCode, WeatherName } from './types';
 
 export function getColors(name: WeatherName): WeatherTheme {

@@ -10,7 +10,7 @@ import { cutText, toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';
-import { stringify } from 'querystring';
+import { stringify } from 'node:querystring';
 
 const API_URL = `https://${process.env.NINTENDO_ID}-dsn.algolia.net/1/indexes/ncom_game_en_us/query`;
 

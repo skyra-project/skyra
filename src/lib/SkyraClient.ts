@@ -9,7 +9,7 @@ import { container, SapphireClient } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { Message, WebhookClient } from 'discord.js';
 import Redis from 'ioredis';
-import { join } from 'path';
+import { join } from 'node:path';
 import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { envIsDefined, envParseBoolean, envParseInteger, envParseString } from './env';

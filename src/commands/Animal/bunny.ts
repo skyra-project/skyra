@@ -7,7 +7,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 

@@ -5,7 +5,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed, version } from 'discord.js';
-import { CpuInfo, cpus, uptime } from 'os';
+import { CpuInfo, cpus, uptime } from 'node:os';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['stats', 'sts'],

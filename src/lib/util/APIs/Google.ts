@@ -5,7 +5,7 @@ import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { container } from '@sapphire/framework';
 import { resolveKey } from '@sapphire/plugin-i18next';
 import type { Message } from 'discord.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 const GOOGLE_CUSTOM_SEARCH_API_URL = 'https://www.googleapis.com/customsearch/v1';

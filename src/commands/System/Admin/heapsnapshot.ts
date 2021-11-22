@@ -29,7 +29,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
-import { writeHeapSnapshot } from 'v8';
+import { writeHeapSnapshot } from 'node:v8';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Admin.HeapSnapshotDescription,

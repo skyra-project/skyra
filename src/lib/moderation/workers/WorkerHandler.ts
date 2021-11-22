@@ -3,9 +3,9 @@ import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
 import { cyan, green, red, yellow } from 'colorette';
-import { once } from 'events';
-import { join } from 'path';
-import { Worker } from 'worker_threads';
+import { once } from 'node:events';
+import { join } from 'node:path';
+import { Worker } from 'node:worker_threads';
 import { IncomingPayload, NoId, OutgoingPayload, OutgoingType } from './types';
 import { WorkerResponseHandler } from './WorkerResponseHandler';
 

@@ -1,9 +1,9 @@
-import { execFile } from 'child_process';
+import { execFile } from 'node:child_process';
 import { gray, green, red } from 'colorette';
-import { mkdir, readdir, rm, writeFile } from 'fs/promises';
-import { dirname, join, sep } from 'path';
-import { fileURLToPath } from 'url';
-import { promisify } from 'util';
+import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { dirname, join, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

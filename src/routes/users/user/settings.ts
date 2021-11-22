@@ -2,7 +2,7 @@ import { authenticated, ratelimit } from '#lib/api/utils';
 import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
-import { inspect } from 'util';
+import { inspect } from 'node:util';
 
 interface BodyData {
 	darkTheme?: boolean;

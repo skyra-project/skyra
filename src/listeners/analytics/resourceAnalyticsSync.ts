@@ -3,7 +3,7 @@ import { Actions, Points, Tags } from '#lib/types/AnalyticsSchema';
 import { Events } from '#lib/types/Enums';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
-import { cpus } from 'os';
+import { cpus } from 'node:os';
 
 @ApplyOptions<AnalyticsListener.Options>({ event: Events.ResourceAnalyticsSync })
 export class UserAnalyticsEvent extends AnalyticsListener {

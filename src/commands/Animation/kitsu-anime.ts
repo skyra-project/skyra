@@ -11,7 +11,7 @@ import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { stringify } from 'querystring';
+import { stringify } from 'node:querystring';
 
 const API_URL = `https://${process.env.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 

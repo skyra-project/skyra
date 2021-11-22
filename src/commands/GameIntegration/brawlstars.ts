@@ -11,7 +11,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 const kTagRegex = /^#?[0289PYLQGRJCUV]{3,9}$/;
 

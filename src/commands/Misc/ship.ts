@@ -10,7 +10,7 @@ import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
 import { remove as removeConfusables } from 'confusables';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
-import { join } from 'path';
+import { join } from 'node:path';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.ShipDescription,

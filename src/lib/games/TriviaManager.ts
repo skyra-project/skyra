@@ -1,5 +1,5 @@
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 export const enum TriviaResponseCode {
 	Success,

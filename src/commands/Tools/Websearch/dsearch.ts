@@ -6,7 +6,7 @@ import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['duckduckgo'],

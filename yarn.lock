@@ -2685,7 +2685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.9":
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.10":
   version: 16.11.10
   resolution: "@types/node@npm:16.11.10"
   checksum: 9c79419c5c3d92d5825bffa30f3668533f598d8b63a73ea7fc24e47f162bdbed92b0f8e4f4261cc3314b39cee050e303366d2aa154abc95c63a572a110b8c160
@@ -6346,7 +6346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^4.28.0":
+"ioredis@npm:^4.28.1":
   version: 4.28.1
   resolution: "ioredis@npm:4.28.1"
   dependencies:
@@ -7421,7 +7421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^12.1.1":
+"lint-staged@npm:^12.1.2":
   version: 12.1.2
   resolution: "lint-staged@npm:12.1.2"
   dependencies:
@@ -9870,7 +9870,7 @@ __metadata:
     "@types/he": ^1.1.2
     "@types/ioredis": ^4.28.1
     "@types/jest": ^27.0.3
-    "@types/node": ^16.11.9
+    "@types/node": ^16.11.10
     "@types/pg": ^8.6.1
     "@types/skia-canvas": ^0.9.2
     "@types/ws": ^8.2.0
@@ -9895,11 +9895,11 @@ __metadata:
     grpc_tools_node_protoc_ts: ^5.3.2
     he: ^1.2.0
     husky: ^7.0.4
-    ioredis: ^4.28.0
+    ioredis: ^4.28.1
     jest: ^27.3.1
     jest-circus: ^27.3.1
     jest-mock-random: ^1.1.1
-    lint-staged: ^12.1.1
+    lint-staged: ^12.1.2
     nock: ^13.2.1
     npm-run-all: ^4.1.5
     pg: ^8.7.1
@@ -9913,7 +9913,7 @@ __metadata:
     typeorm-naming-strategies: ^2.0.0
     typescript: ^4.5.2
     utf-8-validate: ^5.0.7
-    ws: ^8.2.3
+    ws: ^8.3.0
     zlib-sync: ^0.1.7
   languageName: unknown
   linkType: soft
@@ -10922,11 +10922,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.2#~builtin<compat/typescript>":
   version: 4.5.2
-  resolution: "typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>::version=4.5.2&hash=ddd1e8"
+  resolution: "typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>::version=4.5.2&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 24a439e062a05e3285a4f0e8a40644116ecdca89f3e908bed01e5a01b9aee747e3bcf0e85fe9e017e5ebf0c0863437c39479f2616f55a244c2d82d37022cdc4f
+  checksum: 53838d56aba6fcc947d63aa0771e5d966b1b648fddafed6e221d7f38c71219c4e036ece8cfe9e35ed80cf5a35ff4eb958934c993f99c3233773ec4f9ccd53f69
   languageName: node
   linkType: hard
 
@@ -11273,7 +11273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.2.2, ws@npm:^8.2.3":
+"ws@npm:^8.2.2, ws@npm:^8.2.3, ws@npm:^8.3.0":
   version: 8.3.0
   resolution: "ws@npm:8.3.0"
   peerDependencies:

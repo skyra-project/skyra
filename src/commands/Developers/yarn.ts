@@ -11,6 +11,7 @@ import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
+import { decode } from 'he';
 import type { TFunction } from 'i18next';
 import { stringify } from 'node:querystring';
 
@@ -82,10 +83,8 @@ export class UserCommand extends SkyraCommand {
 			const author = this.parseAuthor(hit.owner);
 			const dateCreated = hit.created ? time(new Date(hit.created), TimestampStyles.ShortDate) : t(LanguageKeys.Globals.Unknown);
 			const dateModified = hit.modified ? time(new Date(hit.modified), TimestampStyles.ShortDate) : t(LanguageKeys.Globals.Unknown);
-			const description = cutText(hit.description ?? '', 1000);
-			// const latestVersionNumer = hit.version;
+			const description = decode(cutText(hit.description ?? '', 1000));
 			const license = hit.license || t(LanguageKeys.Globals.None);
-			// const mainFile = latestVersion.main || 'index.js';
 
 			display.addPageEmbed((embed) =>
 				embed //

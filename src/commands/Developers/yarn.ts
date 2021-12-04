@@ -25,7 +25,8 @@ const API_URL = `https://${process.env.NPM_SEARCH_ID}-dsn.algolia.net/1/indexes/
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
-		const pkg = encodeURIComponent((await args.rest('cleanString')).replaceAll(' ', '-').toLowerCase());
+		const cleanString = await args.rest('cleanString');
+		const pkg = cleanString.replaceAll(' ', '-').toLowerCase();
 		const response = await sendLoadingMessage(message, args.t);
 
 		const { hits } = await this.fetchApi(pkg);
@@ -67,6 +68,10 @@ export class UserCommand extends SkyraCommand {
 			template: new MessageEmbed() //
 				.setColor(await this.container.db.fetchColor(message))
 		});
+
+		display.setSelectMenuOptions((pageIndex) => ({
+			label: hits[pageIndex - 1].name
+		}));
 
 		for (const hit of hits) {
 			const maintainers = hit.owners.map((user) => hyperlink(user.name, hideLinkEmbed(user.link)));

@@ -2214,12 +2214,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-subcommands@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@sapphire/plugin-subcommands@npm:2.1.0"
+"@sapphire/plugin-subcommands@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@sapphire/plugin-subcommands@npm:2.1.1"
   dependencies:
     tslib: ^2.3.1
-  checksum: 43b276517e2ca2bf38cdd7c1e1e2bbf35bdb8ca2f589eab3976301b338e453e13ccab01cb1d2ddffc25c827af625e14a6a2dda623e179f716f888294be1d0451
+  checksum: a981bef2ad74bc02258909087ba6fd42af6a9a62558855d54fc75ef1057b819de4317e521df7380c9c5ad65e91d26fd8798fd10708fff395968e8e3daa2d88c3
   languageName: node
   linkType: hard
 
@@ -9894,7 +9894,7 @@ __metadata:
     "@sapphire/plugin-editable-commands": ^1.1.1
     "@sapphire/plugin-i18next": ^2.0.2
     "@sapphire/plugin-logger": ^2.1.0
-    "@sapphire/plugin-subcommands": ^2.1.0
+    "@sapphire/plugin-subcommands": ^2.1.1
     "@sapphire/prettier-config": ^1.2.6
     "@sapphire/ratelimits": ^2.1.10
     "@sapphire/snowflake": ^2.1.4

@@ -31,7 +31,7 @@ export function ratelimit(time: number, limit = 1, auth = false) {
 	const xRateLimitLimit = time;
 	return createFunctionPrecondition(
 		(request: ApiRequest, response: ApiResponse) => {
-			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
+			const id = (auth ? request.auth!.id : request.headers['x-forwarded-for'] || request.socket.remoteAddress) as string;
 			const bucket = manager.acquire(id);
 
 			response.setHeader('Date', new Date().toUTCString());

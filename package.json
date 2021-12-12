@@ -68,7 +68,7 @@
 		"@sapphire/framework": "^2.2.1",
 		"@sapphire/plugin-api": "^3.1.1",
 		"@sapphire/plugin-editable-commands": "^1.1.1",
-		"@sapphire/plugin-i18next": "^2.0.2",
+		"@sapphire/plugin-i18next": "^2.1.2",
 		"@sapphire/plugin-logger": "^2.1.1",
 		"@sapphire/plugin-subcommands": "^2.1.2",
 		"@sapphire/ratelimits": "^2.1.10",

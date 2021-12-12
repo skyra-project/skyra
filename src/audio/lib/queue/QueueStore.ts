@@ -15,7 +15,7 @@ interface RedisCommand {
 
 const commands: RedisCommand[] = [
 	{
-		name: 'lmove',
+		name: 'llmove',
 		keys: 1
 	},
 	{
@@ -33,7 +33,7 @@ const commands: RedisCommand[] = [
 ];
 
 export interface ExtendedRedis extends Redis {
-	lmove: (key: KeyType, from: number, to: number) => Promise<'OK'>;
+	llmove: (key: KeyType, from: number, to: number) => Promise<'OK'>;
 	lremat: (key: KeyType, index: number) => Promise<'OK'>;
 	lshuffle: (key: KeyType, seed: number) => Promise<'OK'>;
 	rpopset: (source: KeyType, destination: KeyType) => Promise<string | null>;

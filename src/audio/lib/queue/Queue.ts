@@ -367,7 +367,7 @@ export class Queue {
 	 * @param to The position of the new position for the track.
 	 */
 	public async moveTracks(from: number, to: number): Promise<void> {
-		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
+		await this.store.redis.llmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
 		await this.refresh();
 		container.client.emit(Events.MusicQueueSync, this);
 	}

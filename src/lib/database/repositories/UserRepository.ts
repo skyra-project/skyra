@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility, @typescript-eslint/unified-signatures */
+/* eslint-disable @typescript-eslint/unified-signatures */
 import { UserCooldownEntity } from '#lib/database/entities/UserCooldownEntity';
 import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { resolveOnErrorCodes } from '#utils/common';
 import { getAudio, isDJ } from '#utils/functions';
 import { container } from '@sapphire/framework';

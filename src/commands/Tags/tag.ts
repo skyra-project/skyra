@@ -27,7 +27,6 @@ import { MessageEmbed, MessageOptions } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	// Based on HEX regex from #utils/Color
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexLessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
 	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Events } from '#lib/types/Enums';
 import { container } from '@sapphire/framework';
 import {

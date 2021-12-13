@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database/entities';
 import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';

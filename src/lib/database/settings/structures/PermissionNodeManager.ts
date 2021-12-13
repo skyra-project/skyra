@@ -18,9 +18,7 @@ type Nodes = readonly PermissionsNode[];
 type Node = Nodes[number];
 
 export class PermissionNodeManager implements IBaseManager {
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#settings: GuildEntity;
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#previous: Nodes = [];
 
 	private sorted = new Collection<string, PermissionsManagerNode>();

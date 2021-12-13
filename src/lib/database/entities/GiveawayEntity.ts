@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';

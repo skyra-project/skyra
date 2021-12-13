@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import type { StickyRole } from '#lib/database/entities';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings, writeSettings } from '#lib/database/settings';

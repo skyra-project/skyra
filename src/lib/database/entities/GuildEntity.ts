@@ -854,7 +854,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	 */
 	public nms: RateLimitManager = null!;
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#words: readonly string[] = [];
 
 	public get guild() {

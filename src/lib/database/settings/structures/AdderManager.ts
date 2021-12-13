@@ -16,7 +16,6 @@ export class AdderManager implements IBaseManager {
 	public words: Adder<string> | null = null;
 	public reactions: Adder<string> | null = null;
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#settings: GuildEntity;
 
 	public constructor(settings: GuildEntity) {

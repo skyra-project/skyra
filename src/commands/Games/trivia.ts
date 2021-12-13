@@ -18,7 +18,6 @@ import type { TFunction } from 'i18next';
 	requiredClientPermissions: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory]
 })
 export class UserCommand extends SkyraCommand {
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 
 	public async messageRun(message: Message, args: SkyraCommand.Args) {

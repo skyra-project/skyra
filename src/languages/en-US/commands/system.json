@@ -84,7 +84,7 @@
 	},
 	"statsFields": {
 		"stats": "• **Users**: {{stats.users, number}}\n• **Servers**: {{stats.guilds, number}}\n• **Channels**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
-		"uptime": "• **Host**: {{uptime.host, duration}}\n• **Total**: {{uptime.total, duration}}\n• **Client**: {{uptime.client, duration}}",
+		"uptime": "• **Host**: {{uptime.host}}\n• **Total**: {{uptime.total}}\n• **Client**: {{uptime.client}}",
 		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
 	},
 	"disable": "+ Successfully disabled {{type}}: {{name}}",

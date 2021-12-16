@@ -1,5 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { seconds } from '#utils/common';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
@@ -46,10 +48,12 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private get uptimeStatistics(): StatsUptime {
+		const now = Date.now();
+		const nowSeconds = roundNumber(now / 1000);
 		return {
-			client: this.container.client.uptime!,
-			host: uptime() * 1000,
-			total: process.uptime() * 1000
+			client: time(seconds.fromMilliseconds(now - this.container.client.uptime!), TimestampStyles.RelativeTime),
+			host: time(roundNumber(nowSeconds - uptime()), TimestampStyles.RelativeTime),
+			total: time(roundNumber(nowSeconds - process.uptime()), TimestampStyles.RelativeTime)
 		};
 	}
 
@@ -76,9 +80,9 @@ export interface StatsGeneral {
 }
 
 export interface StatsUptime {
-	client: number;
-	host: number;
-	total: number;
+	client: string;
+	host: string;
+	total: string;
 }
 
 export interface StatsUsage {

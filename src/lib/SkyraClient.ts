@@ -84,7 +84,7 @@ export class SkyraClient extends SapphireClient {
 
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 
-		if (envParseBoolean('AUDIO_ENABLED')) {
+		if (envParseBoolean('REDIS_ENABLED') && envParseBoolean('AUDIO_ENABLED')) {
 			this.audio = new QueueClient(this.options.audio!, (guildId, packet) => {
 				const guild = this.guilds.cache.get(guildId);
 				return Promise.resolve(guild?.shard.send(packet));

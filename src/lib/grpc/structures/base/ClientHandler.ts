@@ -1,4 +1,3 @@
-import { envParseString } from '#lib/env';
 import { createReferPromise } from '#utils/common';
 import { Client, credentials, ServiceError } from '@grpc/grpc-js';
 import type { Message } from 'google-protobuf';
@@ -20,7 +19,7 @@ export abstract class ClientHandler<C extends Client = Client> {
 			cb((error, response) => {
 				if (error === null) {
 					const parsed = response.toObject() as T;
-					if ((parsed as any).status === 'TODO') refer.resolve(parsed);
+					if ((parsed as any).result === 0) refer.resolve(parsed);
 					else refer.reject(new ResponseError(parsed));
 				} else {
 					refer.reject(error);
@@ -33,7 +32,6 @@ export abstract class ClientHandler<C extends Client = Client> {
 		return refer.promise;
 	}
 
-	public static address = envParseString('GRPC_ADDRESS');
 	public static getCredentials = credentials.createInsecure;
 }
 

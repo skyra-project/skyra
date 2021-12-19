@@ -116,6 +116,51 @@ services:
       - '8284:8284'
     restart: always
 
+  arkadia.notifications:
+    container_name: arkadia.notifications
+    depends_on:
+      - postgres
+    environment:
+      HTTP_PORT: 9001
+      GRPC_PORT: 9002
+      CALLBACK_URL: https://notifications.skyra.pw
+      YOUTUBE_API_KEY:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_HOST: 'localhost'
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: 'arkadia'
+    image: 'ghcr.io/skyra-project/arkadia.notifications:latest'
+    networks:
+      - skyra
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    restart: always
+
+  arkadia.cdn:
+    container_name: arkadia.cdn
+    depends_on:
+      - postgres
+    environment:
+      HTTP_PORT: 9011
+      GRPC_PORT: 9012
+      BASE_ASSET_LOCATION: '/var/lib/cdn/data'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_HOST: 'postgres'
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: 'arkadia'
+    image: 'ghcr.io/skyra-project/arkadia.cdn:latest'
+    networks:
+      - skyra
+    ports:
+      - '9011:9011'
+      - '9012:9012'
+    restart: always
+    volumes:
+      - 'cdn-data:/var/lib/cdn/data'
+
   skyra:
     build:
       context: ../
@@ -144,6 +189,8 @@ volumes:
   postgres-data:
     external: true
   influx-data:
+    external: true
+  cdn-data:
     external: true
 
 networks:

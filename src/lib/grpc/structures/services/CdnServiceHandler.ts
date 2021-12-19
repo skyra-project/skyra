@@ -1,9 +1,10 @@
+import { envParseString } from '#lib/env';
 import { CdnServiceClient } from '../../generated/cdn_grpc_pb';
 import * as Cdn from '../../generated/cdn_pb';
 import { ClientHandler } from '../base/ClientHandler';
 
 export class CdnServiceHandler extends ClientHandler {
-	public readonly client = new CdnServiceClient(ClientHandler.address, ClientHandler.getCredentials());
+	public readonly client = new CdnServiceClient(envParseString('GRPC_CDN_ADDRESS'), ClientHandler.getCredentials());
 
 	public get(options: CdnServiceHandler.GetRequest): Promise<CdnServiceHandler.CdnFileResponse> {
 		const query = new Cdn.GetRequest().setName(options.name);

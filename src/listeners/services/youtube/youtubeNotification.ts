@@ -6,7 +6,7 @@ import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { TextBasedChannels } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ enabled: envParseBoolean('GRPC_ENABLED') && envParseBoolean('GRPC_YOUTUBE_ENABLED') })
+@ApplyOptions<ListenerOptions>({ enabled: envParseBoolean('GRPC_NOTIFICATIONS_ENABLED') })
 export class UserListener extends Listener {
 	public run(notification: YoutubeServiceHandler.UploadNotification) {
 		for (const context of notification.guildInfoList) {

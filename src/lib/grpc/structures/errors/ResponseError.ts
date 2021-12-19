@@ -1,12 +1,12 @@
 export class ResponseError extends Error {
-	public readonly result: any;
+	public readonly response: any;
 
-	public constructor(result: any) {
-		super(`Received non-OK response: '${result.status}'`);
-		this.result = result;
+	public constructor(response: any) {
+		super(`Received non-OK response (${response.result})`);
+		this.response = response;
 	}
 
-	public get status(): any {
-		return this.result.status;
+	public get result(): any {
+		return this.response.result;
 	}
 }

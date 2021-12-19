@@ -1,3 +1,4 @@
+import { envParseString } from '#lib/env';
 import type { ClientReadableStream } from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { YoutubeSubscriptionClient } from '../../generated/youtube_subscription_grpc_pb';
@@ -5,7 +6,7 @@ import * as Youtube from '../../generated/youtube_subscription_pb';
 import { ClientHandler } from '../base/ClientHandler';
 
 export class YoutubeServiceHandler extends ClientHandler {
-	public readonly client = new YoutubeSubscriptionClient(ClientHandler.address, ClientHandler.getCredentials());
+	public readonly client = new YoutubeSubscriptionClient(envParseString('GRPC_NOTIFICATIONS_ADDRESS'), ClientHandler.getCredentials());
 	private notificationStream: ClientReadableStream<Youtube.UploadNotification> | null = null;
 
 	public subscribe(options: YoutubeServiceHandler.SubscriptionRequest): Promise<YoutubeServiceHandler.YoutubeServiceResponse> {

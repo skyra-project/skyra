@@ -6,10 +6,12 @@ export class ModelStore {
 	public readonly youtube = new YoutubeServiceHandler();
 
 	public async start() {
-		if (!envParseBoolean('GRPC_ENABLED')) return this.destroy();
+		const promises: Promise<void>[] = [];
 
-		if (envParseBoolean('GRPC_CDN_ENABLED')) await this.cdn.waitForReady();
-		if (envParseBoolean('GRPC_YOUTUBE_ENABLED')) await this.youtube.waitForReady();
+		if (envParseBoolean('GRPC_CDN_ENABLED')) promises.push(this.cdn.waitForReady());
+		if (envParseBoolean('GRPC_NOTIFICATIONS_ENABLED')) promises.push(this.youtube.waitForReady());
+
+		await Promise.all(promises);
 	}
 
 	public destroy() {

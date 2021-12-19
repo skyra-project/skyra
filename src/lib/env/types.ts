@@ -45,6 +45,8 @@ export interface SkyraEnv {
 	PGSQL_DATABASE_HOST: string;
 	TYPEORM_DEBUG_LOGS: BooleanString;
 	GRPC_ENABLED: BooleanString;
+	GRPC_CDN_ENABLED: BooleanString;
+	GRPC_YOUTUBE_ENABLED: BooleanString;
 	REDIS_HOST: string;
 
 	REDIS_ENABLED: BooleanString;

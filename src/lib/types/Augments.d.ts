@@ -2,7 +2,7 @@
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
-import type { ModelStore } from '#lib/grpc';
+import type { ModelStore, YoutubeServiceHandler } from '#lib/grpc';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
@@ -160,9 +160,10 @@ declare module '@sapphire/framework' {
 		emit(event: Events.MusicConnect, queue: Queue, voiceChannelID: string): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;
 		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
-		emit(events: Events.TwitchStreamOnline, event: TwitchEventSubOnlineEvent): boolean;
-		emit(events: Events.TwitchStreamOffline, event: TwitchEventSubEvent): boolean;
+		emit(event: Events.TwitchStreamOnline, value: TwitchEventSubOnlineEvent): boolean;
+		emit(event: Events.TwitchStreamOffline, value: TwitchEventSubEvent): boolean;
 		emit(event: Events.TaskError, error: Error, payload: TaskErrorPayload): boolean;
+		emit(event: Events.YoutubeNotification, notification: YoutubeServiceHandler.UploadNotification): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 }

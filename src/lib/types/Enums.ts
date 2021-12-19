@@ -90,7 +90,8 @@ export const enum Events {
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
-	UserMessage = 'userMessage'
+	UserMessage = 'userMessage',
+	YoutubeNotification = 'youtubeNotification'
 }
 
 export const enum PermissionLevels {

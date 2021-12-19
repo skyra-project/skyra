@@ -66,7 +66,7 @@ Discord, and in February 2017, I met the Dirigeants team, upon which I started t
 Klasa. And later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire][sapphiredev],
 which is what Skyra is currently using, specifically [Sapphire Framework][]
 
-_Who knows, I might write a book someday for Skyra's lore._
+_Who knows, I might write a [book] someday for Skyra's lore._
 
 ## Links
 
@@ -179,3 +179,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
 [skyra invite link]: https://invite.skyra.pw
 [support server]: https://join.skyra.pw
+[book]: https://github.com/kyranet/lore

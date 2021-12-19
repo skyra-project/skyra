@@ -2,13 +2,23 @@ import { envParseString } from '#lib/env';
 import { CdnServiceClient } from '../../generated/cdn_grpc_pb';
 import * as Cdn from '../../generated/cdn_pb';
 import { ClientHandler } from '../base/ClientHandler';
+import { ResponseError } from '../errors';
 
 export class CdnServiceHandler extends ClientHandler {
 	public readonly client = new CdnServiceClient(envParseString('GRPC_CDN_ADDRESS'), ClientHandler.getCredentials());
 
-	public get(options: CdnServiceHandler.GetRequest): Promise<CdnServiceHandler.CdnFileResponse> {
+	public async get(options: CdnServiceHandler.GetRequest): Promise<CdnServiceHandler.CdnFileResponse> {
 		const query = new Cdn.GetRequest().setName(options.name);
-		return this.makeCall<CdnServiceHandler.CdnFileResponse>((cb) => this.client.get(query, cb));
+		const result = await this.makeCallResult<Cdn.CdnFileResponse>((cb) => this.client.get(query, cb));
+		if (!result.success) throw result.error;
+
+		const resultValue = result.value.getResult();
+		if (resultValue !== Cdn.CdnResult.OK) throw new ResponseError({ result: resultValue, content: '' });
+
+		return {
+			result: resultValue,
+			content: result.value.getContent_asU8()
+		};
 	}
 
 	public upsert(options: CdnServiceHandler.UpsertRequest): Promise<CdnServiceHandler.CdnResponse> {
@@ -32,5 +42,5 @@ export namespace CdnServiceHandler {
 	export type DeleteRequest = Cdn.DeleteRequest.AsObject;
 
 	export type CdnResponse = Cdn.CdnResponse.AsObject;
-	export type CdnFileResponse = Cdn.CdnFileResponse.AsObject;
+	export type CdnFileResponse = Omit<Cdn.CdnFileResponse.AsObject, 'content'> & { content: Uint8Array };
 }

@@ -1,5 +1,6 @@
 import { createReferPromise } from '#utils/common';
 import { Client, credentials, ServiceError } from '@grpc/grpc-js';
+import { err, ok, Result } from '@sapphire/framework';
 import type { Message } from 'google-protobuf';
 import { ResponseError } from '../errors/ResponseError';
 
@@ -12,24 +13,28 @@ export abstract class ClientHandler<C extends Client = Client> {
 		});
 	}
 
-	protected makeCall<T = any>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
-		const refer = createReferPromise<T>();
+	protected makeCallResult<T extends Message>(cb: ClientHandler.AsyncCall<T>): Promise<Result<T, Error>> {
+		const refer = createReferPromise<Result<T, Error>>();
 
 		try {
 			cb((error, response) => {
-				if (error === null) {
-					const parsed = response.toObject() as T;
-					if ((parsed as any).result === 0) refer.resolve(parsed);
-					else refer.reject(new ResponseError(parsed));
-				} else {
-					refer.reject(error);
-				}
+				refer.resolve(error ? err(error) : ok(response));
 			});
 		} catch (error) {
-			refer.reject(error as Error);
+			refer.resolve(err(error as Error));
 		}
 
 		return refer.promise;
+	}
+
+	protected async makeCall<T = any>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
+		const result = await this.makeCallResult(cb);
+		if (!result.success) throw result.error;
+
+		const object = result.value.toObject();
+		if ((object as any).result === 0) return object as T;
+
+		throw new ResponseError(object);
 	}
 
 	public static getCredentials = credentials.createInsecure;

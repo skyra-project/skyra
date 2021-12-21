@@ -1,4 +1,27 @@
 {
+	"cdnDescription": "Manages the CDN service.",
+	"cdnExtended": {
+		"usages": [
+			"get Name",
+			"upload Name Attachment",
+			"delete Name"
+		],
+		"extendedHelp": "The CDN command is reserved for bot owners, and it's only used to manage the CDN service.",
+		"explainedUsage": [
+			[
+				"Name",
+				"The name for the attachment to get, upload, or delete"
+			],
+			[
+				"Attachment",
+				"An URL or an attached file to upload"
+			]
+		],
+		"reminder": "Reserved for bot owners for replying purposes."
+	},
+	"cdnNoAttachment": "You must give a link or upload an attachment.",
+	"cdnUpload": "A file with the content type `{{contentType}}` and a size of {{bytes, numberCompact}} bytes has been uploaded.",
+	"cdnDelete": "The file named `{{name}}` has been deleted.",
 	"dmDescription": "Sends a Direct Message.",
 	"dmExtended": {
 		"usages": [

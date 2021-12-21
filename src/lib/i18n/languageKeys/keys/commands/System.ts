@@ -2,6 +2,11 @@ import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '#root/commands/System/stats';
 
+export const CdnDescription = T('commands/system:cdnDescription');
+export const CdnExtended = T<LanguageHelpDisplayOptions>('commands/system:cdnExtended');
+export const CdnNoAttachment = T('commands/system:cdnNoAttachment');
+export const CdnUpload = FT<{ contentType: string; bytes: number }>('commands/system:cdnUpload');
+export const CdnDelete = FT<{ name: string }>('commands/system:cdnDelete');
 export const Disable = FT<{ type: string; name: string }, string>('commands/system:disable');
 export const DisableDescription = T<string>('commands/system:disableDescription');
 export const DisableExtended = T<LanguageHelpDisplayOptions>('commands/system:disableExtended');

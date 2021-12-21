@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-// TODO(favna): Remove this when https://github.com/discordjs/discord.js/pull/6808 is merged and published
-export type EnumHolder<T> = { [P in keyof T]: T[P] };
-// TODO(favna): Remove this when https://github.com/discordjs/discord.js/pull/6808 is merged and published
-export type ExcludeEnum<T, K extends keyof T> = Exclude<keyof T | T[keyof T], K | T[K]>;
-
 export type CustomGet<K extends string, TCustom> = K & { __type__: TCustom };
 
 export function T<TCustom = string>(k: string): CustomGet<string, TCustom> {

@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
 import { seconds } from '#utils/common';
 import { Permissions } from 'discord.js';
 

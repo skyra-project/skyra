@@ -1,6 +1,6 @@
-import { PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
 import { Events } from '#lib/types/Enums';
-import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
+import { fetch, FetchResultTypes, type QueryError } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';
 import { Constants } from 'discord.js';

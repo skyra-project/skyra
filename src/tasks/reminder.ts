@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType, Task } from '#lib/database';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { resolveOnErrorCodes } from '#utils/common';
 import { time, TimestampStyles } from '@discordjs/builders';

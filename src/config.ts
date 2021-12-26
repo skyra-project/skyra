@@ -8,7 +8,6 @@ import { readSettings } from '#lib/database/settings';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { ExcludeEnum } from '#lib/types/Utils';
 import { getHandler } from '#root/languages/index';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
@@ -16,20 +15,21 @@ import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
+import type { ExcludeEnum } from 'discord.js';
 import {
-	ActivitiesOptions,
-	ClientOptions,
-	DefaultMessageNotificationLevel,
-	ExplicitContentFilterLevel,
 	LimitedCollection,
 	Options,
 	Permissions,
-	PermissionString,
-	WebhookClientData
+	type ActivitiesOptions,
+	type ClientOptions,
+	type DefaultMessageNotificationLevel,
+	type ExplicitContentFilterLevel,
+	type PermissionString,
+	type WebhookClientData
 } from 'discord.js';
 import type { ActivityTypes } from 'discord.js/typings/enums';
 import { config } from 'dotenv-cra';
-import i18next, { FormatFunction, InterpolationOptions } from 'i18next';
+import i18next, { type FormatFunction, type InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 
 // Read config:

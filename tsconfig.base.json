@@ -2,6 +2,7 @@
 	"extends": "@sapphire/ts-config",
 	"compilerOptions": {
 		"target": "ESNext",
-		"removeComments": true
+		"removeComments": true,
+		"skipLibCheck": true
 	}
 }

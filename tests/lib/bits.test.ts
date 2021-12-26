@@ -3,12 +3,12 @@ import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/
 
 describe('Bits', () => {
 	describe('Permissions', () => {
-		test('GIVEN permissionsFlags.size THEN returns 39', () => {
-			expect(permissionsFlags.size).toBe(39);
+		test('GIVEN permissionsFlags.size THEN returns 41', () => {
+			expect(permissionsFlags.size).toBe(41);
 		});
 
-		test('GIVEN permissionsOffset THEN returns 40', () => {
-			expect(Number(permissionsOffset)).toBe(40);
+		test('GIVEN permissionsOffset THEN returns 41', () => {
+			expect(Number(permissionsOffset)).toBe(41);
 		});
 
 		test('GIVEN various permissions THEN returns an array of their names', () => {
@@ -51,10 +51,12 @@ describe('Bits', () => {
 				PermissionFlagsBits.ManageEmojisAndStickers |
 				PermissionFlagsBits.UseApplicationCommands |
 				PermissionFlagsBits.RequestToSpeak |
+				PermissionFlagsBits.ManageEvents |
 				PermissionFlagsBits.ManageThreads |
 				PermissionFlagsBits.CreatePublicThreads |
 				PermissionFlagsBits.CreatePrivateThreads |
-				PermissionFlagsBits.UseExternalStickers;
+				PermissionFlagsBits.UseExternalStickers |
+				PermissionFlagsBits.ModerateMembers;
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CREATE_INSTANT_INVITE',
 				'KICK_MEMBERS',
@@ -89,21 +91,23 @@ describe('Bits', () => {
 				'MANAGE_EMOJIS_AND_STICKERS',
 				'USE_APPLICATION_COMMANDS',
 				'REQUEST_TO_SPEAK',
+				'MANAGE_EVENTS',
 				'MANAGE_THREADS',
 				'CREATE_PUBLIC_THREADS',
 				'CREATE_PRIVATE_THREADS',
-				'USE_EXTERNAL_STICKERS'
+				'USE_EXTERNAL_STICKERS',
+				'MODERATE_MEMBERS'
 			]);
 		});
 	});
 
 	describe('Channel', () => {
-		test('GIVEN channelFlags.size THEN returns 3', () => {
-			expect(channelFlags.size).toBe(3);
+		test('GIVEN channelFlags.size THEN returns 4', () => {
+			expect(channelFlags.size).toBe(4);
 		});
 
-		test('GIVEN channelOffset THEN returns 3', () => {
-			expect(channelOffset).toBe(3);
+		test('GIVEN channelOffset THEN returns 4', () => {
+			expect(channelOffset).toBe(4);
 		});
 
 		test('GIVEN various flags THEN returns an array of their flags', () => {
@@ -114,12 +118,14 @@ describe('Bits', () => {
 		test('GIVEN all flags THEN returns an array with all the flags', () => {
 			const value =
 				GuildSystemChannelFlags.SuppressJoinNotifications |
+				GuildSystemChannelFlags.SuppressJoinNotificationReplies |
 				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
 				GuildSystemChannelFlags.SuppressGuildReminderNotifications;
 			expect(toChannelsArray(value)).toStrictEqual([
 				'SUPPRESS_JOIN_NOTIFICATIONS',
 				'SUPPRESS_PREMIUM_SUBSCRIPTIONS',
-				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS'
+				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS',
+				'SUPPRESS_JOIN_NOTIFICATION_REPLIES'
 			]);
 		});
 	});

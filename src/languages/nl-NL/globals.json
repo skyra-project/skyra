@@ -5,8 +5,6 @@
 	"none": "Geen",
 	"unknown": "onbekend",
 	"yes": "Ja",
-	"paginatedMessagePage": "Pagina",
-	"paginatedMessageWrongUserInteractionReply": "Stop a.u.b. met het drukken op de knoppen bij dit bericht. De buttons zijn alleen voor {{user}}.",
 	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",

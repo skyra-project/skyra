@@ -1,0 +1,20 @@
+{
+	"youTubeSubscriptionDescription": "Manage the server's YouTube subscriptions.",
+	"youTubeSubscriptionExtended": {},
+	"youTubeSubscriptionAdd": "Successfully added <{{channelUrl}}> to the subscriptions.",
+	"youTubeSubscriptionRemove": "Successfully removed <{{channelUrl}}> from the subscriptions.",
+	"youTubeSubscriptionClear": "Successfully cleared all subscriptions.",
+	"youTubeSubscriptionListEmpty": "You do not have any YouTube subscription in this server, who will be the first?",
+	"youTubeSubscriptionListTitle_one": "Displaying a list of 1 notification",
+	"youTubeSubscriptionListTitle_other": "Displaying a list of {{count}} notifications.",
+	"youTubeSubscriptionUploadChannel": "Successfully set the upload channel to {{channel}}.",
+	"youTubeSubscriptionUploadMessage": "Successfully set the message for upload notifications to:\n>>> {{content}}",
+	"youTubeSubscriptionLiveChannel": "Successfully set the live channel to {{channel}}.",
+	"youTubeSubscriptionLiveMessage": "Successfully set the message for live notifications to:\n>>> {{content}}",
+	"youtubeSubscriptionInvalidYouTubeUrlHost": "The URL must be from <https://www.youtube.com>, but I received `{{parameter}}` instead.",
+	"youtubeSubscriptionInvalidYouTubeUrlPath": "The URL must be from a valid channel, however, `{{parameter}}` does not seem to be one.",
+	"youtubeSubscriptionSetKeys": ["upload", "upload-channel", "upload-message", "live", "live-channel", "live-message"],
+	"youtubeSubscriptionInvalidSetKey": "I could not resolve `{{parameter}}` to a valid `set` sub-command.\n**Hint**: the following options are allowed:\n\n- `upload channel` / `upload-channel`.\n- `upload message` / `upload-message`.\n- `live channel` / `live-channel`.\n- `live message` / `live-message`.",
+	"youtubeSubscriptionSetActionKeys": ["channel", "message"],
+	"youtubeSubscriptionInvalidSetActionKey": "I could not resolve `{{parameter}}` to a valid `set` action.\n**Hint**: the following options are allowed:\n\n- `channel`.\n- `message`."
+}

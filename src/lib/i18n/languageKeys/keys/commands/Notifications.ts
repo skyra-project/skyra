@@ -1,0 +1,21 @@
+import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
+import { FT, T } from '#lib/types';
+import type { Channel } from 'discord.js';
+
+export const YouTubeSubscriptionDescription = T('commands/notifications:youTubeSubscriptionDescription');
+export const YouTubeSubscriptionExtended = T<LanguageHelpDisplayOptions>('commands/notifications:youTubeSubscriptionExtended');
+export const YouTubeSubscriptionAdd = FT<{ channelUrl: string }>('commands/notifications:youTubeSubscriptionAdd');
+export const YouTubeSubscriptionRemove = FT<{ channelUrl: string }>('commands/notifications:youTubeSubscriptionRemove');
+export const YouTubeSubscriptionClear = T('commands/notifications:youTubeSubscriptionClear');
+export const YouTubeSubscriptionListEmpty = T('commands/notifications:youTubeSubscriptionListEmpty');
+export const YouTubeSubscriptionListTitle = FT<{ count: number }>('commands/notifications:youTubeSubscriptionListTitle');
+export const YouTubeSubscriptionUploadChannel = FT<{ channel: Channel }>('commands/notifications:youTubeSubscriptionUploadChannel');
+export const YouTubeSubscriptionUploadMessage = FT<{ content: string }>('commands/notifications:youTubeSubscriptionUploadMessage');
+export const YouTubeSubscriptionLiveChannel = FT<{ channel: Channel }>('commands/notifications:youTubeSubscriptionLiveChannel');
+export const YouTubeSubscriptionLiveMessage = FT<{ content: string }>('commands/notifications:youTubeSubscriptionLiveMessage');
+export const YoutubeSubscriptionInvalidYouTubeUrlHost = T('commands/notifications:youtubeSubscriptionInvalidYouTubeUrlHost');
+export const YoutubeSubscriptionInvalidYouTubeUrlPath = T('commands/notifications:youtubeSubscriptionInvalidYouTubeUrlPath');
+export const YoutubeSubscriptionSetKeys = T<string[]>('commands/notifications:youtubeSubscriptionSetKeys');
+export const YoutubeSubscriptionInvalidSetKey = T('commands/notifications:youtubeSubscriptionInvalidSetKey');
+export const YoutubeSubscriptionSetActionKeys = T<string[]>('commands/notifications:youtubeSubscriptionSetActionKeys');
+export const YoutubeSubscriptionInvalidSetActionKey = T('commands/notifications:youtubeSubscriptionInvalidSetActionKey');

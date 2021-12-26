@@ -118,12 +118,14 @@ describe('Bits', () => {
 		test('GIVEN all flags THEN returns an array with all the flags', () => {
 			const value =
 				GuildSystemChannelFlags.SuppressJoinNotifications |
+				GuildSystemChannelFlags.SuppressJoinNotificationReplies |
 				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
 				GuildSystemChannelFlags.SuppressGuildReminderNotifications;
 			expect(toChannelsArray(value)).toStrictEqual([
 				'SUPPRESS_JOIN_NOTIFICATIONS',
 				'SUPPRESS_PREMIUM_SUBSCRIPTIONS',
-				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS'
+				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS',
+				'SUPPRESS_JOIN_NOTIFICATION_REPLIES'
 			]);
 		});
 	});

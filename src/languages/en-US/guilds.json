@@ -4,7 +4,8 @@
 	"explicitContentFilterAllMembers": "All members",
 	"messageNotificationsAll": "All Messages",
 	"messageNotificationsMentions": "Only @mentions",
-	"SUPPRESS_JOIN_NOTIFICATIONS": "Member Join Messages",
-	"SUPPRESS_PREMIUM_SUBSCRIPTIONS": "Server Boost Messages",
-	"SUPPRESS_GUILD_REMINDER_NOTIFICATIONS": "Server Setup Tip Messages"
+	"SUPPRESS_JOIN_NOTIFICATIONS": "Send a random welcome message when someone joins this server.",
+	"SUPPRESS_JOIN_NOTIFICATION_REPLIES": "Prompt members to reply to welcome messages with a sticker.",
+	"SUPPRESS_PREMIUM_SUBSCRIPTIONS": "Send a message when someone boosts this server.",
+	"SUPPRESS_GUILD_REMINDER_NOTIFICATIONS": "Send helpful tips for server setup."
 }

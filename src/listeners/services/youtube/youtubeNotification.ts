@@ -4,7 +4,7 @@ import { time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
-import type { TextBasedChannels } from 'discord.js';
+import type { TextBasedChannel } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({ enabled: envParseBoolean('GRPC_NOTIFICATIONS_ENABLED') })
 export class UserListener extends Listener {
@@ -18,7 +18,7 @@ export class UserListener extends Listener {
 		const guild = this.container.client.guilds.cache.get(context.guildId);
 		if (!guild) return;
 
-		const channel = guild.channels.cache.get(context.channelId) as TextBasedChannels | undefined;
+		const channel = guild.channels.cache.get(context.channelId) as TextBasedChannel | undefined;
 		if (!canSendMessages(channel)) return;
 
 		try {

@@ -5,7 +5,6 @@
 	"BAN_MEMBERS": "Leden verbannen",
 	"CHANGE_NICKNAME": "Verander gebruikersnaam",
 	"CONNECT": "Verbinden",
-	"CREATE_INSTANT_INVITE": "Uitnodiging creëren",
 	"DEAFEN_MEMBERS": "Geluid van leden dempen",
 	"EMBED_LINKS": "Ingesloten links",
 	"KICK_MEMBERS": "Leden verwijderen",
@@ -16,17 +15,13 @@
 	"MANAGE_NICKNAMES": "Gebruikersnamen beheren",
 	"MANAGE_ROLES": "Rollen beheren",
 	"MANAGE_WEBHOOKS": "Webhooks beheren",
-	"MENTION_EVERYONE": "Vemeld @everyone, @here en alle rollen",
 	"MOVE_MEMBERS": "Leden verplaatsen",
 	"MUTE_MEMBERS": "Microfoon van leden dempen",
 	"PRIORITY_SPEAKER": "Prioriteitsspreker",
 	"READ_MESSAGE_HISTORY": "Berichtgeschiedenis lezen",
 	"SEND_MESSAGES": "Berichten verzenden",
-	"SEND_TTS_MESSAGES": "Tekst-naar-spraakberichten verzenden",
 	"SPEAK": "Spreken",
-	"STREAM": "Video",
 	"USE_EXTERNAL_EMOJIS": "Externe emoji gebruiken",
 	"USE_VAD": "Spraakactivatie gebruiken",
-	"VIEW_AUDIT_LOG": "Audit-logboek weergeven",
-	"VIEW_CHANNEL": "Berichten verzenden"
+	"VIEW_AUDIT_LOG": "Audit-logboek weergeven"
 }

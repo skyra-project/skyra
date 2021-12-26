@@ -5,7 +5,6 @@
 	"BAN_MEMBERS": "Interzice membrii",
 	"CHANGE_NICKNAME": "Schimbă porecla",
 	"CONNECT": "Conectare",
-	"CREATE_INSTANT_INVITE": "Creează o invitație instantă",
 	"DEAFEN_MEMBERS": "Asurzește membri",
 	"EMBED_LINKS": "Încorporează linkuri",
 	"KICK_MEMBERS": "Elimină membrii",
@@ -16,17 +15,13 @@
 	"MANAGE_NICKNAMES": "Gestionează poreclele",
 	"MANAGE_ROLES": "Gestionează rolurile",
 	"MANAGE_WEBHOOKS": "Gestionează Webhook-uri",
-	"MENTION_EVERYONE": "Menționează pe toată lumea",
 	"MOVE_MEMBERS": "Mută membri",
 	"MUTE_MEMBERS": "Amuțește membri",
 	"PRIORITY_SPEAKER": "Vorbitor prioritar",
 	"READ_MESSAGE_HISTORY": "Citește istoricul mesajelor",
 	"SEND_MESSAGES": "Trimite mesaje",
-	"SEND_TTS_MESSAGES": "Trimite mesaje TTS",
 	"SPEAK": "Vorbește",
-	"STREAM": "Transmisiune",
 	"USE_EXTERNAL_EMOJIS": "Folosește emoji-uri externe",
 	"USE_VAD": "Folosește activitatea vocală",
-	"VIEW_AUDIT_LOG": "Vezi jurnalul server-ului",
-	"VIEW_CHANNEL": "Citește mesaje"
+	"VIEW_AUDIT_LOG": "Vezi jurnalul server-ului"
 }

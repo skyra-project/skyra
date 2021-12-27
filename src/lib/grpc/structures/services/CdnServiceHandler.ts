@@ -1,4 +1,6 @@
 import { envParseString } from '#lib/env';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { CustomGet } from '#lib/types';
 import { CdnServiceClient } from '../../generated/cdn_grpc_pb';
 import * as Cdn from '../../generated/cdn_pb';
 import { ClientHandler } from '../base/ClientHandler';
@@ -7,13 +9,17 @@ import { ResponseError } from '../errors';
 export class CdnServiceHandler extends ClientHandler {
 	public readonly client = new CdnServiceClient(envParseString('GRPC_CDN_ADDRESS'), ClientHandler.getCredentials());
 
+	public handleStatusCode(status: Cdn.CdnResult): CustomGet<string, string> {
+		return CdnServiceHandler.statuses[status];
+	}
+
 	public async get(options: CdnServiceHandler.GetRequest): Promise<CdnServiceHandler.CdnFileResponse> {
 		const query = new Cdn.GetRequest().setName(options.name);
 		const result = await this.makeCallResult<Cdn.CdnFileResponse>((cb) => this.client.get(query, cb));
 		if (!result.success) throw result.error;
 
 		const resultValue = result.value.getResult();
-		if (resultValue !== Cdn.CdnResult.OK) throw new ResponseError({ status: resultValue }, this);
+		if (resultValue !== Cdn.CdnResult.SUCCESS) throw new ResponseError({ result: resultValue }, this);
 
 		return {
 			result: resultValue,
@@ -34,6 +40,8 @@ export class CdnServiceHandler extends ClientHandler {
 	public dispose() {
 		this.client.close();
 	}
+
+	private static readonly statuses = [null, LanguageKeys.Services.CdnFailure, LanguageKeys.Services.CdnDoesNotExist] as CustomGet<string, string>[];
 }
 
 export namespace CdnServiceHandler {

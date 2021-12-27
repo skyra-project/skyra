@@ -1,0 +1,7 @@
+{
+	"cdnFailure": "The CDN service failed to process your request.",
+	"cdnDoesNotExist": "The file you have specified does not exist.",
+	"youtubeFailure": "The YouTube service failed to process your request.",
+	"youtubeNotConfigured": "The channel and message must be configured before this can be run.",
+	"youtubeIncorrectChannelInfo": "The channel information is incorrect, please make sure you are sending a valid channel link."
+}

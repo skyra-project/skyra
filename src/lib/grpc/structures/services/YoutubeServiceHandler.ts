@@ -1,4 +1,6 @@
 import { envParseString } from '#lib/env';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { CustomGet } from '#lib/types';
 import type { ClientReadableStream } from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { YoutubeSubscriptionClient } from '../../generated/youtube_subscription_grpc_pb';
@@ -8,6 +10,10 @@ import { ClientHandler } from '../base/ClientHandler';
 export class YoutubeServiceHandler extends ClientHandler {
 	public readonly client = new YoutubeSubscriptionClient(envParseString('GRPC_NOTIFICATIONS_ADDRESS'), ClientHandler.getCredentials());
 	private notificationStream: ClientReadableStream<Youtube.UploadNotification> | null = null;
+
+	public handleStatusCode(status: Youtube.YoutubeServiceResult): CustomGet<string, string> {
+		return YoutubeServiceHandler.statuses[status];
+	}
 
 	public subscribe(options: YoutubeServiceHandler.SubscriptionRequest): Promise<YoutubeServiceHandler.YoutubeServiceResponse> {
 		const query = new Youtube.SubscriptionRequest().setGuildId(options.guildId).setChannelUrl(options.channelUrl);
@@ -64,6 +70,13 @@ export class YoutubeServiceHandler extends ClientHandler {
 		this.notificationStream?.cancel();
 		this.client.close();
 	}
+
+	private static readonly statuses = [
+		null, //
+		LanguageKeys.Services.YoutubeFailure,
+		LanguageKeys.Services.YoutubeNotConfigured,
+		LanguageKeys.Services.YoutubeIncorrectChannelInfo
+	] as CustomGet<string, string>[];
 }
 
 export namespace YoutubeServiceHandler {

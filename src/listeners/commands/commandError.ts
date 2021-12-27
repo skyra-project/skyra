@@ -1,4 +1,5 @@
 import { envIsDefined } from '#lib/env';
+import { ResponseError } from '#lib/grpc';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraCommand } from '#lib/structures';
@@ -22,6 +23,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		if (typeof error === 'string') return this.stringError(message, args.t, error);
 		if (error instanceof ArgumentError) return this.argumentError(message, args.t, error);
 		if (error instanceof UserError) return this.userError(message, args.t, error);
+		if (error instanceof ResponseError) return this.responseError(message, args.t, error);
 
 		const { client, logger } = this.container;
 		// If the error was an AbortError or an Internal Server Error, tell the user to re-try:
@@ -104,6 +106,11 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 
 		const identifier = translate(error.identifier);
 		return this.alert(message, t(identifier, error.context as any));
+	}
+
+	private responseError(message: Message, t: TFunction, error: ResponseError) {
+		const identifier = error.handler.handleStatusCode(error.status);
+		return this.alert(message, t(identifier));
 	}
 
 	private alert(message: Message, content: string) {

@@ -1,3 +1,4 @@
+import type { CustomGet } from '#lib/types';
 import { createReferPromise } from '#utils/common';
 import { Client, credentials, ServiceError } from '@grpc/grpc-js';
 import { err, ok, Result } from '@sapphire/framework';
@@ -12,6 +13,8 @@ export abstract class ClientHandler<C extends Client = Client> {
 			this.client.waitForReady(Date.now() + 5000, (error) => (error ? reject(error) : resolve()));
 		});
 	}
+
+	public abstract handleStatusCode(status: number): CustomGet<string, string>;
 
 	protected makeCallResult<T extends Message>(cb: ClientHandler.AsyncCall<T>): Promise<Result<T, Error>> {
 		const refer = createReferPromise<Result<T, Error>>();

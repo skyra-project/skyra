@@ -12,5 +12,6 @@ export * as MusicManager from './MusicManager';
 export * as Preconditions from './Preconditions';
 export * as PromptList from './PromptList';
 export * as Serializers from './Serializers';
+export * as Services from './Services';
 export * as Settings from './Settings';
 export * as System from './System';

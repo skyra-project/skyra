@@ -148,7 +148,7 @@ services:
       BASE_ASSET_LOCATION: '/var/lib/cdn/data'
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_HOST: 'postgres'
+      POSTGRES_HOST: 'localhost'
       POSTGRES_PORT: 5432
       POSTGRES_DB: 'arkadia'
     image: 'ghcr.io/skyra-project/arkadia.cdn:latest'

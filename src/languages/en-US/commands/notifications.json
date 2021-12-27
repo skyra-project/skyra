@@ -47,8 +47,8 @@
 			""
 		]
 	},
-	"youTubeSubscriptionAdd": "Successfully added <{{channelUrl}}> to the subscriptions.",
-	"youTubeSubscriptionRemove": "Successfully removed <{{channelUrl}}> from the subscriptions.",
+	"youTubeSubscriptionAdd": "Subscribed to <{{channelUrl}}>.",
+	"youTubeSubscriptionRemove": "Unsubscribed from <{{channelUrl}}>.",
 	"youTubeSubscriptionClear": "Successfully cleared all subscriptions.",
 	"youTubeSubscriptionListEmpty": "You do not have any YouTube subscription in this server, who will be the first?",
 	"youTubeSubscriptionListTitle_one": "Displaying a list of 1 notification",

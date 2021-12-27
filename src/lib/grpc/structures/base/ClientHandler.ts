@@ -2,7 +2,7 @@ import { createReferPromise } from '#utils/common';
 import { Client, credentials, ServiceError } from '@grpc/grpc-js';
 import { err, ok, Result } from '@sapphire/framework';
 import type { Message } from 'google-protobuf';
-import { ResponseError } from '../errors/ResponseError';
+import { ResponseError, ResultObject } from '../errors/ResponseError';
 
 export abstract class ClientHandler<C extends Client = Client> {
 	public abstract readonly client: C;
@@ -27,14 +27,14 @@ export abstract class ClientHandler<C extends Client = Client> {
 		return refer.promise;
 	}
 
-	protected async makeCall<T = any>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
+	protected async makeCall<T extends ResultObject>(cb: ClientHandler.AsyncCall<Message>): Promise<T> {
 		const result = await this.makeCallResult(cb);
 		if (!result.success) throw result.error;
 
-		const object = result.value.toObject();
+		const object = result.value.toObject() as ResultObject;
 		if ((object as any).result === 0) return object as T;
 
-		throw new ResponseError(object);
+		throw new ResponseError(object, this);
 	}
 
 	public static getCredentials = credentials.createInsecure;

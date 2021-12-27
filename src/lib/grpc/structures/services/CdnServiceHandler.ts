@@ -13,7 +13,7 @@ export class CdnServiceHandler extends ClientHandler {
 		if (!result.success) throw result.error;
 
 		const resultValue = result.value.getResult();
-		if (resultValue !== Cdn.CdnResult.OK) throw new ResponseError({ result: resultValue, content: '' });
+		if (resultValue !== Cdn.CdnResult.OK) throw new ResponseError({ status: resultValue }, this);
 
 		return {
 			result: resultValue,

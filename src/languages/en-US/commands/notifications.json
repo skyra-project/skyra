@@ -1,6 +1,52 @@
 {
 	"youTubeSubscriptionDescription": "Manage the server's YouTube subscriptions.",
-	"youTubeSubscriptionExtended": {},
+	"youTubeSubscriptionExtended": {
+		"usages": [
+			"set upload/live channel Channel",
+			"set upload/live message Content",
+			"add/subscribe ChannelUrl",
+			"remove/unsubscribe ChannelUrl",
+			"clear",
+			"list",
+			""
+		],
+		"extendedHelp": "Manage the YouTube subscriptions for this server.",
+		"explainedUsage": [
+			[
+				"set upload/live channel Channel",
+				"The channel to send the upload or live notifications."
+			],
+			[
+				"set upload/live message Content",
+				"The message to send in the specified channel."
+			],
+			[
+				"add/subscribe ChannelUrl",
+				"Adds a new subscription."
+			],
+			[
+				"remove/unsubscribe ChannelUrl",
+				"Removes an existing subscription."
+			],
+			[
+				"clear",
+				"Clears all existing subscriptions."
+			],
+			[
+				"list",
+				"Lists all the subscriptions."
+			]
+		],
+		"examples": [
+			"set upload channel #notifications",
+			"set upload message {{channel.name}} has uploaded a new video `{{title}}` at {{time}}, go check it out! {{url}}",
+			"add https://www.youtube.com/c/youtube",
+			"remove https://www.youtube.com/c/youtube",
+			"clear",
+			"list",
+			""
+		]
+	},
 	"youTubeSubscriptionAdd": "Successfully added <{{channelUrl}}> to the subscriptions.",
 	"youTubeSubscriptionRemove": "Successfully removed <{{channelUrl}}> from the subscriptions.",
 	"youTubeSubscriptionClear": "Successfully cleared all subscriptions.",

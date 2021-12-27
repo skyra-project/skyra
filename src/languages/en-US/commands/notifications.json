@@ -39,7 +39,7 @@
 		],
 		"examples": [
 			"set upload channel #notifications",
-			"set upload message {{channel.name}} has uploaded a new video `{{title}}` at {{time}}, go check it out! {{url}}",
+			"set upload message {\\{channel.name}} has uploaded a new video *{\\{title}}* at {\\{time}}, go check it out! {\\{url}}",
 			"add https://www.youtube.com/c/youtube",
 			"remove https://www.youtube.com/c/youtube",
 			"clear",

@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { hyperlink } from '@discordjs/builders';
+import { hideLinkEmbed, hyperlink } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum, Resolvers } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -31,13 +31,13 @@ export class UserCommand extends SkyraCommand {
 	public async add(message: GuildMessage, args: SkyraCommand.Args) {
 		const channelUrl = await args.pick(UserCommand.youtubeUrl);
 		await this.container.grpc.youtube.subscribe({ guildId: message.guild.id, channelUrl });
-		return send(message, args.t(LanguageKeys.Commands.Notifications.YouTubeSubscriptionAdd, { channelUrl }));
+		return send(message, args.t(LanguageKeys.Commands.Notifications.YouTubeSubscriptionAdd, { channelUrl: hideLinkEmbed(channelUrl) }));
 	}
 
 	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
 		const channelUrl = await args.pick(UserCommand.youtubeUrl);
 		await this.container.grpc.youtube.unsubscribe({ guildId: message.guild.id, channelUrl });
-		return send(message, args.t(LanguageKeys.Commands.Notifications.YouTubeSubscriptionRemove, { channelUrl }));
+		return send(message, args.t(LanguageKeys.Commands.Notifications.YouTubeSubscriptionRemove, { channelUrl: hideLinkEmbed(channelUrl) }));
 	}
 
 	public async clear(message: GuildMessage, args: SkyraCommand.Args) {

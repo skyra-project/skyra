@@ -30,17 +30,14 @@ export class UserCommand extends SkyraCommand {
 		const blob = await fetch(url, FetchResultTypes.Blob);
 		const contentType = blob.type;
 		const content = new Uint8Array(await blob.arrayBuffer());
-		const { cdn } = this.container.grpc;
-		await cdn.upsert({ name, content, contentType });
+		await this.container.grpc.cdn.upsert({ name, content, contentType });
 
 		return send(message, { content: args.t(LanguageKeys.Commands.System.CdnUpload, { contentType, bytes: content.length }) });
 	}
 
 	public async delete(message: Message, args: SkyraCommand.Args) {
 		const name = await args.pick('string');
-
-		const { cdn } = this.container.grpc;
-		await cdn.delete({ name });
+		await this.container.grpc.cdn.delete({ name });
 
 		return send(message, { content: args.t(LanguageKeys.Commands.System.CdnDelete, { name }) });
 	}

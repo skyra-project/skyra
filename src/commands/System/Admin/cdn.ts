@@ -10,7 +10,7 @@ import { Message, MessageAttachment } from 'discord.js';
 	description: LanguageKeys.Commands.System.CdnDescription,
 	detailedDescription: LanguageKeys.Commands.System.CdnExtended,
 	permissionLevel: PermissionLevels.BotOwner,
-	subCommands: ['get', 'upload', 'delete']
+	subCommands: ['upload', 'delete', { input: 'get', default: true }]
 })
 export class UserCommand extends SkyraCommand {
 	public async get(message: Message, args: SkyraCommand.Args) {

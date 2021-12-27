@@ -12,7 +12,7 @@ import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	enabled: envParseBoolean('GRPC_NOTIFICATIONS_ENABLED'),
-	aliases: ['y-subscription', 'y-sub'],
+	aliases: ['y-subscription', 'y-sub', 'yt-sub'],
 	description: LanguageKeys.Commands.Notifications.YouTubeSubscriptionDescription,
 	detailedDescription: LanguageKeys.Commands.Notifications.YouTubeSubscriptionExtended,
 	permissionLevel: PermissionLevels.Administrator,
@@ -58,6 +58,7 @@ export class UserCommand extends SkyraCommand {
 			.setTitle(args.t(LanguageKeys.Commands.Notifications.YouTubeSubscriptionListTitle, { count: entries.length }))
 			.setDescription(args.t(LanguageKeys.Globals.AndListValue, { value: entries }))
 			.setTimestamp();
+
 		return send(message, { embeds: [embed] });
 	}
 

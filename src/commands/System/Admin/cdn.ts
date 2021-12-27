@@ -16,8 +16,7 @@ export class UserCommand extends SkyraCommand {
 	public async get(message: Message, args: SkyraCommand.Args) {
 		const name = await args.pick('string');
 
-		const { cdn } = this.container.grpc;
-		const entry = await cdn.get({ name });
+		const entry = await this.container.grpc.cdn.get({ name });
 		const files = [new MessageAttachment(Buffer.from(entry.content), name)];
 		return send(message, { files });
 	}

@@ -46,7 +46,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const invite of invites) {
 			display.addPageEmbed((embed: MessageEmbed) =>
 				embed
-					.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+					.setAuthor({ name: invite.inviter.tag, iconURL: invite.inviter.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 					.setThumbnail(invite.inviter.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 					.setDescription(
 						[

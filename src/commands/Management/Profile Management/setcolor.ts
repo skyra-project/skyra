@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(b10.value)
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setDescription(args.t(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }));
 		return send(message, { embeds: [embed] });
 	}

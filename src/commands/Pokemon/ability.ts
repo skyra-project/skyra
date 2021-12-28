@@ -30,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setAuthor(`${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
+			.setAuthor({ name: `${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, iconURL: CdnUrls.Pokedex })
 			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);
 

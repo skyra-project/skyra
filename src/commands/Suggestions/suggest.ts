@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 		// Post the suggestion
 		const embed = new MessageEmbed()
 			.setColor(BrandingColors.Primary)
-			.setAuthor(`${author.tag} (${author.id})`, author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }))
+			.setAuthor({ name: `${author.tag} (${author.id})`, iconURL: author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }) })
 			.setTitle(args.t(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
 			.setDescription(suggestionContent);
 		if (image !== null) embed.setImage(image);

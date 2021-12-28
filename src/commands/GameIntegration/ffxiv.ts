@@ -74,9 +74,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setAuthor({
+				name: character.Name,
+				iconURL: character.Avatar,
+				url: `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`
+			})
 		}).addPageEmbed((embed) =>
 			embed
 				.setThumbnail(character.Avatar)
@@ -140,7 +142,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			display.addPageEmbed((embed) =>
 				embed
 					.setDescription(item.Description.split('\n')[0])
-					.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)
+					.setAuthor({ name: item.Name, iconURL: `${FFXIV_BASE_URL}${item.Icon}` })
 					.setThumbnail(`${FFXIV_BASE_URL}${item.Icon}`)
 					.addField(titles.kind, item.ItemKind.Name, true)
 					.addField(titles.category, item.ItemSearchCategory.Name || titles.none, true)

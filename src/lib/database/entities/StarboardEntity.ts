@@ -221,7 +221,7 @@ export class StarboardEntity extends BaseEntity {
 
 		const message = this.#message;
 		return new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setColor(this.color)
 			.setDescription(this.getContent(t))
 			.setTimestamp(message.createdAt)

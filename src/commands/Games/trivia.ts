@@ -80,7 +80,7 @@ export class UserCommand extends SkyraCommand {
 		const titles = t(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
-			.setAuthor(titles.trivia)
+			.setAuthor({ name: titles.trivia })
 			.setTitle(data.category)
 			.setColor(0xf37917)
 			.setThumbnail('http://i.imgur.com/zPtu5aP.png')

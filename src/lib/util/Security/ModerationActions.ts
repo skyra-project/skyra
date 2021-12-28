@@ -730,7 +730,10 @@ export class ModerationActions {
 			.setFooter(t(LanguageKeys.Commands.Moderation.ModerationDmFooter));
 
 		if (sendOptions.moderator) {
-			embed.setAuthor(sendOptions.moderator.username, sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));
+			embed.setAuthor({
+				name: sendOptions.moderator.username,
+				iconURL: sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			});
 		}
 
 		return embed;

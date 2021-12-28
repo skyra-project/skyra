@@ -88,7 +88,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const t = await fetchT(data.guild);
 		return new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setThumbnail(
 				data.emoji.id === null
 					? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name!)}.png`

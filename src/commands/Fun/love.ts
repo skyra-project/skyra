@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		].join('\n');
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: '❤ Love Meter ❤', iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
 			.setDescription(description);
 		return send(message, { embeds: [embed] });

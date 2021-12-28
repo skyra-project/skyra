@@ -50,7 +50,10 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		return new MessageEmbed()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({
+				name: `${message.author.tag} (${message.author.id})`,
+				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			})
 			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.NewLineFooter)}`)
 			.setTimestamp();
 	}

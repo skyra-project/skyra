@@ -336,7 +336,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)
-			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: moderator.tag, iconURL: moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setDescription(`${body}\n${reason}`)
 			.setFooter(
 				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),

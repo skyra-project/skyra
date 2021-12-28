@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))
-				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
+				.setAuthor({ name: `#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, iconURL: CdnUrls.Pokedex })
 				.setTitle(t(LanguageKeys.Commands.Pokemon.LearnTitle, { pokemon: learnsetData.species, generation }))
 				.setThumbnail(learnsetData[spriteToGet])
 		});

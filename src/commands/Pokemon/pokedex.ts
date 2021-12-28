@@ -216,7 +216,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(resolveColour(pokeDetails.color))
-				.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
+				.setAuthor({ name: `#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, iconURL: CdnUrls.Pokedex })
 				.setThumbnail(pokeDetails[spriteToGet])
 		});
 

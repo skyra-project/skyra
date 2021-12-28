@@ -9,6 +9,7 @@ import { envParseArray, envParseBoolean, envParseInteger, envParseString } from 
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHandler } from '#root/languages/index';
+import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
@@ -17,7 +18,6 @@ import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { ExcludeEnum } from 'discord.js';
 import {
-	LimitedCollection,
 	Options,
 	Permissions,
 	type ActivitiesOptions,
@@ -268,21 +268,19 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		'DIRECT_MESSAGE_REACTIONS'
 	],
 	loadDefaultErrorListeners: false,
-	makeCache: Options.cacheWithLimits({
-		...Options.defaultMakeCacheSettings,
-		MessageManager: {
-			sweepInterval: 180,
-			sweepFilter: LimitedCollection.filterByLifetime({
-				lifetime: 900,
-				getComparisonTimestamp: (m) => m.editedTimestamp ?? m.createdTimestamp
-			})
+	makeCache: Options.cacheEverything(),
+	sweepers: {
+		...Options.defaultSweeperSettings,
+		messages: {
+			interval: minutes(3),
+			lifetime: minutes(15)
 		}
-	}),
+	},
 	partials: ['CHANNEL'],
 	presence: { activities: parsePresenceActivity() },
 	regexPrefix: parseRegExpPrefix(),
 	restTimeOffset: 0,
-	schedule: { interval: 5000 },
+	schedule: { interval: seconds(5) },
 	nms: {
 		everyone: 5,
 		role: 2

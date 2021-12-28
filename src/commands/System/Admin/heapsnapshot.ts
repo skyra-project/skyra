@@ -51,7 +51,7 @@ export class UserCommand extends SkyraCommand {
 		const outputMessage = [
 			//
 			`Heapsnapshot stored at ${inlineCodeBlock(fileName)}!`,
-			envParseString('NODE_ENV') === 'development'
+			envParseString('NODE_ENV') === 'production'
 				? `\nThis file can be extracted from the Docker container using the following command: ${inlineCodeBlock(
 						`docker cp skyra:${join(rootFolder, fileName)} ./${fileName}`
 				  )}`

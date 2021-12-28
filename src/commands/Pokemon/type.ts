@@ -90,7 +90,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message)) //
-				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
+				.setAuthor({ name: `${embedTranslations.typeEffectivenessFor}`, iconURL: CdnUrls.Pokedex }) //
 		})
 			.setSelectMenuOptions((pageIndex) => ({ label: [embedTranslations.offensive, embedTranslations.defensive][pageIndex - 1] }))
 			.addPageEmbed((embed) =>

@@ -17,7 +17,10 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({
+					name: `${member.user.tag} (${member.user.id})`,
+					iconURL: member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+				})
 				.setDescription(
 					t(LanguageKeys.Events.Guilds.Members.GuildMemberAddDescription, {
 						mention: member.toString(),

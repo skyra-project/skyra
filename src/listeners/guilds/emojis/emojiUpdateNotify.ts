@@ -29,7 +29,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 		const embed = new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setThumbnail(next.url)
-			.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter(t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate))
 			.setTimestamp();

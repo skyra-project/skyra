@@ -19,10 +19,10 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setImage(CdnUrls.EscapeRopeGif)
 			.setDescription(args.t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))
-			.setAuthor(
-				message.member?.displayName ?? message.author.username,
-				message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			);
+			.setAuthor({
+				name: message.member?.displayName ?? message.author.username,
+				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			});
 		return send(message, { embeds: [embed] });
 	}
 }

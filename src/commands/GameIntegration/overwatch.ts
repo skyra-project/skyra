@@ -74,7 +74,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(embedData.author, CdnUrls.OverwatchLogo)
+				.setAuthor({ name: embedData.author, iconURL: CdnUrls.OverwatchLogo })
 				.setTitle(embedData.title)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)

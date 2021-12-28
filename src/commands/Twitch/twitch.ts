@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(this.container.client.twitch.BRANDING_COLOUR)
-			.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
+			.setAuthor({ name: channel.display_name, iconURL: CdnUrls.TwitchLogo, url: `https://twitch.tv/${channel.login}` })
 			.setTitle(titles.clickToVisit)
 			.setURL(`https://twitch.tv/${channel.login}`)
 			.setDescription(channel.description)

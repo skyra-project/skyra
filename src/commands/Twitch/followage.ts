@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		});
 		const embed = new MessageEmbed()
 			.setColor(this.container.client.twitch.BRANDING_COLOUR)
-			.setAuthor(authorName, channel.profile_image_url)
+			.setAuthor({ name: authorName, iconURL: channel.profile_image_url })
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

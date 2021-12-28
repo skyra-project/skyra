@@ -67,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(client.user!.username, client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({ name: client.user!.username, iconURL: client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 		});
 
 		const pages = chunk(
@@ -101,7 +101,10 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({
+				name: `${message.author.tag} (${message.author.id})`,
+				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			})
 			.setDescription(task.data.content)
 			.setFooter(args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
 			.setTimestamp(task.time);

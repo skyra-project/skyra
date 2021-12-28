@@ -23,12 +23,17 @@
  * SOFTWARE.
  */
 
+import { envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
+import { rootFolder } from '#utils/constants';
+import { bold } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { send } from '@sapphire/plugin-editable-commands';
+import { reply, send } from '@sapphire/plugin-editable-commands';
+import { filterNullish, inlineCodeBlock } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import { join } from 'node:path';
 import { writeHeapSnapshot } from 'node:v8';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -38,11 +43,24 @@ import { writeHeapSnapshot } from 'node:v8';
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message) {
-		await send(message, 'Capturing HEAP Snapshot. This may take a while...');
+		await reply(message, 'Capturing Heap Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)
-		const filename = writeHeapSnapshot();
+		const fileName = writeHeapSnapshot();
 
-		return send(message, `Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
+		const outputMessage = [
+			//
+			`Heapsnapshot stored at ${inlineCodeBlock(fileName)}!`,
+			envParseString('NODE_ENV') === 'development'
+				? `\nThis file can be extracted from the Docker container using the following command: ${inlineCodeBlock(
+						`docker cp skyra:${join(rootFolder, fileName)} ./${fileName}`
+				  )}`
+				: null,
+			`\nRemember, do ${bold('NOT')} share this with anybody, it may contain a lot of sensitive data.`
+		]
+			.filter(filterNullish)
+			.join('\n');
+
+		return send(message, outputMessage);
 	}
 }

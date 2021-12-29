@@ -42,7 +42,7 @@ export class UserListener extends Listener {
 				.setColor(Colors.Yellow)
 				.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setDescription(this.getRoleDescription(t, addedRoles, removedRoles) || t(LanguageKeys.Events.Guilds.Members.GuildMemberNoUpdate))
-				.setFooter(t(LanguageKeys.Events.Guilds.Members.RoleUpdate))
+				.setFooter({ text: t(LanguageKeys.Events.Guilds.Members.RoleUpdate) })
 				.setTimestamp()
 		);
 	}

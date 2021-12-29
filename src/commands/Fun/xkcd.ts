@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(`https://xkcd.com/${comicNumber}/`)
-			.setFooter(`XKCD | ${comic.num}`)
+			.setFooter({ text: `XKCD | ${comic.num}` })
 			.setDescription(comic.alt)
 			.setTimestamp(this.getTime(comic.year, comic.month, comic.day));
 		return send(message, { embeds: [embed] });

@@ -25,7 +25,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 			.setColor(Colors.Red)
 			.setThumbnail(next.url)
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.EmojiDelete))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiDelete) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

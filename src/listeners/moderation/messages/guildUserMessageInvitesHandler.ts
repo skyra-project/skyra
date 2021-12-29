@@ -70,7 +70,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
 			.setDescription(t(LanguageKeys.Events.Moderation.Messages.InviteFilterLog, { links, count: links.length }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.InviteFooter)}`)
+			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.InviteFooter)}` })
 			.setTimestamp();
 	}
 

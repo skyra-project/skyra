@@ -338,10 +338,10 @@ export class ModerationEntity extends BaseEntity {
 			.setColor(this.color)
 			.setAuthor({ name: moderator.tag, iconURL: moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setDescription(`${body}\n${reason}`)
-			.setFooter(
-				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),
-				container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			)
+			.setFooter({
+				text: t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),
+				iconURL: container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			})
 			.setTimestamp(this.createdTimestamp);
 
 		if (this.imageURL) embed.setImage(this.imageURL);

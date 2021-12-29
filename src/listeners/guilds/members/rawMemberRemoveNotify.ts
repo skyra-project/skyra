@@ -44,7 +44,7 @@ export class UserListener extends Listener {
 						}
 					)
 				)
-				.setFooter(footer)
+				.setFooter({ text: footer })
 				.setTimestamp()
 		);
 	}

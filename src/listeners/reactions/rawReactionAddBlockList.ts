@@ -95,7 +95,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageId})`)
-			.setFooter(`${data.channel.name} | ${t(LanguageKeys.Events.Reactions.FilterFooter)}`)
+			.setFooter({ text: `${data.channel.name} | ${t(LanguageKeys.Events.Reactions.FilterFooter)}` })
 			.setTimestamp();
 	}
 

@@ -727,7 +727,7 @@ export class ModerationActions {
 		});
 		const embed = new MessageEmbed() //
 			.setDescription(description)
-			.setFooter(t(LanguageKeys.Commands.Moderation.ModerationDmFooter));
+			.setFooter({ text: t(LanguageKeys.Commands.Moderation.ModerationDmFooter) });
 
 		if (sendOptions.moderator) {
 			embed.setAuthor({

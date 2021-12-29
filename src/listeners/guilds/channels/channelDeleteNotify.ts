@@ -29,7 +29,7 @@ export class UserListener extends Listener<typeof Events.ChannelDelete> {
 			.setColor(Colors.Red)
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.ChannelDelete))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelDelete) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

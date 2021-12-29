@@ -66,7 +66,7 @@ export class UserCommand extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await this.container.db.fetchColor(message))
-			.setFooter(t(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
+			.setFooter({ text: t(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }) });
 	}
 
 	private async retrieveMarkov(user: User | undefined, channel: GuildTextBasedChannelTypes) {

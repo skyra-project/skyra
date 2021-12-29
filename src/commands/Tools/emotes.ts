@@ -38,12 +38,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, animatedEmojis: string[][], staticEmojis: string[][]) {
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(
-					[`${message.guild.emojis.cache.size}`, `${t(LanguageKeys.Commands.Tools.EmotesTitle)}`, `${message.guild.name}`].join(' '),
-					message.guild.iconURL({ format: 'png' })!
-				)
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setAuthor({
+				name: [`${message.guild.emojis.cache.size}`, `${t(LanguageKeys.Commands.Tools.EmotesTitle)}`, `${message.guild.name}`].join(' '),
+				iconURL: message.guild.iconURL({ format: 'png' })!
+			})
 		});
 
 		for (const chunk of staticEmojis) {

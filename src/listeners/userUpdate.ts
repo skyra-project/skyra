@@ -52,7 +52,7 @@ export class UserListener extends Listener {
 			.setColor(Colors.Yellow)
 			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setDescription(description)
-			.setFooter(t(footerKey))
+			.setFooter({ text: t(footerKey) })
 			.setTimestamp();
 	}
 }

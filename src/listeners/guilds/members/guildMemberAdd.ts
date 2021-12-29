@@ -47,7 +47,7 @@ export class UserListener extends Listener {
 							time: Date.now() - member.user.createdTimestamp
 						})
 					)
-					.setFooter(t(LanguageKeys.Events.Guilds.Members.GuildMemberAddMute))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Members.GuildMemberAddMute) })
 					.setTimestamp()
 			);
 

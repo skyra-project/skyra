@@ -47,9 +47,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				embed
 					.setTitle(mapNativeName(country))
 					.setThumbnail(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)
-					.setFooter(
-						` - ${t(LanguageKeys.Commands.Tools.CountryTimezone, { timezone: country.timezones, count: country.timezones.length })}`
-					)
+					.setFooter({
+						text: ` - ${t(LanguageKeys.Commands.Tools.CountryTimezone, { timezone: country.timezones, count: country.timezones.length })}`
+					})
 					.addField(
 						titles.OVERVIEW,
 						[

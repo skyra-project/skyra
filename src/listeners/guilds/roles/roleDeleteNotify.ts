@@ -21,7 +21,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleDelete> {
 		const embed = new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor({ name: `${role.name} (${role.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleDelete))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleDelete) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

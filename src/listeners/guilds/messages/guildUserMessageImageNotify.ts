@@ -66,12 +66,12 @@ export class UserListener extends Listener {
 				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {
 					const embed = new MessageEmbed()
 						.setColor(Colors.Yellow)
-						.setAuthor(
-							`${message.author.tag} (${message.author.id})`,
-							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-						)
+						.setAuthor({
+							name: `${message.author.tag} (${message.author.id})`,
+							iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+						})
 						.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](${message.url})`)
-						.setFooter(`#${(message.channel as TextChannel).name}`)
+						.setFooter({ text: `#${(message.channel as TextChannel).name}` })
 						.setImage(`attachment://${filename}`)
 						.setTimestamp();
 

@@ -37,7 +37,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			.setColor(Colors.Yellow)
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

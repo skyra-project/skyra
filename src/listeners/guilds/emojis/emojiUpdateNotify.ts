@@ -31,7 +31,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 			.setThumbnail(next.url)
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

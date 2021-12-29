@@ -54,7 +54,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 				name: `${message.author.tag} (${message.author.id})`,
 				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.NewLineFooter)}`)
+			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.NewLineFooter)}` })
 			.setTimestamp();
 	}
 }

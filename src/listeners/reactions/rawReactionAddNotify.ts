@@ -67,7 +67,7 @@ export class UserListener extends Listener {
 						})`
 					].join('\n')
 				)
-				.setFooter(`${t(LanguageKeys.Events.Reactions.Reaction)} • ${data.channel.name}`)
+				.setFooter({ text: `${t(LanguageKeys.Events.Reactions.Reaction)} • ${data.channel.name}` })
 				.setTimestamp()
 		);
 	}

@@ -25,7 +25,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 			.setColor(Colors.Green)
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleCreate))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleCreate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

@@ -25,7 +25,7 @@ export class UserListener extends Listener {
 					.setColor(Colors.Yellow)
 					.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 					.setDescription(this.getNameDescription(t, prevNickname, nextNickname))
-					.setFooter(t(LanguageKeys.Events.Guilds.Members.NicknameUpdate))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Members.NicknameUpdate) })
 					.setTimestamp()
 			);
 		}

@@ -68,7 +68,7 @@ export class UserCommand extends SkyraCommand {
 				.setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined })
 				.setTitle(args.t(LanguageKeys.Commands.Misc.AfkListTitle))
 				.setColor(await this.container.db.fetchColor(message))
-				.setFooter(args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size }))
+				.setFooter({ text: args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size }) })
 				.setTimestamp()
 		});
 
@@ -92,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 			.setAuthor({ name: `${entry.name} (${member.id})`, iconURL: member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }) })
 			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(entry.content)
-			.setFooter(args.t(LanguageKeys.Commands.Misc.AfkShowFooter))
+			.setFooter({ text: args.t(LanguageKeys.Commands.Misc.AfkShowFooter) })
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

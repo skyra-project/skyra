@@ -34,17 +34,17 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new SkyraEmbed()
 				.setColor(Colors.Amber)
-				.setAuthor(
-					`${message.author.tag} (${message.author.id})`,
-					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }),
-					message.url
-				)
+				.setAuthor({
+					name: `${message.author.tag} (${message.author.id})`,
+					iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }),
+					url: message.url
+				})
 				.splitFields(
 					diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(message.content))
 						.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
 						.join(' ')
 				)
-				.setFooter(t(LanguageKeys.Events.Messages.MessageUpdate, { message }))
+				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdate, { message }) })
 				.setTimestamp()
 		);
 	}

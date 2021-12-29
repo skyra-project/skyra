@@ -159,7 +159,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png' }) })
 			.setTimestamp()
-			.setFooter(data.footer)
+			.setFooter({ text: data.footer })
 			.setTitle(data.title)
 			.setDescription(extendedHelp);
 	}

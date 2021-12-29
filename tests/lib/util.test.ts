@@ -282,7 +282,7 @@ describe('Utils', () => {
 			expect(
 				utils.getAllContent({
 					content: '',
-					embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
+					embeds: [new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' })]
 				} as unknown as Message)
 			).toEqual('Description!\nSome footer!');
 		});
@@ -292,8 +292,8 @@ describe('Utils', () => {
 				utils.getAllContent({
 					content: '',
 					embeds: [
-						new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
-						new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
+						new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' }),
+						new MessageEmbed().setDescription('Other embed!').setFooter({ text: 'Another footer!' })
 					]
 				} as unknown as Message)
 			).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');

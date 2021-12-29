@@ -74,7 +74,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setColor(COLORS[index])
 			.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
-			.setFooter(footer);
+			.setFooter({ text: footer });
 		return send(message, { embeds: [embed] });
 	}
 

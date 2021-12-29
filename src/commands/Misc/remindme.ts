@@ -106,7 +106,7 @@ export class UserCommand extends SkyraCommand {
 				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
 			.setDescription(task.data.content)
-			.setFooter(args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
+			.setFooter({ text: args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }) })
 			.setTimestamp(task.time);
 		return send(message, { embeds: [embed] });
 	}

@@ -42,10 +42,10 @@ export class SettingsMenu {
 		this.message = message;
 		this.t = language;
 		this.schema = configurableGroups;
-		this.embed = new MessageEmbed().setAuthor(
-			this.message.author.username,
-			this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-		);
+		this.embed = new MessageEmbed().setAuthor({
+			name: this.message.author.username,
+			iconURL: this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+		});
 	}
 
 	private get updatedValue(): boolean {
@@ -110,7 +110,7 @@ export class SettingsMenu {
 		return this.embed
 			.setColor(await container.db.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
-			.setFooter(parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
+			.setFooter({ text: parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '' })
 			.setTimestamp();
 	}
 

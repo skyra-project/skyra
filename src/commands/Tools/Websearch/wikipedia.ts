@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
-			.setFooter('© Wikipedia');
+			.setFooter({ text: '© Wikipedia' });
 
 		// If there is an image and it is also a valid image URL then add it to the embed
 		const imageUrl =

@@ -100,7 +100,7 @@ export class UserCommand extends SkyraCommand {
 				.setColor(game.color)
 				.setTitle(fields.title)
 				.setDescription(fields.description)
-				.setFooter(fields.footer);
+				.setFooter({ text: fields.footer });
 			await game.response.edit({ embeds: [embed] });
 
 			// Add the options
@@ -162,7 +162,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(game.color)
 			.setTitle(fields.title)
 			.setDescription(fields.description)
-			.setFooter(fields.footer);
+			.setFooter({ text: fields.footer });
 		await game.response.edit({ embeds: [embed] });
 
 		// Ask the user whether they want to continue or cashout
@@ -210,7 +210,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(game.color)
 			.setTitle(fields.title)
 			.setDescription(fields.description)
-			.setFooter(fields.footer);
+			.setFooter({ text: fields.footer });
 		await game.response.edit({ embeds: [embed] });
 
 		game.llrc.end();
@@ -256,7 +256,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(game.color)
 			.setTitle(fields.title)
 			.setDescription(game.t(LanguageKeys.Commands.Games.HigherLowerCashout, { amount: winnings }))
-			.setFooter(fields.footer);
+			.setFooter({ text: fields.footer });
 		await game.response.edit({ embeds: [embed] });
 	}
 

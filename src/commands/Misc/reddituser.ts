@@ -55,7 +55,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await this.container.db.fetchColor(message))
 				.setThumbnail(about.icon_img)
-				.setFooter(fieldsData.dataAvailableFor)
+				.setFooter({ text: fieldsData.dataAvailableFor })
 		})
 			.addPageEmbed((embed) =>
 				embed

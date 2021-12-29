@@ -31,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const template = new MessageEmbed()
 			.setTitle(toTitleCase(results.word))
 			.setColor(await this.container.db.fetchColor(message))
-			.setFooter('Powered by Owlbot');
+			.setFooter({ text: 'Powered by Owlbot' });
 
 		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);
 

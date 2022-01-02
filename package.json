@@ -109,7 +109,7 @@
 		"zlib-sync": "^0.1.7"
 	},
 	"devDependencies": {
-		"0x": "^4.11.0",
+		"0x": "^5.0.0",
 		"@babel/core": "^7.16.7",
 		"@babel/plugin-proposal-class-properties": "^7.16.7",
 		"@babel/plugin-proposal-decorators": "^7.16.7",

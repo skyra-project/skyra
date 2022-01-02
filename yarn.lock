@@ -3950,13 +3950,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bufferutil@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "bufferutil@npm:4.0.5"
+"bufferutil@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "bufferutil@npm:4.0.6"
   dependencies:
     node-gyp: latest
     node-gyp-build: ^4.3.0
-  checksum: 37d5bef7cb38d29f9377b8891ff8a57f53ae6057313d77a8aa2a7417df37a72f16987100796cb2f1e1862f3eb80057705f3c052615ec076a0dcc7aa6c83b68c9
+  checksum: dd107560947445280af7820c3d0534127b911577d85d537e1d7e0aa30fd634853cef8a994d6e8aed3d81388ab1a20257de776164afe6a6af8e78f5f17968ebd6
   languageName: node
   linkType: hard
 
@@ -10033,7 +10033,7 @@ __metadata:
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.2.0
     binarytf: ^2.0.0
-    bufferutil: ^4.0.5
+    bufferutil: ^4.0.6
     canvas-constructor: ^5.0.1
     colorette: ^2.0.16
     confusables: ^1.0.0
@@ -10065,7 +10065,7 @@ __metadata:
     typeorm: 0.2.28
     typeorm-naming-strategies: ^2.0.0
     typescript: ^4.5.4
-    utf-8-validate: ^5.0.7
+    utf-8-validate: ^5.0.8
     ws: ^8.4.0
     zlib-sync: ^0.1.7
   languageName: unknown
@@ -11146,13 +11146,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utf-8-validate@npm:^5.0.7":
-  version: 5.0.7
-  resolution: "utf-8-validate@npm:5.0.7"
+"utf-8-validate@npm:^5.0.8":
+  version: 5.0.8
+  resolution: "utf-8-validate@npm:5.0.8"
   dependencies:
     node-gyp: latest
     node-gyp-build: ^4.3.0
-  checksum: 588d272b359bf555a0c4c2ffe97286edc73126de132f63f4f0c80110bd06b67d3ce44d2b3d24feea6da13ced50c04d774ba4d25fe28576371cd714cd013bd3b7
+  checksum: cb1be3fa4eb896be17945a2e46c25f47ef9344d5955703a09d9d831efef681ce120bddfe02a8ebf3a96580ffa8f70edda55623e4d021adff70cb81cd0c8a885e
   languageName: node
   linkType: hard
 

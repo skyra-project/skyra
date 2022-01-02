@@ -76,7 +76,7 @@ export function getEmojiTextFormat(emoji: SerializedEmoji): string {
  * Formats an emoji in the format that we can use to for reactions on Discord messages.
  */
 export function getEmojiReactionFormat(emoji: SerializedEmoji): string {
-	return isSerializedTwemoji(emoji) ? emoji : `_:${emoji.slice(1)}`;
+	return isSerializedTwemoji(emoji) ? emoji : `emoji:${emoji.slice(1)}`;
 }
 
 /**

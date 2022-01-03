@@ -272,8 +272,8 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	sweepers: {
 		...Options.defaultSweeperSettings,
 		messages: {
-			interval: minutes(3),
-			lifetime: minutes(15)
+			interval: minutes.toSeconds(3),
+			lifetime: minutes.toSeconds(15)
 		}
 	},
 	partials: ['CHANNEL'],

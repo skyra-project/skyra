@@ -38,8 +38,14 @@ describe('Time functions', () => {
 	});
 
 	describe('minutes', () => {
-		test('GIVEN 1 hour THEN returns 60000 milliseconds', () => {
+		test('GIVEN 1 minute THEN returns 60000 milliseconds', () => {
 			expect(minutes(1)).toEqual(60_000);
+		});
+	});
+
+	describe('minutes.toSeconds', () => {
+		test('GIVEN 1 minute THEN returns 60 seconds', () => {
+			expect(minutes.toSeconds(1)).toEqual(60);
 		});
 	});
 

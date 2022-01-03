@@ -36,7 +36,7 @@ export class UserAudioCommand extends AudioCommand {
 			.setColor(12916736)
 			.setTitle(track.title)
 			.setURL(track.uri)
-			.setAuthor(track.author)
+			.setAuthor({ name: track.author })
 			.setDescription(t(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
 			.setTimestamp();
 

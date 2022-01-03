@@ -30,9 +30,9 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 		const changes: string[] = [...this.getChannelInformation(t, next)];
 		const embed = new MessageEmbed()
 			.setColor(Colors.Green)
-			.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.ChannelCreate))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelCreate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

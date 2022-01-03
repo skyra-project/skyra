@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 			.setURL(url)
 			.setColor(await this.container.db.fetchColor(message))
 			.setImage(getImageUrl(url) ?? 'https://i.imgur.com/vKUeMoH.png')
-			.setFooter(args.t(LanguageKeys.Commands.Animation.WaifuFooter))
+			.setFooter({ text: args.t(LanguageKeys.Commands.Animation.WaifuFooter) })
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

@@ -55,7 +55,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			.setURL(url)
 			.setColor(await this.container.db.fetchColor(message))
 			.setImage(url)
-			.setFooter(t(LanguageKeys.System.PoweredByWeebSh));
+			.setFooter({ text: t(LanguageKeys.System.PoweredByWeebSh) });
 		return send(message, { content, embeds: [embed] });
 	}
 

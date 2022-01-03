@@ -73,8 +73,8 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(COLORS[index])
-			.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(footer);
+			.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setFooter({ text: footer });
 		return send(message, { embeds: [embed] });
 	}
 
@@ -90,7 +90,7 @@ export class UserCommand extends SkyraCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
 

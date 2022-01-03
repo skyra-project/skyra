@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
+			.setAuthor({ name: `${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, iconURL: CdnUrls.Pokedex })
 			.setThumbnail(itemDetails.sprite)
 			.setDescription(itemDetails.desc)
 			.addField(embedTranslations.generationIntroduced, formatNumber(t, itemDetails.generationIntroduced), true)

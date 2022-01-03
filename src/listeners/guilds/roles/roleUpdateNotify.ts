@@ -26,9 +26,9 @@ export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 
 		const embed = new MessageEmbed()
 			.setColor(Colors.Yellow)
-			.setAuthor(`${next.name} (${next.id})`, channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined)
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
 			.setDescription(changes.join('\n'))
-			.setFooter(t(LanguageKeys.Events.Guilds.Logs.RoleUpdate))
+			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleUpdate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}

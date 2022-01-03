@@ -4,8 +4,8 @@ import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
-import { readFile } from 'node:fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
+import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 describe('Utils', () => {
@@ -264,7 +264,7 @@ describe('Utils', () => {
 			expect(
 				utils.getAllContent({
 					content: 'Something',
-					embeds: [new MessageEmbed().setAuthor('Some author!')]
+					embeds: [new MessageEmbed().setAuthor({ name: 'Some author!' })]
 				} as unknown as Message)
 			).toEqual('Something\nSome author!');
 		});
@@ -282,7 +282,7 @@ describe('Utils', () => {
 			expect(
 				utils.getAllContent({
 					content: '',
-					embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
+					embeds: [new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' })]
 				} as unknown as Message)
 			).toEqual('Description!\nSome footer!');
 		});
@@ -292,8 +292,8 @@ describe('Utils', () => {
 				utils.getAllContent({
 					content: '',
 					embeds: [
-						new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
-						new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
+						new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' }),
+						new MessageEmbed().setDescription('Other embed!').setFooter({ text: 'Another footer!' })
 					]
 				} as unknown as Message)
 			).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');

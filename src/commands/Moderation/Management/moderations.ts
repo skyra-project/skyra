@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message))
-				.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
 

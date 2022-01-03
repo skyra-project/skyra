@@ -1,6 +1,6 @@
 {
 	"afkRemove": "Welcome back {{user}}! I have just removed your AFK status.",
 	"afkStatus": "**{{user}} is AFK**: {{content}} - {{duration}}",
-	"messageDelete": "Message Deleted • {{channel.name}}",
-	"messageUpdate": "Message Edited | {{message.channel.name}}"
+	"messageDelete": "Message Deleted • {{channel}}",
+	"messageUpdate": "Message Edited • {{channel}}"
 }

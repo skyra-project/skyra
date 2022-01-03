@@ -62,7 +62,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: Message) {
 		const embedData = t(LanguageKeys.Commands.Animation.KitsuMangaEmbedData);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setFooter('© kitsu.io')
+			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)).setFooter({ text: '© kitsu.io' })
 		});
 
 		for (const entry of entries) {

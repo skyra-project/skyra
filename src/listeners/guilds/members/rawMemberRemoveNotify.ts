@@ -32,7 +32,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
-				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))
+				.setAuthor({ name: `${user.username}#${user.discriminator} (${user.id})`, iconURL: getDisplayAvatar(user.id, user) })
 				.setDescription(
 					t(
 						time === -1
@@ -44,7 +44,7 @@ export class UserListener extends Listener {
 						}
 					)
 				)
-				.setFooter(footer)
+				.setFooter({ text: footer })
 				.setTimestamp()
 		);
 	}

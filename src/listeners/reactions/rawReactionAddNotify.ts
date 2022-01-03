@@ -52,7 +52,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, data.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setThumbnail(
 					data.emoji.id === null
 						? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name!)}.png`
@@ -67,7 +67,7 @@ export class UserListener extends Listener {
 						})`
 					].join('\n')
 				)
-				.setFooter(`${t(LanguageKeys.Events.Reactions.Reaction)} • ${data.channel.name}`)
+				.setFooter({ text: `${t(LanguageKeys.Events.Reactions.Reaction)} • ${data.channel.name}` })
 				.setTimestamp()
 		);
 	}

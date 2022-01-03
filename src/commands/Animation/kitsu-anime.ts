@@ -65,7 +65,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed() //
 				.setColor(await this.container.db.fetchColor(message))
-				.setFooter('© kitsu.io')
+				.setFooter({ text: '© kitsu.io' })
 		});
 
 		for (const entry of entries) {

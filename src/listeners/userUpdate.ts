@@ -50,9 +50,9 @@ export class UserListener extends Listener {
 	private buildEmbed(user: User, t: TFunction, description: string, footerKey: CustomGet<string, string>) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
-			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setDescription(description)
-			.setFooter(t(footerKey))
+			.setFooter({ text: t(footerKey) })
 			.setTimestamp();
 	}
 }

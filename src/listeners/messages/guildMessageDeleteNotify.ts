@@ -30,12 +30,12 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
-				.setAuthor(
-					`${message.author.tag} (${message.author.id})`,
-					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-				)
+				.setAuthor({
+					name: `${message.author.tag} (${message.author.id})`,
+					iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+				})
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter(t(LanguageKeys.Events.Messages.MessageDelete, { channel: message.channel }))
+				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageDelete, { channel: `#${message.channel.name}` }) })
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

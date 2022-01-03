@@ -91,7 +91,7 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 		const embed = new MessageEmbed()
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.userName}`)
-			.setFooter(t(LanguageKeys.Events.Twitch.OfflinePostfix))
+			.setFooter({ text: t(LanguageKeys.Events.Twitch.OfflinePostfix) })
 			.setColor(this.container.client.twitch.BRANDING_COLOUR)
 			.setTimestamp(data.startedAt);
 

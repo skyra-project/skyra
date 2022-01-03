@@ -85,13 +85,13 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		return new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
 			.setThumbnail(player.league?.iconUrls?.medium ?? '')
-			.setAuthor(
-				`${player.tag} - ${player.name}`,
-				player.clan?.badgeUrls.large ?? '',
-				`https://www.clashleaders.com/player/${player.name.toLowerCase().replace(filterSpecialCharacters, '-')}-${player.tag
+			.setAuthor({
+				name: `${player.tag} - ${player.name}`,
+				iconURL: player.clan?.badgeUrls.large ?? '',
+				url: `https://www.clashleaders.com/player/${player.name.toLowerCase().replace(filterSpecialCharacters, '-')}-${player.tag
 					.slice(1)
 					.toLowerCase()}`
-			)
+			})
 			.setDescription(
 				[
 					`**${titles.xpLevel}**: ${player.expLevel}`,

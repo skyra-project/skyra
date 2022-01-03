@@ -65,9 +65,12 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	protected onLogMessage(message: GuildMessage, t: TFunction, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({
+				name: `${message.author.tag} (${message.author.id})`,
+				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			})
 			.setDescription(t(LanguageKeys.Events.Moderation.Messages.InviteFilterLog, { links, count: links.length }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.InviteFooter)}`)
+			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.InviteFooter)}` })
 			.setTimestamp();
 	}
 

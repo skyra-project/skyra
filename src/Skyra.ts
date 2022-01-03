@@ -1,6 +1,6 @@
+import { DbSet } from '#lib/database';
 import '#lib/setup';
 
-import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
 import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
 import { container } from '@sapphire/framework';

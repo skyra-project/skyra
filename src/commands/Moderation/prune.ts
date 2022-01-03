@@ -171,7 +171,7 @@ export class UserCommand extends SkyraCommand {
 			});
 
 			const embed = new MessageEmbed()
-				.setAuthor(authorName, authorAvatar)
+				.setAuthor({ name: authorName, iconURL: authorAvatar })
 				.setDescription(description)
 				.setColor(UserCommand.kColor)
 				.setTimestamp();

@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
 			.setDescription(body.AbstractText)
-			.setFooter(args.t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy));
+			.setFooter({ text: args.t(LanguageKeys.Commands.Tools.DuckDuckGoPoweredBy) });
 
 		const thumbnail = getImageUrl(body.Image);
 		if (thumbnail !== undefined) embed.setThumbnail(thumbnail);

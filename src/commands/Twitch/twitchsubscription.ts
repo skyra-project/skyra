@@ -191,7 +191,7 @@ export class UserCommand extends SkyraCommand {
 		const pages = chunk(lines, 10);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setColor(await this.container.db.fetchColor(message))
 		});
 

@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(await this.container.db.fetchColor(sniped))
-			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: sniped.author.username, iconURL: sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setTimestamp(sniped.createdTimestamp);
 
 		const content = getContent(sniped);

@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;
 
 		const embed = new MessageEmbed()
-			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setColor(await this.container.db.fetchColor(message))
 			.setImage(user.displayAvatarURL({ size, format: 'png', dynamic: true }));
 		return send(message, { embeds: [embed] });

@@ -157,9 +157,9 @@ export class UserCommand extends SkyraCommand {
 		const user = this.container.client.user!;
 		return new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
-			.setAuthor(user.username, user.displayAvatarURL({ size: 128, format: 'png' }))
+			.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png' }) })
 			.setTimestamp()
-			.setFooter(data.footer)
+			.setFooter({ text: data.footer })
 			.setTitle(data.title)
 			.setDescription(extendedHelp);
 	}

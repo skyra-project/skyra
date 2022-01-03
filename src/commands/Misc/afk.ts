@@ -65,10 +65,10 @@ export class UserCommand extends SkyraCommand {
 		const entriesPerPage = 20;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setAuthor(message.guild.name, message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined)
+				.setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL({ size: 128, format: 'png', dynamic: true }) ?? undefined })
 				.setTitle(args.t(LanguageKeys.Commands.Misc.AfkListTitle))
 				.setColor(await this.container.db.fetchColor(message))
-				.setFooter(args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size }))
+				.setFooter({ text: args.t(LanguageKeys.Commands.Misc.AfkListFooter, { count: entries.size }) })
 				.setTimestamp()
 		});
 
@@ -89,10 +89,10 @@ export class UserCommand extends SkyraCommand {
 		const [, entry] = await this.fetchEntry(member, message.member === member);
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${entry.name} (${member.id})`, member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }))
+			.setAuthor({ name: `${entry.name} (${member.id})`, iconURL: member.user.displayAvatarURL({ size: 128, dynamic: true, format: 'png' }) })
 			.setColor(await this.container.db.fetchColor(message))
 			.setDescription(entry.content)
-			.setFooter(args.t(LanguageKeys.Commands.Misc.AfkShowFooter))
+			.setFooter({ text: args.t(LanguageKeys.Commands.Misc.AfkShowFooter) })
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

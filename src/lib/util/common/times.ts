@@ -29,6 +29,15 @@ export function minutes(minutes: number): number {
 }
 
 /**
+ * Converts a number of minutes to seconds.
+ * @param value The amount of minutes
+ * @returns The amount of seconds `value` equals to.
+ */
+minutes.toSeconds = (value: number): number => {
+	return roundNumber(minutes(value) / Time.Second);
+};
+
+/**
  * Converts a number of hours to milliseconds.
  * @param hours The amount of hours
  * @returns The amount of milliseconds `hours` equals to.

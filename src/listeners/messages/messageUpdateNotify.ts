@@ -44,7 +44,7 @@ export class UserListener extends Listener {
 						.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
 						.join(' ')
 				)
-				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdate, { message }) })
+				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdate, { channel: `#${message.channel.name}` }) })
 				.setTimestamp()
 		);
 	}

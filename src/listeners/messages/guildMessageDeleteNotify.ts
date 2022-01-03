@@ -35,7 +35,7 @@ export class UserListener extends Listener {
 					iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				})
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageDelete, { channel: message.channel }) })
+				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageDelete, { channel: `#${message.channel.name}` }) })
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

@@ -2091,7 +2091,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord.js-utilities@npm:^4.1.5":
+"@sapphire/discord.js-utilities@npm:^4.1.5, @sapphire/discord.js-utilities@npm:^4.2.0":
   version: 4.2.0
   resolution: "@sapphire/discord.js-utilities@npm:4.2.0"
   dependencies:
@@ -9694,7 +9694,7 @@ __metadata:
     "@influxdata/influxdb-client-apis": ^1.21.0
     "@sapphire/async-queue": ^1.1.9
     "@sapphire/decorators": ^3.1.6
-    "@sapphire/discord.js-utilities": ^4.1.5
+    "@sapphire/discord.js-utilities": ^4.2.0
     "@sapphire/eslint-config": ^4.0.9
     "@sapphire/fetch": ^2.0.4
     "@sapphire/framework": ^2.3.0

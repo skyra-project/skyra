@@ -63,7 +63,7 @@
 		"@influxdata/influxdb-client-apis": "^1.21.0",
 		"@sapphire/async-queue": "^1.1.9",
 		"@sapphire/decorators": "^3.1.6",
-		"@sapphire/discord.js-utilities": "^4.1.5",
+		"@sapphire/discord.js-utilities": "^4.2.0",
 		"@sapphire/fetch": "^2.0.4",
 		"@sapphire/framework": "^2.3.0",
 		"@sapphire/plugin-api": "^3.1.3",

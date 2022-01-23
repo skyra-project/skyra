@@ -3,13 +3,26 @@ import { minutes } from '#utils/common';
 import {
 	isGuildBasedChannel,
 	isMessageButtonInteraction,
-	PaginatedMessageAction,
-	PaginatedMessageOptions,
-	PaginatedMessagePage
+	PaginatedMessagePage,
+	runsOnInteraction,
+	type PaginatedMessageAction,
+	type PaginatedMessageOptions
 } from '@sapphire/discord.js-utilities';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isFunction } from '@sapphire/utilities';
-import { Constants, Message, MessageActionRow, MessageButton, MessageOptions, MessageSelectMenu, User, WebhookEditMessageOptions } from 'discord.js';
+import {
+	Constants,
+	MessageActionRow,
+	MessageButton,
+	MessageSelectMenu,
+	type ButtonInteraction,
+	type CommandInteraction,
+	type Message,
+	type MessageOptions,
+	type SelectMenuInteraction,
+	type User,
+	type WebhookEditMessageOptions
+} from 'discord.js';
 import { SkyraPaginatedMessage } from './SkyraPaginatedMessage';
 
 export class HelpPaginatedMessage extends SkyraPaginatedMessage {
@@ -80,7 +93,17 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 				type: Constants.MessageComponentTypes.BUTTON,
 				run: async ({ collector, response }) => {
 					collector.stop();
-					await response.edit({ components: [] });
+					if (runsOnInteraction(response)) {
+						if (response.replied || response.deferred) {
+							await response.editReply({ components: [] });
+						} else if (response.isMessageComponent()) {
+							await response.update({ components: [] });
+						} else {
+							await response.reply({ content: "This maze wasn't meant for you...what did you do.", ephemeral: true });
+						}
+					} else {
+						await response.edit({ components: [] });
+					}
 				}
 			}
 		]);
@@ -97,7 +120,20 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 		return this;
 	}
 
-	protected override async setUpMessage(channel: Message['channel'], targetUser: User): Promise<void> {
+	/**
+	 * Sets up the message.
+	 *
+	 * @param messageOrInteraction The message or interaction that triggered this {@link PaginatedMessage}.
+	 * Generally this will be the command message or an interaction
+	 * (either a {@link CommandInteraction}, a {@link SelectMenuInteraction} or a {@link ButtonInteraction}),
+	 * but it can also be another message from your client, i.e. to indicate a loading state.
+	 *
+	 * @param author The author the handler is for.
+	 */
+	protected async setUpMessage(
+		messageOrInteraction: Message | CommandInteraction | SelectMenuInteraction | ButtonInteraction,
+		targetUser: User
+	): Promise<void> {
 		// Get the current page
 		let page = this.messages[this.index]!;
 
@@ -122,8 +158,8 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 								this.pages.slice(0, 25).map(async (_, index) => ({
 									...(await this.selectMenuOptions(index + 1, {
 										author: targetUser,
-										channel,
-										guild: isGuildBasedChannel(channel) ? channel.guild : null
+										channel: messageOrInteraction.channel,
+										guild: isGuildBasedChannel(messageOrInteraction.channel) ? messageOrInteraction.channel.guild : null
 									})),
 									value: index.toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
@@ -139,8 +175,8 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 								this.pages.slice(25).map(async (_, index) => ({
 									...(await this.selectMenuOptions(index + 1 + 25, {
 										author: targetUser,
-										channel,
-										guild: isGuildBasedChannel(channel) ? channel.guild : null
+										channel: messageOrInteraction.channel,
+										guild: isGuildBasedChannel(messageOrInteraction.channel) ? messageOrInteraction.channel.guild : null
 									})),
 									value: (index + 25).toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
@@ -155,9 +191,25 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 		}
 
 		if (this.response) {
-			await this.response.edit(page as WebhookEditMessageOptions);
+			if (runsOnInteraction(this.response)) {
+				if (this.response.replied || this.response.deferred) {
+					await this.response.editReply(page as WebhookEditMessageOptions);
+				} else {
+					await this.response.reply(page as WebhookEditMessageOptions);
+				}
+			} else {
+				await this.response.edit(page as WebhookEditMessageOptions);
+			}
+		} else if (runsOnInteraction(messageOrInteraction)) {
+			this.response = messageOrInteraction;
+
+			if (this.response.replied || this.response.deferred) {
+				await this.response.editReply(page as MessageOptions);
+			} else {
+				await this.response.reply(page as MessageOptions);
+			}
 		} else {
-			this.response = await channel.send(page as MessageOptions);
+			this.response = await messageOrInteraction.channel.send(page as MessageOptions);
 		}
 	}
 }
@@ -183,6 +235,6 @@ function createPartitionedMessageRow(components: (MessageButton | MessageSelectM
 	return actionRows;
 }
 
-interface HelpPaginatedMessageAction extends PaginatedMessageAction {
+type HelpPaginatedMessageAction = PaginatedMessageAction & {
 	selectMenuIndex?: 'set-1' | 'set-2';
-}
+};

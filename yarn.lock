@@ -2073,12 +2073,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/decorators@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "@sapphire/decorators@npm:3.1.6"
+"@sapphire/decorators@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@sapphire/decorators@npm:4.0.2"
   dependencies:
     tslib: ^2.3.1
-  checksum: 6e314717e3b9ac4cfdff40b74f73ce2a7ec06d37ee866ebee7c4954a1207875b13896985dd27c56f428973a1240016e674cf3339ff4e6dae257ece511aa69fa8
+  checksum: e1c824b5b4032858fe9a38203f7b78ae5f100c18c0d7f8bb09dfed69a05db096b7c35e7147b5b15ae7048b00631bdee2fa8a2313ee351193e45e2f32147ab319
   languageName: node
   linkType: hard
 
@@ -9752,7 +9752,7 @@ __metadata:
     "@influxdata/influxdb-client": ^1.22.0
     "@influxdata/influxdb-client-apis": ^1.22.0
     "@sapphire/async-queue": ^1.1.9
-    "@sapphire/decorators": ^3.1.6
+    "@sapphire/decorators": ^4.0.2
     "@sapphire/discord.js-utilities": ^4.2.0
     "@sapphire/eslint-config": ^4.0.9
     "@sapphire/fetch": ^2.0.4

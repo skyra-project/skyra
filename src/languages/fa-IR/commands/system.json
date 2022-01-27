@@ -1,56 +1,56 @@
 {
-	"dmDescription": "Enviar un Mensaje Directo.",
+	"dmDescription": "",
 	"dmExtended": {
 		"usages": [
-			"Usuario, Mensaje"
+			""
 		],
-		"extendedHelp": "El comando DM está reservado para los propietarios del bot, y sólo se utiliza para propósitos muy específicos, como responder a mensajes enviados por los usuarios.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Usuario",
-				"Usuario a enviar un DM"
+				"",
+				""
 			],
 			[
-				"Mensaje",
-				"El mensaje a enviar"
+				"",
+				""
 			]
 		],
-		"reminder": "Reservado para los propietarios de los bots con fines de responder."
+		"reminder": ""
 	},
-	"evalDescription": "Evalúa Javascript.",
+	"evalDescription": "",
 	"evalExtended": {
 		"usages": [
-			"Expresión"
+			""
 		],
-		"extendedHelp": "El comando eval evalúa el código tal cual, y cualquier error arrojado en él será manejado.\nTambién utiliza la función de opciones. Escribe --silent, --depth=number o --async para personalizar la salida.\nLa opción --wait cambia el tiempo que se ejecutará el número. Por defecto es de 10 segundos. Acepta el tiempo en milisegundos.\nLas opciones --output y --output-to aceptan ya sea `file`, `log`, `haste` o `hastebin`.\nLa opción --delete hace que el comando borre el mensaje que ejecutó el mensaje después de la evaluación.\nLa opción --silent hará que no se envíe ningún mensaje de respuesta.\nLa opción --depth acepta un número, por ejemplo, --depth=2, para personalizar la profundidad de util.inspect.\nLa opción --async envuelve el código en una función asíncrona donde se puede hacer uso del await, sin embargo, si desea devolver algo, necesitará utilizar return\nLa opción --showHidden habilitará la opción showHidden en util.inspect.\nLas opciones --lang y --language permiten un resaltado de sintaxis diferente para la salida.\nLa opción --json convierte la salida a json\nLa opción --no-timeout desactiva el timeout\nSi la salida es demasiado grande, enviará la salida como un archivo, o en la consola si el bot no tiene el permiso {{ATTACH_FILES, permissions}}.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Expresión",
-				"La expresión a evaluar"
+				"",
+				""
 			]
 		],
 		"examples": [
-			"msg.author.username;",
-			"1 + 1;"
+			"",
+			""
 		],
-		"reminder": "Reservado para los propietarios del bot."
+		"reminder": ""
 	},
-	"execDescription": "Ejecutar el pedido 66.",
+	"execDescription": "",
 	"execExtended": {
 		"usages": [
-			"Expresión"
+			""
 		],
-		"extendedHelp": "Es mejor que no sepan ustedes esto.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
-				"Expresión",
-				"La expresión a evaluar"
+				"",
+				""
 			]
 		]
 	},
-	"donateDescription": "Obtén información sobre cómo donar para mantener a Skyra viva por más tiempo.",
+	"donateDescription": "",
 	"donateExtended": {
-		"extendedHelp": "El Proyecto Skyra comenzó el 24 de octubre de 2016, si estás leyendo esto, estás usando la versión {{VERSION}}. El equipo de desarrollo mejora Skyra un montón con cada iteración.\n\nSin embargo, no todo es gratis y necesitamos tu ayuda para mantener a Skyra viva.\nEstaremos muy agradecidos si nos ayudas.\nHemos estado trabajando en muchas cosas, y Skyra es preciosa para nosotros. Cuida de su ❤\n\n¿Quieres apoyar este increíble proyecto? ¡Siéntete libre de hacerlo! https://donate.skyra.pw/patreon o https://donate.skyra.pw/kofi"
+		"extendedHelp": ""
 	},
 	"echoDescription": "Haz que Skyra envíe un mensaje a este (o otro) canal.",
 	"echoExtended": {

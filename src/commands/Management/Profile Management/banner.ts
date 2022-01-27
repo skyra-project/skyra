@@ -26,7 +26,7 @@ const CDN_URL = CdnUrls.BannersBasePath;
 export class UserCommand extends SkyraCommand {
 	private display: SkyraPaginatedMessage = null!;
 
-	@RequiresClientPermissions(['EMBED_LINKS'])
+	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async buy(message: GuildMessage, args: SkyraCommand.Args, { prefix }: CommandContext) {
 		const { users } = this.container.db;
 		const banner = await args.pick(UserCommand.banner);

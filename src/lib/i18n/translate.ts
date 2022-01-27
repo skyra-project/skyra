@@ -1,4 +1,5 @@
 import type { SkyraArgs } from '#lib/structures';
+import { DecoratorIdentifiers } from '@sapphire/decorators';
 import { Identifiers } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { LanguageKeys } from './languageKeys';
@@ -56,6 +57,8 @@ export function translate(identifier: string): string {
 		case Identifiers.PreconditionGuildNewsThreadOnly:
 			return LanguageKeys.Preconditions.GuildNewsThreadOnly;
 		case Identifiers.PreconditionGuildOnly:
+		case DecoratorIdentifiers.RequiresClientPermissionsGuildOnly:
+		case DecoratorIdentifiers.RequiresUserPermissionsGuildOnly:
 			return LanguageKeys.Preconditions.GuildOnly;
 		case Identifiers.PreconditionGuildPrivateThreadOnly:
 			return LanguageKeys.Preconditions.GuildPrivateThreadOnly;
@@ -66,8 +69,10 @@ export function translate(identifier: string): string {
 		case Identifiers.PreconditionNSFW:
 			return LanguageKeys.Preconditions.Nsfw;
 		case Identifiers.PreconditionClientPermissions:
+		case DecoratorIdentifiers.RequiresClientPermissionsMissingPermissions:
 			return LanguageKeys.Preconditions.ClientPermissions;
 		case Identifiers.PreconditionUserPermissions:
+		case DecoratorIdentifiers.RequiresUserPermissionsMissingPermissions:
 			return LanguageKeys.Preconditions.UserPermissions;
 		case Identifiers.PreconditionThreadOnly:
 			return LanguageKeys.Preconditions.ThreadOnly;

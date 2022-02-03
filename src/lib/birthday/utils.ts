@@ -114,7 +114,7 @@ export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOpt
 	const nowAsDate = new Date(now);
 	const dataAsDate = new Date(data.year, data.month - 1, data.day);
 
-	const years = new Date(nowAsDate - dataAsDate).getFullYear() - new Date(0).getFullYear() - 1;
+	const years = new Date(Number(nowAsDate) - Number(dataAsDate)).getFullYear() - new Date(0).getFullYear() - 1;
 	return years;
 }
 

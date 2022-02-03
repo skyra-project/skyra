@@ -3,6 +3,7 @@ import { minutes } from '#utils/common';
 import {
 	isGuildBasedChannel,
 	isMessageButtonInteraction,
+	isMessageInstance,
 	PaginatedMessagePage,
 	runsOnInteraction,
 	type PaginatedMessageAction,
@@ -101,7 +102,7 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 						} else {
 							await response.reply({ content: "This maze wasn't meant for you...what did you do.", ephemeral: true });
 						}
-					} else {
+					} else if (isMessageInstance(response)) {
 						await response.edit({ components: [] });
 					}
 				}
@@ -197,16 +198,14 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 				} else {
 					await this.response.reply(page as WebhookEditMessageOptions);
 				}
-			} else {
+			} else if (isMessageInstance(this.response)) {
 				await this.response.edit(page as WebhookEditMessageOptions);
 			}
 		} else if (runsOnInteraction(messageOrInteraction)) {
-			this.response = messageOrInteraction;
-
-			if (this.response.replied || this.response.deferred) {
-				await this.response.editReply(page as MessageOptions);
+			if (messageOrInteraction.replied || messageOrInteraction.deferred) {
+				this.response = await messageOrInteraction.editReply(page);
 			} else {
-				await this.response.reply(page as MessageOptions);
+				this.response = await messageOrInteraction.reply({ ...page, fetchReply: true, ephemeral: false });
 			}
 		} else {
 			this.response = await messageOrInteraction.channel.send(page as MessageOptions);

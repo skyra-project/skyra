@@ -111,13 +111,11 @@ export function compareDate(month: Month, day: number, { now = Date.now() }: Tim
 export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
 	if (data.year === null) return null;
 
-	// If the birthday has happened, we subtract the years by one, that way:
-	//
-	// * 2021/03/18 - 2020/05/10 = 0
-	// * 2021/03/18 - 2020/02/26 = 1
-	const extra = compareDate(data.month, data.day, { now }) === -1 ? 0 : -1;
-	const years = new Date(now).getUTCFullYear() - data.year;
-	return years + extra;
+	const nowAsDate = new Date(now);
+	const dataAsDate = new Date(data.year, data.month - 1, data.day);
+
+	const years = new Date(nowAsDate - dataAsDate).getFullYear() - new Date(0).getFullYear() - 1;
+	return years;
 }
 
 /**

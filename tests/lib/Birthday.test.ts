@@ -276,6 +276,18 @@ describe('Birthday', () => {
 			test('GIVEN day after now THEN returns 19', () => {
 				expect(getAge({ year: 2000, month: Month.May, day: 5 })).toBe(19);
 			});
+
+			test('GIVEN yesterday THEN returns 20', () => {
+				expect(getAge({ year: 2000, month: Month.April, day: 17 })).toBe(20);
+			});
+
+			test('GIVEN today THEN returns 20', () => {
+				expect(getAge({ year: 2000, month: Month.April, day: 18 })).toBe(20);
+			});
+
+			test('GIVEN tomorrow THEN returns 19', () => {
+				expect(getAge({ year: 2000, month: Month.April, day: 19 })).toBe(19);
+			});
 		});
 
 		describe('WITH custom now', () => {

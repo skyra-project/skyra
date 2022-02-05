@@ -303,7 +303,6 @@ export const TLDs = [
 	'crs',
 	'cruise',
 	'cruises',
-	'csc',
 	'cu',
 	'cuisinella',
 	'cv',

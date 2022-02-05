@@ -2,10 +2,10 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { Listener } from '@sapphire/framework';
-import type { Guild, User } from 'discord.js';
+import type { GuildBan } from 'discord.js';
 
 export class UserListener extends Listener {
-	public async run(guild: Guild, user: User) {
+	public async run({ guild, user }: GuildBan) {
 		if (!guild.available || !(await readSettings(guild, GuildSettings.Events.BanAdd))) return;
 
 		const moderation = getModeration(guild);

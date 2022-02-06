@@ -111,9 +111,9 @@ export function compareDate(month: Month, day: number, { now = Date.now() }: Tim
 export function getAge(date: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
 	if (date.year === null) return null;
 
-	const birthDate = new Date(date.year, date.month - 1, date.day);
+	const birthDate = Date.UTC(date.year, date.month - 1, date.day);
 
-	return new Date(now - Number(birthDate)).getUTCFullYear() - new Date(0).getUTCFullYear();
+	return new Date(now - birthDate).getUTCFullYear() - new Date(0).getUTCFullYear();
 }
 
 /**

@@ -356,6 +356,14 @@ export const FFXIVClasses = new Map<string, ClassMap>([
 		}
 	],
 	[
+		'SGE',
+		{
+			fullName: 'Sage',
+			emote: '<:Sage:939938208903495700>',
+			subcategory: ClassSubcategory.Healer
+		}
+	],
+	[
 		'PGL',
 		{
 			fullName: 'Pugilist',
@@ -408,6 +416,14 @@ export const FFXIVClasses = new Map<string, ClassMap>([
 		{
 			fullName: 'Samurai',
 			emote: '<:Samurai:668480929538375711>',
+			subcategory: ClassSubcategory.MDPS
+		}
+	],
+	[
+		'RPR',
+		{
+			fullName: 'Reaper',
+			emote: '<:Reaper:939939103779217469>',
 			subcategory: ClassSubcategory.MDPS
 		}
 	],

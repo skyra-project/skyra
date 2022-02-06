@@ -163,38 +163,40 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const magRangedDPSClassValues: string[] = [];
 
 		for (const classJob of classJobs) {
-			const classDetails = FFXIVClasses.get(classJob.Job.Abbreviation)!;
+			const classDetails = FFXIVClasses.get(classJob.Job.Abbreviation);
 
-			switch (classDetails.subcategory) {
-				case ClassSubcategory.DoH:
-					discipleOfTheHandJobs.push({
-						name: `${classDetails.emote} ${classDetails.fullName}`,
-						value: classJob.Level.toString(),
-						inline: true
-					});
-					break;
-				case ClassSubcategory.DoL:
-					discipleOfTheLandJobs.push({
-						name: `${classDetails.emote} ${classDetails.fullName}`,
-						value: classJob.Level.toString(),
-						inline: true
-					});
-					break;
-				case ClassSubcategory.Tank:
-					tankClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
-					break;
-				case ClassSubcategory.Healer:
-					healerClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
-					break;
-				case ClassSubcategory.MDPS:
-					meleeDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
-					break;
-				case ClassSubcategory.PRDPS:
-					phRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
-					break;
-				case ClassSubcategory.MRDPS:
-					magRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
-					break;
+			if (classDetails) {
+				switch (classDetails.subcategory) {
+					case ClassSubcategory.DoH:
+						discipleOfTheHandJobs.push({
+							name: `${classDetails.emote} ${classDetails.fullName}`,
+							value: classJob.Level.toString(),
+							inline: true
+						});
+						break;
+					case ClassSubcategory.DoL:
+						discipleOfTheLandJobs.push({
+							name: `${classDetails.emote} ${classDetails.fullName}`,
+							value: classJob.Level.toString(),
+							inline: true
+						});
+						break;
+					case ClassSubcategory.Tank:
+						tankClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
+						break;
+					case ClassSubcategory.Healer:
+						healerClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
+						break;
+					case ClassSubcategory.MDPS:
+						meleeDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
+						break;
+					case ClassSubcategory.PRDPS:
+						phRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
+						break;
+					case ClassSubcategory.MRDPS:
+						magRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
+						break;
+				}
 			}
 		}
 

@@ -298,6 +298,22 @@ describe('Birthday', () => {
 			test('GIVEN day after now THEN returns 19', () => {
 				expect(getAge({ year: 2000, month: Month.April, day: 5 }, { now: new Date('2020-03-02T12:00:00.000Z').getTime() })).toBe(19);
 			});
+
+			test('GIVEN now before birthday THEN returns 23', () => {
+				expect(getAge({ year: 1998, month: Month.February, day: 3 }, { now: new Date('2022-02-02T00:00:00.000Z').getTime() })).toBe(23);
+			});
+
+			test('GIVEN now is birthday THEN returns 24', () => {
+				expect(getAge({ year: 1998, month: Month.February, day: 3 }, { now: new Date('2022-02-03T00:00:00.000Z').getTime() })).toBe(24);
+			});
+
+			test('GIVEN now after birthday THEN returns 24', () => {
+				expect(getAge({ year: 1998, month: Month.February, day: 3 }, { now: new Date('2022-02-04T00:00:00.000Z').getTime() })).toBe(24);
+			});
+
+			test('GIVEN now is birthday THEN returns 25', () => {
+				expect(getAge({ year: 1997, month: Month.August, day: 28 }, { now: new Date('2022-08-28T00:00:00.000Z').getTime() })).toBe(25);
+			});
 		});
 
 		describe('WITHOUT year', () => {

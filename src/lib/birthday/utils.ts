@@ -104,18 +104,27 @@ export function compareDate(month: Month, day: number, { now = Date.now() }: Tim
 
 /**
  * Gets the current age from a date.
- * @param data The data to compare.
+ * @param date The date to compare.
  * @param options The options for the operation of this function.
- * @returns `null` if `data.year` is `null`, a number of years otherwise.
+ * @returns `null` if `date.year` is `null`, a number of years otherwise.
  */
-export function getAge(data: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
-	if (data.year === null) return null;
+export function getAge(date: DateWithOptionalYear, { now = Date.now() }: TimeOptions = {}) {
+	if (date.year === null) return null;
 
-	const nowAsDate = new Date(now);
-	const dataAsDate = new Date(data.year, data.month - 1, data.day);
+	const currentDate = new Date(now);
+	const dateOfBirth = new Date(date.year, date.month - 1, date.day);
 
-	const years = new Date(Number(nowAsDate) - Number(dataAsDate)).getFullYear() - new Date(0).getFullYear() - 1;
-	return years;
+	const diffYears = currentDate.getUTCFullYear() - dateOfBirth.getUTCFullYear();
+	const diffMonths = currentDate.getUTCMonth() - dateOfBirth.getUTCMonth();
+	const diffDays = currentDate.getUTCDate() - dateOfBirth.getUTCDate();
+
+	let age = diffYears;
+
+	if (diffMonths < 0 || (diffMonths === 0 && diffDays < 0)) {
+		age--;
+	}
+
+	return age;
 }
 
 /**

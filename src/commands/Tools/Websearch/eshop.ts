@@ -88,7 +88,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField(titles.price, price, true)
 					.addField(titles.availability, game.availability[0], true)
 					.addField(titles.releaseDate, releaseDate ? time(releaseDate, TimestampStyles.ShortDate) : game.releaseDateDisplay, true)
-					.addField(titles.numberOfPlayers, toTitleCase(game.numOfPlayers), true)
+					.addField(titles.numberOfPlayers, toTitleCase(game.numOfPlayers ?? t(LanguageKeys.Globals.Unknown)), true)
 					.addField(titles.platform, game.platform, true)
 					.addField(titles.nsuid, game.nsuid || 'TBD', true)
 					.addField(titles.esrb, esrbText)
@@ -118,7 +118,7 @@ interface EShopHit {
 	lowestPrice: number;
 	msrp: number;
 	nsuid: string;
-	numOfPlayers: string;
+	numOfPlayers?: string;
 	objectID: string;
 	platform: string;
 	playerFilters: string[];

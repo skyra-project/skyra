@@ -252,28 +252,7 @@
 		}
 	],
 	[
-		"clashofclans",
-		{
-			"category": "GameIntegration",
-			"subCategory": "General"
-		}
-	],
-	[
 		"ffxiv",
-		{
-			"category": "GameIntegration",
-			"subCategory": "General"
-		}
-	],
-	[
-		"fortnite",
-		{
-			"category": "GameIntegration",
-			"subCategory": "General"
-		}
-	],
-	[
-		"overwatch",
 		{
 			"category": "GameIntegration",
 			"subCategory": "General"

@@ -81,7 +81,6 @@ declare module '@sapphire/framework' {
 		image: Image;
 		invite: InviteCodeValidEntry;
 		language: string;
-		overwatchPlayer: string;
 		piece: Piece;
 		range: number[];
 		reset: true;

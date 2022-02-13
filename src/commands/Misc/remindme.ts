@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async create(message: Message, args: SkyraCommand.Args) {
-		const duration = await args.pick('timespan', { minimum: minutes(1), maximum: years(1) });
+		const duration = await args.pick('timespan', { minimum: minutes(1), maximum: years(5) });
 		const description = args.finished
 			? args.t(LanguageKeys.Commands.Social.RemindMeCreateNoDescription)
 			: await args.rest('string', { maximum: 1024 });

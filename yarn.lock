@@ -2102,12 +2102,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/decorators@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@sapphire/decorators@npm:4.2.1"
+"@sapphire/decorators@npm:^4.2.3":
+  version: 4.2.3
+  resolution: "@sapphire/decorators@npm:4.2.3"
   dependencies:
     tslib: ^2.3.1
-  checksum: 15b4caee407b3355705485d908fdec6c379b6db57d4f9819da038179f7ed3eb3b1d3efbe2c308870e41f4737012787ce2db5032a4833a8fcc80479cb0a405668
+  checksum: 7d71fdf7a5651321e438c1131f734cfe01f1cccf4fa167f60ece4d9fb363c5a6f85de7e4252752d766ee56756274e7e798e20f31e758f267ed577a2ec32d508a
   languageName: node
   linkType: hard
 
@@ -2132,15 +2132,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord.js-utilities@npm:^4.6.1":
-  version: 4.6.1
-  resolution: "@sapphire/discord.js-utilities@npm:4.6.1"
+"@sapphire/discord.js-utilities@npm:^4.7.0":
+  version: 4.7.0
+  resolution: "@sapphire/discord.js-utilities@npm:4.7.0"
   dependencies:
     "@sapphire/discord-utilities": ^2.7.0
     "@sapphire/time-utilities": ^1.6.0
     "@sapphire/utilities": ^3.3.0
     tslib: ^2.3.1
-  checksum: a4c3ca527c7cc05811d4ef0033b3e859e23023a4267b08d19df710a1b97df74df7da3f445bc3bfdc419cc06514f913590bcf979c69d4c30cf260c5071eb98075
+  checksum: 09ba1ac9c9f5aa4395ebccdf05eab5298a9a46fb45986a645885b2631ecb21a6ed5d806cf0c603e3c9d3575bbbc9ff5e721c4d0c1df5f9f9eeae8b2335033a03
   languageName: node
   linkType: hard
 
@@ -9713,8 +9713,8 @@ __metadata:
     "@influxdata/influxdb-client": ^1.22.0
     "@influxdata/influxdb-client-apis": ^1.22.0
     "@sapphire/async-queue": ^1.2.0
-    "@sapphire/decorators": ^4.2.1
-    "@sapphire/discord.js-utilities": ^4.6.1
+    "@sapphire/decorators": ^4.2.3
+    "@sapphire/discord.js-utilities": ^4.7.0
     "@sapphire/eslint-config": ^4.2.0
     "@sapphire/fetch": ^2.1.0
     "@sapphire/framework": ^2.4.0

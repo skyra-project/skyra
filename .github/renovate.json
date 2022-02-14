@@ -5,7 +5,7 @@
 	"npm": {
 		"packageRules": [
 			{
-				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next"],
+				"matchPackagePatterns": ["typeorm", "tslib", "colorette", "i18next", "discord-api-types"],
 				"enabled": false
 			},
 			{

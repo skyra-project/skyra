@@ -92,19 +92,8 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 				style: 'DANGER',
 				emoji: '⏹️',
 				type: Constants.MessageComponentTypes.BUTTON,
-				run: async ({ collector, response }) => {
+				run: ({ collector }) => {
 					collector.stop();
-					if (runsOnInteraction(response)) {
-						if (response.replied || response.deferred) {
-							await response.editReply({ components: [] });
-						} else if (response.isMessageComponent()) {
-							await response.update({ components: [] });
-						} else {
-							await response.reply({ content: "This maze wasn't meant for you...what did you do.", ephemeral: true });
-						}
-					} else if (isMessageInstance(response)) {
-						await response.edit({ components: [] });
-					}
 				}
 			}
 		]);
@@ -154,7 +143,6 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 				} else if (interaction.selectMenuIndex === 'set-1') {
 					messageComponents.push(
 						new MessageSelectMenu({
-							...interaction,
 							options: await Promise.all(
 								this.pages.slice(0, 25).map(async (_, index) => ({
 									...(await this.selectMenuOptions(index + 1, {
@@ -165,13 +153,13 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 									value: index.toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
 								}))
-							)
+							),
+							...interaction
 						})
 					);
 				} else if (this.pages.slice(25).length) {
 					messageComponents.push(
 						new MessageSelectMenu({
-							...interaction,
 							options: await Promise.all(
 								this.pages.slice(25).map(async (_, index) => ({
 									...(await this.selectMenuOptions(index + 1 + 25, {
@@ -182,7 +170,8 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 									value: (index + 25).toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
 								}))
-							)
+							),
+							...interaction
 						})
 					);
 				}

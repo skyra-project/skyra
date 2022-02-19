@@ -179,7 +179,6 @@ export const TLDs = [
 	'brussels',
 	'bs',
 	'bt',
-	'budapest',
 	'bugatti',
 	'build',
 	'builders',

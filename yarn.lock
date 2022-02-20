@@ -1629,12 +1629,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@favware/graphql-pokemon@npm:^6.3.3":
-  version: 6.3.3
-  resolution: "@favware/graphql-pokemon@npm:6.3.3"
+"@favware/graphql-pokemon@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@favware/graphql-pokemon@npm:6.4.0"
   dependencies:
     graphql: ^15.8.0
-  checksum: ed0f546180cfabf2cad0b3aac452668e86c95be63ca81d30611bf04eb0aae6f00cf593a6b3b6db4aaf9dc3a53ab1b1236606d46a1dc9fb30702103ac8baa61d2
+  checksum: 89409391149e5fed5f3a97963743423d5b25f87f624cbddee2c154f46b96b23456b7d82a801037684de95a08bf7a4266b47a28e3b64ffbd17d460e4fa4217101
   languageName: node
   linkType: hard
 
@@ -9717,7 +9717,7 @@ __metadata:
     "@commitlint/config-conventional": ^16.2.1
     "@discordjs/builders": ^0.12.0
     "@discordjs/collection": ^0.5.0
-    "@favware/graphql-pokemon": ^6.3.3
+    "@favware/graphql-pokemon": ^6.4.0
     "@favware/zalgo": ^3.1.3
     "@grpc/grpc-js": ^1.5.5
     "@influxdata/influxdb-client": ^1.23.0

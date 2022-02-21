@@ -92,7 +92,11 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				return this.parseMove(t, learnsetData.species, move.generation!, move.name!, methodTypes[methodName]);
 			});
 
-			display.addPageEmbed((embed) => embed.setDescription(methods.join('\n')));
+			display //
+				.addPageEmbed((embed) =>
+					embed //
+						.setDescription(`${t(LanguageKeys.Commands.Pokemon.DragoniteReminder)}\n\n${methods.join('\n')}`)
+				);
 		}
 
 		return display;

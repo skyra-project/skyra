@@ -25,8 +25,16 @@ export class UserCommand extends SkyraCommand {
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), { backSprite, shinySprite });
 		const spriteToGet = getSpriteKey({ backSprite, shinySprite });
 
-		const content = pokeDetails[spriteToGet];
-		return response.edit({ content, embeds: [] });
+		return response.edit({
+			embeds: [
+				{
+					description: args.t(LanguageKeys.Commands.Pokemon.DragoniteReminder),
+					image: {
+						url: pokeDetails[spriteToGet]
+					}
+				}
+			]
+		});
 	}
 
 	private async fetchAPI(pokemon: string, getSpriteParams: GetPokemonSpriteParameters) {

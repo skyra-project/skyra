@@ -91,6 +91,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message)) //
 				.setAuthor({ name: `${embedTranslations.typeEffectivenessFor}`, iconURL: CdnUrls.Pokedex }) //
+				.setDescription(t(LanguageKeys.Commands.Pokemon.DragoniteReminder)) //
 		})
 			.setSelectMenuOptions((pageIndex) => ({ label: [embedTranslations.offensive, embedTranslations.defensive][pageIndex - 1] }))
 			.addPageEmbed((embed) =>

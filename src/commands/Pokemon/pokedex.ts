@@ -218,6 +218,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 				.setColor(resolveColour(pokeDetails.color))
 				.setAuthor({ name: `#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, iconURL: CdnUrls.Pokedex })
 				.setThumbnail(pokeDetails[spriteToGet])
+				.setDescription(t(LanguageKeys.Commands.Pokemon.DragoniteReminder))
 		});
 
 		display.addPageEmbed((embed) => {

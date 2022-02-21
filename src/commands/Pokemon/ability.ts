@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setColor(await this.container.db.fetchColor(message))
 			.setAuthor({ name: `${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, iconURL: CdnUrls.Pokedex })
-			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
+			.setDescription(`${t(LanguageKeys.Commands.Pokemon.DragoniteReminder)}\n\n${abilityDetails.desc || abilityDetails.shortDesc}`)
 			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);
 
 		if (abilityDetails.isFieldAbility) {

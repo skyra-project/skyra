@@ -1,30 +1,31 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const AbilityDescription = T<string>('commands/pokemon:abilityDescription');
+export const DragoniteReminder = T('commands/pokemon:dragoniteReminder');
+export const AbilityDescription = T('commands/pokemon:abilityDescription');
 export const AbilityExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:abilityExtended');
 export const AbilityEmbedTitles = T<{ authorTitle: string; fieldEffectTitle: string }>('commands/pokemon:abilityEmbedTitles');
-export const AbilityQueryFail = FT<{ ability: string }, string>('commands/pokemon:abilityQueryFail');
-export const FlavorsDescription = T<string>('commands/pokemon:flavorsDescription');
+export const AbilityQueryFail = FT<{ ability: string }>('commands/pokemon:abilityQueryFail');
+export const FlavorsDescription = T('commands/pokemon:flavorsDescription');
 export const FlavorsExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:flavorsExtended');
-export const FlavorsQueryFail = FT<{ pokemon: string }, string>('commands/pokemon:flavorsQueryFail');
-export const FlavorNoFlavors = FT<{ pokemon: string }, string>('commands/pokemon:flavorNoFlavors');
-export const ItemDescription = T<string>('commands/pokemon:itemDescription');
+export const FlavorsQueryFail = FT<{ pokemon: string }>('commands/pokemon:flavorsQueryFail');
+export const FlavorNoFlavors = FT<{ pokemon: string }>('commands/pokemon:flavorNoFlavors');
+export const ItemDescription = T('commands/pokemon:itemDescription');
 export const ItemExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:itemExtended');
 export const ItemEmbedData = FT<
 	{ availableInGen8: string },
 	{ ITEM: string; generationIntroduced: string; availableInGeneration8Title: string; availableInGeneration8Data: string }
 >('commands/pokemon:itemEmbedData');
-export const ItemQueryFail = FT<{ item: string }, string>('commands/pokemon:itemQueryFail');
-export const LearnDescription = T<string>('commands/pokemon:learnDescription');
+export const ItemQueryFail = FT<{ item: string }>('commands/pokemon:itemQueryFail');
+export const LearnDescription = T('commands/pokemon:learnDescription');
 export const LearnExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:learnExtended');
 export const LearnMethodTypes = FT<{ level?: number | null }, LearnMethodTypesReturn>('commands/pokemon:learnMethodTypes');
-export const LearnInvalidGeneration = FT<{ generation: string }, string>('commands/pokemon:learnInvalidGeneration');
-export const LearnMethod = FT<{ generation: number; pokemon: string; move: string; method: string }, string>('commands/pokemon:learnMethod');
-export const LearnQueryFailed = FT<{ pokemon: string; moves: string[] }, string>('commands/pokemon:learnQueryFailed');
-export const LearnCannotLearn = FT<{ pokemon: string; moves: string[] }, string>('commands/pokemon:learnCannotLearn');
-export const LearnTitle = FT<{ pokemon: string; generation: number }, string>('commands/pokemon:learnTitle');
-export const MoveDescription = T<string>('commands/pokemon:moveDescription');
+export const LearnInvalidGeneration = FT<{ generation: string }>('commands/pokemon:learnInvalidGeneration');
+export const LearnMethod = FT<{ generation: number; pokemon: string; move: string; method: string }>('commands/pokemon:learnMethod');
+export const LearnQueryFailed = FT<{ pokemon: string; moves: string[] }>('commands/pokemon:learnQueryFailed');
+export const LearnCannotLearn = FT<{ pokemon: string; moves: string[] }>('commands/pokemon:learnCannotLearn');
+export const LearnTitle = FT<{ pokemon: string; generation: number }>('commands/pokemon:learnTitle');
+export const MoveDescription = T('commands/pokemon:moveDescription');
 export const MoveExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:moveExtended');
 export const MoveEmbedData = FT<
 	{ availableInGen8: string },
@@ -48,16 +49,16 @@ export const MoveEmbedData = FT<
 		fieldMoveEffectTitle: string;
 	}
 >('commands/pokemon:moveEmbedData');
-export const MoveQueryFail = FT<{ move: string }, string>('commands/pokemon:moveQueryFail');
-export const PokedexDescription = T<string>('commands/pokemon:pokedexDescription');
+export const MoveQueryFail = FT<{ move: string }>('commands/pokemon:moveQueryFail');
+export const PokedexDescription = T('commands/pokemon:pokedexDescription');
 export const PokedexExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:pokedexExtended');
 export const PokedexEmbedData = FT<{ otherFormes: readonly string[]; cosmeticFormes: readonly string[] }, PokedexEmbedDataReturn>(
 	'commands/pokemon:pokedexEmbedData'
 );
-export const PokedexQueryFail = FT<{ pokemon: string }, string>('commands/pokemon:pokedexQueryFail');
-export const SpriteDescription = T<string>('commands/pokemon:spriteDescription');
+export const PokedexQueryFail = FT<{ pokemon: string }>('commands/pokemon:pokedexQueryFail');
+export const SpriteDescription = T('commands/pokemon:spriteDescription');
 export const SpriteExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:spriteExtended');
-export const TypeDescription = T<string>('commands/pokemon:typeDescription');
+export const TypeDescription = T('commands/pokemon:typeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commands/pokemon:typeExtended');
 export const TypeEmbedData = FT<
 	{ types: string[] },
@@ -75,9 +76,9 @@ export const TypeEmbedData = FT<
 		typeEffectivenessFor: string;
 	}
 >('commands/pokemon:typeEmbedData');
-export const TypeTooManyTypes = T<string>('commands/pokemon:typeTooManyTypes');
-export const TypeNotAType = FT<{ type: string }, string>('commands/pokemon:typeNotAType');
-export const TypeQueryFail = FT<{ types: string[] }, string>('commands/pokemon:typeQueryFail');
+export const TypeTooManyTypes = T('commands/pokemon:typeTooManyTypes');
+export const TypeNotAType = FT<{ type: string }>('commands/pokemon:typeNotAType');
+export const TypeQueryFail = FT<{ types: string[] }>('commands/pokemon:typeQueryFail');
 
 export interface PokedexEmbedDataReturn {
 	abilities: string;

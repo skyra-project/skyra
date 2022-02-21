@@ -56,7 +56,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			template: new MessageEmbed()
 				.setColor(await this.container.db.fetchColor(message))
 				.setAuthor({ name: `${embedTranslations.move} - ${toTitleCase(moveData.name)}`, iconURL: CdnUrls.Pokedex })
-				.setDescription(moveData.desc || moveData.shortDesc)
+				.setDescription(`${t(LanguageKeys.Commands.Pokemon.DragoniteReminder)}\n\n${moveData.desc || moveData.shortDesc}`)
 		})
 			.addPageEmbed((embed) => {
 				if (moveData.isFieldMove) {

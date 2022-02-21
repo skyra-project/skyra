@@ -1,11 +1,11 @@
 {
-	"dragoniteReminder": "> **_Notice:_**\n> All \"Pokémon\" related commands will be removed in the future in favour of the stand-alone bot Dragonite (<https://top.gg/bot/931264626614763530>).\n> Dragonite features auto-complete for all search queries and gives more up-to-date and better parsed data than Skyra.\n> Dragonite is also maintained by the same developers as Skyra so you will get all the same premium quality that you're used to already.",
+	"dragoniteReminder": "",
 	"abilityDescription": "Gets data for any given Pokémon ability using my Pokémon dataset.",
 	"abilityExtended": {
 		"usages": [
 			"Ability"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Ability",
@@ -21,7 +21,7 @@
 		"authorTitle": "Ability",
 		"fieldEffectTitle": "Effect outside of battle"
 	},
-	"abilityQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)",
+	"abilityQueryFail": "",
 	"flavorsDescription": "Gets the dex entries across various games for a Pokémon.",
 	"flavorsExtended": {
 		"usages": [
@@ -30,7 +30,7 @@
 			"Pokémon --back --shiny",
 			"Pokémon --back"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -53,14 +53,14 @@
 			"mewtwo --back"
 		]
 	},
-	"flavorsQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)",
-	"flavorNoFlavors": "{{REDCROSS}} I am sorry, but no flavor text was available for `{{pokemon}}`.\n\n$t(commands/pokemon:dragoniteReminder)",
+	"flavorsQueryFail": "",
+	"flavorNoFlavors": "",
 	"itemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
 	"itemExtended": {
 		"usages": [
 			"Item"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Item",
@@ -78,7 +78,7 @@
 		"availableInGeneration8Title": "Available in generation 8",
 		"availableInGeneration8Data": "{{availableInGen8}}"
 	},
-	"itemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)",
+	"itemQueryFail": "",
 	"learnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
 	"learnExtended": {
 		"usages": [
@@ -89,7 +89,7 @@
 			"Generation Pokémon Move --shiny --back",
 			"Generation Pokémon Move --back"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches. Moves split on every `, ` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Generation",
@@ -114,11 +114,11 @@
 		],
 		"examples": [
 			"7 dragonite dragon dance",
-			"pikachu quick attack",
-			"pikachu quick attack --shiny",
-			"pikachu quick attack --shiny --back",
-			"pikachu quick attack --back",
-			"pikachu quick attack, thunder"
+			"",
+			"",
+			"",
+			"",
+			""
 		]
 	},
 	"learnMethodTypes": {
@@ -130,17 +130,17 @@
 		"tmMoves": "by using a technical machine or technical record",
 		"dreamworldMoves": "through a Dream World capture"
 	},
-	"learnInvalidGeneration": "{{REDCROSS}} I am sorry, but {{generation}} is not a supported Pokémon Generation.\n\n$t(commands/pokemon:dragoniteReminder)",
+	"learnInvalidGeneration": "",
 	"learnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
-	"learnQueryFailed": "{{REDCROSS}} I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves, andList}} are actually moves?\n\n$t(commands/pokemon:dragoniteReminder)",
-	"learnCannotLearn": "$t(commands/pokemon:dragoniteReminder)\n\nLooks like {{pokemon, toTitleCase}} cannot learn {{moves, orList}}",
+	"learnQueryFailed": "",
+	"learnCannotLearn": "",
 	"learnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
 	"moveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
 	"moveExtended": {
 		"usages": [
 			"Move"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches.",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Move",
@@ -173,7 +173,7 @@
 		"zMovePower": "Base power as Z-Move (Z-Crystal)",
 		"fieldMoveEffectTitle": "Effect outside of battle"
 	},
-	"moveQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)",
+	"moveQueryFail": "",
 	"pokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
 	"pokedexExtended": {
 		"usages": [
@@ -182,7 +182,7 @@
 			"Pokémon --shiny --back",
 			"Pokémon --back"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -218,18 +218,18 @@
 		"evolutionaryLine": "Evolutionary line",
 		"baseStats": "Base stats",
 		"baseStatsTotal": "BST",
-		"evYields": "EV Yields",
-		"flavourText": "Pokédex entry",
+		"evYields": "",
+		"flavourText": "",
 		"otherFormesTitle": "Other forme(s)",
 		"cosmeticFormesTitle": "Cosmetic Formes",
 		"otherFormesList": "{{otherFormes, andList}}",
 		"cosmeticFormesList": "{{cosmeticFormes, andList}}",
-		"levellingRate": "Levelling rate",
-		"isEggObtainable": "Egg can be obtained",
-		"minimumHatchingTime": "Minimum hatching time",
-		"maximumHatchTime": "Maximum hatching time"
+		"levellingRate": "",
+		"isEggObtainable": "",
+		"minimumHatchingTime": "",
+		"maximumHatchTime": ""
 	},
-	"pokedexQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)",
+	"pokedexQueryFail": "",
 	"spriteDescription": "Gives you the sprite of a Pokémon.",
 	"spriteExtended": {
 		"usages": [
@@ -238,7 +238,7 @@
 			"Pokémon --shiny --back",
 			"Pokémon --back"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nUseful if you want to check if the name of a Pokémon that you're remembering is actually that Pokémon.\nYou can provide a flag of `--shiny` to get the shiny sprite.\nAnd a flag of `--back` to get the back sprite (i.e. the sprite you see when you send out this Pokémon)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Pokémon",
@@ -267,7 +267,7 @@
 			"Type",
 			"Type1 Type2"
 		],
-		"extendedHelp": "$t(commands/pokemon:dragoniteReminder)\n\nTypes have to be exact matches to pokemon types (upper/lowercase can be ignored)",
+		"extendedHelp": "",
 		"explainedUsage": [
 			[
 				"Type/Type1/Type2",
@@ -292,7 +292,7 @@
 		"notAffectedBy": "Not affected by",
 		"typeEffectivenessFor": "Type effectiveness for {{types, andList}}"
 	},
-	"typeTooManyTypes": "{{REDCROSS}} I am sorry, but you can get the matchup for at most 2 types.\n\n$t(commands/pokemon:dragoniteReminder)",
-	"typeNotAType": "{{REDCROSS}} {{type}} is not a valid Pokémon type.\n\n$t(commands/pokemon:dragoniteReminder)",
-	"typeQueryFail": "{{REDCROSS}} I am sorry, but that query failed. Are you sure {{types, andList}} are actually types in Pokémon?\n\n$t(commands/pokemon:dragoniteReminder)"
+	"typeTooManyTypes": "",
+	"typeNotAType": "",
+	"typeQueryFail": ""
 }

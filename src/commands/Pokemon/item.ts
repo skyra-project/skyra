@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(await this.container.db.fetchColor(message))
 			.setAuthor({ name: `${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, iconURL: CdnUrls.Pokedex })
 			.setThumbnail(itemDetails.sprite)
-			.setDescription(itemDetails.desc)
+			.setDescription(`${t(LanguageKeys.Commands.Pokemon.DragoniteReminder)}\n\n${itemDetails.desc}`)
 			.addField(embedTranslations.generationIntroduced, formatNumber(t, itemDetails.generationIntroduced), true)
 			.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 			.addField(t(LanguageKeys.System.PokedexExternalResource), externalResources);

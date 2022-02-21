@@ -8,6 +8,7 @@ import { zalgo } from '@favware/zalgo';
 import { ApplyOptions } from '@sapphire/decorators';
 import { toTitleCase } from '@sapphire/utilities';
 import { Message, MessageEmbed } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<PaginatedMessageCommand.Options>({
 	aliases: ['flavor', 'flavour', 'flavours'],
@@ -30,7 +31,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			this.error(LanguageKeys.Commands.Pokemon.FlavorNoFlavors, { pokemon: toTitleCase(pokemonData.species) });
 		}
 
-		await this.buildDisplay(pokemonData, { backSprite, shinySprite }).run(response, message.author);
+		await this.buildDisplay(t, pokemonData, { backSprite, shinySprite }).run(response, message.author);
 		return response;
 	}
 
@@ -52,7 +53,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private buildDisplay(pokemonData: Pokemon, getSpriteParams: GetPokemonSpriteParameters) {
+	private buildDisplay(t: TFunction, pokemonData: Pokemon, getSpriteParams: GetPokemonSpriteParameters) {
 		const spriteToGet = getSpriteKey(getSpriteParams);
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
@@ -62,7 +63,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}).setSelectMenuOptions((pageIndex) => ({ label: pokemonData.flavorTexts[pageIndex - 1].game }));
 
 		for (const { game, flavor } of pokemonData.flavorTexts) {
-			display.addPageEmbed((embed) => embed.setDescription([`**${game}**`, pokemonData.num === 0 ? zalgo(flavor) : flavor].join('\n')));
+			display //
+				.addPageEmbed((embed) =>
+					embed //
+						.setDescription(
+							`${t(LanguageKeys.Commands.Pokemon.DragoniteReminder)}\n\n${[
+								`**${game}**`,
+								pokemonData.num === 0 ? zalgo(flavor) : flavor
+							].join('\n')}`
+						)
+				);
 		}
 
 		return display;

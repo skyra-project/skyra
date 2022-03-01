@@ -17,6 +17,7 @@ import { Message, MessageEmbed } from 'discord.js';
 		'divorce',
 		'ffxiv',
 		'final-fantasy',
+		'flow',
 		'g',
 		'gc',
 		'gcreate',
@@ -37,12 +38,16 @@ import { Message, MessageEmbed } from 'discord.js';
 		'gsearch',
 		'gstart',
 		'img',
+		'markov',
 		'married',
 		'marry',
 		'npm-package',
 		'npm',
 		'pnpm-package',
 		'pnpm',
+		'quote',
+		'reddit-user',
+		'redditor',
 		'reset-birthday',
 		'search',
 		'set-birthday',
@@ -59,8 +64,9 @@ import { Message, MessageEmbed } from 'discord.js';
 		'yarn-package',
 		'yarn'
 	],
-	description: LanguageKeys.Commands.General.InfoDescription,
-	detailedDescription: LanguageKeys.Commands.General.InfoExtended
+	description: LanguageKeys.Commands.General.V7Description,
+	detailedDescription: LanguageKeys.Commands.General.V7Extended,
+	hidden: true
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
@@ -70,7 +76,7 @@ export class UserCommand extends SkyraCommand {
 				name: this.container.client.user!.tag,
 				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
-			.setDescription(args.t(LanguageKeys.Commands.General.InfoBody))
+			.setDescription(args.t(LanguageKeys.Commands.General.V7Message, { command: args.commandContext.commandName }))
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

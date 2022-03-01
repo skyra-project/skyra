@@ -9,36 +9,6 @@
 	"randRedditErrorQuarantined": "",
 	"randRedditErrorNotFound": "",
 	"randRedditErrorBanned": "",
-	"redditUserComplexityLevels": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"redditUserInvalidUser": "",
-	"redditUserQueryFailed": "",
-	"redditUserTitles": {
-		"awardGiving": "",
-		"awardReceiving": "",
-		"linkKarma": "",
-		"commentKarma": "",
-		"totalComments": "",
-		"totalSubmissions": "",
-		"commentControversiality": "",
-		"textComplexity": "",
-		"top5Subreddits": "",
-		"bySubmissions": "",
-		"byComments": "",
-		"bestComment": "",
-		"worstComment": ""
-	},
-	"redditUserData": {
-		"overviewFor": "",
-		"dataAvailableFor": "",
-		"joinedReddit": ""
-	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
 	"skyrafactDescription": "",
@@ -246,22 +216,6 @@
 	},
 	"randRedditDescription": "",
 	"randRedditExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"redditUserDescription": "",
-	"redditUserExtended": {
 		"usages": [
 			""
 		],

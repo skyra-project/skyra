@@ -99,15 +99,6 @@
 			"Skyra"
 		]
 	},
-	"markovDescription": "Genera una cadena de Markov desde el canal de texto.",
-	"markovExtended": {
-		"usages": [
-			"",
-			"Canal de Texto",
-			"CanalDeTexto Usuario"
-		],
-		"extendedHelp": "Una cadena Markov es una co... ¿qué? Vale, algo que una teoría de probabilidad hecha por un matemático ruso, comprueba Wikipedia para más información. **En resumen**: Generaré un mensaje aleatorio dado el contenido de los mensajes en el canal."
-	},
 	"norrisDescription": "Disfruta tu día leyendo las bromas de Chuck Norris.",
 	"norrisExtended": {
 		"extendedHelp": "¿Sabías que Chuck norris **no** llama al número equivocado, sino que tú **respondes** al teléfono equivocado? Ostras, ¡mi cabeza explotó! También lanzó un cartón de leche y creó la Vía Láctea. Este comando consulta chucknorris.io y recupera un hecho (no asuma que son falsos, no delante de él) así que puedes leerlo"
@@ -348,9 +339,6 @@
 	"love100": "¡Pareja perfecta!",
 	"loveItself": "Eres una persona especial y te deberías amar más que a nadie más en este mundo <3",
 	"loveResult": "Resultado",
-	"markovTimer": "Procesado en {{timer}}.",
-	"markovNoMessages": "El canal o usuario no tiene mensajes.",
-	"markovNsfwChannel": "Lo siento, pero solo puedes usar el comando markov en {{channel}} cuando estás en un canal NSFW.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [

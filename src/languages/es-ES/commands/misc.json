@@ -9,36 +9,6 @@
 	"randRedditErrorQuarantined": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está en cuarentena.",
 	"randRedditErrorNotFound": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit no existe.",
 	"randRedditErrorBanned": "{{REDCROSS}} No se pudo descargar ningún dato ya que el subreddit está baneado.",
-	"redditUserComplexityLevels": [
-		"muy bajo",
-		"bajo",
-		"medio",
-		"alto",
-		"muy alto",
-		"muy alto"
-	],
-	"redditUserInvalidUser": "`{{user}}` no es un nombre de usuario válido para Reddit",
-	"redditUserQueryFailed": "No se pudo encontrar ningún dato para ese usuario de Reddit",
-	"redditUserTitles": {
-		"awardGiving": "",
-		"awardReceiving": "",
-		"linkKarma": "",
-		"commentKarma": "",
-		"totalComments": "",
-		"totalSubmissions": "",
-		"commentControversiality": "",
-		"textComplexity": "",
-		"top5Subreddits": "",
-		"bySubmissions": "",
-		"byComments": "",
-		"bestComment": "Mejor Comentario",
-		"worstComment": "Peor Comentario"
-	},
-	"redditUserData": {
-		"overviewFor": "Resumen para /u/{{user}}",
-		"dataAvailableFor": "Los datos están disponibles para los últimos 1000 comentarios y envíos (limitación de Reddit)",
-		"joinedReddit": "Se unió a Reddit el"
-	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
 	"skyrafactDescription": "Permítanme que les diga un hecho misterioso sobre mi.",
@@ -258,22 +228,6 @@
 		],
 		"examples": [
 			""
-		]
-	},
-	"redditUserDescription": "",
-	"redditUserExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				"El usuario de Reddit a mirar."
-			]
-		],
-		"examples": [
-			"GloriousGe0rge"
 		]
 	},
 	"shipDescription": "Relaciona 2 miembros",

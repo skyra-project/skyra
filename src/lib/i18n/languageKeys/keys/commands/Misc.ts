@@ -34,29 +34,6 @@ export const RandRedditExtended = T<LanguageHelpDisplayOptions>('commands/misc:r
 export const RandRedditFail = T<string>('commands/misc:randRedditFail');
 export const RandRedditInvalidArgument = T<string>('commands/misc:randRedditInvalidArgument');
 export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commands/misc:randRedditMessage');
-export const RedditUserComplexityLevels = T<string[]>('commands/misc:redditUserComplexityLevels');
-export const RedditUserData = FT<{ user: string }, { overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }>(
-	'commands/misc:redditUserData'
-);
-export const RedditUserDescription = T<string>('commands/misc:redditUserDescription');
-export const RedditUserExtended = T<LanguageHelpDisplayOptions>('commands/misc:redditUserExtended');
-export const RedditUserInvalidUser = FT<{ user: string }, string>('commands/misc:redditUserInvalidUser');
-export const RedditUserQueryFailed = T<string>('commands/misc:redditUserQueryFailed');
-export const RedditUserTitles = T<{
-	awardGiving: string;
-	awardReceiving: string;
-	linkKarma: string;
-	commentKarma: string;
-	totalComments: string;
-	totalSubmissions: string;
-	commentControversiality: string;
-	textComplexity: string;
-	top5Subreddits: string;
-	bySubmissions: string;
-	byComments: string;
-	bestComment: string;
-	worstComment: string;
-}>('commands/misc:redditUserTitles');
 export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
 	'commands/misc:shipData'
 );

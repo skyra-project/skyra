@@ -59,5 +59,10 @@
 	"pingExtended": {
 		"extendedHelp": "Pong!"
 	},
-	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)"
+	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)",
+	"v7Description": "Gets the information regarding Skyra v7",
+	"v7Extended": {
+		"extendedHelp": "This is a **hidden** command used exclusively to send a notice to everyone who tries to use commands that have been removed according to [Skyra v7](https://skyra.notion.site/skyra/Skyra-v7-922ba06004654142a7b63347a92513a8) plans."
+	},
+	"v7Message": "Hello there! Thank you for using this command, however, it was removed due to [Skyra v7](https://skyra.notion.site/skyra/Skyra-v7-922ba06004654142a7b63347a92513a8)'s plans. The link includes an explanation as for why `{{command}}` was removed.\n\nSorry for the inconvenience, and thank you for using Skyra. 💖"
 }

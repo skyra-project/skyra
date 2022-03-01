@@ -9,36 +9,6 @@
 	"randRedditErrorQuarantined": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as quarantined.",
 	"randRedditErrorNotFound": "{{REDCROSS}} No data could be downloaded as the subreddit does not exist.",
 	"randRedditErrorBanned": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as banned.",
-	"redditUserComplexityLevels": [
-		"very low",
-		"low",
-		"medium",
-		"high",
-		"very high",
-		"very high"
-	],
-	"redditUserInvalidUser": "`{{user}}` is not a valid Reddit username",
-	"redditUserQueryFailed": "Couldn't find any data for that reddit user",
-	"redditUserTitles": {
-		"awardGiving": "Award Giving Karma",
-		"awardReceiving": "Award Receiving Karma",
-		"linkKarma": "Link Karma",
-		"commentKarma": "Comment Karma",
-		"totalComments": "Total Comments",
-		"totalSubmissions": "Total Submissions",
-		"commentControversiality": "Comment Controversiality",
-		"textComplexity": "Text Complexity",
-		"top5Subreddits": "Top 5 Subreddits",
-		"bySubmissions": "by submission",
-		"byComments": "by comments",
-		"bestComment": "Best Comment",
-		"worstComment": "Worst Comment"
-	},
-	"redditUserData": {
-		"overviewFor": "Overview for /u/{{user}}",
-		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
-		"joinedReddit": "Joined Reddit at"
-	},
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",
 	"skyrafactDescription": "Let me tell you a mysterious fact about me.",
@@ -258,22 +228,6 @@
 		],
 		"examples": [
 			"discordapp"
-		]
-	},
-	"redditUserDescription": "Retrieve statistics for a Reddit user.",
-	"redditUserExtended": {
-		"usages": [
-			"RedditUserName"
-		],
-		"extendedHelp": "Gets statistics of any given Reddit user",
-		"explainedUsage": [
-			[
-				"user",
-				"The reddit user to look at."
-			]
-		],
-		"examples": [
-			"GloriousGe0rge"
 		]
 	},
 	"shipDescription": "Ships 2 members",

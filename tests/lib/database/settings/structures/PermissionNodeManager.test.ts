@@ -194,10 +194,10 @@ describe('PermissionNodeManager', () => {
 			const roleDeveloper = createRole({ id: '541739191776575502', name: 'Developer', position: 27 }, guild);
 			const roleModerator = createRole({ id: '637592502756704256', name: 'Moderator', position: 26 }, guild);
 			const roleContributor = createRole({ id: '635547552229490708', name: 'Contributor', position: 18 }, guild);
-			const roleSubscriber = createRole({ id: '541743369081192451', name: 'Subscriber', position: 11 }, guild);
+			const roleAlumni = createRole({ id: '541743369081192451', name: 'Alumni', position: 11 }, guild);
 
 			entity.permissionsRoles.push({ id: roleModerator.id, allow: ['balance'], deny: [] });
-			entity.permissionsRoles.push({ id: roleSubscriber.id, allow: [], deny: ['balance'] });
+			entity.permissionsRoles.push({ id: roleAlumni.id, allow: [], deny: ['balance'] });
 			entity.permissionsRoles.push({ id: roleDeveloper.id, allow: ['ping'], deny: [] });
 			entity.permissionsRoles.push({ id: roleContributor.id, allow: [], deny: ['ping'] });
 
@@ -208,7 +208,7 @@ describe('PermissionNodeManager', () => {
 			expect(sorted[0]).toEqual([roleDeveloper.id, { allow: new Set(['ping']), deny: new Set() }]);
 			expect(sorted[1]).toEqual([roleModerator.id, { allow: new Set(['balance']), deny: new Set() }]);
 			expect(sorted[2]).toEqual([roleContributor.id, { allow: new Set(), deny: new Set(['ping']) }]);
-			expect(sorted[3]).toEqual([roleSubscriber.id, { allow: new Set(), deny: new Set(['balance']) }]);
+			expect(sorted[3]).toEqual([roleAlumni.id, { allow: new Set(), deny: new Set(['balance']) }]);
 		});
 
 		// TODO: Test with auto-removal

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey, TableUnique } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey } from 'typeorm';
 
 export class V64VersionSevenRemoveSpouses1646163533583 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
@@ -10,25 +10,26 @@ export class V64VersionSevenRemoveSpouses1646163533583 implements MigrationInter
 			new Table({
 				name: 'user_spouses_user',
 				columns: [
-					new TableColumn({ name: 'user_id_1', type: 'varchar', length: '19', isPrimary: true }),
-					new TableColumn({ name: 'user_id_2', type: 'varchar', length: '19', isPrimary: true })
+					new TableColumn({ name: 'user_id_1', type: 'varchar', length: '19', isNullable: false }),
+					new TableColumn({ name: 'user_id_2', type: 'varchar', length: '19', isNullable: false })
 				],
 				foreignKeys: [
 					new TableForeignKey({
+						columnNames: ['user_id_1'],
 						referencedTableName: 'user',
 						referencedColumnNames: ['id'],
-						columnNames: ['user_id_1'],
 						onDelete: 'CASCADE'
 					}),
 					new TableForeignKey({
+						columnNames: ['user_id_2'],
 						referencedTableName: 'user',
 						referencedColumnNames: ['id'],
-						columnNames: ['user_id_2'],
 						onDelete: 'CASCADE'
 					})
-				],
-				uniques: [new TableUnique({ columnNames: ['user_id_1', 'user_id_2'] })]
+				]
 			})
 		);
+
+		await queryRunner.createPrimaryKey('user_spouses_user', ['user_id_1', 'user_id_2']);
 	}
 }

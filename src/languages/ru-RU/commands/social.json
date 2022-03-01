@@ -50,30 +50,6 @@
 		"experience": "Опыт",
 		"nextIn": ""
 	},
-	"divorceSelf": "",
-	"divorceNotTaken": "",
-	"divorcePrompt": "",
-	"divorceCancel": "",
-	"divorceDm": "Простите... но... вы помните {{user}}? Он/а решил/а расстаться с вами 💔!",
-	"divorceSuccess": "",
-	"marryWith": "",
-	"marryNotTaken": "",
-	"marrySkyra": "",
-	"marrySister": "",
-	"marryBots": "О нет! Вам не следует вступать в брак с ботами! Они всё ещё не понимают, что такое настоящая любовь, и они не тёплые!",
-	"marrySelf": "",
-	"marryAuthorTaken": "",
-	"marryAuthorMultipleCancel": "",
-	"marryTaken_one": "",
-	"marryTaken_other": "",
-	"marryAlreadyMarried": "Вы уже состоите в браке с {{user}}, вы забыли об этом?",
-	"marryAuthorTooMany": "{{REDCROSS}} Вы состоите в браке со слишком большим количеством людей, ваш максимум - {{limit}}!",
-	"marryTargetTooMany": "{{REDCROSS}} Пользователь, с которым вы пытаетесь вступить в брак, уже состоит в браке со слишком большим количеством людей, его/её максимум - {{limit}}!",
-	"marryMultipleCancel": "",
-	"marryPetition": "",
-	"marryNoreply": "",
-	"marryDenied": "",
-	"marryAccepted": "",
 	"mylevel": "",
 	"mylevelSelf": "",
 	"mylevelNext": "",
@@ -247,13 +223,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"divorceDescription": "",
-	"divorceExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": ""
-	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
 		"usages": [
@@ -291,27 +260,6 @@
 				"",
 				""
 			]
-		]
-	},
-	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
-	"marriedExtended": {
-		"extendedHelp": "Эта команда сообщит вам, с кем вы состоите в браке."
-	},
-	"marryDescription": "Вступите в брак с кем-нибудь!",
-	"marryExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"пользователь",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
 		]
 	},
 	"mylevelDescription": "Проверьте свой локальный уровень.",

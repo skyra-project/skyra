@@ -13,8 +13,7 @@ import { join } from 'node:path';
 	aliases: ['cmm'],
 	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
 	detailedDescription: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

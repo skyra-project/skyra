@@ -1,66 +1,4 @@
 {
-	"currentTimeDescription": "Gets the current time in any location on the world",
-	"currentTimeExtended": {
-		"usages": [
-			"Country Name"
-		],
-		"extendedHelp": "This command uses Google Maps to get the coordinates of the place.\nOnce this command has the coordinates, it queries TimezoneDB to get the time data.",
-		"explainedUsage": [
-			[
-				"Country Name",
-				"The locality, governing, country or continent to check the time for."
-			]
-		],
-		"examples": [
-			"Antarctica",
-			"Arizona"
-		]
-	},
-	"currentTimeLocationNotFound": "I am sorry, but I could not find time data for that location.",
-	"currentTimeTitles": {
-		"currentTime": "Current Time",
-		"currentDate": "Current Date",
-		"country": "Country",
-		"gmtOffset": "GMT Offset",
-		"dst": "**DST**: {{dst}}"
-	},
-	"currentTimeDst": "Does not observe DST right now",
-	"currentTimeNoDst": "Observes DST right now",
-	"gimageDescription": "Find your favourite images on Google",
-	"gimageExtended": {
-		"usages": [
-			"Search Query"
-		],
-		"extendedHelp": "This command queries the powerful Google Search engine to find images for your query. For regular web results please use the `gsearch` command.",
-		"explainedUsage": [
-			[
-				"Search Query",
-				"The image you want to find on Google"
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		],
-		"reminder": "This command has been marked as NSFW because it is unavoidable that when you query explicit content, you will get explicit results."
-	},
-	"gsearchDescription": "Find your favourite things on Google",
-	"gsearchExtended": {
-		"usages": [
-			"Search Query"
-		],
-		"extendedHelp": "This command queries the powerful Google Search engine to find websites for your query. For images please use the `gimage` command.",
-		"explainedUsage": [
-			[
-				"Search Query",
-				"The thing you want to find on Google"
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
-	},
 	"lmgtfyDescription": "Send a LMGTFY (Let Me Google That For You) link.",
 	"lmgtfyExtended": {
 		"usages": [
@@ -99,12 +37,6 @@
 		],
 		"reminder": "The units are in the Imperial System by default. Use the --celsius or --metric flag to view it in the **International System**."
 	},
-	"errorZeroResults": "Your request returned no results.",
-	"errorRequestDenied": "The GeoCode API Request was denied.",
-	"errorInvalidRequest": "Invalid request.",
-	"errorOverQueryLimit": "Query Limit exceeded. Try again tomorrow.",
-	"errorPermissionDenied": "Google denied my permission to this resource, please contact the developers regarding this in the official support server at <https://join.skyra.pw>",
-	"errorUnknown": "I am sorry, but I failed to get a result from Google.",
 	"weatherFahrenheit": "{{value}} ({{feelsLike}}) ºF",
 	"weatherInches": "{{value}} in",
 	"weatherMiles": "{{value}} mi",

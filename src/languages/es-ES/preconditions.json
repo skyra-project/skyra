@@ -11,7 +11,6 @@
 	"disabledGlobal": "Este comando ha sido desactivado globalmente por los propietarios del bot. ¿Quieres saber por qué y averiguar cuándo va a volver? Únete al servidor oficial de Skyra: <https://join.skyra.pw>",
 	"textOnly": "Este comando solo puede ser utilizado en canales de texto.",
 	"newsOnly": "Este comando sólo puede utilizarse en canales de anuncios.",
-	"spam": "¿Podemos movernos a {{channel}}, por favor? Este comando puede causar mucho spam y puede arruinar las conversaciones de otras personas.",
 	"musicBothVoiceChannel": "{{REDCROSS}} ¡Oye! ¡Parece que no estás en el mismo canal de voz que yo! ¡Por favor únete a mí!",
 	"musicBotVoiceChannel": "{{REDCROSS}} Me temo que necesito estar en un canal de voz para operar este comando, ¡por favor muéstrame el camino!",
 	"musicDjMember": "{{REDCROSS}} ¡Creo que esto es algo que solo un moderador o un DJ de esta sesión se supone que debe hacer!",

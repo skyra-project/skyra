@@ -47,7 +47,6 @@ export class UserListener extends Listener {
 			if (settings.rolesRestrictedAttachment === role.id) settings.rolesRestrictedAttachment = null;
 
 			if (settings.rolesRestrictedVoice === role.id) settings.rolesRestrictedVoice = null;
-			if (settings.rolesSubscriber === role.id) settings.rolesSubscriber = null;
 
 			if (this.container.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
 				settings.permissionNodes.refresh();

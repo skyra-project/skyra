@@ -1,66 +1,4 @@
 {
-	"currentTimeDescription": "Obtiene la hora actual en cualquier lugar del mundo",
-	"currentTimeExtended": {
-		"usages": [
-			"Nombre del País"
-		],
-		"extendedHelp": "Este comando utiliza Google Maps para obtener las coordenadas del lugar.\nUna vez que este comando tiene las coordenadas, consulta TimezoneDB para obtener los datos de tiempo.",
-		"explainedUsage": [
-			[
-				"Nombre del País",
-				"La localidad, gobernación, país o continente para comprobar su tiempo."
-			]
-		],
-		"examples": [
-			"Antártida",
-			"Arizona"
-		]
-	},
-	"currentTimeLocationNotFound": "Lo siento, pero no pude encontrar los datos de tiempo para esa ubicación.",
-	"currentTimeTitles": {
-		"currentTime": "Hora actual",
-		"currentDate": "Fecha Actual",
-		"country": "País",
-		"gmtOffset": "Desplazamiento GMT",
-		"dst": "**Horario de Verano**: {{dst}}"
-	},
-	"currentTimeDst": "No están en horario de verano",
-	"currentTimeNoDst": "Están en horario de verano",
-	"gimageDescription": "Encuentra tus imágenes favoritas en Google",
-	"gimageExtended": {
-		"usages": [
-			"Consulta de Búsqueda"
-		],
-		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar imágenes para tu consulta. Para resultados web regulares, por favor usa el comando `gsearch`.",
-		"explainedUsage": [
-			[
-				"Consulta de Búsqueda",
-				"La imagen que desea encontrar en Google"
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		],
-		"reminder": "Este comando ha sido marcado como NSFW porque es inevitable que cuando usted consulta contenido explícito, obtenga resultados explícitos."
-	},
-	"gsearchDescription": "Encuentra tus cosas favoritas en Google",
-	"gsearchExtended": {
-		"usages": [
-			"Consulta de Búsqueda"
-		],
-		"extendedHelp": "Este comando consulta el potente motor de búsqueda de Google para encontrar sitios web para tu consulta. Para imágenes, por favor utiliza el comando `gimage`.",
-		"explainedUsage": [
-			[
-				"Consulta de Búsqueda",
-				"Lo que desea encontrar en Google"
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
-	},
 	"lmgtfyDescription": "Envia un enlace a LMGTFY (Let Me Google That For You).",
 	"lmgtfyExtended": {
 		"usages": [
@@ -99,12 +37,6 @@
 		],
 		"reminder": "Las unidades están en el Sistema Internacional por defecto. Utilice la opción --fahrenheit o --imperial para verla en el **Sistema Imperial**."
 	},
-	"errorZeroResults": "Tu búsqueda no ha devuelto ningún resultado.",
-	"errorRequestDenied": "La solicitud de API de GeoCode ha sido denegada.",
-	"errorInvalidRequest": "Petición inválida.",
-	"errorOverQueryLimit": "Límite de consulta excedido. Inténtalo de nuevo mañana.",
-	"errorPermissionDenied": "Google denegó mi permiso para este recurso, por favor contacte a los desarrolladores acerca de esto en el servidor de soporte oficial en <https://join.skyra.pw>",
-	"errorUnknown": "Lo siento, pero no pude obtener un resultado de Google.",
 	"weatherFahrenheit": "{{value}} ({{feelsLike}}) ºF",
 	"weatherInches": "{{value}} in",
 	"weatherMiles": "{{value}} mi",

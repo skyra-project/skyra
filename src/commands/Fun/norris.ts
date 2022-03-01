@@ -10,8 +10,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['chucknorris'],
 	description: LanguageKeys.Commands.Fun.NorrisDescription,
 	detailedDescription: LanguageKeys.Commands.Fun.NorrisExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {

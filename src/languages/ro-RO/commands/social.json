@@ -50,30 +50,6 @@
 		"experience": "",
 		"nextIn": ""
 	},
-	"divorceSelf": "",
-	"divorceNotTaken": "",
-	"divorcePrompt": "",
-	"divorceCancel": "",
-	"divorceDm": "",
-	"divorceSuccess": "",
-	"marryWith": "",
-	"marryNotTaken": "",
-	"marrySkyra": "",
-	"marrySister": "",
-	"marryBots": "",
-	"marrySelf": "",
-	"marryAuthorTaken": "",
-	"marryAuthorMultipleCancel": "",
-	"marryTaken_one": "",
-	"marryTaken_other": "",
-	"marryAlreadyMarried": "",
-	"marryAuthorTooMany": "",
-	"marryTargetTooMany": "",
-	"marryMultipleCancel": "",
-	"marryPetition": "",
-	"marryNoreply": "",
-	"marryDenied": "",
-	"marryAccepted": "",
 	"mylevel": "",
 	"mylevelSelf": "",
 	"mylevelNext": "",
@@ -247,13 +223,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"divorceDescription": "",
-	"divorceExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": ""
-	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
 		"usages": [
@@ -291,27 +260,6 @@
 				"",
 				""
 			]
-		]
-	},
-	"marriedDescription": "",
-	"marriedExtended": {
-		"extendedHelp": ""
-	},
-	"marryDescription": "",
-	"marryExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
 		]
 	},
 	"mylevelDescription": "",

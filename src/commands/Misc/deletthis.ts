@@ -14,8 +14,7 @@ import { join } from 'node:path';
 	aliases: ['deletethis'],
 	description: LanguageKeys.Commands.Misc.DeletThisDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.DeletThisExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

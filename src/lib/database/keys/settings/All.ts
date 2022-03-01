@@ -1,5 +1,3 @@
-export * as Afk from './Afk';
-export * as Birthday from './Birthday';
 export * as Channels from './Channels';
 export * as Events from './Events';
 export * as Messages from './Messages';
@@ -8,7 +6,6 @@ export * as Permissions from './Permissions';
 export * as Roles from './Roles';
 export * as Selfmod from './Selfmod/All';
 export * as Social from './Social';
-export * as Starboard from './Starboard';
 export * as Suggestions from './Suggestions';
 export * as Trigger from './Trigger';
 

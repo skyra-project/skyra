@@ -79,7 +79,6 @@
 	"manageReactionRolesRemove": "{{GREENTICK}} Success! I will not longer give the role when people react with {{emoji}} at {{url}}!",
 	"manageReactionRolesResetEmpty": "There were no reaction roles set up.",
 	"manageReactionRolesReset": "{{GREENTICK}} Successfully removed all reaction roles.",
-	"setStarboardEmojiSet": "Successfully set a new emoji for the next star messages: {{emoji}}",
 	"configurationEquals": "Successfully configured: no changes were made.",
 	"setIgnoreChannelsSet": "Ignoring all command input from {{channel}} now.",
 	"setIgnoreChannelsRemoved": "Listening all command input from {{channel}} now.",
@@ -450,23 +449,6 @@
 		"examples": [
 			"&",
 			"="
-		]
-	},
-	"setStarboardEmojiDescription": "Set the emoji reaction for starboard.",
-	"setStarboardEmojiExtended": {
-		"usages": [
-			"Emoji"
-		],
-		"extendedHelp": "This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and will count users who reacted to said emoji.",
-		"explainedUsage": [
-			[
-				"emoji",
-				"The emoji to set."
-			]
-		],
-		"reminder": "Use this wisely, not everyone expects the starboard to listen to a custom emoji.",
-		"examples": [
-			"⭐"
 		]
 	},
 	"guildInfoDescription": "Check the information of the server.",

@@ -13,8 +13,7 @@ import { join } from 'node:path';
 	aliases: ['pepelove'],
 	description: LanguageKeys.Commands.Fun.PeepoLoveDescription,
 	detailedDescription: LanguageKeys.Commands.Fun.PeepoLoveExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private bodyImage: Image = null!;

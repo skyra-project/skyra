@@ -15,8 +15,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 	aliases: ['bunbun', 'rabbit'],
 	description: LanguageKeys.Commands.Animal.BunnyDescription,
 	detailedDescription: LanguageKeys.Commands.Animal.BunnyExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {

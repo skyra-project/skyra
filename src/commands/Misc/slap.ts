@@ -13,8 +13,7 @@ import { join } from 'node:path';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.SlapDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.SlapExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

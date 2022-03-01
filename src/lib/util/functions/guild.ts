@@ -1,5 +1,4 @@
 import { ModerationManager, StickyRoleManager } from '#lib/moderation/managers';
-import { StarboardManager } from '#lib/structures/managers';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import { container } from '@sapphire/framework';
 import type { Guild, GuildResolvable } from 'discord.js';
@@ -7,7 +6,6 @@ import type { Guild, GuildResolvable } from 'discord.js';
 interface GuildUtilities {
 	readonly moderation: ModerationManager;
 	readonly security: GuildSecurity;
-	readonly starboard: StarboardManager;
 	readonly stickyRoles: StickyRoleManager;
 }
 
@@ -21,7 +19,6 @@ export function getGuildUtilities(resolvable: GuildResolvable): GuildUtilities {
 	const entry: GuildUtilities = {
 		moderation: new ModerationManager(guild),
 		security: new GuildSecurity(guild),
-		starboard: new StarboardManager(guild),
 		stickyRoles: new StickyRoleManager(guild)
 	};
 	cache.set(guild, entry);
@@ -35,7 +32,6 @@ export function removeGuildUtilities(resolvable: GuildResolvable): boolean {
 
 export const getModeration = getProperty('moderation');
 export const getSecurity = getProperty('security');
-export const getStarboard = getProperty('starboard');
 export const getStickyRoles = getProperty('stickyRoles');
 
 export function getAudio(resolvable: GuildResolvable) {

@@ -12,8 +12,7 @@ import { join } from 'node:path';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.ShindeiruDescription,
 	detailedDescription: LanguageKeys.Commands.Fun.ShindeiruExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

@@ -13,8 +13,7 @@ import { join } from 'node:path';
 	aliases: ['gn', 'night'],
 	description: LanguageKeys.Commands.Misc.GoodNightDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.GoodNightExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

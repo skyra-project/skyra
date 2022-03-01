@@ -1,6 +1,5 @@
 export * from './BannerEntity';
 export * from './ClientEntity';
-export * from './GiveawayEntity';
 export * from './GuildEntity';
 export * from './GuildSubscriptionEntity';
 export * from './MemberEntity';
@@ -13,7 +12,6 @@ export * from './RpgItemEntity';
 export * from './RpgUserEntity';
 export * from './RpgUserItemEntity';
 export * from './ScheduleEntity';
-export * from './StarboardEntity';
 export * from './SuggestionEntity';
 export * from './TwitchSubscriptionEntity';
 export * from './UserCooldownEntity';

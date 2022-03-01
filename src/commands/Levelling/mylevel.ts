@@ -9,8 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.MyLevelDescription,
 	detailedDescription: LanguageKeys.Commands.Social.MyLevelExtended,
-	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	spam: true
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {

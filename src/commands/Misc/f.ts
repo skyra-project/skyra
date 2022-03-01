@@ -14,8 +14,7 @@ import { join } from 'node:path';
 	aliases: ['pray'],
 	description: LanguageKeys.Commands.Misc.FDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.FExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

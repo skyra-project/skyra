@@ -50,30 +50,6 @@
 		"experience": "Experience",
 		"nextIn": "Next level in"
 	},
-	"divorceSelf": "I am sorry, but you cannot divorce yourself.",
-	"divorceNotTaken": "Who would you divorce? You are not even taken!",
-	"divorcePrompt": "Ooh... that sounds quite bad 💔... are you 100% sure about this?",
-	"divorceCancel": "Oh lord. I am very glad you will continue with your partner!",
-	"divorceDm": "Pardon... but... do you remember {{user}}? They decided to break up with you 💔!",
-	"divorceSuccess": "Successful divorce 💔... You are no longer married to {{user}}!",
-	"marryWith": "Dear, how could you forget it... You are currently married to {{users, andList}}!",
-	"marryNotTaken": "Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?",
-	"marrySkyra": "I am sorry, I know you love me, but I am already taken by a brave man I love 💞!",
-	"marrySister": "In your dreams. She is my sister, I am not letting somebody harm her!",
-	"marryBots": "Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!",
-	"marrySelf": "No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔",
-	"marryAuthorTaken": "You are already married. Is your love big enough for two people? <@{{author.id}}>, reply with **yes** to confirm!",
-	"marryAuthorMultipleCancel": "Cancelling. Your commitment to {{user}} is admirable.",
-	"marryTaken_one": "This user is already married to someone. Would you like to join their harem?",
-	"marryTaken_other": "This user is already married to {{spousesCount}} people. Would you like to join their harem?",
-	"marryAlreadyMarried": "You are already married with {{user}}, did you forget it?",
-	"marryAuthorTooMany": "{{REDCROSS}} You are married to too many people, your maximum is {{limit}}!",
-	"marryTargetTooMany": "{{REDCROSS}} The user you are trying to marry to is already married to too many people, their maximum is {{limit}}!",
-	"marryMultipleCancel": "Cancelling. Don't worry, you'll find someone you don't have to share!",
-	"marryPetition": "Fresh pair of eyes! {{author.username}} is proposing to {{user.username}}! 💞 <@{{user.id}}>, reply with **yes** to accept!",
-	"marryNoreply": "The user did not reply on time... Maybe it was a hard decision?",
-	"marryDenied": "O-oh... The user rejected your proposal! 💔",
-	"marryAccepted": "Congratulations dear {{author}}! You're now officially married with {{user}}! ❤",
 	"mylevel": "The user {{user}} has a total of {{points}} points.{{next}}",
 	"mylevelSelf": "You have a total of {{points}} points.{{next}}",
 	"mylevelNext": "Points for next rank: **{{remaining}}** (at {{next}} points).",
@@ -247,13 +223,6 @@
 		"extendedHelp": "Shiiiiny!",
 		"reminder": "Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.\nYou can claim dailies once every 12 hours.\nIf you use the --reminder flag, I will remind you when it's time to collect dailies again."
 	},
-	"divorceDescription": "Break up with your couple!",
-	"divorceExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are allowed to marry the user again."
-	},
 	"leaderboardDescription": "Check the leaderboards.",
 	"leaderboardExtended": {
 		"usages": [
@@ -291,27 +260,6 @@
 				"User",
 				"The user of whom you want to view the level. Defaults to your own."
 			]
-		]
-	},
-	"marriedDescription": "Check who you are married with.",
-	"marriedExtended": {
-		"extendedHelp": "This command will tell you who are you married with."
-	},
-	"marryDescription": "Marry somebody!",
-	"marryExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "Marry your waifu!",
-		"explainedUsage": [
-			[
-				"user",
-				"(Optional) The user to marry with. If not given, the command will tell you who are you married with."
-			]
-		],
-		"examples": [
-			"",
-			"@love"
 		]
 	},
 	"mylevelDescription": "Check your local level.",

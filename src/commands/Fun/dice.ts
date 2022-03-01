@@ -8,8 +8,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['roll'],
 	description: LanguageKeys.Commands.Fun.DiceDescription,
-	detailedDescription: LanguageKeys.Commands.Fun.DiceExtended,
-	spam: true
+	detailedDescription: LanguageKeys.Commands.Fun.DiceExtended
 })
 export class UserCommand extends SkyraCommand {
 	/**

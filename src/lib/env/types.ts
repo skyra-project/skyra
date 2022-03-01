@@ -48,7 +48,6 @@ export interface SkyraEnv {
 	REDIS_HOST: string;
 
 	REDIS_ENABLED: BooleanString;
-	REDIS_AFK_DB: IntegerString;
 	REDIS_PORT: IntegerString;
 	REDIS_DB: IntegerString;
 	REDIS_PASSWORD: string;
@@ -76,7 +75,6 @@ export interface SkyraEnv {
 	HASTEBIN_POST_URL: string;
 	HASTEBIN_GET_URL: string;
 
-	WEBHOOK_ERROR_ENABLED: BooleanString;
 	WEBHOOK_ERROR_ID: string;
 	WEBHOOK_ERROR_TOKEN: string;
 
@@ -90,19 +88,13 @@ export interface SkyraEnv {
 	DISCORD_BOT_LIST_TOKEN: string;
 	DISCORD_BOTS_TOKEN: string;
 	GOOGLE_API_TOKEN: string;
-	GOOGLE_CUSTOM_SEARCH_IMAGE_TOKEN: string;
-	GOOGLE_CUSTOM_SEARCH_WEB_TOKEN: string;
-	GOOGLE_MAPS_API_TOKEN: string;
 	KITSU_ID: string;
 	KITSU_TOKEN: string;
 	NINTENDO_ID: string;
 	NINTENDO_TOKEN: string;
-	NPM_SEARCH_ID: string;
-	NPM_SEARCH_KEY: string;
 	OWLBOT_TOKEN: string;
 	SENTRY_URL: string;
 	THEMOVIEDATABASE_TOKEN: string;
-	TIMEZONEDB_TOKEN: string;
 	TOP_GG_TOKEN: string;
 	TWITCH_CLIENT_ID: string;
 	TWITCH_EVENTSUB_SECRET: string;
@@ -110,5 +102,4 @@ export interface SkyraEnv {
 	WEBHOOK_DISCORDS_TOKEN: string;
 	WEBHOOK_TOPGG_TOKEN: string;
 	WEEB_SH_TOKEN: string;
-	XIVAPI_TOKEN: string;
 }

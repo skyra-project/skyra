@@ -1,66 +1,4 @@
 {
-	"currentTimeDescription": "",
-	"currentTimeExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"currentTimeLocationNotFound": "",
-	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
-		"gmtOffset": "",
-		"dst": ""
-	},
-	"currentTimeDst": "",
-	"currentTimeNoDst": "",
-	"gimageDescription": "",
-	"gimageExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"reminder": ""
-	},
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
 		"usages": [
@@ -99,12 +37,6 @@
 		],
 		"reminder": ""
 	},
-	"errorZeroResults": "",
-	"errorRequestDenied": "",
-	"errorInvalidRequest": "",
-	"errorOverQueryLimit": "",
-	"errorPermissionDenied": "",
-	"errorUnknown": "",
 	"weatherFahrenheit": "",
 	"weatherInches": "",
 	"weatherMiles": "",

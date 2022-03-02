@@ -99,15 +99,6 @@
 			"Skyra"
 		]
 	},
-	"markovDescription": "Erzeugt eine Markov-Kette aus dem Textchannel.",
-	"markovExtended": {
-		"usages": [
-			"",
-			"TextChannel",
-			"TextChannel Benutzer"
-		],
-		"extendedHelp": "Eine Markov-Kette ist eine... was? Okay irgendwas, irgendwas eine Probabilitätstheorie eines Russischen Mathematikers, schau aif Wikipedia für mehr Infos. **Kurzform:** Ich werde eine zufällige Nachricht generieren die auf dem Kontext der Nachrichten in diesem Channel basiert."
-	},
 	"norrisDescription": "Viel Spaß beim Lesen von Chuck Norris Witzen.",
 	"norrisExtended": {
 		"extendedHelp": "Wusstest du, dass Chuck norris **nicht** die falsche Nummer anruft, sondern du den falschen Anruf **beantwortest**? Woah, mindblow. Er warf auch einen Karton Milch und schuf die Milchstraße. Dieser Befehl ruft chucknorris.io ab und sucht sich einen Fakt aus (gehe nicht davon aus, dass sie falsch sind), so dass du ihn lesen kannst"
@@ -348,9 +339,6 @@
 	"love100": "Perfekte Übereinstimmung!",
 	"loveItself": "Du bist ein spezielles Wesen und solltest dich mehr als alle anderen Lieben <3",
 	"loveResult": "Ergebnis",
-	"markovTimer": "In {{timer}} verarbeitet.",
-	"markovNoMessages": "Der Channel oder Benutzer hat keine Nachrichten.",
-	"markovNsfwChannel": "Es tut mir leid, aber du kannst den markov Command nur auf {{channel}} verwenden, wenn du in einem NSFW Channel bist.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, ich würde **{{userToRate}}** eine **{{rate}}**/100 {{emoji}} geben",
 	"rateMyself": [

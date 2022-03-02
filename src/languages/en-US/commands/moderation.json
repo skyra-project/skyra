@@ -1,7 +1,6 @@
 {
 	"permissions": "Permissions for {{username}} ({{id}})",
 	"permissionsAll": "All Permissions",
-	"flow": "{{amount}} messages have been sent within the last minute.",
 	"timeTimed": "The selected moderation case has already been timed.",
 	"timeUnsupportedType": "The type of action for the selected case cannot be reverse, therefore this action is unsupported.",
 	"timeNotScheduled": "This task is not scheduled.",
@@ -535,20 +534,6 @@
 			]
 		],
 		"extendedHelp": "Ideal if you want to know the what permissions are granted to a member when they have a certain set of roles."
-	},
-	"flowDescription": "Shows the amount of messages per minute in a channel.",
-	"flowExtended": {
-		"usages": [
-			"",
-			"TextChannel"
-		],
-		"explainedUsage": [
-			[
-				"TextChannel",
-				"The channel to check, if omitted current channel is used."
-			]
-		],
-		"extendedHelp": "This helps you determine the overall activity of a channel"
 	},
 	"reasonDescription": "Edit the reason field from a moderation log case.",
 	"reasonExtended": {

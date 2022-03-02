@@ -13,5 +13,4 @@ export const RestrictedVoice = 'rolesRestrictedVoice';
 export const Public = 'rolesPublic';
 export const RemoveInitial = 'rolesRemoveInitial';
 export const Dj = 'rolesDj';
-export const Subscriber = 'rolesSubscriber';
 export const UniqueRoleSets = 'rolesUniqueRoleSets';

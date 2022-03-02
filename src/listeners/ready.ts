@@ -5,7 +5,6 @@ import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
 @ApplyOptions<ListenerOptions>({ once: true })
@@ -13,16 +12,12 @@ export class UserListener extends Listener {
 	private readonly style = this.container.client.dev ? yellow : blue;
 
 	public async run() {
-		const { client } = this.container;
 		try {
 			await Promise.all([
 				// Initialize Slotmachine data
 				Slotmachine.init().catch((error) => this.container.logger.fatal(error)),
 				// Initialize WheelOfFortune data
 				WheelOfFortune.init().catch((error) => this.container.logger.fatal(error)),
-				// Initialize giveaways
-				client.giveaways.init().catch((error) => this.container.logger.fatal(error)),
-				this.connectAfk(),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()
@@ -71,10 +66,6 @@ export class UserListener extends Listener {
 			await this.container.client.audio!.connect();
 			await this.container.client.audio!.queues.start();
 		}
-	}
-
-	private async connectAfk() {
-		if (!isNullish(this.container.afk)) await this.container.afk.connect();
 	}
 
 	private printBanner() {

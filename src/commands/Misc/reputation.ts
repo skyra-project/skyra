@@ -17,8 +17,7 @@ const flags = ['remind', 'reminder', 'remindme'];
 	description: LanguageKeys.Commands.Social.ReputationDescription,
 	detailedDescription: LanguageKeys.Commands.Social.ReputationExtended,
 	flags,
-	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	spam: true
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {

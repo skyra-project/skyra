@@ -1,6 +1,6 @@
 import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
-import { AnalyticsData, GiveawayManager, InviteStore, ScheduleManager } from '#lib/structures';
+import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
 import { mainFolder } from '#utils/constants';
@@ -8,11 +8,10 @@ import { Enumerable } from '@sapphire/decorators';
 import { container, SapphireClient } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { Message, WebhookClient } from 'discord.js';
-import Redis from 'ioredis';
 import { join } from 'node:path';
 import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { envIsDefined, envParseBoolean, envParseInteger, envParseString } from './env';
+import { envParseBoolean } from './env';
 import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
@@ -27,12 +26,6 @@ export class SkyraClient extends SapphireClient {
 	 */
 	@Enumerable(false)
 	public leaderboard = new Leaderboard();
-
-	/**
-	 * The Giveaway manager
-	 */
-	@Enumerable(false)
-	public giveaways = new GiveawayManager();
 
 	/**
 	 * The Schedule manager
@@ -92,16 +85,6 @@ export class SkyraClient extends SapphireClient {
 			this.stores.registerPath(join(mainFolder, 'audio'));
 		} else {
 			this.audio = null;
-		}
-
-		if (envIsDefined('REDIS_AFK_DB') && envParseBoolean('REDIS_ENABLED')) {
-			container.afk = new Redis({
-				host: envParseString('REDIS_HOST'),
-				port: envParseInteger('REDIS_PORT'),
-				db: envParseInteger('REDIS_AFK_DB'),
-				password: envParseString('REDIS_PASSWORD'),
-				lazyConnect: true
-			});
 		}
 	}
 

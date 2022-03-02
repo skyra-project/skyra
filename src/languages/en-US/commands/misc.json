@@ -9,36 +9,6 @@
 	"randRedditErrorQuarantined": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as quarantined.",
 	"randRedditErrorNotFound": "{{REDCROSS}} No data could be downloaded as the subreddit does not exist.",
 	"randRedditErrorBanned": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as banned.",
-	"redditUserComplexityLevels": [
-		"very low",
-		"low",
-		"medium",
-		"high",
-		"very high",
-		"very high"
-	],
-	"redditUserInvalidUser": "`{{user}}` is not a valid Reddit username",
-	"redditUserQueryFailed": "Couldn't find any data for that reddit user",
-	"redditUserTitles": {
-		"awardGiving": "Award Giving Karma",
-		"awardReceiving": "Award Receiving Karma",
-		"linkKarma": "Link Karma",
-		"commentKarma": "Comment Karma",
-		"totalComments": "Total Comments",
-		"totalSubmissions": "Total Submissions",
-		"commentControversiality": "Comment Controversiality",
-		"textComplexity": "Text Complexity",
-		"top5Subreddits": "Top 5 Subreddits",
-		"bySubmissions": "by submission",
-		"byComments": "by comments",
-		"bestComment": "Best Comment",
-		"worstComment": "Worst Comment"
-	},
-	"redditUserData": {
-		"overviewFor": "Overview for /u/{{user}}",
-		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
-		"joinedReddit": "Joined Reddit at"
-	},
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",
 	"skyrafactDescription": "Let me tell you a mysterious fact about me.",
@@ -84,107 +54,6 @@
 		"We never carry the knowledge of all the universe, there are nodes which transfer us data about the Sector we are in. The reasoning for that is because we don't have enough memory space for the knowledge from more than 2 Sectors, and there are thousands of them.",
 		"While I look physically young, I am over 97 million years old."
 	],
-	"afkDescription": "Set an AFK message with automatic replies!",
-	"afkExtended": {
-		"usages": [
-			"Content",
-			"set Content",
-			"ignore Channel",
-			"reset",
-			"reset Member",
-			"clear",
-			"clear Member",
-			"list"
-		],
-		"extendedHelp": "You're going Away From Keyboard? You can use this command to temporarily change your nickname and set an automatic response if you are mentioned.",
-		"explainedUsage": [
-			[
-				"Content",
-				"The message you want other members to see when they mention you."
-			],
-			[
-				"set Content",
-				"The same as `set Content`."
-			],
-			[
-				"ignore",
-				"The same as `ignore Channel` but with the message's channel."
-			],
-			[
-				"ignore Channel",
-				"Toggles whether the channel should not return you from AFK when sending a message in it."
-			],
-			[
-				"reset",
-				"Reset your AFK status to default."
-			],
-			[
-				"reset Member",
-				"Reset the AFK status for another member to default, requires moderator privileges."
-			],
-			[
-				"clear",
-				"Removes your AFK status."
-			],
-			[
-				"clear all",
-				"Removes the AFK status from all members."
-			],
-			[
-				"clear Member",
-				"Removes the AFK status from another member."
-			],
-			[
-				"list",
-				"Displays a list of all the members in AFK, requires moderator privileges."
-			],
-			[
-				"show",
-				"Displays your AFK status, if any."
-			],
-			[
-				"show Member",
-				"Displays the AFK status from another member."
-			]
-		],
-		"examples": [
-			"Doing dishes.",
-			"ignore #staff-channel",
-			"reset",
-			"reset kyra",
-			"clear"
-		],
-		"reminder": "The AFK status is automatically removed as soon as you send a message, with a 30 second grace period."
-	},
-	"afkDefault": "Nothing specified.",
-	"afkAddedIgnoredChannel": "Successfully added {{channel}} to the list of ignored channels, I shall not remove your AFK if you talk in that channel.",
-	"afkClear": "Successfully cleared {{user}}'s AFK status.",
-	"afkClearSelf": "Successfully cleared your AFK status.",
-	"afkClearAllFailed_other": "Failed to remove AFK from {{count, number}} users.",
-	"afkClearAllFailed_one": "Failed to remove AFK from {{count, number}} user.",
-	"afkClearAllProgress_other": "Removing AFK from {{count, number}} users... {{percentage, number}} complete.",
-	"afkClearAllProgress_one": "Removing AFK from {{count, number}} user... {{percentage, number}} complete.",
-	"afkClearAllStarting_other": "Removing AFK from {{count, number}} users...",
-	"afkClearAllStarting_one": "Removing AFK from {{count, number}} user...",
-	"afkClearAllTitle": "Server-wide AFK Removal",
-	"afkClearAllTotal_other": "Successfully removed AFK from {{count, number}} users.",
-	"afkClearAllTotal_one": "Successfully removed AFK from {{count, number}} user.",
-	"afkListTitle": "List of AFK Users",
-	"afkListFooter_one": "{{count, number}} user total",
-	"afkListFooter_other": "{{count, number}} users total",
-	"afkNoEntries": "There are no AFK members in this server.",
-	"afkNotSet": "{{user}} is not AFK.",
-	"afkNotSetSelf": "You are not AFK.",
-	"afkPermissionLevelList": "You need moderator privileges to check the list of AFK users.",
-	"afkPermissionLevelResetUser": "You need moderator privileges to reset the AFK message from a user.\n\n> **Hint**: If you want to reset your AFK message, simply run `afk reset` without specifying a user.",
-	"afkPermissionLevelClearUser": "You need moderator privileges to clear the AFK status from a user.\n\n> **Hint**: If you want to clear your AFK message, simply run `afk clear` without specifying a user.",
-	"afkPermissionLevelClearAll": "You need moderator privileges to clear the AFK status from all users.",
-	"afkPrefix": "AFK -",
-	"afkRemovedIgnoredChannel": "Successfully removed {{channel}} from the list of ignored channels, I shall remove your AFK as soon as you send a message in that channel.",
-	"afkReset": "Successfully set {{user}}'s AFK status to default.",
-	"afkResetSelf": "Successfully set your AFK message to default.",
-	"afkSet": "Got it, see you soon!",
-	"afkShowFooter": "AFK Status",
 	"cannotTargetOwner": "Hey, you can't target to yourself, and I won't do that for you!",
 	"chaseDescription": "Get in here!",
 	"chaseExtended": {
@@ -361,54 +230,6 @@
 			"discordapp"
 		]
 	},
-	"redditUserDescription": "Retrieve statistics for a Reddit user.",
-	"redditUserExtended": {
-		"usages": [
-			"RedditUserName"
-		],
-		"extendedHelp": "Gets statistics of any given Reddit user",
-		"explainedUsage": [
-			[
-				"user",
-				"The reddit user to look at."
-			]
-		],
-		"examples": [
-			"GloriousGe0rge"
-		]
-	},
-	"resetBirthdayDescription": "Reset your birthday.",
-	"resetBirthdayExtended": {
-		"extendedHelp": "Removing your birthday will remove the entry from our database. Use when you want to anonymize your birthday again."
-	},
-	"resetBirthdayNotSet": "{{REDCROSS}} You have not set your birthday in this server.",
-	"resetBirthdaySuccess": "{{GREENTICK}} I will not wish you a happy birthday in this server anymore.",
-	"setBirthdayDescription": "Set your birthday, and I will automatically notify the other members on that date.",
-	"setBirthdayExtended": {
-		"usages": [
-			"BirthDate"
-		],
-		"extendedHelp": "This command needs the settings `birthday.role` and/or `birthday.channel` to be configured. On a user's birthday, I will give them the birthday role, and send `birthday.message` to the birthday channel.",
-		"explainedUsage": [
-			[
-				"BirthDate",
-				"Your birth-date, in the format $t(globals:dateFormat) (`$t(globals:dateFormatExplanation)`)."
-			]
-		],
-		"examples": [
-			"05/04/1984",
-			"05/04"
-		],
-		"reminder": "By using this command, you consent to it that we save your date of birth in our database."
-	},
-	"setBirthdayNotConfigured": "{{REDCROSS}} A birthday channel or role has not been configured in this server. You can configure both using the `{{prefix}}conf` command.",
-	"setBirthdayInvalidDate": "I could not resolve `{{parameter}}` to a valid date, you must input the data in `{{formatWithYear}}` or `{{formatWithoutYear}}` (if you want to hide the year), for example, `11/24/1984` for 24th November 1984.",
-	"setBirthdayInvalidYear": "I could not resolve `{{parameter}}` to a valid birth year, the oldest person alive in Earth was born in 1903, and you cannot have been born in the future, time machines do not exist, at least, not that I'm aware of.",
-	"setBirthdayInvalidMonth": "I could not resolve `{{parameter}}` to a valid month, it must be a number between 1 (January) and 12 (December) inclusive.",
-	"setBirthdayInvalidDay": "I could not resolve `{{parameter}}` to a valid day, the {{month, ordinal}} of {{year}} has less days than the one you have given.",
-	"setBirthdayAlreadySet": "{{REDCROSS}} Your birthdate is already set to {{birthDate}}.",
-	"setBirthdayConfirmation": "Are you sure you want to change your birthday again?",
-	"setBirthdaySuccess": "{{GREENTICK}} I will wish you a happy birthday on {{nextBirthday}}.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [
@@ -521,33 +342,6 @@
 		"examples": [
 			"A E S T H E T I C"
 		]
-	},
-	"viewBirthdayDescription": "View a user's birthday.",
-	"viewBirthdayExtended": {
-		"usages": [
-			"",
-			"User"
-		],
-		"extendedHelp": "Birthdays are stored per-server. If you don't see yours, you probably haven't used the `{{prefix}}set-birthday` command in this server yet!",
-		"explainedUsage": [
-			[
-				"User",
-				"The user for whom to view the birthday"
-			]
-		],
-		"examples": [
-			"",
-			"<@{{CLIENT_ID}}>"
-		]
-	},
-	"viewBirthdayNotSet": "{{user}} has not set a birthday yet. Use the `{{prefix}}set-birthday` command to set your birthday.",
-	"viewBirthdaySet": "{{user}}'s next birthday is on {{birthDate}}.",
-	"upcomingBirthdaysDescription": "View the next 10 birthdays in this server.",
-	"upcomingBirthdaysTitle": "Upcoming Birthdays",
-	"upcomingBirthdaysNone": "There aren't any upcoming birthdays set! Use {{prefix}}birthday to set your birthday.",
-	"upcomingBirthdaysExtended": {
-		"extendedHelp": "Use to find out whose birthday is when",
-		"reminder": "If people haven't set their year I will show \"unknown\" for the user's age"
 	},
 	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
 	"zalgoDescription": "Create zalgo of your message!",

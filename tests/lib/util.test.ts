@@ -513,35 +513,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('getFromPath', () => {
-		const obj = {
-			keyOne: 'valueOne',
-			keyTwo: {
-				nestedKeyOne: 'nestedValueOne'
-			}
-		};
-
-		test('GIVEN object and existing root level key THEN returns value', () => {
-			expect(utils.getFromPath(obj, 'keyOne')).toEqual('valueOne');
-		});
-
-		test('GIVEN object and non-existing root level key THEN returns undefined', () => {
-			expect(utils.getFromPath(obj, 'keyThree')).toBeUndefined();
-		});
-
-		test('GIVEN object and existing nested level key THEN returns value', () => {
-			expect(utils.getFromPath(obj, 'keyTwo.nestedKeyOne')).toEqual('nestedValueOne');
-		});
-
-		test('GIVEN object and non-existing nested level key THEN returns undefined', () => {
-			expect(utils.getFromPath(obj, 'keyTwo.nestedKeyTwo')).toBeUndefined();
-		});
-
-		test('GIVEN object and string array path THEN returns undefined', () => {
-			expect(utils.getFromPath(obj, ['keyTwo', 'nestedKeyOne'])).toEqual('nestedValueOne');
-		});
-	});
-
 	describe('gql', () => {
 		test('GIVEN gql tag THEN returns unmodified code', () => {
 			expect(utils.gql`

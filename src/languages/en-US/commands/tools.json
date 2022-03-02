@@ -419,24 +419,6 @@
 			"10 USD BAT"
 		]
 	},
-	"quoteDescription": "Quote another person's message.",
-	"quoteExtended": {
-		"usages": [
-			"Message",
-			"Channel Message"
-		],
-		"extendedHelp": "Quotes also include the message's image, if any",
-		"explainedUsage": [
-			[
-				"channel",
-				"The channel in which the message is to quote. Defaults to the current channel"
-			],
-			[
-				"message",
-				"ID of the message to quote."
-			]
-		]
-	},
 	"showsData": {
 		"noGenres": "None on TheMovieDB",
 		"unknownUserScore": "No user score",

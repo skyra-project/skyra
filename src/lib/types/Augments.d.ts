@@ -4,7 +4,7 @@ import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { ModelStore } from '#lib/grpc';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
-import type { AnalyticsData, ColorHandler, GiveawayManager, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
+import type { AnalyticsData, ColorHandler, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { WebsocketHandler } from '#root/audio/lib/websocket/WebsocketHandler';
 import type { O } from '#utils/constants';
@@ -28,7 +28,6 @@ declare module 'discord.js' {
 		readonly dev: boolean;
 		readonly analytics: AnalyticsData | null;
 		readonly audio: QueueClient | null;
-		readonly giveaways: GiveawayManager;
 		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
 		readonly invites: InviteStore;
 		readonly leaderboard: Leaderboard;
@@ -58,7 +57,6 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		afk: Redis;
 		db: DbSet;
 		grpc: ModelStore;
 		schedule: ScheduleManager;
@@ -105,22 +103,12 @@ declare module '@sapphire/framework' {
 		Everyone: never;
 		Moderator: never;
 		ServerOwner: never;
-		Spam: never;
 	}
 
 	interface SapphireClient {
 		emit(event: Events.Error, error: Error): boolean;
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string): boolean;
-		emit(
-			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
-			message: Message,
-			resultMessage: Message,
-			channel: TextChannel,
-			role: Role,
-			content: string
-		): boolean;
-		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(
 			event: Events.GuildMessageLog,
 			guild: Guild,

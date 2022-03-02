@@ -1,19 +1,6 @@
 import { Events } from '#lib/types/Enums';
 import { container } from '@sapphire/framework';
-import {
-	AfterInsert,
-	AfterLoad,
-	AfterRemove,
-	AfterUpdate,
-	BaseEntity,
-	Column,
-	Entity,
-	JoinTable,
-	ManyToMany,
-	OneToMany,
-	OneToOne,
-	PrimaryColumn
-} from 'typeorm';
+import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { kBigIntTransformer } from '../utils/Transformers';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
@@ -48,10 +35,6 @@ export class UserEntity extends BaseEntity {
 
 	@OneToOne(() => UserCooldownEntity, (cooldown) => cooldown.user, { cascade: true })
 	public cooldowns?: UserCooldownEntity;
-
-	@ManyToMany(() => UserEntity, { cascade: true })
-	@JoinTable()
-	public spouses?: UserEntity[];
 
 	#money: number | null;
 

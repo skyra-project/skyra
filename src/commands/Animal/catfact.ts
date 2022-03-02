@@ -12,8 +12,7 @@ import { join } from 'node:path';
 	aliases: ['kittenfact'],
 	description: LanguageKeys.Commands.Animal.CatfactDescription,
 	detailedDescription: LanguageKeys.Commands.Animal.CatfactExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	private facts: readonly string[] = [];

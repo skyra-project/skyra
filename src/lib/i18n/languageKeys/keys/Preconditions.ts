@@ -31,6 +31,5 @@ export const MusicUserVoiceChannel = T('preconditions:musicUserVoiceChannel');
 export const NewsOnly = T('preconditions:newsOnly');
 export const PermissionNodes = T('preconditions:permissionNodes');
 export const ServerOwner = T('preconditions:serverOwner');
-export const Spam = FT<{ channel: string }, string>('preconditions:spam');
 export const SubCommandGuildOnly = T('preconditions:subCommandGuildOnly');
 export const TextOnly = T('preconditions:textOnly');

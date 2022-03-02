@@ -16,8 +16,7 @@ type LeaderboardUsers = Collection<string, LeaderboardUser>;
 	aliases: ['lb', 'top', 'scoreboard', 'sb'],
 	description: LanguageKeys.Commands.Social.LeaderboardDescription,
 	detailedDescription: LanguageKeys.Commands.Social.LeaderboardExtended,
-	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	spam: true
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {

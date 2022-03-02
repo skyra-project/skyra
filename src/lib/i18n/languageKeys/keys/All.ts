@@ -4,7 +4,6 @@ export * as Colors from './Colors';
 export * as Commands from './Commands';
 export * as Events from './events/All';
 export * as FuzzySearch from './FuzzySearch';
-export * as Giveaway from './Giveaway';
 export * as Globals from './Globals';
 export * as Guilds from './Guilds';
 export * as Misc from './Misc';

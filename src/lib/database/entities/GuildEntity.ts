@@ -39,47 +39,11 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('jsonb', { name: 'custom-commands', transformer: kTagsTransformer, default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.AfkRole, type: 'role' })
-	@Column('varchar', { name: 'afk.role', nullable: true, length: 19 })
-	public afkRole?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.AfkPrefix })
-	@Column('varchar', { name: 'afk.prefix', nullable: true, length: 32 })
-	public afkPrefix?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.AfkPrefixForce })
-	@Column('boolean', { name: 'afk.prefix-force', default: false })
-	public afkPrefixForce = false;
-
 	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
 	public permissionsUsers: PermissionsNode[] = [];
 
 	@Column('jsonb', { name: 'permissions.roles', default: () => "'[]'::JSONB" })
 	public permissionsRoles: PermissionsNode[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayChannel, type: 'textchannel' })
-	@Column('varchar', { name: 'birthday.channel', nullable: true, length: 19 })
-	public birthdayChannel?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayMessage })
-	@Column('varchar', { name: 'birthday.message', nullable: true, length: 200 })
-	public birthdayMessage?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.BirthdayRole, type: 'role' })
-	@Column('varchar', { name: 'birthday.role', nullable: true, length: 19 })
-	public birthdayRole?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Announcements, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.announcements', nullable: true, length: 19 })
-	public channelsAnnouncements?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Greeting, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.greeting', nullable: true, length: 19 })
-	public channelsGreeting?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Farewell, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.farewell', nullable: true, length: 19 })
-	public channelsFarewell?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.MediaOnly, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.media-only', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -177,10 +141,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'channels.logs.server-update', nullable: true, length: 19 })
 	public channelsLogsServerUpdate?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Spam, type: 'textchannel' })
-	@Column('varchar', { name: 'channels.spam', nullable: true, length: 19 })
-	public channelsSpam?: string | null;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.All, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.all', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreAll: string[] = [];
@@ -219,33 +179,9 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'events.twemoji-reactions', default: false })
 	public eventsTwemojiReactions = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesFarewell })
-	@Column('varchar', { name: 'messages.farewell', nullable: true, length: 2000 })
-	public messagesFarewell?: string | null;
-
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesFarewellAutoDelete, minimum: 0, maximum: minutes(15) })
-	@Column('bigint', { name: 'messages.farewell-auto-delete', nullable: true, transformer: kBigIntTransformer })
-	public messagesFarewellAutoDelete?: number | null = null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesGreeting })
-	@Column('varchar', { name: 'messages.greeting', nullable: true, length: 2000 })
-	public messagesGreeting?: string | null;
-
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.MessagesGreetingAutoDelete, minimum: 0, maximum: minutes(15) })
-	@Column('bigint', { name: 'messages.greeting-auto-delete', nullable: true, transformer: kBigIntTransformer })
-	public messagesGreetingAutoDelete?: number | null = null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesJoinDM })
-	@Column('varchar', { name: 'messages.join-dm', nullable: true, length: 1500 })
-	public messagesJoinDM?: string | null;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'messages.ignore-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public messagesIgnoreChannels: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesAnnouncementEmbed })
-	@Column('boolean', { name: 'messages.announcement-embed', default: false })
-	public messagesAnnouncementEmbed = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesModerationDM })
 	@Column('boolean', { name: 'messages.moderation-dm', default: false })
@@ -347,10 +283,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role' })
 	@Column('varchar', { name: 'roles.dj', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public rolesDj: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesSubscriber, type: 'role' })
-	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })
-	public rolesSubscriber?: string | null;
 
 	@Column('jsonb', { name: 'roles.unique-role-sets', default: () => "'[]'::JSONB" })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
@@ -758,30 +690,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'social.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public socialIgnoredRoles: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardChannel, type: 'textchannel' })
-	@Column('varchar', { name: 'starboard.channel', nullable: true, length: 19 })
-	public starboardChannel?: string | null;
-
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'emoji' })
-	@Column('varchar', { name: 'starboard.emoji', length: 75, default: '%E2%AD%90' })
-	public starboardEmoji = '%E2%AD%90' as SerializedEmoji;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardIgnoreChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'starboard.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public starboardIgnoreChannels: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardMinimum, minimum: 1 })
-	@Column('smallint', { name: 'starboard.minimum', default: 1 })
-	public starboardMinimum = 1;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardSelfStar })
-	@Column('boolean', { name: 'starboard.self-star', default: false })
-	public starboardSelfStar = false;
-
-	@ConfigurableKey({ type: 'timespan', description: LanguageKeys.Settings.StarboardMaximumAge, minimum: 0, maximum: years(5) })
-	@Column('bigint', { name: 'starboard.maximum-age', nullable: true, transformer: kBigIntTransformer })
-	public starboardMaximumAge: number | null = null;
 
 	@Column('jsonb', { name: 'trigger.alias', default: () => "'[]'::JSONB" })
 	public triggerAlias: TriggerAlias[] = [];

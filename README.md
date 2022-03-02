@@ -25,7 +25,7 @@
 -   [`InfluxDB`]: Metrics platform.
 -   [`Lavalink`]: Audio server.
 -   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
--   [`Redis`]: Caching for [`Saelem`], queueing for [`Lavalink`], and AFK status tracking.
+-   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`].
 -   [`Saelem`]: Horoscope API.
 -   [`Star-Wars-Api`]: Star Wars API.
 

@@ -19,7 +19,6 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 	cooldownDelay: seconds(30),
 	description: LanguageKeys.Commands.Social.DailyDescription,
 	detailedDescription: LanguageKeys.Commands.Social.DailyExtended,
-	spam: true,
 	flags: REMINDER_FLAGS
 })
 export class UserCommand extends SkyraCommand {

@@ -13,8 +13,7 @@ import type { TFunction } from 'i18next';
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.PayDescription,
 	detailedDescription: LanguageKeys.Commands.Social.PayExtended,
-	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	spam: true
+	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {

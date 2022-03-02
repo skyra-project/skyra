@@ -140,27 +140,6 @@
 		}
 	],
 	[
-		"announcement",
-		{
-			"category": "Announcement",
-			"subCategory": "General"
-		}
-	],
-	[
-		"subscribe",
-		{
-			"category": "Announcement",
-			"subCategory": "General"
-		}
-	],
-	[
-		"unsubscribe",
-		{
-			"category": "Announcement",
-			"subCategory": "General"
-		}
-	],
-	[
 		"8ball",
 		{
 			"category": "Fun",
@@ -210,13 +189,6 @@
 		}
 	],
 	[
-		"markov",
-		{
-			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
 		"norris",
 		{
 			"category": "Fun",
@@ -248,13 +220,6 @@
 		"xkcd",
 		{
 			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
-		"ffxiv",
-		{
-			"category": "GameIntegration",
 			"subCategory": "General"
 		}
 	],
@@ -304,48 +269,6 @@
 		"wheeloffortune",
 		{
 			"category": "Games",
-			"subCategory": "General"
-		}
-	],
-	[
-		"gcreate",
-		{
-			"category": "Giveaway",
-			"subCategory": "General"
-		}
-	],
-	[
-		"greroll",
-		{
-			"category": "Giveaway",
-			"subCategory": "General"
-		}
-	],
-	[
-		"gstart",
-		{
-			"category": "Giveaway",
-			"subCategory": "General"
-		}
-	],
-	[
-		"currenttime",
-		{
-			"category": "Google",
-			"subCategory": "General"
-		}
-	],
-	[
-		"gimage",
-		{
-			"category": "Google",
-			"subCategory": "General"
-		}
-	],
-	[
-		"gsearch",
-		{
-			"category": "Google",
 			"subCategory": "General"
 		}
 	],
@@ -456,13 +379,6 @@
 	],
 	[
 		"randreddit",
-		{
-			"category": "Misc",
-			"subCategory": "General"
-		}
-	],
-	[
-		"reddituser",
 		{
 			"category": "Misc",
 			"subCategory": "General"
@@ -826,13 +742,6 @@
 		}
 	],
 	[
-		"divorce",
-		{
-			"category": "Social",
-			"subCategory": "General"
-		}
-	],
-	[
 		"leaderboard",
 		{
 			"category": "Social",
@@ -841,13 +750,6 @@
 	],
 	[
 		"level",
-		{
-			"category": "Social",
-			"subCategory": "General"
-		}
-	],
-	[
-		"marry",
 		{
 			"category": "Social",
 			"subCategory": "General"
@@ -896,23 +798,9 @@
 		}
 	],
 	[
-		"template",
-		{
-			"category": "Social",
-			"subCategory": "General"
-		}
-	],
-	[
 		"vault",
 		{
 			"category": "Social",
-			"subCategory": "General"
-		}
-	],
-	[
-		"star",
-		{
-			"category": "Starboard",
 			"subCategory": "General"
 		}
 	],
@@ -939,13 +827,6 @@
 	],
 	[
 		"echo",
-		{
-			"category": "System",
-			"subCategory": "General"
-		}
-	],
-	[
-		"feedback",
 		{
 			"category": "System",
 			"subCategory": "General"
@@ -1009,13 +890,6 @@
 	],
 	[
 		"poll",
-		{
-			"category": "Tools",
-			"subCategory": "General"
-		}
-	],
-	[
-		"quote",
 		{
 			"category": "Tools",
 			"subCategory": "General"
@@ -1316,13 +1190,6 @@
 		}
 	],
 	[
-		"setstarboardemoji",
-		{
-			"category": "Management",
-			"subCategory": "Configuration"
-		}
-	],
-	[
 		"guildinfo",
 		{
 			"category": "Management",
@@ -1597,13 +1464,6 @@
 	],
 	[
 		"reboot",
-		{
-			"category": "System",
-			"subCategory": "Admin"
-		}
-	],
-	[
-		"setavatar",
 		{
 			"category": "System",
 			"subCategory": "Admin"

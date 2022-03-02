@@ -13,8 +13,7 @@ const url = new URL('https://randomfox.ca/floof');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Animal.FoxDescription,
 	detailedDescription: LanguageKeys.Commands.Animal.FoxExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message) {

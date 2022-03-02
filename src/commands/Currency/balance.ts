@@ -7,8 +7,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bal', 'credits'],
 	description: LanguageKeys.Commands.Social.BalanceDescription,
-	detailedDescription: LanguageKeys.Commands.Social.BalanceExtended,
-	spam: true
+	detailedDescription: LanguageKeys.Commands.Social.BalanceExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {

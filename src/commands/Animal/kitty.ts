@@ -12,8 +12,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	aliases: ['kitten', 'cat'],
 	description: LanguageKeys.Commands.Animal.KittyDescription,
 	detailedDescription: LanguageKeys.Commands.Animal.KittyExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message) {

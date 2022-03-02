@@ -59,5 +59,10 @@
 	"pingExtended": {
 		"extendedHelp": ""
 	},
-	"pingPong": ""
+	"pingPong": "",
+	"v7Description": "",
+	"v7Extended": {
+		"extendedHelp": ""
+	},
+	"v7Message": ""
 }

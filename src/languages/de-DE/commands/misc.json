@@ -9,36 +9,6 @@
 	"randRedditErrorQuarantined": "",
 	"randRedditErrorNotFound": "",
 	"randRedditErrorBanned": "",
-	"redditUserComplexityLevels": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"redditUserInvalidUser": "",
-	"redditUserQueryFailed": "",
-	"redditUserTitles": {
-		"awardGiving": "",
-		"awardReceiving": "",
-		"linkKarma": "",
-		"commentKarma": "",
-		"totalComments": "",
-		"totalSubmissions": "",
-		"commentControversiality": "",
-		"textComplexity": "",
-		"top5Subreddits": "",
-		"bySubmissions": "",
-		"byComments": "",
-		"bestComment": "",
-		"worstComment": ""
-	},
-	"redditUserData": {
-		"overviewFor": "",
-		"dataAvailableFor": "",
-		"joinedReddit": ""
-	},
 	"snipeEmpty": "",
 	"snipeTitle": "",
 	"skyrafactDescription": "",
@@ -84,107 +54,6 @@
 		"",
 		""
 	],
-	"afkDescription": "",
-	"afkExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"reminder": ""
-	},
-	"afkDefault": "",
-	"afkAddedIgnoredChannel": "",
-	"afkClear": "",
-	"afkClearSelf": "",
-	"afkClearAllFailed_other": "",
-	"afkClearAllFailed_one": "",
-	"afkClearAllProgress_other": "",
-	"afkClearAllProgress_one": "",
-	"afkClearAllStarting_other": "",
-	"afkClearAllStarting_one": "",
-	"afkClearAllTitle": "",
-	"afkClearAllTotal_other": "",
-	"afkClearAllTotal_one": "",
-	"afkListTitle": "",
-	"afkListFooter_one": "",
-	"afkListFooter_other": "",
-	"afkNoEntries": "",
-	"afkNotSet": "",
-	"afkNotSetSelf": "",
-	"afkPermissionLevelList": "",
-	"afkPermissionLevelResetUser": "",
-	"afkPermissionLevelClearUser": "",
-	"afkPermissionLevelClearAll": "",
-	"afkPrefix": "",
-	"afkRemovedIgnoredChannel": "",
-	"afkReset": "",
-	"afkResetSelf": "",
-	"afkSet": "",
-	"afkShowFooter": "",
 	"cannotTargetOwner": "",
 	"chaseDescription": "",
 	"chaseExtended": {
@@ -361,54 +230,6 @@
 			""
 		]
 	},
-	"redditUserDescription": "",
-	"redditUserExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"resetBirthdayDescription": "",
-	"resetBirthdayExtended": {
-		"extendedHelp": ""
-	},
-	"resetBirthdayNotSet": "",
-	"resetBirthdaySuccess": "",
-	"setBirthdayDescription": "",
-	"setBirthdayExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"reminder": ""
-	},
-	"setBirthdayNotConfigured": "",
-	"setBirthdayInvalidDate": "",
-	"setBirthdayInvalidYear": "",
-	"setBirthdayInvalidMonth": "",
-	"setBirthdayInvalidDay": "",
-	"setBirthdayAlreadySet": "",
-	"setBirthdayConfirmation": "",
-	"setBirthdaySuccess": "",
 	"shipDescription": "",
 	"shipExtended": {
 		"usages": [
@@ -521,33 +342,6 @@
 		"examples": [
 			""
 		]
-	},
-	"viewBirthdayDescription": "",
-	"viewBirthdayExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"viewBirthdayNotSet": "",
-	"viewBirthdaySet": "",
-	"upcomingBirthdaysDescription": "",
-	"upcomingBirthdaysTitle": "",
-	"upcomingBirthdaysNone": "",
-	"upcomingBirthdaysExtended": {
-		"extendedHelp": "",
-		"reminder": ""
 	},
 	"vaporwaveOutput": "",
 	"zalgoDescription": "",

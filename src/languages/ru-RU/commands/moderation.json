@@ -1,7 +1,6 @@
 {
 	"permissions": "Разрешения для {{username}} ({{id}})",
 	"permissionsAll": "Все разрешения",
-	"flow": "",
 	"timeTimed": "",
 	"timeUnsupportedType": "",
 	"timeNotScheduled": "",
@@ -524,20 +523,6 @@
 	"caseDeleted": "",
 	"permissionsDescription": "",
 	"permissionsExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"extendedHelp": ""
-	},
-	"flowDescription": "",
-	"flowExtended": {
 		"usages": [
 			"",
 			""

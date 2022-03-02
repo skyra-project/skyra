@@ -1,7 +1,6 @@
 {
 	"permissions": "{{username}} ({{id}}) के लिए अनुमतियाँ",
 	"permissionsAll": "सब अनुमतियां",
-	"flow": "अंतिम मिनट के भीतर {{amount}} संदेश भेजे गए हैं।",
 	"timeTimed": "चयनित मॉडरेशन मामला पहले ही समाप्त हो चुका है।",
 	"timeUnsupportedType": "चयनित मामले के लिए कार्रवाई का प्रकार रिवर्स नहीं किया जा सकता है, इसलिए यह कार्रवाई असमर्थित है।",
 	"timeNotScheduled": "यह कार्य निर्धारित नहीं है।",
@@ -524,20 +523,6 @@
 	"caseDeleted": "",
 	"permissionsDescription": "",
 	"permissionsExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"extendedHelp": ""
-	},
-	"flowDescription": "",
-	"flowExtended": {
 		"usages": [
 			"",
 			""

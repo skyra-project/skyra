@@ -99,15 +99,6 @@
 			""
 		]
 	},
-	"markovDescription": "",
-	"markovExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": ""
-	},
 	"norrisDescription": "",
 	"norrisExtended": {
 		"extendedHelp": ""
@@ -348,9 +339,6 @@
 	"love100": "",
 	"loveItself": "",
 	"loveResult": "Результат",
-	"markovTimer": "",
-	"markovNoMessages": "",
-	"markovNsfwChannel": "",
 	"norrisOutput": "Чак Норрис",
 	"rateOutput": "",
 	"rateMyself": [

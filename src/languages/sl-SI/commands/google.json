@@ -1,66 +1,4 @@
 {
-	"currentTimeDescription": "",
-	"currentTimeExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Antarktika",
-			"Arizona"
-		]
-	},
-	"currentTimeLocationNotFound": "",
-	"currentTimeTitles": {
-		"currentTime": "Trenutni Čas",
-		"currentDate": "Trenutni Datum",
-		"country": "Država",
-		"gmtOffset": "GMT Odmik",
-		"dst": ""
-	},
-	"currentTimeDst": "",
-	"currentTimeNoDst": "",
-	"gimageDescription": "",
-	"gimageExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		],
-		"reminder": ""
-	},
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
-	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
 		"usages": [
@@ -99,12 +37,6 @@
 		],
 		"reminder": ""
 	},
-	"errorZeroResults": "",
-	"errorRequestDenied": "",
-	"errorInvalidRequest": "",
-	"errorOverQueryLimit": "",
-	"errorPermissionDenied": "",
-	"errorUnknown": "",
 	"weatherFahrenheit": "",
 	"weatherInches": "",
 	"weatherMiles": "",

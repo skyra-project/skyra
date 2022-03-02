@@ -1,10 +1,6 @@
 {
-	"channelsAnnouncements": "El canal de anuncios. Esto (junto con la clave `roles.subscriber`) es necesario para el comando de anuncio.",
-	"channelsFarewell": "El canal que usaré para enviar despedidas, debe habilitar los eventos y configurar los mensajes, en otras categorías.",
-	"channelsGreeting": "El canal que usaré para enviar saludos, debe habilitar los eventos y configurar los mensajes, en otras categorías.",
 	"channelsIgnoreAll": "Canales que debería ignorar para todos los tipos de registros.",
 	"channelsIgnoreMessageDelete": "Canales que debería ignorar para los registros de mensajes borrados.",
 	"channelsIgnoreMessageEdit": "Canales que debería ignorar para los registros de mensajes editados.",
-	"channelsIgnoreReactionAdd": "Canales que debería ignorar para los registros de reacciones añadidas.",
-	"channelsSpam": "El canal al cual redireccionar a los usuarios cuando utilizan comandos que considero no adecuados para conversaciones normales."
+	"channelsIgnoreReactionAdd": "Canales que debería ignorar para los registros de reacciones añadidas."
 }

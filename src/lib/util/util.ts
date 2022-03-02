@@ -1,9 +1,6 @@
-import { GuildSettings } from '#lib/database/keys';
-import { readSettings } from '#lib/database/settings/functions';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { UserError } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
@@ -19,13 +16,11 @@ import {
 	Message,
 	MessageEmbed,
 	Permissions,
-	Role,
 	ThreadChannel,
 	User,
 	UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { api } from '../discord/Api';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
 
@@ -96,23 +91,7 @@ export function showSeconds(duration: number): string {
 }
 
 export function snowflakeAge(snowflake: string | bigint) {
-	const { timestamp } = DiscordSnowflake.deconstruct(snowflake);
-	return Math.max(Date.now() - Number(timestamp), 0);
-}
-
-/**
- * Check if the announcement is correctly set up
- * @param message The message instance to check with
- */
-export async function announcementCheck(message: GuildMessage) {
-	const [announcementId] = await readSettings(message.guild, (settings) => [settings[GuildSettings.Roles.Subscriber]]);
-	if (!announcementId) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
-
-	const role = message.guild.roles.cache.get(announcementId);
-	if (!role) throw new UserError({ identifier: LanguageKeys.Commands.Announcement.SubscribeNoRole });
-
-	if (role.position >= message.guild.me!.roles.highest.position) throw new UserError({ identifier: LanguageKeys.System.HighestRole });
-	return role;
+	return Math.max(Date.now() - DiscordSnowflake.timestampFrom(snowflake), 0);
 }
 
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {
@@ -165,23 +144,6 @@ export async function fetchAvatar(user: User, size: AllowedImageSize = 512): Pro
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}
-}
-
-export async function fetchReactionUsers(channelId: string, messageId: string, reaction: string) {
-	const users: Set<string> = new Set();
-	let rawUsers: APIUser[] = [];
-
-	// Fetch loop, to get +100 users
-	do {
-		rawUsers = await api()
-			.channels(channelId)
-			.messages(messageId)
-			.reactions(reaction)
-			.get<APIUser[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
-		for (const user of rawUsers) users.add(user.id);
-	} while (rawUsers.length === 100);
-
-	return users;
 }
 
 export function twemoji(emoji: string) {
@@ -430,17 +392,6 @@ export function pickRandom<T>(array: readonly T[]): T {
 	return array[Math.floor(Math.random() * length)];
 }
 
-export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
-	if (typeof path === 'string') path = path.split('.');
-
-	let value: unknown = object;
-	for (const key of path) {
-		value = Reflect.get(value as Record<string, unknown>, key);
-		if (value === null || value === undefined) return value;
-	}
-	return value;
-}
-
 export function cast<T>(value: unknown): T {
 	return value as T;
 }
@@ -454,21 +405,6 @@ export function cast<T>(value: unknown): T {
  */
 export function validateChannelAccess(channel: GuildChannel | ThreadChannel, user: UserResolvable) {
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
-}
-
-export function getHighestRole(guild: Guild, roles: readonly string[]) {
-	let highest: Role | null = null;
-	let position = 0;
-	for (const roleId of roles) {
-		const role = guild.roles.cache.get(roleId);
-		if (typeof role === 'undefined') continue;
-		if (role.position > position) {
-			highest = role;
-			position = role.position;
-		}
-	}
-
-	return highest;
 }
 
 /**

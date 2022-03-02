@@ -7,8 +7,7 @@ import type { Message } from 'discord.js';
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['choose', 'choise', 'pick'],
 	description: LanguageKeys.Commands.Fun.ChoiceDescription,
-	detailedDescription: LanguageKeys.Commands.Fun.ChoiceExtended,
-	spam: true
+	detailedDescription: LanguageKeys.Commands.Fun.ChoiceExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {

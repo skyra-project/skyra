@@ -99,15 +99,6 @@
 			"Skyra"
 		]
 	},
-	"markovDescription": "Generate a Markov Chain from the text channel.",
-	"markovExtended": {
-		"usages": [
-			"",
-			"TextChannel",
-			"TextChannel User"
-		],
-		"extendedHelp": "A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel."
-	},
 	"norrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
 	"norrisExtended": {
 		"extendedHelp": "Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
@@ -348,9 +339,6 @@
 	"love100": "Perfect match!",
 	"loveItself": "You are a special creature and you should love yourself more than anyone <3",
 	"loveResult": "Result",
-	"markovTimer": "Processed in {{timer}}.",
-	"markovNoMessages": "The channel or user has no messages.",
-	"markovNsfwChannel": "I am sorry, but you can only use the markov command on {{channel}} when you are in an NSFW channel.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, I would give **{{userToRate}}** a **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [

@@ -9,8 +9,7 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.RateDescription,
-	detailedDescription: LanguageKeys.Commands.Fun.RateExtended,
-	spam: true
+	detailedDescription: LanguageKeys.Commands.Fun.RateExtended
 })
 export class UserCommand extends SkyraCommand {
 	private devRegex = new RegExp(`^(kyra|favna|${OWNERS.map((owner) => `<@!?${owner}>`).join('|')})$`, 'i');

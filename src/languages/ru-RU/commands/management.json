@@ -79,7 +79,6 @@
 	"manageReactionRolesRemove": "",
 	"manageReactionRolesResetEmpty": "",
 	"manageReactionRolesReset": "",
-	"setStarboardEmojiSet": "",
 	"configurationEquals": "",
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
@@ -449,23 +448,6 @@
 		"reminder": "",
 		"examples": [
 			"",
-			""
-		]
-	},
-	"setStarboardEmojiDescription": "",
-	"setStarboardEmojiExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"эмодзи",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
 			""
 		]
 	},

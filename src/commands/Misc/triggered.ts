@@ -21,8 +21,7 @@ const COORDINATES: readonly [number, number][] = [
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Misc.TriggeredDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.TriggeredExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

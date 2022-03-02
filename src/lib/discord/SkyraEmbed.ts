@@ -16,7 +16,7 @@ export class SkyraEmbed extends MessageEmbed {
 		}
 
 		if (Array.isArray(content)) content = content.join('\n');
-		if (title === ZeroWidthSpace && !this.description && content.length < 2048) {
+		if (title === ZeroWidthSpace && !this.description && content.length < 4096) {
 			this.description = content;
 			return this;
 		}

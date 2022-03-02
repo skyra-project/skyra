@@ -9,7 +9,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { URL } from 'node:url';
 
 @ApplyOptions<SkyraCommand.Options>({
-	aliases: ['duckduckgo'],
+	aliases: ['duckduckgo', 'search'],
 	description: LanguageKeys.Commands.Tools.DuckDuckGoDescription,
 	detailedDescription: LanguageKeys.Commands.Tools.DuckDuckGoExtended,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]

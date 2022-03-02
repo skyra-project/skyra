@@ -13,8 +13,7 @@ import { join } from 'node:path';
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 	description: LanguageKeys.Commands.Misc.GoofyTimeDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.GoofyTimeExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

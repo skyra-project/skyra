@@ -1,6 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { Role, User } from 'discord.js';
+import type { Role } from 'discord.js';
 
 export interface LevelTitles {
 	experience: string;
@@ -55,14 +55,6 @@ export const DailyGraceAccepted = FT<{ amount: number; remaining: number }, stri
 export const DailyGraceDenied = T('commands/social:dailyGraceDenied');
 export const DailyTime = FT<{ time: number }, string>('commands/social:dailyTime');
 export const DailyTimeSuccess = FT<{ amount: number }, string>('commands/social:dailyTimeSuccess');
-export const DivorceCancel = T('commands/social:divorceCancel');
-export const DivorceDescription = T('commands/social:divorceDescription');
-export const DivorceDm = FT<{ user: string }, string>('commands/social:divorceDm');
-export const DivorceExtended = T<LanguageHelpDisplayOptions>('commands/social:divorceExtended');
-export const DivorceSelf = T('commands/social:divorceSelf');
-export const DivorceNotTaken = T('commands/social:divorceNotTaken');
-export const DivorcePrompt = T('commands/social:divorcePrompt');
-export const DivorceSuccess = FT<{ user: string }, string>('commands/social:divorceSuccess');
 export const LeaderboardDescription = T('commands/social:leaderboardDescription');
 export const LeaderboardExtended = T<LanguageHelpDisplayOptions>('commands/social:leaderboardExtended');
 export const LeaderboardHeader = FT<{ guild: string }>('commands/social:leaderboardHeader');
@@ -71,27 +63,6 @@ export const LeaderboardUnknownUser = FT<{ user: string }, string>('commands/soc
 export const Level = T<LevelTitles>('commands/social:level');
 export const LevelDescription = T('commands/social:levelDescription');
 export const LevelExtended = T<LanguageHelpDisplayOptions>('commands/social:levelExtended');
-export const MarryAccepted = FT<{ author: string; user: string }, string>('commands/social:marryAccepted');
-export const MarryAlreadyMarried = FT<{ user: string }, string>('commands/social:marryAlreadyMarried');
-export const MarryAuthorMultipleCancel = FT<{ user: string }, string>('commands/social:marryAuthorMultipleCancel');
-export const MarryAuthorTaken = FT<{ author: User }, string>('commands/social:marryAuthorTaken');
-export const MarryAuthorTooMany = FT<{ limit: number }, string>('commands/social:marryAuthorTooMany');
-export const MarryBots = T('commands/social:marryBots');
-export const MarryDenied = T('commands/social:marryDenied');
-export const MarryDescription = T('commands/social:marryDescription');
-export const MarryExtended = T<LanguageHelpDisplayOptions>('commands/social:marryExtended');
-export const MarryMultipleCancel = T('commands/social:marryMultipleCancel');
-export const MarryNoReply = T('commands/social:marryNoreply');
-export const MarryNotTaken = T('commands/social:marryNotTaken');
-export const MarryPetition = FT<{ author: User; user: User }, string>('commands/social:marryPetition');
-export const MarrySelf = T('commands/social:marrySelf');
-export const MarrySkyra = T('commands/social:marrySkyra');
-export const MarrySister = T('commands/social:marrySister');
-export const MarryTaken = FT<{ count: number }, string>('commands/social:marryTaken');
-export const MarryTargetTooMany = FT<{ limit: number }, string>('commands/social:marryTargetTooMany');
-export const MarryWith = FT<{ users: readonly string[] }, string>('commands/social:marryWith');
-export const MarriedDescription = T('commands/social:marriedDescription');
-export const MarriedExtended = T<LanguageHelpDisplayOptions>('commands/social:marriedExtended');
 export const MyLevel = FT<{ points: number; next: string; user: string }, string>('commands/social:mylevel');
 export const MyLevelDescription = T('commands/social:mylevelDescription');
 export const MyLevelExtended = T<LanguageHelpDisplayOptions>('commands/social:mylevelExtended');

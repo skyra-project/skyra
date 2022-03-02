@@ -419,24 +419,6 @@
 			""
 		]
 	},
-	"quoteDescription": "",
-	"quoteExtended": {
-		"usages": [
-			"Сообщение",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"канал",
-				""
-			],
-			[
-				"сообщение",
-				"ID цитируемого сообщения."
-			]
-		]
-	},
 	"showsData": {
 		"noGenres": "",
 		"unknownUserScore": "",

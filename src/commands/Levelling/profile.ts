@@ -20,8 +20,7 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Social.ProfileDescription,
 	detailedDescription: LanguageKeys.Commands.Social.ProfileExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;

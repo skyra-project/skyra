@@ -1,6 +1,5 @@
 export * from './AniList';
 export * from './ArgumentTypes';
-export * from './FFXIVTypings';
 export * from './Igdb';
 export * from './Internals';
 export * from './Kitsu';
@@ -9,4 +8,3 @@ export * from './StarWars';
 export * from './Suggestion';
 export * from './Tmdb';
 export * from './Twitch';
-export * from './Yarnpkg';

@@ -14,9 +14,6 @@ export const enum Events {
 	CoreSettingsUpdate = 'coreSettingsUpdate',
 	Disconnect = 'disconnect',
 	EventError = 'eventError',
-	GuildAnnouncementEdit = 'guildAnnouncementEdit',
-	GuildAnnouncementError = 'guildAnnouncementError',
-	GuildAnnouncementSend = 'guildAnnouncementSend',
 	GuildBanAdd = 'guildBanAdd',
 	GuildBanRemove = 'guildBanRemove',
 	GuildCreate = 'guildCreate',
@@ -102,7 +99,6 @@ export const enum PermissionLevels {
 }
 
 export const enum Schedules {
-	DelayedGiveawayCreate = 'delayedGiveawayCreate',
 	Poststats = 'poststats',
 	SyncResourceAnalytics = 'syncResourceAnalytics',
 	Reminder = 'reminder'

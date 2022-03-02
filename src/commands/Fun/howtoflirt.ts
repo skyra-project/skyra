@@ -28,8 +28,7 @@ const imageCoordinates = [
 	aliases: ['pants'],
 	description: LanguageKeys.Commands.Fun.HowToFlirtDescription,
 	detailedDescription: LanguageKeys.Commands.Fun.HowToFlirtExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

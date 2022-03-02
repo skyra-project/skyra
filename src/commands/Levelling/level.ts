@@ -18,8 +18,7 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	aliases: ['lvl', 'rank'],
 	description: LanguageKeys.Commands.Social.LevelDescription,
 	detailedDescription: LanguageKeys.Commands.Social.LevelExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;

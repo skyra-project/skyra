@@ -43,12 +43,7 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 
 	protected parseConstructorPreConditions(options: SkyraCommand.Options): void {
 		super.parseConstructorPreConditions(options);
-		this.parseConstructorPreConditionsSpam(options);
 		this.parseConstructorPreConditionsPermissionLevel(options);
-	}
-
-	protected parseConstructorPreConditionsSpam(options: SkyraCommand.Options): void {
-		if (options.spam) this.preconditions.append('Spam');
 	}
 
 	protected parseConstructorPreConditionsPermissionLevel(options: SkyraCommand.Options): void {
@@ -95,7 +90,6 @@ export namespace SkyraCommand {
 		guarded?: boolean;
 		hidden?: boolean;
 		permissionLevel?: number;
-		spam?: boolean;
 	};
 
 	export type Args = SkyraArgs;

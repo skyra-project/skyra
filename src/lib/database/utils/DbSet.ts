@@ -3,7 +3,6 @@ import type { Message } from 'discord.js';
 import type { Connection, FindConditions, FindManyOptions, Repository } from 'typeorm';
 import { connect } from '../database.config';
 import { BannerEntity } from '../entities/BannerEntity';
-import { GiveawayEntity } from '../entities/GiveawayEntity';
 import { GuildEntity } from '../entities/GuildEntity';
 import { GuildSubscriptionEntity } from '../entities/GuildSubscriptionEntity';
 import { ModerationEntity } from '../entities/ModerationEntity';
@@ -15,7 +14,6 @@ import { RpgItemEntity } from '../entities/RpgItemEntity';
 import { RpgUserEntity } from '../entities/RpgUserEntity';
 import { RpgUserItemEntity } from '../entities/RpgUserItemEntity';
 import { ScheduleEntity } from '../entities/ScheduleEntity';
-import { StarboardEntity } from '../entities/StarboardEntity';
 import { SuggestionEntity } from '../entities/SuggestionEntity';
 import { TwitchSubscriptionEntity } from '../entities/TwitchSubscriptionEntity';
 import { UserCooldownEntity } from '../entities/UserCooldownEntity';
@@ -29,7 +27,6 @@ export class DbSet {
 	public readonly connection: Connection;
 	public readonly banners: Repository<BannerEntity>;
 	public readonly clients: ClientRepository;
-	public readonly giveaways: Repository<GiveawayEntity>;
 	public readonly guilds: Repository<GuildEntity>;
 	public readonly guildSubscriptions: Repository<GuildSubscriptionEntity>;
 	public readonly members: MemberRepository;
@@ -42,7 +39,6 @@ export class DbSet {
 	public readonly rpgUserItems: Repository<RpgUserItemEntity>;
 	public readonly rpgUsers: Repository<RpgUserEntity>;
 	public readonly schedules: Repository<ScheduleEntity>;
-	public readonly starboards: Repository<StarboardEntity>;
 	public readonly suggestions: Repository<SuggestionEntity>;
 	public readonly twitchSubscriptions: Repository<TwitchSubscriptionEntity>;
 	public readonly users: UserRepository;
@@ -54,7 +50,6 @@ export class DbSet {
 		this.connection = connection;
 		this.banners = this.connection.getRepository(BannerEntity);
 		this.clients = this.connection.getCustomRepository(ClientRepository);
-		this.giveaways = this.connection.getRepository(GiveawayEntity);
 		this.guilds = this.connection.getRepository(GuildEntity);
 		this.guildSubscriptions = this.connection.getRepository(GuildSubscriptionEntity);
 		this.members = this.connection.getCustomRepository(MemberRepository);
@@ -67,7 +62,6 @@ export class DbSet {
 		this.rpgUserItems = this.connection.getRepository(RpgUserItemEntity);
 		this.rpgUsers = this.connection.getRepository(RpgUserEntity);
 		this.schedules = this.connection.getRepository(ScheduleEntity);
-		this.starboards = this.connection.getRepository(StarboardEntity);
 		this.suggestions = this.connection.getRepository(SuggestionEntity);
 		this.twitchSubscriptions = this.connection.getRepository(TwitchSubscriptionEntity);
 		this.users = this.connection.getCustomRepository(UserRepository);

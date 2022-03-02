@@ -13,8 +13,7 @@ import { join } from 'node:path';
 	aliases: ['heal', 'healing'],
 	description: LanguageKeys.Commands.Misc.INeedHealingDescription,
 	detailedDescription: LanguageKeys.Commands.Misc.INeedHealingExtended,
-	requiredClientPermissions: [PermissionFlagsBits.AttachFiles],
-	spam: true
+	requiredClientPermissions: [PermissionFlagsBits.AttachFiles]
 })
 export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;

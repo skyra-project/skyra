@@ -1,66 +1,4 @@
 {
-	"currentTimeDescription": "",
-	"currentTimeExtended": {
-		"usages": [
-			"Название страны"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Название страны",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"currentTimeLocationNotFound": "",
-	"currentTimeTitles": {
-		"currentTime": "Текущее время",
-		"currentDate": "Текущая дата",
-		"country": "Страна",
-		"gmtOffset": "",
-		"dst": ""
-	},
-	"currentTimeDst": "",
-	"currentTimeNoDst": "",
-	"gimageDescription": "",
-	"gimageExtended": {
-		"usages": [
-			"Поисковый запрос"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Поисковый запрос",
-				"Изображение, которое вы хотите найти в Google"
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"reminder": ""
-	},
-	"gsearchDescription": "",
-	"gsearchExtended": {
-		"usages": [
-			"Поисковый запрос"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Поисковый запрос",
-				"То, что вы хотите найти в Google"
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
 		"usages": [
@@ -99,12 +37,6 @@
 		],
 		"reminder": ""
 	},
-	"errorZeroResults": "",
-	"errorRequestDenied": "",
-	"errorInvalidRequest": "",
-	"errorOverQueryLimit": "",
-	"errorPermissionDenied": "",
-	"errorUnknown": "",
 	"weatherFahrenheit": "",
 	"weatherInches": "",
 	"weatherMiles": "",

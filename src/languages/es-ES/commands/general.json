@@ -59,5 +59,10 @@
 	"pingExtended": {
 		"extendedHelp": "¡Eco!"
 	},
-	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)"
+	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)",
+	"v7Description": "",
+	"v7Extended": {
+		"extendedHelp": ""
+	},
+	"v7Message": ""
 }

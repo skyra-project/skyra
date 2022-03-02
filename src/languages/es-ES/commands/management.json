@@ -79,7 +79,6 @@
 	"manageReactionRolesRemove": "",
 	"manageReactionRolesResetEmpty": "",
 	"manageReactionRolesReset": "",
-	"setStarboardEmojiSet": "",
 	"configurationEquals": "",
 	"setIgnoreChannelsSet": "",
 	"setIgnoreChannelsRemoved": "",
@@ -450,23 +449,6 @@
 		"examples": [
 			"",
 			""
-		]
-	},
-	"setStarboardEmojiDescription": "",
-	"setStarboardEmojiExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"emoji",
-				"El emoji a establecer."
-			]
-		],
-		"reminder": "Usa esto sabiamente, no todo el mundo espera que el tablero de estrellas se actúe con un emoji personalizado.",
-		"examples": [
-			"⭐"
 		]
 	},
 	"guildInfoDescription": "Revise la información del servidor.",

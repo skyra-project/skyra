@@ -51,13 +51,17 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 				if (result.climates) {
 					description.push(
-						`**${planetTitles.climates}**: ${t(LanguageKeys.Globals.AndListValue, { value: result.climates.map(toTitleCase) })}`
+						`**${planetTitles.climates}**: ${t(LanguageKeys.Globals.AndListValue, {
+							value: result.climates.map((climate) => toTitleCase(climate))
+						})}`
 					);
 				}
 
 				if (result.terrains) {
 					description.push(
-						`**${planetTitles.terrains}**: ${t(LanguageKeys.Globals.AndListValue, { value: result.terrains.map(toTitleCase) })}`
+						`**${planetTitles.terrains}**: ${t(LanguageKeys.Globals.AndListValue, {
+							value: result.terrains.map((terrain) => toTitleCase(terrain))
+						})}`
 					);
 				}
 

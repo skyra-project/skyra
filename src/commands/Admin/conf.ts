@@ -43,7 +43,12 @@ export class UserCommand extends SkyraCommand {
 			});
 		}
 
-		const title = key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '';
+		const title = key
+			? `: ${key
+					.split('.')
+					.map((key) => toTitleCase(key))
+					.join('/')}`
+			: '';
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }),
 			allowedMentions: { users: [], roles: [] }

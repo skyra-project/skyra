@@ -58,14 +58,16 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 					if (result.eyeColors?.length) {
 						description.push(
-							`**${speciesTitles.eyeColours}**: ${t(LanguageKeys.Globals.AndListValue, { value: result.eyeColors.map(toTitleCase) })}`
+							`**${speciesTitles.eyeColours}**: ${t(LanguageKeys.Globals.AndListValue, {
+								value: result.eyeColors.map((eyeColor) => toTitleCase(eyeColor))
+							})}`
 						);
 					}
 
 					if (result.hairColors?.length) {
 						description.push(
 							`**${speciesTitles.hairColours}**: ${t(LanguageKeys.Globals.AndListValue, {
-								value: result.hairColors.map(toTitleCase)
+								value: result.hairColors.map((hairColor) => toTitleCase(hairColor))
 							})}`
 						);
 					}
@@ -73,7 +75,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.skinColors?.length) {
 						description.push(
 							`**${speciesTitles.skinColours}**: ${t(LanguageKeys.Globals.AndListValue, {
-								value: result.skinColors.map(toTitleCase)
+								value: result.skinColors.map((skinColor) => toTitleCase(skinColor))
 							})}`
 						);
 					}

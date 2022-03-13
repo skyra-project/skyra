@@ -84,7 +84,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					if (result.manufacturers?.length) {
 						description.push(
 							`**${vehicleTitles.manufacturers}**: ${t(LanguageKeys.Globals.AndListValue, {
-								value: result.manufacturers.map(toTitleCase)
+								value: result.manufacturers.map((manufacturer) => toTitleCase(manufacturer))
 							})}`
 						);
 					}

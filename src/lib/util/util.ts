@@ -15,6 +15,7 @@ import {
 	ImageURLOptions,
 	Message,
 	MessageEmbed,
+	MessageMentionTypes,
 	Permissions,
 	ThreadChannel,
 	User,
@@ -324,6 +325,7 @@ export function cleanMentions(guild: Guild, input: string) {
 }
 
 export const anyMentionRegExp = /<(@[!&]?|#)(\d{17,19})>/g;
+export const hereOrEveryoneMentionRegExp = /@(?:here|everyone)/;
 
 /**
  * Extracts mentions from a body of text.
@@ -334,9 +336,10 @@ export function extractDetailedMentions(input: string | Nullish): DetailedMentio
 	const users = new Set<string>();
 	const roles = new Set<string>();
 	const channels = new Set<string>();
+	const parse = [] as MessageMentionTypes[];
 
 	if (isNullishOrEmpty(input)) {
-		return { users, roles, channels };
+		return { users, roles, channels, parse };
 	}
 
 	let result: RegExpExecArray | null;
@@ -358,13 +361,16 @@ export function extractDetailedMentions(input: string | Nullish): DetailedMentio
 		}
 	}
 
-	return { users, roles, channels };
+	if (hereOrEveryoneMentionRegExp.test(input)) parse.push('everyone');
+
+	return { users, roles, channels, parse };
 }
 
 export interface DetailedMentionExtractionResult {
 	users: ReadonlySet<string>;
 	roles: ReadonlySet<string>;
 	channels: ReadonlySet<string>;
+	parse: MessageMentionTypes[];
 }
 
 /**

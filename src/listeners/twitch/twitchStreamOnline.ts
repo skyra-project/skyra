@@ -64,7 +64,7 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 						channel.send({
 							content: guildSubscription.message || null,
 							embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)],
-							allowedMentions: { users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
+							allowedMentions: { parse: detailedMentions.parse, users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
 						})
 					);
 				}

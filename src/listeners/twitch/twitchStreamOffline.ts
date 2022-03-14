@@ -58,7 +58,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 					floatPromise(
 						channel.send({
 							content: this.buildMessage(guildSubscription.message, date, t),
-							allowedMentions: { users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
+							allowedMentions: { parse: detailedMentions.parse, users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
 						})
 					);
 				}

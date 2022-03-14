@@ -13,6 +13,6 @@ export class GuildSubscriptionEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public channelId!: string;
 
-	@Column('varchar', { nullable: true, length: 50 })
+	@Column('varchar', { nullable: true, length: 200 })
 	public message?: string;
 }

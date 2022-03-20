@@ -1695,19 +1695,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client-apis@npm:^1.23.0":
-  version: 1.23.0
-  resolution: "@influxdata/influxdb-client-apis@npm:1.23.0"
+"@influxdata/influxdb-client-apis@npm:^1.24.0":
+  version: 1.24.0
+  resolution: "@influxdata/influxdb-client-apis@npm:1.24.0"
   peerDependencies:
     "@influxdata/influxdb-client": "*"
-  checksum: 7a9c5a4d4594b52903411b5e35222cf87e9993b2d68a7c9f26b08619d038fc92e54094fbf8564ea530fd2237f37dfbf43834e2a7f40535d73c5dbf8e83c9c2c0
+  checksum: cb61a75ecd91331a2cbac0c627156b6344f3f7bea0ff0468ce67ec0f68b500fd4d713e4864766eccd7a66b1e998c794961ca09b9f12f40a0fbc1b3ffce95d664
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client@npm:^1.23.0":
-  version: 1.23.0
-  resolution: "@influxdata/influxdb-client@npm:1.23.0"
-  checksum: 2bdae6a0aaba3c7db07153b63e6216409204cbc23a4d50ad37f52ecd8ae2512ea005084123a6b3404ebab7fda8f2d1384fa5ca77612b660d7b907405a2d7f755
+"@influxdata/influxdb-client@npm:^1.24.0":
+  version: 1.24.0
+  resolution: "@influxdata/influxdb-client@npm:1.24.0"
+  checksum: 3f2eeb46720d7fc7e6490fc052feddef2271fe2f6315875407b899192d94cdb9c20794e88f7d6d7be6f241f91297663116adde3db28c9577f80538137ff2a60d
   languageName: node
   linkType: hard
 
@@ -9751,8 +9751,8 @@ __metadata:
     "@favware/graphql-pokemon": ^6.5.0
     "@favware/zalgo": ^3.1.3
     "@grpc/grpc-js": ^1.5.7
-    "@influxdata/influxdb-client": ^1.23.0
-    "@influxdata/influxdb-client-apis": ^1.23.0
+    "@influxdata/influxdb-client": ^1.24.0
+    "@influxdata/influxdb-client-apis": ^1.24.0
     "@sapphire/async-queue": ^1.3.0
     "@sapphire/decorators": ^4.3.2
     "@sapphire/discord.js-utilities": ^4.9.2

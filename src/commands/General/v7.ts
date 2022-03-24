@@ -50,7 +50,6 @@ import { Message, MessageEmbed } from 'discord.js';
 		'reddit-user',
 		'redditor',
 		'reset-birthday',
-		'search',
 		'set-birthday',
 		'set-starboard-emoji',
 		'setbday',

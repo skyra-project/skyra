@@ -222,6 +222,6 @@ export class V30AttachmentModeChecks1606411800922 implements MigrationInterface 
 		const tableName = 'guilds';
 		const replacedTableName = tableName.replace('.', '_');
 		const key = `${replacedTableName}_${expression}`;
-		return `CHK_${RandomGenerator.sha1(key).substr(0, 26)}`;
+		return `CHK_${RandomGenerator.sha1(key).slice(0, 26)}`;
 	}
 }

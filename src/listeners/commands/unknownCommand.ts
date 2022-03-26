@@ -38,7 +38,7 @@ export class UserListener extends Listener<typeof Events.UnknownCommand> {
 		const spaceIndex = prefixLess.indexOf(' ');
 
 		// Run the last stage before running the command:
-		const rawParameters = spaceIndex === -1 ? '' : prefixLess.substr(spaceIndex + 1).trim();
+		const rawParameters = spaceIndex === -1 ? '' : prefixLess.slice(spaceIndex + 1).trim();
 		const parameters = rawParameters.length === 0 ? suffix : suffix.length === 0 ? rawParameters : `${suffix} ${rawParameters}`;
 		message.client.emit(Events.PreCommandRun, { message, command, parameters, context: { commandName, commandPrefix, prefix: commandPrefix } });
 	}

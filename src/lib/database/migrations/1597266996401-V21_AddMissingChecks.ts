@@ -105,6 +105,6 @@ export class V21AddMissingChecks1597266996401 implements MigrationInterface {
 		const tableName = 'guilds';
 		const replacedTableName = tableName.replace('.', '_');
 		const key = `${replacedTableName}_${expression}`;
-		return `CHK_${RandomGenerator.sha1(key).substr(0, 26)}`;
+		return `CHK_${RandomGenerator.sha1(key).slice(0, 26)}`;
 	}
 }

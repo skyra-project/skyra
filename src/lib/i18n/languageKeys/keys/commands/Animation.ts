@@ -23,8 +23,9 @@ export const AniListEmbedTitles = T<{
 export const KitsuAnimeOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
 	'commands/animation:kitsuAnimeOutputDescription'
 );
-export const KitsuAnimeTypes =
-	T<{ tv: string; movie: string; ova: string; special: string; [index: string]: string }>('commands/animation:kitsuAnimeTypes');
+export const KitsuAnimeTypes = T<{ tv: string; movie: string; ova: string; special: string; [index: string]: string }>(
+	'commands/animation:kitsuAnimeTypes'
+);
 export const KitsuAnimeDescription = T('commands/animation:kitsuAnimeDescription');
 export const KitsuAnimeEmbedData = T<{
 	type: string;
@@ -46,10 +47,9 @@ export const KitsuMangaExtended = T<LanguageHelpDisplayOptions>('commands/animat
 export const KitsuMangaOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
 	'commands/animation:kitsuMangaOutputDescription'
 );
-export const KitsuMangaTypes =
-	T<{ manga: string; novel: string; manhwa: string; oneShot: string; special: string; [index: string]: string }>(
-		'commands/animation:kitsuMangaTypes'
-	);
+export const KitsuMangaTypes = T<{ manga: string; novel: string; manhwa: string; oneShot: string; special: string; [index: string]: string }>(
+	'commands/animation:kitsuMangaTypes'
+);
 export const WaifuDescription = T('commands/animation:waifuDescription');
 export const WaifuExtended = T<LanguageHelpDisplayOptions>('commands/animation:waifuExtended');
 export const WaifuFooter = T('commands/animation:waifuFooter');

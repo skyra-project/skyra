@@ -16,7 +16,6 @@ import type { Piece, Store } from '@sapphire/framework';
 import type { Nullish, PickByValue } from '@sapphire/utilities';
 import type { Image } from 'canvas-constructor/skia';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User, VoiceChannel } from 'discord.js';
-import type { Redis } from 'ioredis';
 import type { TaskErrorPayload, TwitchEventSubEvent, TwitchEventSubOnlineEvent } from './definitions';
 import type { Scope } from './definitions/ArgumentTypes';
 import type { MessageAcknowledgeable } from './Discord';

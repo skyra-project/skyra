@@ -3,10 +3,12 @@ import Collection from '@discordjs/collection';
 import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { readFileSync } from 'node:fs';
-import type { KeyType, Redis } from 'ioredis';
+import type Redis from 'ioredis';
 import { resolve } from 'node:path';
 import { Queue } from './Queue';
 import type { QueueClient } from './QueueClient';
+
+type KeyType = string | Buffer;
 
 interface RedisCommand {
 	name: string;

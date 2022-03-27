@@ -2476,12 +2476,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/saelem@npm:^3.0.9":
-  version: 3.0.9
-  resolution: "@skyra/saelem@npm:3.0.9"
+"@skyra/saelem@npm:^3.0.25":
+  version: 3.0.25
+  resolution: "@skyra/saelem@npm:3.0.25"
   dependencies:
-    graphql: ^15.5.0
-  checksum: 0da7568e79f23e19556e92bfd26596fa579ec808168699a207a773b142377272d8019954d3713ef405f9ce572bf8dfba8d664f2a37b1fa861d348d93af32f503
+    graphql: ^15.8.0
+  checksum: af02ad9a608a4f71cc3f492a92269ca24a70c5627b60d52655367e1606146d85405f7036d19685cadf1a6b985b70c68aec641f4b5db7562f618ac9883e366d37
   languageName: node
   linkType: hard
 
@@ -5941,7 +5941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.5.0, graphql@npm:^15.7.2, graphql@npm:^15.8.0":
+"graphql@npm:^15.7.2, graphql@npm:^15.8.0":
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: 423325271db8858428641b9aca01699283d1fe5b40ef6d4ac622569ecca927019fce8196208b91dd1d8eb8114f00263fe661d241d0eb40c10e5bfd650f86ec5e
@@ -9713,7 +9713,7 @@ __metadata:
     "@skyra/char": ^1.0.2
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
-    "@skyra/saelem": ^3.0.9
+    "@skyra/saelem": ^3.0.25
     "@skyra/star-wars-api": ^2.0.9
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2

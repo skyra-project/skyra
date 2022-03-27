@@ -42,7 +42,7 @@ jobs:
             skyrabot/skyra:latest
             ghcr.io/skyra-project/skyra:latest
       - name: Update repo description
-        uses: peter-evans/dockerhub-description@616d1b63e806b630b975af3b4fe3304307b20f40 # renovate: tag=v2.4.3
+        uses: peter-evans/dockerhub-description@836d7e6aa8f6f32dce26f5a1dd46d3dc24997eae # tag=v3.0.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

@@ -2,7 +2,6 @@
 process.env.NODE_ENV ??= 'development';
 
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
-import type { QueueClientOptions } from '#lib/audio';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
@@ -40,35 +39,6 @@ config({
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
 export const SISTER_CLIENTS = envParseArray('SISTER_CLIENTS');
-
-function parseAudio(): QueueClientOptions | undefined {
-	if (!envParseBoolean('REDIS_ENABLED', false)) return undefined;
-	if (!envParseBoolean('AUDIO_ENABLED', false)) return undefined;
-
-	const host = envParseString('AUDIO_HOST');
-	const port = envParseInteger('AUDIO_PORT').toString();
-
-	return {
-		userID: envParseString('CLIENT_ID'),
-		password: envParseString('AUDIO_PASSWORD'),
-		redis: {
-			host: envParseString('REDIS_HOST'),
-			port: envParseInteger('REDIS_PORT'),
-			db: envParseInteger('REDIS_DB'),
-			password: envParseString('REDIS_PASSWORD')
-		},
-		hosts: {
-			rest: `http://${host}:${port}`,
-			ws: {
-				url: `ws://${host}:${port}`,
-				options: {
-					resumeKey: envParseString('AUDIO_RESUME_KEY'),
-					resumeTimeout: envParseInteger('AUDIO_RESUME_TIMEOUT')
-				}
-			}
-		}
-	};
-}
 
 export function parseAnalytics(): ConnectionOptions {
 	const url = envParseString('INFLUX_URL');
@@ -250,7 +220,6 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 }
 
 export const CLIENT_OPTIONS: ClientOptions = {
-	audio: parseAudio(),
 	allowedMentions: { users: [], roles: [] },
 	api: parseApi(),
 	caseInsensitiveCommands: true,

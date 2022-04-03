@@ -1,6 +1,6 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { hours, minutes, years } from '#utils/common';
+import { minutes, years } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
 import { create } from '#utils/Security/RegexCreator';
 import { container } from '@sapphire/framework';
@@ -279,10 +279,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRemoveInitial })
 	@Column('boolean', { name: 'roles.remove-initial', default: false })
 	public rolesRemoveInitial = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role' })
-	@Column('varchar', { name: 'roles.dj', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public rolesDj: string[] = [];
 
 	@Column('jsonb', { name: 'roles.unique-role-sets', default: () => "'[]'::JSONB" })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
@@ -696,34 +692,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	@Column('jsonb', { name: 'trigger.includes', default: () => "'[]'::JSONB" })
 	public triggerIncludes: TriggerIncludes[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicDefaultVolume, minimum: 0, maximum: 200 })
-	@Column('smallint', { name: 'music.default-volume', default: 100 })
-	public musicDefaultVolume = 100;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumDuration, minimum: 0, maximum: hours(12) })
-	@Column('integer', { name: 'music.maximum-duration', default: hours(2) })
-	public musicMaximumDuration = hours(2);
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumEntriesPerUser, minimum: 1, maximum: 250 })
-	@Column('smallint', { name: 'music.maximum-entries-per-user', default: 100 })
-	public musicMaximumEntriesPerUser = 100;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowStreams })
-	@Column('boolean', { name: 'music.allow-streams', default: true })
-	public musicAllowStreams = true;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowedVoiceChannels, type: 'voicechannel' })
-	@Column('varchar', { name: 'music.allowed-voice-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public musicAllowedVoiceChannels: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowedRoles, type: 'role' })
-	@Column('varchar', { name: 'music.allowed-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public musicAllowedRoles: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAutoLeave })
-	@Column('boolean', { name: 'music.auto-leave', default: true })
-	public musicAutoLeave = true;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: 's694594285487652954' })

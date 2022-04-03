@@ -7,7 +7,6 @@ export * as FuzzySearch from './FuzzySearch';
 export * as Globals from './Globals';
 export * as Guilds from './Guilds';
 export * as Misc from './Misc';
-export * as MusicManager from './MusicManager';
 export * as Preconditions from './Preconditions';
 export * as PromptList from './PromptList';
 export * as Serializers from './Serializers';

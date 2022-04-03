@@ -2488,17 +2488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/audio@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@skyra/audio@npm:2.0.0"
-  dependencies:
-    backoff: ^2.5.0
-    tslib: ^2.3.1
-    ws: ^8.2.2
-  checksum: 7d4030c6bc185ae778a7dd7f0964230dddd03868a82057f6875ab6df8de055a77c750bc6522ecb99c422b476eb702a9b926e28ab6d7ecae5a347c13fcd3eccdc
-  languageName: node
-  linkType: hard
-
 "@skyra/char@npm:^1.0.2":
   version: 1.0.2
   resolution: "@skyra/char@npm:1.0.2"
@@ -3436,15 +3425,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"backoff@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "backoff@npm:2.5.0"
-  dependencies:
-    precond: 0.2
-  checksum: ccdcf2a26acd9379d0d4f09e3fb3b7ee34dee94f07ab74d1e38b38f89a3675d9f3cbebb142d9c61c655f4c9eb63f1d6ec28cebeb3dc9215efd8fe7cef92725b9
-  languageName: node
-  linkType: hard
-
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -3463,13 +3443,6 @@ __metadata:
   version: 2.2.0
   resolution: "binary-extensions@npm:2.2.0"
   checksum: ccd267956c58d2315f5d3ea6757cf09863c5fc703e50fbeb13a7dc849b812ef76e3cf9ca8f35a0c48498776a7478d7b4a0418e1e2b8cb9cb9731f2922aaad7f8
-  languageName: node
-  linkType: hard
-
-"binarytf@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "binarytf@npm:2.1.1"
-  checksum: e6a666aaf89fae8002cb14f61729856787d0eb7f4db8d134bfba7c768fe74078488f8738b53bf9bf7300932a2c460f6e3654c57bf8a4dfdc4781fa6430419daf
   languageName: node
   linkType: hard
 
@@ -8900,13 +8873,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"precond@npm:0.2":
-  version: 0.2.3
-  resolution: "precond@npm:0.2.3"
-  checksum: c613e7d68af3e0b43a294a994bf067cc2bc44b03fd17bc4fb133e30617a4f5b49414b08e9b392d52d7c6822d8a71f66a7fe93a8a1e7d02240177202cff3f63ef
-  languageName: node
-  linkType: hard
-
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -9771,7 +9737,6 @@ __metadata:
     "@sentry/integrations": ^6.19.3
     "@sentry/node": ^6.19.3
     "@skyra/ai": ^1.2.0
-    "@skyra/audio": ^2.0.0
     "@skyra/char": ^1.0.2
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
@@ -9790,7 +9755,6 @@ __metadata:
     "@typescript-eslint/parser": ^5.17.0
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.2.0
-    binarytf: ^2.1.1
     bufferutil: ^4.0.6
     canvas-constructor: ^5.0.2
     colorette: ^2.0.16
@@ -11141,7 +11105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.2.2, ws@npm:^8.4.0, ws@npm:^8.5.0":
+"ws@npm:^8.4.0, ws@npm:^8.5.0":
   version: 8.5.0
   resolution: "ws@npm:8.5.0"
   peerDependencies:

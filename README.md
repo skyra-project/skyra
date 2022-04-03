@@ -23,9 +23,8 @@
 -   [`GraphQL-Pokemon`]: Pokemon API.
 -   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
 -   [`InfluxDB`]: Metrics platform.
--   [`Lavalink`]: Audio server.
 -   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
--   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`].
+-   [`Redis`]: Caching for [`Saelem`].
 -   [`Saelem`]: Horoscope API.
 -   [`Star-Wars-Api`]: Star Wars API.
 
@@ -41,8 +40,7 @@ The developer team does not support the idea of other self-hosted instances of S
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
--   [`Lavalink`] as music module, this requires hosting a personal instance of Lavalink (a Java application)
--   [`Redis`] for the music queue, and as a cache for [`Saelem`]
+-   [`Redis`] for [`Saelem`]'s cache
 -   [`InfluxDB`] in order to keep anonymous metrics on bot usage
 -   [`PostgreSQL`] as database
 -   Other external APIs, each requiring their own individual API keys.
@@ -152,7 +150,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
 [`hasteserver`]: https://github.com/skyra-project/docker-images/tree/main/haste-server
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
-[`lavalink`]: https://github.com/freyacodes/lavalink
 [`node.js`]: https://nodejs.org/en/download/current/
 [`outflux`]: https://github.com/skyra-project/outflux
 [`postgresql`]: https://www.postgresql.org/download/

@@ -1,14 +1,11 @@
-import { QueueClient, WebsocketHandler } from '#lib/audio';
 import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
 import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
-import { mainFolder } from '#utils/constants';
 import { Enumerable } from '@sapphire/decorators';
 import { container, SapphireClient } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { Message, WebhookClient } from 'discord.js';
-import { join } from 'node:path';
 import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { envParseBoolean } from './env';
@@ -46,9 +43,6 @@ export class SkyraClient extends SapphireClient {
 	public invites = new InviteStore();
 
 	@Enumerable(false)
-	public readonly audio: QueueClient | null;
-
-	@Enumerable(false)
 	public readonly analytics: AnalyticsData | null;
 
 	@Enumerable(false)
@@ -59,9 +53,6 @@ export class SkyraClient extends SapphireClient {
 
 	@Enumerable(false)
 	public twitch = new Twitch();
-
-	@Enumerable(false)
-	public websocket = new WebsocketHandler();
 
 	public constructor() {
 		super(CLIENT_OPTIONS);
@@ -76,16 +67,6 @@ export class SkyraClient extends SapphireClient {
 		container.schedule = this.schedules;
 
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
-
-		if (envParseBoolean('AUDIO_ENABLED')) {
-			this.audio = new QueueClient(this.options.audio!, (guildId, packet) => {
-				const guild = this.guilds.cache.get(guildId);
-				return Promise.resolve(guild?.shard.send(packet));
-			});
-			this.stores.registerPath(join(mainFolder, 'audio'));
-		} else {
-			this.audio = null;
-		}
 	}
 
 	public async login(token?: string) {

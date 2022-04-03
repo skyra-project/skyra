@@ -12,5 +12,3 @@ export interface DMMessage extends Message {
 	readonly guild: null;
 	readonly member: null;
 }
-
-export type MessageAcknowledgeable = TextChannel | GuildMessage;

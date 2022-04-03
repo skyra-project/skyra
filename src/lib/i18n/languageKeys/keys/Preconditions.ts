@@ -17,17 +17,7 @@ export const UserPermissions = FT<{ missing: string[] }>('preconditions:userPerm
 
 // Skyra:
 export const Administrator = T('preconditions:administrator');
-export const DJ = T('preconditions:dj');
 export const Moderator = T('preconditions:moderator');
-export const MusicBothVoiceChannel = T('preconditions:musicBothVoiceChannel');
-export const MusicBotVoiceChannel = T('preconditions:musicBotVoiceChannel');
-export const MusicDjMember = T('preconditions:musicDjMember');
-export const MusicNothingPlaying = T('preconditions:musicNothingPlaying');
-export const MusicNotPlaying = T('preconditions:musicNotPlaying');
-export const MusicPaused = T('preconditions:musicPaused');
-export const MusicQueueEmpty = T('preconditions:musicQueueEmpty');
-export const MusicRoleNotAllowed = T('preconditions:musicRoleNotAllowed');
-export const MusicUserVoiceChannel = T('preconditions:musicUserVoiceChannel');
 export const NewsOnly = T('preconditions:newsOnly');
 export const PermissionNodes = T('preconditions:permissionNodes');
 export const ServerOwner = T('preconditions:serverOwner');

@@ -89,6 +89,7 @@ VALUES
 	(1646162907066, 'V63VersionSevenRemoveStarboard1646162907066'),
 	(1646163533583, 'V64VersionSevenRemoveSpouses1646163533583'),
 	(1646178098086, 'V65VersionSevenRemoveStaleSchedules1646178098086'),
-	(1647241680539, 'V66ExpandGuildSubscriptionMessage1647241680539');
+	(1647241680539, 'V66ExpandGuildSubscriptionMessage1647241680539'),
+	(1648974657502, 'V67RemoveAudioSettings1648974657502');
 
 COMMIT;

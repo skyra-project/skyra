@@ -52,14 +52,6 @@ export interface SkyraEnv {
 	REDIS_DB: IntegerString;
 	REDIS_PASSWORD: string;
 
-	AUDIO_ENABLED: BooleanString;
-	AUDIO_HOST: string;
-	AUDIO_PORT: IntegerString;
-	AUDIO_PASSWORD: string;
-	AUDIO_RESUME_KEY: string;
-	AUDIO_RESUME_TIMEOUT: IntegerString;
-	AUDIO_DASHBOARD_WSS_PORT: IntegerString;
-
 	INFLUX_ENABLED: BooleanString;
 	INFLUX_URL: string;
 	INFLUX_TOKEN: string;

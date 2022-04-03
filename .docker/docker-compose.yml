@@ -31,17 +31,6 @@ services:
     volumes:
       - 'influx-data:/var/lib/influxdb2'
 
-  lavalink:
-    container_name: lavalink
-    depends_on:
-      - redis
-    image: 'skyrabot/lavalink:latest'
-    networks:
-      - skyra
-    ports:
-      - '2333:2333'
-    restart: always
-
   outflux:
     container_name: outflux
     depends_on:
@@ -123,7 +112,6 @@ services:
     depends_on:
       - hasteserver
       - influx
-      - lavalink
       - outflux
       - redis
       - saelem

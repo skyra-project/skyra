@@ -1,8 +1,0 @@
-{
-	"fetchNoArguments": "¡Necesito que me dé el nombre de una canción!",
-	"fetchNoMatches": "Lo siento, ¡pero no he podido encontrar la pista!",
-	"importQueueError": "{{REDCROSS}} Lo siento, pero tengo problemas al intentar importar esa lista de reproducción. ¿Estás seguro/a de que es de mi tabla de DJ?",
-	"importQueueNotFound": "{{REDCROSS}} ¡Necesito una cola para importar!",
-	"stuck": "{{LOADING}} Espera, he tenido un pequeño problema, ¡Volveré en: {{milliseconds, duration}}!",
-	"tooManySongs": "{{REDCROSS}} ¡Oye, estás añadiendo más canciones de las permitidas!"
-}

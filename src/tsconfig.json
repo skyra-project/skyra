@@ -7,7 +7,6 @@
 		"baseUrl": ".",
 		"paths": {
 			"#utils/*": ["lib/util/*"],
-			"#lib/audio": ["audio/lib"],
 			"#lib/*": ["lib/*"],
 			"#languages": ["languages/index"],
 			"#root/*": ["*"]

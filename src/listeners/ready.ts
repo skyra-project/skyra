@@ -18,8 +18,6 @@ export class UserListener extends Listener {
 				Slotmachine.init().catch((error) => this.container.logger.fatal(error)),
 				// Initialize WheelOfFortune data
 				WheelOfFortune.init().catch((error) => this.container.logger.fatal(error)),
-				// Connect Lavalink if configured to do so
-				this.connectLavalink(),
 				this.initAnalytics()
 			]);
 
@@ -61,13 +59,6 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private async connectLavalink() {
-		if (envParseBoolean('AUDIO_ENABLED')) {
-			await this.container.client.audio!.connect();
-			await this.container.client.audio!.queues.start();
-		}
-	}
-
 	private printBanner() {
 		const { client } = this.container;
 		const success = green('+');
@@ -105,9 +96,9 @@ ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
 ${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
-${line11} ${pad}[${client.audio?.queues?.client.connected ? success : failed}] Audio
-${line12} ${pad}[${success}] Moderation
-${line13} ${pad}[${success}] Social & Leaderboards
+${line11} ${pad}[${success}] Moderation
+${line12} ${pad}[${success}] Social & Leaderboards
+${line13}
 ${line14}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);

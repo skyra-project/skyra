@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildTextBasedChannelTypes, TextBasedChannelTypes, VoiceBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import type { GuildTextBasedChannelTypes, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { UserError } from '@sapphire/framework';
-import { isNullish, Nullish } from '@sapphire/utilities';
 import type { Message, ThreadChannel } from 'discord.js';
 
 /**
@@ -15,29 +14,6 @@ export function assertNonThread<T extends TextBasedChannelTypes>(channel: T): Ex
 	}
 
 	return channel as Exclude<T, ThreadChannel>;
-}
-
-export function getListeners(channel: VoiceBasedChannelTypes | Nullish): string[] {
-	if (isNullish(channel)) return [];
-
-	const members: string[] = [];
-	for (const [id, member] of channel.members.entries()) {
-		if (member.user.bot || member.voice.deaf) continue;
-		members.push(id);
-	}
-
-	return members;
-}
-
-export function getListenerCount(channel: VoiceBasedChannelTypes | Nullish): number {
-	if (isNullish(channel)) return 0;
-
-	let count = 0;
-	for (const member of channel.members.values()) {
-		if (!member.user.bot && !member.voice.deaf) ++count;
-	}
-
-	return count;
 }
 
 export interface SnipedMessage {

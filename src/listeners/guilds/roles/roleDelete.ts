@@ -24,7 +24,6 @@ export class UserListener extends Listener {
 			settings.rolesModerator = settings.rolesModerator.filter((rm) => rm !== role.id);
 			settings.rolesAdmin = settings.rolesAdmin.filter((rm) => rm !== role.id);
 			settings.rolesPublic = settings.rolesPublic.filter((rm) => rm !== role.id);
-			settings.rolesDj = settings.rolesDj.filter((rm) => rm !== role.id);
 
 			settings.selfmodAttachmentsIgnoredRoles = settings.selfmodAttachmentsIgnoredRoles.filter((rm) => rm !== role.id);
 			settings.selfmodCapitalsIgnoredRoles = settings.selfmodCapitalsIgnoredRoles.filter((rm) => rm !== role.id);

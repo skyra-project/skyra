@@ -7,7 +7,6 @@
 	"main": "./dist/Skyra.js",
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
-		"#lib/audio": "./dist/audio/lib/index.js",
 		"#lib/customCommands": "./dist/lib/customCommands/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/entities": "./dist/lib/database/entities/index.js",
@@ -78,7 +77,6 @@
 		"@sentry/integrations": "^6.19.3",
 		"@sentry/node": "^6.19.3",
 		"@skyra/ai": "^1.2.0",
-		"@skyra/audio": "^2.0.0",
 		"@skyra/char": "^1.0.2",
 		"@skyra/gifenc": "^1.0.0",
 		"@skyra/jaro-winkler": "^1.1.0",

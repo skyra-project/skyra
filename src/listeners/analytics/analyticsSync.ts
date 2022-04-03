@@ -14,7 +14,6 @@ export class UserAnalyticsEvent extends AnalyticsListener {
 		this.writePoints([
 			this.syncGuilds(guilds),
 			this.syncUsers(users),
-			this.syncVoiceConnections(),
 			this.syncEconomy(economyHealth.total_money, EconomyType.Money),
 			this.syncEconomy(economyHealth.total_vault, EconomyType.Vault),
 			this.syncTwitchSubscriptions(twitchSubscriptionCount),
@@ -39,15 +38,6 @@ export class UserAnalyticsEvent extends AnalyticsListener {
 				.tag(Tags.Action, Actions.Sync)
 				// TODO: Adjust for traditional sharding
 				.intField('value', value)
-		);
-	}
-
-	private syncVoiceConnections() {
-		return (
-			new Point(Points.VoiceConnections)
-				.tag(Tags.Action, Actions.Sync)
-				// TODO: Adjust for traditional sharding
-				.intField('value', this.container.client.audio?.queues.reduce((acc, queue) => (queue.player.playing ? acc + 1 : acc), 0) ?? 0)
 		);
 	}
 

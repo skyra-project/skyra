@@ -8,6 +8,5 @@ export class UserListener extends Listener {
 		if (data.unavailable) return;
 
 		this.container.settings.guilds.delete(data.id);
-		this.container.client.audio?.queues.delete(data.id);
 	}
 }

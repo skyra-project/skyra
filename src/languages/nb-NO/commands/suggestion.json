@@ -63,6 +63,8 @@
 	"resolveSuggestionMessageNotFound": "",
 	"resolveSuggestionIdNotFound": "",
 	"resolveSuggestionDefaultComment": "",
+	"resolveSuggestionTooManyFields": "",
+	"resolveSuggestionTooManyCharacters": "",
 	"resolveSuggestionAuthorAdmin": "",
 	"resolveSuggestionAuthorModerator": "",
 	"resolveSuggestionActions": {

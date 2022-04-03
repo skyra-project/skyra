@@ -3446,13 +3446,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"binarytf@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "binarytf@npm:2.1.1"
-  checksum: e6a666aaf89fae8002cb14f61729856787d0eb7f4db8d134bfba7c768fe74078488f8738b53bf9bf7300932a2c460f6e3654c57bf8a4dfdc4781fa6430419daf
-  languageName: node
-  linkType: hard
-
 "bindings@npm:^1.5.0":
   version: 1.5.0
   resolution: "bindings@npm:1.5.0"
@@ -9762,7 +9755,6 @@ __metadata:
     "@typescript-eslint/parser": ^5.17.0
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.2.0
-    binarytf: ^2.1.1
     bufferutil: ^4.0.6
     canvas-constructor: ^5.0.2
     colorette: ^2.0.16

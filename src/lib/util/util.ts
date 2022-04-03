@@ -51,22 +51,6 @@ const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 /**
- * Audio extensions:
- * - wav
- * - mp3
- * - ogg
- */
-export const AUDIO_EXTENSION = /\.(wav|mp3|ogg)$/i;
-
-/**
- * Video extensions:
- * - gifv
- * - webm
- * - mp4
- */
-export const VIDEO_EXTENSION = /\.(gifv|webm|mp4)$/i;
-
-/**
  * Media extensions
  * - ...Image extensions
  * - ...Audio extensions

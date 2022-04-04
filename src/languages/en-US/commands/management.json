@@ -729,7 +729,7 @@
 			"sh/show",
 			""
 		],
-		"extendedHelp": "The inviteMode command manages the behavior of the word filter system.",
+		"extendedHelp": "The inviteMode command manages the behavior of the invite filter system.",
 		"explainedUsage": [
 			[
 				"Enable",

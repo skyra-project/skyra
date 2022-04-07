@@ -164,24 +164,6 @@
 	"defineNotfound": "I could not find a definition for this word.",
 	"definePronounciation": "Pronunciation",
 	"defineUnknown": "Unknown",
-	"duckDuckGoDescription": "Search the Internet with DuckDuckGo.",
-	"duckDuckGoExtended": {
-		"usages": [
-			"Query"
-		],
-		"explainedUsage": [
-			[
-				"Query",
-				"The query to ask DuckDuckGo"
-			]
-		],
-		"extendedHelp": "This uses the alternative search enginge DuckDuckGo to search the web",
-		"reminder": "If you want to search google use `Skyra, google`"
-	},
-	"duckDuckGoLookalso": "Related to this topic:",
-	"duckDuckGoNotfound": "I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.",
-	"duckDuckGoUnknownError": "I am sorry, but DuckDuckGo API replied me with a message I can't understand...",
-	"duckDuckGoPoweredBy": "Powered by DuckDuckGo API",
 	"emojiCustom": "→ `Emoji ::` **{{emoji}}**\n→ `Type  ::` **Custom**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "Get info on an emoji.",
 	"emojiExtended": {

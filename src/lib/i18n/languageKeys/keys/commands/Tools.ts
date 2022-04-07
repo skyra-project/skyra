@@ -117,8 +117,6 @@ export const ShowsTitles = T<{
 	genres: string;
 }>('commands/tools:showsTitles');
 export const ShowsData = T<{ variableRuntime: string; unknownUserScore: string; noGenres: string }>('commands/tools:showsData');
-export const DuckDuckGoDescription = T('commands/tools:duckDuckGoDescription');
-export const DuckDuckGoExtended = T<LanguageHelpDisplayOptions>('commands/tools:duckDuckGoExtended');
 export const PriceDescription = T('commands/tools:priceDescription');
 export const PriceExtended = T<LanguageHelpDisplayOptions>('commands/tools:priceExtended');
 export const PollDescription = T('commands/tools:pollDescription');
@@ -159,10 +157,6 @@ export const EmotesTitle = T('commands/tools:emotesTitle');
 export const EmoteNoEmotes = T('commands/tools:emotesNoEmotes');
 export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
 export const PriceCurrencyNotFound = T('commands/tools:priceCurrencyNotFound');
-export const DuckDuckGoNotFound = T('commands/tools:duckDuckGoNotfound');
-export const DuckDuckGoUnknownError = T('commands/tools:duckDuckGoUnknownError');
-export const DuckDuckGoLookAlso = T('commands/tools:duckDuckGoLookalso');
-export const DuckDuckGoPoweredBy = T('commands/tools:duckDuckGoPoweredBy');
 export const WhoisMemberTitles = T<{ joined: string; createdAt: string }>('commands/tools:whoisMemberTitles');
 export const WhoisMemberFields = FT<
 	{

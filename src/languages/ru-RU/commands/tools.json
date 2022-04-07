@@ -164,24 +164,6 @@
 	"defineNotfound": "",
 	"definePronounciation": "Произношение",
 	"defineUnknown": "",
-	"duckDuckGoDescription": "",
-	"duckDuckGoExtended": {
-		"usages": [
-			"Запрос"
-		],
-		"explainedUsage": [
-			[
-				"Запрос",
-				""
-			]
-		],
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"duckDuckGoLookalso": "",
-	"duckDuckGoNotfound": "",
-	"duckDuckGoUnknownError": "",
-	"duckDuckGoPoweredBy": "",
 	"emojiCustom": "→ `Эмодзи ::` **{{emoji}}**\n→ `Тип  ::` **Пользовательский**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "",
 	"emojiExtended": {

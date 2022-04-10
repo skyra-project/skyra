@@ -9782,7 +9782,7 @@ __metadata:
     pretty-quick: ^3.1.3
     skia-canvas: ^0.9.29
     ts-node: ^10.7.0
-    tsc-watch: ^4.6.2
+    tsc-watch: ^5.0.3
     tslib: 1.11.2
     typeorm: 0.2.28
     typeorm-naming-strategies: ^2.0.0
@@ -10551,9 +10551,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsc-watch@npm:^4.6.2":
-  version: 4.6.2
-  resolution: "tsc-watch@npm:4.6.2"
+"tsc-watch@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "tsc-watch@npm:5.0.3"
   dependencies:
     cross-spawn: ^7.0.3
     node-cleanup: ^2.1.2
@@ -10564,7 +10564,7 @@ __metadata:
     typescript: "*"
   bin:
     tsc-watch: index.js
-  checksum: 36cf74d45c7c32d2db70f784d153d36c5a010d0d9e138a835c6e7d804a8593f6784688a64deb818e74f84c622c4b73695d1380630e7b24a24ca7d96aeeea5ea5
+  checksum: abd63295dd5fda098a45d27912031e6c35a95f1aa20d7a86d6ad1469580400069e6476f2ffd4b88e37886d016443e60b1ae2dbcaf756e324efc67d0fa713fb15
   languageName: node
   linkType: hard
 

@@ -17,7 +17,6 @@ export const ExceededLengthChooseOutput = FT<{ output: string[] }>('system:excee
 export const ExceededLengthOutputType = FT<{ type: string }>('system:exceededLengthOutputType');
 export const ExceededLengthOutputTime = FT<{ time: string }>('system:exceededLengthOutputTime');
 export const ExternalServerError = T('system:externalServerError');
-export const PokedexExternalResource = T('system:pokedexExternalResource');
 export const HelpTitles = T<{
 	aliases: string;
 	usages: string;

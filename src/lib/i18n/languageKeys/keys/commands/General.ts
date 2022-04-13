@@ -26,3 +26,4 @@ export const PingPong = FT<{ diff: number; ping: number }, string>('commands/gen
 export const V7Description = T('commands/general:v7Description');
 export const V7Extended = T<LanguageHelpDisplayOptions>('commands/general:v7Extended');
 export const V7Message = FT<{ command: string }>('commands/general:v7Message');
+export const V7PokemonMessage = FT<{ command: string }>('commands/general:v7PokemonMessage');

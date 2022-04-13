@@ -62,7 +62,6 @@ export interface SkyraEnv {
 	SAELEM_URL: string;
 
 	OUTFLUX_URL: string;
-	GRAPHQL_POKEMON_URL: string;
 	GRAPHQL_STARWARS_URL: string;
 	HASTEBIN_POST_URL: string;
 	HASTEBIN_GET_URL: string;

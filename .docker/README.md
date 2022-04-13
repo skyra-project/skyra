@@ -6,10 +6,6 @@ they would be ran. In order to easily control the docker-compose file there is a
 
 Skyra currently has the following microservices that can be dockerized:
 
--   GraphQL-Pokémon
-    -   Service name in docker-compose: `pokedex`
-    -   Image used: `favware/graphql-pokemon:latest`
-    -   For more information see [favware/graphql-pokemon]
 -   PostgreSQL Database
     -   Service name in docker-compose: `postgres`
     -   Image used: `skyrabot/postgres:latest`
@@ -51,7 +47,6 @@ Skyra currently has the following microservices that can be dockerized:
 [`configs`]: ./configs/
 [`redis.conf`]: ./configs/redis.conf
 [`redis.local.conf`]: ./configs/redis.local.conf
-[favware/graphql-pokemon]: https://github.com/favware/graphql-pokemon
 [influxdb]: https://v2.docs.influxdata.com/v2.0/get-started/#download-and-run-influxdb-v2-0-beta
 [locahost:8285]: http://localhost:8285
 [redis]: https://hub.docker.com/_/redis

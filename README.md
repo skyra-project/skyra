@@ -20,7 +20,6 @@
 
 ### Optional additions
 
--   [`GraphQL-Pokemon`]: Pokemon API.
 -   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
 -   [`InfluxDB`]: Metrics platform.
 -   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
@@ -147,7 +146,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 [`.net`]: https://docs.microsoft.com/en-gb/dotnet/
 [`entity framework`]: https://docs.microsoft.com/en-gb/ef/
-[`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
 [`hasteserver`]: https://github.com/skyra-project/docker-images/tree/main/haste-server
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
 [`node.js`]: https://nodejs.org/en/download/current/

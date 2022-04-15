@@ -32,8 +32,6 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/lib/games/Slotmachine.ts',
 		'<rootDir>/src/lib/games/tic-tac-toe',
 		'<rootDir>/src/lib/games/WheelOfFortune.ts',
-		'<rootDir>/src/lib/grpc',
-		'<rootDir>/src/lib/grpc/generated',
 		'<rootDir>/src/lib/i18n/structures/Augments.d.ts',
 		'<rootDir>/src/lib/moderation',
 		'<rootDir>/src/lib/setup/PaginatedMessage.ts',

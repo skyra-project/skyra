@@ -1,9 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const GrowthDescription = T('commands/general:growthDescription');
-export const GrowthExtended = T<LanguageHelpDisplayOptions>('commands/general:growthExtended');
-export const GrowthOutfluxError = FT<{ diff: number; ping: number }, string>('commands/general:growthOutfluxError');
 export const HelpAllFlag = FT<{ prefix: string }, string>('commands/general:helpAllFlag');
 export const HelpCommandCount = FT<{ count: number }, string>('commands/general:helpCommandCount');
 export const HelpData = FT<{ titleDescription: string; footerName: string }, { title: string; footer: string }>('commands/general:helpData');

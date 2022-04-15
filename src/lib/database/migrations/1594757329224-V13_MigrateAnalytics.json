@@ -560,55 +560,6 @@
 		}
 	],
 	[
-		"ability",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"flavors",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"item",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"learn",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"move",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"pokedex",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
-		"type",
-		{
-			"category": "Pokemon",
-			"subCategory": "General"
-		}
-	],
-	[
 		"autorole",
 		{
 			"category": "Social",

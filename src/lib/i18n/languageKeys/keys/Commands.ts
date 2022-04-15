@@ -9,7 +9,6 @@ export * as Social from './commands/Levelling';
 export * as Management from './commands/Management';
 export * as Misc from './commands/Misc';
 export * as Moderation from './commands/Moderation';
-export * as Pokemon from './commands/Pokemon';
 export * as StarWars from './commands/StarWars';
 export * as Suggestions from './commands/Suggestions';
 export * as System from './commands/System';

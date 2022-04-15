@@ -34,7 +34,6 @@
 	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
 	"noResults": "No pude encontrar resultados para esa consulta",
 	"parseError": "{{REDCROSS}} No he podido procesar los datos que me has proporcionado, ¡lo siento~!",
-	"pokedexExternalResource": "Recursos Externos",
 	"poweredByWeebSh": "Hecho posible gracias a weeb.sh",
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
 	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?",

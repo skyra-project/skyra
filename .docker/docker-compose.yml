@@ -47,17 +47,6 @@ services:
       - '8286:8286'
     restart: always
 
-  pokedex:
-    container_name: pokedex
-    image: 'favware/graphql-pokemon:latest'
-    environment:
-      PORT: 8288
-    networks:
-      - skyra
-    ports:
-      - '8288:8288'
-    restart: always
-
   swapi:
     container_name: star-wars-api
     image: 'skyrabot/star-wars-api:latest'

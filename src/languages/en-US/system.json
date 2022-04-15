@@ -34,7 +34,6 @@
 	"messagePromptTimeout": "The prompt has timed out.",
 	"noResults": "I wasn't able to find any results for that query",
 	"parseError": "{{REDCROSS}} I failed to process the data I was given, sorry~!",
-	"pokedexExternalResource": "External Resources",
 	"poweredByWeebSh": "Powered by weeb.sh",
 	"prefixReminder": "The prefix in this server is set to: `{{prefix}}`",
 	"queryFail": "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",

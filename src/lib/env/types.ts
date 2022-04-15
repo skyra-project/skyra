@@ -28,8 +28,6 @@ export interface SkyraEnv {
 	API_PORT: IntegerString;
 	API_PREFIX: string;
 
-	GRPC_ADDRESS: string;
-
 	OAUTH_COOKIE: string;
 	OAUTH_DOMAIN_OVERWRITE: string;
 	OAUTH_REDIRECT_URI: string;
@@ -44,7 +42,6 @@ export interface SkyraEnv {
 	PGSQL_DATABASE_PORT: IntegerString;
 	PGSQL_DATABASE_HOST: string;
 	TYPEORM_DEBUG_LOGS: BooleanString;
-	GRPC_ENABLED: BooleanString;
 	REDIS_HOST: string;
 
 	REDIS_ENABLED: BooleanString;

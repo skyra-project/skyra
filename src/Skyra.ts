@@ -30,9 +30,6 @@ async function main() {
 	}
 
 	try {
-		// Wait for gRPC to connect
-		await container.grpc.start();
-
 		// Connect to the Database
 		container.db = await DbSet.connect();
 

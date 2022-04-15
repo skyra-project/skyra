@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
-import type { ModelStore } from '#lib/grpc';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, ColorHandler, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
@@ -51,7 +50,6 @@ declare module 'discord.js' {
 declare module '@sapphire/pieces' {
 	interface Container {
 		db: DbSet;
-		grpc: ModelStore;
 		schedule: ScheduleManager;
 		settings: SettingsManager;
 		workers: WorkerManager;

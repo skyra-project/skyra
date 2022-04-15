@@ -60,8 +60,6 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
-      - name: Run gRPC generator script
-        run: yarn build:grpc
       - name: Run unit tests
         run: yarn test --coverage
       - name: Store code coverage report

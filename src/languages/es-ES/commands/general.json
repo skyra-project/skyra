@@ -64,5 +64,6 @@
 	"v7Extended": {
 		"extendedHelp": ""
 	},
-	"v7Message": ""
+	"v7Message": "",
+	"v7PokemonMessage": ""
 }

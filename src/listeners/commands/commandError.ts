@@ -1,4 +1,3 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraCommand } from '#lib/structures';
@@ -8,6 +7,7 @@ import { sendTemporaryMessage } from '#utils/functions';
 import { Args, ArgumentError, Command, CommandErrorPayload, Events, Listener, UserError } from '@sapphire/framework';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { captureException } from '@sentry/minimal';
+import { envIsDefined } from '@skyra/env-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';

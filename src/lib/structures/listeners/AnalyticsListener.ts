@@ -1,7 +1,7 @@
-import { envParseBoolean } from '#lib/env';
 import { Tags } from '#lib/types/AnalyticsSchema';
 import type { Point } from '@influxdata/influxdb-client';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
+import { envParseBoolean } from '@skyra/env-utilities';
 
 export abstract class AnalyticsListener extends Listener {
 	public tags: [Tags, string][] = [];

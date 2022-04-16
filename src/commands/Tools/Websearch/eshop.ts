@@ -1,4 +1,3 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { sendLoadingMessage } from '#utils/util';
@@ -7,6 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, toTitleCase } from '@sapphire/utilities';
+import { envIsDefined } from '@skyra/env-utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import type { TFunction } from 'i18next';

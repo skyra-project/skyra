@@ -1,8 +1,8 @@
-import { envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { UserError } from '@sapphire/framework';
 import { MimeTypes } from '@sapphire/plugin-api';
+import { envParseString } from '@skyra/env-utilities';
 import type {
 	Query,
 	QueryGetFuzzyFilmArgs,

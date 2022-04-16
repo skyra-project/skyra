@@ -1,10 +1,10 @@
-import { envParseBoolean } from '#lib/env';
 import { Slotmachine } from '#lib/games/Slotmachine';
 import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
+import { envParseBoolean } from '@skyra/env-utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
 @ApplyOptions<ListenerOptions>({ once: true })

@@ -1,8 +1,7 @@
 // Config must be the first to be loaded, as it sets the env:
 import '#root/config';
-
 // Import everything else:
-import { envParseBoolean, envParseInteger, envParseString } from '#lib/env';
+import { envParseBoolean, envParseInteger, envParseString } from '@skyra/env-utilities';
 import { join } from 'node:path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';

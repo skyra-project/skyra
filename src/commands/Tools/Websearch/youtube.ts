@@ -1,10 +1,10 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Args, IArgument } from '@sapphire/framework';
+import { envIsDefined } from '@skyra/env-utilities';
 import type { Message, MessageSelectOptionData } from 'discord.js';
 import { decode } from 'he';
 import { URL } from 'node:url';

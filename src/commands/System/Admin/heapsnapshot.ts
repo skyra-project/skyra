@@ -23,7 +23,6 @@
  * SOFTWARE.
  */
 
-import { envParseString } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
@@ -32,6 +31,7 @@ import { bold } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { reply, send } from '@sapphire/plugin-editable-commands';
 import { filterNullish, inlineCodeBlock } from '@sapphire/utilities';
+import { envParseString } from '@skyra/env-utilities';
 import type { Message } from 'discord.js';
 import { join } from 'node:path';
 import { writeHeapSnapshot } from 'node:v8';

@@ -1,4 +1,4 @@
-import { envParseInteger } from '#lib/env';
+import { envParseInteger } from '@skyra/env-utilities';
 import { cpus } from 'node:os';
 import type { IncomingPayload, IncomingRunRegExpPayload, NoId, OutgoingNoContentPayload, OutgoingRegExpMatchPayload } from './types';
 import { WorkerHandler } from './WorkerHandler';

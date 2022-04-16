@@ -1,10 +1,10 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { envIsDefined } from '@skyra/env-utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { MessageEmbed } from 'discord.js';
 import { URL } from 'node:url';

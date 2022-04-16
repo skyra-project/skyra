@@ -1,10 +1,6 @@
-// Unless explicitly defined, set NODE_ENV as development:
-process.env.NODE_ENV ??= 'development';
-
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
-import { envParseArray, envParseBoolean, envParseInteger, envParseString } from '#lib/env';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHandler } from '#root/languages/index';
@@ -15,6 +11,7 @@ import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
+import { envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import type { ExcludeEnum } from 'discord.js';
 import {
 	Options,
@@ -27,15 +24,11 @@ import {
 	type WebhookClientData
 } from 'discord.js';
 import type { ActivityTypes } from 'discord.js/typings/enums';
-import { config } from 'dotenv-cra';
 import i18next, { type FormatFunction, type InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 
 // Read config:
-config({
-	debug: process.env.DOTENV_DEBUG_ENABLED ? envParseBoolean('DOTENV_DEBUG_ENABLED') : undefined,
-	path: join(rootFolder, 'src', '.env')
-});
+setup(join(rootFolder, 'src', '.env'));
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
 export const SISTER_CLIENTS = envParseArray('SISTER_CLIENTS');

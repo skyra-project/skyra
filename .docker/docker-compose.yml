@@ -31,22 +31,6 @@ services:
     volumes:
       - 'influx-data:/var/lib/influxdb2'
 
-  outflux:
-    container_name: outflux
-    depends_on:
-      - influx
-    environment:
-      INFLUX_BASE_URL: 'http://influx:8086'
-      INFLUX_LOGIN_USERNAME: 'admin'
-      INFLUX_LOGIN_PASSWORD: 'influxadmin'
-      INFLUX_ORG_ID: 'Skyra-Project'
-    image: 'skyrabot/outflux:latest'
-    networks:
-      - skyra
-    ports:
-      - '8286:8286'
-    restart: always
-
   swapi:
     container_name: star-wars-api
     image: 'skyrabot/star-wars-api:latest'
@@ -101,7 +85,6 @@ services:
     depends_on:
       - hasteserver
       - influx
-      - outflux
       - redis
       - saelem
       - postgres

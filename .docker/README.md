@@ -35,10 +35,6 @@ Skyra currently has the following microservices that can be dockerized:
     -   Service name in docker-compose: `hasteserver`
     -   Image used: `skyrabot/haste-server:latest`
     -   For more information see [skyra-project/docker-images]
--   Outflux
-    -   Service name in docker-compose: `outflux`
-    -   Image used: `skyrabot/outflux:latest`
-    -   For more information see [skyra-project/outflux]
 
 <!-- Link dump -->
 
@@ -52,5 +48,4 @@ Skyra currently has the following microservices that can be dockerized:
 [redis]: https://hub.docker.com/_/redis
 [skyra-project/docker-images]: https://github.com/skyra-project/docker-images
 [skyra-project/saelem]: https://github.com/skyra-project/saelem
-[skyra-project/outflux]: https://github.com/skyra-project/outflux
 [the config file]: ../src/config.ts

@@ -22,7 +22,6 @@
 
 -   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
 -   [`InfluxDB`]: Metrics platform.
--   [`Outflux`]: For exposing [`InfluxDB`] metrics to Skyra users.
 -   [`Redis`]: Caching for [`Saelem`].
 -   [`Saelem`]: Horoscope API.
 -   [`Star-Wars-Api`]: Star Wars API.
@@ -149,7 +148,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`hasteserver`]: https://github.com/skyra-project/docker-images/tree/main/haste-server
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
 [`node.js`]: https://nodejs.org/en/download/current/
-[`outflux`]: https://github.com/skyra-project/outflux
 [`postgresql`]: https://www.postgresql.org/download/
 [`redis`]: https://redis.io
 [`saelem`]: https://github.com/skyra-project/saelem

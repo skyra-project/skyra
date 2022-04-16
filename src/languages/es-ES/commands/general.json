@@ -1,10 +1,4 @@
 {
-	"growthDescription": "Muestra mi crecimiento en las últimas 24 horas.",
-	"growthExtended": {
-		"extendedHelp": "Cada día llego a más usuarios y servidores. ¿Alguna vez has querido ver cómo va ese crecimiento? Puedes usar este comando para averiguarlo.",
-		"reminder": "La información sólo se actualizará cada 12 horas."
-	},
-	"growthOutfluxError": "No se pudo solicitar información del crecimiento. Inténtalo de nuevo en unas horas.",
 	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
 	"helpCommandCount_one": "",
 	"helpCommandCount_other": "",

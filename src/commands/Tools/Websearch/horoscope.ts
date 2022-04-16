@@ -1,4 +1,3 @@
-import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
@@ -7,6 +6,7 @@ import { createPick } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import { envParseBoolean } from '@skyra/env-utilities';
 import { Days, Sunsigns } from '@skyra/saelem';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';

@@ -2333,6 +2333,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skyra/env-utilities@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "@skyra/env-utilities@npm:0.0.7"
+  dependencies:
+    dotenv-cra: ^3.0.2
+  checksum: 1aa83387feabf4732a4437a2b65ce21551d9b5d14aef4a755b12a57cd6aee22d4e14aef5789bf646fb2e4bff17c0e6a8ce8daf40a0a3555cad0f8d4ac395c389
+  languageName: node
+  linkType: hard
+
 "@skyra/gifenc@npm:^1.0.0":
   version: 1.0.0
   resolution: "@skyra/gifenc@npm:1.0.0"
@@ -9463,6 +9472,7 @@ __metadata:
     "@sentry/node": ^6.19.6
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.2
+    "@skyra/env-utilities": ^0.0.7
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
     "@skyra/saelem": ^3.0.25
@@ -9487,7 +9497,6 @@ __metadata:
     diff: ^5.0.0
     discord-api-types: 0.26.1
     discord.js: ^13.6.0
-    dotenv-cra: ^3.0.2
     eslint: ^8.13.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.0.0

@@ -1,5 +1,4 @@
 import { GuildSubscriptionEntity, TwitchSubscriptionEntity } from '#lib/database';
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -12,6 +11,7 @@ import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework'
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
+import { envIsDefined } from '@skyra/env-utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Guild, MessageEmbed } from 'discord.js';
 

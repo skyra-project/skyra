@@ -1,9 +1,9 @@
-import { envParseBoolean } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import { envParseBoolean } from '@skyra/env-utilities';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

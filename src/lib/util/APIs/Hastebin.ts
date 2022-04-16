@@ -1,5 +1,5 @@
-import { envParseString } from '#lib/env';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
+import { envParseString } from '@skyra/env-utilities';
 
 interface HastebinResponse {
 	key: string;

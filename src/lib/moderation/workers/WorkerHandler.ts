@@ -1,7 +1,7 @@
-import { envParseString } from '#lib/env';
 import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
+import { envParseString } from '@skyra/env-utilities';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'node:events';
 import { join } from 'node:path';

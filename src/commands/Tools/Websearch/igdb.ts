@@ -1,4 +1,3 @@
-import { envIsDefined } from '#lib/env';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { AgeRatingRatingEnum, Company, Game } from '#lib/types/definitions/Igdb';
@@ -8,6 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
+import { envIsDefined } from '@skyra/env-utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
 

@@ -1,10 +1,4 @@
 {
-	"growthDescription": "",
-	"growthExtended": {
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"growthOutfluxError": "",
 	"helpAllFlag": "",
 	"helpCommandCount_one": "",
 	"helpCommandCount_other": "",

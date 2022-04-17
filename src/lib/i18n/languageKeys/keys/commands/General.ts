@@ -24,3 +24,28 @@ export const V7Description = T('commands/general:v7Description');
 export const V7Extended = T<LanguageHelpDisplayOptions>('commands/general:v7Extended');
 export const V7Message = FT<{ command: string }>('commands/general:v7Message');
 export const V7PokemonMessage = FT<{ command: string }>('commands/general:v7PokemonMessage');
+export const InfoTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/general:infoTitles');
+export const InfoFields = FT<{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage }, { stats: string; uptime: string; serverUsage: string }>(
+	'commands/general:infoFields'
+);
+
+export interface StatsGeneral {
+	channels: number;
+	guilds: number;
+	nodeJs: string;
+	users: number;
+	djsVersion: string;
+	sapphireVersion: string;
+}
+
+export interface StatsUptime {
+	client: string;
+	host: string;
+	total: string;
+}
+
+export interface StatsUsage {
+	cpuLoad: string;
+	ramTotal: number;
+	ramUsed: number;
+}

@@ -1,6 +1,5 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { StatsGeneral, StatsUptime, StatsUsage } from '#root/commands/System/stats';
 
 export const Disable = FT<{ type: string; name: string }, string>('commands/system:disable');
 export const DisableDescription = T<string>('commands/system:disableDescription');
@@ -33,13 +32,7 @@ export const ReloadExtended = T<LanguageHelpDisplayOptions>('commands/system:rel
 export const ReloadEverything = FT<{ time: string }, string>('commands/system:reloadEverything');
 export const ReloadInvalidEverything = FT<{ parameter: string }, string>('commands/system:reloadInvalidEverything');
 export const ReloadLanguage = FT<{ time: string; language: string }, string>('commands/system:reloadLanguage');
-export const StatsDescription = T<string>('commands/system:statsDescription');
-export const StatsExtended = T<LanguageHelpDisplayOptions>('commands/system:statsExtended');
-export const StatsTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/system:statsTitles');
-export const StatsFields = FT<
-	{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage },
-	{ stats: string; uptime: string; serverUsage: string }
->('commands/system:statsFields');
+
 export const SupportDescription = T<string>('commands/system:supportDescription');
 export const SupportEmbedDescription = T<string>('commands/system:supportEmbedDescription');
 export const SupportEmbedTitle = FT<{ username: string }, string>('commands/system:supportEmbedTitle');

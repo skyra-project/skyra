@@ -32,7 +32,6 @@ export const ReloadExtended = T<LanguageHelpDisplayOptions>('commands/system:rel
 export const ReloadEverything = FT<{ time: string }, string>('commands/system:reloadEverything');
 export const ReloadInvalidEverything = FT<{ parameter: string }, string>('commands/system:reloadInvalidEverything');
 export const ReloadLanguage = FT<{ time: string; language: string }, string>('commands/system:reloadLanguage');
-
 export const SupportDescription = T<string>('commands/system:supportDescription');
 export const SupportEmbedDescription = T<string>('commands/system:supportEmbedDescription');
 export const SupportEmbedTitle = FT<{ username: string }, string>('commands/system:supportEmbedTitle');

@@ -23,7 +23,7 @@ const outputTo = ['output', 'output-to'];
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		// Retrieve the target message:
-		const channel = await args.pick('textChannelName').catch(() => message.channel);
+		const channel = await args.pick('textOrNewsChannelName').catch(() => message.channel);
 		const target = await args.pick('message', { channel });
 
 		// Parse the message content:

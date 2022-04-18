@@ -71,22 +71,8 @@
 		],
 		"reminder": ""
 	},
-	"statsDescription": "",
-	"statsExtended": {
-		"extendedHelp": ""
-	},
 	"evalTimeout": "",
 	"evalError": "",
-	"statsTitles": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"statsFields": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {

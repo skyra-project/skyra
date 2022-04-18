@@ -32,6 +32,22 @@
 	"infoExtended": {
 		"extendedHelp": ""
 	},
+	"infoTitles": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"infoFields": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"infoComponentLabels": {
+		"addToServer": "",
+		"supportServer": "",
+		"repository": "",
+		"donate": ""
+	},
 	"inviteDescription": "",
 	"inviteExtended": {
 		"usages": [

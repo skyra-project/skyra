@@ -71,22 +71,8 @@
 		],
 		"reminder": "Reserved for bot owners."
 	},
-	"statsDescription": "Provides some details about the bot and stats.",
-	"statsExtended": {
-		"extendedHelp": "This should be very obvious..."
-	},
 	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
 	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
-	"statsTitles": {
-		"stats": "Statistics",
-		"uptime": "Uptime",
-		"serverUsage": "Server Usage"
-	},
-	"statsFields": {
-		"stats": "• **Users**: {{stats.users, number}}\n• **Servers**: {{stats.guilds, number}}\n• **Channels**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
-		"uptime": "• **Host**: {{uptime.host}}\n• **Total**: {{uptime.total}}\n• **Client**: {{uptime.client}}",
-		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
-	},
 	"disable": "+ Successfully disabled {{type}}: {{name}}",
 	"disableDescription": "Re-disables or temporarily disables a command/preconditions/event. Default state restored on reboot.",
 	"disableExtended": {

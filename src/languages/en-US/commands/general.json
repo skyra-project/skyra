@@ -27,7 +27,7 @@
 	},
 	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
-	"infoBody": "Skyra {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks with great performance and constant 24/7 uptime.\nShe is built on top of [Sapphire Framework](https://sapphirejs.dev), a 'plug-and-play' framework built on top of the [Discord.js library](https://discord.js.org).\n\nSkyra features:\n• Advanced Moderation with temporary actions included\n• Fully configurable\n• Message logs, member logs, and mod logs\n• Multilingual\n• Profiles and levels, with leaderboards and social management\n• Role management\n• Weeb commands (+10)!\nAnd more!\n\nYou can find our Privacy Policy [here](https://skyra.pw/privacy).\nYou can find our Terms of Service [here](https://github.com/skyra-project/skyra/blob/main/.github/TERMS_OF_SERVICE.md).",
+	"infoBody": "[Skyra](https://skyra.pw) {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks in your server with great performance and uptime.\nI use the [Sapphire Framework](https://sapphirejs.dev) for the [Discord.js library](https://discord.js.org).\n\n[Privacy Policy](https://skyra.pw/privacy) | [Terms of Service](https://github.com/skyra-project/skyra/blob/main/.github/TERMS_OF_SERVICE.md).",
 	"infoDescription": "Provides some information about me.",
 	"infoExtended": {
 		"extendedHelp": "Just... that :P"

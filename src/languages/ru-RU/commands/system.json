@@ -71,22 +71,8 @@
 		],
 		"reminder": ""
 	},
-	"statsDescription": "",
-	"statsExtended": {
-		"extendedHelp": ""
-	},
 	"evalTimeout": "",
 	"evalError": "**Ошибка**:{{output}}\n**Тип**:{{type}}\n{{time}}",
-	"statsTitles": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"statsFields": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {

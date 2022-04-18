@@ -32,6 +32,22 @@
 	"infoExtended": {
 		"extendedHelp": "Simplemente... eso :P"
 	},
+	"infoTitles": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"infoFields": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"infoComponentLabels": {
+		"addToServer": "",
+		"supportServer": "",
+		"repository": "",
+		"donate": ""
+	},
 	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
 	"inviteExtended": {
 		"usages": [

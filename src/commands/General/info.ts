@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKeys/keys/commands/General';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraArgs, SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -8,7 +8,7 @@ import { version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
-import { Message, MessageEmbed, version as djsVersion } from 'discord.js';
+import { Message, MessageActionRow, MessageButton, MessageEmbed, Permissions, version as djsVersion } from 'discord.js';
 import { cpus, uptime, type CpuInfo } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -20,7 +20,12 @@ import { cpus, uptime, type CpuInfo } from 'os';
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const embed = await this.buildEmbed(message, args);
-		return send(message, { embeds: [embed] });
+		const components = this.buildComponents(args);
+
+		return send(message, {
+			embeds: [embed],
+			components
+		});
 	}
 
 	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
@@ -42,6 +47,49 @@ export class UserCommand extends SkyraCommand {
 			.addField(titles.stats, fields.stats)
 			.addField(titles.uptime, fields.uptime)
 			.addField(titles.serverUsage, fields.serverUsage);
+	}
+
+	private buildComponents(args: SkyraArgs): MessageActionRow[] {
+		const componentLabels = args.t(LanguageKeys.Commands.General.InfoComponentLabels);
+
+		return [
+			new MessageActionRow().addComponents(
+				new MessageButton() //
+					.setStyle('LINK')
+					.setURL(this.inviteLink)
+					.setLabel(componentLabels.addToServer)
+					.setEmoji('🎉'),
+				new MessageButton() //
+					.setStyle('LINK')
+					.setURL('https://discord.gg/6gakFR2')
+					.setLabel(componentLabels.supportServer)
+					.setEmoji('🆘')
+			),
+			new MessageActionRow().addComponents(
+				new MessageButton()
+					.setStyle('LINK')
+					.setURL('https://github.com/skyra-project/skyra')
+					.setLabel(componentLabels.repository)
+					.setEmoji('<:github2:950888087188283422>'),
+				new MessageButton() //
+					.setStyle('LINK')
+					.setURL('https://donate.skyra.pw/patreon')
+					.setLabel(componentLabels.donate)
+					.setEmoji('🧡')
+			)
+		];
+	}
+
+	private get inviteLink() {
+		return this.container.client.generateInvite({
+			scopes: ['bot', 'applications.commands'],
+			permissions: new Permissions([
+				PermissionFlagsBits.ViewChannel,
+				PermissionFlagsBits.ReadMessageHistory,
+				PermissionFlagsBits.SendMessages,
+				PermissionFlagsBits.EmbedLinks
+			])
+		});
 	}
 
 	private get generalStatistics(): StatsGeneral {

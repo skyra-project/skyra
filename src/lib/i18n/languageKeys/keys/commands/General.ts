@@ -11,6 +11,11 @@ export const HelpNoDm = T('commands/general:helpNodm');
 export const InfoBody = T('commands/general:infoBody');
 export const InfoDescription = T('commands/general:infoDescription');
 export const InfoExtended = T<LanguageHelpDisplayOptions>('commands/general:infoExtended');
+export const InfoTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/general:infoTitles');
+export const InfoFields = FT<{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage }, { stats: string; uptime: string; serverUsage: string }>(
+	'commands/general:infoFields'
+);
+export const InfoComponentLabels = T<InfoComponentLabels>('commands/general:infoComponentLabels');
 export const InviteDescription = T('commands/general:inviteDescription');
 export const InviteExtended = T<LanguageHelpDisplayOptions>('commands/general:inviteExtended');
 export const InvitePermissionInviteText = T('commands/general:invitePermissionInviteText');
@@ -24,10 +29,13 @@ export const V7Description = T('commands/general:v7Description');
 export const V7Extended = T<LanguageHelpDisplayOptions>('commands/general:v7Extended');
 export const V7Message = FT<{ command: string }>('commands/general:v7Message');
 export const V7PokemonMessage = FT<{ command: string }>('commands/general:v7PokemonMessage');
-export const InfoTitles = T<{ stats: string; uptime: string; serverUsage: string }>('commands/general:infoTitles');
-export const InfoFields = FT<{ stats: StatsGeneral; uptime: StatsUptime; usage: StatsUsage }, { stats: string; uptime: string; serverUsage: string }>(
-	'commands/general:infoFields'
-);
+
+export interface InfoComponentLabels {
+	addToServer: string;
+	supportServer: string;
+	repository: string;
+	donate: string;
+}
 
 export interface StatsGeneral {
 	channels: number;

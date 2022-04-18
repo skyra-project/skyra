@@ -42,6 +42,12 @@
 		"uptime": "• **Host**: {{uptime.host}}\n• **Total**: {{uptime.total}}\n• **Client**: {{uptime.client}}",
 		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
 	},
+	"infoComponentLabels": {
+		"addToServer": "Add me to your server!",
+		"supportServer": "Support server",
+		"repository": "GitHub Repository",
+		"donate": "Donate"
+	},
 	"inviteDescription": "Shows the invite link to add Skyra to your server.",
 	"inviteExtended": {
 		"usages": [

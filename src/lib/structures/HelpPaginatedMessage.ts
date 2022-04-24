@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
 import {
-	isGuildBasedChannel,
 	isMessageButtonInteraction,
 	isMessageInstance,
 	PaginatedMessagePage,
@@ -145,11 +144,10 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 						new MessageSelectMenu({
 							options: await Promise.all(
 								this.pages.slice(0, 25).map(async (_, index) => ({
-									...(await this.selectMenuOptions(index + 1, {
-										author: targetUser,
-										channel: messageOrInteraction.channel,
-										guild: isGuildBasedChannel(messageOrInteraction.channel) ? messageOrInteraction.channel.guild : null
-									})),
+									...(await this.selectMenuOptions(
+										index + 1,
+										this.resolvePaginatedMessageInternationalizationContext(messageOrInteraction, targetUser)
+									)),
 									value: index.toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1}`
 								}))
@@ -162,11 +160,10 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 						new MessageSelectMenu({
 							options: await Promise.all(
 								this.pages.slice(25).map(async (_, index) => ({
-									...(await this.selectMenuOptions(index + 1 + 25, {
-										author: targetUser,
-										channel: messageOrInteraction.channel,
-										guild: isGuildBasedChannel(messageOrInteraction.channel) ? messageOrInteraction.channel.guild : null
-									})),
+									...(await this.selectMenuOptions(
+										index + 1 + 25,
+										this.resolvePaginatedMessageInternationalizationContext(messageOrInteraction, targetUser)
+									)),
 									value: (index + 25).toString(),
 									description: `${this.language(LanguageKeys.Globals.PaginatedMessagePage)} ${index + 1 + 25}`
 								}))

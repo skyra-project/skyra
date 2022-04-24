@@ -1564,17 +1564,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/builders@npm:^0.13.0":
-  version: 0.13.0
-  resolution: "@discordjs/builders@npm:0.13.0"
+"@discordjs/builders@npm:0.12.0":
+  version: 0.12.0
+  resolution: "@discordjs/builders@npm:0.12.0"
   dependencies:
-    "@sapphire/shapeshift": ^2.0.0
-    "@sindresorhus/is": ^4.6.0
-    discord-api-types: ^0.31.1
-    fast-deep-equal: ^3.1.3
-    ts-mixer: ^6.0.1
+    "@sindresorhus/is": ^4.3.0
+    discord-api-types: ^0.26.1
+    ts-mixer: ^6.0.0
     tslib: ^2.3.1
-  checksum: 1bce798b8f36b5abb09d8d42a660a5da6a9352ada03e0819d08ae6c98d4d8a556ed86485e252e53c448a40d17bf0d685e7f88f333db76f5b6b3bd562b9759d7c
+    zod: ^3.11.6
+  checksum: 3c4ef256371121938d5d75571e19f0697b1575dd9fb31a7ca47337d00a1ec45b2c1ce19a1261650a5f6393ac4116f8ed9e82120ce5de534be562dde919a2a6d7
   languageName: node
   linkType: hard
 
@@ -2150,13 +2149,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/shapeshift@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "@sapphire/shapeshift@npm:2.1.0"
-  checksum: 74826ed31d26f1d10d2cac8f4736e107947496b7ba8f1b31b79e0e34829f747b236d1ef47e37170ee0166aa4e3e3aaf312323e2742e1e6a67d4b5ec66a90d261
-  languageName: node
-  linkType: hard
-
 "@sapphire/snowflake@npm:^3.2.2":
   version: 3.2.2
   resolution: "@sapphire/snowflake@npm:3.2.2"
@@ -2290,7 +2282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sindresorhus/is@npm:^4.6.0":
+"@sindresorhus/is@npm:^4.3.0":
   version: 4.6.0
   resolution: "@sindresorhus/is@npm:4.6.0"
   checksum: 83839f13da2c29d55c97abc3bc2c55b250d33a0447554997a85c539e058e57b8da092da396e252b11ec24a0279a0bed1f537fa26302209327060643e327f81d2
@@ -4731,17 +4723,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:0.26.1, discord-api-types@npm:^0.26.0":
+"discord-api-types@npm:0.26.1, discord-api-types@npm:^0.26.0, discord-api-types@npm:^0.26.1":
   version: 0.26.1
   resolution: "discord-api-types@npm:0.26.1"
   checksum: e53bfa7589b24108e6b403dbe213da34c4592f72e2b8fde6800dcb6c703065887ecbd644e1cdf694e4c7796954bc51462ced868f26ec45dc1e0dc4fa8d3c723c
-  languageName: node
-  linkType: hard
-
-"discord-api-types@npm:^0.31.1":
-  version: 0.31.2
-  resolution: "discord-api-types@npm:0.31.2"
-  checksum: 928d4f57f4c1ace0baf1d3b2c3ab4a4a5107f100217ce889a6e00ad365115fd328a0b922dbc62af6b6ccac9552ffd7ec3d07f4c8820502c5b55d9f2e5382dfba
   languageName: node
   linkType: hard
 
@@ -9501,7 +9486,7 @@ __metadata:
     "@babel/preset-typescript": ^7.16.7
     "@commitlint/cli": ^16.2.3
     "@commitlint/config-conventional": ^16.2.1
-    "@discordjs/builders": ^0.13.0
+    "@discordjs/builders": 0.12.0
     "@discordjs/collection": ^0.6.0
     "@favware/zalgo": ^3.1.3
     "@influxdata/influxdb-client": ^1.25.0
@@ -10294,7 +10279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-mixer@npm:^6.0.1":
+"ts-mixer@npm:^6.0.0":
   version: 6.0.1
   resolution: "ts-mixer@npm:6.0.1"
   checksum: 7050f6e85a24155d18cecdcc0a098d1038991cc498317fcffa9d7a8654c776d417fb97e65de1ce8e7ed54ef4814abd8057d0efb9c3b24e9cc78ac3c0f48bbf53
@@ -11013,5 +10998,12 @@ __metadata:
     nan: ^2.14.0
     node-gyp: latest
   checksum: 8f6ef7bf5726b41fefffa4509f5679872b425ef47227a59d8c787b32518db6220961262f78b0f6eb1dcd9b52cd71bc8213d4f061b8b56a9b7e82c345a548e6f4
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.11.6":
+  version: 3.14.4
+  resolution: "zod@npm:3.14.4"
+  checksum: 30e75dc1e4e1d6ce5695750d1906b6b918779b8aa446f5db77eb2b8344d08f29344b5d0115034a9e695fd5a627d23c5c03d67efe58fe16fbb91dee9dc08761bc
   languageName: node
   linkType: hard

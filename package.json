@@ -48,7 +48,7 @@
 		"prepare": "husky install .github/husky"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^0.13.0",
+		"@discordjs/builders": "0.12.0",
 		"@discordjs/collection": "^0.6.0",
 		"@favware/zalgo": "^3.1.3",
 		"@influxdata/influxdb-client": "^1.25.0",
@@ -137,7 +137,7 @@
 		"typescript": "^4.6.3"
 	},
 	"resolutions": {
-		"@discordjs/builders": "^0.13.0",
+		"@discordjs/builders": "0.12.0",
 		"@discordjs/collection": "^0.6.0",
 		"ansi-regex": "^5.0.1",
 		"minimist": "^1.2.6",

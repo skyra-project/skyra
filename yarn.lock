@@ -2097,7 +2097,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-i18next@npm:^2.3.0":
+"@sapphire/plugin-i18next@npm:^2.5.0":
   version: 2.5.0
   resolution: "@sapphire/plugin-i18next@npm:2.5.0"
   dependencies:
@@ -9499,7 +9499,7 @@ __metadata:
     "@sapphire/framework": ^2.4.1
     "@sapphire/plugin-api": ^3.2.1
     "@sapphire/plugin-editable-commands": ^1.2.0
-    "@sapphire/plugin-i18next": ^2.3.0
+    "@sapphire/plugin-i18next": ^2.5.0
     "@sapphire/plugin-logger": ^2.2.1
     "@sapphire/plugin-subcommands": ^2.2.0
     "@sapphire/prettier-config": ^1.4.3

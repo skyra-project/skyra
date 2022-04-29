@@ -15,4 +15,3 @@ export * as System from './commands/System';
 export * as Tags from './commands/Tags';
 export * as Tools from './commands/Tools';
 export * as Twitch from './commands/Twitch';
-export * as Weeb from './commands/Weeb';

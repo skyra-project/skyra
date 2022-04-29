@@ -213,6 +213,5 @@ declare module '@skyra/env-utilities' {
 		TWITCH_TOKEN: string;
 		WEBHOOK_DISCORDS_TOKEN: string;
 		WEBHOOK_TOPGG_TOKEN: string;
-		WEEB_SH_TOKEN: string;
 	}
 }

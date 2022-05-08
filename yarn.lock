@@ -2490,12 +2490,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/env-utilities@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@skyra/env-utilities@npm:0.0.7"
+"@skyra/env-utilities@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@skyra/env-utilities@npm:1.0.0"
   dependencies:
     dotenv-cra: ^3.0.2
-  checksum: 1aa83387feabf4732a4437a2b65ce21551d9b5d14aef4a755b12a57cd6aee22d4e14aef5789bf646fb2e4bff17c0e6a8ce8daf40a0a3555cad0f8d4ac395c389
+  checksum: 26d8b756824820ef0f6163f4d5235bc821e8526dde8e15900af35feaa32afe5e484567cbb7056308ce7d241a1a474afa78f81416614b37f39f00f68d5a0a98bc
   languageName: node
   linkType: hard
 
@@ -9888,7 +9888,7 @@ __metadata:
     "@sentry/node": ^6.19.7
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.2
-    "@skyra/env-utilities": ^0.0.7
+    "@skyra/env-utilities": ^1.0.0
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
     "@skyra/saelem": ^3.0.29

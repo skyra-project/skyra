@@ -73,7 +73,7 @@
 		"@sentry/node": "^6.19.7",
 		"@skyra/ai": "^1.2.0",
 		"@skyra/char": "^1.0.2",
-		"@skyra/env-utilities": "^0.0.7",
+		"@skyra/env-utilities": "^1.0.0",
 		"@skyra/gifenc": "^1.0.0",
 		"@skyra/jaro-winkler": "^1.1.0",
 		"@skyra/saelem": "^3.0.29",

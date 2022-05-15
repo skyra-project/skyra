@@ -1,10 +1,7 @@
-import type { Config } from '@jest/types';
-
-export default async (): Promise<Config.InitialOptions> => ({
+/** @type {import('@jest/types').Config.InitialOptions} */
+const config = {
 	coverageProvider: 'v8',
 	displayName: 'unit test',
-	testEnvironment: 'node',
-	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/tests/**/*.test.ts'],
 	moduleNameMapper: {
 		'^#utils/(.*)$': '<rootDir>/src/lib/util/$1',
@@ -55,4 +52,6 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'<rootDir>/src/lib/util/Timers.ts',
 		'<rootDir>/src/lib/weather'
 	]
-});
+};
+
+export default config;

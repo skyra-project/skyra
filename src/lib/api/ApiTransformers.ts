@@ -218,7 +218,7 @@ function flattenChannelDM(channel: DMChannel): FlattenedDMChannel {
 		id: channel.id,
 		type: channel.type as FlattenedDMChannel['type'],
 		recipient: channel.recipient.id,
-		createdTimestamp: channel.createdTimestamp
+		createdTimestamp: channel.createdTimestamp ?? 0
 	};
 }
 
@@ -228,7 +228,7 @@ function flattenChannelThread(channel: ThreadChannel): FlattenedThreadChannel {
 		type: channel.type,
 		archived: channel.archived ?? false,
 		archivedTimestamp: channel.archiveTimestamp,
-		createdTimestamp: channel.createdTimestamp,
+		createdTimestamp: channel.createdTimestamp ?? 0,
 		guildId: channel.guildId,
 		name: channel.name,
 		parentId: channel.parentId,
@@ -242,7 +242,7 @@ function flattenChannelFallback(channel: Channel): FlattenedChannel {
 	return {
 		id: channel.id,
 		type: channel.type as FlattenedChannel['type'],
-		createdTimestamp: channel.createdTimestamp
+		createdTimestamp: channel.createdTimestamp ?? 0
 	};
 }
 

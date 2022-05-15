@@ -25,18 +25,6 @@ dist/
 .config/
 generated/
 
-# Ignore JavaScript files
-**/*.js
-**/*.mjs
-!scripts/**/*.mjs
-!scripts/workerTsLoader.js
-**/*.js.map
-**/*.d.ts
-**/*.tsbuildinfo
-!ormconfig.js
-!babel.config.js
-!src/**/*.d.ts
-
 # Ignore heapsnapshot and log files
 *.heapsnapshot
 *.log

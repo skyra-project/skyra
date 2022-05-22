@@ -2145,16 +2145,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-i18next@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "@sapphire/plugin-i18next@npm:2.5.1"
+"@sapphire/plugin-i18next@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "@sapphire/plugin-i18next@npm:2.5.2"
   dependencies:
     "@sapphire/utilities": ^3.6.2
     "@skyra/i18next-backend": ^1.0.0
     chokidar: ^3.5.3
     i18next: ^21.8.2
     tslib: ^2.4.0
-  checksum: 47a9daed3e8e692600320f37cdb28c70594786a6745163198dd12e12e5cc04e77dbb576b31e2c8e3f3e56f5d2db1f342091537195e7b24478f6c64da3aa1537a
+  checksum: 239ec8db20a7b6cd9dadadc7ba3438592f578df299e32943716f65f8e9bce13e03ead8558cad337bfab5fc615595628d2bb1a9db0c626bc5187cea2dc1a4678b
   languageName: node
   linkType: hard
 
@@ -9608,7 +9608,7 @@ __metadata:
     "@sapphire/framework": ^2.5.0
     "@sapphire/plugin-api": ^3.2.1
     "@sapphire/plugin-editable-commands": ^1.2.0
-    "@sapphire/plugin-i18next": ^2.5.1
+    "@sapphire/plugin-i18next": ^2.5.2
     "@sapphire/plugin-logger": ^2.2.1
     "@sapphire/plugin-subcommands": ^2.2.0
     "@sapphire/prettier-config": ^1.4.3

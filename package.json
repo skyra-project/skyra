@@ -109,7 +109,7 @@
 		"@sapphire/eslint-config": "^4.3.5",
 		"@sapphire/prettier-config": "^1.4.3",
 		"@sapphire/ts-config": "^3.3.4",
-		"@skyra/star-wars-api": "^2.0.28",
+		"@skyra/star-wars-api": "^2.0.29",
 		"@types/backoff": "^2.5.2",
 		"@types/diff": "^5.0.2",
 		"@types/he": "^1.1.2",

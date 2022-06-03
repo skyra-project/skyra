@@ -109,8 +109,6 @@
 	"socialIgnoredRoles": "The roles I should ignore when adding points.",
 	"socialMultiplier": "The multiplier to apply to the gain of points for users",
 	"suggestionsChannel": "The channel where suggestions will be sent.",
-	"suggestionsEmojisDownVote": "The downvote emoji Skyra reacts with on every suggestion.",
-	"suggestionsEmojisUpVote": "The upvote emoji Skyra reacts with on every suggestion.",
 	"suggestionsOnActionDm": "If this setting is enabled, Skyra will DM the suggestion's author every time it is updated.",
 	"suggestionsOnActionHideAuthor": "This setting allows you to update suggestions anonymously. It will substitute the updater's name with either `An administrator` or `A moderator`, according to their permission level.",
 	"suggestionsOnActionRePost": "If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message.",

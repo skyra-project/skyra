@@ -1,31 +1,5 @@
 {
-	"suggestDescription": "Posts a suggestion for the server.",
-	"suggestExtended": {
-		"usages": [
-			"Suggestion",
-			"Message"
-		],
-		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
-		"explainedUsage": [
-			[
-				"Suggestion",
-				"Your suggestion."
-			],
-			[
-				"Message",
-				"An existing message to use as a suggestion, this only works for administrators."
-			]
-		],
-		"examples": [
-			"Let's make a memes channel!",
-			"https://discord.com/channels/254360814063058944/283965220446273547/822462253202538506"
-		],
-		"reminder": "You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command."
-	},
 	"suggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
-	"suggestNopermissions": "I'm sorry {{username}}, but the administrators didn't give me permission to send messages in {{channel}}!",
-	"suggestTitle": "Suggestion #{{id}}",
-	"suggestSuccess": "Thank you for your suggestion! It has been successfully posted to {{channel}}!",
 	"resolveSuggestionDescription": "Set the suggestion's status.",
 	"resolveSuggestionExtended": {
 		"usages": [

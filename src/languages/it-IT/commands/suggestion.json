@@ -1,31 +1,5 @@
 {
-	"suggestDescription": "",
-	"suggestExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"reminder": ""
-	},
 	"suggestNoSetup": "",
-	"suggestNopermissions": "",
-	"suggestTitle": "",
-	"suggestSuccess": "",
 	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
 		"usages": [

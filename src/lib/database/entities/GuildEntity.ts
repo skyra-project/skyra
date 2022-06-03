@@ -693,14 +693,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('jsonb', { name: 'trigger.includes', default: () => "'[]'::JSONB" })
 	public triggerIncludes: TriggerIncludes[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpVote, type: 'emoji' })
-	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: 's694594285487652954' })
-	public suggestionsEmojisUpVote = 's694594285487652954' as SerializedEmoji;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownVote, type: 'emoji' })
-	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: 's694594285269680179' })
-	public suggestionsEmojisDownVote = 's694594285269680179' as SerializedEmoji;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
 	public suggestionsChannel?: string | null;

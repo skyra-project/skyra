@@ -1,31 +1,5 @@
 {
-	"suggestDescription": "Публикует предложение для сервера.",
-	"suggestExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Предложение",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"reminder": ""
-	},
 	"suggestNoSetup": "",
-	"suggestNopermissions": "",
-	"suggestTitle": "Предложение #{{id}}",
-	"suggestSuccess": "Спасибо за ваше предложение! Оно было успешно опубликовано в {{channel}}!",
 	"resolveSuggestionDescription": "Установите статус предложения.",
 	"resolveSuggestionExtended": {
 		"usages": [

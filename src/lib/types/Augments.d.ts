@@ -211,7 +211,5 @@ declare module '@skyra/env-utilities' {
 		TWITCH_CLIENT_ID: string;
 		TWITCH_EVENTSUB_SECRET: string;
 		TWITCH_TOKEN: string;
-		WEBHOOK_DISCORDS_TOKEN: string;
-		WEBHOOK_TOPGG_TOKEN: string;
 	}
 }

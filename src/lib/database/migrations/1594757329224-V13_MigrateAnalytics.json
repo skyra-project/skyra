@@ -1036,13 +1036,6 @@
 		}
 	],
 	[
-		"dm",
-		{
-			"category": "System",
-			"subCategory": "Admin"
-		}
-	],
-	[
 		"eval",
 		{
 			"category": "System",
@@ -1050,28 +1043,7 @@
 		}
 	],
 	[
-		"exec",
-		{
-			"category": "System",
-			"subCategory": "Admin"
-		}
-	],
-	[
-		"heapsnapshot",
-		{
-			"category": "System",
-			"subCategory": "Admin"
-		}
-	],
-	[
 		"reboot",
-		{
-			"category": "System",
-			"subCategory": "Admin"
-		}
-	],
-	[
-		"update",
 		{
 			"category": "System",
 			"subCategory": "Admin"

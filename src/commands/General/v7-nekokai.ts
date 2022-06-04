@@ -7,6 +7,7 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: [
+		'slap',
 		'wbang',
 		'wbanghead',
 		'wbite',

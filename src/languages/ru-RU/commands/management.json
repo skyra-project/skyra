@@ -10,8 +10,6 @@
 	"commandModeThresholdDuration": "",
 	"commandModeReminder": "",
 	"commandHandlerAborted": "",
-	"nickSet": "Никнейм изменён на **{{nickname}}**.",
-	"nickCleared": "",
 	"permissionNodesHigher": "",
 	"permissionNodesCannotAllowEveryone": "",
 	"permissionNodesInvalidType": "",
@@ -23,11 +21,6 @@
 	"permissionNodesShowName": "Разрешения для: __{{name}}__",
 	"permissionNodesShowAllow": "",
 	"permissionNodesShowDeny": "",
-	"triggersRemoveNottaken": "",
-	"triggersRemove": "",
-	"triggersAddTaken": "",
-	"triggersAdd": "",
-	"triggersListEmpty": "",
 	"guildInfoTitles": {
 		"CHANNELS": "Каналы",
 		"MEMBERS": "",
@@ -99,26 +92,6 @@
 	"createMuteExtended": {
 		"extendedHelp": ""
 	},
-	"nickDescription": "Измените никнейм Skyra для этого сервера.",
-	"nickExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"reminder": "Эта команда требует разрешение **{{CHANGE_NICKNAME, permissions}}**. Убедитесь, что у Skyra оно есть.",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
-	},
 	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
 		"usages": [
@@ -156,43 +129,6 @@
 			""
 		],
 		"reminder": ""
-	},
-	"triggersDescription": "",
-	"triggersExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		]
 	},
 	"managecommandautodeleteDescription": "",
 	"managecommandautodeleteExtended": {

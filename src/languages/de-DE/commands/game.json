@@ -9,14 +9,7 @@
 			"Skyra"
 		]
 	},
-	"c4GameColumnFull": "Diese Spalte ist voll. Bitte wähle eine andere.",
-	"c4GameDraw": "Dieses Spiel wurde mit einem **Unentschieden** beendet!",
-	"c4GameNext": "Runde von: {{user}} (rot).",
-	"c4GameNextTurn0": "Runde von: {{user}} (blau).",
-	"c4GameWin": "{{user}} (rot) hat gewonnen!",
-	"c4GameWinTurn0": "{{user}} (blau) hat gewonnen!",
 	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
-	"c4Start": "Lass uns spielen! Runde für: **{{player}}**.",
 	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
 	"coinFlipHeadNames": [
 		"kopf",
@@ -70,11 +63,8 @@
 	"gamesNoPlayers": "Bitte gib ein paar Tribute an, um die Hungerspiele zu spielen, z.B.: `{{prefix}}hg Bob, Mark, Jim, Kyra`",
 	"gamesProgress": "Tut mir leid, gerade findet in diesem Channel ein Spiel statt, versuche es noch einmal nachdem das Spiel beendet ist.",
 	"gamesPromptDeny": "Tut mir leid, der herausgeforderte User hat es abgelehnt zu spielen.",
-	"gamesPromptTimeout": "Tut mir leid, aber der herausgeforderte User hat nicht rechtzeitig geantwortet.",
 	"gamesRepeat": "Es tut mir leid, aber ein User kann nicht zweimal spielen.",
 	"gamesSelf": "Du musst wirklich traurig sein um gegen dich selbst zu spielen. Versuchs nochmal mit einem anderen User.",
-	"gamesSkyra": "Es tut mir leid, ich weiß, dass du mit mir spielen willst, aber wenn ich das tue, kann ich anderen nicht helfen! 💔",
-	"gamesTimeout": "**Das Spiel wurde mit einem Unentschieden beendet, da keine Antwort erfolgte (60 Sekunden)**",
 	"gamesTooManyOrFew": "Es tut mir leid, aber die Anzahl der Spieler ist kleiner als {{min}} oder größer als {{max}}.",
 	"hgBloodbath": [
 		"{1} schnappt sich eine Schaufel.",

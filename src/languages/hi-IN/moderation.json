@@ -5,7 +5,6 @@
 	"logDescriptionTypeAndUser": "❯ **प्रकार**: {{data.type}}\n❯ **सदस्य**: {{data.userName}}#{{data.userDiscriminator}} ({{data.userId}})",
 	"logDescriptionWithReason": "❯ **वजह:** {{data.reason}}{{data.formattedDuration}}",
 	"logDescriptionWithoutReason": "❯ **वजह:** कृपया कारण निर्धारित करने के लिए `{{data.prefix}}reason {{data.caseId}} <reason>` का उपयोग करें।{{data.formattedDuration}}",
-	"logInvalidDuration": "मुझे खेद है, लेकिन {{duration, duration}} एक अमान्य अवधि है, यह 5 वर्ष तक की सकारात्मक अवधि होनी चाहिए।",
 	"logExpiresIn": "\n❯ **संपूर्ण होगा**: {{duration, duration}}",
 	"logFooter": "प्रकरण {{caseId}}",
 	"muteCannotManageRoles": "म्यूट करने में सक्षम होने के लिए मेरे पास **{{MANAGE_ROLES, permissions}}** अनुमतियां होनी चाहिए।",

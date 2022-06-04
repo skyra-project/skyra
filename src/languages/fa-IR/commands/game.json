@@ -9,14 +9,7 @@
 			""
 		]
 	},
-	"c4GameColumnFull": "",
-	"c4GameDraw": "",
-	"c4GameNext": "",
-	"c4GameNextTurn0": "",
-	"c4GameWin": "",
-	"c4GameWinTurn0": "",
 	"c4Prompt": "",
-	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
 	"coinFlipHeadNames": [
 		"",
@@ -70,11 +63,8 @@
 	"gamesNoPlayers": "",
 	"gamesProgress": "",
 	"gamesPromptDeny": "",
-	"gamesPromptTimeout": "",
 	"gamesRepeat": "",
 	"gamesSelf": "",
-	"gamesSkyra": "",
-	"gamesTimeout": "",
 	"gamesTooManyOrFew": "",
 	"hgBloodbath": [
 		"",

@@ -1,5 +1,4 @@
 {
-	"channelNotPostable": "No estoy autorizado a enviar mensajes a este canal.",
 	"discordAbortError": "Tuve un pequeño error de red al enviar el mensaje a Discord, ¡por favor ejecuta este comando de nuevo!",
 	"exceededLengthChooseOutput": "Elija una de las siguientes opciones: {{output, orList}}",
 	"exceededLengthOutput": "**Salida**:{{output}}",
@@ -19,7 +18,6 @@
 		"examples": "🔗 | **Ejemplos**",
 		"reminders": "⏰ | **Recordatorio**"
 	},
-	"highestRole": "La posición jerárquica de este rol es mayor o igual que yo, no puedo concederla a nadie.",
 	"jumpTo": "Saltar al Mensaje ►",
 	"loading": [
 		"{{LOADING}} Viendo hámsters correr...",

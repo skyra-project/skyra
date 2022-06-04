@@ -30,10 +30,6 @@
 	"confServer": "",
 	"confDashboardOnlyKey": "",
 	"confSettingNotSet": "",
-	"heapSnapshotDescription": "",
-	"heapSnapshotExtended": {
-		"extendedHelp": ""
-	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
-	"updateExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		]
-	}
+	"confMenuSaved": ""
 }

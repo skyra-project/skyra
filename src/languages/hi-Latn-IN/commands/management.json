@@ -10,8 +10,6 @@
 	"commandModeThresholdDuration": "",
 	"commandModeReminder": "",
 	"commandHandlerAborted": "",
-	"nickSet": "",
-	"nickCleared": "",
 	"permissionNodesHigher": "",
 	"permissionNodesCannotAllowEveryone": "",
 	"permissionNodesInvalidType": "",
@@ -23,11 +21,6 @@
 	"permissionNodesShowName": "",
 	"permissionNodesShowAllow": "**अनुमति**:{{allow}}",
 	"permissionNodesShowDeny": "",
-	"triggersRemoveNottaken": "",
-	"triggersRemove": "",
-	"triggersAddTaken": "",
-	"triggersAdd": "",
-	"triggersListEmpty": "",
 	"guildInfoTitles": {
 		"CHANNELS": "चैनल्स",
 		"MEMBERS": "सदस्यों",
@@ -99,26 +92,6 @@
 	"createMuteExtended": {
 		"extendedHelp": ""
 	},
-	"nickDescription": "",
-	"nickExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"reminder": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
-	},
 	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
 		"usages": [
@@ -156,43 +129,6 @@
 			""
 		],
 		"reminder": ""
-	},
-	"triggersDescription": "",
-	"triggersExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		]
 	},
 	"managecommandautodeleteDescription": "",
 	"managecommandautodeleteExtended": {

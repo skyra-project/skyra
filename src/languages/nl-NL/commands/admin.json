@@ -30,10 +30,6 @@
 	"confServer": "**Server Instelling {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
 	"confSettingNotSet": "Niet ingesteld",
-	"heapSnapshotDescription": "Maakt een heapdump voor het vinden van geheugenlekken.",
-	"heapSnapshotExtended": {
-		"extendedHelp": "Het heapsnapshot commando is erg handig voor bots die geheugenproblemen hebben. het maakt gebruik van de heapdump bibliotheek die het hele proces een moment bevriest om alle elementen te analyseren van het proces deel nooit het heapsnapshot bestanden met iedereen, omdat alles waar je bot kennis van heeft is opgenomen in dat bestand.\n\nOm het heapsnapshot bestanden te openen, open Google Chrome, open Developer Tools, ga naar het tab Memory, en klik in profielen onderaan op \"load\". Ten slotte open je het profiel en krijg je een tabel van alle objecten in je proces, geniet je plezier!\n\nP.S: heapsnapshot bestanden zijn zo groot als de hoeveelheid RAM die u gebruikt in big bots, de snapshots kunnen veel langer de bot bevriezen en de bestanden kunnen veel zwaarder zijn."
-	},
 	"rolesetDescription": "Beheer unieke rolesets.",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "Druk op ◀ om terug te gaan",
 	"confMenuInvalidKey": "Ongeldige sleutel, probeer het opnieuw met een van de volgende opties:",
 	"confMenuInvalidAction": "Ongeldige actie, probeer het opnieuw met een van de volgende opties:",
-	"confMenuSaved": "Wijzigingen zijn succesvol opgeslagen.",
-	"updateDescription": "Werk de bot bij",
-	"updateExtended": {
-		"usages": [
-			"Branch",
-			"--clean",
-			"Branch --clean"
-		],
-		"extendedHelp": "Een beetje sop daar hier, wat opruimen, en voor je het weet ben ik plots een hele nieuwe android!",
-		"explainedUsage": [
-			[
-				"Branch",
-				"De git branch om te pullen"
-			],
-			[
-				"--clean",
-				"Opschonen van de gehele \"dist\" map voor het bouwen of niet"
-			]
-		]
-	}
+	"confMenuSaved": "Wijzigingen zijn succesvol opgeslagen."
 }

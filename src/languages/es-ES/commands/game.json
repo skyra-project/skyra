@@ -9,14 +9,7 @@
 			"Skyra"
 		]
 	},
-	"c4GameColumnFull": "Esta columna está llena. Por favor intente otra.",
-	"c4GameDraw": "¡Esta partida concluyó en un **empate**!",
-	"c4GameNext": "Turno para: {{user}} (rojo).",
-	"c4GameNextTurn0": "Turno para: {{user}} (azul).",
-	"c4GameWin": "¡{{user}} (rojo) ganó!",
-	"c4GameWinTurn0": "¡{{user}} (azul) ganó!",
 	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
-	"c4Start": "¡Juguemos! Turno para: **{{player}}**.",
 	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
 	"coinFlipHeadNames": [
 		"cara",
@@ -70,11 +63,8 @@
 	"gamesNoPlayers": "Por favor especifica algunos tributos para jugar a las Partidas del Hambre, así: `{{prefix}}hg Bob, Mark, Jim, Kyra`",
 	"gamesProgress": "Lo siento, pero hay un juego en curso en este canal, inténtelo de nuevo cuando termine.",
 	"gamesPromptDeny": "Lo siento, pero el contrincante se negó a jugar.",
-	"gamesPromptTimeout": "Lo siento, pero el contrincante no respondió a tiempo.",
 	"gamesRepeat": "Lo siento, pero un usuario no puede jugar dos veces.",
 	"gamesSelf": "Debes estar muy triste para jugar contra ti mismo. Inténtalo de nuevo con otro usuario.",
-	"gamesSkyra": "Lo siento, sé que quieres jugar conmigo, pero si lo hago, ¡no podré ayudar a otras personas! 💔",
-	"gamesTimeout": "**El partido concluyó en un empate debido a la falta de respuesta (60 segundos)**",
 	"gamesTooManyOrFew": "Lo siento, pero la cantidad de jugadores es menor que {{min}} o mayor que {{max}}.",
 	"hgBloodbath": [
 		"{1} agarra una pala.",

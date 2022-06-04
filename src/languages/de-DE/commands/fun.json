@@ -1,20 +1,4 @@
 {
-	"8ballDescription": "Skyra wird die heilige Bibel lesen, um die richtige Antwort für deine Frage zu finden.",
-	"8ballExtended": {
-		"usages": [
-			"Frage"
-		],
-		"extendedHelp": "Dieser Command gibt die eine zufällige Frage basierend auf einem Fragentyp. Sei vorsichtig, sie könnte zu schlau sein.",
-		"explainedUsage": [
-			[
-				"Frage",
-				"Die Heilige Frage"
-			]
-		],
-		"examples": [
-			"Warum ging das Huhn über die Straße?"
-		]
-	},
 	"changemymindDescription": "Skyre ist die beste, change my mind.",
 	"changemymindExtended": {
 		"usages": [
@@ -67,22 +51,6 @@
 	"escaperopeExtended": {
 		"extendedHelp": "**Skyra** benutzte **Fluchtseil**."
 	},
-	"howToFlirtDescription": "Captain America, du weißt nicht wie man flirtet.",
-	"howToFlirtExtended": {
-		"usages": [
-			"Benutzer"
-		],
-		"extendedHelp": "Lass mich dir zeigen wie man effektiv mit jemandem flirtet mit der Technik die Tony Stark bei Captain America verwendet. Ich garantiere dir dass du ihn kriegst.",
-		"explainedUsage": [
-			[
-				"Benutzer",
-				"Der Nutzer den du anflirten möchtest."
-			]
-		],
-		"examples": [
-			"Skyra"
-		]
-	},
 	"loveDescription": "Liebesmeter, online!",
 	"loveExtended": {
 		"usages": [
@@ -97,26 +65,6 @@
 		],
 		"examples": [
 			"Skyra"
-		]
-	},
-	"norrisDescription": "Viel Spaß beim Lesen von Chuck Norris Witzen.",
-	"norrisExtended": {
-		"extendedHelp": "Wusstest du, dass Chuck norris **nicht** die falsche Nummer anruft, sondern du den falschen Anruf **beantwortest**? Woah, mindblow. Er warf auch einen Karton Milch und schuf die Milchstraße. Dieser Befehl ruft chucknorris.io ab und sucht sich einen Fakt aus (gehe nicht davon aus, dass sie falsch sind), so dass du ihn lesen kannst"
-	},
-	"peepoloveDescription": "Erzeugt ein peepoLove-Bild aus dem Avatar eines Benutzers.",
-	"peepoloveExtended": {
-		"usages": [
-			"Benutzer"
-		],
-		"extendedHelp": "Ermöglicht es, ein peepoLove-Bild aus dem Avatar eines Benutzers zu generieren.",
-		"explainedUsage": [
-			[
-				"Benutzer",
-				"Der Benutzer, den Peepo umarmen soll."
-			]
-		],
-		"examples": [
-			"Joe"
 		]
 	},
 	"popDescription": "Erzeugt ein Board zu Pop, Pop, Pop, Pop und Pop.",
@@ -156,10 +104,6 @@
 	"popTitle": "",
 	"popTitleLost": "",
 	"popTitleWinner": "",
-	"punDescription": "Zeigt dir einen zufälligen Wortwitz.",
-	"punExtended": {
-		"extendedHelp": "Ein Steak Wortwitz ist selten gut durch.\nHol dir deine tägliche Dosis dad jokes von icanhazdadjoke.com und lache über witzige Sprüche."
-	},
 	"rateDescription": "Lass Bots Meinungen haben und jemanden bewerten.",
 	"rateExtended": {
 		"usages": [
@@ -232,100 +176,6 @@
 			"Neugierde"
 		]
 	},
-	"8ballOutput": "🎱 Frage von {{author}}: *{{question}}*\n{{response}}",
-	"8ballQuestions": {
-		"When": "wann",
-		"What": "Was",
-		"HowMuch": "Wieviel",
-		"HowMany": "wie viele",
-		"Why": "Warum",
-		"Who": "Wer"
-	},
-	"8ballWhen": [
-		"Bald™",
-		"Vielleicht morgen.",
-		"Vielleicht nächstes Jahr...",
-		"Jetzt.",
-		"In ein paar Monaten."
-	],
-	"8ballWhat": [
-		"Ein Flugzeug.",
-		"Was? Frage erneut.",
-		"Ein Geschenk.",
-		"Nichts.",
-		"Ein Ring.",
-		"Ich weiß nicht, vielleicht etwas."
-	],
-	"8ballHowMuch": [
-		"Viel.",
-		"Ein bisschen.",
-		"Wenige.",
-		"Frag mich morgen.",
-		"Weiß ich nicht, frag einen Physiker.",
-		"Nichts.",
-		"Innerhalb von 10 und 1000L.",
-		"10e1000L.",
-		"2 oder 3 Liter, ich erinnere mich nicht.",
-		"Unendlichkeit.",
-		"1010 Liter."
-	],
-	"8ballHowMany": [
-		"Viel.",
-		"Ein bisschen.",
-		"Ein paar.",
-		"Frag mich morgen.",
-		"Weiß ich nicht, frag einen Physiker.",
-		"Nichts.",
-		"Innerhalb von 10 und 1000.",
-		"10e1000.",
-		"2 oder 3, ich erinnere mich nicht.",
-		"Unendlichkeit",
-		"1010."
-	],
-	"8ballWhy": [
-		"Vielleicht Genetik.",
-		"Weil jemand das beschlossen hat.",
-		"Natürlich für den Ruhm des Satan!",
-		"Ich weiß nicht, vielleicht Schicksal.",
-		"Weil ich das gesagt habe.",
-		"Keine Ahnung.",
-		"Frage den Serverowner.",
-		"Frag nochmal.",
-		"Um auf die andere Seite zu kommen.",
-		"Das steht so in der Bibel."
-	],
-	"8ballWho": [
-		"Ein Mensch.",
-		"Ein Roboter.",
-		"Ein Flugzeug.",
-		"Ein Vogel.",
-		"Eine Kohlenstoffzusammensetzung.",
-		"Ein Haufen von Nullen und Einsen.",
-		"Ich habe keine Ahnung, ist es ein Material?",
-		"Das ergibt keinen Sinn."
-	],
-	"8ballElse": [
-		"Sehr wahrscheinlich.",
-		"Nope.",
-		"JA!",
-		"Vielleicht.",
-		"So wie ich es sehe, ja",
-		"Frag mich morgen.",
-		"Weiß ich nicht, frag einen Physiker.",
-		"Das sage ich dir besser nicht.",
-		"Verlasse dich nicht drauf.",
-		"Sicherlich.",
-		"Das ist eindeutig der Fall.",
-		"Meine Quellen sagen Nein.",
-		"Sieht nicht so gut aus.",
-		"Sieht gut aus.",
-		"Unklare Antwort, versuche es erneut.",
-		"Anzeichen deuten auf ja.",
-		"Sehr zweifelhaft.",
-		"Zweifellos.",
-		"Ja - auf jeden Fall.",
-		"Du kannst dich darauf verlassen."
-	],
 	"choiceOutput": "🕺 *Ene, mene, miste, deine Muddah rappelt in der Kiste...* {{user}}, Ich wähle: {{word, codeBlock}}",
 	"choiceMissing": "Bitte gebe mindestens zwei durch ein Komma getrennte Optionen an.",
 	"choiceDuplicates": "Warum sollte ich doppelte Wörter akzeptieren? \"{{words}}\".",
@@ -339,7 +189,6 @@
 	"love100": "Perfekte Übereinstimmung!",
 	"loveItself": "Du bist ein spezielles Wesen und solltest dich mehr als alle anderen Lieben <3",
 	"loveResult": "Ergebnis",
-	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, ich würde **{{userToRate}}** eine **{{rate}}**/100 {{emoji}} geben",
 	"rateMyself": [
 		". Ich liebe mich sehr 😊",
@@ -349,7 +198,6 @@
 		". Ich liebe meine Entwickler sehr 🥰",
 		"meine Entwickler"
 	],
-	"punError": "Hoppla, leider ist etwas schiefgegangen. Versuch es später nochmal.",
 	"xkcdComics": "Es gibt nur {{amount}} Comics.",
 	"xkcdNotfound": "Ich habe weit und breit gesucht, aber ich hatte kein Glück diesen Comic zu finden, versuche es später noch einmal oder versuche einen anderen!"
 }

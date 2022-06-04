@@ -1,5 +1,4 @@
 {
-	"channelNotPostable": "",
 	"discordAbortError": "",
 	"exceededLengthChooseOutput": "",
 	"exceededLengthOutput": "",
@@ -19,7 +18,6 @@
 		"examples": "",
 		"reminders": ""
 	},
-	"highestRole": "",
 	"jumpTo": "",
 	"loading": [
 		"",

@@ -120,35 +120,6 @@
 			""
 		]
 	},
-	"flipDescription": "",
-	"flipExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"flipDisabled": "",
-	"flipOutput": "",
 	"goodnightDescription": "",
 	"goodnightExtended": {
 		"usages": [
@@ -269,23 +240,6 @@
 			"Juan"
 		]
 	},
-	"slapDescription": "Golpea a otro usuario usando el meme de Batman y Robin.",
-	"slapExtended": {
-		"usages": [
-			"Usuario"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"usuario",
-				""
-			]
-		],
-		"examples": [
-			"Juan"
-		],
-		"reminder": ""
-	},
 	"snipeDescription": "",
 	"snipeExtended": {
 		"extendedHelp": ""
@@ -321,45 +275,5 @@
 		"examples": [
 			"kyra"
 		]
-	},
-	"upvoteDescription": "",
-	"upvoteExtended": {
-		"extendedHelp": ""
-	},
-	"upvoteMessage": "",
-	"vaporwaveDescription": "",
-	"vaporwaveExtended": {
-		"usages": [
-			"Contenido"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Contenido",
-				"La frase a convertir"
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"vaporwaveOutput": "",
-	"zalgoDescription": "",
-	"zalgoExtended": {
-		"usages": [
-			"Contenido"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Contenido",
-				"La frase a convertir"
-			]
-		],
-		"examples": [
-			"AHÍ VIENE"
-		],
-		"reminder": ""
-	},
-	"zalgoOutput": "Este es tu mensaje convertido:\n{{str}}"
+	}
 }

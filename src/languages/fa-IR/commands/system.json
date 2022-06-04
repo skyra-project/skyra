@@ -1,22 +1,4 @@
 {
-	"dmDescription": "",
-	"dmExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
 	"evalDescription": "",
 	"evalExtended": {
 		"usages": [
@@ -35,41 +17,9 @@
 		],
 		"reminder": ""
 	},
-	"execDescription": "",
-	"execExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		]
-	},
 	"donateDescription": "",
 	"donateExtended": {
 		"extendedHelp": ""
-	},
-	"echoDescription": "",
-	"echoExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
 	},
 	"evalTimeout": "",
 	"evalError": "",
@@ -112,25 +62,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"reload": "",
-	"reloadAll": "",
-	"reloadDescription": "",
-	"reloadExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
-	"reloadEverything": "",
-	"reloadInvalidEverything": "",
-	"reloadLanguage": "",
 	"supportDescription": "Muestra las instrucciones de soporte",
 	"supportEmbedDescription": "¡Entonces probablemente deberías unirte a [Skyra's Lounge](https://join.skyra.pw)! ¡Aquí, puedes recibir apoyo de los desarrolladores y otros miembros de la comunidad!",
 	"supportEmbedTitle": "¿Estás buscando ayuda, {{username}}?",

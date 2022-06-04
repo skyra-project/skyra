@@ -182,13 +182,6 @@
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
 	"emojiTwemoji": "",
-	"emotesDescription": "Показывает все пользовательские эмодзи, доступные на этом сервере",
-	"emotesExtended": {
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"emotesTitle": "",
-	"emotesNoEmotes": "",
 	"eshopDescription": "",
 	"eshopExtended": {
 		"usages": [
@@ -432,22 +425,6 @@
 		"userScore": ""
 	},
 	"systemTextTruncated": "",
-	"topInvitesDescription": "",
-	"topInvitesEmbedData": {
-		"channel": "Канал",
-		"createdAt": "Дата создания",
-		"createdAtUnknown": "Дата создания неизвестна",
-		"expiresAt": "",
-		"link": "Ссылка",
-		"neverExpress": "Никогда",
-		"temporary": "Временное приглашение",
-		"uses": ""
-	},
-	"topInvitesExtended": {
-		"extendedHelp": ""
-	},
-	"topInvitesNoInvites": "",
-	"topInvitesTop10InvitesFor": "",
 	"urbanDescription": "",
 	"urbanExtended": {
 		"usages": [

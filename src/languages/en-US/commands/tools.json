@@ -182,13 +182,6 @@
 	"emojiInvalid": "The argument you provided is not a valid emoji.",
 	"emojiTooLarge": "'{{emoji}}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?",
 	"emojiTwemoji": "→ `Emoji ::` `{{emoji}}`\n→ `Type  ::` **Twemoji**\n→ `ID    ::` **{{id}}**",
-	"emotesDescription": "Shows all custom emotes available on this server",
-	"emotesExtended": {
-		"extendedHelp": "This will first list all the non-animated emojis, and after that all the animated emojis.",
-		"reminder": "The list of emotes is split per 50 emotes"
-	},
-	"emotesTitle": "Emotes in",
-	"emotesNoEmotes": "{{REDCROSS}} This server has no custom emotes. Why not upload your first?",
 	"eshopDescription": "Request information for any American Nintendo Digital Store",
 	"eshopExtended": {
 		"usages": [
@@ -432,22 +425,6 @@
 		"userScore": "User score"
 	},
 	"systemTextTruncated": "{{definition}}... [continue reading]({{url}})",
-	"topInvitesDescription": "Shows the top 10 most used invites for this server",
-	"topInvitesEmbedData": {
-		"channel": "Channel",
-		"createdAt": "Date Created",
-		"createdAtUnknown": "Creation date unknown",
-		"expiresAt": "Expires At",
-		"link": "Link",
-		"neverExpress": "Never",
-		"temporary": "Temporary invite",
-		"uses": "Uses"
-	},
-	"topInvitesExtended": {
-		"extendedHelp": "Use this to get some server insights if your server doesn't have access to Discord's official server insights."
-	},
-	"topInvitesNoInvites": "There are no invites, or none of them have been used!",
-	"topInvitesTop10InvitesFor": "Top 10 invites for {{guild}}",
 	"urbanDescription": "Check the definition of a word on UrbanDictionary.",
 	"urbanExtended": {
 		"usages": [

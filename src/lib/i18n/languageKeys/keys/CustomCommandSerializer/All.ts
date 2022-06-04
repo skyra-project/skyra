@@ -5,6 +5,5 @@ export const InvalidAliases = T<string>('serializers:customCommandInvalidAliases
 export const InvalidEmbed = T<string>('serializers:customCommandInvalidEmbed');
 export const InvalidColor = T<string>('serializers:customCommandInvalidColor');
 export const InvalidContent = T<string>('serializers:customCommandInvalidContent');
-export const InvalidArgs = T<string>('serializers:customCommandInvalidArgs');
 export const InvalidType = FT<{ possibles: readonly string[]; count: number }, string>('serializers:customCommandInvalidType');
 export const MissingParameter = FT<{ type: string }, string>('serializers:customCommandMissingParameter');

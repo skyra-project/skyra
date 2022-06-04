@@ -37,7 +37,6 @@ export const BannerBought = FT<{ prefix: string; banner: string }, string>('comm
 export const BannerBuy = FT<{ banner: string }, string>('commands/social:bannerBuy');
 export const BannerDescription = T('commands/social:bannerDescription');
 export const BannerExtended = T<LanguageHelpDisplayOptions>('commands/social:bannerExtended');
-export const BannerMissing = FT<{ type: string }, string>('commands/social:bannerMissing');
 export const BannerMoney = FT<{ money: number; cost: number }, string>('commands/social:bannerMoney');
 export const BannerNotExists = FT<{ prefix: string }, string>('commands/social:bannerNotexists');
 export const BannerPaymentCancelled = T('commands/social:bannerPaymentCancelled');

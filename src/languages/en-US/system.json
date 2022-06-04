@@ -1,5 +1,4 @@
 {
-	"channelNotPostable": "I am not allowed to send messages to this channel.",
 	"discordAbortError": "I had a small network error when messaging Discord, please run this command again!",
 	"exceededLengthChooseOutput": "Choose one of the following options: {{output, orList}}",
 	"exceededLengthOutput": "**Output**:{{output}}",
@@ -19,7 +18,6 @@
 		"examples": "🔗 | **Examples**",
 		"reminders": "⏰ | **Reminder**"
 	},
-	"highestRole": "This role's hierarchy position is higher or equal than me, I am not able to grant it to anyone.",
 	"jumpTo": "Jump to Message ►",
 	"loading": [
 		"{{LOADING}} Watching hamsters run...",

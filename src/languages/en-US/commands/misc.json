@@ -120,35 +120,6 @@
 			"Jake"
 		]
 	},
-	"flipDescription": "Flip your messages!",
-	"flipExtended": {
-		"usages": [
-			"Content",
-			"Content --x=no",
-			"Content --x=yes --y=no"
-		],
-		"extendedHelp": "You can flip messages both vertically and horizontally!",
-		"explainedUsage": [
-			[
-				"Content",
-				"The phrase to convert"
-			],
-			[
-				"--x/--h/--horizontal",
-				"Whether or not the content should be flipped horizontally, defaults to enabled."
-			],
-			[
-				"--y/--v/--vertical",
-				"Whether or not the content should be flipped vertically, defaults to enabled."
-			]
-		],
-		"examples": [
-			"Help, this message is not flipped!",
-			"Upside down! --h=no"
-		]
-	},
-	"flipDisabled": "You need to enable at least one of the flips!",
-	"flipOutput": "Here is your converted message:\n{{value}}",
 	"goodnightDescription": "Give somebody a nice Good Night!",
 	"goodnightExtended": {
 		"usages": [
@@ -269,23 +240,6 @@
 			"Jack"
 		]
 	},
-	"slapDescription": "Slap another user using the Batman & Robin Meme.",
-	"slapExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.",
-		"explainedUsage": [
-			[
-				"user",
-				"The user you wish to slap."
-			]
-		],
-		"examples": [
-			"Jake"
-		],
-		"reminder": "You try to slap me and I'll slap you instead."
-	},
 	"snipeDescription": "Retrieve the last deleted message from a channel",
 	"snipeExtended": {
 		"extendedHelp": "This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them."
@@ -321,45 +275,5 @@
 		"examples": [
 			"kyra"
 		]
-	},
-	"upvoteDescription": "Get a link to upvote Skyra in various bot lists",
-	"upvoteExtended": {
-		"extendedHelp": "Bot lists are websites where you can find great bots for your server, and they come with a voting system that allows users to find the most popular one.\n\nBy voting me in them, you'll allow my discoverability to improve, and more users will be able to find me!"
-	},
-	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://discords.com/bots/bot/266624760782258186**, or **https://discordlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
-	"vaporwaveDescription": "Vaporwave characters!",
-	"vaporwaveExtended": {
-		"usages": [
-			"Content"
-		],
-		"extendedHelp": "Well, what can I tell you? This command turns your messages into unicode monospaced characters. That is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...",
-		"explainedUsage": [
-			[
-				"Content",
-				"The phrase to convert"
-			]
-		],
-		"examples": [
-			"A E S T H E T I C"
-		]
-	},
-	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
-	"zalgoDescription": "Create zalgo of your message!",
-	"zalgoExtended": {
-		"usages": [
-			"Content"
-		],
-		"extendedHelp": "To invoke the hive-mind representing chaos.\nInvoking the feeling of chaos.\nWithout order.\nThe Nezperdian hive-mind of chaos. Zalgo.\nHe who Waits Behind The Wall.\nZALGO!",
-		"explainedUsage": [
-			[
-				"Content",
-				"The phrase to convert"
-			]
-		],
-		"examples": [
-			"HE COMES"
-		],
-		"reminder": "H̡̰͉̜̰̠̣͆ͣ̒ͯ̽̃E̪̱̬̪ͣ̓̈́̐͗́̑ͩ͠ͅ ̞͍͍̪̟͚̩̃̀ͯ̓ͥͪͦ̎͜C̣̮̄ͩͤͬͥ͆͛͆͢͞O̲͙̟͎̙͑̿̋̚M̛̖͙͖̣͇̊ͦ̽ͭ͋̑̂̾Ē̸̳͎͖̟̿̆S̱̭̩̳̠̜ͨ̔̿ͅ"
-	},
-	"zalgoOutput": "Here is your converted message:\n{{str}}"
+	}
 }

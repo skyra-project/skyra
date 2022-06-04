@@ -1,20 +1,4 @@
 {
-	"8ballDescription": "Skyra will read the Holy Bible to find the correct answer for your question.",
-	"8ballExtended": {
-		"usages": [
-			"Question"
-		],
-		"extendedHelp": "This command provides you a random question based on your questions' type. Be careful, it may be too smart.",
-		"explainedUsage": [
-			[
-				"question",
-				"The Holy Question"
-			]
-		],
-		"examples": [
-			"Why did the chicken cross the road?"
-		]
-	},
 	"changemymindDescription": "Skyra is the best, change my mind.",
 	"changemymindExtended": {
 		"usages": [
@@ -67,22 +51,6 @@
 	"escaperopeExtended": {
 		"extendedHelp": "**Skyra** used **Escape Rope**."
 	},
-	"howToFlirtDescription": "Captain America, you do not know how to flirt.",
-	"howToFlirtExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain America, I can guarantee that you'll get him.",
-		"explainedUsage": [
-			[
-				"user",
-				"The user to flirt with."
-			]
-		],
-		"examples": [
-			"Skyra"
-		]
-	},
 	"loveDescription": "Lovemeter, online!",
 	"loveExtended": {
 		"usages": [
@@ -97,26 +65,6 @@
 		],
 		"examples": [
 			"Skyra"
-		]
-	},
-	"norrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
-	"norrisExtended": {
-		"extendedHelp": "Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
-	},
-	"peepoloveDescription": "Generates a peepoLove image from a users' avatar.",
-	"peepoloveExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "Allows you to generate a peepoLove image from a user's avatar.",
-		"explainedUsage": [
-			[
-				"User",
-				"The user that peepo should hug."
-			]
-		],
-		"examples": [
-			"Joe"
 		]
 	},
 	"popDescription": "Generates a board to pop, pop, pop, and pop.",
@@ -156,10 +104,6 @@
 	"popTitle": "POP! Let the pops begin!",
 	"popTitleLost": "POP! Nobody got it in time!",
 	"popTitleWinner": "POP! We got a winner: {{value}}!",
-	"punDescription": "Shows you a random pun.",
-	"punExtended": {
-		"extendedHelp": "A steak pun is a rare medium well done.\nGet your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
-	},
 	"rateDescription": "Let bots have opinions and rate somebody.",
 	"rateExtended": {
 		"usages": [
@@ -232,100 +176,6 @@
 			"Curiosity"
 		]
 	},
-	"8ballOutput": "🎱 Question by {{author}}: *{{question}}*\n{{response}}",
-	"8ballQuestions": {
-		"When": "when",
-		"What": "what",
-		"HowMuch": "how much",
-		"HowMany": "how many",
-		"Why": "why",
-		"Who": "who"
-	},
-	"8ballWhen": [
-		"Soon™",
-		"Maybe tomorrow.",
-		"Maybe next year...",
-		"Right now.",
-		"In a few months."
-	],
-	"8ballWhat": [
-		"A plane.",
-		"What? Ask again.",
-		"A gift.",
-		"Nothing.",
-		"A ring.",
-		"I do not know, maybe something."
-	],
-	"8ballHowMuch": [
-		"A lot.",
-		"A bit.",
-		"A few.",
-		"Ask me tomorrow.",
-		"I do not know, ask a physicist.",
-		"Nothing.",
-		"Within 10 and 1000L.",
-		"10e1000L.",
-		"2 or 3 liters, I don't remember.",
-		"Infinity.",
-		"1010 liters."
-	],
-	"8ballHowMany": [
-		"A lot.",
-		"A bit.",
-		"A few.",
-		"Ask me tomorrow.",
-		"I don't know, ask a physicist.",
-		"Nothing.",
-		"Within 10 and 1000.",
-		"10e1000.",
-		"2 or 3, I do not remember.",
-		"Infinity",
-		"1010."
-	],
-	"8ballWhy": [
-		"Maybe genetics.",
-		"Because somebody decided it.",
-		"For the glory of satan, of course!",
-		"I do not know, maybe destiny.",
-		"Because I said so.",
-		"I have no idea.",
-		"Ask the owner of this server.",
-		"Ask again.",
-		"To get to the other side.",
-		"It says so in the Bible."
-	],
-	"8ballWho": [
-		"A human.",
-		"A robot.",
-		"An airplane.",
-		"A bird.",
-		"A carbon composition.",
-		"A bunch of zeroes and ones.",
-		"I have no clue, is it material?",
-		"That is not logical."
-	],
-	"8ballElse": [
-		"Most likely.",
-		"Nope.",
-		"YES!",
-		"Maybe.",
-		"As I see it, yes",
-		"Ask me tomorrow.",
-		"I don't know, ask a physicist.",
-		"Better not tell you now.",
-		"Don’t count on it.",
-		"It is certain.",
-		"It is decidedly so.",
-		"My sources say no.",
-		"Outlook not so good.",
-		"Outlook good.",
-		"Reply hazy, try again.",
-		"Signs point to yes.",
-		"Very doubtful.",
-		"Without a doubt.",
-		"Yes – definitely.",
-		"You may rely on it."
-	],
 	"choiceOutput": "🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* {{user}}, I choose: {{word, codeBlock}}",
 	"choiceMissing": "Please write at least two options separated by comma.",
 	"choiceDuplicates": "Why would I accept duplicated words? \"{{words}}\".",
@@ -339,7 +189,6 @@
 	"love100": "Perfect match!",
 	"loveItself": "You are a special creature and you should love yourself more than anyone <3",
 	"loveResult": "Result",
-	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, I would give **{{userToRate}}** a **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [
 		". I love myself a lot 😊",
@@ -349,7 +198,6 @@
 		". I love my developers a lot 🥰",
 		"my developers"
 	],
-	"punError": "Something went wrong. Try again later.",
 	"xkcdComics": "There are only {{amount}} comics.",
 	"xkcdNotfound": "I have searched far and wide, but I got no luck finding this comic, try again later or try another!"
 }

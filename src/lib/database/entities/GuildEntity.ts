@@ -687,12 +687,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'social.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public socialIgnoredRoles: string[] = [];
 
-	@Column('jsonb', { name: 'trigger.alias', default: () => "'[]'::JSONB" })
-	public triggerAlias: TriggerAlias[] = [];
-
-	@Column('jsonb', { name: 'trigger.includes', default: () => "'[]'::JSONB" })
-	public triggerIncludes: TriggerIncludes[] = [];
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
 	public suggestionsChannel?: string | null;
@@ -829,18 +823,6 @@ export interface RolesAuto {
 	id: string;
 
 	points: number;
-}
-
-export interface TriggerAlias {
-	input: string;
-
-	output: string;
-}
-
-export interface TriggerIncludes {
-	action: 'react';
-	input: string;
-	output: SerializedEmoji;
 }
 
 export interface UniqueRoleSet {

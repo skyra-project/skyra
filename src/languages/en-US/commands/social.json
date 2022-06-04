@@ -25,7 +25,6 @@
 	"socialResetAllEmpty": "{{REDCROSS}} The scoreboard for this server is empty.",
 	"socialResetAllSuccess_one": "Successfully reset the points of {{count}} member.",
 	"socialResetAllSuccess_other": "Successfully reset the points of {{count}} members.",
-	"bannerMissing": "You must specify a banner id to {{type}}.",
 	"bannerNotexists": "This banner id does not exist. Please check `{{prefix}}banner list` for a list of banners you can buy.",
 	"bannerUserlistEmpty": "You did not buy a banner yet. Check `{{prefix}}banner list` for a list of banners you can buy.",
 	"bannerResetDefault": "You are already using the default banner.",

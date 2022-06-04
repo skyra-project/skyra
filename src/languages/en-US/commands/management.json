@@ -10,8 +10,6 @@
 	"commandModeThresholdDuration": "The time in which infractions will accumulate before taking action, instantly if unset.",
 	"commandModeReminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
 	"commandHandlerAborted": "Aborted",
-	"nickSet": "Changed the nickname to **{{nickname}}**.",
-	"nickCleared": "Nickname cleared.",
 	"permissionNodesHigher": "{{REDCROSS}} You cannot modify nor preview the permission nodes for this target.",
 	"permissionNodesCannotAllowEveryone": "{{REDCROSS}} You cannot allow commands for the `@everyone` role.",
 	"permissionNodesInvalidType": "{{REDCROSS}} Invalid type, expected either of `allow` or `deny`.",
@@ -23,11 +21,6 @@
 	"permissionNodesShowName": "Permissions for: __{{name}}__",
 	"permissionNodesShowAllow": "**Allow**: {{allow}}",
 	"permissionNodesShowDeny": "**Deny**: {{deny}}",
-	"triggersRemoveNottaken": "There is no trigger with this input.",
-	"triggersRemove": "Successfully removed this trigger.",
-	"triggersAddTaken": "There is already a trigger with this input.",
-	"triggersAdd": "Successfully added the trigger.",
-	"triggersListEmpty": "The trigger list for this server is empty.",
 	"guildInfoTitles": {
 		"CHANNELS": "Channels",
 		"MEMBERS": "Members",
@@ -99,26 +92,6 @@
 	"createMuteExtended": {
 		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the server settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{CONNECT, permissions}}** in voice channels for said role."
 	},
-	"nickDescription": "Change Skyra's nickname for this server.",
-	"nickExtended": {
-		"usages": [
-			"",
-			"Nick"
-		],
-		"extendedHelp": "This command allows you to change Skyra's nickname easily for the server.",
-		"reminder": "This command requires the **{{CHANGE_NICKNAME, permissions}}** permission. Make sure Skyra has it.",
-		"explainedUsage": [
-			[
-				"Nick",
-				"The new nickname. If you don't put any, it'll reset it instead."
-			]
-		],
-		"examples": [
-			"SkyNET",
-			"Assistant",
-			""
-		]
-	},
 	"permissionNodesDescription": "Configure the permission nodes for this server.",
 	"permissionNodesExtended": {
 		"usages": [
@@ -156,43 +129,6 @@
 			"show staff"
 		],
 		"reminder": "The server owner cannot have any actions, nor the `everyone` role can have allowed commands."
-	},
-	"triggersDescription": "Set custom triggers for your server.",
-	"triggersExtended": {
-		"usages": [
-			"add alias Input Command",
-			"add reaction Input Emoji",
-			"remove alias/reaction Input",
-			"show",
-			""
-		],
-		"extendedHelp": "This command allows administrators to go further with the personalization of Skyra in the server.\nA trigger is a piece that can active other functions.\nFor example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.\nWhen this happens, the alias system executes and tries to find an entry that matches with the input.",
-		"explainedUsage": [
-			[
-				"add alias",
-				"Adds a new alias for a command."
-			],
-			[
-				"add reaction",
-				"Adds a reaction trigger for a specific input."
-			],
-			[
-				"remove",
-				"Removes an alias or a reaction."
-			],
-			[
-				"show",
-				"Shows all aliases and reaction triggers."
-			]
-		],
-		"reminder": "This command requires the **{{ADD_REACTIONS, permissions}}** permission so it can test reactions. Make sure Skyra has it.",
-		"examples": [
-			"add alias pong ping",
-			"add reaction \"good night\" 🌛",
-			"remove reaction \"good night\"",
-			"list",
-			""
-		]
 	},
 	"managecommandautodeleteDescription": "Manage per-channel auto-delete timer.",
 	"managecommandautodeleteExtended": {

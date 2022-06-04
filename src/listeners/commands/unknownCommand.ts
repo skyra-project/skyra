@@ -9,22 +9,15 @@ export class UserListener extends Listener<typeof Events.UnknownCommand> {
 	public async run({ message, commandPrefix, commandName }: UnknownCommandPayload) {
 		if (!isGuildMessage(message)) return null;
 
-		const [disabledChannels, tags, aliases] = await readSettings(message.guild, [
-			GuildSettings.DisabledChannels,
-			GuildSettings.CustomCommands,
-			GuildSettings.Trigger.Alias
-		]);
+		const [disabledChannels, tags] = await readSettings(message.guild, [GuildSettings.DisabledChannels, GuildSettings.CustomCommands]);
 
-		if (tags.length === 0 && aliases.length === 0) return null;
+		if (tags.length === 0) return null;
 		if (disabledChannels.includes(message.channel.id) && !(await isModerator(message.member))) return null;
 
 		const name = commandName.toLowerCase();
 
 		const tag = getFromId(name, tags);
 		if (tag) return this.runCommand(message as GuildMessage, commandPrefix, 'tag', tag.id);
-
-		const alias = aliases.find((entry) => entry.input === name);
-		if (alias) return this.runCommand(message as GuildMessage, commandPrefix, alias.output, '');
 
 		return null;
 	}

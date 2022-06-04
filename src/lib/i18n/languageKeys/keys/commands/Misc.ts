@@ -1,5 +1,5 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
-import { FT, T, Value } from '#lib/types';
+import { FT, T } from '#lib/types';
 
 export const CannotTargetOwner = T('commands/misc:cannotTargetOwner');
 export const ChaseDescription = T<string>('commands/misc:chaseDescription');
@@ -10,10 +10,6 @@ export const DeletThisDescription = T<string>('commands/misc:deletthisDescriptio
 export const DeletThisExtended = T<LanguageHelpDisplayOptions>('commands/misc:deletthisExtended');
 export const FDescription = T<string>('commands/misc:fDescription');
 export const FExtended = T<LanguageHelpDisplayOptions>('commands/misc:fExtended');
-export const FlipDescription = T('commands/misc:flipDescription');
-export const FlipExtended = T<LanguageHelpDisplayOptions>('commands/misc:flipExtended');
-export const FlipDisabled = T('commands/misc:flipDisabled');
-export const FlipOutput = FT<Value>('commands/misc:flipOutput');
 export const GoodNightDescription = T<string>('commands/misc:goodnightDescription');
 export const GoodNightExtended = T<LanguageHelpDisplayOptions>('commands/misc:goodnightExtended');
 export const GoofyTimeDescription = T<string>('commands/misc:goofytimeDescription');
@@ -39,8 +35,6 @@ export const ShipData = FT<{ romeoUsername: string; julietUsername: string; ship
 );
 export const ShipDescription = T<string>('commands/misc:shipDescription');
 export const ShipExtended = T<LanguageHelpDisplayOptions>('commands/misc:shipExtended');
-export const SlapDescription = T<string>('commands/misc:slapDescription');
-export const SlapExtended = T<LanguageHelpDisplayOptions>('commands/misc:slapExtended');
 export const SnipeDescription = T<string>('commands/misc:snipeDescription');
 export const SnipeEmpty = T<string>('commands/misc:snipeEmpty');
 export const SnipeExtended = T<LanguageHelpDisplayOptions>('commands/misc:snipeExtended');
@@ -53,12 +47,3 @@ export const TheSearchDescription = T<string>('commands/misc:thesearchDescriptio
 export const TheSearchExtended = T<LanguageHelpDisplayOptions>('commands/misc:thesearchExtended');
 export const TriggeredDescription = T<string>('commands/misc:triggeredDescription');
 export const TriggeredExtended = T<LanguageHelpDisplayOptions>('commands/misc:triggeredExtended');
-export const UpvoteDescription = T<string>('commands/misc:upvoteDescription');
-export const UpvoteExtended = T<LanguageHelpDisplayOptions>('commands/misc:upvoteExtended');
-export const UpvoteMessage = T<string>('commands/misc:upvoteMessage');
-export const VaporwaveDescription = T<string>('commands/misc:vaporwaveDescription');
-export const VaporwaveExtended = T<LanguageHelpDisplayOptions>('commands/misc:vaporwaveExtended');
-export const VaporwaveOutput = FT<{ str: string }, string>('commands/misc:vaporwaveOutput');
-export const ZalgoDescription = T<string>('commands/misc:zalgoDescription');
-export const ZalgoExtended = T<LanguageHelpDisplayOptions>('commands/misc:zalgoExtended');
-export const ZalgoOutput = FT<{ str: string }, string>('commands/misc:zalgoOutput');

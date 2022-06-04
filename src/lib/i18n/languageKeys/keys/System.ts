@@ -1,8 +1,6 @@
 import { FT, T } from '#lib/types';
 
 export const ParseError = T('system:parseError');
-export const HighestRole = T('system:highestRole');
-export const ChannelNotPostable = T('system:channelNotPostable');
 export const FetchBansFail = T('system:fetchBansFail');
 export const Loading = T<readonly string[]>('system:loading');
 export const DiscordAbortError = T('system:discordAbortError');

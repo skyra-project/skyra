@@ -31,13 +31,11 @@
 	"twitchSubscriptionRemoveSuccessLive": "",
 	"twitchSubscriptionResetSuccess_one": "",
 	"twitchSubscriptionResetSuccess_other": "",
-	"twitchSubscriptionResetStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
 	"twitchSubscriptionShowStatus": {
 		"live": "",
 		"offline": ""
 	},
-	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {

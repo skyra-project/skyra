@@ -30,10 +30,6 @@
 	"confServer": "**Setarea {{key}} a server-ului**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` poate fi configurat doar prin intermediul panoului web (<https://skyra.pw>)",
 	"confSettingNotSet": "Nu este setat",
-	"heapSnapshotDescription": "Creează un heapdump pentru a găsi scurgeri de memorie.",
-	"heapSnapshotExtended": {
-		"extendedHelp": "Comanda heapsnapshot este foarte folositoare pentru boții care au probleme cu memoria, folosește librăria cu heapdump care îngheață întregul proces pentru o clipă pentru a analiza toate elementele din processul HEAP, NICIODATĂ să nu partajați fișierele heapsnapshot cu oricine, pentru că tot ce conține bot-ul este inclus în acel fișier.\n\nPentru a deschide heapsnapshot-uri, deschide Google Chrome, deschide Unelte de Dezvoltare, mergi la tab-ul Memorie, și în Profiluri, apasă pe butonul \"load\" de jos. În cele din urmă, deschideți profilul și veți primi o masă cu toate obiectele din procesul dvs., distrați-vă!\n\n\n\nP.S: Fișierele heapsnapshot sunt la fel de mari ca și cantitatea de RAM pe care o folosești, în roboți mari, imaginile pot îngheța botul mult mai mult și fișierele pot fi mult mai grele."
-	},
 	"rolesetDescription": "Gestionați seturi de roluri unice.",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "Apăsați ◀ pentru a merge înapoi",
 	"confMenuInvalidKey": "Cheie invalidă, te rugăm să încerci din nou cu oricare dintre următoarele opțiuni.",
 	"confMenuInvalidAction": "Acțiune invalidă, vă rugăm să încercați din nou cu oricare dintre următoarele opțiuni.",
-	"confMenuSaved": "Salvare reuşită a tuturor modificărilor.",
-	"updateDescription": "Actualizează botul",
-	"updateExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "Niste lustruire aici, niște curățare pe-acolo, și ce să știu, brusc sunt un android cu totul nou!",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		]
-	}
+	"confMenuSaved": "Salvare reuşită a tuturor modificărilor."
 }

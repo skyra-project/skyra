@@ -6,7 +6,7 @@ import { Colors, O, rootFolder, ZeroWidthSpace } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
 import { Args, ArgumentError, Command, CommandErrorPayload, Events, Listener, UserError } from '@sapphire/framework';
 import { codeBlock, cutText } from '@sapphire/utilities';
-import { captureException } from '@sentry/minimal';
+import { captureException } from '@sentry/hub';
 import { envIsDefined } from '@skyra/env-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';

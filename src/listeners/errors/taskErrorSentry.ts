@@ -2,7 +2,7 @@ import type { TaskErrorPayload } from '#lib/types';
 import type { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import { captureException } from '@sentry/minimal';
+import { captureException } from '@sentry/hub';
 import { envIsDefined } from '@skyra/env-utilities';
 
 @ApplyOptions({ enabled: envIsDefined('SENTRY_URL') })

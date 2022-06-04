@@ -30,10 +30,6 @@
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
 	"confSettingNotSet": "Not Set",
-	"heapSnapshotDescription": "",
-	"heapSnapshotExtended": {
-		"extendedHelp": ""
-	},
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": "",
-	"updateDescription": "",
-	"updateExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		]
-	}
+	"confMenuSaved": ""
 }

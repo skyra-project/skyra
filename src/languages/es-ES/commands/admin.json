@@ -30,10 +30,6 @@
 	"confServer": "**Configuración del servidor {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` sólo puede configurarse a través del panel web (<https://skyra.pw>)",
 	"confSettingNotSet": "No Establecido",
-	"heapSnapshotDescription": "Crea un montón para encontrar fugas de memorias.",
-	"heapSnapshotExtended": {
-		"extendedHelp": "El comando de captura de pila es muy útil para bots que tienen problemas de memoria. utiliza la librería heapdump que congela todo el proceso por un momento para analizar todos los elementos del HEAP del proceso, NUNCA compartas archivos de estas instantáneas con nadie, ya que todo lo que tu bot tiene está incluido en ese archivo.\n\nPara abrir las instantáneas, abra Google Chrome, y en Herramientas de desarrollador, vaya a la pestaña Memoria y en Perfiles, haga clic en el botón \"cargar\" en la parte inferior. Finalmente, abra el perfil y se le dará una tabla de todos los objetos en su proceso, ¡diviértete!\n\n\n\nP.S: los archivos de captura de pila son tan grandes como la cantidad de RAM que usas, en bots grandes, las instantáneas pueden congelar el bot mucho más tiempo y los archivos pueden ser mucho más pesados."
-	},
 	"rolesetDescription": "Administrar los conjuntos de roles únicos.",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "Pulsa ◀ para volver atrás",
 	"confMenuInvalidKey": "Clave no válida, por favor inténtalo de nuevo con cualquiera de las siguientes opciones.",
 	"confMenuInvalidAction": "Acción no válida, por favor inténtalo de nuevo con cualquiera de las siguientes opciones.",
-	"confMenuSaved": "Guardado todos los cambios con éxito.",
-	"updateDescription": "Actualiza el código",
-	"updateExtended": {
-		"usages": [
-			"Rama",
-			"--clean",
-			"Rama --clean"
-		],
-		"extendedHelp": "Algún pulido aquí, algo de limpieza por allí, y lo que quieras, ¡de repente soy una nueva androide!",
-		"explainedUsage": [
-			[
-				"Rama",
-				"La rama a extraer de git"
-			],
-			[
-				"--clean",
-				"Si debería borrar la carpeta \"dist\" entera antes de compilar"
-			]
-		]
-	}
+	"confMenuSaved": "Guardado todos los cambios con éxito."
 }

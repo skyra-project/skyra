@@ -1,22 +1,4 @@
 {
-	"lmgtfyDescription": "Envia un enlace a LMGTFY (Let Me Google That For You).",
-	"lmgtfyExtended": {
-		"usages": [
-			"Consulta"
-		],
-		"explainedUsage": [
-			[
-				"Consulta",
-				"La consulta a Google"
-			]
-		],
-		"extendedHelp": "Simplemente Googlealo, no es tan difícil.",
-		"examples": [
-			"¿¿Cómo se camina por las escaleras??",
-			"¿¿Cómo hago panqueques??"
-		]
-	},
-	"lmgtfyClick": "[Haz clic para buscar]({{link}})",
 	"weatherDescription": "Compruebe el estado del tiempo en una ubicación.",
 	"weatherExtended": {
 		"usages": [

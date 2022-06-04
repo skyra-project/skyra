@@ -1,22 +1,4 @@
 {
-	"dmDescription": "Отправляет личное сообщение.",
-	"dmExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
 	"evalDescription": "",
 	"evalExtended": {
 		"usages": [
@@ -35,41 +17,9 @@
 		],
 		"reminder": ""
 	},
-	"execDescription": "",
-	"execExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "Вам лучше не знать об этом.",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		]
-	},
 	"donateDescription": "",
 	"donateExtended": {
 		"extendedHelp": ""
-	},
-	"echoDescription": "",
-	"echoExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
 	},
 	"evalTimeout": "",
 	"evalError": "**Ошибка**:{{output}}\n**Тип**:{{type}}\n{{time}}",
@@ -112,25 +62,6 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"reload": "",
-	"reloadAll": "",
-	"reloadDescription": "",
-	"reloadExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
-	"reloadEverything": "",
-	"reloadInvalidEverything": "",
-	"reloadLanguage": "",
 	"supportDescription": "",
 	"supportEmbedDescription": "",
 	"supportEmbedTitle": "",

@@ -120,35 +120,6 @@
 			""
 		]
 	},
-	"flipDescription": "",
-	"flipExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"flipDisabled": "",
-	"flipOutput": "",
 	"goodnightDescription": "",
 	"goodnightExtended": {
 		"usages": [
@@ -269,23 +240,6 @@
 			""
 		]
 	},
-	"slapDescription": "",
-	"slapExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"пользователь",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
-		"reminder": ""
-	},
 	"snipeDescription": "",
 	"snipeExtended": {
 		"extendedHelp": ""
@@ -321,45 +275,5 @@
 		"examples": [
 			""
 		]
-	},
-	"upvoteDescription": "",
-	"upvoteExtended": {
-		"extendedHelp": ""
-	},
-	"upvoteMessage": "",
-	"vaporwaveDescription": "",
-	"vaporwaveExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"vaporwaveOutput": "",
-	"zalgoDescription": "",
-	"zalgoExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
-		"reminder": ""
-	},
-	"zalgoOutput": ""
+	}
 }

@@ -1,9 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const LmgtfyClick = FT<{ link: string }, string>('commands/google:lmgtfyClick');
-export const LmgtfyDescription = T<string>('commands/google:lmgtfyDescription');
-export const LmgtfyExtended = T<LanguageHelpDisplayOptions>('commands/google:lmgtfyExtended');
 export const WeatherDescription = T<string>('commands/google:weatherDescription');
 export const WeatherExtended = T<LanguageHelpDisplayOptions>('commands/google:weatherExtended');
 

@@ -1,22 +1,4 @@
 {
-	"dmDescription": "Sends a Direct Message.",
-	"dmExtended": {
-		"usages": [
-			"User, Message"
-		],
-		"extendedHelp": "The DM command is reserved for bot owners, and it's only used for very certain purposes, such as replying feedback messages sent by users.",
-		"explainedUsage": [
-			[
-				"User",
-				"The User to send a DM to"
-			],
-			[
-				"Message",
-				"The message to send"
-			]
-		],
-		"reminder": "Reserved for bot owners for replying purposes."
-	},
 	"evalDescription": "Evaluates arbitrary Javascript.",
 	"evalExtended": {
 		"usages": [
@@ -35,41 +17,9 @@
 		],
 		"reminder": "Reserved for bot owners."
 	},
-	"execDescription": "Execute Order 66.",
-	"execExtended": {
-		"usages": [
-			"Expression"
-		],
-		"extendedHelp": "You better not know about this.",
-		"explainedUsage": [
-			[
-				"Expression",
-				"The expression to evaluate"
-			]
-		]
-	},
 	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
 	"donateExtended": {
 		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
-	},
-	"echoDescription": "Make Skyra send a message to this (or another) channel.",
-	"echoExtended": {
-		"usages": [
-			"Message",
-			"Channel Message"
-		],
-		"extendedHelp": "This should be very obvious...",
-		"explainedUsage": [
-			[
-				"Channel",
-				"The channel to output text to"
-			],
-			[
-				"Message",
-				"The message to send"
-			]
-		],
-		"reminder": "Reserved for bot owners."
 	},
 	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
 	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
@@ -112,25 +62,6 @@
 		"extendedHelp": "The bot goes boom, then the bot goes revive.",
 		"reminder": "Reserved for bot owners."
 	},
-	"reload": "{{GREENTICK}} Reloaded {{type}}: {{name}}. (Took: {{time}})",
-	"reloadAll": "{{GREENTICK}} Reloaded all {{type}}. (Took: {{time}})",
-	"reloadDescription": "Reloads a Sapphire piece, or all pieces of a Sapphire store.",
-	"reloadExtended": {
-		"usages": [
-			"Piece/language/everything"
-		],
-		"extendedHelp": "Hot-reloads a piece.",
-		"explainedUsage": [
-			[
-				"Piece/language/everything",
-				"The piece or language to reload, or \"everything\" to reload everything"
-			]
-		],
-		"reminder": "Be careful with potentially duplicate names as you can easily trigger reloading all pieces!"
-	},
-	"reloadEverything": "{{GREENTICK}} Reloaded everything. (Took: {{time}})",
-	"reloadInvalidEverything": "I was not able to resolve `{{parameter}}` to a valid \"everything\".\n**Hint**: The only possible value is `everything`.",
-	"reloadLanguage": "{{GREENTICK}} Reloaded language resource `{{language}}`. (Took: {{time}})",
 	"supportDescription": "Show support instructions",
 	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
 	"supportEmbedTitle": "Looking for help, {{username}}?",

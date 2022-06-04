@@ -31,13 +31,11 @@
 	"twitchSubscriptionRemoveSuccessLive": "{{GREENTICK}} Success! I will no longer post messages to {{channel}} whenever {{name}} goes live.",
 	"twitchSubscriptionResetSuccess_one": "{{GREENTICK}} Success! {{count}} subscription has been removed from this server.",
 	"twitchSubscriptionResetSuccess_other": "{{GREENTICK}} Success! {{count}} subscriptions have been removed from this server.",
-	"twitchSubscriptionResetStreamerNotSubscribed": "{{REDCROSS}} You were not subscribed to this streamer. Are you sure you specified the right one?",
 	"twitchSubscriptionShowStreamerNotSubscribed": "{{REDCROSS}} You wanted to see all subscriptions from this streamer, but there are none!",
 	"twitchSubscriptionShowStatus": {
 		"live": "Live",
 		"offline": "Offline"
 	},
-	"twitchSubscriptionShowEmpty": "{{REDCROSS}} There are no subscriptions, who will be the first?",
 	"twitchSubscriptionShowUnknownUser": "Unknown",
 	"followageDescription": "Check how long a Twitch user has been following a channel.",
 	"followageExtended": {

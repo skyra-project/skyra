@@ -1,6 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { Guild, GuildMember, User } from 'discord.js';
+import type { GuildMember, User } from 'discord.js';
 
 export const WikipediaNotFound = T('commands/tools:wikipediaNotfound');
 export const YouTubeNotFound = T('commands/tools:youtubeNotfound');
@@ -126,20 +126,6 @@ export const VoteDescription = T('commands/tools:voteDescription');
 export const VoteExtended = T<LanguageHelpDisplayOptions>('commands/tools:voteExtended');
 export const VoteContentNeeded = T('commands/tools:voteContentNeeded');
 export const VoteReactionBlocked = T('commands/tools:voteReactionBlocked');
-export const TopInvitesDescription = T('commands/tools:topInvitesDescription');
-export const TopInvitesExtended = T<LanguageHelpDisplayOptions>('commands/tools:topInvitesExtended');
-export const TopInvitesNoInvites = T('commands/tools:topInvitesNoInvites');
-export const TopInvitesTop10InvitesFor = FT<{ guild: Guild }, string>('commands/tools:topInvitesTop10InvitesFor');
-export const TopInvitesEmbedData = T<{
-	channel: string;
-	link: string;
-	createdAt: string;
-	createdAtUnknown: string;
-	expiresAt: string;
-	neverExpress: string;
-	temporary: string;
-	uses: string;
-}>('commands/tools:topInvitesEmbedData');
 export const UrbanDescription = T('commands/tools:urbanDescription');
 export const UrbanExtended = T<LanguageHelpDisplayOptions>('commands/tools:urbanExtended');
 export const UrbanNoDefinition = FT<{ parameter: string }, string>('commands/tools:urbanNoDefinition');
@@ -151,10 +137,6 @@ export const EmojiCustom = FT<{ emoji: string; id: string }, string>('commands/t
 export const EmojiTwemoji = FT<{ emoji: string; id: string }, string>('commands/tools:emojiTwemoji');
 export const EmojiInvalid = T('commands/tools:emojiInvalid');
 export const EmojiTooLarge = FT<{ emoji: string }, string>('commands/tools:emojiTooLarge');
-export const EmotesDescription = T('commands/tools:emotesDescription');
-export const EmotesExtended = T<LanguageHelpDisplayOptions>('commands/tools:emotesExtended');
-export const EmotesTitle = T('commands/tools:emotesTitle');
-export const EmoteNoEmotes = T('commands/tools:emotesNoEmotes');
 export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
 export const PriceCurrencyNotFound = T('commands/tools:priceCurrencyNotFound');
 export const WhoisMemberTitles = T<{ joined: string; createdAt: string }>('commands/tools:whoisMemberTitles');

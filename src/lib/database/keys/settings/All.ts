@@ -6,7 +6,6 @@ export * as Roles from './Roles';
 export * as Selfmod from './Selfmod/All';
 export * as Social from './Social';
 export * as Suggestions from './Suggestions';
-export * as Trigger from './Trigger';
 
 export const Prefix = 'prefix';
 export const Language = 'language';

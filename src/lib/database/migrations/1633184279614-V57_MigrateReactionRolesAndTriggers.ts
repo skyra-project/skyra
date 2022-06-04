@@ -1,7 +1,7 @@
 import type { SerializedEmoji } from '#utils/functions';
 import { TwemojiRegex } from '@sapphire/discord-utilities';
 import type { MigrationInterface, QueryRunner } from 'typeorm';
-import type { ReactionRole, TriggerIncludes } from '../entities/GuildEntity';
+import type { ReactionRole } from '../entities/GuildEntity';
 
 export class V57MigrateReactionRolesAndTriggers1633184279614 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
@@ -149,4 +149,10 @@ interface GuildData {
 	id: string;
 	reactionRoles: ReactionRole[];
 	triggerIncludes: TriggerIncludes[];
+}
+
+interface TriggerIncludes {
+	action: 'react';
+	input: string;
+	output: SerializedEmoji;
 }

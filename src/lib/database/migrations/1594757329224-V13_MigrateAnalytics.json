@@ -140,13 +140,6 @@
 		}
 	],
 	[
-		"8ball",
-		{
-			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
 		"changemymind",
 		{
 			"category": "Fun",
@@ -175,28 +168,7 @@
 		}
 	],
 	[
-		"howtoflirt",
-		{
-			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
 		"love",
-		{
-			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
-		"norris",
-		{
-			"category": "Fun",
-			"subCategory": "General"
-		}
-	],
-	[
-		"peepolove",
 		{
 			"category": "Fun",
 			"subCategory": "General"
@@ -273,13 +245,6 @@
 		}
 	],
 	[
-		"lmgtfy",
-		{
-			"category": "Google",
-			"subCategory": "General"
-		}
-	],
-	[
 		"weather",
 		{
 			"category": "Google",
@@ -294,13 +259,6 @@
 		}
 	],
 	[
-		"nick",
-		{
-			"category": "Management",
-			"subCategory": "General"
-		}
-	],
-	[
 		"permissionnodes",
 		{
 			"category": "Management",
@@ -309,13 +267,6 @@
 	],
 	[
 		"roles",
-		{
-			"category": "Management",
-			"subCategory": "General"
-		}
-	],
-	[
-		"triggers",
 		{
 			"category": "Management",
 			"subCategory": "General"
@@ -392,13 +343,6 @@
 		}
 	],
 	[
-		"slap",
-		{
-			"category": "Misc",
-			"subCategory": "General"
-		}
-	],
-	[
 		"snipe",
 		{
 			"category": "Misc",
@@ -414,20 +358,6 @@
 	],
 	[
 		"triggered",
-		{
-			"category": "Misc",
-			"subCategory": "General"
-		}
-	],
-	[
-		"upvote",
-		{
-			"category": "Misc",
-			"subCategory": "General"
-		}
-	],
-	[
-		"vaporwave",
 		{
 			"category": "Misc",
 			"subCategory": "General"

@@ -10,8 +10,6 @@
 	"commandModeThresholdDuration": "El tiempo en el que las infracciones se acumularán antes de tomar acción, instantáneamente si no está establecido.",
 	"commandModeReminder": "`Action Log` requiere que `channel.logs.moderation` esté ya configurado.",
 	"commandHandlerAborted": "Cancelado",
-	"nickSet": "Me he cambiado el apodo a **{{nickname}}**.",
-	"nickCleared": "Apodo borrado.",
 	"permissionNodesHigher": "{{REDCROSS}} No puedes modificar ni previsualizar los nodos de permiso para este objetivo.",
 	"permissionNodesCannotAllowEveryone": "{{REDCROSS}} No puedes habilitar comandos para el rol `@everyone`.",
 	"permissionNodesInvalidType": "{{REDCROSS}} Tipo inválido, se esperaba ya sea de `allow` o `deny`.",
@@ -23,11 +21,6 @@
 	"permissionNodesShowName": "Permisos para: __{{name}}__",
 	"permissionNodesShowAllow": "**Permitidos**: {{allow}}",
 	"permissionNodesShowDeny": "**Desactivado**: {{deny}}",
-	"triggersRemoveNottaken": "No hay ningún disparador con esta entrada.",
-	"triggersRemove": "",
-	"triggersAddTaken": "",
-	"triggersAdd": "",
-	"triggersListEmpty": "",
 	"guildInfoTitles": {
 		"CHANNELS": "",
 		"MEMBERS": "",
@@ -99,26 +92,6 @@
 	"createMuteExtended": {
 		"extendedHelp": ""
 	},
-	"nickDescription": "Cambiar el apodo de Skyra para este servidor.",
-	"nickExtended": {
-		"usages": [
-			"",
-			"Apodo"
-		],
-		"extendedHelp": "Este comando te permite cambiar el apodo de Skyra fácilmente para el servidor.",
-		"reminder": "Este comando requiere el permiso **{{CHANGE_NICKNAME, permissions}}. Asegúrate de que Skyra lo tenga.",
-		"explainedUsage": [
-			[
-				"Apodo",
-				"El nuevo apodo. Si no pones ninguno, se pondrá eliminará."
-			]
-		],
-		"examples": [
-			"SkyNET",
-			"Asistente",
-			""
-		]
-	},
 	"permissionNodesDescription": "Configurar los nodos de permiso para este servidor.",
 	"permissionNodesExtended": {
 		"usages": [
@@ -156,43 +129,6 @@
 			""
 		],
 		"reminder": ""
-	},
-	"triggersDescription": "",
-	"triggersExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		]
 	},
 	"managecommandautodeleteDescription": "",
 	"managecommandautodeleteExtended": {

@@ -9,12 +9,12 @@ export class V68PartialRemoveSuggestionSettings1654278189464 implements Migratio
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.addColumn(
 			'guilds',
-			new TableColumn({ name: 'suggestions.emojis.upvote', type: 'varchar', length: '128', default: 's694594285487652954' })
+			new TableColumn({ name: 'suggestions.emojis.upvote', type: 'varchar', length: '128', default: "'s694594285487652954'" })
 		);
 
 		await queryRunner.addColumn(
 			'guilds',
-			new TableColumn({ name: 'suggestions.emojis.downvote', type: 'varchar', length: '128', default: 's694594285269680179' })
+			new TableColumn({ name: 'suggestions.emojis.downvote', type: 'varchar', length: '128', default: "'s694594285269680179'" })
 		);
 	}
 }

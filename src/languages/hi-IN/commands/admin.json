@@ -30,10 +30,6 @@
 	"confServer": "**सर्वर सेटिंग्स {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "{{key}} केवल वेब डैशबोर्ड (<https://skyra.pw>) माध्यम से ही इसे रूप दिया जा सकता हैं।",
 	"confSettingNotSet": "निर्धारित नहीं है",
-	"heapSnapshotDescription": "मेमरी रिसाव को ढूंढने के लिए एक हीपडंप तैयार करता है।",
-	"heapSnapshotExtended": {
-		"extendedHelp": ""
-	},
 	"rolesetDescription": "विविध किरदार संच का प्रबंध करे।",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "पिछे जाने के लिए ◀ दबाए।",
 	"confMenuInvalidKey": "अवैध की, कृपया दिए गए पर्याय से पुन: प्रयास करें।",
 	"confMenuInvalidAction": "अवैध कृती, कृपया दिए गए पर्याय से पुन: प्रयास करें।",
-	"confMenuSaved": "सफलतापूर्वक सभी बदलाव किए जा चुके है।",
-	"updateDescription": "अद्यतन बॉट",
-	"updateExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "यहाँ कुछ पॉलिश, कुछ सफाई, और व्हाटकोन, मैं अचानक एक नया एंड्रॉइड हूँ!",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		]
-	}
+	"confMenuSaved": "सफलतापूर्वक सभी बदलाव किए जा चुके है।"
 }

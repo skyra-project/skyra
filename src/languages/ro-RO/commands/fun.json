@@ -1,20 +1,4 @@
 {
-	"8ballDescription": "",
-	"8ballExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
 	"changemymindDescription": "",
 	"changemymindExtended": {
 		"usages": [
@@ -67,44 +51,8 @@
 	"escaperopeExtended": {
 		"extendedHelp": ""
 	},
-	"howToFlirtDescription": "",
-	"howToFlirtExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
 	"loveDescription": "",
 	"loveExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"norrisDescription": "",
-	"norrisExtended": {
-		"extendedHelp": ""
-	},
-	"peepoloveDescription": "",
-	"peepoloveExtended": {
 		"usages": [
 			""
 		],
@@ -156,10 +104,6 @@
 	"popTitle": "",
 	"popTitleLost": "",
 	"popTitleWinner": "",
-	"punDescription": "",
-	"punExtended": {
-		"extendedHelp": ""
-	},
 	"rateDescription": "",
 	"rateExtended": {
 		"usages": [
@@ -232,100 +176,6 @@
 			""
 		]
 	},
-	"8ballOutput": "",
-	"8ballQuestions": {
-		"When": "",
-		"What": "",
-		"HowMuch": "",
-		"HowMany": "",
-		"Why": "",
-		"Who": ""
-	},
-	"8ballWhen": [
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballWhat": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballHowMuch": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballHowMany": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballWhy": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballWho": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
-	"8ballElse": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
 	"choiceOutput": "",
 	"choiceMissing": "",
 	"choiceDuplicates": "",
@@ -339,7 +189,6 @@
 	"love100": "",
 	"loveItself": "",
 	"loveResult": "",
-	"norrisOutput": "",
 	"rateOutput": "",
 	"rateMyself": [
 		"",
@@ -349,7 +198,6 @@
 		"",
 		""
 	],
-	"punError": "",
 	"xkcdComics": "",
 	"xkcdNotfound": ""
 }

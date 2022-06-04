@@ -1,5 +1,4 @@
 {
-	"customCommandInvalidArgs": "La propiedad \"args\" debe ser un conjunto de textos.",
 	"customCommandInvalidAliases": "La propiedad \"aliases\" debe ser un conjunto de textos.",
 	"customCommandInvalidColor": "La propiedad \"color\" debe ser un número.",
 	"customCommandInvalidContent": "La propiedad \"contenido\" debe ser un texto.",

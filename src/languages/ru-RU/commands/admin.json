@@ -30,10 +30,6 @@
 	"confServer": "**Настройки сервера {{key}}**\n{{list}}",
 	"confDashboardOnlyKey": "`{{key}}` можно настроить только через веб-панель инструментов (<https://skyra.pw>)",
 	"confSettingNotSet": "Не задано",
-	"heapSnapshotDescription": "Создаёт дамп кучи для обнаружения утечек памяти.",
-	"heapSnapshotExtended": {
-		"extendedHelp": ""
-	},
 	"rolesetDescription": "Управляйте наборами уникальных ролей.",
 	"rolesetExtended": {
 		"usages": [
@@ -108,24 +104,5 @@
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": "Все изменения успешно сохранены.",
-	"updateDescription": "Обновите бота",
-	"updateExtended": {
-		"usages": [
-			"Ветка",
-			"--clean",
-			"Ветка --clean"
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"Ветка",
-				""
-			],
-			[
-				"--clean",
-				"Очистить ли всю папку \"dist\" перед сборкой"
-			]
-		]
-	}
+	"confMenuSaved": "Все изменения успешно сохранены."
 }

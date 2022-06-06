@@ -36,6 +36,6 @@ export class UserCommand extends SkyraCommand {
 			.translate(316, 115)
 			.rotate(radians(10))
 			.printCircularImage(avatar, 0, 0, 65)
-			.png();
+			.pngAsync();
 	}
 }

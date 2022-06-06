@@ -55,7 +55,7 @@ export class UserCommand extends SkyraCommand {
 				.restore()
 
 				// Draw the buffer
-				.png()
+				.pngAsync()
 		);
 	}
 }

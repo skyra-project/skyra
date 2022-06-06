@@ -44,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 			.printImage(this.heartIcon, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
-			.png();
+			.pngAsync();
 
 		// Return the lovely message
 		const data = args.t(LanguageKeys.Commands.Misc.ShipData, {
@@ -60,8 +60,8 @@ export class UserCommand extends SkyraCommand {
 	/** Initialize the light and dark theme templates and the heart icon */
 	public async onLoad() {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).png().then(resolveImage),
-			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).png().then(resolveImage),
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).pngAsync().then(resolveImage),
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).pngAsync().then(resolveImage),
 			resolveImage(join(socialFolder, 'heart.png'))
 		]);
 	}

@@ -54,7 +54,7 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('16px FiraSans')
 			.setColor(rgb(thisLum, thisLum, thisLum))
 			.printText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
-			.png();
+			.pngAsync();
 	}
 
 	public processFrame(ctx: Canvas, x: number, y: number, red: number, green: number, blue: number) {

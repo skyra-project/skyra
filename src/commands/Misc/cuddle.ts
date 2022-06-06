@@ -46,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 				.printCircularImage(woman, 0, 0, 69)
 
 				// Draw the buffer
-				.png()
+				.pngAsync()
 		);
 	}
 

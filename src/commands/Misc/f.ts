@@ -37,11 +37,11 @@ export class UserCommand extends SkyraCommand {
 				.printImage(praised, 0, 0, 109, 109)
 
 				// Draw the template
-				.resetTransformation()
+				.resetTransform()
 				.printImage(this.kTemplate, 0, 0, 960, 540)
 
 				// Draw the buffer
-				.png()
+				.pngAsync()
 		);
 	}
 

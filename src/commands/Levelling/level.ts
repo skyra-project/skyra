@@ -85,7 +85,7 @@ export class UserCommand extends SkyraCommand {
 				.save()
 				.printCircularImage(imgAvatarSRC, 103, 87, 71)
 				.restore()
-				.png()
+				.pngAsync()
 		);
 	}
 
@@ -103,7 +103,7 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#E8E8E8')
 				.printRoundedRectangle(340, 85, 267, 11, 4)
-				.png()
+				.pngAsync()
 				.then(resolveImage),
 			new Canvas(640, 174)
 				.setShadowColor(rgba(0, 0, 0, 0.7))
@@ -117,7 +117,7 @@ export class UserCommand extends SkyraCommand {
 				.resetShadows()
 				.setColor('#2C2F33')
 				.printRoundedRectangle(340, 85, 267, 11, 4)
-				.png()
+				.pngAsync()
 				.then(resolveImage)
 		]);
 	}

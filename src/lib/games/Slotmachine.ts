@@ -153,7 +153,7 @@ export class Slotmachine {
 			)
 		);
 
-		return canvas.png();
+		return canvas.pngAsync();
 	}
 
 	/** The boost */

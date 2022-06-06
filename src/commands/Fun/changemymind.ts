@@ -46,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 				.printWrappedText(text, 311, 375, 340)
 
 				// Render
-				.png()
+				.pngAsync()
 		);
 	}
 }

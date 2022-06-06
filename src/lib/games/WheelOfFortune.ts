@@ -149,7 +149,7 @@ export class WheelOfFortune {
 			)
 		);
 
-		return canvas.png();
+		return canvas.pngAsync();
 	}
 
 	/** The Wheel of Fortune multipliers */

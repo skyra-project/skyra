@@ -30,7 +30,7 @@ export class UserCommand extends SkyraCommand {
 			.setTextFont('19px FamilyFriends')
 			.createRectangleClip(61, 335, 156, 60)
 			.printWrappedText(text, 143, 360, 156)
-			.png();
+			.pngAsync();
 	}
 
 	public async onLoad() {

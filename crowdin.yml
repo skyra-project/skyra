@@ -1,5 +1,6 @@
 project_id: '434340'
 api_token_env: 'CROWDIN_PERSONAL_TOKEN'
+pull_request_title: 'chore(i18n-crowdin): new crowdin translation 🌐'
 commit_message: 'chore(i18n-crowdin): new translations for %original_file_name% (%language%)'
 append_commit_message: false
 

@@ -1,4 +1,4 @@
-import { animatedSkyraGlasses, encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra, staticSkyra } from '#mocks/constants';
+import { animatedSkyraGlasses, encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra, staticSkyra } from '#common/constants';
 import { isValidSerializedEmoji } from '#utils/functions';
 
 describe('isValidSerializedEmoji', () => {

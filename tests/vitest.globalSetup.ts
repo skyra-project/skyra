@@ -3,7 +3,7 @@ export async function setup() {
 }
 
 export async function teardown() {
-	const { client } = await import('./mocks/MockInstances');
+	const { client } = await import('./common/MockInstances');
 
 	client.destroy();
 }

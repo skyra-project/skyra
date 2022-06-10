@@ -5,7 +5,7 @@ import {
 	serializedAnimatedSkyraGlasses,
 	serializedStaticSkyra,
 	staticSkyra
-} from '#mocks/constants';
+} from '#common/constants';
 import { isValidTwemoji } from '#utils/functions';
 
 describe('isValidTwemoji', () => {

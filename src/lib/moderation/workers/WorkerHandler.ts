@@ -1,4 +1,3 @@
-import { rootFolder } from '#utils/constants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
 import { envParseString } from '@skyra/env-utilities';
@@ -132,7 +131,7 @@ export class WorkerHandler {
 		}
 	}
 
-	private static readonly workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
+	private static readonly workerTsLoader = join(__dirname, 'worker.js');
 	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
 	private static readonly filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
 	private static readonly maximumId = Number.MAX_SAFE_INTEGER;

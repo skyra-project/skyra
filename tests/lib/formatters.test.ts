@@ -1,5 +1,5 @@
 import type { GuildMessage } from '#lib/types';
-import { client } from '#mocks/MockInstances';
+import { client } from '#common/MockInstances';
 import { formatMessage } from '#utils/formatters';
 import { container } from '@sapphire/framework';
 import { APIMessage, EmbedType } from 'discord-api-types/v9';
@@ -35,6 +35,7 @@ describe('formatters', () => {
 				flags: 0
 			};
 
+			// @ts-expect-error Private constructor:
 			return new Message(client, { ...messageData, ...data }) as GuildMessage;
 		}
 

@@ -7,10 +7,11 @@ export default defineConfig({
 			{ find: '#utils', replacement: resolve('src/lib/util') },
 			{ find: '#lib', replacement: resolve('src/lib') },
 			{ find: '#languages', replacement: resolve('src/lib/languages') },
-			{ find: '#mocks', replacement: resolve('tests/mocks') },
-			{ find: '#root', replacement: resolve('src') }
+			{ find: '#root', replacement: resolve('src') },
+			{ find: '#common', replacement: resolve('tests/common') }
 		]
 	},
+	esbuild: { format: 'cjs' },
 	test: {
 		globals: true,
 		coverage: {

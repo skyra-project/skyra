@@ -1,10 +1,9 @@
-import { createUser } from '#mocks/MockInstances';
+import { createUser } from '#common/MockInstances';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
-import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
@@ -579,9 +578,8 @@ describe('Utils', () => {
 
 	describe('random', () => {
 		test('GIVEN 2 calls to random THEN returns floored mocked values', () => {
-			mockRandom(0.6);
+			vi.spyOn(Math, 'random').mockImplementationOnce(() => 0.6);
 			expect(utils.random(50)).toEqual(30);
-			resetMockRandom();
 		});
 	});
 

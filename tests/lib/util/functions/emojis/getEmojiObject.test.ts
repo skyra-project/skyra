@@ -5,7 +5,7 @@ import {
 	serializedAnimatedSkyraGlasses,
 	serializedStaticSkyra,
 	staticSkyra
-} from '#mocks/constants';
+} from '#common/constants';
 import { EmojiObject, getEmojiObject } from '#utils/functions';
 
 describe('getEmojiObject', () => {

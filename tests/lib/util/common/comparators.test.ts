@@ -3,8 +3,8 @@ import { andMix, orMix } from '#utils/common';
 describe('util common comparators', () => {
 	describe('andMix', () => {
 		test('GIVEN two callbacks AND passing value THEN passes test', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = andMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -19,8 +19,8 @@ describe('util common comparators', () => {
 		});
 
 		test('GIVEN two callbacks AND a value failing the second THEN fails test', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = andMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -35,8 +35,8 @@ describe('util common comparators', () => {
 		});
 
 		test('GIVEN two callbacks AND a value failing the first THEN fails test and short-circuits the second', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = andMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -52,8 +52,8 @@ describe('util common comparators', () => {
 
 	describe('orMix', () => {
 		test('GIVEN two callbacks AND passing value THEN passes test', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = orMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -67,8 +67,8 @@ describe('util common comparators', () => {
 		});
 
 		test('GIVEN two callbacks AND a value passing the first THEN passes test and short-circuits the second', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = orMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -82,8 +82,8 @@ describe('util common comparators', () => {
 		});
 
 		test('GIVEN two callbacks AND a value passing the second THEN passes test', () => {
-			const a = jest.fn((v: number) => v > 0);
-			const b = jest.fn((v: number) => v < 1);
+			const a = vi.fn((v: number) => v > 0);
+			const b = vi.fn((v: number) => v < 1);
 
 			const mix = orMix(a, b);
 			expect(a.mock.calls.length).toBe(0);
@@ -98,8 +98,8 @@ describe('util common comparators', () => {
 		});
 
 		test('GIVEN two callbacks AND a value failing both THEN fails test and short-circuits the second', () => {
-			const a = jest.fn((v: number) => v < 0);
-			const b = jest.fn((v: number) => v > 1);
+			const a = vi.fn((v: number) => v < 0);
+			const b = vi.fn((v: number) => v > 1);
 
 			const mix = orMix(a, b);
 			expect(a.mock.calls.length).toBe(0);

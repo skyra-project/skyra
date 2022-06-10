@@ -18,7 +18,7 @@
 /.gitignore @favna
 /.gqlconfig @favna
 /.prettierrc @favna
-/jest.config.ts @favna
+/vitest.config.ts @favna
 
 # Tyler & Kyra
 /services @Tylertron1998 @kyranet

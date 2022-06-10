@@ -132,7 +132,7 @@ describe('PermissionNodeManager', () => {
 			test('GIVEN an empty node THEN throws error', () => {
 				try {
 					entity.permissionNodes.reset(user);
-					fail();
+					throw new Error('failure');
 				} catch (error: unknown) {
 					const casted = error as UserError;
 
@@ -151,7 +151,7 @@ describe('PermissionNodeManager', () => {
 
 				try {
 					entity.permissionNodes.reset(member);
-					fail();
+					throw new Error('failure');
 				} catch (error: unknown) {
 					const casted = error as UserError;
 
@@ -169,7 +169,7 @@ describe('PermissionNodeManager', () => {
 				const role = createGuildMember({}, guild);
 				try {
 					entity.permissionNodes.reset(role);
-					fail();
+					throw new Error('failure');
 				} catch (error: unknown) {
 					const casted = error as UserError;
 

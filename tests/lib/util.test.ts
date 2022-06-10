@@ -505,7 +505,7 @@ describe('Utils', () => {
 	describe('createPick', () => {
 		beforeAll(() => {
 			// Mock out random so the result is predictable
-			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+			vi.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
 		});
 
 		afterAll(() => {
@@ -521,7 +521,7 @@ describe('Utils', () => {
 	describe('pickRandom', () => {
 		beforeAll(() => {
 			// Mock out random so the result is predictable
-			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+			vi.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
 		});
 
 		afterAll(() => {

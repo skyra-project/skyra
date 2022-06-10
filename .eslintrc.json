@@ -9,7 +9,7 @@
 	},
 	"overrides": [
 		{
-			"files": ["src/commands/**/*.ts", "**/jest.config.ts"],
+			"files": ["src/commands/**/*.ts"],
 			"rules": {
 				"@typescript-eslint/require-await": 0
 			}

@@ -10,7 +10,8 @@
 			"#languages": ["../src/languages/index"],
 			"#mocks/*": ["./mocks/*"],
 			"#root/*": ["../src/*"]
-		}
+		},
+		"types": ["vitest/globals"]
 	},
 	"include": [".", "../src/**/*"],
 	"exclude": ["../dist/**/*"],

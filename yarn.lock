@@ -4316,10 +4316,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"confusables@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "confusables@npm:1.1.0"
-  checksum: b7253c45a3f9502866e8feb665ada996d0226081a5afa6b50876b36fa402b307e3f28045bcb35cfd85050490b37e36a4f5852e3800ec49a3ffad188adeb72191
+"confusables@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "confusables@npm:1.1.1"
+  checksum: 4114964e0996d8b6d6d3698de9cf7bfc910f8d4dd471f75f1e6c75b08cc1b169aee371f1e9d379eba530dd4676920f55bd60a9e4817564b505745f9ca53b3b24
   languageName: node
   linkType: hard
 
@@ -9841,7 +9841,7 @@ __metadata:
     bufferutil: ^4.0.6
     canvas-constructor: ^6.0.1
     colorette: ^2.0.19
-    confusables: ^1.1.0
+    confusables: ^1.1.1
     cz-conventional-changelog: ^3.3.0
     diff: ^5.1.0
     discord-api-types: 0.33.4

@@ -81,7 +81,7 @@
 		"bufferutil": "^4.0.6",
 		"canvas-constructor": "^6.0.1",
 		"colorette": "^2.0.19",
-		"confusables": "^1.1.0",
+		"confusables": "^1.1.1",
 		"diff": "^5.1.0",
 		"discord-api-types": "0.33.4",
 		"discord.js": "^13.8.1",

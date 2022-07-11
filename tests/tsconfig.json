@@ -12,7 +12,6 @@
 			"#common/*": ["./common/*"],
 			"#root/*": ["../src/*"]
 		},
-		"types": ["vitest/globals"]
 	},
 	"include": [".", "../src/**/*"],
 	"exclude": ["../dist/**/*"],

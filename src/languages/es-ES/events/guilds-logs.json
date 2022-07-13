@@ -83,7 +83,7 @@
 	"serverUpdatePreferredLocale": "• **Idioma Preferido**: `{{previous}}` → `{{next}}`",
 	"serverUpdatePremiumSubscriptionCountAdded": "• **Mejoras**: No Establecido → `{{value, number}}`",
 	"serverUpdatePremiumSubscriptionCountRemoved": "• **Mejoras**: `{{value, number}}` → No Establecido",
-	"serverUpdatePremiumSubscriptionCount": "• **Mejoras**: `{{previous, number}}` → {{next, number}}`",
+	"serverUpdatePremiumSubscriptionCount": "• **Mejoras**: `{{previous, number}}` → `{{next, number}}`",
 	"serverUpdatePremiumTier": "• **Nivel de Mejoras**: `{{previous, number}}` → `{{next, number}}`",
 	"serverUpdatePublicUpdatesChannelAdded": "**Canal de Actualizaciones Públicas**: No Establecido → {{value}}",
 	"serverUpdatePublicUpdatesChannelRemoved": "• **Canal de Actualizaciones Públicas**: {{value}} → No Establecido",

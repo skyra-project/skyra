@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { resolveImageFromFS, sanitizeInput } from '#utils/util';
+import { loadImageFromFS, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image } from 'canvas-constructor/napi-rs';
@@ -34,6 +34,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await resolveImageFromFS(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.kTemplate = await loadImageFromFS(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 }

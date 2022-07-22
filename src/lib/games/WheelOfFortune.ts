@@ -1,7 +1,7 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors, socialFolder } from '#utils/constants';
-import { resolveImageFromFS } from '#utils/util';
+import { loadImageFromFS } from '#utils/util';
 import { container, UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { roundNumber } from '@sapphire/utilities';
@@ -174,10 +174,10 @@ export class WheelOfFortune {
 
 	public static async init() {
 		const [winIcons, loseIcons, arrows, shiny] = await Promise.all([
-			resolveImageFromFS(join(socialFolder, 'wof-win-icons.png')),
-			resolveImageFromFS(join(socialFolder, 'wof-lose-icons.png')),
-			resolveImageFromFS(join(socialFolder, 'wof-arrows.png')),
-			resolveImageFromFS(join(socialFolder, 'shiny-icon.png'))
+			loadImageFromFS(join(socialFolder, 'wof-win-icons.png')),
+			loadImageFromFS(join(socialFolder, 'wof-lose-icons.png')),
+			loadImageFromFS(join(socialFolder, 'wof-arrows.png')),
+			loadImageFromFS(join(socialFolder, 'shiny-icon.png'))
 		]);
 
 		WheelOfFortune.images.LOSE_ICONS = loseIcons;

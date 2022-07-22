@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar, resolveImageFromFS } from '#utils/util';
+import { fetchAvatar, loadImageFromFS } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -46,6 +46,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await resolveImageFromFS(join(assetsFolder, './images/memes/f.png'));
+		this.kTemplate = await loadImageFromFS(join(assetsFolder, './images/memes/f.png'));
 	}
 }

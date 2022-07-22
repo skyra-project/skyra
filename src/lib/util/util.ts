@@ -6,7 +6,7 @@ import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNullishOrEmpty, isNumber, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
-import { Image, resolveImage } from 'canvas-constructor/napi-rs';
+import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
 import {
 	AllowedImageSize,
@@ -124,20 +124,20 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 	return payload;
 }
 
-export async function resolveImageFromUrl(url: string | URL): Promise<Image> {
+export async function loadImageFromUrl(url: string | URL): Promise<Image> {
 	const result = await fetch(url);
-	if (result.ok) return resolveImage(Buffer.from(await result.arrayBuffer()));
+	if (result.ok) return loadImage(Buffer.from(await result.arrayBuffer()));
 	throw new Error(`${result.status}: ${await result.text()}`);
 }
 
-export async function resolveImageFromFS(path: PathLike | FileHandle): Promise<Image> {
+export async function loadImageFromFS(path: PathLike | FileHandle): Promise<Image> {
 	const file = await readFile(path);
-	return resolveImage(file);
+	return loadImage(file);
 }
 
 export function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
-	return resolveImageFromUrl(url);
+	return loadImageFromUrl(url);
 }
 
 export function twemoji(emoji: string) {

@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar, resolveImageFromFS, sanitizeInput } from '#utils/util';
+import { fetchAvatar, loadImageFromFS, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image } from 'canvas-constructor/napi-rs';
@@ -25,7 +25,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await resolveImageFromFS(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
+		this.kTemplate = await loadImageFromFS(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
 	}
 
 	private async generate(author: User, text: string) {

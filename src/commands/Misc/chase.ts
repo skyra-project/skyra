@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar, radians, resolveImageFromFS } from '#utils/util';
+import { fetchAvatar, loadImageFromFS, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image } from 'canvas-constructor/napi-rs';
@@ -52,7 +52,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.KTemplate = await resolveImageFromFS(join(assetsFolder, './images/memes/chase.png'));
+		this.KTemplate = await loadImageFromFS(join(assetsFolder, './images/memes/chase.png'));
 	}
 
 	private resolve(message: Message, possibleTarget: User) {

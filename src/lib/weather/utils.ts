@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { assetsFolder } from '#utils/constants';
-import { resolveImageFromFS } from '#utils/util';
+import { loadImageFromFS } from '#utils/util';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { container, fromAsync, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
@@ -102,7 +102,7 @@ export async function getFile(name: WeatherName): Promise<Image> {
 	const existing = getFileCache.get(name);
 	if (existing !== undefined) return existing;
 
-	const image = await resolveImageFromFS(join(weatherFolder, `${name}.png`));
+	const image = await loadImageFromFS(join(weatherFolder, `${name}.png`));
 	getFileCache.set(name, image);
 	return image;
 }
@@ -113,10 +113,10 @@ export async function getIcons(theme: Theme): Promise<Icons> {
 	if (existing !== undefined) return existing;
 
 	const [pointer, precipitation, temperature, visibility] = await Promise.all([
-		resolveImageFromFS(join(weatherFolder, theme, 'pointer.png')),
-		resolveImageFromFS(join(weatherFolder, theme, 'precipitation.png')),
-		resolveImageFromFS(join(weatherFolder, theme, 'temperature.png')),
-		resolveImageFromFS(join(weatherFolder, theme, 'visibility.png'))
+		loadImageFromFS(join(weatherFolder, theme, 'pointer.png')),
+		loadImageFromFS(join(weatherFolder, theme, 'precipitation.png')),
+		loadImageFromFS(join(weatherFolder, theme, 'temperature.png')),
+		loadImageFromFS(join(weatherFolder, theme, 'visibility.png'))
 	]);
 
 	const icons: Icons = { pointer, precipitation, temperature, visibility };

@@ -1,7 +1,7 @@
 import type { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { CanvasColors, socialFolder } from '#utils/constants';
-import { resolveImageFromFS } from '#utils/util';
+import { loadImageFromFS } from '#utils/util';
 import { container, UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { Canvas, Image } from 'canvas-constructor/napi-rs';
@@ -202,8 +202,8 @@ export class Slotmachine {
 
 	public static async init(): Promise<void> {
 		const [icon, shiny] = await Promise.all([
-			resolveImageFromFS(join(socialFolder, 'sm-icons.png')),
-			resolveImageFromFS(join(socialFolder, 'shiny-icon.png'))
+			loadImageFromFS(join(socialFolder, 'sm-icons.png')),
+			loadImageFromFS(join(socialFolder, 'shiny-icon.png'))
 		]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;

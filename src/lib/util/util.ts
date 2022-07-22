@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
@@ -125,9 +126,8 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 }
 
 export async function loadImageFromUrl(url: string | URL): Promise<Image> {
-	const result = await fetch(url);
-	if (result.ok) return loadImage(Buffer.from(await result.arrayBuffer()));
-	throw new Error(`${result.status}: ${await result.text()}`);
+	const buffer = await fetch(url, FetchResultTypes.Buffer);
+	return loadImage(buffer);
 }
 
 export async function loadImageFromFS(path: PathLike | FileHandle): Promise<Image> {

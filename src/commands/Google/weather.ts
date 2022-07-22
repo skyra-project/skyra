@@ -16,7 +16,7 @@ import { seconds } from '#utils/common';
 import { baseLanguage, countryLanguage, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas } from 'canvas-constructor/skia';
+import { Canvas } from 'canvas-constructor/napi-rs';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 

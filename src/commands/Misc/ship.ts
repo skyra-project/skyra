@@ -2,11 +2,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CanvasColors, socialFolder } from '#utils/constants';
-import { fetchAvatar } from '#utils/util';
+import { fetchAvatar, resolveImageFromFS } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/napi-rs';
 import { remove as removeConfusables } from 'confusables';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { User } from 'discord.js';
@@ -62,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
 			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).pngAsync().then(resolveImage),
 			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).pngAsync().then(resolveImage),
-			resolveImage(join(socialFolder, 'heart.png'))
+			resolveImageFromFS(join(socialFolder, 'heart.png'))
 		]);
 	}
 

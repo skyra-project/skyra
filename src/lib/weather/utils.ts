@@ -1,9 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { assetsFolder } from '#utils/constants';
+import { resolveImageFromFS } from '#utils/util';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { container, fromAsync, UserError } from '@sapphire/framework';
 import { tryParse } from '@sapphire/utilities';
-import { Image, resolveImage } from 'canvas-constructor/skia';
+import type { Image } from 'canvas-constructor/napi-rs';
 import { cyan, gray, red } from 'colorette';
 import type { TFunction } from 'i18next';
 import { join } from 'node:path';
@@ -101,7 +102,7 @@ export async function getFile(name: WeatherName): Promise<Image> {
 	const existing = getFileCache.get(name);
 	if (existing !== undefined) return existing;
 
-	const image = await resolveImage(join(weatherFolder, `${name}.png`));
+	const image = await resolveImageFromFS(join(weatherFolder, `${name}.png`));
 	getFileCache.set(name, image);
 	return image;
 }
@@ -112,10 +113,10 @@ export async function getIcons(theme: Theme): Promise<Icons> {
 	if (existing !== undefined) return existing;
 
 	const [pointer, precipitation, temperature, visibility] = await Promise.all([
-		resolveImage(join(weatherFolder, theme, 'pointer.png')),
-		resolveImage(join(weatherFolder, theme, 'precipitation.png')),
-		resolveImage(join(weatherFolder, theme, 'temperature.png')),
-		resolveImage(join(weatherFolder, theme, 'visibility.png'))
+		resolveImageFromFS(join(weatherFolder, theme, 'pointer.png')),
+		resolveImageFromFS(join(weatherFolder, theme, 'precipitation.png')),
+		resolveImageFromFS(join(weatherFolder, theme, 'temperature.png')),
+		resolveImageFromFS(join(weatherFolder, theme, 'visibility.png'))
 	]);
 
 	const icons: Icons = { pointer, precipitation, temperature, visibility };

@@ -4,10 +4,10 @@ import { Scope } from '#lib/types';
 import { isPrivateMessage } from '#utils/common';
 import { cdnFolder } from '#utils/constants';
 import { fetchGlobalRank, fetchLocalRank, formatNumber } from '#utils/functions';
-import { fetchAvatar, sanitizeInput } from '#utils/util';
+import { fetchAvatar, resolveImageFromFS, sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas, Image, resolveImage } from 'canvas-constructor/skia';
+import { Canvas, Image, resolveImage } from 'canvas-constructor/napi-rs';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -49,14 +49,14 @@ export class UserCommand extends SkyraCommand {
 		/* Global leaderboard */
 		const rank = await (scope === Scope.Local ? fetchLocalRank(user, message.guild!) : fetchGlobalRank(user));
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			resolveImage(join(THEMES_FOLDER, `${settings.profile.bannerProfile}.png`)),
+			resolveImageFromFS(join(THEMES_FOLDER, `${settings.profile.bannerProfile}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
 		const title = t(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
-			const badges = await Promise.all(settings.profile.publicBadges.map((name) => resolveImage(join(BADGES_FOLDER, `${name}.png`))));
+			const badges = await Promise.all(settings.profile.publicBadges.map((name) => resolveImageFromFS(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock : this.lightThemeDock, 600, 0, 100, 391);
 			let position = 20;

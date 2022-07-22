@@ -3,10 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { Scope } from '#lib/types';
 import { cdnFolder } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
-import { fetchAvatar } from '#utils/util';
+import { fetchAvatar, resolveImageFromFS } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/skia';
+import { Canvas, Image, resolveImage, rgba } from 'canvas-constructor/napi-rs';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -43,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			resolveImage(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
+			resolveImageFromFS(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
 			fetchAvatar(user, 256)
 		]);
 

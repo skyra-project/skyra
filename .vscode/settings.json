@@ -14,24 +14,5 @@
 		"**/dist/": true,
 		"**/.git/": true
 	},
-	"typescript.tsdk": "node_modules\\typescript\\lib",
-	"workbench.colorCustomizations": {
-		"activityBar.activeBackground": "#ea7ba9",
-		"activityBar.activeBorder": "#c9f2ad",
-		"activityBar.background": "#ea7ba9",
-		"activityBar.foreground": "#15202b",
-		"activityBar.inactiveForeground": "#15202b99",
-		"activityBarBadge.background": "#c9f2ad",
-		"activityBarBadge.foreground": "#15202b",
-		"sash.hoverBorder": "#ea7ba9",
-		"statusBar.background": "#e34f8c",
-		"statusBar.foreground": "#15202b",
-		"statusBarItem.hoverBackground": "#dc236f",
-		"statusBarItem.remoteBackground": "#e34f8c",
-		"statusBarItem.remoteForeground": "#15202b",
-		"titleBar.activeBackground": "#e34f8c",
-		"titleBar.activeForeground": "#15202b",
-		"titleBar.inactiveBackground": "#e34f8c99",
-		"titleBar.inactiveForeground": "#15202b99"
-	}
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

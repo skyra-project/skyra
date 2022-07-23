@@ -1,12 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@sapphire/time-utilities';
 import { isNullishOrEmpty, isNumber, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
-import { Image, resolveImage } from 'canvas-constructor/skia';
+import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
 import {
 	AllowedImageSize,
@@ -22,6 +23,8 @@ import {
 	UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
+import type { PathLike } from 'node:fs';
+import { FileHandle, readFile } from 'node:fs/promises';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 import type { LeaderboardUser } from './Leaderboard';
 
@@ -122,13 +125,19 @@ export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [stri
 	return payload;
 }
 
-export async function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
+export async function loadImageFromUrl(url: string | URL): Promise<Image> {
+	const buffer = await fetch(url, FetchResultTypes.Buffer);
+	return loadImage(buffer);
+}
+
+export async function loadImageFromFS(path: PathLike | FileHandle): Promise<Image> {
+	const file = await readFile(path);
+	return loadImage(file);
+}
+
+export function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
-	try {
-		return await resolveImage(url);
-	} catch (error) {
-		throw `Could not download the profile avatar: ${error}`;
-	}
+	return loadImageFromUrl(url);
 }
 
 export function twemoji(emoji: string) {

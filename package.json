@@ -49,7 +49,7 @@
 	},
 	"dependencies": {
 		"@discordjs/builders": "^0.16.0",
-		"@discordjs/collection": "^0.7.0",
+		"@discordjs/collection": "^1.0.0",
 		"@influxdata/influxdb-client": "^1.27.0",
 		"@influxdata/influxdb-client-apis": "^1.27.0",
 		"@napi-rs/canvas": "^0.1.25",

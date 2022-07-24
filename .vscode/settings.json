@@ -1,7 +1,4 @@
 {
-	"eslint.validate": [
-		"typescript"
-	],
 	"editor.tabSize": 4,
 	"editor.useTabStops": true,
 	"editor.insertSpaces": false,
@@ -15,6 +12,5 @@
 		"**/.yarn": true,
 		"**/dist/": true,
 		"**/.git/": true
-	},
-	"typescript.tsdk": "node_modules\\typescript\\lib"
+	}
 }

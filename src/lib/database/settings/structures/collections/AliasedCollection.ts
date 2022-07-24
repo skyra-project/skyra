@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 export class AliasedCollection<K, V> extends Collection<K, V> {
 	/**

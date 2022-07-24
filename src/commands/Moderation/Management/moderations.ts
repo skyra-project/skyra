@@ -8,7 +8,7 @@ import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
-import type Collection from '@discordjs/collection';
+import type { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';

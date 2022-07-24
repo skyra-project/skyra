@@ -3,7 +3,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role, User } from 'discord.js';

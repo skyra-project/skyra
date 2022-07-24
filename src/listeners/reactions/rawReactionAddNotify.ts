@@ -6,7 +6,7 @@ import { Colors } from '#utils/constants';
 import { getEmojiId, getEmojiReactionFormat, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { twemoji } from '#utils/util';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';

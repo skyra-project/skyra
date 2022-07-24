@@ -5,7 +5,7 @@ import { skip, take } from '#utils/common';
 import { LongWidthSpace } from '#utils/constants';
 import { formatNumber } from '#utils/functions';
 import type { LeaderboardUser } from '#utils/Leaderboard';
-import type Collection from '@discordjs/collection';
+import type { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';

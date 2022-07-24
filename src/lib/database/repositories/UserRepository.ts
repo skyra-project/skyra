@@ -2,7 +2,7 @@
 import { UserCooldownEntity } from '#lib/database/entities/UserCooldownEntity';
 import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
 import type { User } from 'discord.js';

@@ -1,6 +1,6 @@
 import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';

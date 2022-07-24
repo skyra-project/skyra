@@ -3,7 +3,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
 import { cast } from '#utils/util';
-import Collection, { CollectionConstructor } from '@discordjs/collection';
+import { Collection, type CollectionConstructor } from '@discordjs/collection';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { isNullish, StrictRequired } from '@sapphire/utilities';

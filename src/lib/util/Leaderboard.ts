@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { container } from '@sapphire/framework';
 import { minutes } from './common';
 import { PreciseTimeout } from './PreciseTimeout';

@@ -6471,7 +6471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.1":
+"ioredis@npm:^5.2.2":
   version: 5.2.2
   resolution: "ioredis@npm:5.2.2"
   dependencies:
@@ -9695,7 +9695,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     he: ^1.2.0
     husky: ^8.0.1
-    ioredis: ^5.2.1
+    ioredis: ^5.2.2
     jest: ^28.1.3
     jest-mock-random: ^1.1.1
     lint-staged: ^13.0.3
@@ -10585,7 +10585,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

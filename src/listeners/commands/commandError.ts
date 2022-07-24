@@ -80,8 +80,8 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		try {
 			const report = captureException(error, { tags: { command: args.command.name } });
 			return args.t(LanguageKeys.Events.Errors.UnexpectedErrorWithContext, { report });
-		} catch (reportError) {
-			this.container.client.emit(Events.Error, reportError);
+		} catch (error) {
+			this.container.client.emit(Events.Error, error);
 			return args.t(LanguageKeys.Events.Errors.UnexpectedError);
 		}
 	}

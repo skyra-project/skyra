@@ -2564,11 +2564,11 @@ __metadata:
   linkType: hard
 
 "@skyra/star-wars-api@npm:^2.0.30":
-  version: 2.0.30
-  resolution: "@skyra/star-wars-api@npm:2.0.30"
+  version: 2.0.31
+  resolution: "@skyra/star-wars-api@npm:2.0.31"
   dependencies:
     graphql: ^15.8.0
-  checksum: ebabfa3be97b8727a25dfb75223d2a9ab517d46dd304582f4bc3052038df7ba0ee924a74b35a02c4f4d819ebda1748c62864f4ab49425b0ed543941eb21db52d
+  checksum: e2544118f764988406616dd2ce8e754aa182fc347a31219d32971adff5045abc7ae9afe11fa9db862201562d5ff185c8c0c3ec96972998027740432fc3453ae6
   languageName: node
   linkType: hard
 
@@ -6471,7 +6471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.1":
+"ioredis@npm:^5.2.2":
   version: 5.2.2
   resolution: "ioredis@npm:5.2.2"
   dependencies:
@@ -9695,7 +9695,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     he: ^1.2.0
     husky: ^8.0.1
-    ioredis: ^5.2.1
+    ioredis: ^5.2.2
     jest: ^28.1.3
     jest-mock-random: ^1.1.1
     lint-staged: ^13.0.3
@@ -10585,7 +10585,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

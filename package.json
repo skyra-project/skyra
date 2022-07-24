@@ -87,7 +87,7 @@
 		"discord-api-types": "~0.33.5",
 		"discord.js": "^13.9.1",
 		"he": "^1.2.0",
-		"ioredis": "^5.2.1",
+		"ioredis": "^5.2.2",
 		"pg": "^8.7.3",
 		"tslib": "1.11.2",
 		"typeorm": "0.2.28",
@@ -160,5 +160,5 @@
 		}
 	},
 	"prettier": "@sapphire/prettier-config",
-	"packageManager": "yarn@3.2.1"
+	"packageManager": "yarn@3.2.2"
 }

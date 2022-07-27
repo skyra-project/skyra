@@ -1,45 +1,5 @@
 version: '2.4'
 services:
-  hasteserver:
-    container_name: hasteserver
-    depends_on:
-      - redis
-    environment:
-      PORT: 8290
-      STORAGE_DB: 2
-      STORAGE_EXPIRE_SECONDS: 21600
-      STORAGE_HOST: redis
-      STORAGE_PASSWORD: redis
-      STORAGE_PORT: 8287
-      STORAGE_TYPE: redis
-    image: 'skyrabot/haste-server:latest'
-    networks:
-      - skyra
-    ports:
-      - '8290:8290'
-    restart: always
-
-  influx:
-    command: 'influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt'
-    container_name: influxdb
-    image: 'influxdb:2.3-alpine'
-    networks:
-      - skyra
-    ports:
-      - '8285:8086'
-    restart: always
-    volumes:
-      - 'influx-data:/var/lib/influxdb2'
-
-  swapi:
-    container_name: star-wars-api
-    image: 'skyrabot/star-wars-api:latest'
-    networks:
-      - skyra
-    ports:
-      - '8293:8293'
-    restart: always
-
   postgres:
     container_name: postgres
     image: 'skyrabot/postgres:latest'
@@ -61,32 +21,12 @@ services:
       - '8287:8287'
     restart: always
 
-  saelem:
-    container_name: saelem
-    depends_on:
-      - redis
-    environment:
-      PORT: 8284
-      SAELEM_REDIS_DATABASE: 0
-      SAELEM_REDIS_HOST: redis
-      SAELEM_REDIS_PASSWORD: redis
-      SAELEM_REDIS_PORT: 8287
-    image: 'skyrabot/saelem:latest'
-    networks:
-      - skyra
-    ports:
-      - '8284:8284'
-    restart: always
-
   skyra:
     build:
       context: ../
     container_name: skyra
     depends_on:
-      - hasteserver
-      - influx
       - redis
-      - saelem
       - postgres
     env_file:
       - ../src/.env.development
@@ -102,8 +42,6 @@ services:
 
 volumes:
   postgres-data:
-    external: true
-  influx-data:
     external: true
 
 networks:

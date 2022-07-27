@@ -1,0 +1,496 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Guild {
+    id BigInt @id @map("id")
+
+    log            GuildLogs?
+    moderation     GuildModeration?
+    autoModeration GuildAutoModeration?
+    roles          GuildRoles?
+
+    cases       ModerationAction[]
+    stickyRoles StickyRole[]
+}
+
+model GuildModeration {
+    id    BigInt @id @map("id")
+    /// The guild entry is from.
+    guild Guild  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// The moderation logs channel.
+    channelId     BigInt? @map("channel_id")
+    /// Whether or not bans issued manually should be logged.
+    trackBans     Boolean @default(false) @map("track_bans")
+    /// Whether or not timeouts issued manually should be included.
+    trackTimeouts Boolean @default(false) @map("track_timeouts")
+}
+
+model GuildAutoModeration {
+    id    BigInt @id @map("id")
+    /// The guild entry is from.
+    guild Guild  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// The moderation logs channel.
+    channelId   BigInt? @map("channel_id")
+    /// Whether or not to track Discord's native automod actions.
+    trackNative Boolean @default(false) @map("track_native")
+
+    attachments                 GuildAutoModerationAttachments?
+    capitals                    GuildAutoModerationCapitals?
+    links                       GuildAutoModerationLinks?
+    newlines                    GuildAutoModerationNewlines?
+    invites                     GuildAutoModerationInvites?
+    words                       GuildAutoModerationWords?
+    GuildAutoModerationMentions GuildAutoModerationMentions[]
+}
+
+enum GuildAutoModerationHardAction {
+    Warning
+    Timeout
+    Kick
+    Softban
+    Ban
+}
+
+model GuildAutoModerationAttachments {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationCapitals {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The amount of characters at which the message won't be ignored by this subsystem.
+    minimum Int @map("minimum")
+    /// The percentage of uppercase characters a message may have for an infraction.
+    maximum Int @map("maximum")
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationLinks {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The allowed domain links.
+    allowed String[] @default([])
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationNewlines {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The amount of newlines characters a message may have for an infraction.
+    maximum Int @map("maximum")
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationInvites {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The allowed invite codes.
+    allowedCodes  String[] @default([]) @map("allowed_codes")
+    /// The allowed invite codes.
+    allowedGuilds BigInt[] @default([]) @map("allowed_guilds")
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationWords {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The filtered words.
+    words String[] @default([]) @map("words")
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationMentions {
+    id     BigInt              @id @map("id")
+    /// The parent where all automod information is at.
+    parent GuildAutoModeration @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// Whether or not the subsystem is enabled.
+    enabled Boolean? @map("enabled")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    softAction Int @map("soft_action")
+
+    /// The action to do in each infraction. Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b00X): Whether or not to delete the message.
+    /// - 2nd bit (0b0X0): Whether or not to send an alert to the channel.
+    /// - 3rd bit (0bX00): Whether or not to log the infraction.
+    hardAction         GuildAutoModerationHardAction @map("hard_action")
+    /// The duration of the hard action. Only applicable to Warning, Timeout, and Ban.
+    ///
+    /// In the case of Timeout, if none is given, the action will be ignored.
+    hardActionDuration Int?                          @map("hard_action_duration")
+
+    /// The amount of infractions a user can do before triggering the hard action.
+    thresholdMaximum  Int @map("threshold_maximum")
+    /// The amount of time to pool the amount of infractions.
+    thresholdDuration Int @map("threshold_duration")
+
+    /// The overrides for the point system.
+    overrides GuildAutoModerationMentionsOverrides[]
+
+    /// The roles that are ignored by this subsystem.
+    ignoredRoles    BigInt[] @default([]) @map("ignored_roles")
+    /// The channels that are ignored by this subsystem.
+    ignoredChannels BigInt[] @default([]) @map("ignored_channels")
+}
+
+model GuildAutoModerationMentionsOverrides {
+    id BigInt @id @default(autoincrement()) @map("id")
+
+    parentId BigInt                      @map("parent_id")
+    /// The parent where all automod information is at.
+    parent   GuildAutoModerationMentions @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+    /// The roles affected by this override.
+    roles BigInt[] @map("roles")
+    /// The users affected by this override.
+    users BigInt[] @map("users")
+
+    points Int @map("points")
+}
+
+model GuildLogs {
+    id    BigInt @id @map("id")
+    /// The guild entry is from.
+    guild Guild  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// The member add logs channel.
+    memberAdd            BigInt? @map("member_add")
+    /// The member remove logs channel.
+    memberRemove         BigInt? @map("member_remove")
+    /// The member nickname update logs channel.
+    memberNickNameUpdate BigInt? @map("member_nickname_update")
+    /// The member username update logs channel.
+    memberUserNameUpdate BigInt? @map("member_username_update")
+
+    /// The message delete logs channel.
+    messageDelete     BigInt? @map("message_delete")
+    /// The message delete logs NSFW channel.
+    messageDeleteNsfw BigInt? @map("message_delete_nsfw")
+    /// The message update logs channel.
+    messageUpdate     BigInt? @map("message_update")
+    /// The message update logs NSFW channel.
+    messageUpdateNsfw BigInt? @map("message_update_nsfw")
+
+    /// The message prune logs channel.
+    prune    BigInt? @map("prune")
+    /// The message reaction logs channel.
+    reaction BigInt? @map("reaction")
+
+    /// The role create logs channel.
+    roleCreate BigInt? @map("role_create")
+    /// The role update logs channel.
+    roleUpdate BigInt? @map("role_update")
+    /// The role delete logs channel.
+    roleDelete BigInt? @map("role_delete")
+
+    /// The channel create logs channel.
+    channelCreate BigInt? @map("channel_create")
+    /// The channel update logs channel.
+    channelUpdate BigInt? @map("channel_update")
+    /// The channel delete logs channel.
+    channelDelete BigInt? @map("channel_delete")
+
+    /// The emoji create logs channel.
+    emojiCreate BigInt? @map("emoji_create")
+    /// The emoji update logs channel.
+    emojiUpdate BigInt? @map("emoji_update")
+    /// The emoji delete logs channel.
+    emojiDelete BigInt? @map("emoji_delete")
+
+    /// The emoji reaction add logs channel.
+    emojiAdd               BigInt? @map("emoji_add")
+    /// Whether or not twemoji reactions should be logged.
+    emojiAddIncludeTwemoji Boolean @default(false) @map("emoji_add_include_twemoji")
+
+    /// The server update logs channel.
+    serverUpdate BigInt? @map("server_update")
+
+    /// The channels to ignore logs from.
+    ignoreAll       BigInt[] @default([]) @map("ignore_all")
+    /// The channels to ignore message updates from.
+    ignoreMessages  BigInt[] @default([]) @map("ignore_messages")
+    /// The channels to ignore reaction updates from.
+    ignoreReactions BigInt[] @default([]) @map("ignore_reactions")
+}
+
+model GuildRoles {
+    id    BigInt @id @map("id")
+    /// The guild entry is from.
+    guild Guild  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+    /// The roles to be given to any new user.
+    initial       BigInt[] @default([]) @map("initial")
+    /// The roles to be given to any new human user.
+    initialHumans BigInt[] @default([]) @map("initial_humans")
+    /// The roles to be given to any new bot user.
+    initialRobots BigInt[] @default([]) @map("initial_robots")
+}
+
+model StickyRole {
+    /// The entry's case number ID.
+    userId  BigInt @map("user_id")
+    /// The guild this entry was issued at.
+    guild   Guild  @relation(fields: [guildId], references: [id])
+    /// The ID of the guild this entry was issued at.
+    guildId BigInt @map("guild_id")
+
+    /// The sticky role IDs
+    roleIds BigInt[] @map("role_ids")
+
+    @@id([userId, guildId])
+}
+
+enum ModerationActionType {
+    AddRole
+    RemoveRole
+    Nickname
+    AddWarning
+    RemoveWarning
+    Timeout
+    TimeoutEnd
+    Kick
+    Softban
+    Ban
+    Unban
+}
+
+model ModerationAction {
+    /// The entry's case number ID.
+    id          Int                  @map("id")
+    /// The guild this entry was issued at.
+    guild       Guild                @relation(fields: [guildId], references: [id])
+    /// The ID of the guild this entry was issued at.
+    guildId     BigInt               @map("guild_id")
+    /// The moderation action type.
+    action      ModerationActionType @map("action")
+    /// Holds a bitfield value, where:
+    ///
+    /// - 1st bit (0b000X): Whether or not the entry is hidden.
+    metadata    Int                  @map("metadata")
+    /// The creation time of this entry.
+    createdAt   DateTime             @default(now()) @map("created_at")
+    /// The duration of this entry, `0` is considered no duration.
+    duration    Int                  @map("duration")
+    /// The target user.
+    targetId    BigInt               @map("target_id")
+    /// The moderator who issued this action.
+    moderatorId BigInt               @map("moderator_id")
+    /// The moderation log this entry refers to, if any.
+    referenceId Int?                 @map("reference_id")
+
+    @@id([id, guildId])
+}
+
+model User {
+    /// The ID of the user.
+    id     BigInt  @id @map("id")
+    /// Whether or not moderation actions should DM the user.
+    report Boolean @default(true) @map("report")
+}

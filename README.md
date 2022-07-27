@@ -18,14 +18,6 @@
 -   [`Node.js`]: To run the project.
 -   [`PostgreSQL`]: To store persistent data.
 
-### Optional additions
-
--   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
--   [`InfluxDB`]: Metrics platform.
--   [`Redis`]: Caching for [`Saelem`].
--   [`Saelem`]: Horoscope API.
--   [`Star-Wars-Api`]: Star Wars API.
-
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
 ## Translating Skyra <a href="https://translation.skyra.pw" target="_blank"><img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%"></a>

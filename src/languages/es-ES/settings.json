@@ -1,6 +1,0 @@
-{
-	"channelsIgnoreAll": "Canales que debería ignorar para todos los tipos de registros.",
-	"channelsIgnoreMessageDelete": "Canales que debería ignorar para los registros de mensajes borrados.",
-	"channelsIgnoreMessageEdit": "Canales que debería ignorar para los registros de mensajes editados.",
-	"channelsIgnoreReactionAdd": "Canales que debería ignorar para los registros de reacciones añadidas."
-}

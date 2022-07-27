@@ -3,7 +3,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { getHandler } from '#root/languages/index';
+import { getHandler } from '#root/locales/index';
 import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';

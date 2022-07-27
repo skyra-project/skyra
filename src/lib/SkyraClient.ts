@@ -1,13 +1,10 @@
-import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
+import { SettingsManager, UserRepository } from '#lib/database';
 import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
-import { isGuildMessage } from '#utils/common';
 import { Enumerable } from '@sapphire/decorators';
 import { container, SapphireClient } from '@sapphire/framework';
-import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { envParseBoolean } from '@skyra/env-utilities';
-import { Message, WebhookClient } from 'discord.js';
-import { readSettings } from './database/settings/functions';
+import { WebhookClient } from 'discord.js';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { WorkerManager } from './moderation/workers/WorkerManager';
 import { Leaderboard } from './util/Leaderboard';
@@ -84,21 +81,4 @@ export class SkyraClient extends SapphireClient {
 		UserRepository.destroy();
 		return super.destroy();
 	}
-
-	/**
-	 * Retrieves the prefix for the guild.
-	 * @param message The message that gives context.
-	 */
-	public fetchPrefix = async (message: Message) => {
-		if (isGuildMessage(message)) return readSettings(message.guild, GuildSettings.Prefix);
-		return [process.env.CLIENT_PREFIX, ''] as readonly string[];
-	};
-
-	/**
-	 * Retrieves the language key for the message.
-	 * @param message The message that gives context.
-	 */
-	public fetchLanguage = (message: InternationalizationContext) => {
-		return message.guild ? readSettings(message.guild, GuildSettings.Language) : 'en-US';
-	};
 }

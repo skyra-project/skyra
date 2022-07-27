@@ -8,7 +8,7 @@
 		"paths": {
 			"#utils/*": ["lib/util/*"],
 			"#lib/*": ["lib/*"],
-			"#languages": ["languages/index"],
+			"#languages": ["locales/index"],
 			"#root/*": ["*"]
 		},
 		"composite": true

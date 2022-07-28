@@ -1,0 +1,80 @@
+{
+	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
+	"confUpdated": "Successfully updated the key **{{key}}**: {{response}}",
+	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
+	"confGet": "The value for the key **{{key}}** is: `{{value}}`",
+	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
+	"confNochange": "The value for **{{key}}** was already that value.",
+	"confServerDescription": "Define per-server settings.",
+	"confServerExtended": {
+		"usages": ["set NameOfKey Value for Key", "show", "show NameOfKey", "remove NameOfKey Value for Key", "reset NameOfKey", "menu"],
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the [web dashboard](https://skyra.pw).",
+		"examples": [
+			"set language en-GB",
+			"set channels.moderation-logs #moderation-logs",
+			"show",
+			"show channels",
+			"remove roles.moderator Moderator",
+			"reset roles.moderator",
+			"menu"
+		],
+		"reminder": "There are keys and groups, keys that are within a group are named by `GroupName.KeyName`."
+	},
+	"confServer": "**Server Setting {{key}}**\n{{list}}",
+	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
+	"confSettingNotSet": "Not Set",
+	"rolesetDescription": "Manage unique role sets.",
+	"rolesetExtended": {
+		"usages": [
+			"set RoleSetName Role1 Role2 Role3...",
+			"remove RoleSetName Role1 Role2 Role3...",
+			"reset",
+			"reset RoleSetName",
+			"list",
+			"RoleSetName Role1 Role2 Role3"
+		],
+		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
+		"explainedUsage": [
+			["add", "Create a new roleset or add a role to an existing one."],
+			["remove", "Remove a role from an existing roleset."],
+			["reset", "Removes all roles from a roleset or, if not specified, all existing rolesets."],
+			["list", "Lists all rolesets."],
+			["auto", "Adds or removes a roleset."],
+			["RoleSetName", "The name of the roleset"],
+			["Role1 Role2 Role3", "The roles to add to the roleset"]
+		],
+		"examples": [
+			"add regions America",
+			"add regions Africa America Asia Europe",
+			"remove regions America",
+			"reset",
+			"reset regions",
+			"list",
+			"regions America",
+			"regions Africa America Asia Europe"
+		],
+		"reminder": "This command can add and/or remove multiple roles at the same time."
+	},
+	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
+	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, andList}}.",
+	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, andList}}",
+	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this group.",
+	"rolesetResetAll": "{{GREENTICK}} Successfully removed all rolesets.",
+	"rolesetResetNotExists": "{{REDCROSS}} The roleset `{{name}}` does not exist in this server.",
+	"rolesetResetGroup": "{{GREENTICK}} Successfully removed the roleset `{{name}}` from this server.",
+	"rolesetUpdated": "The {{name}} unique role set has been updated.",
+	"rolesetNoRolesets": "You have no rolesets.",
+	"confMenuRenderAtFolder": "Currently at: 📁 {{path}}",
+	"confMenuRenderAtPiece": "Currently at: ⚙️ {{path}}",
+	"confMenuRenderNokeys": "There are no configurable keys for this folder",
+	"confMenuRenderSelect": "Please type in any of the following entries' names",
+	"confMenuRenderUpdate": "• Update Value → `set <value>`",
+	"confMenuRenderRemove": "• Remove Value → `remove <value>`",
+	"confMenuRenderReset": "• Reset Value → `reset`",
+	"confMenuRenderUndo": "• Undo Update → `undo`",
+	"confMenuRenderCvalue": "Current Value: **``{{value}}``**",
+	"confMenuRenderBack": "Press ◀ to go back",
+	"confMenuInvalidKey": "Invalid Key, please try again with any of the following options.",
+	"confMenuInvalidAction": "Invalid Action, please try again with any of the following options.",
+	"confMenuSaved": "Successfully saved all changes."
+}

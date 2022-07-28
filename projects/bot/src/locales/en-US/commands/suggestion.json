@@ -1,0 +1,47 @@
+{
+	"suggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
+	"resolveSuggestionDescription": "Set the suggestion's status.",
+	"resolveSuggestionExtended": {
+		"usages": ["Suggestion accept/a/deny/d/consider/c", "Suggestion accept/a/deny/d/consider/c Comment"],
+		"extendedHelp": "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",
+		"explainedUsage": [
+			["Suggestion", "The suggestion to resolve, also accepts `latest` to manage the latest suggestion."],
+			["accept/a/deny/d/consider/c", "Whether to change the status of the suggestion to accepted, denied or considering."],
+			["Comment", "An optional comment that you want to give back to the person who made this suggestion."]
+		],
+		"examples": [
+			"latest accept Thank you for your suggestion!",
+			"1 accept Thank you for your suggestion!",
+			"1 a Thank you for your suggestion!",
+			"1 consider Hmm... we may do this, but it's really low priority",
+			"1 c Hmm... we may do this, but it's really low priority",
+			"1 deny There is no way this is going to happen.",
+			"1 d There is no way this is going to happen."
+		],
+		"reminder": "Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.\nFurthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
+	},
+	"resolveSuggestionInvalidId": "I am sorry, but I was not able to resolve `{{parameter}}` to a valid suggestion ID! They are integers between {{minimum, number}} and {{maximum, number}} inclusive.",
+	"resolveSuggestionInvalidAction": "I am sorry, but I was not able to resolve `{{parameter}}` into a valid action.\n**Hint**: The possible values are: {{possibles, orList}}.",
+	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
+	"resolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
+	"resolveSuggestionDefaultComment": "No comment was provided.",
+	"resolveSuggestionTooManyFields": "{{REDCROSS}} I cannot add more responses, the maximum is 25, sorry!",
+	"resolveSuggestionTooManyCharacters": "{{REDCROSS}} The total amount of characters inside the embed ({{amount, number}}) with your reply surpasses {{maximum, number}} characters!",
+	"resolveSuggestionAuthorAdmin": "An administrator",
+	"resolveSuggestionAuthorModerator": "A moderator",
+	"resolveSuggestionActions": {
+		"accept": "{{author}} accepted this suggestion:",
+		"consider": "{{author}} considered this suggestion:",
+		"deny": "{{author}} denied this suggestion:"
+	},
+	"resolveSuggestionActionsDms": {
+		"accept": "{{author}} accepted this suggestion in {{guild}}:",
+		"consider": "{{author}} considered this suggestion in {{guild}}:",
+		"deny": "{{author}} denied this suggestion in {{guild}}:"
+	},
+	"resolveSuggestionDmFail": "{{REDCROSS}} I wasn't able to send the author a DM. Are their DMs closed?",
+	"resolveSuggestionSuccess": "{{GREENTICK}} Successfully {{actionText}} suggestion `{{id}}`!",
+	"resolveSuggestionSuccessAcceptedText": "accepted",
+	"resolveSuggestionSuccessDeniedText": "denied",
+	"resolveSuggestionSuccessConsideredText": "considered"
+}

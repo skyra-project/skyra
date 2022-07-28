@@ -1,0 +1,79 @@
+version: '2.4'
+services:
+  postgres:
+    container_name: postgres
+    image: 'skyrabot/postgres:latest'
+    networks:
+      - skyra
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - 'postgres-data:/var/lib/postgresql/data'
+
+  redis:
+    command: 'redis-server --port 8287 --requirepass redis'
+    container_name: redis
+    image: 'redis:alpine'
+    networks:
+      - skyra
+    ports:
+      - '8287:8287'
+    restart: always
+
+  skyra:
+    build:
+      context: ../bot
+    container_name: skyra
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - ../bot/src/.env.development
+      - ../bot/src/.env.development.local
+    image: 'skyrabot/skyra:latest'
+    networks:
+      - skyra
+    ports:
+      - '8282:8282'
+      - '7282:7282'
+    restart: always
+    tty: true
+
+  gateway:
+    build:
+      context: ../gateway
+    container_name: skyra-gateway
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ../gateway/src/.env.development
+      - ../gateway/src/.env.development.local
+    image: 'skyrabot/skyra-gateway:latest'
+    networks:
+      - skyra
+    # ports:
+    #   - '8282:8282'
+    #   - '7282:7282'
+    restart: always
+    tty: true
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: 'rabbitmq:3-management'
+    networks:
+      - skyra
+    environment:
+      RABBITMQ_DEFAULT_USER: skyra
+      RABBITMQ_DEFAULT_PASS: skyra
+    ports:
+      - '8296:5672'
+      - '8297:15672'
+    restart: always
+
+volumes:
+  postgres-data:
+    external: true
+
+networks:
+  skyra:

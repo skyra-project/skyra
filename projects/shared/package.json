@@ -1,0 +1,24 @@
+{
+	"name": "skyra-shared",
+	"version": "7.0.0",
+	"description": "Multipurpose Discord Bot built on Sapphire Framework",
+	"author": "Skyra Project",
+	"license": "Apache-2.0",
+	"private": true,
+	"main": "dist/main.js",
+	"type": "module",
+	"imports": {
+		"#lib/*": "./dist/lib/*.js"
+	},
+	"scripts": {
+		"build": "tsc -b src",
+		"dev": "yarn build && yarn start",
+		"watch": "tsc -b src -w",
+		"prisma:generate": "yarn prisma generate",
+		"clean": "node scripts/clean.mjs",
+		"start": "node --enable-source-maps dist/main.js",
+		"test": "eslint --ext ts src",
+		"lint": "eslint --fix --ext ts src",
+		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
+	}
+}

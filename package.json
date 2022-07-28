@@ -1,47 +1,18 @@
 {
-	"name": "skyra",
+	"name": "skyra-root",
 	"version": "7.0.0",
 	"description": "Multipurpose Discord Bot built on Sapphire Framework",
 	"author": "Skyra Project",
 	"license": "Apache-2.0",
 	"private": true,
-	"main": "dist/main.js",
 	"type": "module",
-	"imports": {
-		"#lib/*": "./dist/lib/*.js"
-	},
+	"workspaces": [
+		"projects/*"
+	],
 	"scripts": {
-		"build": "tsc -b src",
-		"dev": "yarn build && yarn start",
-		"watch": "tsc -b src -w",
-		"watch:start": "tsc-watch -b src --onSuccess \"yarn start\"",
-		"prisma:generate": "yarn prisma generate",
-		"clean": "node scripts/build/clean.mjs",
-		"start": "node --enable-source-maps dist/main.js",
-		"test": "eslint --ext ts src",
-		"lint": "eslint --fix --ext ts src",
-		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\"",
+		"format": "prettier --write --loglevel=warn \"projects/**/*.{js,ts,json}\"",
 		"update": "yarn upgrade-interactive",
 		"postinstall": "husky install .github/husky"
-	},
-	"dependencies": {
-		"@discordjs/builders": "1.0.0",
-		"@discordjs/collection": "1.0.0",
-		"@discordjs/ws": "^0.1.1-dev.1658880789-798466a.0",
-		"@prisma/client": "^4.1.0",
-		"@sapphire/async-queue": "^1.3.2",
-		"@sapphire/result": "^2.0.1",
-		"@sapphire/utilities": "^3.7.0",
-		"@skyra/env-utilities": "^1.0.2",
-		"@skyra/http-framework": "^0.6.2",
-		"@skyra/http-framework-i18n": "^0.1.16",
-		"@skyra/shared-http-pieces": "^0.0.38",
-		"@skyra/start-banner": "^1.0.2",
-		"colorette": "^2.0.19",
-		"discord-api-types": "^0.36.3",
-		"gradient-string": "^2.0.1",
-		"limax": "^3.0.0",
-		"tslib": "^2.4.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.0.3",

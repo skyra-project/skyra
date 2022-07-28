@@ -23,7 +23,8 @@ services:
 
   skyra:
     build:
-      context: ../bot
+      context: ../../
+      dockerfile: ../bot/Dockerfile
     container_name: skyra
     depends_on:
       - redis
@@ -42,7 +43,8 @@ services:
 
   gateway:
     build:
-      context: ../gateway
+      context: ../../
+      dockerfile: ../gateway/Dockerfile
     container_name: skyra-gateway
     depends_on:
       - rabbitmq

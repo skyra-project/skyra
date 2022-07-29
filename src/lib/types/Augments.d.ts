@@ -168,12 +168,6 @@ declare module '@skyra/env-utilities' {
 		PGSQL_DATABASE_HOST: string;
 		TYPEORM_DEBUG_LOGS: BooleanString;
 
-		REDIS_HOST: string;
-		REDIS_ENABLED: BooleanString;
-		REDIS_PORT: IntegerString;
-		REDIS_DB: IntegerString;
-		REDIS_PASSWORD: string;
-
 		INFLUX_ENABLED: BooleanString;
 		INFLUX_URL: string;
 		INFLUX_TOKEN: string;

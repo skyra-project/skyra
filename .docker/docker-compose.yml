@@ -85,7 +85,6 @@ services:
     depends_on:
       - hasteserver
       - influx
-      - redis
       - saelem
       - postgres
     env_file:

@@ -1,2 +1,2 @@
-src/languages/**/*.json
+**/locales/**/*.json
 dist/

@@ -1,3 +1,0 @@
-{
-	"logDescriptionWithReason": "❯ **Причина:** {{data.reason}}{{data.formattedDuration}}"
-}

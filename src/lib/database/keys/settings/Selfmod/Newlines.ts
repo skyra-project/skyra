@@ -1,9 +1,0 @@
-export const Enabled = 'selfmodNewlinesEnabled';
-export const IgnoredRoles = 'selfmodNewlinesIgnoredRoles';
-export const IgnoredChannels = 'selfmodNewlinesIgnoredChannels';
-export const Maximum = 'selfmodNewlinesMaximum';
-export const SoftAction = 'selfmodNewlinesSoftAction';
-export const HardAction = 'selfmodNewlinesHardAction';
-export const HardActionDuration = 'selfmodNewlinesHardActionDuration';
-export const ThresholdMaximum = 'selfmodNewlinesThresholdMaximum';
-export const ThresholdDuration = 'selfmodNewlinesThresholdDuration';

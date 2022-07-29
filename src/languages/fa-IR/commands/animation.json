@@ -1,90 +1,0 @@
-{
-    "aniListAnimeDescription": "",
-    "aniListAnimeExtended": {
-        "examples": [
-            "",
-            ""
-        ],
-        "extendedHelp": "",
-        "usages": [
-            ""
-        ]
-    },
-    "aniListAnimeQueryFail": "",
-    "aniListMangaDescription": "",
-    "aniListMangaExtended": [],
-    "aniListMangaQueryFail": "",
-    "aniListQueryOnlyNsfw": "",
-    "aniListEmbedTitles": {
-        "adultContent": "",
-        "countryOfOrigin": "",
-        "englishName": "",
-        "episodeLength": "",
-        "episodes": "",
-        "chapters": "",
-        "volumes": "",
-        "externalLinks": "",
-        "nativeName": "",
-        "romajiName": ""
-    },
-    "kitsuAnimeDescription": "جستجوی اسم انیمه مورد علاقه شما با این دستور.",
-    "kitsuAnimeEmbedData": {
-        "ageRating": "رده سنی",
-        "episodeLength": "مقدار زمان هر قسمت",
-        "episodes": "قسمت(ها)",
-        "firstAirDate": "تاریخ پخش",
-        "score": "امتیاز",
-        "stillAiring": "درحال پخش",
-        "type": "نوع",
-        "watchIt": "تماشا در:"
-    },
-    "kitsuAnimeExtended": {
-        "examples": [
-            ""
-        ],
-        "extendedHelp": "این دستور از وبسایت Kitsu.io استفاده میکند تا اطلاعات انیمه مورد علاقه شما را نشان دهد.",
-        "usages": [
-            "نام انیمه"
-        ]
-    },
-    "kitsuAnimeNoSynopsis": "هیچ خلاصه داستانی برای این نام پیدا نشد.",
-    "kitsuAnimeOutputDescription": "**نام انگلیسی:** {{englishTitle}}\n**نام ژاپنی:** {{japaneseTitle}}\n**نام استاندارد:** {{canonicalTitle}}\n{{synopsis}}",
-    "kitsuAnimeTypes": {
-        "movie": "",
-        "ova": "",
-        "special": "",
-        "tv": ""
-    },
-    "kitsuMangaDescription": "جستجوی اسم مانگا مورد علاقه شما با این دستور.",
-    "kitsuMangaEmbedData": {
-        "ageRating": "رده سنی",
-        "firstPublishDate": "تاریخ اولین انتشار",
-        "none": "هیچ‌کدام",
-        "readIt": "در اینجا بخوانید:",
-        "score": "امتیاز",
-        "type": "نوع"
-    },
-    "kitsuMangaExtended": {
-        "examples": [
-            "",
-            ""
-        ],
-        "extendedHelp": "این دستور از وبسایت Kitsu.io استفاده میکند تا اطلاعات مانگا مورد علاقه شما را نشان دهد.",
-        "usages": [
-            "اسم مانگا"
-        ]
-    },
-    "kitsuMangaOutputDescription": "**نام انگلیسی:** {{englishTitle}}\n**نام ژاپنی:** {{japaneseTitle}}\n**نام استاندارد:** {{canonicalTitle}}\n{{synopsis}}",
-    "kitsuMangaTypes": {
-        "manga": "📘 مانگا",
-        "manhwa": "🇰🇷 مانگهای رنگی",
-        "novel": "📕 رمان",
-        "oneShot": "☄ تک قسمتی",
-        "special": ""
-    },
-    "waifuDescription": "ارسال یک عکس ویفو به صورت تصادفی.",
-    "waifuExtended": {
-        "extendedHelp": "این دستور یک عکس ویفو به صورت تصادفی از وبسایت <https://thiswaifudoesnotexist.net/> ارسال میکند"
-    },
-    "waifuFooter": "ساخته شده توسط thiswaifudoesnotexist.net"
-}

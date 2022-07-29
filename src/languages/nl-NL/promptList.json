@@ -1,4 +1,0 @@
-{
-	"aborted": "De vraag is succesvol afgebroken.",
-	"attemptFailed": "Ongeldige invoer. Poging **{{attempt}}** van **{{maxAttempts}}**\n{{list}}"
-}

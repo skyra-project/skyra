@@ -1,0 +1,47 @@
+{
+	"evalDescription": "Evaluates arbitrary Javascript.",
+	"evalExtended": {
+		"usages": ["Expression"],
+		"extendedHelp": "The eval command evaluates code as-in, any error thrown from it will be handled.\nIt also uses the flags feature. Write --silent, --depth=number or --async to customize the output.\nThe --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.\nThe --output and --output-to flag accept either `file`, `log`, `haste` or `hastebin`.\nThe --delete flag makes the command delete the message that executed the message after evaluation.\nThe --silent flag will make it output nothing.\nThe --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.\nThe --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword\nThe --showHidden flag will enable the showHidden option in util.inspect.\nThe --lang and --language flags allow different syntax highlight for the output.\nThe --json flag converts the output to json\nThe --no-timeout flag disables the timeout\nIf the output is too large, it'll send the output as a file, or in the console if the bot does not have the {{ATTACH_FILES, permissions}} permission.",
+		"explainedUsage": [["Expression", "The expression to evaluate"]],
+		"examples": ["msg.author.username;", "1 + 1;"],
+		"reminder": "Reserved for bot owners."
+	},
+	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
+	"donateExtended": {
+		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
+	},
+	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
+	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
+	"disable": "+ Successfully disabled {{type}}: {{name}}",
+	"disableDescription": "Re-disables or temporarily disables a command/preconditions/event. Default state restored on reboot.",
+	"disableExtended": {
+		"usages": ["Piece"],
+		"extendedHelp": "Disable a piece that was previously enabled",
+		"explainedUsage": [["Piece", "The piece to disable"]],
+		"reminder": "Reserved for bot owners."
+	},
+	"disableWarn": "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
+	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
+	"dmSent": "I have sent you the message in DMs.",
+	"enable": "+ Successfully enabled {{type}}: {{name}}",
+	"enableDescription": "Re-enables or temporarily enables a command/preconditions. Default state restored on reboot.",
+	"enableExtended": {
+		"usages": ["Piece"],
+		"extendedHelp": "Enables a piece that was previously disabled",
+		"explainedUsage": [["Piece", "The piece to enable"]],
+		"reminder": "Reserved for bot owners."
+	},
+	"reboot": "{{LOADING}} Rebooting...",
+	"rebootDescription": "Reboots the bot.",
+	"rebootExtended": {
+		"extendedHelp": "The bot goes boom, then the bot goes revive.",
+		"reminder": "Reserved for bot owners."
+	},
+	"supportDescription": "Show support instructions",
+	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
+	"supportEmbedTitle": "Looking for help, {{username}}?",
+	"supportExtended": {
+		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
+	}
+}

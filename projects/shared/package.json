@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"@sapphire/utilities": "^3.7.0",
-		"discord-api-types": "^0.36.3"
+		"discord-api-types": "^0.36.3",
+		"ioredis": "^5.2.2"
 	}
 }

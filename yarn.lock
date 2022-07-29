@@ -4867,6 +4867,9 @@ __metadata:
 "skyra-shared@workspace:projects/shared":
   version: 0.0.0-use.local
   resolution: "skyra-shared@workspace:projects/shared"
+  dependencies:
+    "@sapphire/utilities": ^3.7.0
+    discord-api-types: ^0.36.3
   languageName: unknown
   linkType: soft
 

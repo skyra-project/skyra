@@ -20,5 +20,9 @@
 		"test": "eslint --ext ts src",
 		"lint": "eslint --fix --ext ts src",
 		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
+	},
+	"dependencies": {
+		"@sapphire/utilities": "^3.7.0",
+		"discord-api-types": "^0.36.3"
 	}
 }

@@ -23,7 +23,7 @@ export class Writer {
 
 		this.ensure(2);
 		this.offset += this.data.writeUInt8(1, this.offset);
-		this.offset += this.data.writeInt8(value ? 1 : 0, this.offset);
+		this.offset += this.data.writeUInt8(value ? 1 : 0, this.offset);
 
 		return this;
 	}

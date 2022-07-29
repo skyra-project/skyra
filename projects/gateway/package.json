@@ -14,11 +14,19 @@
 		"build": "tsc -b src",
 		"dev": "yarn build && yarn start",
 		"watch": "tsc -b src -w",
-		"prisma:generate": "yarn prisma generate",
 		"clean": "node scripts/clean.mjs",
 		"start": "node --enable-source-maps dist/main.js",
 		"test": "eslint --ext ts src",
 		"lint": "eslint --fix --ext ts src",
 		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
+	},
+	"dependencies": {
+		"@discordjs/rest": "^1.0.1",
+		"@discordjs/ws": "^0.1.0",
+		"@skyra/env-utilities": "1.0.2",
+		"@skyra/start-banner": "^1.0.2",
+		"amqplib": "^0.10.1",
+		"discord-api-types": "^0.36.3",
+		"gradient-string": "^2.0.1"
 	}
 }

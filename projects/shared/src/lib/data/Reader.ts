@@ -3,7 +3,7 @@ import { NonNullObject } from '@sapphire/utilities';
 const decoder = new TextDecoder();
 
 export class Reader {
-	private data: Buffer;
+	public readonly data: Buffer;
 	private offset = 0;
 
 	public constructor(data: Buffer) {

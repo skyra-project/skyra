@@ -11,8 +11,8 @@ import type {
 	GuildVerificationLevel
 } from 'discord-api-types/v10';
 import { normalize } from '../common/util';
-import type { Reader } from '../data/common/Reader';
-import { Writer } from '../data/common/Writer';
+import type { Reader } from '../data/Reader';
+import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
 import { fromFeatures, toFeatures } from './values/GuildFeatures';
 

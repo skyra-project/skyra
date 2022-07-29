@@ -1,5 +1,5 @@
 import { isNullishOrZero } from '@sapphire/utilities';
-import { GuildFeature } from 'discord-api-types/v10';
+import type { GuildFeature } from 'discord-api-types/v10';
 import { bitHas } from '../../common/bits';
 
 export const GuildFeatureBits = {

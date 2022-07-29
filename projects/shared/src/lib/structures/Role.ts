@@ -1,8 +1,8 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIRole } from 'discord-api-types/v10';
 import { normalize } from '../common/util';
-import type { Reader } from '../data/common/Reader';
-import { Writer } from '../data/common/Writer';
+import type { Reader } from '../data/Reader';
+import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
 
 export class Role implements IStructure {

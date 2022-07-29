@@ -1,8 +1,8 @@
 import { isNullish, type Nullish } from '@sapphire/utilities';
 import type { APIGuildMember, APIUser } from 'discord-api-types/v10';
 import { fromTimestamp, toTimestamp } from '../common/util';
-import type { Reader } from '../data/common/Reader';
-import { Writer } from '../data/common/Writer';
+import type { Reader } from '../data/Reader';
+import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
 
 export class Member implements IStructure {

@@ -194,8 +194,6 @@ declare module '@skyra/env-utilities' {
 		DISCORD_BOT_LIST_TOKEN: string;
 		DISCORD_BOTS_TOKEN: string;
 		GOOGLE_API_TOKEN: string;
-		KITSU_ID: string;
-		KITSU_TOKEN: string;
 		NINTENDO_ID: string;
 		NINTENDO_TOKEN: string;
 		OWLBOT_TOKEN: string;

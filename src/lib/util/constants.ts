@@ -65,7 +65,6 @@ export const enum BrandingColors {
 export type O = object;
 
 export const enum CdnUrls {
-	AnilistLogo = 'https://cdn.skyra.pw/skyra-assets/anilist.png',
 	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
 	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
 	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',

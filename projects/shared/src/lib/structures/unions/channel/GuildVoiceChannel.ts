@@ -17,11 +17,11 @@ export class GuildVoiceChannel extends GuildBasedChannel<GuildVoiceChannel.Type>
 		this.videoQualityMode = data.videoQualityMode ?? null;
 	}
 
-	public toBuffer(): Buffer {
+	public override toBuffer(): Buffer {
 		return this.toBufferShared().u32(this.bitrate).u32(this.userLimit).string(this.rtcRegion).u8(this.videoQualityMode).trimmed;
 	}
 
-	public toJSON(): GuildVoiceChannel.Json {
+	public override toJSON(): GuildVoiceChannel.Json {
 		return {
 			...super.toJSON(),
 			bitrate: this.bitrate ?? undefined,

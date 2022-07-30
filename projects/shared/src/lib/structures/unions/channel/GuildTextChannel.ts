@@ -11,11 +11,11 @@ export class GuildTextChannel extends GuildTextBasedChannel<GuildTextChannel.Typ
 		this.rateLimitPerUser = data.rateLimitPerUser ?? null;
 	}
 
-	public toBuffer(): Buffer {
+	public override toBuffer(): Buffer {
 		return this.toBufferShared().u16(this.rateLimitPerUser).trimmed;
 	}
 
-	public toJSON(): GuildTextChannel.Json {
+	public override toJSON(): GuildTextChannel.Json {
 		return {
 			...super.toJSON(),
 			rate_limit_per_user: this.rateLimitPerUser ?? undefined

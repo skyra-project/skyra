@@ -1,4 +1,4 @@
-import { NonNullObject } from '@sapphire/utilities';
+import type { NonNullObject } from '@sapphire/utilities';
 
 const decoder = new TextDecoder();
 

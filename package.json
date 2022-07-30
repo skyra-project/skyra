@@ -10,7 +10,10 @@
 		"projects/*"
 	],
 	"scripts": {
-		"format": "prettier --write --loglevel=warn \"projects/**/*.{js,ts,json}\"",
+		"build": "yarn workspaces foreach --parallel --topological run build",
+		"test": "yarn workspaces foreach --parallel --topological run test",
+		"lint": "yarn workspaces foreach --parallel --topological run lint",
+		"format": "yarn workspaces foreach --parallel --topological run format",
 		"update": "yarn upgrade-interactive",
 		"postinstall": "husky install .github/husky"
 	},

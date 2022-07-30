@@ -45,7 +45,7 @@ export abstract class HashScopeCache<T extends IStructure> extends ScopedCache {
 		return this.client.hlen(this.makeGuildId(guildId));
 	}
 
-	protected makeGuildId(guildId: ScopedCache.Snowflake) {
+	protected override makeGuildId(guildId: ScopedCache.Snowflake) {
 		return `${this.parent['prefix']}${guildId}${this.tail}`;
 	}
 

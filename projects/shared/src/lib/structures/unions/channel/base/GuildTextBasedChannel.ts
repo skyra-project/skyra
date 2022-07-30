@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIGuildTextChannel, GuildTextChannelType, ThreadAutoArchiveDuration } from 'discord-api-types/v10';
-import { Reader } from '../../../../data/Reader';
+import type { Reader } from '../../../../data/Reader';
 import type { Writer } from '../../../../data/Writer';
 import { GuildBasedChannel, guildBasedFromAPIShared } from './GuildBasedChannel';
 
@@ -14,7 +14,7 @@ export abstract class GuildTextBasedChannel<T extends GuildTextChannelType> exte
 		this.topic = data.topic ?? null;
 	}
 
-	public toJSON(): GuildTextBasedChannel.Json<T> {
+	public override toJSON(): GuildTextBasedChannel.Json<T> {
 		return {
 			...super.toJSON(),
 			default_auto_archive_duration: this.defaultAutoArchiveDuration ?? undefined,

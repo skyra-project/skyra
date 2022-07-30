@@ -1,4 +1,4 @@
-import { isNullish, Nullish } from '@sapphire/utilities';
+import { isNullish, type Nullish } from '@sapphire/utilities';
 
 export function normalize<Value, Return>(value: Value | Nullish, cb: (value: Value) => Return): Return | null {
 	return isNullish(value) ? null : cb(value);

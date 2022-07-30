@@ -26,7 +26,7 @@ export class GuildThreadChannel extends GuildBasedChannel<GuildThreadChannel.Typ
 		this.createdAt = data.createdAt ?? null;
 	}
 
-	public toBuffer(): Buffer {
+	public override toBuffer(): Buffer {
 		return this.toBufferShared()
 			.u64(this.ownerId)
 			.u16(this.rateLimitPerUser)
@@ -38,7 +38,7 @@ export class GuildThreadChannel extends GuildBasedChannel<GuildThreadChannel.Typ
 			.date(this.createdAt).trimmed;
 	}
 
-	public toJSON(): GuildThreadChannel.Json {
+	public override toJSON(): GuildThreadChannel.Json {
 		return {
 			...super.toJSON(),
 			owner_id: this.ownerId?.toString(),

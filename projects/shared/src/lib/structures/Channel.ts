@@ -1,5 +1,5 @@
 import { ChannelType, type APIChannel } from 'discord-api-types/v10';
-import { Reader } from '../data/Reader';
+import type { Reader } from '../data/Reader';
 import { GuildCategoryChannel } from './unions/channel/GuildCategoryChannel';
 import { GuildForumChannel } from './unions/channel/GuildForumChannel';
 import { GuildNewsChannel } from './unions/channel/GuildNewsChannel';

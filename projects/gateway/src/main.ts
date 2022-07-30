@@ -25,38 +25,29 @@ const manager = new WebSocketManager({
 	.on('error', (error) => console.error('Received error:', error))
 	.on(WebSocketShardEvents.Ready, (payload) => console.log(`[WS] ${payload.shardId} is now ready.`))
 	.on(WebSocketShardEvents.Resumed, (payload) => console.log(`[WS] ${payload.shardId} has resumed previous session.`))
-	.on(WebSocketShardEvents.Dispatch, (payload) => console.log(payload));
+	.on(WebSocketShardEvents.Dispatch, (payload) => console.log(payload.data.t));
 
 await manager.connect();
 
 console.log(
-	gradient.morning.multiline(
+	gradient.vice.multiline(
 		createBanner({
 			logo: [
-				String.raw`          ____ `,
-				String.raw`         /    \ `,
-				String.raw`    ____/      \____ `,
-				String.raw`   /    \      /    \ `,
-				String.raw`  /      \____/      \ `,
-				String.raw`  \      /    \      / `,
-				String.raw`   \____/      \____/ `,
-				String.raw`   /    \      /    \ `,
-				String.raw`  /      \____/      \ `,
-				String.raw`  \      /    \      / `,
-				String.raw`   \____/      \____/ `,
-				String.raw`        \      / `,
-				String.raw`         \____/ `,
+				String.raw`       __`,
+				String.raw`    __╱  ╲__`,
+				String.raw` __╱  ╲__╱  ╲__`,
+				String.raw`╱  ╲__╱  ╲__╱  ╲`,
+				String.raw`╲__╱  ╲__╱  ╲__╱`,
+				String.raw`   ╲__╱  ╲__╱`,
+				String.raw`      ╲__╱`,
 				''
 			],
 			name: [
-				String.raw` .d8888b.         d8888 88888888888 8888888888 888       888        d8888 Y88b   d88P`,
-				String.raw`d88P  Y88b       d88888     888     888        888   o   888       d88888  Y88b d88P`,
-				String.raw`888    888      d88P888     888     888        888  d8b  888      d88P888   Y88o88P`,
-				String.raw`888            d88P 888     888     8888888    888 d888b 888     d88P 888    Y888P`,
-				String.raw`888  88888    d88P  888     888     888        888d88888b888    d88P  888     888`,
-				String.raw`888    888   d88P   888     888     888        88888P Y88888   d88P   888     888`,
-				String.raw`Y88b  d88P  d8888888888     888     888        8888P   Y8888  d8888888888     888`,
-				String.raw` "Y8888P88 d88P     888     888     8888888888 888P     Y888 d88P     888     888`
+				String.raw`    _______  ________  ________  ________  ________  ________  ________ `,
+				String.raw`  ╱╱       ╲╱        ╲╱        ╲╱        ╲╱  ╱  ╱  ╲╱        ╲╱    ╱   ╲ `,
+				String.raw` ╱╱      __╱         ╱        _╱         ╱         ╱         ╱         ╱ `,
+				String.raw`╱       ╱ ╱         ╱╱       ╱╱        _╱         ╱         ╱╲__      ╱ `,
+				String.raw`╲________╱╲___╱____╱ ╲______╱ ╲________╱╲________╱╲___╱____╱   ╲_____╱ `
 			],
 			extra: [
 				'',

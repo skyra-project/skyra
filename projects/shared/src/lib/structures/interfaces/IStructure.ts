@@ -1,5 +1,5 @@
-import { NonNullObject } from '@sapphire/utilities';
-import { Reader } from '../../data/Reader';
+import type { NonNullObject } from '@sapphire/utilities';
+import type { Reader } from '../../data/Reader';
 import type { BufferEncodable } from './BufferEncodable';
 import type { Identifiable } from './Identifiable';
 import type { JsonEncodable } from './JsonEncodable';

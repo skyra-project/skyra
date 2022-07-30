@@ -15,7 +15,7 @@ export class Cache {
 	public readonly members: CacheMembers;
 	public readonly roles: CacheRoles;
 	public readonly stickers: CacheStickers;
-	private readonly prefix: string;
+	protected readonly prefix: string;
 
 	public constructor(options: Cache.Options) {
 		this.client = options.client;

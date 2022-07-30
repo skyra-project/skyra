@@ -1,7 +1,7 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIGuildChannel, APIOverwrite, ChannelFlags, ChannelType, OverwriteType } from 'discord-api-types/v10';
 import { normalize } from '../../../../common/util';
-import { Reader } from '../../../../data/Reader';
+import type { Reader } from '../../../../data/Reader';
 import { Writer } from '../../../../data/Writer';
 import type { IStructure } from '../../../interfaces/IStructure';
 

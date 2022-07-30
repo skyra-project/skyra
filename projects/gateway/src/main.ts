@@ -34,9 +34,9 @@ console.log(
 		createBanner({
 			logo: [
 				String.raw`       __`,
-				String.raw`    __╱  ╲__`,
-				String.raw` __╱  ╲__╱  ╲__`,
-				String.raw`╱  ╲__╱  ╲__╱  ╲`,
+				String.raw`    __╱‾‾╲__`,
+				String.raw` __╱‾‾╲__╱‾‾╲__`,
+				String.raw`╱‾‾╲__╱  ╲__╱‾‾╲`,
 				String.raw`╲__╱  ╲__╱  ╲__╱`,
 				String.raw`   ╲__╱  ╲__╱`,
 				String.raw`      ╲__╱`,
@@ -50,8 +50,9 @@ console.log(
 				String.raw`╲________╱╲___╱____╱ ╲______╱ ╲________╱╲________╱╲___╱____╱   ╲_____╱ `
 			],
 			extra: [
-				'',
-				`Connected ${manager.options.shardCount} shards`
+				` Skyra ${envParseString('CLIENT_VERSION')} Gateway`,
+				` ├ WebSocket: ${manager.options.shardCount} shards`,
+				' └ RabbitMQ : Coming soon'
 				// TODO: Add RabbitMQ information
 			]
 		})

@@ -7,6 +7,12 @@ import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: [
+		'ani-list',
+		'anime',
+		'kitsu-anime',
+		'kitsu-manga',
+		'manga-list',
+		'manga',
 		'slap',
 		'wbang',
 		'wbanghead',

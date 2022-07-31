@@ -1,5 +1,5 @@
 import { Member } from '../structures/Member';
-import { HashScopedCache } from './base/HashScopeCache';
+import { HashScopedCache } from './base/HashScopedCache';
 
 export class CacheMembers extends HashScopedCache<Member> {
 	public readonly tail = ':members';

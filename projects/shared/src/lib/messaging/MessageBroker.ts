@@ -1,7 +1,7 @@
 import { isNullishOrEmpty, type Nullish } from '@sapphire/utilities';
 import type { Redis } from 'ioredis';
 import { deserialize, serialize } from 'node:v8';
-import { Message } from './Message';
+import { RedisMessage } from './RedisMessage';
 
 export class MessageBroker {
 	public readonly redis: Redis;
@@ -11,7 +11,7 @@ export class MessageBroker {
 	private readonly serialize: Serializer;
 	private readonly deserialize: Deserializer;
 	private readonly redisReader: Redis;
-	private listenStream: AsyncGenerator<unknown> | null = null;
+	private listenStream: AsyncGenerator<RedisMessage> | null = null;
 
 	public constructor(options: MessageBroker.Options) {
 		this.redis = options.redis;
@@ -27,7 +27,7 @@ export class MessageBroker {
 		return this.redis.xadd(this.stream, '*', MessageBroker.STREAM_DATA_FIELD, this.serialize(value));
 	}
 
-	public listen() {
+	public listen(): AsyncGenerator<RedisMessage> {
 		return (this.listenStream ??= this.handleListen());
 	}
 
@@ -35,7 +35,7 @@ export class MessageBroker {
 		this.redisReader.disconnect(false);
 	}
 
-	private async *handleListen() {
+	private async *handleListen(): AsyncGenerator<RedisMessage> {
 		while (true) {
 			const data = await this.redisReader.xreadBuffer('COUNT', this.max, 'BLOCK', this.block, 'STREAMS', this.stream, '>');
 			if (isNullishOrEmpty(data)) continue;
@@ -48,13 +48,13 @@ export class MessageBroker {
 					// Verify that the key of the pair of fields is the data the broker sends.
 					if (fields[0].toString('utf8') !== MessageBroker.STREAM_DATA_FIELD) continue;
 
-					yield new Message(this, streamId, entryId, this.deserialize(fields[1]));
+					yield new RedisMessage(this, streamId, entryId, this.deserialize(fields[1]));
 				}
 			}
 		}
 	}
 
-	public static readonly STREAM_DATA_FIELD = 'data';
+	private static readonly STREAM_DATA_FIELD = 'data';
 }
 
 export namespace MessageBroker {

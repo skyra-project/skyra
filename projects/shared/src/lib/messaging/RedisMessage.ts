@@ -1,6 +1,6 @@
 import type { MessageBroker } from './MessageBroker';
 
-export class Message {
+export class RedisMessage {
 	public readonly streamIdBuffer: Buffer;
 	public readonly entryIdBuffer: Buffer;
 	public readonly data: unknown;

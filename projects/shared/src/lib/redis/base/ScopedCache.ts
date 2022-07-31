@@ -11,8 +11,9 @@ export abstract class ScopedCache {
 		return this.parent.client;
 	}
 
-	protected makeGuildId(guildId: ScopedCache.Snowflake) {
-		return `${this.parent['prefix']}${guildId}`;
+	protected makeId(parentId: ScopedCache.Snowflake) {
+		// eslint-disable-next-line @typescript-eslint/dot-notation
+		return `${this.parent['prefix']}${parentId}`;
 	}
 }
 

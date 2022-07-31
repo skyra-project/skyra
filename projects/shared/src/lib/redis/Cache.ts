@@ -4,6 +4,7 @@ import { CacheChannels } from './CacheChannels';
 import { CacheEmojis } from './CacheEmojis';
 import { CacheGuilds } from './CacheGuilds';
 import { CacheMembers } from './CacheMembers';
+import { CacheMessages } from './CacheMessages';
 import { CacheRoles } from './CacheRoles';
 import { CacheStickers } from './CacheStickers';
 
@@ -13,6 +14,7 @@ export class Cache {
 	public readonly emojis: CacheEmojis;
 	public readonly guilds: CacheGuilds;
 	public readonly members: CacheMembers;
+	public readonly messages: CacheMessages;
 	public readonly roles: CacheRoles;
 	public readonly stickers: CacheStickers;
 	protected readonly prefix: string;
@@ -25,6 +27,7 @@ export class Cache {
 		this.emojis = new CacheEmojis(this);
 		this.guilds = new CacheGuilds(this);
 		this.members = new CacheMembers(this);
+		this.messages = new CacheMessages(this);
 		this.roles = new CacheRoles(this);
 		this.stickers = new CacheStickers(this);
 	}

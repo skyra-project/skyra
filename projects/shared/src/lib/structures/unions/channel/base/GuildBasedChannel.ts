@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIGuildChannel, APIOverwrite, ChannelFlags, ChannelType, OverwriteType } from 'discord-api-types/v10';
-import { normalize } from '../../../../common/util';
+import { normalizeNullable } from '../../../../common/util';
 import type { Reader } from '../../../../data/Reader';
 import { Writer } from '../../../../data/Writer';
 import type { IStructure } from '../../../interfaces/IStructure';
@@ -92,7 +92,7 @@ export function guildBasedFromAPIShared<T extends ChannelType>(data: GuildBasedC
 		name: data.name!,
 		flags: data.flags,
 		nsfw: data.nsfw,
-		parentId: normalize(data.parent_id, BigInt),
+		parentId: normalizeNullable(data.parent_id, BigInt),
 		permissionOverwrites: data.permission_overwrites?.map(
 			(value): GuildBasedChannel.DataPermissionOverwrite => ({
 				id: BigInt(value.id),

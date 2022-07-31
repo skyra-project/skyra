@@ -1,7 +1,15 @@
 import { isNullish, type Nullish } from '@sapphire/utilities';
 
-export function normalize<Value, Return>(value: Value | Nullish, cb: (value: Value) => Return): Return | null {
+export function normalizeNullable<Value, Return>(value: Value | Nullish, cb: (value: Value) => Return): Return | null {
 	return isNullish(value) ? null : cb(value);
+}
+
+export function normalizeOptional<Value, Return>(value: Value | Nullish, cb: (value: Value) => Return): Return | undefined {
+	return isNullish(value) ? undefined : cb(value);
+}
+
+export function normalizeArray<Value, Return>(values: readonly Value[] | Nullish, cb: (value: Value) => Return): Return[] | null {
+	return isNullish(values) ? null : values.map((value) => cb(value));
 }
 
 export function toTimestamp(value: string | number): number;

@@ -10,7 +10,7 @@ import type {
 	GuildSystemChannelFlags,
 	GuildVerificationLevel
 } from 'discord-api-types/v10';
-import { normalize } from '../common/util';
+import { normalizeNullable } from '../common/util';
 import type { Reader } from '../data/Reader';
 import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
@@ -157,7 +157,7 @@ export class Guild implements IStructure {
 	public static fromAPI(data: Guild.Json): Guild {
 		return new Guild({
 			id: BigInt(data.id),
-			afkChannelId: normalize(data.afk_channel_id, BigInt),
+			afkChannelId: normalizeNullable(data.afk_channel_id, BigInt),
 			afkTimeout: data.afk_timeout,
 			banner: data.banner,
 			defaultMessageNotifications: data.default_message_notifications,
@@ -178,14 +178,14 @@ export class Guild implements IStructure {
 			premiumProgressBarEnabled: data.premium_progress_bar_enabled,
 			premiumSubscriptionCount: data.premium_subscription_count,
 			premiumTier: data.premium_tier,
-			publicUpdatesChannelId: normalize(data.public_updates_channel_id, BigInt),
-			rulesChannelId: normalize(data.rules_channel_id, BigInt),
+			publicUpdatesChannelId: normalizeNullable(data.public_updates_channel_id, BigInt),
+			rulesChannelId: normalizeNullable(data.rules_channel_id, BigInt),
 			splash: data.splash,
 			systemChannelFlags: data.system_channel_flags,
-			systemChannelId: normalize(data.system_channel_id, BigInt),
+			systemChannelId: normalizeNullable(data.system_channel_id, BigInt),
 			vanityUrlCode: data.vanity_url_code,
 			verificationLevel: data.verification_level,
-			widgetChannelId: normalize(data.widget_channel_id, BigInt),
+			widgetChannelId: normalizeNullable(data.widget_channel_id, BigInt),
 			widgetEnabled: data.widget_enabled
 		});
 	}

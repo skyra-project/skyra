@@ -1,7 +1,7 @@
 import { Member } from '../structures/Member';
-import { HashScopeCache } from './base/HashScopeCache';
+import { HashScopedCache } from './base/HashScopeCache';
 
-export class CacheMembers extends HashScopeCache<Member> {
+export class CacheMembers extends HashScopedCache<Member> {
 	public readonly tail = ':members';
 	public readonly structure = Member;
 }

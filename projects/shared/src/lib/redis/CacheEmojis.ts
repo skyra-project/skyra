@@ -1,7 +1,7 @@
 import { Emoji } from '../structures/Emoji';
-import { HashScopeCache } from './base/HashScopeCache';
+import { HashScopedCache } from './base/HashScopeCache';
 
-export class CacheEmojis extends HashScopeCache<Emoji> {
+export class CacheEmojis extends HashScopedCache<Emoji> {
 	public readonly tail = ':emojis';
 	public readonly structure = Emoji;
 }

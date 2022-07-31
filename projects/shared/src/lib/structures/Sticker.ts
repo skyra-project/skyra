@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APISticker, StickerFormatType, StickerType } from 'discord-api-types/v10';
-import { normalize } from '../common/util';
+import { normalizeNullable } from '../common/util';
 import type { Reader } from '../data/Reader';
 import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
@@ -54,7 +54,7 @@ export class Sticker implements IStructure {
 	public static fromAPI(data: Sticker.Json): Sticker {
 		return new Sticker({
 			id: BigInt(data.id),
-			packId: normalize(data.pack_id, BigInt),
+			packId: normalizeNullable(data.pack_id, BigInt),
 			name: data.name,
 			description: data.description,
 			tags: data.tags,

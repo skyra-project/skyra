@@ -1,7 +1,7 @@
 {
-	"name": "skyra-shared",
+	"name": "@skyra/shared",
 	"version": "7.0.0",
-	"description": "Multipurpose Discord Bot built on Sapphire Framework",
+	"description": "Shared utilities for Skyra's projects",
 	"author": "Skyra Project",
 	"license": "Apache-2.0",
 	"private": true,

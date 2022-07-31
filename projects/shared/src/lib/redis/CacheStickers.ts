@@ -1,7 +1,7 @@
 import { Sticker } from '../structures/Sticker';
-import { HashScopeCache } from './base/HashScopeCache';
+import { HashScopedCache } from './base/HashScopeCache';
 
-export class CacheStickers extends HashScopeCache<Sticker> {
+export class CacheStickers extends HashScopedCache<Sticker> {
 	public readonly tail = ':stickers';
 	public readonly structure = Sticker;
 }

@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIThreadChannel, ChannelType, ThreadAutoArchiveDuration } from 'discord-api-types/v10';
-import { fromTimestamp, normalize, toTimestamp } from '../../../common/util';
+import { fromTimestamp, normalizeNullable, toTimestamp } from '../../../common/util';
 import type { Reader } from '../../../data/Reader';
 import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel';
 
@@ -57,7 +57,7 @@ export class GuildThreadChannel extends GuildBasedChannel<GuildThreadChannel.Typ
 	public static fromAPI(data: GuildThreadChannel.Json): GuildThreadChannel {
 		return new GuildThreadChannel({
 			...guildBasedFromAPIShared(data),
-			ownerId: normalize(data.owner_id, BigInt),
+			ownerId: normalizeNullable(data.owner_id, BigInt),
 			rateLimitPerUser: data.rate_limit_per_user,
 			archived: data.thread_metadata!.archived,
 			autoArchiveDuration: data.thread_metadata!.auto_archive_duration,

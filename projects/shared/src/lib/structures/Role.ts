@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIRole } from 'discord-api-types/v10';
-import { normalize } from '../common/util';
+import { normalizeNullable } from '../common/util';
 import type { Reader } from '../data/Reader';
 import { Writer } from '../data/Writer';
 import type { IStructure } from './interfaces/IStructure';
@@ -64,7 +64,7 @@ export class Role implements IStructure {
 			permissions: this.permissions.toString(),
 			position: this.position,
 			tags:
-				normalize(this.tags, (value) => ({
+				normalizeNullable(this.tags, (value) => ({
 					bot_id: value.botId?.toString() ?? undefined,
 					premium_subscriber: value.premiumSubscriber ? null : undefined,
 					integration_id: value.integrationId?.toString() ?? undefined
@@ -84,10 +84,10 @@ export class Role implements IStructure {
 			mentionable: data.mentionable,
 			permissions: BigInt(data.permissions),
 			position: data.position,
-			tags: normalize(data.tags, (value) => ({
-				botId: normalize(value.bot_id, BigInt),
+			tags: normalizeNullable(data.tags, (value) => ({
+				botId: normalizeNullable(value.bot_id, BigInt),
 				premiumSubscriber: value.premium_subscriber,
-				integrationId: normalize(value.integration_id, BigInt)
+				integrationId: normalizeNullable(value.integration_id, BigInt)
 			})),
 			unicodeEmoji: data.unicode_emoji
 		});

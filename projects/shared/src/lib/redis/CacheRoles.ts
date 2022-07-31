@@ -1,7 +1,7 @@
 import { Role } from '../structures/Role';
-import { HashScopeCache } from './base/HashScopeCache';
+import { HashScopedCache } from './base/HashScopeCache';
 
-export class CacheRoles extends HashScopeCache<Role> {
+export class CacheRoles extends HashScopedCache<Role> {
 	public readonly tail = ':roles';
 	public readonly structure = Role;
 }

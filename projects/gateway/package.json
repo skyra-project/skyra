@@ -25,7 +25,6 @@
 		"@discordjs/ws": "^0.1.0",
 		"@skyra/env-utilities": "1.0.2",
 		"@skyra/start-banner": "^1.0.2",
-		"amqplib": "^0.10.1",
 		"discord-api-types": "^0.36.3",
 		"gradient-string": "^2.0.1"
 	}

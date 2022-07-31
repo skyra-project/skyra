@@ -52,8 +52,8 @@ console.log(
 			extra: [
 				` Skyra ${envParseString('CLIENT_VERSION')} Gateway`,
 				` ├ WebSocket: ${manager.options.shardCount} shards`,
-				' └ RabbitMQ : Coming soon'
-				// TODO: Add RabbitMQ information
+				' └ Redis    : Coming soon'
+				// TODO: Add Redis information
 			]
 		})
 	)

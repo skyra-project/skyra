@@ -60,19 +60,6 @@ services:
     restart: always
     tty: true
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: 'rabbitmq:3-management'
-    networks:
-      - skyra
-    environment:
-      RABBITMQ_DEFAULT_USER: skyra
-      RABBITMQ_DEFAULT_PASS: skyra
-    ports:
-      - '8296:5672'
-      - '8297:15672'
-    restart: always
-
 volumes:
   postgres-data:
     external: true

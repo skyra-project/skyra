@@ -33,7 +33,6 @@
 		"@skyra/http-framework-i18n": "^0.1.16",
 		"@skyra/shared-http-pieces": "^0.0.38",
 		"@skyra/start-banner": "^1.0.2",
-		"amqplib": "^0.10.1",
 		"colorette": "^2.0.19",
 		"discord-api-types": "^0.36.3",
 		"gradient-string": "^2.0.1",

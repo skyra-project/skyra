@@ -119,27 +119,6 @@
 		}
 	],
 	[
-		"anime",
-		{
-			"category": "Anime",
-			"subCategory": "General"
-		}
-	],
-	[
-		"manga",
-		{
-			"category": "Anime",
-			"subCategory": "General"
-		}
-	],
-	[
-		"waifu",
-		{
-			"category": "Anime",
-			"subCategory": "General"
-		}
-	],
-	[
 		"changemymind",
 		{
 			"category": "Fun",

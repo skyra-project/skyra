@@ -1,6 +1,5 @@
 export * as Admin from './commands/Admin';
 export * as Animal from './commands/Animal';
-export * as Animation from './commands/Animation';
 export * as Fun from './commands/Fun';
 export * as Games from './commands/Games';
 export * as General from './commands/General';

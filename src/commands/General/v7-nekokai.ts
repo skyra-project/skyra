@@ -14,6 +14,7 @@ import { Message, MessageEmbed } from 'discord.js';
 		'manga-list',
 		'manga',
 		'slap',
+		'waifu',
 		'wbang',
 		'wbanghead',
 		'wbite',

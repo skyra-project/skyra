@@ -534,6 +534,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/result@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@sapphire/result@npm:2.1.1"
+  checksum: e1c77ba6fcdb63b17152e06a1b30ca8e9a8da00c343019cf1181aeb6d14cc3d7546c2535c9f3f592252c3578889081dcdbad0649bd33d6279b93a79710a7f8e1
+  languageName: node
+  linkType: hard
+
 "@sapphire/shapeshift@npm:^3.5.1":
   version: 3.5.1
   resolution: "@sapphire/shapeshift@npm:3.5.1"
@@ -636,7 +643,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skyra/shared@workspace:projects/shared"
   dependencies:
+    "@sapphire/result": ^2.1.1
     "@sapphire/utilities": ^3.7.0
+    "@vladfrangu/async_event_emitter": 2.0.1
     discord-api-types: ^0.36.3
     ioredis: ^5.2.2
     ix: ^4.6.1
@@ -899,7 +908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vladfrangu/async_event_emitter@npm:^2.0.1":
+"@vladfrangu/async_event_emitter@npm:2.0.1, @vladfrangu/async_event_emitter@npm:^2.0.1":
   version: 2.0.1
   resolution: "@vladfrangu/async_event_emitter@npm:2.0.1"
   checksum: 96aec2c774676c3af47651167cb8ce1eba386c512aeac44731b09080f3a6faed7286993c37086da6cf600027f3281572d7beb8bc650f2fb257749ac99e6e2f6a

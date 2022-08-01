@@ -22,7 +22,9 @@
 		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
 	},
 	"dependencies": {
+		"@sapphire/result": "^2.1.1",
 		"@sapphire/utilities": "^3.7.0",
+		"@vladfrangu/async_event_emitter": "2.0.1",
 		"discord-api-types": "^0.36.3",
 		"ioredis": "^5.2.2",
 		"ix": "^4.6.1"

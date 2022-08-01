@@ -1,9 +1,13 @@
+import { Result } from '@sapphire/result';
 import { isNullishOrEmpty, type Nullish } from '@sapphire/utilities';
+import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import type { Redis } from 'ioredis';
 import { deserialize, serialize } from 'node:v8';
 import { RedisMessage } from './RedisMessage';
 
-export class MessageBroker {
+export class MessageBroker extends AsyncEventEmitter<{
+	message: [message: RedisMessage];
+}> {
 	public readonly redis: Redis;
 	public readonly stream: string;
 	private readonly block: string;
@@ -11,9 +15,12 @@ export class MessageBroker {
 	private readonly serialize: Serializer;
 	private readonly deserialize: Deserializer;
 	private readonly redisReader: Redis;
-	private listenStream: AsyncGenerator<RedisMessage> | null = null;
+	private listening = false;
+	private lastId = '$';
 
 	public constructor(options: MessageBroker.Options) {
+		super();
+
 		this.redis = options.redis;
 		this.stream = options.stream;
 		this.block = String(options.block ?? 5000);
@@ -23,35 +30,64 @@ export class MessageBroker {
 		this.redisReader = this.redis.duplicate();
 	}
 
-	public send(value: unknown) {
+	public send(value: RedisMessage.Data) {
 		return this.redis.xadd(this.stream, '*', MessageBroker.STREAM_DATA_FIELD, this.serialize(value));
 	}
 
-	public listen(): AsyncGenerator<RedisMessage> {
-		return (this.listenStream ??= this.handleListen());
+	public listen() {
+		if (this.listening) return false;
+
+		void this.handleListen();
+		return true;
 	}
 
 	public disconnect() {
+		this.listening = false;
 		this.redisReader.disconnect(false);
 	}
 
-	private async *handleListen(): AsyncGenerator<RedisMessage> {
-		while (true) {
-			const data = await this.redisReader.xreadBuffer('COUNT', this.max, 'BLOCK', this.block, 'STREAMS', this.stream, '>');
-			if (isNullishOrEmpty(data)) continue;
+	private async handleListen() {
+		this.listening = true;
+		while (this.listening) {
+			const result = await Result.fromAsync(
+				this.redisReader.xreadBuffer('COUNT', this.max, 'BLOCK', this.block, 'STREAMS', this.stream, this.lastId)
+			);
 
-			for (const [streamId, items] of data) {
-				for (const [entryId, fields] of items) {
-					// The broker sends 1 pair of fields, so anything different is invalid.
-					if (fields.length !== 2) continue;
+			result.match({
+				ok: (data) => this.handleBulk(data),
+				err: (error) => this.handleError(error)
+			});
+		}
 
-					// Verify that the key of the pair of fields is the data the broker sends.
-					if (fields[0].toString('utf8') !== MessageBroker.STREAM_DATA_FIELD) continue;
+		this.lastId = '$';
+	}
 
-					yield new RedisMessage(this, streamId, entryId, this.deserialize(fields[1]));
-				}
+	private handleBulk(data: [key: Buffer, items: [id: Buffer, fields: Buffer[]][]][] | null) {
+		if (isNullishOrEmpty(data)) return;
+
+		for (const [streamIdBuffer, items] of data) {
+			const streamId = streamIdBuffer.toString('utf8');
+
+			// Verify that the stream is the one the application is listening for.
+			if (streamId !== this.stream) continue;
+
+			for (const [entryIdBuffer, fields] of items) {
+				const entryId = entryIdBuffer.toString('utf8');
+				this.lastId = entryId;
+
+				// The broker sends 1 pair of fields, so anything different is invalid.
+				if (fields.length !== 2) continue;
+
+				// Verify that the key of the pair of fields is the data the broker sends.
+				if (fields[0].toString('utf8') !== MessageBroker.STREAM_DATA_FIELD) continue;
+
+				this.emit('message', new RedisMessage(this, streamId, entryId, this.deserialize(fields[1])));
 			}
 		}
+	}
+
+	private handleError(error: unknown) {
+		this.emit('error', error);
 	}
 
 	private static readonly STREAM_DATA_FIELD = 'data';
@@ -69,9 +105,9 @@ export namespace MessageBroker {
 }
 
 export interface Serializer {
-	(value: unknown): Buffer;
+	(value: RedisMessage.Data): Buffer;
 }
 
 export interface Deserializer {
-	(value: Buffer): unknown;
+	(value: Buffer): RedisMessage.Data;
 }

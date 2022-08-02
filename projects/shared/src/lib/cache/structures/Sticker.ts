@@ -26,6 +26,19 @@ export class Sticker implements IStructure {
 		this.available = data.available ?? null;
 	}
 
+	public equals(other: Sticker) {
+		return (
+			this.id === other.id &&
+			this.packId === other.packId &&
+			this.name === other.name &&
+			this.description === other.description &&
+			this.tags === other.tags &&
+			this.type === other.type &&
+			this.formatType === other.formatType &&
+			this.available === other.available
+		);
+	}
+
 	public toBuffer(): Buffer {
 		return new Writer(100)
 			.u64(this.id)

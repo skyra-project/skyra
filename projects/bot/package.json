@@ -38,5 +38,8 @@
 		"gradient-string": "^2.0.1",
 		"skyra-shared": "workspace:^",
 		"tslib": "^2.4.0"
+	},
+	"devDependencies": {
+		"typescript": "^4.7.4"
 	}
 }

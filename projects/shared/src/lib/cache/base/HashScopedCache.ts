@@ -1,3 +1,4 @@
+import { Collection } from '@discordjs/collection';
 import { isNullish } from '@sapphire/utilities';
 import { Reader } from '../../data/Reader.js';
 import type { IStructure, IStructureConstructor } from '../structures/interfaces/IStructure.js';
@@ -37,10 +38,10 @@ export abstract class HashScopedCache<T extends IStructure> extends ScopedCache 
 	 * Gets multiple entries by its ID from the hashmap.
 	 * @param parentId The parent's ID.
 	 * @param entries The IDs of the entries to retrieve.
-	 * @returns The entries inside a Map, keyed by their ID.
+	 * @returns The entries inside a Collection, keyed by their ID.
 	 * @remark The IDs of entries that do not exist are dropped.
 	 */
-	public async get(parentId: ScopedCache.Snowflake, entries: readonly ScopedCache.Snowflake[]): Promise<Map<bigint, T>>;
+	public async get(parentId: ScopedCache.Snowflake, entries: readonly ScopedCache.Snowflake[]): Promise<Collection<bigint, T>>;
 	public async get(parentId: ScopedCache.Snowflake, entries: ScopedCache.Snowflake | readonly ScopedCache.Snowflake[]) {
 		return Array.isArray(entries)
 			? this.getMany(parentId, entries as readonly ScopedCache.Snowflake[])
@@ -67,12 +68,12 @@ export abstract class HashScopedCache<T extends IStructure> extends ScopedCache 
 	/**
 	 * Gets all the entries from the hashmap.
 	 * @param parentId The parent's ID.
-	 * @returns The entries inside a Map, keyed by their ID.
+	 * @returns The entries inside a Collection, keyed by their ID.
 	 */
 	public async entries(parentId: ScopedCache.Snowflake) {
 		const buffers = await this.client.hvalsBuffer(this.makeId(parentId));
 
-		const result = new Map<bigint, T>();
+		const result = new Collection<bigint, T>();
 		for (const buffer of buffers) {
 			const channel = this.structure.fromBinary(new Reader(buffer));
 			result.set(channel.id, channel);
@@ -123,10 +124,10 @@ export abstract class HashScopedCache<T extends IStructure> extends ScopedCache 
 		return data ? this.structure.fromBinary(new Reader(data)) : null;
 	}
 
-	private async getMany(parentId: ScopedCache.Snowflake, entries: readonly ScopedCache.Snowflake[]): Promise<Map<bigint, T>> {
+	private async getMany(parentId: ScopedCache.Snowflake, entries: readonly ScopedCache.Snowflake[]): Promise<Collection<bigint, T>> {
 		const buffers = await this.client.hmgetBuffer(this.makeId(parentId), ...entries.map((entry) => entry.toString()));
 
-		const result = new Map<bigint, T>();
+		const result = new Collection<bigint, T>();
 		for (const buffer of buffers) {
 			if (isNullish(buffer)) continue;
 

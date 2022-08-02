@@ -1,5 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIEmoji } from 'discord-api-types/v10';
+import { arrayEquals } from '../../common/util.js';
 import type { Reader } from '../../data/Reader.js';
 import { Writer } from '../../data/Writer.js';
 import type { IStructure } from './interfaces/IStructure.js';
@@ -21,6 +22,18 @@ export class Emoji implements IStructure {
 		this.managed = data.managed ?? null;
 		this.requireColons = data.requireColons ?? null;
 		this.roles = data.roles;
+	}
+
+	public equals(other: Emoji) {
+		return (
+			this.id === other.id &&
+			this.name === other.name &&
+			this.animated === other.animated &&
+			this.available === other.available &&
+			this.managed === other.managed &&
+			this.requireColons === other.requireColons &&
+			arrayEquals(this.roles, other.roles)
+		);
 	}
 
 	public toBuffer(): Buffer {

@@ -1,9 +1,14 @@
 import type {
+	APIChannel,
+	APIUser,
 	GatewayGuildBanAddDispatchData,
 	GatewayGuildBanRemoveDispatchData,
+	GatewayMessageCreateDispatchData,
 	GatewayMessageReactionAddDispatchData,
 	GatewayMessageReactionRemoveAllDispatchData,
-	GatewayMessageReactionRemoveDispatchData
+	GatewayMessageReactionRemoveDispatchData,
+	GatewayMessageReactionRemoveEmojiDispatchData,
+	GatewayMessageUpdateDispatchData
 } from 'discord-api-types/v10';
 import type { Channel } from '../cache/structures/Channel.js';
 import type { Emoji } from '../cache/structures/Emoji.js';
@@ -11,6 +16,7 @@ import type { Guild } from '../cache/structures/Guild.js';
 import type { Member } from '../cache/structures/Member.js';
 import type { Message } from '../cache/structures/Message.js';
 import type { Role } from '../cache/structures/Role.js';
+import type { Sticker } from '../cache/structures/Sticker.js';
 import type { MessageBroker } from './MessageBroker.js';
 
 export class RedisMessage {
@@ -43,18 +49,23 @@ export namespace RedisMessage {
 		| GuildBanAddRedisPayload
 		| GuildBanRemoveRedisPayload
 		| GuildUpdateRedisPayload
-		| MemberCreateRedisPayload
-		| MemberDeleteRedisPayload
+		| MemberAddRedisPayload
+		| MemberRemoveRedisPayload
 		| MemberUpdateRedisPayload
 		| MessageCreateRedisPayload
+		| MessageDeleteBulkRedisPayload
 		| MessageDeleteRedisPayload
 		| MessageReactionAddRedisPayload
 		| MessageReactionRemoveAllRedisPayload
+		| MessageReactionRemoveEmojiRedisPayload
 		| MessageReactionRemoveRedisPayload
 		| MessageUpdateRedisPayload
 		| RoleCreateRedisPayload
 		| RoleDeleteRedisPayload
-		| RoleUpdateRedisPayload;
+		| RoleUpdateRedisPayload
+		| StickerCreateRedisPayload
+		| StickerDeleteRedisPayload
+		| StickerUpdateRedisPayload;
 }
 
 export enum RedisMessageType {
@@ -67,18 +78,23 @@ export enum RedisMessageType {
 	GuildBanAdd,
 	GuildBanRemove,
 	GuildUpdate,
-	MemberCreate,
-	MemberDelete,
+	MemberAdd,
+	MemberRemove,
 	MemberUpdate,
 	MessageCreate,
 	MessageDelete,
+	MessageDeleteBulk,
 	MessageReactionAdd,
 	MessageReactionRemove,
 	MessageReactionRemoveAll,
+	MessageReactionRemoveEmoji,
 	MessageUpdate,
 	RoleCreate,
 	RoleDelete,
-	RoleUpdate
+	RoleUpdate,
+	StickerCreate,
+	StickerDelete,
+	StickerUpdate
 }
 
 export interface IDataRedisPayload<T> {
@@ -89,22 +105,28 @@ export interface IOldRedisPayload<T> {
 	old: T | null;
 }
 
-export interface IUpdateRedisPayload<T> extends IDataRedisPayload<T>, IOldRedisPayload<T> {}
+export interface IUpdateRedisPayload<T, N = T> extends IDataRedisPayload<N>, IOldRedisPayload<T> {}
 
-export interface GuildUpdateRedisPayload extends IUpdateRedisPayload<Guild> {
+export interface GuildUpdateRedisPayload extends IUpdateRedisPayload<Guild.Json> {
 	type: RedisMessageType.GuildUpdate;
 }
 
-export interface MessageCreateRedisPayload extends IDataRedisPayload<Message> {
+export interface MessageCreateRedisPayload extends IDataRedisPayload<GatewayMessageCreateDispatchData> {
 	type: RedisMessageType.MessageCreate;
 }
 
-export interface MessageUpdateRedisPayload extends IUpdateRedisPayload<Message> {
+export interface MessageUpdateRedisPayload extends IUpdateRedisPayload<Message.Json, GatewayMessageUpdateDispatchData> {
 	type: RedisMessageType.MessageUpdate;
 }
 
-export interface MessageDeleteRedisPayload extends IOldRedisPayload<Message> {
+export interface MessageDeleteRedisPayload extends IOldRedisPayload<Message.Json | { id: string; channel_id: string; guild_id: string }> {
 	type: RedisMessageType.MessageDelete;
+}
+
+export interface MessageDeleteBulkRedisPayload extends IOldRedisPayload<(Message.Json | { id: string })[]> {
+	type: RedisMessageType.MessageDeleteBulk;
+	channel_id: string;
+	guild_id: string;
 }
 
 export interface GuildBanAddRedisPayload extends IDataRedisPayload<GatewayGuildBanAddDispatchData> {
@@ -115,52 +137,60 @@ export interface GuildBanRemoveRedisPayload extends IDataRedisPayload<GatewayGui
 	type: RedisMessageType.GuildBanRemove;
 }
 
-export interface ChannelCreateRedisPayload extends IDataRedisPayload<Channel> {
+export interface ChannelCreateRedisPayload extends IDataRedisPayload<APIChannel> {
 	type: RedisMessageType.ChannelCreate;
 }
 
-export interface ChannelUpdateRedisPayload extends IUpdateRedisPayload<Channel> {
+export interface ChannelUpdateRedisPayload extends IUpdateRedisPayload<Channel.Json, APIChannel> {
 	type: RedisMessageType.ChannelUpdate;
 }
 
-export interface ChannelDeleteRedisPayload extends IOldRedisPayload<Channel> {
+export interface ChannelDeleteRedisPayload extends IOldRedisPayload<APIChannel> {
 	type: RedisMessageType.ChannelDelete;
 }
 
-export interface EmojiCreateRedisPayload extends IDataRedisPayload<Emoji> {
+export interface EmojiCreateRedisPayload extends IDataRedisPayload<Emoji.Json> {
 	type: RedisMessageType.EmojiCreate;
+	guild_id: string;
 }
 
-export interface EmojiUpdateRedisPayload extends IUpdateRedisPayload<Emoji> {
+export interface EmojiUpdateRedisPayload extends IUpdateRedisPayload<Emoji.Json> {
 	type: RedisMessageType.EmojiUpdate;
+	guild_id: string;
 }
 
-export interface EmojiDeleteRedisPayload extends IOldRedisPayload<Emoji> {
+export interface EmojiDeleteRedisPayload extends IOldRedisPayload<Emoji.Json> {
 	type: RedisMessageType.EmojiDelete;
+	guild_id: string;
 }
 
-export interface MemberCreateRedisPayload extends IDataRedisPayload<Member> {
-	type: RedisMessageType.MemberCreate;
+export interface MemberAddRedisPayload extends IDataRedisPayload<Member.Json> {
+	type: RedisMessageType.MemberAdd;
 }
 
-export interface MemberUpdateRedisPayload extends IUpdateRedisPayload<Member> {
+export interface MemberUpdateRedisPayload extends IUpdateRedisPayload<Member.Json> {
 	type: RedisMessageType.MemberUpdate;
 }
 
-export interface MemberDeleteRedisPayload extends IOldRedisPayload<Member> {
-	type: RedisMessageType.MemberDelete;
+export interface MemberRemoveRedisPayload extends IOldRedisPayload<Member.Json> {
+	type: RedisMessageType.MemberRemove;
+	user: APIUser;
+	guild_id: string;
 }
 
-export interface RoleCreateRedisPayload extends IDataRedisPayload<Role> {
+export interface RoleCreateRedisPayload extends IDataRedisPayload<Role.Json> {
 	type: RedisMessageType.RoleCreate;
+	guild_id: string;
 }
 
-export interface RoleUpdateRedisPayload extends IUpdateRedisPayload<Role> {
+export interface RoleUpdateRedisPayload extends IUpdateRedisPayload<Role.Json> {
 	type: RedisMessageType.RoleUpdate;
+	guild_id: string;
 }
 
-export interface RoleDeleteRedisPayload extends IOldRedisPayload<Role> {
+export interface RoleDeleteRedisPayload extends IOldRedisPayload<Role.Json | { id: string }> {
 	type: RedisMessageType.RoleDelete;
+	guild_id: string;
 }
 
 export interface MessageReactionAddRedisPayload extends IDataRedisPayload<GatewayMessageReactionAddDispatchData> {
@@ -173,4 +203,23 @@ export interface MessageReactionRemoveRedisPayload extends IDataRedisPayload<Gat
 
 export interface MessageReactionRemoveAllRedisPayload extends IDataRedisPayload<GatewayMessageReactionRemoveAllDispatchData> {
 	type: RedisMessageType.MessageReactionRemoveAll;
+}
+
+export interface MessageReactionRemoveEmojiRedisPayload extends IDataRedisPayload<GatewayMessageReactionRemoveEmojiDispatchData> {
+	type: RedisMessageType.MessageReactionRemoveEmoji;
+}
+
+export interface StickerCreateRedisPayload extends IDataRedisPayload<Sticker.Json> {
+	type: RedisMessageType.StickerCreate;
+	guild_id: string;
+}
+
+export interface StickerUpdateRedisPayload extends IUpdateRedisPayload<Sticker.Json> {
+	type: RedisMessageType.StickerUpdate;
+	guild_id: string;
+}
+
+export interface StickerDeleteRedisPayload extends IOldRedisPayload<Sticker.Json> {
+	type: RedisMessageType.StickerDelete;
+	guild_id: string;
 }

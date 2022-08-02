@@ -1,6 +1,7 @@
 import { isNullish, type Nullish } from '@sapphire/utilities';
+import type { Nullable } from 'discord-api-types/utils/internals.js';
 import type { APIGuildMember, APIUser } from 'discord-api-types/v10';
-import { fromTimestamp, toTimestamp } from '../../common/util.js';
+import { defaultOptional, fromTimestamp, toTimestamp } from '../../common/util.js';
 import type { Reader } from '../../data/Reader.js';
 import { Writer } from '../../data/Writer.js';
 import type { IStructure } from './interfaces/IStructure.js';
@@ -15,10 +16,10 @@ export class Member implements IStructure {
 	public readonly nickname: string | null;
 	public readonly guildAvatar: string | null;
 	public readonly roles: readonly bigint[];
-	public readonly joinedAt: number;
+	public readonly joinedAt: number | null;
 	public readonly premiumSince: number | null;
-	public readonly deaf: boolean;
-	public readonly mute: boolean;
+	public readonly deaf: boolean | null;
+	public readonly mute: boolean | null;
 	public readonly pending: boolean | null;
 	public readonly communicationDisabledUntil: number | null;
 
@@ -32,12 +33,32 @@ export class Member implements IStructure {
 		this.nickname = data.nickname ?? null;
 		this.guildAvatar = data.guildAvatar ?? null;
 		this.roles = data.roles;
-		this.joinedAt = data.joinedAt;
+		this.joinedAt = data.joinedAt ?? null;
 		this.premiumSince = data.premiumSince ?? null;
-		this.deaf = data.deaf;
-		this.mute = data.mute;
+		this.deaf = data.deaf ?? null;
+		this.mute = data.mute ?? null;
 		this.pending = data.pending ?? null;
 		this.communicationDisabledUntil = data.communicationDisabledUntil ?? null;
+	}
+
+	public patch(data: Partial<Member.Json>) {
+		return new Member({
+			id: this.id,
+			username: defaultOptional(data.user?.username, this.username),
+			discriminator: defaultOptional(data.user?.discriminator, this.discriminator, Number),
+			bot: defaultOptional(data.user?.bot, this.bot),
+			avatar: defaultOptional(data.user?.avatar, this.avatar),
+			flags: defaultOptional(data.user?.public_flags, this.flags),
+			nickname: defaultOptional(data.nick, this.nickname),
+			guildAvatar: defaultOptional(data.avatar, this.guildAvatar),
+			roles: defaultOptional(data.roles, this.roles, (values) => values.map((role) => BigInt(role))),
+			joinedAt: defaultOptional(data.joined_at, this.joinedAt, toTimestamp)!,
+			premiumSince: defaultOptional(data.premium_since, this.premiumSince, toTimestamp),
+			deaf: defaultOptional(data.deaf, this.deaf),
+			mute: defaultOptional(data.mute, this.mute),
+			pending: defaultOptional(data.pending, this.pending),
+			communicationDisabledUntil: defaultOptional(data.communication_disabled_until, this.communicationDisabledUntil, toTimestamp)
+		});
 	}
 
 	public toBuffer(): Buffer {
@@ -74,8 +95,8 @@ export class Member implements IStructure {
 			roles: this.roles.map((role) => role.toString()),
 			joined_at: fromTimestamp(this.joinedAt),
 			premium_since: fromTimestamp(this.premiumSince),
-			deaf: this.deaf,
-			mute: this.mute,
+			deaf: this.deaf ?? undefined,
+			mute: this.mute ?? undefined,
 			pending: this.pending ?? undefined,
 			communication_disabled_until: fromTimestamp(this.communicationDisabledUntil)
 		};
@@ -126,7 +147,10 @@ export class Member implements IStructure {
 }
 
 export namespace Member {
-	export type Json = APIGuildMember;
+	export type Json = Omit<APIGuildMember, 'deaf' | 'mute' | 'joined_at'> &
+		Partial<Pick<APIGuildMember, 'deaf' | 'mute'>> &
+		Nullable<Pick<APIGuildMember, 'joined_at'>>;
+
 	export interface Data {
 		id: bigint;
 		username: string;
@@ -137,10 +161,10 @@ export namespace Member {
 		nickname?: string | Nullish;
 		guildAvatar?: string | Nullish;
 		roles: readonly bigint[];
-		joinedAt: number;
+		joinedAt?: number | Nullish;
 		premiumSince?: number | Nullish;
-		deaf: boolean;
-		mute: boolean;
+		deaf?: boolean | Nullish;
+		mute?: boolean | Nullish;
 		pending?: boolean | Nullish;
 		communicationDisabledUntil?: number | Nullish;
 	}

@@ -1,5 +1,19 @@
 import { isNullish, type Nullish } from '@sapphire/utilities';
 
+export function arrayEquals<T>(a: readonly T[], b: readonly T[]): boolean {
+	return a.length === b.length && a.every((value, index) => b[index] === value);
+}
+
+export function isDefined<Value>(value: Value): value is Exclude<Value, undefined> {
+	return value !== undefined;
+}
+
+export function defaultOptional<Value>(value: Value | undefined, fallback: Value): Value;
+export function defaultOptional<Value, Return>(value: Value | undefined, fallback: Return, cb: (value: Value) => Return): Return;
+export function defaultOptional<Value, Return>(value: Value | undefined, fallback: Return, cb?: (value: Value) => Return): Value | Return {
+	return value === undefined ? fallback : typeof cb === 'function' ? cb(value) : value;
+}
+
 export function normalizeNullable<Value, Return>(value: Value | Nullish, cb: (value: Value) => Return): Return | null {
 	return isNullish(value) ? null : cb(value);
 }

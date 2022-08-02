@@ -32,8 +32,8 @@ export function createClient(options: ClientOptions) {
 		max: envParseInteger('BROKER_MAX', 10)
 	});
 
-	// TODO: PR URL support for registerPath
 	container.stores.register(new ListenerStore());
+	// TODO: https://github.com/sapphiredev/pieces/pull/231
 	container.stores.registerPath(fileURLToPath(new URL('..', import.meta.url)));
 }
 

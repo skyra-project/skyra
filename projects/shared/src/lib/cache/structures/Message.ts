@@ -1,6 +1,6 @@
 import type { Nullish } from '@sapphire/utilities';
-import type { APIAttachment, APIEmbed, APIEmbedAuthor, APIMessage } from 'discord-api-types/v10';
-import { fromTimestamp, normalizeArray, normalizeNullable, normalizeOptional, toTimestamp } from '../../common/util.js';
+import type { APIAttachment, APIEmbed, APIEmbedAuthor, APIMessage, APIUser } from 'discord-api-types/v10';
+import { defaultOptional, fromTimestamp, normalizeArray, normalizeNullable, normalizeOptional, toTimestamp } from '../../common/util.js';
 import type { Reader } from '../../data/Reader.js';
 import { Writer } from '../../data/Writer.js';
 import type { IStructure } from './interfaces/IStructure.js';
@@ -20,6 +20,17 @@ export class Message implements IStructure {
 		this.content = data.content;
 		this.attachments = data.attachments ?? [];
 		this.embeds = data.embeds ?? [];
+	}
+
+	public patch(data: Partial<Message.Json>) {
+		return new Message({
+			id: this.id,
+			channelId: this.channelId,
+			author: defaultOptional(data.author, this.author, (author) => Message.mapAuthor(author)),
+			content: defaultOptional(data.content, this.content),
+			attachments: defaultOptional(data.attachments, this.attachments, (attachments) => Message.mapAttachments(attachments)),
+			embeds: defaultOptional(data.embeds, this.embeds, (embeds) => Message.mapEmbeds(embeds))
+		});
 	}
 
 	public toBuffer(): Buffer {
@@ -86,34 +97,10 @@ export class Message implements IStructure {
 		return new Message({
 			id: BigInt(data.id!),
 			channelId: BigInt(data.channel_id),
-			author: {
-				id: BigInt(data.author.id),
-				username: data.author.username,
-				discriminator: Number(data.author.discriminator),
-				avatar: data.author.avatar
-			},
+			author: Message.mapAuthor(data.author),
 			content: data.content,
-			attachments: data.attachments.map((attachment) => ({
-				id: BigInt(attachment.id),
-				name: attachment.filename,
-				url: attachment.url
-			})),
-			embeds: data.embeds.map(
-				(embed): Message.DataEmbed => ({
-					author: normalizeNullable(
-						embed.author,
-						(author): Message.DataEmbedAuthor => ({ name: author.name, icon: author.icon_url, url: author.url })
-					),
-					description: embed.description,
-					fields: normalizeArray(embed.fields, (field): Message.DataEmbedField => ({ name: field.name, value: field.value })),
-					footer: normalizeNullable(embed.footer, (footer): Message.DataEmbedFooter => ({ text: footer.text, icon: footer.icon_url })),
-					image: normalizeNullable(embed.image, (image): Message.DataEmbedImage => ({ url: image.url })),
-					thumbnail: normalizeNullable(embed.thumbnail, (thumbnail): Message.DataEmbedThumbnail => ({ url: thumbnail.url })),
-					timestamp: toTimestamp(embed.timestamp),
-					title: embed.title,
-					url: embed.url
-				})
-			)
+			attachments: Message.mapAttachments(data.attachments ?? []),
+			embeds: Message.mapEmbeds(data.embeds)
 		});
 	}
 
@@ -150,12 +137,50 @@ export class Message implements IStructure {
 			)
 		});
 	}
+
+	private static mapAuthor(author: APIUser) {
+		return {
+			id: BigInt(author.id),
+			username: author.username,
+			discriminator: Number(author.discriminator),
+			avatar: author.avatar
+		};
+	}
+
+	private static mapAttachments(attachments: Message.JsonAttachment[]) {
+		return attachments.map((attachment) => ({
+			id: BigInt(attachment.id),
+			name: attachment.filename,
+			url: attachment.url
+		}));
+	}
+
+	private static mapEmbeds(embeds: APIEmbed[]) {
+		return embeds.map(
+			(embed): Message.DataEmbed => ({
+				author: normalizeNullable(
+					embed.author,
+					(author): Message.DataEmbedAuthor => ({ name: author.name, icon: author.icon_url, url: author.url })
+				),
+				description: embed.description,
+				fields: normalizeArray(embed.fields, (field): Message.DataEmbedField => ({ name: field.name, value: field.value })),
+				footer: normalizeNullable(embed.footer, (footer): Message.DataEmbedFooter => ({ text: footer.text, icon: footer.icon_url })),
+				image: normalizeNullable(embed.image, (image): Message.DataEmbedImage => ({ url: image.url })),
+				thumbnail: normalizeNullable(embed.thumbnail, (thumbnail): Message.DataEmbedThumbnail => ({ url: thumbnail.url })),
+				timestamp: toTimestamp(embed.timestamp),
+				title: embed.title,
+				url: embed.url
+			})
+		);
+	}
 }
 
 export namespace Message {
 	export interface Json extends Pick<APIMessage, 'id' | 'channel_id' | 'author' | 'content' | 'embeds'> {
-		attachments: Pick<APIAttachment, 'id' | 'filename' | 'url'>[];
+		attachments?: JsonAttachment[];
 	}
+
+	export type JsonAttachment = Pick<APIAttachment, 'id' | 'filename' | 'url'>;
 
 	export interface Data {
 		id: bigint;

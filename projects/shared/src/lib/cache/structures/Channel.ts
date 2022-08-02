@@ -16,6 +16,30 @@ export type Channel =
 	| GuildVoiceChannel;
 
 export namespace Channel {
+	export type Type =
+		| GuildTextChannel.Type
+		| GuildVoiceChannel.Type
+		| GuildCategoryChannel.Type
+		| GuildNewsChannel.Type
+		| GuildForumChannel.Type
+		| GuildThreadChannel.Type;
+
+	export type Json =
+		| GuildTextChannel.Json
+		| GuildVoiceChannel.Json
+		| GuildCategoryChannel.Json
+		| GuildNewsChannel.Json
+		| GuildForumChannel.Json
+		| GuildThreadChannel.Json;
+
+	export type Data =
+		| GuildTextChannel.Data
+		| GuildVoiceChannel.Data
+		| GuildCategoryChannel.Data
+		| GuildNewsChannel.Data
+		| GuildForumChannel.Data
+		| GuildThreadChannel.Data;
+
 	export function fromAPI(data: APIChannel): Channel {
 		const { type } = data;
 		switch (type) {

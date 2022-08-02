@@ -1,8 +1,9 @@
+import { Collection } from '@discordjs/collection';
 import { isNullish } from '@sapphire/utilities';
 import { count } from 'ix/asynciterable/count.js';
 import { Reader } from '../data/Reader.js';
-import { Guild } from './structures/Guild.js';
 import { ScopedCache } from './base/ScopedCache.js';
+import { Guild } from './structures/Guild.js';
 
 export class CacheGuilds extends ScopedCache {
 	public async set(guild: Guild) {
@@ -20,7 +21,7 @@ export class CacheGuilds extends ScopedCache {
 	}
 
 	public async getAll() {
-		const result = new Map<bigint, Guild>();
+		const result = new Collection<bigint, Guild>();
 		for await (const guild of this.values()) {
 			result.set(guild.id, guild);
 		}

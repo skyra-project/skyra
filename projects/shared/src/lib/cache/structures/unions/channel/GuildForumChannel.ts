@@ -1,6 +1,6 @@
 import type { APIGuildForumChannel, ChannelType } from 'discord-api-types/v10';
-import type { Reader } from '../../../data/Reader';
-import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel';
+import type { Reader } from '../../../../data/Reader.js';
+import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel.js';
 
 export class GuildForumChannel extends GuildBasedChannel<GuildForumChannel.Type> {
 	public static fromAPI(data: GuildForumChannel.Json): GuildForumChannel {

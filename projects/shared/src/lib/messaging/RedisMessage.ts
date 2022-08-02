@@ -5,13 +5,13 @@ import type {
 	GatewayMessageReactionRemoveAllDispatchData,
 	GatewayMessageReactionRemoveDispatchData
 } from 'discord-api-types/v10';
-import type { Channel } from '../structures/Channel';
-import type { Emoji } from '../structures/Emoji';
-import type { Guild } from '../structures/Guild';
-import type { Member } from '../structures/Member';
-import type { Message } from '../structures/Message';
-import type { Role } from '../structures/Role';
-import type { MessageBroker } from './MessageBroker';
+import type { Channel } from '../cache/structures/Channel.js';
+import type { Emoji } from '../cache/structures/Emoji.js';
+import type { Guild } from '../cache/structures/Guild.js';
+import type { Member } from '../cache/structures/Member.js';
+import type { Message } from '../cache/structures/Message.js';
+import type { Role } from '../cache/structures/Role.js';
+import type { MessageBroker } from './MessageBroker.js';
 
 export class RedisMessage {
 	public readonly streamId: string;

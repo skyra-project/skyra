@@ -1,7 +1,7 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APITextChannel, ChannelType } from 'discord-api-types/v10';
-import type { Reader } from '../../../data/Reader';
-import { GuildTextBasedChannel, guildTextBasedFromAPIShared, guildTextBasedFromBinaryShared } from './base/GuildTextBasedChannel';
+import type { Reader } from '../../../../data/Reader.js';
+import { GuildTextBasedChannel, guildTextBasedFromAPIShared, guildTextBasedFromBinaryShared } from './base/GuildTextBasedChannel.js';
 
 export class GuildTextChannel extends GuildTextBasedChannel<GuildTextChannel.Type> {
 	public readonly rateLimitPerUser: number | null;

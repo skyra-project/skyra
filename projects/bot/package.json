@@ -19,7 +19,7 @@
 		"start": "node --enable-source-maps dist/main.js",
 		"test": "eslint --ext ts src",
 		"lint": "eslint --fix --ext ts src",
-		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
+		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,mts,json}\""
 	},
 	"dependencies": {
 		"@discordjs/builders": "1.1.0",
@@ -36,6 +36,7 @@
 		"colorette": "^2.0.19",
 		"discord-api-types": "^0.36.3",
 		"gradient-string": "^2.0.1",
+		"skyra-shared": "workspace:^",
 		"tslib": "^2.4.0"
 	}
 }

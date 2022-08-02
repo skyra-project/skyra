@@ -1,11 +1,11 @@
 import { ChannelType, type APIChannel } from 'discord-api-types/v10';
-import type { Reader } from '../data/Reader';
-import { GuildCategoryChannel } from './unions/channel/GuildCategoryChannel';
-import { GuildForumChannel } from './unions/channel/GuildForumChannel';
-import { GuildNewsChannel } from './unions/channel/GuildNewsChannel';
-import { GuildTextChannel } from './unions/channel/GuildTextChannel';
-import { GuildThreadChannel } from './unions/channel/GuildThreadChannel';
-import { GuildVoiceChannel } from './unions/channel/GuildVoiceChannel';
+import type { Reader } from '../../data/Reader.js';
+import { GuildCategoryChannel } from './unions/channel/GuildCategoryChannel.js';
+import { GuildForumChannel } from './unions/channel/GuildForumChannel.js';
+import { GuildNewsChannel } from './unions/channel/GuildNewsChannel.js';
+import { GuildTextChannel } from './unions/channel/GuildTextChannel.js';
+import { GuildThreadChannel } from './unions/channel/GuildThreadChannel.js';
+import { GuildVoiceChannel } from './unions/channel/GuildVoiceChannel.js';
 
 export type Channel =
 	| GuildCategoryChannel //

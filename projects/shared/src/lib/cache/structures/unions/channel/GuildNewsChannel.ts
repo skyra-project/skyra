@@ -1,6 +1,6 @@
 import type { APINewsChannel, ChannelType } from 'discord-api-types/v10';
-import type { Reader } from '../../../data/Reader';
-import { GuildTextBasedChannel, guildTextBasedFromAPIShared, guildTextBasedFromBinaryShared } from './base/GuildTextBasedChannel';
+import type { Reader } from '../../../../data/Reader.js';
+import { GuildTextBasedChannel, guildTextBasedFromAPIShared, guildTextBasedFromBinaryShared } from './base/GuildTextBasedChannel.js';
 
 export class GuildNewsChannel extends GuildTextBasedChannel<GuildNewsChannel.Type> {
 	public static fromAPI(data: GuildNewsChannel.Json): GuildNewsChannel {

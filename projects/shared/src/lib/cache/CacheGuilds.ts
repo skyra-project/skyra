@@ -1,8 +1,8 @@
 import { isNullish } from '@sapphire/utilities';
-import { count } from 'ix/asynciterable/count';
-import { Reader } from '../data/Reader';
-import { Guild } from '../structures/Guild';
-import { ScopedCache } from './base/ScopedCache';
+import { count } from 'ix/asynciterable/count.js';
+import { Reader } from '../data/Reader.js';
+import { Guild } from './structures/Guild.js';
+import { ScopedCache } from './base/ScopedCache.js';
 
 export class CacheGuilds extends ScopedCache {
 	public async set(guild: Guild) {

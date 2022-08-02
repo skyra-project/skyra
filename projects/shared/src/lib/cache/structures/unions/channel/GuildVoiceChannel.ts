@@ -1,7 +1,7 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIVoiceChannel, ChannelType, VideoQualityMode } from 'discord-api-types/v10';
-import type { Reader } from '../../../data/Reader';
-import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel';
+import type { Reader } from '../../../../data/Reader.js';
+import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel.js';
 
 export class GuildVoiceChannel extends GuildBasedChannel<GuildVoiceChannel.Type> {
 	public readonly bitrate: number | null;

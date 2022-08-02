@@ -1,6 +1,6 @@
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { GuildFeature } from 'discord-api-types/v10';
-import { bitHas } from '../../common/bits';
+import { bitHas } from '../../../common/bits.js';
 
 export const GuildFeatureBits = {
 	ANIMATED_BANNER: 1 << 0,

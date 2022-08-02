@@ -1,8 +1,8 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIEmoji } from 'discord-api-types/v10';
-import type { Reader } from '../data/Reader';
-import { Writer } from '../data/Writer';
-import type { IStructure } from './interfaces/IStructure';
+import type { Reader } from '../../data/Reader.js';
+import { Writer } from '../../data/Writer.js';
+import type { IStructure } from './interfaces/IStructure.js';
 
 export class Emoji implements IStructure {
 	public readonly id: bigint;

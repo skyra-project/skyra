@@ -18,7 +18,7 @@
 		"start": "node --enable-source-maps dist/main.js",
 		"test": "eslint --ext ts src",
 		"lint": "eslint --fix --ext ts src",
-		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,json}\""
+		"format": "prettier --write --loglevel=warn \"src/**/*.{js,ts,mts,json}\""
 	},
 	"dependencies": {
 		"@discordjs/rest": "^1.0.1",
@@ -26,6 +26,7 @@
 		"@skyra/env-utilities": "1.0.2",
 		"@skyra/start-banner": "^1.0.2",
 		"discord-api-types": "^0.36.3",
-		"gradient-string": "^2.0.1"
+		"gradient-string": "^2.0.1",
+		"skyra-shared": "workspace:^"
 	}
 }

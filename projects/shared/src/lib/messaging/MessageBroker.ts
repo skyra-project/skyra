@@ -3,7 +3,7 @@ import { isNullishOrEmpty, type Nullish } from '@sapphire/utilities';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import type { Redis } from 'ioredis';
 import { deserialize, serialize } from 'node:v8';
-import { RedisMessage } from './RedisMessage';
+import { RedisMessage } from './RedisMessage.js';
 
 export class MessageBroker extends AsyncEventEmitter<{
 	message: [message: RedisMessage];
@@ -14,7 +14,7 @@ export class MessageBroker extends AsyncEventEmitter<{
 	private readonly max: string;
 	private readonly serialize: Serializer;
 	private readonly deserialize: Deserializer;
-	private readonly redisReader: Redis;
+	private redisReader: Redis | null = null;
 	private listening = false;
 	private lastId = '$';
 
@@ -27,7 +27,6 @@ export class MessageBroker extends AsyncEventEmitter<{
 		this.max = String(options.max ?? 10);
 		this.serialize = options.serialize ?? serialize;
 		this.deserialize = options.deserialize ?? deserialize;
-		this.redisReader = this.redis.duplicate();
 	}
 
 	public send(value: RedisMessage.Data) {
@@ -43,11 +42,14 @@ export class MessageBroker extends AsyncEventEmitter<{
 
 	public disconnect() {
 		this.listening = false;
-		this.redisReader.disconnect(false);
+		this.redisReader?.disconnect(false);
 	}
 
 	private async handleListen() {
+		if (this.redisReader) throw new Error('The reader is already active');
+		this.redisReader = this.redis.duplicate();
 		this.listening = true;
+
 		while (this.listening) {
 			const result = await Result.fromAsync(
 				this.redisReader.xreadBuffer('COUNT', this.max, 'BLOCK', this.block, 'STREAMS', this.stream, this.lastId)
@@ -60,6 +62,7 @@ export class MessageBroker extends AsyncEventEmitter<{
 		}
 
 		this.lastId = '$';
+		this.redisReader = null;
 	}
 
 	private handleBulk(data: [key: Buffer, items: [id: Buffer, fields: Buffer[]][]][] | null) {

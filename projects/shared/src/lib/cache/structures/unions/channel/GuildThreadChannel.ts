@@ -1,8 +1,8 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIThreadChannel, ChannelType, ThreadAutoArchiveDuration } from 'discord-api-types/v10';
-import { fromTimestamp, normalizeNullable, toTimestamp } from '../../../common/util';
-import type { Reader } from '../../../data/Reader';
-import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel';
+import { fromTimestamp, normalizeNullable, toTimestamp } from '../../../../common/util.js';
+import type { Reader } from '../../../../data/Reader.js';
+import { GuildBasedChannel, guildBasedFromAPIShared, guildBasedFromBinaryShared } from './base/GuildBasedChannel.js';
 
 export class GuildThreadChannel extends GuildBasedChannel<GuildThreadChannel.Type> {
 	public readonly ownerId: bigint | null;

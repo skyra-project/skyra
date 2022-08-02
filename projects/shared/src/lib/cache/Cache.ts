@@ -1,12 +1,12 @@
 import { isNullishOrEmpty, type Nullish } from '@sapphire/utilities';
 import type { Redis } from 'ioredis';
-import { CacheChannels } from './CacheChannels';
-import { CacheEmojis } from './CacheEmojis';
-import { CacheGuilds } from './CacheGuilds';
-import { CacheMembers } from './CacheMembers';
-import { CacheMessages } from './CacheMessages';
-import { CacheRoles } from './CacheRoles';
-import { CacheStickers } from './CacheStickers';
+import { CacheChannels } from './CacheChannels.js';
+import { CacheEmojis } from './CacheEmojis.js';
+import { CacheGuilds } from './CacheGuilds.js';
+import { CacheMembers } from './CacheMembers.js';
+import { CacheMessages } from './CacheMessages.js';
+import { CacheRoles } from './CacheRoles.js';
+import { CacheStickers } from './CacheStickers.js';
 
 export class Cache {
 	public readonly client: Redis;

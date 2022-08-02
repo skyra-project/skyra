@@ -1,33 +1,28 @@
-import { REST } from '@discordjs/rest';
-import { WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
+import { createClient, loadAll } from '#lib/Client';
 import { envParseString, setup } from '@skyra/env-utilities';
 import { createBanner } from '@skyra/start-banner';
 import { GatewayIntentBits } from 'discord-api-types/v10';
 import gradient from 'gradient-string';
+import { container } from 'skyra-shared';
 
 setup(new URL('../src/.env', import.meta.url));
 
-const token = envParseString('DISCORD_TOKEN');
-const manager = new WebSocketManager({
-	intents:
-		GatewayIntentBits.GuildBans |
-		GatewayIntentBits.GuildEmojisAndStickers |
-		GatewayIntentBits.GuildInvites |
-		GatewayIntentBits.GuildMembers |
-		GatewayIntentBits.GuildMessageReactions |
-		GatewayIntentBits.GuildMessages |
-		GatewayIntentBits.GuildVoiceStates |
-		GatewayIntentBits.Guilds |
-		GatewayIntentBits.MessageContent,
-	rest: new REST().setToken(token),
-	token
-})
-	.on('error', (error) => console.error('Received error:', error))
-	.on(WebSocketShardEvents.Ready, (payload) => console.log(`[WS] ${payload.shardId} is now ready.`))
-	.on(WebSocketShardEvents.Resumed, (payload) => console.log(`[WS] ${payload.shardId} has resumed previous session.`))
-	.on(WebSocketShardEvents.Dispatch, (payload) => console.log(payload.data.t));
+createClient({
+	ws: {
+		intents:
+			GatewayIntentBits.GuildBans |
+			GatewayIntentBits.GuildEmojisAndStickers |
+			GatewayIntentBits.GuildInvites |
+			GatewayIntentBits.GuildMembers |
+			GatewayIntentBits.GuildMessageReactions |
+			GatewayIntentBits.GuildMessages |
+			GatewayIntentBits.GuildVoiceStates |
+			GatewayIntentBits.Guilds |
+			GatewayIntentBits.MessageContent
+	}
+});
 
-await manager.connect();
+await loadAll();
 
 console.log(
 	gradient.vice.multiline(
@@ -51,9 +46,8 @@ console.log(
 			],
 			extra: [
 				` Skyra ${envParseString('CLIENT_VERSION')} Gateway`,
-				` ├ WebSocket: ${manager.options.shardCount} shards`,
-				' └ Redis    : Coming soon'
-				// TODO: Add Redis information
+				` ├ WebSocket: ${container.ws.options.shardCount} shards`,
+				` └ Redis    : ${container.redis.options.host}:${container.redis.options.port}`
 			]
 		})
 	)

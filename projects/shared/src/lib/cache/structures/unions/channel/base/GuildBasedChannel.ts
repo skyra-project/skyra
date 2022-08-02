@@ -1,9 +1,9 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIGuildChannel, APIOverwrite, ChannelFlags, ChannelType, OverwriteType } from 'discord-api-types/v10';
-import { normalizeNullable } from '../../../../common/util';
-import type { Reader } from '../../../../data/Reader';
-import { Writer } from '../../../../data/Writer';
-import type { IStructure } from '../../../interfaces/IStructure';
+import { normalizeNullable } from '../../../../../common/util.js';
+import type { Reader } from '../../../../../data/Reader.js';
+import { Writer } from '../../../../../data/Writer.js';
+import type { IStructure } from '../../../interfaces/IStructure.js';
 
 export abstract class GuildBasedChannel<T extends ChannelType> implements IStructure {
 	public readonly id: bigint;

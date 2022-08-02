@@ -1,7 +1,7 @@
 import { isNullish } from '@sapphire/utilities';
-import { Reader } from '../../data/Reader';
-import type { IStructure, IStructureConstructor } from '../../structures/interfaces/IStructure';
-import { ScopedCache } from './ScopedCache';
+import { Reader } from '../../data/Reader.js';
+import type { IStructure, IStructureConstructor } from '../structures/interfaces/IStructure.js';
+import { ScopedCache } from './ScopedCache.js';
 
 export abstract class HashScopedCache<T extends IStructure> extends ScopedCache {
 	public abstract readonly tail: string;

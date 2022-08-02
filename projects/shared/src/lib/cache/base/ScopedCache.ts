@@ -1,4 +1,4 @@
-import type { Cache } from '../Cache';
+import type { Cache } from '../Cache.js';
 
 export abstract class ScopedCache {
 	public readonly parent: Cache;

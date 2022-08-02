@@ -1,8 +1,8 @@
 import type { Nullish } from '@sapphire/utilities';
 import type { APIGuildTextChannel, GuildTextChannelType, ThreadAutoArchiveDuration } from 'discord-api-types/v10';
-import type { Reader } from '../../../../data/Reader';
-import type { Writer } from '../../../../data/Writer';
-import { GuildBasedChannel, guildBasedFromAPIShared } from './GuildBasedChannel';
+import type { Reader } from '../../../../../data/Reader.js';
+import type { Writer } from '../../../../../data/Writer.js';
+import { GuildBasedChannel, guildBasedFromAPIShared } from './GuildBasedChannel.js';
 
 export abstract class GuildTextBasedChannel<T extends GuildTextChannelType> extends GuildBasedChannel<T> {
 	public readonly defaultAutoArchiveDuration: ThreadAutoArchiveDuration | null;

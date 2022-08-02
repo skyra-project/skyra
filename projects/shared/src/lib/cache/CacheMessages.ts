@@ -1,5 +1,5 @@
-import { Message } from '../structures/Message';
-import { HashScopedCache } from './base/HashScopedCache';
+import { Message } from './structures/Message.js';
+import { HashScopedCache } from './base/HashScopedCache.js';
 
 export class CacheMessages extends HashScopedCache<Message> {
 	public readonly tail = ':messages';

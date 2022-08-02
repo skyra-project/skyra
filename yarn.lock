@@ -507,7 +507,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/pieces@npm:^3.3.4":
+"@sapphire/pieces@npm:^3.3.4, @sapphire/pieces@npm:^3.3.5":
   version: 3.3.5
   resolution: "@sapphire/pieces@npm:3.3.5"
   dependencies:
@@ -638,19 +638,6 @@ __metadata:
   checksum: 4c7f50f6c9c01afa5d38ba899f25afc55b3b0f020344a8c9353a865b688f8b5533812a1331bf0931ec230696f24e0e5d4b0f0fb8745701938677e9bd0f141785
   languageName: node
   linkType: hard
-
-"@skyra/shared@workspace:projects/shared":
-  version: 0.0.0-use.local
-  resolution: "@skyra/shared@workspace:projects/shared"
-  dependencies:
-    "@sapphire/result": ^2.1.1
-    "@sapphire/utilities": ^3.7.0
-    "@vladfrangu/async_event_emitter": 2.0.1
-    discord-api-types: ^0.36.3
-    ioredis: ^5.2.2
-    ix: ^4.6.1
-  languageName: unknown
-  linkType: soft
 
 "@skyra/start-banner@npm:^1.0.2":
   version: 1.0.2
@@ -4778,6 +4765,7 @@ __metadata:
     "@skyra/start-banner": ^1.0.2
     discord-api-types: ^0.36.3
     gradient-string: ^2.0.1
+    skyra-shared: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -4808,6 +4796,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"skyra-shared@workspace:^, skyra-shared@workspace:projects/shared":
+  version: 0.0.0-use.local
+  resolution: "skyra-shared@workspace:projects/shared"
+  dependencies:
+    "@sapphire/pieces": ^3.3.5
+    "@sapphire/result": ^2.1.1
+    "@sapphire/utilities": ^3.7.0
+    "@vladfrangu/async_event_emitter": 2.0.1
+    discord-api-types: ^0.36.3
+    ioredis: ^5.2.2
+    ix: ^4.6.1
+  languageName: unknown
+  linkType: soft
+
 "skyra@workspace:projects/bot":
   version: 0.0.0-use.local
   resolution: "skyra@workspace:projects/bot"
@@ -4826,6 +4828,7 @@ __metadata:
     colorette: ^2.0.19
     discord-api-types: ^0.36.3
     gradient-string: ^2.0.1
+    skyra-shared: "workspace:^"
     tslib: ^2.4.0
   languageName: unknown
   linkType: soft

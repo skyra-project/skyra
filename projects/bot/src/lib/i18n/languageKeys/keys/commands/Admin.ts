@@ -1,4 +1,3 @@
-import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
 export const ConfGet = FT<{ key: string; value: string }, string>('commands/admin:confGet');

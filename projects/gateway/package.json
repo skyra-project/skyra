@@ -22,11 +22,11 @@
 	},
 	"dependencies": {
 		"@discordjs/rest": "^1.0.1",
-		"@discordjs/ws": "^0.1.0",
-		"@sapphire/utilities": "3.7.0",
-		"@skyra/env-utilities": "1.0.2",
+		"@discordjs/ws": "^0.2.0",
+		"@sapphire/utilities": "^3.8.0",
+		"@skyra/env-utilities": "^1.0.2",
 		"@skyra/start-banner": "^1.0.2",
-		"discord-api-types": "^0.36.3",
+		"discord-api-types": "^0.37.0",
 		"gradient-string": "^2.0.1",
 		"skyra-shared": "workspace:^"
 	},

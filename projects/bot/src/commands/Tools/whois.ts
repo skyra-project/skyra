@@ -1,28 +1,18 @@
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { months, seconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
 import { time, TimestampStyles } from '@discordjs/builders';
-import { ApplyOptions } from '@sapphire/decorators';
-import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
+import { Command, RegisterCommand, RegisterSubCommand } from '@skyra/http-framework';
+import { applyLocalizedBuilder } from '@skyra/http-framework-i18n';
 import type { TFunction } from 'i18next';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
 
-@ApplyOptions<SkyraCommand.Options>({
-	aliases: ['userinfo', 'uinfo', 'user'],
-	description: LanguageKeys.Commands.Tools.WhoisDescription,
-	detailedDescription: LanguageKeys.Commands.Tools.WhoisExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
-	runIn: [CommandOptionsRunTypeEnum.GuildAny]
-})
-export class UserCommand extends SkyraCommand {
+@RegisterCommand((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.RootName, LanguageKeys.Commands.Whois.RootDescription))
+export class UserCommand extends Command {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, bigint][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
@@ -36,6 +26,21 @@ export class UserCommand extends SkyraCommand {
 		['MANAGE_WEBHOOKS', FLAGS.MANAGE_WEBHOOKS],
 		['MENTION_EVERYONE', FLAGS.MENTION_EVERYONE]
 	];
+
+	@RegisterSubCommand((builder) =>
+		applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.User) //
+			.addUserOption((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.OptionsUser))
+	)
+	public async handleUser(interaction: Command.Interaction) {}
+
+	@RegisterSubCommand((builder) =>
+		applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.Role) //
+			.addRoleOption((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.OptionsRole))
+	)
+	public async handleRole(interaction: Command.Interaction) {}
+
+	@RegisterSubCommand((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.Server))
+	public async handleServer(interaction: Command.Interaction) {}
 
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');

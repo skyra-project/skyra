@@ -30,11 +30,11 @@
 		"@discordjs/collection": "^1.0.1",
 		"@sapphire/pieces": "^3.3.5",
 		"@sapphire/result": "^2.1.1",
-		"@sapphire/utilities": "^3.7.0",
-		"@vladfrangu/async_event_emitter": "2.0.1",
-		"discord-api-types": "^0.36.3",
+		"@sapphire/utilities": "^3.8.0",
+		"@vladfrangu/async_event_emitter": "^2.0.1",
+		"discord-api-types": "^0.37.0",
 		"ioredis": "^5.2.2",
-		"ix": "^4.6.1"
+		"ix": "^5.0.0"
 	},
 	"devDependencies": {
 		"typescript": "^4.7.4"

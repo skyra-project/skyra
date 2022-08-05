@@ -11,7 +11,9 @@ import type { TFunction } from 'i18next';
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
 
-@RegisterCommand((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.RootName, LanguageKeys.Commands.Whois.RootDescription))
+@RegisterCommand((builder) =>
+	applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.RootName, LanguageKeys.Commands.Whois.RootDescription).setDMPermission(false)
+)
 export class UserCommand extends Command {
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, bigint][] = [
@@ -40,7 +42,9 @@ export class UserCommand extends Command {
 	public async handleRole(interaction: Command.Interaction) {}
 
 	@RegisterSubCommand((builder) => applyLocalizedBuilder(builder, LanguageKeys.Commands.Whois.Server))
-	public async handleServer(interaction: Command.Interaction) {}
+	public async handleServer(interaction: Command.Interaction) {
+		this.container.client
+	}
 
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');

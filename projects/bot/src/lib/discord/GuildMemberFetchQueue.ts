@@ -1,6 +1,8 @@
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 
+// TODO: Move this to /gateway
+
 /**
  * Represents a {@link GuildMemberFetchQueue.shards} entry.
  */

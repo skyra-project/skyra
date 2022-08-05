@@ -1,5 +1,4 @@
 import { getRootData } from '@sapphire/pieces';
-import type { PostProcessorModule } from 'i18next';
 import { join } from 'node:path';
 
 export const mainFolder = getRootData().root;
@@ -45,17 +44,6 @@ export const enum Emojis {
 	FemaleSignEmoji = '<:2640:845772713729720320>'
 }
 
-export const helpUsagePostProcessor: PostProcessorModule = {
-	type: 'postProcessor',
-	name: 'helpUsagePostProcessor',
-	process(value, [key]) {
-		// If the value is equal to the key then it is an empty usage, so return an empty string
-		if (value === key) return '';
-		// Otherwise just return the value
-		return value;
-	}
-};
-
 export const enum BrandingColors {
 	Primary = 0x1e88e5,
 	Secondary = 0xff9d01
@@ -63,18 +51,6 @@ export const enum BrandingColors {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type O = object;
-
-export const enum CdnUrls {
-	AnilistLogo = 'https://cdn.skyra.pw/skyra-assets/anilist.png',
-	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
-	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
-	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',
-	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
-	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
-	RevolvingHeartTwemoji = 'https://twemoji.maxcdn.com/72x72/1f49e.png',
-	StarWarsLogo = 'https://cdn.skyra.pw/skyra-assets/star-wars-api-logo.png',
-	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
-}
 
 export const enum LanguageFormatters {
 	AndList = 'andList',
@@ -121,11 +97,4 @@ export const enum Colors {
 	Teal = 0x009688,
 	Yellow = 0xffeb3b,
 	Yellow300 = 0xfff176
-}
-
-export const enum CanvasColors {
-	BackgroundLight = '#FAFAFA',
-	BackgroundDark = '#212121',
-	IndicatorGreen = '#4CAF50',
-	IndicatorRed = '#F44336'
 }

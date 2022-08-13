@@ -46,8 +46,6 @@ services:
       context: ../../
       dockerfile: ../gateway/Dockerfile
     container_name: skyra-gateway
-    depends_on:
-      - rabbitmq
     env_file:
       - ../gateway/src/.env.development
       - ../gateway/src/.env.development.local

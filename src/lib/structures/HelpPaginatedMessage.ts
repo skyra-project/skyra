@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
 import {
+	isAnyInteraction,
 	isMessageButtonInteraction,
 	isMessageInstance,
 	PaginatedMessagePage,
-	runsOnInteraction,
 	type PaginatedMessageAction,
 	type PaginatedMessageOptions
 } from '@sapphire/discord.js-utilities';
@@ -178,7 +178,7 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 		}
 
 		if (this.response) {
-			if (runsOnInteraction(this.response)) {
+			if (isAnyInteraction(this.response)) {
 				if (this.response.replied || this.response.deferred) {
 					await this.response.editReply(page as WebhookEditMessageOptions);
 				} else {
@@ -187,7 +187,7 @@ export class HelpPaginatedMessage extends SkyraPaginatedMessage {
 			} else if (isMessageInstance(this.response)) {
 				await this.response.edit(page as WebhookEditMessageOptions);
 			}
-		} else if (runsOnInteraction(messageOrInteraction)) {
+		} else if (isAnyInteraction(messageOrInteraction)) {
 			if (messageOrInteraction.replied || messageOrInteraction.deferred) {
 				this.response = await messageOrInteraction.editReply(page);
 			} else {

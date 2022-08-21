@@ -5,7 +5,20 @@
 	"npm": {
 		"packageRules": [
 			{
-				"matchPackagePatterns": ["typeorm", "tslib", "discord-api-types", "@discordjs/builders"],
+				"matchPackagePatterns": [
+					"typeorm",
+					"tslib",
+					"discord-api-types",
+					"@discordjs/builders",
+					"@sapphire/decorators",
+					"@sapphire/discord.js-utilities",
+					"@sapphire/framework",
+					"@sapphire/plugin-api",
+					"@sapphire/plugin-editable-commands",
+					"@sapphire/plugin-i18next",
+					"@sapphire/plugin-logger",
+					"@sapphire/plugin-subcommands"
+				],
 				"enabled": false
 			},
 			{

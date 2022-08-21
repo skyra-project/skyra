@@ -2032,82 +2032,82 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-android-arm64@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-android-arm64@npm:0.1.28"
+"@napi-rs/canvas-android-arm64@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-android-arm64@npm:0.1.26"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-darwin-arm64@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-darwin-arm64@npm:0.1.28"
+"@napi-rs/canvas-darwin-arm64@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-darwin-arm64@npm:0.1.26"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-darwin-x64@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-darwin-x64@npm:0.1.28"
+"@napi-rs/canvas-darwin-x64@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-darwin-x64@npm:0.1.26"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.28"
+"@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.26"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-linux-arm64-gnu@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-linux-arm64-gnu@npm:0.1.28"
+"@napi-rs/canvas-linux-arm64-gnu@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-linux-arm64-gnu@npm:0.1.26"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-linux-arm64-musl@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-linux-arm64-musl@npm:0.1.28"
+"@napi-rs/canvas-linux-arm64-musl@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-linux-arm64-musl@npm:0.1.26"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-linux-x64-gnu@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-linux-x64-gnu@npm:0.1.28"
+"@napi-rs/canvas-linux-x64-gnu@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-linux-x64-gnu@npm:0.1.26"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-linux-x64-musl@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-linux-x64-musl@npm:0.1.28"
+"@napi-rs/canvas-linux-x64-musl@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-linux-x64-musl@npm:0.1.26"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas-win32-x64-msvc@npm:0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas-win32-x64-msvc@npm:0.1.28"
+"@napi-rs/canvas-win32-x64-msvc@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas-win32-x64-msvc@npm:0.1.26"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@napi-rs/canvas@npm:^0.1.28":
-  version: 0.1.28
-  resolution: "@napi-rs/canvas@npm:0.1.28"
+"@napi-rs/canvas@npm:0.1.26":
+  version: 0.1.26
+  resolution: "@napi-rs/canvas@npm:0.1.26"
   dependencies:
-    "@napi-rs/canvas-android-arm64": 0.1.28
-    "@napi-rs/canvas-darwin-arm64": 0.1.28
-    "@napi-rs/canvas-darwin-x64": 0.1.28
-    "@napi-rs/canvas-linux-arm-gnueabihf": 0.1.28
-    "@napi-rs/canvas-linux-arm64-gnu": 0.1.28
-    "@napi-rs/canvas-linux-arm64-musl": 0.1.28
-    "@napi-rs/canvas-linux-x64-gnu": 0.1.28
-    "@napi-rs/canvas-linux-x64-musl": 0.1.28
-    "@napi-rs/canvas-win32-x64-msvc": 0.1.28
+    "@napi-rs/canvas-android-arm64": 0.1.26
+    "@napi-rs/canvas-darwin-arm64": 0.1.26
+    "@napi-rs/canvas-darwin-x64": 0.1.26
+    "@napi-rs/canvas-linux-arm-gnueabihf": 0.1.26
+    "@napi-rs/canvas-linux-arm64-gnu": 0.1.26
+    "@napi-rs/canvas-linux-arm64-musl": 0.1.26
+    "@napi-rs/canvas-linux-x64-gnu": 0.1.26
+    "@napi-rs/canvas-linux-x64-musl": 0.1.26
+    "@napi-rs/canvas-win32-x64-msvc": 0.1.26
   dependenciesMeta:
     "@napi-rs/canvas-android-arm64":
       optional: true
@@ -2127,7 +2127,7 @@ __metadata:
       optional: true
     "@napi-rs/canvas-win32-x64-msvc":
       optional: true
-  checksum: d8d2548b2d73a22bc3c7cfa2459d89d15a1d115d08c0d96833063b851a0d960840c08aa11f6a448ea0bfef5fc40bc66908982aad4cd402679eee25178b29403f
+  checksum: e48e162cb51914cc6f0cc261ae1f93be630aa40542ab7554bb1e191063785193198cacfe2f430a80434d3883fb20eac20fc278b88d30ee7bc3b0663e1eeb4a2e
   languageName: node
   linkType: hard
 
@@ -2159,33 +2159,26 @@ __metadata:
   linkType: hard
 
 "@npmcli/fs@npm:^2.1.0":
-  version: 2.1.1
-  resolution: "@npmcli/fs@npm:2.1.1"
+  version: 2.1.2
+  resolution: "@npmcli/fs@npm:2.1.2"
   dependencies:
     "@gar/promisify": ^1.1.3
     semver: ^7.3.5
-  checksum: 4944a0545d38d3e6e29780eeb3cd4be6059c1e9627509d2c9ced635c53b852d28b37cdc615a2adf815b51ab8673adb6507e370401a20a7e90c8a6dc4fac02389
+  checksum: 405074965e72d4c9d728931b64d2d38e6ea12066d4fad651ac253d175e413c06fe4350970c783db0d749181da8fe49c42d3880bd1cbc12cd68e3a7964d820225
   languageName: node
   linkType: hard
 
 "@npmcli/move-file@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@npmcli/move-file@npm:2.0.0"
+  version: 2.0.1
+  resolution: "@npmcli/move-file@npm:2.0.1"
   dependencies:
     mkdirp: ^1.0.4
     rimraf: ^3.0.2
-  checksum: 1388777b507b0c592d53f41b9d182e1a8de7763bc625fc07999b8edbc22325f074e5b3ec90af79c89d6987fdb2325bc66d59f483258543c14a43661621f841b0
+  checksum: 52dc02259d98da517fae4cb3a0a3850227bdae4939dda1980b788a7670636ca2b4a01b58df03dd5f65c1e3cb70c50fa8ce5762b582b3f499ec30ee5ce1fd9380
   languageName: node
   linkType: hard
 
-"@sapphire/async-queue@npm:^1.3.2":
-  version: 1.4.0
-  resolution: "@sapphire/async-queue@npm:1.4.0"
-  checksum: 1361898e82aceee4189dd4bd3d2516f560ed15c3fb048a51e9df26f3e506c5935ef87160e4fdbd15facb8c2f2417cd896ee92c14f784aaf4d3ae96d0b21fbddf
-  languageName: node
-  linkType: hard
-
-"@sapphire/async-queue@npm:^1.5.0":
+"@sapphire/async-queue@npm:^1.3.2, @sapphire/async-queue@npm:^1.5.0":
   version: 1.5.0
   resolution: "@sapphire/async-queue@npm:1.5.0"
   checksum: 983dbd1fd1b1798496e5edb6a0db7e4d90015160e1028f20475eab0a92625513f1e8d938bc0305811a9cec461c94e01b1e4191615ff03ba49356f568f3255250
@@ -2202,9 +2195,9 @@ __metadata:
   linkType: hard
 
 "@sapphire/discord-utilities@npm:^2.11.2, @sapphire/discord-utilities@npm:^2.11.5":
-  version: 2.11.5
-  resolution: "@sapphire/discord-utilities@npm:2.11.5"
-  checksum: 5a507d845372f51012486d5bb6ec82fa4ac7e305b49d336517539d05267f82603ce4c0add3d7903afd19f0046efc6986f1837c041d0ec1edecd77cad48d27061
+  version: 2.11.6
+  resolution: "@sapphire/discord-utilities@npm:2.11.6"
+  checksum: aaabbb3558fa9255ab7fd874c6dba845caa6b5b2cbfccc96c6365d828888fc50b95c4fc9cb5f4aa6a7c904d7d9a95e61b80018a90e55bcc5d3779f2fb57926f1
   languageName: node
   linkType: hard
 
@@ -2261,13 +2254,13 @@ __metadata:
   linkType: hard
 
 "@sapphire/pieces@npm:^3.3.4":
-  version: 3.5.0
-  resolution: "@sapphire/pieces@npm:3.5.0"
+  version: 3.5.1
+  resolution: "@sapphire/pieces@npm:3.5.1"
   dependencies:
     "@discordjs/collection": ^1.0.1
-    "@sapphire/utilities": ^3.9.0
+    "@sapphire/utilities": ^3.9.2
     tslib: ^2.4.0
-  checksum: e38e8f58931f2b497e0ba5209851de0f83290512410f36f10c01f0abb1e092a7e4005965c0a1a817b1e5ce56995a901c8bfabd2bc1cddc9b5d59281358fe7eed
+  checksum: 200ff646f7e49d542f16779587ea373f9a7a032686ecc0fdf5948e185d009f2cd365dfb6d77793daaad9c8f97bc2d0932dad46cee04a6b4483f0cb32dd971760
   languageName: node
   linkType: hard
 
@@ -2372,16 +2365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:^1.7.4, @sapphire/time-utilities@npm:^1.7.5":
-  version: 1.7.5
-  resolution: "@sapphire/time-utilities@npm:1.7.5"
-  dependencies:
-    "@sapphire/utilities": ^3.7.0
-  checksum: a83f505ff0e5eac7b8b316c7fa207f52ae2c07dd223f651d7dcb3f9a3e61b86b6168dac746455d1d1a2a4732d4865ab7526332f3f463db31048d8b1e5ba9d6cb
-  languageName: node
-  linkType: hard
-
-"@sapphire/time-utilities@npm:^1.7.6":
+"@sapphire/time-utilities@npm:^1.7.4, @sapphire/time-utilities@npm:^1.7.5, @sapphire/time-utilities@npm:^1.7.6":
   version: 1.7.6
   resolution: "@sapphire/time-utilities@npm:1.7.6"
   dependencies:
@@ -2411,14 +2395,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/utilities@npm:^3.6.2, @sapphire/utilities@npm:^3.7.0, @sapphire/utilities@npm:^3.9.0":
-  version: 3.9.0
-  resolution: "@sapphire/utilities@npm:3.9.0"
-  checksum: 2d8fdf173abc39d7f8bdeb593daebe8b1e2fb71ffa91951cb4ef57845eec45938bfd1d4f5db2e78a0b9ab212c0d033a4fbefcf6335a28afb8a1cea7f44926160
-  languageName: node
-  linkType: hard
-
-"@sapphire/utilities@npm:^3.9.2":
+"@sapphire/utilities@npm:^3.6.2, @sapphire/utilities@npm:^3.7.0, @sapphire/utilities@npm:^3.9.0, @sapphire/utilities@npm:^3.9.2":
   version: 3.9.2
   resolution: "@sapphire/utilities@npm:3.9.2"
   checksum: eeef33b03b802e931ada752b8c335cc8bde4017f8029b577b0247e3f3d2b57bf5f1936b2c8c29aef5e2c6975d9b162363e4c5c434c4fead0bba74253d067b4d9
@@ -2794,9 +2771,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:>=12, @types/node@npm:^18.0.6":
-  version: 18.7.3
-  resolution: "@types/node@npm:18.7.3"
-  checksum: f51ed436a112235ac068d739b4823090a37b869cc186b64dd5c250dd285139c286990fcbeff2fb3ecba5d605fa885de4275247d332e5b96eafdfbb1da62e3ced
+  version: 18.7.8
+  resolution: "@types/node@npm:18.7.8"
+  checksum: e0125efefa896083c05f549d93166109959ffdd68cb626aad0d660c0ce9de888fe405b4763b4a3c3e0968560409c272413e0ad07204522543c688e162a617ecb
   languageName: node
   linkType: hard
 
@@ -3186,9 +3163,9 @@ __metadata:
   linkType: hard
 
 "app-root-path@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "app-root-path@npm:3.0.0"
-  checksum: ff91a24db2b55070f6b3e22e72ce8fe8ea847e19eb8a3cbb267f9e9ac2a8372db65114dd6798a4ed7897a6f475b90a49330b3e53bf199d47e6abb5c5279aa1d7
+  version: 3.1.0
+  resolution: "app-root-path@npm:3.1.0"
+  checksum: e3db3957aee197143a0f6c75e39fe89b19e7244f28b4f2944f7276a9c526d2a7ab2d115b4b2d70a51a65a9a3ca17506690e5b36f75a068a7e5a13f8c092389ba
   languageName: node
   linkType: hard
 
@@ -3803,8 +3780,8 @@ __metadata:
   linkType: hard
 
 "cacache@npm:^16.1.0":
-  version: 16.1.1
-  resolution: "cacache@npm:16.1.1"
+  version: 16.1.2
+  resolution: "cacache@npm:16.1.2"
   dependencies:
     "@npmcli/fs": ^2.1.0
     "@npmcli/move-file": ^2.0.0
@@ -3824,7 +3801,7 @@ __metadata:
     ssri: ^9.0.0
     tar: ^6.1.11
     unique-filename: ^1.1.1
-  checksum: 488524617008b793f0249b0c4ea2c330c710ca997921376e15650cc2415a8054491ae2dee9f01382c2015602c0641f3f977faf2fa7361aa33d2637dcfb03907a
+  checksum: defe1d6f557ddda178204cac111990da27e8a60ed276fcd608dad7109cc1936e7dcd57d7263d22cdb06a80e7ceb76ab5eb05133c7c7f886abf1d870d722abd6c
   languageName: node
   linkType: hard
 
@@ -3895,9 +3872,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001370":
-  version: 1.0.30001375
-  resolution: "caniuse-lite@npm:1.0.30001375"
-  checksum: 6ed9cf7a3f80f5880cb021105864b869dddfdda8490559aa623e77feeca5ce8958a3b7c1cf37322e519176dcb488c99e6358b8c2de2aa4a0e08846ac122c4e75
+  version: 1.0.30001380
+  resolution: "caniuse-lite@npm:1.0.30001380"
+  checksum: a106a63dfc6f49271bff16820cda81ca87c0afa7bd0a7b542e31cec250bca8b4d29ec2daff5ac1e4d9ee58b9edef9ee6c1fb852ebd371a794f5c67d36184ede6
   languageName: node
   linkType: hard
 
@@ -5021,9 +4998,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.202":
-  version: 1.4.219
-  resolution: "electron-to-chromium@npm:1.4.219"
-  checksum: c743284c73a1c01fb845909d59fdbe86c8c3c0053a8c37a3c7e98521220434d28c2c5a3f540a154033f62477e2df3d85657ecec11a44c2c648879008af84378c
+  version: 1.4.225
+  resolution: "electron-to-chromium@npm:1.4.225"
+  checksum: 54b5c5550e33ce5df1d2ab71543b9dc24e4dd55dc4650b29cc19b2911b932b072317e662ce3236c500a498ad69e90d2ceebe2433a772e53a337e97bd53cc7dc9
   languageName: node
   linkType: hard
 
@@ -5668,9 +5645,9 @@ __metadata:
   linkType: hard
 
 "flatted@npm:^3.1.0":
-  version: 3.2.6
-  resolution: "flatted@npm:3.2.6"
-  checksum: 33b87aa88dfa40ca6ee31d7df61712bbbad3d3c05c132c23e59b9b61d34631b337a18ff2b8dc5553acdc871ec72b741e485f78969cf006124a3f57174de29a0e
+  version: 3.2.7
+  resolution: "flatted@npm:3.2.7"
+  checksum: 427633049d55bdb80201c68f7eb1cbd533e03eac541f97d3aecab8c5526f12a20ccecaeede08b57503e772c769e7f8680b37e8d482d1e5f8d7e2194687f9ea35
   languageName: node
   linkType: hard
 
@@ -6308,11 +6285,11 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^21.8.13":
-  version: 21.9.0
-  resolution: "i18next@npm:21.9.0"
+  version: 21.9.1
+  resolution: "i18next@npm:21.9.1"
   dependencies:
     "@babel/runtime": ^7.17.2
-  checksum: b3d2f06cdecefd8e7d25a5961f6a6d26e7fb08aeb35c9cb548d08fd8acf809ec977052a1ba3a01a2da63cff6c8484829c26aa3ff627a803f8f2d5a38de923469
+  checksum: 1bc59c61fbb27385841f76436c7dd60e9f42a3fb326797db44a65dd165c489420e549b5370e3de75b85f8d61239f4869fc9fbcf63deae5f40ee606bc04916e6d
   languageName: node
   linkType: hard
 
@@ -7680,9 +7657,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^7.7.1":
-  version: 7.13.2
-  resolution: "lru-cache@npm:7.13.2"
-  checksum: dfed24e52bae95edf490d0f28f4f14552319ac7e7dc37ae0b84a72e084949233821b33227271abe81d8361ac079810f9d171a706f316cfdeda135012e4311015
+  version: 7.14.0
+  resolution: "lru-cache@npm:7.14.0"
+  checksum: efdd329f2c1bb790b71d497c6c59272e6bc2d7dd060ba55fc136becd3dd31fc8346edb446275504d94cb60d3c8385dbf5267b79b23789e409b2bdf302d13f0d7
   languageName: node
   linkType: hard
 
@@ -7719,8 +7696,8 @@ __metadata:
   linkType: hard
 
 "make-fetch-happen@npm:^10.0.3":
-  version: 10.2.0
-  resolution: "make-fetch-happen@npm:10.2.0"
+  version: 10.2.1
+  resolution: "make-fetch-happen@npm:10.2.1"
   dependencies:
     agentkeepalive: ^4.2.1
     cacache: ^16.1.0
@@ -7738,7 +7715,7 @@ __metadata:
     promise-retry: ^2.0.1
     socks-proxy-agent: ^7.0.0
     ssri: ^9.0.0
-  checksum: 2f6c294179972f56fab40fd8618f07841e06550692bb78f6da16e7afaa9dca78c345b08cf44a77a8907ef3948e4dc77e93eb7492b8381f1217d7ac057a7522f8
+  checksum: 2332eb9a8ec96f1ffeeea56ccefabcb4193693597b132cd110734d50f2928842e22b84cfa1508e921b8385cdfd06dda9ad68645fed62b50fff629a580f5fb72c
   languageName: node
   linkType: hard
 
@@ -7951,8 +7928,8 @@ __metadata:
   linkType: hard
 
 "minipass-fetch@npm:^2.0.3":
-  version: 2.1.0
-  resolution: "minipass-fetch@npm:2.1.0"
+  version: 2.1.1
+  resolution: "minipass-fetch@npm:2.1.1"
   dependencies:
     encoding: ^0.1.13
     minipass: ^3.1.6
@@ -7961,7 +7938,7 @@ __metadata:
   dependenciesMeta:
     encoding:
       optional: true
-  checksum: 1334732859a3f7959ed22589bafd9c40384b885aebb5932328071c33f86b3eb181d54c86919675d1825ab5f1c8e4f328878c863873258d113c29d79a4b0c9c9f
+  checksum: 1aae0c2240b2f65309e046615e5a38cfd56a16ed2d334932aa195d183a0a2e1673a242a3b257bbb64892dee2e75d0233e8d2c3ad160928b6a2e5609efe6daad8
   languageName: node
   linkType: hard
 
@@ -8400,14 +8377,14 @@ __metadata:
   linkType: hard
 
 "object.assign@npm:^4.1.0, object.assign@npm:^4.1.2":
-  version: 4.1.3
-  resolution: "object.assign@npm:4.1.3"
+  version: 4.1.4
+  resolution: "object.assign@npm:4.1.4"
   dependencies:
     call-bind: ^1.0.2
     define-properties: ^1.1.4
     has-symbols: ^1.0.3
     object-keys: ^1.1.1
-  checksum: fe87c8acd60e0d7140e1eae8886804e7497bf6a019bae715084083c2abd1760bd5aa9c3f0e5b02c82ca5cc33b641dc908c42c86c6f7d6dfd9f083a7baa95d318
+  checksum: 76cab513a5999acbfe0ff355f15a6a125e71805fcf53de4e9d4e082e1989bdb81d1e329291e1e4e0ae7719f0e4ef80e88fb2d367ae60500d79d25a6224ac8864
   languageName: node
   linkType: hard
 
@@ -9622,7 +9599,7 @@ __metadata:
     "@discordjs/collection": ^1.0.1
     "@influxdata/influxdb-client": ^1.28.0
     "@influxdata/influxdb-client-apis": ^1.28.0
-    "@napi-rs/canvas": ^0.1.28
+    "@napi-rs/canvas": 0.1.26
     "@sapphire/async-queue": ^1.5.0
     "@sapphire/decorators": ^4.3.8
     "@sapphire/discord.js-utilities": ^4.12.0
@@ -10917,12 +10894,12 @@ __metadata:
   linkType: hard
 
 "write-file-atomic@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "write-file-atomic@npm:4.0.1"
+  version: 4.0.2
+  resolution: "write-file-atomic@npm:4.0.2"
   dependencies:
     imurmurhash: ^0.1.4
     signal-exit: ^3.0.7
-  checksum: 8f780232533ca6223c63c9b9c01c4386ca8c625ebe5017a9ed17d037aec19462ae17109e0aa155bff5966ee4ae7a27b67a99f55caf3f32ffd84155e9da3929fc
+  checksum: 5da60bd4eeeb935eec97ead3df6e28e5917a6bd317478e4a85a5285e8480b8ed96032bbcc6ecd07b236142a24f3ca871c924ec4a6575e623ec1b11bf8c1c253c
   languageName: node
   linkType: hard
 

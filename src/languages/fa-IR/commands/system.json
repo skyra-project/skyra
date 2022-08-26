@@ -62,10 +62,10 @@
 		"extendedHelp": "",
 		"reminder": ""
 	},
-	"supportDescription": "Muestra las instrucciones de soporte",
-	"supportEmbedDescription": "¡Entonces probablemente deberías unirte a [Skyra's Lounge](https://join.skyra.pw)! ¡Aquí, puedes recibir apoyo de los desarrolladores y otros miembros de la comunidad!",
-	"supportEmbedTitle": "¿Estás buscando ayuda, {{username}}?",
+	"supportDescription": "",
+	"supportEmbedDescription": "",
+	"supportEmbedTitle": "",
 	"supportExtended": {
-		"extendedHelp": "Este comando te da un enlace a *Skyra's Lounge*, el mejor lugar para todo lo relacionado conmigo."
+		"extendedHelp": ""
 	}
 }

@@ -2614,15 +2614,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/star-wars-api@npm:^2.0.32":
-  version: 2.0.32
-  resolution: "@skyra/star-wars-api@npm:2.0.32"
-  dependencies:
-    graphql: ^15.8.0
-  checksum: 1f5cffd7e12b6130a017325d257c2699bf3fb63e57e506d0fa4be77a1248f1ae46707f745c22cf039299d88b05e974268bb3b10e2e41cedcb2ecf51c72271309
-  languageName: node
-  linkType: hard
-
 "@skyra/tags@npm:^1.1.3":
   version: 1.1.3
   resolution: "@skyra/tags@npm:1.1.3"
@@ -9764,7 +9755,6 @@ __metadata:
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
     "@skyra/saelem": ^3.0.34
-    "@skyra/star-wars-api": ^2.0.32
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.2

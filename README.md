@@ -24,7 +24,6 @@
 -   [`InfluxDB`]: Metrics platform.
 -   [`Redis`]: Caching for [`Saelem`].
 -   [`Saelem`]: Horoscope API.
--   [`Star-Wars-Api`]: Star Wars API.
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -151,7 +150,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`postgresql`]: https://www.postgresql.org/download/
 [`redis`]: https://redis.io
 [`saelem`]: https://github.com/skyra-project/saelem
-[`star-wars-api`]: https://github.com/skyra-project/star-wars-api
 [bitcoin]: bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
 [digitalocean]: https://www.digitalocean.com/

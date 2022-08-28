@@ -8,6 +8,7 @@
 				"matchPackagePatterns": [
 					"typeorm",
 					"tslib",
+					"typescript",
 					"discord-api-types",
 					"@discordjs/builders",
 					"@sapphire/decorators",

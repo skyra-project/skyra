@@ -9,6 +9,7 @@
 					"typeorm",
 					"tslib",
 					"typescript",
+					"@napi-rs/canvas",
 					"discord-api-types",
 					"@discordjs/builders",
 					"@sapphire/decorators",

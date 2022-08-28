@@ -2,7 +2,6 @@ export * from './ArgumentTypes';
 export * from './Igdb';
 export * from './Internals';
 export * from './Reddit';
-export * from './StarWars';
 export * from './Suggestion';
 export * from './Tmdb';
 export * from './Twitch';

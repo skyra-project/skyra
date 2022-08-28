@@ -22,7 +22,7 @@ services:
   influx:
     command: 'influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt'
     container_name: influxdb
-    image: 'influxdb:2.3-alpine'
+    image: 'influxdb:2.4-alpine'
     networks:
       - skyra
     ports:

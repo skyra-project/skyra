@@ -2,7 +2,7 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -132,7 +132,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
+				.setColor(getColor(message))
 				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});

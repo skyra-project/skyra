@@ -1,4 +1,4 @@
-import { GuildSettings, SettingsManager, UserRepository } from '#lib/database';
+import { GuildSettings, SettingsManager } from '#lib/database';
 import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
@@ -10,19 +10,12 @@ import { Message, WebhookClient } from 'discord.js';
 import { readSettings } from './database/settings/functions';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 import { WorkerManager } from './moderation/workers/WorkerManager';
-import { Leaderboard } from './util/Leaderboard';
 import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
 
 export class SkyraClient extends SapphireClient {
 	@Enumerable(false)
 	public dev = process.env.NODE_ENV !== 'production';
-
-	/**
-	 * The loaded Leaderboard singleton instance
-	 */
-	@Enumerable(false)
-	public leaderboard = new Leaderboard();
 
 	/**
 	 * The Schedule manager
@@ -81,7 +74,6 @@ export class SkyraClient extends SapphireClient {
 		this.guildMemberFetchQueue.destroy();
 		this.invites.destroy();
 		this.schedules.destroy();
-		UserRepository.destroy();
 		return super.destroy();
 	}
 

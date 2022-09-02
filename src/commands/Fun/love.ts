@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
+import { getColor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -36,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 			`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 		].join('\n');
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setAuthor({ name: '❤ Love Meter ❤', iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
 			.setDescription(description);

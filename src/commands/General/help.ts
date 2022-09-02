@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { HelpPaginatedMessage } from '#lib/structures/HelpPaginatedMessage';
 import { isGuildMessage, isPrivateMessage } from '#utils/common';
+import { getColor } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { Args, container, fromAsync } from '@sapphire/framework';
@@ -48,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
 		if (command.success) {
-			const embed = await this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context));
+			const embed = this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context));
 			return send(message, { embeds: [embed] });
 		}
 
@@ -120,7 +121,7 @@ export class UserCommand extends SkyraCommand {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
 		const display = new HelpPaginatedMessage(language, {
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+			template: new MessageEmbed().setColor(getColor(message))
 		}).setSelectMenuOptions((pageIndex) => ({ label: commandsByCategory.at(pageIndex - 1)![0].fullCategory!.join(' → ') }));
 
 		for (const [category, commands] of commandsByCategory) {
@@ -135,7 +136,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	private async buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
+	private buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
 		const builderData = args.t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
@@ -156,7 +157,7 @@ export class UserCommand extends SkyraCommand {
 		});
 		const user = this.container.client.user!;
 		return new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png' }) })
 			.setTimestamp()
 			.setFooter({ text: data.footer })

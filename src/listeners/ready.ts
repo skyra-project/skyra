@@ -1,5 +1,3 @@
-import { Slotmachine } from '#lib/games/Slotmachine';
-import { WheelOfFortune } from '#lib/games/WheelOfFortune';
 import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
@@ -13,13 +11,7 @@ export class UserListener extends Listener {
 
 	public async run() {
 		try {
-			await Promise.all([
-				// Initialize Slotmachine data
-				Slotmachine.init().catch((error) => this.container.logger.fatal(error)),
-				// Initialize WheelOfFortune data
-				WheelOfFortune.init().catch((error) => this.container.logger.fatal(error)),
-				this.initAnalytics()
-			]);
+			await this.initAnalytics();
 
 			// Setup the stat updating task
 			await this.initPostStatsTask().catch((error) => this.container.logger.fatal(error));
@@ -97,7 +89,7 @@ ${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
 ${line11} ${pad}[${success}] Moderation
-${line12} ${pad}[${success}] Social & Leaderboards
+${line12}
 ${line13}
 ${line14}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()

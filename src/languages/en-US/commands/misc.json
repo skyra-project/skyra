@@ -201,6 +201,13 @@
 			"discordapp"
 		]
 	},
+	"remindmeCreate": "A reminder with ID `{{id}}` has been created.",
+	"remindmeCreateNoDescription": "Something, you did not tell me what.",
+	"remindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{remainingDuration, duration}}** has been successfully deleted.",
+	"remindmeListEmpty": "You do not have any active reminder",
+	"remindmeShowFooter": "ID: {{id}} | Ends at:",
+	"remindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
+	"remindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [

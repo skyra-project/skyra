@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
@@ -28,7 +28,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { hits } = await this.fetchAPI(gameName);
 		if (!hits.length) this.error(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, args.t, hits);
+		const display = this.buildDisplay(message, args.t, hits);
 		await display.run(response, message.author);
 		return response;
 	}
@@ -59,10 +59,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: Message, t: TFunction, entries: EShopHit[]) {
+	private buildDisplay(message: Message, t: TFunction, entries: EShopHit[]) {
 		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+			template: new MessageEmbed().setColor(getColor(message))
 		}).setSelectMenuOptions((pageIndex) => ({ label: entries[pageIndex - 1].title }));
 
 		for (const game of entries) {

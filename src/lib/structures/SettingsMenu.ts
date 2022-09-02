@@ -7,7 +7,7 @@ import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
@@ -108,7 +108,7 @@ export class SettingsMenu {
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
-			.setColor(await container.db.fetchColor(this.message))
+			.setColor(getColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
 			.setFooter({ text: parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '' })
 			.setTimestamp();

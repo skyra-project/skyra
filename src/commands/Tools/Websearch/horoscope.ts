@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { fetchSaelem, getHoroscope } from '#utils/APIs/Saelem';
 import { Emojis } from '#utils/constants';
-import { createPick } from '#utils/util';
+import { createPick, getColor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setDescription(prediction)
 			.setTitle(titles.dailyHoroscope)
 			.setTimestamp(new Date(date))

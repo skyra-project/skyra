@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 
 		const result = await this.fetchAPI(fromCurrency, toCurrencies);
 
-		const embed = await this.buildEmbed(message, args.t, result, fromCurrency, amount);
+		const embed = this.buildEmbed(message, args.t, result, fromCurrency, amount);
 		return send(message, { embeds: [embed] });
 	}
 
@@ -55,14 +55,14 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	private async buildEmbed(message: GuildMessage, t: TFunction, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
+	private buildEmbed(message: GuildMessage, t: TFunction, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
 		const worths: string[] = [];
 		for (const [currency, toAmount] of Object.entries(result)) {
 			worths.push(`**${roundNumber(fromAmount * toAmount, 2)}** ${currency}`);
 		}
 
 		return new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setDescription(t(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}

@@ -26,7 +26,6 @@ import type { TFunction } from 'i18next';
 import type { PathLike } from 'node:fs';
 import { FileHandle, readFile } from 'node:fs/promises';
 import { BrandingColors, ZeroWidthSpace } from './constants';
-import type { LeaderboardUser } from './Leaderboard';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -87,42 +86,6 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
 	return ONE_TO_TEN.get(level);
-}
-
-export interface Payload {
-	avatar: string | null;
-	username: string | null;
-	discriminator: string | null;
-	points: number;
-	position: number;
-}
-
-export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [string, LeaderboardUser][]) {
-	const members = guild.members.cache;
-	const payload: Payload[] = [];
-	for (const [id, element] of results) {
-		const member = members.get(id);
-		if (member === undefined) {
-			payload.push({
-				avatar: null,
-				username: null,
-				discriminator: null,
-				points: element.points,
-				position: element.position
-			});
-		} else {
-			const { user } = member;
-			payload.push({
-				avatar: user.avatar,
-				username: user.username,
-				discriminator: user.discriminator,
-				points: element.points,
-				position: element.position
-			});
-		}
-	}
-
-	return payload;
 }
 
 export async function loadImageFromUrl(url: string | URL): Promise<Image> {
@@ -469,6 +432,10 @@ export function sanitizeInput(input: string): string {
 			return isLetterOrDigit(code) || isWhiteSpace(code) ? c : '';
 		})
 		.join('');
+}
+
+export function getColor(message: Message) {
+	return message.member?.displayColor ?? BrandingColors.Primary;
 }
 
 export interface UtilOneToTenEntry {

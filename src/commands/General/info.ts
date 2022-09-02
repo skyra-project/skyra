@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKeys/keys/commands/General';
 import { SkyraArgs, SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
+import { getColor } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { version as sapphireVersion } from '@sapphire/framework';
@@ -19,7 +20,7 @@ import { cpus, uptime, type CpuInfo } from 'os';
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
-		const embed = await this.buildEmbed(message, args);
+		const embed = this.buildEmbed(message, args);
 		const components = this.buildComponents(args);
 
 		return send(message, {
@@ -28,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	private async buildEmbed(message: Message, args: SkyraCommand.Args) {
+	private buildEmbed(message: Message, args: SkyraCommand.Args) {
 		const titles = args.t(LanguageKeys.Commands.General.InfoTitles);
 		const fields = args.t(LanguageKeys.Commands.General.InfoFields, {
 			stats: this.generalStatistics,
@@ -37,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		return new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setAuthor({
 				name: this.container.client.user!.tag,
 				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

@@ -6,7 +6,6 @@ import type { AnalyticsData, ColorHandler, InviteCodeValidEntry, InviteStore, Sc
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { O } from '#utils/constants';
 import type { EmojiObject } from '#utils/functions';
-import type { Leaderboard } from '#utils/Leaderboard';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
@@ -25,7 +24,6 @@ declare module 'discord.js' {
 		readonly analytics: AnalyticsData | null;
 		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
 		readonly invites: InviteStore;
-		readonly leaderboard: Leaderboard;
 		readonly llrCollectors: Set<LongLivingReactionCollector>;
 		readonly schedules: ScheduleManager;
 		readonly twitch: Twitch;

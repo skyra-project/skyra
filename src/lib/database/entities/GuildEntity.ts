@@ -655,38 +655,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('integer', { name: 'no-mention-spam.time-period', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialEnabled })
-	@Column('boolean', { name: 'social.enabled', default: true })
-	public socialEnabled = true;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveRole })
-	@Column('varchar', { name: 'social.achieve-role', nullable: true })
-	public socialAchieveRole?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveLevel })
-	@Column('varchar', { name: 'social.achieve-level', nullable: true })
-	public socialAchieveLevel?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveChannel, type: 'textchannel' })
-	@Column('varchar', { name: 'social.achieve-channel', nullable: true, length: 19 })
-	public socialAchieveChannel?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveMultiple, minimum: 1 })
-	@Column('smallint', { name: 'social.achieve-multiple', default: 1 })
-	public socialAchieveMultiple = 1;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, minimum: 0, maximum: 5 })
-	@Column('numeric', { name: 'social.multiplier', precision: 53, default: 1 })
-	public socialMultiplier = 1;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoredChannels, type: 'textchannel' })
-	@Column('varchar', { name: 'social.ignored-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public socialIgnoredChannels: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoredRoles, type: 'role' })
-	@Column('varchar', { name: 'social.ignored-roles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public socialIgnoredRoles: string[] = [];
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
 	public suggestionsChannel?: string | null;

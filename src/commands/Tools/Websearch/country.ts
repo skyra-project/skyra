@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { formatNumber } from '#utils/functions';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch } from '@sapphire/fetch';
 import { Message, MessageEmbed } from 'discord.js';
@@ -24,7 +24,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const countries = await this.fetchAPI(countryName);
 		if (countries.length === 0) this.error(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, args.t, countries);
+		const display = this.buildDisplay(message, args.t, countries);
 		await display.run(response, message.author);
 		return response;
 	}
@@ -37,10 +37,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
+	private buildDisplay(message: Message, t: TFunction, countries: CountryResultOk) {
 		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(await this.container.db.fetchColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(getColor(message)) });
 
 		for (const country of countries) {
 			display.addPageEmbed((embed) =>

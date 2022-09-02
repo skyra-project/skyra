@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getImageUrl } from '#utils/util';
+import { getColor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -15,9 +15,9 @@ import { Message, MessageEmbed } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message) {
-		const [color, image] = await Promise.all([this.container.db.fetchColor(message), this.fetchImage()]);
+		const image = await this.fetchImage();
 
-		const embed = new MessageEmbed().setColor(color).setImage(image!).setTimestamp();
+		const embed = new MessageEmbed().setColor(getColor(message)).setImage(image!).setTimestamp();
 		return send(message, { embeds: [embed] });
 	}
 

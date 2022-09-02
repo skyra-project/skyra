@@ -6,7 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import type { Collection } from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
@@ -89,7 +89,7 @@ export class UserCommand extends SkyraCommand {
 		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
+				.setColor(getColor(message))
 				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});

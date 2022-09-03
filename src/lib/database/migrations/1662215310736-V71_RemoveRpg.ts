@@ -2,13 +2,14 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class V71RemoveRpg1662215310736 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.dropTable('rpg_battle');
-		await queryRunner.dropTable('rpg_class');
-		await queryRunner.dropTable('rpg_guild');
-		await queryRunner.dropTable('rpg_guild_rank');
-		await queryRunner.dropTable('rpg_item');
-		await queryRunner.dropTable('rpg_user');
-		await queryRunner.dropTable('rpg_user_item');
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user_item CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_battle CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_class CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_guild CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_guild_rank CASCADE;`);
+		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_item CASCADE;`);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

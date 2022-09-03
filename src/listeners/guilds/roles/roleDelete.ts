@@ -20,7 +20,6 @@ export class UserListener extends Listener {
 			settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets.filter((sr) => Boolean(sr.roles.length));
 
 			settings.reactionRoles = settings.reactionRoles.filter((rr) => rr.role !== role.id);
-			settings.rolesAuto = settings.rolesAuto.filter((ra) => ra.id !== role.id);
 			settings.rolesModerator = settings.rolesModerator.filter((rm) => rm !== role.id);
 			settings.rolesAdmin = settings.rolesAdmin.filter((rm) => rm !== role.id);
 			settings.rolesPublic = settings.rolesPublic.filter((rm) => rm !== role.id);

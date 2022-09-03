@@ -14,7 +14,6 @@ import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utili
 import type { Image } from 'canvas-constructor/napi-rs';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 import type { TaskErrorPayload, TwitchEventSubEvent, TwitchEventSubOnlineEvent } from './definitions';
-import type { Scope } from './definitions/ArgumentTypes';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
 
@@ -73,7 +72,6 @@ declare module '@sapphire/framework' {
 		range: number[];
 		reset: true;
 		roleName: Role;
-		scope: Scope;
 		shinyWager: number;
 		snowflake: Snowflake;
 		store: Store<Piece>;

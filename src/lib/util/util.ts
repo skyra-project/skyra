@@ -3,9 +3,7 @@ import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
-import { DiscordSnowflake } from '@sapphire/snowflake';
-import { Time } from '@sapphire/time-utilities';
-import { isNullishOrEmpty, isNumber, Nullish, parseURL } from '@sapphire/utilities';
+import { isNullishOrEmpty, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
@@ -62,23 +60,6 @@ export const MEDIA_EXTENSION = /\.(bmp|jpe?g|png|gifv?|web[pm]|wav|mp[34]|ogg)$/
 
 export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;
-}
-
-export function showSeconds(duration: number): string {
-	if (!isNumber(duration)) return '00:00';
-	const seconds = Math.floor(duration / Time.Second) % 60;
-	const minutes = Math.floor(duration / Time.Minute) % 60;
-	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-	if (duration >= Time.Hour) {
-		const hours = Math.floor(duration / Time.Hour);
-		output = `${hours.toString().padStart(2, '0')}:${output}`;
-	}
-
-	return output;
-}
-
-export function snowflakeAge(snowflake: string | bigint) {
-	return Math.max(Date.now() - DiscordSnowflake.timestampFrom(snowflake), 0);
 }
 
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {

@@ -229,9 +229,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'roles.admin', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public rolesAdmin: string[] = [];
 
-	@Column('jsonb', { name: 'roles.auto', default: () => "'[]'::JSONB" })
-	public rolesAuto: RolesAuto[] = [];
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitial, type: 'role' })
 	@Column('varchar', { name: 'roles.initial', nullable: true, length: 19 })
 	public rolesInitial?: string | null;
@@ -785,12 +782,6 @@ export interface ReactionRole {
 	message: string | null;
 
 	role: string;
-}
-
-export interface RolesAuto {
-	id: string;
-
-	points: number;
 }
 
 export interface UniqueRoleSet {

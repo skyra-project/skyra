@@ -5,5 +5,3 @@ export const enum Emojis {
 	WinnerOne = '<:PlayerONEWin:352403997761601547>',
 	WinnerTwo = '<:PlayerTWOWin:352403997958602752>'
 }
-
-export const Reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as readonly string[];

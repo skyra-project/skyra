@@ -1,4 +1,3 @@
-export * from './ArgumentTypes';
 export * from './Igdb';
 export * from './Internals';
 export * from './Reddit';

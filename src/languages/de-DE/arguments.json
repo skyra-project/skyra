@@ -35,7 +35,7 @@
 	"channelError": "",
 	"color": "Ich konnte `{{parameter}}` nicht in einer gültigen Farbe auflösen, hier sind einige der gültigen Formate:\n\n- `#dfdfdfdfdf` (Hexadezimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"command": "Ich konnte `{{parameter}}` nicht in einen Command auflösen, bitte stelle sicher, dass du den Namen oder den Alias korrekt eingegeben hast!",
-	"commandMatch": "Ich konnte `{{parameter}}` nicht zu einem Command oder einer Kategorie zuordnen, dies sind einige der gültigen Formate:\n\n- `ping` (entspricht nur dem Ping-Command).\n- `social.*` (entspricht allen Commands in der **Social**-Kategorie).\n- `social.member management.*` (trifft alle Befehle unter **Social** > **Member Management** Unterkategorie).\n\n> **Tipp**: Wenn du `{{commandContext.commandPrefix}}hilfe überprüfst, befindet sich die Kategorie jedes Befehls oben am Embed.",
+	"commandMatch": "",
 	"dateError": "",
 	"dateFormats": "- `2016-11-24` (JJJJ-MM-TT)\n- `2016-11-24T23:56` (JJJJ-MM-DDTHH:mm)\n- `2016-11-24T23:56:12` (JJJJ-MM-DDTHH:mm:ss)\n- `2016-11-24T23:56:12.000` (JJJJ-MM-DDTHH:mm:ss.ss)\n\n> **Tipp**: Die letzten 3 Formate akzeptieren `Z` am Ende, um die Zeit als UTC zu markieren. Alternativ kannst du den Offset deiner Zeitzone eingeben, indem du `+HH:MM` hinzufügst, z.B. `+01:00`.",
 	"dateTooEarly": "",

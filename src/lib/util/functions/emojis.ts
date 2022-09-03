@@ -117,10 +117,3 @@ export function resolveEmojiId(emoji: EmojiObject | SerializedEmoji): string {
 
 	return typeof emoji === 'string' ? getEmojiId(emoji) : emoji.id ?? encodeURIComponent(emoji.name!);
 }
-
-/**
- * Compared whether the identifiers for both emojis are the same, ignoring name and animated.
- */
-export function areEmojisEqual(a: EmojiObject | SerializedEmoji, b: EmojiObject | SerializedEmoji) {
-	return resolveEmojiId(a) === resolveEmojiId(b);
-}

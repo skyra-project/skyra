@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getImageUrl } from '#utils/util';
+import { getColor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { fromAsync } from '@sapphire/framework';
@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message) {
 		const result = await fromAsync(fetch<AwsRandomCatResult>('https://aws.random.cat/meow', FetchResultTypes.JSON));
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setImage((result.success && getImageUrl(result.value.file)) || 'https://wallpapercave.com/wp/wp3021105.jpg')
 			.setTimestamp();
 		return send(message, { embeds: [embed] });

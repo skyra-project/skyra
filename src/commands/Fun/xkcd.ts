@@ -1,5 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
+import { getColor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -21,7 +22,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(`https://xkcd.com/${comicNumber}/`)

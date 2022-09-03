@@ -3,6 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ZeroWidthSpace } from '#utils/constants';
+import { getColor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -37,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
 			.setDescription(list.join('\n'));
 		return send(message, { embeds: [embed] });

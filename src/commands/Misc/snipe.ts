@@ -3,7 +3,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getSnipedMessage } from '#utils/functions';
-import { getContent, getImage } from '#utils/util';
+import { getColor, getContent, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -19,13 +19,13 @@ import { MessageEmbed } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const sniped = getSnipedMessage(message.channel);
 		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
-			.setColor(await this.container.db.fetchColor(sniped))
+			.setColor(getColor(sniped))
 			.setAuthor({ name: sniped.author.username, iconURL: sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setTimestamp(sniped.createdTimestamp);
 

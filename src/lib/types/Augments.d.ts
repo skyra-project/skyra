@@ -6,7 +6,6 @@ import type { AnalyticsData, ColorHandler, InviteCodeValidEntry, InviteStore, Sc
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { O } from '#utils/constants';
 import type { EmojiObject } from '#utils/functions';
-import type { Leaderboard } from '#utils/Leaderboard';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
@@ -15,7 +14,6 @@ import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utili
 import type { Image } from 'canvas-constructor/napi-rs';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 import type { TaskErrorPayload, TwitchEventSubEvent, TwitchEventSubOnlineEvent } from './definitions';
-import type { Scope } from './definitions/ArgumentTypes';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Utils';
 
@@ -25,7 +23,6 @@ declare module 'discord.js' {
 		readonly analytics: AnalyticsData | null;
 		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
 		readonly invites: InviteStore;
-		readonly leaderboard: Leaderboard;
 		readonly llrCollectors: Set<LongLivingReactionCollector>;
 		readonly schedules: ScheduleManager;
 		readonly twitch: Twitch;
@@ -75,7 +72,6 @@ declare module '@sapphire/framework' {
 		range: number[];
 		reset: true;
 		roleName: Role;
-		scope: Scope;
 		shinyWager: number;
 		snowflake: Snowflake;
 		store: Store<Piece>;

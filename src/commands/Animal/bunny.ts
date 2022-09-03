@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getImageUrl } from '#utils/util';
+import { getColor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -28,12 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const translations = args.t(LanguageKeys.Commands.Animal.BunnyEmbedData);
 		const source = this.getSource(bunnySource);
 
-		const embed = new MessageEmbed()
-			.setURL(imageUrl)
-			.setTitle(translations.title)
-			.setColor(await this.container.db.fetchColor(message))
-			.setImage(imageUrl)
-			.setTimestamp();
+		const embed = new MessageEmbed().setURL(imageUrl).setTitle(translations.title).setColor(getColor(message)).setImage(imageUrl).setTimestamp();
 
 		if (source) {
 			embed.setDescription(`[${translations.source}](${source})`);

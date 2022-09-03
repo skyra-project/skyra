@@ -6,8 +6,6 @@ import { join } from 'node:path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import './repositories/ClientRepository';
-import './repositories/MemberRepository';
-import './repositories/UserRepository';
 
 export const config: ConnectionOptions = {
 	type: 'postgres',

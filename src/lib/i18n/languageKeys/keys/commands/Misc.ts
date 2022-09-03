@@ -30,6 +30,15 @@ export const RandRedditExtended = T<LanguageHelpDisplayOptions>('commands/misc:r
 export const RandRedditFail = T<string>('commands/misc:randRedditFail');
 export const RandRedditInvalidArgument = T<string>('commands/misc:randRedditInvalidArgument');
 export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commands/misc:randRedditMessage');
+export const RemindMeCreate = FT<{ id: string }, string>('commands/misc:remindmeCreate');
+export const RemindMeCreateNoDescription = T('commands/misc:remindmeCreateNoDescription');
+export const RemindMeDelete = FT<{ remainingDuration: number; id: number }, string>('commands/misc:remindmeDelete');
+export const RemindMeDescription = T('commands/misc:remindmeDescription');
+export const RemindMeExtended = T<LanguageHelpDisplayOptions>('commands/misc:remindmeExtended');
+export const RemindMeInvalidId = T('commands/misc:remindmeInvalidId');
+export const RemindMeListEmpty = T('commands/misc:remindmeListEmpty');
+export const RemindMeNotFound = T('commands/misc:remindmeNotfound');
+export const RemindMeShowFooter = FT<{ id: number }, string>('commands/misc:remindmeShowFooter');
 export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
 	'commands/misc:shipData'
 );

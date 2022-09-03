@@ -3,9 +3,7 @@ import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
-import { DiscordSnowflake } from '@sapphire/snowflake';
-import { Time } from '@sapphire/time-utilities';
-import { isNullishOrEmpty, isNumber, Nullish, parseURL } from '@sapphire/utilities';
+import { isNullishOrEmpty, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
@@ -26,7 +24,6 @@ import type { TFunction } from 'i18next';
 import type { PathLike } from 'node:fs';
 import { FileHandle, readFile } from 'node:fs/promises';
 import { BrandingColors, ZeroWidthSpace } from './constants';
-import type { LeaderboardUser } from './Leaderboard';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -65,64 +62,11 @@ export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;
 }
 
-export function showSeconds(duration: number): string {
-	if (!isNumber(duration)) return '00:00';
-	const seconds = Math.floor(duration / Time.Second) % 60;
-	const minutes = Math.floor(duration / Time.Minute) % 60;
-	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-	if (duration >= Time.Hour) {
-		const hours = Math.floor(duration / Time.Hour);
-		output = `${hours.toString().padStart(2, '0')}:${output}`;
-	}
-
-	return output;
-}
-
-export function snowflakeAge(snowflake: string | bigint) {
-	return Math.max(Date.now() - DiscordSnowflake.timestampFrom(snowflake), 0);
-}
-
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	level |= 0;
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
 	return ONE_TO_TEN.get(level);
-}
-
-export interface Payload {
-	avatar: string | null;
-	username: string | null;
-	discriminator: string | null;
-	points: number;
-	position: number;
-}
-
-export function fetchAllLeaderBoardEntries(guild: Guild, results: readonly [string, LeaderboardUser][]) {
-	const members = guild.members.cache;
-	const payload: Payload[] = [];
-	for (const [id, element] of results) {
-		const member = members.get(id);
-		if (member === undefined) {
-			payload.push({
-				avatar: null,
-				username: null,
-				discriminator: null,
-				points: element.points,
-				position: element.position
-			});
-		} else {
-			const { user } = member;
-			payload.push({
-				avatar: user.avatar,
-				username: user.username,
-				discriminator: user.discriminator,
-				points: element.points,
-				position: element.position
-			});
-		}
-	}
-
-	return payload;
 }
 
 export async function loadImageFromUrl(url: string | URL): Promise<Image> {
@@ -469,6 +413,10 @@ export function sanitizeInput(input: string): string {
 			return isLetterOrDigit(code) || isWhiteSpace(code) ? c : '';
 		})
 		.join('');
+}
+
+export function getColor(message: Message) {
+	return message.member?.displayColor ?? BrandingColors.Primary;
 }
 
 export interface UtilOneToTenEntry {

@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
+import { getColor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
@@ -16,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 		if (message.deletable) await deleteMessage(message).catch(() => null);
 
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setImage(CdnUrls.EscapeRopeGif)
 			.setDescription(args.t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))
 			.setAuthor({

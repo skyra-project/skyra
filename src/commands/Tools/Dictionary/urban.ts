@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { cutText, toTitleCase } from '@sapphire/utilities';
@@ -25,17 +25,17 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (result.list.length === 0) this.error(LanguageKeys.Commands.Tools.UrbanNoDefinition, { parameter: query });
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = await this.buildDisplay(list, message, args.t, query);
+		const display = this.buildDisplay(list, message, args.t, query);
 
 		await display.run(response, message.author);
 		return response;
 	}
 
-	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: Message, language: TFunction, query: string) {
+	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: Message, language: TFunction, query: string) {
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
-				.setColor(await this.container.db.fetchColor(message))
+				.setColor(getColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 				.setFooter({ text: '© Urban Dictionary' })
 		});

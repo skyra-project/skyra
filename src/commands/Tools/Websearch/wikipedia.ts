@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getImageUrl } from '#utils/util';
+import { getColor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setTitle(pageInformation.title)
 			.setURL(pageUrl)
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
 			.setFooter({ text: '© Wikipedia' });

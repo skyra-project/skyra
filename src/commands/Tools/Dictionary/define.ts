@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
+import { getColor, IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -21,17 +21,14 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const result = await this.fetchApi(input);
-		const display = await this.buildDisplay(result, message, args.t);
+		const display = this.buildDisplay(result, message, args.t);
 
 		await display.run(response, message.author);
 		return response;
 	}
 
-	private async buildDisplay(results: OwlbotResultOk, message: Message, t: TFunction) {
-		const template = new MessageEmbed()
-			.setTitle(toTitleCase(results.word))
-			.setColor(await this.container.db.fetchColor(message))
-			.setFooter({ text: 'Powered by Owlbot' });
+	private buildDisplay(results: OwlbotResultOk, message: Message, t: TFunction) {
+		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(getColor(message)).setFooter({ text: 'Powered by Owlbot' });
 
 		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);
 

@@ -26,10 +26,6 @@ export function getGuildUtilities(resolvable: GuildResolvable): GuildUtilities {
 	return entry;
 }
 
-export function removeGuildUtilities(resolvable: GuildResolvable): boolean {
-	return cache.delete(resolveGuild(resolvable));
-}
-
 export const getModeration = getProperty('moderation');
 export const getSecurity = getProperty('security');
 export const getStickyRoles = getProperty('stickyRoles');

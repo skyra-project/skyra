@@ -1,7 +1,6 @@
 import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
 import { Collection } from '@discordjs/collection';
-import { Time } from '@sapphire/time-utilities';
 import type { DeepPartial } from '@sapphire/utilities';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
@@ -47,21 +46,6 @@ describe('Utils', () => {
 
 		test('GIVEN 360 degrees THEN returns 2 Pi', () => {
 			expect(utils.radians(360)).toEqual(Math.PI * 2);
-		});
-	});
-
-	describe('showSeconds', () => {
-		test('GIVEN duration of string THEN returns 00:00', () => {
-			// @ts-expect-error Testing the error case
-			expect(utils.showSeconds('I am your father')).toEqual('00:00');
-		});
-
-		test('GIVEN duration of number THEN returns seconds', () => {
-			expect(utils.showSeconds(Number(Time.Day))).toEqual('24:00:00');
-		});
-
-		test('GIVEN duration of number THEN returns seconds', () => {
-			expect(utils.showSeconds(Number(Time.Second))).toEqual('00:01');
 		});
 	});
 

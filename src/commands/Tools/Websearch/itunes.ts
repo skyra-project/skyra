@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { formatNumber } from '#utils/functions';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -21,7 +21,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const { results: entries } = await this.fetchAPI(args.t, song);
 		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, args.t, entries);
+		const display = this.buildDisplay(message, args.t, entries);
 		await display.run(response, message.author);
 		return response;
 	}
@@ -43,10 +43,10 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		}
 	}
 
-	private async buildDisplay(message: Message, t: TFunction, entries: ItunesData[]) {
+	private buildDisplay(message: Message, t: TFunction, entries: ItunesData[]) {
 		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+			template: new MessageEmbed().setColor(getColor(message))
 		}).setSelectMenuOptions((pageIndex) => ({
 			label: entries[pageIndex - 1].trackName
 		}));

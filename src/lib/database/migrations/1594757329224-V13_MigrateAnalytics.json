@@ -994,20 +994,6 @@
 		}
 	],
 	[
-		"social",
-		{
-			"category": "Social",
-			"subCategory": "Member Management"
-		}
-	],
-	[
-		"banner",
-		{
-			"category": "Social",
-			"subCategory": "Profile Management"
-		}
-	],
-	[
 		"toggledarkmode",
 		{
 			"category": "Social",

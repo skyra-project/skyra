@@ -3,6 +3,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
+import { getColor } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
@@ -27,7 +28,7 @@ const paginatedMessagePermissions = new Permissions([Permissions.FLAGS.ADD_REACT
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
-		const color = await this.container.db.fetchColor(message);
+		const color = getColor(message);
 		const roles = this.getRoles(args);
 
 		if (message.channel.permissionsFor(message.guild.me!)!.has(paginatedMessagePermissions)) {

@@ -3,7 +3,7 @@ import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures'
 import type { Tmdb } from '#lib/types/definitions/Tmdb';
 import { minutes } from '#utils/common';
 import { formatNumber } from '#utils/functions';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -60,7 +60,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const titles = t(LanguageKeys.Commands.Tools.ShowsTitles);
 		const fieldsData = t(LanguageKeys.Commands.Tools.ShowsData);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(await this.container.db.fetchColor(message))
+			template: new MessageEmbed().setColor(getColor(message))
 		}).setSelectMenuOptions((pageIndex) => ({
 			label: showData[pageIndex - 1].name
 		}));

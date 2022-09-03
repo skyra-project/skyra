@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { minutes, years } from '#utils/common';
-import { sendLoadingMessage } from '#utils/util';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -27,8 +27,8 @@ interface ReminderScheduledTask extends ScheduleEntity {
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rmm', 'remind', 'reminder', 'reminders'],
-	description: LanguageKeys.Commands.Social.RemindMeDescription,
-	detailedDescription: LanguageKeys.Commands.Social.RemindMeExtended
+	description: LanguageKeys.Commands.Misc.RemindMeDescription,
+	detailedDescription: LanguageKeys.Commands.Misc.RemindMeExtended
 })
 export class UserCommand extends SkyraCommand {
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 	public async create(message: Message, args: SkyraCommand.Args) {
 		const duration = await args.pick('timespan', { minimum: minutes(1), maximum: years(5) });
 		const description = args.finished
-			? args.t(LanguageKeys.Commands.Social.RemindMeCreateNoDescription)
+			? args.t(LanguageKeys.Commands.Misc.RemindMeCreateNoDescription)
 			: await args.rest('string', { maximum: 1024 });
 
 		const task = await this.container.schedule.add(Schedules.Reminder, Date.now() + duration, {
@@ -50,7 +50,7 @@ export class UserCommand extends SkyraCommand {
 			}
 		});
 
-		const content = args.t(LanguageKeys.Commands.Social.RemindMeCreate, { id: task.id.toString() });
+		const content = args.t(LanguageKeys.Commands.Misc.RemindMeCreate, { id: task.id.toString() });
 		return send(message, content);
 	}
 
@@ -59,14 +59,14 @@ export class UserCommand extends SkyraCommand {
 		const { client } = this.container;
 		const tasks = client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
 		if (!tasks.length) {
-			const content = args.t(LanguageKeys.Commands.Social.RemindMeListEmpty);
+			const content = args.t(LanguageKeys.Commands.Misc.RemindMeListEmpty);
 			return send(message, content);
 		}
 		const response = await sendLoadingMessage(message, args.t);
 
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
-				.setColor(await this.container.db.fetchColor(message))
+				.setColor(getColor(message))
 				.setAuthor({ name: client.user!.username, iconURL: client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 		});
 
@@ -91,7 +91,7 @@ export class UserCommand extends SkyraCommand {
 		const { id } = task;
 		await task.delete();
 
-		const content = args.t(LanguageKeys.Commands.Social.RemindMeDelete, { remainingDuration: task.time.getTime() - Date.now(), id });
+		const content = args.t(LanguageKeys.Commands.Misc.RemindMeDelete, { remainingDuration: task.time.getTime() - Date.now(), id });
 		return send(message, content);
 	}
 
@@ -100,13 +100,13 @@ export class UserCommand extends SkyraCommand {
 		const task = await args.pick(UserCommand.task);
 
 		const embed = new MessageEmbed()
-			.setColor(await this.container.db.fetchColor(message))
+			.setColor(getColor(message))
 			.setAuthor({
 				name: `${message.author.tag} (${message.author.id})`,
 				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
 			.setDescription(task.data.content)
-			.setFooter({ text: args.t(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }) })
+			.setFooter({ text: args.t(LanguageKeys.Commands.Misc.RemindMeShowFooter, { id: task.id }) })
 			.setTimestamp(task.time);
 		return send(message, { embeds: [embed] });
 	}
@@ -141,7 +141,7 @@ export class UserCommand extends SkyraCommand {
 	private static task = Args.make<ReminderScheduledTask>((parameter, { message, argument }) => {
 		const id = Number(parameter);
 		if (!Number.isInteger(id) || id < 0) {
-			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.RemindMeInvalidId });
+			return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.RemindMeInvalidId });
 		}
 
 		for (const task of message.client.schedules.queue) {
@@ -159,6 +159,6 @@ export class UserCommand extends SkyraCommand {
 			return Args.ok(task as ReminderScheduledTask);
 		}
 
-		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Social.RemindMeNotFound });
+		return Args.error({ argument, parameter, identifier: LanguageKeys.Commands.Misc.RemindMeNotFound });
 	});
 }

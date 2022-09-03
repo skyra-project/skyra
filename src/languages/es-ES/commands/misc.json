@@ -201,6 +201,46 @@
 			""
 		]
 	},
+	"remindmeDescription": "",
+	"remindmeExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"remindmeCreate": "",
+	"remindmeCreateNoDescription": "",
+	"remindmeDelete": "",
+	"remindmeListEmpty": "",
+	"remindmeShowFooter": "",
+	"remindmeInvalidId": "",
+	"remindmeNotfound": "",
 	"shipDescription": "Relaciona 2 miembros",
 	"shipExtended": {
 		"usages": [

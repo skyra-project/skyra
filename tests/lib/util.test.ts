@@ -50,21 +50,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('showSeconds', () => {
-		test('GIVEN duration of string THEN returns 00:00', () => {
-			// @ts-expect-error Testing the error case
-			expect(utils.showSeconds('I am your father')).toEqual('00:00');
-		});
-
-		test('GIVEN duration of number THEN returns seconds', () => {
-			expect(utils.showSeconds(Number(Time.Day))).toEqual('24:00:00');
-		});
-
-		test('GIVEN duration of number THEN returns seconds', () => {
-			expect(utils.showSeconds(Number(Time.Second))).toEqual('00:01');
-		});
-	});
-
 	describe('oneToTen', () => {
 		test('GIVEN positive rational number THEN returns level 0 (😪)', () => {
 			expect(utils.oneToTen(2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });

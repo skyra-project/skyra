@@ -142,7 +142,7 @@ addCommand(
 		},
 		{
 			description: LanguageKeys.Commands.General.PingDescription,
-			extendedHelp: LanguageKeys.Commands.General.PingExtended,
+			detailedDescription: LanguageKeys.Commands.General.PingExtended,
 			aliases: ['pong'],
 			fullCategory: ['General']
 		}
@@ -153,13 +153,13 @@ addCommand(
 	new Command(
 		{
 			name: 'balance',
-			path: resolve('/home/skyra/commands/Social/balance.js'),
+			path: resolve('/home/skyra/commands/admin/conf.js'),
 			store: commands,
 			root: '/home/skyra/commands'
 		},
 		{
-			description: LanguageKeys.Commands.Social.BalanceDescription,
-			extendedHelp: LanguageKeys.Commands.Social.BalanceExtended,
+			description: LanguageKeys.Commands.Admin.ConfDescription,
+			detailedDescription: LanguageKeys.Commands.Admin.ConfExtended,
 			aliases: ['bal'],
 			fullCategory: ['Currency']
 		}
@@ -176,7 +176,7 @@ addCommand(
 		},
 		{
 			description: LanguageKeys.Commands.Tools.DefineDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.DefineExtended,
+			detailedDescription: LanguageKeys.Commands.Tools.DefineExtended,
 			aliases: ['def', 'definition', 'defination', 'dictionary'],
 			fullCategory: ['Tools', 'Dictionary']
 		}

@@ -3,7 +3,6 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 export class V71RemoveRpg1662215310736 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user CASCADE;`);
-		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user CASCADE;`);
 		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_user_item CASCADE;`);
 		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_battle CASCADE;`);
 		await queryRunner.query(/* sql */ `DROP TABLE IF EXISTS public.rpg_class CASCADE;`);

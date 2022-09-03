@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
 		if (command.success) {
-			const embed = this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context));
+			const embed = await this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context));
 			return send(message, { embeds: [embed] });
 		}
 
@@ -136,7 +136,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	private buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
+	private async buildCommandHelp(message: Message, args: SkyraCommand.Args, command: SkyraCommand, prefixUsed: string) {
 		const builderData = args.t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()

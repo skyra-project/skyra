@@ -35,7 +35,7 @@
 	"channelError": "",
 	"color": "No pude resolver `{{parameter}}` a un color válido, aquí tiene alguno de los formatos válidos:\n\n- `#dfdf` (Hexadecimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"command": "¡No pude resolver `{{parameter}}` a un comando! ¡Asegúrate de que escribiste su nombre o uno de sus alias correctamente!",
-	"commandMatch": "No pude coincidir `{{parameter}}` con un comando ni categoría, estos son algunos de los formatos válidos:\n\n- `ping` (coincide con el comando ping solamente).\n- `social.*` (coincide con todos los comandos de la categoría **Social**).\n- `social.member management.*` (coincide con todos los comandos en la subcategoría **Social** > **Member Management**).\n\n> **Pista**: Cuando utilizas `{{commandContext.commandPrefix}}help`, la categoría de cada comando se encuentra en la parte superior de la inserción.",
+	"commandMatch": "",
 	"dateError": "",
 	"dateFormats": "- `2016-11-24` (AAAA-MM-DD)\n- `2016-11-24T23:56` (AAAA-MM-DDTHH:mm)\n- `2016-11-24T23:56:12` (AAAA-MM-DDTHH:mm:ss)\n- `2016-11-24T23:56:12. 00` (AAAA-MM-DDTHH:mm:sss)\n\n> **Pista**: Los últimos 3 formatos aceptan `Z` al final para marcar la hora como UTC`. Alternativamente, puedes poner la zona horaria añadiendo `+HH:MM`, por ejemplo `+01:00`.",
 	"dateTooEarly": "",

@@ -2475,6 +2475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/utilities@npm:^3.9.3":
+  version: 3.9.3
+  resolution: "@sapphire/utilities@npm:3.9.3"
+  checksum: 9f3f977fd5c0677d5f79136e9cb68ade3317cfba3e87bb58689f4af68233a807af34eb6092ad262c946d5eaf5c4a76cd534b0b395ebbaf0f0912dd80e174f912
+  languageName: node
+  linkType: hard
+
 "@sentry/core@npm:7.12.1":
   version: 7.12.1
   resolution: "@sentry/core@npm:7.12.1"
@@ -9800,7 +9807,7 @@ __metadata:
     "@sapphire/time-utilities": ^1.7.6
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.2.4
-    "@sapphire/utilities": ^3.9.2
+    "@sapphire/utilities": ^3.9.3
     "@sentry/integrations": ^7.12.1
     "@sentry/node": ^7.12.1
     "@skyra/ai": ^1.2.0

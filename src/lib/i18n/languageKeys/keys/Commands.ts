@@ -7,7 +7,6 @@ export * as Google from './commands/Google';
 export * as Management from './commands/Management';
 export * as Misc from './commands/Misc';
 export * as Moderation from './commands/Moderation';
-export * as Suggestions from './commands/Suggestions';
 export * as System from './commands/System';
 export * as Tags from './commands/Tags';
 export * as Tools from './commands/Tools';

@@ -4,7 +4,6 @@ export * as Messages from './Messages';
 export * as Permissions from './Permissions';
 export * as Roles from './Roles';
 export * as Selfmod from './Selfmod/All';
-export * as Suggestions from './Suggestions';
 
 export const Prefix = 'prefix';
 export const Language = 'language';

@@ -99,10 +99,6 @@
 	"selfmodReactionsIgnoredRoles": "The roles that will be ignored by the reactions sub-system",
 	"selfmodReactionsMaximum": "The maximum amount of reactions before I will start applying penalties",
 	"selfmodReactionsAllowed": "The reactions that are allowed",
-	"suggestionsChannel": "The channel where suggestions will be sent.",
-	"suggestionsOnActionDm": "If this setting is enabled, Skyra will DM the suggestion's author every time it is updated.",
-	"suggestionsOnActionHideAuthor": "This setting allows you to update suggestions anonymously. It will substitute the updater's name with either `An administrator` or `A moderator`, according to their permission level.",
-	"suggestionsOnActionRePost": "If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message.",
 	"validationChooseKey": "You cannot configure a group, please pick one of the following keys: {{keys, andList}}.",
 	"validationMissingValue": "The value ``{{value}}`` was not set in the key **{{path}}**.",
 	"validationDuplicatedValue": "The value for the key `{{path}}` was already set to ``{{value}}``!"

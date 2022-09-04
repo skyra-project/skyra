@@ -5,7 +5,6 @@ import { GuildEntity } from '../entities/GuildEntity';
 import { GuildSubscriptionEntity } from '../entities/GuildSubscriptionEntity';
 import { ModerationEntity } from '../entities/ModerationEntity';
 import { ScheduleEntity } from '../entities/ScheduleEntity';
-import { SuggestionEntity } from '../entities/SuggestionEntity';
 import { TwitchSubscriptionEntity } from '../entities/TwitchSubscriptionEntity';
 import { UserEntity } from '../entities/UserEntity';
 import { ClientRepository } from '../repositories/ClientRepository';
@@ -18,7 +17,6 @@ export class DbSet {
 	public readonly guildSubscriptions: Repository<GuildSubscriptionEntity>;
 	public readonly moderations: Repository<ModerationEntity>;
 	public readonly schedules: Repository<ScheduleEntity>;
-	public readonly suggestions: Repository<SuggestionEntity>;
 	public readonly twitchSubscriptions: Repository<TwitchSubscriptionEntity>;
 	public readonly users: Repository<UserEntity>;
 
@@ -30,7 +28,6 @@ export class DbSet {
 		this.guildSubscriptions = this.connection.getRepository(GuildSubscriptionEntity);
 		this.moderations = this.connection.getRepository(ModerationEntity);
 		this.schedules = this.connection.getRepository(ScheduleEntity);
-		this.suggestions = this.connection.getRepository(SuggestionEntity);
 		this.twitchSubscriptions = this.connection.getRepository(TwitchSubscriptionEntity);
 		this.users = this.connection.getRepository(UserEntity);
 	}

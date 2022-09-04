@@ -652,22 +652,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('integer', { name: 'no-mention-spam.time-period', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
-	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
-	public suggestionsChannel?: string | null;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionDM })
-	@Column('boolean', { name: 'suggestions.on-action.dm', default: false })
-	public suggestionsOnActionDm = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionRePost })
-	@Column('boolean', { name: 'suggestions.on-action.repost', default: false })
-	public suggestionsOnActionRePost = false;
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionHideAuthor })
-	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })
-	public suggestionsOnActionHideAuthor = false;
-
 	/**
 	 * The anti-spam adders used to control spam
 	 */

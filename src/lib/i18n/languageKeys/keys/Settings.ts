@@ -71,10 +71,6 @@ export const SelfmodReactionsEnabled = T('settings:selfmodReactionsEnabled');
 export const SelfmodReactionsIgnoredChannels = T('settings:selfmodReactionsIgnoredChannels');
 export const SelfmodReactionsIgnoredRoles = T('settings:selfmodReactionsIgnoredRoles');
 export const SelfmodReactionsAllowed = T('settings:selfmodReactionsAllowed');
-export const SuggestionsChannel = T('settings:suggestionsChannel');
-export const SuggestionsOnActionDM = T('settings:suggestionsOnActionDm');
-export const SuggestionsOnActionRePost = T('settings:suggestionsOnActionRePost');
-export const SuggestionsOnActionHideAuthor = T('settings:suggestionsOnActionHideAuthor');
 export const DashboardOnlyKey = T('settings:dashboardOnlyKey');
 
 export * as Channels from './settings/Channels';

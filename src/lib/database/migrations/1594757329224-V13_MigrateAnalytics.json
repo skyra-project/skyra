@@ -553,20 +553,6 @@
 		}
 	],
 	[
-		"resolvesuggestion",
-		{
-			"category": "Suggestions",
-			"subCategory": "General"
-		}
-	],
-	[
-		"suggest",
-		{
-			"category": "Suggestions",
-			"subCategory": "General"
-		}
-	],
-	[
 		"donate",
 		{
 			"category": "System",

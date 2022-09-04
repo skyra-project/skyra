@@ -110,7 +110,7 @@
 		"@types/backoff": "^2.5.2",
 		"@types/diff": "^5.0.2",
 		"@types/he": "^1.1.2",
-		"@types/jest": "^28.1.8",
+		"@types/jest": "^29.0.0",
 		"@types/node": "^18.7.13",
 		"@types/pg": "^8.6.5",
 		"@types/ws": "^8.5.3",

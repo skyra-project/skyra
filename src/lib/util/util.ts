@@ -237,7 +237,7 @@ export function getImageUrl(url: string): string | undefined {
  * @param input The input to clean
  * @returns The input cleaned of mentions
  * @license Apache-2.0
- * @copyright 2019 Antonio Román
+ * @copyright 2019 Aura Román
  */
 export function cleanMentions(guild: Guild, input: string) {
 	return input.replace(/@(here|everyone)/g, `@${ZeroWidthSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {

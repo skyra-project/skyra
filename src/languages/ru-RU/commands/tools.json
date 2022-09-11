@@ -214,41 +214,7 @@
 		"price": "Стоимость",
 		"releaseDate": "Дата выпуска"
 	},
-	"horoscopeDescription": "",
-	"horoscopeExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"horoscopeInvalidSunsign": "",
-	"horoscopeTitles": {
-		"dailyHoroscope": "",
-		"metadata": [
-			"",
-			"",
-			"",
-			""
-		],
-		"metadataTitle": ""
-	},
+
 	"igdbData": {
 		"noAgeRatings": "",
 		"noDevelopers": "",

@@ -48,13 +48,6 @@ export const EshopTitles = T<{
 }>('commands/tools:eshopTitles');
 export const EshopPricePaid = FT<{ price: number }, string>('commands/tools:eshopPricePaid');
 export const EshopPriceFree = T('commands/tools:eshopPriceFree');
-export const HoroscopeDescription = T('commands/tools:horoscopeDescription');
-export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commands/tools:horoscopeExtended');
-export const HoroscopeInvalidSunsign = FT<{ parameter: string; maybe: string }, string>('commands/tools:horoscopeInvalidSunsign');
-export const HoroscopeTitles = FT<
-	{ sign: string; intensity: string; keywords: readonly string[]; mood: string; rating: string },
-	{ dailyHoroscope: string; metadataTitle: string; metadata: readonly string[] }
->('commands/tools:horoscopeTitles');
 export const IgdbDescription = T('commands/tools:igdbDescription');
 export const IgdbExtended = T<LanguageHelpDisplayOptions>('commands/tools:igdbExtended');
 export const IgdbTitles = T<{

@@ -22,8 +22,6 @@
 
 -   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
 -   [`InfluxDB`]: Metrics platform.
--   [`Redis`]: Caching for [`Saelem`].
--   [`Saelem`]: Horoscope API.
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -37,7 +35,6 @@ The developer team does not support the idea of other self-hosted instances of S
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
--   [`Redis`] for [`Saelem`]'s cache
 -   [`InfluxDB`] in order to keep anonymous metrics on bot usage
 -   [`PostgreSQL`] as database
 -   Other external APIs, each requiring their own individual API keys.
@@ -149,7 +146,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`node.js`]: https://nodejs.org/en/download/current/
 [`postgresql`]: https://www.postgresql.org/download/
 [`redis`]: https://redis.io
-[`saelem`]: https://github.com/skyra-project/saelem
 [bitcoin]: bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot
 [bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
 [digitalocean]: https://www.digitalocean.com/

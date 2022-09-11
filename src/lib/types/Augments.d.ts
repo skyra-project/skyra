@@ -170,9 +170,6 @@ declare module '@skyra/env-utilities' {
 		INFLUX_ORG: string;
 		INFLUX_ORG_ANALYTICS_BUCKET: string;
 
-		SAELEM_ENABLED: BooleanString;
-		SAELEM_URL: string;
-
 		HASTEBIN_POST_URL: string;
 		HASTEBIN_GET_URL: string;
 

@@ -214,41 +214,6 @@
 		"price": "Price",
 		"releaseDate": "Release Date"
 	},
-	"horoscopeDescription": "Get your latest horoscope",
-	"horoscopeExtended": {
-		"usages": [
-			"Sunsign",
-			"Sunsign today/tomorrow/yesterday"
-		],
-		"extendedHelp": "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
-		"explainedUsage": [
-			[
-				"Sunsign",
-				"The sun sign you want to get the horoscope for"
-			],
-			[
-				"today/tomorrow/yesterday",
-				"If you want to get the horoscope of another day you can specify that Defaults to \"today\"."
-			]
-		],
-		"examples": [
-			"pisces",
-			"virgo tomorrow",
-			"gemini yesterday",
-			"aries today"
-		]
-	},
-	"horoscopeInvalidSunsign": "I was not able to resolve `{{parameter}}` to a valid sign, maybe try `{{maybe}}`?",
-	"horoscopeTitles": {
-		"dailyHoroscope": "Daily horoscope for {{sign}}",
-		"metadata": [
-			"**Intensity:** {{intensity}}",
-			"**Keywords:** {{keywords, andList}}",
-			"**Mood:** {{mood}}",
-			"**Rating:** {{rating}}"
-		],
-		"metadataTitle": "Metadata"
-	},
 	"igdbData": {
 		"noAgeRatings": "No age ratings available",
 		"noDevelopers": "Developer(s) unknown",

@@ -2800,15 +2800,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skyra/saelem@npm:^3.0.34":
-  version: 3.0.34
-  resolution: "@skyra/saelem@npm:3.0.34"
-  dependencies:
-    graphql: ^15.8.0
-  checksum: f1b81bbb65c208a06e6a701db6fd8db436bee2bc85d0485481a76e36dad911161dcad5b3e959f239503246cf216bc57f309b8453804369db84d882ec386da35b
-  languageName: node
-  linkType: hard
-
 "@skyra/tags@npm:^1.1.3":
   version: 1.1.3
   resolution: "@skyra/tags@npm:1.1.3"
@@ -6278,13 +6269,6 @@ __metadata:
   version: 1.0.4
   resolution: "grapheme-splitter@npm:1.0.4"
   checksum: 0c22ec54dee1b05cd480f78cf14f732cb5b108edc073572c4ec205df4cd63f30f8db8025afc5debc8835a8ddeacf648a1c7992fe3dcd6ad38f9a476d84906620
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^15.8.0":
-  version: 15.8.0
-  resolution: "graphql@npm:15.8.0"
-  checksum: 423325271db8858428641b9aca01699283d1fe5b40ef6d4ac622569ecca927019fce8196208b91dd1d8eb8114f00263fe661d241d0eb40c10e5bfd650f86ec5e
   languageName: node
   linkType: hard
 
@@ -9958,7 +9942,6 @@ __metadata:
     "@skyra/env-utilities": ^1.0.2
     "@skyra/gifenc": ^1.0.0
     "@skyra/jaro-winkler": ^1.1.0
-    "@skyra/saelem": ^3.0.34
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.2

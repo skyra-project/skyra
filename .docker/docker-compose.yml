@@ -52,23 +52,6 @@ services:
       - '8287:8287'
     restart: always
 
-  saelem:
-    container_name: saelem
-    depends_on:
-      - redis
-    environment:
-      PORT: 8284
-      SAELEM_REDIS_DATABASE: 0
-      SAELEM_REDIS_HOST: redis
-      SAELEM_REDIS_PASSWORD: redis
-      SAELEM_REDIS_PORT: 8287
-    image: 'skyrabot/saelem:latest'
-    networks:
-      - skyra
-    ports:
-      - '8284:8284'
-    restart: always
-
   skyra:
     build:
       context: ../
@@ -76,7 +59,6 @@ services:
     depends_on:
       - hasteserver
       - influx
-      - saelem
       - postgres
     env_file:
       - ../src/.env.development

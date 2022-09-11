@@ -10,10 +10,6 @@ Skyra currently has the following microservices that can be dockerized:
     -   Service name in docker-compose: `postgres`
     -   Image used: `skyrabot/postgres:latest`
     -   For more information see [skyra-project/docker-images]
--   Saelem
-    -   Service name in docker-compose: `saelem`
-    -   Image used: `skyrabot/saelem:latest`
-    -   For more information see [skyra-project/saelem]
 -   InfluxDB
     -   Service name in docker-compose: `influx`
     -   Image used: `quay.io/influxdb/influxdb:2.0.0-beta`
@@ -47,5 +43,4 @@ Skyra currently has the following microservices that can be dockerized:
 [locahost:8285]: http://localhost:8285
 [redis]: https://hub.docker.com/_/redis
 [skyra-project/docker-images]: https://github.com/skyra-project/docker-images
-[skyra-project/saelem]: https://github.com/skyra-project/saelem
 [the config file]: ../src/config.ts

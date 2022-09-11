@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { assetsFolder } from '#utils/constants';
-import { loadImageFromFS, sanitizeInput } from '#utils/util';
+import { sanitizeInput } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas, Image } from 'canvas-constructor/napi-rs';
+import { Canvas, Image, loadImage } from 'canvas-constructor/napi-rs';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 import { join } from 'node:path';
@@ -34,6 +34,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.kTemplate = await loadImageFromFS(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 }

@@ -1015,13 +1015,6 @@
 		}
 	],
 	[
-		"horoscope",
-		{
-			"category": "Tools",
-			"subCategory": "Websearch"
-		}
-	],
-	[
 		"igdb",
 		{
 			"category": "Tools",

@@ -3924,12 +3924,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"canvas-constructor@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "canvas-constructor@npm:6.0.2"
+"canvas-constructor@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "canvas-constructor@npm:7.0.0"
   dependencies:
     tslib: ^2.4.0
-  checksum: 8c609a623b5ac2483c1a815ba8fa172c9e9441aba6a04647c41534fbccec33ef057c3580439853fd5f8d91d05dc272b080d52fc9e55e246e6e71dc3a86829aa0
+  checksum: 0890ad860b9673f2bde285895d80421ab6665b30887ff2c9cc4fb167a349aca6496f8ede4c27766f7858635381e922cd221197d6fcbe3e1df9b2c37b2c480c1e
   languageName: node
   linkType: hard
 
@@ -9703,7 +9703,7 @@ __metadata:
     async-rwlock: ^1.1.1
     babel-plugin-const-enum: ^1.2.0
     bufferutil: ^4.0.6
-    canvas-constructor: ^6.0.2
+    canvas-constructor: ^7.0.0
     colorette: ^2.0.19
     confusables: ^1.1.1
     cz-conventional-changelog: ^3.3.0

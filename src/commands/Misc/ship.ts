@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { CanvasColors, socialFolder } from '#utils/constants';
-import { fetchAvatar, loadImageFromFS } from '#utils/util';
+import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -57,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 	public async onLoad() {
 		[this.lightThemeTemplate, this.heartIcon] = await Promise.all([
 			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).pngAsync().then(loadImage),
-			loadImageFromFS(join(socialFolder, 'heart.png'))
+			loadImage(join(socialFolder, 'heart.png'))
 		]);
 	}
 

@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { OWNERS, SISTER_CLIENTS } from '#root/config';
 import { assetsFolder } from '#utils/constants';
-import { fetchAvatar, loadImageFromFS, radians } from '#utils/util';
+import { fetchAvatar, radians } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Canvas, Image } from 'canvas-constructor/napi-rs';
+import { Canvas, Image, loadImage } from 'canvas-constructor/napi-rs';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message, User } from 'discord.js';
 import { join } from 'node:path';
@@ -52,7 +52,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async onLoad() {
-		this.KTemplate = await loadImageFromFS(join(assetsFolder, './images/memes/chase.png'));
+		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
 	}
 
 	private resolve(message: Message, possibleTarget: User) {

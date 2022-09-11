@@ -1482,28 +1482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:>6.1.1":
-  version: 17.1.1
-  resolution: "@commitlint/load@npm:17.1.1"
-  dependencies:
-    "@commitlint/config-validator": ^17.1.0
-    "@commitlint/execute-rule": ^17.0.0
-    "@commitlint/resolve-extends": ^17.1.0
-    "@commitlint/types": ^17.0.0
-    "@types/node": ^14.0.0
-    chalk: ^4.1.0
-    cosmiconfig: ^7.0.0
-    cosmiconfig-typescript-loader: ^3.0.0
-    lodash: ^4.17.19
-    resolve-from: ^5.0.0
-    typescript: ^4.6.4
-  peerDependencies:
-    ts-node: ">=10"
-  checksum: 5c61878a6c47034d54a9c1b7964740f3454fd77a30cb396d6bc649222b8b0701034f2e96f46b718126d23bd777829b15751fb883b257fe011bc054862bd53899
-  languageName: node
-  linkType: hard
-
-"@commitlint/load@npm:^17.1.2":
+"@commitlint/load@npm:>6.1.1, @commitlint/load@npm:^17.1.2":
   version: 17.1.2
   resolution: "@commitlint/load@npm:17.1.2"
   dependencies:
@@ -2436,14 +2415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/utilities@npm:^3.6.2, @sapphire/utilities@npm:^3.7.0, @sapphire/utilities@npm:^3.9.0, @sapphire/utilities@npm:^3.9.2":
-  version: 3.9.2
-  resolution: "@sapphire/utilities@npm:3.9.2"
-  checksum: eeef33b03b802e931ada752b8c335cc8bde4017f8029b577b0247e3f3d2b57bf5f1936b2c8c29aef5e2c6975d9b162363e4c5c434c4fead0bba74253d067b4d9
-  languageName: node
-  linkType: hard
-
-"@sapphire/utilities@npm:^3.9.3":
+"@sapphire/utilities@npm:^3.6.2, @sapphire/utilities@npm:^3.7.0, @sapphire/utilities@npm:^3.9.0, @sapphire/utilities@npm:^3.9.2, @sapphire/utilities@npm:^3.9.3":
   version: 3.9.3
   resolution: "@sapphire/utilities@npm:3.9.3"
   checksum: 9f3f977fd5c0677d5f79136e9cb68ade3317cfba3e87bb58689f4af68233a807af34eb6092ad262c946d5eaf5c4a76cd534b0b395ebbaf0f0912dd80e174f912
@@ -4398,18 +4370,6 @@ __metadata:
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
   checksum: 9de8597363a8e9b9952491ebe18167e3b36e7707569eed0ebf14f8bba773611376466ae34575bca8cfe3c767890c859c74056084738f09d4e4a6f902b2ad7d99
-  languageName: node
-  linkType: hard
-
-"cosmiconfig-typescript-loader@npm:^3.0.0":
-  version: 3.1.2
-  resolution: "cosmiconfig-typescript-loader@npm:3.1.2"
-  peerDependencies:
-    "@types/node": "*"
-    cosmiconfig: ">=7"
-    ts-node: ">=10"
-    typescript: ">=3"
-  checksum: 755c6908896598ab867a74aa786df4318d5418a457c30fd22d00c15081486ab5e024785759e8ad5a6631c1d4fee9fc710fe7fc082af62535b694719fa4a91c20
   languageName: node
   linkType: hard
 

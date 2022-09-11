@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty, Nullish, parseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
@@ -21,8 +20,6 @@ import {
 	UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { PathLike } from 'node:fs';
-import { FileHandle, readFile } from 'node:fs/promises';
 import { BrandingColors, ZeroWidthSpace } from './constants';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
@@ -69,19 +66,9 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	return ONE_TO_TEN.get(level);
 }
 
-export async function loadImageFromUrl(url: string | URL): Promise<Image> {
-	const buffer = await fetch(url, FetchResultTypes.Buffer);
-	return loadImage(buffer);
-}
-
-export async function loadImageFromFS(path: PathLike | FileHandle): Promise<Image> {
-	const file = await readFile(path);
-	return loadImage(file);
-}
-
 export function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
-	return loadImageFromUrl(url);
+	return loadImage(url);
 }
 
 export function twemoji(emoji: string) {

@@ -1,11 +1,11 @@
 import { LanguageHelp } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { HelpPaginatedMessage } from '#lib/structures/HelpPaginatedMessage';
 import { isGuildMessage, isPrivateMessage } from '#utils/common';
 import { getColor } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
+import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { Args, container, fromAsync } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -120,9 +120,10 @@ export class UserCommand extends SkyraCommand {
 	private async buildDisplay(message: Message, language: TFunction, prefix: string) {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
-		const display = new HelpPaginatedMessage(language, {
+		const display = new PaginatedMessage({
 			template: new MessageEmbed().setColor(getColor(message))
-		}).setSelectMenuOptions((pageIndex) => ({ label: commandsByCategory.at(pageIndex - 1)![0].fullCategory!.join(' → ') }));
+		}) //
+			.setSelectMenuOptions((pageIndex) => ({ label: commandsByCategory.at(pageIndex - 1)![0].fullCategory!.join(' → ') }));
 
 		for (const [category, commands] of commandsByCategory) {
 			display.addPageEmbed((embed) =>

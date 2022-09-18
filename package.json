@@ -48,7 +48,7 @@
 		"postinstall": "husky install .github/husky"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^1.0.0",
+		"@discordjs/builders": "^0.16.0",
 		"@discordjs/collection": "^1.1.0",
 		"@influxdata/influxdb-client": "^1.29.0",
 		"@influxdata/influxdb-client-apis": "^1.29.0",
@@ -110,11 +110,11 @@
 		"@types/diff": "^5.0.2",
 		"@types/he": "^1.1.2",
 		"@types/jest": "^29.0.3",
-		"@types/node": "^18.7.13",
+		"@types/node": "^18.7.18",
 		"@types/pg": "^8.6.5",
 		"@types/ws": "^8.5.3",
-		"@typescript-eslint/eslint-plugin": "^5.35.1",
-		"@typescript-eslint/parser": "^5.35.1",
+		"@typescript-eslint/eslint-plugin": "^5.37.0",
+		"@typescript-eslint/parser": "^5.37.0",
 		"babel-plugin-const-enum": "^1.2.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.23.1",

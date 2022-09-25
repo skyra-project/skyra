@@ -2193,6 +2193,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/cron@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@sapphire/cron@npm:1.0.0"
+  dependencies:
+    "@sapphire/utilities": ^3.9.3
+  checksum: ce33466c52ec8ee9392e67116858643c963a19543f77ce56ca928c743e04f18cde2c793a15c7f0fe0db071f1399a95338f17a25ba746a877dea0918c8b13672e
+  languageName: node
+  linkType: hard
+
 "@sapphire/decorators@npm:^4.3.8":
   version: 4.3.8
   resolution: "@sapphire/decorators@npm:4.3.8"
@@ -2218,6 +2227,13 @@ __metadata:
     "@sapphire/utilities": ^3.9.0
     tslib: ^2.4.0
   checksum: 7f71f9205993be15fee97c9128997304cfadc3d5b420885e2588f3ec2c0653fcdda29138d277ec6f13950ecc8ac01fa904c94cf2414e355bb05edcd5fe9b54c9
+  languageName: node
+  linkType: hard
+
+"@sapphire/duration@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@sapphire/duration@npm:1.0.0"
+  checksum: dadf3b5742742b5f724d1d78b0c59fd468ffe3ac817da2ba84361ac310528cb8c43f3d9d6032ff08f0f22fcaf61b495fb29b87800748e14abb0b780e86afda75
   languageName: node
   linkType: hard
 
@@ -2347,6 +2363,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/ratelimits@npm:^2.4.5":
+  version: 2.4.5
+  resolution: "@sapphire/ratelimits@npm:2.4.5"
+  dependencies:
+    "@sapphire/timer-manager": ^1.0.0
+  checksum: e987d285c974e600222298e2c5e9523581c024059b3ec93cdfc71fc704b2dca5a55f126b897ee71b8bd82d2516e1d6c17c22355f329f43ead7bc001d9fbd9118
+  languageName: node
+  linkType: hard
+
 "@sapphire/shapeshift@npm:^3.1.0":
   version: 3.6.0
   resolution: "@sapphire/shapeshift@npm:3.6.0"
@@ -2383,12 +2408,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:^1.7.4, @sapphire/time-utilities@npm:^1.7.5, @sapphire/time-utilities@npm:^1.7.6":
+"@sapphire/time-utilities@npm:^1.7.4, @sapphire/time-utilities@npm:^1.7.5":
   version: 1.7.6
   resolution: "@sapphire/time-utilities@npm:1.7.6"
   dependencies:
     "@sapphire/utilities": ^3.9.2
   checksum: eadcdf2cbadcc15fa36d7d3b4719acb05f30ed0611f3f8bcfd47d8037221239168f190e79b2c05942cc66a66cbbf3c7d313eda15e9a2a3cff81cf25cec42f3ce
+  languageName: node
+  linkType: hard
+
+"@sapphire/time-utilities@npm:^1.7.8":
+  version: 1.7.8
+  resolution: "@sapphire/time-utilities@npm:1.7.8"
+  dependencies:
+    "@sapphire/cron": ^1.0.0
+    "@sapphire/duration": ^1.0.0
+    "@sapphire/timer-manager": ^1.0.0
+    "@sapphire/timestamp": ^1.0.0
+  checksum: 8867770bea845705a55d18e737366c089a27a87c52fb2e3900de2362c7460ff7cdf4adae0c23dd06db8c6427458c22c7ebc7fe553904a6027ca4ee94c7a9a949
+  languageName: node
+  linkType: hard
+
+"@sapphire/timer-manager@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@sapphire/timer-manager@npm:1.0.0"
+  checksum: 2f131c2bf1882528c80e6a4aa8f0d3078ae1e2e3d1afc054878fbdb946dc987073d037dad5122e67d20b98e0ec6a37a8e4da7f9c0a91b9711819ad54bbedd6a4
+  languageName: node
+  linkType: hard
+
+"@sapphire/timestamp@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@sapphire/timestamp@npm:1.0.0"
+  checksum: 2852210825626431cb7aee4da9cd04518778854f5b9e8eafc0fa0a57d499251030ad115f0d0c58e15e5b176cfb495301df7418d95e51c4826e9fadc09ff98bbb
   languageName: node
   linkType: hard
 
@@ -9608,10 +9659,10 @@ __metadata:
     "@sapphire/plugin-logger": ^2.2.3
     "@sapphire/plugin-subcommands": ^2.2.2
     "@sapphire/prettier-config": ^1.4.4
-    "@sapphire/ratelimits": ^2.4.4
+    "@sapphire/ratelimits": ^2.4.5
     "@sapphire/snowflake": ^3.2.2
     "@sapphire/stopwatch": ^1.4.1
-    "@sapphire/time-utilities": ^1.7.6
+    "@sapphire/time-utilities": ^1.7.8
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.2.4
     "@sapphire/utilities": ^3.9.3

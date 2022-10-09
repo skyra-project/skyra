@@ -50,8 +50,8 @@
 	"dependencies": {
 		"@discordjs/builders": "^0.16.0",
 		"@discordjs/collection": "^1.2.0",
-		"@influxdata/influxdb-client": "^1.30.0",
-		"@influxdata/influxdb-client-apis": "^1.30.0",
+		"@influxdata/influxdb-client": "^1.31.0",
+		"@influxdata/influxdb-client-apis": "^1.31.0",
 		"@napi-rs/canvas": "0.1.26",
 		"@sapphire/async-queue": "^1.5.0",
 		"@sapphire/decorators": "^4.3.8",

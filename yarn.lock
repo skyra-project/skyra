@@ -1846,19 +1846,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client-apis@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@influxdata/influxdb-client-apis@npm:1.30.0"
+"@influxdata/influxdb-client-apis@npm:^1.31.0":
+  version: 1.31.0
+  resolution: "@influxdata/influxdb-client-apis@npm:1.31.0"
   peerDependencies:
     "@influxdata/influxdb-client": "*"
-  checksum: 0863b4993a8f40fa7c02356b02cb22647e73cc90bcf3f08dd96a25e64e5e880b1e82d8794abe3a06898bfbae2195db990020653c327cdd8945caf05fb5d82e90
+  checksum: 6f8107dfcc50bc554251a0a8f5e73b85986bc3b537cc92f2d1a08ba47042b73707ca807e7aaf26f74aa03ae089618ba5cea9f250f4f90eabc83f0c6911784065
   languageName: node
   linkType: hard
 
-"@influxdata/influxdb-client@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@influxdata/influxdb-client@npm:1.30.0"
-  checksum: 2e1db60ed6522cfab34628784bbc2c081a4b60cd5035baaa28a3f2a85721f01ce354f48c4d16c592bbed75bfe5f86eccdb4961e36300e08ca8793ae86d35ba8a
+"@influxdata/influxdb-client@npm:^1.31.0":
+  version: 1.31.0
+  resolution: "@influxdata/influxdb-client@npm:1.31.0"
+  checksum: a92ebd2cdc9dec697657785e73627699578f2464055977a02743e2a1bec32028e683526f3b34b00a0d2854f61ad689e2dc071bd75263bff7ca714b314b60971a
   languageName: node
   linkType: hard
 
@@ -9931,8 +9931,8 @@ __metadata:
     "@commitlint/config-conventional": ^17.1.0
     "@discordjs/builders": ^0.16.0
     "@discordjs/collection": ^1.2.0
-    "@influxdata/influxdb-client": ^1.30.0
-    "@influxdata/influxdb-client-apis": ^1.30.0
+    "@influxdata/influxdb-client": ^1.31.0
+    "@influxdata/influxdb-client-apis": ^1.31.0
     "@napi-rs/canvas": 0.1.26
     "@sapphire/async-queue": ^1.5.0
     "@sapphire/decorators": ^4.3.8

@@ -7,7 +7,7 @@ import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import { Constants, Message, MessageActionRow, MessageComponentInteraction, MessageSelectMenu } from 'discord.js';
+import { Constants, MessageActionRow, MessageSelectMenu, type Message, type MessageComponentInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 export async function handleMessage<ED extends ExtraDataPartial>(

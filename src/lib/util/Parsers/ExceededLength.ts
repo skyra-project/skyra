@@ -1,12 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getHaste } from '#utils/APIs/Hastebin';
-import { promptForMessage } from '#utils/functions';
+import { floatPromise, seconds } from '#utils/common';
+import { deleteMessage } from '#utils/functions';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
+import { Message, MessageActionRow, MessageComponentInteraction, MessageSelectMenu } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
@@ -32,10 +33,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			await getTypeOutput(message, t, options);
 			return handleMessage(message, options);
 		}
-		case 'haste':
 		case 'hastebin': {
 			if (!options.url) {
-				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
+				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch((err) => {
+					container.logger.fatal(err.message);
+					return null;
+				});
 			}
 
 			if (options.url) {
@@ -50,7 +53,6 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			await getTypeOutput(message, t, options);
 			return handleMessage(message, options);
 		}
-		case 'console':
 		case 'log': {
 			if (options.canLogToConsole) {
 				container.logger.info(options.result);
@@ -63,7 +65,6 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			return handleMessage(message, options);
 		}
 		case 'abort':
-		case 'none':
 			return null;
 		default: {
 			if (options.content ? options.content.length > 1950 : options.result!.length > 1950) {
@@ -91,19 +92,59 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 }
 
 async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: TFunction, options: HandleMessageData<ED>) {
-	const _options = ['none', 'abort'];
-	if (options.canLogToConsole) _options.push('log');
+	const selectMenu = new MessageSelectMenu().setCustomId('@skyra/getOutputType').setOptions([
+		{
+			label: 'Abort',
+			value: 'abort',
+			description: 'Abort the action'
+		}
+	]);
 
-	if (canSendAttachments(message.channel)) _options.push('file');
-	if (!options.hastebinUnavailable) _options.push('hastebin');
+	if (options.canLogToConsole) {
+		selectMenu.addOptions([
+			{
+				label: 'Log to console',
+				value: 'log',
+				description: 'Log the output to the console'
+			}
+		]);
+	}
 
-	let choice: string;
-	do {
-		const content = await promptForMessage(message, t(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }));
-		choice = content?.toLowerCase() ?? 'none';
-	} while (!_options.concat('none', 'abort').includes(choice));
+	if (canSendAttachments(message.channel)) {
+		selectMenu.addOptions([
+			{
+				label: 'Send as file',
+				value: 'file',
+				description: 'Send the output in a file format'
+			}
+		]);
+	}
+	if (!options.hastebinUnavailable) {
+		selectMenu.addOptions([
+			{
+				label: 'Hastebin',
+				value: 'hastebin',
+				description: 'Upload the output to hastebin'
+			}
+		]);
+	}
 
-	options.sendAs = choice;
+	const actionRow = new MessageActionRow().addComponents(selectMenu);
+
+	const response = await message.channel.send({ components: [actionRow], content: t(LanguageKeys.System.ExceededLengthChooseOutput) });
+	try {
+		const result = await response.awaitMessageComponent({
+			filter: (interaction: MessageComponentInteraction) =>
+				interaction.customId === '@skyra/getOutputType' && interaction.user.id === message.author.id,
+			time: seconds(30),
+			componentType: 'SELECT_MENU'
+		});
+
+		[options.sendAs] = result.values; // eslint 🤷‍♂️
+	} catch {
+		options.sendAs = 'abort';
+	}
+	floatPromise(deleteMessage(response));
 }
 
 type HandleMessageData<ED extends ExtraDataPartial> = {

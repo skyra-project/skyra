@@ -7,7 +7,7 @@ import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import { Message, MessageActionRow, MessageComponentInteraction, MessageSelectMenu } from 'discord.js';
+import { Constants, Message, MessageActionRow, MessageComponentInteraction, MessageSelectMenu } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
@@ -35,10 +35,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		}
 		case 'hastebin': {
 			if (!options.url) {
-				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch((err) => {
-					container.logger.fatal(err.message);
-					return null;
-				});
+				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
 			}
 
 			if (options.url) {
@@ -132,18 +129,20 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: Message, t: T
 	const actionRow = new MessageActionRow().addComponents(selectMenu);
 
 	const response = await message.channel.send({ components: [actionRow], content: t(LanguageKeys.System.ExceededLengthChooseOutput) });
+
 	try {
 		const result = await response.awaitMessageComponent({
 			filter: (interaction: MessageComponentInteraction) =>
 				interaction.customId === '@skyra/getOutputType' && interaction.user.id === message.author.id,
 			time: seconds(30),
-			componentType: 'SELECT_MENU'
+			componentType: Constants.MessageComponentTypes.SELECT_MENU
 		});
 
-		[options.sendAs] = result.values; // eslint 🤷‍♂️
+		[options.sendAs] = result.values;
 	} catch {
 		options.sendAs = 'abort';
 	}
+
 	floatPromise(deleteMessage(response));
 }
 

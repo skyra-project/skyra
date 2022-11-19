@@ -1,0 +1,20 @@
+diff --git a/dist/index.js b/dist/index.js
+index b9256ddb47c0bee60891aec094728daf7a806cec..a6eb55c565b70ec818dd8e9ea5f3800608f85c13 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1323,7 +1323,14 @@ function canJoinVoiceChannel(channel) {
+ }
+ __name(canJoinVoiceChannel, "canJoinVoiceChannel");
+ function canDoUtility(channel, permissionsToPass) {
+-  return isGuildBasedChannel(channel) ? channel.permissionsFor(channel.guild.me).has(permissionsToPass) : true;
++  if (!isGuildBasedChannel(channel)) {
++    return true;
++  }
++
++  const permissionsFor = channel.permissionsFor(channel.guild.me);
++  if (!permissionsFor) return false;
++
++  return permissionsFor.has(permissionsToPass)
+ }
+ __name(canDoUtility, "canDoUtility");
+ // Annotate the CommonJS export names for ESM import in node:

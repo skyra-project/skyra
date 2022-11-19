@@ -4,6 +4,7 @@ import { readSettings } from '#lib/database/settings';
 import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { Collection, type CollectionConstructor } from '@discordjs/collection';
+import { AsyncQueue } from '@sapphire/async-queue';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { isNullish, StrictRequired } from '@sapphire/utilities';
@@ -21,6 +22,11 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 * The Guild instance that manages this manager
 	 */
 	public guild: Guild;
+
+	/**
+	 * A queue for save tasks, prevents case_id duplication
+	 */
+	private saveQueue = new AsyncQueue();
 
 	/**
 	 * The current case count
@@ -137,6 +143,17 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		}
 
 		return this._count;
+	}
+
+	public async save(data: ModerationEntity) {
+		await this.saveQueue.wait();
+		try {
+			data.caseId = (await this.getCurrentId()) + 1;
+			await data.save();
+			this.insert(data);
+		} finally {
+			this.saveQueue.shift();
+		}
 	}
 
 	public insert(data: ModerationEntity): ModerationEntity;

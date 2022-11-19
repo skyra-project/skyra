@@ -9,7 +9,7 @@ interface GuildUtilities {
 	readonly stickyRoles: StickyRoleManager;
 }
 
-const cache = new WeakMap<Guild, GuildUtilities>();
+export const cache = new WeakMap<Guild, GuildUtilities>();
 
 export function getGuildUtilities(resolvable: GuildResolvable): GuildUtilities {
 	const guild = resolveGuild(resolvable);

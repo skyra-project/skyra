@@ -55,9 +55,9 @@
 		"@napi-rs/canvas": "0.1.26",
 		"@sapphire/async-queue": "^1.5.0",
 		"@sapphire/decorators": "^4.3.8",
-		"@sapphire/discord.js-utilities": "^4.12.0",
+		"@sapphire/discord.js-utilities": "4.12.0",
 		"@sapphire/fetch": "^2.4.1",
-		"@sapphire/framework": "^2.5.1",
+		"@sapphire/framework": "2.5.1",
 		"@sapphire/plugin-api": "^3.2.4",
 		"@sapphire/plugin-editable-commands": "^1.2.2",
 		"@sapphire/plugin-i18next": "^2.5.4",
@@ -135,7 +135,10 @@
 	"resolutions": {
 		"ansi-regex": "^5.0.1",
 		"minimist": "^1.2.7",
-		"typescript": "~4.7.4"
+		"typescript": "~4.7.4",
+		"@sapphire/framework@2.5.1": "patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch",
+		"@sapphire/discord.js-utilities@4.12.0": "patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch",
+		"@sapphire/discord.js-utilities@^4.11.2": "patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch"
 	},
 	"engines": {
 		"node": "^16",

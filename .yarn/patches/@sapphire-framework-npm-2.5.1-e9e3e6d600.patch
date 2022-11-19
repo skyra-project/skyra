@@ -1,0 +1,16 @@
+diff --git a/dist/listeners/command-handler/CoreMessageParser.js b/dist/listeners/command-handler/CoreMessageParser.js
+index 77085e6236e54886704803e8111278c4977780df..fd9c1a6c5d9b4accd669910dbbcca229bcb3f77b 100644
+--- a/dist/listeners/command-handler/CoreMessageParser.js
++++ b/dist/listeners/command-handler/CoreMessageParser.js
+@@ -49,7 +49,10 @@ class CoreListener extends Listener_1.Listener {
+         if (me.isCommunicationDisabled())
+             return false;
+         const channel = message.channel;
+-        return channel.permissionsFor(me).has(this.requiredPermissions, false);
++        const permissionsFor = channel.permissionsFor(me);
++        if (!permissionsFor) return false;
++
++        return permissionsFor.has(this.requiredPermissions, false);
+     }
+     getMentionPrefix(message) {
+         if (this.container.client.disableMentionPrefix)

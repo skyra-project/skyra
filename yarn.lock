@@ -2223,13 +2223,13 @@ __metadata:
 
 "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::locator=skyra%40workspace%3A.":
   version: 4.12.0
-  resolution: "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::version=4.12.0&hash=4bb588&locator=skyra%40workspace%3A."
+  resolution: "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::version=4.12.0&hash=47d1c5&locator=skyra%40workspace%3A."
   dependencies:
     "@sapphire/discord-utilities": ^2.11.5
     "@sapphire/time-utilities": ^1.7.5
     "@sapphire/utilities": ^3.9.0
     tslib: ^2.4.0
-  checksum: e68e3dd913db620ec82c5e167c7ffacd4a2a7c45e87d2956f2a06f79d695099d1f48026fb4bc506631ce10f8e877b74db1be68f4ce8984b21f29b0d6fd2030dc
+  checksum: 10dd516a94e5f1a80a4af7aab6f2cdbceb69f00aa3f56eeb230095a41b376e97d9435e7ff6670afc064b68a6ec142e57db4a910785e707c8a8b9c7776bee06dc
   languageName: node
   linkType: hard
 

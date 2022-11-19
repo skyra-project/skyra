@@ -89,7 +89,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
-				output.push(args.t(LanguageKeys.Commands.Moderation.ModerationFailed, { users, count: users.length }));
+				output.push(args.t(LanguageKeys.Commands.Moderation.ModerationFailed, { users: users.join('\n'), count: users.length }));
 			}
 
 			// Else send the message as usual.

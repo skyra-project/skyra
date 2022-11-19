@@ -434,9 +434,7 @@ export class ModerationEntity extends BaseEntity {
 		// If the entry should not send, abort creation
 		if (!this.shouldSend) return null;
 
-		this.caseId = (await this.#manager.getCurrentId()) + 1;
-		await this.save();
-		this.#manager.insert(this);
+		await this.#manager.save(this);
 
 		container.client.emit(Events.ModerationEntryAdd, this);
 		return this;

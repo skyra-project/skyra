@@ -2223,7 +2223,7 @@ __metadata:
 
 "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::locator=skyra%40workspace%3A.":
   version: 4.12.0
-  resolution: "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::version=4.12.0&hash=47d1c5&locator=skyra%40workspace%3A."
+  resolution: "@sapphire/discord.js-utilities@patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch::version=4.12.0&hash=bde76c&locator=skyra%40workspace%3A."
   dependencies:
     "@sapphire/discord-utilities": ^2.11.5
     "@sapphire/time-utilities": ^1.7.5
@@ -2282,7 +2282,7 @@ __metadata:
 
 "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::locator=skyra%40workspace%3A.":
   version: 2.5.1
-  resolution: "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::version=2.5.1&hash=0756f9&locator=skyra%40workspace%3A."
+  resolution: "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::version=2.5.1&hash=197cb9&locator=skyra%40workspace%3A."
   dependencies:
     "@discordjs/builders": ^0.15.0
     "@sapphire/discord-utilities": ^2.11.2
@@ -2473,7 +2473,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.19.0":
+"@sentry/hub@npm:^7.20.0":
   version: 7.20.0
   resolution: "@sentry/hub@npm:7.20.0"
   dependencies:
@@ -2485,7 +2485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.19.0":
+"@sentry/integrations@npm:^7.20.0":
   version: 7.20.0
   resolution: "@sentry/integrations@npm:7.20.0"
   dependencies:
@@ -2497,7 +2497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.19.0":
+"@sentry/node@npm:^7.20.0":
   version: 7.20.0
   resolution: "@sentry/node@npm:7.20.0"
   dependencies:
@@ -2770,7 +2770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.2.2":
+"@types/jest@npm:^29.2.3":
   version: 29.2.3
   resolution: "@types/jest@npm:29.2.3"
   dependencies:
@@ -5239,7 +5239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.22.0, eslint@npm:^8.27.0":
+"eslint@npm:^8.22.0, eslint@npm:^8.28.0":
   version: 8.28.0
   resolution: "eslint@npm:8.28.0"
   dependencies:
@@ -5750,7 +5750,7 @@ __metadata:
 
 "fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -9200,7 +9200,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.1.4#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.4.0#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -9473,9 +9473,9 @@ __metadata:
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.2.6
     "@sapphire/utilities": ^3.11.0
-    "@sentry/hub": ^7.19.0
-    "@sentry/integrations": ^7.19.0
-    "@sentry/node": ^7.19.0
+    "@sentry/hub": ^7.20.0
+    "@sentry/integrations": ^7.20.0
+    "@sentry/node": ^7.20.0
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.2
     "@skyra/env-utilities": ^1.1.0
@@ -9485,7 +9485,7 @@ __metadata:
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.2
     "@types/he": ^1.1.2
-    "@types/jest": ^29.2.2
+    "@types/jest": ^29.2.3
     "@types/node": ^18.11.9
     "@types/pg": ^8.6.5
     "@types/ws": ^8.5.3
@@ -9501,7 +9501,7 @@ __metadata:
     diff: ^5.1.0
     discord-api-types: ~0.33.5
     discord.js: ^13.12.0
-    eslint: ^8.27.0
+    eslint: ^8.28.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.2.1
     he: ^1.2.0
@@ -10346,7 +10346,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A~4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=701156"
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=65a307"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

@@ -69,9 +69,9 @@
 		"@sapphire/time-utilities": "^1.7.8",
 		"@sapphire/type": "^2.2.6",
 		"@sapphire/utilities": "^3.11.0",
-		"@sentry/hub": "^7.19.0",
-		"@sentry/integrations": "^7.19.0",
-		"@sentry/node": "^7.19.0",
+		"@sentry/hub": "^7.20.0",
+		"@sentry/integrations": "^7.20.0",
+		"@sentry/node": "^7.20.0",
 		"@skyra/ai": "^1.2.0",
 		"@skyra/char": "^1.0.2",
 		"@skyra/env-utilities": "^1.1.0",
@@ -110,7 +110,7 @@
 		"@types/backoff": "^2.5.2",
 		"@types/diff": "^5.0.2",
 		"@types/he": "^1.1.2",
-		"@types/jest": "^29.2.2",
+		"@types/jest": "^29.2.3",
 		"@types/node": "^18.11.9",
 		"@types/pg": "^8.6.5",
 		"@types/ws": "^8.5.3",
@@ -118,7 +118,7 @@
 		"@typescript-eslint/parser": "^5.37.0",
 		"babel-plugin-const-enum": "^1.2.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.27.0",
+		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"husky": "^8.0.2",
@@ -162,5 +162,5 @@
 		}
 	},
 	"prettier": "@sapphire/prettier-config",
-	"packageManager": "yarn@3.2.4"
+	"packageManager": "yarn@3.3.0"
 }

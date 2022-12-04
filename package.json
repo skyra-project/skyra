@@ -64,7 +64,7 @@
 		"@sapphire/plugin-logger": "^2.2.3",
 		"@sapphire/plugin-subcommands": "^2.2.2",
 		"@sapphire/ratelimits": "^2.4.5",
-		"@sapphire/snowflake": "^3.2.2",
+		"@sapphire/snowflake": "^3.3.0",
 		"@sapphire/stopwatch": "^1.5.0",
 		"@sapphire/time-utilities": "^1.7.8",
 		"@sapphire/type": "^2.2.6",

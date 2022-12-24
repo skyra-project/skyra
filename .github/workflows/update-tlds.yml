@@ -50,5 +50,5 @@ jobs:
             git checkout -b NM-EEA-Y/update-tlds/$(date +%F-%H-%M);
             git commit -sam "chore: update TLDs";
             git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-            ./gh pr create -t "refactor: update TLDs" -b "*bleep bloop* I updated the TLDs file" -l "refactor" -r "favna" -r "kyranet" -B main;
+            ./gh pr create --title "refactor: update TLDs" --body "*bleep bloop* I updated the TLDs file" --label refactor --reviewer favna,kyranet -B main;
           fi

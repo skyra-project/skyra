@@ -2691,14 +2691,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/type@npm:^2.2.6":
-  version: 2.2.6
-  resolution: "@sapphire/type@npm:2.2.6"
+"@sapphire/type@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@sapphire/type@npm:2.3.0"
   dependencies:
     "@discordjs/node-pre-gyp": ^0.4.5
     nan: ^2.17.0
     tslib: ^2.4.1
-  checksum: cf37add5b9fb04f90c0742b87f0985fc82890ce7a557c4eda28dc1f748234194cda2dfceed77398294a84aff6d003cd16a5e17ae7d981887c47d8fa3378a507a
+  checksum: 78473401140eb4af26c11f8cb2eb5f186369300a4a4105fcd720746abc32c69e3065e779f304416ea21a535ed0afcb9b298dfac3f9c92c13e9b045203b45f5fd
   languageName: node
   linkType: hard
 
@@ -9864,7 +9864,7 @@ __metadata:
     "@sapphire/stopwatch": ^1.5.0
     "@sapphire/time-utilities": ^1.7.8
     "@sapphire/ts-config": ^3.3.4
-    "@sapphire/type": ^2.2.6
+    "@sapphire/type": ^2.3.0
     "@sapphire/utilities": ^3.11.0
     "@sentry/hub": ^7.28.1
     "@sentry/integrations": ^7.28.1

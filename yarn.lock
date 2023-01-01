@@ -2639,10 +2639,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/snowflake@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "@sapphire/snowflake@npm:3.3.0"
-  checksum: 122bbe325d596d670650c5c037d7f80a85a280ef5d5170dcb11030252773defa0df76277bcd28e663abe9c206310dcc596e3be32666fc6c53dede2798c3109da
+"@sapphire/snowflake@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@sapphire/snowflake@npm:3.4.0"
+  checksum: 556b7001f33d6edbbbcbca46f6abfa56c732a29e78b693161e358688e688edcb012d2c1bc944e7ffb41bd6c9950d261bc73f95656dc01643361a218b4f5ab985
   languageName: node
   linkType: hard
 
@@ -9869,7 +9869,7 @@ __metadata:
     "@sapphire/plugin-subcommands": ^2.2.2
     "@sapphire/prettier-config": ^1.4.4
     "@sapphire/ratelimits": ^2.4.5
-    "@sapphire/snowflake": ^3.3.0
+    "@sapphire/snowflake": ^3.4.0
     "@sapphire/stopwatch": ^1.5.0
     "@sapphire/time-utilities": ^1.7.8
     "@sapphire/ts-config": ^3.3.4

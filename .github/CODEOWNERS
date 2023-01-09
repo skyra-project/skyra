@@ -13,7 +13,6 @@
 /.devcontainer/ @favna
 /.vscode/ @favna
 /scripts/ @favna
-/.all-contributorsrc @favna
 /.eslintrc.json @favna
 /.gitignore @favna
 /.gqlconfig @favna

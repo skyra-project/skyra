@@ -105,7 +105,7 @@
 		"@commitlint/cli": "^17.4.2",
 		"@commitlint/config-conventional": "^17.4.2",
 		"@sapphire/eslint-config": "^4.3.8",
-		"@sapphire/prettier-config": "^1.4.4",
+		"@sapphire/prettier-config": "^1.4.5",
 		"@sapphire/ts-config": "^3.3.4",
 		"@types/backoff": "^2.5.2",
 		"@types/diff": "^5.0.2",

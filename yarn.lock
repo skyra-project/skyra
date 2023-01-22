@@ -209,9 +209,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-create-class-features-plugin@npm:^7.20.7":
-  version: 7.20.7
-  resolution: "@babel/helper-create-class-features-plugin@npm:7.20.7"
+"@babel/helper-create-class-features-plugin@npm:^7.20.12":
+  version: 7.20.12
+  resolution: "@babel/helper-create-class-features-plugin@npm:7.20.12"
   dependencies:
     "@babel/helper-annotate-as-pure": ^7.18.6
     "@babel/helper-environment-visitor": ^7.18.9
@@ -219,10 +219,11 @@ __metadata:
     "@babel/helper-member-expression-to-functions": ^7.20.7
     "@babel/helper-optimise-call-expression": ^7.18.6
     "@babel/helper-replace-supers": ^7.20.7
+    "@babel/helper-skip-transparent-expression-wrappers": ^7.20.0
     "@babel/helper-split-export-declaration": ^7.18.6
   peerDependencies:
     "@babel/core": ^7.0.0
-  checksum: fdbbfb532fc800a30b7c9d56203b80824f67dbc1acf1a2f52429e6e1ad0a3cd086c5c53031d78e8e23a5201018ecb23dc2d8cc955b2bd72c5338654d5679f847
+  checksum: 1e9ed4243b75278fa24deb40dc62bf537b79307987223a2d2d2ae5abf7ba6dc8435d6e3bb55d52ceb30d3e1eba88e7eb6a1885a8bb519e5cfc3e9dedb97d43e6
   languageName: node
   linkType: hard
 
@@ -414,7 +415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-skip-transparent-expression-wrappers@npm:^7.18.9":
+"@babel/helper-skip-transparent-expression-wrappers@npm:^7.18.9, @babel/helper-skip-transparent-expression-wrappers@npm:^7.20.0":
   version: 7.20.0
   resolution: "@babel/helper-skip-transparent-expression-wrappers@npm:7.20.0"
   dependencies:
@@ -579,18 +580,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-decorators@npm:^7.20.7":
-  version: 7.20.7
-  resolution: "@babel/plugin-proposal-decorators@npm:7.20.7"
+"@babel/plugin-proposal-decorators@npm:^7.20.13":
+  version: 7.20.13
+  resolution: "@babel/plugin-proposal-decorators@npm:7.20.13"
   dependencies:
-    "@babel/helper-create-class-features-plugin": ^7.20.7
+    "@babel/helper-create-class-features-plugin": ^7.20.12
     "@babel/helper-plugin-utils": ^7.20.2
     "@babel/helper-replace-supers": ^7.20.7
     "@babel/helper-split-export-declaration": ^7.18.6
     "@babel/plugin-syntax-decorators": ^7.19.0
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 0de9134d71a60b165df9b6e66b7c270fb2fa940ad28d7672e5c73fe5e4300a798cbb28d845477e3265a356d5254758735f28d13452f448dd12988ea299cf7e16
+  checksum: 445723b410627d52ab2d195589eb9fe5fbd66a00ebfc9bedcf63b6cbfdfc42e163d77ac391f8738ab9f632779e6f2aa427fe468fbbd6661177ef0cdca735a7d5
   languageName: node
   linkType: hard
 
@@ -2753,70 +2754,70 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/core@npm:7.30.0"
+"@sentry/core@npm:7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/core@npm:7.31.1"
   dependencies:
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/types": 7.31.1
+    "@sentry/utils": 7.31.1
     tslib: ^1.9.3
-  checksum: 661a068bbe1afc66668f1808667fec09320b549e8bf06c0a4263398d7bac023a533535073fe469c656ea925d625a5e3fb93dd6535f3226893854b33e7813ab8c
+  checksum: 9e00c18d0af5e2c3566931b9a9410dc0b368c81b66ae26b529bbb072db9a09d30e0b1a395cc5785009a8c9e1208ce701d14cf93b1e6a52a2b5c012ebda01bd06
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/hub@npm:7.30.0"
+"@sentry/hub@npm:^7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/hub@npm:7.31.1"
   dependencies:
-    "@sentry/core": 7.30.0
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/core": 7.31.1
+    "@sentry/types": 7.31.1
+    "@sentry/utils": 7.31.1
     tslib: ^1.9.3
-  checksum: cb9fbec57b5696cbadb5d9d88ea7aa53a05bdf570c965cced150e09a0763844aab110de18754c6572de55dd20a569bad334958dc06e608d304dedd0f6b0afac9
+  checksum: 4f6a8c32e6eace80c9b007c00f5298a4d92543453804d69c6847ff5a33965ae89b76e5b50414d7a5e33774d049a4a641b9ab70eba911bbb9915c9e0b3000a084
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/integrations@npm:7.30.0"
+"@sentry/integrations@npm:^7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/integrations@npm:7.31.1"
   dependencies:
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/types": 7.31.1
+    "@sentry/utils": 7.31.1
     localforage: ^1.8.1
     tslib: ^1.9.3
-  checksum: 9fd40dfccdbf95ce7869afffac4ae8ce5b6c465d0bf52f005eb3878790dddd9db25419ae7003c09f6cea6e9a934869479178657b4c4eb3cb710c86580e44aeac
+  checksum: 8a6963cd51953fc204e137b61c4ae5b93e87079f3e0993e1c376bb791ac5ce7dae0b556e81379cb60320ff7269e849e99d4fd5bf9964e102a9e54481699bde1b
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/node@npm:7.30.0"
+"@sentry/node@npm:^7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/node@npm:7.31.1"
   dependencies:
-    "@sentry/core": 7.30.0
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/core": 7.31.1
+    "@sentry/types": 7.31.1
+    "@sentry/utils": 7.31.1
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: baa94c4fe7ce01d810847f0fa3ac2c31367b321c25e0c8a706e21f295c7cbe6d0f651b01e2ffce6e6ec6e83696e508f54e270141c784498a34f29678b21f06dc
+  checksum: 515646e2133d51d983eedb155e069e3226dcbc0f324ae74a4eaa8018e6731bb51e52cc0a42d85a0743e4cff633b7357af748d40a1c134cfa291a4ef072c01cae
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/types@npm:7.30.0"
-  checksum: be228ae65f8750513371b6692821aa0d92d15354aa9fd7f1f1b497c2a53d20769fd56f89a1516d80e416ab73596609e805a6fae2b51510018338eedf5a0dd260
+"@sentry/types@npm:7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/types@npm:7.31.1"
+  checksum: 246d9529ef3a47f1f69f24b32a3737b583afc8e3fa632ee097ca5b0aff1de1f35b22317a175803f663920fc252358b45caa4e3ebe0f124f36f7fa262a21ff3b2
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/utils@npm:7.30.0"
+"@sentry/utils@npm:7.31.1":
+  version: 7.31.1
+  resolution: "@sentry/utils@npm:7.31.1"
   dependencies:
-    "@sentry/types": 7.30.0
+    "@sentry/types": 7.31.1
     tslib: ^1.9.3
-  checksum: df99b77706dc38a206ba4a27da2226c73c5a465a39591dde66455a8ca52b070830ad3fa3cbc803d4e45bd0e4e4fad74552f3d92d681a8dd4c95c4733cc9ff4cc
+  checksum: dc40063d2287f211a8e4f8df94e2b3aaf5caf3a6316a7054b9e6ddbff2eef3151267f53239ef4b9eb87eec9f5ccd7a8e0a828163db38ca23795b7746d02095e7
   languageName: node
   linkType: hard
 
@@ -3061,13 +3062,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.2.5":
-  version: 29.2.5
-  resolution: "@types/jest@npm:29.2.5"
+"@types/jest@npm:^29.2.6":
+  version: 29.2.6
+  resolution: "@types/jest@npm:29.2.6"
   dependencies:
     expect: ^29.0.0
     pretty-format: ^29.0.0
-  checksum: d668470f00ec4cb8b8457f1fd90f7358fad8f22d74b85006dad6be522d6b9bf10f49f597e88d1d1a518d211c1b65be32a1f27f0e49ce0658d110a9206b8ea310
+  checksum: 90190ac830334af1470d255853f9621fe657e5030b4d96773fc1f884833cd303c76580b00c1b86dc38a8db94f1c7141d462190437a10af31852b8845a57c48ba
   languageName: node
   linkType: hard
 
@@ -9913,7 +9914,7 @@ __metadata:
     0x: ^5.4.1
     "@babel/core": ^7.20.12
     "@babel/plugin-proposal-class-properties": ^7.18.6
-    "@babel/plugin-proposal-decorators": ^7.20.7
+    "@babel/plugin-proposal-decorators": ^7.20.13
     "@babel/preset-env": ^7.20.2
     "@babel/preset-typescript": ^7.18.6
     "@commitlint/cli": ^17.4.2
@@ -9942,9 +9943,9 @@ __metadata:
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.3.0
     "@sapphire/utilities": ^3.11.0
-    "@sentry/hub": ^7.30.0
-    "@sentry/integrations": ^7.30.0
-    "@sentry/node": ^7.30.0
+    "@sentry/hub": ^7.31.1
+    "@sentry/integrations": ^7.31.1
+    "@sentry/node": ^7.31.1
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.3
     "@skyra/env-utilities": ^1.1.0
@@ -9954,7 +9955,7 @@ __metadata:
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.2
     "@types/he": ^1.1.2
-    "@types/jest": ^29.2.5
+    "@types/jest": ^29.2.6
     "@types/node": ^18.11.18
     "@types/pg": ^8.6.6
     "@types/ws": ^8.5.4
@@ -9988,7 +9989,7 @@ __metadata:
     typeorm: 0.2.28
     typeorm-naming-strategies: ^2.0.0
     typescript: ~4.7.4
-    utf-8-validate: ^6.0.0
+    utf-8-validate: ^6.0.1
     ws: ^8.12.0
     zlib-sync: ^0.1.7
   languageName: unknown
@@ -10935,13 +10936,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utf-8-validate@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "utf-8-validate@npm:6.0.0"
+"utf-8-validate@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "utf-8-validate@npm:6.0.1"
   dependencies:
     node-gyp: latest
     node-gyp-build: ^4.3.0
-  checksum: b66479e3e5e3350632eefdddaf9d94461fb29922421d515a03987f3afcdd1902ac951c9f1bf6782bbb3c1be178ddbe7e48c106c92539a4baa223a9f01e7f3679
+  checksum: 4a8f4305981bbd049384102712516aa82e8618dd3f456d46b22e6929c2b7239cff5deade01305b2a66e7582ae1da7ce4264e677afd955a89962065628e2f7c79
   languageName: node
   linkType: hard
 

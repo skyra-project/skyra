@@ -15,7 +15,7 @@ import {
 } from '#utils/moderationConstants';
 import { container, UserError } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
-import { isNullishOrZero, isNumber, NonNullObject, parseURL } from '@sapphire/utilities';
+import { isNullishOrZero, isNumber, NonNullObject, tryParseURL } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { readSettings } from '../settings';
@@ -406,7 +406,7 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public setImageURL(value?: string | null) {
-		this.imageURL = (value && parseURL(value)?.href) ?? null;
+		this.imageURL = (value && tryParseURL(value)?.href) ?? null;
 		return this;
 	}
 

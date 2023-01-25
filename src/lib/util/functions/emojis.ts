@@ -2,6 +2,34 @@ import { formatEmoji } from '@discordjs/builders';
 import { FormattedCustomEmojiWithGroups, TwemojiRegex } from '@sapphire/discord-utilities';
 import { isNullish } from '@sapphire/utilities';
 
+export type EncodedTwemoji = `${1 | 2 | 3}${string}` | 'a9' | 'ae' | 'e50a';
+
+// Hacky workaround for codes Discord and Windows use that don't exist on Twemoji's CDN.
+const TwemojiExceptions = {
+	'\u2764\ufe0f': '2764' // (❤️)
+} as Record<string, EncodedTwemoji>;
+
+/**
+ * Transforms the given emoji to a code point string.
+ * @param emoji The emoji to encode
+ * @example
+ * ```typescript
+ * twemoji('😃');
+ * // → '1f603'
+ * ```
+ */
+export function twemoji(emoji: string): EncodedTwemoji {
+	return TwemojiExceptions[emoji] ?? [...emoji].map((point) => point.codePointAt(0)!.toString(16)).join('-');
+}
+
+/**
+ * Gets the CDN URL for a Twemoji.
+ * @param emoji The encoded Twemoji to use.
+ */
+export function getTwemojiUrl(emoji: EncodedTwemoji) {
+	return `https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/${emoji}.png` as const;
+}
+
 interface EmojiObjectPartial {
 	name: string | null;
 	id: string | null;

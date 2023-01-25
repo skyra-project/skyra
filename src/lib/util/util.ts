@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { send } from '@sapphire/plugin-editable-commands';
-import { isNullishOrEmpty, Nullish, parseURL } from '@sapphire/utilities';
+import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
 import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
@@ -69,26 +69,6 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 export function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	return loadImage(url);
-}
-
-export function twemoji(emoji: string) {
-	const r: string[] = [];
-	let c = 0;
-	let p = 0;
-	let i = 0;
-
-	while (i < emoji.length) {
-		c = emoji.charCodeAt(i++);
-		if (p) {
-			r.push((0x10000 + ((p - 0xd800) << 10) + (c - 0xdc00)).toString(16));
-			p = 0;
-		} else if (c >= 0xd800 && c <= 0xdbff) {
-			p = c;
-		} else {
-			r.push(c.toString(16));
-		}
-	}
-	return r.join('-');
 }
 
 /**
@@ -214,7 +194,7 @@ export function parseRange(input: string): number[] {
  * @param url The url to check
  */
 export function getImageUrl(url: string): string | undefined {
-	const parsed = parseURL(url);
+	const parsed = tryParseURL(url);
 	return parsed && IMAGE_EXTENSION.test(parsed.pathname) ? parsed.href : undefined;
 }
 

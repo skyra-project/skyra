@@ -4,7 +4,7 @@ import { getColor, IMAGE_EXTENSION, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
-import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
+import { cutText, tryParseURL, toTitleCase } from '@sapphire/utilities';
 import { envIsDefined } from '@skyra/env-utilities';
 import { Message, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -41,7 +41,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 					.addField('Type', result.type ? toTitleCase(result.type) : t(LanguageKeys.Commands.Tools.DefineUnknown), true)
 					.setDescription(definition);
 
-				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && parseURL(result.image_url ?? '');
+				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && tryParseURL(result.image_url ?? '');
 				if (imageUrl) embed.setThumbnail(imageUrl.toString());
 
 				return embed;

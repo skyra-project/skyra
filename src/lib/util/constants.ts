@@ -69,7 +69,7 @@ export const enum CdnUrls {
 	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',
 	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
 	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
-	RevolvingHeartTwemoji = 'https://twemoji.maxcdn.com/72x72/1f49e.png',
+	RevolvingHeartTwemoji = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f49e.png',
 	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
 }
 

@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { twemoji } from '#utils/util';
+import { getEncodedTwemoji, getTwemojiUrl } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { TwemojiRegex } from '@sapphire/discord-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -36,15 +36,15 @@ export class UserCommand extends SkyraCommand {
 
 	private async twemoji(args: SkyraCommand.Args, emoji: string) {
 		if (!TwemojiRegex.test(emoji)) this.error(LanguageKeys.Commands.Tools.EmojiInvalid);
-		const emojiCode = twemoji(emoji);
+		const id = getEncodedTwemoji(emoji);
 
-		const name = `${emojiCode}.png`;
-		const attachment = await fetch(`https://twemoji.maxcdn.com/v/latest/72x72/${name}`, FetchResultTypes.Buffer).catch(() => {
+		const attachment = await fetch(getTwemojiUrl(id), FetchResultTypes.Buffer).catch(() => {
 			this.error(LanguageKeys.Commands.Tools.EmojiInvalid);
 		});
 		if (attachment.byteLength >= MAX_EMOJI_SIZE) this.error(LanguageKeys.Commands.Tools.EmojiTooLarge, { emoji });
 
-		const content = args.t(LanguageKeys.Commands.Tools.EmojiTwemoji, { emoji, id: emojiCode });
+		const name = `${id}.png`;
+		const content = args.t(LanguageKeys.Commands.Tools.EmojiTwemoji, { emoji, id });
 
 		return { content, name, attachment } as const;
 	}

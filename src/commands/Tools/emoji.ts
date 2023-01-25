@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getTwemojiUrl, twemoji } from '#utils/functions';
+import { getEncodedTwemoji, getTwemojiUrl } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { TwemojiRegex } from '@sapphire/discord-utilities';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 
 	private async twemoji(args: SkyraCommand.Args, emoji: string) {
 		if (!TwemojiRegex.test(emoji)) this.error(LanguageKeys.Commands.Tools.EmojiInvalid);
-		const id = twemoji(emoji);
+		const id = getEncodedTwemoji(emoji);
 
 		const attachment = await fetch(getTwemojiUrl(id), FetchResultTypes.Buffer).catch(() => {
 			this.error(LanguageKeys.Commands.Tools.EmojiInvalid);

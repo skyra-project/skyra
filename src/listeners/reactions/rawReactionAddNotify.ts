@@ -3,7 +3,7 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
-import { getEmojiId, getEmojiReactionFormat, getTwemojiUrl, SerializedEmoji, twemoji } from '#utils/functions';
+import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -54,7 +54,7 @@ export class UserListener extends Listener {
 				.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setThumbnail(
 					data.emoji.id === null
-						? getTwemojiUrl(twemoji(data.emoji.name!))
+						? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))
 						: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 				)
 				.setDescription(

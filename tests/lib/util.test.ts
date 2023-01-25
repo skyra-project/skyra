@@ -175,12 +175,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('twemoji', () => {
-		test('GIVEN twemoji icon THEN returns identifier for maxcdn', () => {
-			expect(utils.twemoji('😀')).toEqual('1f600');
-		});
-	});
-
 	describe('getContent', () => {
 		test('GIVEN content THEN returns content', () => {
 			expect(

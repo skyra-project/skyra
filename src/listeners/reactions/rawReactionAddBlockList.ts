@@ -5,7 +5,7 @@ import { HardPunishment, ModerationListener, SelfModeratorBitField } from '#lib/
 import { Events } from '#lib/types/Enums';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, getEmojiReactionFormat, getTwemojiUrl, SerializedEmoji, twemoji } from '#utils/functions';
+import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ListenerOptions } from '@sapphire/framework';
@@ -90,7 +90,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 			.setThumbnail(
 				data.emoji.id === null
-					? getTwemojiUrl(twemoji(data.emoji.name!))
+					? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageId})`)

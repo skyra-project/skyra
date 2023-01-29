@@ -33,7 +33,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: 'skyrabot/postgres:latest'
+    image: 'postgres:15-alpine'
     networks:
       - skyra
     ports:
@@ -41,6 +41,10 @@ services:
     restart: always
     volumes:
       - 'postgres-data:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=skyra
 
   redis:
     command: 'redis-server --port 8287 --requirepass redis'

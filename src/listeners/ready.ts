@@ -2,6 +2,7 @@ import { Events, Schedules } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
+import { isNullish } from '@sapphire/utilities';
 import { envParseBoolean } from '@skyra/env-utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
@@ -72,9 +73,12 @@ export class UserListener extends Listener {
 		const line12 = llc(String.raw`              ╢${blc('▓▓/')}   `);
 		const line13 = llc(String.raw`             ▓${blc('╬/')}     `);
 		const line14 = llc(String.raw`            /        `);
+		const line15 = llc(String.raw`                     `);
 
 		// Offset Pad
 		const pad = ' '.repeat(7);
+
+		const isAuthEnabled = !isNullish(client.options.api?.auth);
 
 		console.log(
 			String.raw`
@@ -88,10 +92,11 @@ ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
 ${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
-${line11} ${pad}[${success}] Moderation
-${line12}
+${line11} ${pad}[${isAuthEnabled ? success : failed}] OAuth 2.0 Enabled
+${line12} ${pad}[${success}] Moderation
 ${line13}
-${line14}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+${line14}
+${line15}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}

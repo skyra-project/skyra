@@ -23,11 +23,6 @@ import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
 export class ModerationEntity extends BaseEntity {
-	#manager: ModerationManager = null!;
-	#moderator: User | null = null;
-	#user: User | null = null;
-	#timeout = Date.now() + minutes(15);
-
 	@PrimaryColumn('integer')
 	public caseId = -1;
 
@@ -57,6 +52,11 @@ export class ModerationEntity extends BaseEntity {
 
 	@Column('smallint')
 	public type?: number | null;
+
+	#manager: ModerationManager = null!;
+	#moderator: User | null = null;
+	#user: User | null = null;
+	#timeout = Date.now() + minutes(15);
 
 	public constructor(data?: Partial<ModerationEntity>) {
 		super();

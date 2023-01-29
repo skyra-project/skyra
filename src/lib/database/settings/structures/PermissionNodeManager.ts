@@ -18,10 +18,10 @@ type Nodes = readonly PermissionsNode[];
 type Node = Nodes[number];
 
 export class PermissionNodeManager implements IBaseManager {
+	private sorted = new Collection<string, PermissionsManagerNode>();
+
 	#settings: GuildEntity;
 	#previous: Nodes = [];
-
-	private sorted = new Collection<string, PermissionsManagerNode>();
 
 	public constructor(settings: GuildEntity) {
 		this.#settings = settings;

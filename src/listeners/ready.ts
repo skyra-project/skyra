@@ -92,7 +92,7 @@ ${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
 ${line08} ${blc(process.env.CLIENT_VERSION.padStart(55, ' '))}
 ${line09} ${pad}[${success}] Gateway
 ${line10} ${pad}[${client.analytics ? success : failed}] Analytics
-${line11} ${pad}[${isAuthEnabled ? success : failed}] OAUTH2 Enabled
+${line11} ${pad}[${isAuthEnabled ? success : failed}] OAuth 2.0 Enabled
 ${line12} ${pad}[${success}] Moderation
 ${line13}
 ${line14}

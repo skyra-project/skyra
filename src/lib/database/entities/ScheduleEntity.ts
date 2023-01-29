@@ -29,8 +29,6 @@ export type ResponseValue = PartialResponseValue & { entry: ScheduleEntity };
 
 @Entity('schedule', { schema: 'public' })
 export class ScheduleEntity extends BaseEntity {
-	#manager: ScheduleManager = null!;
-
 	/**
 	 * The id for this scheduled task
 	 */
@@ -76,6 +74,8 @@ export class ScheduleEntity extends BaseEntity {
 	 * Whether or not the entity is paused
 	 */
 	#paused = true;
+
+	#manager: ScheduleManager = null!;
 
 	public setup(manager: ScheduleManager) {
 		this.#manager = manager;

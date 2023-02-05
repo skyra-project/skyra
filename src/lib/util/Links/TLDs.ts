@@ -20,7 +20,6 @@ export const TLDs = [
 	'aco',
 	'actor',
 	'ad',
-	'adac',
 	'ads',
 	'adult',
 	'ae',
@@ -724,7 +723,6 @@ export const TLDs = [
 	'loans',
 	'locker',
 	'locus',
-	'loft',
 	'lol',
 	'london',
 	'lotte',
@@ -1061,7 +1059,6 @@ export const TLDs = [
 	'select',
 	'sener',
 	'services',
-	'ses',
 	'seven',
 	'sew',
 	'sex',
@@ -1388,7 +1385,6 @@ export const TLDs = [
 	'укр', // xn--j1amh
 	'香港', // xn--j6w193g
 	'亚马逊', // xn--jlq480n2rg
-	'诺基亚', // xn--jlq61u9w7b
 	'食品', // xn--jvr189m
 	'飞利浦', // xn--kcrx77d1x4a
 	'台湾', // xn--kprw13d

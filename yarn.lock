@@ -2472,70 +2472,70 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/core@npm:7.34.0"
+"@sentry/core@npm:7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/core@npm:7.36.0"
   dependencies:
-    "@sentry/types": 7.34.0
-    "@sentry/utils": 7.34.0
+    "@sentry/types": 7.36.0
+    "@sentry/utils": 7.36.0
     tslib: ^1.9.3
-  checksum: 8ed510b5b9145c07700fe92064ac6412d1466d572736a12124ca4cf7fc4ac0788e51ebd3f886feac5232cf8be88a3b7fb8c6a3d99a5e8190c367a9a67d634fac
+  checksum: 121d7ca9fe40235ac4d761e82aadb0dd0b8a13d9cfbd37838bc168c59702d1ccd1390dc78ef90b6e6a01f952db91a13b95bdf57dae9d6eca76d5210f518659e8
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/hub@npm:7.34.0"
+"@sentry/hub@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/hub@npm:7.36.0"
   dependencies:
-    "@sentry/core": 7.34.0
-    "@sentry/types": 7.34.0
-    "@sentry/utils": 7.34.0
+    "@sentry/core": 7.36.0
+    "@sentry/types": 7.36.0
+    "@sentry/utils": 7.36.0
     tslib: ^1.9.3
-  checksum: 26134862134aa3b3e572d72cb1c4a7ba0cd82c52b5662026c5bbf3d54547164f5c484006ecb7461cff65922087d5da6a970dc69dc50903f895a3b4eee01f11f5
+  checksum: ca7643eb390a5ab307a908f662573ad600533d93d7735d30e8c317b9a193715e4240e237b291eb8e20274d5e1ab70135475f906f601f80007644d80a7ab86d55
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/integrations@npm:7.34.0"
+"@sentry/integrations@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/integrations@npm:7.36.0"
   dependencies:
-    "@sentry/types": 7.34.0
-    "@sentry/utils": 7.34.0
+    "@sentry/types": 7.36.0
+    "@sentry/utils": 7.36.0
     localforage: ^1.8.1
     tslib: ^1.9.3
-  checksum: 1f023836811d9278c0b788b51f818d526007c126b3f4621993dea247ddfa266866fcb4fe7087c58c2dec0079c4f1e6f574cdf5046dc1762b189deb40053ca834
+  checksum: 96cc1204fe4ae8929cb9c138994b22d1b5ede3023f90e12fe4cba5645d7adb8f2c401ce9d284e8cbc020d827f1b22022fa67c8778d8879a03e820dffd4531d6c
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/node@npm:7.34.0"
+"@sentry/node@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/node@npm:7.36.0"
   dependencies:
-    "@sentry/core": 7.34.0
-    "@sentry/types": 7.34.0
-    "@sentry/utils": 7.34.0
+    "@sentry/core": 7.36.0
+    "@sentry/types": 7.36.0
+    "@sentry/utils": 7.36.0
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: 972eb7edd1217a1d30eaab374e1ad533b4cefc69ab756f123342fc55d0511892f4ebb2e86e03f85edf08fe28b5b22483aff65379c6b8cfc24cda16c988a0d208
+  checksum: a4240844a93cfe02c71412fc25c602d8c6eef5c7fe19be7b5e8a58ebf58fdadea0e4ab6db0d51d20f97aa5b09318edc042229d0316da5dc0d4590ca2cfceb4c6
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/types@npm:7.34.0"
-  checksum: fcd150a85a2ff0e2dffc815bd9e0507fc3b160d53bf72e38394f8678822da7eb191fbd1715f0e9e5b0f36d7f65800c3e5907fa77d446cab0af1d5c083e6d1f93
+"@sentry/types@npm:7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/types@npm:7.36.0"
+  checksum: 7d4d0b049e23ebff208cbd0519e90fba8953268609a11fa16652406c76edd92d190de3af76acc39f2a0b2f640a60762527ce7b59edae9724edb9009b3cb35426
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.34.0":
-  version: 7.34.0
-  resolution: "@sentry/utils@npm:7.34.0"
+"@sentry/utils@npm:7.36.0":
+  version: 7.36.0
+  resolution: "@sentry/utils@npm:7.36.0"
   dependencies:
-    "@sentry/types": 7.34.0
+    "@sentry/types": 7.36.0
     tslib: ^1.9.3
-  checksum: 3eff4d7f5c6affe0775c83ac5e4a289876912ec886da9af6562d78b3902faea84e87c439d0d88fcf065502d46c865ad3d7077efa4923ed0edd4c4be0b2c916b3
+  checksum: 996831ae0895e7531b8a9119ebe5555b974d0b2193b9d143c87bb0ee620a4afe6515d0fda024454207ffcc24c366e7fcbe05e1cebc4e8344fdd6247334152244
   languageName: node
   linkType: hard
 
@@ -2748,10 +2748,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/he@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "@types/he@npm:1.1.2"
-  checksum: 71e9786c35330a2003a7692d5dc4f70946e4c45486f84d7a5792360c6c234cd34bf53421856de40a2c4bead9c21a805c309d72d012467f46bb2cce0571a9ba08
+"@types/he@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@types/he@npm:1.2.0"
+  checksum: 0110608efe61a8fb710c5a344485d70dab48116e9529d10a3175985ad7a118a2547ffd708349681f3ecdbcd6ae91e63c674b73ed0e4bd2c9a57ca793f538c852
   languageName: node
   linkType: hard
 
@@ -2821,10 +2821,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.11.18":
+"@types/node@npm:*":
   version: 18.11.18
   resolution: "@types/node@npm:18.11.18"
   checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.19":
+  version: 18.11.19
+  resolution: "@types/node@npm:18.11.19"
+  checksum: d7cd19fcfc59cbdd3f9ba0b4072cb7adc21bd575bd8eb7d7e698975e63564aaa83f03434f32b12331f84f73d0b369d9cbe2371e359d9d7f5c3361f4987f4f7da
   languageName: node
   linkType: hard
 
@@ -8054,7 +8061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.14.0, nan@npm:^2.17.0":
+"nan@npm:^2.17.0":
   version: 2.17.0
   resolution: "nan@npm:2.17.0"
   dependencies:
@@ -9557,9 +9564,9 @@ __metadata:
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.3.0
     "@sapphire/utilities": ^3.11.0
-    "@sentry/hub": ^7.34.0
-    "@sentry/integrations": ^7.34.0
-    "@sentry/node": ^7.34.0
+    "@sentry/hub": ^7.36.0
+    "@sentry/integrations": ^7.36.0
+    "@sentry/node": ^7.36.0
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.3
     "@skyra/env-utilities": ^1.1.0
@@ -9568,9 +9575,9 @@ __metadata:
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
     "@types/diff": ^5.0.2
-    "@types/he": ^1.1.2
+    "@types/he": ^1.2.0
     "@types/jest": ^29.4.0
-    "@types/node": ^18.11.18
+    "@types/node": ^18.11.19
     "@types/pg": ^8.6.6
     "@types/ws": ^8.5.4
     "@typescript-eslint/eslint-plugin": ^5.49.0
@@ -9605,7 +9612,7 @@ __metadata:
     typescript: ~4.7.4
     utf-8-validate: ^6.0.2
     ws: ^8.12.0
-    zlib-sync: ^0.1.7
+    zlib-sync: ^0.1.8
   languageName: unknown
   linkType: soft
 
@@ -10893,12 +10900,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zlib-sync@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "zlib-sync@npm:0.1.7"
+"zlib-sync@npm:^0.1.8":
+  version: 0.1.8
+  resolution: "zlib-sync@npm:0.1.8"
   dependencies:
-    nan: ^2.14.0
+    nan: ^2.17.0
     node-gyp: latest
-  checksum: 8f6ef7bf5726b41fefffa4509f5679872b425ef47227a59d8c787b32518db6220961262f78b0f6eb1dcd9b52cd71bc8213d4f061b8b56a9b7e82c345a548e6f4
+  checksum: 3ee774339f50b49de764312b74d6ef090e85a9a2d6401e89f6eb1bd33dd59d644d2831c6811e01aa8a51d0ecf51d5f435bd7f551d68d40d3c360a8eebb555b6f
   languageName: node
   linkType: hard

@@ -1,9 +1,7 @@
 name: Update TLDs
 
 on:
-  push:
-    branches:
-      - 'update-tlds-test'
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 6'
 
@@ -14,41 +12,31 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v3
-      - name: Use Node.js v16
+      - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
       - name: Run the TLD updater script
         run: yarn scripts:tlds
-      - name: Install GitHub CLI
-        env:
-          GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
-        run: |
-          curl -sL \
-              $(curl -sL \
-                  -H "Authorization: bearer ${GITHUB_TOKEN}" \
-                  -X POST \
-                  --data '{"query":"query { repository(owner: \"cli\", name: \"cli\") { releases(last: 1) { nodes { releaseAssets(first: 20) { nodes { downloadUrl name }}}}}}"}' "https://api.github.com/graphql" |
-                  jq -cr '.data.repository.releases.nodes[0].releaseAssets.nodes[]? | select(.name | contains("linux_amd64.tar.gz")).downloadUrl') |
-              tar -xz --wildcards "*gh" && mv gh*linux_amd64/bin/gh . && rm -r gh_*linux_amd64
       - name: Commit any changes and create a pull request
         env:
-          GITHUB_USER: NM-EEA-Y
-          GITHUB_EMAIL: contact@skyra.pw
-          GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
+          GITHUB_USER: github-actions[bot]
+          GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add .;
           if git diff-index --quiet HEAD --; then
+            echo "No changes to commit, exiting with code 0"
             exit 0;
           else
             git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git";
             git config --local user.email "${GITHUB_EMAIL}";
             git config --local user.name "${GITHUB_USER}";
-            git checkout -b NM-EEA-Y/update-tlds/$(date +%F-%H-%M);
-            git commit -sam "chore: update TLDs";
+            git checkout -b update-tlds/$(date +%F-%H-%M);
+            git commit -sam "refactor: update TLDs";
             git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-            ./gh pr create --title "refactor: update TLDs" --body "*bleep bloop* I updated the TLDs file" --label refactor --reviewer favna,kyranet -B main;
+            gh pr create -t "refactor: update TLDs" -b "*bleep bloop* I updated the TLDs file" -B main;
           fi

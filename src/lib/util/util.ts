@@ -1,9 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { TwemojiRegex } from '@sapphire/discord.js-utilities';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
-import { getCode, isLetterOrDigit, isWhiteSpace } from '@skyra/char';
 import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
 import {
@@ -82,24 +80,6 @@ export function getContent(message: Message): string | null {
 		if (embed.fields.length) return embed.fields[0].value;
 	}
 	return null;
-}
-
-/**
- * Gets all the contents from a message.
- * @param message The Message instance to get all contents from
- */
-export function getAllContent(message: Message): string {
-	const output: string[] = [];
-	if (message.content) output.push(message.content);
-	for (const embed of message.embeds) {
-		if (embed.author?.name) output.push(embed.author.name);
-		if (embed.title) output.push(embed.title);
-		if (embed.description) output.push(embed.description);
-		for (const field of embed.fields) output.push(`${field.name}\n${field.value}`);
-		if (embed.footer?.text) output.push(embed.footer.text);
-	}
-
-	return output.join('\n');
 }
 
 export interface ImageAttachment {
@@ -278,20 +258,6 @@ export interface DetailedMentionExtractionResult {
 }
 
 /**
- * Creates an array picker function
- * @param array The array to create a pick function from
- * @example
- * const picker = createPick([1, 2, 3, 4]);
- * picker(); // 2
- * picker(); // 1
- * picker(); // 4
- */
-export function createPick<T>(array: T[]): () => T {
-	const { length } = array;
-	return () => array[Math.floor(Math.random() * length)];
-}
-
-/**
  * Picks a random item from an array
  * @param array The array to pick a random item from
  * @example
@@ -318,19 +284,6 @@ export function validateChannelAccess(channel: GuildChannel | ThreadChannel, use
 }
 
 /**
- * Fake GraphQL tag that just returns everything passed in as a single combined string
- * @remark used to trick the GraphQL parser into treating some code as GraphQL parsable data for syntax checking
- * @param gqlData data to pass off as GraphQL code
- */
-export function gql(...args: any[]): string {
-	return args[0].reduce((acc: string, str: string, idx: number) => {
-		acc += str;
-		if (Reflect.has(args, idx + 1)) acc += args[idx + 1];
-		return acc;
-	}, '');
-}
-
-/**
  * Shuffles an array, returning it
  * @param array The array to shuffle
  */
@@ -349,38 +302,6 @@ export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T,
 	const embed = new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary);
 	return send(message, { embeds: [embed] }) as Promise<T>;
 };
-
-/**
- * Gets the base language from an i18n code.
- * @param lang The ISO 639-1 language to process, e.g. `en-US`
- * @returns The base language, for example, `en-US` becomes `en`.
- */
-export function baseLanguage(lang: string): string {
-	const index = lang.indexOf('-');
-	return index === -1 ? lang : lang.slice(0, index);
-}
-
-/**
- * Gets the country from an i18n code.
- * @param lang The ISO 639-1 language to process, e.g. `en-US`
- * @returns The country, for example, `en-US` becomes `US`.
- */
-export function countryLanguage(lang: string): string {
-	const index = lang.lastIndexOf('-');
-	return index === -1 ? lang : lang.slice(index + 1);
-}
-
-export function sanitizeInput(input: string): string {
-	return [...input]
-		.map((c) => {
-			if (TwemojiRegex.test(c)) return c;
-
-			const code = getCode(c);
-
-			return isLetterOrDigit(code) || isWhiteSpace(code) ? c : '';
-		})
-		.join('');
-}
 
 export function getColor(message: Message) {
 	return message.member?.displayColor ?? BrandingColors.Primary;

@@ -37,26 +37,4 @@ export class ExtendedHandler extends Handler {
 			}
 		});
 	}
-
-	public ordinal(cardinal: number) {
-		const dec = cardinal % 10;
-
-		switch (dec) {
-			case 1:
-				return `${cardinal}ro`;
-			case 2:
-				return `${cardinal}do`;
-			case 3:
-				return `${cardinal}ro`;
-			case 0:
-			case 7:
-				return `${cardinal}mo`;
-			case 8:
-				return `${cardinal}vo`;
-			case 9:
-				return `${cardinal}no`;
-			default:
-				return `${cardinal}to`;
-		}
-	}
 }

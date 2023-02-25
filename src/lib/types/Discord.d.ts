@@ -1,5 +1,5 @@
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import type { DMChannel, Guild, GuildMember, Message, TextChannel } from 'discord.js';
+import type { DMChannel, Guild, GuildMember, Message } from 'discord.js';
 
 export interface GuildMessage extends Message {
 	channel: GuildTextBasedChannelTypes;

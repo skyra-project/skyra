@@ -2,14 +2,13 @@
 import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
-import type { AnalyticsData, ColorHandler, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
+import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
-import type { O } from '#utils/constants';
 import type { EmojiObject } from '#utils/functions';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
-import type { Nullish, PickByValue } from '@sapphire/utilities';
+import type { NonNullObject, Nullish, PickByValue } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
 import type { Image } from 'canvas-constructor/napi-rs';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
@@ -59,7 +58,6 @@ declare module '@sapphire/framework' {
 		case: number;
 		channelName: GuildChannel;
 		cleanString: string;
-		color: ColorHandler;
 		command: SkyraCommand;
 		commandMatch: string;
 		commandName: SkyraCommand;
@@ -120,8 +118,8 @@ declare module 'i18next' {
 
 		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: TOptionsBase | string): TReturn;
 		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options?: TOptionsBase | string): TReturn;
-		<K extends string, TArgs extends O, TReturn>(key: CustomFunctionGet<K, TArgs, TReturn>, options?: TOptions<TArgs>): TReturn;
-		<K extends string, TArgs extends O, TReturn>(
+		<K extends string, TArgs extends NonNullObject, TReturn>(key: CustomFunctionGet<K, TArgs, TReturn>, options?: TOptions<TArgs>): TReturn;
+		<K extends string, TArgs extends NonNullObject, TReturn>(
 			key: CustomFunctionGet<K, TArgs, TReturn>,
 			defaultValue: TReturn,
 			options?: TOptions<TArgs>
@@ -182,15 +180,9 @@ declare module '@skyra/env-utilities' {
 		BOTLIST_SPACE_TOKEN: string;
 		BOTS_FOR_DISCORD_TOKEN: string;
 		BOTS_ON_DISCORD_TOKEN: string;
-		CRYPTOCOMPARE_TOKEN: string;
 		DISCORD_BOT_LIST_TOKEN: string;
 		DISCORD_BOTS_TOKEN: string;
-		GOOGLE_API_TOKEN: string;
-		NINTENDO_ID: string;
-		NINTENDO_TOKEN: string;
-		OWLBOT_TOKEN: string;
 		SENTRY_URL: string;
-		THEMOVIEDATABASE_TOKEN: string;
 		TOP_GG_TOKEN: string;
 		TWITCH_CLIENT_ID: string;
 		TWITCH_EVENTSUB_SECRET: string;

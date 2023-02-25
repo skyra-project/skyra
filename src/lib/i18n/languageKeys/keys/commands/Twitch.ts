@@ -1,18 +1,8 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const FollowageDescription = T('commands/twitch:followageDescription');
-export const FollowageExtended = T<LanguageHelpDisplayOptions>('commands/twitch:followageExtended');
-export const TwitchDescription = T('commands/twitch:twitchDescription');
-export const TwitchExtended = T<LanguageHelpDisplayOptions>('commands/twitch:twitchExtended');
 export const TwitchSubscriptionDescription = T('commands/twitch:twitchSubscriptionDescription');
 export const TwitchSubscriptionExtended = T<LanguageHelpDisplayOptions>('commands/twitch:twitchSubscriptionExtended');
-export const Followage = FT<{ user: string; channel: string; time: number }>('commands/twitch:followage');
-export const FollowageMissingEntries = T('commands/twitch:followageMissingEntries');
-export const TwitchNoEntries = T('commands/twitch:twitchNoEntries');
-export const TwitchTitles = T<{ followers: string; views: string; clickToVisit: string; partner: string }>('commands/twitch:twitchTitles');
-export const TwitchPartnershipWithoutAffiliate = T('commands/twitch:twitchPartnershipWithoutAffiliate');
-export const TwitchAffiliateStatus = T<{ affiliated: string; partnered: string }>('commands/twitch:twitchAffiliateStatus');
 export const TwitchSubscriptionStreamerNotFound = T('commands/twitch:twitchSubscriptionStreamerNotFound');
 export const TwitchSubscriptionStatusValues = T<[string, string]>('commands/twitch:twitchSubscriptionStatusValues');
 export const TwitchSubscriptionInvalidStatus = T('commands/twitch:twitchSubscriptionInvalidStatus');

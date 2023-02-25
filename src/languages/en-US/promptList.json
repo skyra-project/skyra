@@ -1,6 +1,0 @@
-{
-	"aborted": "Successfully aborted the prompt.",
-	"attemptFailed": "Invalid input. Attempt **{{attempt}}** out of **{{maxAttempts}}**\n{{list}}",
-	"multipleChoice_other": "There are {{count}} results. Please choose a number between 1 and {{count}}, or write **`CANCEL`** to cancel the prompt.\n{{list}}",
-	"multipleChoice_one": "There are {{count}} result. Please choose a number between 1 and {{count}}, or write **`CANCEL`** to cancel the prompt.\n{{list}}"
-}

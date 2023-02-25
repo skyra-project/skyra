@@ -37,30 +37,4 @@ export class ExtendedHandler extends Handler {
 			}
 		});
 	}
-
-	public ordinal(cardinal: number): string {
-		const cent = cardinal % 100;
-		const dec = cardinal % 10;
-		if (cent > 10 && cent < 20) {
-			switch (dec) {
-				case 1:
-				case 2:
-					return `${cardinal}te`;
-				default:
-					return `${cardinal}de`;
-			}
-		}
-		switch (dec) {
-			case 1:
-				return `${cardinal}ste`;
-			case 2:
-				return `${cardinal}ndre`;
-			case 3:
-				return `${cardinal}dje`;
-			case 6:
-				return `${cardinal}te`;
-			default:
-				return `${cardinal}de`;
-		}
-	}
 }

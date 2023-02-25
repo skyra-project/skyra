@@ -2,14 +2,15 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { minutes, years } from '#utils/common';
+import { Invites } from '#utils/constants';
 import { getColor, sendLoadingMessage } from '#utils/util';
+import { ButtonBuilder } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import { ButtonStyle, PermissionFlagsBits } from 'discord-api-types/v9';
+import { Message, MessageActionRow, MessageEmbed } from 'discord.js';
 
 const enum Actions {
 	List = 'list',
@@ -37,21 +38,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async create(message: Message, args: SkyraCommand.Args) {
-		const duration = await args.pick('timespan', { minimum: minutes(1), maximum: years(5) });
-		const description = args.finished
-			? args.t(LanguageKeys.Commands.Misc.RemindMeCreateNoDescription)
-			: await args.rest('string', { maximum: 1024 });
-
-		const task = await this.container.schedule.add(Schedules.Reminder, Date.now() + duration, {
-			catchUp: true,
-			data: {
-				content: description,
-				user: message.author.id
-			}
-		});
-
-		const content = args.t(LanguageKeys.Commands.Misc.RemindMeCreate, { id: task.id.toString() });
-		return send(message, content);
+		const content = args.t(LanguageKeys.Commands.Misc.RemindMeDeprecated);
+		const row = new MessageActionRow().addComponents([
+			new ButtonBuilder().setLabel('Invite Teryl').setStyle(ButtonStyle.Link).setURL(Invites.Teryl).toJSON()
+		]);
+		return send(message, { content, components: [row] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)

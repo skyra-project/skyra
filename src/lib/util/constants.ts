@@ -10,6 +10,12 @@ export const socialFolder = join(assetsFolder, 'images', 'social');
 export const ZeroWidthSpace = '\u200B';
 export const LongWidthSpace = '\u3000';
 
+export const enum Fonts {
+	FamilyFriends = 'Family-Friends, Roboto-Medium, NotoSans-Medium, NotoEmoji-Medium',
+	Medium = 'Roboto-Medium, NotoSans-Medium, NotoEmoji-Medium',
+	Light = 'Roboto-Light, NotoSans-Light, NotoEmoji-Light'
+}
+
 export const enum Emojis {
 	ArrowB = '<:ArrowB:694594285269680179>',
 	ArrowBL = '<:ArrowBL:694594285118685259>',
@@ -60,9 +66,6 @@ export const enum BrandingColors {
 	Secondary = 0xff9d01
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type O = object;
-
 export const enum CdnUrls {
 	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
 	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
@@ -71,6 +74,10 @@ export const enum CdnUrls {
 	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
 	RevolvingHeartTwemoji = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f49e.png',
 	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
+}
+
+export const enum Invites {
+	Teryl = 'https://discord.com/api/oauth2/authorize?client_id=948377583626637343&permissions=1074004032&scope=applications.commands%20bot'
 }
 
 export const enum LanguageFormatters {
@@ -84,7 +91,6 @@ export const enum LanguageFormatters {
 	InlineCodeblock = 'inlineCodeBlock',
 	CodeBlock = 'codeBlock',
 	JsCodeBlock = 'jsCodeBlock',
-	Ordinal = 'ordinal',
 	OrList = 'orList',
 	Permissions = 'permissions',
 	Random = 'random',

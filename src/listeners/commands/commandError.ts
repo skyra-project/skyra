@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraCommand } from '#lib/structures';
 import { OWNERS } from '#root/config';
-import { Colors, O, rootFolder, ZeroWidthSpace } from '#utils/constants';
+import { Colors, rootFolder, ZeroWidthSpace } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
 import { Args, ArgumentError, Command, CommandErrorPayload, Events, Listener, UserError } from '@sapphire/framework';
-import { codeBlock, cutText } from '@sapphire/utilities';
+import { codeBlock, cutText, NonNullObject } from '@sapphire/utilities';
 import { captureException } from '@sentry/hub';
 import { envIsDefined } from '@skyra/env-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
@@ -94,7 +94,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		const argument = error.argument.name;
 		const identifier = translate(error.identifier);
 		const parameter = error.parameter.replaceAll('`', '῾');
-		return this.alert(message, t(identifier, { ...error, ...(error.context as O), argument, parameter: cutText(parameter, 50) }));
+		return this.alert(message, t(identifier, { ...error, ...(error.context as NonNullObject), argument, parameter: cutText(parameter, 50) }));
 	}
 
 	private userError(message: Message, t: TFunction, error: UserError) {

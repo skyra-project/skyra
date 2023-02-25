@@ -39,6 +39,7 @@ export const RemindMeInvalidId = T('commands/misc:remindmeInvalidId');
 export const RemindMeListEmpty = T('commands/misc:remindmeListEmpty');
 export const RemindMeNotFound = T('commands/misc:remindmeNotfound');
 export const RemindMeShowFooter = FT<{ id: number }, string>('commands/misc:remindmeShowFooter');
+export const RemindMeDeprecated = T('commands/misc:remindmeDeprecated');
 export const ShipData = FT<{ romeoUsername: string; julietUsername: string; shipName: string }, { title: string; description: string }>(
 	'commands/misc:shipData'
 );
@@ -48,10 +49,6 @@ export const SnipeDescription = T<string>('commands/misc:snipeDescription');
 export const SnipeEmpty = T<string>('commands/misc:snipeEmpty');
 export const SnipeExtended = T<LanguageHelpDisplayOptions>('commands/misc:snipeExtended');
 export const SnipeTitle = T<string>('commands/misc:snipeTitle');
-export const SkyraFactDescription = T<string>('commands/misc:skyrafactDescription');
-export const SkyraFactExtended = T<LanguageHelpDisplayOptions>('commands/misc:skyrafactExtended');
-export const SkyraFactTitle = T<string>('commands/misc:skyrafactTitle');
-export const SkyraFactMessages = T<readonly string[]>('commands/misc:skyrafactMessages');
 export const TheSearchDescription = T<string>('commands/misc:thesearchDescription');
 export const TheSearchExtended = T<LanguageHelpDisplayOptions>('commands/misc:thesearchExtended');
 export const TriggeredDescription = T<string>('commands/misc:triggeredDescription');

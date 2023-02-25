@@ -2,8 +2,14 @@ import { assetsFolder } from '#utils/constants';
 import { loadFont } from 'canvas-constructor/napi-rs';
 import { join } from 'node:path';
 
-loadFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular');
-loadFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular');
-loadFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular');
-loadFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight');
-loadFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
+const folder = join(assetsFolder, 'fonts');
+
+loadFont(join(folder, 'Family-Friends.ttf'), 'Family-Friends');
+
+loadFont(join(folder, 'Roboto-Medium.ttf'), 'Roboto-Medium');
+loadFont(join(folder, 'NotoSans-Medium.ttf'), 'NotoSans-Medium');
+loadFont(join(folder, 'NotoEmoji-Medium.ttf'), 'NotoEmoji-Medium');
+
+loadFont(join(folder, 'Roboto-Light.ttf'), 'Roboto-Light');
+loadFont(join(folder, 'NotoSans-Light.ttf'), 'NotoSans-Light');
+loadFont(join(folder, 'NotoEmoji-Light.ttf'), 'NotoEmoji-Light');

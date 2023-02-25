@@ -7,6 +7,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	name: '\u200Bv7-iriss',
 	aliases: ['suggest', 'resolve-suggestion', 'resu'],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,

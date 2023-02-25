@@ -3,7 +3,6 @@ export * as Animal from './commands/Animal';
 export * as Fun from './commands/Fun';
 export * as Games from './commands/Games';
 export * as General from './commands/General';
-export * as Google from './commands/Google';
 export * as Management from './commands/Management';
 export * as Misc from './commands/Misc';
 export * as Moderation from './commands/Moderation';

@@ -1,6 +1,6 @@
 {
 	"name": "skyra",
-	"version": "6.1.0",
+	"version": "6.2.0",
 	"description": "Multipurpose Discord Bot built on Sapphire Framework",
 	"author": "Skyra Project",
 	"license": "Apache-2.0",
@@ -21,7 +21,6 @@
 		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#lib/setup": "./dist/lib/setup/index.js",
 		"#lib/types": "./dist/lib/types/index.js",
-		"#lib/weather": "./dist/lib/weather/index.js",
 		"#lib/i18n/languageKeys": "./dist/lib/i18n/languageKeys/index.js",
 		"#root/*": "./dist/*.js",
 		"#languages": "./dist/languages/index.js",
@@ -162,5 +161,8 @@
 		}
 	},
 	"prettier": "@sapphire/prettier-config",
-	"packageManager": "yarn@3.4.1"
+	"packageManager": "yarn@3.4.1",
+	"volta": {
+		"node": "16.19.1"
+	}
 }

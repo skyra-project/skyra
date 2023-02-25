@@ -32,6 +32,7 @@ export const V7IrissMessage = FT<{ command: string }>('commands/general:v7IrissM
 export const V7NekokaiMessage = FT<{ command: string }>('commands/general:v7NekokaiMessage');
 export const V7PokemonMessage = FT<{ command: string }>('commands/general:v7PokemonMessage');
 export const V7NayreMessage = FT<{ command: string }>('commands/general:v7NayreMessage');
+export const V7TerylMessage = FT<{ command: string }>('commands/general:v7TerylMessage');
 
 export interface InfoComponentLabels {
 	addToServer: string;

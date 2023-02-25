@@ -2,16 +2,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
-import { Invites } from '#utils/constants';
-import { sendLoadingMessage } from '#utils/util';
-import { ButtonBuilder } from '@discordjs/builders';
+import { getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { ButtonStyle } from 'discord-api-types/v9';
-import { MessageActionRow } from 'discord.js';
 
 const subredditBlocklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const subredditTitleBlocklist = /nsfl/i;
@@ -49,10 +45,7 @@ export class UserCommand extends SkyraCommand {
 			author: post.author,
 			url: post.spoiler ? `||${post.url}||` : post.url
 		});
-		const row = new MessageActionRow().addComponents([
-			new ButtonBuilder().setLabel('Invite Teryl').setStyle(ButtonStyle.Link).setURL(Invites.Teryl).toJSON()
-		]);
-		return send(message, { content, components: [row], allowedMentions: { users: [], roles: [] } });
+		return send(message, { content, components: [getTerylInviteComponentRow()], allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async fetchData(reddit: string) {

@@ -4,16 +4,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { Invites } from '#utils/constants';
 import { RequiresLevel } from '#utils/decorators';
-import { getColor, sendLoadingMessage } from '#utils/util';
-import { ButtonBuilder } from '@discordjs/builders';
+import { getColor, getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, codeBlock } from '@sapphire/utilities';
-import { ButtonStyle, PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageActionRow, MessageEmbed, MessageOptions } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { MessageEmbed, MessageOptions } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['tags', 'custom-command', 'copy-pasta'],
@@ -65,10 +63,7 @@ export class UserCommand extends SkyraCommand {
 	@RequiresLevel(PermissionLevels.Moderator, LanguageKeys.Commands.Tags.TagPermissionLevel)
 	public async deprecated(message: GuildMessage, args: SkyraCommand.Args) {
 		const content = args.t(LanguageKeys.Commands.Tags.Deprecated);
-		const row = new MessageActionRow().addComponents([
-			new ButtonBuilder().setLabel('Invite Teryl').setStyle(ButtonStyle.Link).setURL(Invites.Teryl).toJSON()
-		]);
-		return send(message, { content, components: [row] });
+		return send(message, { content, components: [getTerylInviteComponentRow()] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)

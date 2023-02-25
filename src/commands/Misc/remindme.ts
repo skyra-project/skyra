@@ -2,15 +2,13 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { Invites } from '#utils/constants';
-import { getColor, sendLoadingMessage } from '#utils/util';
-import { ButtonBuilder } from '@discordjs/builders';
+import { getColor, getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { ButtonStyle, PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageActionRow, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { Message, MessageEmbed } from 'discord.js';
 
 const enum Actions {
 	List = 'list',
@@ -39,10 +37,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async create(message: Message, args: SkyraCommand.Args) {
 		const content = args.t(LanguageKeys.Commands.Misc.RemindMeDeprecated);
-		const row = new MessageActionRow().addComponents([
-			new ButtonBuilder().setLabel('Invite Teryl').setStyle(ButtonStyle.Link).setURL(Invites.Teryl).toJSON()
-		]);
-		return send(message, { content, components: [row] });
+		return send(message, { content, components: [getTerylInviteComponentRow()] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)

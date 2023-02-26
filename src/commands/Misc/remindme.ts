@@ -2,8 +2,7 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { minutes, years } from '#utils/common';
-import { getColor, sendLoadingMessage } from '#utils/util';
+import { getColor, getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -37,21 +36,8 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public async create(message: Message, args: SkyraCommand.Args) {
-		const duration = await args.pick('timespan', { minimum: minutes(1), maximum: years(5) });
-		const description = args.finished
-			? args.t(LanguageKeys.Commands.Misc.RemindMeCreateNoDescription)
-			: await args.rest('string', { maximum: 1024 });
-
-		const task = await this.container.schedule.add(Schedules.Reminder, Date.now() + duration, {
-			catchUp: true,
-			data: {
-				content: description,
-				user: message.author.id
-			}
-		});
-
-		const content = args.t(LanguageKeys.Commands.Misc.RemindMeCreate, { id: task.id.toString() });
-		return send(message, content);
+		const content = args.t(LanguageKeys.Commands.Misc.RemindMeDeprecated);
+		return send(message, { content, components: [getTerylInviteComponentRow()] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)

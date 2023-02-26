@@ -1,18 +1,4 @@
 {
-	"followage": "{{user}} has been following {{channel}} for {{time, duration}}.",
-	"followageMissingEntries": "Either the user or the channel do not exist. Make sure you wrote their names correctly.",
-	"twitchNoEntries": "There are no entries. Are you sure you wrote the user name correctly?",
-	"twitchTitles": {
-		"followers": "Followers",
-		"views": "Views",
-		"clickToVisit": "Click to go to streamer's channel",
-		"partner": "Partner"
-	},
-	"twitchPartnershipWithoutAffiliate": "This channel is not part of the Twitch affiliate program.",
-	"twitchAffiliateStatus": {
-		"affiliated": "This is an affiliated channel.",
-		"partnered": "This is a partnered channel."
-	},
 	"twitchSubscriptionStreamerNotFound": "{{REDCROSS}} Sorry, I could not find the streamer. Are you sure you wrote their name correctly?",
 	"twitchSubscriptionStatusValues": [
 		"online",
@@ -37,42 +23,6 @@
 		"offline": "Offline"
 	},
 	"twitchSubscriptionShowUnknownUser": "Unknown",
-	"followageDescription": "Check how long a Twitch user has been following a channel.",
-	"followageExtended": {
-		"usages": [
-			"Username ChannelName"
-		],
-		"extendedHelp": "Useful if you want to flex how long you've been a fan of your favorite Twitch streamer",
-		"explainedUsage": [
-			[
-				"Username",
-				"The name of the Twitch user to check."
-			],
-			[
-				"ChannelName",
-				"The name of the Twitch channel to check."
-			]
-		],
-		"examples": [
-			"dallas cohhcarnage"
-		]
-	},
-	"twitchDescription": "Check the information about a Twitch profile.",
-	"twitchExtended": {
-		"usages": [
-			"Username"
-		],
-		"extendedHelp": "Shows you how many followers and views a channel has had as well as if they are partnered or not.",
-		"explainedUsage": [
-			[
-				"Username",
-				"The Twitch user to get info about"
-			]
-		],
-		"examples": [
-			"riotgames"
-		]
-	},
 	"twitchSubscriptionDescription": "Manage the subscriptions for your server.",
 	"twitchSubscriptionExtended": {
 		"usages": [

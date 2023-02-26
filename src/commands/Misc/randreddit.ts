@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import type { Reddit } from '#lib/types/definitions/Reddit';
-import { sendLoadingMessage } from '#utils/util';
+import { getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
@@ -45,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 			author: post.author,
 			url: post.spoiler ? `||${post.url}||` : post.url
 		});
-		return send(message, { content, allowedMentions: { users: [], roles: [] } });
+		return send(message, { content, components: [getTerylInviteComponentRow()], allowedMentions: { users: [], roles: [] } });
 	}
 
 	private async fetchData(reddit: string) {

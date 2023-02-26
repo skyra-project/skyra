@@ -6,7 +6,6 @@ export const None = T('globals:none');
 export const Unknown = T('globals:unknown');
 export const PaginatedMessagePage = T('globals:paginatedMessagePage');
 export const PaginatedMessageWrongUserInteractionReply = FT<{ user: string }>('globals:paginatedMessageWrongUserInteractionReply');
-export const OrdinalValue = FT<{ value: string }>('globals:ordinalValue');
 export const DurationValue = FT<{ value: number }>('globals:durationValue');
 export const NumberValue = FT<{ value: number }>('globals:numberValue');
 export const NumberCompactValue = FT<{ value: number }>('globals:numberCompactValue');

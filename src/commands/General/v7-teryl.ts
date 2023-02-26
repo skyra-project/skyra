@@ -7,35 +7,41 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
-	name: '\u200Bv7-pokemon',
+	name: '\u200Bv7-teryl',
 	aliases: [
-		'abilities',
-		'ability',
-		'advantage',
-		'bag',
-		'dex',
-		'dexter',
-		'flavor',
-		'flavors',
-		'flavour',
-		'flavours',
-		'item',
-		'learn',
-		'learnall',
-		'learnset',
-		'matchup',
-		'mon',
-		'move',
-		'poke',
-		'pokeability',
-		'pokedex',
-		'pokeimage',
-		'pokeitem',
-		'pokemon',
-		'pokesprite',
-		'sprite',
-		'type',
-		'weakness'
+		'add-emoji',
+		'choice',
+		'choise',
+		'choose',
+		'color',
+		'colour',
+		'content',
+		'create-emoji',
+		'currency',
+		'def',
+		'defination',
+		'define',
+		'definition',
+		'dictionary',
+		'emoji',
+		'emote',
+		'exchange',
+		'followage',
+		'message-source',
+		'money',
+		'msg-source',
+		'pick',
+		'poll',
+		'price',
+		'saelem',
+		'source',
+		'spoll',
+		'twitch',
+		'weather',
+		'wiki',
+		'wikipedia',
+		'youtube',
+		'yt'
 	],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,
@@ -50,7 +56,7 @@ export class UserCommand extends SkyraCommand {
 				name: this.container.client.user!.tag,
 				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			})
-			.setDescription(args.t(LanguageKeys.Commands.General.V7PokemonMessage, { command: args.commandContext.commandName }))
+			.setDescription(args.t(LanguageKeys.Commands.General.V7TerylMessage, { command: args.commandContext.commandName }))
 			.setTimestamp();
 		return send(message, { embeds: [embed] });
 	}

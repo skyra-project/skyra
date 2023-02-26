@@ -3,9 +3,8 @@ import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraArgs } from '#lib/structures';
-import type { O } from '#utils/constants';
 import { AliasPiece, AliasPieceOptions, ArgumentError, UserError } from '@sapphire/framework';
-import type { Awaitable } from '@sapphire/utilities';
+import type { Awaitable, NonNullObject } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -92,7 +91,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	protected errorFromArgument<E>(args: Serializer.Args, error: UserError | ArgumentError<E>): SerializerResult<T> {
 		const argument = error instanceof ArgumentError ? error.argument.name : 'Unknown';
 		const identifier = translate(error.identifier);
-		return this.error(args.t(identifier, { ...error, ...(error.context as O), argument }));
+		return this.error(args.t(identifier, { ...error, ...(error.context as NonNullObject), argument }));
 	}
 
 	/**

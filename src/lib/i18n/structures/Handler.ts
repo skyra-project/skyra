@@ -18,8 +18,6 @@ export abstract class Handler {
 		this.dateTime = new Intl.DateTimeFormat(this.name, { timeZone: 'Etc/UTC', dateStyle: 'short', timeStyle: 'medium' });
 		this.duration = new DurationFormatter(options.duration);
 	}
-
-	public abstract ordinal(cardinal: number): string;
 }
 
 export namespace Handler {

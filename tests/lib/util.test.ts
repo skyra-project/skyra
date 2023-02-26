@@ -213,92 +213,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('getAllContent', () => {
-		test('GIVEN content THEN returns content', () => {
-			expect(
-				utils.getAllContent({
-					content: 'Something',
-					embeds: []
-				} as unknown as Message)
-			).toEqual('Something');
-		});
-
-		test('GIVEN description in embed THEN returns description', () => {
-			expect(
-				utils.getAllContent({
-					content: '',
-					embeds: [new MessageEmbed().setDescription('Hey there!')]
-				} as unknown as Message)
-			).toEqual('Hey there!');
-		});
-
-		test('GIVEN field value in embed THEN returns field value', () => {
-			expect(
-				utils.getAllContent({
-					content: '',
-					embeds: [new MessageEmbed().addField('Name', 'Value')]
-				} as unknown as Message)
-			).toEqual('Name\nValue');
-		});
-
-		test('GIVEN no detectable content THEN returns null', () => {
-			expect(
-				utils.getAllContent({
-					content: '',
-					embeds: [new MessageEmbed()]
-				} as unknown as Message)
-			).toEqual('');
-		});
-
-		test('GIVEN content and description in embed THEN returns both', () => {
-			expect(
-				utils.getAllContent({
-					content: 'Something',
-					embeds: [new MessageEmbed().setDescription('Hey there!')]
-				} as unknown as Message)
-			).toEqual('Something\nHey there!');
-		});
-
-		test('GIVEN content and author in embed THEN returns both', () => {
-			expect(
-				utils.getAllContent({
-					content: 'Something',
-					embeds: [new MessageEmbed().setAuthor({ name: 'Some author!' })]
-				} as unknown as Message)
-			).toEqual('Something\nSome author!');
-		});
-
-		test('GIVEN content and title in embed THEN returns both', () => {
-			expect(
-				utils.getAllContent({
-					content: 'Something',
-					embeds: [new MessageEmbed().setTitle('Some title!')]
-				} as unknown as Message)
-			).toEqual('Something\nSome title!');
-		});
-
-		test('GIVEN description and footer in embed THEN returns both', () => {
-			expect(
-				utils.getAllContent({
-					content: '',
-					embeds: [new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' })]
-				} as unknown as Message)
-			).toEqual('Description!\nSome footer!');
-		});
-
-		test('GIVEN two embeds THEN returns both', () => {
-			expect(
-				utils.getAllContent({
-					content: '',
-					embeds: [
-						new MessageEmbed().setDescription('Description!').setFooter({ text: 'Some footer!' }),
-						new MessageEmbed().setDescription('Other embed!').setFooter({ text: 'Another footer!' })
-					]
-				} as unknown as Message)
-			).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');
-		});
-	});
-
 	describe('getImage', () => {
 		test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
 			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
@@ -480,22 +394,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('createPick', () => {
-		beforeAll(() => {
-			// Mock out random so the result is predictable
-			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
-		});
-
-		afterAll(() => {
-			(global.Math.random as any).mockRestore();
-		});
-
-		test('GIVEN simple picker THEN picks first value', () => {
-			const picker = utils.createPick([1, 2, 3, 4]);
-			expect(picker()).toEqual(1);
-		});
-	});
-
 	describe('pickRandom', () => {
 		beforeAll(() => {
 			// Mock out random so the result is predictable
@@ -509,40 +407,6 @@ describe('Utils', () => {
 		test('GIVEN simple picker THEN picks first value', () => {
 			const randomEntry = utils.pickRandom([1, 2, 3, 4]);
 			expect(randomEntry).toEqual(1);
-		});
-	});
-
-	describe('gql', () => {
-		test('GIVEN gql tag THEN returns unmodified code', () => {
-			expect(utils.gql`
-			fragment one on two {
-				one
-				two
-			}`).toEqual(`
-			fragment one on two {
-				one
-				two
-			}`);
-		});
-
-		test('GIVEN nested gql tag THEN returns unmodified code', () => {
-			const nestableCode = utils.gql`
-				fragment two on three {
-					three
-					four
-				}`;
-
-			expect(utils.gql`
-			${nestableCode}
-			fragment one on two {
-				one
-				two
-			}`).toEqual(`
-			${nestableCode}
-			fragment one on two {
-				one
-				two
-			}`);
 		});
 	});
 

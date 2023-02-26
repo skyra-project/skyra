@@ -3,11 +3,6 @@ import { FT, T } from '#lib/types';
 
 export const ChangeMyMindDescription = T<string>('commands/fun:changemymindDescription');
 export const ChangeMyMindExtended = T<LanguageHelpDisplayOptions>('commands/fun:changemymindExtended');
-export const ChoiceDescription = T<string>('commands/fun:choiceDescription');
-export const ChoiceDuplicates = FT<{ words: string }, string>('commands/fun:choiceDuplicates');
-export const ChoiceExtended = T<LanguageHelpDisplayOptions>('commands/fun:choiceExtended');
-export const ChoiceMissing = T<string>('commands/fun:choiceMissing');
-export const ChoiceOutput = FT<{ user: string; word: string }, string>('commands/fun:choiceOutput');
 export const DiceDescription = T<string>('commands/fun:diceDescription');
 export const DiceExtended = T<LanguageHelpDisplayOptions>('commands/fun:diceExtended');
 export const DiceOutput = FT<{ result: number }, string>('commands/fun:diceOutput');

@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { assetsFolder } from '#utils/constants';
-import { sanitizeInput } from '#utils/util';
+import { assetsFolder, Fonts } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Canvas, Image, loadImage } from 'canvas-constructor/napi-rs';
@@ -18,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 	private kTemplate: Image = null!;
 
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
-		const text = sanitizeInput(await args.rest('string'));
+		const text = await args.rest('string');
 		const attachment = await this.generate(text);
 		return send(message, { files: [{ attachment, name: 'TheSearch.png' }] });
 	}
@@ -27,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 		return new Canvas(700, 612)
 			.printImage(this.kTemplate, 0, 0, 700, 612)
 			.setTextAlign('center')
-			.setTextFont('19px FamilyFriends')
+			.setTextFont(`19px ${Fonts.FamilyFriends}`)
 			.createRectangleClip(61, 335, 156, 60)
 			.printWrappedText(text, 143, 360, 156)
 			.pngAsync();

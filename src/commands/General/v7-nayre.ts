@@ -7,6 +7,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { Message, MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
+	name: '\u200Bv7-nayre',
 	aliases: [
 		'balance',
 		'bal',

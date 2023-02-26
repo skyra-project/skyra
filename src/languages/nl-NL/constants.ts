@@ -37,8 +37,4 @@ export class ExtendedHandler extends Handler {
 			}
 		});
 	}
-
-	public ordinal(cardinal: number): string {
-		return `${cardinal}e`;
-	}
 }

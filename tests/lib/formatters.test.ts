@@ -35,7 +35,7 @@ describe('formatters', () => {
 				flags: 0
 			};
 
-			return new Message(client, { ...messageData, ...data }) as GuildMessage;
+			return Reflect.construct(Message, [client, { ...messageData, ...data }]) as GuildMessage;
 		}
 
 		function t() {

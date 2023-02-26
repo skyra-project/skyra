@@ -169,9 +169,6 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 				case LanguageFormatters.NumberCompact: {
 					return getHandler(language!).numberCompact.format(value as number);
 				}
-				case LanguageFormatters.Ordinal: {
-					return getHandler(language!).ordinal(value as number);
-				}
 				case LanguageFormatters.Duration: {
 					return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
 				}

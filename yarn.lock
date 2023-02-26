@@ -5250,7 +5250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.22.0, eslint@npm:^8.34.0":
+"eslint@npm:^8.22.0, eslint@npm:^8.35.0":
   version: 8.35.0
   resolution: "eslint@npm:8.35.0"
   dependencies:
@@ -9592,7 +9592,7 @@ __metadata:
     diff: ^5.1.0
     discord-api-types: ~0.33.5
     discord.js: ^13.13.1
-    eslint: ^8.34.0
+    eslint: ^8.35.0
     eslint-config-prettier: ^8.6.0
     eslint-plugin-prettier: ^4.2.1
     he: ^1.2.0

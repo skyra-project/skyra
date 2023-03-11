@@ -742,7 +742,6 @@ export const TLDs = [
 	'lv',
 	'ly',
 	'ma',
-	'macys',
 	'madrid',
 	'maif',
 	'maison',

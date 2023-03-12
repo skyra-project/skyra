@@ -62,7 +62,7 @@
 		"@sapphire/plugin-i18next": "^2.5.4",
 		"@sapphire/plugin-logger": "^2.2.3",
 		"@sapphire/plugin-subcommands": "^2.2.2",
-		"@sapphire/ratelimits": "^2.4.5",
+		"@sapphire/ratelimits": "^2.4.6",
 		"@sapphire/snowflake": "^3.4.0",
 		"@sapphire/stopwatch": "^1.5.0",
 		"@sapphire/time-utilities": "^1.7.8",

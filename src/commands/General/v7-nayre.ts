@@ -37,7 +37,6 @@ import { Message, MessageEmbed } from 'discord.js';
 		'lb',
 		'top',
 		'scoreboard',
-		'sb',
 		'level',
 		'lvl',
 		'rank',

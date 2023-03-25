@@ -3,7 +3,6 @@ import { SkyraCommand } from '#lib/structures';
 import { ButtonSkyraV7, makeRemovedMessage, makeRow } from '#utils/deprecate';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 const row = makeRow(ButtonSkyraV7);

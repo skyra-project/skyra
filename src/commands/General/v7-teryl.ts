@@ -4,7 +4,6 @@ import { ButtonInviteTeryl, ButtonSkyraV7, createDeprecatedList, makeReplacedMes
 import { inlineCode } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
 import type { Message } from 'discord.js';
 
 const list = createDeprecatedList({

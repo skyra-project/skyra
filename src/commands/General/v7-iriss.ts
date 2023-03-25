@@ -1,29 +1,32 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getColor } from '#utils/util';
+import { ButtonInviteIriss, ButtonSkyraV7, createDeprecatedList, makeReplacedMessage, makeRow } from '#utils/deprecate';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import type { Message } from 'discord.js';
+
+const list = createDeprecatedList({
+	entries: [
+		{ out: '</suggest:977945558406815797>', in: 'suggest' },
+		{
+			out: ['</resolve accept:977945558406815796>', '</resolve consider:977945558406815796>', '</resolve deny:977945558406815796>'],
+			in: ['resolve-suggestion', 'resu']
+		}
+	]
+});
+
+const row = makeRow(ButtonInviteIriss, ButtonSkyraV7);
 
 @ApplyOptions<SkyraCommand.Options>({
 	name: '\u200Bv7-iriss',
-	aliases: ['suggest', 'resolve-suggestion', 'resu'],
+	aliases: [...list.keys()],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,
-	hidden: true,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
+	hidden: true
 })
 export class UserCommand extends SkyraCommand {
 	public messageRun(message: Message, args: SkyraCommand.Args) {
-		const embed = new MessageEmbed()
-			.setColor(getColor(message))
-			.setAuthor({
-				name: this.container.client.user!.tag,
-				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
-			.setDescription(args.t(LanguageKeys.Commands.General.V7IrissMessage, { command: args.commandContext.commandName }))
-			.setTimestamp();
-		return send(message, { embeds: [embed] });
+		return send(message, makeReplacedMessage(args.commandContext.commandName, row, list));
 	}
 }

@@ -1,63 +1,42 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getColor } from '#utils/util';
+import { ButtonInviteTeryl, ButtonSkyraV7, createDeprecatedList, makeReplacedMessage, makeRow } from '#utils/deprecate';
+import { inlineCode } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import type { Message } from 'discord.js';
+
+const list = createDeprecatedList({
+	entries: [
+		{ out: '</choice:1078828281555603487>', in: ['choice', 'choise', 'choose', 'pick'] },
+		{ out: '</color:1078828281949859983>', in: ['color', 'colour'] },
+		{ out: '</create-emoji:1078828281555603495>', in: ['add-emoji', 'create-emoji'] },
+		{ out: '</dictionary:1078828281555603490>', in: ['def', 'defination', 'define', 'definition', 'dictionary'] },
+		{ out: '</emoji:1078828281949859982>', in: ['emoji', 'emote'] },
+		{ out: '</poll:1078828281949859987>', in: ['poll', 'spoll'] },
+		{ out: '</price:1078828281555603489>', in: ['currency', 'exchange', 'money', 'price'] },
+		{ out: '</reddit:1078828281555603492>', in: ['rand', 'rand-reddit', 'reddit'] },
+		{ out: '</twitch followage:1078828281555603488>', in: ['followage'] },
+		{ out: '</twitch user:1078828281555603488>', in: ['twitch'] },
+		{ out: '</weather:1078828281555603494>', in: ['weather'] },
+		{ out: '</wikipedia:1078828281555603491>', in: ['wiki', 'wikipedia'] },
+		{ out: '</youtube:1078828281555603493>', in: ['youtube', 'yt'] },
+		{ out: inlineCode('Apps > Get Message JSON'), in: ['content', 'message-source', 'msg-source', 'source'] }
+	]
+});
+
+const row = makeRow(ButtonInviteTeryl, ButtonSkyraV7);
 
 @ApplyOptions<SkyraCommand.Options>({
 	name: '\u200Bv7-teryl',
-	aliases: [
-		'add-emoji',
-		'choice',
-		'choise',
-		'choose',
-		'color',
-		'colour',
-		'content',
-		'create-emoji',
-		'currency',
-		'def',
-		'defination',
-		'define',
-		'definition',
-		'dictionary',
-		'emoji',
-		'emote',
-		'exchange',
-		'followage',
-		'message-source',
-		'money',
-		'msg-source',
-		'pick',
-		'poll',
-		'price',
-		'saelem',
-		'source',
-		'spoll',
-		'twitch',
-		'weather',
-		'wiki',
-		'wikipedia',
-		'youtube',
-		'yt'
-	],
+	aliases: [...list.keys()],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,
-	hidden: true,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
+	hidden: true
 })
 export class UserCommand extends SkyraCommand {
 	public messageRun(message: Message, args: SkyraCommand.Args) {
-		const embed = new MessageEmbed()
-			.setColor(getColor(message))
-			.setAuthor({
-				name: this.container.client.user!.tag,
-				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
-			.setDescription(args.t(LanguageKeys.Commands.General.V7TerylMessage, { command: args.commandContext.commandName }))
-			.setTimestamp();
-		return send(message, { embeds: [embed] });
+		return send(message, makeReplacedMessage(args.commandContext.commandName, row, list));
 	}
 }

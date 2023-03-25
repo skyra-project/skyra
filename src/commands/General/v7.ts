@@ -1,10 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getColor } from '#utils/util';
+import { ButtonSkyraV7, makeRemovedMessage, makeRow } from '#utils/deprecate';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import type { Message } from 'discord.js';
+
+const row = makeRow(ButtonSkyraV7);
 
 @ApplyOptions<SkyraCommand.Options>({
 	name: '\u200Bv7',
@@ -77,6 +79,7 @@ import { Message, MessageEmbed } from 'discord.js';
 		'reddit-user',
 		'redditor',
 		'reset-birthday',
+		'saelem',
 		'search',
 		'set-birthday',
 		'set-starboard-emoji',
@@ -110,19 +113,10 @@ import { Message, MessageEmbed } from 'discord.js';
 	],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,
-	hidden: true,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
+	hidden: true
 })
 export class UserCommand extends SkyraCommand {
 	public messageRun(message: Message, args: SkyraCommand.Args) {
-		const embed = new MessageEmbed()
-			.setColor(getColor(message))
-			.setAuthor({
-				name: this.container.client.user!.tag,
-				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
-			.setDescription(args.t(LanguageKeys.Commands.General.V7Message, { command: args.commandContext.commandName }))
-			.setTimestamp();
-		return send(message, { embeds: [embed] });
+		return send(message, makeRemovedMessage(args.commandContext.commandName, row));
 	}
 }

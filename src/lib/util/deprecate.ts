@@ -11,6 +11,11 @@ export function createDeprecatedList(options: Options) {
 		const value = typeof entry.out === 'string' ? [entry.out] : entry.out;
 		for (const key of keys) {
 			values.set(key, value);
+
+			// Mimic CommandOptions#generateDashLessAliases:
+			if (key.includes('-')) {
+				values.set(key.replaceAll('-', ''), value);
+			}
 		}
 	}
 

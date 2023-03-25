@@ -22,6 +22,7 @@ const row = makeRow(ButtonInviteIriss, ButtonSkyraV7);
 	aliases: [...list.keys()],
 	description: LanguageKeys.Commands.General.V7Description,
 	detailedDescription: LanguageKeys.Commands.General.V7Extended,
+	generateDashLessAliases: false,
 	hidden: true
 })
 export class UserCommand extends SkyraCommand {

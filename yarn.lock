@@ -1477,13 +1477,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^17.4.4":
-  version: 17.4.4
-  resolution: "@commitlint/cli@npm:17.4.4"
+"@commitlint/cli@npm:^17.5.0":
+  version: 17.5.0
+  resolution: "@commitlint/cli@npm:17.5.0"
   dependencies:
     "@commitlint/format": ^17.4.4
     "@commitlint/lint": ^17.4.4
-    "@commitlint/load": ^17.4.4
+    "@commitlint/load": ^17.5.0
     "@commitlint/read": ^17.4.4
     "@commitlint/types": ^17.4.4
     execa: ^5.0.0
@@ -1493,7 +1493,7 @@ __metadata:
     yargs: ^17.0.0
   bin:
     commitlint: cli.js
-  checksum: 5e77737b32f58b7b2ae14f183605c3c3bec2d23d786448ec99e43fd5bf6b21e43f8ba19c98785ee8bef1472a96ac912bffcc34c2ff20c9f6700f848e7f7000a0
+  checksum: d7d7a016a64d323ecbd3f9cc652039323d6ba735d13f0820dcbf78d3f270a63b4e609ef0fdd3ee2cfa749ad74bf59f9d4a7d74c3458ea1e849916078f9303bad
   languageName: node
   linkType: hard
 
@@ -1569,7 +1569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:>6.1.1, @commitlint/load@npm:^17.4.4":
+"@commitlint/load@npm:>6.1.1":
   version: 17.4.4
   resolution: "@commitlint/load@npm:17.4.4"
   dependencies:
@@ -1588,6 +1588,28 @@ __metadata:
     ts-node: ^10.8.1
     typescript: ^4.6.4
   checksum: 4fa16296a1c35e26f4c37d4c24fe92b965e85113bb4495673e641ee64d84b463f7bd143278af12018c4b2c696a10381c4cc3664a7fd50a6fb2b6e78062dbe7d6
+  languageName: node
+  linkType: hard
+
+"@commitlint/load@npm:^17.5.0":
+  version: 17.5.0
+  resolution: "@commitlint/load@npm:17.5.0"
+  dependencies:
+    "@commitlint/config-validator": ^17.4.4
+    "@commitlint/execute-rule": ^17.4.0
+    "@commitlint/resolve-extends": ^17.4.4
+    "@commitlint/types": ^17.4.4
+    "@types/node": "*"
+    chalk: ^4.1.0
+    cosmiconfig: ^8.0.0
+    cosmiconfig-typescript-loader: ^4.0.0
+    lodash.isplainobject: ^4.0.6
+    lodash.merge: ^4.6.2
+    lodash.uniq: ^4.5.0
+    resolve-from: ^5.0.0
+    ts-node: ^10.8.1
+    typescript: ^4.6.4 || ^5.0.0
+  checksum: c039114b0ad67bb9d8b05ec635d847bd5ab760528f0fb203411f433585bdab5472f4f5c7856dfc417cf64c05576f54c1afc4997a813f529304e0156bfc1d6cc8
   languageName: node
   linkType: hard
 
@@ -2674,70 +2696,83 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/core@npm:7.43.0"
+"@sentry-internal/tracing@npm:7.45.0":
+  version: 7.45.0
+  resolution: "@sentry-internal/tracing@npm:7.45.0"
   dependencies:
-    "@sentry/types": 7.43.0
-    "@sentry/utils": 7.43.0
+    "@sentry/core": 7.45.0
+    "@sentry/types": 7.45.0
+    "@sentry/utils": 7.45.0
     tslib: ^1.9.3
-  checksum: 54e6b8c0ae6830211ff94d99a6d5f31fa461a9de6c4baf1507945ba7225d61bac7d48b0c021e8a8cb109ce30c83165dcbef6aba9f6a205d69703eb99b95077d0
+  checksum: 64cb8ddca80d4c3a8b7d7fab8ebfc38e5eeb56753b72fc7fbcc6003a190f0492fe89075f7e7d7a2621f4746c52613c79eec2695368cc44da134b0be42bd0f71b
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/hub@npm:7.43.0"
+"@sentry/core@npm:7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/core@npm:7.45.0"
   dependencies:
-    "@sentry/core": 7.43.0
-    "@sentry/types": 7.43.0
-    "@sentry/utils": 7.43.0
+    "@sentry/types": 7.45.0
+    "@sentry/utils": 7.45.0
     tslib: ^1.9.3
-  checksum: 6e18d299139873ebdc10ae3efa8d5121806582a1332643eda672ea8c1f94d739bb9d41b616ad23d9cbe5e12a29c7ee42baeeb4e05e3928737327419de8aea5e6
+  checksum: c0453edf833b7ed86bcde6d341090bd3f4cfdb08b50a5e96cbe9d240d3955ea90c4af5550af37f95e8b987c13fa178cb004dd7bea9071145e63ce0dc7c635ec6
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/integrations@npm:7.43.0"
+"@sentry/hub@npm:^7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/hub@npm:7.45.0"
   dependencies:
-    "@sentry/types": 7.43.0
-    "@sentry/utils": 7.43.0
+    "@sentry/core": 7.45.0
+    "@sentry/types": 7.45.0
+    "@sentry/utils": 7.45.0
+    tslib: ^1.9.3
+  checksum: f8ec0ef6b355f3be50a64289fd2e2ab87e19fea25ed62fc129395965c5f6b1b447cc3f302d2f2465a2d11d2c58dd1eb8428955950a08b52eda82aab703e7768b
+  languageName: node
+  linkType: hard
+
+"@sentry/integrations@npm:^7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/integrations@npm:7.45.0"
+  dependencies:
+    "@sentry/types": 7.45.0
+    "@sentry/utils": 7.45.0
     localforage: ^1.8.1
     tslib: ^1.9.3
-  checksum: 78734de425eda03f32aac79b007b3b25592df4b793b6f01fe90617c6c76d0c426d65ba89a4962904ff7cd77938cdb1a8f22a13a726af0aa2c0d2358448ad15bb
+  checksum: a7a0ffb98f5568ff5ae22f4dc2b8d1a15624b124c260fb546c76c967737e25e8481bb039008d8ed13c3c9165971d12717827252a0d9129bd49e4c94090f65cf3
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/node@npm:7.43.0"
+"@sentry/node@npm:^7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/node@npm:7.45.0"
   dependencies:
-    "@sentry/core": 7.43.0
-    "@sentry/types": 7.43.0
-    "@sentry/utils": 7.43.0
+    "@sentry-internal/tracing": 7.45.0
+    "@sentry/core": 7.45.0
+    "@sentry/types": 7.45.0
+    "@sentry/utils": 7.45.0
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: 0c5d6804577389713cb0e9c6322fa52d6e88f89c6ab7cd89c20a8887ab6ece740c171f36831505c7bb87180757615ac281f2fddf4ba6e636ae5c2147c18056ad
+  checksum: cbe52b335419271d1e0926b28c476c590b9fb576914ed56af7b123f061d219b093a2bf1bcc9ac4131af891beb9286f5084e13575cfede9947dfa229d47a23065
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/types@npm:7.43.0"
-  checksum: fc28b9996f85fde7d9e092f067a5f1e5a9882f9b212014adcf58fa134fc14149f3118240d93c8ae52f33c74cfc889a4f4d1b52bb9f57c2dda295f8c18f242df3
+"@sentry/types@npm:7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/types@npm:7.45.0"
+  checksum: feb7de474f486f52f8f2594dc0559872c51c770b8511d90383eb4aadac8dffc2ddfb8fd7747cfd1486e629eba47bc7c9fae72fdad28cddaaeaf8dd1a52fabdfa
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.43.0":
-  version: 7.43.0
-  resolution: "@sentry/utils@npm:7.43.0"
+"@sentry/utils@npm:7.45.0":
+  version: 7.45.0
+  resolution: "@sentry/utils@npm:7.45.0"
   dependencies:
-    "@sentry/types": 7.43.0
+    "@sentry/types": 7.45.0
     tslib: ^1.9.3
-  checksum: 1b99986c7120710c8fcece9debecff32d4daa48395b044bada57095913116f91fb7eda8b4dc7b52824cb9329e9aaf627a8c521b32df337f9f2ed5ae354c425d8
+  checksum: 5d4d2ab4fe85d7231a35859cbeecc3d0c95368c818f15d8d6332f8c57604a67c0e12d5a81c23e5dcb1c53b4e44faf753028592792eb98e4af1440ee375b2292e
   languageName: node
   linkType: hard
 
@@ -2934,10 +2969,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/diff@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@types/diff@npm:5.0.2"
-  checksum: 8fbc419b5aca33f494026bf5f70e026f76367689677ef114f9c078ac738d7dbe96e6dda3fd8290e4a7c35281e2b60b034e3d7e3c968b850cf06a21279e7ddcbe
+"@types/diff@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@types/diff@npm:5.0.3"
+  checksum: d8a7d4de12f1aba0bd0c17b0b0d1e45c83824d3d6cc65763fbad371cd8315361a7e16fbae3f260a83bfdf30cebe1c876b42cec4518698055bc430fb09db1cbc8
   languageName: node
   linkType: hard
 
@@ -3030,10 +3065,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.15.3":
-  version: 18.15.3
-  resolution: "@types/node@npm:18.15.3"
-  checksum: 31b1d92475a82c30de29aa6c0771b18a276552d191283b4423ba2d61b3f01159bf0d02576c0b7cc834b043997893800db6bb47f246083ed85aa45e79c80875d7
+"@types/node@npm:^18.15.10":
+  version: 18.15.10
+  resolution: "@types/node@npm:18.15.10"
+  checksum: 9aeae0b683eda82892def5315812bdee3f1a28c4898b7e70f8e2514564538b16c4dccbe8339c1266f8fc1d707a48f152689264a854f5ebc2eba5011e793612d9
   languageName: node
   linkType: hard
 
@@ -5391,14 +5426,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.7.0":
-  version: 8.7.0
-  resolution: "eslint-config-prettier@npm:8.7.0"
+"eslint-config-prettier@npm:^8.8.0":
+  version: 8.8.0
+  resolution: "eslint-config-prettier@npm:8.8.0"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: b05bc7f2296ce3e0925c14147849706544870e0382d38af2352d709a6cf8521bdaff2bd8e5021f1780e570775a8ffa1d2bac28b8065d90d43a3f1f98fd26ce52
+  checksum: 1e94c3882c4d5e41e1dcfa2c368dbccbfe3134f6ac7d40101644d3bfbe3eb2f2ffac757f3145910b5eacf20c0e85e02b91293d3126d770cbf3dc390b3564681c
   languageName: node
   linkType: hard
 
@@ -9182,12 +9217,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.7.1, prettier@npm:^2.8.2, prettier@npm:^2.8.4":
+"prettier@npm:^2.7.1, prettier@npm:^2.8.2":
   version: 2.8.4
   resolution: "prettier@npm:2.8.4"
   bin:
     prettier: bin-prettier.js
   checksum: c173064bf3df57b6d93d19aa98753b9b9dd7657212e33b41ada8e2e9f9884066bb9ca0b4005b89b3ab137efffdf8fbe0b462785aba20364798ff4303aadda57e
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.8.7":
+  version: 2.8.7
+  resolution: "prettier@npm:2.8.7"
+  bin:
+    prettier: bin-prettier.js
+  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
   languageName: node
   linkType: hard
 
@@ -9897,7 +9941,7 @@ __metadata:
     "@babel/plugin-proposal-decorators": ^7.21.0
     "@babel/preset-env": ^7.20.2
     "@babel/preset-typescript": ^7.18.6
-    "@commitlint/cli": ^17.4.4
+    "@commitlint/cli": ^17.5.0
     "@commitlint/config-conventional": ^17.4.4
     "@discordjs/builders": ^0.16.0
     "@discordjs/collection": ^1.4.0
@@ -9923,9 +9967,9 @@ __metadata:
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.3.0
     "@sapphire/utilities": ^3.11.0
-    "@sentry/hub": ^7.43.0
-    "@sentry/integrations": ^7.43.0
-    "@sentry/node": ^7.43.0
+    "@sentry/hub": ^7.45.0
+    "@sentry/integrations": ^7.45.0
+    "@sentry/node": ^7.45.0
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.3
     "@skyra/env-utilities": ^1.1.0
@@ -9933,10 +9977,10 @@ __metadata:
     "@skyra/jaro-winkler": ^1.1.0
     "@skyra/tags": ^1.1.3
     "@types/backoff": ^2.5.2
-    "@types/diff": ^5.0.2
+    "@types/diff": ^5.0.3
     "@types/he": ^1.2.0
     "@types/jest": ^29.5.0
-    "@types/node": ^18.15.3
+    "@types/node": ^18.15.10
     "@types/pg": ^8.6.6
     "@types/ws": ^8.5.4
     "@typescript-eslint/eslint-plugin": ^5.49.0
@@ -9952,7 +9996,7 @@ __metadata:
     discord-api-types: ~0.33.5
     discord.js: ^13.13.1
     eslint: ^8.36.0
-    eslint-config-prettier: ^8.7.0
+    eslint-config-prettier: ^8.8.0
     eslint-plugin-prettier: ^4.2.1
     he: ^1.2.0
     husky: ^8.0.3
@@ -9961,7 +10005,7 @@ __metadata:
     lint-staged: ^13.2.0
     nock: ^13.3.0
     pg: ^8.10.0
-    prettier: ^2.8.4
+    prettier: ^2.8.7
     pretty-quick: ^3.1.3
     ts-node: ^10.9.1
     tsc-watch: ^6.0.0

@@ -48,7 +48,7 @@
 	},
 	"dependencies": {
 		"@discordjs/builders": "^0.16.0",
-		"@discordjs/collection": "^1.4.0",
+		"@discordjs/collection": "^1.5.0",
 		"@influxdata/influxdb-client": "^1.33.2",
 		"@influxdata/influxdb-client-apis": "^1.33.2",
 		"@napi-rs/canvas": "0.1.39",
@@ -68,9 +68,9 @@
 		"@sapphire/time-utilities": "^1.7.9",
 		"@sapphire/type": "^2.3.0",
 		"@sapphire/utilities": "^3.11.0",
-		"@sentry/hub": "^7.45.0",
-		"@sentry/integrations": "^7.45.0",
-		"@sentry/node": "^7.45.0",
+		"@sentry/hub": "^7.46.0",
+		"@sentry/integrations": "^7.46.0",
+		"@sentry/node": "^7.46.0",
 		"@skyra/ai": "^1.2.0",
 		"@skyra/char": "^1.0.3",
 		"@skyra/env-utilities": "^1.1.0",
@@ -84,7 +84,7 @@
 		"confusables": "^1.1.1",
 		"diff": "^5.1.0",
 		"discord-api-types": "~0.33.5",
-		"discord.js": "^13.14.0",
+		"discord.js": "^13.15.0",
 		"he": "^1.2.0",
 		"pg": "^8.10.0",
 		"tslib": "1.14.1",
@@ -96,10 +96,10 @@
 	},
 	"devDependencies": {
 		"0x": "^5.5.0",
-		"@babel/core": "^7.21.3",
+		"@babel/core": "^7.21.4",
 		"@babel/plugin-proposal-class-properties": "^7.18.6",
 		"@babel/plugin-proposal-decorators": "^7.21.0",
-		"@babel/preset-env": "^7.20.2",
+		"@babel/preset-env": "^7.21.4",
 		"@babel/preset-typescript": "^7.21.0",
 		"@commitlint/cli": "^17.5.1",
 		"@commitlint/config-conventional": "^17.4.4",
@@ -163,6 +163,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@3.5.0",
 	"volta": {
-		"node": "16.19.1"
+		"node": "16.20.0"
 	}
 }

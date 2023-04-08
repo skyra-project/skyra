@@ -17,6 +17,7 @@ const row = makeRow(ButtonSkyraV7);
 		'bd',
 		'birthday',
 		'birthdays',
+		'catfact',
 		'chucknorris',
 		'country',
 		'ctime',

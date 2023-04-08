@@ -84,13 +84,6 @@
 		}
 	],
 	[
-		"catfact",
-		{
-			"category": "Animal",
-			"subCategory": "General"
-		}
-	],
-	[
 		"dog",
 		{
 			"category": "Animal",

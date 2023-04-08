@@ -199,7 +199,7 @@
 	"remindmeShowFooter": "ID: {{id}} | Ends at:",
 	"remindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
 	"remindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
-	"remindmeDeprecated": "**Notice**: This command has been moved to Teryl and will be removed from Skyra around <t:1708772400:d>. Consider inviting him before then with the button below.",
+	"remindmeDeprecated": "The reminder functionality has been deprecated and will be removed around <t:1708772400:d>. Please use </reminders create:1078828281949859985> from Teryl instead. You may need to invite the bot with the button below if the command doesn't work.",
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
 		"usages": [

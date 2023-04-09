@@ -1,17 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { ButtonBuilder } from '@discordjs/builders';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
 import { loadImage, type Image } from 'canvas-constructor/napi-rs';
-import { APIUser, ButtonStyle } from 'discord-api-types/v9';
+import type { APIUser } from 'discord-api-types/v9';
 import {
 	AllowedImageSize,
 	Guild,
 	GuildChannel,
 	ImageURLOptions,
 	Message,
-	MessageActionRow,
 	MessageEmbed,
 	MessageMentionTypes,
 	Permissions,
@@ -20,7 +18,7 @@ import {
 	UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { BrandingColors, Invites, ZeroWidthSpace } from './constants';
+import { BrandingColors, ZeroWidthSpace } from './constants';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -307,12 +305,6 @@ export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T,
 
 export function getColor(message: Message) {
 	return message.member?.displayColor ?? BrandingColors.Primary;
-}
-
-export function getTerylInviteComponentRow() {
-	return new MessageActionRow().addComponents([
-		new ButtonBuilder().setLabel('Invite Teryl').setStyle(ButtonStyle.Link).setURL(Invites.Teryl).toJSON()
-	]);
 }
 
 export interface UtilOneToTenEntry {

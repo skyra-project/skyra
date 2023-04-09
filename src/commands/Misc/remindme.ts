@@ -2,7 +2,8 @@ import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
-import { getColor, getTerylInviteComponentRow, sendLoadingMessage } from '#utils/util';
+import { ButtonInviteTeryl, ButtonSkyraV7, makeRow } from '#utils/deprecate';
+import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -24,6 +25,8 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	};
 }
 
+const row = makeRow(ButtonInviteTeryl, ButtonSkyraV7);
+
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['rmm', 'remind', 'reminder', 'reminders'],
 	description: LanguageKeys.Commands.Misc.RemindMeDescription,
@@ -37,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 
 	public async create(message: Message, args: SkyraCommand.Args) {
 		const content = args.t(LanguageKeys.Commands.Misc.RemindMeDeprecated);
-		return send(message, { content, components: [getTerylInviteComponentRow()] });
+		return send(message, { content, components: [row] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)

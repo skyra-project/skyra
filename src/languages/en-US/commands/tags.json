@@ -40,5 +40,5 @@
 	"nameNotAllowed": "A tag name may not have a grave accent nor invisible characters.",
 	"nameTooLong": "A tag name must be 50 or less characters long.",
 	"notExists": "The tag `{{tag}}` does not exist.",
-	"deprecated": "**Notice**: This command has been moved to Teryl and will be removed from Skyra on <t:1685185200:d>. Consider inviting him before then with the button below."
+	"deprecated": "The tag functionality has been deprecated and will be removed around <t:1685185200:d>. Please use </manage-tag add:1078828281949859988> from Teryl instead. You may need to invite the bot with the button below if the command doesn't work."
 }

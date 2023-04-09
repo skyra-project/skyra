@@ -33,6 +33,7 @@
 		"dev": "yarn build && yarn start",
 		"watch": "tsc -b src -w",
 		"watch:start": "tsc-watch -b src --onSuccess \"yarn start\"",
+		"prisma:generate": "yarn prisma generate",
 		"clean": "node scripts/build/clean.mjs",
 		"start": "node --enable-source-maps dist/Skyra.js",
 		"start:profiler:0x": "0x --collect-only dist/Skyra.js",
@@ -42,7 +43,6 @@
 		"scripts:tlds": "node scripts/tlds.mjs",
 		"scripts:migration": "node scripts/migrations.mjs",
 		"dockerps": "pwsh -NoLogo ./.docker/control.ps1",
-		"typeorm:schema:resync": "docker container rm -f postgres && docker volume rm postgres-data && docker volume create postgres-data && docker-compose -f ./.docker/docker-compose.yml up -d postgres && sleep 3 && yarn typeorm schema:sync",
 		"update": "yarn upgrade-interactive",
 		"postinstall": "husky install .github/husky"
 	},
@@ -52,6 +52,7 @@
 		"@influxdata/influxdb-client": "^1.33.2",
 		"@influxdata/influxdb-client-apis": "^1.33.2",
 		"@napi-rs/canvas": "0.1.39",
+		"@prisma/client": "^4.12.0",
 		"@sapphire/async-queue": "^1.5.0",
 		"@sapphire/decorators": "^4.3.8",
 		"@sapphire/discord.js-utilities": "4.12.0",
@@ -88,8 +89,6 @@
 		"he": "^1.2.0",
 		"pg": "^8.10.0",
 		"tslib": "1.14.1",
-		"typeorm": "0.2.28",
-		"typeorm-naming-strategies": "^2.0.0",
 		"utf-8-validate": "^6.0.3",
 		"ws": "^8.13.0",
 		"zlib-sync": "^0.1.8"
@@ -127,6 +126,7 @@
 		"nock": "^13.3.0",
 		"prettier": "^2.8.7",
 		"pretty-quick": "^3.1.3",
+		"prisma": "^4.12.0",
 		"ts-node": "^10.9.1",
 		"tsc-watch": "^6.0.0",
 		"typescript": "~4.7.4"

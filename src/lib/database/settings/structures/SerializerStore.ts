@@ -7,7 +7,7 @@ export class SerializerStore extends AliasStore<Serializer<unknown>> {
 	 * @param client The client that instantiates this store
 	 */
 	public constructor() {
-		super(Serializer as any, { name: 'serializers' });
+		super(Serializer, { name: 'serializers' });
 		this.container.client.stores.register(this);
 	}
 }

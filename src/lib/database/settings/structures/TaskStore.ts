@@ -7,7 +7,7 @@ export class TaskStore extends Store<Task> {
 	 * @param client The client that instantiates this store
 	 */
 	public constructor() {
-		super(Task as any, { name: 'tasks' });
+		super(Task, { name: 'tasks' });
 		this.container.client.stores.register(this);
 	}
 }

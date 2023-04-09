@@ -1,10 +1,8 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
-import { SettingsCollection, SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
+import { AliasedCollection } from '#lib/database/settings/structures/collections/AliasedCollection';
 import { container } from '@sapphire/framework';
 
-export interface GuildSettingsCollectionCallback<R> extends SettingsCollectionCallback<GuildEntity, R> {}
-
-export class GuildSettingsCollection extends SettingsCollection<GuildEntity> {
+export class GuildSettingsCollection extends AliasedCollection<string, GuildEntity> {
 	public async fetch(key: string): Promise<GuildEntity> {
 		const { guilds } = container.db;
 		const existing = await guilds.findOne(key);

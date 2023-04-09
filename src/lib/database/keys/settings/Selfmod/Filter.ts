@@ -1,9 +1,0 @@
-export const Raw = 'selfmodFilterRaw';
-export const Enabled = 'selfmodFilterEnabled';
-export const IgnoredRoles = 'selfmodFilterIgnoredRoles';
-export const IgnoredChannels = 'selfmodFilterIgnoredChannels';
-export const SoftAction = 'selfmodFilterSoftAction';
-export const HardAction = 'selfmodFilterHardAction';
-export const HardActionDuration = 'selfmodFilterHardActionDuration';
-export const ThresholdMaximum = 'selfmodFilterThresholdMaximum';
-export const ThresholdDuration = 'selfmodFilterThresholdDuration';

@@ -8,11 +8,9 @@ import '@sapphire/plugin-api/register';
 import '@sapphire/plugin-i18next/register';
 import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-editable-commands/register';
-import './Canvas';
-import './PaginatedMessage';
 
-import * as colorette from 'colorette';
-import { inspect } from 'node:util';
-
-inspect.defaultOptions.depth = 1;
-colorette.createColors({ useColor: true });
+// Setup files
+import '#lib/setup/canvas';
+import '#lib/setup/inspect';
+import '#lib/setup/paginated-message';
+import '#lib/setup/prisma';

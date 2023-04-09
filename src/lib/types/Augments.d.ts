@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { DbSet, GuildEntity, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
@@ -7,6 +6,7 @@ import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { EmojiObject } from '#utils/functions';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
+import type { Guild as PrismaGuild } from '@prisma/client';
 import type { Piece, Store } from '@sapphire/framework';
 import type { NonNullObject, Nullish, PickByValue } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
@@ -46,9 +46,7 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		db: DbSet;
 		schedule: ScheduleManager;
-		settings: SettingsManager;
 		workers: WorkerManager;
 	}
 }
@@ -96,7 +94,7 @@ declare module '@sapphire/framework' {
 			event: Events.GuildMessageLog,
 			guild: Guild,
 			channelId: string | Nullish,
-			key: PickByValue<GuildEntity, string | Nullish>,
+			key: PickByValue<PrismaGuild, string | Nullish>,
 			makeMessage: () => Promise<MessageEmbed> | MessageEmbed
 		): boolean;
 		emit(event: Events.ReactionBlocked, data: LLRCData, emoji: string): boolean;

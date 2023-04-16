@@ -19,7 +19,8 @@
 					"@sapphire/plugin-editable-commands",
 					"@sapphire/plugin-i18next",
 					"@sapphire/plugin-logger",
-					"@sapphire/plugin-subcommands"
+					"@sapphire/plugin-subcommands",
+					"@sapphire/ts-config"
 				],
 				"enabled": false
 			},

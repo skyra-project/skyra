@@ -80,7 +80,7 @@
 		"async-rwlock": "^1.1.1",
 		"bufferutil": "^4.0.7",
 		"canvas-constructor": "^7.0.0",
-		"colorette": "^2.0.19",
+		"colorette": "^2.0.20",
 		"confusables": "^1.1.1",
 		"diff": "^5.1.0",
 		"discord-api-types": "~0.33.5",

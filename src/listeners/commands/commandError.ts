@@ -175,7 +175,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 	 * @param error The error to format.
 	 */
 	private getErrorLine(error: Error): string {
-		return `**Error**: ${codeBlock('js', error.stack || error)}`;
+		return `**Error**: ${codeBlock('js', error.stack || error.toString())}`;
 	}
 
 	private getWarnError(message: Message) {

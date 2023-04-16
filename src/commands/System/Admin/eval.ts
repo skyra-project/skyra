@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 			return null;
 		}
 
-		const footer = executeSql ? undefined : codeBlock('ts', type);
+		const footer = executeSql ? undefined : codeBlock('ts', type as string);
 		const sendAs = args.getOption('output', 'output-to') ?? (args.getFlags('log') ? 'log' : null);
 
 		return handleMessage<Partial<EvalExtraData>>(message, {

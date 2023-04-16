@@ -2475,13 +2475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/ts-config@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "@sapphire/ts-config@npm:3.3.4"
+"@sapphire/ts-config@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@sapphire/ts-config@npm:4.0.0"
   dependencies:
-    tslib: ^2.3.1
-    typescript: ^4.6.3
-  checksum: c26dee331e17dd1762caa499ca6f1d1ee22fe781a5486575ead625c399678fbf3b33cf963a4f48aad04df5d515a4b3d2f80a03272d2413894d96f799d5f5ca87
+    tslib: ^2.5.0
+    typescript: ^5.0.3
+  checksum: 05ede6d5b34e070302e6671180bf46f20185c0ea0aceb6a3a287a00306a40923e32a104ed6795199529669d5448d3ac280cbe7524f6266efaf3938ecf5f7fb36
   languageName: node
   linkType: hard
 
@@ -9589,7 +9589,7 @@ __metadata:
     "@sapphire/snowflake": ^3.4.0
     "@sapphire/stopwatch": ^1.5.0
     "@sapphire/time-utilities": ^1.7.9
-    "@sapphire/ts-config": ^3.3.4
+    "@sapphire/ts-config": ^4.0.0
     "@sapphire/type": ^2.3.0
     "@sapphire/utilities": ^3.11.0
     "@sentry/hub": ^7.47.0
@@ -10313,7 +10313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.4.1":
+"tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: ae3ed5f9ce29932d049908ebfdf21b3a003a85653a9a140d614da6b767a93ef94f460e52c3d787f0e4f383546981713f165037dc2274df212ea9f8a4541004e1

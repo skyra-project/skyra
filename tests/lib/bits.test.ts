@@ -1,14 +1,15 @@
 import { channelFlags, channelOffset, permissionsFlags, permissionsOffset, toChannelsArray, toPermissionsArray } from '#utils/bits';
 import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v9';
+import { Permissions, SystemChannelFlags } from 'discord.js';
 
 describe('Bits', () => {
 	describe('Permissions', () => {
-		test('GIVEN permissionsFlags.size THEN returns 41', () => {
-			expect(permissionsFlags.size).toBe(41);
+		test('GIVEN permissionsFlags.size THEN returns 44', () => {
+			expect(permissionsFlags.size).toBe(44);
 		});
 
-		test('GIVEN permissionsOffset THEN returns 41', () => {
-			expect(Number(permissionsOffset)).toBe(41);
+		test('GIVEN permissionsOffset THEN returns 47', () => {
+			expect(Number(permissionsOffset)).toBe(47);
 		});
 
 		test('GIVEN various permissions THEN returns an array of their names', () => {
@@ -56,7 +57,12 @@ describe('Bits', () => {
 				PermissionFlagsBits.CreatePublicThreads |
 				PermissionFlagsBits.CreatePrivateThreads |
 				PermissionFlagsBits.UseExternalStickers |
-				PermissionFlagsBits.ModerateMembers;
+				PermissionFlagsBits.SendMessagesInThreads |
+				PermissionFlagsBits.UseEmbeddedActivities |
+				PermissionFlagsBits.ModerateMembers |
+				Permissions.FLAGS.VIEW_CREATOR_MONETIZATION_ANALYTICS |
+				Permissions.FLAGS.USE_SOUNDBOARD |
+				Permissions.FLAGS.SEND_VOICE_MESSAGES;
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CREATE_INSTANT_INVITE',
 				'KICK_MEMBERS',
@@ -96,18 +102,23 @@ describe('Bits', () => {
 				'CREATE_PUBLIC_THREADS',
 				'CREATE_PRIVATE_THREADS',
 				'USE_EXTERNAL_STICKERS',
-				'MODERATE_MEMBERS'
+				'SEND_MESSAGES_IN_THREADS',
+				'START_EMBEDDED_ACTIVITIES',
+				'MODERATE_MEMBERS',
+				'VIEW_CREATOR_MONETIZATION_ANALYTICS',
+				'USE_SOUNDBOARD',
+				'SEND_VOICE_MESSAGES'
 			]);
 		});
 	});
 
 	describe('Channel', () => {
-		test('GIVEN channelFlags.size THEN returns 4', () => {
-			expect(channelFlags.size).toBe(4);
+		test('GIVEN channelFlags.size THEN returns 6', () => {
+			expect(channelFlags.size).toBe(6);
 		});
 
-		test('GIVEN channelOffset THEN returns 4', () => {
-			expect(channelOffset).toBe(4);
+		test('GIVEN channelOffset THEN returns 6', () => {
+			expect(channelOffset).toBe(6);
 		});
 
 		test('GIVEN various flags THEN returns an array of their flags', () => {
@@ -120,12 +131,16 @@ describe('Bits', () => {
 				GuildSystemChannelFlags.SuppressJoinNotifications |
 				GuildSystemChannelFlags.SuppressJoinNotificationReplies |
 				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
-				GuildSystemChannelFlags.SuppressGuildReminderNotifications;
+				GuildSystemChannelFlags.SuppressGuildReminderNotifications |
+				SystemChannelFlags.FLAGS.SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATIONS |
+				SystemChannelFlags.FLAGS.SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATION_REPLIES;
 			expect(toChannelsArray(value)).toStrictEqual([
 				'SUPPRESS_JOIN_NOTIFICATIONS',
 				'SUPPRESS_PREMIUM_SUBSCRIPTIONS',
 				'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS',
-				'SUPPRESS_JOIN_NOTIFICATION_REPLIES'
+				'SUPPRESS_JOIN_NOTIFICATION_REPLIES',
+				'SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATIONS',
+				'SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATION_REPLIES'
 			]);
 		});
 	});

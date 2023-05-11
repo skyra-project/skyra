@@ -31,10 +31,12 @@ export class UserCommand extends SkyraCommand {
 			.setDescription(
 				[
 					[
-						`[${t(LanguageKeys.Commands.General.InvitePermissionInviteText)}](https://invite.skyra.pw${
-							shouldNotAddPermissions ? '/no-permissions' : ''
-						})`,
-						`[${t(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://join.skyra.pw)`
+						`[${t(
+							LanguageKeys.Commands.General.InvitePermissionInviteText
+						)}](https://discord.com/oauth2/authorize?client_id=266624760782258186&permissions=${
+							shouldNotAddPermissions ? '0' : '534185897078'
+						}&scope=applications.commands%20bot)`,
+						`[${t(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://discord.com/invite/6gakFR2)`
 					].join(' | '),
 					shouldNotAddPermissions ? undefined : t(LanguageKeys.Commands.General.InvitePermissionsDescription)
 				]

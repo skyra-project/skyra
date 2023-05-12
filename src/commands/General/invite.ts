@@ -49,33 +49,31 @@ export class UserCommand extends SkyraCommand {
 		return this.container.client.generateInvite({
 			scopes: [OAuth2Scopes.ApplicationsCommands, OAuth2Scopes.Bot],
 			permissions: shouldNotAddPermissions
-				? []
-				: [
-						PermissionFlagsBits.AddReactions,
-						PermissionFlagsBits.AttachFiles,
-						PermissionFlagsBits.BanMembers,
-						PermissionFlagsBits.ChangeNickname,
-						PermissionFlagsBits.CreatePrivateThreads,
-						PermissionFlagsBits.CreatePublicThreads,
-						PermissionFlagsBits.DeafenMembers,
-						PermissionFlagsBits.EmbedLinks,
-						PermissionFlagsBits.KickMembers,
-						PermissionFlagsBits.ManageChannels,
-						PermissionFlagsBits.ManageEmojisAndStickers,
-						PermissionFlagsBits.ManageGuild,
-						PermissionFlagsBits.ManageMessages,
-						PermissionFlagsBits.ManageNicknames,
-						PermissionFlagsBits.ManageRoles,
-						PermissionFlagsBits.ManageThreads,
-						PermissionFlagsBits.MoveMembers,
-						PermissionFlagsBits.MuteMembers,
-						PermissionFlagsBits.ReadMessageHistory,
-						PermissionFlagsBits.SendMessages,
-						PermissionFlagsBits.SendMessagesInThreads,
-						PermissionFlagsBits.UseExternalEmojis,
-						PermissionFlagsBits.UseExternalStickers,
-						PermissionFlagsBits.ViewChannel
-				  ]
+				? 0n
+				: PermissionFlagsBits.AddReactions |
+				  PermissionFlagsBits.AttachFiles |
+				  PermissionFlagsBits.BanMembers |
+				  PermissionFlagsBits.ChangeNickname |
+				  PermissionFlagsBits.CreatePrivateThreads |
+				  PermissionFlagsBits.CreatePublicThreads |
+				  PermissionFlagsBits.DeafenMembers |
+				  PermissionFlagsBits.EmbedLinks |
+				  PermissionFlagsBits.KickMembers |
+				  PermissionFlagsBits.ManageChannels |
+				  PermissionFlagsBits.ManageEmojisAndStickers |
+				  PermissionFlagsBits.ManageGuild |
+				  PermissionFlagsBits.ManageMessages |
+				  PermissionFlagsBits.ManageNicknames |
+				  PermissionFlagsBits.ManageRoles |
+				  PermissionFlagsBits.ManageThreads |
+				  PermissionFlagsBits.MoveMembers |
+				  PermissionFlagsBits.MuteMembers |
+				  PermissionFlagsBits.ReadMessageHistory |
+				  PermissionFlagsBits.SendMessages |
+				  PermissionFlagsBits.SendMessagesInThreads |
+				  PermissionFlagsBits.UseExternalEmojis |
+				  PermissionFlagsBits.UseExternalStickers |
+				  PermissionFlagsBits.ViewChannel
 		});
 	}
 }

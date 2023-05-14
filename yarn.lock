@@ -2437,10 +2437,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/snowflake@npm:^3.4.2":
-  version: 3.4.2
-  resolution: "@sapphire/snowflake@npm:3.4.2"
-  checksum: 3bcd05608a63f012538aa0a45bc6abe5b19e15979a1012a9b3af1e0901f897e4df83c80d484c87bd1dece1124f5a14a2f86427190b1dca7f116ee34f13c96788
+"@sapphire/snowflake@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "@sapphire/snowflake@npm:3.5.1"
+  checksum: 8fc025020adab1a7a1a5d2cf07704d598cc1977b50e5fcd3a5dd239f00934dc936d3a4d5ae336e71d8bf1d88ec27aa814b34de79e38ff097b7b9ba5a7977a683
   languageName: node
   linkType: hard
 
@@ -2507,83 +2507,83 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/tracing@npm:7.51.0":
-  version: 7.51.0
-  resolution: "@sentry-internal/tracing@npm:7.51.0"
+"@sentry-internal/tracing@npm:7.51.2":
+  version: 7.51.2
+  resolution: "@sentry-internal/tracing@npm:7.51.2"
   dependencies:
-    "@sentry/core": 7.51.0
-    "@sentry/types": 7.51.0
-    "@sentry/utils": 7.51.0
+    "@sentry/core": 7.51.2
+    "@sentry/types": 7.51.2
+    "@sentry/utils": 7.51.2
     tslib: ^1.9.3
-  checksum: 582d51f9eba63d4c191bd14374efc7256edb47d8ac79cc8bcd6812904eab0266ed5a0315cee404d724a5e530bb23cbe7d6511bb99685843bc55f7ce256e72f28
+  checksum: a10ee8717b76f140eaa1a94aac67005da98f0aa32a433d33a29265db7197fcb2e4a1e1a21502926f3c1460a5c82a6bc78413013731ac0a3bb41797f25550694e
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/core@npm:7.51.0"
+"@sentry/core@npm:7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/core@npm:7.51.2"
   dependencies:
-    "@sentry/types": 7.51.0
-    "@sentry/utils": 7.51.0
+    "@sentry/types": 7.51.2
+    "@sentry/utils": 7.51.2
     tslib: ^1.9.3
-  checksum: 9645906bf630617feeb1e7d906f0ebc4f09be0373cdf96821787888c583c5fb1f3d18a065dd46940686c75368e94a0df7d42b97a30c48330e702f60138094c5d
+  checksum: f0526ff9cbbea368e50e24ff3ff4b97df8e6d2bede340de69ae2362715bc30d9f1b526eff4eea1f1e891b69e5fec09d263196fa49a1dfeca7aab38e92aa79a90
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/hub@npm:7.51.0"
+"@sentry/hub@npm:^7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/hub@npm:7.51.2"
   dependencies:
-    "@sentry/core": 7.51.0
-    "@sentry/types": 7.51.0
-    "@sentry/utils": 7.51.0
+    "@sentry/core": 7.51.2
+    "@sentry/types": 7.51.2
+    "@sentry/utils": 7.51.2
     tslib: ^1.9.3
-  checksum: a47f8b464a51505b3269a4e9afb0fa15563a2c98f58ccdfb825e89a62a2f697f529a6197f3cf03395934108b106e55ea2ba2c808890f396e7a467ef3f17f66d5
+  checksum: 5cf0f0c9f1f409b45e4e7fa3fbf38f61972dd706ba060276091e7b53227844883a91762f71a407c5427e02f55e1cd570fab9a2af915814d94e7307c6349aa838
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/integrations@npm:7.51.0"
+"@sentry/integrations@npm:^7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/integrations@npm:7.51.2"
   dependencies:
-    "@sentry/types": 7.51.0
-    "@sentry/utils": 7.51.0
+    "@sentry/types": 7.51.2
+    "@sentry/utils": 7.51.2
     localforage: ^1.8.1
     tslib: ^1.9.3
-  checksum: dc62cc7c28488283fd188c70b3a1d59f08489ee3ca405c5c6640c3b377dc2fedbb004fb9bb2d82d28dd40330c12843f3fd8d9976f71eafe66130c143a3fd5862
+  checksum: 5e40e34433e5393b7927a3299760924170cfedcd54f2730b71e51363778e3dbd35d139e01c7afbb8cb20a8be1e8548f473515480daf5187b736f3d2de50b2e87
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/node@npm:7.51.0"
+"@sentry/node@npm:^7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/node@npm:7.51.2"
   dependencies:
-    "@sentry-internal/tracing": 7.51.0
-    "@sentry/core": 7.51.0
-    "@sentry/types": 7.51.0
-    "@sentry/utils": 7.51.0
+    "@sentry-internal/tracing": 7.51.2
+    "@sentry/core": 7.51.2
+    "@sentry/types": 7.51.2
+    "@sentry/utils": 7.51.2
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: b57293ea5ea004ccbf5046057e5c7462fd119d3023d837922ff2b69b6dbea70d77d8e24a54b7718502dc0de9a29a0f73b6249b565d1bfca93655aa746f4452b9
+  checksum: 86abe40ccd69268c0ab3cf57ef9f93126e70a222da962476b3d8157c2f8225537344bfe29fc0bbb2148f9f30d3377afd6f1b20cbe3fa8f349bc27796171ad18b
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/types@npm:7.51.0"
-  checksum: dfd583bba204355047d654cc6fdd99c8e3be5d0613f71e807e1d809f9d80a2e2078c238e7fe187b715b7aa705f8dbf94e9569c051880f984e9de37a7ff859165
+"@sentry/types@npm:7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/types@npm:7.51.2"
+  checksum: 6d200e1b4f15f0d4911a1579c44e5fabe73220b2b0ec297ece88503e93249fd1f268f5b6319b22f58334638a9f7e611a5cf89813d087b74b2cc4e7d6b0c027ca
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.51.0":
-  version: 7.51.0
-  resolution: "@sentry/utils@npm:7.51.0"
+"@sentry/utils@npm:7.51.2":
+  version: 7.51.2
+  resolution: "@sentry/utils@npm:7.51.2"
   dependencies:
-    "@sentry/types": 7.51.0
+    "@sentry/types": 7.51.2
     tslib: ^1.9.3
-  checksum: 6de2f18dfc41021a8b16b5f99f678bae28efbbf0796466c64d11e37a225d0159f8864997274a8d95f819a4419a5622c867789bb1bc640e70e0817bfc7bd78b14
+  checksum: 626e4ceb17677f67b5276624509e14bc3849244d4ea103df25ab5a3b2f341d2a3e791d9bb366dc79aa39b4085418a7562ee16037ceb8d05eb4f1b4874a8f3d06
   languageName: node
   linkType: hard
 
@@ -2880,10 +2880,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.16.5":
-  version: 18.16.5
-  resolution: "@types/node@npm:18.16.5"
-  checksum: b6df96a76a7655cd944794197cf63f5269e5034041bc355f4f243cb3f185ad3e1948011b6f0ac66c22434e50bc53a20ec3a9d95ad284f0e3819813d309d1650b
+"@types/node@npm:*, @types/node@npm:^18.16.9":
+  version: 18.16.9
+  resolution: "@types/node@npm:18.16.9"
+  checksum: 7fe0ef372ba8b157bd646efe29b0ece92ccb9f455171a7ceb4c92d6b490789ff0f14411b1dc6ad203351a0efa2b435072dfab5566fb6eaaaa5cd549e1fb22afa
   languageName: node
   linkType: hard
 
@@ -9581,15 +9581,15 @@ __metadata:
     "@sapphire/plugin-subcommands": ^2.2.2
     "@sapphire/prettier-config": ^1.4.5
     "@sapphire/ratelimits": ^2.4.6
-    "@sapphire/snowflake": ^3.4.2
+    "@sapphire/snowflake": ^3.5.1
     "@sapphire/stopwatch": ^1.5.0
     "@sapphire/time-utilities": ^1.7.9
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.4.0
     "@sapphire/utilities": ^3.11.2
-    "@sentry/hub": ^7.51.0
-    "@sentry/integrations": ^7.51.0
-    "@sentry/node": ^7.51.0
+    "@sentry/hub": ^7.51.2
+    "@sentry/integrations": ^7.51.2
+    "@sentry/node": ^7.51.2
     "@skyra/ai": ^1.2.0
     "@skyra/char": ^1.0.3
     "@skyra/env-utilities": ^1.2.0
@@ -9600,7 +9600,7 @@ __metadata:
     "@types/diff": ^5.0.3
     "@types/he": ^1.2.0
     "@types/jest": ^29.5.1
-    "@types/node": ^18.16.5
+    "@types/node": ^18.16.9
     "@types/pg": ^8.6.6
     "@types/ws": ^8.5.4
     "@typescript-eslint/eslint-plugin": ^5.58.0

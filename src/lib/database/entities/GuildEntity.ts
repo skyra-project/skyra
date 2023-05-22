@@ -1,18 +1,17 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { create } from '#utils/Security/RegexCreator';
 import { minutes, years } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
-import { create } from '#utils/Security/RegexCreator';
 import { container } from '@sapphire/framework';
 import { RateLimitManager } from '@sapphire/ratelimits';
-import { arrayStrictEquals, NonNullObject } from '@sapphire/utilities';
-import type { Sentence } from '@skyra/tags';
+import { NonNullObject, arrayStrictEquals } from '@sapphire/utilities';
 import type { TFunction } from 'i18next';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import type { IBaseEntity } from '../settings/base/IBaseEntity';
 import { AdderManager } from '../settings/structures/AdderManager';
 import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
-import { kBigIntTransformer, kTagsTransformer } from '../utils/Transformers';
+import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity implements IBaseEntity {
@@ -34,10 +33,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledCommands, type: 'commandmatch' })
 	@Column('varchar', { name: 'disabled-commands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
-
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand', array: true })
-	@Column('jsonb', { name: 'custom-commands', transformer: kTagsTransformer, default: () => "'[]'::JSONB" })
-	public customCommands: CustomCommand[] = [];
 
 	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
 	public permissionsUsers: PermissionsNode[] = [];
@@ -728,18 +723,6 @@ export interface PermissionsNode {
 	allow: string[];
 
 	deny: string[];
-
-	id: string;
-}
-
-export interface CustomCommand {
-	aliases: string[];
-
-	color: number;
-
-	content: Sentence;
-
-	embed: boolean;
 
 	id: string;
 }

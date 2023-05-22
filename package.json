@@ -7,7 +7,6 @@
 	"main": "./dist/Skyra.js",
 	"imports": {
 		"#lib/*": "./dist/lib/*.js",
-		"#lib/customCommands": "./dist/lib/customCommands/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/entities": "./dist/lib/database/entities/index.js",
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
@@ -76,7 +75,6 @@
 		"@skyra/env-utilities": "^1.2.0",
 		"@skyra/gifenc": "^1.0.1",
 		"@skyra/jaro-winkler": "^1.1.0",
-		"@skyra/tags": "^1.1.3",
 		"async-rwlock": "^1.1.1",
 		"bufferutil": "^4.0.7",
 		"canvas-constructor": "^7.0.1",

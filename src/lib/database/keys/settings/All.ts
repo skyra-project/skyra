@@ -7,7 +7,6 @@ export * as Selfmod from './Selfmod/All';
 
 export const Prefix = 'prefix';
 export const Language = 'language';
-export const CustomCommands = 'customCommands';
 export const CommandAutoDelete = 'commandAutoDelete';
 export const DisabledChannels = 'disabledChannels';
 export const DisabledCommands = 'disabledCommands';

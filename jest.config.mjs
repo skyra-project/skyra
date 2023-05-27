@@ -13,7 +13,6 @@ const config = {
 	collectCoverageFrom: ['<rootDir>/src/lib/**/*.ts'],
 	coveragePathIgnorePatterns: [
 		'<rootDir>/src/lib/api',
-		'<rootDir>/src/lib/customCommands',
 		'<rootDir>/src/lib/database/entities',
 		'<rootDir>/src/lib/database/index.ts',
 		'<rootDir>/src/lib/database/migrations',

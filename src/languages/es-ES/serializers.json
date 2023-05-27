@@ -1,10 +1,4 @@
 {
-	"customCommandInvalidAliases": "La propiedad \"aliases\" debe ser un conjunto de textos.",
-	"customCommandInvalidColor": "La propiedad \"color\" debe ser un número.",
-	"customCommandInvalidContent": "La propiedad \"contenido\" debe ser un texto.",
-	"customCommandInvalidEmbed": "La propiedad \"embed\" debe ser un booleano.",
-	"customCommandInvalidId": "La propiedad \"id\" debe ser un texto.",
-	"customCommandMissingParameter": "¡Necesitas escribir otro parámetro!\n\n> **Consejo**: ¡El tipo para el siguiente argumento es `{{type}}`!",
 	"disabledCommandChannelsChannelsCommandDoesNotExist": "El comando `{{name}}` no existe.",
 	"disabledCommandChannelsChannelsDoesNotExist": "Ese canal de chat no existe.",
 	"invalidBool": "{{name}} debe ser verdadero o falso.",

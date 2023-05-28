@@ -10,55 +10,6 @@
 		]
 	},
 	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect-Four match. Click the 🇾 reaction to accept!",
-	"cannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s.",
-	"coinFlipHeadNames": [
-		"heads",
-		"head",
-		"h"
-	],
-	"coinFlipTailNames": [
-		"tails",
-		"tail",
-		"t"
-	],
-	"coinFlipCoinNames": [
-		"Heads",
-		"Tails"
-	],
-	"coinFlipDescription": "Flip a coin!",
-	"coinFlipExtended": {
-		"usages": [
-			"heads/tails",
-			"heads cashless",
-			"tails Wager"
-		],
-		"extendedHelp": "Flip a coin. If you guess the side that shows up, you get back your wager, doubled.\nIf you don't, you lose your wager.\nYou can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.\nNow get those coins flippin'.",
-		"explainedUsage": [
-			[
-				"heads/tails",
-				"Whether you think the coin will lands heads or tails up."
-			],
-			[
-				"cashless, Wager",
-				"If cashless (default) then you do not input shinies for the coinflip (useful for RPG games or making decision). You can also put a wager of shinies here to gamble them."
-			]
-		],
-		"examples": [
-			"tails",
-			"heads 50",
-			"tails 200",
-			"tails cashless"
-		]
-	},
-	"coinFlipInvalidCoinName": "Excuse me, but `{{parameter}}` is not a coin face!",
-	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
-	"coinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
-	"coinFlipLoseTitle": "You lost.",
-	"coinFlipNoguessDescription": "The coin was flipped, and it showed {{result}}.",
-	"coinFlipNoguessTitle": "You flipped a coin.",
-	"coinFlipWinDescription": "The coin was flipped, and it showed {{result}}. You got it right!",
-	"coinFlipWinDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You guessed correctly and won {{wager}} {{SHINY}}!",
-	"coinFlipWinTitle": "You won!",
 	"gamesBot": "I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.",
 	"gamesNoPlayers": "Please specify some tributes to play the Hunger Games, like so: `{{prefix}}hg Bob, Mark, Jim, Kyra`",
 	"gamesProgress": "I am sorry, but there is a game in progress in this channel, try again when it finishes.",
@@ -416,39 +367,6 @@
 		"{1} writes in their journal.",
 		"{1} watches {2} sitting at their campfire, and considers killing them"
 	],
-	"higherLowerCancel": {
-		"description": "Thanks for playing, {{username}}! I'll be here when you want to play again.",
-		"title": "Game cancelled by choice"
-	},
-	"higherLowerCashout": "Paid out {{amount}} {{SHINY}} to your account. Hope you had fun!",
-	"higherLowerDescription": "Play a game of Higher/Lower",
-	"higherLowerEmbed": {
-		"description": "Your number is {{number}}. Will the next number be higher or lower?",
-		"footer": "The game will expire in 3 minutes, so act fast!",
-		"title": "Higher or Lower? | Turn {{turn}}"
-	},
-	"higherLowerExtended": {
-		"usages": [
-			"Wager"
-		],
-		"extendedHelp": "Higher/Lower is a game of luck.\nI will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis.\nYour winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 emoji.\nBe warned though! The further you go, the more chances you have to lose the winnings.",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"higherLowerLoading": "{{LOADING}} Starting a new game of Higher/Lower.",
-	"higherLowerLose": {
-		"description": "You didn't quite get it. The number was {{number}}. You lost {{losses}} {{SHINY}}.",
-		"footer": "Better luck next time!",
-		"title": "You lost!"
-	},
-	"higherLowerNewround": "Alright. Starting new round.",
-	"higherLowerWin": {
-		"description": "The number was {{number}}. Want to continue? With another attempt, you can win {{potentials}} {{SHINY}}!",
-		"footer": "Act fast! You don't have much time.",
-		"title": "You won!"
-	},
 	"hungerGamesDescription": "Play Hunger Games with your friends!",
 	"hungerGamesExtended": {
 		"usages": [
@@ -469,25 +387,6 @@
 	"hungerGamesResultProceed": "Proceed?",
 	"hungerGamesStop": "Game finished by choice! See you later!",
 	"hungerGamesWinner": "And the winner is... {{winner}}!",
-	"notEnoughMoney": "I am sorry, but you do not have enough money to pay your bet! Your current account balance is {{money}} {{SHINY}}",
-	"slotmachineCanvasTextLost": "You lost",
-	"slotmachineCanvasTextWon": "You won",
-	"slotmachineDescription": "I bet 100 {{SHINY}}'s you ain't winning this round.",
-	"slotmachineExtended": {
-		"usages": [
-			"Wager"
-		],
-		"explainedUsage": [
-			[
-				"Wager",
-				"Either 50, 100, 200, 500, 1000, and even more {{SHINY}} to bet."
-			]
-		],
-		"extendedHelp": "Spin a slot machine of 3 reels and gamble your shinies for larger rewards.",
-		"reminder": "You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin)."
-	},
-	"slotmachinesLoss": "**You rolled:**\n{{roll}}\n**Mission failed!**\nWe'll get em next time!",
-	"slotmachinesWin": "**You rolled:**\n{{roll}}\n**Congratulations!**\nYou won {{winnings}}{{SHINY}}!",
 	"ticTacToeDescription": "Play Tic-Tac-Toe with somebody.",
 	"ticTacToeDraw": "This match concluded in a **draw**!\n{{board}}",
 	"ticTacToeExtended": {
@@ -544,19 +443,5 @@
 	"triviaIncorrect": "I am sorry, but **{{attempt}}** is not the correct answer. Better luck next time!",
 	"triviaInvalidCategory": "Invalid category: Please use `Skyra, help trivia` for a list of categories.",
 	"triviaNoAnswer": "Looks like nobody got it! The right answer was **{{correctAnswer}}**.",
-	"triviaWinner": "We have a winner! {{winner}} had a right answer with **{{correctAnswer}}**!",
-	"wheelOfFortuneCanvasTextLost": "You lost",
-	"wheelOfFortuneCanvasTextWon": "You won",
-	"wheelOfFortuneDescription": "Gamble your shinies by spinning a wheel of fortune",
-	"wheelOfFortuneExtended": {
-		"usages": [
-			"Wager"
-		],
-		"extendedHelp": "You can lose 0.1, 0.2, 0.3 or 0.5 times your input or win 1.2, 1.5, 1.7 or 2.4 times your input",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"balanceDifference": "**Previous**: {{previous, number}} {{SHINY}}\n**New**: {{next, number}} {{SHINY}}"
+	"triviaWinner": "We have a winner! {{winner}} had a right answer with **{{correctAnswer}}**!"
 }

@@ -70,6 +70,12 @@ export const ButtonInviteTeryl: APIButtonComponent = new ButtonBuilder()
 	.setURL(Invites.Teryl)
 	.toJSON();
 
+export const ButtonInviteArtiel: APIButtonComponent = new ButtonBuilder()
+	.setLabel('Invite Artiel')
+	.setStyle(ButtonStyle.Link)
+	.setURL(Invites.Artiel)
+	.toJSON();
+
 export interface Options {
 	entries: { out: string | readonly string[]; in: string | readonly string[] }[];
 }

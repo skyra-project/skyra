@@ -2,9 +2,7 @@ import { FT, T } from '#lib/types';
 
 export const RangeInvalid = FT<{ value: string }>('arguments/range:invalid');
 export const RangeMax = FT<{ value: string; maximum: number; count: number }>('arguments/range:max');
-export const ImageNotFound = FT<{ value: string }>('arguments/image:notFound');
 
-export const All = T('arguments:all');
 export const BooleanDisabled = T('arguments:booleanDisabled');
 export const BooleanError = FT<{ parameter: string; possibles: string[]; count: number }>('arguments:booleanError');
 export const BooleanEnabled = T('arguments:booleanEnabled');
@@ -13,7 +11,6 @@ export const BooleanTrueOptions = T<readonly string[]>('arguments:booleanTrueOpt
 export const CaseLatestOptions = T<readonly string[]>('arguments:caseLatestOptions');
 export const CategoryChannelError = FT<{ parameter: string }>('arguments:categoryChannelError');
 export const ChannelError = FT<{ parameter: string }>('arguments:channelError');
-export const Color = FT<{ parameter: string }>('arguments:color');
 export const Command = FT<{ parameter: string }>('arguments:command');
 export const CommandMatch = FT<{ parameter: string }>('arguments:commandMatch');
 export const DateError = FT<{ parameter: string }>('arguments:dateError');
@@ -65,5 +62,3 @@ export const TooFewWinners = FT<{ parameter: string }>('arguments:tooFewWinners'
 export const TooManyWinners = FT<{ parameter: string }>('arguments:tooManyWinners');
 export const Unavailable = T('arguments:unavailable');
 export const UserError = FT<{ parameter: string }>('arguments:userError');
-export const Wager = FT<{ parameter: number; possibles: readonly string[] }>('arguments:wager');
-export const Winners = FT<{ parameter: string }>('arguments:winners');

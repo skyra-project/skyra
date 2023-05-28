@@ -2,10 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
-import { loadImage, type Image } from 'canvas-constructor/napi-rs';
 import type { APIUser } from 'discord-api-types/v9';
 import {
-	AllowedImageSize,
 	Guild,
 	GuildChannel,
 	ImageURLOptions,
@@ -62,11 +60,6 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
 	return ONE_TO_TEN.get(level);
-}
-
-export function fetchAvatar(user: User, size: AllowedImageSize = 512): Promise<Image> {
-	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
-	return loadImage(url);
 }
 
 /**

@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
 	"confUpdated": "Successfully updated the key **{{key}}**: {{response}}",
 	"confGetNoExt": "The key **{{key}}** does not seem to exist.",
 	"confGet": "The value for the key **{{key}}** is: `{{value}}`",

@@ -1,20 +1,4 @@
 {
-	"changemymindDescription": "Skyra is the best, change my mind.",
-	"changemymindExtended": {
-		"usages": [
-			"Content"
-		],
-		"extendedHelp": "I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.",
-		"explainedUsage": [
-			[
-				"text",
-				"The phrase you want."
-			]
-		],
-		"examples": [
-			"Skyra is the best bot in this server"
-		]
-	},
 	"diceDescription": "Roll the dice using d20 syntax.",
 	"diceExtended": {
 		"usages": [
@@ -104,61 +88,6 @@
 			"me"
 		]
 	},
-	"shindeiruDescription": "Omae wa mou shindeiru.",
-	"shindeiruExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?).",
-		"examples": [
-			"Skyra"
-		]
-	},
-	"thinkDescription": "Think, Mark!",
-	"thinkExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "\"Think, Mark!\" is a meme from the TV show Invincible, the rest... no, that would be spoilers.",
-		"reminder": "This command contains cartoon blood, which may not be suitable for all audiences.",
-		"examples": [
-			"Mark"
-		]
-	},
-	"thinkMessage": "Think, {{user}}, think!",
-	"wakandaDescription": "Helpful descriptions? We don't do that here",
-	"wakandaExtended": {
-		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
-	},
-	"whereDescription": "I found the person we were looking for!",
-	"whereExtended": {
-		"usages": [
-			"User"
-		],
-		"extendedHelp": "This command generates a meme from [Attack on Titan: The Final Season](https://anilist.co/anime/110277/Shingeki-no-Kyojin-The-Final-Season/), and it's better not to tell you anything, other than this will generate a meme of you pointing to a user of your choice.",
-		"examples": [
-			"Charm"
-		]
-	},
-	"whereMessage": "I found {{user}}!",
-	"xkcdDescription": "Read comics from XKCD.",
-	"xkcdExtended": {
-		"usages": [
-			"ComicNumber",
-			"Comic Name"
-		],
-		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
-		"explainedUsage": [
-			[
-				"query",
-				"Either the number of the comic, or a title to search for."
-			]
-		],
-		"examples": [
-			"1091",
-			"Curiosity"
-		]
-	},
 	"diceOutput": "You rolled the dice! You got: **{{result}}**",
 	"diceRollsError": "Amount of rolls must be a number between 1 and 1024.",
 	"diceSidesError": "Amount of sides must be a number between 3 and 1024.",
@@ -177,7 +106,5 @@
 	"rateOwners": [
 		". I love my developers a lot 🥰",
 		"my developers"
-	],
-	"xkcdComics": "There are only {{amount}} comics.",
-	"xkcdNotfound": "I have searched far and wide, but I got no luck finding this comic, try again later or try another!"
+	]
 }

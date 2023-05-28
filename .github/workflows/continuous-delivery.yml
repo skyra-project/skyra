@@ -41,11 +41,3 @@ jobs:
           tags: |
             skyrabot/skyra:latest
             ghcr.io/skyra-project/skyra:latest
-      - name: Update repo description
-        uses: peter-evans/dockerhub-description@v3.1.1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: skyrabot/skyra
-          readme-filepath: ./assets/docker-hub/SKYRA.md
-          short-description: Skyra - Multipurpose Discord Bot built on Sapphire Framework

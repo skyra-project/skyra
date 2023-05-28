@@ -1,5 +1,4 @@
 {
-	"channelNotReadable": "I am sorry, but I need the permissions **{{VIEW_CHANNEL, permissions}}** and **{{READ_MESSAGE_HISTORY, permissions}}**",
 	"guildBansEmpty": "There are no bans registered in this server.",
 	"guildBansNotFound": "I tried and failed to find this user from the ban list. Are you certain this user is banned?",
 	"guildMemberNotVoicechannel": "I cannot execute this action in a member that is not connected to a voice channel.",

@@ -7,7 +7,6 @@
 	"exceededLengthOutputTime": "{{time}}",
 	"exceededLengthOutputFile": "Sent the result as a file.",
 	"exceededLengthOutputHastebin": "Sent the result to hastebin: {{url}}",
-	"externalServerError": "The external service we use could not process our message. Please try again later.",
 	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
 	"helpTitles": {
 		"aliases": "🖇️ | **Aliases**",
@@ -29,15 +28,6 @@
 		"{{LOADING}} Tuning in to the right frequencies...",
 		"{{LOADING}} Reticulating splines..."
 	],
-	"messagePromptTimeout": "The prompt has timed out.",
-	"noResults": "I wasn't able to find any results for that query",
-	"parseError": "{{REDCROSS}} I failed to process the data I was given, sorry~!",
 	"prefixReminder": "The prefix in this server is set to: `{{prefix}}`",
-	"queryFail": "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",
-	"textPromptAbortOptions": [
-		"abort",
-		"cancel",
-		"stop"
-	],
 	"reminderHeader": "⏲ Hey there! You asked to be reminded at {{timestamp}} about:"
 }

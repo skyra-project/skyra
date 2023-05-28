@@ -100,7 +100,6 @@ function parseInternationalizationDefaultVariables() {
 		TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
 		VERSION: process.env.CLIENT_VERSION,
 		LOADING: Emojis.Loading,
-		SHINY: Emojis.Shiny,
 		GREENTICK: Emojis.GreenTick,
 		REDCROSS: Emojis.RedCross,
 		DEFAULT_PREFIX: process.env.CLIENT_PREFIX,

@@ -38,6 +38,4 @@ jobs:
         with:
           push: true
           context: .
-          tags: |
-            skyrabot/skyra:latest
-            ghcr.io/skyra-project/skyra:latest
+          tags: ghcr.io/skyra-project/skyra:latest

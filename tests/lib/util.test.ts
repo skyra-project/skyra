@@ -35,20 +35,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('radians', () => {
-		test('GIVEN 180 degrees THEN returns 1 Pi', () => {
-			expect(utils.radians(180)).toEqual(Math.PI);
-		});
-
-		test('GIVEN 120 degrees THEN returns ⅔ Pi', () => {
-			expect(utils.radians(120)).toEqual((Math.PI / 3) * 2);
-		});
-
-		test('GIVEN 360 degrees THEN returns 2 Pi', () => {
-			expect(utils.radians(360)).toEqual(Math.PI * 2);
-		});
-	});
-
 	describe('oneToTen', () => {
 		test('GIVEN positive rational number THEN returns level 0 (😪)', () => {
 			expect(utils.oneToTen(2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });

@@ -51,10 +51,6 @@ export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
  */
 export const MEDIA_EXTENSION = /\.(bmp|jpe?g|png|gifv?|web[pm]|wav|mp[34]|ogg)$/i;
 
-export function radians(degrees: number) {
-	return (degrees * Math.PI) / 180;
-}
-
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	level |= 0;
 	if (level < 0) level = 0;

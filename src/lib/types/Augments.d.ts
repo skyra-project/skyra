@@ -101,8 +101,8 @@ declare module '@sapphire/framework' {
 		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;
 		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
-		emit(events: Events.TwitchStreamOnline, event: TwitchEventSubOnlineEvent): boolean;
-		emit(events: Events.TwitchStreamOffline, event: TwitchEventSubEvent): boolean;
+		emit(event: Events.TwitchStreamOnline, data: TwitchEventSubOnlineEvent): boolean;
+		emit(event: Events.TwitchStreamOffline, data: TwitchEventSubEvent): boolean;
 		emit(event: Events.TaskError, error: Error, payload: TaskErrorPayload): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}

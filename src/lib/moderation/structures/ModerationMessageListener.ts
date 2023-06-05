@@ -2,9 +2,9 @@ import { AdderKey, GuildEntity, GuildSettings, readSettings } from '#lib/databas
 import type { AdderError } from '#lib/database/utils/Adder';
 import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { floatPromise, seconds } from '#utils/common';
 import { getModeration, getSecurity, isModerator } from '#utils/functions';
-import { canSendMessages, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { GuildTextBasedChannelTypes, canSendMessages } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
 import type { Awaitable, Nullish, PickByValue } from '@sapphire/utilities';
 import type { GuildMember, MessageEmbed } from 'discord.js';
@@ -143,22 +143,19 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 					moderatorId: process.env.CLIENT_ID,
 					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
-				1
+				seconds.fromMinutes(5)
 			)
 		);
 	}
 
 	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.ban(
-				{
-					userId: message.author.id,
-					moderatorId: process.env.CLIENT_ID,
-					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-					duration
-				},
-				0
-			)
+			getSecurity(message.guild).actions.ban({
+				userId: message.author.id,
+				moderatorId: process.env.CLIENT_ID,
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				duration
+			})
 		);
 	}
 

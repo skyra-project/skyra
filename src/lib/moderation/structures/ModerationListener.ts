@@ -1,4 +1,5 @@
 import { GuildEntity, readSettings } from '#lib/database';
+import { seconds } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import { Listener } from '@sapphire/framework';
 import type { PickByValue } from '@sapphire/utilities';
@@ -79,7 +80,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 					moderatorId: process.env.CLIENT_ID,
 					reason: '[Auto-Moderation] Threshold Reached.'
 				},
-				1
+				seconds.fromMinutes(5)
 			)
 		);
 	}
@@ -88,15 +89,12 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.ban(
-				{
-					userId,
-					moderatorId: process.env.CLIENT_ID,
-					reason: '[Auto-Moderation] Threshold Reached.',
-					duration
-				},
-				0
-			)
+			getSecurity(guild).actions.ban({
+				userId,
+				moderatorId: process.env.CLIENT_ID,
+				reason: '[Auto-Moderation] Threshold Reached.',
+				duration
+			})
 		);
 	}
 

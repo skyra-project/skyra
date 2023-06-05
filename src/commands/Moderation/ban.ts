@@ -2,6 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import { getModeration, getSecurity } from '#utils/functions';
+import { TimeOptions, getSeconds } from '#utils/moderation-utilities';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -13,7 +14,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 	description: LanguageKeys.Commands.Moderation.BanDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.BanExtended,
 	optionalDuration: true,
-	options: ['d', 'day', 'days'],
+	options: TimeOptions,
 	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
 	requiredMember: false
 })
@@ -31,7 +32,7 @@ export class UserModerationCommand extends ModerationCommand {
 				imageURL: getImage(message),
 				reason: context.reason
 			},
-			await this.getDays(context.args),
+			getSeconds(context.args),
 			await this.getTargetDM(message, context.args, context.target)
 		);
 	}
@@ -44,14 +45,5 @@ export class UserModerationCommand extends ModerationCommand {
 		const member = await super.checkModeratable(message, context);
 		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
-	}
-
-	private async getDays(args: ModerationCommand.Args) {
-		const value = args.getOption('d', 'day', 'days');
-		if (value === null) return 0;
-
-		const parsed = Number(value);
-		if (Number.isInteger(parsed) && parsed >= 0 && parsed <= 7) return parsed;
-		return 0;
 	}
 }

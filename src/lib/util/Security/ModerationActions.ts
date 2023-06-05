@@ -8,9 +8,9 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
-import { container, UserError } from '@sapphire/framework';
+import { UserError, container } from '@sapphire/framework';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
-import { isNullish, isNullishOrEmpty, isNullishOrZero, Nullish, PickByValue } from '@sapphire/utilities';
+import { Nullish, PickByValue, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
 import {
 	DiscordAPIError,
@@ -410,7 +410,7 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
-	public async softBan(rawOptions: ModerationActionOptions, days: number, sendOptions?: ModerationActionsSendOptions) {
+	public async softBan(rawOptions: ModerationActionOptions, seconds?: number, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.SoftBan);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
@@ -421,7 +421,7 @@ export class ModerationActions {
 			.bans(options.userId)
 			.put({
 				data: {
-					delete_message_days: days
+					delete_message_seconds: seconds ?? 0
 				},
 				reason: moderationLog.reason
 					? t(LanguageKeys.Commands.Moderation.ActionSoftBanReason, { reason: moderationLog.reason! })
@@ -438,7 +438,7 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
-	public async ban(rawOptions: ModerationActionOptions, days: number, sendOptions?: ModerationActionsSendOptions) {
+	public async ban(rawOptions: ModerationActionOptions, seconds?: number, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Ban);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
@@ -447,7 +447,7 @@ export class ModerationActions {
 			.bans(options.userId)
 			.put({
 				data: {
-					delete_message_days: days
+					delete_message_seconds: seconds ?? 0
 				},
 				reason: await this.getReason('ban', moderationLog.reason)
 			});

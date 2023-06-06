@@ -4,6 +4,7 @@ import type { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { filter, map } from '#utils/common';
 import { Colors } from '#utils/constants';
+import { getFullEmbedAuthor } from '#utils/util';
 import { Listener } from '@sapphire/framework';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -50,7 +51,7 @@ export class UserListener extends Listener {
 	private buildEmbed(user: User, t: TFunction, description: string, footerKey: CustomGet<string, string>) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
-			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setAuthor(getFullEmbedAuthor(user))
 			.setDescription(description)
 			.setFooter({ text: t(footerKey) })
 			.setTimestamp();

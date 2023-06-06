@@ -7,6 +7,7 @@ import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ListenerOptions } from '@sapphire/framework';
 import { fetchT, sendLocalized } from '@sapphire/plugin-i18next';
@@ -87,7 +88,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const t = await fetchT(data.guild);
 		return new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setAuthor(getFullEmbedAuthor(user))
 			.setThumbnail(
 				data.emoji.id === null
 					? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))

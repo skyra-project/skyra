@@ -6,7 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
-import { cast } from '#utils/util';
+import { cast, getTag } from '#utils/util';
 import { Args, CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
@@ -79,7 +79,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
 				const sorted = processed.sort((a, b) => a.log.caseId - b.log.caseId);
 				const cases = sorted.map(({ log }) => log.caseId);
-				const users = sorted.map(({ target }) => `\`${target.tag}\``);
+				const users = sorted.map(({ target }) => `\`${getTag(target)}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
 					? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
@@ -88,7 +88,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			if (errored.length) {
-				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
+				const users = errored.map(({ error, target }) => `- ${getTag(target)} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(args.t(LanguageKeys.Commands.Moderation.ModerationFailed, { users: users.join('\n'), count: users.length }));
 			}
 

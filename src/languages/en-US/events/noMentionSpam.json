@@ -1,6 +1,6 @@
 {
 	"footer": "[NOMENTIONSPAM]",
 	"alert": "Be careful mentioning any more, as you are about to be banned for exceeding this server's mention threshold.",
-	"message": "The banhammer has landed and now the user {{user.tag}} with id {{user.id}} is banned for mention spam.\nDo not worry! I'm here to help you! 😄",
+	"message": "The banhammer has landed and now the user {{userTag}} with id {{userId}} is banned for mention spam.\nDo not worry! I'm here to help you! 😄",
 	"modlog": "[NOMENTIONSPAM] Automatic: Mention Spam threshold exceeded.\nThreshold: {{threshold}}."
 }

@@ -4,18 +4,18 @@ import type { ModerationManager, ModerationManagerUpdateData } from '#lib/modera
 import { Events } from '#lib/types/Enums';
 import { minutes, years } from '#utils/common';
 import {
-	metadata,
-	ModerationManagerDescriptionData,
 	ModerationTypeAssets,
 	TypeBits,
 	TypeCodes,
 	TypeMetadata,
 	TypeVariation,
-	TypeVariationAppealNames
+	TypeVariationAppealNames,
+	metadata
 } from '#utils/moderationConstants';
-import { container, UserError } from '@sapphire/framework';
+import { getFullEmbedAuthor, getTag } from '#utils/util';
+import { UserError, container } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
-import { isNullishOrZero, isNumber, NonNullObject, tryParseURL } from '@sapphire/utilities';
+import { NonNullObject, isNullishOrZero, isNumber, tryParseURL } from '@sapphire/utilities';
 import { MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { readSettings } from '../settings';
@@ -313,30 +313,22 @@ export class ModerationEntity extends BaseEntity {
 
 		const [prefix, t] = await readSettings(manager.guild, (settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
-		const descriptionData: ModerationManagerDescriptionData = {
-			type: this.title,
-			userName: user.username,
-			userDiscriminator: user.discriminator,
-			userId: this.userId,
-			reason: this.reason,
-			prefix,
-			caseId: this.caseId,
-			formattedDuration
-		};
 
-		const body = t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, { data: descriptionData });
+		const body = t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {
+			type: this.title,
+			userId: user.id,
+			userTag: getTag(user)
+		});
 		const reason = t(
 			this.reason
 				? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
 				: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
-			{
-				data: descriptionData
-			}
+			{ reason: this.reason, prefix, caseId: this.caseId, formattedDuration }
 		);
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)
-			.setAuthor({ name: moderator.tag, iconURL: moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setAuthor(getFullEmbedAuthor(moderator))
 			.setDescription(`${body}\n${reason}`)
 			.setFooter({
 				text: t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),

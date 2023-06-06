@@ -5,7 +5,7 @@
 	"timeUnsupportedType": "The type of action for the selected case cannot be reverse, therefore this action is unsupported.",
 	"timeNotScheduled": "This task is not scheduled.",
 	"timeAborted": "Successfully aborted the schedule for {{title}}",
-	"timeScheduled": "{{GREENTICK}} Successfully scheduled a moderation action type **{{title}}** for the user {{user.tag}} ({{user.id}}) with a duration of {{time, duration}}",
+	"timeScheduled": "{{GREENTICK}} Successfully scheduled a moderation action type **{{title}}** for the user {{userTag}} ({{userId}}) with a duration of {{time, duration}}",
 	"slowmodeSet": "The cooldown for this channel has been set to {{cooldown, duration}}.",
 	"slowmodeReset": "The cooldown for this channel has been reset.",
 	"timeDescription": "Set the timer.",

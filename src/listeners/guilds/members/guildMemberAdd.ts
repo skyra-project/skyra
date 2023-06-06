@@ -4,6 +4,7 @@ import { Events } from '#lib/types/Enums';
 import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getStickyRoles } from '#utils/functions';
+import { getFullEmbedAuthor } from '#utils/util';
 import { Listener } from '@sapphire/framework';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 
@@ -37,10 +38,7 @@ export class UserListener extends Listener {
 			this.container.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
 				new MessageEmbed()
 					.setColor(Colors.Amber)
-					.setAuthor({
-						name: `${member.user.tag} (${member.user.id})`,
-						iconURL: member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-					})
+					.setAuthor(getFullEmbedAuthor(member.user))
 					.setDescription(
 						t(LanguageKeys.Events.Guilds.Members.GuildMemberAddDescription, {
 							mention: member.toString(),

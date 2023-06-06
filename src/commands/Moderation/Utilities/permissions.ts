@@ -3,12 +3,12 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ZeroWidthSpace } from '#utils/constants';
-import { getColor } from '#utils/util';
+import { getColor, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { MessageEmbed, PermissionString, Permissions } from 'discord.js';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -39,7 +39,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(getColor(message))
-			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
+			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: getTag(user), id: user.id }))
 			.setDescription(list.join('\n'));
 		return send(message, { embeds: [embed] });
 	}

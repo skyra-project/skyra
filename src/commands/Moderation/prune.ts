@@ -9,7 +9,7 @@ import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { metadata, TypeCodes } from '#utils/moderationConstants';
-import { getImageUrl } from '#utils/util';
+import { getFullEmbedAuthor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, CommandOptionsRunTypeEnum, IArgument } from '@sapphire/framework';
@@ -162,8 +162,6 @@ export class UserCommand extends SkyraCommand {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
 
-			const authorName = `${message.author.tag} (${message.author.id})`;
-			const authorAvatar = message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true });
 			const description = t(LanguageKeys.Commands.Moderation.PruneLogMessage, {
 				channel: (message.channel as TextChannel).toString(),
 				author: message.author.toString(),
@@ -171,7 +169,7 @@ export class UserCommand extends SkyraCommand {
 			});
 
 			const embed = new MessageEmbed()
-				.setAuthor({ name: authorName, iconURL: authorAvatar })
+				.setAuthor(getFullEmbedAuthor(message.author, message.url))
 				.setDescription(description)
 				.setColor(UserCommand.kColor)
 				.setTimestamp();

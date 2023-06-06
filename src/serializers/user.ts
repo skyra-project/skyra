@@ -1,6 +1,8 @@
 import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getTag } from '#utils/util';
 import { SnowflakeRegex } from '@sapphire/discord.js-utilities';
+import { isNullish } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args) {
@@ -22,6 +24,7 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	public stringify(value: string) {
-		return this.container.client.users.cache.get(value)?.tag ?? value;
+		const user = this.container.client.users.cache.get(value);
+		return isNullish(user) ? value : getTag(user);
 	}
 }

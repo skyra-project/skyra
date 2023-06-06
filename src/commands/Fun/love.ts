@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
-import { getColor } from '#utils/util';
+import { getColor, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -31,8 +31,8 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		const description = [
-			`💗 **${user.tag}**`,
-			`💗 **${message.author.tag}**\n`,
+			`💗 **${getTag(user)}**`,
+			`💗 **${getTag(message.author)}**\n`,
 			`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
 			`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 		].join('\n');

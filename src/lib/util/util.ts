@@ -4,16 +4,17 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
 import type { APIUser } from 'discord-api-types/v9';
 import {
-	Guild,
-	GuildChannel,
-	ImageURLOptions,
-	Message,
 	MessageEmbed,
-	MessageMentionTypes,
 	Permissions,
-	ThreadChannel,
-	User,
-	UserResolvable
+	type EmbedAuthorData,
+	type Guild,
+	type GuildChannel,
+	type ImageURLOptions,
+	type Message,
+	type MessageMentionTypes,
+	type ThreadChannel,
+	type User,
+	type UserResolvable
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 import { BrandingColors, ZeroWidthSpace } from './constants';
@@ -126,12 +127,37 @@ export function getImage(message: Message): string | null {
 	return attachment ? attachment.proxyURL || attachment.url : null;
 }
 
+/**
+ * Checks whether or not the user uses the new username change, defined by the
+ * `discriminator` being `'0'` or in the future, no discriminator at all.
+ * @see {@link https://dis.gd/usernames}
+ * @param user The user to check.
+ */
+export function usesPomelo(user: User | APIUser) {
+	return isNullishOrEmpty(user.discriminator) || user.discriminator === '0';
+}
+
 const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(id: string, user: User | APIUser, options: ImageURLOptions = {}) {
-	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
+export function getDisplayAvatar(user: User | APIUser, options: ImageURLOptions = {}) {
+	if (user.avatar === null) {
+		const id = (usesPomelo(user) ? BigInt(user.id) % 5n : Number(user.discriminator) % 5).toString();
+		return `${ROOT}/embed/avatars/${id}.png`;
+	}
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
-	return `${ROOT}/avatars/${id}/${user.avatar}.${format}${size}`;
+	return `${ROOT}/avatars/${user.id}/${user.avatar}.${format}${size}`;
+}
+
+export function getTag(user: User | APIUser) {
+	return usesPomelo(user) ? `@${user.username}` : `${user.username}#${user.discriminator}`;
+}
+
+export function getEmbedAuthor(user: User | APIUser, url?: string | undefined): EmbedAuthorData {
+	return { name: getTag(user), iconURL: getDisplayAvatar(user, { size: 128, format: 'png', dynamic: true }), url };
+}
+
+export function getFullEmbedAuthor(user: User | APIUser, url?: string | undefined): EmbedAuthorData {
+	return { name: `${getTag(user)} (${user.id})`, iconURL: getDisplayAvatar(user, { size: 128, format: 'png', dynamic: true }), url };
 }
 
 /**

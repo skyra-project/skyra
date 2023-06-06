@@ -6,6 +6,7 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { seconds, years } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
+import { getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -62,7 +63,12 @@ export class UserCommand extends SkyraCommand {
 			moderatorId: message.author.id
 		});
 
-		const content = args.t(LanguageKeys.Commands.Moderation.TimeScheduled, { title: entry.title, user, time: duration! });
+		const content = args.t(LanguageKeys.Commands.Moderation.TimeScheduled, {
+			title: entry.title,
+			userId: user.id,
+			userTag: getTag(user),
+			time: duration!
+		});
 		return send(message, content);
 	}
 

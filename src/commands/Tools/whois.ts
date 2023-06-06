@@ -4,12 +4,13 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { months, seconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { getTag } from '#utils/util';
+import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
+import { GuildMember, PermissionString, Permissions, Role, User } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -94,7 +95,7 @@ export class UserCommand extends SkyraCommand {
 	private getUserInformation(user: User, extras = ''): string {
 		const bot = user.bot ? ` ${Emojis.Bot}` : '';
 		const avatar = `[Avatar ${Emojis.Frame}](${user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true })})`;
-		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
+		return `**${getTag(user)}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
 	private applyMemberRoles(t: TFunction, member: GuildMember, embed: SkyraEmbed) {

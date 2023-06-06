@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
@@ -65,10 +66,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		return new MessageEmbed()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
-			.setAuthor({
-				name: `${message.author.tag} (${message.author.id})`,
-				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
+			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.CapsFilterFooter)}` })
 			.setTimestamp();
 	}

@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { cleanMentions, getTag } from '#utils/util';
 import type { EmbedField, Guild, MessageAttachment, MessageEmbed, MessageEmbedFooter, MessageEmbedImage, User } from 'discord.js';
 import type { TFunction } from 'i18next';
-import { cleanMentions } from './util';
 
 export function formatMessage(t: TFunction, message: GuildMessage): string {
 	const header = formatHeader(t, message);
@@ -25,7 +25,7 @@ function formatTimestamp(t: TFunction, timestamp: number): string {
 }
 
 function formatAuthor(author: User): string {
-	return `${author.tag}${author.bot ? ' [BOT]' : ''}`;
+	return `${getTag(author)}${author.bot ? ' [BOT]' : ''}`;
 }
 
 function formatContents(message: GuildMessage): string {

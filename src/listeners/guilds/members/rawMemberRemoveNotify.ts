@@ -4,7 +4,7 @@ import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
-import { getDisplayAvatar } from '#utils/util';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -32,7 +32,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
-				.setAuthor({ name: `${user.username}#${user.discriminator} (${user.id})`, iconURL: getDisplayAvatar(user.id, user) })
+				.setAuthor(getFullEmbedAuthor(user))
 				.setDescription(
 					t(
 						time === -1

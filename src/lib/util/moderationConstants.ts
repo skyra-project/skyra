@@ -177,10 +177,6 @@ export interface ModerationTypeAssets {
 }
 
 export interface ModerationManagerDescriptionData {
-	type: string;
-	userName: string;
-	userDiscriminator: string;
-	userId: string;
 	reason: string | null;
 	prefix: string;
 	caseId: number;

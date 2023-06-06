@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
-import { getContent, getImage } from '#utils/util';
+import { getContent, getFullEmbedAuthor, getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -30,10 +30,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
-				.setAuthor({
-					name: `${message.author.tag} (${message.author.id})`,
-					iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-				})
+				.setAuthor(getFullEmbedAuthor(message.author, message.url))
 				.setDescription(cutText(getContent(message) || '', 1900))
 				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageDelete, { channel: `#${message.channel.name}` }) })
 				.setImage(getImage(message)!)

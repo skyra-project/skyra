@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { minutes, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { random } from '#utils/util';
+import { getTag, random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -48,7 +48,7 @@ export class UserCommand extends SkyraCommand {
 		if (winners.size === 0) {
 			embed.setColor(Colors.Red).setTitle(args.t(LanguageKeys.Commands.Fun.PopTitleLost));
 		} else {
-			const value = winners.first()!.author.tag;
+			const value = getTag(winners.first()!.author);
 			embed.setColor(Colors.Green).setTitle(args.t(LanguageKeys.Commands.Fun.PopTitleWinner, { value }));
 		}
 

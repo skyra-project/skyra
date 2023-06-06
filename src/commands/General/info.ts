@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKeys/keys/commands/General';
 import { SkyraArgs, SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
-import { getColor } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { getColor, getEmbedAuthor } from '#utils/util';
+import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -39,10 +39,7 @@ export class UserCommand extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor({
-				name: this.container.client.user!.tag,
-				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
+			.setAuthor(getEmbedAuthor(this.container.client.user!))
 			.setDescription(args.t(LanguageKeys.Commands.General.InfoBody))
 			.setTimestamp()
 			.addField(titles.stats, fields.stats)

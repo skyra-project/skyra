@@ -1,7 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import type { ModerationManagerDescriptionData } from '#utils/moderationConstants';
-import type { User } from 'discord.js';
 
 export interface ModerationAction {
 	addRole: string;
@@ -99,7 +98,7 @@ export const TimeTimed = T('commands/moderation:timeTimed');
 export const TimeUnsupportedType = T('commands/moderation:timeUnsupportedType');
 export const TimeNotScheduled = T('commands/moderation:timeNotScheduled');
 export const TimeAborted = FT<{ title: string }, string>('commands/moderation:timeAborted');
-export const TimeScheduled = FT<{ title: string; user: User; time: number }, string>('commands/moderation:timeScheduled');
+export const TimeScheduled = FT<{ title: string; userId: string; userTag: string; time: number }, string>('commands/moderation:timeScheduled');
 export const SlowmodeSet = FT<{ cooldown: number }, string>('commands/moderation:slowmodeSet');
 export const SlowmodeReset = T('commands/moderation:slowmodeReset');
 export const TimeDescription = T('commands/moderation:timeDescription');
@@ -149,9 +148,13 @@ export const ModerationOutputWithReason = FT<{ count: number; range: string | nu
 );
 export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation:caseNotExists');
 export const ModerationLogAppealed = T('moderation:logAppealed');
-export const ModerationLogDescriptionTypeAndUser = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionTypeAndUser');
-export const ModerationLogDescriptionWithReason = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionWithReason');
-export const ModerationLogDescriptionWithoutReason = FT<{ data: ModerationManagerDescriptionData }, string>('moderation:logDescriptionWithoutReason');
+export const ModerationLogDescriptionTypeAndUser = FT<{ type: string; userId: string; userTag: string }, string>(
+	'moderation:logDescriptionTypeAndUser'
+);
+export const ModerationLogDescriptionWithReason = FT<Pick<ModerationManagerDescriptionData, 'reason' | 'formattedDuration'>, string>(
+	'moderation:logDescriptionWithReason'
+);
+export const ModerationLogDescriptionWithoutReason = FT<ModerationManagerDescriptionData, string>('moderation:logDescriptionWithoutReason');
 export const GuildBansEmpty = T('errors:guildBansEmpty');
 export const GuildBansNotFound = T('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T('errors:guildMemberNotVoicechannel');

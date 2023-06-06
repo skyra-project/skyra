@@ -5,7 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
-import { getImage } from '#utils/util';
+import { getImage, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 
@@ -17,7 +17,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 export class UserModerationCommand extends ModerationCommand {
 	public async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
 		const caseId = await args.pick('case');
-		const reason = await args.rest('string');
+		const reason = args.finished ? null : await args.rest('string');
 
 		const [autoDelete, messageDisplay, reasonDisplay] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModerationAutoDelete,
@@ -42,12 +42,7 @@ export class UserModerationCommand extends ModerationCommand {
 			const originalReason = reasonDisplay ? unwarnLog.reason : null;
 			const content = args.t(
 				originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
-				{
-					count: 1,
-					range: unwarnLog.caseId,
-					users: [`\`${user.tag}\``],
-					reason: originalReason
-				}
+				{ count: 1, range: unwarnLog.caseId, users: [`\`${getTag(user)}\``], reason: originalReason }
 			);
 
 			return send(message, content) as Promise<GuildMessage>;

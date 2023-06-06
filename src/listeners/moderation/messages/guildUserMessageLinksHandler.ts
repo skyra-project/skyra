@@ -5,6 +5,7 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -53,10 +54,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor({
-				name: `${message.author.tag} (${message.author.id})`,
-				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
+			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.LinkFooter)}` })
 			.setTimestamp();
 	}

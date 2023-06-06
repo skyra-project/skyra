@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
-import { IMAGE_EXTENSION } from '#utils/util';
+import { IMAGE_EXTENSION, getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
 import { MessageAttachment, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
@@ -66,10 +66,7 @@ export class UserListener extends Listener {
 				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {
 					const embed = new MessageEmbed()
 						.setColor(Colors.Yellow)
-						.setAuthor({
-							name: `${message.author.tag} (${message.author.id})`,
-							iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-						})
+						.setAuthor(getFullEmbedAuthor(message.author, message.url))
 						.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter({ text: `#${(message.channel as TextChannel).name}` })
 						.setImage(`attachment://${filename}`)

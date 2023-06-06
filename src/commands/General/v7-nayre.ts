@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getColor } from '#utils/util';
+import { getColor, getEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -66,10 +66,7 @@ export class UserCommand extends SkyraCommand {
 	public messageRun(message: Message, args: SkyraCommand.Args) {
 		const embed = new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor({
-				name: this.container.client.user!.tag,
-				iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
+			.setAuthor(getEmbedAuthor(this.container.client.user!))
 			.setDescription(args.t(LanguageKeys.Commands.General.V7NayreMessage, { command: args.commandContext.commandName }))
 			.setTimestamp();
 		return send(message, { embeds: [embed] });

@@ -5,6 +5,7 @@ import { Events } from '#lib/types/Enums';
 import { isGuildMessage } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -34,11 +35,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
 			new SkyraEmbed()
 				.setColor(Colors.Amber)
-				.setAuthor({
-					name: `${message.author.tag} (${message.author.id})`,
-					iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }),
-					url: message.url
-				})
+				.setAuthor(getFullEmbedAuthor(message.author, message.url))
 				.splitFields(
 					diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(message.content))
 						.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))

@@ -1,8 +1,5 @@
 import { FT, T } from '#lib/types';
 
-export const RangeInvalid = FT<{ value: string }>('arguments/range:invalid');
-export const RangeMax = FT<{ value: string; maximum: number; count: number }>('arguments/range:max');
-
 export const BooleanDisabled = T('arguments:booleanDisabled');
 export const BooleanError = FT<{ parameter: string; possibles: string[]; count: number }>('arguments:booleanError');
 export const BooleanEnabled = T('arguments:booleanEnabled');
@@ -45,6 +42,8 @@ export const NumberError = FT<{ parameter: string }>('arguments:numberError');
 export const NumberTooLarge = FT<{ parameter: string; maximum: number }>('arguments:numberTooLarge');
 export const NumberTooSmall = FT<{ parameter: string; minimum: number }>('arguments:numberTooSmall');
 export const Piece = FT<{ parameter: string; piece: string }>('arguments:piece');
+export const RangeInvalid = FT<{ value: string }>('arguments:rangeInvalid');
+export const RangeMax = FT<{ value: string; maximum: number; count: number }>('arguments:rangeMax');
 export const ResetPossibles = T<string[]>('arguments:resetPossibles');
 export const RoleError = FT<{ parameter: string }>('arguments:roleError');
 export const RoleMissingGuild = FT<{ parameter: string }>('arguments:roleMissingGuild');

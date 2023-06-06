@@ -68,6 +68,9 @@
 	"numberTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"numberTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"piece": "I could not resolve `{{parameter}}` to a piece! Make sure you typed its name or one of its aliases correctly!",
+	"rangeInvalid": "`{{parameter}}` must be a number or a range of numbers.",
+	"rangeMax_other": "`{{parameter}}` accepts a range of maximum {{maximum}} numbers",
+	"rangeMax_one": "`{{parameter}}` accepts a range of maximum {{maximum}} number",
 	"resetPossibles": [
 		"off",
 		"reset"

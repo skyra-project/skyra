@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import { Schedules } from '#lib/types/Enums';
 import { ButtonInviteTeryl, ButtonSkyraV7, makeRow } from '#utils/deprecate';
-import { getColor, sendLoadingMessage } from '#utils/util';
+import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -90,10 +90,7 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor({
-				name: `${message.author.tag} (${message.author.id})`,
-				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			})
+			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setDescription(task.data.content)
 			.setFooter({ text: args.t(LanguageKeys.Commands.Misc.RemindMeShowFooter, { id: task.id }) })
 			.setTimestamp(task.time);

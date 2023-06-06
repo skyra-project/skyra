@@ -1,6 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { Role, User } from 'discord.js';
+import type { Role } from 'discord.js';
 
 export const AttachmentsModeDescription = T<string>('commands/management:attachmentsModeDescription');
 export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:attachmentsModeExtended');
@@ -27,7 +27,7 @@ export const GuildInfoChannelsAfkChannelText = FT<{ afkChannel: string; afkTime:
 );
 export const GuildInfoDescription = T<string>('commands/management:guildInfoDescription');
 export const GuildInfoExtended = T<LanguageHelpDisplayOptions>('commands/management:guildInfoExtended');
-export const GuildInfoMembers = FT<{ memberCount: number; owner: User }, string>('commands/management:guildInfoMembers');
+export const GuildInfoMembers = FT<{ memberCount: number; ownerId: string; ownerTag: string }, string>('commands/management:guildInfoMembers');
 export const GuildInfoOther = FT<
 	{
 		size: number;

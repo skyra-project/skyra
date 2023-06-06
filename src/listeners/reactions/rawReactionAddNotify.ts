@@ -5,6 +5,7 @@ import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
 import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { getFullEmbedAuthor } from '#utils/util';
 import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -51,7 +52,7 @@ export class UserListener extends Listener {
 		this.container.client.emit(Events.GuildMessageLog, data.guild, logChannelId, key, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setAuthor({ name: `${user.tag} (${user.id})`, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+				.setAuthor(getFullEmbedAuthor(user))
 				.setThumbnail(
 					data.emoji.id === null
 						? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))

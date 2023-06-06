@@ -3,8 +3,8 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
-import { getColor } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { getColor, getTag } from '#utils/util';
+import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -143,7 +143,11 @@ export class UserCommand extends SkyraCommand {
 		const guild = args.message.guild!;
 		const owner = await this.container.client.users.fetch(guild.ownerId);
 
-		return args.t(LanguageKeys.Commands.Management.GuildInfoMembers, { memberCount: guild.memberCount, owner });
+		return args.t(LanguageKeys.Commands.Management.GuildInfoMembers, {
+			memberCount: guild.memberCount,
+			ownerId: owner.id,
+			ownerTag: getTag(owner)
+		});
 	}
 
 	private getSummaryChannels(args: SkyraCommand.Args): string {

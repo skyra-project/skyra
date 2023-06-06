@@ -28,7 +28,7 @@
 	},
 	"guildInfoChannels": "• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.\n• AFK: {{afkChannelText}}",
 	"guildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **{{afkTime}}**min",
-	"guildInfoMembers": "• **{{memberCount, number}}** member(s)\n• Owner: **{{owner.tag}}**\n  (ID: **{{owner.id}}**)",
+	"guildInfoMembers": "• **{{memberCount, number}}** member(s)\n• Owner: **{{ownerTag}}**\n  (ID: **{{ownerId}}**)",
 	"guildInfoOther": "• Roles: **{{size}}**\n• Created: **{{createdAt}}**\n• Verification Level: **{{verificationLevel, humanLevels}}**",
 	"guildInfoBanner": "Banner Image",
 	"guildInfoIcon": "Icon Image",

@@ -420,7 +420,16 @@ describe('Utils', () => {
 				avatar: null
 			});
 
-			expect(utils.getDisplayAvatar('', user)).toEqual('https://cdn.discordapp.com/embed/avatars/1.png');
+			expect(utils.getDisplayAvatar(user)).toEqual('https://cdn.discordapp.com/embed/avatars/1.png');
+		});
+
+		test('GIVEN user without avatar THEN returns base avatar', () => {
+			const user = createUser({
+				discriminator: '0',
+				avatar: null
+			});
+
+			expect(utils.getDisplayAvatar(user)).toEqual('https://cdn.discordapp.com/embed/avatars/1.png');
 		});
 
 		test('GIVEN user with animated avatar THEN avatar gif url', () => {
@@ -429,8 +438,8 @@ describe('Utils', () => {
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
 			});
 
-			expect(utils.getDisplayAvatar('268792781713965056', user)).toEqual(
-				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.gif'
+			expect(utils.getDisplayAvatar(user)).toEqual(
+				'https://cdn.discordapp.com/avatars/266624760782258186/a_e583ad02d90ca9a5431bccec6c17b348.gif'
 			);
 		});
 
@@ -440,7 +449,7 @@ describe('Utils', () => {
 				avatar: '09b52e547fa797c47c7877cd10eb6ba8'
 			});
 
-			expect(utils.getDisplayAvatar('266624760782258186', user)).toEqual(
+			expect(utils.getDisplayAvatar(user)).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
 			);
 		});
@@ -451,7 +460,7 @@ describe('Utils', () => {
 				avatar: '09b52e547fa797c47c7877cd10eb6ba8'
 			});
 
-			expect(utils.getDisplayAvatar('266624760782258186', user, { format: 'png' })).toEqual(
+			expect(utils.getDisplayAvatar(user, { format: 'png' })).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
 			);
 		});
@@ -462,8 +471,8 @@ describe('Utils', () => {
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
 			});
 
-			expect(utils.getDisplayAvatar('268792781713965056', user, { format: 'png' })).toEqual(
-				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.png'
+			expect(utils.getDisplayAvatar(user, { format: 'png' })).toEqual(
+				'https://cdn.discordapp.com/avatars/266624760782258186/a_e583ad02d90ca9a5431bccec6c17b348.png'
 			);
 		});
 
@@ -473,8 +482,8 @@ describe('Utils', () => {
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
 			});
 
-			expect(utils.getDisplayAvatar('268792781713965056', user, { size: 2048 })).toEqual(
-				'https://cdn.discordapp.com/avatars/268792781713965056/a_e583ad02d90ca9a5431bccec6c17b348.gif?size=2048'
+			expect(utils.getDisplayAvatar(user, { size: 2048 })).toEqual(
+				'https://cdn.discordapp.com/avatars/266624760782258186/a_e583ad02d90ca9a5431bccec6c17b348.gif?size=2048'
 			);
 		});
 	});

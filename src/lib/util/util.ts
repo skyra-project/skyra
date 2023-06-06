@@ -127,10 +127,20 @@ export function getImage(message: Message): string | null {
 	return attachment ? attachment.proxyURL || attachment.url : null;
 }
 
+/**
+ * Checks whether or not the user uses the new username change, defined by the
+ * `discriminator` being `'0'` or in the future, no discriminator at all.
+ * @see {@link https://dis.gd/usernames}
+ * @param user The user to check.
+ */
+export function usesPomelo(user: User | APIUser) {
+	return isNullishOrEmpty(user.discriminator) || user.discriminator === '0';
+}
+
 const ROOT = 'https://cdn.discordapp.com';
 export function getDisplayAvatar(user: User | APIUser, options: ImageURLOptions = {}) {
 	if (user.avatar === null) {
-		const id = (isNullishOrEmpty(user.discriminator) ? BigInt(user.id) % 5n : Number(user.discriminator) % 5).toString();
+		const id = (usesPomelo(user) ? BigInt(user.id) % 5n : Number(user.discriminator) % 5).toString();
 		return `${ROOT}/embed/avatars/${id}.png`;
 	}
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
@@ -139,9 +149,7 @@ export function getDisplayAvatar(user: User | APIUser, options: ImageURLOptions 
 }
 
 export function getTag(user: User | APIUser) {
-	return isNullishOrEmpty(user.discriminator) || user.discriminator === '0' //
-		? `@${user.username}`
-		: `${user.username}#${user.discriminator}`;
+	return usesPomelo(user) ? `@${user.username}` : `${user.username}#${user.discriminator}`;
 }
 
 export function getEmbedAuthor(user: User | APIUser, url?: string | undefined): EmbedAuthorData {

@@ -10,7 +10,6 @@ import type { Twitch } from '#utils/Notifications/Twitch';
 import type { Piece, Store } from '@sapphire/framework';
 import type { NonNullObject, Nullish, PickByValue } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
-import type { Image } from 'canvas-constructor/napi-rs';
 import type { Guild, GuildChannel, Message, MessageEmbed, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 import type { TaskErrorPayload, TwitchEventSubEvent, TwitchEventSubOnlineEvent } from './definitions';
 import type { Events } from './Enums';
@@ -63,14 +62,12 @@ declare module '@sapphire/framework' {
 		commandName: SkyraCommand;
 		duration: Date;
 		emoji: EmojiObject;
-		image: Image;
 		invite: InviteCodeValidEntry;
 		language: string;
 		piece: Piece;
 		range: number[];
 		reset: true;
 		roleName: Role;
-		shinyWager: number;
 		snowflake: Snowflake;
 		store: Store<Piece>;
 		textChannelName: TextChannel;
@@ -104,8 +101,8 @@ declare module '@sapphire/framework' {
 		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;
 		emit(event: Events.TwitchStreamHookedAnalytics, status: TwitchStreamStatus): boolean;
-		emit(events: Events.TwitchStreamOnline, event: TwitchEventSubOnlineEvent): boolean;
-		emit(events: Events.TwitchStreamOffline, event: TwitchEventSubEvent): boolean;
+		emit(event: Events.TwitchStreamOnline, data: TwitchEventSubOnlineEvent): boolean;
+		emit(event: Events.TwitchStreamOffline, data: TwitchEventSubEvent): boolean;
 		emit(event: Events.TaskError, error: Error, payload: TaskErrorPayload): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}

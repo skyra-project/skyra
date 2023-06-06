@@ -1,8 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const ChangeMyMindDescription = T<string>('commands/fun:changemymindDescription');
-export const ChangeMyMindExtended = T<LanguageHelpDisplayOptions>('commands/fun:changemymindExtended');
 export const DiceDescription = T<string>('commands/fun:diceDescription');
 export const DiceExtended = T<LanguageHelpDisplayOptions>('commands/fun:diceExtended');
 export const DiceOutput = FT<{ result: number }, string>('commands/fun:diceOutput');
@@ -30,17 +28,3 @@ export const RateExtended = T<LanguageHelpDisplayOptions>('commands/fun:rateExte
 export const RateMyOwners = T<[string, string]>('commands/fun:rateOwners');
 export const RateMyself = T<[string, string]>('commands/fun:rateMyself');
 export const RateOutput = FT<{ author: string; userToRate: string; rate: number; emoji: string }, string>('commands/fun:rateOutput');
-export const ShindeiruDescription = T<string>('commands/fun:shindeiruDescription');
-export const ShindeiruExtended = T<LanguageHelpDisplayOptions>('commands/fun:shindeiruExtended');
-export const ThinkDescription = T<string>('commands/fun:thinkDescription');
-export const ThinkExtended = T<LanguageHelpDisplayOptions>('commands/fun:thinkExtended');
-export const ThinkMessage = FT<{ user: string }>('commands/fun:thinkMessage');
-export const WakandaDescription = T<string>('commands/fun:wakandaDescription');
-export const WakandaExtended = T<LanguageHelpDisplayOptions>('commands/fun:wakandaExtended');
-export const WhereDescription = T<string>('commands/fun:whereDescription');
-export const WhereExtended = T<LanguageHelpDisplayOptions>('commands/fun:whereExtended');
-export const WhereMessage = FT<{ user: string }>('commands/fun:whereMessage');
-export const XkcdComics = FT<{ amount: number }, string>('commands/fun:xkcdComics');
-export const XkcdDescription = T<string>('commands/fun:xkcdDescription');
-export const XkcdExtended = T<LanguageHelpDisplayOptions>('commands/fun:xkcdExtended');
-export const XkcdNotFound = T<string>('commands/fun:xkcdNotfound');

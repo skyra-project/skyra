@@ -107,7 +107,7 @@ export function sendLocalizedMessage(message: Message, key: LocalizedSimpleKey):
  * // ➡ "Pong! Current latency is 42ms."
  * ```
  */
-export function sendLocalizedMessage<TArgs>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
+export function sendLocalizedMessage<TArgs extends StringMap>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
 export async function sendLocalizedMessage(message: Message, options: LocalizedSimpleKey | LocalizedMessageOptions) {
 	if (typeof options === 'string') options = { key: options };
 

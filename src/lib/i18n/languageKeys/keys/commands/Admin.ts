@@ -3,7 +3,6 @@ import { FT, T } from '#lib/types';
 
 export const ConfGet = FT<{ key: string; value: string }, string>('commands/admin:confGet');
 export const ConfGetNoExt = FT<{ key: string }, string>('commands/admin:confGetNoExt');
-export const ConfGuarded = FT<{ name: string }, string>('commands/admin:confGuarded');
 export const ConfMenuInvalidAction = T<string>('commands/admin:confMenuInvalidAction');
 export const ConfMenuInvalidKey = T<string>('commands/admin:confMenuInvalidKey');
 export const ConfMenuRenderAtFolder = FT<{ path: string }, string>('commands/admin:confMenuRenderAtFolder');

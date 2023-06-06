@@ -4,8 +4,6 @@ import { join } from 'node:path';
 
 export const mainFolder = getRootData().root;
 export const rootFolder = join(mainFolder, '..');
-export const assetsFolder = join(rootFolder, 'assets');
-export const socialFolder = join(assetsFolder, 'images', 'social');
 
 export const ZeroWidthSpace = '\u200B';
 export const LongWidthSpace = '\u3000';
@@ -40,7 +38,6 @@ export const enum Emojis {
 	GreenTickSerialized = 's637706251253317669',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
-	Shiny = '<:shiny:612364146792726539>',
 	Star = '<:Star:736337719982030910>',
 	StarEmpty = '<:StarEmpty:736337232738254849>',
 	StarHalf = '<:StarHalf:736337529900499034>',
@@ -67,11 +64,7 @@ export const enum BrandingColors {
 }
 
 export const enum CdnUrls {
-	BannersBasePath = 'https://cdn.skyra.pw/skyra-assets/banners/',
-	CoinHeads = 'https://cdn.skyra.pw/skyra-assets/coins_heads.png',
-	CoinTails = 'https://cdn.skyra.pw/skyra-assets/coins_tails.png',
 	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
-	NodeJSLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png',
 	RevolvingHeartTwemoji = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f49e.png',
 	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png'
 }
@@ -80,7 +73,8 @@ export const enum Invites {
 	Dragonite = 'https://discord.com/api/oauth2/authorize?client_id=931264626614763530&permissions=81920&scope=bot%20applications.commands',
 	Iriss = 'https://discord.com/api/oauth2/authorize?client_id=948377113457745990&permissions=326417868864&scope=bot%20applications.commands',
 	Nekokai = 'https://discord.com/api/oauth2/authorize?client_id=939613684592934992&permissions=16384&scope=bot%20applications.commands',
-	Teryl = 'https://discord.com/api/oauth2/authorize?client_id=948377583626637343&permissions=1074004032&scope=applications.commands%20bot'
+	Teryl = 'https://discord.com/api/oauth2/authorize?client_id=948377583626637343&permissions=1074004032&scope=applications.commands%20bot',
+	Artiel = 'https://discord.com/api/oauth2/authorize?client_id=948377028028145755&permissions=51200&scope=applications.commands%20bot'
 }
 
 export const enum LanguageFormatters {
@@ -127,11 +121,4 @@ export const enum Colors {
 	Teal = 0x009688,
 	Yellow = 0xffeb3b,
 	Yellow300 = 0xfff176
-}
-
-export const enum CanvasColors {
-	BackgroundLight = '#FAFAFA',
-	BackgroundDark = '#212121',
-	IndicatorGreen = '#4CAF50',
-	IndicatorRed = '#F44336'
 }

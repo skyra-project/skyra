@@ -18,7 +18,7 @@ COPY --chown=node:node .yarn/ .yarn/
 
 RUN sed -i 's/"postinstall": "husky install .github\/husky"/"postinstall": ""/' ./package.json
 
-# ENTRYPOINT ["dumb-init", "--"]
+ENTRYPOINT ["dumb-init", "--"]
 
 # ================ #
 #   Builder Stage  #

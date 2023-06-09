@@ -7,23 +7,40 @@ import type { Message } from 'discord.js';
 
 const list = createDeprecatedList({
 	entries: [
-		{ out: '</meme:TBD>', in: ['changemymind', 'cmm'] },
-		{ out: '</meme:TBD>', in: ['chase'] },
-		{ out: '</meme:TBD>', in: ['cuddle'] },
-		{ out: '</meme:TBD>', in: ['deletthis', 'deletethis'] },
-		{ out: '</meme:TBD>', in: ['f', 'pray'] },
-		{ out: '</meme:TBD>', in: ['good-night', 'gn', 'night'] },
-		{ out: '</meme:TBD>', in: ['goofytime', 'goof', 'goofy', 'daddy', 'goofie', 'goofietime'] },
-		{ out: '</meme:TBD>', in: ['hug'] },
-		{ out: '</meme:TBD>', in: ['ineedhealing', 'heal', 'healing'] },
-		{ out: '</meme:TBD>', in: ['shindeiru'] },
-		{ out: '</meme:TBD>', in: ['ship'] },
-		{ out: '</meme:TBD>', in: ['thesearch'] },
-		{ out: '</meme:TBD>', in: ['think'] },
-		{ out: '</meme:TBD>', in: ['triggered'] },
-		{ out: '</meme:TBD>', in: ['wakanda'] },
-		{ out: '</meme:TBD>', in: ['where'] },
-		{ out: '</xkcd:TBD>', in: ['xkcd'] }
+		{
+			out: '</meme:1116785425240047720>',
+			in: [
+				'changemymind',
+				'cmm',
+				'chase',
+				'cuddle',
+				'deletthis',
+				'deletethis',
+				'f',
+				'pray',
+				'good-night',
+				'gn',
+				'night',
+				'goofytime',
+				'goof',
+				'goofy',
+				'daddy',
+				'goofie',
+				'goofietime',
+				'hug',
+				'ineedhealing',
+				'heal',
+				'healing',
+				'shindeiru',
+				'thesearch',
+				'think',
+				'triggered',
+				'wakanda',
+				'where'
+			]
+		},
+		{ out: '</ship:1116785425240047721>', in: ['ship'] },
+		{ out: '</xkcd:1116785425240047719>', in: ['xkcd'] }
 	]
 });
 

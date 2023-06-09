@@ -2,14 +2,14 @@
 #    Base Stage    #
 # ================ #
 
-FROM node:16-alpine as base
+FROM node:18-alpine as base
 
 WORKDIR /usr/src/app
 
 ENV HUSKY=0
 ENV CI=true
 
-RUN apk add --no-cache dumb-init
+RUN apk add --no-cache dumb-init python3 g++ make
 
 COPY --chown=node:node yarn.lock .
 COPY --chown=node:node package.json .
@@ -18,7 +18,7 @@ COPY --chown=node:node .yarn/ .yarn/
 
 RUN sed -i 's/"postinstall": "husky install .github\/husky"/"postinstall": ""/' ./package.json
 
-ENTRYPOINT ["dumb-init", "--"]
+# ENTRYPOINT ["dumb-init", "--"]
 
 # ================ #
 #   Builder Stage  #
@@ -44,9 +44,10 @@ FROM base AS runner
 ENV NODE_ENV="production"
 ENV NODE_OPTIONS="--enable-source-maps --max_old_space_size=4096"
 
+COPY --chown=node:node --from=builder /usr/src/app/dist dist
+
 COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
 COPY --chown=node:node src/.env src/.env
-COPY --chown=node:node --from=builder /usr/src/app/dist dist
 
 RUN yarn workspaces focus --all --production
 RUN chown node:node /usr/src/app/

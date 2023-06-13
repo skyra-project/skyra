@@ -1,12 +1,5 @@
 {
 	"discordAbortError": "I had a small network error when messaging Discord. Please run this command again!",
-	"exceededLengthChooseOutput": "Choose one of the following options: {{output, orList}}",
-	"exceededLengthOutput": "**Output**:{{output}}",
-	"exceededLengthOutputConsole": "I've sent the result to my console.",
-	"exceededLengthOutputType": "**Type**:{{type}}",
-	"exceededLengthOutputTime": "{{time}}",
-	"exceededLengthOutputFile": "I've sent the result in a file.",
-	"exceededLengthOutputHastebin": "I've sent the result to hastebin: {{url}}",
 	"externalServerError": "The external service we use could not process our message. Please try again later.",
 	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
 	"helpTitles": {

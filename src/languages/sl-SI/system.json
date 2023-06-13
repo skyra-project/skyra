@@ -1,12 +1,5 @@
 {
 	"discordAbortError": "",
-	"exceededLengthChooseOutput": "",
-	"exceededLengthOutput": "",
-	"exceededLengthOutputConsole": "Poslala rezultat v konzolo.",
-	"exceededLengthOutputType": "",
-	"exceededLengthOutputTime": "",
-	"exceededLengthOutputFile": "Poslala rezultat kot datoteko.",
-	"exceededLengthOutputHastebin": "",
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {

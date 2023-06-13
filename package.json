@@ -64,7 +64,6 @@
 		"@sapphire/snowflake": "^3.5.1",
 		"@sapphire/stopwatch": "^1.5.0",
 		"@sapphire/time-utilities": "^1.7.9",
-		"@sapphire/type": "^2.4.0",
 		"@sapphire/utilities": "^3.12.0",
 		"@sentry/hub": "^7.54.0",
 		"@sentry/integrations": "^7.54.0",

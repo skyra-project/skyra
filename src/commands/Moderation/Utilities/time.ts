@@ -112,7 +112,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkBan(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
 			this.error(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
 		}
 
@@ -122,7 +122,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkMute(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
@@ -132,7 +132,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkVMute(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
 		}
 

@@ -6,7 +6,7 @@ import { Guild, Permissions } from 'discord.js';
 
 export class UserModerationTask extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {
-		const me = guild.me === null ? await guild.members.fetch(process.env.CLIENT_ID) : guild.me;
+		const me = guild.members.me ?? (await guild.members.fetch(this.container.client.id!));
 		if (!me.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return null;
 
 		const t = await fetchT(guild);

@@ -18,7 +18,7 @@ export class UserListener extends Listener {
 		if (!roleId) return;
 
 		const role = member.guild.roles.cache.get(roleId);
-		if (role && role.position < member.guild.me!.roles.highest.position) {
+		if (role && role.position < member.guild.members.me!.roles.highest.position) {
 			return member.roles.add(role);
 		}
 

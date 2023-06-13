@@ -47,7 +47,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const unmanageable: string[] = [];
 		const addedRoles: string[] = [];
 		const removedRoles: string[] = [];
-		const { position } = message.guild.me!.roles.highest;
+		const { position } = message.guild.members.me!.roles.highest;
 
 		for (const role of filterRoles) {
 			if (!role) continue;

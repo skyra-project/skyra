@@ -31,7 +31,7 @@ export class UserCommand extends SkyraCommand {
 		const color = getColor(message);
 		const roles = this.getRoles(args);
 
-		if (message.channel.permissionsFor(message.guild.me!)!.has(paginatedMessagePermissions)) {
+		if (message.channel.permissionsFor(message.guild.members.me!)!.has(paginatedMessagePermissions)) {
 			const display = await this.buildDisplay(args, roles, color);
 			return display.run(message);
 		}

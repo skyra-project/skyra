@@ -2294,7 +2294,7 @@ __metadata:
 
 "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::locator=skyra%40workspace%3A.":
   version: 2.5.1
-  resolution: "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::version=2.5.1&hash=197cb9&locator=skyra%40workspace%3A."
+  resolution: "@sapphire/framework@patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch::version=2.5.1&hash=283bb0&locator=skyra%40workspace%3A."
   dependencies:
     "@discordjs/builders": ^0.15.0
     "@sapphire/discord-utilities": ^2.11.2
@@ -2304,7 +2304,7 @@ __metadata:
     "@sapphire/utilities": ^3.6.2
     lexure: ^0.17.0
     tslib: ^2.4.0
-  checksum: 63a46d1a61b400e8bd2ec1c642ed02277469a57b7af2140682d541766709caf655f8766af5bf6c08310c14de940b108562a99a8924c4911e54d69e4a90d8b438
+  checksum: e08dc26693781bdb2426f4b3b80abd024dac52eb2b7bfed4495f78153645fcfc0f046b30bd109a814e30d3fc5e849249ca4033eeb7fd743d06234a567b791cf9
   languageName: node
   linkType: hard
 

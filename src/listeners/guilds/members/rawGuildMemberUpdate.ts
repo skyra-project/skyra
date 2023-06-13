@@ -23,7 +23,7 @@ export class UserListener extends Listener {
 		if (typeof guild === 'undefined') return;
 
 		// If the bot doesn't have the required permissions, skip:
-		if (!guild.me?.permissions.has(this.requiredPermissions)) return;
+		if (!guild.members.me?.permissions.has(this.requiredPermissions)) return;
 
 		floatPromise(this.handleRoleSets(guild, data));
 	}

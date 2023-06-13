@@ -140,7 +140,7 @@ export function usesPomelo(user: User | APIUser) {
 const ROOT = 'https://cdn.discordapp.com';
 export function getDisplayAvatar(user: User | APIUser, options: ImageURLOptions = {}) {
 	if (user.avatar === null) {
-		const id = (usesPomelo(user) ? BigInt(user.id) % 5n : Number(user.discriminator) % 5).toString();
+		const id = (usesPomelo(user) ? (BigInt(user.id) >> 22n) % 6n : Number(user.discriminator) % 5).toString();
 		return `${ROOT}/embed/avatars/${id}.png`;
 	}
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;

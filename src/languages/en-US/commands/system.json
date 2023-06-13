@@ -23,39 +23,8 @@
 	},
 	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
 	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
-	"disable": "+ Successfully disabled {{type}}: {{name}}",
-	"disableDescription": "Re-disables or temporarily disables a command/preconditions/event. Default state restored on reboot.",
-	"disableExtended": {
-		"usages": [
-			"Piece"
-		],
-		"extendedHelp": "Disable a piece that was previously enabled",
-		"explainedUsage": [
-			[
-				"Piece",
-				"The piece to disable"
-			]
-		],
-		"reminder": "Reserved for bot owners."
-	},
-	"disableWarn": "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
 	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
 	"dmSent": "I have sent you the message in DMs.",
-	"enable": "+ Successfully enabled {{type}}: {{name}}",
-	"enableDescription": "Re-enables or temporarily enables a command/preconditions. Default state restored on reboot.",
-	"enableExtended": {
-		"usages": [
-			"Piece"
-		],
-		"extendedHelp": "Enables a piece that was previously disabled",
-		"explainedUsage": [
-			[
-				"Piece",
-				"The piece to enable"
-			]
-		],
-		"reminder": "Reserved for bot owners."
-	},
 	"reboot": "{{LOADING}} Rebooting...",
 	"rebootDescription": "Reboots the bot.",
 	"rebootExtended": {

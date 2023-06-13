@@ -23,39 +23,8 @@
 	},
 	"evalTimeout": "",
 	"evalError": "",
-	"disable": "",
-	"disableDescription": "",
-	"disableExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
-	"disableWarn": "",
 	"dmNotSent": "",
 	"dmSent": "",
-	"enable": "",
-	"enableDescription": "",
-	"enableExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": ""
-	},
 	"reboot": "",
 	"rebootDescription": "",
 	"rebootExtended": {

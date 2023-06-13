@@ -450,7 +450,7 @@ describe('Utils', () => {
 			});
 
 			expect(utils.getDisplayAvatar(user)).toEqual(
-				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
+				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.webp'
 			);
 		});
 
@@ -460,18 +460,29 @@ describe('Utils', () => {
 				avatar: '09b52e547fa797c47c7877cd10eb6ba8'
 			});
 
-			expect(utils.getDisplayAvatar(user, { format: 'png' })).toEqual(
+			expect(utils.getDisplayAvatar(user, { extension: 'png' })).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/09b52e547fa797c47c7877cd10eb6ba8.png'
 			);
 		});
 
-		test('GIVEN user with animated avatar AND options.format=gif THEN avatar png url', () => {
+		test('GIVEN user with animated avatar AND format "png" THEN avatar png url', () => {
 			const user = createUser({
 				discriminator: '0001',
 				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
 			});
 
-			expect(utils.getDisplayAvatar(user, { format: 'png' })).toEqual(
+			expect(utils.getDisplayAvatar(user, { extension: 'png' })).toEqual(
+				'https://cdn.discordapp.com/avatars/266624760782258186/a_e583ad02d90ca9a5431bccec6c17b348.gif'
+			);
+		});
+
+		test('GIVEN user with animated avatar AND format "png" AND forceStatic THEN avatar png url', () => {
+			const user = createUser({
+				discriminator: '0001',
+				avatar: 'a_e583ad02d90ca9a5431bccec6c17b348'
+			});
+
+			expect(utils.getDisplayAvatar(user, { extension: 'png', forceStatic: true })).toEqual(
 				'https://cdn.discordapp.com/avatars/266624760782258186/a_e583ad02d90ca9a5431bccec6c17b348.png'
 			);
 		});

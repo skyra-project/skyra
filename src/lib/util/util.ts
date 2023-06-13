@@ -6,10 +6,11 @@ import type { APIUser } from 'discord-api-types/v9';
 import {
 	MessageEmbed,
 	Permissions,
+	type AllowedImageSize,
+	type DynamicImageFormat,
 	type EmbedAuthorData,
 	type Guild,
 	type GuildChannel,
-	type ImageURLOptions,
 	type Message,
 	type MessageMentionTypes,
 	type ThreadChannel,
@@ -137,15 +138,36 @@ export function usesPomelo(user: User | APIUser) {
 	return isNullishOrEmpty(user.discriminator) || user.discriminator === '0';
 }
 
+/**
+ * The options used for image URLs, ported from {@link https://github.com/discordjs/discord.js/blob/main/packages/rest/src/lib/CDN.ts}.
+ */
+export interface AvatarOptions {
+	/**
+	 * The extension to use for the image URL
+	 *
+	 * @defaultValue `'webp'`
+	 */
+	extension?: DynamicImageFormat;
+	/**
+	 * The size specified in the image URL
+	 */
+	size?: AllowedImageSize;
+	/**
+	 * Whether or not to prefer the static version of an image asset.
+	 */
+	forceStatic?: boolean;
+}
+
 const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(user: User | APIUser, options: ImageURLOptions = {}) {
+export function getDisplayAvatar(user: User | APIUser, options: AvatarOptions = {}) {
 	if (user.avatar === null) {
 		const id = (usesPomelo(user) ? BigInt(user.id) % 5n : Number(user.discriminator) % 5).toString();
 		return `${ROOT}/embed/avatars/${id}.png`;
 	}
-	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
+
+	const extension = !options.forceStatic && user.avatar.startsWith('a_') ? 'gif' : options.extension ?? 'webp';
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
-	return `${ROOT}/avatars/${user.id}/${user.avatar}.${format}${size}`;
+	return `${ROOT}/avatars/${user.id}/${user.avatar}.${extension}${size}`;
 }
 
 export function getTag(user: User | APIUser) {
@@ -153,11 +175,11 @@ export function getTag(user: User | APIUser) {
 }
 
 export function getEmbedAuthor(user: User | APIUser, url?: string | undefined): EmbedAuthorData {
-	return { name: getTag(user), iconURL: getDisplayAvatar(user, { size: 128, format: 'png', dynamic: true }), url };
+	return { name: getTag(user), iconURL: getDisplayAvatar(user, { size: 128 }), url };
 }
 
 export function getFullEmbedAuthor(user: User | APIUser, url?: string | undefined): EmbedAuthorData {
-	return { name: `${getTag(user)} (${user.id})`, iconURL: getDisplayAvatar(user, { size: 128, format: 'png', dynamic: true }), url };
+	return { name: `${getTag(user)} (${user.id})`, iconURL: getDisplayAvatar(user, { size: 128 }), url };
 }
 
 /**

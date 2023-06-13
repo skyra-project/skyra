@@ -129,11 +129,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
-		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
+			template: new MessageEmbed() //
 				.setColor(getColor(message))
-				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});
 

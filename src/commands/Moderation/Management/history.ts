@@ -6,8 +6,8 @@ import { PermissionLevels } from '#lib/types/Enums';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
-import { getColor, sendLoadingMessage } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
+import { TimestampStyles, time } from '@discordjs/builders';
 import type { Collection } from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -71,9 +71,9 @@ export class UserCommand extends SkyraCommand {
 			bansText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
 		});
 
-		const embed = new MessageEmbed()
+		const embed = new MessageEmbed() //
 			.setColor(COLORS[index])
-			.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setAuthor(getFullEmbedAuthor(target))
 			.setFooter({ text: footer });
 		return send(message, { embeds: [embed] });
 	}
@@ -86,11 +86,9 @@ export class UserCommand extends SkyraCommand {
 		const entries = (await getModeration(message.guild).fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
-		const user = this.container.client.user!;
 		const display = new SkyraPaginatedMessage({
 			template: new MessageEmbed()
 				.setColor(getColor(message))
-				.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
 

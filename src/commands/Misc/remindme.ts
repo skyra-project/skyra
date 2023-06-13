@@ -53,12 +53,7 @@ export class UserCommand extends SkyraCommand {
 		}
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setColor(getColor(message))
-				.setAuthor({ name: client.user!.username, iconURL: client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
-		});
-
+		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(getColor(message)) });
 		const pages = chunk(
 			tasks.map(
 				(task) =>

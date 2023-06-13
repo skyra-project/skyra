@@ -7,6 +7,7 @@ import type { ModerationManagerCreateData } from '#lib/moderation';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
+import { getFullEmbedAuthor } from '#utils/util';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
@@ -729,13 +730,7 @@ export class ModerationActions {
 			.setDescription(description)
 			.setFooter({ text: t(LanguageKeys.Commands.Moderation.ModerationDmFooter) });
 
-		if (sendOptions.moderator) {
-			embed.setAuthor({
-				name: sendOptions.moderator.username,
-				iconURL: sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			});
-		}
-
+		if (sendOptions.moderator) embed.setAuthor(getFullEmbedAuthor(sendOptions.moderator));
 		return embed;
 	}
 

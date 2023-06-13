@@ -4,7 +4,7 @@ import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { TwitchEventSubTypes, TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
 import { PermissionLevels } from '#lib/types/Enums';
-import { getColor, sendLoadingMessage } from '#utils/util';
+import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
@@ -190,8 +190,8 @@ export class UserCommand extends SkyraCommand {
 		// Create the pages and the URD to display them.
 		const pages = chunk(lines, 10);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
-				.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			template: new MessageEmbed() //
+				.setAuthor(getFullEmbedAuthor(message.author))
 				.setColor(getColor(message))
 		});
 

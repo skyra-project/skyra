@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
-import { getColor, getTag } from '#utils/util';
+import { getColor, getDisplayAvatar, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		].join('\n');
 		const embed = new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor({ name: '❤ Love Meter ❤', iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setAuthor({ name: '❤ Love Meter ❤', iconURL: getDisplayAvatar(message.author, { size: 128 }) })
 			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
 			.setDescription(description);
 		return send(message, { embeds: [embed] });

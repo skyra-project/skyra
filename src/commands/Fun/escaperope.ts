@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
-import { getColor } from '#utils/util';
+import { getColor, getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
@@ -20,10 +20,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(getColor(message))
 			.setImage(CdnUrls.EscapeRopeGif)
 			.setDescription(args.t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))
-			.setAuthor({
-				name: message.member?.displayName ?? message.author.username,
-				iconURL: message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			});
+			.setAuthor(getFullEmbedAuthor(message.author));
 		return send(message, { embeds: [embed] });
 	}
 }

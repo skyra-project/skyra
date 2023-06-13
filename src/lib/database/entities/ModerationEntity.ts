@@ -12,7 +12,7 @@ import {
 	TypeVariationAppealNames,
 	metadata
 } from '#utils/moderationConstants';
-import { getFullEmbedAuthor, getTag } from '#utils/util';
+import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
 import { UserError, container } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
 import { NonNullObject, isNullishOrZero, isNumber, tryParseURL } from '@sapphire/utilities';
@@ -332,7 +332,7 @@ export class ModerationEntity extends BaseEntity {
 			.setDescription(`${body}\n${reason}`)
 			.setFooter({
 				text: t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseId: this.caseId }),
-				iconURL: container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+				iconURL: getDisplayAvatar(container.client.user!, { size: 128 })
 			})
 			.setTimestamp(this.createdTimestamp);
 

@@ -7,7 +7,7 @@ import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import { getColor, sendLoadingMessage } from '#utils/util';
+import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v9';
@@ -42,10 +42,7 @@ export class SettingsMenu {
 		this.message = message;
 		this.t = language;
 		this.schema = configurableGroups;
-		this.embed = new MessageEmbed().setAuthor({
-			name: this.message.author.username,
-			iconURL: this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-		});
+		this.embed = new MessageEmbed().setAuthor(getFullEmbedAuthor(this.message.author));
 	}
 
 	private get updatedValue(): boolean {

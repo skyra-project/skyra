@@ -156,10 +156,8 @@ export class UserCommand extends SkyraCommand {
 			footerName: command.name,
 			titleDescription: args.t(command.description)
 		});
-		const user = this.container.client.user!;
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 128, format: 'png' }) })
 			.setTimestamp()
 			.setFooter({ text: data.footer })
 			.setTitle(data.title)

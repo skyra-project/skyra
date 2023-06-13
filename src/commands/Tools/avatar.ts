@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { getColor, getEmbedAuthor } from '#utils/util';
+import { getColor, getDisplayAvatar, getEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -23,10 +23,10 @@ export class UserCommand extends SkyraCommand {
 		const sizeFlag = args.getOption('size');
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;
 
-		const embed = new MessageEmbed()
+		const embed = new MessageEmbed() //
 			.setAuthor(getEmbedAuthor(user))
 			.setColor(getColor(message))
-			.setImage(user.displayAvatarURL({ size, format: 'png', dynamic: true }));
+			.setImage(getDisplayAvatar(user, { size }));
 		return send(message, { embeds: [embed] });
 	}
 

@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { months, seconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
-import { getTag } from '#utils/util';
+import { getDisplayAvatar, getTag } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -58,10 +58,10 @@ export class UserCommand extends SkyraCommand {
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
-			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setThumbnail(getDisplayAvatar(user, { size: 256 }))
 			.setDescription(this.getUserInformation(user))
 			.addField(titles.createdAt, fields.createdAt)
-			.setFooter({ text: fields.footer, iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setFooter({ text: fields.footer, iconURL: getDisplayAvatar(this.container.client.user!, { size: 128 }) })
 			.setTimestamp();
 	}
 
@@ -80,11 +80,11 @@ export class UserCommand extends SkyraCommand {
 
 		const embed = new SkyraEmbed()
 			.setColor(member.displayColor || Colors.White)
-			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setThumbnail(getDisplayAvatar(member.user, { size: 256 }))
 			.setDescription(this.getUserInformation(member.user, this.getBoostIcon(member.premiumSinceTimestamp)))
 			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown, true)
 			.addField(titles.createdAt, fields.createdAt, true)
-			.setFooter({ text: fields.footer, iconURL: this.container.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }) })
+			.setFooter({ text: fields.footer, iconURL: getDisplayAvatar(this.container.client.user!, { size: 128 }) })
 			.setTimestamp();
 
 		this.applyMemberRoles(t, member, embed);
@@ -94,7 +94,7 @@ export class UserCommand extends SkyraCommand {
 
 	private getUserInformation(user: User, extras = ''): string {
 		const bot = user.bot ? ` ${Emojis.Bot}` : '';
-		const avatar = `[Avatar ${Emojis.Frame}](${user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true })})`;
+		const avatar = `[Avatar ${Emojis.Frame}](${getDisplayAvatar(user, { size: 4096 })})`;
 		return `**${getTag(user)}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 

@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
 import { seconds } from '#utils/common';
+import { ZeroWidthSpace } from '#utils/constants';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
 import { bold } from '@discordjs/builders';
@@ -39,15 +40,16 @@ export class UserCommand extends SkyraCommand {
 			return null;
 		}
 
+		const body = codeBlock(language, result || ZeroWidthSpace);
 		const header = `${bold(success ? 'Output' : 'Error')}: ${time}`;
-		// If the sum of the length between the header, codeblock (```\n...\n```), and result exceed 2000 characters, send as file:
-		if ([...header, ...language, ...result].length + 8 > 2000) {
+		// If the sum of the length between the header and the body exceed 2000 characters, send as file:
+		if ([...header, ...body].length > 2000) {
 			const file = { attachment: Buffer.from(result, 'utf8'), name: `output.${language}` } as const;
 			return send(message, { content: header, files: [file] });
 		}
 
 		// Otherwise send as a single message:
-		return send(message, `${header}${codeBlock(language, result)}`);
+		return send(message, `${header}${body}`);
 	}
 
 	private async timedEval(message: Message, args: SkyraCommand.Args, code: string, flagTime: number) {

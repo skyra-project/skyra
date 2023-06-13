@@ -165,9 +165,6 @@ declare module '@skyra/env-utilities' {
 		INFLUX_ORG: string;
 		INFLUX_ORG_ANALYTICS_BUCKET: string;
 
-		HASTEBIN_POST_URL: string;
-		HASTEBIN_GET_URL: string;
-
 		WEBHOOK_ERROR_ID: string;
 		WEBHOOK_ERROR_TOKEN: string;
 

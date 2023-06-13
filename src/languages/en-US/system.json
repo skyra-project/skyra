@@ -1,12 +1,5 @@
 {
 	"discordAbortError": "I had a small network error when messaging Discord, please run this command again!",
-	"exceededLengthChooseOutput": "Choose one of the following options: {{output, orList}}",
-	"exceededLengthOutput": "**Output**:{{output}}",
-	"exceededLengthOutputConsole": "Sent the result to console.",
-	"exceededLengthOutputType": "**Type**:{{type}}",
-	"exceededLengthOutputTime": "{{time}}",
-	"exceededLengthOutputFile": "Sent the result as a file.",
-	"exceededLengthOutputHastebin": "Sent the result to hastebin: {{url}}",
 	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
 	"helpTitles": {
 		"aliases": "🖇️ | **Aliases**",

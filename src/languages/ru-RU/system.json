@@ -1,12 +1,5 @@
 {
 	"discordAbortError": "",
-	"exceededLengthChooseOutput": "Выберите один из следующих вариантов: {{output, orList}}",
-	"exceededLengthOutput": "",
-	"exceededLengthOutputConsole": "",
-	"exceededLengthOutputType": "",
-	"exceededLengthOutputTime": "",
-	"exceededLengthOutputFile": "",
-	"exceededLengthOutputHastebin": "",
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {

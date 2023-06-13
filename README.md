@@ -20,7 +20,6 @@
 
 ### Optional additions
 
--   [`Hasteserver`]: Self hosted Pastebin (https://hastebin.skyra.pw) that we can reliably use.
 -   [`InfluxDB`]: Metrics platform.
 
 ### [Set-Up - Refer to CONTRIBUTING.md]

@@ -1,12 +1,5 @@
 {
 	"discordAbortError": "",
-	"exceededLengthChooseOutput": "",
-	"exceededLengthOutput": "",
-	"exceededLengthOutputConsole": "",
-	"exceededLengthOutputType": "",
-	"exceededLengthOutputTime": "",
-	"exceededLengthOutputFile": "",
-	"exceededLengthOutputHastebin": "",
 	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {

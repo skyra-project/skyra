@@ -65,9 +65,9 @@
 		"@sapphire/stopwatch": "^1.5.0",
 		"@sapphire/time-utilities": "^1.7.9",
 		"@sapphire/utilities": "^3.12.0",
-		"@sentry/hub": "^7.55.2",
-		"@sentry/integrations": "^7.55.2",
-		"@sentry/node": "^7.55.2",
+		"@sentry/hub": "^7.56.0",
+		"@sentry/integrations": "^7.56.0",
+		"@sentry/node": "^7.56.0",
 		"@skyra/ai": "^1.2.0",
 		"@skyra/char": "^1.0.3",
 		"@skyra/env-utilities": "^1.2.1",
@@ -93,8 +93,8 @@
 		"@babel/plugin-proposal-decorators": "^7.22.5",
 		"@babel/preset-env": "^7.22.5",
 		"@babel/preset-typescript": "^7.21.4",
-		"@commitlint/cli": "^17.6.5",
-		"@commitlint/config-conventional": "^17.6.5",
+		"@commitlint/cli": "^17.6.6",
+		"@commitlint/config-conventional": "^17.6.6",
 		"@sapphire/eslint-config": "^4.4.2",
 		"@sapphire/prettier-config": "^1.4.5",
 		"@sapphire/ts-config": "^3.3.4",
@@ -155,6 +155,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@3.6.0",
 	"volta": {
-		"node": "16.20.0"
+		"node": "16.20.1"
 	}
 }

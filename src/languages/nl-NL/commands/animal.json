@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "Laat ik jou een mysterieus kattenfeit vertellen.",
-	"catfactExtended": {
-		"extendedHelp": "Je weet dat katten erg nieuwsgierig zijn, toch? Ze hebben zeker een heleboel leuke en rare feiten.\nMet dit command krijg je een willekeurig feit."
+	"bunnyDescription": "",
+	"bunnyExtended": {
+		"extendedHelp": ""
 	},
-	"catfactTitle": "Kat Feit",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "Schattige hondjes! ❤",
 	"dogExtended": {
 		"extendedHelp": ""

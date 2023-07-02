@@ -1,5 +1,4 @@
 {
-	"all": "Alle",
 	"boolean_one": "",
 	"boolean_other": "",
 	"booleanError": "",
@@ -33,7 +32,6 @@
 	],
 	"categoryChannelError": "",
 	"channelError": "",
-	"color": "Ich konnte `{{parameter}}` nicht in einer gültigen Farbe auflösen, hier sind einige der gültigen Formate:\n\n- `#dfdfdfdfdf` (Hexadezimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"command": "Ich konnte `{{parameter}}` nicht in einen Command auflösen, bitte stelle sicher, dass du den Namen oder den Alias korrekt eingegeben hast!",
 	"commandMatch": "",
 	"dateError": "",
@@ -70,6 +68,9 @@
 	"numberTooLarge": "",
 	"numberTooSmall": "Der Parameter `{{parameter}}` ist zu niedrig! Er muss mindestens {{minimum}} sein!",
 	"piece": "Ich konnte `{{parameter}}` nicht zu einem Stück auflösen! Stelle sicher, dass du seinen Namen oder einen seiner Aliase korrekt eingegeben hast!",
+	"rangeInvalid": "",
+	"rangeMax_other": "",
+	"rangeMax_one": "",
 	"resetPossibles": [
 		"Aus",
 		"Zurücksetzen"
@@ -89,7 +90,5 @@
 	"tooFewWinners": "Der Parameter `{{parameter}}` wurde an eine zu niedrige Zahl aufgelöst, er muss mindestens 1 sein!",
 	"tooManyWinners": "Der Parameter `{{parameter}}` wurde zu einer Zahl aufgelöst, die zu hoch ist, es darf maximal 20 sein!",
 	"unavailable": "Hoppla! Es scheint, dass ich keinen Parser für einen Parameter finden konnte, bitte kontaktiere meine Entwickler!",
-	"userError": "",
-	"wager": "Es tut mir leid, aber {{parameter}} {{SHINY}} ist ein ungültiger Betrag. Du kannst einen {{possibles, orList}} verwenden.",
-	"winners": "Ich konnte `{{parameter}}` nicht zu einem gültigen Siegerbetrag auflösen!\n**Tipp**: Das folgende Format wird unterstützt: `Nw`, ist `N` eine ganze Zahl, e. . `3w` oder `12w`."
+	"userError": ""
 }

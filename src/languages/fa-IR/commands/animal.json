@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "",
-	"catfactExtended": {
+	"bunnyDescription": "",
+	"bunnyExtended": {
 		"extendedHelp": ""
 	},
-	"catfactTitle": "فکت از گربه ها",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "سگ های گوگولی! ❤",
 	"dogExtended": {
 		"extendedHelp": ""

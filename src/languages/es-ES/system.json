@@ -1,6 +1,5 @@
 {
 	"discordAbortError": "Tuve un pequeño error de red al enviar el mensaje a Discord, ¡por favor ejecuta este comando de nuevo!",
-	"externalServerError": "El servicio externo que utilizamos no ha podido procesar nuestro mensaje. Inténtalo de nuevo más tarde.",
 	"fetchBansFail": "Error al obtener la información de los baneos. ¿Tengo el permiso **{{ADMINISTRATOR, permissions}}**?",
 	"helpTitles": {
 		"aliases": "🖇️ | **Aliases**",
@@ -22,15 +21,6 @@
 		"{{LOADING}} Ajustando a las frecuencias correctas...",
 		"{{LOADING}} Reticulando curvas..."
 	],
-	"messagePromptTimeout": "El tiempo de espera de la solicitud ha sido agotado.",
-	"noResults": "No pude encontrar resultados para esa consulta",
-	"parseError": "{{REDCROSS}} No he podido procesar los datos que me has proporcionado, ¡lo siento~!",
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
-	"queryFail": "Lo siento, la aplicación no ha podido resolver tu solicitud. ¿Estás seguro de que has escrito el nombre correctamente?",
-	"textPromptAbortOptions": [
-		"abortar",
-		"cancelar",
-		"parar"
-	],
 	"reminderHeader": ""
 }

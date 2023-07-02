@@ -1,6 +1,5 @@
 {
 	"discordAbortError": "",
-	"externalServerError": "",
 	"fetchBansFail": "",
 	"helpTitles": {
 		"aliases": "",
@@ -22,15 +21,6 @@
 		"",
 		""
 	],
-	"messagePromptTimeout": "",
-	"noResults": "",
-	"parseError": "",
 	"prefixReminder": "",
-	"queryFail": "",
-	"textPromptAbortOptions": [
-		"",
-		"",
-		""
-	],
 	"reminderHeader": ""
 }

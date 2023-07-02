@@ -1,5 +1,4 @@
 {
-	"channelNotReadable": "Lo siento, pero necesito los permisos **{{VIEW_CHANNEL, permissions}}** y **{{READ_MESSAGE_HISTORY, permissions}}**",
 	"guildBansEmpty": "No hay baneos registrados en este servidor.",
 	"guildBansNotFound": "Lo he intentado y no he podido encontrar a este usuario de la lista de baneos. ¿Estás seguro de que este usuario está baneado?",
 	"guildMemberNotVoicechannel": "No puedo ejecutar esta acción en un miembro que no está conectado a un canal de voz.",

@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "",
-	"catfactExtended": {
+	"bunnyDescription": "",
+	"bunnyExtended": {
 		"extendedHelp": ""
 	},
-	"catfactTitle": "Факт о кошках",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "Милые собачки! ❤",
 	"dogExtended": {
 		"extendedHelp": "**Вы** знаете, насколько собаки милые? Они такие красивые!\nЭта команда использует [dog.ceo](https://dog.ceo), чтобы показать изображения самых милых собачек!"

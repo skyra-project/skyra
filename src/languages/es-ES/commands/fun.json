@@ -1,37 +1,4 @@
 {
-	"changemymindDescription": "Skyra es la mejor, convénceme de lo contrario.",
-	"changemymindExtended": {
-		"usages": [
-			"Contenido"
-		],
-		"extendedHelp": "Sigo pensando que soy la mejor, convénceme de lo opuesto. Hago una foto con tu avatar y un poco de texto en un cartel.",
-		"explainedUsage": [
-			[
-				"texto",
-				"La frase que desea."
-			]
-		],
-		"examples": [
-			"Skyra es el mejor bot de este servidor"
-		]
-	},
-	"choiceDescription": "Pito pito, gorgorito, ¿dónde vas tú tan bonito?...",
-	"choiceExtended": {
-		"usages": [
-			"Elección1 Elección2 Elección3..."
-		],
-		"extendedHelp": "Tengo una duda existencial... ¿debo lavar los platos o tirarlos por la ventana? La búsqueda continúa. Liste los elementos separados por coma y elegiré uno. Postdata, no soy responsable de lo que sucede después.",
-		"explainedUsage": [
-			[
-				"palabras",
-				"Una lista de palabras separadas por coma."
-			]
-		],
-		"examples": [
-			"Lavar los platos, Lanzar los platos a la ventana",
-			"Gato, Perro"
-		]
-	},
 	"diceDescription": "Lanza los dados usando la sintaxis d20.",
 	"diceExtended": {
 		"usages": [
@@ -121,64 +88,6 @@
 			"yo"
 		]
 	},
-	"shindeiruDescription": "Omae wa mou shindeiru.",
-	"shindeiruExtended": {
-		"usages": [
-			"Usuario"
-		],
-		"extendedHelp": "\"Usted ya está muerto\" Japonés: お前はもう死んでいる; Omae Wa Mou Shindeiru, es una expresión de la serie de manga y anime Hokuto no Ken. Esto muestra una historieta del personaje pronunciando las palabras más importantes, lo que hace que el oponente responda con \"nani?\" (¿qué?).",
-		"examples": [
-			"Skyra"
-		]
-	},
-	"thinkDescription": "Piensa, ¡Mark!",
-	"thinkExtended": {
-		"usages": [
-			"Usuario"
-		],
-		"extendedHelp": "\"¡Piensa, Mark!\" es un meme del programa de televisión Invincible, el resto... no, eso serían spoilers.",
-		"reminder": "Este comando contiene sangre de dibujos animados, que puede no ser adecuado para todos los públicos.",
-		"examples": [
-			"Mark"
-		]
-	},
-	"thinkMessage": "Piensa, {{user}}, ¡piensa!",
-	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
-	"wakandaExtended": {
-		"extendedHelp": "Genera una imagen usando la plantilla [No Hacemos Eso Aquí](https://knowyourmeme.com/memes/we-dont-do-that-here) con el usuario dado."
-	},
-	"whereDescription": "¡Encontré a la persona que estábamos buscando!",
-	"whereExtended": {
-		"usages": [
-			"Usuario"
-		],
-		"extendedHelp": "Este comando genera un meme de [Ataque a los titanes: la temporada final](https://anilist.co/anime/110277/Shingeki-no-Kyojin-The-Final-Season/), y es mejor no decirte nada, otro que esto generará un meme de ti apuntando a un usuario de tu elección.",
-		"examples": [
-			"Encanto"
-		]
-	},
-	"whereMessage": "¡He encontrado a {{user}}!",
-	"xkcdDescription": "Lee comics de XKCD.",
-	"xkcdExtended": {
-		"usages": [
-			"NúmeroDelCómic",
-			"Nombre del Cómic"
-		],
-		"extendedHelp": "**xkcd** es un archivo de cómics repleto de matemáticas, ciencias, sarcasmo e idiomas. Si usted no proporciona ningún argumento, obtendré un cómic aleatorio de xkcd. Si en cambio, usted proporciona un número, yo le mostraré el cómic con dicho número. Pero si proporcionas un título/texto/tema, buscaré un cómic que coincida con tu entrada y lo mostraré. Por ejemplo, `Skyra, xkcd Curiosity` mostrará el cómic número 1091.",
-		"explainedUsage": [
-			[
-				"consulta",
-				"O bien el número del cómic o bien un título para buscar."
-			]
-		],
-		"examples": [
-			"1091",
-			"Curiosidad"
-		]
-	},
-	"choiceOutput": "🕺 *Pito pito, gorgorito, ¿dónde vas tú tan bonito?...* {{user}}, yo elijo:{{word, codeBlock}}",
-	"choiceMissing": "Por favor, escriba al menos dos opciones separadas por coma.",
-	"choiceDuplicates": "¿Por qué aceptaría palabras duplicadas? \"{{words}}\".",
 	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",
 	"diceRollsError": "Cantidad de lanzamientos debe ser un número entre 1 y 1024.",
 	"diceSidesError": "Cantidad de lados debe ser un número entre 3 y 1024.",
@@ -197,7 +106,5 @@
 	"rateOwners": [
 		". Me encanta mucho a mis desarrolladores 🥰",
 		"mis desarrolladores"
-	],
-	"xkcdComics": "Solo hay {{amount}} cómics.",
-	"xkcdNotfound": "He buscado mucho, pero no tuve suerte en encontrar este cómic, ¡intente de nuevo más tarde o pruebe otro!"
+	]
 }

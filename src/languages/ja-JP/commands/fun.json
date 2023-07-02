@@ -1,37 +1,4 @@
 {
-	"changemymindDescription": "",
-	"changemymindExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"choiceDescription": "",
-	"choiceExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"diceDescription": "",
 	"diceExtended": {
 		"usages": [
@@ -121,64 +88,6 @@
 			""
 		]
 	},
-	"shindeiruDescription": "",
-	"shindeiruExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			""
-		]
-	},
-	"thinkDescription": "",
-	"thinkExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"reminder": "",
-		"examples": [
-			""
-		]
-	},
-	"thinkMessage": "",
-	"wakandaDescription": "",
-	"wakandaExtended": {
-		"extendedHelp": ""
-	},
-	"whereDescription": "",
-	"whereExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			""
-		]
-	},
-	"whereMessage": "",
-	"xkcdDescription": "",
-	"xkcdExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
-	"choiceOutput": "",
-	"choiceMissing": "",
-	"choiceDuplicates": "",
 	"diceOutput": "",
 	"diceRollsError": "",
 	"diceSidesError": "",
@@ -197,7 +106,5 @@
 	"rateOwners": [
 		"",
 		""
-	],
-	"xkcdComics": "",
-	"xkcdNotfound": ""
+	]
 }

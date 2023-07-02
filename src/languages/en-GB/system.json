@@ -1,6 +1,5 @@
 {
 	"discordAbortError": "I had a small network error when messaging Discord. Please run this command again!",
-	"externalServerError": "The external service we use could not process our message. Please try again later.",
 	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
 	"helpTitles": {
 		"aliases": "🖇️ | **Aliases**",
@@ -22,15 +21,6 @@
 		"{{LOADING}} Tuning in to the right frequencies...",
 		"{{LOADING}} Reticulating splines..."
 	],
-	"messagePromptTimeout": "The prompt has timed out.",
-	"noResults": "I wasn't able to find any results for that query...",
-	"parseError": "{{REDCROSS}} I failed to process the data I was given, sorry about that~!",
 	"prefixReminder": "The prefix in this server is currently set to `{{prefix}}`",
-	"queryFail": "I'm sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",
-	"textPromptAbortOptions": [
-		"abort",
-		"cancel",
-		"stop"
-	],
 	"reminderHeader": ""
 }

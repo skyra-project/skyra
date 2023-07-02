@@ -10,55 +10,6 @@
 		]
 	},
 	"c4Prompt": "",
-	"cannotHaveNegativeMoney": "",
-	"coinFlipHeadNames": [
-		"",
-		"",
-		""
-	],
-	"coinFlipTailNames": [
-		"",
-		"",
-		""
-	],
-	"coinFlipCoinNames": [
-		"",
-		""
-	],
-	"coinFlipDescription": "Подбросьте монетку!",
-	"coinFlipExtended": {
-		"usages": [
-			"орёл/решка",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"орёл/решка",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"решка",
-			"орёл 50",
-			"решка 200",
-			""
-		]
-	},
-	"coinFlipInvalidCoinName": "Простите, но `{{parameter}}` не является стороной монеты!",
-	"coinFlipLoseDescription": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали.",
-	"coinFlipLoseDescriptionWithWager": "Монета была подброшена, выпавшая сторона - {{result}}. Вы не угадали и потеряли {{wager}} {{SHINY}}.",
-	"coinFlipLoseTitle": "Вы проиграли.",
-	"coinFlipNoguessDescription": "Монета была подброшена, выпавшая сторона - {{result}}.",
-	"coinFlipNoguessTitle": "Вы подбросили монетку.",
-	"coinFlipWinDescription": "Монета была подброшена, выпавшая сторона - {{result}}. Вы угадали!",
-	"coinFlipWinDescriptionWithWager": "Монета была подброшена, выпавшая сторона - {{result}}. Вы угадали и выиграли {{wager}} {{SHINY}}!",
-	"coinFlipWinTitle": "Вы выиграли!",
 	"gamesBot": "",
 	"gamesNoPlayers": "",
 	"gamesProgress": "",
@@ -416,39 +367,6 @@
 		"",
 		""
 	],
-	"higherLowerCancel": {
-		"description": "Спасибо за игру, {{username}}! Я буду здесь, когда вы захотите сыграть снова.",
-		"title": ""
-	},
-	"higherLowerCashout": "",
-	"higherLowerDescription": "",
-	"higherLowerEmbed": {
-		"description": "Ваше число - {{number}}. Следующее число будет больше или меньше?",
-		"footer": "",
-		"title": "Больше или Меньше? | Ход {{turn}}"
-	},
-	"higherLowerExtended": {
-		"usages": [
-			"Ставка"
-		],
-		"extendedHelp": "",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"higherLowerLoading": "",
-	"higherLowerLose": {
-		"description": "",
-		"footer": "Удачи в следующий раз!",
-		"title": "Вы проиграли!"
-	},
-	"higherLowerNewround": "",
-	"higherLowerWin": {
-		"description": "",
-		"footer": "Действуйте быстро! У вас не так много времени.",
-		"title": "Вы выиграли!"
-	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"usages": [
@@ -469,25 +387,6 @@
 	"hungerGamesResultProceed": "Продолжить?",
 	"hungerGamesStop": "",
 	"hungerGamesWinner": "И победитель... {{winner}}!",
-	"notEnoughMoney": "",
-	"slotmachineCanvasTextLost": "Вы проиграли",
-	"slotmachineCanvasTextWon": "Вы выиграли",
-	"slotmachineDescription": "",
-	"slotmachineExtended": {
-		"usages": [
-			"Ставка"
-		],
-		"explainedUsage": [
-			[
-				"Ставка",
-				""
-			]
-		],
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"slotmachinesLoss": "",
-	"slotmachinesWin": "",
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "Этот матч завершился **ничьей**!\n{{board}}",
 	"ticTacToeExtended": {
@@ -544,19 +443,5 @@
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",
 	"triviaNoAnswer": "",
-	"triviaWinner": "",
-	"wheelOfFortuneCanvasTextLost": "Вы проиграли",
-	"wheelOfFortuneCanvasTextWon": "Вы выиграли",
-	"wheelOfFortuneDescription": "",
-	"wheelOfFortuneExtended": {
-		"usages": [
-			"Ставка"
-		],
-		"extendedHelp": "",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"balanceDifference": ""
+	"triviaWinner": ""
 }

@@ -1,5 +1,4 @@
 {
-	"all": "",
 	"boolean_one": "",
 	"boolean_other": "",
 	"booleanError": "",
@@ -33,7 +32,6 @@
 	],
 	"categoryChannelError": "",
 	"channelError": "",
-	"color": "I could not resolve `{{parameter}}` to a valid colour. These are some of the valid formats:\n\n- `#dfdfdf` (HEX codes).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (base 10).",
 	"command": "I could not resolve `{{parameter}}` to a command! Make sure you typed its name or one of its aliases correctly!",
 	"commandMatch": "",
 	"dateError": "",
@@ -70,6 +68,9 @@
 	"numberTooLarge": "",
 	"numberTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"piece": "I could not resolve `{{parameter}}` to a piece! Make sure you typed its name or one of its aliases correctly!",
+	"rangeInvalid": "",
+	"rangeMax_other": "",
+	"rangeMax_one": "",
 	"resetPossibles": [
 		"off",
 		"reset"
@@ -89,7 +90,5 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "",
-	"userError": "",
-	"wager": "",
-	"winners": ""
+	"userError": ""
 }

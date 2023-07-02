@@ -1,18 +1,4 @@
 {
-	"followage": "",
-	"followageMissingEntries": "",
-	"twitchNoEntries": "",
-	"twitchTitles": {
-		"followers": "",
-		"views": "",
-		"clickToVisit": "",
-		"partner": "Partner"
-	},
-	"twitchPartnershipWithoutAffiliate": "",
-	"twitchAffiliateStatus": {
-		"affiliated": "",
-		"partnered": ""
-	},
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionStatusValues": [
 		"",
@@ -37,42 +23,6 @@
 		"offline": ""
 	},
 	"twitchSubscriptionShowUnknownUser": "Neznano",
-	"followageDescription": "",
-	"followageExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"twitchDescription": "",
-	"twitchExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"riotgames"
-		]
-	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
 		"usages": [

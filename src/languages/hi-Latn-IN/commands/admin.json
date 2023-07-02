@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} band nahi hona chahiye.",
 	"confUpdated": "",
 	"confGetNoExt": "{{key}} यह कुंजी मौजूद नहीं है।",
 	"confGet": "{{key}} इस कुंजी का मूल्य {{value}} के बराबर है।",

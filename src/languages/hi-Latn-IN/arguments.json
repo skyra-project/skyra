@@ -1,5 +1,4 @@
 {
-	"all": "",
 	"boolean_one": "",
 	"boolean_other": "",
 	"booleanError": "",
@@ -33,7 +32,6 @@
 	],
 	"categoryChannelError": "",
 	"channelError": "",
-	"color": "",
 	"command": "",
 	"commandMatch": "",
 	"dateError": "",
@@ -70,6 +68,9 @@
 	"numberTooLarge": "",
 	"numberTooSmall": "",
 	"piece": "",
+	"rangeInvalid": "",
+	"rangeMax_other": "",
+	"rangeMax_one": "",
 	"resetPossibles": [
 		"",
 		""
@@ -89,7 +90,5 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "",
-	"userError": "",
-	"wager": "",
-	"winners": ""
+	"userError": ""
 }

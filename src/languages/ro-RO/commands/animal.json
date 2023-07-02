@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "Lasa-mă să îți spun un fapt misterios despre pisici.",
-	"catfactExtended": {
-		"extendedHelp": "Ştiai că pisicile sunt foarte curioase, nu? Cu siguranţă au o mulţime de fapte distractive şi ciudate.\nCu această comandă vei primi un fapt aleatoriu."
+	"bunnyDescription": "",
+	"bunnyExtended": {
+		"extendedHelp": ""
 	},
-	"catfactTitle": "Fapte despre pisici",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "Câini drăguți! ❤",
 	"dogExtended": {
 		"extendedHelp": ""

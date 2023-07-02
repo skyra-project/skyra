@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "Lass mich dir einen mysteriösen Katzenfakt erzählen.",
-	"catfactExtended": {
-		"extendedHelp": "Du weißt, dass Katzen sehr neugierig sind, richtig? Sie haben sicherlich viel Spaß und es gibt viele seltsame Fakten über sie.\nMit diesem Command wirst du einen zufälligen Fakt lesen können."
+	"bunnyDescription": "",
+	"bunnyExtended": {
+		"extendedHelp": ""
 	},
-	"catfactTitle": "Katzen-Fakt",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "Süße Hundis! ❤",
 	"dogExtended": {
 		"extendedHelp": "Weißt **du** wie süß Hunde sind? Sie sind so schön!\nDieser Command verwendet [dog.ceo](https://dog.ceo) um Bilder der süßesten Hunde zu zeigen!"

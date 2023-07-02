@@ -10,55 +10,6 @@
 		]
 	},
 	"c4Prompt": "",
-	"cannotHaveNegativeMoney": "आपके पास {{SHINY}} ऋणात्मक संख्या में नहीं हो सकती |",
-	"coinFlipHeadNames": [
-		"",
-		"",
-		""
-	],
-	"coinFlipTailNames": [
-		"",
-		"",
-		""
-	],
-	"coinFlipCoinNames": [
-		"",
-		""
-	],
-	"coinFlipDescription": "सिक्का उछालें !",
-	"coinFlipExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "सिक्का उछालें | यदि आपका अनुमान सही हुआ, तो बाजी की रक़म दुगनी हो कर आपको वापस मिलेगी |\nयदि आपका अनुमान गलत हुआ तो आप बाजी हार जायेंगे |\nआप बिना किसी रक़म के भी सिक्का उछाल सकते हैं, जिसमे पैसे नहीं लगते, परन्तु आपको इनाम भी नहीं मिलेगा |\nअब सिक्के उछालना शुरू कीजिये |",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"coinFlipInvalidCoinName": "",
-	"coinFlipLoseDescription": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था |",
-	"coinFlipLoseDescriptionWithWager": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था और आप {{wager}} {{SHINY}} हार गए |",
-	"coinFlipLoseTitle": "आप हार गए |",
-	"coinFlipNoguessDescription": "सिक्का उछाला गया, और {{result}} आया |",
-	"coinFlipNoguessTitle": "आपने सिक्का उछाला |",
-	"coinFlipWinDescription": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही था !",
-	"coinFlipWinDescriptionWithWager": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही था और आप {{wager}} {{SHINY}} जीत गए !",
-	"coinFlipWinTitle": "आप जीत गए!",
 	"gamesBot": "क्षमा कीजिये, परन्तु मुझे नहीं लगता की वे जो काम कर रहे हैं उसे छोड़कर मनुष्यों के साथ खेलना चाहेंगे |",
 	"gamesNoPlayers": "'हंगर गेम्स' के लिए कुछ नाम प्रदान करें, जैसे: `{{prefix}}hg अंकित, दिय्यांश, आर्यन, काएरा`",
 	"gamesProgress": "क्षमा कीजिये, लेकिन इस चैनल में एक खेल प्रगति पर है, कुछ समय पश्चात पुन: प्रयास करें |",
@@ -416,39 +367,6 @@
 		"",
 		""
 	],
-	"higherLowerCancel": {
-		"description": "",
-		"title": ""
-	},
-	"higherLowerCashout": "",
-	"higherLowerDescription": "",
-	"higherLowerEmbed": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
-	"higherLowerExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"higherLowerLoading": "",
-	"higherLowerLose": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
-	"higherLowerNewround": "",
-	"higherLowerWin": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"usages": [
@@ -469,25 +387,6 @@
 	"hungerGamesResultProceed": "",
 	"hungerGamesStop": "",
 	"hungerGamesWinner": "",
-	"notEnoughMoney": "",
-	"slotmachineCanvasTextLost": "",
-	"slotmachineCanvasTextWon": "",
-	"slotmachineDescription": "",
-	"slotmachineExtended": {
-		"usages": [
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"slotmachinesLoss": "",
-	"slotmachinesWin": "",
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
@@ -544,19 +443,5 @@
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",
 	"triviaNoAnswer": "",
-	"triviaWinner": "",
-	"wheelOfFortuneCanvasTextLost": "",
-	"wheelOfFortuneCanvasTextWon": "",
-	"wheelOfFortuneDescription": "",
-	"wheelOfFortuneExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"balanceDifference": ""
+	"triviaWinner": ""
 }

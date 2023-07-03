@@ -5,7 +5,6 @@
 	"none": "None",
 	"unknown": "unknown",
 	"yes": "Yes",
-	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",

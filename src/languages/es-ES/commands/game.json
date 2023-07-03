@@ -10,55 +10,6 @@
 		]
 	},
 	"c4Prompt": "Estimado {{challengee}}. Has sido desafiado por {{challenger}} en una partida de Conecta 4. ¡Haz clic en la reacción to para aceptar!",
-	"cannotHaveNegativeMoney": "No puedes tener una cantidad negativa de {{SHINY}}s.",
-	"coinFlipHeadNames": [
-		"cara",
-		"cara",
-		"c"
-	],
-	"coinFlipTailNames": [
-		"cruz",
-		"cruz",
-		"c"
-	],
-	"coinFlipCoinNames": [
-		"Cara",
-		"Cruz"
-	],
-	"coinFlipDescription": "¡Lanza una moneda al aire!",
-	"coinFlipExtended": {
-		"usages": [
-			"heads/tails",
-			"heads cashless",
-			"tails Apuesta"
-		],
-		"extendedHelp": "Lanza una moneda al aire. Si adivinas el lado que aparece, recuperarás el doble de apuesta, si no, perderás tu apuesta.\nTambién puedes hacer un lanzamiento sin apostar, pero no tendrías una recompensa por ello.\n\nAhora... ¡hora de lanzar monedas!",
-		"explainedUsage": [
-			[
-				"heads/tails",
-				"Si crees que la moneda aterrizará en cara o en cruz."
-			],
-			[
-				"cashless, Wager",
-				"Si está en \"cashless\" (por defecto) entonces no estarás utilizando Shiny para el lanzamiento de la moneda (útil para juegos RPG o para tomar una decisión). También puedes hacer una apuesta de Shiny."
-			]
-		],
-		"examples": [
-			"tails 50",
-			"heads 200",
-			"tails 200",
-			"tails cashless"
-		]
-	},
-	"coinFlipInvalidCoinName": "Disculpe, ¡pero `{{parameter}}` no es una cara de moneda!",
-	"coinFlipLoseDescription": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente.",
-	"coinFlipLoseDescriptionWithWager": "La moneda fue lanzada y mostró {{result}}. No adivinaste correctamente y perdiste {{wager}} {{SHINY}}.",
-	"coinFlipLoseTitle": "¡Perdiste!",
-	"coinFlipNoguessDescription": "La moneda fue lanzada y mostró {{result}}.",
-	"coinFlipNoguessTitle": "Has lanzado una moneda.",
-	"coinFlipWinDescription": "La moneda fue lanzada y mostró {{result}}. ¡Lo adivinaste!",
-	"coinFlipWinDescriptionWithWager": "La moneda fue lanzada y mostró {{result}}. ¡Lo adivinaste y ganaste {{wager}} {{SHINY}}!",
-	"coinFlipWinTitle": "¡Ganaste!",
 	"gamesBot": "Lo siento, pero no creo que les gustaría dejar de hacer lo que están haciendo y jugar con los humanos.",
 	"gamesNoPlayers": "Por favor especifica algunos tributos para jugar a las Partidas del Hambre, así: `{{prefix}}hg Bob, Mark, Jim, Kyra`",
 	"gamesProgress": "Lo siento, pero hay un juego en curso en este canal, inténtelo de nuevo cuando termine.",
@@ -416,39 +367,6 @@
 		"{1} escribe en su diario.",
 		"{1} mira a {2} sentados en su hoguera, y considera matarle"
 	],
-	"higherLowerCancel": {
-		"description": "¡Gracias por jugar, {{username}}! Estaré aquí cuando quieras jugar de nuevo.",
-		"title": "El juego ha sido cancelado por elección"
-	},
-	"higherLowerCashout": "He ingresado {{amount}} {{SHINY}} a tu cuenta. ¡Espero que te diviertas!",
-	"higherLowerDescription": "Juega una partida de Mayor/Menor",
-	"higherLowerEmbed": {
-		"description": "Tu número es {{number}}. ¿Será el siguiente número mayor o menor?",
-		"footer": "El juego caducará en 3 minutos, así que ¡actúe rápido!",
-		"title": "¿Mayor o menor? | Turno para {{turn}}"
-	},
-	"higherLowerExtended": {
-		"usages": [
-			"Apuesta"
-		],
-		"extendedHelp": "Mayor/Menor es un juego de suerte.\nEscogeré un número y tendrás que adivinar si el siguiente número que elijo será **mayor** o **menor** que el actual, usando los emojis ⬆ o ⬇.\nTus ganancias aumentan a medida que avanzas a través de las rondas, y puedes canjear en cualquier momento haciendo clic en 💰 emoji.\n¡Pero ten cuidado! Cuanto más lejos vayas, más posibilidades tendrás de perder las ganancias.",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"higherLowerLoading": "{{LOADING}} Comenzando una nueva partida de Higher/Llower.",
-	"higherLowerLose": {
-		"description": "No lo has conseguido. El número era {{number}}. Perdiste {{losses}} {{SHINY}}.",
-		"footer": "¡Más suerte la próxima vez!",
-		"title": "¡Has perdido!"
-	},
-	"higherLowerNewround": "Muy bien. Iniciando una nueva ronda.",
-	"higherLowerWin": {
-		"description": "El número era {{number}}. ¿Desea continuar? ¡Con otro intento, puedes ganar {{potentials}} {{SHINY}}!",
-		"footer": "¡Actúe rápido! No tiene mucho tiempo.",
-		"title": "¡Has ganado!"
-	},
 	"hungerGamesDescription": "¡Juega a los Juegos de Hambre con tus amigos!",
 	"hungerGamesExtended": {
 		"usages": [
@@ -469,25 +387,6 @@
 	"hungerGamesResultProceed": "¿Continuar?",
 	"hungerGamesStop": "¡El juego terminó por elección! ¡Nos vemos más tarde!",
 	"hungerGamesWinner": "¡Y el ganador es... {{winner}}!",
-	"notEnoughMoney": "Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! Tu monedero tiene {{money}} {{SHINY}}",
-	"slotmachineCanvasTextLost": "Has perdido",
-	"slotmachineCanvasTextWon": "Has ganado",
-	"slotmachineDescription": "Apuesto 100 {{SHINY}}'s que no ganas en esta ronda.",
-	"slotmachineExtended": {
-		"usages": [
-			"Apuesta"
-		],
-		"explainedUsage": [
-			[
-				"Apuesta",
-				"50, 100, 200, 500, 1000, e incluso más {{SHINY}} para apostar."
-			]
-		],
-		"extendedHelp": "Gire una máquina tragaperras de 3 tambores y apuesta tus Shiny para obtener grandes recompensas.",
-		"reminder": "Recibirás al menos 5 veces la cantidad (cerezas) al ganar, y hasta 24 veces (sietes)."
-	},
-	"slotmachinesLoss": "**Has tirado:**\n{{roll}}\n**¡Misión fallida!**\n¡Lo conseguiremos la próxima vez!",
-	"slotmachinesWin": "**Has obtenido:**\n{{roll}}\n**¡Felicidades!**\n¡Has ganado {{winnings}}{{SHINY}}!",
 	"ticTacToeDescription": "Juega al Tres en Raya con alguien.",
 	"ticTacToeDraw": "¡Esta partida concluyó en un **empate**!\n{{board}}",
 	"ticTacToeExtended": {
@@ -544,19 +443,5 @@
 	"triviaIncorrect": "Lo siento, pero **{{attempt}}** no es la respuesta correcta. ¡Buena suerte la próxima vez!",
 	"triviaInvalidCategory": "Categoría no válida: Por favor usa `Skyra, help trivia` para leer la lista de categorías.",
 	"triviaNoAnswer": "¡Parece que nadie lo ha conseguido! La respuesta correcta era **{{correctAnswer}}**.",
-	"triviaWinner": "¡Tenemos un ganador! ¡{{winner}} tuvo una respuesta correcta con **{{correctAnswer}}**!",
-	"wheelOfFortuneCanvasTextLost": "Has perdido",
-	"wheelOfFortuneCanvasTextWon": "Has ganado",
-	"wheelOfFortuneDescription": "Apuesta tus Shiny girando una rueda de fortuna",
-	"wheelOfFortuneExtended": {
-		"usages": [
-			"Apuesta"
-		],
-		"extendedHelp": "Puedes perder 0.1, 0.2, 0.3 o 0.5 veces tu cantidad o ganar hasta 1.2, 1.5, 1.7 o 2.4 veces lo introducido",
-		"examples": [
-			"50",
-			"200"
-		]
-	},
-	"balanceDifference": "**Antes**: {{previous, number}} {{SHINY}}\n**Después**: {{next, number}} {{SHINY}}"
+	"triviaWinner": "¡Tenemos un ganador! ¡{{winner}} tuvo una respuesta correcta con **{{correctAnswer}}**!"
 }

@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} не может быть отключен.",
 	"confUpdated": "",
 	"confGetNoExt": "Кажется, ключа **{{key}}** не существует.",
 	"confGet": "Значение ключа **{{key}}**: `{{value}}`",

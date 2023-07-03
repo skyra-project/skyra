@@ -1,5 +1,4 @@
 {
-	"all": "",
 	"boolean_one": "",
 	"boolean_other": "",
 	"booleanError": "",
@@ -33,7 +32,6 @@
 	],
 	"categoryChannelError": "",
 	"channelError": "",
-	"color": "No pude resolver `{{parameter}}` a un color válido, aquí tiene alguno de los formatos válidos:\n\n- `#dfdf` (Hexadecimal).\n- `\"rgb(200, 200, 200)\"` (RGB).\n- `\"hsl(350, 100, 100)\"` (HSL).\n- `14671839` (Base 10).",
 	"command": "¡No pude resolver `{{parameter}}` a un comando! ¡Asegúrate de que escribiste su nombre o uno de sus alias correctamente!",
 	"commandMatch": "",
 	"dateError": "",
@@ -70,6 +68,9 @@
 	"numberTooLarge": "",
 	"numberTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",
 	"piece": "¡No pude resolver `{{parameter}}` a una pieza! ¡Asegúrate de que escribiste su nombre o uno de sus alias correctamente!",
+	"rangeInvalid": "",
+	"rangeMax_other": "",
+	"rangeMax_one": "",
 	"resetPossibles": [
 		"apagado",
 		"restablecer"
@@ -89,7 +90,5 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "¡Ups! Parece que no he podido encontrar un analizador para un parámetro, ¡por favor contacta a mis desarrolladores sobre esto!",
-	"userError": "",
-	"wager": "Lo siento, pero {{parameter}} {{SHINY}} no es una cantidad válida para apostar. Puedes apostar uno de {{possibles, orList}}",
-	"winners": "¡No pude resolver `{{parameter}}` a una cantidad de ganador válida!\n**Pista**: el siguiente formato es compatible: `Nw`, siendo `N` cualquier entero, p. ej. `3w` o `12w`."
+	"userError": ""
 }

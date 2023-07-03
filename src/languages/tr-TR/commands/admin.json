@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} devre dışı bırakılamaz.",
 	"confUpdated": "",
 	"confGetNoExt": "**{{key}}** anahtarı mevcut görünmüyor.",
 	"confGet": "**{{key}}** anahtarının değeri: `{{value}}`",

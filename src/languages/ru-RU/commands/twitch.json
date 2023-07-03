@@ -1,18 +1,4 @@
 {
-	"followage": "",
-	"followageMissingEntries": "",
-	"twitchNoEntries": "",
-	"twitchTitles": {
-		"followers": "",
-		"views": "Просмотры",
-		"clickToVisit": "Нажмите, чтобы перейти в канал стримера",
-		"partner": ""
-	},
-	"twitchPartnershipWithoutAffiliate": "",
-	"twitchAffiliateStatus": {
-		"affiliated": "",
-		"partnered": ""
-	},
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionStatusValues": [
 		"",
@@ -37,42 +23,6 @@
 		"offline": ""
 	},
 	"twitchSubscriptionShowUnknownUser": "",
-	"followageDescription": "",
-	"followageExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
-	"twitchDescription": "",
-	"twitchExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
-	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
 		"usages": [

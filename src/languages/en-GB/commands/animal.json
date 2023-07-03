@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "Let me tell you a mysterious cat fact.",
-	"catfactExtended": {
+	"bunnyDescription": "",
+	"bunnyExtended": {
 		"extendedHelp": ""
 	},
-	"catfactTitle": "Cat Fact",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "Cute doggos! ❤",
 	"dogExtended": {
 		"extendedHelp": ""

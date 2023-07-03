@@ -1,9 +1,12 @@
 {
-	"catfactDescription": "",
-	"catfactExtended": {
+	"bunnyDescription": "",
+	"bunnyExtended": {
 		"extendedHelp": ""
 	},
-	"catfactTitle": "",
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
 	"dogDescription": "",
 	"dogExtended": {
 		"extendedHelp": ""

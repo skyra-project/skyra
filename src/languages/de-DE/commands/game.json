@@ -10,55 +10,6 @@
 		]
 	},
 	"c4Prompt": "Lieber {{challengee}}, du wurdest von {{challenger}} in einem Connect-Four-Spiel herausgefordert. Klicken Sie auf die Reaktion 🇾, um zu akzeptieren!",
-	"cannotHaveNegativeMoney": "Du kannst keinen negativen Betrag von {{SHINY}}s haben.",
-	"coinFlipHeadNames": [
-		"kopf",
-		"kopf",
-		"h"
-	],
-	"coinFlipTailNames": [
-		"Zahl",
-		"Zahl",
-		"t"
-	],
-	"coinFlipCoinNames": [
-		"Kopf",
-		"Zahl"
-	],
-	"coinFlipDescription": "Wirf eine Münze!",
-	"coinFlipExtended": {
-		"usages": [
-			"kopf/zahl",
-			"bargeldlos kopf",
-			"zahl Wette"
-		],
-		"extendedHelp": "Wirf eine Münze. Wenn du die Seite errätst die erscheint, erhälst du deinen Wetteinsatz zurück, verdoppelt.\nWenn nicht, dann verlierst du deinen Einsatz.\nDu kannst auch einen bargeldlosen Wurf durchführen, der nichts kostet, aber dich auch nicht belohnt.\nJetzt lass die Münzen fliegen.",
-		"explainedUsage": [
-			[
-				"kopf/zahl",
-				"Ob du denkst dass die Münze auf Kopf oder Zahl landen wird."
-			],
-			[
-				"bargeldlos, Wette",
-				"Wenn geldlos (standard) dann verbrauchst du keine shinies für den Münzwurf (nützlich für RPG spiele oder das fällen einer Entscheidung). Du kannst auch shinies für ein Glücksspiel verwetten."
-			]
-		],
-		"examples": [
-			"Kopf",
-			"Kopf 50",
-			"Zahl 200",
-			"Zahl geldlos"
-		]
-	},
-	"coinFlipInvalidCoinName": "Entschuldigung, aber {{parameter}} ist keine Münzseite!",
-	"coinFlipLoseDescription": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten.",
-	"coinFlipLoseDescriptionWithWager": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast nicht richtig geraten und {{wager}} {{SHINY}} verloren.",
-	"coinFlipLoseTitle": "Du hast verloren.",
-	"coinFlipNoguessDescription": "Die Münze wurde geworfen und zeigt {{result}}.",
-	"coinFlipNoguessTitle": "Du hast eine Münze geworfen.",
-	"coinFlipWinDescription": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast hast richtig geraten!",
-	"coinFlipWinDescriptionWithWager": "Die Münze wurde geworfen, und zeigte {{result}}. Du hast richtig geraten und {{wager}} {{SHINY}} gewonnen!",
-	"coinFlipWinTitle": "Du hast gewonnen!",
 	"gamesBot": "Es tut mir leid, aber ich glaube nicht, dass sie aufhören wollen, das zu tun, was sie tun, um mit Menschen zu spielen.",
 	"gamesNoPlayers": "Bitte gib ein paar Tribute an, um die Hungerspiele zu spielen, z.B.: `{{prefix}}hg Bob, Mark, Jim, Kyra`",
 	"gamesProgress": "Tut mir leid, gerade findet in diesem Channel ein Spiel statt, versuche es noch einmal nachdem das Spiel beendet ist.",
@@ -416,39 +367,6 @@
 		"",
 		""
 	],
-	"higherLowerCancel": {
-		"description": "",
-		"title": ""
-	},
-	"higherLowerCashout": "",
-	"higherLowerDescription": "",
-	"higherLowerEmbed": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
-	"higherLowerExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"higherLowerLoading": "",
-	"higherLowerLose": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
-	"higherLowerNewround": "",
-	"higherLowerWin": {
-		"description": "",
-		"footer": "",
-		"title": ""
-	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"usages": [
@@ -469,25 +387,6 @@
 	"hungerGamesResultProceed": "",
 	"hungerGamesStop": "",
 	"hungerGamesWinner": "",
-	"notEnoughMoney": "",
-	"slotmachineCanvasTextLost": "",
-	"slotmachineCanvasTextWon": "",
-	"slotmachineDescription": "",
-	"slotmachineExtended": {
-		"usages": [
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"extendedHelp": "",
-		"reminder": ""
-	},
-	"slotmachinesLoss": "",
-	"slotmachinesWin": "",
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
@@ -544,19 +443,5 @@
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",
 	"triviaNoAnswer": "",
-	"triviaWinner": "",
-	"wheelOfFortuneCanvasTextLost": "",
-	"wheelOfFortuneCanvasTextWon": "",
-	"wheelOfFortuneDescription": "",
-	"wheelOfFortuneExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"balanceDifference": ""
+	"triviaWinner": ""
 }

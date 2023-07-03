@@ -2,7 +2,6 @@
 	"defaultLanguage": "Язык по умолчанию",
 	"no": "Нет",
 	"yes": "Да",
-	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",

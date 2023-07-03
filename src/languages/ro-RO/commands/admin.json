@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
 	"confUpdated": "",
 	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
 	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",

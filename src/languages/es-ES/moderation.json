@@ -1,6 +1,5 @@
 {
 	"logAppealed": "{{REDCROSS}} Lo siento, pero el registro de moderación seleccionado ha expirado o no puede ser hecho temporal.",
-	"logDescriptionWithReason": "❯ **Razón**: {{data.reason}}{{data.formattedDuration}}",
 	"logExpiresIn": "\n❯ **Expira en**: {{duration, duration}}",
 	"muteCannotManageRoles": "Necesito tener **{{MANAGE_ROLES, permissions}}** permisos para poder silenciar.",
 	"muteLowHierarchy": "No puedo silenciar a un usuario con una posición de rol superior a la mía.",

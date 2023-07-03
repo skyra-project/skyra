@@ -1,5 +1,4 @@
 {
-	"confGuarded": "{{name, toTitleCase}} darf nicht deaktiviert werden.",
 	"confUpdated": "",
 	"confGetNoExt": "Der Schlüssel **{{key}}** scheint nicht zu existieren.",
 	"confGet": "Der Wert für den Schlüssel **{{key}}** ist: `{{value}}`",

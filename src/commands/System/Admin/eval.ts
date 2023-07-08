@@ -80,6 +80,20 @@ export class UserCommand extends SkyraCommand {
 				...modules,
 				stream: { consumers: require('node:stream/consumers'), web: require('node:stream/web'), ...modules.stream },
 				timers: { promises: require('node:timers/promises'), ...modules.timers },
+				discord: {
+					...require('discord.js'),
+					builders: require('@discordjs/builders'),
+					collection: require('@discordjs/collection'),
+					types: require('discord-api-types/v9')
+				},
+				sapphire: {
+					asyncQueue: require('@sapphire/async-queue'),
+					fetch: require('@sapphire/fetch'),
+					framework: require('@sapphire/framework'),
+					snowflake: require('@sapphire/snowflake'),
+					stopwatch: require('@sapphire/stopwatch'),
+					utilities: { ...require('@sapphire/utilities'), time: require('@sapphire/time-utilities') }
+				},
 				container: this.container,
 				client: this.container.client,
 				command: this

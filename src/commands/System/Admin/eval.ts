@@ -96,8 +96,7 @@ export class UserCommand extends SkyraCommand {
 					utilities: {
 						...require('@sapphire/utilities'),
 						time: require('@sapphire/time-utilities'),
-						discord: require('@sapphire/discord-utilities'),
-						discordjs: require('@sapphire/discord.js-utilities')
+						discord: require('@sapphire/discord.js-utilities')
 					}
 				},
 				container: this.container,

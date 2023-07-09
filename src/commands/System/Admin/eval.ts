@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types/Enums';
-import { seconds } from '#utils/common';
+import { createReferPromise, seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
@@ -11,29 +11,30 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { setTimeout as sleep } from 'node:timers/promises';
 import { inspect } from 'node:util';
+import { createContext, Script } from 'node:vm';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ev'],
 	description: LanguageKeys.Commands.System.EvalDescription,
 	detailedDescription: LanguageKeys.Commands.System.EvalExtended,
 	flags: ['async', 'no-timeout', 'json', 'silent', 'showHidden', 'hidden', 'sql'],
-	options: ['wait', 'lang', 'language', 'depth'],
+	options: ['timeout', 'wait', 'lang', 'language', 'depth'],
 	permissionLevel: PermissionLevels.BotOwner,
 	quotes: []
 })
 export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
+	#cachedEvalContext: object | null = null;
 
 	public async messageRun(message: Message, args: SkyraCommand.Args) {
 		const code = await args.rest('string');
 
-		const wait = args.getOption('wait');
-		const flagTime = args.getFlags('no-timeout') ? (wait === null ? this.kTimeout : Number(wait)) : Infinity;
+		const wait = args.getOption('timeout', 'wait');
+		const flagTime = args.getFlags('no-timeout') ? Infinity : wait === null ? this.kTimeout : Number(wait);
 		const executeSql = args.getFlags('sql');
 		const language = args.getOption('lang', 'language') ?? (executeSql || args.getFlags('json') ? 'json' : 'js');
-		const { success, result, time } = executeSql ? await this.sql(code) : await this.timedEval(message, args, code, flagTime);
+		const { success, result, time } = executeSql ? await this.sql(code) : await this.eval(message, args, code, flagTime);
 
 		if (args.getFlags('silent')) {
 			if (!success && result && cast<Error>(result).stack) this.container.logger.fatal(cast<Error>(result).stack);
@@ -52,21 +53,95 @@ export class UserCommand extends SkyraCommand {
 		return send(message, `${header}${body}`);
 	}
 
-	private async timedEval(message: Message, args: SkyraCommand.Args, code: string, flagTime: number) {
-		if (flagTime === Infinity || flagTime === 0) return this.eval(message, args, code);
-		return Promise.race([
-			sleep(flagTime).then(() => ({
-				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: seconds.fromMilliseconds(flagTime) }),
-				success: false,
-				time: '⏱ ...',
-				type: 'EvalTimeoutError'
-			})),
-			this.eval(message, args, code)
-		]);
+	private get context() {
+		if (!this.#cachedEvalContext) {
+			const modules = Object.fromEntries(
+				[
+					//
+					['buffer', 'node:buffer'],
+					['crypto', 'node:crypto'],
+					['events', 'node:events'],
+					['fs', 'node:fs'],
+					['http', 'node:http'],
+					['os', 'node:os'],
+					['path', 'node:path'],
+					['process', 'node:process'],
+					['stream', 'node:stream'],
+					['timers', 'node:timers'],
+					['url', 'node:url'],
+					['util', 'node:util'],
+					['v8', 'node:v8'],
+					['vm', 'node:vm'],
+					['worker_threads', 'node:worker_threads']
+				].map(([key, module]) => [key, require(module)])
+			);
+			this.#cachedEvalContext = {
+				...globalThis,
+				...modules,
+				stream: { consumers: require('node:stream/consumers'), web: require('node:stream/web'), ...modules.stream },
+				timers: { promises: require('node:timers/promises'), ...modules.timers },
+				discord: {
+					...require('discord.js'),
+					builders: require('@discordjs/builders'),
+					collection: require('@discordjs/collection'),
+					types: require('discord-api-types/v9')
+				},
+				sapphire: {
+					asyncQueue: require('@sapphire/async-queue'),
+					fetch: require('@sapphire/fetch'),
+					pieces: require('@sapphire/pieces'),
+					framework: require('@sapphire/framework'),
+					snowflake: require('@sapphire/snowflake'),
+					stopwatch: require('@sapphire/stopwatch'),
+					utilities: {
+						...require('@sapphire/utilities'),
+						time: require('@sapphire/time-utilities'),
+						discord: require('@sapphire/discord.js-utilities')
+					}
+				},
+				container: this.container,
+				client: this.container.client,
+				command: this
+			};
+		}
+
+		return this.#cachedEvalContext;
 	}
 
-	// Eval the input
-	private async eval(message: Message, args: SkyraCommand.Args, code: string) {
+	private async eval(message: Message, args: SkyraCommand.Args, code: string, timeout: number): Promise<EvalResult> {
+		if (timeout === Infinity || timeout === 0) return this.runEval(message, args, code, null, undefined);
+
+		const controller = new AbortController();
+		const sleepPromise = createReferPromise<EvalResult>();
+		const timer = setTimeout(() => {
+			controller.abort();
+			sleepPromise.resolve({
+				success: false,
+				time: '⏱ ...',
+				result: args.t(LanguageKeys.Commands.System.EvalTimeout, { seconds: seconds.fromMilliseconds(timeout) })
+			});
+		}, timeout);
+		return Promise.race([this.runEval(message, args, code, controller.signal, timeout).finally(() => clearTimeout(timer)), sleepPromise.promise]);
+	}
+
+	private async runEval(
+		message: Message,
+		args: SkyraCommand.Args,
+		code: string,
+		signal: AbortSignal | null,
+		timeout: number | undefined
+	): Promise<EvalResult> {
+		if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
+
+		let script: Script;
+		try {
+			script = new Script(code, { filename: 'eval' });
+		} catch (error) {
+			return { success: false, time: '💥 Syntax Error', result: (error as SyntaxError).message };
+		}
+
+		const context = createContext({ ...this.context, msg: message, message, args, signal });
+
 		const stopwatch = new Stopwatch();
 		let success: boolean;
 		let syncTime = '';
@@ -75,13 +150,11 @@ export class UserCommand extends SkyraCommand {
 		let thenable = false;
 
 		try {
-			if (args.getFlags('async')) code = `(async () => {\n${code}\n})();`;
+			result = script.runInNewContext(context, { timeout, microtaskMode: 'afterEvaluate' });
 
-			// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const msg = message;
-			// eslint-disable-next-line no-eval
-			result = eval(code);
+			// If the signal aborted, it should not continue processing the result:
+			if (signal?.aborted) return { success: false, time: '⏱ ...', result: 'AbortError' };
+
 			syncTime = stopwatch.toString();
 			if (isThenable(result)) {
 				thenable = true;
@@ -96,6 +169,9 @@ export class UserCommand extends SkyraCommand {
 			result = error;
 			success = false;
 		}
+
+		// If the signal aborted, it should not continue processing the result:
+		if (signal?.aborted) return { success: false, time: '⏱ ...', result: 'AbortError' };
 
 		stopwatch.stop();
 		if (typeof result !== 'string') {
@@ -144,4 +220,10 @@ export class UserCommand extends SkyraCommand {
 	private formatTime(syncTime: string, asyncTime?: string) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
+}
+
+interface EvalResult {
+	success: boolean;
+	time: string;
+	result: string;
 }

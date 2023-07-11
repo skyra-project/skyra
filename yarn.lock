@@ -4909,7 +4909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:^13.16.0":
+"discord.js@npm:13.16.0":
   version: 13.16.0
   resolution: "discord.js@npm:13.16.0"
   dependencies:
@@ -4923,6 +4923,23 @@ __metadata:
     node-fetch: ^2.6.7
     ws: ^8.13.0
   checksum: 42457561d13412d42d6247dec35ac13f5996958ee643be84b8e108326ec9b1420d2216d60527cbaaab10e5f6a5d14a3509ac189e6cf7f72a27e67f77789029c6
+  languageName: node
+  linkType: hard
+
+"discord.js@patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch::locator=skyra%40workspace%3A.":
+  version: 13.16.0
+  resolution: "discord.js@patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch::version=13.16.0&hash=7ec6eb&locator=skyra%40workspace%3A."
+  dependencies:
+    "@discordjs/builders": ^0.16.0
+    "@discordjs/collection": ^0.7.0
+    "@sapphire/async-queue": ^1.5.0
+    "@types/node-fetch": ^2.6.3
+    "@types/ws": ^8.5.4
+    discord-api-types: ^0.33.5
+    form-data: ^4.0.0
+    node-fetch: ^2.6.7
+    ws: ^8.13.0
+  checksum: e7d80a77491d58158cae962844ae3dea239528547461e26c5c8d51ba225c79f1415be45c51092efb03618c28fd3bb8186c6fae944d02abc0103317e7c81f12c8
   languageName: node
   linkType: hard
 

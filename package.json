@@ -129,7 +129,8 @@
 		"typescript": "~4.7.4",
 		"@sapphire/discord.js-utilities@4.12.0": "patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch",
 		"@sapphire/discord.js-utilities@^4.11.2": "patch:@sapphire/discord.js-utilities@npm%3A4.12.0#./.yarn/patches/@sapphire-discord.js-utilities-npm-4.12.0-cff496cdca.patch",
-		"@sapphire/framework@2.5.1": "patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch"
+		"@sapphire/framework@2.5.1": "patch:@sapphire/framework@npm%3A2.5.1#./.yarn/patches/@sapphire-framework-npm-2.5.1-e9e3e6d600.patch",
+		"discord.js@^13.16.0": "patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch"
 	},
 	"engines": {
 		"node": "^16",

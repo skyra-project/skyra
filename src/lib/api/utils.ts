@@ -64,7 +64,7 @@ export async function canManage(guild: Guild, member: GuildMember): Promise<bool
 	return isAdmin(member, roles) && (pnodes.run(member, container.stores.get('commands').get('conf') as SkyraCommand) ?? true);
 }
 
-export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {
+async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {
 	if (oauthGuild.owner) return true;
 	if (typeof guild === 'undefined') return new Permissions(BigInt(oauthGuild.permissions)).has(Permissions.FLAGS.MANAGE_GUILD);
 
@@ -74,7 +74,7 @@ export async function getManageable(id: string, oauthGuild: RESTAPIPartialCurren
 	return canManage(guild, member);
 }
 
-export async function transformGuild(client: Client, userId: string, data: RESTAPIPartialCurrentUserGuild): Promise<OauthFlattenedGuild> {
+async function transformGuild(client: Client, userId: string, data: RESTAPIPartialCurrentUserGuild): Promise<OauthFlattenedGuild> {
 	const guild = client.guilds.cache.get(data.id);
 	const serialized: PartialOauthFlattenedGuild =
 		typeof guild === 'undefined'

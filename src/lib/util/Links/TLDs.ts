@@ -1163,7 +1163,6 @@ export const TLDs = [
 	'tiaa',
 	'tickets',
 	'tienda',
-	'tiffany',
 	'tips',
 	'tires',
 	'tirol',

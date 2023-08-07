@@ -149,7 +149,15 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		return {
 			moderator: args.getFlags('no-author') ? null : args.getFlags('authored') || nameDisplay ? message.author : null,
-			send: (args.getFlags('dm') || (enabledDM && !args.getFlags('no-dm'))) && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+			send:
+				// --no-dm disables
+				!args.getFlags('no-dm') && (
+					// --dm and enabledDM enable
+					args.getFlags('dm') || enabledDM
+				) && (
+					// user settings
+					await this.container.db.fetchModerationDirectMessageEnabled(target.id)
+				)
 		};
 	}
 

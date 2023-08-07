@@ -25,7 +25,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
 		super(context, {
 			cooldownDelay: seconds(5),
-			flags: ['no-author', 'authored'],
+			flags: ['no-author', 'authored', 'no-dm', 'dm'],
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
@@ -149,7 +149,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		return {
 			moderator: args.getFlags('no-author') ? null : args.getFlags('no-authored') || nameDisplay ? message.author : null,
-			send: enabledDM && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+			send: (args.getFlags('dm') || (enabledDM && !args.getFlags('no-dm'))) && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 

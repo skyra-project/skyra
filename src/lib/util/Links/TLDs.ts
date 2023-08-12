@@ -845,7 +845,6 @@ export const TLDs = [
 	'nl',
 	'no',
 	'nokia',
-	'northwesternmutual',
 	'norton',
 	'now',
 	'nowruz',

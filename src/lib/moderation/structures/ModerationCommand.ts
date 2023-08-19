@@ -8,7 +8,7 @@ import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, getTag } from '#utils/util';
 import { Args, CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
-import { send } from '@sapphire/plugin-editable-commands';
+import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -94,7 +94,16 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 			// Else send the message as usual.
 			const content = output.join('\n');
-			return send(message, content);
+			const response = await send(message, content);
+
+			// If the server was configured to automatically delete messages, untrack the editable message so it doesn't
+			// get automatically deleted in the event of race-conditions. `send` + `free` is used over
+			// `message.channel.send` so it can edit any existing response.
+			if (shouldAutoDelete) {
+				free(message);
+			}
+
+			return response;
 		}
 
 		return null;

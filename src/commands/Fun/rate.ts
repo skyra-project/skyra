@@ -29,14 +29,16 @@ export class UserCommand extends SkyraCommand {
 			rate = 101;
 			[ratewaifu, rateableThing] = args.t(LanguageKeys.Commands.Fun.RateMyOwners);
 		} else {
-			rateableThing = /^(myself|me)$/i.test(rateableThing) ? message.author.username : escapeMarkdown(rateableThing.replace(/\bmy\b/g, 'your'));
+			rateableThing = /^(myself|me)$/i.test(rateableThing)
+				? message.author.displayName
+				: escapeMarkdown(rateableThing.replace(/\bmy\b/g, 'your'));
 
 			const rng = Math.round(Math.random() * 100);
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
 		const content = args.t(LanguageKeys.Commands.Fun.RateOutput, {
-			author: message.author.username,
+			author: message.author.displayName,
 			userToRate: rateableThing,
 			rate,
 			emoji: ratewaifu

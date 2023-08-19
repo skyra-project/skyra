@@ -16,7 +16,7 @@ import { Message, MessageEmbed } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	public messageRun(message: Message, args: SkyraCommand.Args) {
 		const embed = new MessageEmbed()
-			.setTitle(args.t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
+			.setTitle(args.t(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.displayName }))
 			.setDescription(args.t(LanguageKeys.Commands.System.SupportEmbedDescription))
 			.setColor(getColor(message));
 		return send(message, { embeds: [embed] });

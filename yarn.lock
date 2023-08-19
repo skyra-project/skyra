@@ -4927,7 +4927,7 @@ __metadata:
 
 "discord.js@patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch::locator=skyra%40workspace%3A.":
   version: 13.16.0
-  resolution: "discord.js@patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch::version=13.16.0&hash=7ec6eb&locator=skyra%40workspace%3A."
+  resolution: "discord.js@patch:discord.js@npm%3A13.16.0#./.yarn/patches/discord.js-npm-13.16.0-03bbf983c5.patch::version=13.16.0&hash=5000f3&locator=skyra%40workspace%3A."
   dependencies:
     "@discordjs/builders": ^0.16.0
     "@discordjs/collection": ^0.7.0
@@ -4938,7 +4938,7 @@ __metadata:
     form-data: ^4.0.0
     node-fetch: ^2.6.7
     ws: ^8.13.0
-  checksum: e7d80a77491d58158cae962844ae3dea239528547461e26c5c8d51ba225c79f1415be45c51092efb03618c28fd3bb8186c6fae944d02abc0103317e7c81f12c8
+  checksum: 2f97aca32172b744a2b614749c3758684c7f263d7254a7a1dff48e47384dc0db20a94cbc477c38b45a243eed39443a8f11de3e2250c8ee08687d9fce667aa1b4
   languageName: node
   linkType: hard
 

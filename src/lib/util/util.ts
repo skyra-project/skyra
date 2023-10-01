@@ -86,7 +86,7 @@ export interface ImageAttachment {
  */
 export function getAttachment(message: Message): ImageAttachment | null {
 	if (message.attachments.size) {
-		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
+		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.name ?? att.url));
 		if (attachment) {
 			return {
 				url: attachment.url,

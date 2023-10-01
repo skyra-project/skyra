@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
-import { IMAGE_EXTENSION, getFullEmbedAuthor } from '#utils/util';
+import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { Listener, ListenerOptions } from '@sapphire/framework';
@@ -34,13 +34,14 @@ export class UserListener extends Listener {
 		]);
 		if (isNullish(logChannelId) || ignoredChannels.includes(message.channel.id)) return;
 
-		for (const image of this.getAttachments(message)) {
-			const dimensions = this.getDimensions(image.width, image.height);
+		for (const attachment of this.getAttachments(message)) {
+			const dimensions = this.getDimensions(attachment.width, attachment.height);
 
 			// Create a new image url with search params.
-			const url = new URL(image.proxyURL);
+			const url = new URL(attachment.proxyURL);
 			url.searchParams.append('width', dimensions.width.toString());
 			url.searchParams.append('height', dimensions.height.toString());
+			if (attachment.kind === 'video') url.searchParams.append('format', 'webp');
 
 			// Fetch the image.
 			const result = await fetch(url, FetchResultTypes.Result).catch((error) => {
@@ -82,9 +83,14 @@ export class UserListener extends Listener {
 
 	private *getAttachments(message: GuildMessage) {
 		for (const attachment of message.attachments.values()) {
-			if (!IMAGE_EXTENSION.test(attachment.url)) continue;
+			const type = attachment.contentType;
+			if (type === null) continue;
+
+			const [kind] = type.split('/', 1);
+			if (kind !== 'image' && kind !== 'video') continue;
 
 			yield {
+				kind: kind as 'image' | 'video',
 				url: attachment.url,
 				proxyURL: attachment.proxyURL,
 				height: attachment.height!,

@@ -2,6 +2,7 @@ import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
 import { Collection } from '@discordjs/collection';
 import type { DeepPartial } from '@sapphire/utilities';
+import type { APIAttachment } from 'discord-api-types/v9';
 import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 
@@ -204,31 +205,11 @@ describe('Utils', () => {
 			hm: 'b0227f7dce067d2f83880cd01f59a5856885af9204940f8c666dd81f257796c6'
 		}).toString();
 
-		function createAttachment(name: 'image.png' | 'text.txt'): MessageAttachment {
-			const Data =
-				name === 'image.png'
-					? {
-							id: '1111111111111111111',
-							filename: 'image.png',
-							content_type: 'image/png',
-							url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
-							proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
-							size: 2463,
-							width: 32,
-							height: 32
-					  }
-					: {
-							id: '1111111111111111111',
-							filename: 'text.txt',
-							content_type: 'text/plain; charset=utf-8',
-							url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
-							proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
-							size: 4
-					  };
-			return new MessageAttachment(Data.url, Data.filename, Data);
+		function createAttachment(data: APIAttachment): MessageAttachment {
+			return new MessageAttachment(data.url, data.filename, data);
 		}
 
-		function createAttachments(attachment: MessageAttachment | null) {
+		function createAttachments(attachment?: MessageAttachment | undefined) {
 			const collection = new Collection<string, MessageAttachment>();
 			if (attachment) collection.set(attachment.id, attachment);
 			return collection;
@@ -250,40 +231,44 @@ describe('Utils', () => {
 			return utils.getImage(message);
 		}
 
-		test('GIVEN message WITH image attachment THEN returns url', () => {
-			const attachment = createAttachment('image.png');
-			const message: DeepPartial<Message> = {
-				attachments: createAttachments(attachment),
-				embeds: []
-			};
+		describe.each`
+			embed          | description
+			${null}        | ${'no embeds'}
+			${'image'}     | ${'image embed'}
+			${'thumbnail'} | ${'thumbnail embed'}
+		`('GIVEN message WITH $description', ({ embed }: { embed: null | 'image' | 'thumbnail' }) => {
+			const AttachmentImage = createAttachment({
+				id: '1111111111111111111',
+				filename: 'image.png',
+				content_type: 'image/png',
+				url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
+				proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
+				size: 2463,
+				width: 32,
+				height: 32
+			} as const);
+			const AttachmentText = createAttachment({
+				id: '1111111111111111111',
+				filename: 'text.txt',
+				content_type: 'text/plain; charset=utf-8',
+				url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
+				proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
+				size: 4
+			} as const);
 
-			expect(getImage(message)).toEqual(attachment.proxyURL);
-		});
+			const embeds: MessageEmbed[] = embed === null ? [] : [createEmbed(embed)];
+			const ExpectedEmbedImageURL = embed === null ? null : embeds[0][embed]!.proxyURL;
+			const ExpectedReturn = embed === null ? 'null' : `embed ${embed} URL`;
+			test.each`
+				attachment         | returns             | expected                    | description
+				${undefined}       | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'no attachments'}
+				${AttachmentText}  | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'non-image attachment'}
+				${AttachmentImage} | ${'attachment URL'} | ${AttachmentImage.proxyURL} | ${'image attachment'}
+			`(`AND $description THEN returns $returns`, ({ attachment, expected }) => {
+				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds };
 
-		test.each([
-			{ attachment: null, description: 'no' },
-			{ attachment: createAttachment('text.txt'), description: 'non-image' }
-		])('GIVEN message WITH $description attachment AND image embed THEN returns embed image url', ({ attachment }) => {
-			const embed = createEmbed('image');
-			const message: DeepPartial<Message> = {
-				attachments: createAttachments(attachment),
-				embeds: [embed]
-			};
-
-			expect(getImage(message)).toEqual(embed.image!.proxyURL);
-		});
-
-		test.each([
-			{ attachment: null, description: 'no' },
-			{ attachment: createAttachment('text.txt'), description: 'non-image' }
-		])('GIVEN message WITH $description attachment AND thumbnail embed THEN returns embed thumbnail url', ({ attachment }) => {
-			const embed = createEmbed('thumbnail');
-			const message: DeepPartial<Message> = {
-				attachments: createAttachments(attachment),
-				embeds: [embed]
-			};
-
-			expect(getImage(message)).toEqual(embed.thumbnail!.proxyURL);
+				expect(getImage(message)).toEqual(expected);
+			});
 		});
 	});
 

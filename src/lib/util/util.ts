@@ -86,7 +86,7 @@ export interface ImageAttachment {
  */
 export function getAttachment(message: Message): ImageAttachment | null {
 	if (message.attachments.size) {
-		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
+		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.name ?? att.url));
 		if (attachment) {
 			return {
 				url: attachment.url,
@@ -98,20 +98,21 @@ export function getAttachment(message: Message): ImageAttachment | null {
 	}
 
 	for (const embed of message.embeds) {
-		if (embed.type === 'image') {
-			return {
-				url: embed.thumbnail!.url,
-				proxyURL: embed.thumbnail!.proxyURL!,
-				height: embed.thumbnail!.height!,
-				width: embed.thumbnail!.width!
-			};
-		}
 		if (embed.image) {
 			return {
 				url: embed.image.url,
 				proxyURL: embed.image.proxyURL!,
 				height: embed.image.height!,
 				width: embed.image.width!
+			};
+		}
+
+		if (embed.thumbnail) {
+			return {
+				url: embed.thumbnail.url,
+				proxyURL: embed.thumbnail.proxyURL!,
+				height: embed.thumbnail.height!,
+				width: embed.thumbnail.width!
 			};
 		}
 	}

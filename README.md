@@ -30,7 +30,7 @@ We use **Crowdin** to translate Skyra's messages into different languages. If yo
 
 ## A note to aspiring developers who want to self host Skyra
 
-The developer team does not support the idea of other self-hosted instances of Skyra. The team prides itself on providing the best experience and support for the end-users. As such, an offshoot or unaffiliated mirror of Skyra may cause ill effects to the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
+The developer team does not support the idea of other self-hosted instances of Skyra. The team prides itself on providing the best experience and support for the end-users. As such, an offshoot or unaffiliated mirror of Skyra may cause ill effects on the reputation and image of Skyra. If you wish to see new features implemented, please refer to the developing guidelines linked above.
 
 In addition, Skyra was built with a dependence on many services which need consistent maintenance and oversight in order to function and behave properly. These include, but are not limited to,
 
@@ -54,7 +54,7 @@ completely configurable, she also has a backstory, inherited from the lore I hav
 
 There have been over 14 rewrites with an active development of over two years, I have met many developers and friends in
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for
-Klasa. And later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire][sapphiredev],
+Klasa. Later in September 2020 I split from Dirigeants along with many of these developers and friends and started [Sapphire][sapphiredev],
 which is what Skyra is currently using, specifically [Sapphire Framework][]
 
 _Who knows, I might write a [book] someday for Skyra's lore._

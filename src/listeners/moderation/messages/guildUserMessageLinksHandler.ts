@@ -7,7 +7,7 @@ import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageListener.Options>({
@@ -52,7 +52,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.LinkFooter)}` })

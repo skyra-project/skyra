@@ -1,6 +1,6 @@
-import { GuildSettings, PermissionNodeAction, PermissionsNode, readSettings, writeSettings } from '#lib/database';
+import { GuildSettings, PermissionNodeAction, readSettings, writeSettings, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { resolveOnErrorCodes } from '#utils/common';
@@ -8,19 +8,19 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { RESTJSONErrorCodes } from 'discord-api-types/v10';
 import { GuildMember, Role } from 'discord.js';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['pnodes', 'pnode'],
 	permissionLevel: PermissionLevels.Administrator,
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	detailedDescription: LanguageKeys.Commands.Management.PermissionNodesExtended,
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }],
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 		const action = await args.pick(UserCommand.type);
 
@@ -42,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 		const action = await args.pick(UserCommand.type);
 		const command = await args.pick('commandMatch', { owners: false });
@@ -57,7 +57,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
@@ -70,12 +70,12 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const content = args.finished ? await this.showAll(message, args) : await this.showOne(message, args);
 		return send(message, { content, allowedMentions: { users: [], roles: [] } });
 	}
 
-	private async showOne(message: GuildMessage, args: SkyraCommand.Args) {
+	private async showOne(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
@@ -89,7 +89,7 @@ export class UserCommand extends SkyraCommand {
 		return this.formatPermissionNode(args, node, isRole, target);
 	}
 
-	private async showAll(message: GuildMessage, args: SkyraCommand.Args) {
+	private async showAll(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [users, roles] = await readSettings(message.guild, [GuildSettings.Permissions.Users, GuildSettings.Permissions.Roles]);
 		const [fUsers, fRoles] = await Promise.all([this.formatPermissionNodes(args, users, false), this.formatPermissionNodes(args, roles, true)]);
 		const total = fUsers.concat(fRoles);
@@ -98,7 +98,7 @@ export class UserCommand extends SkyraCommand {
 		return total.join('\n\n');
 	}
 
-	private async formatPermissionNodes(args: SkyraCommand.Args, nodes: readonly PermissionsNode[], isRole: boolean) {
+	private async formatPermissionNodes(args: SkyraSubcommand.Args, nodes: readonly PermissionsNode[], isRole: boolean) {
 		const output: string[] = [];
 		for (const node of nodes) {
 			const target = isRole
@@ -113,7 +113,7 @@ export class UserCommand extends SkyraCommand {
 		return output;
 	}
 
-	private formatPermissionNode(args: SkyraCommand.Args, node: PermissionsNode, isRole: boolean, target: Role | GuildMember) {
+	private formatPermissionNode(args: SkyraSubcommand.Args, node: PermissionsNode, isRole: boolean, target: Role | GuildMember) {
 		return [
 			args.t(LanguageKeys.Commands.Management.PermissionNodesShowName, { name: this.formatTarget(isRole, target) }),
 			args.t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, { allow: this.formatCommands(args, node.allow) }),
@@ -125,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 		return isRole ? (target as Role).name : (target as GuildMember).displayName;
 	}
 
-	private formatCommands(args: SkyraCommand.Args, commands: readonly string[]) {
+	private formatCommands(args: SkyraSubcommand.Args, commands: readonly string[]) {
 		return commands.length === 0
 			? args.t(LanguageKeys.Globals.None)
 			: args.t(LanguageKeys.Globals.AndListValue, { value: commands.map((command) => `\`${command}\``) });

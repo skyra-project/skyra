@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V44AddAutoDeleteIgnoreOptions1617272351741 implements MigrationInterface {
 	private readonly names = [

@@ -6,7 +6,7 @@ import {
 	serializedStaticSkyra,
 	staticSkyra
 } from '#mocks/constants';
-import { EmojiObject, getEmojiObject } from '#utils/functions';
+import { getEmojiObject, type EmojiObject } from '#utils/functions';
 
 describe('getEmojiObject', () => {
 	test(`GIVEN decoded twemoji THEN returns emoji as name; id as null`, () => {

@@ -1,2 +1,2 @@
-export * from './managers';
-export * from './structures';
+export * from '#lib/moderation/managers/index';
+export * from '#lib/moderation/structures/index';

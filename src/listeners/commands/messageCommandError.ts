@@ -1,23 +1,25 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
-import type { SkyraCommand } from '#lib/structures';
+import type { SkyraArgs } from '#lib/structures';
 import { OWNERS } from '#root/config';
-import { Colors, rootFolder, ZeroWidthSpace } from '#utils/constants';
+import { Colors, ZeroWidthSpace, rootFolder } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
-import { Args, ArgumentError, Command, CommandErrorPayload, Events, Listener, UserError } from '@sapphire/framework';
-import { codeBlock, cutText, NonNullObject } from '@sapphire/utilities';
-import { captureException } from '@sentry/hub';
+import { Args, ArgumentError, Command, Events, Listener, UserError, type MessageCommandErrorPayload } from '@sapphire/framework';
+import { codeBlock, cutText, type NonNullObject } from '@sapphire/utilities';
+import { captureException } from '@sentry/core';
 import { envIsDefined } from '@skyra/env-utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
-import { DiscordAPIError, HTTPError, Message, MessageEmbed } from 'discord.js';
+import { RESTJSONErrorCodes, Routes } from 'discord-api-types/v10';
+import { DiscordAPIError, EmbedBuilder, HTTPError, Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 
-export class UserListener extends Listener<typeof Events.CommandError> {
+export class UserListener extends Listener<typeof Events.MessageCommandError> {
 	private readonly sentry = envIsDefined('SENTRY_URL');
 
-	public async run(error: Error, { message, piece, parameters, args }: CommandErrorPayload) {
+	public async run(error: Error, { message, command, parameters, args: unknownArgs }: MessageCommandErrorPayload) {
+		const args = unknownArgs as SkyraArgs;
+
 		// If the error was a string or an UserError, send it to the user:
 		if (typeof error === 'string') return this.stringError(message, args.t, error);
 		if (error instanceof ArgumentError) return this.argumentError(message, args.t, error);
@@ -31,7 +33,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		}
 
 		// Extract useful information about the DiscordAPIError
-		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
+		if (error instanceof DiscordAPIError) {
 			if (this.isSilencedError(args, error)) return;
 			client.emit(Events.Error, error);
 		} else {
@@ -39,7 +41,6 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		}
 
 		// Send a detailed message:
-		const command = piece as SkyraCommand;
 		await this.sendErrorChannel(message, command, parameters, error);
 
 		// Emit where the error was emitted
@@ -53,16 +54,16 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		return undefined;
 	}
 
-	private isSilencedError(args: Args, error: DiscordAPIError | HTTPError) {
+	private isSilencedError(args: Args, error: DiscordAPIError) {
 		return (
 			// If it's an unknown channel or an unknown message, ignore:
-			ignoredCodes.includes(error.code) ||
+			ignoredCodes.includes(error.code as number) ||
 			// If it's a DM message reply after a block, ignore:
 			this.isDirectMessageReplyAfterBlock(args, error)
 		);
 	}
 
-	private isDirectMessageReplyAfterBlock(args: Args, error: DiscordAPIError | HTTPError) {
+	private isDirectMessageReplyAfterBlock(args: Args, error: DiscordAPIError) {
 		// When sending a message to a user who has blocked the bot, Discord replies with 50007 "Cannot send messages to this user":
 		if (error.code !== RESTJSONErrorCodes.CannotSendMessagesToThisUser) return false;
 
@@ -70,7 +71,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		if (args.message.guild !== null) return false;
 
 		// If the query was made to the message's channel, then it was a DM response:
-		return error.path === `/channels/${args.message.channel.id}/messages`;
+		return error.url === Routes.channelMessages(args.message.channel.id);
 	}
 
 	private generateUnexpectedErrorMessage(args: Args, error: Error) {
@@ -103,7 +104,8 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 		if (Reflect.get(Object(error.context), 'silent')) return;
 
 		const identifier = translate(error.identifier);
-		return this.alert(message, t(identifier, error.context as any));
+		const content = t(identifier, error.context as any) as string;
+		return this.alert(message, content);
 	}
 
 	private alert(message: Message, content: string) {
@@ -121,7 +123,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 			lines.splice(2, 0, this.getPathLine(error), this.getCodeLine(error));
 		}
 
-		const embed = new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp();
+		const embed = new EmbedBuilder().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp();
 		try {
 			await webhook.send({ embeds: [embed] });
 		} catch (err) {
@@ -150,7 +152,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 	 * @param error The error to format.
 	 */
 	private getPathLine(error: DiscordAPIError | HTTPError): string {
-		return `**Path**: ${error.method.toUpperCase()} ${error.path}`;
+		return `**Path**: ${error.method.toUpperCase()} ${error.url}`;
 	}
 
 	/**
@@ -158,7 +160,7 @@ export class UserListener extends Listener<typeof Events.CommandError> {
 	 * @param error The error to format.
 	 */
 	private getCodeLine(error: DiscordAPIError | HTTPError): string {
-		return `**Code**: ${error.code}`;
+		return `**Code**: ${'code' in error ? error.code : error.status}`;
 	}
 
 	/**

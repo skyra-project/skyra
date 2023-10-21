@@ -55,7 +55,7 @@ const row = makeRow(ButtonInviteArtiel, ButtonSkyraV7);
 	hidden: true
 })
 export class UserCommand extends SkyraCommand {
-	public messageRun(message: Message, args: SkyraCommand.Args) {
+	public override messageRun(message: Message, args: SkyraCommand.Args) {
 		return send(message, makeReplacedMessage(args.commandContext.commandName, row, list));
 	}
 }

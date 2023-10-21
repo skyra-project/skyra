@@ -1,16 +1,16 @@
 import { Tags } from '#lib/types/AnalyticsSchema';
 import type { Point } from '@influxdata/influxdb-client';
-import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { envParseBoolean } from '@skyra/env-utilities';
 
 export abstract class AnalyticsListener extends Listener {
 	public tags: [Tags, string][] = [];
 
-	public constructor(context: PieceContext, options?: AnalyticsListener.Options) {
+	public constructor(context: Listener.Context, options?: AnalyticsListener.Options) {
 		super(context, { ...options, enabled: envParseBoolean('INFLUX_ENABLED') });
 	}
 
-	public onLoad() {
+	public override onLoad() {
 		this.initTags();
 		return super.onLoad();
 	}
@@ -32,10 +32,10 @@ export abstract class AnalyticsListener extends Listener {
 	}
 
 	protected initTags() {
-		this.tags.push([Tags.Client, process.env.CLIENT_ID], [Tags.OriginEvent, this.event]);
+		this.tags.push([Tags.Client, process.env.CLIENT_ID], [Tags.OriginEvent, this.event as string]);
 	}
 }
 
 export namespace AnalyticsListener {
-	export type Options = Omit<ListenerOptions, 'enabled'>;
+	export type Options = Omit<Listener.Options, 'enabled'>;
 }

@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationData, ModerationTask } from '#lib/moderation';
+import { ModerationTask, type ModerationData } from '#lib/moderation';
 import { getSecurity } from '#utils/functions';
 import { fetchT } from '@sapphire/plugin-i18next';
 import type { Guild } from 'discord.js';

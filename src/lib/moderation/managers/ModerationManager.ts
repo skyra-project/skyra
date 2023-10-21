@@ -1,13 +1,13 @@
 import { ModerationEntity } from '#lib/database/entities';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
-import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
+import { createReferPromise, floatPromise, seconds, type ReferredPromise } from '#utils/common';
 import { cast } from '#utils/util';
 import { Collection, type CollectionConstructor } from '@discordjs/collection';
 import { AsyncQueue } from '@sapphire/async-queue';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
-import { isNullish, StrictRequired } from '@sapphire/utilities';
+import { isNullish, type StrictRequired } from '@sapphire/utilities';
 import { DiscordAPIError, Guild } from 'discord.js';
 import { In } from 'typeorm';
 

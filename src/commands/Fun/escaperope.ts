@@ -5,7 +5,7 @@ import { deleteMessage } from '#utils/functions';
 import { getColor, getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Message, MessageEmbed } from 'discord.js';
+import { EmbedBuilder, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['escape'],
@@ -13,10 +13,10 @@ import { Message, MessageEmbed } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.Fun.EscapeRopeExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		if (message.deletable) await deleteMessage(message).catch(() => null);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setImage(CdnUrls.EscapeRopeGif)
 			.setDescription(args.t(LanguageKeys.Commands.Fun.EscapeRopeOutput, { user: message.author.toString() }))

@@ -1,6 +1,6 @@
 import { LockdownManager } from '#lib/structures';
+import { ModerationActions } from '#lib/util/Security/ModerationActions';
 import type { Guild } from 'discord.js';
-import { ModerationActions } from './ModerationActions';
 
 /**
  * @version 3.0.0

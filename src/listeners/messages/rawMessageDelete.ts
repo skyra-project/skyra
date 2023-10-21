@@ -1,9 +1,9 @@
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
-import { GatewayDispatchEvents, GatewayMessageDeleteDispatch } from 'discord-api-types/v9';
+import { Listener } from '@sapphire/framework';
+import { GatewayDispatchEvents, type GatewayMessageDeleteDispatch } from 'discord-api-types/v10';
 
-@ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.MessageDelete, emitter: 'ws' })
+@ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageDelete, emitter: 'ws' })
 export class UserListener extends Listener {
 	public run(data: GatewayMessageDeleteDispatch['d']): void {
 		if (!data.guild_id) return;

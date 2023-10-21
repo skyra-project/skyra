@@ -2,7 +2,7 @@ import type { GuildMessage } from '#lib/types';
 import { client } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
 import { container } from '@sapphire/framework';
-import { APIMessage, EmbedType } from 'discord-api-types/v9';
+import { type APIMessage, EmbedType, MessageFlags } from 'discord-api-types/v10';
 import { Message } from 'discord.js';
 
 describe('formatters', () => {
@@ -21,7 +21,8 @@ describe('formatters', () => {
 					avatar: '51227d2976cc66b9c1add6b911eda5e9',
 					discriminator: '7023',
 					public_flags: 65536,
-					bot: true
+					bot: true,
+					global_name: null
 				},
 				attachments: [],
 				embeds: [],
@@ -32,7 +33,7 @@ describe('formatters', () => {
 				tts: false,
 				timestamp: '2021-03-26T22:29:51.675000+00:00',
 				edited_timestamp: '2021-03-26T22:29:56.581000+00:00',
-				flags: 0
+				flags: MessageFlags.Ephemeral
 			};
 
 			return Reflect.construct(Message, [client, { ...messageData, ...data }]) as GuildMessage;
@@ -260,7 +261,7 @@ describe('formatters', () => {
 			expect(formatMessage(t(), message)).toBe(
 				join(
 					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
-					'🖼️ [https://media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif]'
+					'> 📎 https://media.discordapp.net/attachments/758186338217492503/825157377090912296/birdflip2.gif'
 				)
 			);
 		});
@@ -302,7 +303,7 @@ describe('formatters', () => {
 			expect(formatMessage(t(), message)).toBe(
 				join(
 					'[3/26/21, 10:29:51 PM] Skyra#7023 [BOT]', //
-					'📹 [https://www.youtube.com/watch?v=5dqixBi8TPU] (YouTube).'
+					'🔖 [https://www.youtube.com/watch?v=5dqixBi8TPU] (YouTube).'
 				)
 			);
 		});

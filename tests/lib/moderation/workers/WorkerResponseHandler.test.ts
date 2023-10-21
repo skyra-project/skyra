@@ -18,8 +18,8 @@ describe('WorkerHandler', () => {
 		const promise = handler.define(id);
 		expect(handler['handler']).not.toBeNull();
 
-		const resolve = jest.spyOn(handler['handler']!, 'resolve');
-		const reject = jest.spyOn(handler['handler']!, 'reject');
+		const resolve = vi.spyOn(handler['handler']!, 'resolve');
+		const reject = vi.spyOn(handler['handler']!, 'reject');
 
 		handler.resolve(id, data);
 		expect(resolve).toBeCalledTimes(1);
@@ -37,8 +37,8 @@ describe('WorkerHandler', () => {
 		const promise = handler.define(id);
 		expect(handler['handler']).not.toBeNull();
 
-		const resolve = jest.spyOn(handler['handler']!, 'resolve');
-		const reject = jest.spyOn(handler['handler']!, 'reject');
+		const resolve = vi.spyOn(handler['handler']!, 'resolve');
+		const reject = vi.spyOn(handler['handler']!, 'reject');
 
 		handler.resolve(id + 1, data);
 		expect(resolve).not.toBeCalled();
@@ -60,8 +60,8 @@ describe('WorkerHandler', () => {
 		const promise = handler.define(id);
 		expect(handler['handler']).not.toBeNull();
 
-		const resolve = jest.spyOn(handler['handler']!, 'resolve');
-		const reject = jest.spyOn(handler['handler']!, 'reject');
+		const resolve = vi.spyOn(handler['handler']!, 'resolve');
+		const reject = vi.spyOn(handler['handler']!, 'reject');
 
 		handler.reject(id, error);
 		expect(resolve).not.toBeCalled();
@@ -79,8 +79,8 @@ describe('WorkerHandler', () => {
 		const promise = handler.define(id);
 		expect(handler['handler']).not.toBeNull();
 
-		const resolve = jest.spyOn(handler['handler']!, 'resolve');
-		const reject = jest.spyOn(handler['handler']!, 'reject');
+		const resolve = vi.spyOn(handler['handler']!, 'resolve');
+		const reject = vi.spyOn(handler['handler']!, 'reject');
 
 		handler.reject(id + 1, error);
 		expect(resolve).not.toBeCalled();
@@ -96,7 +96,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN 5ms timeout WHEN there is no timeout and no pending task THEN returns false and does not clear timeout', () => {
 		const handler = new WorkerResponseHandler();
 
-		const clearTimeout = jest.spyOn(handler, 'clearTimeout' as any);
+		const clearTimeout = vi.spyOn(handler, 'clearTimeout' as any);
 
 		expect(handler.timeout(5)).toBe(false);
 		expect(handler['timer']).toBeNull();
@@ -106,7 +106,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN timeout WHEN there is no timeout but has a pending task THEN returns true and does clear timeout', async () => {
 		const handler = new WorkerResponseHandler();
 
-		const clearTimeout = jest.spyOn(handler, 'clearTimeout' as any);
+		const clearTimeout = vi.spyOn(handler, 'clearTimeout' as any);
 
 		const id = 1;
 		const promise = handler.define(id);
@@ -128,7 +128,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN timeout WHEN there was a timeout and a pending task THEN returns true and does clear timeout', async () => {
 		const handler = new WorkerResponseHandler();
 
-		const clearTimeout = jest.spyOn(handler, 'clearTimeout' as any);
+		const clearTimeout = vi.spyOn(handler, 'clearTimeout' as any);
 
 		const id = 1;
 		const promise = handler.define(id);
@@ -149,7 +149,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN no timeout WHEN there was no pending task nor timeout THEN returns false', () => {
 		const handler = new WorkerResponseHandler();
 
-		const clearTimeout = jest.spyOn(handler, 'clearTimeout' as any);
+		const clearTimeout = vi.spyOn(handler, 'clearTimeout' as any);
 
 		expect(handler.timeout(null)).toBe(false);
 		expect(handler['timer']).toBeNull();

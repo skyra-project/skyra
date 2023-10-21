@@ -1,4 +1,4 @@
-import { GuildSettings, PartialResponseValue, readSettings, ResponseType, Task } from '#lib/database';
+import { GuildSettings, type PartialResponseValue, readSettings, ResponseType, Task } from '#lib/database';
 import type { SchemaKeys } from '#utils/moderationConstants';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import type { Guild, User } from 'discord.js';

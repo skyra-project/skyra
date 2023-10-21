@@ -10,7 +10,8 @@ import { getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Permissions, User } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
@@ -19,7 +20,7 @@ import { Permissions, User } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cancel = await args.pick(UserCommand.cancel).catch(() => false);
 		const caseId = await args.pick('case');
 
@@ -112,7 +113,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkBan(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.BanMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
 		}
 
@@ -122,7 +123,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
@@ -132,7 +133,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkVMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.MuteMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
 		}
 

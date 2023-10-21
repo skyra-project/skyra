@@ -1,8 +1,8 @@
+import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { DecoratorIdentifiers } from '@sapphire/decorators';
 import { Identifiers } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { LanguageKeys } from './languageKeys';
 
 export function translate(identifier: string): string {
 	switch (identifier) {

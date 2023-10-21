@@ -6,7 +6,7 @@ import { getTag, random } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Message, MessageEmbed } from 'discord.js';
+import { EmbedBuilder, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.PopDescription,
@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 		return this.container.stores.get('arguments').get('integer') as Argument<number>;
 	}
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const time = args.finished ? seconds(30) : await args.pick('timespan', { minimum: seconds(10), maximum: minutes(2) });
 		const [width, height, length] = await Promise.all([
 			this.parseOption(args, ['x', 'width'], 8, 1, 10),
@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		const solution = this.generateSolution(length);
 
 		const board = [...this.generateBoard(width, height, pop, solution)].join('\n');
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Indigo)
 			.setTitle(args.t(LanguageKeys.Commands.Fun.PopTitle))
 			.setDescription(board)
@@ -112,7 +112,6 @@ export class UserCommand extends SkyraCommand {
 			minimum,
 			maximum
 		});
-		if (result.success) return result.value;
-		throw result.error;
+		return result.unwrapRaw();
 	}
 }

@@ -2,8 +2,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/rest/v9';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { RESTJSONErrorCodes } from 'discord-api-types/rest/v10';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -13,7 +13,7 @@ import { DiscordAPIError, Message } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		if (args.finished) this.error(LanguageKeys.Commands.Tools.VoteContentNeeded);
 
 		for (const reaction of ['👍', '👎', '🤷']) {

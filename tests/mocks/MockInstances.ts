@@ -3,26 +3,34 @@ import { SkyraCommand } from '#lib/structures';
 import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import {
-	APIChannel,
-	APIGuild,
-	APIGuildMember,
-	APIRole,
-	APIUser,
 	ChannelType,
 	GuildFeature,
+	GuildMemberFlags,
 	GuildNSFWLevel,
-	GuildSystemChannelFlags
-} from 'discord-api-types/v9';
-import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
+	GuildSystemChannelFlags,
+	RoleFlags,
+	type APIChannel,
+	type APIGuild,
+	type APIGuildMember,
+	type APIRole,
+	type APIUser,
+	type APIEmbed
+} from 'discord-api-types/v10';
+import { Embed, Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
 import { resolve } from 'node:path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
+
+export function createEmbed(data: APIEmbed) {
+	return Reflect.construct(Embed, [data]);
+}
 
 export const userData: APIUser = {
 	id: '266624760782258186',
 	username: 'Skyra',
 	discriminator: '7023',
-	avatar: '09b52e547fa797c47c7877cd10eb6ba8'
+	avatar: '09b52e547fa797c47c7877cd10eb6ba8',
+	global_name: null
 };
 
 export function createUser(data: Partial<APIUser> = {}) {
@@ -36,7 +44,8 @@ export const guildMemberData: APIGuildMember = {
 	nick: null,
 	roles: [],
 	premium_since: null,
-	joined_at: '2019-02-03T21:57:10.354Z'
+	joined_at: '2019-02-03T21:57:10.354Z',
+	flags: GuildMemberFlags.DidRejoin
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
@@ -55,7 +64,8 @@ export const roleData: APIRole = {
 	position: 0,
 	permissions: '104189505',
 	managed: false,
-	mentionable: false
+	mentionable: false,
+	flags: RoleFlags.InPrompt
 };
 
 export function createRole(data: Partial<APIRole> = {}, g: Guild = guild) {
@@ -80,7 +90,7 @@ export const guildData: APIGuild = {
 	features: [
 		GuildFeature.News,
 		GuildFeature.AnimatedIcon,
-		GuildFeature.Commerce,
+		GuildFeature.Discoverable,
 		GuildFeature.WelcomeScreenEnabled,
 		GuildFeature.InviteSplash,
 		GuildFeature.Community
@@ -102,6 +112,7 @@ export const guildData: APIGuild = {
 	splash: null,
 	hub_type: null,
 	stickers: [],
+	safety_alerts_channel_id: null,
 	system_channel_flags: GuildSystemChannelFlags.SuppressJoinNotifications,
 	system_channel_id: '254360814063058944',
 	vanity_url_code: null,
@@ -133,7 +144,7 @@ export const textChannelData: APIChannel = {
 };
 
 export function createTextChannel(data: Partial<APIChannel> = {}, g: Guild = guild) {
-	const c = Reflect.construct(TextChannel, [guild, { ...textChannelData, ...data }]) as TextChannel;
+	const c = Reflect.construct(TextChannel, [guild, { ...textChannelData, ...data }, client]) as TextChannel;
 	g.channels.cache.set(c.id, c);
 	g.client.channels.cache.set(c.id, c);
 	return c;
@@ -147,7 +158,11 @@ function addCommand(command: SkyraCommand) {
 	for (const alias of command.aliases) commands.aliases.set(alias, command);
 }
 
-class Command extends SkyraCommand {}
+class Command extends SkyraCommand {
+	public override messageRun(): unknown {
+		throw new Error('Method not implemented.');
+	}
+}
 addCommand(
 	new Command(
 		{

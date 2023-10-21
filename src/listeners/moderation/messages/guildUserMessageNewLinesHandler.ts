@@ -6,7 +6,7 @@ import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent, getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const NEW_LINE = '\n';
@@ -47,7 +47,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))

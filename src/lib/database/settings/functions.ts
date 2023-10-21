@@ -1,7 +1,7 @@
+import type { GuildEntity } from '#lib/database/entities/GuildEntity';
+import type { SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
 import { container } from '@sapphire/framework';
 import type { GuildResolvable } from 'discord.js';
-import type { GuildEntity } from '../entities/GuildEntity';
-import type { SettingsCollectionCallback } from './base/SettingsCollection';
 
 type K = keyof V;
 type V = GuildEntity;

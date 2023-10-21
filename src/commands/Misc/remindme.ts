@@ -8,8 +8,8 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder, Message } from 'discord.js';
 
 const enum Actions {
 	List = 'list',
@@ -33,7 +33,7 @@ const row = makeRow(ButtonInviteTeryl, ButtonSkyraV7);
 	detailedDescription: LanguageKeys.Commands.Misc.RemindMeExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const action = args.finished ? Actions.List : await args.pick(UserCommand.action).catch(() => Actions.Create);
 		return this[action](message, args);
 	}
@@ -53,7 +53,7 @@ export class UserCommand extends SkyraCommand {
 		}
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new SkyraPaginatedMessage({ template: new MessageEmbed().setColor(getColor(message)) });
+		const display = new SkyraPaginatedMessage({ template: new EmbedBuilder().setColor(getColor(message)) });
 		const pages = chunk(
 			tasks.map(
 				(task) =>
@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: Message, args: SkyraCommand.Args) {
 		const task = await args.pick(UserCommand.task);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setDescription(task.data.content)

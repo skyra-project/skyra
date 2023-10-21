@@ -1,9 +1,9 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
+		"rootDir": ".",
 		"noEmit": true,
-		"incremental": false,
-		"baseUrl": ".",
+		"types": ["vitest/globals"],
 		"paths": {
 			"#utils/*": ["../src/lib/util/*"],
 			"#lib/*": ["../src/lib/*"],
@@ -12,7 +12,10 @@
 			"#root/*": ["../src/*"]
 		}
 	},
-	"include": [".", "../src/**/*"],
-	"exclude": ["../dist/**/*"],
-	"references": [{ "path": "../src" }]
+	"include": [".", "../src"],
+	"references": [{ "path": "../src" }],
+	"ts-node": {
+		"esm": true,
+		"typeCheck": false
+	}
 }

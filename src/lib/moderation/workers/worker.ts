@@ -1,8 +1,12 @@
+import type { IncomingPayload, IncomingRunRegExpPayload, OutgoingPayload } from '#lib/moderation/workers/types';
 import { remove as removeConfusables } from 'confusables';
 import { isMainThread, parentPort } from 'node:worker_threads';
-import { IncomingPayload, IncomingRunRegExpPayload, IncomingType, OutgoingPayload, OutgoingType } from './types';
 
 if (isMainThread || parentPort === null) throw new Error('The Worker may only be ran via the worker_threads fork method!');
+
+const { IncomingType, OutgoingType } = (await import(
+	process.env.NODE_ENV === 'test' ? './types.ts' : '#lib/moderation/workers/types'
+)) as typeof import('./types.js');
 
 function post(message: OutgoingPayload) {
 	return parentPort!.postMessage(message);

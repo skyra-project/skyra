@@ -2,12 +2,12 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { GuildEmoji, MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, GuildEmoji, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildEmojiCreate })
+@ApplyOptions<Listener.Options>({ event: Events.GuildEmojiCreate })
 export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 	public async run(next: GuildEmoji) {
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
@@ -23,10 +23,10 @@ export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 		}
 
 		const changes: string[] = [...this.getEmojiInformation(t, next)];
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)
 			.setThumbnail(next.url)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiCreate) })
 			.setTimestamp();

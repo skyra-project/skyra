@@ -1,4 +1,4 @@
-import type { GuildEntity, ModerationEntity } from '#lib/database/entities';
+import type { GuildSettingsOfType, ModerationEntity } from '#lib/database/entities';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
@@ -11,20 +11,20 @@ import { getFullEmbedAuthor } from '#utils/util';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
-import { Nullish, PickByValue, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { isNullish, isNullishOrEmpty, isNullishOrZero, type Nullish } from '@sapphire/utilities';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
 import {
 	DiscordAPIError,
+	EmbedBuilder,
 	Guild,
 	GuildChannel,
 	GuildMember,
 	Message,
-	MessageEmbed,
-	PermissionOverwriteOptions,
-	Permissions,
+	PermissionsBitField,
 	Role,
-	RoleData,
-	User
+	User,
+	type PermissionOverwriteOptions,
+	type RoleData
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -114,25 +114,22 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Muted,
 		{
 			category: {
-				options: {
-					SEND_MESSAGES: false,
-					ADD_REACTIONS: false,
-					CONNECT: false
-				},
-				permissions: new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS', 'CONNECT'])
+				options: { SendMessages: false, AddReactions: false, Connect: false, CreatePublicThreads: false, CreatePrivateThreads: false },
+				permissions: new PermissionsBitField(
+					PermissionFlagsBits.SendMessages |
+						PermissionFlagsBits.AddReactions |
+						PermissionFlagsBits.Connect |
+						PermissionFlagsBits.CreatePublicThreads |
+						PermissionFlagsBits.CreatePrivateThreads
+				)
 			},
 			text: {
-				options: {
-					SEND_MESSAGES: false,
-					ADD_REACTIONS: false
-				},
-				permissions: new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS'])
+				options: { SendMessages: false, AddReactions: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.SendMessages | PermissionFlagsBits.AddReactions)
 			},
 			voice: {
-				options: {
-					CONNECT: false
-				},
-				permissions: new Permissions(['CONNECT'])
+				options: { Connect: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
 			}
 		}
 	],
@@ -140,16 +137,12 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Attachment,
 		{
 			category: {
-				options: {
-					ATTACH_FILES: false
-				},
-				permissions: new Permissions(['ATTACH_FILES'])
+				options: { AttachFiles: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.AttachFiles)
 			},
 			text: {
-				options: {
-					ATTACH_FILES: false
-				},
-				permissions: new Permissions(['ATTACH_FILES'])
+				options: { AttachFiles: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.AttachFiles)
 			},
 			voice: null
 		}
@@ -158,16 +151,12 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Embed,
 		{
 			category: {
-				options: {
-					EMBED_LINKS: false
-				},
-				permissions: new Permissions(['EMBED_LINKS'])
+				options: { EmbedLinks: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.EmbedLinks)
 			},
 			text: {
-				options: {
-					EMBED_LINKS: false
-				},
-				permissions: new Permissions(['EMBED_LINKS'])
+				options: { EmbedLinks: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.EmbedLinks)
 			},
 			voice: null
 		}
@@ -176,16 +165,12 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Emoji,
 		{
 			category: {
-				options: {
-					USE_EXTERNAL_EMOJIS: false
-				},
-				permissions: new Permissions(['USE_EXTERNAL_EMOJIS'])
+				options: { UseExternalEmojis: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.UseExternalEmojis)
 			},
 			text: {
-				options: {
-					USE_EXTERNAL_EMOJIS: false
-				},
-				permissions: new Permissions(['USE_EXTERNAL_EMOJIS'])
+				options: { UseExternalEmojis: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.UseExternalEmojis)
 			},
 			voice: null
 		}
@@ -194,16 +179,12 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Reaction,
 		{
 			category: {
-				options: {
-					ADD_REACTIONS: false
-				},
-				permissions: new Permissions(['ADD_REACTIONS'])
+				options: { AddReactions: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.AddReactions)
 			},
 			text: {
-				options: {
-					ADD_REACTIONS: false
-				},
-				permissions: new Permissions(['ADD_REACTIONS'])
+				options: { AddReactions: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.AddReactions)
 			},
 			voice: null
 		}
@@ -212,17 +193,13 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		RoleDataKey.Voice,
 		{
 			category: {
-				options: {
-					CONNECT: false
-				},
-				permissions: new Permissions(['CONNECT'])
+				options: { Connect: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
 			},
 			text: null,
 			voice: {
-				options: {
-					CONNECT: false
-				},
-				permissions: new Permissions(['CONNECT'])
+				options: { Connect: false },
+				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
 			}
 		}
 	]
@@ -279,26 +256,20 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, TypeCodes.SetNickname);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.members(rawOptions.userId)
-			.patch({
-				data: { nick: nickname },
-				reason: moderationLog.reason
-					? await resolveKey(
-							this.guild,
-							nickname
-								? LanguageKeys.Commands.Moderation.ActionSetNicknameSet
-								: LanguageKeys.Commands.Moderation.ActionSetNicknameRemoved,
-							{ reason: moderationLog.reason }
-					  )
-					: await resolveKey(
-							this.guild,
-							nickname
-								? LanguageKeys.Commands.Moderation.ActionSetNicknameNoReasonSet
-								: LanguageKeys.Commands.Moderation.ActionSetNicknameNoReasonRemoved
-					  )
-			});
+
+		const reason = await (moderationLog.reason
+			? resolveKey(
+					this.guild,
+					nickname ? LanguageKeys.Commands.Moderation.ActionSetNicknameSet : LanguageKeys.Commands.Moderation.ActionSetNicknameRemoved,
+					{ reason: moderationLog.reason }
+			  )
+			: resolveKey(
+					this.guild,
+					nickname
+						? LanguageKeys.Commands.Moderation.ActionSetNicknameNoReasonSet
+						: LanguageKeys.Commands.Moderation.ActionSetNicknameNoReasonRemoved
+			  ));
+		await api().guilds.editMember(this.guild.id, rawOptions.userId, { nick: nickname }, { reason });
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.SetNickname);
 		return (await moderationLog.create())!;
@@ -308,10 +279,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnSetNickname);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.members(rawOptions.userId)
-			.patch({ data: { nick: nickname }, reason: rawOptions.reason });
+		await api().guilds.editMember(this.guild.id, rawOptions.userId, { nick: nickname }, { reason: rawOptions.reason ?? undefined });
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.SetNickname);
 		return (await moderationLog.create())!;
@@ -321,13 +289,9 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeCodes.AddRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.members(rawOptions.userId)
-			.roles(role.id)
-			.put({
-				reason: await this.getReason('addRole', moderationLog.reason)
-			});
+		await api().guilds.addRoleToMember(this.guild.id, rawOptions.userId, role.id, {
+			reason: await this.getReason('addRole', moderationLog.reason)
+		});
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.AddRole, (log) => (log.extraData as { role?: string })?.role === role.id);
 		return (await moderationLog.create())!;
@@ -337,7 +301,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnAddRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api().guilds(this.guild.id).members(rawOptions.userId).roles(role.id).delete({ reason: rawOptions.reason! });
+		await api().guilds.removeRoleFromMember(this.guild.id, rawOptions.userId, role.id, { reason: rawOptions.reason! });
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.AddRole, (log) => (log.extraData as { role?: string })?.role === role.id);
 		return (await moderationLog.create())!;
@@ -347,11 +311,9 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeCodes.RemoveRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.members(rawOptions.userId)
-			.roles(role.id)
-			.delete({ reason: await this.getReason('removeRole', moderationLog.reason) });
+		await api().guilds.removeRoleFromMember(this.guild.id, rawOptions.userId, role.id, {
+			reason: await this.getReason('removeRole', moderationLog.reason)
+		});
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RemoveRole, (log) => (log.extraData as { role?: string })?.role === role.id);
 		return (await moderationLog.create())!;
@@ -361,7 +323,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRemoveRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api().guilds(this.guild.id).members(rawOptions.userId).roles(role.id).put({ reason: rawOptions.reason });
+		await api().guilds.addRoleToMember(this.guild.id, rawOptions.userId, role.id, { reason: rawOptions.reason ?? undefined });
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RemoveRole, (log) => (log.extraData as { role?: string })?.role === role.id);
 		return (await moderationLog.create())!;
@@ -387,7 +349,7 @@ export class ModerationActions {
 		}
 
 		// If Skyra does not have permissions to manage permissions, abort.
-		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+		if (!(await this.fetchMe()).permissions.has(PermissionFlagsBits.ManageRoles)) {
 			throw await resolveKey(this.guild, LanguageKeys.Commands.Moderation.MuteCannotManageRoles);
 		}
 
@@ -402,12 +364,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Kick);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.members(options.userId)
-			.delete({
-				reason: await this.getReason('kick', moderationLog.reason)
-			});
+		await api().guilds.removeMember(this.guild.id, options.userId, { reason: await this.getReason('kick', moderationLog.reason) });
 		return (await moderationLog.create())!;
 	}
 
@@ -417,25 +374,21 @@ export class ModerationActions {
 		await this.sendDM(moderationLog, sendOptions);
 
 		const t = await fetchT(this.guild);
-		await api()
-			.guilds(this.guild.id)
-			.bans(options.userId)
-			.put({
-				data: {
-					delete_message_seconds: seconds ?? 0
-				},
+		await api().guilds.banUser(
+			this.guild.id,
+			options.userId,
+			{ delete_message_seconds: seconds ?? 0 },
+			{
 				reason: moderationLog.reason
 					? t(LanguageKeys.Commands.Moderation.ActionSoftBanReason, { reason: moderationLog.reason! })
 					: t(LanguageKeys.Commands.Moderation.ActionSoftBanNoReason)
-			});
-		await api()
-			.guilds(this.guild.id)
-			.bans(options.userId)
-			.delete({
-				reason: moderationLog.reason
-					? t(LanguageKeys.Commands.Moderation.ActionUnSoftBanReason, { reason: moderationLog.reason! })
-					: t(LanguageKeys.Commands.Moderation.ActionUnSoftBanNoReason)
-			});
+			}
+		);
+		await api().guilds.unbanUser(this.guild.id, options.userId, {
+			reason: moderationLog.reason
+				? t(LanguageKeys.Commands.Moderation.ActionUnSoftBanReason, { reason: moderationLog.reason! })
+				: t(LanguageKeys.Commands.Moderation.ActionUnSoftBanNoReason)
+		});
 		return (await moderationLog.create())!;
 	}
 
@@ -443,16 +396,12 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Ban);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
-		await api()
-			.guilds(this.guild.id)
-			.bans(options.userId)
-			.put({
-				data: {
-					delete_message_seconds: seconds ?? 0
-				},
-				reason: await this.getReason('ban', moderationLog.reason)
-			});
-
+		await api().guilds.banUser(
+			this.guild.id,
+			options.userId,
+			{ delete_message_seconds: seconds ?? 0 },
+			{ reason: await this.getReason('ban', moderationLog.reason) }
+		);
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Ban);
 		return (await moderationLog.create())!;
 	}
@@ -460,10 +409,7 @@ export class ModerationActions {
 	public async unBan(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnBan);
 		const moderationLog = getModeration(this.guild).create(options);
-		await api()
-			.guilds(this.guild.id)
-			.bans(options.userId)
-			.delete({ reason: await this.getReason('ban', moderationLog.reason, true) });
+		await api().guilds.unbanUser(this.guild.id, options.userId, { reason: await this.getReason('ban', moderationLog.reason, true) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Ban);
@@ -473,10 +419,7 @@ export class ModerationActions {
 	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.VoiceMute);
 		const moderationLog = getModeration(this.guild).create(options);
-		await api()
-			.guilds(this.guild.id)
-			.members(options.userId)
-			.patch({ data: { mute: true }, reason: await this.getReason('vmute', moderationLog.reason) });
+		await api().guilds.editMember(this.guild.id, options.userId, { mute: true }, { reason: await this.getReason('vmute', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.VoiceMute);
@@ -486,10 +429,12 @@ export class ModerationActions {
 	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnVoiceMute);
 		const moderationLog = getModeration(this.guild).create(options);
-		await api()
-			.guilds(this.guild.id)
-			.members(options.userId)
-			.patch({ data: { mute: false }, reason: await this.getReason('vmute', moderationLog.reason, true) });
+		await api().guilds.editMember(
+			this.guild.id,
+			options.userId,
+			{ mute: false },
+			{ reason: await this.getReason('vmute', moderationLog.reason, true) }
+		);
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.VoiceMute);
@@ -499,10 +444,12 @@ export class ModerationActions {
 	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.VoiceKick);
 		const moderationLog = getModeration(this.guild).create(options);
-		await api()
-			.guilds(this.guild.id)
-			.members(options.userId)
-			.patch({ data: { channel_id: null }, reason: await this.getReason('vkick', moderationLog.reason) });
+		await api().guilds.editMember(
+			this.guild.id,
+			options.userId,
+			{ channel_id: null },
+			{ reason: await this.getReason('vkick', moderationLog.reason) }
+		);
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -639,7 +586,7 @@ export class ModerationActions {
 
 	public async userIsBanned(user: User) {
 		try {
-			await api().guilds(this.guild.id).bans(user.id).get();
+			await api().guilds.getMemberBan(this.guild.id, user.id);
 			return true;
 		} catch (error) {
 			if (!(error instanceof DiscordAPIError)) throw await resolveKey(this.guild, LanguageKeys.System.FetchBansFail);
@@ -659,7 +606,7 @@ export class ModerationActions {
 		return member?.voice.serverMute ?? false;
 	}
 
-	private async sharedRoleSetup(message: Message, key: RoleDataKey, path: PickByValue<GuildEntity, string | Nullish>) {
+	private async sharedRoleSetup(message: Message, key: RoleDataKey, path: GuildSettingsOfType<string | Nullish>) {
 		const roleData = kRoleDataOptions.get(key)!;
 		const role = await this.guild.roles.create({
 			...roleData,
@@ -726,7 +673,7 @@ export class ModerationActions {
 			reason: entry.reason,
 			duration: entry.duration
 		});
-		const embed = new MessageEmbed() //
+		const embed = new EmbedBuilder() //
 			.setDescription(description)
 			.setFooter({ text: t(LanguageKeys.Commands.Moderation.ModerationDmFooter) });
 
@@ -771,7 +718,7 @@ export class ModerationActions {
 		const extracted = ModerationActions.muteExtractRoles(member, position);
 		extracted.keepRoles.push(roleId);
 
-		await member.edit({ roles: extracted.keepRoles }, reason);
+		await member.edit({ roles: extracted.keepRoles, reason });
 		return extracted.removedRoles;
 	}
 
@@ -798,7 +745,7 @@ export class ModerationActions {
 		const { position } = (await this.fetchMe()).roles.highest;
 		const rawRoleIds = Array.isArray(moderationLog.extraData) ? (moderationLog.extraData as string[]) : [];
 		const roles = this.unmuteExtractRoles(member, roleId, position, rawRoleIds);
-		await member.edit({ roles }, reason);
+		await member.edit({ roles, reason });
 
 		return roles;
 	}
@@ -855,29 +802,29 @@ export class ModerationActions {
 		return [...roles];
 	}
 
-	private async addStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
+	private async addStickyRestriction(id: string, key: GuildSettingsOfType<string | Nullish>) {
 		const [roleId] = await readSettings(this.guild, (settings) => [settings[key]]);
 		if (isNullish(roleId)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		return getStickyRoles(this.guild).add(id, roleId);
 	}
 
-	private async addRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
+	private async addRestrictionRole(id: string, key: GuildSettingsOfType<string | Nullish>) {
 		const [roleId] = await readSettings(this.guild, (settings) => [settings[key]]);
 		if (isNullish(roleId)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
-		await api().guilds(this.guild.id).members(id).roles(roleId).put();
+		await api().guilds.addRoleToMember(this.guild.id, id, roleId);
 	}
 
-	private async removeStickyRestriction(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
+	private async removeStickyRestriction(id: string, key: GuildSettingsOfType<string | Nullish>) {
 		const [roleId] = await readSettings(this.guild, (settings) => [settings[key]]);
 		if (isNullish(roleId)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		return getStickyRoles(this.guild).remove(id, roleId);
 	}
 
-	private async removeRestrictionRole(id: string, key: PickByValue<GuildEntity, string | Nullish>) {
+	private async removeRestrictionRole(id: string, key: GuildSettingsOfType<string | Nullish>) {
 		const [roleId] = await readSettings(this.guild, (settings) => [settings[key]]);
 		if (isNullish(roleId)) throw new UserError({ identifier: LanguageKeys.Misc.RestrictionNotConfigured });
 		try {
-			await api().guilds(this.guild.id).members(id).roles(roleId).delete();
+			await api().guilds.removeRoleFromMember(this.guild.id, id, roleId);
 		} catch (error) {
 			if ((error as DiscordAPIError).code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}
@@ -1017,7 +964,7 @@ interface RolePermissionOverwriteOption {
 
 interface RolePermissionOverwriteOptionField {
 	options: PermissionOverwriteOptions;
-	permissions: Permissions;
+	permissions: PermissionsBitField;
 }
 
 export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;

@@ -4,11 +4,11 @@ import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { GuildMember, MessageEmbed } from 'discord.js';
+import { EmbedBuilder, GuildMember } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.NotMutedMemberAdd })
+@ApplyOptions<Listener.Options>({ event: Events.NotMutedMemberAdd })
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
 		const key = GuildSettings.Channels.Logs.MemberAdd;
@@ -16,7 +16,7 @@ export class UserListener extends Listener {
 		if (isNullish(logChannelId)) return;
 
 		this.container.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
-			new MessageEmbed()
+			new EmbedBuilder()
 				.setColor(Colors.Green)
 				.setAuthor(getFullEmbedAuthor(member.user))
 				.setDescription(

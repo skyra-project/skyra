@@ -6,7 +6,7 @@ import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const enum CodeType {
@@ -64,7 +64,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, links: readonly string[]) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setDescription(t(LanguageKeys.Events.Moderation.Messages.InviteFilterLog, { links, count: links.length }))

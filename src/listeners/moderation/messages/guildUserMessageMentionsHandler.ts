@@ -3,10 +3,10 @@ import type { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
 import { isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
+@ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
 		if (!isNullishOrZero(message.editedTimestamp)) return;

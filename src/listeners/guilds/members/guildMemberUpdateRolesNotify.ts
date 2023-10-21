@@ -4,12 +4,12 @@ import { Events } from '#lib/types/Enums';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { GuildMember, MessageEmbed } from 'discord.js';
+import { EmbedBuilder, GuildMember } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildMemberUpdate })
+@ApplyOptions<Listener.Options>({ event: Events.GuildMemberUpdate })
 export class UserListener extends Listener {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const key = GuildSettings.Channels.Logs.MemberRoleUpdate;
@@ -39,7 +39,7 @@ export class UserListener extends Listener {
 
 		// Set the Role change log
 		this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, key, () =>
-			new MessageEmbed()
+			new EmbedBuilder()
 				.setColor(Colors.Yellow)
 				.setAuthor(getFullEmbedAuthor(user))
 				.setDescription(this.getRoleDescription(t, addedRoles, removedRoles) || t(LanguageKeys.Events.Guilds.Members.GuildMemberNoUpdate))

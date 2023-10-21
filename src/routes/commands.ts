@@ -3,10 +3,10 @@ import type { SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Command } from '@sapphire/framework';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import type { TFunction } from 'i18next';
 
-@ApplyOptions<RouteOptions>({ route: 'commands' })
+@ApplyOptions<Route.Options>({ route: 'commands' })
 export class UserRoute extends Route {
 	@ratelimit(seconds(2), 2)
 	public [methods.GET](request: ApiRequest, response: ApiResponse) {
@@ -25,7 +25,10 @@ export class UserRoute extends Route {
 		return {
 			category: command.category,
 			description: t(command.description),
-			extendedHelp: t(command.detailedDescription, { replace: { prefix: process.env.CLIENT_PREFIX }, postProcess: 'helpUsagePostProcessor' }),
+			extendedHelp: t(command.detailedDescription, {
+				replace: { prefix: process.env.CLIENT_PREFIX },
+				postProcess: 'helpUsagePostProcessor'
+			}) as string,
 			guarded: command.guarded,
 			name: command.name,
 			permissionLevel: command.permissionLevel,

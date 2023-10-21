@@ -1,13 +1,12 @@
-import type { SkyraCommand } from '#lib/structures';
-import { Args, CommandContext, isOk, Result, UserError } from '@sapphire/framework';
+import { Args, Result, UserError, type MessageCommand } from '@sapphire/framework';
+import { ArgumentStream, Parser } from '@sapphire/lexure';
 import type { Message } from 'discord.js';
 import type { TFunction } from 'i18next';
-import type { Args as LexureArgs } from 'lexure';
 
 export class SkyraArgs extends Args {
-	public t: TFunction;
+	public override t: TFunction;
 
-	public constructor(message: Message, command: SkyraCommand, parser: LexureArgs, context: CommandContext, t: TFunction) {
+	public constructor(message: Message, command: MessageCommand, parser: ArgumentStream, context: MessageCommand.RunContext, t: TFunction) {
 		super(message, command, parser, context);
 		this.t = t;
 	}
@@ -21,12 +20,14 @@ export class SkyraArgs extends Args {
 		if (this.parser.finished) return this.missingArguments();
 
 		const values: string[] = [];
-		const parts = this.parser
-			.many()
-			.reduce((acc, token) => `${acc}${token.value}${token.trailing}`, '')
-			.split(delimiter);
+		const parts = this.parser.many();
+		if (parts.isNone()) return this.missingArguments();
 
-		for (const part of parts) {
+		const tokens = parts
+			.unwrap()
+			.reduce((acc, token) => `${acc}${token.leading}${token.value}`, '')
+			.split(delimiter);
+		for (const part of tokens) {
 			const trimmed = part.trim();
 			if (trimmed.length === 0) continue;
 
@@ -43,14 +44,15 @@ export class SkyraArgs extends Args {
 	 * @returns An array of values.
 	 */
 	public nextSplit(options?: SkyraArgs.NextSplitOptions) {
-		const result = this.nextSplitResult(options);
-		if (isOk(result)) return result.value;
-		throw result.error;
+		return this.nextSplitResult(options).unwrapRaw();
 	}
-}
 
-export interface SkyraArgs {
-	command: SkyraCommand;
+	public static from(command: MessageCommand, message: Message, parameters: string, context: MessageCommand.RunContext, t: TFunction) {
+		const parser = new Parser(command.strategy);
+		// eslint-disable-next-line @typescript-eslint/dot-notation
+		const args = new ArgumentStream(parser.run(command['lexer'].run(parameters)));
+		return new SkyraArgs(message, command, args, context, t);
+	}
 }
 
 export namespace SkyraArgs {

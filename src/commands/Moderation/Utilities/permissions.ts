@@ -7,10 +7,10 @@ import { getColor, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed, PermissionString, Permissions } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder } from 'discord.js';
 
-const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
+const PERMISSION_FLAGS = Object.keys(PermissionFlagsBits) as (keyof typeof PermissionFlagsBits)[];
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
@@ -20,7 +20,7 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const member = await message.guild.members.fetch(user.id).catch(() => {
 			this.error(LanguageKeys.Misc.UserNotInGuild);
@@ -29,7 +29,7 @@ export class UserCommand extends SkyraCommand {
 		const { permissions } = member;
 		const list = [ZeroWidthSpace];
 
-		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+		if (permissions.has(PermissionFlagsBits.Administrator)) {
 			list.push(args.t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 			}
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: getTag(user), id: user.id }))
 			.setDescription(list.join('\n'));

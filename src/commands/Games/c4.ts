@@ -7,7 +7,7 @@ import type { GuildMessage } from '#lib/types';
 import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 import type { User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -21,7 +21,7 @@ import type { User } from 'discord.js';
 export class UserCommand extends SkyraCommand {
 	private readonly channels = new Set<string>();
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (this.channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
 
 		const user = await args.pick('userName');

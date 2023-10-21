@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<Date> {
 	private get date() {
@@ -10,12 +10,11 @@ export class UserArgument extends Argument<Date> {
 		return this.container.stores.get('arguments').get('duration') as Argument<Date>;
 	}
 
-	public async run(parameter: string, context: ArgumentContext<Date>) {
-		const date = await Promise.resolve()
-			.then(() => this.date.run(parameter, context))
-			.then((date) => (date.success ? date : this.duration.run(parameter, context)));
+	public async run(parameter: string, context: Argument.Context<Date>) {
+		let result = await this.date.run(parameter, context);
+		if (result.isErr()) result = await this.duration.run(parameter, context);
 
-		if (date.success && date.value.getTime() > Date.now()) return this.ok(date.value);
+		if (result.isOkAnd((date) => date.getTime() > Date.now())) return this.ok(result.unwrap());
 		return this.error({ parameter, identifier: LanguageKeys.Arguments.Time, context });
 	}
 }

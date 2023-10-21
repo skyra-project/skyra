@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
 	#cachedEvalContext: object | null = null;
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const code = await args.rest('string');
 
 		const wait = args.getOption('timeout', 'wait');
@@ -84,7 +84,7 @@ export class UserCommand extends SkyraCommand {
 					...require('discord.js'),
 					builders: require('@discordjs/builders'),
 					collection: require('@discordjs/collection'),
-					types: require('discord-api-types/v9')
+					types: require('discord-api-types/v10')
 				},
 				sapphire: {
 					asyncQueue: require('@sapphire/async-queue'),

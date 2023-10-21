@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V52JoinAndLeaveMessageAutoDelete1619969827210 implements MigrationInterface {
 	private readonly keys = ['messages.farewell-auto-delete', 'messages.greeting-auto-delete'];

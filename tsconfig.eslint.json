@@ -4,5 +4,5 @@
 		"allowJs": true,
 		"checkJs": true
 	},
-	"include": ["src", "tests", "scripts", "ormconfig.js", "babel.config.js", "jest.config.mjs"]
+	"include": ["src", "tests", "scripts", "ormconfig.js", "vitest.config.ts"]
 }

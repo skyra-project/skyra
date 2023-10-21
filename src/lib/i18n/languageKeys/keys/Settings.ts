@@ -73,5 +73,5 @@ export const SelfmodReactionsIgnoredRoles = T('settings:selfmodReactionsIgnoredR
 export const SelfmodReactionsAllowed = T('settings:selfmodReactionsAllowed');
 export const DashboardOnlyKey = T('settings:dashboardOnlyKey');
 
-export * as Channels from './settings/Channels';
-export * as Gateway from './settings/Gateway';
+export * as Channels from '#lib/i18n/languageKeys/keys/settings/Channels';
+export * as Gateway from '#lib/i18n/languageKeys/keys/settings/Gateway';

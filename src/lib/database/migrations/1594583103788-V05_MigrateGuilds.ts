@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 const guildChangeTypeColumns = [
 	['command-autodelete', 'text[]', 'text[]'],

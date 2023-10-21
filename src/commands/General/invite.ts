@@ -4,8 +4,8 @@ import { BrandingColors } from '#utils/constants';
 import { hyperlink } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import { OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder, Message } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 const flags = ['noperms', 'nopermissions'];
@@ -18,22 +18,24 @@ const flags = ['noperms', 'nopermissions'];
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public messageRun(message: Message, args: SkyraCommand.Args) {
-		const arg = args.nextMaybe();
-		const shouldNotAddPermissions = arg.exists ? flags.includes(arg.value.toLowerCase()) : args.getFlags(...flags);
+	public override messageRun(message: Message, args: SkyraCommand.Args) {
+		const shouldNotAddPermissions = args.nextMaybe().match({
+			some: (value) => flags.includes(value.toLowerCase()),
+			none: () => args.getFlags(...flags)
+		});
 
 		const embed = this.getEmbed(args.t, shouldNotAddPermissions);
 		return send(message, { embeds: [embed] });
 	}
 
-	private getEmbed(t: TFunction, shouldNotAddPermissions: boolean): MessageEmbed {
+	private getEmbed(t: TFunction, shouldNotAddPermissions: boolean): EmbedBuilder {
 		const embeddedInviteLink = hyperlink(
 			t(LanguageKeys.Commands.General.InvitePermissionInviteText),
 			this.generateInviteLink(shouldNotAddPermissions)
 		);
 		const embeddedJoinLink = hyperlink(t(LanguageKeys.Commands.General.InvitePermissionSupportServerText), 'https://discord.com/invite/6gakFR2');
 
-		return new MessageEmbed() //
+		return new EmbedBuilder() //
 			.setColor(BrandingColors.Primary)
 			.setDescription(
 				[

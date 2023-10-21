@@ -3,11 +3,11 @@ import { getEmojiString } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReadMessages, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
-import { Listener, ListenerOptions } from '@sapphire/framework';
-import { GatewayDispatchEvents, GatewayMessageReactionAddDispatch } from 'discord-api-types/v9';
+import { Listener } from '@sapphire/framework';
+import { GatewayDispatchEvents, type GatewayMessageReactionAddDispatch } from 'discord-api-types/v10';
 import type { TextChannel } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.MessageReactionAdd, emitter: 'ws' })
+@ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageReactionAdd, emitter: 'ws' })
 export class UserListener extends Listener {
 	public run(raw: GatewayMessageReactionAddDispatch['d']) {
 		const channel = this.container.client.channels.cache.get(raw.channel_id) as TextChannel | undefined;

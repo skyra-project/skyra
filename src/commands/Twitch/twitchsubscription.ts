@@ -1,8 +1,8 @@
 import { GuildSubscriptionEntity, TwitchSubscriptionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { TwitchEventSubTypes, TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
+import { TwitchEventSubTypes, type TwitchHelixUsersSearchResult } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
@@ -12,10 +12,10 @@ import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { envIsDefined } from '@skyra/env-utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Guild, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder, Guild } from 'discord.js';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	enabled: envIsDefined('TWITCH_CALLBACK', 'TWITCH_CLIENT_ID', 'TWITCH_TOKEN', 'TWITCH_EVENTSUB_SECRET'),
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
@@ -23,10 +23,10 @@ import { Guild, MessageEmbed } from 'discord.js';
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const streamer = await args.pick(UserCommand.streamer);
 		const channel = await args.pick('channelName');
 		const subscriptionType = await args.pick(UserCommand.status);
@@ -190,7 +190,7 @@ export class UserCommand extends SkyraCommand {
 		// Create the pages and the URD to display them.
 		const pages = chunk(lines, 10);
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed() //
+			template: new EmbedBuilder() //
 				.setAuthor(getFullEmbedAuthor(message.author))
 				.setColor(getColor(message))
 		});

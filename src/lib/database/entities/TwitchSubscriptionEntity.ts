@@ -1,6 +1,6 @@
+import { GuildSubscriptionEntity } from '#lib/database/entities/GuildSubscriptionEntity';
 import { TwitchEventSubTypes } from '#lib/types';
 import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { GuildSubscriptionEntity } from './GuildSubscriptionEntity';
 
 @Index(['streamerId', 'subscriptionType'], { unique: true })
 @Entity('twitch_subscriptions', { schema: 'public' })

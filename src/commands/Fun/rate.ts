@@ -15,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 	private devRegex = new RegExp(`^(kyra|favna|${OWNERS.map((owner) => `<@!?${owner}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${process.env.CLIENT_ID}>)$`, 'i');
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		// Escape all markdown
 		let rateableThing = await args.rest('string');
 

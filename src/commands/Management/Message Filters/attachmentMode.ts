@@ -1,8 +1,7 @@
-import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
+import { GuildSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SelfModerationCommand } from '#lib/moderation';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { PickByValue } from '@sapphire/utilities';
 
 @ApplyOptions<SelfModerationCommand.Options>({
 	aliases: ['attachment-mode', 'attachments-mode', 'att-mode', 'manageAttachment', 'manageattachment'],
@@ -11,10 +10,10 @@ import type { PickByValue } from '@sapphire/utilities';
 })
 export class UserSelfModerationCommand extends SelfModerationCommand {
 	protected $adder: AdderKey = 'attachments';
-	protected keyEnabled: PickByValue<GuildEntity, boolean> = GuildSettings.Selfmod.Attachments.Enabled;
-	protected keySoftAction: PickByValue<GuildEntity, number> = GuildSettings.Selfmod.Attachments.SoftAction;
-	protected keyHardAction: PickByValue<GuildEntity, number | null> = GuildSettings.Selfmod.Attachments.HardAction;
-	protected keyHardActionDuration: PickByValue<GuildEntity, number | null> = GuildSettings.Selfmod.Attachments.HardActionDuration;
-	protected keyThresholdMaximum: PickByValue<GuildEntity, number | null> = GuildSettings.Selfmod.Attachments.ThresholdMaximum;
-	protected keyThresholdDuration: PickByValue<GuildEntity, number | null> = GuildSettings.Selfmod.Attachments.ThresholdDuration;
+	protected keyEnabled: GuildSettingsOfType<boolean> = GuildSettings.Selfmod.Attachments.Enabled;
+	protected keySoftAction: GuildSettingsOfType<number> = GuildSettings.Selfmod.Attachments.SoftAction;
+	protected keyHardAction: GuildSettingsOfType<number | null> = GuildSettings.Selfmod.Attachments.HardAction;
+	protected keyHardActionDuration: GuildSettingsOfType<number | null> = GuildSettings.Selfmod.Attachments.HardActionDuration;
+	protected keyThresholdMaximum: GuildSettingsOfType<number | null> = GuildSettings.Selfmod.Attachments.ThresholdMaximum;
+	protected keyThresholdDuration: GuildSettingsOfType<number | null> = GuildSettings.Selfmod.Attachments.ThresholdDuration;
 }

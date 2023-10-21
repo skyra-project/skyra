@@ -30,7 +30,7 @@ export class LockdownManager extends Collection<string, Collection<string, Lockd
 		return true;
 	}
 
-	public delete(id: string) {
+	public override delete(id: string) {
 		const roles = this.get(id);
 		if (roles === undefined) return false;
 

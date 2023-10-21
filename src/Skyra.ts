@@ -37,7 +37,7 @@ async function main() {
 		await client.login();
 	} catch (error) {
 		container.logger.error(error);
-		client.destroy();
+		await client.destroy();
 		process.exit(1);
 	}
 }

@@ -6,8 +6,8 @@ import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed, Permissions } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Management.RoleInfoDescription,
@@ -17,11 +17,11 @@ import { MessageEmbed, Permissions } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const role = args.finished ? message.member.roles.highest : await args.pick('roleName');
 		const roleInfoTitles = args.t(LanguageKeys.Commands.Management.RoleInfoTitles);
 
-		const permissions = role.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
+		const permissions = role.permissions.has(PermissionFlagsBits.Administrator)
 			? args.t(LanguageKeys.Commands.Management.RoleInfoAll)
 			: role.permissions.toArray().length > 0
 			? role.permissions
@@ -36,11 +36,11 @@ export class UserCommand extends SkyraCommand {
 			mentionable: args.t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)
 		});
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(role.color || BrandingColors.Secondary)
 			.setTitle(`${role.name} [${role.id}]`)
 			.setDescription(description)
-			.addField(roleInfoTitles.PERMISSIONS, permissions);
+			.addFields({ name: roleInfoTitles.PERMISSIONS, value: permissions });
 		return send(message, { embeds: [embed] });
 	}
 }

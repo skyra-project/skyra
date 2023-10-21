@@ -6,12 +6,12 @@ import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v9';
-import { Guild, GuildMember, MessageEmbed } from 'discord.js';
+import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v10';
+import { EmbedBuilder, Guild, GuildMember } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.RawMemberRemove })
+@ApplyOptions<Listener.Options>({ event: Events.RawMemberRemove })
 export class UserListener extends Listener {
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const key = GuildSettings.Channels.Logs.MemberRemove;
@@ -30,7 +30,7 @@ export class UserListener extends Listener {
 
 		const time = this.processJoinedTimestamp(member);
 		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>
-			new MessageEmbed()
+			new EmbedBuilder()
 				.setColor(Colors.Red)
 				.setAuthor(getFullEmbedAuthor(user))
 				.setDescription(

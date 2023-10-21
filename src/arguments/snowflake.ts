@@ -1,5 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import type { Snowflake } from 'discord.js';
 
@@ -15,7 +15,7 @@ export class UserArgument extends Argument<Snowflake> {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public run(parameter: string, context: ArgumentContext) {
+	public run(parameter: string, context: Argument.Context) {
 		if (this.kRegExp.test(parameter)) {
 			const snowflake = DiscordSnowflake.deconstruct(parameter);
 			const timestamp = Number(snowflake.timestamp);

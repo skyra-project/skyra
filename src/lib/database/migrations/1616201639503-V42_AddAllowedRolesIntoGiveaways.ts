@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V42AddAllowedRolesIntoGiveaways1616201639503 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

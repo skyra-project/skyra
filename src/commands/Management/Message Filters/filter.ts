@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,15 +9,15 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { remove as removeConfusables } from 'confusables';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	description: LanguageKeys.Commands.Management.FilterDescription,
 	detailedDescription: LanguageKeys.Commands.Management.FilterExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const word = await this.getWord(args);
 		await writeSettings(message.guild, async (settings) => {
 			// Check if the word is not filtered:
@@ -34,7 +34,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const word = await this.getWord(args);
 		await writeSettings(message.guild, (settings) => {
 			// Check if the word is not filtered:
@@ -52,14 +52,14 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		await writeSettings(message.guild, [[GuildSettings.Selfmod.Filter.Raw, []]]);
 
 		const content = args.t(LanguageKeys.Commands.Management.FilterReset);
 		return send(message, content);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const raw = await readSettings(message.guild, GuildSettings.Selfmod.Filter.Raw);
 
 		const content = raw.length
@@ -68,7 +68,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	private async getWord(args: SkyraCommand.Args) {
+	private async getWord(args: SkyraSubcommand.Args) {
 		const word = await args.pick('string', { maximum: 32 });
 		return removeConfusables(word.toLowerCase());
 	}

@@ -1,6 +1,6 @@
+import { BaseReactionController } from '#lib/games/base/BaseReactionController';
+import type { ConnectFourGame } from '#lib/games/connect-four/ConnectFourGame';
 import { cast } from '#utils/util';
-import { BaseReactionController } from '../base/BaseReactionController';
-import type { ConnectFourGame } from './ConnectFourGame';
 
 export class ConnectFourHumanController extends BaseReactionController<number> {
 	public async await(): Promise<number> {

@@ -7,8 +7,8 @@ import { getColor, getContent, getFullEmbedAuthor, getImage } from '#utils/util'
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],
@@ -19,11 +19,11 @@ import { MessageEmbed } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const sniped = getSnipedMessage(message.channel);
 		if (sniped === null) this.error(LanguageKeys.Commands.Misc.SnipeEmpty);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(args.t(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(getColor(sniped))
 			.setAuthor(getFullEmbedAuthor(sniped.author))

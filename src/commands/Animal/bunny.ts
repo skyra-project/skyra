@@ -2,11 +2,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { getColor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullishOrEmpty } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder, Message } from 'discord.js';
 import { URL } from 'node:url';
 
 const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
@@ -18,7 +18,7 @@ const url = new URL('https://api.bunnies.io/v2/loop/random/?media=gif,png');
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const {
 			media: { gif },
 			source: bunnySource
@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		const translations = args.t(LanguageKeys.Commands.Animal.BunnyEmbedData);
 		const source = this.getSource(bunnySource);
 
-		const embed = new MessageEmbed().setURL(imageUrl).setTitle(translations.title).setColor(getColor(message)).setImage(imageUrl).setTimestamp();
+		const embed = new EmbedBuilder().setURL(imageUrl).setTitle(translations.title).setColor(getColor(message)).setImage(imageUrl).setTimestamp();
 
 		if (source) {
 			embed.setDescription(`[${translations.source}](${source})`);

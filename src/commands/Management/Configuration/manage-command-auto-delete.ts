@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { minutes, seconds } from '#utils/common';
@@ -10,16 +10,16 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { codeBlock } from '@sapphire/utilities';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['mcad'],
 	description: LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription,
 	detailedDescription: LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const time = await args.pick('timespan', { minimum: seconds(1), maximum: minutes(2) });
 
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		await writeSettings(message.guild, (settings) => {
 			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
@@ -53,14 +53,14 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		await writeSettings(message.guild, [[GuildSettings.CommandAutoDelete, []]]);
 
 		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset);
 		return send(message, content);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
 		if (!commandAutoDelete.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 

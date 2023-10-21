@@ -1,7 +1,13 @@
 import { envParseInteger } from '@skyra/env-utilities';
 import { cpus } from 'node:os';
-import type { IncomingPayload, IncomingRunRegExpPayload, NoId, OutgoingNoContentPayload, OutgoingRegExpMatchPayload } from './types';
-import { WorkerHandler } from './WorkerHandler';
+import type {
+	IncomingPayload,
+	IncomingRunRegExpPayload,
+	NoId,
+	OutgoingNoContentPayload,
+	OutgoingRegExpMatchPayload
+} from '#lib/moderation/workers/types';
+import { WorkerHandler } from '#lib/moderation/workers/WorkerHandler';
 
 export class WorkerManager {
 	public readonly workers: WorkerHandler[] = [];
@@ -19,8 +25,8 @@ export class WorkerManager {
 		await Promise.all(this.workers.map((worker) => worker.start()));
 	}
 
-	public async send(data: NoId<IncomingRunRegExpPayload>, delay?: number | null): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
-	public async send(data: NoId<IncomingPayload>, delay?: number | null) {
+	public send(data: NoId<IncomingRunRegExpPayload>, delay?: number | null): Promise<OutgoingNoContentPayload | OutgoingRegExpMatchPayload>;
+	public send(data: NoId<IncomingPayload>, delay?: number | null) {
 		return this.getIdealWorker().send(data, delay);
 	}
 

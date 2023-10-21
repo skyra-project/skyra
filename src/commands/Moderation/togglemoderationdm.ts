@@ -11,9 +11,9 @@ import { send } from '@sapphire/plugin-editable-commands';
 	detailedDescription: LanguageKeys.Commands.Moderation.ToggleModerationDmExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const { users } = this.container.db;
-		let user = await users.findOne(message.author.id);
+		let user = await users.findOne({ where: { id: message.author.id } });
 		if (user) {
 			user.moderationDM = !user.moderationDM;
 		} else {

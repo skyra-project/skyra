@@ -1,6 +1,6 @@
-import { GuildSettings, ReactionRole, readSettings, writeSettings } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings, type ReactionRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { getEmojiString, getEmojiTextFormat } from '#utils/functions';
@@ -11,19 +11,19 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Guild, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { EmbedBuilder, Guild } from 'discord.js';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	description: LanguageKeys.Commands.Management.ManageReactionRolesDescription,
 	detailedDescription: LanguageKeys.Commands.Management.ManageReactionRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const role = await args.pick('roleName');
 		if (!args.finished) {
 			const channel = await args.pick('textChannelName');
@@ -72,7 +72,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const role = await args.pick('roleName');
 		const messageId = await args.pick('snowflake');
 
@@ -100,7 +100,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		await writeSettings(message.guild, (settings) => {
 			const reactionRoles = settings[GuildSettings.ReactionRoles];
 
@@ -116,7 +116,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const reactionRoles = await readSettings(message.guild, GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
 			this.error(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
@@ -125,7 +125,7 @@ export class UserCommand extends SkyraCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed().setColor(getColor(message))
+			template: new EmbedBuilder().setColor(getColor(message))
 		});
 
 		for (const bulk of chunk(reactionRoles, 15)) {

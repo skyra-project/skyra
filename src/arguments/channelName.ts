@@ -3,7 +3,7 @@ import { isGuildMessage } from '#utils/common';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
 import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 import type { Guild, GuildChannel, ThreadChannel, User } from 'discord.js';
 
 export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
@@ -33,6 +33,6 @@ export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 	}
 }
 
-interface ChannelArgumentContext extends ArgumentContext<GuildChannel | ThreadChannel> {
+interface ChannelArgumentContext extends Argument.Context<GuildChannel | ThreadChannel> {
 	filter?: (entry: GuildChannel | ThreadChannel) => boolean;
 }

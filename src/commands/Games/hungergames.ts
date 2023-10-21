@@ -4,14 +4,14 @@ import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
 import { deleteMessage, isModerator } from '#utils/functions';
-import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'node:timers/promises';
 
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.RunContext) {
 		const autoFilled = args.getFlags('autofill');
 		const tributes = args.finished && autoFilled ? [] : args.nextSplit({ times: 50 });
 		const autoSkip = args.getFlags('autoskip');
@@ -85,7 +85,10 @@ export class UserCommand extends SkyraCommand {
 					: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, args.t(events).map(HungerGamesUsage.create));
+				const { results, deaths } = this.makeResultEvents(
+					game,
+					args.t(events).map((usage) => HungerGamesUsage.create(usage))
+				);
 				const texts = this.buildTexts(args.t, game, results, deaths);
 
 				// Ask for the user to proceed:

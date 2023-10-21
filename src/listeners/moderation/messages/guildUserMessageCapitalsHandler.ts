@@ -9,7 +9,7 @@ import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageListener.Options>({
@@ -63,7 +63,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))

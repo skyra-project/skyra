@@ -27,7 +27,6 @@ FROM base as builder
 ENV NODE_ENV="development"
 
 COPY --chown=node:node tsconfig.base.json tsconfig.base.json
-COPY --chown=node:node scripts/ scripts/
 COPY --chown=node:node src/ src/
 
 RUN yarn install --immutable
@@ -44,7 +43,6 @@ ENV NODE_OPTIONS="--enable-source-maps --max_old_space_size=4096"
 
 COPY --chown=node:node --from=builder /usr/src/app/dist dist
 
-COPY --chown=node:node scripts/workerTsLoader.js scripts/workerTsLoader.js
 COPY --chown=node:node src/.env src/.env
 
 RUN yarn workspaces focus --all --production

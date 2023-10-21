@@ -1,22 +1,22 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
+import { SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['mcc'],
 	description: LanguageKeys.Commands.Management.ManageCommandChannelDescription,
 	detailedDescription: LanguageKeys.Commands.Management.ManageCommandChannelExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
 		await writeSettings(message.guild, (settings) => {
@@ -38,7 +38,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
 		await writeSettings(message.guild, (settings) => {
@@ -65,7 +65,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		await writeSettings(message.guild, (settings) => {
 			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
@@ -82,7 +82,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 		const disabledCommandsChannels = await readSettings(message.guild, GuildSettings.DisabledCommandChannels);
 

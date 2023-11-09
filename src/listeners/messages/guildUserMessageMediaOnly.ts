@@ -1,6 +1,5 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, isModerator } from '#utils/functions';
 import { MEDIA_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';

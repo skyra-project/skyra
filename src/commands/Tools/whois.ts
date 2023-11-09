@@ -2,7 +2,8 @@ import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { months, seconds } from '#utils/common';
+import { PermissionsBits } from '#utils/bits';
+import { map, months, seconds } from '#utils/common';
 import { Colors, Emojis } from '#utils/constants';
 import { getDisplayAvatar, getTag } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
@@ -23,19 +24,18 @@ const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Numbe
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	private readonly kAdministratorPermission = PermissionFlagsBits.Administrator;
-	private readonly kKeyPermissions: [keyof typeof PermissionFlagsBits, bigint][] = [
-		['BanMembers', PermissionFlagsBits.BanMembers],
-		['KickMembers', PermissionFlagsBits.KickMembers],
-		['ManageChannels', PermissionFlagsBits.ManageChannels],
-		['ManageGuildExpressions', PermissionFlagsBits.ManageGuildExpressions],
-		['ManageGuild', PermissionFlagsBits.ManageGuild],
-		['ManageMessages', PermissionFlagsBits.ManageMessages],
-		['ManageNicknames', PermissionFlagsBits.ManageNicknames],
-		['ManageRoles', PermissionFlagsBits.ManageRoles],
-		['ManageWebhooks', PermissionFlagsBits.ManageWebhooks],
-		['MentionEveryone', PermissionFlagsBits.MentionEveryone]
-	];
+	private readonly KeyPermissions = PermissionsBits.resolve([
+		PermissionFlagsBits.BanMembers,
+		PermissionFlagsBits.KickMembers,
+		PermissionFlagsBits.ManageChannels,
+		PermissionFlagsBits.ManageGuildExpressions,
+		PermissionFlagsBits.ManageGuild,
+		PermissionFlagsBits.ManageMessages,
+		PermissionFlagsBits.ManageNicknames,
+		PermissionFlagsBits.ManageRoles,
+		PermissionFlagsBits.ManageWebhooks,
+		PermissionFlagsBits.MentionEveryone
+	]);
 
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
@@ -106,7 +106,11 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private applyMemberKeyPermissions(t: TFunction, member: GuildMember, embed: SkyraEmbed) {
-		if (member.permissions.has(this.kAdministratorPermission)) {
+		const permissions = member.permissions.bitfield;
+
+		// If the member has Administrator, add a field indicating the member
+		// has all permissions and return:
+		if (PermissionsBits.has(permissions, PermissionFlagsBits.Administrator)) {
 			embed.addFields({
 				name: t(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
 				value: t(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll)
@@ -114,14 +118,16 @@ export class UserCommand extends SkyraCommand {
 			return;
 		}
 
-		const permissions: string[] = [];
-		for (const [name, bit] of this.kKeyPermissions) {
-			if (member.permissions.has(bit)) permissions.push(t(`permissions:${name}`));
-		}
+		// Create an intersection between the permissions the member has and the
+		// key permissions, if there are no permissions, return, else add a field
+		// with the permissions:
+		const intersection = PermissionsBits.intersection(permissions, this.KeyPermissions);
+		if (intersection === 0n) return;
 
-		if (permissions.length > 0) {
-			embed.addFields({ name: t(LanguageKeys.Commands.Tools.WhoisMemberPermissions), value: permissions.join(', ') });
-		}
+		embed.addFields({
+			name: t(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
+			value: [...map(PermissionsBits.toKeys(intersection), (name) => t(`permissions:${name}`))].join(', ')
+		});
 	}
 
 	private getBoostIcon(boostingSince: number | null): string {

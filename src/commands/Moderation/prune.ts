@@ -1,8 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { days, floatPromise, seconds } from '#utils/common';
 import { andMix, type BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';

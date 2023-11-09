@@ -1,4 +1,4 @@
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { getEmojiString } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';

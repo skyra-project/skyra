@@ -8,8 +8,7 @@ import {
 	implementSkyraCommandPreParse,
 	type ExtendOptions
 } from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
-import type { CustomGet } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type CustomGet } from '#lib/types';
 import { UserError, type MessageCommand, type PieceContext } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import type { Message } from 'discord.js';

@@ -1,8 +1,7 @@
 import { readSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { isAdmin, isGuildOwner } from '#utils/functions';
 import { Identifiers, Precondition, type PieceContext, type PreconditionOptions } from '@sapphire/framework';
 

@@ -1,6 +1,4 @@
-import { TwitchEventSubTypes, type TwitchEventSubVerificationMessage } from '#lib/types';
-import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
-import { Events } from '#lib/types/Enums';
+import { Events, TwitchEventSubTypes, TwitchStreamStatus, type TwitchEventSubVerificationMessage } from '#lib/types';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';

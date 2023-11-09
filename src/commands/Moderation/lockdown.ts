@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LockdownManager, SkyraSubcommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { assertNonThread, getSecurity } from '#utils/functions';
 import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';

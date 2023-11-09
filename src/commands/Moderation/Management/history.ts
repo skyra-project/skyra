@@ -1,8 +1,7 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
@@ -56,6 +55,9 @@ export class UserCommand extends SkyraSubcommand {
 					break;
 				case TypeVariation.Warning:
 					++warnings;
+					break;
+				default:
+					break;
 			}
 		}
 

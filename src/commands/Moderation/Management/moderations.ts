@@ -1,8 +1,7 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';

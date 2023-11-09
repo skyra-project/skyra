@@ -1,9 +1,7 @@
 import { GuildSubscriptionEntity, TwitchSubscriptionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { TwitchEventSubTypes, type TwitchHelixUsersSearchResult } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, TwitchEventSubTypes, type GuildMessage, type TwitchHelixUsersSearchResult } from '#lib/types';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';

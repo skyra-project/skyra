@@ -1,5 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';

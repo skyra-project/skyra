@@ -1,7 +1,7 @@
 import { CommandMatcher, Serializer, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import type { CommandStore } from '@sapphire/framework';
 import { isObject } from '@sapphire/utilities';
 import type { GuildMember, Role } from 'discord.js';

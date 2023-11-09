@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { createReferPromise, seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { clean } from '#utils/Sanitizer/clean';

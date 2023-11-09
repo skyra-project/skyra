@@ -1,7 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -36,7 +35,7 @@ export class UserCommand extends SkyraSubcommand {
 		const entry = await moderation.fetch(caseId);
 		if (!entry) this.error(LanguageKeys.Commands.Moderation.ReasonNotExists);
 
-		entry.remove();
+		await entry.remove();
 		moderation.delete(entry.caseId);
 
 		const content = args.t(LanguageKeys.Commands.Moderation.CaseDeleted, { case: entry.caseId });

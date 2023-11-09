@@ -1,5 +1,5 @@
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, type ValueTransformer } from 'typeorm';

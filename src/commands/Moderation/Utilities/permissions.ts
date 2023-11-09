@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { PermissionsBits, PermissionsBitsList } from '#utils/bits';
 import { ZeroWidthSpace } from '#utils/constants';
 import { getColor, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,8 +9,6 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { EmbedBuilder } from 'discord.js';
-
-const PERMISSION_FLAGS = Object.keys(PermissionFlagsBits) as (keyof typeof PermissionFlagsBits)[];
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
@@ -26,14 +24,14 @@ export class UserCommand extends SkyraCommand {
 			this.error(LanguageKeys.Misc.UserNotInGuild);
 		});
 
-		const { permissions } = member;
+		const permissions = member.permissions.bitfield;
 		const list = [ZeroWidthSpace];
 
-		if (permissions.has(PermissionFlagsBits.Administrator)) {
+		if (PermissionsBits.has(permissions, PermissionFlagsBits.Administrator)) {
 			list.push(args.t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
-			for (const flag of PERMISSION_FLAGS) {
-				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${args.t(`permissions:${flag}`, flag)}`);
+			for (const [name, flag] of PermissionsBitsList) {
+				list.push(`${PermissionsBits.has(permissions, flag) ? '🔹' : '🔸'} ${args.t(`permissions:${name}`)}`);
 			}
 		}
 

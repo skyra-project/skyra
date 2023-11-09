@@ -1,10 +1,8 @@
 import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraArgs } from '#lib/structures/commands/SkyraArgs';
-import type { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { SkyraArgs, type SkyraCommand } from '#lib/structures';
+import { Events, type GuildMessage } from '#lib/types';
 import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';

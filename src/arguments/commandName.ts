@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { OWNERS } from '#root/config';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { Argument, Command } from '@sapphire/framework';

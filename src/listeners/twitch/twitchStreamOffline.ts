@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { TwitchEventSubTypes, type TwitchEventSubEvent } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, TwitchEventSubTypes, type TwitchEventSubEvent } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { extractDetailedMentions } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';

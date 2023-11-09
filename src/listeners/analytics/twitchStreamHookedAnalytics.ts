@@ -1,6 +1,5 @@
 import { AnalyticsListener } from '#lib/structures';
-import { Actions, Points, Tags, TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
-import { Events } from '#lib/types/Enums';
+import { Actions, Events, Points, Tags, TwitchStreamStatus } from '#lib/types';
 import { Point } from '@influxdata/influxdb-client';
 import { ApplyOptions } from '@sapphire/decorators';
 

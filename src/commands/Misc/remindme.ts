@@ -1,7 +1,7 @@
 import type { ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
-import { Schedules } from '#lib/types/Enums';
+import { Schedules } from '#lib/types';
 import { ButtonInviteTeryl, ButtonSkyraV7, makeRow } from '#utils/deprecate';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';

@@ -1,7 +1,7 @@
 import type { BaseController } from '#lib/games/base/BaseController';
 import { BaseGame } from '#lib/games/base/BaseGame';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sendLoadingMessage } from '#utils/util';
 import { send } from '@sapphire/plugin-editable-commands';

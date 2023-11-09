@@ -2,7 +2,7 @@ import { GuildSettings, readSettings, type GuildSettingsOfType } from '#lib/data
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationListener, SelfModeratorBitField, type HardPunishment } from '#lib/moderation';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';

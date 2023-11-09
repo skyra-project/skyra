@@ -1,4 +1,4 @@
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { GatewayDispatchEvents, type GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v10';

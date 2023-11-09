@@ -1,5 +1,5 @@
 import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { FetchResultTypes, QueryError, fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';

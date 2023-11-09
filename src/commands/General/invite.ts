@@ -62,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 				  PermissionFlagsBits.EmbedLinks |
 				  PermissionFlagsBits.KickMembers |
 				  PermissionFlagsBits.ManageChannels |
-				  PermissionFlagsBits.ManageEmojisAndStickers |
+				  PermissionFlagsBits.ManageGuildExpressions |
 				  PermissionFlagsBits.ManageGuild |
 				  PermissionFlagsBits.ManageMessages |
 				  PermissionFlagsBits.ManageNicknames |

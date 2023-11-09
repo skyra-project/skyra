@@ -1,7 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { TwitchEventSubOnlineEvent, TwitchHelixStreamsResult, TwitchOnlineEmbedData } from '#lib/types';
-import { TwitchEventSubTypes } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, TwitchEventSubTypes, type TwitchEventSubOnlineEvent, type TwitchHelixStreamsResult, type TwitchOnlineEmbedData } from '#lib/types';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { floatPromise } from '#utils/common';
 import { extractDetailedMentions } from '#utils/util';

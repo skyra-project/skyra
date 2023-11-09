@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { DbSet, GuildEntity, GuildSettingsOfType, SettingsManager } from '#lib/database';
+import type { DbSet, GuildSettingsOfType, SettingsManager } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
+import type { Events } from '#lib/types';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
-import type { Events } from '#lib/types/Enums';
 import type { TaskErrorPayload } from '#lib/types/Internals';
 import type { TwitchEventSubEvent, TwitchEventSubOnlineEvent } from '#lib/types/Twitch';
 import type { CustomFunctionGet, CustomGet } from '#lib/types/Utils';
@@ -12,9 +12,9 @@ import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingRea
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { EmojiObject } from '#utils/functions';
 import type { Piece, Store } from '@sapphire/framework';
-import type { Nullish, PickByValue } from '@sapphire/utilities';
+import type { Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
-import type { EmbedBuilder, Guild, GuildChannel, Message, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
+import type { EmbedBuilder, Guild, GuildChannel, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 
 declare module 'discord.js' {
 	interface Client {

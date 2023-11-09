@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { PermissionsBits } from '#utils/bits';
 import { BrandingColors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -21,12 +21,12 @@ export class UserCommand extends SkyraCommand {
 		const role = args.finished ? message.member.roles.highest : await args.pick('roleName');
 		const roleInfoTitles = args.t(LanguageKeys.Commands.Management.RoleInfoTitles);
 
-		const permissions = role.permissions.has(PermissionFlagsBits.Administrator)
+		const permissions = role.permissions.bitfield;
+		const permissionsString = PermissionsBits.has(permissions, PermissionFlagsBits.Administrator)
 			? args.t(LanguageKeys.Commands.Management.RoleInfoAll)
-			: role.permissions.toArray().length > 0
-			? role.permissions
-					.toArray()
-					.map((key) => `+ **${args.t(`permissions:${key}`, key)}**`)
+			: permissions > 0n
+			? PermissionsBits.toArray(permissions)
+					.map((name) => `+ ${args.t(`permissions:${name}`)}`)
 					.join('\n')
 			: args.t(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
 
@@ -40,7 +40,7 @@ export class UserCommand extends SkyraCommand {
 			.setColor(role.color || BrandingColors.Secondary)
 			.setTitle(`${role.name} [${role.id}]`)
 			.setDescription(description)
-			.addFields({ name: roleInfoTitles.PERMISSIONS, value: permissions });
+			.addFields({ name: roleInfoTitles.PERMISSIONS, value: permissionsString });
 		return send(message, { embeds: [embed] });
 	}
 }

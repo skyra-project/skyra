@@ -1,4 +1,4 @@
-import { Events, Schedules } from '#lib/types/Enums';
+import { Events, Schedules } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Piece, Store } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';

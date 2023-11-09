@@ -2,7 +2,7 @@ import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, r
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { isValidCustomEmoji, isValidSerializedTwemoji, isValidTwemoji } from '#lib/util/functions/emojis';
 import { filter, map } from '#utils/common';
 import { inlineCode } from '@discordjs/builders';

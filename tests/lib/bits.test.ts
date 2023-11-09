@@ -1,4 +1,5 @@
 import { toChannelsArray, toPermissionsArray } from '#utils/bits';
+import { enumToObject } from '@sapphire/bitfield';
 import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v10';
 
 describe('Bits', () => {
@@ -9,51 +10,7 @@ describe('Bits', () => {
 		});
 
 		test('GIVEN all permissions THEN returns an array with all the names', () => {
-			const value =
-				PermissionFlagsBits.CreateInstantInvite |
-				PermissionFlagsBits.KickMembers |
-				PermissionFlagsBits.BanMembers |
-				PermissionFlagsBits.Administrator |
-				PermissionFlagsBits.ManageChannels |
-				PermissionFlagsBits.ManageGuild |
-				PermissionFlagsBits.AddReactions |
-				PermissionFlagsBits.ViewAuditLog |
-				PermissionFlagsBits.PrioritySpeaker |
-				PermissionFlagsBits.Stream |
-				PermissionFlagsBits.ViewChannel |
-				PermissionFlagsBits.SendMessages |
-				PermissionFlagsBits.SendTTSMessages |
-				PermissionFlagsBits.ManageMessages |
-				PermissionFlagsBits.EmbedLinks |
-				PermissionFlagsBits.AttachFiles |
-				PermissionFlagsBits.ReadMessageHistory |
-				PermissionFlagsBits.MentionEveryone |
-				PermissionFlagsBits.UseExternalEmojis |
-				PermissionFlagsBits.ViewGuildInsights |
-				PermissionFlagsBits.Connect |
-				PermissionFlagsBits.Speak |
-				PermissionFlagsBits.MuteMembers |
-				PermissionFlagsBits.DeafenMembers |
-				PermissionFlagsBits.MoveMembers |
-				PermissionFlagsBits.UseVAD |
-				PermissionFlagsBits.ChangeNickname |
-				PermissionFlagsBits.ManageNicknames |
-				PermissionFlagsBits.ManageRoles |
-				PermissionFlagsBits.ManageWebhooks |
-				PermissionFlagsBits.ManageGuildExpressions |
-				PermissionFlagsBits.UseApplicationCommands |
-				PermissionFlagsBits.RequestToSpeak |
-				PermissionFlagsBits.ManageEvents |
-				PermissionFlagsBits.ManageThreads |
-				PermissionFlagsBits.CreatePublicThreads |
-				PermissionFlagsBits.CreatePrivateThreads |
-				PermissionFlagsBits.UseExternalStickers |
-				PermissionFlagsBits.SendMessagesInThreads |
-				PermissionFlagsBits.UseEmbeddedActivities |
-				PermissionFlagsBits.ModerateMembers |
-				PermissionFlagsBits.ViewCreatorMonetizationAnalytics |
-				PermissionFlagsBits.UseSoundboard |
-				PermissionFlagsBits.SendVoiceMessages;
+			const value = Object.values(PermissionFlagsBits).reduce((a, b) => a | b);
 			expect(toPermissionsArray(value)).toStrictEqual([
 				'CreateInstantInvite',
 				'KickMembers',
@@ -85,7 +42,6 @@ describe('Bits', () => {
 				'ManageNicknames',
 				'ManageRoles',
 				'ManageWebhooks',
-				'ManageEmojisAndStickers',
 				'ManageGuildExpressions',
 				'UseApplicationCommands',
 				'RequestToSpeak',
@@ -99,6 +55,7 @@ describe('Bits', () => {
 				'ModerateMembers',
 				'ViewCreatorMonetizationAnalytics',
 				'UseSoundboard',
+				'UseExternalSounds',
 				'SendVoiceMessages'
 			]);
 		});
@@ -111,13 +68,7 @@ describe('Bits', () => {
 		});
 
 		test('GIVEN all flags THEN returns an array with all the flags', () => {
-			const value =
-				GuildSystemChannelFlags.SuppressJoinNotifications |
-				GuildSystemChannelFlags.SuppressJoinNotificationReplies |
-				GuildSystemChannelFlags.SuppressPremiumSubscriptions |
-				GuildSystemChannelFlags.SuppressGuildReminderNotifications |
-				GuildSystemChannelFlags.SuppressRoleSubscriptionPurchaseNotifications |
-				GuildSystemChannelFlags.SuppressRoleSubscriptionPurchaseNotificationReplies;
+			const value = Object.values(enumToObject(GuildSystemChannelFlags)).reduce((a, b) => a | b);
 			expect(toChannelsArray(value)).toStrictEqual([
 				'SuppressJoinNotifications',
 				'SuppressPremiumSubscriptions',

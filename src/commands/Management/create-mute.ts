@@ -1,8 +1,7 @@
 import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
 import { Emojis } from '#utils/constants';
 import { getEmojiReactionFormat, getSecurity, promptConfirmation, promptForMessage, type SerializedEmoji } from '#utils/functions';

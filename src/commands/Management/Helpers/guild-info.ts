@@ -10,7 +10,7 @@ import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoic
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { GuildVerificationLevel, PermissionFlagsBits } from 'discord-api-types/v10';
 import { EmbedBuilder, PermissionsBitField, Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -179,7 +179,7 @@ export class UserCommand extends SkyraCommand {
 		return args.t(LanguageKeys.Commands.Management.GuildInfoOther, {
 			size: guild.roles.cache.size,
 			createdAt: time(seconds.fromMilliseconds(guild.createdTimestamp), TimestampStyles.ShortDateTime),
-			verificationLevel: guild.verificationLevel
+			verificationLevel: GuildVerificationLevel[guild.verificationLevel]
 		});
 	}
 }

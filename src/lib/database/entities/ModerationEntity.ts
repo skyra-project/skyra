@@ -3,7 +3,7 @@ import { readSettings } from '#lib/database/settings';
 import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { minutes, years } from '#utils/common';
 import {
 	TypeBits,

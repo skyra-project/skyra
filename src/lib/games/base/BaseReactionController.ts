@@ -1,7 +1,7 @@
 import { api } from '#lib/discord/Api';
 import { BaseController } from '#lib/games/base/BaseController';
 import type { BaseReactionGame } from '#lib/games/base/BaseReactionGame';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { getEmojiString } from '#utils/functions';
 import { cast } from '#utils/util';

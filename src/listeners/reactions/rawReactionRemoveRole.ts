@@ -1,5 +1,5 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { resolveEmojiId } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';

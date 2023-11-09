@@ -1315,17 +1315,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:^7.79.0":
-  version: 7.79.0
-  resolution: "@sentry/hub@npm:7.79.0"
-  dependencies:
-    "@sentry/core": 7.79.0
-    "@sentry/types": 7.79.0
-    "@sentry/utils": 7.79.0
-  checksum: 22b292e8802ef535a42d22b755535fbcd028b82baa6c13a57d6cbc98c7454e4b5fd04f1023f9fc41b74b561236b3abf040cbc1f93d1ebb779e3fa1b043f52aaa
-  languageName: node
-  linkType: hard
-
 "@sentry/integrations@npm:^7.79.0":
   version: 7.79.0
   resolution: "@sentry/integrations@npm:7.79.0"
@@ -7700,7 +7689,6 @@ __metadata:
     "@sapphire/time-utilities": ^1.7.10
     "@sapphire/ts-config": ^5.0.0
     "@sapphire/utilities": ^3.13.0
-    "@sentry/hub": ^7.79.0
     "@sentry/integrations": ^7.79.0
     "@sentry/node": ^7.79.0
     "@skyra/ai": ^1.2.0

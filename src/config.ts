@@ -10,7 +10,7 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
-import { envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
+import { envIsDefined, envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import {
 	ActivityType,
 	GatewayIntentBits,
@@ -40,7 +40,7 @@ export function parseAnalytics(): ConnectionOptions {
 }
 
 function parseApiAuth(): ServerOptionsAuth | undefined {
-	if (!process.env.OAUTH_SECRET) return undefined;
+	if (!envIsDefined('OAUTH_SECRET')) return undefined;
 
 	return {
 		id: envParseString('CLIENT_ID'),

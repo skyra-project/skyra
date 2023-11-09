@@ -10,7 +10,6 @@ import { Listener } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
 import { AttachmentBuilder, type MessageCreateOptions, type TextChannel } from 'discord.js';
 import { extname } from 'node:path';
-import { URL } from 'node:url';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte

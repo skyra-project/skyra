@@ -3,7 +3,7 @@ import { client } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
 import { container } from '@sapphire/framework';
 import { EmbedType, MessageFlags, type APIMessage } from 'discord-api-types/v10';
-import type { Message } from 'discord.js';
+import { Message } from 'discord.js';
 
 describe('formatters', () => {
 	describe('formatMessage', () => {

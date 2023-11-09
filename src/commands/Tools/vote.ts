@@ -2,8 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/rest/v10';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
 import { DiscordAPIError, Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({

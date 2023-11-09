@@ -11,13 +11,13 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, PermissionsBitField, Role } from 'discord.js';
+import { EmbedBuilder, type Role } from 'discord.js';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const roleMention = (role: Role): string => role.toString();
 const roleLimit = 15;
 
-const paginatedMessagePermissions = new PermissionsBitField([PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages]);
+const paginatedMessagePermissions = PermissionFlagsBits.AddReactions | PermissionFlagsBits.ManageMessages;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['server-info'],

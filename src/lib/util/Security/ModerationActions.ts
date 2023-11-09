@@ -8,25 +8,15 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
+import { DiscordAPIError } from '@discordjs/rest';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Nullish } from '@sapphire/utilities';
 import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
-import {
-	DiscordAPIError,
-	EmbedBuilder,
-	Guild,
-	GuildChannel,
-	GuildMember,
-	Message,
-	PermissionsBitField,
-	Role,
-	User,
-	type PermissionOverwriteOptions,
-	type RoleData
-} from 'discord.js';
+import type { Guild, GuildChannel, GuildMember, Message, PermissionOverwriteOptions, Role, RoleData, User } from 'discord.js';
 
 export const enum ModerationSetupRestriction {
 	All = 'rolesMuted',
@@ -115,21 +105,20 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { SendMessages: false, AddReactions: false, Connect: false, CreatePublicThreads: false, CreatePrivateThreads: false },
-				permissions: new PermissionsBitField(
+				permissions:
 					PermissionFlagsBits.SendMessages |
-						PermissionFlagsBits.AddReactions |
-						PermissionFlagsBits.Connect |
-						PermissionFlagsBits.CreatePublicThreads |
-						PermissionFlagsBits.CreatePrivateThreads
-				)
+					PermissionFlagsBits.AddReactions |
+					PermissionFlagsBits.Connect |
+					PermissionFlagsBits.CreatePublicThreads |
+					PermissionFlagsBits.CreatePrivateThreads
 			},
 			text: {
 				options: { SendMessages: false, AddReactions: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.SendMessages | PermissionFlagsBits.AddReactions)
+				permissions: PermissionFlagsBits.SendMessages | PermissionFlagsBits.AddReactions
 			},
 			voice: {
 				options: { Connect: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
+				permissions: PermissionFlagsBits.Connect
 			}
 		}
 	],
@@ -138,11 +127,11 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { AttachFiles: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.AttachFiles)
+				permissions: PermissionFlagsBits.AttachFiles
 			},
 			text: {
 				options: { AttachFiles: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.AttachFiles)
+				permissions: PermissionFlagsBits.AttachFiles
 			},
 			voice: null
 		}
@@ -152,11 +141,11 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { EmbedLinks: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.EmbedLinks)
+				permissions: PermissionFlagsBits.EmbedLinks
 			},
 			text: {
 				options: { EmbedLinks: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.EmbedLinks)
+				permissions: PermissionFlagsBits.EmbedLinks
 			},
 			voice: null
 		}
@@ -166,11 +155,11 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { UseExternalEmojis: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.UseExternalEmojis)
+				permissions: PermissionFlagsBits.UseExternalEmojis
 			},
 			text: {
 				options: { UseExternalEmojis: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.UseExternalEmojis)
+				permissions: PermissionFlagsBits.UseExternalEmojis
 			},
 			voice: null
 		}
@@ -180,11 +169,11 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { AddReactions: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.AddReactions)
+				permissions: PermissionFlagsBits.AddReactions
 			},
 			text: {
 				options: { AddReactions: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.AddReactions)
+				permissions: PermissionFlagsBits.AddReactions
 			},
 			voice: null
 		}
@@ -194,12 +183,12 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		{
 			category: {
 				options: { Connect: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
+				permissions: PermissionFlagsBits.Connect
 			},
 			text: null,
 			voice: {
 				options: { Connect: false },
-				permissions: new PermissionsBitField(PermissionFlagsBits.Connect)
+				permissions: PermissionFlagsBits.Connect
 			}
 		}
 	]
@@ -964,7 +953,7 @@ interface RolePermissionOverwriteOption {
 
 interface RolePermissionOverwriteOptionField {
 	options: PermissionOverwriteOptions;
-	permissions: PermissionsBitField;
+	permissions: bigint;
 }
 
 export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;

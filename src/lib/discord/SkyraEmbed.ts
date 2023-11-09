@@ -1,5 +1,5 @@
 import { ZeroWidthSpace } from '#utils/constants';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder } from '@discordjs/builders';
 
 export class SkyraEmbed extends EmbedBuilder {
 	public splitFields(contentOrTitle: string | string[], rawContent?: string | string[]) {

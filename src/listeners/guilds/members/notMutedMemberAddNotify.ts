@@ -3,10 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder, GuildMember } from 'discord.js';
+import type { GuildMember } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.NotMutedMemberAdd })
 export class UserListener extends Listener {

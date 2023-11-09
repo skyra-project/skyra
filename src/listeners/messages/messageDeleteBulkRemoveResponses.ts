@@ -1,11 +1,13 @@
 import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, getCommand } from '#utils/functions';
+import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { get } from '@sapphire/plugin-editable-commands';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import type { Collection, Message, Snowflake } from 'discord.js';
+import type { Snowflake } from 'discord-api-types/v10';
+import type { Message } from 'discord.js';
 
 type MessageCollection = Collection<Snowflake, Message>;
 

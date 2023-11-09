@@ -11,7 +11,7 @@ import type { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';
-import { EmbedBuilder, User } from 'discord.js';
+import { EmbedBuilder, type User } from 'discord.js';
 
 const enum Type {
 	Mute,

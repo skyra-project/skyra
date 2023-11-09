@@ -11,7 +11,7 @@ import { Enumerable } from '@sapphire/decorators';
 import { SapphireClient, container } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { envParseBoolean } from '@skyra/env-utilities';
-import { Message, WebhookClient } from 'discord.js';
+import { WebhookClient, type Message } from 'discord.js';
 
 export class SkyraClient extends SapphireClient {
 	@Enumerable(false)

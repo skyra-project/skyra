@@ -3,11 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { Listener } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
-import { AttachmentBuilder, EmbedBuilder, TextChannel, type MessageCreateOptions } from 'discord.js';
+import { AttachmentBuilder, type MessageCreateOptions, type TextChannel } from 'discord.js';
 import { extname } from 'node:path';
 import { URL } from 'node:url';
 

@@ -8,11 +8,13 @@ import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
+import { DiscordAPIError } from '@discordjs/rest';
 import { container, type MessageCommand } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v10';
-import { DiscordAPIError, EmbedBuilder, MessageCollector } from 'discord.js';
+import { MessageCollector } from 'discord.js';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = minutes(15);

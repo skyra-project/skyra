@@ -1,6 +1,7 @@
 import type { AccurateTimeout } from '#utils/Timers';
+import { Collection } from '@discordjs/collection';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Collection, Role } from 'discord.js';
+import type { Role } from 'discord.js';
 
 export class LockdownManager extends Collection<string, Collection<string, LockdownManager.Entry>> {
 	public add(role: Role, channel: LockdownManager.Channel, value: LockdownManager.Entry) {

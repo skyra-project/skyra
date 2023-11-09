@@ -2,15 +2,15 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { Colors } from '#utils/constants';
 import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
-import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {

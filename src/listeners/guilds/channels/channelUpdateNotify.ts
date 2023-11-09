@@ -4,22 +4,14 @@ import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { Colors, LongWidthSpace } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isDMChannel, isNsfwChannel, type GuildBasedChannelTypes, type NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import {
-	ChannelType,
-	DMChannel,
-	EmbedBuilder,
-	GuildChannel,
-	NewsChannel,
-	OverwriteType,
-	PermissionOverwrites,
-	TextChannel,
-	VoiceChannel
-} from 'discord.js';
+import { ChannelType, OverwriteType } from 'discord-api-types/v10';
+import type { DMChannel, GuildChannel, NewsChannel, PermissionOverwrites, TextChannel, VoiceChannel } from 'discord.js';
 
 type Channel = DMChannel | GuildChannel;
 

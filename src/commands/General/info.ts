@@ -3,13 +3,13 @@ import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKe
 import { SkyraArgs, SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 import { getColor, getEmbedAuthor } from '#utils/util';
-import { ActionRowBuilder, ButtonBuilder, TimestampStyles, time, type MessageActionRowComponentBuilder } from '@discordjs/builders';
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, TimestampStyles, time, type MessageActionRowComponentBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
 import { ButtonStyle, OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, PermissionsBitField, version as djsVersion, type Message } from 'discord.js';
+import { version as djsVersion, type Message } from 'discord.js';
 import { cpus, uptime, type CpuInfo } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -79,12 +79,11 @@ export class UserCommand extends SkyraCommand {
 	private get inviteLink() {
 		return this.container.client.generateInvite({
 			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
-			permissions: new PermissionsBitField([
-				PermissionFlagsBits.ViewChannel,
-				PermissionFlagsBits.ReadMessageHistory,
-				PermissionFlagsBits.SendMessages,
+			permissions:
+				PermissionFlagsBits.ViewChannel |
+				PermissionFlagsBits.ReadMessageHistory |
+				PermissionFlagsBits.SendMessages |
 				PermissionFlagsBits.EmbedLinks
-			])
 		});
 	}
 

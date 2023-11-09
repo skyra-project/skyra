@@ -9,13 +9,15 @@ import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
 import { TypeCodes, metadata } from '#utils/moderationConstants';
 import { getFullEmbedAuthor, getImageUrl } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
+import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, Argument, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
-import { AttachmentBuilder, Collection, EmbedBuilder, TextChannel } from 'discord.js';
+import { AttachmentBuilder, type TextChannel } from 'discord.js';
 
 const enum Position {
 	Before,

@@ -4,11 +4,12 @@ import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/modera
 import { Events, type CustomFunctionGet, type CustomGet, type GuildMessage } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, getSecurity, isModerator } from '#utils/functions';
+import { EmbedBuilder } from '@discordjs/builders';
 import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import type { Awaitable, Nullish } from '@sapphire/utilities';
-import type { EmbedBuilder, GuildMember } from 'discord.js';
+import type { GuildMember } from 'discord.js';
 
 export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	private readonly keyEnabled: GuildSettingsOfType<boolean>;

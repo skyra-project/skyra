@@ -1,7 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Argument } from '@sapphire/framework';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import type { Snowflake } from 'discord.js';
+import type { Snowflake } from 'discord-api-types/v10';
 
 export class UserArgument extends Argument<Snowflake> {
 	/**

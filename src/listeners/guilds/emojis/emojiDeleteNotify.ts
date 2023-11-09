@@ -1,10 +1,11 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder, GuildEmoji, TextChannel } from 'discord.js';
+import type { GuildEmoji, TextChannel } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiDelete })
 export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {

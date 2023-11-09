@@ -3,10 +3,11 @@ import { SkyraCommand } from '#lib/structures';
 import { minutes, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getTag, random } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Argument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { EmbedBuilder, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.PopDescription,

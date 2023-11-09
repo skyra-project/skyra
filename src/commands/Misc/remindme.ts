@@ -9,7 +9,7 @@ import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, Message } from 'discord.js';
+import { EmbedBuilder, type Message } from 'discord.js';
 
 const enum Actions {
 	List = 'list',

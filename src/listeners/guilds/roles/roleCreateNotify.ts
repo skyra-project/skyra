@@ -2,11 +2,12 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder, Role, TextChannel } from 'discord.js';
+import type { Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildRoleCreate })
 export class UserListener extends Listener<typeof Events.GuildRoleCreate> {

@@ -3,9 +3,10 @@ import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { getColor, getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { EmbedBuilder, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['escape'],

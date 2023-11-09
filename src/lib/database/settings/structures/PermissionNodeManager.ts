@@ -7,7 +7,7 @@ import type { SkyraCommand } from '#lib/structures';
 import { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { GuildMember, Role, User } from 'discord.js';
+import { Role, type GuildMember, type User } from 'discord.js';
 
 export const enum PermissionNodeAction {
 	Allow,

@@ -10,11 +10,11 @@ import {
 	type GatewayGuildMemberUpdateDispatch,
 	type RESTGetAPIAuditLogResult
 } from 'discord-api-types/v10';
-import { Guild, PermissionsBitField } from 'discord.js';
+import type { Guild } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export class UserListener extends Listener {
-	private readonly requiredPermissions = new PermissionsBitField(PermissionFlagsBits.ViewAuditLog);
+	private readonly requiredPermissions = PermissionFlagsBits.ViewAuditLog;
 
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);

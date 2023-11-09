@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { BrandingColors } from '#utils/constants';
-import { hyperlink } from '@discordjs/builders';
+import { EmbedBuilder, hyperlink } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 const flags = ['noperms', 'nopermissions'];
 

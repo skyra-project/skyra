@@ -5,9 +5,10 @@ import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent, getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { EmbedBuilder, TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 
 const NEW_LINE = '\n';
 

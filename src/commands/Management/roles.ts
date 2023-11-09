@@ -9,7 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, Role } from 'discord.js';
+import { EmbedBuilder, type Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>(
 	SkyraCommand.PaginatedOptions({

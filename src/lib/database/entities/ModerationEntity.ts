@@ -15,10 +15,11 @@ import {
 	type ModerationTypeAssets
 } from '#utils/moderationConstants';
 import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { UserError, container } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
 import { isNullishOrZero, isNumber, tryParseURL, type NonNullObject } from '@sapphire/utilities';
-import { EmbedBuilder, User } from 'discord.js';
+import { User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('moderation', { schema: 'public' })

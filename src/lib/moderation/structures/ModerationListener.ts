@@ -3,8 +3,9 @@ import type { HardPunishment } from '#lib/moderation/structures/ModerationMessag
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { seconds } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
-import { Listener } from '@sapphire/framework';
-import type { EmbedBuilder, Guild } from 'discord.js';
+import type { EmbedBuilder } from '@discordjs/builders';
+import { Listener, type Awaitable } from '@sapphire/framework';
+import type { Guild } from 'discord.js';
 
 export abstract class ModerationListener<V extends unknown[], T = unknown> extends Listener {
 	public abstract override run(...params: V): unknown;
@@ -106,11 +107,11 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected abstract keyEnabled: GuildSettingsOfType<boolean>;
 	protected abstract softPunishmentPath: GuildSettingsOfType<number>;
 	protected abstract hardPunishmentPath: HardPunishment;
-	protected abstract preProcess(args: Readonly<V>): Promise<T | null> | T | null;
+	protected abstract preProcess(args: Readonly<V>): Awaitable<T | null>;
 	protected abstract onLog(args: Readonly<V>, value: T): unknown;
 	protected abstract onDelete(args: Readonly<V>, value: T): unknown;
 	protected abstract onAlert(args: Readonly<V>, value: T): unknown;
-	protected abstract onLogMessage(args: Readonly<V>, value: T): Promise<EmbedBuilder> | EmbedBuilder;
+	protected abstract onLogMessage(args: Readonly<V>, value: T): Awaitable<EmbedBuilder>;
 }
 
 export namespace ModerationListener {

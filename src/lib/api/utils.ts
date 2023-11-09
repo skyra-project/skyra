@@ -3,6 +3,7 @@ import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginD
 import * as GuildSettings from '#lib/database/keys/settings/All';
 import { readSettings } from '#lib/database/settings';
 import type { SkyraCommand } from '#lib/structures';
+import { PermissionsBits } from '#lib/util/bits';
 import { createFunctionPrecondition } from '@sapphire/decorators';
 import { container } from '@sapphire/framework';
 import { ApiRequest, ApiResponse, HttpCodes, type LoginData } from '@sapphire/plugin-api';
@@ -18,7 +19,7 @@ import {
 	PermissionFlagsBits,
 	type RESTAPIPartialCurrentUserGuild
 } from 'discord-api-types/v10';
-import { Client, Guild, GuildMember, PermissionsBitField } from 'discord.js';
+import type { Client, Guild, GuildMember } from 'discord.js';
 
 function isAdmin(member: GuildMember, roles: readonly string[]): boolean {
 	return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.ManageGuild) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
@@ -75,7 +76,7 @@ export async function canManage(guild: Guild, member: GuildMember): Promise<bool
 
 async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {
 	if (oauthGuild.owner) return true;
-	if (typeof guild === 'undefined') return new PermissionsBitField(BigInt(oauthGuild.permissions)).has(PermissionFlagsBits.ManageGuild);
+	if (typeof guild === 'undefined') return PermissionsBits.has(BigInt(oauthGuild.permissions), PermissionFlagsBits.ManageGuild);
 
 	const member = await guild.members.fetch(id).catch(() => null);
 	if (!member) return false;

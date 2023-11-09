@@ -3,11 +3,11 @@ import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { getSnipedMessage } from '#utils/functions';
 import { getColor, getContent, getFullEmbedAuthor, getImage } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['sniped'],

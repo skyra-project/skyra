@@ -3,11 +3,11 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { getContent, getFullEmbedAuthor, getImage } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { cutText, isNullish } from '@sapphire/utilities';
-import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildMessageDelete })
 export class UserListener extends Listener {

@@ -1,11 +1,12 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder, type CategoryChannel, type NewsChannel, type TextChannel, type VoiceChannel } from 'discord.js';
+import type { CategoryChannel, NewsChannel, TextChannel, VoiceChannel } from 'discord.js';
 
 type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel;
 

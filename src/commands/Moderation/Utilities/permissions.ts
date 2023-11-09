@@ -4,11 +4,11 @@ import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { PermissionsBits, PermissionsBitsList } from '#utils/bits';
 import { ZeroWidthSpace } from '#utils/constants';
 import { getColor, getTag } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,

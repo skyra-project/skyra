@@ -4,13 +4,15 @@ import type { SkyraArgs } from '#lib/structures';
 import { OWNERS } from '#root/config';
 import { Colors, ZeroWidthSpace, rootFolder } from '#utils/constants';
 import { sendTemporaryMessage } from '#utils/functions';
+import { EmbedBuilder } from '@discordjs/builders';
+import { DiscordAPIError, HTTPError } from '@discordjs/rest';
 import { Args, ArgumentError, Command, Events, Listener, UserError, type MessageCommandErrorPayload } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, cutText, type NonNullObject } from '@sapphire/utilities';
 import { captureException } from '@sentry/node';
 import { envIsDefined } from '@skyra/env-utilities';
 import { RESTJSONErrorCodes, Routes } from 'discord-api-types/v10';
-import { DiscordAPIError, EmbedBuilder, HTTPError, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 

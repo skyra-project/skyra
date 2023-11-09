@@ -2,8 +2,8 @@ import type { GuildMessage } from '#lib/types';
 import { client } from '#mocks/MockInstances';
 import { formatMessage } from '#utils/formatters';
 import { container } from '@sapphire/framework';
-import { type APIMessage, EmbedType, MessageFlags } from 'discord-api-types/v10';
-import { Message } from 'discord.js';
+import { EmbedType, MessageFlags, type APIMessage } from 'discord-api-types/v10';
+import type { Message } from 'discord.js';
 
 describe('formatters', () => {
 	describe('formatMessage', () => {

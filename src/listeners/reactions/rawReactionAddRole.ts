@@ -1,12 +1,12 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
-import { resolveEmojiId, sendTemporaryMessage, type SerializedEmoji } from '#utils/functions';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { resolveEmojiId, sendTemporaryMessage, type SerializedEmoji } from '#utils/functions';
+import { DiscordAPIError } from '@discordjs/rest';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { resolveKey } from '@sapphire/plugin-i18next';
-import { DiscordAPIError } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {

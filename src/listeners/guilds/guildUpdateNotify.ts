@@ -1,24 +1,23 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toChannelsArray } from '#utils/bits';
-import { seconds } from '#utils/common';
-import { differenceArray, differenceBitField } from '#utils/common/comparators';
+import { differenceArray, differenceBitField, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import {
-	EmbedBuilder,
-	GuildMFALevel,
-	type Guild,
-	type GuildDefaultMessageNotifications,
-	type GuildExplicitContentFilter,
-	type GuildFeature,
-	type GuildPremiumTier,
-	type GuildVerificationLevel,
-	type SystemChannelFlagsBitField,
-	type TextChannel
+import { GuildMFALevel } from 'discord-api-types/v10';
+import type {
+	Guild,
+	GuildDefaultMessageNotifications,
+	GuildExplicitContentFilter,
+	GuildFeature,
+	GuildPremiumTier,
+	GuildVerificationLevel,
+	SystemChannelFlagsBitField,
+	TextChannel
 } from 'discord.js';
 
 type ChannelFlags = Readonly<SystemChannelFlagsBitField>;

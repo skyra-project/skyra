@@ -11,10 +11,12 @@ import type { CustomFunctionGet, CustomGet } from '#lib/types/Utils';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { EmojiObject } from '#utils/functions';
+import type { EmbedBuilder } from '@discordjs/builders';
 import type { Piece, Store } from '@sapphire/framework';
-import type { Nullish } from '@sapphire/utilities';
+import type { Awaitable, Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
-import type { EmbedBuilder, Guild, GuildChannel, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
+import type { Snowflake } from 'discord-api-types/v10';
+import type { Guild, GuildChannel, NewsChannel, Role, TextChannel, User } from 'discord.js';
 
 declare module 'discord.js' {
 	interface Client {
@@ -91,7 +93,7 @@ declare module '@sapphire/framework' {
 			guild: Guild,
 			channelId: string | Nullish,
 			key: GuildSettingsOfType<string | Nullish>,
-			makeMessage: () => Promise<EmbedBuilder> | EmbedBuilder
+			makeMessage: () => Awaitable<EmbedBuilder>
 		): boolean;
 		emit(event: Events.ReactionBlocked, data: LLRCData, emoji: string): boolean;
 		emit(event: Events.ResourceAnalyticsSync): boolean;

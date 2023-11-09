@@ -1,10 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { getColor, getDisplayAvatar, getEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { type ImageSize, EmbedBuilder, Message } from 'discord.js';
+import type { ImageSize, Message } from 'discord.js';
 
 const VALID_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096] as const satisfies readonly ImageSize[];
 

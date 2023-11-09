@@ -10,7 +10,7 @@ import { canReact } from '@sapphire/discord.js-utilities';
 import { Argument, CommandOptionsRunTypeEnum, Result, UserError } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { Role } from 'discord.js';
+import type { Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	cooldownDelay: minutes(5),

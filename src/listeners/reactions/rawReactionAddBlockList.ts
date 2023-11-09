@@ -3,16 +3,17 @@ import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationListener, SelfModeratorBitField, type HardPunishment } from '#lib/moderation';
 import { Events } from '#lib/types';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
-import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap, type Nullish } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, GuildMember } from 'discord.js';
+import type { GuildMember } from 'discord.js';
 
 type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
 

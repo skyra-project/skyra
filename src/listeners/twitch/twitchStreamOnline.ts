@@ -3,13 +3,13 @@ import { Events, TwitchEventSubTypes, type TwitchEventSubOnlineEvent, type Twitc
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { floatPromise } from '#utils/common';
 import { extractDetailedMentions } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, type TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({
 	event: Events.TwitchStreamOnline

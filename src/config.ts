@@ -129,10 +129,10 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 					return getT(language)(`humanLevels:${GuildVerificationLevel[value]}`, options);
 				}
 				case LanguageFormatters.ExplicitContentFilter: {
-					return getT(language)(`guilds:${GuildExplicitContentFilter[value]}`, options);
+					return getT(language)(`guilds:explicitContentFilter${GuildExplicitContentFilter[value]}`, options);
 				}
 				case LanguageFormatters.MessageNotifications: {
-					return getT(language)(`guilds:${GuildDefaultMessageNotifications[value]}`, options);
+					return getT(language)(`guilds:defaultMessageNotifications${GuildDefaultMessageNotifications[value]}`, options);
 				}
 				case LanguageFormatters.Number: {
 					return getHandler(language!).number.format(value as number);

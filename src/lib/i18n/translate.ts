@@ -52,10 +52,41 @@ export function translate(identifier: string): string {
 		case Identifiers.ArgumentEnumEmptyError:
 		case Identifiers.ArgumentEnumError:
 			return `arguments:${identifier}`;
+
 		case Identifiers.CommandDisabled:
 			return LanguageKeys.Preconditions.DisabledGlobal;
 		case Identifiers.PreconditionCooldown:
 			return LanguageKeys.Preconditions.Cooldown;
+
+		case Identifiers.PreconditionNSFW:
+			return LanguageKeys.Preconditions.Nsfw;
+		case Identifiers.PreconditionClientPermissions:
+		case DecoratorIdentifiers.RequiresClientPermissionsMissingPermissions:
+			return LanguageKeys.Preconditions.ClientPermissions;
+		case Identifiers.PreconditionClientPermissionsNoClient:
+			return LanguageKeys.Preconditions.ClientPermissionsNoClient;
+		case Identifiers.PreconditionClientPermissionsNoPermissions:
+			return LanguageKeys.Preconditions.ClientPermissionsNoPermissions;
+		case Identifiers.PreconditionRunIn:
+			return LanguageKeys.Preconditions.RunIn;
+		case Identifiers.PreconditionUserPermissions:
+		case DecoratorIdentifiers.RequiresUserPermissionsMissingPermissions:
+			return LanguageKeys.Preconditions.UserPermissions;
+		case Identifiers.PreconditionUserPermissionsNoPermissions:
+			return LanguageKeys.Preconditions.UserPermissionsNoPermissions;
+		case Identifiers.PreconditionUnavailable:
+			return LanguageKeys.Preconditions.Unavailable;
+		case Identifiers.PreconditionMissingMessageHandler:
+			return LanguageKeys.Preconditions.MissingMessageHandler;
+		case Identifiers.PreconditionMissingChatInputHandler:
+			return LanguageKeys.Preconditions.MissingChatInputHandler;
+		case Identifiers.PreconditionMissingContextMenuHandler:
+			return LanguageKeys.Preconditions.MissingContextMenuHandler;
+		case DecoratorIdentifiers.RequiresClientPermissionsGuildOnly:
+		case DecoratorIdentifiers.RequiresUserPermissionsGuildOnly:
+			return LanguageKeys.Preconditions.GuildOnly;
+
+		// Sapphire (deprecated)
 		case Identifiers.PreconditionDMOnly:
 			return LanguageKeys.Preconditions.DmOnly;
 		case Identifiers.PreconditionGuildNewsOnly:
@@ -63,25 +94,15 @@ export function translate(identifier: string): string {
 		case Identifiers.PreconditionGuildNewsThreadOnly:
 			return LanguageKeys.Preconditions.GuildNewsThreadOnly;
 		case Identifiers.PreconditionGuildOnly:
-		case DecoratorIdentifiers.RequiresClientPermissionsGuildOnly:
-		case DecoratorIdentifiers.RequiresUserPermissionsGuildOnly:
-			return LanguageKeys.Preconditions.GuildOnly;
 		case Identifiers.PreconditionGuildPrivateThreadOnly:
 			return LanguageKeys.Preconditions.GuildPrivateThreadOnly;
 		case Identifiers.PreconditionGuildPublicThreadOnly:
 			return LanguageKeys.Preconditions.GuildPublicThreadOnly;
 		case Identifiers.PreconditionGuildTextOnly:
 			return LanguageKeys.Preconditions.GuildTextOnly;
-		case Identifiers.PreconditionNSFW:
-			return LanguageKeys.Preconditions.Nsfw;
-		case Identifiers.PreconditionClientPermissions:
-		case DecoratorIdentifiers.RequiresClientPermissionsMissingPermissions:
-			return LanguageKeys.Preconditions.ClientPermissions;
-		case Identifiers.PreconditionUserPermissions:
-		case DecoratorIdentifiers.RequiresUserPermissionsMissingPermissions:
-			return LanguageKeys.Preconditions.UserPermissions;
 		case Identifiers.PreconditionThreadOnly:
 			return LanguageKeys.Preconditions.ThreadOnly;
+
 		default:
 			return identifier;
 	}

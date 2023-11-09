@@ -126,8 +126,6 @@ declare module '@skyra/env-utilities' {
 		CLIENT_PRESENCE_NAME: string;
 		CLIENT_PRESENCE_TYPE: string;
 
-		SISTER_CLIENTS: ArrayString;
-
 		API_ENABLED: BooleanString;
 		API_ORIGIN: string;
 		API_PORT: IntegerString;

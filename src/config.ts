@@ -28,7 +28,6 @@ import { join } from 'node:path';
 setup(join(rootFolder, 'src', '.env'));
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
-export const SISTER_CLIENTS = envParseArray('SISTER_CLIENTS');
 
 export function parseAnalytics(): ConnectionOptions {
 	const url = envParseString('INFLUX_URL');

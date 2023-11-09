@@ -10,9 +10,9 @@ import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { GuildMember, Role, User } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 

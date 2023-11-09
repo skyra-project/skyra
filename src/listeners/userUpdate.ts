@@ -5,8 +5,8 @@ import { filter, map } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { EmbedBuilder, Guild, User } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 export class UserListener extends Listener {
 	public async run(previous: User, user: User) {

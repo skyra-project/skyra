@@ -1,16 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { LockdownManager, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { floatPromise } from '#utils/common';
 import { assertNonThread, getSecurity } from '#utils/functions';
-import { clearAccurateTimeout, setAccurateTimeout } from '#utils/Timers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages, type NonThreadGuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Role } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['lock', 'unlock'],

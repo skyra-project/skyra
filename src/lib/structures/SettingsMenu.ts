@@ -9,10 +9,10 @@ import { deleteMessage } from '#utils/functions';
 import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { container, type MessageCommand } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { deepClone } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v10';
 import { DiscordAPIError, EmbedBuilder, MessageCollector } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = minutes(15);

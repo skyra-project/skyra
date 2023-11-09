@@ -1,20 +1,28 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { DecoratorIdentifiers } from '@sapphire/decorators';
-import { Identifiers } from '@sapphire/framework';
-import type { TFunction } from '@sapphire/plugin-i18next';
+import { Identifiers, container } from '@sapphire/framework';
+import type { InternationalizationContext, TFunction } from '@sapphire/plugin-i18next';
+import type { Nullish } from '@sapphire/utilities';
+import type { LocaleString } from 'discord-api-types/v10';
 
 export function translate(identifier: string): string {
 	switch (identifier) {
+		case Identifiers.ArgsUnavailable:
+			return LanguageKeys.Arguments.Unavailable;
+		case Identifiers.ArgsMissing:
+			return LanguageKeys.Arguments.Missing;
 		case Identifiers.ArgumentBooleanError:
 		case Identifiers.ArgumentChannelError:
 		case Identifiers.ArgumentDateError:
 		case Identifiers.ArgumentDateTooEarly:
 		case Identifiers.ArgumentDateTooFar:
 		case Identifiers.ArgumentDMChannelError:
+		case Identifiers.ArgumentEmojiError:
 		case Identifiers.ArgumentFloatError:
 		case Identifiers.ArgumentFloatTooLarge:
 		case Identifiers.ArgumentFloatTooSmall:
+		case Identifiers.ArgumentGuildError:
 		case Identifiers.ArgumentGuildCategoryChannelError:
 		case Identifiers.ArgumentGuildChannelError:
 		case Identifiers.ArgumentGuildChannelMissingGuildError:
@@ -41,11 +49,9 @@ export function translate(identifier: string): string {
 		case Identifiers.ArgumentStringTooLong:
 		case Identifiers.ArgumentStringTooShort:
 		case Identifiers.ArgumentUserError:
+		case Identifiers.ArgumentEnumEmptyError:
+		case Identifiers.ArgumentEnumError:
 			return `arguments:${identifier}`;
-		case Identifiers.ArgsUnavailable:
-			return LanguageKeys.Arguments.Unavailable;
-		case Identifiers.ArgsMissing:
-			return LanguageKeys.Arguments.Missing;
 		case Identifiers.CommandDisabled:
 			return LanguageKeys.Preconditions.DisabledGlobal;
 		case Identifiers.PreconditionCooldown:
@@ -85,4 +91,32 @@ export type TResolvable = SkyraArgs | TFunction;
 
 export function resolveT(t: TResolvable): TFunction {
 	return typeof t === 'function' ? t : t.t;
+}
+
+/**
+ * Returns a translation function for the specified locale, or the default 'en-US' if none is provided.
+ * @param locale The locale to get the translation function for.
+ * @returns The translation function for the specified locale.
+ */
+export function getT(locale?: LocaleString | Nullish) {
+	return container.i18n.getT(locale ?? 'en-US');
+}
+
+/**
+ * Fetches the language for the given {@link InternationalizationContext}.
+ * If the language cannot be fetched, defaults to 'en-US'.
+ * @param context The InternationalizationContext to fetch the language for.
+ * @returns The fetched language as a {@link LocaleString}.
+ */
+export async function fetchLanguage(context: InternationalizationContext) {
+	return ((await container.i18n.fetchLanguage(context)) ?? 'en-US') as LocaleString;
+}
+
+/**
+ * Fetches the translation function for the given context.
+ * @param context The internationalization context.
+ * @returns The translation function.
+ */
+export async function fetchT(context: InternationalizationContext) {
+	return getT(await fetchLanguage(context));
 }

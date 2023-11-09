@@ -2,8 +2,8 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { AliasedCollection } from '#lib/database/settings/structures/collections/AliasedCollection';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, isNullish, toTitleCase } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 

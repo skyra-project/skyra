@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, ZeroWidthSpace } from '#lib/util/constants';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
 import { PermissionFlagsBits, type APIUser } from 'discord-api-types/v10';
 import {
@@ -17,7 +18,6 @@ import {
 	type User,
 	type UserResolvable
 } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],

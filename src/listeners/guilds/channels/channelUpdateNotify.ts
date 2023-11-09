@@ -7,6 +7,7 @@ import { Colors, LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isDMChannel, isNsfwChannel, type GuildBasedChannelTypes, type NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import {
 	ChannelType,
@@ -19,7 +20,6 @@ import {
 	TextChannel,
 	VoiceChannel
 } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 type Channel = DMChannel | GuildChannel;
 

@@ -2,13 +2,13 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { urlRegex } from '#utils/Links/UrlRegex';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
-import { urlRegex } from '#utils/Links/UrlRegex';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { EmbedBuilder, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationLinks,

@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { EmbedBuilder, GuildEmoji, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiCreate })
 export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {

@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { EmbedBuilder, type CategoryChannel, type NewsChannel, type TextChannel, type VoiceChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel;
 

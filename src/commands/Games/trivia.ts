@@ -7,10 +7,10 @@ import { sendLoadingMessage, shuffle } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { EmbedBuilder, Message, MessageCollector, User } from 'discord.js';
 import he from 'he';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Games.TriviaDescription,

@@ -4,13 +4,15 @@ import { AdderManager } from '#lib/database/settings/structures/AdderManager';
 import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
 import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { create } from '#utils/Security/RegexCreator';
 import { minutes, years } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
 import { container } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { arrayStrictEquals, type NonNullObject, type PickByValue } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
+import type { LocaleString } from 'discord-api-types/v10';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })
@@ -670,7 +672,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	 * Gets the [[Language]] for this entity.
 	 */
 	public getLanguage(): TFunction {
-		return container.i18n.getT(this.language);
+		return getT(this.language as LocaleString);
 	}
 
 	/**

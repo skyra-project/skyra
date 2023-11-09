@@ -5,8 +5,8 @@ import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
 
 export enum AKeys {
 	Enable,

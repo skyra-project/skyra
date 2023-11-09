@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { Argument, Identifiers } from '@sapphire/framework';
 import type { PieceContext } from '@sapphire/pieces';
-import { cast } from '@sapphire/utilities';
-import { t } from 'i18next';
+import { filterNullish } from '@sapphire/utilities';
 
 export class CoreArgument extends Argument<boolean> {
 	private defaultTruthValues: string[] | null = null;
@@ -29,10 +29,10 @@ export class CoreArgument extends Argument<boolean> {
 	}
 
 	private get getDefaultTruthValues() {
-		return (this.defaultTruthValues ??= cast<string[]>(t(LanguageKeys.Arguments.BooleanTrueOptions, { lng: 'en-US' })).filter(Boolean));
+		return (this.defaultTruthValues ??= getT('en-US')(LanguageKeys.Arguments.BooleanTrueOptions).filter(filterNullish));
 	}
 
 	private get getDefaultFalseValues() {
-		return (this.defaultFalseValues ??= cast<string[]>(t(LanguageKeys.Arguments.BooleanFalseOptions, { lng: 'en-US' })).filter(Boolean));
+		return (this.defaultFalseValues ??= getT('en-US')(LanguageKeys.Arguments.BooleanFalseOptions).filter(filterNullish));
 	}
 }

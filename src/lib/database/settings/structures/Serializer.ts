@@ -4,10 +4,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraArgs } from '#lib/structures';
 import { AliasPiece, ArgumentError, UserError } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { Result } from '@sapphire/result';
 import type { Awaitable, NonNullObject } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
-import type { TFunction } from 'i18next';
-import { Result } from '@sapphire/result';
 
 export type SerializerResult<T> = Result<T, Error>;
 export type AsyncSerializerResult<T> = Promise<Result<T, Error>>;

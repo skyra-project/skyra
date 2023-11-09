@@ -4,9 +4,9 @@ import { BrandingColors } from '#utils/constants';
 import { hyperlink } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
 import { EmbedBuilder, Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const flags = ['noperms', 'nopermissions'];
 

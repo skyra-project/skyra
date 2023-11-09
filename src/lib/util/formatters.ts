@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { cleanMentions, getTag } from '#utils/util';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import type { APIEmbedField } from 'discord-api-types/v10';
 import type { Attachment, Embed, EmbedAssetData, EmbedFooterData, Guild, User } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 export function formatMessage(t: TFunction, message: GuildMessage): string {
 	const header = formatHeader(t, message);

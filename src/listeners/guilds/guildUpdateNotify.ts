@@ -6,6 +6,7 @@ import { differenceArray, differenceBitField } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import {
 	EmbedBuilder,
@@ -19,7 +20,6 @@ import {
 	type SystemChannelFlagsBitField,
 	type TextChannel
 } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 type ChannelFlags = Readonly<SystemChannelFlagsBitField>;
 type Features = readonly `${GuildFeature}`[];

@@ -5,9 +5,9 @@ import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildMemberUpdate })
 export class UserListener extends Listener {

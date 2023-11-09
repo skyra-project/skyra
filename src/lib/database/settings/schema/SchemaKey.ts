@@ -6,8 +6,8 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { CustomGet } from '#lib/types';
 import { container } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, type NonNullObject } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**

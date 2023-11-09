@@ -6,11 +6,11 @@ import { getColor, splitMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
-import { Args, container, Result, type MessageCommand } from '@sapphire/framework';
+import { Args, Result, container, type MessageCommand } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Collection, EmbedBuilder, Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 /**
  * Sorts a collection alphabetically as based on the keys, rather than the values.
@@ -150,8 +150,7 @@ export class UserCommand extends SkyraCommand {
 			.setReminder(builderData.reminders);
 
 		const extendedHelpData = args.t(command.detailedDescription, {
-			replace: { prefix: prefixUsed },
-			postProcess: 'helpUsagePostProcessor'
+			replace: { prefix: prefixUsed }
 		}) as LanguageHelpDisplayOptions;
 		const extendedHelp = builder.display(command.name, this.formatAliases(args.t, command.aliases), extendedHelpData, prefixUsed);
 

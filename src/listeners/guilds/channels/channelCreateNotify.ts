@@ -6,9 +6,9 @@ import { Colors, LongWidthSpace } from '#utils/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { ChannelType, EmbedBuilder, GuildChannel, NewsChannel, OverwriteType, PermissionOverwrites, TextChannel, VoiceChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<Listener.Options>({ event: Events.ChannelCreate })
 export class UserListener extends Listener<typeof Events.ChannelCreate> {

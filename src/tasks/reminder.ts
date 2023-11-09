@@ -1,9 +1,9 @@
 import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { resolveOnErrorCodes } from '#utils/common';
 import { TimestampStyles, time } from '@discordjs/builders';
 import { RESTJSONErrorCodes } from 'discord-api-types/v10';
-import i18next from 'i18next';
 
 export class UserTask extends Task {
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
@@ -12,7 +12,7 @@ export class UserTask extends Task {
 
 		if (user) {
 			const timestamp = time(new Date(), TimestampStyles.ShortDateTime);
-			const reminderHeader = i18next.t(LanguageKeys.System.ReminderHeader, { timestamp });
+			const reminderHeader = getT('en-US')(LanguageKeys.System.ReminderHeader, { timestamp });
 
 			await resolveOnErrorCodes(
 				//

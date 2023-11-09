@@ -10,6 +10,7 @@ import { TypeCodes } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Nullish } from '@sapphire/utilities';
 import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
@@ -26,7 +27,6 @@ import {
 	type PermissionOverwriteOptions,
 	type RoleData
 } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 export const enum ModerationSetupRestriction {
 	All = 'rolesMuted',

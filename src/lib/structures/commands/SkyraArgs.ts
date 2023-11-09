@@ -1,7 +1,7 @@
 import { Args, Result, UserError, type MessageCommand } from '@sapphire/framework';
 import { ArgumentStream, Parser } from '@sapphire/lexure';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import type { Message } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 export class SkyraArgs extends Args {
 	public override t: TFunction;

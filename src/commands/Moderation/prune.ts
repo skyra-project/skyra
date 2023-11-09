@@ -2,20 +2,20 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { urlRegex } from '#utils/Links/UrlRegex';
 import { days, floatPromise, seconds } from '#utils/common';
 import { andMix, type BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
-import { urlRegex } from '#utils/Links/UrlRegex';
-import { metadata, TypeCodes } from '#utils/moderationConstants';
+import { TypeCodes, metadata } from '#utils/moderationConstants';
 import { getFullEmbedAuthor, getImageUrl } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
 import { Args, Argument, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
 import { AttachmentBuilder, Collection, EmbedBuilder, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 const enum Position {
 	Before,

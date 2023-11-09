@@ -2,17 +2,17 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { minutes } from '#utils/common';
 import { deleteMessage, isModerator } from '#utils/functions';
-import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { TFunction } from 'i18next';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({

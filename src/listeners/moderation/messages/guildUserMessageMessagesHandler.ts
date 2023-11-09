@@ -6,8 +6,8 @@ import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent, getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { EmbedBuilder, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
 
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationMessages,

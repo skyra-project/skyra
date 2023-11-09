@@ -2,7 +2,7 @@ import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { getHandler } from '#root/languages/index';
 import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
@@ -10,17 +10,18 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
-import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import { envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import {
 	ActivityType,
 	GatewayIntentBits,
 	GuildDefaultMessageNotifications,
 	GuildExplicitContentFilter,
-	PermissionFlagsBits
+	GuildVerificationLevel,
+	PermissionFlagsBits,
+	type LocaleString
 } from 'discord-api-types/v10';
 import { Options, Partials, type ActivitiesOptions, type ClientOptions, type OAuth2Scopes, type WebhookClientData } from 'discord.js';
-import i18next, { type FormatFunction, type InterpolationOptions } from 'i18next';
+import type { FormatFunction, InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 
 // Read config:
@@ -108,7 +109,8 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 	return {
 		escapeValue: false,
 		defaultVariables: parseInternationalizationDefaultVariables(),
-		format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
+		format: (...[value, format, lng, options]: Parameters<FormatFunction>) => {
+			const language = (lng ?? 'en-US') as LocaleString;
 			switch (format as LanguageFormatters) {
 				case LanguageFormatters.AndList: {
 					return getHandler(language!).listAnd.format(value as string[]);
@@ -117,46 +119,20 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 					return getHandler(language!).listOr.format(value as string[]);
 				}
 				case LanguageFormatters.Permissions: {
-					return i18next.t(`permissions:${value}`, { ...options, lng: language });
+					return getT(language)(`permissions:${value}`, options);
 				}
 				case LanguageFormatters.PermissionsAndList: {
-					return getHandler(language!).listAnd.format(
-						(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
-					);
+					const t = getT(language);
+					return getHandler(language!).listAnd.format((value as string[]).map((value) => t(`permissions:${value}`, options)));
 				}
 				case LanguageFormatters.HumanLevels: {
-					return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
-				}
-				case LanguageFormatters.ToTitleCase: {
-					return toTitleCase(value);
+					return getT(language)(`humanLevels:${GuildVerificationLevel[value]}`, options);
 				}
 				case LanguageFormatters.ExplicitContentFilter: {
-					switch (value as GuildExplicitContentFilter) {
-						case GuildExplicitContentFilter.Disabled:
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterDisabled, { ...options, lng: language });
-						case GuildExplicitContentFilter.MembersWithoutRoles:
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterMembersWithoutRoles, { ...options, lng: language });
-						case GuildExplicitContentFilter.AllMembers:
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterAllMembers, { ...options, lng: language });
-						default:
-							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-					}
+					return getT(language)(`guilds:${GuildExplicitContentFilter[value]}`, options);
 				}
 				case LanguageFormatters.MessageNotifications: {
-					switch (value as GuildDefaultMessageNotifications) {
-						case GuildDefaultMessageNotifications.AllMessages:
-							return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
-						case GuildDefaultMessageNotifications.OnlyMentions:
-							return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
-						default:
-							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-					}
-				}
-				case LanguageFormatters.CodeBlock: {
-					return codeBlock('', value);
-				}
-				case LanguageFormatters.JsCodeBlock: {
-					return codeBlock('js', value);
+					return getT(language)(`guilds:${GuildDefaultMessageNotifications[value]}`, options);
 				}
 				case LanguageFormatters.Number: {
 					return getHandler(language!).number.format(value as number);

@@ -94,6 +94,7 @@ export function translate(identifier: string): string {
 		case Identifiers.PreconditionGuildNewsThreadOnly:
 			return LanguageKeys.Preconditions.GuildNewsThreadOnly;
 		case Identifiers.PreconditionGuildOnly:
+			return LanguageKeys.Preconditions.GuildOnly;
 		case Identifiers.PreconditionGuildPrivateThreadOnly:
 			return LanguageKeys.Preconditions.GuildPrivateThreadOnly;
 		case Identifiers.PreconditionGuildPublicThreadOnly:

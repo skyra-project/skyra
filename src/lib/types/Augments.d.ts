@@ -15,8 +15,7 @@ import type { EmbedBuilder } from '@discordjs/builders';
 import type { Piece, Store } from '@sapphire/framework';
 import type { Awaitable, Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
-import type { Snowflake } from 'discord-api-types/v10';
-import type { Guild, GuildChannel, NewsChannel, Role, TextChannel, User } from 'discord.js';
+import type { Guild, GuildChannel, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 
 declare module 'discord.js' {
 	interface Client {

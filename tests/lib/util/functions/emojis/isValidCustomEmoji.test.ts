@@ -1,5 +1,11 @@
-import { encodedBunnyTwemoji, animatedSkyraGlasses, staticSkyra, serializedAnimatedSkyraGlasses, serializedStaticSkyra } from '#mocks/constants';
 import { isValidCustomEmoji } from '#utils/functions';
+import {
+	animatedSkyraGlasses,
+	encodedBunnyTwemoji,
+	serializedAnimatedSkyraGlasses,
+	serializedStaticSkyra,
+	staticSkyra
+} from '../../../../mocks/constants.js';
 
 describe('isValidCustomEmoji', () => {
 	test('GIVEN encoded twemoji THEN returns false', () => {

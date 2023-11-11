@@ -16,7 +16,6 @@
 			"#lib/moderation/workers": ["lib/moderation/workers/index.js"],
 			"#lib/structures": ["lib/structures/index.js"],
 			"#lib/structures/managers": ["lib/structures/managers/index.js"],
-			"#lib/structures/color": ["lib/structures/color/index.js"],
 			"#lib/setup": ["lib/setup/index.js"],
 			"#lib/types": ["lib/types/index.js"],
 			"#lib/i18n/languageKeys": ["lib/i18n/languageKeys/index.js"],

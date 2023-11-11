@@ -4,19 +4,24 @@ import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
 import {
 	ChannelType,
+	Embed,
+	Guild,
 	GuildFeature,
+	GuildMember,
 	GuildMemberFlags,
 	GuildNSFWLevel,
 	GuildSystemChannelFlags,
+	Role,
 	RoleFlags,
+	TextChannel,
+	User,
 	type APIChannel,
+	type APIEmbed,
 	type APIGuild,
 	type APIGuildMember,
 	type APIRole,
-	type APIUser,
-	type APIEmbed
-} from 'discord-api-types/v10';
-import { Embed, Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
+	type APIUser
+} from 'discord.js';
 import { resolve } from 'node:path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
@@ -159,9 +164,7 @@ function addCommand(command: SkyraCommand) {
 }
 
 class Command extends SkyraCommand {
-	public override messageRun(): unknown {
-		throw new Error('Method not implemented.');
-	}
+	public override messageRun = vi.fn();
 }
 addCommand(
 	new Command(

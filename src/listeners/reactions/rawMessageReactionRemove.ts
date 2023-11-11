@@ -2,8 +2,7 @@ import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReadMessages, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { GatewayDispatchEvents, type GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v10';
-import type { TextChannel } from 'discord.js';
+import { GatewayDispatchEvents, type GatewayMessageReactionRemoveDispatch, type TextChannel } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageReactionRemove, emitter: 'ws' })
 export class UserListener extends Listener {

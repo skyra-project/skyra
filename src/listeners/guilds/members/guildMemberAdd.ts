@@ -7,8 +7,7 @@ import { getStickyRoles } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { Listener } from '@sapphire/framework';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { GuildMember } from 'discord.js';
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {

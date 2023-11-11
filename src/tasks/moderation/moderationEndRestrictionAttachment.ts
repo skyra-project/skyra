@@ -2,8 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationTask, type ModerationData } from '#lib/moderation';
 import { getSecurity } from '#utils/functions';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { Guild } from 'discord.js';
+import { PermissionFlagsBits, type Guild } from 'discord.js';
 
 export class UserModerationTask extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {

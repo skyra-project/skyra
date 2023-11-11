@@ -5,9 +5,8 @@ import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { getEmojiString } from '#utils/functions';
 import { cast } from '#utils/util';
-import { DiscordAPIError } from '@discordjs/rest';
 import { container } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/v10';
+import { DiscordAPIError, RESTJSONErrorCodes } from 'discord.js';
 
 export abstract class BaseReactionController<T> extends BaseController<T> {
 	public readonly userId: string;

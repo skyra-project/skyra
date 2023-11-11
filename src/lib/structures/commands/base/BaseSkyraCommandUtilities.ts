@@ -5,8 +5,7 @@ import { OWNERS } from '#root/config';
 import { seconds } from '#utils/common';
 import { Command, PreconditionContainerArray, UserError, type MessageCommand } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { PermissionsBitField, type Message } from 'discord.js';
+import { PermissionFlagsBits, PermissionsBitField, type Message } from 'discord.js';
 
 export const SkyraCommandConstructorDefaults = {
 	cooldownDelay: seconds(10),

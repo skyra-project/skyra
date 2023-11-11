@@ -7,10 +7,10 @@ import { Colors } from '#utils/constants';
 import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
-import { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
+import { Collection } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {

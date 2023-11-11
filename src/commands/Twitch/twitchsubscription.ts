@@ -10,8 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { envIsDefined } from '@skyra/env-utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, type Guild } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits, type Guild } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	enabled: envIsDefined('TWITCH_CALLBACK', 'TWITCH_CLIENT_ID', 'TWITCH_TOKEN', 'TWITCH_EVENTSUB_SECRET'),

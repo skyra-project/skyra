@@ -1,7 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { GuildVerificationLevel } from 'discord-api-types/v10';
-import type { Role } from 'discord.js';
+import type { GuildVerificationLevel, Role } from 'discord.js';
 
 export const AttachmentsModeDescription = T<string>('commands/management:attachmentsModeDescription');
 export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:attachmentsModeExtended');

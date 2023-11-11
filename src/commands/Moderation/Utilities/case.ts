@@ -5,7 +5,7 @@ import { getModeration } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	description: LanguageKeys.Commands.Moderation.CaseDescription,

@@ -1,5 +1,5 @@
 import { FT, T, type Difference, type Value, type Values } from '#lib/types';
-import type { GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildVerificationLevel } from 'discord-api-types/v10';
+import type { GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildVerificationLevel } from 'discord.js';
 
 type Notifications = GuildDefaultMessageNotifications;
 

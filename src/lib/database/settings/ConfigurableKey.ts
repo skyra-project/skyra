@@ -1,8 +1,8 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { SchemaGroup, type NonEmptyArray } from '#lib/database/settings/schema/SchemaGroup';
 import { SchemaKey, type ConfigurableKeyValueOptions } from '#lib/database/settings/schema/SchemaKey';
-import { Collection } from '@discordjs/collection';
 import { isFunction, isNumber, isPrimitive } from '@sapphire/utilities';
+import { Collection } from 'discord.js';
 import { getMetadataArgsStorage, type ColumnOptions, type ColumnType } from 'typeorm';
 
 export const configurableKeys = new Collection<string, SchemaKey>();

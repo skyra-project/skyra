@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getT } from '#lib/i18n/translate';
 import { resolveOnErrorCodes } from '#utils/common';
 import { TimestampStyles, time } from '@discordjs/builders';
-import { RESTJSONErrorCodes } from 'discord-api-types/v10';
+import { RESTJSONErrorCodes } from 'discord.js';
 
 export class UserTask extends Task {
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {

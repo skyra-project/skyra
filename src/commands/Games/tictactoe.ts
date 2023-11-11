@@ -8,8 +8,7 @@ import { promptConfirmation } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { User } from 'discord.js';
+import { PermissionFlagsBits, type User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ttt'],

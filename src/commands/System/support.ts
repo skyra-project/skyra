@@ -4,8 +4,7 @@ import { getColor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { Message } from 'discord.js';
+import { PermissionFlagsBits, type Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['support-server', 'server'],

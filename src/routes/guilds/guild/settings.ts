@@ -1,13 +1,5 @@
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
-import {
-	configurableKeys,
-	isSchemaKey,
-	readSettings,
-	writeSettings,
-	type GuildEntity,
-	type Serializer,
-	type SerializerUpdateContext
-} from '#lib/database';
+import { configurableKeys, isSchemaKey, readSettings, writeSettings, type GuildEntity, type Serializer } from '#lib/database';
 import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -78,7 +70,7 @@ export class UserRoute extends Route {
 			// If null is passed, reset to default:
 			if (value === null) return [entry.property, entry.default];
 
-			const ctx = { ...context, entry } as SerializerUpdateContext;
+			const ctx = { ...context, entry } as Serializer.UpdateContext;
 			const result = await (entry.array ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
 			if (!result) throw 'The value is not valid.';
 
@@ -120,4 +112,4 @@ export class UserRoute extends Route {
 	}
 }
 
-type PartialSerializerUpdateContext = Omit<SerializerUpdateContext, 'entry'>;
+type PartialSerializerUpdateContext = Omit<Serializer.UpdateContext, 'entry'>;

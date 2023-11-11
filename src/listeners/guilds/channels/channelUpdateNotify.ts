@@ -10,8 +10,16 @@ import { isDMChannel, isNsfwChannel, type GuildBasedChannelTypes, type NonThread
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { ChannelType, OverwriteType } from 'discord-api-types/v10';
-import type { DMChannel, GuildChannel, NewsChannel, PermissionOverwrites, TextChannel, VoiceChannel } from 'discord.js';
+import {
+	ChannelType,
+	OverwriteType,
+	type DMChannel,
+	type GuildChannel,
+	type NewsChannel,
+	type PermissionOverwrites,
+	type TextChannel,
+	type VoiceChannel
+} from 'discord.js';
 
 type Channel = DMChannel | GuildChannel;
 

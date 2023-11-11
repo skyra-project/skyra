@@ -4,8 +4,7 @@ import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReadMessages, isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { GatewayDispatchEvents, type GatewayMessageReactionAddDispatch } from 'discord-api-types/v10';
-import type { TextChannel } from 'discord.js';
+import { GatewayDispatchEvents, type GatewayMessageReactionAddDispatch, type TextChannel } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageReactionAdd, emitter: 'ws' })
 export class UserListener extends Listener {

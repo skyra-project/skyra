@@ -12,8 +12,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { hasAtLeastOneKeyInMap, type Nullish } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { GuildMember } from 'discord.js';
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
 

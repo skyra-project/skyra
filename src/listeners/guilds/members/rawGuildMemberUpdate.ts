@@ -8,9 +8,9 @@ import {
 	GatewayDispatchEvents,
 	PermissionFlagsBits,
 	type GatewayGuildMemberUpdateDispatch,
+	type Guild,
 	type RESTGetAPIAuditLogResult
-} from 'discord-api-types/v10';
-import type { Guild } from 'discord.js';
+} from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export class UserListener extends Listener {

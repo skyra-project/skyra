@@ -5,8 +5,7 @@ import { hours, seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { TextChannel } from 'discord.js';
+import { PermissionFlagsBits, type TextChannel } from 'discord.js';
 
 const MAXIMUM_DURATION = hours(6);
 

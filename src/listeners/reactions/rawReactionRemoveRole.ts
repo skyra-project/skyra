@@ -4,8 +4,7 @@ import { resolveEmojiId } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import type { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v10';
-import type { TextChannel } from 'discord.js';
+import type { GatewayMessageReactionRemoveDispatch, TextChannel } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawReactionRemove })
 export class UserListener extends Listener {

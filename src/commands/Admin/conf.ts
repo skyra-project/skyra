@@ -10,7 +10,7 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],

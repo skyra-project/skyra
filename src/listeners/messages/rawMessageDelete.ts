@@ -1,7 +1,7 @@
 import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import { GatewayDispatchEvents, type GatewayMessageDeleteDispatch } from 'discord-api-types/v10';
+import { GatewayDispatchEvents, type GatewayMessageDeleteDispatch } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageDelete, emitter: 'ws' })
 export class UserListener extends Listener {

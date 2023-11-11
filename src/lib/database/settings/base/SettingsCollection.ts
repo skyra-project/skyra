@@ -1,6 +1,6 @@
 import type { IBaseEntity } from '#lib/database/settings/base/IBaseEntity';
-import { Collection } from '@discordjs/collection';
 import { RWLock } from 'async-rwlock';
+import { Collection } from 'discord.js';
 
 export interface SettingsCollectionCallback<T extends IBaseEntity, R> {
 	(entity: T): Promise<R> | R;

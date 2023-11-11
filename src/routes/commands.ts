@@ -6,7 +6,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import type { Command } from '@sapphire/framework';
 import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import type { LocaleString } from 'discord-api-types/v10';
+import type { LocaleString } from 'discord.js';
 
 @ApplyOptions<Route.Options>({ route: 'commands' })
 export class UserRoute extends Route {

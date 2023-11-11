@@ -8,16 +8,16 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { GuildMFALevel } from 'discord-api-types/v10';
-import type {
-	Guild,
-	GuildDefaultMessageNotifications,
-	GuildExplicitContentFilter,
-	GuildFeature,
-	GuildPremiumTier,
-	GuildVerificationLevel,
-	SystemChannelFlagsBitField,
-	TextChannel
+import {
+	GuildMFALevel,
+	type Guild,
+	type GuildDefaultMessageNotifications,
+	type GuildExplicitContentFilter,
+	type GuildFeature,
+	type GuildPremiumTier,
+	type GuildVerificationLevel,
+	type SystemChannelFlagsBitField,
+	type TextChannel
 } from 'discord.js';
 
 type ChannelFlags = Readonly<SystemChannelFlagsBitField>;

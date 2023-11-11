@@ -1,7 +1,7 @@
 import { omit } from '#utils/common';
 import { BitField, enumToObject } from '@sapphire/bitfield';
 import { objectEntries } from '@sapphire/utilities';
-import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v10';
+import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord.js';
 
 export const PermissionsBits = new BitField(omit(PermissionFlagsBits, 'ManageEmojisAndStickers'));
 export const PermissionsBitsList = objectEntries(PermissionsBits.flags);

@@ -1,5 +1,5 @@
-import { DiscordAPIError, HTTPError } from '@discordjs/rest';
 import { Listener } from '@sapphire/framework';
+import { DiscordAPIError, HTTPError } from 'discord.js';
 
 const NEWLINE = '\n';
 

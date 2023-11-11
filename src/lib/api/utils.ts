@@ -17,9 +17,11 @@ import {
 	GuildVerificationLevel,
 	Locale,
 	PermissionFlagsBits,
+	type Client,
+	type Guild,
+	type GuildMember,
 	type RESTAPIPartialCurrentUserGuild
-} from 'discord-api-types/v10';
-import type { Client, Guild, GuildMember } from 'discord.js';
+} from 'discord.js';
 
 function isAdmin(member: GuildMember, roles: readonly string[]): boolean {
 	return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.ManageGuild) : hasAtLeastOneKeyInMap(member.roles.cache, roles);

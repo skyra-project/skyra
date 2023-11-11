@@ -6,9 +6,9 @@ import {
 	isThreadChannel,
 	isVoiceChannel
 } from '@sapphire/discord.js-utilities';
-import type { ChannelType } from 'discord-api-types/v10';
 import type {
 	Channel,
+	ChannelType,
 	DMChannel,
 	Guild,
 	GuildChannel,

@@ -12,7 +12,7 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { PermissionFlagsBits } from 'discord.js';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({

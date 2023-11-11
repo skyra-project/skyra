@@ -5,18 +5,19 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
-import { PermissionFlagsBits, type APIUser } from 'discord-api-types/v10';
-import type {
-	EmbedAuthorData,
-	Guild,
-	GuildChannel,
-	ImageExtension,
-	ImageSize,
-	Message,
-	MessageMentionTypes,
-	ThreadChannel,
-	User,
-	UserResolvable
+import {
+	PermissionFlagsBits,
+	type APIUser,
+	type EmbedAuthorData,
+	type Guild,
+	type GuildChannel,
+	type ImageExtension,
+	type ImageSize,
+	type Message,
+	type MessageMentionTypes,
+	type ThreadChannel,
+	type User,
+	type UserResolvable
 } from 'discord.js';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([

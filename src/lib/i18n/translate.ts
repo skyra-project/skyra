@@ -4,7 +4,7 @@ import { DecoratorIdentifiers } from '@sapphire/decorators';
 import { Identifiers, container } from '@sapphire/framework';
 import type { InternationalizationContext, TFunction } from '@sapphire/plugin-i18next';
 import type { Nullish } from '@sapphire/utilities';
-import type { LocaleString } from 'discord-api-types/v10';
+import type { LocaleString } from 'discord.js';
 
 export function translate(identifier: string): string {
 	switch (identifier) {

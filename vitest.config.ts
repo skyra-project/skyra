@@ -18,7 +18,6 @@ export default defineConfig({
 					if (source === '#lib/moderation/workers') return resolve('src/lib/moderation/workers/index.ts');
 					if (source === '#lib/structures') return resolve('src/lib/structures/index.ts');
 					if (source === '#lib/structures/managers') return resolve('src/lib/structures/managers/index.ts');
-					if (source === '#lib/structures/color') return resolve('src/lib/structures/color/index.ts');
 					if (source === '#lib/setup') return resolve('src/lib/setup/index.ts');
 					if (source === '#lib/types') return resolve('src/lib/types/index.ts');
 					if (source === '#lib/i18n/languageKeys') return resolve('src/lib/i18n/languageKeys/index.ts');
@@ -35,8 +34,7 @@ export default defineConfig({
 					if (source === '#utils/functions') return resolve('src/lib/util/functions/index.ts');
 					return source.replace('#utils', resolve('src/lib/util'));
 				}
-			},
-			{ find: /^#mocks\/(.*)/, replacement: resolve('tests/mocks/$1.ts') }
+			}
 		]
 	},
 	test: {

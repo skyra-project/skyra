@@ -1,9 +1,7 @@
-import { createEmbed, createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
-import { Collection } from '@discordjs/collection';
 import type { DeepPartial } from '@sapphire/utilities';
-import type { APIAttachment } from 'discord-api-types/v10';
-import { Attachment, Embed, Message } from 'discord.js';
+import { Attachment, Collection, Embed, Message, type APIAttachment } from 'discord.js';
+import { createEmbed, createUser } from '../mocks/MockInstances.js';
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {

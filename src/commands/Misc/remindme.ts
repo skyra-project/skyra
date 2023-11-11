@@ -8,8 +8,7 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, type Message } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits, type Message } from 'discord.js';
 
 const enum Actions {
 	List = 'list',

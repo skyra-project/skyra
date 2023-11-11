@@ -5,7 +5,7 @@ import { container } from '@sapphire/framework';
 import { envParseString } from '@skyra/env-utilities';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'node:events';
-import { Worker } from 'node:worker_threads';
+import { SHARE_ENV, Worker } from 'node:worker_threads';
 
 export class WorkerHandler {
 	public lastHeartBeat!: number;
@@ -61,11 +61,7 @@ export class WorkerHandler {
 	public spawn() {
 		this.online = false;
 		this.lastHeartBeat = 0;
-		this.worker = new Worker(WorkerHandler.filename, {
-			workerData: {
-				path: WorkerHandler.filename
-			}
-		});
+		this.worker = new Worker(WorkerHandler.filename, { env: SHARE_ENV });
 		this.worker.on('message', (message: OutgoingPayload) => this.handleMessage(message));
 		this.worker.once('online', () => this.handleOnline());
 		this.worker.once('exit', (code: number) => this.handleExit(code));

@@ -6,7 +6,7 @@ import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['k'],

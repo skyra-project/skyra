@@ -10,8 +10,7 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, type Guild } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits, type Guild } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],

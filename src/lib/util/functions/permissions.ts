@@ -3,8 +3,7 @@ import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { GuildMember } from 'discord.js';
+import { GuildMember, PermissionFlagsBits } from 'discord.js';
 
 export function isModerator(member: GuildMember) {
 	return isGuildOwner(member) || readSettings(member, (settings) => checkModerator(member, settings) || checkAdministrator(member, settings));

@@ -1,7 +1,6 @@
 import { api } from '#lib/discord/Api';
 import { minutes, resolveOnErrorCodes } from '#utils/common';
-import { Collection } from '@discordjs/collection';
-import { RESTJSONErrorCodes, type RESTGetAPIInviteResult } from 'discord-api-types/v10';
+import { Collection, RESTJSONErrorCodes, type RESTGetAPIInviteResult } from 'discord.js';
 
 export class InviteStore extends Collection<string, InviteCodeEntry> {
 	private readonly interval = setInterval(() => {

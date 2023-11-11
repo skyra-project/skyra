@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { HttpCodes, MimeTypes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import { Time } from '@sapphire/time-utilities';
-import { OAuth2Routes, type RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v10';
+import { OAuth2Routes, type RESTPostOAuth2AccessTokenResult } from 'discord.js';
 import { stringify } from 'node:querystring';
 
 @ApplyOptions<Route.Options>({ route: 'oauth/user' })

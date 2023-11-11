@@ -9,8 +9,7 @@ import { canSendMessages, type NonThreadGuildTextBasedChannelTypes } from '@sapp
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import type { Role } from 'discord.js';
+import { PermissionFlagsBits, type Role } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['lock', 'unlock'],

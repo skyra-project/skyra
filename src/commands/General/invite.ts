@@ -5,8 +5,7 @@ import { EmbedBuilder, hyperlink } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
-import type { Message } from 'discord.js';
+import { OAuth2Scopes, PermissionFlagsBits, type Message } from 'discord.js';
 
 const flags = ['noperms', 'nopermissions'];
 

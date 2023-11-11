@@ -8,14 +8,9 @@
 			"#utils/*": ["../src/lib/util/*"],
 			"#lib/*": ["../src/lib/*"],
 			"#languages": ["../src/languages/index"],
-			"#mocks/*": ["./mocks/*"],
 			"#root/*": ["../src/*"]
 		}
 	},
 	"include": [".", "../src"],
-	"references": [{ "path": "../src" }],
-	"ts-node": {
-		"esm": true,
-		"typeCheck": false
-	}
+	"references": [{ "path": "../src" }]
 }

@@ -9,8 +9,15 @@ import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { ChannelType, OverwriteType } from 'discord-api-types/v10';
-import type { GuildChannel, NewsChannel, PermissionOverwrites, TextChannel, VoiceChannel } from 'discord.js';
+import {
+	ChannelType,
+	OverwriteType,
+	type GuildChannel,
+	type NewsChannel,
+	type PermissionOverwrites,
+	type TextChannel,
+	type VoiceChannel
+} from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.ChannelCreate })
 export class UserListener extends Listener<typeof Events.ChannelCreate> {

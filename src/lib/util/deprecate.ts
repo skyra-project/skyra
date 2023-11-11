@@ -1,7 +1,7 @@
 import { Invites } from '#lib/util/constants';
 import { ActionRowBuilder, ButtonBuilder, inlineCode, type MessageActionRowComponentBuilder } from '@discordjs/builders';
 import { isNullishOrEmpty } from '@sapphire/utilities';
-import { ButtonStyle } from 'discord-api-types/v10';
+import { ButtonStyle } from 'discord.js';
 
 export function createDeprecatedList(options: Options) {
 	const values = new Map<string, readonly string[]>();

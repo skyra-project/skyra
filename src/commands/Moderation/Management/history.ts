@@ -7,13 +7,11 @@ import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
-import type { Collection } from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits, type Collection } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 
@@ -111,7 +109,6 @@ export class UserCommand extends SkyraSubcommand {
 		}
 
 		await display.run(response, message.author);
-		await response;
 	}
 
 	private displayModerationLogFromModerators(users: Map<string, string>, now: number, entry: ModerationEntity) {

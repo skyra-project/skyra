@@ -17,7 +17,6 @@
 		"#lib/moderation/workers": "./dist/lib/moderation/workers/index.js",
 		"#lib/structures": "./dist/lib/structures/index.js",
 		"#lib/structures/managers": "./dist/lib/structures/managers/index.js",
-		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#lib/setup": "./dist/lib/setup/index.js",
 		"#lib/types": "./dist/lib/types/index.js",
 		"#lib/i18n/languageKeys": "./dist/lib/i18n/languageKeys/index.js",
@@ -36,7 +35,7 @@
 		"clean": "node scripts/build/clean.mjs",
 		"start": "node --enable-source-maps dist/Skyra.js",
 		"start:profiler:0x": "0x --collect-only dist/Skyra.js",
-		"test": "NODE_OPTIONS=\"--loader tsx/esm\" vitest",
+		"test": "NODE_OPTIONS=\"--import tsx/esm\" vitest",
 		"lint": "eslint --fix --ext ts src tests",
 		"format": "prettier --write --log-level=warn \"{src,tests}/**/*.{js,ts,json}\"",
 		"scripts:tlds": "node scripts/tlds.mjs",
@@ -143,6 +142,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@4.0.1",
 	"volta": {
-		"node": "18.18.2"
+		"node": "20.9.0"
 	}
 }

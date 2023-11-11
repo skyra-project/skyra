@@ -9,8 +9,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import type { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v10';
-import type { Guild, GuildMember } from 'discord.js';
+import type { GatewayGuildMemberRemoveDispatch, Guild, GuildMember } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawMemberRemove })
 export class UserListener extends Listener {

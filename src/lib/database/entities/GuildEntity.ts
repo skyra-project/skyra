@@ -12,7 +12,7 @@ import { container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { arrayStrictEquals, type NonNullObject, type PickByValue } from '@sapphire/utilities';
-import type { LocaleString } from 'discord-api-types/v10';
+import type { LocaleString } from 'discord.js';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })

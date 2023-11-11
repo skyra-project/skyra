@@ -7,8 +7,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { isNullish } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v10';
-import { Role, type GuildMember } from 'discord.js';
+import { RESTJSONErrorCodes, Role, type GuildMember } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['pnodes', 'pnode'],

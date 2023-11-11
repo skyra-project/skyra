@@ -7,11 +7,10 @@ import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getColor, sendLoadingMessage } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
-import type { Collection } from '@discordjs/collection';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';
-import { EmbedBuilder, type User } from 'discord.js';
+import { EmbedBuilder, type Collection, type User } from 'discord.js';
 
 const enum Type {
 	Mute,

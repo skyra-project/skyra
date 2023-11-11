@@ -17,10 +17,15 @@ import {
 	GuildDefaultMessageNotifications,
 	GuildExplicitContentFilter,
 	GuildVerificationLevel,
+	Options,
+	Partials,
 	PermissionFlagsBits,
-	type LocaleString
-} from 'discord-api-types/v10';
-import { Options, Partials, type ActivitiesOptions, type ClientOptions, type OAuth2Scopes, type WebhookClientData } from 'discord.js';
+	type ActivitiesOptions,
+	type ClientOptions,
+	type LocaleString,
+	type OAuth2Scopes,
+	type WebhookClientData
+} from 'discord.js';
 import type { FormatFunction, InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 

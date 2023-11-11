@@ -1,6 +1,6 @@
 import { toChannelsArray, toPermissionsArray } from '#utils/bits';
 import { enumToObject } from '@sapphire/bitfield';
-import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord-api-types/v10';
+import { GuildSystemChannelFlags, PermissionFlagsBits } from 'discord.js';
 
 describe('Bits', () => {
 	describe('Permissions', () => {

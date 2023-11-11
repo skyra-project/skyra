@@ -1,10 +1,9 @@
 import { writeSettings, type GuildSettingsOfType } from '#lib/database';
 import { EmbedBuilder } from '@discordjs/builders';
-import { DiscordAPIError, HTTPError } from '@discordjs/rest';
 import { canSendEmbeds } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { isNullish, type Awaitable, type Nullish } from '@sapphire/utilities';
-import type { Guild, MessageCreateOptions, TextChannel } from 'discord.js';
+import { DiscordAPIError, HTTPError, type Guild, type MessageCreateOptions, type TextChannel } from 'discord.js';
 
 export class UserListener extends Listener {
 	public async run(

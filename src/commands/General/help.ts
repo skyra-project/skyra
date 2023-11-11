@@ -3,15 +3,13 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { isGuildMessage, isPrivateMessage } from '#utils/common';
 import { getColor, splitMessage } from '#utils/util';
-import { Collection } from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { Args, Result, container, type MessageCommand } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { EmbedBuilder, type Message } from 'discord.js';
+import { Collection, EmbedBuilder, PermissionFlagsBits, type Message } from 'discord.js';
 
 /**
  * Sorts a collection alphabetically as based on the keys, rather than the values.

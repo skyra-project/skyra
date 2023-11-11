@@ -8,8 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
-import { ButtonStyle, OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10';
-import { version as djsVersion, type Message } from 'discord.js';
+import { ButtonStyle, OAuth2Scopes, PermissionFlagsBits, version as djsVersion, type Message } from 'discord.js';
 import { cpus, uptime, type CpuInfo } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({

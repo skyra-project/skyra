@@ -1,6 +1,6 @@
 import '#lib/setup';
-import { client } from '#mocks/MockInstances';
+import { client } from './mocks/MockInstances.js';
 
-afterAll(() => {
-	client.destroy();
+afterAll(async () => {
+	await client.destroy();
 });

@@ -9,14 +9,24 @@ import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functi
 import { TypeCodes } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
-import { DiscordAPIError } from '@discordjs/rest';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Nullish } from '@sapphire/utilities';
-import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v10';
-import type { Guild, GuildChannel, GuildMember, Message, PermissionOverwriteOptions, Role, RoleData, User } from 'discord.js';
+import {
+	DiscordAPIError,
+	PermissionFlagsBits,
+	RESTJSONErrorCodes,
+	type Guild,
+	type GuildChannel,
+	type GuildMember,
+	type Message,
+	type PermissionOverwriteOptions,
+	type Role,
+	type RoleData,
+	type User
+} from 'discord.js';
 
 export const enum ModerationSetupRestriction {
 	All = 'rolesMuted',

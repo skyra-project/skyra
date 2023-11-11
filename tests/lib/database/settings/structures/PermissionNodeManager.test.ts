@@ -1,8 +1,9 @@
-import { GuildEntity, PermissionNodeAction, PermissionsNode } from '#lib/database';
+import { GuildEntity, PermissionNodeAction, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { createGuild, createGuildMember, createRole, createUser, roleData } from '#mocks/MockInstances';
 import { UserError } from '@sapphire/framework';
 import type { Guild } from 'discord.js';
+import { fail } from 'node:assert';
+import { createGuild, createGuildMember, createRole, createUser, roleData } from '../../../../mocks/MockInstances.js';
 
 describe('PermissionNodeManager', () => {
 	let guild: Guild;

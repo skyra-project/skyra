@@ -2,7 +2,6 @@ import { WorkerResponseHandler } from '#lib/moderation/workers/WorkerResponseHan
 import { OutgoingType, type IncomingPayload, type NoId, type OutgoingPayload } from '#lib/moderation/workers/types';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
-import { envParseString } from '@skyra/env-utilities';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'node:events';
 import { SHARE_ENV, Worker } from 'node:worker_threads';
@@ -127,7 +126,7 @@ export class WorkerHandler {
 	}
 
 	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
-	private static readonly filename = new URL(`./worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`, import.meta.url);
+	private static readonly filename = new URL('worker.mjs', import.meta.url);
 
 	private static readonly maximumId = Number.MAX_SAFE_INTEGER;
 }

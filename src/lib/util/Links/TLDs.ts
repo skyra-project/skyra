@@ -382,7 +382,6 @@ export const TLDs = [
 	'esq',
 	'estate',
 	'et',
-	'etisalat',
 	'eu',
 	'eurovision',
 	'eus',
@@ -1238,7 +1237,6 @@ export const TLDs = [
 	'vlaanderen',
 	'vn',
 	'vodka',
-	'volkswagen',
 	'volvo',
 	'vote',
 	'voting',
@@ -1373,7 +1371,6 @@ export const TLDs = [
 	'ارامكو', // xn--mgba3a3ejt
 	'ایران', // xn--mgba3a4f16a
 	'العليان', // xn--mgba7c0bbn0a
-	'اتصالات', // xn--mgbaakc7dvf
 	'امارات', // xn--mgbaam7a8h
 	'بازار', // xn--mgbab2bd
 	'موريتانيا', // xn--mgbah1a3hjkrd

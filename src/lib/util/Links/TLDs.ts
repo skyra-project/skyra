@@ -1019,7 +1019,6 @@ export const TLDs = [
 	'sbi',
 	'sbs',
 	'sc',
-	'sca',
 	'scb',
 	'schaeffler',
 	'schmidt',

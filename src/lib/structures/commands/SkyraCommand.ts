@@ -9,7 +9,7 @@ import {
 	type ExtendOptions
 } from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
 import { PermissionLevels, type CustomGet } from '#lib/types';
-import { Command, UserError, type Awaitable, type MessageCommand, type PieceContext } from '@sapphire/framework';
+import { Command, UserError, type Awaitable, type MessageCommand } from '@sapphire/framework';
 import { type Message } from 'discord.js';
 
 /**
@@ -23,7 +23,7 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args, SkyraComma
 	public declare readonly detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
 	public declare readonly description: CustomGet<string, string>;
 
-	public constructor(context: PieceContext, options: SkyraCommand.Options) {
+	public constructor(context: Command.LoaderContext, options: SkyraCommand.Options) {
 		super(context, { ...SkyraCommandConstructorDefaults, ...options });
 		this.guarded = options.guarded ?? SkyraCommandConstructorDefaults.guarded;
 		this.hidden = options.hidden ?? SkyraCommandConstructorDefaults.hidden;
@@ -57,6 +57,6 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args, SkyraComma
 export namespace SkyraCommand {
 	export type Options = ExtendOptions<Command.Options>;
 	export type Args = SkyraArgs;
-	export type Context = Command.Context;
+	export type LoaderContext = Command.LoaderContext;
 	export type RunContext = MessageCommand.RunContext;
 }

@@ -13,7 +13,7 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	private readonly responseKey: CustomFunctionGet<string, { channel: string }, string>;
 	private readonly settingsKey: GuildSettingsOfType<string | Nullish>;
 
-	public constructor(context: SkyraCommand.Context, options: ChannelConfigurationCommand.Options) {
+	public constructor(context: SkyraCommand.LoaderContext, options: ChannelConfigurationCommand.Options) {
 		super(context, {
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],

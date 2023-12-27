@@ -3,12 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { isAdmin, isGuildOwner } from '#utils/functions';
-import { Identifiers, Precondition, type PieceContext, type PreconditionOptions } from '@sapphire/framework';
+import { Identifiers, Precondition, type PreconditionOptions } from '@sapphire/framework';
 
 export abstract class PermissionsPrecondition extends Precondition {
 	private readonly guildOnly: boolean;
 
-	public constructor(context: PieceContext, options: PermissionsPrecondition.Options = {}) {
+	public constructor(context: Precondition.LoaderContext, options: PermissionsPrecondition.Options = {}) {
 		super(context, options);
 		this.guildOnly = options.guildOnly ?? true;
 	}

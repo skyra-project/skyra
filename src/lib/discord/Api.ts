@@ -3,5 +3,5 @@ import { container } from '@sapphire/framework';
 
 let instance: API;
 export function api() {
-	return (instance ??= new API(container.client.rest));
+	return (instance ??= new API(container.client.rest as any));
 }

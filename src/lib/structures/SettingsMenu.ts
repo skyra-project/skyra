@@ -101,11 +101,13 @@ export class SettingsMenu {
 		if (parent) floatPromise(this._reactResponse(EMOJIS.BACK));
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
-		return this.embed
+		this.embed
 			.setColor(getColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
-			.setFooter({ text: parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '' })
 			.setTimestamp();
+
+		if (parent) this.embed.setFooter({ text: t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) });
+		return this.embed;
 	}
 
 	private async onMessage(message: GuildMessage, context: SkyraCommand.RunContext) {

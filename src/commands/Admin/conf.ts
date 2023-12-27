@@ -20,12 +20,12 @@ import { PermissionFlagsBits } from 'discord.js';
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subcommands: [
-		{ name: 'set' },
+		{ name: 'set', messageRun: 'set' },
 		{ name: 'add', messageRun: 'set' },
-		{ name: 'show' },
-		{ name: 'remove' },
-		{ name: 'reset' },
-		{ name: 'menu', default: true }
+		{ name: 'show', messageRun: 'show' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'menu', messageRun: 'menu', default: true }
 	]
 })
 export class UserCommand extends SkyraSubcommand {

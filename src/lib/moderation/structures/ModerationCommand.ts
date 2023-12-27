@@ -207,7 +207,7 @@ export namespace ModerationCommand {
 	}
 
 	export type Args = SkyraCommand.Args;
-	export type Context = SkyraCommand.Context;
+	export type Context = SkyraCommand.LoaderContext;
 	export type RunContext = SkyraCommand.RunContext;
 }
 

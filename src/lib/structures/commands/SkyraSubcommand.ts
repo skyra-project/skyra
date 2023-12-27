@@ -9,7 +9,7 @@ import {
 	type ExtendOptions
 } from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
 import { PermissionLevels, type CustomGet } from '#lib/types';
-import { UserError, type MessageCommand, type PieceContext } from '@sapphire/framework';
+import { Command, UserError, type MessageCommand } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import type { Message } from 'discord.js';
 
@@ -24,7 +24,7 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 	public declare readonly detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
 	public override readonly description: CustomGet<string, string>;
 
-	public constructor(context: PieceContext, options: SkyraSubcommand.Options) {
+	public constructor(context: SkyraSubcommand.LoaderContext, options: SkyraSubcommand.Options) {
 		super(context, { ...SkyraCommandConstructorDefaults, ...options });
 		this.guarded = options.guarded ?? SkyraCommandConstructorDefaults.guarded;
 		this.hidden = options.hidden ?? SkyraCommandConstructorDefaults.hidden;
@@ -57,6 +57,6 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 export namespace SkyraSubcommand {
 	export type Options = ExtendOptions<Subcommand.Options>;
 	export type Args = SkyraArgs;
-	export type Context = Subcommand.Context;
+	export type LoaderContext = Command.LoaderContext;
 	export type RunContext = MessageCommand.RunContext;
 }

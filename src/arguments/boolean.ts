@@ -1,14 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getT } from '#lib/i18n/translate';
 import { Argument, Identifiers } from '@sapphire/framework';
-import type { PieceContext } from '@sapphire/pieces';
 import { filterNullish } from '@sapphire/utilities';
 
 export class CoreArgument extends Argument<boolean> {
 	private defaultTruthValues: string[] | null = null;
 	private defaultFalseValues: string[] | null = null;
 
-	public constructor(context: PieceContext) {
+	public constructor(context: Argument.LoaderContext) {
 		super(context, { name: 'boolean' });
 	}
 

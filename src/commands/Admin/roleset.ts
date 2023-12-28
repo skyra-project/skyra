@@ -1,28 +1,33 @@
-import { GuildEntity, GuildSettings, readSettings, UniqueRoleSet, writeSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings, writeSettings, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['rs'],
 	description: LanguageKeys.Commands.Admin.RoleSetDescription,
 	detailedDescription: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', 'list', { input: 'auto', default: true }]
+	subcommands: [
+		{ name: 'add', messageRun: 'add' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'list', messageRun: 'list' },
+		{ name: 'auto', messageRun: 'auto', default: true }
+	]
 })
-export class UserCommand extends SkyraCommand {
+export class UserCommand extends SkyraSubcommand {
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		return this.handleAdd(message, await args.pick('string'), args);
 	}
 
 	// This subcommand will always remove roles from a provided role set.
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const name = await args.pick('string');
 		const roles = await args.repeat('roleName');
 
@@ -38,7 +43,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetRemoved, { name, roles: roles.map((role) => role.name) }));
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [name, sets] = await Promise.all([
 			args.pick('string').catch(() => null),
 			// Get all rolesets from settings and check if there is an existing set with the name provided by the user
@@ -62,7 +67,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	// This subcommand will run if a user doesn't type add or remove. The bot will then add AND remove based on whether that role is in the set already.
-	public async auto(message: GuildMessage, args: SkyraCommand.Args) {
+	public async auto(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const name = await args.pick('string');
 
 		// Get all role sets from settings and check if there is an existing set with the name provided by the user

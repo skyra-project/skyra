@@ -1,24 +1,24 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
+import { BrandingColors, ZeroWidthSpace } from '#lib/util/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { send } from '@sapphire/plugin-editable-commands';
-import { isNullishOrEmpty, Nullish, tryParseURL } from '@sapphire/utilities';
-import type { APIUser } from 'discord-api-types/v9';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
 import {
-	MessageEmbed,
-	Permissions,
-	type AllowedImageSize,
-	type DynamicImageFormat,
+	PermissionFlagsBits,
+	type APIUser,
 	type EmbedAuthorData,
 	type Guild,
 	type GuildChannel,
+	type ImageExtension,
+	type ImageSize,
 	type Message,
 	type MessageMentionTypes,
 	type ThreadChannel,
 	type User,
 	type UserResolvable
 } from 'discord.js';
-import type { TFunction } from 'i18next';
-import { BrandingColors, ZeroWidthSpace } from './constants';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -126,7 +126,11 @@ export function getAttachment(message: Message): ImageAttachment | null {
  */
 export function getImage(message: Message): string | null {
 	const attachment = getAttachment(message);
-	return attachment ? attachment.proxyURL || attachment.url : null;
+	if (attachment) return attachment.proxyURL || attachment.url;
+
+	const sticker = message.stickers.first();
+	if (sticker) return sticker.url;
+	return null;
 }
 
 /**
@@ -148,11 +152,11 @@ export interface AvatarOptions {
 	 *
 	 * @defaultValue `'webp'`
 	 */
-	extension?: DynamicImageFormat;
+	extension?: ImageExtension;
 	/**
 	 * The size specified in the image URL
 	 */
-	size?: AllowedImageSize;
+	size?: ImageSize;
 	/**
 	 * Whether or not to prefer the static version of an image asset.
 	 */
@@ -250,6 +254,41 @@ export const anyMentionRegExp = /<(@[!&]?|#)(\d{17,19})>/g;
 export const hereOrEveryoneMentionRegExp = /@(?:here|everyone)/;
 
 /**
+ * Splits a message into multiple messages if it exceeds a certain length, using a specified character as the delimiter.
+ * @param content The message to split.
+ * @param options The options for splitting the message.
+ * @returns An array of messages split from the original message.
+ * @throws An error if the content cannot be split.
+ */
+export function splitMessage(content: string, options: SplitMessageOptions) {
+	if (content.length <= options.maxLength) return [content];
+
+	let last = 0;
+	const messages = [] as string[];
+	while (last < content.length) {
+		// If the last chunk can fit the rest of the content, push it and break:
+		if (content.length - last <= options.maxLength) {
+			messages.push(content.slice(last));
+			break;
+		}
+
+		// Find the last best index to split the chunk:
+		const index = content.lastIndexOf(options.char, options.maxLength + last);
+		if (index === -1) throw new Error('Unable to split content.');
+
+		messages.push(content.slice(last, index + 1));
+		last = index + 1;
+	}
+
+	return messages;
+}
+
+export interface SplitMessageOptions {
+	char: string;
+	maxLength: number;
+}
+
+/**
  * Extracts mentions from a body of text.
  * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`.
  * @param input The input to extract mentions from.
@@ -318,7 +357,7 @@ export function cast<T>(value: unknown): T {
  * @example validateChannelAccess(channel, message.author)
  */
 export function validateChannelAccess(channel: GuildChannel | ThreadChannel, user: UserResolvable) {
-	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
+	return (channel.guild !== null && channel.permissionsFor(user)?.has(PermissionFlagsBits.ViewChannel)) || false;
 }
 
 /**
@@ -337,7 +376,7 @@ export const shuffle = <T>(array: T[]): T[] => {
 export const random = (num: number) => Math.floor(Math.random() * num);
 
 export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T, t: TFunction): Promise<T> => {
-	const embed = new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary);
+	const embed = new EmbedBuilder().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary);
 	return send(message, { embeds: [embed] }) as Promise<T>;
 };
 

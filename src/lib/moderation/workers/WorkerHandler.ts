@@ -1,13 +1,10 @@
-import { rootFolder } from '#utils/constants';
+import { WorkerResponseHandler } from '#lib/moderation/workers/WorkerResponseHandler';
+import { OutgoingType, type IncomingPayload, type NoId, type OutgoingPayload } from '#lib/moderation/workers/types';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container } from '@sapphire/framework';
-import { envParseString } from '@skyra/env-utilities';
 import { cyan, green, red, yellow } from 'colorette';
 import { once } from 'node:events';
-import { join } from 'node:path';
-import { Worker } from 'node:worker_threads';
-import { IncomingPayload, NoId, OutgoingPayload, OutgoingType } from './types';
-import { WorkerResponseHandler } from './WorkerResponseHandler';
+import { SHARE_ENV, Worker } from 'node:worker_threads';
 
 export class WorkerHandler {
 	public lastHeartBeat!: number;
@@ -63,11 +60,7 @@ export class WorkerHandler {
 	public spawn() {
 		this.online = false;
 		this.lastHeartBeat = 0;
-		this.worker = new Worker(WorkerHandler.workerTsLoader, {
-			workerData: {
-				path: WorkerHandler.filename
-			}
-		});
+		this.worker = new Worker(WorkerHandler.filename, { env: SHARE_ENV });
 		this.worker.on('message', (message: OutgoingPayload) => this.handleMessage(message));
 		this.worker.once('online', () => this.handleOnline());
 		this.worker.once('exit', (code: number) => this.handleExit(code));
@@ -132,8 +125,8 @@ export class WorkerHandler {
 		}
 	}
 
-	private static readonly workerTsLoader = join(rootFolder, 'scripts', 'workerTsLoader.js');
 	private static readonly logsEnabled = process.env.NODE_ENV !== 'test';
-	private static readonly filename = join(__dirname, `worker.${envParseString('NODE_ENV') === 'test' ? 't' : 'j'}s`);
+	private static readonly filename = new URL('worker.mjs', import.meta.url);
+
 	private static readonly maximumId = Number.MAX_SAFE_INTEGER;
 }

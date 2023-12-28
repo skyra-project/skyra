@@ -2,22 +2,19 @@ import { DbSet } from '#lib/database';
 import '#lib/setup';
 
 import { SkyraClient } from '#lib/SkyraClient';
-import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
+import { rootFolder } from '#utils/constants';
 import { container } from '@sapphire/framework';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
-import i18next from 'i18next';
+import { envIsDefined, envParseString } from '@skyra/env-utilities';
 
 const client = new SkyraClient();
 
 async function main() {
-	// Load in i18next post processor
-	i18next.use(helpUsagePostProcessor);
-
 	// Load in Sentry for error logging
-	if (process.env.SENTRY_URL) {
+	if (envIsDefined('SENTRY_URL')) {
 		Sentry.init({
-			dsn: process.env.SENTRY_URL,
+			dsn: envParseString('SENTRY_URL'),
 			integrations: [
 				new Sentry.Integrations.Modules(),
 				new Sentry.Integrations.FunctionToString(),
@@ -37,7 +34,7 @@ async function main() {
 		await client.login();
 	} catch (error) {
 		container.logger.error(error);
-		client.destroy();
+		await client.destroy();
 		process.exit(1);
 	}
 }

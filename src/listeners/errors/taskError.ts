@@ -1,5 +1,4 @@
-import type { TaskErrorPayload } from '#lib/types';
-import type { Events } from '#lib/types/Enums';
+import type { Events, TaskErrorPayload } from '#lib/types';
 import { Listener } from '@sapphire/framework';
 
 export class UserListener extends Listener<Events.TaskError> {

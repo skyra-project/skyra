@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 const NEW_COLUMNS = ['channels.ignore.all', 'channels.ignore.message-edit', 'channels.ignore.message-delete', 'channels.ignore.reaction-add'];
 

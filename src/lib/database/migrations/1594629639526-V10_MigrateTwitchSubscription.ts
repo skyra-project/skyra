@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
+import { Table, TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V10MigrateTwitchSubscription1594629639526 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

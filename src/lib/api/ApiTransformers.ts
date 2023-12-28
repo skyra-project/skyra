@@ -1,5 +1,4 @@
 import {
-	ChannelTypeString,
 	isDMChannel,
 	isGuildBasedChannelByGuildKey,
 	isNewsChannel,
@@ -9,6 +8,7 @@ import {
 } from '@sapphire/discord.js-utilities';
 import type {
 	Channel,
+	ChannelType,
 	DMChannel,
 	Guild,
 	GuildChannel,
@@ -18,7 +18,7 @@ import type {
 	Role,
 	TextChannel,
 	ThreadChannel,
-	ThreadChannelTypes,
+	ThreadChannelType,
 	User,
 	VoiceChannel
 } from 'discord.js';
@@ -140,11 +140,10 @@ export interface FlattenedRole {
 export function flattenChannel(channel: NewsChannel): FlattenedNewsChannel;
 export function flattenChannel(channel: TextChannel): FlattenedTextChannel;
 export function flattenChannel(channel: VoiceChannel): FlattenedVoiceChannel;
-export function flattenChannel(channel: GuildChannel): FlattenedGuildChannel;
 export function flattenChannel(channel: DMChannel): FlattenedDMChannel;
 export function flattenChannel(channel: ThreadChannel): FlattenedThreadChannel;
 export function flattenChannel(channel: Channel): FlattenedChannel;
-export function flattenChannel(channel: Channel) {
+export function flattenChannel(channel: Channel | ThreadChannel) {
 	if (isThreadChannel(channel)) return flattenChannelThread(channel as ThreadChannel);
 	if (isNewsChannel(channel)) return flattenChannelNews(channel as NewsChannel);
 	if (isTextChannel(channel)) return flattenChannelText(channel as TextChannel);
@@ -157,7 +156,7 @@ export function flattenChannel(channel: Channel) {
 function flattenChannelNews(channel: NewsChannel): FlattenedNewsChannel {
 	return {
 		id: channel.id,
-		type: channel.type as FlattenedNewsChannel['type'],
+		type: channel.type,
 		guildId: channel.guild.id,
 		name: channel.name,
 		rawPosition: channel.rawPosition,
@@ -217,7 +216,7 @@ function flattenChannelDM(channel: DMChannel): FlattenedDMChannel {
 	return {
 		id: channel.id,
 		type: channel.type as FlattenedDMChannel['type'],
-		recipient: channel.recipient.id,
+		recipient: channel.recipient?.id ?? null,
 		createdTimestamp: channel.createdTimestamp ?? 0
 	};
 }
@@ -247,89 +246,66 @@ function flattenChannelFallback(channel: Channel): FlattenedChannel {
 }
 
 export interface FlattenedChannel {
-	createdTimestamp: number;
-
 	id: string;
-
-	type: ChannelTypeString;
+	type: ChannelType;
+	createdTimestamp: number;
 }
 
 export interface FlattenedGuildChannel extends FlattenedChannel {
+	type: ChannelType;
 	guildId: string;
-
 	name: string;
-
 	parentId: string | null;
-
 	permissionOverwrites: [string, PermissionOverwrites][];
-
 	rawPosition: number;
-
-	type: ChannelTypeString;
 }
 
 export interface FlattenedNewsChannel extends FlattenedGuildChannel {
-	type: 'GUILD_NEWS';
-
+	type: ChannelType.GuildAnnouncement;
 	nsfw: boolean;
-
 	topic: string | null;
 }
 
 export interface FlattenedTextChannel extends FlattenedGuildChannel {
+	type: ChannelType.GuildText;
 	nsfw: boolean;
-
 	rateLimitPerUser: number;
-
 	topic: string | null;
-
-	type: 'GUILD_TEXT';
 }
 
 export interface FlattenedThreadChannel extends Pick<FlattenedGuildChannel, 'id' | 'createdTimestamp'> {
+	type: ThreadChannelType;
 	archived: boolean;
-
 	archivedTimestamp: number | null;
-
 	guildId: string;
-
 	name: string;
-
 	parentId: string | null;
-
 	permissionOverwrites: [string, PermissionOverwrites][];
-
 	rateLimitPerUser: number | null;
-
 	rawPosition: number | null;
-
-	type: ThreadChannelTypes;
 }
 
 export interface FlattenedNewsThreadChannel extends FlattenedChannel {
-	type: 'GUILD_NEWS_THREAD';
+	type: ChannelType.AnnouncementThread;
 }
 
 export interface FlattenedPublicThreadChannel extends FlattenedChannel {
-	type: 'GUILD_PUBLIC_THREAD';
+	type: ChannelType.PublicThread;
 }
 
 export interface FlattenedPrivateThreadChannel extends FlattenedChannel {
-	type: 'GUILD_PRIVATE_THREAD';
+	type: ChannelType.PrivateThread;
 }
 
 export interface FlattenedVoiceChannel extends FlattenedGuildChannel {
-	type: 'GUILD_VOICE';
-
+	type: ChannelType.GuildVoice;
 	bitrate: number;
-
 	userLimit: number;
 }
 
 export interface FlattenedDMChannel extends FlattenedChannel {
-	type: 'DM';
-
-	recipient: string;
+	type: ChannelType.DM;
+	recipient: string | null;
 }
 
 // #endregion Channel

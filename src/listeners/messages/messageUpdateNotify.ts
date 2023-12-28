@@ -1,19 +1,19 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { isGuildMessage } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { getFullEmbedAuthor } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 import { diffWordsWithSpace } from 'diff';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.MessageUpdate })
+@ApplyOptions<Listener.Options>({ event: Events.MessageUpdate })
 export class UserListener extends Listener {
 	public async run(old: Message, message: Message) {
 		if (!isGuildMessage(message) || old.content === message.content || message.author.bot) return;

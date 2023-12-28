@@ -1,3 +1,4 @@
+import { getEmojiObject, type EmojiObject } from '#utils/functions';
 import {
 	animatedSkyraGlasses,
 	bunnyTwemoji,
@@ -5,8 +6,7 @@ import {
 	serializedAnimatedSkyraGlasses,
 	serializedStaticSkyra,
 	staticSkyra
-} from '#mocks/constants';
-import { EmojiObject, getEmojiObject } from '#utils/functions';
+} from '../../../../mocks/constants.js';
 
 describe('getEmojiObject', () => {
 	test(`GIVEN decoded twemoji THEN returns emoji as name; id as null`, () => {

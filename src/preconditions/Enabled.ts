@@ -8,7 +8,7 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<Precondition.Options>({ position: 10 })
 export class UserPrecondition extends Precondition {
-	public run(message: Message, command: Command, context: Precondition.Context): Precondition.Result {
+	public override messageRun(message: Message, command: Command, context: Precondition.Context): Precondition.Result {
 		return message.guild ? this.runGuild(message as GuildMessage, command, context) : this.runDM(command, context);
 	}
 

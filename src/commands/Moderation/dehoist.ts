@@ -1,15 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { getColor, sendLoadingMessage } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { GuildMember, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
@@ -24,7 +23,7 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 export class UserCommand extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
 			await sendLoadingMessage(message, args.t);
 			await message.guild.members.fetch();
@@ -88,7 +87,7 @@ export class UserCommand extends SkyraCommand {
 			errored: erroredChanges.length,
 			users: message.guild.members.cache.size
 		});
-		const embed = new MessageEmbed().setColor(getColor(message)).setTitle(embedLanguage.title);
+		const embed = new EmbedBuilder().setColor(getColor(message)).setTitle(embedLanguage.title);
 
 		let { description } = embedLanguage;
 		if (deHoistedMembers <= 0) description = embedLanguage.descriptionNoone;
@@ -97,7 +96,7 @@ export class UserCommand extends SkyraCommand {
 			description = erroredChanges.length > 1 ? embedLanguage.descriptionWithMultipleErrors : embedLanguage.descriptionWithError;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
-			embed.addField(embedLanguage.fieldErrorTitle, codeblock);
+			embed.addFields({ name: embedLanguage.fieldErrorTitle, value: codeblock });
 		}
 
 		return embed.setDescription(description);

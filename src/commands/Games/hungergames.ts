@@ -2,17 +2,17 @@ import { HungerGamesUsage } from '#lib/games/HungerGamesUsage';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { minutes } from '#utils/common';
 import { deleteMessage, isModerator } from '#utils/functions';
-import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { cleanMentions } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendMessages } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isFunction } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import type { TFunction } from 'i18next';
+import { PermissionFlagsBits } from 'discord.js';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.RunContext) {
 		const autoFilled = args.getFlags('autofill');
 		const tributes = args.finished && autoFilled ? [] : args.nextSplit({ times: 50 });
 		const autoSkip = args.getFlags('autoskip');
@@ -81,11 +81,14 @@ export class UserCommand extends SkyraCommand {
 				const events = game.bloodbath
 					? LanguageKeys.Commands.Games.HungerGamesBloodbath
 					: game.sun
-					? LanguageKeys.Commands.Games.HungerGamesDay
-					: LanguageKeys.Commands.Games.HungerGamesNight;
+						? LanguageKeys.Commands.Games.HungerGamesDay
+						: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, args.t(events).map(HungerGamesUsage.create));
+				const { results, deaths } = this.makeResultEvents(
+					game,
+					args.t(events).map((usage) => HungerGamesUsage.create(usage))
+				);
 				const texts = this.buildTexts(args.t, game, results, deaths);
 
 				// Ask for the user to proceed:
@@ -165,8 +168,8 @@ export class UserCommand extends SkyraCommand {
 		const headerKey = game.bloodbath
 			? LanguageKeys.Commands.Games.HungerGamesResultHeaderBloodbath
 			: game.sun
-			? LanguageKeys.Commands.Games.HungerGamesResultHeaderSun
-			: LanguageKeys.Commands.Games.HungerGamesResultHeaderMoon;
+				? LanguageKeys.Commands.Games.HungerGamesResultHeaderSun
+				: LanguageKeys.Commands.Games.HungerGamesResultHeaderMoon;
 
 		const header = t(headerKey, { game });
 		const death = deaths.length
@@ -248,18 +251,18 @@ export class UserCommand extends SkyraCommand {
 		// If there are more than 16 tributes, perform a large blood bath
 		return game.tributes.size >= 16
 			? // For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
-			  // If it's in bloodbath, perform 50% more deaths.
-			  Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
+				// If it's in bloodbath, perform 50% more deaths.
+				Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
 			: // If there are more than 7 tributes, proceed to kill them in 4 or more.
-			game.tributes.size > 7
-			? // If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
-			  game.bloodbath
-				? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
-				: 4
-			: // If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
-			game.tributes.size === 4
-			? 2
-			: 1;
+				game.tributes.size > 7
+				? // If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
+					game.bloodbath
+					? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
+					: 4
+				: // If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
+					game.tributes.size === 4
+					? 2
+					: 1;
 	}
 }
 

@@ -1,16 +1,15 @@
-import { LanguageHelp } from '#lib/i18n/LanguageHelp';
+import { LanguageHelp, type LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { isGuildMessage, isPrivateMessage } from '#utils/common';
-import { getColor } from '#utils/util';
+import { getColor, splitMessage } from '#utils/util';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
-import { Args, container, fromAsync } from '@sapphire/framework';
+import { Args, Result, container, type MessageCommand } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Collection, Message, MessageEmbed, Util } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { Collection, EmbedBuilder, PermissionFlagsBits, type Message } from 'discord.js';
 
 /**
  * Sorts a collection alphabetically as based on the keys, rather than the values.
@@ -34,29 +33,29 @@ function sortCommandsAlphabetically(_: SkyraCommand[], __: SkyraCommand[], first
 	guarded: true
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args, context: SkyraCommand.RunContext) {
 		if (args.finished) {
 			if (args.getFlags('cat', 'categories')) return this.helpCategories(message, args);
 			if (args.getFlags('all')) return this.all(message, args, context);
 		}
 
 		const category = await args.pickResult(UserCommand.categories);
-		if (category.success) return this.display(message, args, category.value - 1, context);
+		if (category.isOk()) return this.display(message, args, category.unwrap() - 1, context);
 
 		const page = await args.pickResult('integer', { minimum: 0 });
-		if (page.success) return this.display(message, args, page.value - 1, context);
+		if (page.isOk()) return this.display(message, args, page.unwrap() - 1, context);
 
 		// Handle case for a single command
 		const command = await args.pickResult('commandName');
-		if (command.success) {
-			const embed = await this.buildCommandHelp(message, args, command.value, this.getCommandPrefix(context));
+		if (command.isOk()) {
+			const embed = await this.buildCommandHelp(message, args, command.unwrap(), this.getCommandPrefix(context));
 			return send(message, { embeds: [embed] });
 		}
 
 		return this.display(message, args, null, context);
 	}
 
-	private getCommandPrefix(context: SkyraCommand.Context): string {
+	private getCommandPrefix(context: SkyraCommand.RunContext): string {
 		return (context.prefix instanceof RegExp && !context.commandPrefix.endsWith(' ')) || UserOrMemberMentionRegex.test(context.commandPrefix)
 			? `${context.commandPrefix} `
 			: context.commandPrefix;
@@ -77,13 +76,13 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	private async all(message: Message, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	private async all(message: Message, args: SkyraCommand.Args, context: SkyraCommand.RunContext) {
 		const fullContent = await this.buildHelp(message, args.t, this.getCommandPrefix(context));
-		const contents = Util.splitMessage(fullContent, { char: '\n', maxLength: 2000 });
+		const contents = splitMessage(fullContent, { char: '\n', maxLength: 2000 });
 
 		for (const content of contents) {
-			const { success } = await fromAsync(message.author.send(content));
-			if (success) continue;
+			const result = await Result.fromAsync(message.author.send(content));
+			if (result.isOk()) continue;
 
 			if (isPrivateMessage(message)) this.error(LanguageKeys.Commands.General.HelpNoDm);
 			return;
@@ -93,7 +92,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	private async display(message: Message, args: SkyraCommand.Args, index: number | null, context: SkyraCommand.Context) {
+	private async display(message: Message, args: SkyraCommand.Args, index: number | null, context: SkyraCommand.RunContext) {
 		const prefix = this.getCommandPrefix(context);
 
 		const content = args.t(LanguageKeys.Commands.General.HelpAllFlag, { prefix });
@@ -121,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 		const commandsByCategory = await UserCommand.fetchCommands(message);
 
 		const display = new PaginatedMessage({
-			template: new MessageEmbed().setColor(getColor(message))
+			template: new EmbedBuilder().setColor(getColor(message))
 		}) //
 			.setSelectMenuOptions((pageIndex) => ({ label: commandsByCategory.at(pageIndex - 1)![0].fullCategory!.join(' → ') }));
 
@@ -149,14 +148,16 @@ export class UserCommand extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = args.t(command.detailedDescription, { replace: { prefix: prefixUsed }, postProcess: 'helpUsagePostProcessor' });
+		const extendedHelpData = args.t(command.detailedDescription, {
+			replace: { prefix: prefixUsed }
+		}) as LanguageHelpDisplayOptions;
 		const extendedHelp = builder.display(command.name, this.formatAliases(args.t, command.aliases), extendedHelpData, prefixUsed);
 
 		const data = args.t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
 			titleDescription: args.t(command.description)
 		});
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(getColor(message))
 			.setTimestamp()
 			.setFooter({ text: data.footer })
@@ -193,12 +194,12 @@ export class UserCommand extends SkyraCommand {
 				const command = cmd as SkyraCommand;
 				if (command.hidden) return;
 
-				const result = await cmd.preconditions.run(message, command, { command: null! });
-				if (!result.success) return;
+				const result = await cmd.preconditions.messageRun(message, command as MessageCommand, { command: null! });
+				if (result.isErr()) return;
 
-				const category = filtered.get(command.fullCategory!.join(' → '));
+				const category = filtered.get(command.fullCategory.join(' → '));
 				if (category) category.push(command);
-				else filtered.set(command.fullCategory!.join(' → '), [command as SkyraCommand]);
+				else filtered.set(command.fullCategory.join(' → '), [command]);
 			})
 		);
 

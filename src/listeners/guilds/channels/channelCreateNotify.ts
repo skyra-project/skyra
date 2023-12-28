@@ -3,18 +3,25 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
 import { Colors, LongWidthSpace } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { CategoryChannel, GuildChannel, MessageEmbed, NewsChannel, PermissionOverwrites, StoreChannel, TextChannel, VoiceChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import {
+	ChannelType,
+	OverwriteType,
+	type GuildChannel,
+	type NewsChannel,
+	type PermissionOverwrites,
+	type TextChannel,
+	type VoiceChannel
+} from 'discord.js';
 
-type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel;
-
-@ApplyOptions<ListenerOptions>({ event: Events.ChannelCreate })
+@ApplyOptions<Listener.Options>({ event: Events.ChannelCreate })
 export class UserListener extends Listener<typeof Events.ChannelCreate> {
-	public async run(next: GuildBasedChannel) {
+	public async run(next: GuildChannel) {
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
 			settings[GuildSettings.Channels.Logs.ChannelCreate],
 			settings.getLanguage()
@@ -28,30 +35,28 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 		}
 
 		const changes: string[] = [...this.getChannelInformation(t, next)];
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelCreate) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });
 	}
 
-	private *getChannelInformation(t: TFunction, channel: GuildBasedChannel) {
+	private *getChannelInformation(t: TFunction, channel: GuildChannel) {
 		yield* this.getGuildChannelInformation(t, channel);
 
 		switch (channel.type) {
-			case 'GUILD_TEXT':
-				yield* this.getTextChannelInformation(t, channel);
+			case ChannelType.GuildText:
+				yield* this.getTextChannelInformation(t, channel as TextChannel);
 				break;
-			case 'GUILD_VOICE':
-				yield* this.getVoiceChannelInformation(t, channel);
+			case ChannelType.GuildStageVoice:
+			case ChannelType.GuildVoice:
+				yield* this.getVoiceChannelInformation(t, channel as VoiceChannel);
 				break;
-			case 'GUILD_NEWS':
-				yield* this.getNewsChannelInformation(t, channel);
-				break;
-			case 'GUILD_STORE':
-				yield* this.getStoreChannelInformation(t, channel);
+			case ChannelType.GuildAnnouncement:
+				yield* this.getNewsChannelInformation(t, channel as NewsChannel);
 				break;
 			default:
 			// No Op
@@ -60,7 +65,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 		yield* this.getChannelPermissionOverwrites(t, channel);
 	}
 
-	private *getGuildChannelInformation(t: TFunction, channel: GuildBasedChannel) {
+	private *getGuildChannelInformation(t: TFunction, channel: GuildChannel) {
 		if (channel.parentId) yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreateParent, { value: `<#${channel.parentId}>` });
 		yield t(LanguageKeys.Events.Guilds.Logs.ChannelCreatePosition, { value: channel.position });
 	}
@@ -101,10 +106,6 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 		if (channel.topic) yield this.displayTopic(t, channel.topic);
 	}
 
-	private *getStoreChannelInformation(t: TFunction, channel: StoreChannel) {
-		if (isNsfwChannel(channel)) yield this.displayNsfw(t);
-	}
-
 	private displayNsfw(t: TFunction) {
 		return t(LanguageKeys.Events.Guilds.Logs.ChannelCreateNsfw);
 	}
@@ -126,7 +127,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	}
 
 	private displayMention(permissions: PermissionOverwrites) {
-		if (permissions.type === 'member') return `<@${permissions.id}>`;
+		if (permissions.type === OverwriteType.Member) return `<@${permissions.id}>`;
 		if (permissions.id === permissions.channel.guild.id) return '@everyone';
 		return `<@&${permissions.id}>`;
 	}

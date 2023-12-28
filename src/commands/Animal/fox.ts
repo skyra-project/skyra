@@ -1,12 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { getColor, getImageUrl } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
-import { URL } from 'node:url';
+import { PermissionFlagsBits, type Message } from 'discord.js';
 
 const url = new URL('https://randomfox.ca/floof');
 
@@ -16,9 +15,9 @@ const url = new URL('https://randomfox.ca/floof');
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message) {
+	public override async messageRun(message: Message) {
 		const { image } = await fetch<FoxResultOk>(url, FetchResultTypes.JSON);
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setImage(getImageUrl(image) ?? 'https://i.imgur.com/JCtnTv8.png')
 			.setTimestamp();

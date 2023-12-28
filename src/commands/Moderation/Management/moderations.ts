@@ -1,18 +1,16 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getColor, sendLoadingMessage } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
-import type { Collection } from '@discordjs/collection';
+import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { chunk, cutText } from '@sapphire/utilities';
-import { MessageEmbed, User } from 'discord.js';
+import { EmbedBuilder, type Collection, type User } from 'discord.js';
 
 const enum Type {
 	Mute,
@@ -20,36 +18,38 @@ const enum Type {
 	All
 }
 
-@ApplyOptions<PaginatedMessageCommand.Options>({
-	aliases: ['moderation'],
-	description: LanguageKeys.Commands.Moderation.ModerationsDescription,
-	detailedDescription: LanguageKeys.Commands.Moderation.ModerationsExtended,
-	permissionLevel: PermissionLevels.Moderator,
-	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: [
-		{ input: 'mute', output: 'mutes' },
-		'mutes',
-		{ input: 'warning', output: 'warnings' },
-		'warnings',
-		{ input: 'warn', output: 'warnings' },
-		{ input: 'warns', output: 'warnings' },
-		{ input: 'all', default: true }
-	]
-})
-export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public mutes(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+@ApplyOptions<SkyraSubcommand.Options>(
+	SkyraSubcommand.PaginatedOptions({
+		aliases: ['moderation'],
+		description: LanguageKeys.Commands.Moderation.ModerationsDescription,
+		detailedDescription: LanguageKeys.Commands.Moderation.ModerationsExtended,
+		permissionLevel: PermissionLevels.Moderator,
+		runIn: [CommandOptionsRunTypeEnum.GuildAny],
+		subcommands: [
+			{ name: 'mute', messageRun: 'mutes' },
+			{ name: 'mutes', messageRun: 'mutes' },
+			{ name: 'warning', messageRun: 'warnings' },
+			{ name: 'warnings', messageRun: 'warnings' },
+			{ name: 'warn', messageRun: 'warnings' },
+			{ name: 'warns', messageRun: 'warnings' },
+			{ name: 'all', messageRun: 'all', default: true }
+		]
+	})
+)
+export class UserPaginatedMessageCommand extends SkyraSubcommand {
+	public mutes(message: GuildMessage, args: SkyraSubcommand.Args, { commandPrefix }: SkyraSubcommand.RunContext) {
 		return this.handle(message, args, Type.Mute, commandPrefix);
 	}
 
-	public warnings(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+	public warnings(message: GuildMessage, args: SkyraCommand.Args, { commandPrefix }: SkyraCommand.RunContext) {
 		return this.handle(message, args, Type.Warning, commandPrefix);
 	}
 
-	public all(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+	public all(message: GuildMessage, args: SkyraCommand.Args, { commandPrefix }: SkyraCommand.RunContext) {
 		return this.handle(message, args, Type.All, commandPrefix);
 	}
 
-	private async handle(message: GuildMessage, args: PaginatedMessageCommand.Args, action: Type, prefix: string) {
+	private async handle(message: GuildMessage, args: SkyraCommand.Args, action: Type, prefix: string) {
 		const target = args.finished ? null : await args.pick('userName');
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -59,7 +59,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty, { prefix });
 
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
+			template: new EmbedBuilder()
 				.setColor(getColor(message))
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
@@ -78,8 +78,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPageEmbed((embed) => {
 				for (const entry of page) {
-					const { name, value } = format(entry);
-					embed.addField(name, value);
+					embed.addFields(format(entry));
 				}
 
 				return embed;

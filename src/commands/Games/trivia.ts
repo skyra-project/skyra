@@ -1,16 +1,16 @@
-import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '#lib/games/TriviaManager';
+import { CATEGORIES, QuestionDifficulty, QuestionType, getQuestion, type QuestionData } from '#lib/games/TriviaManager';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { floatPromise, minutes, seconds } from '#utils/common';
 import { sendTemporaryMessage } from '#utils/functions';
 import { sendLoadingMessage, shuffle } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageCollector, MessageEmbed, User } from 'discord.js';
-import { decode } from 'he';
-import type { TFunction } from 'i18next';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { MessageCollector, PermissionFlagsBits, type Message, type User } from 'discord.js';
+import he from 'he';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Games.TriviaDescription,
@@ -20,7 +20,7 @@ import type { TFunction } from 'i18next';
 export class UserCommand extends SkyraCommand {
 	#channels = new Set<string>();
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const category = await args.pick(UserCommand.category).catch(() => CATEGORIES.general);
 		const questionType = await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
@@ -35,8 +35,8 @@ export class UserCommand extends SkyraCommand {
 			const possibleAnswers =
 				questionType === QuestionType.Boolean
 					? ['True', 'False']
-					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
-			const correctAnswer = decode(data.correct_answer);
+					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => he.decode(ans)));
+			const correctAnswer = he.decode(data.correct_answer);
 
 			const questionEmbed = this.buildQuestionEmbed(args.t, data, possibleAnswers);
 			await send(message, { embeds: [questionEmbed] });
@@ -54,7 +54,7 @@ export class UserCommand extends SkyraCommand {
 				.on('collect', (collected: Message) => {
 					if (participants.has(collected.author.id)) return;
 					const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
-					if (attempt === decode(data.correct_answer)) {
+					if (attempt === correctAnswer) {
 						winner = collected.author;
 						return collector.stop();
 					}
@@ -79,12 +79,12 @@ export class UserCommand extends SkyraCommand {
 	public buildQuestionEmbed(t: TFunction, data: QuestionData, possibleAnswers: string[]) {
 		const titles = t(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setAuthor({ name: titles.trivia })
 			.setTitle(data.category)
 			.setColor(0xf37917)
-			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
-			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
+			.setThumbnail('https://i.imgur.com/zPtu5aP.png')
+			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', he.decode(data.question), '', questionDisplay.join('\n')].join('\n'));
 	}
 
 	private static category = Args.make<number>((parameter, { argument }) => {

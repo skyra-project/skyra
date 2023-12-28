@@ -1,9 +1,9 @@
 import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
-import { Events } from '#lib/types/Enums';
-import { fetch, FetchResultTypes, QueryError } from '@sapphire/fetch';
+import { Events } from '#lib/types';
+import { FetchResultTypes, QueryError, fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';
-import { Constants } from 'discord.js';
+import { Status } from 'discord.js';
 
 const header = blueBright('[POST STATS   ]');
 
@@ -21,7 +21,7 @@ export class UserTask extends Task {
 		const { client, logger } = this.container;
 
 		// If the websocket isn't ready, delay the execution by 30 seconds:
-		if (client.ws.status !== Constants.Status.READY) {
+		if (client.ws.status !== Status.Ready) {
 			return { type: ResponseType.Delay, value: 30000 };
 		}
 

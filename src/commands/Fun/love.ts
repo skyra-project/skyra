@@ -2,10 +2,10 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CdnUrls } from '#utils/constants';
 import { getColor, getDisplayAvatar, getTag } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { Message, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits, type Message } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Fun.LoveDescription,
@@ -13,7 +13,7 @@ import { Message, MessageEmbed } from 'discord.js';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraCommand {
 			`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
 			`**${args.t(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 		].join('\n');
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setAuthor({ name: '❤ Love Meter ❤', iconURL: getDisplayAvatar(message.author, { size: 128 }) })
 			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)

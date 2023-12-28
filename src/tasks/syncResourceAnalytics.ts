@@ -1,5 +1,5 @@
 import { Task } from '#lib/database';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 
 export class UserTask extends Task {
 	public run() {

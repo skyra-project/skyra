@@ -1,5 +1,5 @@
 import type { SkyraArgs } from '#lib/structures';
-import { seconds } from './common';
+import { seconds } from '#utils/common';
 
 export const SecondsOptions = ['s', 'sec', 'secs', 'second', 'seconds'] as const;
 export const MinutesOptions = ['m', 'min', 'mins', 'minute', 'minutes'] as const;

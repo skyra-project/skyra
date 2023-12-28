@@ -1,12 +1,11 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, isModerator } from '#utils/functions';
 import { MEDIA_EXTENSION } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
+@ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
 		const channels = await readSettings(message.guild, GuildSettings.Channels.MediaOnly);

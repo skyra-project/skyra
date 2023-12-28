@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableCheck } from 'typeorm';
+import { Table, TableCheck, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V50RemoveDatabaseChecks1618951687674 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,4 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Awaitable } from '@sapphire/utilities';
@@ -15,7 +15,7 @@ export class UserSerializer extends Serializer<boolean> {
 		return typeof value === 'boolean';
 	}
 
-	public stringify(value: boolean, { t }: SerializerUpdateContext): string {
+	public override stringify(value: boolean, { t }: Serializer.UpdateContext): string {
 		return t(value ? LanguageKeys.Arguments.BooleanEnabled : LanguageKeys.Arguments.BooleanDisabled);
 	}
 }

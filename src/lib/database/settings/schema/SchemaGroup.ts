@@ -1,9 +1,9 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
+import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
+import { AliasedCollection } from '#lib/database/settings/structures/collections/AliasedCollection';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, isNullish, toTitleCase } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
-import { AliasedCollection } from '../structures/collections/AliasedCollection';
-import type { SchemaKey } from './SchemaKey';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
@@ -19,7 +19,7 @@ export class SchemaGroup extends AliasedCollection<string, ISchemaValue> impleme
 		this.parent = parent;
 	}
 
-	public set(key: string, value: ISchemaValue) {
+	public override set(key: string, value: ISchemaValue) {
 		// Add auto-alias:
 		if (key.includes('-')) {
 			this.aliases.set(key.replaceAll('-', ''), value);

@@ -1,12 +1,10 @@
-import { TwitchEventSubTypes, TwitchEventSubVerificationMessage } from '#lib/types';
-import { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
-import { Events } from '#lib/types/Enums';
+import { Events, TwitchEventSubTypes, TwitchStreamStatus, type TwitchEventSubVerificationMessage } from '#lib/types';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
 
-@ApplyOptions<RouteOptions>({ route: 'twitch/event_sub_verify' })
+@ApplyOptions<Route.Options>({ route: 'twitch/event_sub_verify' })
 export class UserRoute extends Route {
 	private lastNotificationId: string | null = null;
 

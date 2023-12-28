@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { EmojiObject, getEmojiObject } from '#utils/functions';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { getEmojiObject, type EmojiObject } from '#utils/functions';
+import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<EmojiObject> {
-	public run(parameter: string, context: ArgumentContext) {
+	public run(parameter: string, context: Argument.Context) {
 		const resolved = getEmojiObject(parameter);
-		if (resolved === null) return this.error({ parameter, identifier: LanguageKeys.Arguments.Emoji, context });
+		if (resolved === null) return this.error({ parameter, identifier: LanguageKeys.Arguments.EmojiError, context });
 		return this.ok(resolved);
 	}
 }

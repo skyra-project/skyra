@@ -1,13 +1,12 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import { Events } from '#lib/types/Enums';
 import { isGuildMessage } from '#utils/common';
 import { deleteMessage } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { CommandSuccessPayload, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, type MessageCommandSuccessPayload } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ event: Events.CommandSuccess })
-export class UserListener extends Listener<Events.CommandSuccess> {
-	public async run({ message }: CommandSuccessPayload) {
+@ApplyOptions<Listener.Options>({ event: Events.MessageCommandSuccess })
+export class UserListener extends Listener<typeof Events.MessageCommandSuccess> {
+	public async run({ message }: MessageCommandSuccessPayload) {
 		if (!isGuildMessage(message)) return;
 
 		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);

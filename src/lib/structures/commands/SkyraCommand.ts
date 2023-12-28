@@ -1,29 +1,36 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
-import type { CustomGet } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
-import { OWNERS } from '#root/config';
-import { seconds } from '#utils/common';
-import { CommandContext, PieceContext, PreconditionContainerArray, UserError } from '@sapphire/framework';
-import { fetchT } from '@sapphire/plugin-i18next';
-import { SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
-import type { Message } from 'discord.js';
-import * as Lexure from 'lexure';
-import { SkyraArgs } from './parsers/SkyraArgs';
+import { SkyraArgs } from '#lib/structures/commands/SkyraArgs';
+import {
+	SkyraCommandConstructorDefaults,
+	implementSkyraCommandError,
+	implementSkyraCommandPaginatedOptions,
+	implementSkyraCommandParseConstructorPreConditionsPermissionLevel,
+	implementSkyraCommandPreParse,
+	type ExtendOptions
+} from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
+import { PermissionLevels, type CustomGet } from '#lib/types';
+import { Command, UserError, type Awaitable, type MessageCommand } from '@sapphire/framework';
+import { type Message } from 'discord.js';
 
-export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.Args, SkyraCommand> {
+/**
+ * The base class for all Skyra commands.
+ * @seealso {@link SkyraSubcommand} for subcommand support.
+ */
+export abstract class SkyraCommand extends Command<SkyraCommand.Args, SkyraCommand.Options> {
 	public readonly guarded: boolean;
 	public readonly hidden: boolean;
 	public readonly permissionLevel: PermissionLevels;
-	public readonly description: CustomGet<string, string>;
+	public declare readonly detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
+	public declare readonly description: CustomGet<string, string>;
 
-	public constructor(context: PieceContext, options: SkyraCommand.Options) {
-		super(context, { cooldownDelay: seconds(10), cooldownLimit: 2, cooldownFilteredUsers: OWNERS, generateDashLessAliases: true, ...options });
-
-		this.guarded = options.guarded ?? false;
-		this.hidden = options.hidden ?? false;
-		this.permissionLevel = options.permissionLevel ?? PermissionLevels.Everyone;
-		this.description = options.description;
+	public constructor(context: Command.LoaderContext, options: SkyraCommand.Options) {
+		super(context, { ...SkyraCommandConstructorDefaults, ...options });
+		this.guarded = options.guarded ?? SkyraCommandConstructorDefaults.guarded;
+		this.hidden = options.hidden ?? SkyraCommandConstructorDefaults.hidden;
+		this.permissionLevel = options.permissionLevel ?? SkyraCommandConstructorDefaults.permissionLevel;
 	}
+
+	public abstract override messageRun(message: Message, args: SkyraCommand.Args, context: MessageCommand.RunContext): Awaitable<unknown>;
 
 	/**
 	 * The pre-parse method. This method can be overridden by plugins to define their own argument parser.
@@ -31,67 +38,25 @@ export abstract class SkyraCommand extends SubCommandPluginCommand<SkyraCommand.
 	 * @param parameters The raw parameters as a single string.
 	 * @param context The command-context used in this execution.
 	 */
-	public async preParse(message: Message, parameters: string, context: CommandContext): Promise<SkyraCommand.Args> {
-		const parser = new Lexure.Parser(this.lexer.setInput(parameters).lex()).setUnorderedStrategy(this.strategy);
-		const args = new Lexure.Args(parser.parse());
-		return new SkyraArgs(message, this, args, context, await fetchT(message));
+	public override messagePreParse(message: Message, parameters: string, context: MessageCommand.RunContext): Promise<SkyraCommand.Args> {
+		return implementSkyraCommandPreParse(this as MessageCommand, message, parameters, context);
 	}
 
 	protected error(identifier: string | UserError, context?: unknown): never {
-		throw typeof identifier === 'string' ? new UserError({ identifier, context }) : identifier;
+		implementSkyraCommandError(identifier, context);
 	}
 
-	protected parseConstructorPreConditions(options: SkyraCommand.Options): void {
+	protected override parseConstructorPreConditions(options: SkyraCommand.Options): void {
 		super.parseConstructorPreConditions(options);
-		this.parseConstructorPreConditionsPermissionLevel(options);
+		implementSkyraCommandParseConstructorPreConditionsPermissionLevel(this, options.permissionLevel);
 	}
 
-	protected parseConstructorPreConditionsPermissionLevel(options: SkyraCommand.Options): void {
-		if (options.permissionLevel === PermissionLevels.BotOwner) {
-			this.preconditions.append('BotOwner');
-			return;
-		}
-
-		const container = new PreconditionContainerArray(['BotOwner'], this.preconditions);
-		switch (options.permissionLevel ?? PermissionLevels.Everyone) {
-			case PermissionLevels.Everyone:
-				container.append('Everyone');
-				break;
-			case PermissionLevels.Moderator:
-				container.append('Moderator');
-				break;
-			case PermissionLevels.Administrator:
-				container.append('Administrator');
-				break;
-			case PermissionLevels.ServerOwner:
-				container.append('ServerOwner');
-				break;
-			default:
-				throw new Error(
-					`SkyraCommand[${this.name}]: "permissionLevel" was specified as an invalid permission level (${options.permissionLevel}).`
-				);
-		}
-
-		this.preconditions.append(container);
-	}
-}
-
-export interface SkyraCommand {
-	detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
+	public static readonly PaginatedOptions = implementSkyraCommandPaginatedOptions<SkyraCommand.Options>;
 }
 
 export namespace SkyraCommand {
-	/**
-	 * The SkyraCommand Options
-	 */
-	export type Options = SubCommandPluginCommand.Options & {
-		description: CustomGet<string, string>;
-		detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
-		guarded?: boolean;
-		hidden?: boolean;
-		permissionLevel?: number;
-	};
-
+	export type Options = ExtendOptions<Command.Options>;
 	export type Args = SkyraArgs;
-	export type Context = CommandContext;
+	export type LoaderContext = Command.LoaderContext;
+	export type RunContext = MessageCommand.RunContext;
 }

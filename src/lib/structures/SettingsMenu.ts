@@ -1,21 +1,18 @@
 import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { SkyraArgs, type SkyraCommand } from '#lib/structures';
+import { Events, type GuildMessage } from '#lib/types';
 import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
-import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
-import { container } from '@sapphire/framework';
+import { EmbedBuilder } from '@discordjs/builders';
+import { container, type MessageCommand } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { deepClone } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
-import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
-import * as Lexure from 'lexure';
-import { SkyraArgs } from './commands/parsers/SkyraArgs';
-import type { SkyraCommand } from './commands/SkyraCommand';
+import { DiscordAPIError, MessageCollector, RESTJSONErrorCodes } from 'discord.js';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = minutes(15);
@@ -34,7 +31,7 @@ export class SettingsMenu {
 	private messageCollector: MessageCollector | null = null;
 	private errorMessage: string | null = null;
 	private llrc: LongLivingReactionCollector | null = null;
-	private readonly embed: MessageEmbed;
+	private readonly embed: EmbedBuilder;
 	private response: GuildMessage | null = null;
 	private oldValue: unknown = undefined;
 
@@ -42,14 +39,14 @@ export class SettingsMenu {
 		this.message = message;
 		this.t = language;
 		this.schema = configurableGroups;
-		this.embed = new MessageEmbed().setAuthor(getFullEmbedAuthor(this.message.author));
+		this.embed = new EmbedBuilder().setAuthor(getFullEmbedAuthor(this.message.author));
 	}
 
 	private get updatedValue(): boolean {
 		return this.oldValue !== undefined;
 	}
 
-	public async init(context: SkyraCommand.Context): Promise<void> {
+	public async init(context: SkyraCommand.RunContext): Promise<void> {
 		this.response = await sendLoadingMessage(this.message, this.t);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector().setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
@@ -104,14 +101,16 @@ export class SettingsMenu {
 		if (parent) floatPromise(this._reactResponse(EMOJIS.BACK));
 		else floatPromise(this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
-		return this.embed
+		this.embed
 			.setColor(getColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
-			.setFooter({ text: parent ? t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '' })
 			.setTimestamp();
+
+		if (parent) this.embed.setFooter({ text: t(LanguageKeys.Commands.Admin.ConfMenuRenderBack) });
+		return this.embed;
 	}
 
-	private async onMessage(message: GuildMessage, context: SkyraCommand.Context) {
+	private async onMessage(message: GuildMessage, context: SkyraCommand.RunContext) {
 		// In case of messages that do not have a content, like attachments, ignore
 		if (!message.content) return;
 
@@ -126,12 +125,8 @@ export class SettingsMenu {
 				this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
 			}
 		} else {
-			//                                                                                                            parser context
-			const conf = container.stores.get('commands').get('conf') as SkyraCommand;
-			// eslint-disable-next-line @typescript-eslint/dot-notation
-			const lexureParser = new Lexure.Parser(conf['lexer'].setInput(message.content).lex());
-			const lexureArgs = new Lexure.Args(lexureParser.parse());
-			const args = new SkyraArgs(this.message, conf, lexureArgs, context, this.t);
+			const conf = container.stores.get('commands').get('conf') as MessageCommand;
+			const args = SkyraArgs.from(conf, message, message.content, context, this.t);
 
 			const commandLowerCase = args.next().toLowerCase();
 			if (commandLowerCase === 'set') await this.tryUpdate(UpdateType.Set, args);
@@ -146,7 +141,12 @@ export class SettingsMenu {
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
+		// If the message is not the menu's message, ignore:
+		if (!this.response || reaction.messageId !== this.response.id) return;
+
+		// If the user is not the author, ignore:
 		if (reaction.userId !== this.message.author.id) return;
+
 		this.llrc?.setTime(TIMEOUT);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc?.end();
@@ -162,12 +162,13 @@ export class SettingsMenu {
 
 	private async _removeReactionFromUser(reaction: string, userId: string) {
 		if (!this.response) return;
+
+		const channelId = this.response.channel.id;
+		const messageId = this.response.id;
 		try {
-			return await api()
-				.channels(this.message.channel.id)
-				.messages(this.response.id)
-				.reactions(encodeURIComponent(reaction), userId === this.message.client.user!.id ? '@me' : userId)
-				.delete();
+			return await (userId === this.message.client.user!.id
+				? api().channels.deleteUserMessageReaction(channelId, messageId, reaction, userId)
+				: api().channels.deleteOwnMessageReaction(channelId, messageId, reaction));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage) {

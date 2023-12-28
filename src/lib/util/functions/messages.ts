@@ -4,10 +4,9 @@ import { floatPromise, minutes, resolveOnErrorCodes } from '#utils/common';
 import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { resolveKey, StringMap, TOptions } from '@sapphire/plugin-i18next';
+import { resolveKey, type TOptions } from '@sapphire/plugin-i18next';
 import type { NonNullObject } from '@sapphire/utilities';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
-import type { Message, MessageOptions, UserResolvable } from 'discord.js';
+import { RESTJSONErrorCodes, type Message, type MessageCreateOptions, type UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 const messageCommands = new WeakMap<Message, SkyraCommand>();
@@ -45,14 +44,13 @@ async function deleteMessageImmediately(message: Message): Promise<Message> {
  * @returns The deleted message.
  */
 export async function deleteMessage(message: Message, time = 0): Promise<Message> {
-	if (message.deleted) return message;
 	if (time === 0) return deleteMessageImmediately(message);
 
 	const lastEditedTimestamp = message.editedTimestamp;
 	await sleep(time);
 
 	// If it was deleted or edited, cancel:
-	if (message.deleted || message.editedTimestamp !== lastEditedTimestamp) {
+	if (message.editedTimestamp !== lastEditedTimestamp) {
 		return message;
 	}
 
@@ -66,7 +64,7 @@ export async function deleteMessage(message: Message, time = 0): Promise<Message
  * @param timer The timer in which the message should be deleted, using {@link deleteMessage}.
  * @returns The response message.
  */
-export async function sendTemporaryMessage(message: Message, options: string | MessageOptions, timer = minutes(1)): Promise<Message> {
+export async function sendTemporaryMessage(message: Message, options: string | MessageCreateOptions, timer = minutes(1)): Promise<Message> {
 	if (typeof options === 'string') options = { content: options };
 
 	const response = (await send(message, options)) as Message;
@@ -107,16 +105,17 @@ export function sendLocalizedMessage(message: Message, key: LocalizedSimpleKey):
  * // ➡ "Pong! Current latency is 42ms."
  * ```
  */
-export function sendLocalizedMessage<TArgs extends StringMap>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
+export function sendLocalizedMessage<TArgs extends object>(message: Message, options: LocalizedMessageOptions<TArgs>): Promise<Message>;
 export async function sendLocalizedMessage(message: Message, options: LocalizedSimpleKey | LocalizedMessageOptions) {
 	if (typeof options === 'string') options = { key: options };
 
+	// @ts-expect-error 2345: Complex overloads
 	const content = await resolveKey(message, options.key, options.formatOptions);
 	return send(message, { ...options, content });
 }
 
 type LocalizedSimpleKey = CustomGet<string, string>;
-type LocalizedMessageOptions<TArgs extends StringMap = NonNullObject> = Omit<MessageOptions, 'content'> &
+type LocalizedMessageOptions<TArgs extends object = NonNullObject> = Omit<MessageCreateOptions, 'content'> &
 	(
 		| {
 				key: LocalizedSimpleKey;
@@ -131,7 +130,7 @@ type LocalizedMessageOptions<TArgs extends StringMap = NonNullObject> = Omit<Mes
 /**
  * The prompt confirmation options.
  */
-export interface PromptConfirmationMessageOptions extends MessageOptions {
+export interface PromptConfirmationMessageOptions extends MessageCreateOptions {
 	/**
 	 * The target.
 	 * @default message.author
@@ -189,7 +188,7 @@ export async function promptConfirmation(message: Message, options: string | Pro
 		: promptConfirmationMessage(message, response, options);
 }
 
-export async function promptForMessage(message: Message, sendOptions: string | MessageOptions, time = minutes(1)): Promise<string | null> {
+export async function promptForMessage(message: Message, sendOptions: string | MessageCreateOptions, time = minutes(1)): Promise<string | null> {
 	const response = await message.channel.send(sendOptions);
 	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));

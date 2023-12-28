@@ -1,7 +1,7 @@
 import type { SerializedEmoji } from '#utils/functions';
 import { TwemojiRegex } from '@sapphire/discord-utilities';
 import type { MigrationInterface, QueryRunner } from 'typeorm';
-import type { ReactionRole } from '../entities/GuildEntity';
+import type { ReactionRole } from '#lib/database/entities/GuildEntity';
 
 export class V57MigrateReactionRolesAndTriggers1633184279614 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

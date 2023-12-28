@@ -1,7 +1,7 @@
+import { BaseBotController } from '#lib/games/base/BaseBotController';
+import type { ConnectFourGame } from '#lib/games/connect-four/ConnectFourGame';
 import { cast } from '#utils/util';
 import { connectFour } from '@skyra/ai';
-import { BaseBotController } from '../base/BaseBotController';
-import type { ConnectFourGame } from './ConnectFourGame';
 
 export class ConnectFourBotController extends BaseBotController<number> {
 	private readonly depth: number;

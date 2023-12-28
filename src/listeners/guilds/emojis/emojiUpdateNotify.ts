@@ -2,13 +2,14 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { differenceMap } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { GuildEmoji, MessageEmbed, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { GuildEmoji, TextChannel } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildEmojiUpdate })
+@ApplyOptions<Listener.Options>({ event: Events.GuildEmojiUpdate })
 export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 	public async run(previous: GuildEmoji, next: GuildEmoji) {
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
@@ -26,10 +27,10 @@ export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 		const changes: string[] = [...this.differenceEmoji(t, previous, next)];
 		if (changes.length === 0) return;
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Yellow)
 			.setThumbnail(next.url)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate) })
 			.setTimestamp();

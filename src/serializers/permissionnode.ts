@@ -1,17 +1,17 @@
-import { CommandMatcher, PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
+import { CommandMatcher, Serializer, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import type { CommandStore } from '@sapphire/framework';
 import { isObject } from '@sapphire/utilities';
 import type { GuildMember, Role } from 'discord.js';
 
 export class UserSerializer extends Serializer<PermissionsNode> {
-	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
+	public parse(_: Serializer.Args, { t }: Serializer.UpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public async isValid(value: PermissionsNode, { t, entry, guild }: SerializerUpdateContext): Promise<boolean> {
+	public async isValid(value: PermissionsNode, { t, entry, guild }: Serializer.UpdateContext): Promise<boolean> {
 		// Safe-guard checks against arbitrary data
 		if (!isObject(value)) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
 		if (Object.keys(value).length !== 3) throw t(LanguageKeys.Serializers.PermissionNodeInvalid);
@@ -67,7 +67,7 @@ export class UserSerializer extends Serializer<PermissionsNode> {
 		return true;
 	}
 
-	public stringify(value: PermissionsNode) {
+	public override stringify(value: PermissionsNode) {
 		return `${value.id}(${value.allow.join(', ')} | ${value.deny.join(', ')})`;
 	}
 

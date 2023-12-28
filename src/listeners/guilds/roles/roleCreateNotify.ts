@@ -2,13 +2,14 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { MessageEmbed, Role, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { Role, TextChannel } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildRoleCreate })
+@ApplyOptions<Listener.Options>({ event: Events.GuildRoleCreate })
 export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 	public async run(next: Role) {
 		const [channelId, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleCreate], settings.getLanguage()]);
@@ -21,9 +22,9 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 		}
 
 		const changes: string[] = [...this.getRoleInformation(t, next)];
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleCreate) })
 			.setTimestamp();

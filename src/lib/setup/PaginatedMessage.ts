@@ -1,23 +1,21 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { fetchT } from '#lib/i18n/translate';
 import { userMention } from '@discordjs/builders';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
-import { container } from '@sapphire/framework';
-import i18n from 'i18next';
 
 PaginatedMessage.selectMenuOptions = async (pageIndex, internationalizationContext) => {
-	const languageForContext = await container.i18n.fetchLanguage(internationalizationContext);
+	const t = await fetchT(internationalizationContext);
 
-	return { label: `${i18n.t(LanguageKeys.Globals.PaginatedMessagePage, { lng: languageForContext ?? 'en-US' })} ${pageIndex}` };
+	return {
+		label: `${t(LanguageKeys.Globals.PaginatedMessagePage, {})} ${pageIndex}`
+	};
 };
 
 PaginatedMessage.wrongUserInteractionReply = async (targetUser, _, internationalizationContext) => {
-	const languageForContext = await container.i18n.fetchLanguage(internationalizationContext);
+	const t = await fetchT(internationalizationContext);
 
 	return {
-		content: i18n.t(LanguageKeys.Globals.PaginatedMessageWrongUserInteractionReply, {
-			lng: languageForContext ?? 'en-US',
-			user: userMention(targetUser.id)
-		}),
+		content: t(LanguageKeys.Globals.PaginatedMessageWrongUserInteractionReply, { user: userMention(targetUser.id) }),
 		ephemeral: true,
 		allowedMentions: { users: [], roles: [] }
 	};

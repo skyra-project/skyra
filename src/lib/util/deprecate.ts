@@ -1,8 +1,7 @@
 import { Invites } from '#lib/util/constants';
-import { ButtonBuilder, inlineCode } from '@discordjs/builders';
+import { ActionRowBuilder, ButtonBuilder, inlineCode, type MessageActionRowComponentBuilder } from '@discordjs/builders';
 import { isNullishOrEmpty } from '@sapphire/utilities';
-import { ButtonStyle, type APIButtonComponent } from 'discord-api-types/v9';
-import { MessageActionRow } from 'discord.js';
+import { ButtonStyle } from 'discord.js';
 
 export function createDeprecatedList(options: Options) {
 	const values = new Map<string, readonly string[]>();
@@ -22,13 +21,13 @@ export function createDeprecatedList(options: Options) {
 	return values;
 }
 
-export function makeRemovedMessage(alias: string, row: MessageActionRow) {
+export function makeRemovedMessage(alias: string, row: ActionRowBuilder<MessageActionRowComponentBuilder>) {
 	const content = `The command ${inlineCode(alias)} has been removed, please read more information about this change with the button below.`;
 	return { content, components: [row], allowedMentions: { users: [], roles: [] } };
 }
 
 const listFormatter = new Intl.ListFormat('en-US', { type: 'disjunction' });
-export function makeReplacedMessage(alias: string, row: MessageActionRow, list: Map<string, readonly string[]>) {
+export function makeReplacedMessage(alias: string, row: ActionRowBuilder<MessageActionRowComponentBuilder>, list: Map<string, readonly string[]>) {
 	const replacement = list.get(alias);
 	const content = `The command ${inlineCode(alias)} has been removed${
 		isNullishOrEmpty(replacement) ? '' : `, please use ${listFormatter.format(replacement)} instead`
@@ -36,45 +35,24 @@ export function makeReplacedMessage(alias: string, row: MessageActionRow, list: 
 	return { content, components: [row], allowedMentions: { users: [], roles: [] } };
 }
 
-export function makeRow(...buttons: readonly APIButtonComponent[]) {
-	return new MessageActionRow().addComponents(...buttons);
+export function makeRow(...buttons: readonly ButtonBuilder[]) {
+	return new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(...buttons);
 }
 
-export const ButtonSkyraV7: APIButtonComponent = new ButtonBuilder()
+export const ButtonSkyraV7 = new ButtonBuilder() //
 	.setLabel('Blog Post')
 	.setStyle(ButtonStyle.Link)
-	.setURL('https://blog.skyra.pw/skyra-v7')
-	.toJSON();
+	.setURL('https://blog.skyra.pw/skyra-v7');
 
-export const ButtonInviteDragonite: APIButtonComponent = new ButtonBuilder()
-	.setLabel('Invite Dragonite')
-	.setStyle(ButtonStyle.Link)
-	.setURL(Invites.Dragonite)
-	.toJSON();
-
-export const ButtonInviteIriss: APIButtonComponent = new ButtonBuilder()
-	.setLabel('Invite Iriss')
-	.setStyle(ButtonStyle.Link)
-	.setURL(Invites.Iriss)
-	.toJSON();
-
-export const ButtonInviteNekokai: APIButtonComponent = new ButtonBuilder()
-	.setLabel('Invite Nekokai')
-	.setStyle(ButtonStyle.Link)
-	.setURL(Invites.Nekokai)
-	.toJSON();
-
-export const ButtonInviteTeryl: APIButtonComponent = new ButtonBuilder()
+export const ButtonInviteTeryl = new ButtonBuilder() //
 	.setLabel('Invite Teryl')
 	.setStyle(ButtonStyle.Link)
-	.setURL(Invites.Teryl)
-	.toJSON();
+	.setURL(Invites.Teryl);
 
-export const ButtonInviteArtiel: APIButtonComponent = new ButtonBuilder()
+export const ButtonInviteArtiel = new ButtonBuilder() //
 	.setLabel('Invite Artiel')
 	.setStyle(ButtonStyle.Link)
-	.setURL(Invites.Artiel)
-	.toJSON();
+	.setURL(Invites.Artiel);
 
 export interface Options {
 	entries: { out: string | readonly string[]; in: string | readonly string[] }[];

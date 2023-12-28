@@ -1,12 +1,13 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { GuildEmoji, MessageEmbed, TextChannel } from 'discord.js';
+import type { GuildEmoji, TextChannel } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildEmojiDelete })
+@ApplyOptions<Listener.Options>({ event: Events.GuildEmojiDelete })
 export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 	public async run(next: GuildEmoji) {
 		const [channelId, t] = await readSettings(next.guild, (settings) => [
@@ -21,10 +22,10 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 			return;
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setThumbnail(next.url)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiDelete) })
 			.setTimestamp();
 		await channel.send({ embeds: [embed] });

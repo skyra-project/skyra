@@ -5,6 +5,6 @@ export class UserShardListener extends ShardListener {
 	protected readonly title = yellow('Reconnecting');
 
 	public run(id: number) {
-		this.container.logger.error(`${this.header(id)}: ${this.title}`);
+		this.container.logger.warn(`${this.header(id)}: ${this.title}`);
 	}
 }

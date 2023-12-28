@@ -3,7 +3,7 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { SchemaKeys } from '#utils/moderationConstants';
 import { canSendEmbeds } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
+import { RESTJSONErrorCodes } from 'discord.js';
 
 export class UserListener extends Listener {
 	public run(entry: ModerationEntity) {

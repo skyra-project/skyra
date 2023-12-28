@@ -1,6 +1,6 @@
 import { CommandMatcher } from '#lib/database';
 import type { SkyraCommand } from '#lib/structures';
-import { commands } from '#mocks/MockInstances';
+import { commands } from '../mocks/MockInstances.js';
 
 describe('CommandMatcher', () => {
 	const command = commands.get('ping') as SkyraCommand;

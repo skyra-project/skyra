@@ -1,6 +1,6 @@
-import { createReferPromise, ReferredPromise } from '#utils/common';
-import { TimeoutError } from './errors';
-import type { OutgoingPayload } from './types';
+import { createReferPromise, type ReferredPromise } from '#utils/common';
+import { TimeoutError } from '#lib/moderation/workers/errors/TimeoutError';
+import type { OutgoingPayload } from '#lib/moderation/workers/types';
 
 export class WorkerResponseHandler {
 	private id = -1;

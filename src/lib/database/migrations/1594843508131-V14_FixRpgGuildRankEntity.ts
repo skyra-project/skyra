@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn, TableForeignKey } from 'typeorm';
+import { TableColumn, TableForeignKey, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V14FixRpgGuildRankEntity1594843508131 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

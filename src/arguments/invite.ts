@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { DiscordInviteLinkRegex } from '@sapphire/discord-utilities';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<string> {
-	public async run(parameter: string, context: ArgumentContext) {
+	public async run(parameter: string, context: Argument.Context) {
 		const parsed = DiscordInviteLinkRegex.exec(parameter);
 		if (parsed === null) {
 			return this.error({ parameter, identifier: LanguageKeys.Arguments.Invite, context });

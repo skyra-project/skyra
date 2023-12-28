@@ -1,11 +1,11 @@
+import type { BaseController } from '#lib/games/base/BaseController';
+import { BaseGame } from '#lib/games/base/BaseGame';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { sendLoadingMessage } from '#utils/util';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { Message } from 'discord.js';
-import type { BaseController } from './BaseController';
-import { BaseGame } from './BaseGame';
 
 export abstract class BaseReactionGame<T> extends BaseGame<T> {
 	public readonly reactions: readonly string[];
@@ -26,7 +26,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 		this.listener = new LongLivingReactionCollector();
 	}
 
-	protected async onStart(): Promise<unknown> {
+	protected override async onStart(): Promise<unknown> {
 		try {
 			this.message = await sendLoadingMessage(this.message, this.t);
 			for (const reaction of this.reactions) await this.message.react(reaction);
@@ -41,7 +41,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 		return this.listener.ended;
 	}
 
-	protected onEnd(): Promise<unknown> {
+	protected override onEnd(): Promise<unknown> {
 		this.listener.end();
 		return super.onEnd();
 	}

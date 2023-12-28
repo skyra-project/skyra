@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { Events, PermissionLevels } from '#lib/types/Enums';
+import { Events, PermissionLevels } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
 import { envParseBoolean } from '@skyra/env-utilities';
@@ -12,7 +12,7 @@ import type { Message } from 'discord.js';
 	permissionLevel: PermissionLevels.BotOwner
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const content = args.t(LanguageKeys.Commands.System.Reboot);
 		await send(message, content).catch((error) => this.container.logger.fatal(error));
 

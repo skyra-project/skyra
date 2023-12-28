@@ -1,4 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getTag } from '#utils/util';
 import { SnowflakeRegex } from '@sapphire/discord.js-utilities';
@@ -7,10 +7,13 @@ import { isNullish } from '@sapphire/utilities';
 export class UserSerializer extends Serializer<string> {
 	public async parse(args: Serializer.Args) {
 		const result = await args.pickResult('user');
-		return result.success ? this.ok(result.value.id) : this.errorFromArgument(args, result.error);
+		return result.match({
+			ok: (value) => this.ok(value.id),
+			err: (error) => this.errorFromArgument(args, error)
+		});
 	}
 
-	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
+	public async isValid(value: string, { t, entry }: Serializer.UpdateContext): Promise<boolean> {
 		try {
 			// If it's not a valid snowflake, throw
 			if (!SnowflakeRegex.test(value)) throw undefined;
@@ -23,7 +26,7 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public stringify(value: string) {
+	public override stringify(value: string) {
 		const user = this.container.client.users.cache.get(value);
 		return isNullish(user) ? value : getTag(user);
 	}

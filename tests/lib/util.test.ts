@@ -1,10 +1,7 @@
-import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
-import { Collection } from '@discordjs/collection';
 import type { DeepPartial } from '@sapphire/utilities';
-import type { APIAttachment } from 'discord-api-types/v9';
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
-import { mockRandom, resetMockRandom } from 'jest-mock-random';
+import { Attachment, Collection, Embed, Message, type APIAttachment } from 'discord.js';
+import { createEmbed, createUser } from '../mocks/MockInstances.js';
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {
@@ -174,7 +171,7 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed().setDescription('Hey there!')]
+					embeds: [createEmbed({ description: 'Hey there!' })]
 				} as unknown as Message)
 			).toEqual('Hey there!');
 		});
@@ -183,7 +180,7 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed().addField('Name', 'Value')]
+					embeds: [createEmbed({ fields: [{ name: 'Name', value: 'Value' }] })]
 				} as unknown as Message)
 			).toEqual('Value');
 		});
@@ -192,7 +189,7 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed()]
+					embeds: [createEmbed({})]
 				} as unknown as Message)
 			).toEqual(null);
 		});
@@ -205,25 +202,25 @@ describe('Utils', () => {
 			hm: 'b0227f7dce067d2f83880cd01f59a5856885af9204940f8c666dd81f257796c6'
 		}).toString();
 
-		function createAttachment(data: APIAttachment): MessageAttachment {
-			return new MessageAttachment(data.url, data.filename, data);
+		function createAttachment(data: APIAttachment): Attachment {
+			return Reflect.construct(Attachment, [data]);
 		}
 
-		function createAttachments(attachment?: MessageAttachment | undefined) {
-			const collection = new Collection<string, MessageAttachment>();
+		function createAttachments(attachment?: Attachment | undefined) {
+			const collection = new Collection<string, Attachment>();
 			if (attachment) collection.set(attachment.id, attachment);
 			return collection;
 		}
 
-		function createEmbed(name: 'image' | 'thumbnail'): MessageEmbed {
-			return new MessageEmbed({
+		function makeEmbed(name: 'image' | 'thumbnail'): Embed {
+			return createEmbed({
 				[name]: {
 					url: `https://cdn.discordapp.com/attachments/222222222222222222/222222222222222222/image.png?${_Query}&`,
 					proxy_url: `https://media.discordapp.net/attachments/222222222222222222/222222222222222222/image.png?${_Query}&`,
 					width: 32,
 					height: 32
 				}
-			} as const);
+			});
 		}
 
 		function getImage(message: DeepPartial<Message>) {
@@ -256,7 +253,7 @@ describe('Utils', () => {
 				size: 4
 			} as const);
 
-			const embeds: MessageEmbed[] = embed === null ? [] : [createEmbed(embed)];
+			const embeds: Embed[] = embed === null ? [] : [makeEmbed(embed)];
 			const ExpectedEmbedImageURL = embed === null ? null : embeds[0][embed]!.proxyURL;
 			const ExpectedReturn = embed === null ? 'null' : `embed ${embed} URL`;
 			test.each`
@@ -265,7 +262,7 @@ describe('Utils', () => {
 				${AttachmentText}  | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'non-image attachment'}
 				${AttachmentImage} | ${'attachment URL'} | ${AttachmentImage.proxyURL} | ${'image attachment'}
 			`(`AND $description THEN returns $returns`, ({ attachment, expected }) => {
-				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds };
+				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds, stickers: new Collection() };
 
 				expect(getImage(message)).toEqual(expected);
 			});
@@ -341,11 +338,11 @@ describe('Utils', () => {
 	describe('pickRandom', () => {
 		beforeAll(() => {
 			// Mock out random so the result is predictable
-			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+			vi.spyOn(Math, 'random').mockReturnValue(0.123456789);
 		});
 
 		afterAll(() => {
-			(global.Math.random as any).mockRestore();
+			(Math.random as any).mockRestore();
 		});
 
 		test('GIVEN simple picker THEN picks first value', () => {
@@ -365,9 +362,9 @@ describe('Utils', () => {
 
 	describe('random', () => {
 		test('GIVEN 2 calls to random THEN returns floored mocked values', () => {
-			mockRandom(0.6);
+			const spy = vi.spyOn(Math, 'random').mockReturnValue(0.6);
 			expect(utils.random(50)).toEqual(30);
-			resetMockRandom();
+			spy.mockRestore();
 		});
 	});
 

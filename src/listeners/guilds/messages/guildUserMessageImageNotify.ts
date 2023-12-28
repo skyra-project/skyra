@@ -1,23 +1,22 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
-import { MessageAttachment, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
+import { AttachmentBuilder, type MessageCreateOptions, type TextChannel } from 'discord.js';
 import { extname } from 'node:path';
-import { URL } from 'node:url';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte
 // 1024 * 1024 = 1 megabyte
 const MAXIMUM_LENGTH = 1024 * 1024;
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
+@ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
 		// If there are no attachments, do not post:
@@ -64,8 +63,8 @@ export class UserListener extends Listener {
 				const buffer = Buffer.from(await (await result.blob()).arrayBuffer());
 				const filename = `image${extname(url.pathname)}`;
 
-				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {
-					const embed = new MessageEmbed()
+				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageCreateOptions => {
+					const embed = new EmbedBuilder()
 						.setColor(Colors.Yellow)
 						.setAuthor(getFullEmbedAuthor(message.author, message.url))
 						.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](${message.url})`)
@@ -73,7 +72,7 @@ export class UserListener extends Listener {
 						.setImage(`attachment://${filename}`)
 						.setTimestamp();
 
-					return { embeds: [embed], files: [new MessageAttachment(buffer, filename)] };
+					return { embeds: [embed], files: [new AttachmentBuilder(buffer, { name: filename })] };
 				});
 			} catch (error) {
 				this.container.logger.fatal(`ImageLogs[${error}] ${url}`);

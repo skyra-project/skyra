@@ -1,5 +1,5 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
-import { SettingsCollection, SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
+import { SettingsCollection, type SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
 import { container } from '@sapphire/framework';
 
 export interface GuildSettingsCollectionCallback<R> extends SettingsCollectionCallback<GuildEntity, R> {}
@@ -7,7 +7,7 @@ export interface GuildSettingsCollectionCallback<R> extends SettingsCollectionCa
 export class GuildSettingsCollection extends SettingsCollection<GuildEntity> {
 	public async fetch(key: string): Promise<GuildEntity> {
 		const { guilds } = container.db;
-		const existing = await guilds.findOne(key);
+		const existing = await guilds.findOne({ where: { id: key } });
 		if (existing) {
 			this.set(key, existing);
 			return existing;

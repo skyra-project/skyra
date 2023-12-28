@@ -1,4 +1,4 @@
-import { Collection } from '@discordjs/collection';
+import { Collection } from 'discord.js';
 
 export class AliasedCollection<K, V> extends Collection<K, V> {
 	/**
@@ -6,7 +6,7 @@ export class AliasedCollection<K, V> extends Collection<K, V> {
 	 */
 	public readonly aliases = new Collection<K, V>();
 
-	public get(key: K): V | undefined {
+	public override get(key: K): V | undefined {
 		return super.get(key) ?? this.aliases.get(key);
 	}
 }

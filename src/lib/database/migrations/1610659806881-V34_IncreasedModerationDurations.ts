@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableCheck } from 'typeorm';
+import { TableCheck, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V34IncreasedModerationDurations1610659806881 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

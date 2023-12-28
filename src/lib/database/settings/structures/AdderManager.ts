@@ -2,7 +2,7 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
 import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
 import { Adder } from '#lib/database/utils/Adder';
-import { isNullishOrZero, Nullish } from '@sapphire/utilities';
+import { isNullishOrZero, type Nullish } from '@sapphire/utilities';
 
 export type AdderKey = 'attachments' | 'capitals' | 'links' | 'messages' | 'newlines' | 'invites' | 'words' | 'reactions';
 

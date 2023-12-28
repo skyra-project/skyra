@@ -1,9 +1,9 @@
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
-import { GatewayDispatchEvents, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v9';
+import { Listener } from '@sapphire/framework';
+import { GatewayDispatchEvents, type GatewayGuildMemberRemoveDispatch } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.GuildMemberRemove, emitter: 'ws' })
+@ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildMemberRemove, emitter: 'ws' })
 export class UserListener extends Listener {
 	public run(data: GatewayGuildMemberRemoveDispatch['d']) {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);

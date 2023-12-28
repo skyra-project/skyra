@@ -1,11 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
+import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['sn'],
@@ -16,7 +16,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
-	protected async resolveOverloads(args: ModerationCommand.Args) {
+	protected override async resolveOverloads(args: ModerationCommand.Args) {
 		return {
 			targets: await args.repeat('user', { times: 10 }),
 			nickname: args.finished ? null : await args.pick('string'),

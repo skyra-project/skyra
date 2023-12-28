@@ -1,6 +1,6 @@
 import type { AccurateTimeout } from '#utils/Timers';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Collection, Role } from 'discord.js';
+import { Collection, type Role } from 'discord.js';
 
 export class LockdownManager extends Collection<string, Collection<string, LockdownManager.Entry>> {
 	public add(role: Role, channel: LockdownManager.Channel, value: LockdownManager.Entry) {
@@ -30,7 +30,7 @@ export class LockdownManager extends Collection<string, Collection<string, Lockd
 		return true;
 	}
 
-	public delete(id: string) {
+	public override delete(id: string) {
 		const roles = this.get(id);
 		if (roles === undefined) return false;
 

@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { seconds } from '#utils/common';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 import { Duration } from '@sapphire/time-utilities';
 
 export class UserArgument extends Argument<number> {
-	public run(parameter: string, context: ArgumentContext) {
+	public run(parameter: string, context: Argument.Context) {
 		const duration = this.parseParameter(parameter);
 
 		if (!Number.isSafeInteger(duration)) {

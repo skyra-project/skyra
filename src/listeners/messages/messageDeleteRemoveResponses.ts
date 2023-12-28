@@ -1,14 +1,13 @@
 import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, getCommand } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { get } from '@sapphire/plugin-editable-commands';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.MessageDelete })
+@ApplyOptions<Listener.Options>({ event: Events.MessageDelete })
 export class UserListener extends Listener {
 	public async run(message: Message) {
 		const response = get(message);

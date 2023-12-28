@@ -1,14 +1,14 @@
-import { GuildEntity, readSettings } from '#lib/database';
+import { readSettings, type GuildSettingsOfType } from '#lib/database';
+import type { HardPunishment } from '#lib/moderation/structures/ModerationMessageListener';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { seconds } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
-import { Listener } from '@sapphire/framework';
-import type { PickByValue } from '@sapphire/utilities';
-import type { Guild, MessageEmbed } from 'discord.js';
-import type { HardPunishment } from './ModerationMessageListener';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import type { EmbedBuilder } from '@discordjs/builders';
+import { Listener, type Awaitable } from '@sapphire/framework';
+import type { Guild } from 'discord.js';
 
 export abstract class ModerationListener<V extends unknown[], T = unknown> extends Listener {
-	public abstract run(...params: V): unknown;
+	public abstract override run(...params: V): unknown;
 
 	protected processSoftPunishment(args: Readonly<V>, preProcessed: T, bitField: SelfModeratorBitField) {
 		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE)) this.onDelete(args, preProcessed);
@@ -104,12 +104,18 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		unlock();
 	}
 
-	protected abstract keyEnabled: PickByValue<GuildEntity, boolean>;
-	protected abstract softPunishmentPath: PickByValue<GuildEntity, number>;
+	protected abstract keyEnabled: GuildSettingsOfType<boolean>;
+	protected abstract softPunishmentPath: GuildSettingsOfType<number>;
 	protected abstract hardPunishmentPath: HardPunishment;
-	protected abstract preProcess(args: Readonly<V>): Promise<T | null> | T | null;
+	protected abstract preProcess(args: Readonly<V>): Awaitable<T | null>;
 	protected abstract onLog(args: Readonly<V>, value: T): unknown;
 	protected abstract onDelete(args: Readonly<V>, value: T): unknown;
 	protected abstract onAlert(args: Readonly<V>, value: T): unknown;
-	protected abstract onLogMessage(args: Readonly<V>, value: T): Promise<MessageEmbed> | MessageEmbed;
+	protected abstract onLogMessage(args: Readonly<V>, value: T): Awaitable<EmbedBuilder>;
+}
+
+export namespace ModerationListener {
+	export type Options = Listener.Options;
+	export type JSON = Listener.JSON;
+	export type Context = Listener.Context;
 }

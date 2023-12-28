@@ -1,7 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
 import { TypeCodes } from '#utils/moderationConstants';
 import { getTag } from '#utils/util';
@@ -19,7 +18,7 @@ export class UserListener extends Listener {
 		const lock = moderation.createLock();
 		try {
 			await message.guild.members
-				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Events.NoMentionSpam.Footer) })
+				.ban(message.author.id, { deleteMessageSeconds: 0, reason: t(LanguageKeys.Events.NoMentionSpam.Footer) })
 				.catch((error) => this.container.client.emit(Events.Error, error));
 			await message.channel
 				.send(t(LanguageKeys.Events.NoMentionSpam.Message, { userId: message.author.id, userTag: getTag(message.author) }))

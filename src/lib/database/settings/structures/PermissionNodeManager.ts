@@ -1,13 +1,12 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
 import { GuildSettings } from '#lib/database/keys';
+import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { Collection } from '@discordjs/collection';
 import { UserError } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { GuildMember, Role, User } from 'discord.js';
-import type { IBaseManager } from '../base/IBaseManager';
+import { Collection, Role, type GuildMember, type User } from 'discord.js';
 
 export const enum PermissionNodeAction {
 	Allow,

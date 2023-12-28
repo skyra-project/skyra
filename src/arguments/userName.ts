@@ -2,7 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { isGuildMessage } from '#utils/common';
 import { SnowflakeRegex, UserOrMemberMentionRegex } from '@sapphire/discord.js-utilities';
-import { Argument, ArgumentContext, Identifiers } from '@sapphire/framework';
+import { Argument, Identifiers } from '@sapphire/framework';
 import type { User } from 'discord.js';
 
 export class UserArgument extends Argument<User> {
@@ -10,7 +10,7 @@ export class UserArgument extends Argument<User> {
 		return this.store.get('user') as Argument<User>;
 	}
 
-	public async run(parameter: string, context: ArgumentContext<User>) {
+	public async run(parameter: string, context: Argument.Context<User>) {
 		const message = context.message as GuildMessage;
 		if (!isGuildMessage(message)) return this.user.run(parameter, context);
 

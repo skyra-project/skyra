@@ -1,16 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { PermissionsBits, PermissionsBitsList } from '#utils/bits';
 import { ZeroWidthSpace } from '#utils/constants';
 import { getColor, getTag } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed, PermissionString, Permissions } from 'discord.js';
-
-const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
@@ -20,24 +18,24 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = args.finished ? message.author : await args.pick('userName');
 		const member = await message.guild.members.fetch(user.id).catch(() => {
 			this.error(LanguageKeys.Misc.UserNotInGuild);
 		});
 
-		const { permissions } = member;
+		const permissions = member.permissions.bitfield;
 		const list = [ZeroWidthSpace];
 
-		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+		if (PermissionsBits.has(permissions, PermissionFlagsBits.Administrator)) {
 			list.push(args.t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
-			for (const flag of PERMISSION_FLAGS) {
-				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${args.t(`permissions:${flag}`, flag)}`);
+			for (const [name, flag] of PermissionsBitsList) {
+				list.push(`${PermissionsBits.has(permissions, flag) ? '🔹' : '🔸'} ${args.t(`permissions:${name}`)}`);
 			}
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(getColor(message))
 			.setTitle(args.t(LanguageKeys.Commands.Moderation.Permissions, { username: getTag(user), id: user.id }))
 			.setDescription(list.join('\n'));

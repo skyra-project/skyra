@@ -1,23 +1,22 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
-import { Colors } from '#utils/constants';
-import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
+import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { Colors } from '#utils/constants';
+import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
-import { Collection } from '@discordjs/collection';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import type { APIUser } from 'discord-api-types/v9';
-import { MessageEmbed } from 'discord.js';
+import { Collection } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.RawReactionAdd })
+@ApplyOptions<Listener.Options>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {
 	private readonly kCountCache = new Collection<string, InternalCacheEntry>();
 	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();
-	private kTimerSweeper: NodeJS.Timer | null = null;
+	private kTimerSweeper: NodeJS.Timeout | null = null;
 
 	public async run(data: LLRCData, emoji: SerializedEmoji) {
 		const key = GuildSettings.Channels.Logs.Reaction;
@@ -50,7 +49,7 @@ export class UserListener extends Listener {
 		if (user.bot) return;
 
 		this.container.client.emit(Events.GuildMessageLog, data.guild, logChannelId, key, () =>
-			new MessageEmbed()
+			new EmbedBuilder()
 				.setColor(Colors.Green)
 				.setAuthor(getFullEmbedAuthor(user))
 				.setThumbnail(
@@ -72,7 +71,7 @@ export class UserListener extends Listener {
 		);
 	}
 
-	public onUnload() {
+	public override onUnload() {
 		super.onUnload();
 		if (this.kTimerSweeper) clearInterval(this.kTimerSweeper);
 	}
@@ -99,7 +98,7 @@ export class UserListener extends Listener {
 	}
 
 	private async fetchCount(data: LLRCData, emoji: SerializedEmoji, id: string) {
-		const users = (await api().channels(data.channel.id).messages(data.messageId).reactions(getEmojiReactionFormat(emoji)).get()) as APIUser[];
+		const users = await api().channels.getMessageReactions(data.channel.id, data.messageId, getEmojiReactionFormat(emoji));
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);

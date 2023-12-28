@@ -1,10 +1,9 @@
 import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
 import { resolveOnErrorCodes } from '#utils/common';
 import { SchemaKeys } from '#utils/moderationConstants';
-import { canSendEmbeds, GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { RESTJSONErrorCodes } from 'discord-api-types/v9';
-import type { Message, MessageEmbed } from 'discord.js';
+import { RESTJSONErrorCodes, type Embed, type Message } from 'discord.js';
 
 export class UserListener extends Listener {
 	public run(old: ModerationEntity, entry: ModerationEntity) {
@@ -61,9 +60,8 @@ export class UserListener extends Listener {
 		);
 	}
 
-	private validateModerationLogMessageEmbed(embed: MessageEmbed) {
+	private validateModerationLogMessageEmbed(embed: Embed) {
 		return (
-			embed.type === 'rich' &&
 			this.validateModerationLogMessageEmbedAuthor(embed.author) &&
 			this.validateModerationLogMessageEmbedDescription(embed.description) &&
 			this.validateModerationLogMessageEmbedColor(embed.color) &&
@@ -72,23 +70,23 @@ export class UserListener extends Listener {
 		);
 	}
 
-	private validateModerationLogMessageEmbedAuthor(author: MessageEmbed['author']) {
-		return author !== null && typeof author.name === 'string' && /[^#]{2,32}#\d{4}/.test(author.name) && typeof author.iconURL === 'string';
+	private validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
+		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)^/.test(author.name) && typeof author.iconURL === 'string';
 	}
 
-	private validateModerationLogMessageEmbedDescription(description: MessageEmbed['description']) {
+	private validateModerationLogMessageEmbedDescription(description: Embed['description']) {
 		return typeof description === 'string' && description.split('\n').length >= 3;
 	}
 
-	private validateModerationLogMessageEmbedColor(color: MessageEmbed['color']) {
+	private validateModerationLogMessageEmbedColor(color: Embed['color']) {
 		return typeof color === 'number';
 	}
 
-	private validateModerationLogMessageEmbedFooter(footer: MessageEmbed['footer']) {
+	private validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
 		return footer !== null && typeof footer.text === 'string' && typeof footer.iconURL === 'string';
 	}
 
-	private validateModerationLogMessageEmbedTimestamp(timestamp: MessageEmbed['timestamp']) {
+	private validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
 		return typeof timestamp === 'number';
 	}
 

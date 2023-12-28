@@ -1,14 +1,12 @@
 import { ModerationEntity } from '#lib/database/entities';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
-import { createReferPromise, floatPromise, ReferredPromise, seconds } from '#utils/common';
-import { cast } from '#utils/util';
-import { Collection, type CollectionConstructor } from '@discordjs/collection';
+import { createReferPromise, floatPromise, seconds, type ReferredPromise } from '#utils/common';
 import { AsyncQueue } from '@sapphire/async-queue';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
-import { isNullish, StrictRequired } from '@sapphire/utilities';
-import { DiscordAPIError, Guild } from 'discord.js';
+import { isNullish, type StrictRequired } from '@sapphire/utilities';
+import { Collection, DiscordAPIError, type Guild } from 'discord.js';
 import { In } from 'typeorm';
 
 enum CacheActions {
@@ -87,8 +85,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 							? curr
 							: prev
 						: curr.createdTimestamp > prev.createdTimestamp
-						? curr
-						: prev
+							? curr
+							: prev
 					: prev,
 			null
 		);
@@ -173,7 +171,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 			})
 		);
 
-		return lock.resolve;
+		return () => lock.resolve();
 	}
 
 	public releaseLock() {
@@ -211,7 +209,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	}
 
 	public static get [Symbol.species]() {
-		return cast<CollectionConstructor>(Collection);
+		return Collection;
 	}
 }
 

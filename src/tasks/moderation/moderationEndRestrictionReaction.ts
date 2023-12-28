@@ -1,13 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationData, ModerationTask } from '#lib/moderation';
+import { ModerationTask, type ModerationData } from '#lib/moderation';
 import { getSecurity } from '#utils/functions';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { Guild, Permissions } from 'discord.js';
+import { PermissionFlagsBits, type Guild } from 'discord.js';
 
 export class UserModerationTask extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {
 		const me = guild.members.me ?? (await guild.members.fetch(this.container.client.id!));
-		if (!me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
+		if (!me.permissions.has(PermissionFlagsBits.ManageRoles)) return null;
 
 		const t = await fetchT(guild);
 		await getSecurity(guild).actions.unRestrictReaction(

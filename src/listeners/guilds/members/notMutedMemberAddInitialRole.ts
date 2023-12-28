@@ -1,10 +1,10 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.NotMutedMemberAdd })
+@ApplyOptions<Listener.Options>({ event: Events.NotMutedMemberAdd })
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
 		const [initial, initialHumans, initialBots] = await readSettings(member, [

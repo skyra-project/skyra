@@ -1,39 +1,39 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
-import type { Collection } from '@discordjs/collection';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk, cutText } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits, type Collection } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['hd', 'ho'],
 	description: LanguageKeys.Commands.Moderation.HistoryDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['details', { input: 'overview', default: true }]
+	subcommands: [
+		{ name: 'details', messageRun: 'details' },
+		{ name: 'overview', messageRun: 'overview', default: true }
+	]
 })
-export class UserCommand extends SkyraCommand {
-	public messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+export class UserCommand extends SkyraSubcommand {
+	public override messageRun(message: GuildMessage, args: SkyraSubcommand.Args, context: SkyraSubcommand.RunContext) {
 		if (context.commandName === 'hd') return this.details(message, args);
 		if (context.commandName === 'ho') return this.overview(message, args);
 		return super.messageRun(message, args, context);
 	}
 
-	public async overview(message: GuildMessage, args: SkyraCommand.Args) {
+	public async overview(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = args.finished ? message.author : await args.pick('userName');
 		const logs = await getModeration(message.guild).fetch(target.id);
 		let warnings = 0;
@@ -56,6 +56,9 @@ export class UserCommand extends SkyraCommand {
 					break;
 				case TypeVariation.Warning:
 					++warnings;
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -71,15 +74,15 @@ export class UserCommand extends SkyraCommand {
 			bansText: args.t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
 		});
 
-		const embed = new MessageEmbed() //
+		const embed = new EmbedBuilder() //
 			.setColor(COLORS[index])
 			.setAuthor(getFullEmbedAuthor(target))
 			.setFooter({ text: footer });
-		return send(message, { embeds: [embed] });
+		await send(message, { embeds: [embed] });
 	}
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	public async details(message: GuildMessage, args: SkyraCommand.Args) {
+	public async details(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const target = args.finished ? message.author : await args.pick('userName');
 		const response = await sendLoadingMessage(message, args.t);
 
@@ -87,7 +90,7 @@ export class UserCommand extends SkyraCommand {
 		if (!entries.size) this.error(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed()
+			template: new EmbedBuilder()
 				.setColor(getColor(message))
 				.setTitle(args.t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		});
@@ -101,8 +104,7 @@ export class UserCommand extends SkyraCommand {
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPageEmbed((embed) => {
 				for (const entry of page) {
-					const { name, value } = this.displayModerationLogFromModerators(usernames, now, entry);
-					embed.addField(name, value);
+					embed.addFields(this.displayModerationLogFromModerators(usernames, now, entry));
 				}
 
 				return embed;
@@ -110,7 +112,6 @@ export class UserCommand extends SkyraCommand {
 		}
 
 		await display.run(response, message.author);
-		return response;
 	}
 
 	private displayModerationLogFromModerators(users: Map<string, string>, now: number, entry: ModerationEntity) {

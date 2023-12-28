@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-types */
-
 export type CustomGet<K extends string, TCustom> = K & { __type__: TCustom };
 
 export function T<TCustom = string>(k: string): CustomGet<string, TCustom> {

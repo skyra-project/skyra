@@ -1,5 +1,4 @@
 import { getRootData } from '@sapphire/pieces';
-import type { PostProcessorModule } from 'i18next';
 import { join } from 'node:path';
 
 export const mainFolder = getRootData().root;
@@ -46,17 +45,6 @@ export const enum Emojis {
 	/** This is the default Twemoji, uploaded as a custom emoji because iOS and Android do not render the emoji properly */
 	FemaleSignEmoji = '<:2640:845772713729720320>'
 }
-
-export const helpUsagePostProcessor: PostProcessorModule = {
-	type: 'postProcessor',
-	name: 'helpUsagePostProcessor',
-	process(value, [key]) {
-		// If the value is equal to the key then it is an empty usage, so return an empty string
-		if (value === key) return '';
-		// Otherwise just return the value
-		return value;
-	}
-};
 
 export const enum BrandingColors {
 	Primary = 0x1e88e5,

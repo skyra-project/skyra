@@ -2,13 +2,14 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
+import { urlRegex } from '#utils/Links/UrlRegex';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
-import { urlRegex } from '#utils/Links/UrlRegex';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationLinks,
@@ -52,7 +53,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.LinkFooter)}` })

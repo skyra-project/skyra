@@ -1,10 +1,10 @@
+import type { BaseController } from '#lib/games/base/BaseController';
+import { GameStatus } from '#lib/games/base/BaseGame';
+import { BaseReactionGame } from '#lib/games/base/BaseReactionGame';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
 import type { Message } from 'discord.js';
-import type { BaseController } from '../base/BaseController';
-import { GameStatus } from '../base/BaseGame';
-import { BaseReactionGame } from '../base/BaseReactionGame';
 
 export class TicTacToeGame extends BaseReactionGame<number> {
 	public readonly board = new Uint8Array(9);
@@ -13,7 +13,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 		super(message, playerA, playerB, TicTacToeGame.emojis, minutes(5), turn);
 	}
 
-	public get finished() {
+	public override get finished() {
 		return super.finished || this.board.every((cell) => cell !== 0) || this.check() !== null;
 	}
 
@@ -32,7 +32,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 			: this.t(LanguageKeys.Commands.Games.TicTacToeWinner, {
 					winner: this.player.name,
 					board: this.renderBoard()
-			  });
+				});
 	}
 
 	protected renderOnUpdateOrStart(): string {

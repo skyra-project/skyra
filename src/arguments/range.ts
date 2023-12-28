@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { parseRange } from '#utils/util';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<number[]> {
-	public run(parameter: string, context: ArgumentContext) {
+	public run(parameter: string, context: Argument.Context) {
 		const number = Number(parameter);
 		if (Number.isSafeInteger(number)) return this.ok([number]);
 

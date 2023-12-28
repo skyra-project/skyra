@@ -1,13 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types/Discord';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { hours, seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import type { TextChannel } from 'discord.js';
+import { PermissionFlagsBits, type TextChannel } from 'discord.js';
 
 const MAXIMUM_DURATION = hours(6);
 
@@ -20,7 +18,7 @@ const MAXIMUM_DURATION = hours(6);
 	runIn: [CommandOptionsRunTypeEnum.GuildText]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cooldown = await args
 			.pick('reset')
 			.then(() => 0)

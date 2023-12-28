@@ -1,6 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { Role } from 'discord.js';
+import type { GuildVerificationLevel, Role } from 'discord.js';
 
 export const AttachmentsModeDescription = T<string>('commands/management:attachmentsModeDescription');
 export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:attachmentsModeExtended');
@@ -32,7 +32,7 @@ export const GuildInfoOther = FT<
 	{
 		size: number;
 		createdAt: string;
-		verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
+		verificationLevel: GuildVerificationLevel;
 	},
 	string
 >('commands/management:guildInfoOther');

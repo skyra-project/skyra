@@ -1,0 +1,23 @@
+{
+	"guildMemberAdd": "उपयोगकर्ता जुड़े",
+	"guildMemberAddDescription": "{{mention}} | **डिस्कॉर्ड से जुड़े**: {{time, duration}} पहले|",
+	"guildMemberAddedRoles_other": "**पद जोड़े गए**: {{addedRoles, andList}}",
+	"guildMemberAddedRoles_one": "**पद जोड़े गए**: {{addedRoles}}",
+	"guildMemberAddMute": "म्यूट किया गया उपयोगकर्ता शामिल हुआ",
+	"guildMemberBanned": "उपयोगकर्ता प्रतिबंधित",
+	"guildMemberKicked": "उपयोगकर्ता हटा दिया गया",
+	"guildMemberNoUpdate": "कोई अपडेट नहीं मिला",
+	"guildMemberRemove": "उपयोगकर्ता विदा हो गया",
+	"guildMemberRemoveDescription": "{{mention}} | **सर्वर से जुड़े**: अनजान|",
+	"guildMemberRemoveDescriptionWithJoinedAt": "{{mention}} | **सर्वर से जुड़े**: {{time, duration}} पहले|",
+	"guildMemberRemovedRoles_other": "**पद हटाए गए**: {{removedRoles, andList}}",
+	"guildMemberRemovedRoles_one": "**पद हटाए गए**: {{removedRoles}}",
+	"guildMemberSoftBanned": "उपयोगकर्ता सॉफ्टबैन",
+	"nameUpdateNextWasNotSet": "**अगला**: सेट नहीं",
+	"nameUpdateNextWasSet": "**अगला**: `{{nextName}}`",
+	"nameUpdatePreviousWasNotSet": "**पूर्व**: सेट नहीं",
+	"nameUpdatePreviousWasSet": "**सेट नहीं**: `{{previousName}}`",
+	"nicknameUpdate": "उपनाम संपादित किया गया",
+	"roleUpdate": "पद सम्पादित किया गया",
+	"usernameUpdate": "किया गया किया गया"
+}

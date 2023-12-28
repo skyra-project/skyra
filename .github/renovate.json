@@ -1,33 +1,3 @@
 {
-	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"enabled": false,
-	"labels": ["Meta: Dependencies"],
-	"npm": {
-		"packageRules": [
-			{
-				"matchPackagePatterns": [
-					"typeorm",
-					"tslib",
-					"typescript",
-					"@napi-rs/canvas",
-					"discord-api-types",
-					"@discordjs/builders",
-					"@sapphire/decorators",
-					"@sapphire/discord.js-utilities",
-					"@sapphire/framework",
-					"@sapphire/plugin-api",
-					"@sapphire/plugin-editable-commands",
-					"@sapphire/plugin-i18next",
-					"@sapphire/plugin-logger",
-					"@sapphire/plugin-subcommands",
-					"@sapphire/ts-config"
-				],
-				"enabled": false
-			},
-			{
-				"matchPackagePatterns": ["@influxdata"],
-				"groupName": "InfluxDB Dependencies"
-			}
-		]
-	}
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json"
 }

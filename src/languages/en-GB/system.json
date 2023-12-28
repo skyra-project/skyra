@@ -1,0 +1,26 @@
+{
+	"discordAbortError": "I had a small network error when messaging Discord. Please run this command again!",
+	"fetchBansFail": "Failed to fetch bans. Do I have the **{{ADMINISTRATOR, permissions}}** permission?",
+	"helpTitles": {
+		"aliases": "🖇️ | **Aliases**",
+		"usages": "📝 | **Command Usage**",
+		"extendedHelp": "🔍 | **Extended Help**",
+		"explainedUsage": "⚙ | **Explained usage**",
+		"possibleFormats": "🔢 | **Possible formats**",
+		"examples": "🔗 | **Examples**",
+		"reminders": "⏰ | **Reminder**"
+	},
+	"jumpTo": "Jump to Message ►",
+	"loading": [
+		"{{LOADING}} Watching hamsters run...",
+		"{{LOADING}} Finding people in hide-and-seek...",
+		"{{LOADING}} Trying to figure out this command...",
+		"{{LOADING}} Fetching data from the cloud...",
+		"{{LOADING}} Calibrating lenses...",
+		"{{LOADING}} Playing rock, paper, scissors...",
+		"{{LOADING}} Tuning in to the right frequencies...",
+		"{{LOADING}} Reticulating splines..."
+	],
+	"prefixReminder": "The prefix in this server is currently set to `{{prefix}}`",
+	"reminderHeader": ""
+}

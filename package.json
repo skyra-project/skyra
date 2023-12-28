@@ -35,7 +35,7 @@
 		"clean": "node scripts/build/clean.mjs",
 		"start": "node --enable-source-maps dist/Skyra.js",
 		"start:profiler:0x": "0x --collect-only dist/Skyra.js",
-		"test": "vitest",
+		"test": "vitest run",
 		"lint": "eslint --fix --ext ts src tests",
 		"format": "prettier --write --log-level=warn \"{src,tests}/**/*.{js,ts,json}\"",
 		"scripts:tlds": "node scripts/tlds.mjs",

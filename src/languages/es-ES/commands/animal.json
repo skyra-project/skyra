@@ -1,11 +1,11 @@
 {
-	"bunnyDescription": "",
+	"bunnyDescription": "Déjame mostrarte una imagen de un adorable conejito ❤️.",
 	"bunnyExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Este comando da una imagen aleatoria de [bunnies.io](https://www.bunnies.io)."
 	},
 	"bunnyEmbedData": {
-		"title": "",
-		"source": ""
+		"title": "Haga clic aquí si la imagen falla al cargar",
+		"source": "fuente"
 	},
 	"dogDescription": "¡Perritos lindos! ❤",
 	"dogExtended": {

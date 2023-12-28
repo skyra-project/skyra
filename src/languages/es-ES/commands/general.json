@@ -1,7 +1,7 @@
 {
 	"helpAllFlag": "Mostrando una categoría por página. ¿Tiene problemas con el incrustado? Ejecute `{{prefix}}help --all` para obtener una lista completa en mensajes directos.",
-	"helpCommandCount_one": "",
-	"helpCommandCount_other": "",
+	"helpCommandCount_one": "{{count}} comando",
+	"helpCommandCount_other": "{{count}} comandos",
 	"helpData": {
 		"footer": "Descripción de ayuda para {{footerName}}",
 		"title": "{{titleDescription}}"

@@ -1,7 +1,7 @@
+import { BaseBotController } from '#lib/games/base/BaseBotController';
+import type { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { cast } from '#utils/util';
 import { ticTacToe } from '@skyra/ai';
-import { BaseBotController } from '../base/BaseBotController';
-import type { TicTacToeGame } from './TicTacToeGame';
 
 export class TicTacToeBotController extends BaseBotController<number> {
 	public await(): number {

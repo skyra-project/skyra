@@ -1,28 +1,19 @@
 import { readSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import type { SkyraCommand } from '#lib/structures';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { isAdmin, isGuildOwner } from '#utils/functions';
-import {
-	AsyncPreconditionResult,
-	Identifiers,
-	PieceContext,
-	Precondition,
-	PreconditionContext,
-	PreconditionOptions,
-	PreconditionResult
-} from '@sapphire/framework';
-import type { SkyraCommand } from '../commands/SkyraCommand';
+import { Identifiers, Precondition, type PreconditionOptions } from '@sapphire/framework';
 
 export abstract class PermissionsPrecondition extends Precondition {
 	private readonly guildOnly: boolean;
 
-	public constructor(context: PieceContext, options: PermissionsPrecondition.Options = {}) {
+	public constructor(context: Precondition.LoaderContext, options: PermissionsPrecondition.Options = {}) {
 		super(context, options);
 		this.guildOnly = options.guildOnly ?? true;
 	}
 
-	public async run(message: GuildMessage, command: SkyraCommand, context: PermissionsPrecondition.Context): PermissionsPrecondition.AsyncResult {
+	public override async messageRun(message: GuildMessage, command: SkyraCommand, context: Precondition.Context): Precondition.AsyncResult {
 		// If not in a guild, resolve on an error:
 		if (message.guild === null || message.member === null) {
 			return this.guildOnly ? this.error({ identifier: Identifiers.PreconditionGuildOnly }) : this.ok();
@@ -57,9 +48,9 @@ export abstract class PermissionsPrecondition extends Precondition {
 }
 
 export namespace PermissionsPrecondition {
-	export type Context = PreconditionContext;
-	export type Result = PreconditionResult;
-	export type AsyncResult = AsyncPreconditionResult;
+	export type Context = Precondition.Context;
+	export type Result = Precondition.Result;
+	export type AsyncResult = Precondition.AsyncResult;
 	export interface Options extends PreconditionOptions {
 		guildOnly?: boolean;
 	}

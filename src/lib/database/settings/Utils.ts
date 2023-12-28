@@ -1,10 +1,10 @@
+import type { GuildEntity } from '#lib/database/entities/GuildEntity';
+import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
+import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
+import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { UserError } from '@sapphire/framework';
-import type { GuildEntity } from '../entities/GuildEntity';
-import type { ISchemaValue } from './base/ISchemaValue';
-import type { SchemaGroup } from './schema/SchemaGroup';
-import type { SchemaKey } from './schema/SchemaKey';
 
 export function isSchemaGroup(groupOrKey: ISchemaValue): groupOrKey is SchemaGroup {
 	return groupOrKey.type === 'Group';

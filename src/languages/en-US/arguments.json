@@ -41,11 +41,12 @@
 	"dmChannelError": "I could not resolve `{{parameter}}` to a DM channel, make sure you typed its ID correctly!",
 	"duration": "I could not resolve `{{parameter}}` to a valid duration, there are some of the valid formats:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 hours).\n- `20m5s` (20 minutes and 5 seconds).\n- `\"1w 2d 16h 40m 10s\"` (1 week, 2 days, 16 hours, 40 minutes, and 10 seconds).",
-	"emoji": "I could not resolve `{{parameter}}` to a valid emoji, are you sure you used a valid twemoji (e.g. 🌊) or an emoji (e.g. {{GREENTICK}})?",
+	"emojiError": "I could not resolve `{{parameter}}` to a valid emoji, are you sure you used a valid twemoji (e.g. 🌊) or an emoji (e.g. {{GREENTICK}})?",
 	"floatError": "I could not resolve `{{parameter}}` to a number!",
 	"floatTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"floatTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"guildChannelError": "I could not resolve `{{parameter}}` to a channel from this server, please make sure you typed its name or ID correctly!",
+	"guildChannelMismatchingError": "The parameter `{{parameter}}` resolved to an incompatible channel type in this server, please try another channel!",
 	"guildChannelMissingGuildError": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
 	"guildPrivateThreadChannelError": "I could not resolve `{{parameter}}` to a private thread channel, please make sure you typed its name or ID correctly!",
 	"guildPublicThreadChannelError": "I could not resolve `{{parameter}}` to a public thread channel, please make sure you typed its name or ID correctly!",
@@ -77,8 +78,6 @@
 	],
 	"roleError": "I could not resolve `{{parameter}}` to a role, please make sure you typed its name or ID correctly!\n\n> **Tip**: You can also mention it!",
 	"roleMissingGuild": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
-	"scopeGlobal": "global",
-	"scopeLocal": "local",
 	"snowflake": "I could not resolve `{{parameter}}` to a valid snowflake! They're numbers with 17 to 18 digits, for example, your message has a snowflake of `{{message.id}}`!",
 	"store": "I could not resolve `{{parameter}}` to a valid store!\n**Hint**: the following are supported: {{possibles, andList}}.",
 	"stringTooLong": "The parameter `{{parameter}}` is too long! It needs to have less than {{maximum}} character(s)!",
@@ -90,5 +89,7 @@
 	"tooFewWinners": "The parameter `{{parameter}}` resolved to a number that is too low, it must be at least 1!",
 	"tooManyWinners": "The parameter `{{parameter}}` resolved to a number that is too high, it must be at maximum 20!",
 	"unavailable": "Whoops! It seems I couldn't find a parser for a parameter, please contact my developers about it!",
-	"userError": "I could not resolve `{{parameter}}` to a user, please make sure you typed their ID correctly!\n\n> **Tip**: You can also use mentions!"
+	"userError": "I could not resolve `{{parameter}}` to a user, please make sure you typed their ID correctly!\n\n> **Tip**: You can also use mentions!",
+	"enumEmptyError": "I was not able to resolve `{{parameter}}` because the list of possible values is empty.",
+	"enumError": "I could not resolve `{{parameter}}` to a valid value, the possible values are: {{possibles, orList}}"
 }

@@ -1,6 +1,6 @@
+import { GuildSubscriptionEntity } from '#lib/database/entities/GuildSubscriptionEntity';
 import { TwitchEventSubTypes } from '#lib/types';
-import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { GuildSubscriptionEntity } from './GuildSubscriptionEntity';
+import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
 
 @Index(['streamerId', 'subscriptionType'], { unique: true })
 @Entity('twitch_subscriptions', { schema: 'public' })
@@ -18,5 +18,5 @@ export class TwitchSubscriptionEntity extends BaseEntity {
 	public subscriptionType!: TwitchEventSubTypes;
 
 	@OneToMany(() => GuildSubscriptionEntity, (guildSubscription) => guildSubscription.subscription)
-	public guildSubscription!: GuildSubscriptionEntity[];
+	public guildSubscription!: Relation<GuildSubscriptionEntity>[];
 }

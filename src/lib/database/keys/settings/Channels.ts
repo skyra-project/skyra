@@ -1,4 +1,4 @@
-export * as Ignore from './Channels/Ignore';
-export * as Logs from './Channels/Logs';
+export * as Ignore from '#lib/database/keys/settings/Channels/Ignore';
+export * as Logs from '#lib/database/keys/settings/Channels/Logs';
 
 export const MediaOnly = 'channelsMediaOnly';

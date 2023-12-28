@@ -1,10 +1,10 @@
-import { FlattenedGuild, flattenGuild, flattenUser } from '#lib/api/ApiTransformers';
+import { flattenGuild, flattenUser, type FlattenedGuild } from '#lib/api/ApiTransformers';
 import { authenticated, ratelimit } from '#lib/api/utils';
 import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { HttpCodes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 
-@ApplyOptions<RouteOptions>({ route: 'users/@me' })
+@ApplyOptions<Route.Options>({ route: 'users/@me' })
 export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(seconds(5), 2, true)

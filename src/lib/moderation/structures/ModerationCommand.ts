@@ -1,14 +1,13 @@
 import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, getTag } from '#utils/util';
-import { Args, CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
-import { send } from '@sapphire/plugin-editable-commands';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
@@ -22,10 +21,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	 */
 	public optionalDuration: boolean;
 
-	protected constructor(context: PieceContext, options: ModerationCommand.Options) {
+	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options) {
 		super(context, {
 			cooldownDelay: seconds(5),
-			flags: ['no-author', 'authored'],
+			flags: ['no-author', 'authored', 'no-dm', 'dm'],
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
@@ -37,8 +36,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public messageRun(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null>;
-	public async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
+	public override messageRun(
+		message: GuildMessage,
+		args: ModerationCommand.Args,
+		context: ModerationCommand.RunContext
+	): Promise<GuildMessage | null>;
+
+	public override async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
 		const resolved = await this.resolveOverloads(args);
 		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
@@ -94,7 +98,16 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 			// Else send the message as usual.
 			const content = output.join('\n');
-			return send(message, content);
+			const response = await send(message, content);
+
+			// If the server was configured to automatically delete messages, untrack the editable message so it doesn't
+			// get automatically deleted in the event of race-conditions. `send` + `free` is used over
+			// `message.channel.send` so it can edit any existing response.
+			if (shouldAutoDelete) {
+				free(message);
+			}
+
+			return response;
 		}
 
 		return null;
@@ -148,8 +161,14 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		]);
 
 		return {
-			moderator: args.getFlags('no-author') ? null : args.getFlags('no-authored') || nameDisplay ? message.author : null,
-			send: enabledDM && (await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+			moderator: args.getFlags('no-author') ? null : args.getFlags('authored') || nameDisplay ? message.author : null,
+			send:
+				// --no-dm disables
+				!args.getFlags('no-dm') &&
+				// --dm and enabledDM enable
+				(args.getFlags('dm') || enabledDM) &&
+				// user settings
+				(await this.container.db.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 
@@ -168,9 +187,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (!this.optionalDuration) return null;
 
 		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
-		if (result.success) return result.value;
-		if (result.error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
-		throw result.error;
+		return result.match({
+			ok: (value) => value,
+			err: (error) => {
+				if (error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
+				throw error;
+			}
+		});
 	}
 }
 
@@ -184,7 +207,8 @@ export namespace ModerationCommand {
 	}
 
 	export type Args = SkyraCommand.Args;
-	export type Context = SkyraCommand.Context;
+	export type Context = SkyraCommand.LoaderContext;
+	export type RunContext = SkyraCommand.RunContext;
 }
 
 export interface CommandContext {

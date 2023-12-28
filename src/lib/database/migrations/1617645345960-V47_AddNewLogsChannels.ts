@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V47AddNewLogsChannels1617645345960 implements MigrationInterface {
 	private readonly names: readonly string[] = [

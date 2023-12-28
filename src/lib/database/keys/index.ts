@@ -1,1 +1,1 @@
-export * as GuildSettings from './settings/All';
+export * as GuildSettings from '#lib/database/keys/settings/All';

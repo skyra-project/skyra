@@ -1,4 +1,4 @@
-import { BaseController } from './BaseController';
+import { BaseController } from '#lib/games/base/BaseController';
 
 export abstract class BaseBotController<T> extends BaseController<T> {
 	public constructor() {

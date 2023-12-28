@@ -1,4 +1,4 @@
-import { BaseGame, GameTurn } from './BaseGame';
+import { BaseGame, GameTurn } from '#lib/games/base/BaseGame';
 
 export abstract class BaseController<T> {
 	public readonly name: string;

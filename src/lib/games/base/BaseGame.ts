@@ -1,7 +1,7 @@
+import type { BaseController } from '#lib/games/base/BaseController';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
 import type { Client, Message } from 'discord.js';
-import type { TFunction } from 'i18next';
-import type { BaseController } from './BaseController';
 
 export const enum GameTurn {
 	PlayerA,

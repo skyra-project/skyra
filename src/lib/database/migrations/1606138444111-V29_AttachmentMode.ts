@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V29AttachmentMode1606138444111 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

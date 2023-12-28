@@ -2,7 +2,7 @@ import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { getHandler } from '#root/languages/index';
 import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
@@ -10,28 +10,29 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
-import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import { envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
-import type { ExcludeEnum } from 'discord.js';
+import { envIsDefined, envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import {
+	ActivityType,
+	GatewayIntentBits,
+	GuildDefaultMessageNotifications,
+	GuildExplicitContentFilter,
+	GuildVerificationLevel,
 	Options,
-	Permissions,
+	Partials,
+	PermissionFlagsBits,
 	type ActivitiesOptions,
 	type ClientOptions,
-	type DefaultMessageNotificationLevel,
-	type ExplicitContentFilterLevel,
-	type PermissionString,
+	type LocaleString,
+	type OAuth2Scopes,
 	type WebhookClientData
 } from 'discord.js';
-import type { ActivityTypes } from 'discord.js/typings/enums';
-import i18next, { type FormatFunction, type InterpolationOptions } from 'i18next';
+import type { FormatFunction, InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 
 // Read config:
 setup(join(rootFolder, 'src', '.env'));
 
 export const OWNERS = envParseArray('CLIENT_OWNERS');
-export const SISTER_CLIENTS = envParseArray('SISTER_CLIENTS');
 
 export function parseAnalytics(): ConnectionOptions {
 	const url = envParseString('INFLUX_URL');
@@ -44,14 +45,14 @@ export function parseAnalytics(): ConnectionOptions {
 }
 
 function parseApiAuth(): ServerOptionsAuth | undefined {
-	if (!process.env.OAUTH_SECRET) return undefined;
+	if (!envIsDefined('OAUTH_SECRET')) return undefined;
 
 	return {
 		id: envParseString('CLIENT_ID'),
 		secret: envParseString('OAUTH_SECRET'),
 		cookie: envParseString('OAUTH_COOKIE'),
 		redirect: envParseString('OAUTH_REDIRECT_URI'),
-		scopes: envParseArray('OAUTH_SCOPE'),
+		scopes: envParseArray('OAUTH_SCOPE') as OAuth2Scopes[],
 		transformers: [transformOauthGuildsAndUser],
 		domainOverwrite: envParseString('OAUTH_DOMAIN_OVERWRITE')
 	};
@@ -75,7 +76,7 @@ function parsePresenceActivity(): ActivitiesOptions[] {
 	return [
 		{
 			name: CLIENT_PRESENCE_NAME,
-			type: envParseString('CLIENT_PRESENCE_TYPE', 'LISTENING') as ExcludeEnum<typeof ActivityTypes, 'CUSTOM'>
+			type: ActivityType[envParseString('CLIENT_PRESENCE_TYPE', 'Listening') as keyof typeof ActivityType]
 		}
 	];
 }
@@ -89,10 +90,10 @@ export const PROJECT_ROOT = join(rootFolder, process.env.OVERRIDE_ROOT_PATH ?? '
 export const LANGUAGE_ROOT = join(PROJECT_ROOT, 'languages');
 
 function parseInternationalizationDefaultVariablesPermissions() {
-	const keys = Object.keys(Permissions.FLAGS) as readonly PermissionString[];
+	const keys = Object.keys(PermissionFlagsBits) as readonly (keyof typeof PermissionFlagsBits)[];
 	const entries = keys.map((key) => [key, key] as const);
 
-	return Object.fromEntries(entries) as Readonly<Record<PermissionString, PermissionString>>;
+	return Object.fromEntries(entries) as Readonly<Record<keyof typeof PermissionFlagsBits, keyof typeof PermissionFlagsBits>>;
 }
 
 function parseInternationalizationDefaultVariables() {
@@ -112,7 +113,8 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 	return {
 		escapeValue: false,
 		defaultVariables: parseInternationalizationDefaultVariables(),
-		format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
+		format: (...[value, format, lng, options]: Parameters<FormatFunction>) => {
+			const language = (lng ?? 'en-US') as LocaleString;
 			switch (format as LanguageFormatters) {
 				case LanguageFormatters.AndList: {
 					return getHandler(language!).listAnd.format(value as string[]);
@@ -121,46 +123,20 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 					return getHandler(language!).listOr.format(value as string[]);
 				}
 				case LanguageFormatters.Permissions: {
-					return i18next.t(`permissions:${value}`, { ...options, lng: language });
+					return getT(language)(`permissions:${value}`, options);
 				}
 				case LanguageFormatters.PermissionsAndList: {
-					return getHandler(language!).listAnd.format(
-						(value as string[]).map((value) => i18next.t(`permissions:${value}`, { ...options, lng: language }))
-					);
+					const t = getT(language);
+					return getHandler(language!).listAnd.format((value as string[]).map((value) => t(`permissions:${value}`, options)));
 				}
 				case LanguageFormatters.HumanLevels: {
-					return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
-				}
-				case LanguageFormatters.ToTitleCase: {
-					return toTitleCase(value);
+					return getT(language)(`humanLevels:${GuildVerificationLevel[value]}`, options);
 				}
 				case LanguageFormatters.ExplicitContentFilter: {
-					switch (value as ExplicitContentFilterLevel) {
-						case 'DISABLED':
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterDisabled, { ...options, lng: language });
-						case 'MEMBERS_WITHOUT_ROLES':
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterMembersWithoutRoles, { ...options, lng: language });
-						case 'ALL_MEMBERS':
-							return i18next.t(LanguageKeys.Guilds.ExplicitContentFilterAllMembers, { ...options, lng: language });
-						default:
-							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-					}
+					return getT(language)(`guilds:explicitContentFilter${GuildExplicitContentFilter[value]}`, options);
 				}
 				case LanguageFormatters.MessageNotifications: {
-					switch (value as DefaultMessageNotificationLevel) {
-						case 'ALL_MESSAGES':
-							return i18next.t(LanguageKeys.Guilds.MessageNotificationsAll, { ...options, lng: language });
-						case 'ONLY_MENTIONS':
-							return i18next.t(LanguageKeys.Guilds.MessageNotificationsMentions, { ...options, lng: language });
-						default:
-							return i18next.t(LanguageKeys.Globals.Unknown, { ...options, lng: language });
-					}
-				}
-				case LanguageFormatters.CodeBlock: {
-					return codeBlock('', value);
-				}
-				case LanguageFormatters.JsCodeBlock: {
-					return codeBlock('js', value);
+					return getT(language)(`guilds:defaultMessageNotifications${GuildDefaultMessageNotifications[value]}`, options);
 				}
 				case LanguageFormatters.Number: {
 					return getHandler(language!).number.format(value as number);
@@ -169,7 +145,7 @@ function parseInternationalizationInterpolation(): InterpolationOptions {
 					return getHandler(language!).numberCompact.format(value as number);
 				}
 				case LanguageFormatters.Duration: {
-					return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
+					return getHandler(language!).duration.format(value as number, (options?.precision as number) ?? 2);
 				}
 				case LanguageFormatters.DateTime: {
 					return getHandler(language!).dateTime.format(value as number);
@@ -215,29 +191,30 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	caseInsensitivePrefixes: true,
 	defaultPrefix: envParseString('CLIENT_PREFIX'),
 	intents: [
-		'GUILDS',
-		'GUILD_MEMBERS',
-		'GUILD_BANS',
-		'GUILD_EMOJIS_AND_STICKERS',
-		'GUILD_VOICE_STATES',
-		'GUILD_MESSAGES',
-		'GUILD_MESSAGE_REACTIONS',
-		'DIRECT_MESSAGES',
-		'DIRECT_MESSAGE_REACTIONS'
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildModeration,
+		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageReactions,
+		GatewayIntentBits.MessageContent
 	],
 	loadDefaultErrorListeners: false,
+	loadMessageCommandListeners: true,
 	makeCache: Options.cacheEverything(),
 	sweepers: {
-		...Options.defaultSweeperSettings,
+		...Options.DefaultSweeperSettings,
 		messages: {
 			interval: minutes.toSeconds(3),
 			lifetime: minutes.toSeconds(15)
 		}
 	},
-	partials: ['CHANNEL'],
+	partials: [Partials.Channel],
 	presence: { activities: parsePresenceActivity() },
 	regexPrefix: parseRegExpPrefix(),
-	restTimeOffset: 0,
 	schedule: { interval: seconds(5) },
 	nms: {
 		everyone: 5,

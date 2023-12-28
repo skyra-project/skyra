@@ -1,14 +1,13 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getStickyRoles } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { Listener } from '@sapphire/framework';
-import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-
-const { FLAGS } = Permissions;
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
@@ -17,7 +16,7 @@ export class UserListener extends Listener {
 	}
 
 	private async handleStickyRoles(member: GuildMember) {
-		if (!member.guild.members.me!.permissions.has(FLAGS.MANAGE_ROLES)) return false;
+		if (!member.guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) return false;
 
 		const stickyRoles = await getStickyRoles(member).fetch(member.id);
 		if (stickyRoles.length === 0) return false;
@@ -36,7 +35,7 @@ export class UserListener extends Listener {
 
 			// Handle log
 			this.container.client.emit(Events.GuildMessageLog, member.guild, logChannelId, key, () =>
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(Colors.Amber)
 					.setAuthor(getFullEmbedAuthor(member.user))
 					.setDescription(

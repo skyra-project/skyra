@@ -1,13 +1,12 @@
-import { AdderKey, configurableKeys, GuildEntity, readSettings, writeSettings } from '#lib/database';
+import { configurableKeys, readSettings, writeSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
-import { CommandOptionsRunTypeEnum, PieceContext } from '@sapphire/framework';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { codeBlock, PickByValue } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { codeBlock } from '@sapphire/utilities';
 
 export enum AKeys {
 	Enable,
@@ -85,7 +84,7 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 ]);
 
 export abstract class SelfModerationCommand extends SkyraCommand {
-	protected constructor(context: PieceContext, options: SelfModerationCommand.Options) {
+	protected constructor(context: SkyraCommand.LoaderContext, options: SelfModerationCommand.Options) {
 		super(context, {
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],
@@ -93,7 +92,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 		});
 	}
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const type = this.getAction(args);
 		if (type === AKeys.Show) return this.show(message);
 
@@ -297,12 +296,12 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	}
 
 	protected abstract $adder: AdderKey;
-	protected abstract keyEnabled: PickByValue<GuildEntity, boolean>;
-	protected abstract keySoftAction: PickByValue<GuildEntity, number>;
-	protected abstract keyHardAction: PickByValue<GuildEntity, number | null>;
-	protected abstract keyHardActionDuration: PickByValue<GuildEntity, number | null>;
-	protected abstract keyThresholdMaximum: PickByValue<GuildEntity, number | null>;
-	protected abstract keyThresholdDuration: PickByValue<GuildEntity, number | null>;
+	protected abstract keyEnabled: GuildSettingsOfType<boolean>;
+	protected abstract keySoftAction: GuildSettingsOfType<number>;
+	protected abstract keyHardAction: GuildSettingsOfType<number | null>;
+	protected abstract keyHardActionDuration: GuildSettingsOfType<number | null>;
+	protected abstract keyThresholdMaximum: GuildSettingsOfType<number | null>;
+	protected abstract keyThresholdDuration: GuildSettingsOfType<number | null>;
 }
 
 export namespace SelfModerationCommand {

@@ -4,7 +4,7 @@ import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['vm'],
@@ -28,7 +28,7 @@ export class UserModerationCommand extends ModerationCommand {
 		);
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+	public override async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
 		if (member && member.voice.serverMute) throw context.args.t(LanguageKeys.Commands.Moderation.MuteMuted);
 		return member;

@@ -3,13 +3,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { differenceBitField } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { MessageEmbed, Role, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { Role, TextChannel } from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildRoleUpdate })
+@ApplyOptions<Listener.Options>({ event: Events.GuildRoleUpdate })
 export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 	public async run(previous: Role, next: Role) {
 		const [channelId, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleUpdate], settings.getLanguage()]);
@@ -24,9 +25,9 @@ export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 		const changes: string[] = [...this.differenceRole(t, previous, next)];
 		if (changes.length === 0) return;
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(Colors.Yellow)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, format: 'png', dynamic: true }) ?? undefined })
+			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setDescription(changes.join('\n'))
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleUpdate) })
 			.setTimestamp();

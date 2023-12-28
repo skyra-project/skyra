@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V48AddSeparateInitialRoles1617890802896 implements MigrationInterface {
 	private readonly keys = ['roles.initial-humans', 'roles.initial-bots'];

@@ -1,58 +1,57 @@
 import { GuildSettings, SettingsManager } from '#lib/database';
+import { readSettings } from '#lib/database/settings/functions';
+import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
+import type { LongLivingReactionCollector } from '#lib/util/LongLivingReactionCollector';
+import { Twitch } from '#lib/util/Notifications/Twitch';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
 import { Enumerable } from '@sapphire/decorators';
-import { container, SapphireClient } from '@sapphire/framework';
+import { SapphireClient, container } from '@sapphire/framework';
 import type { InternationalizationContext } from '@sapphire/plugin-i18next';
 import { envParseBoolean } from '@skyra/env-utilities';
-import { Message, WebhookClient } from 'discord.js';
-import { readSettings } from './database/settings/functions';
-import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { WorkerManager } from './moderation/workers/WorkerManager';
-import type { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { Twitch } from './util/Notifications/Twitch';
+import { WebhookClient, type Message } from 'discord.js';
 
 export class SkyraClient extends SapphireClient {
 	@Enumerable(false)
-	public dev = process.env.NODE_ENV !== 'production';
+	public override dev = process.env.NODE_ENV !== 'production';
 
 	/**
 	 * The Schedule manager
 	 */
 	@Enumerable(false)
-	public schedules: ScheduleManager;
+	public override schedules: ScheduleManager;
 
 	/**
 	 * The webhook to use for the error event
 	 */
 	@Enumerable(false)
-	public webhookError: WebhookClient | null = WEBHOOK_ERROR ? new WebhookClient(WEBHOOK_ERROR) : null;
+	public override webhookError: WebhookClient | null = WEBHOOK_ERROR ? new WebhookClient(WEBHOOK_ERROR) : null;
 
 	/**
 	 * The invite store
 	 */
 	@Enumerable(false)
-	public invites = new InviteStore();
+	public override invites = new InviteStore();
 
 	@Enumerable(false)
-	public readonly analytics: AnalyticsData | null;
+	public override readonly analytics: AnalyticsData | null;
 
 	@Enumerable(false)
-	public readonly guildMemberFetchQueue = new GuildMemberFetchQueue();
+	public override readonly guildMemberFetchQueue = new GuildMemberFetchQueue();
 
 	@Enumerable(false)
-	public llrCollectors = new Set<LongLivingReactionCollector>();
+	public override llrCollectors = new Set<LongLivingReactionCollector>();
 
 	@Enumerable(false)
-	public twitch = new Twitch();
+	public override twitch = new Twitch();
 
 	public constructor() {
 		super(CLIENT_OPTIONS);
 
 		// Workers
 		container.workers = new WorkerManager();
-
 		container.settings = new SettingsManager();
 
 		// Analytics
@@ -62,14 +61,14 @@ export class SkyraClient extends SapphireClient {
 		this.analytics = envParseBoolean('INFLUX_ENABLED') ? new AnalyticsData() : null;
 	}
 
-	public async login(token?: string) {
+	public override async login(token?: string) {
 		await container.workers.start();
 		const loginResponse = await super.login(token);
 		await this.schedules.init();
 		return loginResponse;
 	}
 
-	public async destroy() {
+	public override async destroy() {
 		await container.workers.destroy();
 		this.guildMemberFetchQueue.destroy();
 		this.invites.destroy();
@@ -81,7 +80,7 @@ export class SkyraClient extends SapphireClient {
 	 * Retrieves the prefix for the guild.
 	 * @param message The message that gives context.
 	 */
-	public fetchPrefix = async (message: Message) => {
+	public override fetchPrefix = (message: Message) => {
 		if (isGuildMessage(message)) return readSettings(message.guild, GuildSettings.Prefix);
 		return [process.env.CLIENT_PREFIX, ''] as readonly string[];
 	};

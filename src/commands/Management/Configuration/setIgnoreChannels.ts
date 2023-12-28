@@ -1,11 +1,10 @@
 import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Args, CommandOptionsRunTypeEnum, container, IArgument } from '@sapphire/framework';
+import { Args, Argument, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -15,7 +14,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
 		const [oldLength, newLength] = await writeSettings(message.guild, (settings) => {
@@ -41,6 +40,6 @@ export class UserCommand extends SkyraCommand {
 
 	private static hereOrTextChannelResolver = Args.make<GuildTextBasedChannelTypes>((argument, context) => {
 		if (argument === 'here') return Args.ok(context.message.channel as GuildTextBasedChannelTypes);
-		return (container.stores.get('arguments').get('textOrNewsChannelName') as IArgument<GuildTextBasedChannelTypes>).run(argument, context);
+		return (container.stores.get('arguments').get('textOrNewsChannelName') as Argument<GuildTextBasedChannelTypes>).run(argument, context);
 	});
 }

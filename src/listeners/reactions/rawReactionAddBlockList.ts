@@ -1,25 +1,25 @@
-import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
+import { GuildSettings, readSettings, type GuildSettingsOfType } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HardPunishment, ModerationListener, SelfModeratorBitField } from '#lib/moderation';
-import { Events } from '#lib/types/Enums';
+import { ModerationListener, SelfModeratorBitField, type HardPunishment } from '#lib/moderation';
+import { Events } from '#lib/types';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, SerializedEmoji } from '#utils/functions';
-import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ListenerOptions } from '@sapphire/framework';
-import { fetchT, sendLocalized } from '@sapphire/plugin-i18next';
-import { hasAtLeastOneKeyInMap, Nullish, PickByValue } from '@sapphire/utilities';
-import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
+import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
+import { hasAtLeastOneKeyInMap, type Nullish } from '@sapphire/utilities';
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
 
-@ApplyOptions<ListenerOptions>({ event: Events.RawReactionAdd })
+@ApplyOptions<ModerationListener.Options>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationListener<ArgumentType, unknown> {
-	protected keyEnabled: PickByValue<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
-	protected softPunishmentPath: PickByValue<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
+	protected keyEnabled: GuildSettingsOfType<boolean> = GuildSettings.Selfmod.Reactions.Enabled;
+	protected softPunishmentPath: GuildSettingsOfType<number> = GuildSettings.Selfmod.Reactions.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
@@ -66,27 +66,21 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
-		floatPromise(
-			api()
-				.channels(data.channel.id)
-				.messages(data.messageId)
-				.reactions(getEmojiReactionFormat(emoji), data.userId)
-				.delete({ reason: '[MODERATION] Automatic Removal of Blocked Emoji.' })
-		);
+		floatPromise(api().channels.deleteUserMessageReaction(data.channel.id, data.messageId, getEmojiReactionFormat(emoji), data.userId));
 	}
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
-			sendLocalized(data.channel, { keys: LanguageKeys.Events.Reactions.Filter, formatOptions: { user: `<@${data.userId}>` } }).then(
-				(message) => deleteMessage(message, seconds(15))
-			)
+			resolveKey(data.guild, LanguageKeys.Events.Reactions.Filter, { user: `<@${data.userId}>` })
+				.then((content) => data.channel.send(content))
+				.then((message) => deleteMessage(message, seconds(15)))
 		);
 	}
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
 		const user = await this.container.client.users.fetch(data.userId);
 		const t = await fetchT(data.guild);
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(user))
 			.setThumbnail(
@@ -111,6 +105,6 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 
 	private async hasPermissions(member: GuildMember) {
 		const roles = await readSettings(member, GuildSettings.Roles.Moderator);
-		return roles.length === 0 ? member.permissions.has(Permissions.FLAGS.BAN_MEMBERS) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
+		return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.BanMembers) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 	}
 }

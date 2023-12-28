@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { IncomingRunRegExpPayload, IncomingType, NoId, OutgoingPayload, OutgoingType, TimeoutError, WorkerHandler } from '#lib/moderation/workers';
+import {
+	IncomingType,
+	OutgoingType,
+	TimeoutError,
+	WorkerHandler,
+	type IncomingRunRegExpPayload,
+	type NoId,
+	type OutgoingPayload
+} from '#lib/moderation/workers';
 
 describe('WorkerHandler', () => {
 	let handler = new WorkerHandler();
@@ -26,9 +34,9 @@ describe('WorkerHandler', () => {
 		expect(handler['response']['timer']).toBeNull();
 		expect(handler['response']['handler']).toBeNull();
 
-		const handleOnline = jest.spyOn(handler, 'handleOnline' as any);
-		const handleExit = jest.spyOn(handler, 'handleExit' as any);
-		const terminate = jest.spyOn(handler['worker'], 'terminate');
+		const handleOnline = vi.spyOn(handler, 'handleOnline' as any);
+		const handleExit = vi.spyOn(handler, 'handleExit' as any);
+		const terminate = vi.spyOn(handler['worker'], 'terminate');
 
 		await expect(handler.start()).resolves.toBeUndefined();
 
@@ -57,7 +65,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN matching RunRegExp payload THEN resolves with a RegExpMatch payload', async () => {
 		await handler.start();
 
-		const handleMessage = jest.spyOn(handler, 'handleMessage' as any);
+		const handleMessage = vi.spyOn(handler, 'handleMessage' as any);
 
 		const regExp = /hello/g;
 		const given: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
@@ -75,7 +83,7 @@ describe('WorkerHandler', () => {
 	test('GIVEN non-matching RunRegExp payload THEN resolves with a RegExpMatch payload', async () => {
 		await handler.start();
 
-		const handleMessage = jest.spyOn(handler, 'handleMessage' as any);
+		const handleMessage = vi.spyOn(handler, 'handleMessage' as any);
 
 		const regExp = /hello/g;
 		const given: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'nope' };
@@ -91,12 +99,12 @@ describe('WorkerHandler', () => {
 	test('GIVEN ReDoS payload THEN rejects with a TimeoutError', async () => {
 		await handler.start();
 
-		const handleMessage = jest.spyOn(handler, 'handleMessage' as any);
-		const restart = jest.spyOn(handler, 'restart' as any);
-		const destroy = jest.spyOn(handler, 'destroy' as any);
-		const terminate = jest.spyOn(handler['worker'], 'terminate');
-		const spawn = jest.spyOn(handler, 'spawn' as any);
-		const start = jest.spyOn(handler, 'start' as any);
+		const handleMessage = vi.spyOn(handler, 'handleMessage' as any);
+		const restart = vi.spyOn(handler, 'restart');
+		const destroy = vi.spyOn(handler, 'destroy');
+		const terminate = vi.spyOn(handler['worker'], 'terminate');
+		const spawn = vi.spyOn(handler, 'spawn');
+		const start = vi.spyOn(handler, 'start');
 
 		const regExp = /([a-z]+)+$/;
 		const given: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: `${'a'.repeat(100)}!` };

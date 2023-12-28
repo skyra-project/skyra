@@ -1,5 +1,5 @@
-import { isNullish, Nullish } from '@sapphire/utilities';
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { isNullish, type Nullish } from '@sapphire/utilities';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V54EventsModernization1626169505546 implements MigrationInterface {
 	private readonly oldChannelKeys = ['channels.logs.member', 'channels.logs.message', 'channels.logs.nsfw-message'] as const;

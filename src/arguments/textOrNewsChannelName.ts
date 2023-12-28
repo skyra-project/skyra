@@ -1,6 +1,6 @@
 import { orMix } from '#utils/common';
 import { isNewsChannel, isTextChannel } from '@sapphire/discord.js-utilities';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 import type { NewsChannel, TextChannel } from 'discord.js';
 
 export class UserArgument extends Argument<TextChannel | NewsChannel> {
@@ -10,7 +10,7 @@ export class UserArgument extends Argument<TextChannel | NewsChannel> {
 		return this.store.get('channelName') as Argument<TextChannel | NewsChannel>;
 	}
 
-	public run(argument: string, context: ArgumentContext<TextChannel | NewsChannel>) {
+	public run(argument: string, context: Argument.Context<TextChannel | NewsChannel>) {
 		return this.channelName.run(argument, { ...context, filter: this.filter });
 	}
 }

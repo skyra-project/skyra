@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { IncomingRunRegExpPayload, IncomingType, NoId, OutgoingPayload, OutgoingType, WorkerManager } from '#lib/moderation/workers';
+import { IncomingType, OutgoingType, WorkerManager, type IncomingRunRegExpPayload, type NoId, type OutgoingPayload } from '#lib/moderation/workers';
 
 describe('WorkerManager', () => {
 	let handler = new WorkerManager(2);
@@ -17,11 +17,11 @@ describe('WorkerManager', () => {
 	test('GIVEN new instance THEN has initial data', async () => {
 		expect(handler.workers.length).toBe(2);
 
-		const start0 = jest.spyOn(handler.workers[0], 'start' as any);
-		const start1 = jest.spyOn(handler.workers[1], 'start' as any);
+		const start0 = vi.spyOn(handler.workers[0], 'start');
+		const start1 = vi.spyOn(handler.workers[1], 'start');
 
-		const destroy0 = jest.spyOn(handler.workers[0], 'destroy' as any);
-		const destroy1 = jest.spyOn(handler.workers[1], 'destroy' as any);
+		const destroy0 = vi.spyOn(handler.workers[0], 'destroy');
+		const destroy1 = vi.spyOn(handler.workers[1], 'destroy');
 
 		await expect(handler.start()).resolves.toBeUndefined();
 
@@ -45,7 +45,7 @@ describe('WorkerManager', () => {
 	test('GIVEN data to process WHEN both workers are idle THEN the command runs in the first worker', async () => {
 		await handler.start();
 
-		const getIdealWorker = jest.spyOn(handler, 'getIdealWorker' as any);
+		const getIdealWorker = vi.spyOn(handler, 'getIdealWorker' as any);
 
 		const given: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
 		const expected: OutgoingPayload = {
@@ -63,7 +63,7 @@ describe('WorkerManager', () => {
 	test('GIVEN data to process WHEN the first worker is busy THEN the command runs in the second worker', async () => {
 		await handler.start();
 
-		const getIdealWorker = jest.spyOn(handler, 'getIdealWorker' as any);
+		const getIdealWorker = vi.spyOn(handler, 'getIdealWorker' as any);
 
 		const given0: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
 		const expected0: OutgoingPayload = {
@@ -91,9 +91,9 @@ describe('WorkerManager', () => {
 	test('GIVEN a lot data to process THEN both workers get to work', async () => {
 		await handler.start();
 
-		const getIdealWorker = jest.spyOn(handler, 'getIdealWorker' as any);
-		const send0 = jest.spyOn(handler.workers[0], 'send');
-		const send1 = jest.spyOn(handler.workers[1], 'send');
+		const getIdealWorker = vi.spyOn(handler, 'getIdealWorker' as any);
+		const send0 = vi.spyOn(handler.workers[0], 'send');
+		const send1 = vi.spyOn(handler.workers[1], 'send');
 
 		const given0: NoId<IncomingRunRegExpPayload> = { type: IncomingType.RunRegExp, regExp, content: 'hello world!' };
 		const expected0 = OutgoingType.RegExpMatch;

@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.General.PingExtended
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const msg = await send(message, args.t(LanguageKeys.Commands.General.Ping));
 
 		const content = args.t(LanguageKeys.Commands.General.PingPong, {

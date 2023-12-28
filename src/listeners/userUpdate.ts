@@ -1,13 +1,13 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { CustomGet } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type CustomGet } from '#lib/types';
 import { filter, map } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { Listener } from '@sapphire/framework';
-import { Guild, MessageEmbed, User } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import type { Guild, User } from 'discord.js';
 
 export class UserListener extends Listener {
 	public async run(previous: User, user: User) {
@@ -49,7 +49,7 @@ export class UserListener extends Listener {
 	}
 
 	private buildEmbed(user: User, t: TFunction, description: string, footerKey: CustomGet<string, string>) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.Yellow)
 			.setAuthor(getFullEmbedAuthor(user))
 			.setDescription(description)

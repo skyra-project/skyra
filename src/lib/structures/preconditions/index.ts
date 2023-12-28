@@ -1,1 +1,1 @@
-export * from './PermissionsPrecondition';
+export * from '#lib/structures/preconditions/PermissionsPrecondition';

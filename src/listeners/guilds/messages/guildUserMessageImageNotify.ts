@@ -1,23 +1,22 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
-import { IMAGE_EXTENSION, getFullEmbedAuthor } from '#utils/util';
+import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { isNullish, isNumber } from '@sapphire/utilities';
-import { MessageAttachment, MessageEmbed, MessageOptions, TextChannel } from 'discord.js';
+import { AttachmentBuilder, type MessageCreateOptions, type TextChannel } from 'discord.js';
 import { extname } from 'node:path';
-import { URL } from 'node:url';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte
 // 1024 * 1024 = 1 megabyte
 const MAXIMUM_LENGTH = 1024 * 1024;
 
-@ApplyOptions<ListenerOptions>({ event: Events.GuildUserMessage })
+@ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
 		// If there are no attachments, do not post:
@@ -34,13 +33,14 @@ export class UserListener extends Listener {
 		]);
 		if (isNullish(logChannelId) || ignoredChannels.includes(message.channel.id)) return;
 
-		for (const image of this.getAttachments(message)) {
-			const dimensions = this.getDimensions(image.width, image.height);
+		for (const attachment of this.getAttachments(message)) {
+			const dimensions = this.getDimensions(attachment.width, attachment.height);
 
 			// Create a new image url with search params.
-			const url = new URL(image.proxyURL);
+			const url = new URL(attachment.proxyURL);
 			url.searchParams.append('width', dimensions.width.toString());
 			url.searchParams.append('height', dimensions.height.toString());
+			if (attachment.kind === 'video') url.searchParams.append('format', 'webp');
 
 			// Fetch the image.
 			const result = await fetch(url, FetchResultTypes.Result).catch((error) => {
@@ -63,8 +63,8 @@ export class UserListener extends Listener {
 				const buffer = Buffer.from(await (await result.blob()).arrayBuffer());
 				const filename = `image${extname(url.pathname)}`;
 
-				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageOptions => {
-					const embed = new MessageEmbed()
+				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageCreateOptions => {
+					const embed = new EmbedBuilder()
 						.setColor(Colors.Yellow)
 						.setAuthor(getFullEmbedAuthor(message.author, message.url))
 						.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](${message.url})`)
@@ -72,7 +72,7 @@ export class UserListener extends Listener {
 						.setImage(`attachment://${filename}`)
 						.setTimestamp();
 
-					return { embeds: [embed], files: [new MessageAttachment(buffer, filename)] };
+					return { embeds: [embed], files: [new AttachmentBuilder(buffer, { name: filename })] };
 				});
 			} catch (error) {
 				this.container.logger.fatal(`ImageLogs[${error}] ${url}`);
@@ -82,9 +82,14 @@ export class UserListener extends Listener {
 
 	private *getAttachments(message: GuildMessage) {
 		for (const attachment of message.attachments.values()) {
-			if (!IMAGE_EXTENSION.test(attachment.url)) continue;
+			const type = attachment.contentType;
+			if (type === null) continue;
+
+			const [kind] = type.split('/', 1);
+			if (kind !== 'image' && kind !== 'video') continue;
 
 			yield {
+				kind: kind as 'image' | 'video',
 				url: attachment.url,
 				proxyURL: attachment.proxyURL,
 				height: attachment.height!,

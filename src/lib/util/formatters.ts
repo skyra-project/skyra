@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { cleanMentions, getTag } from '#utils/util';
-import type { EmbedField, Guild, MessageAttachment, MessageEmbed, MessageEmbedFooter, MessageEmbedImage, User } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import type { APIEmbedField, Attachment, Embed, EmbedAssetData, EmbedFooterData, Guild, User } from 'discord.js';
 
 export function formatMessage(t: TFunction, message: GuildMessage): string {
 	const header = formatHeader(t, message);
@@ -43,30 +43,11 @@ function formatContent(guild: Guild, content: string): string {
 		.join('\n');
 }
 
-export function formatAttachment(attachment: MessageAttachment): string {
+export function formatAttachment(attachment: Attachment): string {
 	return `📂 [${attachment.name}: ${attachment.url}]`;
 }
 
-function formatEmbed(guild: Guild, embed: MessageEmbed): string {
-	switch (embed.type) {
-		case 'video':
-			return formatEmbedVideo(embed);
-		case 'image':
-			return formatEmbedImage(embed);
-		default:
-			return formatEmbedRich(guild, embed);
-	}
-}
-
-function formatEmbedVideo(embed: MessageEmbed): string {
-	return `📹 [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
-}
-
-function formatEmbedImage(embed: MessageEmbed): string {
-	return `🖼️ [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
-}
-
-function formatEmbedRich(guild: Guild, embed: MessageEmbed): string {
+function formatEmbed(guild: Guild, embed: Embed): string {
 	if (embed.provider === null) {
 		const output: string[] = [];
 		if (embed.title) output.push(formatEmbedRichTitle(embed.title));
@@ -90,7 +71,7 @@ function formatEmbedRichUrl(url: string): string {
 	return `> 📎 ${url}`;
 }
 
-function formatEmbedRichAuthor(author: Exclude<MessageEmbed['author'], null>): string {
+function formatEmbedRichAuthor(author: Exclude<Embed['author'], null>): string {
 	return `> 👤 ${author.iconURL ? `[${author.iconURL}] ` : ''}${author.name || '-'}${author.url ? ` <${author.url}>` : ''}`;
 }
 
@@ -101,21 +82,21 @@ function formatEmbedRichDescription(guild: Guild, description: string): string {
 		.join('\n');
 }
 
-function formatEmbedRichField(guild: Guild, field: EmbedField): string {
+function formatEmbedRichField(guild: Guild, field: APIEmbedField): string {
 	return `> #> ${field.name}\n${cleanMentions(guild, field.value)
 		.split('\n')
 		.map((line) => `>  > ${line}`)
 		.join('\n')}`;
 }
 
-function formatEmbedRichImage(image: MessageEmbedImage): string {
+function formatEmbedRichImage(image: EmbedAssetData): string {
 	return `>🖼️ [${image.url}]`;
 }
 
-function formatEmbedRichFooter(footer: MessageEmbedFooter): string {
+function formatEmbedRichFooter(footer: EmbedFooterData): string {
 	return `>_ ${footer.iconURL ? `[${footer.iconURL}]${footer.text ? ' - ' : ''}` : ''}${footer.text ?? ''}`;
 }
 
-function formatEmbedRichProvider(embed: MessageEmbed): string {
+function formatEmbedRichProvider(embed: Embed): string {
 	return `🔖 [${embed.url}]${embed.provider ? ` (${embed.provider.name}).` : ''}`;
 }

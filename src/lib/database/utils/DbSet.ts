@@ -1,18 +1,16 @@
-import type { Connection, FindConditions, FindManyOptions, Repository } from 'typeorm';
-import { connect } from '../database.config';
-import { BannerEntity } from '../entities/BannerEntity';
-import { GuildEntity } from '../entities/GuildEntity';
-import { GuildSubscriptionEntity } from '../entities/GuildSubscriptionEntity';
-import { ModerationEntity } from '../entities/ModerationEntity';
-import { ScheduleEntity } from '../entities/ScheduleEntity';
-import { TwitchSubscriptionEntity } from '../entities/TwitchSubscriptionEntity';
-import { UserEntity } from '../entities/UserEntity';
-import { ClientRepository } from '../repositories/ClientRepository';
+import { connect } from '#lib/database/database.config';
+import { ClientEntity } from '#lib/database/entities/ClientEntity';
+import { GuildEntity } from '#lib/database/entities/GuildEntity';
+import { GuildSubscriptionEntity } from '#lib/database/entities/GuildSubscriptionEntity';
+import { ModerationEntity } from '#lib/database/entities/ModerationEntity';
+import { ScheduleEntity } from '#lib/database/entities/ScheduleEntity';
+import { TwitchSubscriptionEntity } from '#lib/database/entities/TwitchSubscriptionEntity';
+import { UserEntity } from '#lib/database/entities/UserEntity';
+import type { DataSource, FindManyOptions, FindOptions, Repository } from 'typeorm';
 
 export class DbSet {
-	public readonly connection: Connection;
-	public readonly banners: Repository<BannerEntity>;
-	public readonly clients: ClientRepository;
+	public readonly connection: DataSource;
+	public readonly clients: Repository<ClientEntity>;
 	public readonly guilds: Repository<GuildEntity>;
 	public readonly guildSubscriptions: Repository<GuildSubscriptionEntity>;
 	public readonly moderations: Repository<ModerationEntity>;
@@ -20,10 +18,9 @@ export class DbSet {
 	public readonly twitchSubscriptions: Repository<TwitchSubscriptionEntity>;
 	public readonly users: Repository<UserEntity>;
 
-	private constructor(connection: Connection) {
+	private constructor(connection: DataSource) {
 		this.connection = connection;
-		this.banners = this.connection.getRepository(BannerEntity);
-		this.clients = this.connection.getCustomRepository(ClientRepository);
+		this.clients = this.connection.getRepository(ClientEntity);
 		this.guilds = this.connection.getRepository(GuildEntity);
 		this.guildSubscriptions = this.connection.getRepository(GuildSubscriptionEntity);
 		this.moderations = this.connection.getRepository(ModerationEntity);
@@ -33,7 +30,7 @@ export class DbSet {
 	}
 
 	public async fetchModerationDirectMessageEnabled(id: string) {
-		const entry = await this.users.findOne(id, { select: ['moderationDM'] });
+		const entry = await this.users.findOne({ where: { id }, select: ['moderationDM'] });
 		return entry?.moderationDM ?? true;
 	}
 
@@ -46,8 +43,8 @@ export class DbSet {
 	 * Finds entities that match given conditions.
 	 */
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public fetchModerationEntry(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity>;
-	public async fetchModerationEntry(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
+	public fetchModerationEntry(conditions?: FindOptions<ModerationEntity>): Promise<ModerationEntity>;
+	public async fetchModerationEntry(optionsOrConditions?: FindOptions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
 		return this.moderations.findOne(optionsOrConditions as any);
 	}
 
@@ -60,8 +57,8 @@ export class DbSet {
 	 * Finds entities that match given conditions.
 	 */
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public fetchModerationEntries(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity[]>;
-	public async fetchModerationEntries(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
+	public fetchModerationEntries(conditions?: FindOptions<ModerationEntity>): Promise<ModerationEntity[]>;
+	public async fetchModerationEntries(optionsOrConditions?: FindOptions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
 		return this.moderations.find(optionsOrConditions as any);
 	}
 

@@ -1,8 +1,7 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds, years } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
 import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
@@ -10,7 +9,7 @@ import { getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { Permissions, User } from 'discord.js';
+import { PermissionFlagsBits, type User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
@@ -19,7 +18,7 @@ import { Permissions, User } from 'discord.js';
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const cancel = await args.pick(UserCommand.cancel).catch(() => false);
 		const caseId = await args.pick('case');
 
@@ -112,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkBan(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.BanMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
 		}
 
@@ -122,7 +121,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
@@ -132,7 +131,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async checkVMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) {
+		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.MuteMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
 		}
 

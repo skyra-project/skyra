@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn, TableForeignKey, TableIndex } from 'typeorm';
+import { Table, TableCheck, TableColumn, TableForeignKey, TableIndex, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V11MigrateRpg1594649287397 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

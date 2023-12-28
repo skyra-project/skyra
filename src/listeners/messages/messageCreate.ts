@@ -1,4 +1,4 @@
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { Listener } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 

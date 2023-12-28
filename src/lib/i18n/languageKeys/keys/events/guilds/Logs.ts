@@ -1,7 +1,7 @@
-import { Difference, FT, T, Value, Values } from '#lib/types';
-import type { DefaultMessageNotificationLevel, ExplicitContentFilterLevel, VerificationLevel } from 'discord.js';
+import { FT, T, type Difference, type Value, type Values } from '#lib/types';
+import type { GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildVerificationLevel } from 'discord.js';
 
-type Notifications = DefaultMessageNotificationLevel | number;
+type Notifications = GuildDefaultMessageNotifications;
 
 export const ChannelCreate = T('events/guilds-logs:channelCreate');
 export const ChannelCreateParent = FT<Value>('events/guilds-logs:channelCreateParent');
@@ -85,7 +85,7 @@ export const ServerUpdateDescription = FT<Difference>('events/guilds-logs:server
 export const ServerUpdateDiscoverySplashAdded = FT<Value>('events/guilds-logs:serverUpdateDiscoverySplashAdded');
 export const ServerUpdateDiscoverySplashRemoved = FT<Value>('events/guilds-logs:serverUpdateDiscoverySplashRemoved');
 export const ServerUpdateDiscoverySplash = FT<Difference>('events/guilds-logs:serverUpdateDiscoverySplash');
-export const ServerUpdateExplicitContentFilter = FT<Difference<ExplicitContentFilterLevel>>('events/guilds-logs:serverUpdateExplicitContentFilter');
+export const ServerUpdateExplicitContentFilter = FT<Difference<GuildExplicitContentFilter>>('events/guilds-logs:serverUpdateExplicitContentFilter');
 export const ServerUpdateFeaturesAdded = FT<Values>('events/guilds-logs:serverUpdateFeaturesAdded');
 export const ServerUpdateFeaturesRemoved = FT<Values>('events/guilds-logs:serverUpdateFeaturesRemoved');
 export const ServerUpdateIconAdded = FT<Value>('events/guilds-logs:serverUpdateIconAdded');
@@ -122,7 +122,7 @@ export const ServerUpdateSystemChannel = FT<Difference>('events/guilds-logs:serv
 export const ServerUpdateVanityUrlAdded = FT<Value>('events/guilds-logs:serverUpdateVanityUrlAdded');
 export const ServerUpdateVanityUrlRemoved = FT<Value>('events/guilds-logs:serverUpdateVanityUrlRemoved');
 export const ServerUpdateVanityUrl = FT<Difference>('events/guilds-logs:serverUpdateVanityUrl');
-export const ServerUpdateVerificationLevel = FT<Difference<VerificationLevel>>('events/guilds-logs:serverUpdateVerificationLevel');
+export const ServerUpdateVerificationLevel = FT<Difference<GuildVerificationLevel>>('events/guilds-logs:serverUpdateVerificationLevel');
 export const ServerUpdateWidgetChannelAdded = FT<Value>('events/guilds-logs:serverUpdateWidgetChannelAdded');
 export const ServerUpdateWidgetChannelRemoved = FT<Value>('events/guilds-logs:serverUpdateWidgetChannelRemoved');
 export const ServerUpdateWidgetChannel = FT<Difference>('events/guilds-logs:serverUpdateWidgetChannel');

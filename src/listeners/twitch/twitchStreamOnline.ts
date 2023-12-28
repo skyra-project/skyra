@@ -1,19 +1,17 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { TwitchEventSubTypes } from '#lib/types';
-import type { TwitchEventSubOnlineEvent, TwitchHelixStreamsResult, TwitchOnlineEmbedData } from '#lib/types/definitions/Twitch';
-import { Events } from '#lib/types/Enums';
-import { floatPromise } from '#utils/common';
+import { Events, TwitchEventSubTypes, type TwitchEventSubOnlineEvent, type TwitchHelixStreamsResult, type TwitchOnlineEmbedData } from '#lib/types';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { floatPromise } from '#utils/common';
 import { extractDetailedMentions } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { canSendMessages, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { canSendMessages, type TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
-import { MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
 
-@ApplyOptions<ListenerOptions>({
+@ApplyOptions<Listener.Options>({
 	event: Events.TwitchStreamOnline
 })
 export class UserListener extends Listener<Events.TwitchStreamOnline> {
@@ -62,7 +60,7 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 					const detailedMentions = extractDetailedMentions(guildSubscription.message);
 					floatPromise(
 						channel.send({
-							content: guildSubscription.message || null,
+							content: guildSubscription.message || undefined,
 							embeds: [this.buildEmbed(this.transformTextToObject(data, streamData), t)],
 							allowedMentions: { parse: detailedMentions.parse, users: [...detailedMentions.users], roles: [...detailedMentions.roles] }
 						})
@@ -88,7 +86,7 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 	}
 
 	private buildEmbed(data: TwitchOnlineEmbedData, t: TFunction) {
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.userName}`)
 			.setFooter({ text: t(LanguageKeys.Events.Twitch.OfflinePostfix) })

@@ -1,5 +1,5 @@
 import type { NonNullObject } from '@sapphire/utilities';
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V07MigrateModeration1594583300041 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

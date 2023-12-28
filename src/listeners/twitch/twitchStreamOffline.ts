@@ -1,17 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { TwitchEventSubEvent, TwitchEventSubTypes } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, TwitchEventSubTypes, type TwitchEventSubEvent } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { extractDetailedMentions } from '#utils/util';
-import { time, TimestampStyles } from '@discordjs/builders';
+import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { canSendMessages, TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { canSendMessages, type TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
 
-@ApplyOptions<ListenerOptions>({
+@ApplyOptions<Listener.Options>({
 	event: Events.TwitchStreamOffline
 })
 export class UserListener extends Listener<Events.TwitchStreamOffline> {

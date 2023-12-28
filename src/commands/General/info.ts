@@ -3,13 +3,12 @@ import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKe
 import { SkyraArgs, SkyraCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 import { getColor, getEmbedAuthor } from '#utils/util';
-import { TimestampStyles, time } from '@discordjs/builders';
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, TimestampStyles, time, type MessageActionRowComponentBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { roundNumber } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/payloads/v9';
-import { Message, MessageActionRow, MessageButton, MessageEmbed, Permissions, version as djsVersion } from 'discord.js';
+import { ButtonStyle, OAuth2Scopes, PermissionFlagsBits, version as djsVersion, type Message } from 'discord.js';
 import { cpus, uptime, type CpuInfo } from 'os';
 
 @ApplyOptions<SkyraCommand.Options>({
@@ -19,14 +18,10 @@ import { cpus, uptime, type CpuInfo } from 'os';
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
 })
 export class UserCommand extends SkyraCommand {
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const embed = this.buildEmbed(message, args);
 		const components = this.buildComponents(args);
-
-		return send(message, {
-			embeds: [embed],
-			components
-		});
+		return send(message, { embeds: [embed], components });
 	}
 
 	private buildEmbed(message: Message, args: SkyraCommand.Args) {
@@ -37,56 +32,57 @@ export class UserCommand extends SkyraCommand {
 			usage: this.usageStatistics
 		});
 
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setColor(getColor(message))
 			.setAuthor(getEmbedAuthor(this.container.client.user!))
 			.setDescription(args.t(LanguageKeys.Commands.General.InfoBody))
 			.setTimestamp()
-			.addField(titles.stats, fields.stats)
-			.addField(titles.uptime, fields.uptime)
-			.addField(titles.serverUsage, fields.serverUsage);
+			.addFields(
+				{ name: titles.stats, value: fields.stats },
+				{ name: titles.uptime, value: fields.uptime },
+				{ name: titles.serverUsage, value: fields.serverUsage }
+			);
 	}
 
-	private buildComponents(args: SkyraArgs): MessageActionRow[] {
+	private buildComponents(args: SkyraArgs): ActionRowBuilder<MessageActionRowComponentBuilder>[] {
 		const componentLabels = args.t(LanguageKeys.Commands.General.InfoComponentLabels);
 
 		return [
-			new MessageActionRow().addComponents(
-				new MessageButton() //
-					.setStyle('LINK')
+			new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+				new ButtonBuilder() //
+					.setStyle(ButtonStyle.Link)
 					.setURL(this.inviteLink)
 					.setLabel(componentLabels.addToServer)
-					.setEmoji('🎉'),
-				new MessageButton() //
-					.setStyle('LINK')
+					.setEmoji({ name: '🎉' }),
+				new ButtonBuilder() //
+					.setStyle(ButtonStyle.Link)
 					.setURL('https://discord.gg/6gakFR2')
 					.setLabel(componentLabels.supportServer)
-					.setEmoji('🆘')
+					.setEmoji({ name: '🆘' })
 			),
-			new MessageActionRow().addComponents(
-				new MessageButton()
-					.setStyle('LINK')
+			new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+				new ButtonBuilder()
+					.setStyle(ButtonStyle.Link)
 					.setURL('https://github.com/skyra-project/skyra')
 					.setLabel(componentLabels.repository)
-					.setEmoji('<:github2:950888087188283422>'),
-				new MessageButton() //
-					.setStyle('LINK')
+					.setEmoji({ id: '950888087188283422', name: 'github2' }),
+				new ButtonBuilder() //
+					.setStyle(ButtonStyle.Link)
 					.setURL('https://donate.skyra.pw/patreon')
 					.setLabel(componentLabels.donate)
-					.setEmoji('🧡')
+					.setEmoji({ name: '🧡' })
 			)
 		];
 	}
 
 	private get inviteLink() {
 		return this.container.client.generateInvite({
-			scopes: ['bot', 'applications.commands'],
-			permissions: new Permissions([
-				PermissionFlagsBits.ViewChannel,
-				PermissionFlagsBits.ReadMessageHistory,
-				PermissionFlagsBits.SendMessages,
+			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
+			permissions:
+				PermissionFlagsBits.ViewChannel |
+				PermissionFlagsBits.ReadMessageHistory |
+				PermissionFlagsBits.SendMessages |
 				PermissionFlagsBits.EmbedLinks
-			])
 		});
 	}
 

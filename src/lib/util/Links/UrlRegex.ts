@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import { TLDs } from './TLDs';
+import { TLDs } from '#lib/util/Links/TLDs';
 
 export function urlRegex({ requireProtocol = true, exact = false, tlds = false }: UrlRegexOptions = {}) {
 	const protocol = `(?:(?:[a-z]+:)?//)${requireProtocol ? '' : '?'}`;

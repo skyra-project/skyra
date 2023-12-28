@@ -1,6 +1,6 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { createReferPromise, seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { clean } from '#utils/Sanitizer/clean';
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 	private readonly kTimeout = 60000;
 	#cachedEvalContext: object | null = null;
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		const code = await args.rest('string');
 
 		const wait = args.getOption('timeout', 'wait');
@@ -53,50 +53,42 @@ export class UserCommand extends SkyraCommand {
 		return send(message, `${header}${body}`);
 	}
 
-	private get context() {
+	private async fetchContext() {
 		if (!this.#cachedEvalContext) {
-			const modules = Object.fromEntries(
-				[
-					//
-					['buffer', 'node:buffer'],
-					['crypto', 'node:crypto'],
-					['events', 'node:events'],
-					['fs', 'node:fs'],
-					['http', 'node:http'],
-					['os', 'node:os'],
-					['path', 'node:path'],
-					['process', 'node:process'],
-					['stream', 'node:stream'],
-					['timers', 'node:timers'],
-					['url', 'node:url'],
-					['util', 'node:util'],
-					['v8', 'node:v8'],
-					['vm', 'node:vm'],
-					['worker_threads', 'node:worker_threads']
-				].map(([key, module]) => [key, require(module)])
-			);
 			this.#cachedEvalContext = {
 				...globalThis,
-				...modules,
-				stream: { consumers: require('node:stream/consumers'), web: require('node:stream/web'), ...modules.stream },
-				timers: { promises: require('node:timers/promises'), ...modules.timers },
+				buffer: await import('node:buffer'),
+				crypto: await import('node:crypto'),
+				events: await import('node:events'),
+				fs: await import('node:fs'),
+				http: await import('node:http'),
+				os: await import('node:os'),
+				path: await import('node:path'),
+				process: await import('node:process'),
+				url: await import('node:url'),
+				util: await import('node:util'),
+				v8: await import('node:v8'),
+				vm: await import('node:vm'),
+				worker_threads: await import('node:worker_threads'),
+				stream: { web: await import('node:stream/web'), ...(await import('node:stream')) },
+				timers: { promises: await import('node:timers/promises'), ...(await import('node:timers')) },
 				discord: {
-					...require('discord.js'),
-					builders: require('@discordjs/builders'),
-					collection: require('@discordjs/collection'),
-					types: require('discord-api-types/v9')
+					...(await import('discord.js')),
+					builders: await import('@discordjs/builders'),
+					collection: await import('@discordjs/collection'),
+					types: await import('discord-api-types/v10')
 				},
 				sapphire: {
-					asyncQueue: require('@sapphire/async-queue'),
-					fetch: require('@sapphire/fetch'),
-					pieces: require('@sapphire/pieces'),
-					framework: require('@sapphire/framework'),
-					snowflake: require('@sapphire/snowflake'),
-					stopwatch: require('@sapphire/stopwatch'),
+					asyncQueue: await import('@sapphire/async-queue'),
+					fetch: await import('@sapphire/fetch'),
+					pieces: await import('@sapphire/pieces'),
+					framework: await import('@sapphire/framework'),
+					snowflake: await import('@sapphire/snowflake'),
+					stopwatch: await import('@sapphire/stopwatch'),
 					utilities: {
-						...require('@sapphire/utilities'),
-						time: require('@sapphire/time-utilities'),
-						discord: require('@sapphire/discord.js-utilities')
+						...(await import('@sapphire/utilities')),
+						time: await import('@sapphire/time-utilities'),
+						discord: await import('@sapphire/discord.js-utilities')
 					}
 				},
 				container: this.container,
@@ -140,7 +132,7 @@ export class UserCommand extends SkyraCommand {
 			return { success: false, time: '💥 Syntax Error', result: (error as SyntaxError).message };
 		}
 
-		const context = createContext({ ...this.context, msg: message, message, args, signal });
+		const context = createContext({ ...(await this.fetchContext()), msg: message, message, args, signal });
 
 		const stopwatch = new Stopwatch();
 		let success: boolean;
@@ -179,11 +171,11 @@ export class UserCommand extends SkyraCommand {
 				result instanceof Error
 					? result.stack
 					: args.getFlags('json')
-					? JSON.stringify(result, null, 4)
-					: inspect(result, {
-							depth: Number(args.getOption('depth') ?? 0) || 0,
-							showHidden: args.getFlags('showHidden', 'hidden')
-					  });
+						? JSON.stringify(result, null, 4)
+						: inspect(result, {
+								depth: Number(args.getOption('depth') ?? 0) || 0,
+								showHidden: args.getFlags('showHidden', 'hidden')
+							});
 		}
 		return {
 			success,

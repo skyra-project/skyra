@@ -3,9 +3,9 @@ import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { api } from '#lib/discord/Api';
 import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { HttpCodes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 
-@ApplyOptions<RouteOptions>({ route: 'guilds/:guild' })
+@ApplyOptions<Route.Options>({ route: 'guilds/:guild' })
 export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(seconds(5), 2, true)
@@ -20,7 +20,7 @@ export class UserRoute extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
-		const emojis = await api().guilds(guildId).emojis.get();
+		const emojis = await api().guilds.getEmojis(guildId);
 		return response.json({ ...flattenGuild(guild), emojis });
 	}
 }

@@ -1,11 +1,7 @@
-import { createUser } from '#mocks/MockInstances';
 import * as utils from '#utils/util';
-import { Collection } from '@discordjs/collection';
 import type { DeepPartial } from '@sapphire/utilities';
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
-import { mockRandom, resetMockRandom } from 'jest-mock-random';
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { Attachment, Collection, Embed, Message, type APIAttachment } from 'discord.js';
+import { createEmbed, createUser } from '../mocks/MockInstances.js';
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {
@@ -41,7 +37,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN negative rational number THEN returns level 0 (😪)', () => {
-			expect(utils.oneToTen(2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });
+			expect(utils.oneToTen(-2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });
 		});
 
 		test('GIVEN positive integer number THEN returns level 2 (😫)', () => {
@@ -175,7 +171,7 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed().setDescription('Hey there!')]
+					embeds: [createEmbed({ description: 'Hey there!' })]
 				} as unknown as Message)
 			).toEqual('Hey there!');
 		});
@@ -184,7 +180,7 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed().addField('Name', 'Value')]
+					embeds: [createEmbed({ fields: [{ name: 'Name', value: 'Value' }] })]
 				} as unknown as Message)
 			).toEqual('Value');
 		});
@@ -193,124 +189,83 @@ describe('Utils', () => {
 			expect(
 				utils.getContent({
 					content: '',
-					embeds: [new MessageEmbed()]
+					embeds: [createEmbed({})]
 				} as unknown as Message)
 			).toEqual(null);
 		});
 	});
 
 	describe('getImage', () => {
-		test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
-			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
-			const buffer = await readFile(filePath);
-			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
-			fakeAttachment.url = filePath;
-			fakeAttachment.height = 32;
-			fakeAttachment.width = 32;
+		const _Query = new URLSearchParams({
+			ex: '651c15b6',
+			is: '651ac436',
+			hm: 'b0227f7dce067d2f83880cd01f59a5856885af9204940f8c666dd81f257796c6'
+		}).toString();
 
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
-				embeds: []
-			};
+		function createAttachment(data: APIAttachment): Attachment {
+			return Reflect.construct(Attachment, [data]);
+		}
 
+		function createAttachments(attachment?: Attachment | undefined) {
+			const collection = new Collection<string, Attachment>();
+			if (attachment) collection.set(attachment.id, attachment);
+			return collection;
+		}
+
+		function makeEmbed(name: 'image' | 'thumbnail'): Embed {
+			return createEmbed({
+				[name]: {
+					url: `https://cdn.discordapp.com/attachments/222222222222222222/222222222222222222/image.png?${_Query}&`,
+					proxy_url: `https://media.discordapp.net/attachments/222222222222222222/222222222222222222/image.png?${_Query}&`,
+					width: 32,
+					height: 32
+				}
+			});
+		}
+
+		function getImage(message: DeepPartial<Message>) {
 			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toEqual(filePath);
-		});
+			return utils.getImage(message);
+		}
 
-		test('GIVEN message w/ attachments w/ image w/ proxyURL attachment THEN returns url', async () => {
-			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
-			const buffer = await readFile(filePath);
-			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
-			fakeAttachment.url = filePath;
-			fakeAttachment.proxyURL = filePath;
-			fakeAttachment.height = 32;
-			fakeAttachment.width = 32;
+		describe.each`
+			embed          | description
+			${null}        | ${'no embeds'}
+			${'image'}     | ${'image embed'}
+			${'thumbnail'} | ${'thumbnail embed'}
+		`('GIVEN message WITH $description', ({ embed }: { embed: null | 'image' | 'thumbnail' }) => {
+			const AttachmentImage = createAttachment({
+				id: '1111111111111111111',
+				filename: 'image.png',
+				content_type: 'image/png',
+				url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
+				proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/image.png?${_Query}&`,
+				size: 2463,
+				width: 32,
+				height: 32
+			} as const);
+			const AttachmentText = createAttachment({
+				id: '1111111111111111111',
+				filename: 'text.txt',
+				content_type: 'text/plain; charset=utf-8',
+				url: `https://cdn.discordapp.com/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
+				proxy_url: `https://media.discordapp.net/attachments/111111111111111111/111111111111111111/text.txt?${_Query}&`,
+				size: 4
+			} as const);
 
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
-				embeds: []
-			};
+			const embeds: Embed[] = embed === null ? [] : [makeEmbed(embed)];
+			const ExpectedEmbedImageURL = embed === null ? null : embeds[0][embed]!.proxyURL;
+			const ExpectedReturn = embed === null ? 'null' : `embed ${embed} URL`;
+			test.each`
+				attachment         | returns             | expected                    | description
+				${undefined}       | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'no attachments'}
+				${AttachmentText}  | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'non-image attachment'}
+				${AttachmentImage} | ${'attachment URL'} | ${AttachmentImage.proxyURL} | ${'image attachment'}
+			`(`AND $description THEN returns $returns`, ({ attachment, expected }) => {
+				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds, stickers: new Collection() };
 
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toEqual(filePath);
-		});
-
-		test('GIVEN message w/ attachments w/o image attachment THEN passes through to embed checking', async () => {
-			const filePath = resolve(__dirname, '..', 'mocks', 'image.png');
-			const buffer = await readFile(filePath);
-			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
-			fakeAttachment.url = 'not_an_image';
-			fakeAttachment.proxyURL = 'not_an_image';
-			fakeAttachment.height = 32;
-			fakeAttachment.width = 32;
-
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
-				embeds: [
-					{
-						type: 'image',
-						thumbnail: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
-					}
-				]
-			};
-
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toEqual('image.png');
-		});
-
-		test('GIVEN message w/o attachments w/ embed type === image THEN returns embedded image url', () => {
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>(),
-				embeds: [
-					{
-						type: 'image',
-						thumbnail: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
-					}
-				]
-			};
-
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toEqual('image.png');
-		});
-
-		test('GIVEN message w/o attachments w/ embed w/ image THEN returns embedded image url', () => {
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>(),
-				embeds: [
-					{
-						type: 'not_image',
-						image: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
-					}
-				]
-			};
-
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toEqual('image.png');
-		});
-
-		test('GIVEN message w/o attachments w/ embed w/o image THEN returns null', () => {
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>(),
-				embeds: [
-					{
-						type: 'not_image',
-						image: undefined
-					}
-				]
-			};
-
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toBeNull();
-		});
-
-		test('GIVEN message w/o attachments w/o embed THEN returns null', () => {
-			const fakeMessage: DeepPartial<Message> = {
-				attachments: new Collection<string, MessageAttachment>(),
-				embeds: []
-			};
-
-			// @ts-expect-error We're only passing partial data to not mock an entire message
-			expect(utils.getImage(fakeMessage)).toBeNull();
+				expect(getImage(message)).toEqual(expected);
+			});
 		});
 	});
 
@@ -383,11 +338,11 @@ describe('Utils', () => {
 	describe('pickRandom', () => {
 		beforeAll(() => {
 			// Mock out random so the result is predictable
-			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+			vi.spyOn(Math, 'random').mockReturnValue(0.123456789);
 		});
 
 		afterAll(() => {
-			(global.Math.random as any).mockRestore();
+			(Math.random as any).mockRestore();
 		});
 
 		test('GIVEN simple picker THEN picks first value', () => {
@@ -407,9 +362,9 @@ describe('Utils', () => {
 
 	describe('random', () => {
 		test('GIVEN 2 calls to random THEN returns floored mocked values', () => {
-			mockRandom(0.6);
+			const spy = vi.spyOn(Math, 'random').mockReturnValue(0.6);
 			expect(utils.random(50)).toEqual(30);
-			resetMockRandom();
+			spy.mockRestore();
 		});
 	});
 

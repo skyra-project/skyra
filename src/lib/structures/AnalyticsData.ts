@@ -1,5 +1,5 @@
 import { parseAnalytics } from '#root/config';
-import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
+import { InfluxDB, type QueryApi, type WriteApi } from '@influxdata/influxdb-client';
 import { envParseBoolean, envParseString } from '@skyra/env-utilities';
 
 export class AnalyticsData {

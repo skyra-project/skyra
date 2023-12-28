@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Add problem matchers
         run: echo "::add-matcher::.github/problemMatchers/eslint.json"
-      - name: Use Node.js v16
+      - name: Use Node.js v20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
@@ -35,10 +35,10 @@ jobs:
           submodules: true
       - name: Add problem matchers
         run: echo "::add-matcher::.github/problemMatchers/tsc.json"
-      - name: Use Node.js v16
+      - name: Use Node.js v20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
@@ -53,37 +53,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Use Node.js v16
+      - name: Use Node.js v20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
       - name: Run unit tests
         run: yarn test --coverage
-      - name: Store code coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: nodejs-coverage
-          path: coverage/
-
-  Upload_Coverage_Report:
-    name: Upload coverage report to codecov
-    needs: UnitTesting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - name: Download NodeJS Unit Test Coverage report
-        uses: actions/download-artifact@v3
-        with:
-          name: nodejs-coverage
-          path: coverage/
       - name: Codecov Upload
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/cobertura-coverage.xml
           fail_ci_if_error: true

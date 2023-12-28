@@ -1,3 +1,4 @@
+import { isValidTwemoji } from '#utils/functions';
 import {
 	animatedSkyraGlasses,
 	bunnyTwemoji,
@@ -5,8 +6,7 @@ import {
 	serializedAnimatedSkyraGlasses,
 	serializedStaticSkyra,
 	staticSkyra
-} from '#mocks/constants';
-import { isValidTwemoji } from '#utils/functions';
+} from '../../../../mocks/constants.js';
 
 describe('isValidTwemoji', () => {
 	test('GIVEN decoded twemoji THEN returns true', () => {

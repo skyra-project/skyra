@@ -1,5 +1,5 @@
 import type { PartialResponseValue } from '#lib/database/entities';
-import { Piece, PieceOptions } from '@sapphire/framework';
+import { Piece } from '@sapphire/framework';
 import type { Awaitable } from '@sapphire/utilities';
 
 export abstract class Task extends Piece {
@@ -11,5 +11,5 @@ export abstract class Task extends Piece {
 }
 
 export namespace Task {
-	export type Options = PieceOptions;
+	export type Options = Piece.Options;
 }

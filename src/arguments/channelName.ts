@@ -3,13 +3,13 @@ import { isGuildMessage } from '#utils/common';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
 import { validateChannelAccess } from '#utils/util';
 import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord.js-utilities';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 import type { Guild, GuildChannel, ThreadChannel, User } from 'discord.js';
 
 export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 	public resolveChannel(query: string, guild: Guild) {
 		const channelId = ChannelMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
-		return (channelId !== null && guild.channels.cache.get(channelId[1])) ?? null;
+		return (channelId !== null && guild.channels.cache.get(channelId.groups!.id)) ?? null;
 	}
 
 	public async run(parameter: string, { message, minimum, context, filter }: ChannelArgumentContext) {
@@ -17,7 +17,10 @@ export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 		filter = this.getFilter(message.author, filter);
 
 		const resChannel = this.resolveChannel(parameter, message.guild);
-		if (resChannel && filter(resChannel)) return this.ok(resChannel);
+		if (resChannel) {
+			if (filter(resChannel)) return this.ok(resChannel);
+			return this.error({ parameter, identifier: LanguageKeys.Arguments.GuildChannelMismatchingError, context });
+		}
 
 		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(message, parameter, minimum);
 		if (result) return this.ok(result[1]);
@@ -33,6 +36,6 @@ export class UserArgument extends Argument<GuildChannel | ThreadChannel> {
 	}
 }
 
-interface ChannelArgumentContext extends ArgumentContext<GuildChannel | ThreadChannel> {
+interface ChannelArgumentContext extends Argument.Context<GuildChannel | ThreadChannel> {
 	filter?: (entry: GuildChannel | ThreadChannel) => boolean;
 }

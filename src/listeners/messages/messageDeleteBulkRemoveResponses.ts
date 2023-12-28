@@ -1,16 +1,15 @@
 import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
-import type { GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, getCommand } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { get } from '@sapphire/plugin-editable-commands';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
-import type { Collection, Message, Snowflake } from 'discord.js';
+import { Collection, type Message, type Snowflake } from 'discord.js';
 
 type MessageCollection = Collection<Snowflake, Message>;
 
-@ApplyOptions<ListenerOptions>({ event: Events.MessageDeleteBulk })
+@ApplyOptions<Listener.Options>({ event: Events.MessageDeleteBulk })
 export class UserListener extends Listener<Events.MessageDeleteBulk> {
 	public async run(messages: MessageCollection) {
 		// If, for some reason, this was emitted with no messages, skip all:

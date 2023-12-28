@@ -1,12 +1,12 @@
-import { Events, Schedules } from '#lib/types/Enums';
+import { Events, Schedules } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions, Piece, Store } from '@sapphire/framework';
+import { Listener, Piece, Store } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
 import { envParseBoolean } from '@skyra/env-utilities';
 import { blue, gray, green, magenta, magentaBright, red, white, yellow } from 'colorette';
 
-@ApplyOptions<ListenerOptions>({ once: true })
+@ApplyOptions<Listener.Options>({ once: true })
 export class UserListener extends Listener {
 	private readonly style = this.container.client.dev ? yellow : blue;
 
@@ -113,10 +113,10 @@ ${line15}${client.dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOP
 	}
 
 	private styleStore(store: Store<Piece>) {
-		return gray(`├─ Loaded ${this.style(store.size.toString().padEnd(3, ' '))} ${store.name}.`);
+		return gray(`├─ Loaded ${this.style(store.size.toString().padEnd(2, ' '))} ${store.name}.`);
 	}
 
 	private styleLanguages(languages: Map<string, TFunction>) {
-		return gray(`└─ Loaded ${this.style(languages.size.toString().padEnd(3, ' '))} languages.`);
+		return gray(`└─ Loaded ${this.style(languages.size.toString().padEnd(2, ' '))} languages.`);
 	}
 }

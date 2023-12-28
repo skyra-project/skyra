@@ -1,6 +1,6 @@
+import { BaseReactionController } from '#lib/games/base/BaseReactionController';
+import type { TicTacToeGame } from '#lib/games/tic-tac-toe/TicTacToeGame';
 import { cast } from '#utils/util';
-import { BaseReactionController } from '../base/BaseReactionController';
-import type { TicTacToeGame } from './TicTacToeGame';
 
 export class TicTacToeHumanController extends BaseReactionController<number> {
 	public async await(): Promise<number> {

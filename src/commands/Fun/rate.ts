@@ -15,7 +15,7 @@ export class UserCommand extends SkyraCommand {
 	private devRegex = new RegExp(`^(kyra|favna|${OWNERS.map((owner) => `<@!?${owner}>`).join('|')})$`, 'i');
 	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${process.env.CLIENT_ID}>)$`, 'i');
 
-	public async messageRun(message: Message, args: SkyraCommand.Args) {
+	public override async messageRun(message: Message, args: SkyraCommand.Args) {
 		// Escape all markdown
 		let rateableThing = await args.rest('string');
 
@@ -29,14 +29,16 @@ export class UserCommand extends SkyraCommand {
 			rate = 101;
 			[ratewaifu, rateableThing] = args.t(LanguageKeys.Commands.Fun.RateMyOwners);
 		} else {
-			rateableThing = /^(myself|me)$/i.test(rateableThing) ? message.author.username : escapeMarkdown(rateableThing.replace(/\bmy\b/g, 'your'));
+			rateableThing = /^(myself|me)$/i.test(rateableThing)
+				? message.author.displayName
+				: escapeMarkdown(rateableThing.replace(/\bmy\b/g, 'your'));
 
 			const rng = Math.round(Math.random() * 100);
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
 		const content = args.t(LanguageKeys.Commands.Fun.RateOutput, {
-			author: message.author.username,
+			author: message.author.displayName,
 			userToRate: rateableThing,
 			rate,
 			emoji: ratewaifu

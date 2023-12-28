@@ -1,13 +1,13 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
-import type { Serializer, SerializerUpdateContext } from '#lib/database/settings/structures/Serializer';
+import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
+import type { Serializer } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { CustomGet } from '#lib/types';
 import { container } from '@sapphire/framework';
-import { isNullish, NonNullObject } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
-import type { SchemaGroup } from './SchemaGroup';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import { isNullish, type NonNullObject } from '@sapphire/utilities';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**
@@ -95,8 +95,12 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		const context = this.getContext(settings, args.t);
 
 		const result = await serializer.parse(args, context);
-		if (result.success) return result.value;
-		throw result.error.message;
+		return result.match({
+			ok: (value) => value,
+			err: (error) => {
+				throw error.message;
+			}
+		});
 	}
 
 	public stringify(settings: GuildEntity, t: TFunction, value: GuildEntity[K]): string {
@@ -120,15 +124,13 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		return isNullish(value) ? t(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
 	}
 
-	public getContext(settings: GuildEntity, language: TFunction): SerializerUpdateContext {
-		const context: SerializerUpdateContext = {
+	public getContext(settings: GuildEntity, language: TFunction): Serializer.UpdateContext {
+		return {
 			entity: settings,
 			guild: settings.guild,
 			t: language,
 			entry: this
-		};
-
-		return context;
+		} satisfies Serializer.UpdateContext;
 	}
 }
 

@@ -1,22 +1,21 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { urlRegex } from '#utils/Links/UrlRegex';
 import { days, floatPromise, seconds } from '#utils/common';
-import { andMix, BooleanFn } from '#utils/common/comparators';
+import { andMix, type BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
-import { urlRegex } from '#utils/Links/UrlRegex';
-import { metadata, TypeCodes } from '#utils/moderationConstants';
+import { TypeCodes, metadata } from '#utils/moderationConstants';
 import { getFullEmbedAuthor, getImageUrl } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canSendAttachments } from '@sapphire/discord.js-utilities';
-import { Args, CommandOptionsRunTypeEnum, IArgument } from '@sapphire/framework';
+import { Args, Argument, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import { PermissionFlagsBits, RESTJSONErrorCodes } from 'discord-api-types/v9';
-import { Collection, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import { AttachmentBuilder, Collection, PermissionFlagsBits, RESTJSONErrorCodes, type TextChannel } from 'discord.js';
 
 const enum Position {
 	Before,
@@ -58,11 +57,11 @@ const includesOptions = ['include', 'includes', 'contain', 'contains'] as const;
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraCommand {
-	private get timespan(): IArgument<number> {
-		return this.container.stores.get('arguments').get('timespan') as IArgument<number>;
+	private get timespan(): Argument<number> {
+		return this.container.stores.get('arguments').get('timespan') as Argument<number>;
 	}
 
-	public async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const limit = await args.pick('integer', { minimum: 1, maximum: 100 });
 		const filter = await this.getFilters(args);
 		const rawPosition = args.finished ? null : await args.pick(UserCommand.position);
@@ -135,7 +134,7 @@ export class UserCommand extends SkyraCommand {
 		if (parameter === null) return days(14);
 
 		const argument = this.timespan;
-		const optionResult = await argument.run(parameter, {
+		const result = await argument.run(parameter, {
 			args,
 			argument,
 			command: this,
@@ -144,8 +143,7 @@ export class UserCommand extends SkyraCommand {
 			minimum: 0,
 			maximum: days(14)
 		});
-		if (optionResult.success) return optionResult.value;
-		throw optionResult.error;
+		return result.unwrapRaw();
 	}
 
 	private async sendPruneLogs(message: GuildMessage, t: TFunction, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
@@ -168,7 +166,7 @@ export class UserCommand extends SkyraCommand {
 				count: messages.size
 			});
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setAuthor(getFullEmbedAuthor(message.author, message.url))
 				.setDescription(description)
 				.setColor(UserCommand.kColor)
@@ -186,7 +184,7 @@ export class UserCommand extends SkyraCommand {
 			.reverse()
 			.join('\n\n');
 		const buffer = Buffer.from(`${header}\n\n${processed}`);
-		return new MessageAttachment(buffer, 'prune.txt');
+		return new AttachmentBuilder(buffer, { name: 'prune.txt' });
 	}
 
 	private static position = Args.make<Position>((parameter, { argument }) => {

@@ -1,17 +1,19 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
+import type { IBaseEntity } from '#lib/database/settings/base/IBaseEntity';
+import { AdderManager } from '#lib/database/settings/structures/AdderManager';
+import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getT } from '#lib/i18n/translate';
 import { create } from '#utils/Security/RegexCreator';
 import { minutes, years } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
 import { container } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { RateLimitManager } from '@sapphire/ratelimits';
-import { NonNullObject, arrayStrictEquals } from '@sapphire/utilities';
-import type { TFunction } from 'i18next';
+import { arrayStrictEquals, type NonNullObject, type PickByValue } from '@sapphire/utilities';
+import type { LocaleString } from 'discord.js';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import type { IBaseEntity } from '../settings/base/IBaseEntity';
-import { AdderManager } from '../settings/structures/AdderManager';
-import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
-import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity implements IBaseEntity {
@@ -24,7 +26,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Language, type: 'language' })
 	@Column('varchar', { name: 'language', default: 'en-US' })
-	public language = 'en-US';
+	public language: LocaleString = 'en-US';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisableNaturalPrefix })
 	@Column('boolean', { name: 'disable-natural-prefix', default: false })
@@ -670,7 +672,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	 * Gets the [[Language]] for this entity.
 	 */
 	public getLanguage(): TFunction {
-		return container.i18n.getT(this.language);
+		return getT(this.language);
 	}
 
 	/**
@@ -718,6 +720,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 		this.#words = [];
 	}
 }
+
+export type GuildSettingsKeys = Exclude<keyof GuildEntity, keyof BaseEntity>;
+export type GuildSettingsEntries = Pick<GuildEntity, GuildSettingsKeys>;
+export type GuildSettingsOfType<T> = PickByValue<GuildSettingsEntries, T>;
 
 export interface PermissionsNode {
 	allow: string[];

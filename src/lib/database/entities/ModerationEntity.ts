@@ -1,25 +1,26 @@
 import { GuildSettings } from '#lib/database/keys';
+import { readSettings } from '#lib/database/settings';
+import { kBigIntTransformer } from '#lib/database/utils/Transformers';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/moderation';
-import { Events } from '#lib/types/Enums';
+import { Events } from '#lib/types';
 import { minutes, years } from '#utils/common';
 import {
-	ModerationTypeAssets,
 	TypeBits,
 	TypeCodes,
 	TypeMetadata,
 	TypeVariation,
 	TypeVariationAppealNames,
-	metadata
+	metadata,
+	type ModerationTypeAssets
 } from '#utils/moderationConstants';
 import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { UserError, container } from '@sapphire/framework';
 import { Duration, Time } from '@sapphire/time-utilities';
-import { NonNullObject, isNullishOrZero, isNumber, tryParseURL } from '@sapphire/utilities';
-import { MessageEmbed, User } from 'discord.js';
+import { isNullishOrZero, isNumber, tryParseURL, type NonNullObject } from '@sapphire/utilities';
+import { User } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import { readSettings } from '../settings';
-import { kBigIntTransformer } from '../utils/Transformers';
 
 @Entity('moderation', { schema: 'public' })
 export class ModerationEntity extends BaseEntity {
@@ -326,7 +327,7 @@ export class ModerationEntity extends BaseEntity {
 			{ reason: this.reason, prefix, caseId: this.caseId, formattedDuration }
 		);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(this.color)
 			.setAuthor(getFullEmbedAuthor(moderator))
 			.setDescription(`${body}\n${reason}`)

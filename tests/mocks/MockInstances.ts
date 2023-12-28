@@ -2,21 +2,44 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { CLIENT_OPTIONS } from '#root/config';
 import { SapphireClient } from '@sapphire/framework';
-import { APIChannel, APIGuild, APIGuildMember, APIRole, APIUser, ChannelType, GuildFeature, GuildNSFWLevel } from 'discord-api-types/v9';
-import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
+import {
+	ChannelType,
+	Embed,
+	Guild,
+	GuildFeature,
+	GuildMember,
+	GuildMemberFlags,
+	GuildNSFWLevel,
+	GuildSystemChannelFlags,
+	Role,
+	RoleFlags,
+	TextChannel,
+	User,
+	type APIChannel,
+	type APIEmbed,
+	type APIGuild,
+	type APIGuildMember,
+	type APIRole,
+	type APIUser
+} from 'discord.js';
 import { resolve } from 'node:path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
+
+export function createEmbed(data: APIEmbed) {
+	return Reflect.construct(Embed, [data]);
+}
 
 export const userData: APIUser = {
 	id: '266624760782258186',
 	username: 'Skyra',
 	discriminator: '7023',
-	avatar: '09b52e547fa797c47c7877cd10eb6ba8'
+	avatar: '09b52e547fa797c47c7877cd10eb6ba8',
+	global_name: null
 };
 
 export function createUser(data: Partial<APIUser> = {}) {
-	return new User(client, { ...userData, ...data });
+	return Reflect.construct(User, [client, { ...userData, ...data }]) as User;
 }
 
 export const guildMemberData: APIGuildMember = {
@@ -26,11 +49,16 @@ export const guildMemberData: APIGuildMember = {
 	nick: null,
 	roles: [],
 	premium_since: null,
-	joined_at: '2019-02-03T21:57:10.354Z'
+	joined_at: '2019-02-03T21:57:10.354Z',
+	flags: GuildMemberFlags.DidRejoin
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
-	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } }, g);
+	return Reflect.construct(GuildMember, [
+		client,
+		{ ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } },
+		g
+	]) as GuildMember;
 }
 
 export const roleData: APIRole = {
@@ -41,11 +69,12 @@ export const roleData: APIRole = {
 	position: 0,
 	permissions: '104189505',
 	managed: false,
-	mentionable: false
+	mentionable: false,
+	flags: RoleFlags.InPrompt
 };
 
 export function createRole(data: Partial<APIRole> = {}, g: Guild = guild) {
-	const role = new Role(client, { ...roleData, ...data }, g);
+	const role = Reflect.construct(Role, [client, { ...roleData, ...data }, g]) as Role;
 	g.roles.cache.set(role.id, role);
 	return role;
 }
@@ -66,7 +95,7 @@ export const guildData: APIGuild = {
 	features: [
 		GuildFeature.News,
 		GuildFeature.AnimatedIcon,
-		GuildFeature.Commerce,
+		GuildFeature.Discoverable,
 		GuildFeature.WelcomeScreenEnabled,
 		GuildFeature.InviteSplash,
 		GuildFeature.Community
@@ -79,14 +108,17 @@ export const guildData: APIGuild = {
 	owner_id: '242043489611808769',
 	preferred_locale: 'en-US',
 	premium_subscription_count: 3,
+	premium_progress_bar_enabled: false,
 	premium_tier: 1,
 	public_updates_channel_id: '700806874294911067',
 	region: 'eu-central',
 	roles: [roleData],
 	rules_channel_id: '409663610780909569',
 	splash: null,
+	hub_type: null,
 	stickers: [],
-	system_channel_flags: 0,
+	safety_alerts_channel_id: null,
+	system_channel_flags: GuildSystemChannelFlags.SuppressJoinNotifications,
 	system_channel_id: '254360814063058944',
 	vanity_url_code: null,
 	verification_level: 2,
@@ -95,7 +127,7 @@ export const guildData: APIGuild = {
 };
 
 export function createGuild(data: Partial<APIGuild> = {}) {
-	const g = new Guild(client, { ...guildData, ...data });
+	const g = Reflect.construct(Guild, [client, { ...guildData, ...data }]) as Guild;
 	client.guilds.cache.set(g.id, g);
 	return g;
 }
@@ -117,7 +149,7 @@ export const textChannelData: APIChannel = {
 };
 
 export function createTextChannel(data: Partial<APIChannel> = {}, g: Guild = guild) {
-	const c = new TextChannel(guild, { ...textChannelData, ...data });
+	const c = Reflect.construct(TextChannel, [guild, { ...textChannelData, ...data }, client]) as TextChannel;
 	g.channels.cache.set(c.id, c);
 	g.client.channels.cache.set(c.id, c);
 	return c;
@@ -131,7 +163,9 @@ function addCommand(command: SkyraCommand) {
 	for (const alias of command.aliases) commands.aliases.set(alias, command);
 }
 
-class Command extends SkyraCommand {}
+class Command extends SkyraCommand {
+	public override messageRun = vi.fn();
+}
 addCommand(
 	new Command(
 		{
@@ -175,8 +209,8 @@ addCommand(
 			root: '/home/skyra/commands'
 		},
 		{
-			description: LanguageKeys.Commands.Tools.DefineDescription,
-			detailedDescription: LanguageKeys.Commands.Tools.DefineExtended,
+			description: LanguageKeys.Commands.Tools.AvatarDescription,
+			detailedDescription: LanguageKeys.Commands.Tools.AvatarExtended,
 			aliases: ['def', 'definition', 'defination', 'dictionary'],
 			fullCategory: ['Tools', 'Dictionary']
 		}

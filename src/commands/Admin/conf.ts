@@ -1,8 +1,8 @@
 import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SettingsMenu, SkyraCommand } from '#lib/structures';
+import { SettingsMenu, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { isValidCustomEmoji, isValidSerializedTwemoji, isValidTwemoji } from '#lib/util/functions/emojis';
 import { filter, map } from '#utils/common';
 import { inlineCode } from '@discordjs/builders';
@@ -10,24 +10,31 @@ import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { toTitleCase } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
 	description: LanguageKeys.Commands.Admin.ConfDescription,
 	detailedDescription: LanguageKeys.Commands.Admin.ConfExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['set', { input: 'add', output: 'set' }, 'show', 'remove', 'reset', { input: 'menu', default: true }]
+	subcommands: [
+		{ name: 'set', messageRun: 'set' },
+		{ name: 'add', messageRun: 'set' },
+		{ name: 'show', messageRun: 'show' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'menu', messageRun: 'menu', default: true }
+	]
 })
-export class UserCommand extends SkyraCommand {
+export class UserCommand extends SkyraSubcommand {
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
-	public menu(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.Context) {
+	public menu(message: GuildMessage, args: SkyraSubcommand.Args, context: SkyraSubcommand.RunContext) {
 		return new SettingsMenu(message, args.t).init(context);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const key = args.finished ? '' : await args.pick('string');
 		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
@@ -55,7 +62,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	public async set(message: GuildMessage, args: SkyraCommand.Args) {
+	public async set(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
 		const response = await writeSettings(message.guild, async (settings) => {
 			await set(settings, schemaKey, args);
@@ -68,7 +75,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
 		const response = await writeSettings(message.guild, async (settings) => {
 			await remove(settings, schemaKey, args);
@@ -81,7 +88,7 @@ export class UserCommand extends SkyraCommand {
 		});
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
 		const response = await writeSettings(message.guild, async (settings) => {
 			reset(settings, schemaKey);
@@ -98,7 +105,7 @@ export class UserCommand extends SkyraCommand {
 		return isValidCustomEmoji(response) || isValidSerializedTwemoji(response) || isValidTwemoji(response) ? response : inlineCode(response);
 	}
 
-	private async fetchKey(args: SkyraCommand.Args) {
+	private async fetchKey(args: SkyraSubcommand.Args) {
 		const key = await args.pick('string');
 		const value = configurableGroups.getPathString(key.toLowerCase());
 		if (value === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });

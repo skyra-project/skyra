@@ -6,11 +6,12 @@ import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
-import { MessageEmbed, TextChannel } from 'discord.js';
-import type { TFunction } from 'i18next';
+import type { TextChannel } from 'discord.js';
 
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationCapitals,
@@ -63,7 +64,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction) {
-		return new MessageEmbed()
+		return new EmbedBuilder()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))

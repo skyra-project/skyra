@@ -1,26 +1,26 @@
-import { AdderKey, GuildEntity, GuildSettings, readSettings } from '#lib/database';
+import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
-import type { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
-import { Events } from '#lib/types/Enums';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { Events, type CustomFunctionGet, type CustomGet, type GuildMessage } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, getSecurity, isModerator } from '#utils/functions';
-import { GuildTextBasedChannelTypes, canSendMessages } from '@sapphire/discord.js-utilities';
-import { Listener, ListenerOptions, PieceContext } from '@sapphire/framework';
-import type { Awaitable, Nullish, PickByValue } from '@sapphire/utilities';
-import type { GuildMember, MessageEmbed } from 'discord.js';
-import type { TFunction } from 'i18next';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { EmbedBuilder } from '@discordjs/builders';
+import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { Listener } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
+import type { Awaitable, Nullish } from '@sapphire/utilities';
+import type { GuildMember } from 'discord.js';
 
 export abstract class ModerationMessageListener<T = unknown> extends Listener {
-	private readonly keyEnabled: PickByValue<GuildEntity, boolean>;
-	private readonly ignoredRolesPath: PickByValue<GuildEntity, readonly string[]>;
-	private readonly ignoredChannelsPath: PickByValue<GuildEntity, readonly string[]>;
-	private readonly softPunishmentPath: PickByValue<GuildEntity, number>;
+	private readonly keyEnabled: GuildSettingsOfType<boolean>;
+	private readonly ignoredRolesPath: GuildSettingsOfType<readonly string[]>;
+	private readonly ignoredChannelsPath: GuildSettingsOfType<readonly string[]>;
+	private readonly softPunishmentPath: GuildSettingsOfType<number>;
 	private readonly hardPunishmentPath: HardPunishment;
 	private readonly reasonLanguageKey: CustomGet<string, string>;
 	private readonly reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 
-	public constructor(context: PieceContext, options: ModerationMessageListener.Options) {
+	public constructor(context: ModerationMessageListener.Context, options: ModerationMessageListener.Options) {
 		super(context, { ...options, event: Events.GuildUserMessage });
 
 		this.keyEnabled = options.keyEnabled;
@@ -178,7 +178,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: GuildMessage, language: TFunction, value: T): Awaitable<unknown>;
 	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaitable<unknown>;
-	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaitable<MessageEmbed>;
+	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaitable<EmbedBuilder>;
 
 	private checkPreRun(message: GuildMessage) {
 		return readSettings(
@@ -210,19 +210,21 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 }
 
 export interface HardPunishment {
-	action: PickByValue<GuildEntity, number>;
-	actionDuration: PickByValue<GuildEntity, number | null>;
+	action: GuildSettingsOfType<number>;
+	actionDuration: GuildSettingsOfType<number | null>;
 	adder: AdderKey;
 }
 
 export namespace ModerationMessageListener {
-	export interface Options extends ListenerOptions {
-		keyEnabled: PickByValue<GuildEntity, boolean>;
-		ignoredRolesPath: PickByValue<GuildEntity, readonly string[]>;
-		ignoredChannelsPath: PickByValue<GuildEntity, readonly string[]>;
-		softPunishmentPath: PickByValue<GuildEntity, number>;
+	export interface Options extends Listener.Options {
+		keyEnabled: GuildSettingsOfType<boolean>;
+		ignoredRolesPath: GuildSettingsOfType<readonly string[]>;
+		ignoredChannelsPath: GuildSettingsOfType<readonly string[]>;
+		softPunishmentPath: GuildSettingsOfType<number>;
 		hardPunishmentPath: HardPunishment;
 		reasonLanguageKey: CustomGet<string, string>;
 		reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 	}
+	export type JSON = Listener.JSON;
+	export type Context = Listener.Context;
 }

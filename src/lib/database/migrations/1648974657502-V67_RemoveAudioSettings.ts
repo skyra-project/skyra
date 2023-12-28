@@ -1,5 +1,5 @@
 import { hours } from '#utils/common';
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V67RemoveAudioSettings1648974657502 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

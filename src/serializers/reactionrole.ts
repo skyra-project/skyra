@@ -1,14 +1,14 @@
-import { ReactionRole, Serializer, SerializerUpdateContext } from '#lib/database';
+import { Serializer, type ReactionRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getEmojiTextFormat, isValidSerializedEmoji } from '#utils/functions';
-import { Awaitable, isObject } from '@sapphire/utilities';
+import { isObject, type Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<ReactionRole> {
-	public parse(_: Serializer.Args, { t }: SerializerUpdateContext) {
+	public parse(_: Serializer.Args, { t }: Serializer.UpdateContext) {
 		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: ReactionRole, { t }: SerializerUpdateContext): Awaitable<boolean> {
+	public isValid(value: ReactionRole, { t }: Serializer.UpdateContext): Awaitable<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 4 &&
@@ -23,7 +23,7 @@ export class UserSerializer extends Serializer<ReactionRole> {
 		throw t(LanguageKeys.Serializers.ReactionRoleInvalid);
 	}
 
-	public stringify(value: ReactionRole, { t, guild }: SerializerUpdateContext) {
+	public override stringify(value: ReactionRole, { t, guild }: Serializer.UpdateContext) {
 		const emoji = getEmojiTextFormat(value.emoji);
 		const role = guild.roles.cache.get(value.role)?.name ?? t(LanguageKeys.Serializers.UnknownRole);
 		const url = `https://discord.com/channels/${guild.id}/${value.channel}/${value.message}`;

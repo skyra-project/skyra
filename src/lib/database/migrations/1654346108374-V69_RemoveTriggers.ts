@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V69RemoveTriggers1654346108374 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {

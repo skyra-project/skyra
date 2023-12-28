@@ -1,18 +1,16 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
+		"rootDir": ".",
 		"noEmit": true,
-		"incremental": false,
-		"baseUrl": ".",
+		"types": ["vitest/globals"],
 		"paths": {
 			"#utils/*": ["../src/lib/util/*"],
 			"#lib/*": ["../src/lib/*"],
 			"#languages": ["../src/languages/index"],
-			"#mocks/*": ["./mocks/*"],
 			"#root/*": ["../src/*"]
 		}
 	},
-	"include": [".", "../src/**/*"],
-	"exclude": ["../dist/**/*"],
+	"include": [".", "../src"],
 	"references": [{ "path": "../src" }]
 }

@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { OWNERS } from '#root/config';
 import { FuzzySearch } from '#utils/Parsers/FuzzySearch';
-import { Argument, ArgumentContext, Command } from '@sapphire/framework';
+import { Argument, Command } from '@sapphire/framework';
 
 export class UserArgument extends Argument<Command> {
 	public async run(parameter: string, context: CommandArgumentContext) {
@@ -25,7 +25,7 @@ export class UserArgument extends Argument<Command> {
 	}
 }
 
-interface CommandArgumentContext extends ArgumentContext<Command> {
+interface CommandArgumentContext extends Argument.Context<Command> {
 	filter?: (entry: Command) => boolean;
 	owners?: boolean;
 }

@@ -1,5 +1,5 @@
-import { bunnyTwemoji, encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra } from '#mocks/constants';
 import { resolveEmojiId } from '#utils/functions';
+import { bunnyTwemoji, encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra } from '../../../../mocks/constants.js';
 
 describe('resolveEmojiId', () => {
 	test('GIVEN encoded twemoji THEN returns encoded twemoji', () => {

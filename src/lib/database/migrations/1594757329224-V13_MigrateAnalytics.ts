@@ -3,7 +3,7 @@ import { InfluxDB, Point } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
+import { Table, TableCheck, TableColumn, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${process.env.INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;

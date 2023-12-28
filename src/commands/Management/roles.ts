@@ -1,25 +1,26 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { PaginatedMessageCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
 import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { MessageEmbed, Role } from 'discord.js';
-import type { TFunction } from 'i18next';
+import { EmbedBuilder, PermissionFlagsBits, type Role } from 'discord.js';
 
-@ApplyOptions<PaginatedMessageCommand.Options>({
-	aliases: ['pr', 'role', 'public-roles', 'public-role'],
-	description: LanguageKeys.Commands.Management.RolesDescription,
-	detailedDescription: LanguageKeys.Commands.Management.RolesExtended,
-	requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages],
-	runIn: [CommandOptionsRunTypeEnum.GuildAny]
-})
-export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public async messageRun(message: GuildMessage, args: PaginatedMessageCommand.Args) {
+@ApplyOptions<SkyraCommand.Options>(
+	SkyraCommand.PaginatedOptions({
+		aliases: ['pr', 'role', 'public-roles', 'public-role'],
+		description: LanguageKeys.Commands.Management.RolesDescription,
+		detailedDescription: LanguageKeys.Commands.Management.RolesExtended,
+		requiredClientPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ManageMessages],
+		runIn: [CommandOptionsRunTypeEnum.GuildAny]
+	})
+)
+export class UserPaginatedMessageCommand extends SkyraCommand {
+	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await readSettings(message.guild, [
 			GuildSettings.Roles.Public,
 			GuildSettings.Roles.UniqueRoleSets,
@@ -130,7 +131,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		const display = new SkyraPaginatedMessage({
-			template: new MessageEmbed() //
+			template: new EmbedBuilder() //
 				.setColor(getColor(message))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});

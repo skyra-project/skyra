@@ -1,11 +1,11 @@
+import type { BaseController } from '#lib/games/base/BaseController';
+import { GameStatus } from '#lib/games/base/BaseGame';
+import { BaseReactionGame } from '#lib/games/base/BaseReactionGame';
+import { Emojis } from '#lib/games/connect-four/lib/constants';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
 import type { SerializedEmoji } from '#utils/functions';
 import type { Message } from 'discord.js';
-import type { BaseController } from '../base/BaseController';
-import { GameStatus } from '../base/BaseGame';
-import { BaseReactionGame } from '../base/BaseReactionGame';
-import { Emojis } from './lib/constants';
 
 export enum Cell {
 	Empty,
@@ -28,7 +28,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 		super(message, playerA, playerB, ConnectFourGame.emojis, minutes(5), turn);
 	}
 
-	public get finished() {
+	public override get finished() {
 		return super.finished || this.winner !== null || this.isTableFull();
 	}
 
@@ -57,7 +57,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 			: this.t(LanguageKeys.Commands.Games.TicTacToeWinner, {
 					winner: this.player.name,
 					board: this.renderBoard()
-			  });
+				});
 	}
 
 	protected renderOnUpdateOrStart(): string {
@@ -186,7 +186,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 					[x, y + 1],
 					[x, y + 2],
 					[x, y + 3]
-			  ] as [number, number][])
+				] as [number, number][])
 			: null;
 	}
 

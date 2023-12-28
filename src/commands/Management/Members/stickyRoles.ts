@@ -1,23 +1,27 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand } from '#lib/structures';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { SkyraSubcommand } from '#lib/structures';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { getStickyRoles } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
+import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<SkyraCommand.Options>({
+@ApplyOptions<SkyraSubcommand.Options>({
 	description: LanguageKeys.Commands.Management.StickyRolesDescription,
 	detailedDescription: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subCommands: ['add', 'remove', 'reset', { input: 'show', default: true }]
+	subcommands: [
+		{ name: 'add', messageRun: 'add' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'show', messageRun: 'show', default: true }
+	]
 })
-export class UserCommand extends SkyraCommand {
-	public async add(message: GuildMessage, args: SkyraCommand.Args) {
+export class UserCommand extends SkyraSubcommand {
+	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const user = await args.pick('userName');
 		const role = await args.pick('roleName');
 
@@ -28,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async remove(message: GuildMessage, args: SkyraCommand.Args) {
+	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const user = await args.pick('userName');
 
 		const stickyRoles = getStickyRoles(message.guild);
@@ -42,7 +46,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
+	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const user = await args.pick('userName');
 
 		const stickyRoles = getStickyRoles(message.guild);
@@ -55,7 +59,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const user = await args.pick('userName');
 
 		const stickyRoles = getStickyRoles(message.guild);

@@ -1,5 +1,4 @@
-import { MigrationInterface, QueryRunner, TableCheck } from 'typeorm';
-import { RandomGenerator } from 'typeorm/util/RandomGenerator';
+import { TableCheck, type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class V20UpdateGuildEntityChecks1597088981807 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
@@ -217,6 +216,6 @@ export class V20UpdateGuildEntityChecks1597088981807 implements MigrationInterfa
 		const tableName = 'guilds';
 		const replacedTableName = tableName.replace('.', '_');
 		const key = `${replacedTableName}_${expression}`;
-		return `CHK_${RandomGenerator.sha1(key).slice(0, 26)}`;
+		return `CHK_${key}`;
 	}
 }

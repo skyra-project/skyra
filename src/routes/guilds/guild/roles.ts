@@ -2,9 +2,9 @@ import { flattenRole } from '#lib/api/ApiTransformers';
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import { seconds } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApiRequest, ApiResponse, HttpCodes, methods, Route, RouteOptions } from '@sapphire/plugin-api';
+import { HttpCodes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 
-@ApplyOptions<RouteOptions>({ route: 'guilds/:guild/roles' })
+@ApplyOptions<Route.Options>({ route: 'guilds/:guild/roles' })
 export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(seconds(5), 2, true)

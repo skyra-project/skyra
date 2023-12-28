@@ -38,4 +38,4 @@ export const UnknownRole = T('serializers:unknownRole');
 export const UnknownUser = T('serializers:unknownUser');
 export const Unsupported = T('serializers:unsupported');
 
-export * as DisabledCommandChannels from './DisabledCommandChannels/All';
+export * as DisabledCommandChannels from '#lib/i18n/languageKeys/keys/DisabledCommandChannels/All';

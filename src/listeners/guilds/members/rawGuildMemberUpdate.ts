@@ -2,19 +2,19 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { floatPromise } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,
-	GatewayGuildMemberUpdateDispatch,
-	RESTGetAPIAuditLogQuery,
-	RESTGetAPIAuditLogResult
-} from 'discord-api-types/v9';
-import { Guild, Permissions } from 'discord.js';
+	PermissionFlagsBits,
+	type GatewayGuildMemberUpdateDispatch,
+	type Guild,
+	type RESTGetAPIAuditLogResult
+} from 'discord.js';
 
-@ApplyOptions<ListenerOptions>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
+@ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export class UserListener extends Listener {
-	private readonly requiredPermissions = new Permissions(Permissions.FLAGS.VIEW_AUDIT_LOG);
+	private readonly requiredPermissions = PermissionFlagsBits.ViewAuditLog;
 
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);
@@ -53,12 +53,9 @@ export class UserListener extends Listener {
 		// If the user does not have multiple roles from any set cancel
 		if (!hasMultipleRolesInOneSet) return;
 
-		const query: RESTGetAPIAuditLogQuery = {
+		const auditLogs = await api().guilds.getAuditLogs(guild.id, {
 			limit: 10,
 			action_type: AuditLogEvent.MemberRoleUpdate
-		};
-		const auditLogs = await api().guilds(guild.id)['audit-logs'].get<RESTGetAPIAuditLogResult>({
-			query
 		});
 
 		const updatedRoleId = this.getChange(auditLogs, data.user!.id);
@@ -69,10 +66,7 @@ export class UserListener extends Listener {
 			if (set.roles.includes(updatedRoleId)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleId);
 		}
 
-		await api()
-			.guilds(guild.id)
-			.members(data.user!.id)
-			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
+		await api().guilds.editMember(guild.id, data.user.id, { roles: memberRoles }, { reason: 'Automatic Role Set Modification' });
 	}
 
 	private getChange(results: RESTGetAPIAuditLogResult, userId: string): string | null {

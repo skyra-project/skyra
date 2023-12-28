@@ -1,10 +1,10 @@
-import { ResponseType, ResponseValue, ScheduleEntity } from '#lib/database/entities';
+import { ResponseType, ScheduleEntity, type ResponseValue } from '#lib/database/entities';
 import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
 
 export class ScheduleManager {
 	public queue: ScheduleEntity[] = [];
-	private interval: NodeJS.Timer | null = null;
+	private interval: NodeJS.Timeout | null = null;
 
 	public destroy() {
 		this._clearInterval();

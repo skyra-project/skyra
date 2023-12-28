@@ -1,13 +1,11 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { HandledCommandContext, ModerationCommand } from '#lib/moderation';
-import type { GuildMessage } from '#lib/types';
-import { PermissionLevels } from '#lib/types/Enums';
+import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
 import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import type { Role } from 'discord.js';
+import { PermissionFlagsBits, type Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommand.Options>({
 	aliases: ['ar'],
@@ -19,7 +17,7 @@ import type { Role } from 'discord.js';
 	requiredMember: true
 })
 export class UserModerationCommand extends ModerationCommand {
-	protected async resolveOverloads(args: ModerationCommand.Args) {
+	protected override async resolveOverloads(args: ModerationCommand.Args) {
 		return {
 			targets: await args.repeat('user', { times: 10 }),
 			role: await args.pick('roleName'),

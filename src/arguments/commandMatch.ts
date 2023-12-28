@@ -1,12 +1,12 @@
 import { CommandMatcher } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { PermissionLevels } from '#lib/types/Enums';
+import { PermissionLevels } from '#lib/types';
 import { OWNERS } from '#root/config';
-import { Argument, ArgumentContext } from '@sapphire/framework';
+import { Argument } from '@sapphire/framework';
 
 export class UserArgument extends Argument<string> {
-	public async run(parameter: string, context: CommandArgumentContext) {
+	public run(parameter: string, context: CommandArgumentContext) {
 		const resolved = CommandMatcher.resolve(parameter);
 		if (resolved !== null && this.isAllowed(resolved, context)) return this.ok(resolved);
 		return this.error({ parameter, identifier: LanguageKeys.Arguments.CommandMatch, context });
@@ -21,6 +21,6 @@ export class UserArgument extends Argument<string> {
 	}
 }
 
-interface CommandArgumentContext extends ArgumentContext<string> {
+interface CommandArgumentContext extends Argument.Context<string> {
 	owners?: boolean;
 }

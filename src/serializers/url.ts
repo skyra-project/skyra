@@ -1,11 +1,11 @@
-import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<string> {
 	private readonly kProtocol = /^https?:\/\//;
 
-	public parse(args: Serializer.Args, { t, entry }: SerializerUpdateContext) {
+	public parse(args: Serializer.Args, { t, entry }: Serializer.UpdateContext) {
 		const value = args.next();
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
@@ -16,7 +16,7 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public isValid(value: string, { t, entry }: SerializerUpdateContext): Awaitable<boolean> {
+	public isValid(value: string, { t, entry }: Serializer.UpdateContext): Awaitable<boolean> {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
 			return hostname.length <= 128;
@@ -25,7 +25,7 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public validate(data: string, { entry, t }: SerializerUpdateContext) {
+	public validate(data: string, { entry, t }: Serializer.UpdateContext) {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
 			if (hostname.length > 128) throw t(LanguageKeys.Serializers.MinMaxMaxInclusive, { name: entry.name, max: 128 });
@@ -35,7 +35,7 @@ export class UserSerializer extends Serializer<string> {
 		}
 	}
 
-	public stringify(data: string) {
+	public override stringify(data: string) {
 		return `https://${data}`;
 	}
 }

@@ -1,0 +1,110 @@
+{
+	"diceDescription": "Lanza los dados usando la sintaxis d20.",
+	"diceExtended": {
+		"usages": [
+			"Tiradas"
+		],
+		"extendedHelp": "Las mecánicas de este comando son fáciles. Tienes un dado, luego lo tiras __x__ veces, pero los dados también pueden configurarse para tener __y__ lados. Por defecto, este comando tira un dado con 6 lados una vez. Sin embargo, puedes cambiar la cantidad de tiradas para los dados, y este comando \"tirará\" (obtener un número aleatorio entre 1 y la cantidad de lados). Por ejemplo, tirar un dado con 6 lados 3 veces dejará una secuencia aleatoria de tres números aleatorios entre 1 y 6, por ejemplo: 3, 1, 6; lo cual hará que este comando devuelva 10 como salida.",
+		"examples": [
+			"6",
+			"370d24",
+			"100d6",
+			"2d6+4",
+			"1d10*10",
+			"6d10+2*10"
+		]
+	},
+	"escaperopeDescription": "Usa la Cuerda Huida de Pokemon.",
+	"escaperopeExtended": {
+		"extendedHelp": "**Skyra** utilizó **Cuerda Huida**."
+	},
+	"loveDescription": "Medidor de amor, ¡en línea!",
+	"loveExtended": {
+		"usages": [
+			"Usuario"
+		],
+		"extendedHelp": "¡Hola! ¿Quieres probar el medidor de amor? Sé que es una máquina ridícula, ¡pero a muchos humanos les encanta! ¡No seas tímido y pruébalo!",
+		"explainedUsage": [
+			[
+				"usuario",
+				"El usuario a calificar."
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
+	},
+	"popDescription": "Genera un tablero de pop, pop, pop y pop.",
+	"popExtended": {
+		"usages": [
+			"Duración",
+			"--x/--width",
+			"--y/--height",
+			"--length"
+		],
+		"extendedHelp": "Le permite generar un tablero de burbujas, donde hay una palabra que no es pop, que usted debe encontrar y enviar al canal. Por ejemplo, debes enviar `e60` del ||`pop`|||`e60`|||||`pop`|| para poder ganar.",
+		"explainedUsage": [
+			[
+				"Duración",
+				"La cantidad de tiempo que debo permitirle encontrar la solución, por defecto es de 30 segundos."
+			],
+			[
+				"--x/--width",
+				"La cantidad de columnas que el tablero debe tener, por defecto 8."
+			],
+			[
+				"--y/--height",
+				"La cantidad de rilas que el tablero debe tener, por defecto 3."
+			],
+			[
+				"--length",
+				"La longitud de los pops y la solución, el valor por defecto es 3."
+			]
+		],
+		"examples": [
+			"15",
+			"--x=10",
+			"--y=5",
+			"--length=4"
+		]
+	},
+	"popTitle": "¡POP! ¡Que comiencen los pops!",
+	"popTitleLost": "¡POP! ¡Nadie lo consiguió a tiempo!",
+	"popTitleWinner": "¡POP! ¡Tenemos un ganador: {{value}}!",
+	"rateDescription": "Deja que los robots tengan opiniones y valore a alguien.",
+	"rateExtended": {
+		"usages": [
+			"Contenido"
+		],
+		"extendedHelp": "Sólo porque soy un robot no significa que no pueda calificarte correctamente. Yo puedo calificarte con un generador de números aleatorios para facilitar el proceso. ¡Vaaale! No es justo, pero también quiero decir... también puedo darte 💯.",
+		"explainedUsage": [
+			[
+				"usuario",
+				"El usuario a calificar."
+			]
+		],
+		"examples": [
+			"Skyra",
+			"yo"
+		]
+	},
+	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",
+	"diceRollsError": "Cantidad de lanzamientos debe ser un número entre 1 y 1024.",
+	"diceSidesError": "Cantidad de lados debe ser un número entre 3 y 1024.",
+	"escaperopeOutput": "**{{user}}** utilizó **Cuerda Huida**",
+	"loveLess45": "Inténtalo de nuevo la próxima vez...",
+	"loveLess75": "¡Suficientemente bueno!",
+	"loveLess100": "¡Buena pareja!",
+	"love100": "¡Pareja perfecta!",
+	"loveItself": "Eres una persona especial y te deberías amar más que a nadie más en este mundo <3",
+	"loveResult": "Resultado",
+	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
+	"rateMyself": [
+		". Me amo un montón 😊",
+		"yo mismo"
+	],
+	"rateOwners": [
+		". Me encanta mucho a mis desarrolladores 🥰",
+		"mis desarrolladores"
+	]
+}

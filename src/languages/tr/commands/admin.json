@@ -1,0 +1,107 @@
+{
+	"confUpdated": "",
+	"confGetNoExt": "**{{key}}** anahtarı mevcut görünmüyor.",
+	"confGet": "**{{key}}** anahtarının değeri: `{{value}}`",
+	"confReset": "**{{key}}** anahtarı şuna sıfırlandı: `{{value}}`",
+	"confNochange": "**{{key}}** değeri zaten buydu.",
+	"confServerDescription": "Sunucuların ayarlarını düzenleyin.",
+	"confServerExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"confServer": "**Sunucu Ayarı {{key}}**\n {{list}}",
+	"confDashboardOnlyKey": "`{{key}}` yalnızca web kontrol paneli (<https://skyra.pw>) üzerinden yapılandırılabilir",
+	"confSettingNotSet": "Ayarlanmamış",
+	"rolesetDescription": "",
+	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "",
+	"rolesetResetNotExists": "",
+	"rolesetResetGroup": "",
+	"rolesetUpdated": "",
+	"rolesetNoRolesets": "",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderUpdate": "",
+	"confMenuRenderRemove": "",
+	"confMenuRenderReset": "",
+	"confMenuRenderUndo": "",
+	"confMenuRenderCvalue": "",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": ""
+}

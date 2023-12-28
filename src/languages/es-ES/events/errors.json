@@ -1,0 +1,5 @@
+{
+	"string": "{{REDCROSS}} Querido/a {{mention}}, {{message}}",
+	"unexpectedError": "{{REDCROSS}} He encontrado un error inesperado, ¡por favor informa de los pasos que has dado a mis desarrolladores!",
+	"unexpectedErrorWithContext": "$t(events/errors:unexpectedError)\nPuede agregar `{{report}}` al informe para que puedan ver qué error fue desencadenado."
+}

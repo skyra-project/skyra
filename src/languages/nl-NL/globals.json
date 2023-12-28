@@ -5,10 +5,14 @@
 	"none": "Geen",
 	"unknown": "onbekend",
 	"yes": "Ja",
+	"paginatedMessagePage": "Pagina",
+	"paginatedMessageWrongUserInteractionReply": "Stop met het klikken op de knoppen voor dit bericht. Ze zijn alleen voor {{user}}.",
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",
 	"dateTimeValue": "{{value, dateTime}}",
 	"andListValue": "{{value, andList}}",
-	"orListValue": "{{value, orList}}"
+	"orListValue": "{{value, orList}}",
+	"dateFormat": "MM/DD/JJJJ",
+	"dateFormatExplanation": "Maand/Dag/Jaar"
 }

@@ -41,11 +41,12 @@
 	"dmChannelError": "",
 	"duration": "",
 	"durationFormats": "",
-	"emoji": "",
+	"emojiError": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "",
 	"guildChannelError": "",
+	"guildChannelMismatchingError": "",
 	"guildChannelMissingGuildError": "",
 	"guildPrivateThreadChannelError": "",
 	"guildPublicThreadChannelError": "",
@@ -77,8 +78,6 @@
 	],
 	"roleError": "",
 	"roleMissingGuild": "",
-	"scopeGlobal": "",
-	"scopeLocal": "",
 	"snowflake": "",
 	"store": "",
 	"stringTooLong": "",
@@ -90,5 +89,7 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "",
-	"userError": ""
+	"userError": "",
+	"enumEmptyError": "",
+	"enumError": ""
 }

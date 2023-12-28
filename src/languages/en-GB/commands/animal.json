@@ -1,0 +1,26 @@
+{
+	"bunnyDescription": "",
+	"bunnyExtended": {
+		"extendedHelp": ""
+	},
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
+	"dogDescription": "Cute doggos! ❤",
+	"dogExtended": {
+		"extendedHelp": ""
+	},
+	"foxDescription": "Let me show you an image of a fox!",
+	"foxExtended": {
+		"extendedHelp": ""
+	},
+	"kittyDescription": "KITTENS!",
+	"kittyExtended": {
+		"extendedHelp": ""
+	},
+	"shibeDescription": "Cute shibas!",
+	"shibeExtended": {
+		"extendedHelp": ""
+	}
+}

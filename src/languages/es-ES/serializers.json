@@ -27,6 +27,7 @@
 	"permissionNodeInvalidTarget": "No se pudo encontrar ningún dato del ID.",
 	"permissionNodeSecurityEveryoneAllows": "Por lo que respecta a la seguridad, el rol everyone no puede tener permisos extras.",
 	"permissionNodeSecurityGuarded": "Por seguridad y para mi correcto funcionamiento, no se puede negar el uso para el comando `{{command}}`.",
+	"wordIncluded": "La key `{{name}}` ya incluye la palabra `{{word}}`.",
 	"permissionNodeSecurityOwner": "No puedes denegar permisos al propietario del servidor.",
 	"reactionRoleInvalid": "Los datos del rol de reacción no son inválidos.",
 	"stickyRoleInvalid": "Los datos de rol pegajoso no son válidos.",

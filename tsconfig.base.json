@@ -1,8 +1,6 @@
 {
 	"extends": ["@sapphire/ts-config", "@sapphire/ts-config/extra-strict", "@sapphire/ts-config/decorators", "@sapphire/ts-config/verbatim"],
 	"compilerOptions": {
-		"moduleResolution": "NodeNext",
-		"target": "ESNext",
 		"removeComments": true
 	}
 }

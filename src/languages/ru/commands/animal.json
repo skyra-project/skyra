@@ -1,0 +1,26 @@
+{
+	"bunnyDescription": "",
+	"bunnyExtended": {
+		"extendedHelp": ""
+	},
+	"bunnyEmbedData": {
+		"title": "",
+		"source": ""
+	},
+	"dogDescription": "Милые собачки! ❤",
+	"dogExtended": {
+		"extendedHelp": "**Вы** знаете, насколько собаки милые? Они такие красивые!\nЭта команда использует [dog.ceo](https://dog.ceo), чтобы показать изображения самых милых собачек!"
+	},
+	"foxDescription": "Позвольте мне показать вам изображение лисицы!",
+	"foxExtended": {
+		"extendedHelp": "Эта команда выдаёт случайное изображение с [randomfox.ca](https://randomfox.ca/)."
+	},
+	"kittyDescription": "КОТЯТА!",
+	"kittyExtended": {
+		"extendedHelp": "**Вы** знаете, насколько котята милые? Они такие красивые!\nЭта команда использует [random.cat](https://aws.random.cat/), чтобы показать изображения самых милых кошек!"
+	},
+	"shibeDescription": "Милые сибы!",
+	"shibeExtended": {
+		"extendedHelp": "Все любят сиба-ину, я тоже буду их любить! Они такие очаровательные ❤"
+	}
+}

@@ -3,7 +3,7 @@ import { BaseController } from '#lib/games/base/BaseController';
 import type { BaseReactionGame } from '#lib/games/base/BaseReactionGame';
 import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { getEmojiString, type SerializedEmoji } from '#utils/functions';
+import { getEmojiReactionFormat, getEmojiString, type SerializedEmoji } from '#utils/functions';
 import { cast } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { DiscordAPIError, RESTJSONErrorCodes } from 'discord.js';
@@ -43,7 +43,7 @@ export abstract class BaseReactionController<T> extends BaseController<T> {
 
 	protected async removeEmoji(reaction: LLRCData, emoji: SerializedEmoji, userId: string): Promise<void> {
 		try {
-			await api().channels.deleteUserMessageReaction(reaction.channel.id, reaction.messageId, decodeURIComponent(emoji), userId);
+			await api().channels.deleteUserMessageReaction(reaction.channel.id, reaction.messageId, getEmojiReactionFormat(emoji), userId);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;

@@ -126,7 +126,11 @@ export function getAttachment(message: Message): ImageAttachment | null {
  */
 export function getImage(message: Message): string | null {
 	const attachment = getAttachment(message);
-	return attachment ? attachment.proxyURL || attachment.url : null;
+	if (attachment) return attachment.proxyURL || attachment.url;
+
+	const sticker = message.stickers.first();
+	if (sticker) return sticker.url;
+	return null;
 }
 
 /**

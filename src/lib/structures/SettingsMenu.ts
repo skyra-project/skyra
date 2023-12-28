@@ -141,7 +141,12 @@ export class SettingsMenu {
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
+		// If the message is not the menu's message, ignore:
+		if (!this.response || reaction.messageId !== this.response.id) return;
+
+		// If the user is not the author, ignore:
 		if (reaction.userId !== this.message.author.id) return;
+
 		this.llrc?.setTime(TIMEOUT);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc?.end();
@@ -160,11 +165,10 @@ export class SettingsMenu {
 
 		const channelId = this.response.channel.id;
 		const messageId = this.response.id;
-		const reactionId = encodeURIComponent(reaction);
 		try {
 			return await (userId === this.message.client.user!.id
-				? api().channels.deleteUserMessageReaction(channelId, messageId, reactionId, userId)
-				: api().channels.deleteOwnMessageReaction(channelId, messageId, reactionId));
+				? api().channels.deleteUserMessageReaction(channelId, messageId, reaction, userId)
+				: api().channels.deleteOwnMessageReaction(channelId, messageId, reaction));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage) {

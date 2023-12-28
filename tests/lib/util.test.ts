@@ -262,7 +262,7 @@ describe('Utils', () => {
 				${AttachmentText}  | ${ExpectedReturn}   | ${ExpectedEmbedImageURL}    | ${'non-image attachment'}
 				${AttachmentImage} | ${'attachment URL'} | ${AttachmentImage.proxyURL} | ${'image attachment'}
 			`(`AND $description THEN returns $returns`, ({ attachment, expected }) => {
-				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds };
+				const message: DeepPartial<Message> = { attachments: createAttachments(attachment), embeds, stickers: new Collection() };
 
 				expect(getImage(message)).toEqual(expected);
 			});

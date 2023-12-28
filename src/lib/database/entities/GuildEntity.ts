@@ -26,7 +26,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Language, type: 'language' })
 	@Column('varchar', { name: 'language', default: 'en-US' })
-	public language = 'en-US';
+	public language: LocaleString = 'en-US';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisableNaturalPrefix })
 	@Column('boolean', { name: 'disable-natural-prefix', default: false })
@@ -672,7 +672,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	 * Gets the [[Language]] for this entity.
 	 */
 	public getLanguage(): TFunction {
-		return getT(this.language as LocaleString);
+		return getT(this.language);
 	}
 
 	/**

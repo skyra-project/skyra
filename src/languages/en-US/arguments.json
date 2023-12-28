@@ -46,6 +46,7 @@
 	"floatTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
 	"floatTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"guildChannelError": "I could not resolve `{{parameter}}` to a channel from this server, please make sure you typed its name or ID correctly!",
+	"guildChannelMismatchingError": "The parameter `{{parameter}}` resolved to an incompatible channel type in this server, please try another channel!",
 	"guildChannelMissingGuildError": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
 	"guildPrivateThreadChannelError": "I could not resolve `{{parameter}}` to a private thread channel, please make sure you typed its name or ID correctly!",
 	"guildPublicThreadChannelError": "I could not resolve `{{parameter}}` to a public thread channel, please make sure you typed its name or ID correctly!",

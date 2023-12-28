@@ -131,7 +131,7 @@ export function getT(locale?: LocaleString | Nullish) {
  * @returns The fetched language as a {@link LocaleString}.
  */
 export async function fetchLanguage(context: InternationalizationContext) {
-	return ((await container.i18n.fetchLanguage(context)) ?? 'en-US') as LocaleString;
+	return (await container.i18n.fetchLanguage(context))! as LocaleString;
 }
 
 /**

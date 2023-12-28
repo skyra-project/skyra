@@ -20,6 +20,7 @@ export const FloatError = FT<{ parameter: string }>('arguments:floatError');
 export const FloatTooLarge = FT<{ parameter: string; maximum: number }>('arguments:floatTooLarge');
 export const FloatTooSmall = FT<{ parameter: string; minimum: number }>('arguments:floatTooSmall');
 export const GuildChannelError = FT<{ parameter: string }>('arguments:guildChannelError');
+export const GuildChannelMismatchingError = FT<{ parameter: string }>('arguments:guildChannelMismatchingError');
 export const GuildChannelMissingGuildError = FT<{ parameter: string }>('arguments:guildChannelMissingGuildError');
 export const GuildPrivateThreadChannelError = FT<{ parameter: string }>('arguments:guildPrivateThreadChannelError');
 export const GuildPublicThreadChannelError = FT<{ parameter: string }>('arguments:guildPublicThreadChannelError');

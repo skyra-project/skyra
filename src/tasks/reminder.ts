@@ -12,7 +12,7 @@ export class UserTask extends Task {
 
 		if (user) {
 			const timestamp = time(new Date(), TimestampStyles.ShortDateTime);
-			const reminderHeader = getT('en-US')(LanguageKeys.System.ReminderHeader, { timestamp });
+			const reminderHeader = getT()(LanguageKeys.System.ReminderHeader, { timestamp });
 
 			await resolveOnErrorCodes(
 				//

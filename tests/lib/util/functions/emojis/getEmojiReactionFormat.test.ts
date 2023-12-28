@@ -1,9 +1,9 @@
 import { getEmojiReactionFormat } from '#utils/functions';
-import { encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra } from '../../../../mocks/constants.js';
+import { bunnyTwemoji, encodedBunnyTwemoji, serializedAnimatedSkyraGlasses, serializedStaticSkyra } from '../../../../mocks/constants.js';
 
 describe('getEmojiReactionFormat', () => {
 	test('GIVEN encoded twemoji THEN returns encoded twemoji', () => {
-		expect(getEmojiReactionFormat(encodedBunnyTwemoji)).toBe(encodedBunnyTwemoji);
+		expect(getEmojiReactionFormat(encodedBunnyTwemoji)).toBe(bunnyTwemoji);
 	});
 
 	test('GIVEN custom serialized static emoji THEN returns :_:819227046453444620>', () => {

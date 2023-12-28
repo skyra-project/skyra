@@ -28,10 +28,10 @@ export class CoreArgument extends Argument<boolean> {
 	}
 
 	private get getDefaultTruthValues() {
-		return (this.defaultTruthValues ??= getT('en-US')(LanguageKeys.Arguments.BooleanTrueOptions).filter(filterNullish));
+		return (this.defaultTruthValues ??= getT()(LanguageKeys.Arguments.BooleanTrueOptions).filter(filterNullish));
 	}
 
 	private get getDefaultFalseValues() {
-		return (this.defaultFalseValues ??= getT('en-US')(LanguageKeys.Arguments.BooleanFalseOptions).filter(filterNullish));
+		return (this.defaultFalseValues ??= getT()(LanguageKeys.Arguments.BooleanFalseOptions).filter(filterNullish));
 	}
 }

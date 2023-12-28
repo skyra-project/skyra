@@ -81,8 +81,8 @@ export class UserCommand extends SkyraCommand {
 				const events = game.bloodbath
 					? LanguageKeys.Commands.Games.HungerGamesBloodbath
 					: game.sun
-					? LanguageKeys.Commands.Games.HungerGamesDay
-					: LanguageKeys.Commands.Games.HungerGamesNight;
+						? LanguageKeys.Commands.Games.HungerGamesDay
+						: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
 				const { results, deaths } = this.makeResultEvents(
@@ -168,8 +168,8 @@ export class UserCommand extends SkyraCommand {
 		const headerKey = game.bloodbath
 			? LanguageKeys.Commands.Games.HungerGamesResultHeaderBloodbath
 			: game.sun
-			? LanguageKeys.Commands.Games.HungerGamesResultHeaderSun
-			: LanguageKeys.Commands.Games.HungerGamesResultHeaderMoon;
+				? LanguageKeys.Commands.Games.HungerGamesResultHeaderSun
+				: LanguageKeys.Commands.Games.HungerGamesResultHeaderMoon;
 
 		const header = t(headerKey, { game });
 		const death = deaths.length
@@ -251,18 +251,18 @@ export class UserCommand extends SkyraCommand {
 		// If there are more than 16 tributes, perform a large blood bath
 		return game.tributes.size >= 16
 			? // For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
-			  // If it's in bloodbath, perform 50% more deaths.
-			  Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
+				// If it's in bloodbath, perform 50% more deaths.
+				Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
 			: // If there are more than 7 tributes, proceed to kill them in 4 or more.
-			game.tributes.size > 7
-			? // If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
-			  game.bloodbath
-				? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
-				: 4
-			: // If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
-			game.tributes.size === 4
-			? 2
-			: 1;
+				game.tributes.size > 7
+				? // If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
+					game.bloodbath
+					? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
+					: 4
+				: // If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
+					game.tributes.size === 4
+					? 2
+					: 1;
 	}
 }
 

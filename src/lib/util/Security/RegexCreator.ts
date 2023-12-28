@@ -54,17 +54,17 @@ export function processWordBoundaries(word: string) {
 
 	return starts
 		? // Starts and end?
-		  ends
+			ends
 			? // Starts and ends
-			  WordBoundary.Both
+				WordBoundary.Both
 			: // Only starts
-			  WordBoundary.Start
+				WordBoundary.Start
 		: // Ends?
-		ends
-		? // Ends with wildcard
-		  WordBoundary.End
-		: // Does not have wildcards
-		  WordBoundary.None;
+			ends
+			? // Ends with wildcard
+				WordBoundary.End
+			: // Does not have wildcards
+				WordBoundary.None;
 }
 
 export function processWordPatternsWithGroups(word: string) {
@@ -81,13 +81,13 @@ export function processGroup(group: string) {
 		onMatch: (match) =>
 			match[1] === match[2]
 				? // and a === -
-				  match[1] === '-'
+					match[1] === '-'
 					? // then optimize to -
-					  '\\-'
+						'\\-'
 					: // else optimize to a-
-					  `${processLetter(match[1])}\\-`
+						`${processLetter(match[1])}\\-`
 				: // otherwise a-b
-				  `${processLetter(match[1])}-${processLetter(match[2])}`,
+					`${processLetter(match[1])}-${processLetter(match[2])}`,
 		outMatch: (match) => [...match].map(processLetter).join('')
 	});
 

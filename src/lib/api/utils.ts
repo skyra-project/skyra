@@ -119,7 +119,7 @@ async function transformGuild(client: Client, userId: string, data: RESTAPIParti
 					vanityURLCode: null,
 					verificationLevel: GuildVerificationLevel.None,
 					verified: false
-			  }
+				}
 			: flattenGuild(guild);
 
 	return {

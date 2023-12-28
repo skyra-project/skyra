@@ -13,7 +13,10 @@ import { PermissionFlagsBits } from 'discord.js';
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subcommands: [{ name: 'delete' }, { name: 'show', default: true }]
+	subcommands: [
+		{ name: 'delete', messageRun: 'delete' },
+		{ name: 'show', messageRun: 'show', default: true }
+	]
 })
 export class UserCommand extends SkyraSubcommand {
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {

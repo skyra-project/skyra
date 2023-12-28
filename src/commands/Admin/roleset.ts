@@ -12,7 +12,13 @@ import { send } from '@sapphire/plugin-editable-commands';
 	detailedDescription: LanguageKeys.Commands.Admin.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'list' }, { name: 'auto', default: true }]
+	subcommands: [
+		{ name: 'add', messageRun: 'add' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'list', messageRun: 'list' },
+		{ name: 'auto', messageRun: 'auto', default: true }
+	]
 })
 export class UserCommand extends SkyraSubcommand {
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist

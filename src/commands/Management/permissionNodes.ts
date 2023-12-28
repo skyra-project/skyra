@@ -14,7 +14,12 @@ import { RESTJSONErrorCodes, Role, type GuildMember } from 'discord.js';
 	permissionLevel: PermissionLevels.Administrator,
 	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
 	detailedDescription: LanguageKeys.Commands.Management.PermissionNodesExtended,
-	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }],
+	subcommands: [
+		{ name: 'add', messageRun: 'add' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'show', messageRun: 'show', default: true }
+	],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny]
 })
 export class UserCommand extends SkyraSubcommand {

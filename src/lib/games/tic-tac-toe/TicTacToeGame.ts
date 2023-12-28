@@ -32,7 +32,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 			: this.t(LanguageKeys.Commands.Games.TicTacToeWinner, {
 					winner: this.player.name,
 					board: this.renderBoard()
-			  });
+				});
 	}
 
 	protected renderOnUpdateOrStart(): string {

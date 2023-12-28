@@ -23,10 +23,10 @@ export class UserListener extends Listener {
 		const footer = isModerationAction.kicked
 			? t(LanguageKeys.Events.Guilds.Members.GuildMemberKicked)
 			: isModerationAction.banned
-			? t(LanguageKeys.Events.Guilds.Members.GuildMemberBanned)
-			: isModerationAction.softbanned
-			? t(LanguageKeys.Events.Guilds.Members.GuildMemberSoftBanned)
-			: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
+				? t(LanguageKeys.Events.Guilds.Members.GuildMemberBanned)
+				: isModerationAction.softbanned
+					? t(LanguageKeys.Events.Guilds.Members.GuildMemberSoftBanned)
+					: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
 		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>

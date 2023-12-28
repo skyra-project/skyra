@@ -1,12 +1,13 @@
 // Config must be the first to be loaded, as it sets the env:
 import '#root/config';
+
 // Import everything else:
 import { envParseBoolean, envParseInteger, envParseString } from '@skyra/env-utilities';
 import { fileURLToPath } from 'node:url';
-import { DataSource, type DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-export const config: DataSourceOptions = {
+export const AppDataConfig = new DataSource({
 	type: 'postgres',
 	host: envParseString('PGSQL_DATABASE_HOST'),
 	port: envParseInteger('PGSQL_DATABASE_PORT'),
@@ -17,6 +18,6 @@ export const config: DataSourceOptions = {
 	migrations: [fileURLToPath(new URL('migrations/*.js', import.meta.url))],
 	namingStrategy: new SnakeNamingStrategy(),
 	logging: envParseBoolean('TYPEORM_DEBUG_LOGS', false)
-};
+});
 
-export const connect = () => new DataSource(config).initialize();
+export const connect = () => AppDataConfig.initialize();

@@ -168,7 +168,7 @@ export class UserCommand extends SkyraCommand {
 				? args.t(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
 						afkChannel: guild.afkChannelId,
 						afkTime: guild.afkTimeout / 60
-				  })
+					})
 				: `**${args.t(LanguageKeys.Globals.None)}**`
 		});
 	}

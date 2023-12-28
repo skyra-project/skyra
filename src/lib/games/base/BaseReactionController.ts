@@ -3,7 +3,7 @@ import { BaseController } from '#lib/games/base/BaseController';
 import type { BaseReactionGame } from '#lib/games/base/BaseReactionGame';
 import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
-import { getEmojiString } from '#utils/functions';
+import { getEmojiString, type SerializedEmoji } from '#utils/functions';
 import { cast } from '#utils/util';
 import { container } from '@sapphire/framework';
 import { DiscordAPIError, RESTJSONErrorCodes } from 'discord.js';
@@ -24,9 +24,7 @@ export abstract class BaseReactionController<T> extends BaseController<T> {
 				if (data.userId !== this.userId) return;
 				if (data.messageId !== game.message.id) return;
 
-				const emoji = this.resolveCollectedData(data);
-				if (!emoji) return;
-
+				const emoji = getEmojiString(data.emoji);
 				if (game.reactions.includes(emoji) && this.resolveCollectedValidity(emoji)) {
 					void this.removeEmoji(data, emoji, this.userId);
 					game.listener.setListener(null);
@@ -43,13 +41,9 @@ export abstract class BaseReactionController<T> extends BaseController<T> {
 
 	protected abstract resolveCollectedValidity(collected: string): boolean;
 
-	protected resolveCollectedData(reaction: LLRCData): string | null {
-		return getEmojiString(reaction.emoji);
-	}
-
-	protected async removeEmoji(reaction: LLRCData, emoji: string, userId: string): Promise<void> {
+	protected async removeEmoji(reaction: LLRCData, emoji: SerializedEmoji, userId: string): Promise<void> {
 		try {
-			await api().channels.deleteUserMessageReaction(reaction.channel.id, reaction.messageId, emoji, userId);
+			await api().channels.deleteUserMessageReaction(reaction.channel.id, reaction.messageId, decodeURIComponent(emoji), userId);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;

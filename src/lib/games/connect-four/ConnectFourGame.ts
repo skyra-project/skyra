@@ -57,7 +57,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 			: this.t(LanguageKeys.Commands.Games.TicTacToeWinner, {
 					winner: this.player.name,
 					board: this.renderBoard()
-			  });
+				});
 	}
 
 	protected renderOnUpdateOrStart(): string {
@@ -186,7 +186,7 @@ export class ConnectFourGame extends BaseReactionGame<number> {
 					[x, y + 1],
 					[x, y + 2],
 					[x, y + 3]
-			  ] as [number, number][])
+				] as [number, number][])
 			: null;
 	}
 

@@ -52,29 +52,29 @@ export class UserCommand extends SkyraCommand {
 			permissions: shouldNotAddPermissions
 				? 0n
 				: PermissionFlagsBits.AddReactions |
-				  PermissionFlagsBits.AttachFiles |
-				  PermissionFlagsBits.BanMembers |
-				  PermissionFlagsBits.ChangeNickname |
-				  PermissionFlagsBits.CreatePrivateThreads |
-				  PermissionFlagsBits.CreatePublicThreads |
-				  PermissionFlagsBits.DeafenMembers |
-				  PermissionFlagsBits.EmbedLinks |
-				  PermissionFlagsBits.KickMembers |
-				  PermissionFlagsBits.ManageChannels |
-				  PermissionFlagsBits.ManageGuildExpressions |
-				  PermissionFlagsBits.ManageGuild |
-				  PermissionFlagsBits.ManageMessages |
-				  PermissionFlagsBits.ManageNicknames |
-				  PermissionFlagsBits.ManageRoles |
-				  PermissionFlagsBits.ManageThreads |
-				  PermissionFlagsBits.MoveMembers |
-				  PermissionFlagsBits.MuteMembers |
-				  PermissionFlagsBits.ReadMessageHistory |
-				  PermissionFlagsBits.SendMessages |
-				  PermissionFlagsBits.SendMessagesInThreads |
-				  PermissionFlagsBits.UseExternalEmojis |
-				  PermissionFlagsBits.UseExternalStickers |
-				  PermissionFlagsBits.ViewChannel
+					PermissionFlagsBits.AttachFiles |
+					PermissionFlagsBits.BanMembers |
+					PermissionFlagsBits.ChangeNickname |
+					PermissionFlagsBits.CreatePrivateThreads |
+					PermissionFlagsBits.CreatePublicThreads |
+					PermissionFlagsBits.DeafenMembers |
+					PermissionFlagsBits.EmbedLinks |
+					PermissionFlagsBits.KickMembers |
+					PermissionFlagsBits.ManageChannels |
+					PermissionFlagsBits.ManageGuildExpressions |
+					PermissionFlagsBits.ManageGuild |
+					PermissionFlagsBits.ManageMessages |
+					PermissionFlagsBits.ManageNicknames |
+					PermissionFlagsBits.ManageRoles |
+					PermissionFlagsBits.ManageThreads |
+					PermissionFlagsBits.MoveMembers |
+					PermissionFlagsBits.MuteMembers |
+					PermissionFlagsBits.ReadMessageHistory |
+					PermissionFlagsBits.SendMessages |
+					PermissionFlagsBits.SendMessagesInThreads |
+					PermissionFlagsBits.UseExternalEmojis |
+					PermissionFlagsBits.UseExternalStickers |
+					PermissionFlagsBits.ViewChannel
 		});
 	}
 }

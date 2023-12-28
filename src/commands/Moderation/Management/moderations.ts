@@ -27,12 +27,12 @@ const enum Type {
 		runIn: [CommandOptionsRunTypeEnum.GuildAny],
 		subcommands: [
 			{ name: 'mute', messageRun: 'mutes' },
-			{ name: 'mutes' },
+			{ name: 'mutes', messageRun: 'mutes' },
 			{ name: 'warning', messageRun: 'warnings' },
-			{ name: 'warnings' },
+			{ name: 'warnings', messageRun: 'warnings' },
 			{ name: 'warn', messageRun: 'warnings' },
 			{ name: 'warns', messageRun: 'warnings' },
-			{ name: 'all', default: true }
+			{ name: 'all', messageRun: 'all', default: true }
 		]
 	})
 )

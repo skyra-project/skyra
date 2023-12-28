@@ -21,7 +21,10 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 	detailedDescription: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subcommands: [{ name: 'details' }, { name: 'overview', default: true }]
+	subcommands: [
+		{ name: 'details', messageRun: 'details' },
+		{ name: 'overview', messageRun: 'overview', default: true }
+	]
 })
 export class UserCommand extends SkyraSubcommand {
 	public override messageRun(message: GuildMessage, args: SkyraSubcommand.Args, context: SkyraSubcommand.RunContext) {

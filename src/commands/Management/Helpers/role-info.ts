@@ -25,10 +25,10 @@ export class UserCommand extends SkyraCommand {
 		const permissionsString = PermissionsBits.has(permissions, PermissionFlagsBits.Administrator)
 			? args.t(LanguageKeys.Commands.Management.RoleInfoAll)
 			: permissions > 0n
-			? PermissionsBits.toArray(permissions)
-					.map((name) => `+ ${args.t(`permissions:${name}`)}`)
-					.join('\n')
-			: args.t(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
+				? PermissionsBits.toArray(permissions)
+						.map((name) => `+ ${args.t(`permissions:${name}`)}`)
+						.join('\n')
+				: args.t(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
 
 		const description = args.t(LanguageKeys.Commands.Management.RoleInfoData, {
 			role,

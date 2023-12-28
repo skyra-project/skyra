@@ -85,8 +85,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 							? curr
 							: prev
 						: curr.createdTimestamp > prev.createdTimestamp
-						? curr
-						: prev
+							? curr
+							: prev
 					: prev,
 			null
 		);

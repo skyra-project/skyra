@@ -18,7 +18,11 @@ import { PermissionFlagsBits, type Role } from 'discord.js';
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageRoles],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subcommands: [{ name: 'lock' }, { name: 'unlock' }, { name: 'auto', default: true }]
+	subcommands: [
+		{ name: 'lock', messageRun: 'lock' },
+		{ name: 'unlock', messageRun: 'unlock' },
+		{ name: 'auto', messageRun: 'auto', default: true }
+	]
 })
 export class UserCommand extends SkyraSubcommand {
 	public override messageRun(message: GuildMessage, args: SkyraSubcommand.Args, context: SkyraSubcommand.RunContext) {

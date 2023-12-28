@@ -20,7 +20,12 @@ import { EmbedBuilder, PermissionFlagsBits, type Guild } from 'discord.js';
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
-	subcommands: [{ name: 'add' }, { name: 'remove' }, { name: 'reset' }, { name: 'show', default: true }]
+	subcommands: [
+		{ name: 'add', messageRun: 'add' },
+		{ name: 'remove', messageRun: 'remove' },
+		{ name: 'reset', messageRun: 'reset' },
+		{ name: 'show', messageRun: 'show', default: true }
+	]
 })
 export class UserCommand extends SkyraSubcommand {
 	public async add(message: GuildMessage, args: SkyraSubcommand.Args) {

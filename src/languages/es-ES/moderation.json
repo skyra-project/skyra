@@ -1,6 +1,12 @@
 {
+	"caseNotExists_one": "{{REDCROSS}} Lo siento, pero el caso de registro de moderación seleccionado no existe.",
+	"caseNotExists_other": "{{REDCROSS}} Lo siento, pero ninguno de los registros de moderación seleccionados existe.",
 	"logAppealed": "{{REDCROSS}} Lo siento, pero el registro de moderación seleccionado ha expirado o no puede ser hecho temporal.",
+	"logDescriptionTypeAndUser": "❯ **Tipo**: {{type}}\n❯ **Usuario**: {{userTag}} ({{userId}})",
+	"logDescriptionWithReason": "❯ **Motivo**: {{reason}}{{formattedDuration}}",
+	"logDescriptionWithoutReason": "❯ **Motivo**: Por favor utilize `{{prefix}}reason {{caseId}} <reason>` para establecer el motivo.{{formattedDuration}}",
 	"logExpiresIn": "\n❯ **Expira en**: {{duration, duration}}",
+	"logFooter": "Caso {{caseId}}",
 	"muteCannotManageRoles": "Necesito tener **{{MANAGE_ROLES, permissions}}** permisos para poder silenciar.",
 	"muteLowHierarchy": "No puedo silenciar a un usuario con una posición de rol superior a la mía.",
 	"muteNotConfigured": "El rol de silenciado debe ser configurado para que esta acción se pueda llevar a cabo.",

@@ -1,0 +1,1011 @@
+{
+	"permissions": "",
+	"permissionsAll": "",
+	"timeTimed": "",
+	"timeUnsupportedType": "",
+	"timeNotScheduled": "",
+	"timeAborted": "",
+	"timeScheduled": "",
+	"slowmodeSet": "",
+	"slowmodeReset": "",
+	"timeDescription": "",
+	"timeExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"banNotBannable": "",
+	"dehoistStarting": "",
+	"dehoistProgress": "",
+	"dehoistEmbed": {
+		"title": "",
+		"descriptionNoone": "",
+		"descriptionWithError": "",
+		"descriptionWithMultipleErrors": "",
+		"description": "",
+		"descriptionMultipleMembers": "",
+		"fieldErrorTitle": ""
+	},
+	"kickNotKickable": "",
+	"lockdownLock": "",
+	"lockdownLocking": "",
+	"lockdownLocked": "",
+	"lockdownUnlocked": "",
+	"lockdownOpen": "",
+	"muteMuted": "",
+	"muteUserNotMuted": "",
+	"restrictLowlevel": "",
+	"pruneAlert_one": "",
+	"pruneAlert_other": "",
+	"pruneInvalidPosition": "",
+	"pruneNoDeletes": "",
+	"pruneLogHeader": "",
+	"pruneLogMessage_one": "",
+	"pruneLogMessage_other": "",
+	"reasonNotExists": "",
+	"reasonUpdated_one": "",
+	"reasonUpdated_other": "",
+	"toggleModerationDmToggledEnabled": "",
+	"toggleModerationDmToggledDisabled": "",
+	"unbanMissingPermission": "",
+	"unmuteMissingPermission": "",
+	"vmuteMissingPermission": "",
+	"vmuteUserNotMuted": "",
+	"moderationOutput_one": "",
+	"moderationOutput_other": "",
+	"moderationOutputWithReason_one": "",
+	"moderationOutputWithReason_other": "",
+	"moderationFailed_one": "",
+	"moderationFailed_other": "",
+	"moderationDmFooter": "",
+	"moderationDmDescription": "",
+	"moderationDmDescriptionWithReason": "",
+	"moderationDmDescriptionWithDuration": "",
+	"moderationDmDescriptionWithReasonWithDuration": "",
+	"historyDescription": "",
+	"historyExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"historyFooterNew": "",
+	"historyFooterWarning_one": "",
+	"historyFooterWarning_other": "",
+	"historyFooterMutes_one": "",
+	"historyFooterMutes_other": "",
+	"historyFooterKicks_one": "",
+	"historyFooterKicks_other": "",
+	"historyFooterBans_one": "",
+	"historyFooterBans_other": "",
+	"moderationsDescription": "",
+	"moderationsExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"moderationsEmpty": "",
+	"moderationsAmount_one": "",
+	"moderationsAmount_other": "",
+	"mutesDescription": "",
+	"mutesExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"warningsDescription": "",
+	"warningsExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"slowmodeDescription": "",
+	"slowmodeExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"banDescription": "",
+	"banExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"dehoistDescription": "",
+	"dehoistExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"kickDescription": "",
+	"kickExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"lockdownDescription": "",
+	"lockdownExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"muteDescription": "",
+	"muteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"setNicknameDescription": "",
+	"setNicknameExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"addRoleDescription": "",
+	"addRoleExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"removeroleDescription": "",
+	"removeroleExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"pruneDescription": "",
+	"pruneExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"caseDescription": "",
+	"caseExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"caseDeleted": "",
+	"permissionsDescription": "",
+	"permissionsExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": ""
+	},
+	"reasonDescription": "",
+	"reasonExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"restrictAttachmentDescription": "",
+	"restrictAttachmentExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"restrictEmbedDescription": "",
+	"restrictEmbedExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"restrictEmojiDescription": "",
+	"restrictEmojiExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"restrictReactionDescription": "",
+	"restrictReactionExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"restrictVoiceDescription": "",
+	"restrictVoiceExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"softBanDescription": "",
+	"softBanExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"toggleModerationDmDescription": "",
+	"toggleModerationDmExtended": {
+		"extendedHelp": ""
+	},
+	"unbanDescription": "",
+	"unbanExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"unmuteDescription": "",
+	"unmuteExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"unrestrictAttachmentDescription": "",
+	"unrestrictAttachmentExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictEmbedDescription": "",
+	"unrestrictEmbedExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictEmojiDescription": "",
+	"unrestrictEmojiExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictReactionDescription": "",
+	"unrestrictReactionExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unrestrictVoiceDescription": "",
+	"unrestrictVoiceExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"unwarnDescription": "",
+	"unwarnExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"vmuteDescription": "",
+	"vmuteExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"voiceKickDescription": "",
+	"voiceKickExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"vunmuteDescription": "",
+	"vunmuteExtended": {
+		"usages": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
+	},
+	"warnDescription": "",
+	"warnExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	}
+}

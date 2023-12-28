@@ -22,5 +22,5 @@
 		"{{LOADING}} Reticulando curvas..."
 	],
 	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
-	"reminderHeader": ""
+	"reminderHeader": "⏲ ¡Hola! Veo que has solicitado ser recordado en {{timestamp}} sobre:"
 }

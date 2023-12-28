@@ -1,4 +1,0 @@
-{
-	"aborted": "Se ha abortado la petición con éxito.",
-	"attemptFailed": "Entrada no válida. Intento **{{attempt}}** de **{{maxAttempts}}**\n{{list}}"
-}

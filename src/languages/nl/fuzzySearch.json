@@ -1,0 +1,6 @@
+{
+	"aborted": "De vraag is succesvol afgebroken.",
+	"invalidIndex": "Dat nummer was buiten bereik, vraag wordt gestopt.",
+	"invalidNumber": "Ik verwachtte dat je me een (één cijfer) nummer zou geven, maar ik kreeg een aardappel.",
+	"matches": "Meerdere overeenkomsten zijn gevonden. **Selecteer een nummer tussen 0 en {{matches}}**:\n{{codeblock}}\nSchrijf **ABORT** als je wil stoppen met de vraag."
+}

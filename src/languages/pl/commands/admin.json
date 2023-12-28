@@ -1,0 +1,107 @@
+{
+	"confUpdated": "",
+	"confGetNoExt": "",
+	"confGet": "",
+	"confReset": "",
+	"confNochange": "",
+	"confServerDescription": "",
+	"confServerExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"confServer": "",
+	"confDashboardOnlyKey": "",
+	"confSettingNotSet": "",
+	"rolesetDescription": "",
+	"rolesetExtended": {
+		"usages": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "",
+	"rolesetResetNotExists": "",
+	"rolesetResetGroup": "",
+	"rolesetUpdated": "",
+	"rolesetNoRolesets": "",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderUpdate": "",
+	"confMenuRenderRemove": "",
+	"confMenuRenderReset": "",
+	"confMenuRenderUndo": "",
+	"confMenuRenderCvalue": "",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": ""
+}

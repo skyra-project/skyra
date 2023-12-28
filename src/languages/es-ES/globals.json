@@ -5,6 +5,8 @@
 	"none": "Ninguno",
 	"unknown": "desconocido",
 	"yes": "Sí",
+	"paginatedMessagePage": "Página",
+	"paginatedMessageWrongUserInteractionReply": "Por favor, deje de hacer clic en los botones de este mensaje. Sólo son para {{user}}.",
 	"durationValue": "{{value, duration}}",
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",

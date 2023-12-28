@@ -1,5 +1,5 @@
 {
-	"confUpdated": "",
+	"confUpdated": "Se actualizó exitosamente la clave **{{key}}**: `{{response}}",
 	"confGetNoExt": "La clave **{{key}}** parece no existir.",
 	"confGet": "El valor para la clave **{{key}}** es: `{{value}}`",
 	"confReset": "La clave **{{key}}** ha sido restablecida a: `{{value}}`",

@@ -1,0 +1,71 @@
+{
+	"avatarDescription": "Просмотрите чей-либо аватар в полном размере.",
+	"avatarExtended": {
+		"usages": [
+			"",
+			"Пользователь"
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"Пользователь",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"avatarNone": "",
+	"voteDescription": "",
+	"voteExtended": {
+		"usages": [
+			"Вопрос"
+		],
+		"examples": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"Вопрос",
+				""
+			]
+		]
+	},
+	"voteContentNeeded": "",
+	"voteReactionBlocked": "",
+	"whoisDescription": "Кто вы?",
+	"whoisExtended": {
+		"usages": [
+			"",
+			"Пользователь"
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"Пользователь",
+				""
+			]
+		]
+	},
+	"whoisMemberFields": {
+		"createdAt": "",
+		"footer": "ID: {{member.id}}",
+		"joinedUnknown": "",
+		"joinedWithTimestamp": ""
+	},
+	"whoisMemberPermissions": "",
+	"whoisMemberPermissionsAll": "Все разрешения",
+	"whoisMemberRoles_one": "",
+	"whoisMemberRoles_other": "",
+	"whoisMemberRoleListAndMore": "",
+	"whoisMemberTitles": {
+		"createdAt": "",
+		"joined": ""
+	},
+	"whoisUserFields": {
+		"createdAt": "",
+		"footer": "ID: {{user.id}}"
+	},
+	"whoisUserTitles": {
+		"createdAt": ""
+	}
+}

@@ -1,12 +1,12 @@
 {
 	"cooldown": "Acabas de usar este comando. Puedes usarlo de nuevo en {{remaining, duration}}.",
-	"dmOnly": "Este comando solo puede ser utilizado en mensajes directos.",
-	"guildOnly": "Este comando solo puede ser utilizado dentro de un servidor.",
 	"nsfw": "¡No puedes usar comandos con contenido no apropiado en este canal!",
 	"administrator": "Necesitas privilegios de administrador para ejecutar `{{command.name}}`!",
 	"disabledGlobal": "Este comando ha sido desactivado globalmente por los propietarios del bot. ¿Quieres saber por qué y averiguar cuándo va a volver? Únete al servidor oficial de Skyra: <https://join.skyra.pw>",
 	"disabledGuild": "¡Este comando ha sido desactivado por un administrador en este servidor!",
 	"moderator": "Necesitas privilegios de moderador para ejecutar `{{command.name}}`!",
 	"permissionNodes": "{{REDCROSS}} ¡No tienes permiso para usar este comando!",
-	"serverOwner": "Necesitas ser el dueño del servidor para ejecutar `{{command.name}}`!"
+	"serverOwner": "Necesitas ser el dueño del servidor para ejecutar `{{command.name}}`!",
+	"dmOnly": "Este comando solo puede ser utilizado en mensajes directos.",
+	"guildOnly": "Este comando solo puede ser utilizado dentro de un servidor."
 }

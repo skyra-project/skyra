@@ -41,7 +41,7 @@ export default defineConfig({
 		setupFiles: ['./tests/vitest.setup.ts'],
 		globals: true,
 		coverage: {
-			reporter: ['text', 'lcov', 'clover'],
+			reporter: ['text', 'lcov', 'cobertura'],
 			include: ['src/lib/**'],
 			exclude: [
 				'src/lib/api',

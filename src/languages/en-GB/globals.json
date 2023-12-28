@@ -1,0 +1,16 @@
+{
+	"default": "{{key}} has not been localised for en-GB yet.",
+	"defaultLanguage": "Default Language",
+	"no": "No",
+	"none": "None",
+	"unknown": "unknown",
+	"yes": "Yes",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"dateTimeValue": "{{value, dateTime}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}",
+	"dateFormat": "DD/MM/YYYY",
+	"dateFormatExplanation": "Day/Month/Year"
+}

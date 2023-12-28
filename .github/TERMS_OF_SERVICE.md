@@ -13,23 +13,23 @@ Skyra Project
 
 **Table of contents**:
 
-- [TERMS](#terms)
+-   [TERMS](#terms)
 
-- [USE LICENSE](#use-license)
+-   [USE LICENSE](#use-license)
 
-- [DISCLAIMER](#disclaimer)
+-   [DISCLAIMER](#disclaimer)
 
-- [LIMITATIONS](#limitations)
+-   [LIMITATIONS](#limitations)
 
-- [REVISIONS AND ERRATA](#revisions-and-errata)
+-   [REVISIONS AND ERRATA](#revisions-and-errata)
 
-- [LINKS](#links)
+-   [LINKS](#links)
 
-- [TERMS OF SERVICE MODIFICATIONS](#terms-of-service-modifications)
+-   [TERMS OF SERVICE MODIFICATIONS](#terms-of-service-modifications)
 
-- [YOUR PRIVACY](#your-privacy)
+-   [YOUR PRIVACY](#your-privacy)
 
-- [GOVERNING LAW](#governing-law)
+-   [GOVERNING LAW](#governing-law)
 
 ---
 

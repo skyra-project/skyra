@@ -83,7 +83,7 @@ export class UserCommand extends SkyraCommand {
 			.setAuthor({ name: titles.trivia })
 			.setTitle(data.category)
 			.setColor(0xf37917)
-			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
+			.setThumbnail('https://i.imgur.com/zPtu5aP.png')
 			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', he.decode(data.question), '', questionDisplay.join('\n')].join('\n'));
 	}
 

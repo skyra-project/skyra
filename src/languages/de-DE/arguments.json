@@ -41,11 +41,12 @@
 	"dmChannelError": "",
 	"duration": "Ich konnte `{{parameter}}` nicht zu einer gültigen Dauer auflösen, hier sind einige der gültigen Formate:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 Stunden).\n- `20m5s` (20 Minuten und 5 Sekunden).\n- \"1w 2d 16h 40m 10s\"` (1 Woche, 2 Tage, 16 Stunden, 40 Minuten und 10 Sekunden).",
-	"emoji": "",
+	"emojiError": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "Der Parameter `{{parameter}}` ist zu niedrig! Er muss mindestens {{minimum}} sein!",
 	"guildChannelError": "",
+	"guildChannelMismatchingError": "",
 	"guildChannelMissingGuildError": "",
 	"guildPrivateThreadChannelError": "",
 	"guildPublicThreadChannelError": "",
@@ -77,8 +78,6 @@
 	],
 	"roleError": "",
 	"roleMissingGuild": "Ich konnte `{{parameter}}` nicht auflösen, da dieses Argument in einem Server Channel ausgeführt werden muss.",
-	"scopeGlobal": "Global",
-	"scopeLocal": "Lokal",
 	"snowflake": "Ich konnte `{{parameter}}` nicht zu einer gültigen snowflake auflösen! Es sind Zahlen mit 17 bis 18 Ziffern, zum Beispiel, deine Nachricht hat die snowflake `{{message.id}}`!",
 	"store": "Ich konnte `{{parameter}}` nicht in einen gültigen Shop auflösen!\n**Tipp**: Folgendes wird unterstützt: {{possibles, andList}}.",
 	"stringTooLong": "Der Parameter `{{parameter}}` ist zu lang! Er muss kürzer als {{maximum}} sein)!",
@@ -90,5 +89,7 @@
 	"tooFewWinners": "Der Parameter `{{parameter}}` wurde an eine zu niedrige Zahl aufgelöst, er muss mindestens 1 sein!",
 	"tooManyWinners": "Der Parameter `{{parameter}}` wurde zu einer Zahl aufgelöst, die zu hoch ist, es darf maximal 20 sein!",
 	"unavailable": "Hoppla! Es scheint, dass ich keinen Parser für einen Parameter finden konnte, bitte kontaktiere meine Entwickler!",
-	"userError": ""
+	"userError": "",
+	"enumEmptyError": "",
+	"enumError": ""
 }

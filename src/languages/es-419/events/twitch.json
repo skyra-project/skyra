@@ -1,0 +1,5 @@
+{
+	"embedDescription": "¡{{userName}} está ahora en directo!",
+	"embedDescriptionWithGame": "{{userName}} ahora está en directo - ¡Transmitiendo {{gameName}}!",
+	"offlinePostfix": "Notificaciones Twitch de Skyra"
+}

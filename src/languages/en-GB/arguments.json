@@ -41,11 +41,12 @@
 	"dmChannelError": "",
 	"duration": "I could not resolve `{{parameter}}` to a valid duration, there are some of the valid formats:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 hours).\n- `20m5s` (20 minutes and 5 seconds).\n- `\"1w 2d 16h 40m 10s\"` (1 week, 2 days, 16 hours, 40 minutes, and 10 seconds).",
-	"emoji": "",
+	"emojiError": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"guildChannelError": "",
+	"guildChannelMismatchingError": "",
 	"guildChannelMissingGuildError": "",
 	"guildPrivateThreadChannelError": "",
 	"guildPublicThreadChannelError": "",
@@ -77,8 +78,6 @@
 	],
 	"roleError": "",
 	"roleMissingGuild": "I was not able to resolve `{{parameter}}` because this argument requires to be run in a server channel.",
-	"scopeGlobal": "global",
-	"scopeLocal": "local",
 	"snowflake": "I could not resolve `{{parameter}}` to a valid snowflake! They're numbers with 17 to 18 digits, for example, your message has a snowflake of `{{message.id}}`!",
 	"store": "I could not resolve `{{parameter}}` to a valid store!\n**Hint**: the following are supported: {{possibles, andList}}.",
 	"stringTooLong": "The parameter `{{parameter}}` is too long! It needs to have less than {{maximum}} character(s)!",
@@ -90,5 +89,7 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "",
-	"userError": ""
+	"userError": "",
+	"enumEmptyError": "",
+	"enumError": ""
 }

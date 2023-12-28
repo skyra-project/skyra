@@ -1,0 +1,6 @@
+{
+	"aborted": "Se ha abortado la petición con éxito.",
+	"invalidIndex": "Ese número estaba fuera de rango, abortando la petición.",
+	"invalidNumber": "Esperaba que me dieras un número (un dígito) y me diste una patata.",
+	"matches": "¡He encontrado varias coincidencias! **Por favor, selecciona un número dentro de 0 y {{matches}}**:\n{{codeblock}}\nEscribe **ABORT** si quieres salir de la petición."
+}

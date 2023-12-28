@@ -1,0 +1,71 @@
+{
+	"avatarDescription": "किसी का अवतार पूरे आकार में देखें।",
+	"avatarExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"avatarNone": "",
+	"voteDescription": "",
+	"voteExtended": {
+		"usages": [
+			""
+		],
+		"examples": [
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"voteContentNeeded": "",
+	"voteReactionBlocked": "",
+	"whoisDescription": "",
+	"whoisExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"whoisMemberFields": {
+		"createdAt": "",
+		"footer": "",
+		"joinedUnknown": "",
+		"joinedWithTimestamp": ""
+	},
+	"whoisMemberPermissions": "",
+	"whoisMemberPermissionsAll": "",
+	"whoisMemberRoles_one": "",
+	"whoisMemberRoles_other": "",
+	"whoisMemberRoleListAndMore": "",
+	"whoisMemberTitles": {
+		"createdAt": "",
+		"joined": ""
+	},
+	"whoisUserFields": {
+		"createdAt": "",
+		"footer": ""
+	},
+	"whoisUserTitles": {
+		"createdAt": ""
+	}
+}

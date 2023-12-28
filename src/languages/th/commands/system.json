@@ -1,0 +1,40 @@
+{
+	"evalDescription": "",
+	"evalExtended": {
+		"usages": [
+			""
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"donateDescription": "",
+	"donateExtended": {
+		"extendedHelp": ""
+	},
+	"evalTimeout": "",
+	"evalError": "",
+	"dmNotSent": "",
+	"dmSent": "",
+	"reboot": "",
+	"rebootDescription": "",
+	"rebootExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"supportDescription": "",
+	"supportEmbedDescription": "",
+	"supportEmbedTitle": "",
+	"supportExtended": {
+		"extendedHelp": ""
+	}
+}

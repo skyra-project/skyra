@@ -1,0 +1,107 @@
+{
+	"confUpdated": "",
+	"confGetNoExt": "Кажется, ключа **{{key}}** не существует.",
+	"confGet": "Значение ключа **{{key}}**: `{{value}}`",
+	"confReset": "",
+	"confNochange": "Значение **{{key}}** уже соответствует этому значению.",
+	"confServerDescription": "Определить параметры для сервера.",
+	"confServerExtended": {
+		"usages": [
+			"",
+			"show",
+			"show НазваниеКлюча",
+			"",
+			"reset НазваниеКлюча",
+			"menu"
+		],
+		"extendedHelp": "",
+		"examples": [
+			"set language ru-RU",
+			"",
+			"show",
+			"show channels",
+			"remove roles.moderator Модератор",
+			"reset roles.moderator",
+			"menu"
+		],
+		"reminder": ""
+	},
+	"confServer": "**Настройки сервера {{key}}**\n{{list}}",
+	"confDashboardOnlyKey": "`{{key}}` можно настроить только через веб-панель инструментов (<https://skyra.pw>)",
+	"confSettingNotSet": "Не задано",
+	"rolesetDescription": "Управляйте наборами уникальных ролей.",
+	"rolesetExtended": {
+		"usages": [
+			"set НазваниеНабораРолей Роль1 Роль2 Роль3...",
+			"remove НазваниеНабораРолей Роль1 Роль2 Роль3...",
+			"reset",
+			"reset НазваниеНабораРолей",
+			"list",
+			"НазваниеНабораРолей Роль1 Роль2 Роль3"
+		],
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"добавить",
+				"Создать новый набор ролей или добавить роль к уже существующему."
+			],
+			[
+				"удалить",
+				"Удалить роль из существующего набора ролей."
+			],
+			[
+				"сбросить",
+				"Удаляет все роли из набора ролей или, если не указано, все существующие наборы ролей."
+			],
+			[
+				"список",
+				"Перечисляет все наборы ролей."
+			],
+			[
+				"авто",
+				"Добавляет или удаляет набор ролей."
+			],
+			[
+				"НазваниеНабораРолей",
+				"Название набора ролей"
+			],
+			[
+				"Роль1 Роль2 Роль3",
+				""
+			]
+		],
+		"examples": [
+			"add регионы Америка",
+			"add регионы Африка Америка Азия Европа",
+			"remove регионы Америка",
+			"reset",
+			"reset регионы",
+			"list",
+			"регионы Америка",
+			"регионы Африка Америка Азия Европа"
+		],
+		"reminder": "Эта команда может добавить и/или удалить несколько ролей одновременно."
+	},
+	"rolesetCreated": "Набор уникальных ролей {{name}} создан со следующими ролями: {{roles, andList}}",
+	"rolesetAdded": "Набор уникальных ролей {{name}} обновлён, теперь он содержит следующие роли: {{roles, andList}}.",
+	"rolesetRemoved": "Набор уникальных ролей {{name}} больше не будет включать в себя следующие роли: {{roles, andList}}",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
+	"rolesetResetNotExists": "{{REDCROSS}} На этом сервере не существует набора ролей `{{name}}`.",
+	"rolesetResetGroup": "{{GREENTICK}} Набор ролей `{{name}}` успешно удалён с этого сервера.",
+	"rolesetUpdated": "Набор уникальных ролей {{name}} обновлён.",
+	"rolesetNoRolesets": "У вас нет наборов ролей.",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderUpdate": "• Обновить значение → `set <value>`",
+	"confMenuRenderRemove": "• Удалить значение → `remove <value>`",
+	"confMenuRenderReset": "• Сбросить значение → `reset`",
+	"confMenuRenderUndo": "• Отменить обновление → `undo`",
+	"confMenuRenderCvalue": "Текущее значение: **``{{value}}``**",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": "Все изменения успешно сохранены."
+}

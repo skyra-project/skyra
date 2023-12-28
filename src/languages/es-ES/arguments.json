@@ -41,11 +41,12 @@
 	"dmChannelError": "",
 	"duration": "No pude resolver `{{parameter}}` a una duración válida, aquí tiene alguno de los formatos válidos:\n\n$t(arguments:durationFormats)",
 	"durationFormats": "- `4h` (4 horas).\n- `20m5s` (20 minutos y 5 segundos).\n- `\"1w 2d 16h 40m 10s\"` (1 semana, 2 días, 16 horas, 40 minutos y 10 segundos).",
-	"emoji": "",
+	"emojiError": "",
 	"floatError": "",
 	"floatTooLarge": "",
 	"floatTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",
 	"guildChannelError": "",
+	"guildChannelMismatchingError": "",
 	"guildChannelMissingGuildError": "",
 	"guildPrivateThreadChannelError": "",
 	"guildPublicThreadChannelError": "",
@@ -77,8 +78,6 @@
 	],
 	"roleError": "",
 	"roleMissingGuild": "No pude resolver `{{parameter}}` porque este argumento requiere ser ejecutado en un canal de un servidor.",
-	"scopeGlobal": "global",
-	"scopeLocal": "local",
 	"snowflake": "¡No pude resolver `{{parameter}}` a un copo de nieve válido! Son números con 17 a 18 dígitos, por ejemplo, ¡tu mensaje tiene un Snowflake de `{{message.id}}`!",
 	"store": "No pude resolver `{{parameter}}` a una colección válida!\n**Pista**: lo siguiente son compatibles: {{possibles, andList}}.",
 	"stringTooLong": "¡El parámetro `{{parameter}}` es demasiado largo! ¡Debe tener menos de {{maximum}} caracter(es)!",
@@ -90,5 +89,7 @@
 	"tooFewWinners": "",
 	"tooManyWinners": "",
 	"unavailable": "¡Ups! Parece que no he podido encontrar un analizador para un parámetro, ¡por favor contacta a mis desarrolladores sobre esto!",
-	"userError": ""
+	"userError": "",
+	"enumEmptyError": "",
+	"enumError": ""
 }

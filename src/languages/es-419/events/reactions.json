@@ -1,6 +1,0 @@
-{
-	"reaction": "Reacción Añadida",
-	"filterFooter": "Reacción Filtrada",
-	"filter": "{{REDCROSS}} Hey {{user}}, ¡por favor no añadas esa reacción!",
-	"selfRoleHierarchy": "{{REDCROSS}} Mi rol tiene que ser mayor que todos los roles auto-asignables, ¡de lo contrario no puedo concederlos a la gente!"
-}

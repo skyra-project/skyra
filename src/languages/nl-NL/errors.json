@@ -1,9 +1,0 @@
-{
-	"guildBansEmpty": "Er zijn geen verbanningen geregistreerd in deze server.",
-	"guildBansNotFound": "Ik heb geprobeerd en het is niet gelukt om deze gebruiker uit de bloklijst te vinden. Weet je zeker dat deze gebruiker geblokkeerd is?",
-	"guildMemberNotVoicechannel": "Ik kan deze actie niet uitvoeren op een lid dat niet verbonden is met een spraakkanaal.",
-	"guildWarnNotFound": "Het is me niet gelukt om die waarschuwing op te halen. De waarschuwing bestaat niet, het is geen waarschuwing, of hij is al teruggedraaid.",
-	"modlogTimed": "Deze moderatie log is al tijdelijk gezet. Deze verloopt in {{remaining, duration}}",
-	"unexpectedIssue": "Er is een onverwachte fout opgetreden! Deze opdracht wordt gestopt...",
-	"userNotInGuild": "Deze gebruiker is niet in deze server."
-}

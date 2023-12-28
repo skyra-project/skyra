@@ -1,5 +1,0 @@
-{
-	"string": "{{REDCROSS}} प्रिय {{mention}}, {{message}}",
-	"unexpectedError": "{{REDCROSS}} मुझे एक अनपेक्षित त्रुटि मिली, कृपया मेरे डेवलपर्स को आपके द्वारा उठाए गए कदमों की रिपोर्ट करें!",
-	"unexpectedErrorWithContext": "$t(events/errors:unexpectedError)\nआप रिपोर्ट में `{{report}}` जोड़ सकते हैं ताकि वे देख सकें कि किस त्रुटि को ट्रिगर किया गया था।"
-}

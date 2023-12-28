@@ -1,4 +1,0 @@
-{
-	"aborted": "Cerere anulată cu succes.",
-	"attemptFailed": "Intrare invalidă. Încercarea **{{attempt}}** din **{{maxAttempts}}**\n{{list}}"
-}

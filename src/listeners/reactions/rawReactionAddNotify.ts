@@ -8,9 +8,10 @@ import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, t
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
+import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { Collection } from 'discord.js';
+import { Collection, PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.RawReactionAdd })
 export class UserListener extends Listener {
@@ -19,6 +20,9 @@ export class UserListener extends Listener {
 	private kTimerSweeper: NodeJS.Timeout | null = null;
 
 	public async run(data: LLRCData, emoji: SerializedEmoji) {
+		// If the bot cannot fetch messages, do not proceed:
+		if (!this.canFetchMessages(data.channel)) return;
+
 		const key = GuildSettings.Channels.Logs.Reaction;
 		const [allowedEmojis, logChannelId, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents, t] = await readSettings(
 			data.guild,
@@ -76,7 +80,12 @@ export class UserListener extends Listener {
 		if (this.kTimerSweeper) clearInterval(this.kTimerSweeper);
 	}
 
-	protected async retrieveCount(data: LLRCData, emoji: SerializedEmoji) {
+	private canFetchMessages(channel: GuildTextBasedChannelTypes) {
+		const permissions = channel.permissionsFor(this.container.client.id!);
+		return !isNullish(permissions) && permissions.has(PermissionFlagsBits.ReadMessageHistory);
+	}
+
+	private async retrieveCount(data: LLRCData, emoji: SerializedEmoji) {
 		const id = `${data.messageId}.${getEmojiId(emoji)}`;
 
 		// Pull from sync queue, and if it exists, await

@@ -1,9 +1,10 @@
 import { ZeroWidthSpace } from '#utils/constants';
 import { EmbedBuilder } from '@discordjs/builders';
+import { isNullishOrEmpty } from '@sapphire/utilities';
 
 export class SkyraEmbed extends EmbedBuilder {
 	public splitFields(contentOrTitle: string | string[], rawContent?: string | string[]) {
-		if (typeof contentOrTitle === 'undefined') return this;
+		if (isNullishOrEmpty(contentOrTitle)) return this;
 
 		let title: string;
 		let content: string | string[];

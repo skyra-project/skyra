@@ -2,11 +2,15 @@ import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import type { GuildMember } from 'discord.js';
+import { isNullish } from '@sapphire/utilities';
+import { PermissionFlagsBits, type GuildMember } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.NotMutedMemberAdd })
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
+		// If the bot cannot manage roles, do not proceed:
+		if (!this.canGiveRoles(member)) return;
+
 		const [initial, initialHumans, initialBots] = await readSettings(member, [
 			GuildSettings.Roles.Initial,
 			GuildSettings.Roles.InitialHumans,
@@ -22,6 +26,16 @@ export class UserListener extends Listener {
 			return member.roles.add(role);
 		}
 
-		return writeSettings(member, [[GuildSettings.Roles.Initial, null]]);
+		const key = role //
+			? GuildSettings.Roles.Initial
+			: member.user.bot
+				? GuildSettings.Roles.InitialBots
+				: GuildSettings.Roles.InitialHumans;
+		return writeSettings(member, [[key, null]]);
+	}
+
+	private canGiveRoles(member: GuildMember) {
+		const permissions = member.guild.members.me?.permissions;
+		return !isNullish(permissions) && permissions.has(PermissionFlagsBits.ManageRoles);
 	}
 }

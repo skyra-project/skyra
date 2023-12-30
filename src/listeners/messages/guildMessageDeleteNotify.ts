@@ -7,7 +7,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { cutText, isNullish } from '@sapphire/utilities';
+import { cutText, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildMessageDelete })
 export class UserListener extends Listener {
@@ -26,14 +26,19 @@ export class UserListener extends Listener {
 		if (ignoredDeletes.some((id) => id === message.channel.id && message.channel.parentId === id)) return;
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentId === id)) return;
 
-		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () =>
-			new EmbedBuilder()
+		this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, () => {
+			const embed = new EmbedBuilder()
 				.setColor(Colors.Red)
 				.setAuthor(getFullEmbedAuthor(message.author, message.url))
-				.setDescription(cutText(getContent(message) || '', 1900))
 				.setFooter({ text: t(LanguageKeys.Events.Messages.MessageDelete, { channel: `#${message.channel.name}` }) })
-				.setImage(getImage(message)!)
-				.setTimestamp()
-		);
+				.setTimestamp();
+
+			const content = getContent(message);
+			if (!isNullishOrEmpty(content)) embed.setDescription(cutText(content, 1900));
+			const image = getImage(message);
+			if (!isNullish(image)) embed.setImage(image);
+
+			return embed;
+		});
 	}
 }

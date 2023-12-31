@@ -6,7 +6,13 @@ import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { Colors, LongWidthSpace } from '#utils/constants';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isDMChannel, isNsfwChannel, type GuildBasedChannelTypes, type NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import {
+	canSendMessages,
+	isDMChannel,
+	isNsfwChannel,
+	type GuildBasedChannelTypes,
+	type NonThreadGuildBasedChannelTypes
+} from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
@@ -35,7 +41,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
+		if (isNullish(channel) || !canSendMessages(channel)) {
 			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.ChannelUpdate, null]]);
 			return;
 		}

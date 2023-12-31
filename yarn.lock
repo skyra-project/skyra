@@ -1517,8 +1517,8 @@ __metadata:
   linkType: hard
 
 "@vitest/coverage-v8@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@vitest/coverage-v8@npm:1.1.0"
+  version: 1.1.1
+  resolution: "@vitest/coverage-v8@npm:1.1.1"
   dependencies:
     "@ampproject/remapping": "npm:^2.2.1"
     "@bcoe/v8-coverage": "npm:^0.2.3"
@@ -1535,7 +1535,7 @@ __metadata:
     v8-to-istanbul: "npm:^9.2.0"
   peerDependencies:
     vitest: ^1.0.0
-  checksum: 4446a157af8041b07b85b7c5c96ac73a44739c3b1ba6ebfb12a4388150390a56e33230d6ca2469560554cb9a6594a574e92d14453b28b07622361bd3529c512a
+  checksum: 0b133ac5f150be82f7867be5cbf098393237ab3b773510eccae232666ae9c46aa810fd8fdfafab0b77e57f8775cfac3f6d80d438864034226a622c8bf46501ca
   languageName: node
   linkType: hard
 

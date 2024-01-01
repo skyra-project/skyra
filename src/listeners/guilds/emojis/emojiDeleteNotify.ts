@@ -24,7 +24,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)
-			.setThumbnail(next.url)
+			.setThumbnail(next.imageURL({ size: 256 }))
 			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
 			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiDelete) })
 			.setTimestamp();

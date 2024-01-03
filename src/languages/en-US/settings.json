@@ -99,7 +99,7 @@
 	"selfmodReactionsIgnoredRoles": "The roles that will be ignored by the reactions sub-system",
 	"selfmodReactionsMaximum": "The maximum amount of reactions before I will start applying penalties",
 	"selfmodReactionsAllowed": "The reactions that are allowed",
-	"validationChooseKey": "You cannot configure a group, please pick one of the following keys: {{keys, andList}}.",
+	"validationChooseKey": "You cannot configure a group, please pick one of the following keys: {{keys, list(conjunction)}}.",
 	"validationMissingValue": "The value ``{{value}}`` was not set in the key **{{path}}**.",
 	"validationDuplicatedValue": "The value for the key `{{path}}` was already set to ``{{value}}``!"
 }

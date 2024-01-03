@@ -66,22 +66,14 @@ export const enum Invites {
 }
 
 export const enum LanguageFormatters {
-	AndList = 'andList',
 	Duration = 'duration',
 	ExplicitContentFilter = 'explicitContentFilter',
 	MessageNotifications = 'messageNotifications',
 	Number = 'number',
 	NumberCompact = 'numberCompact',
 	HumanLevels = 'humanLevels',
-	InlineCodeblock = 'inlineCodeBlock',
-	CodeBlock = 'codeBlock',
-	JsCodeBlock = 'jsCodeBlock',
-	OrList = 'orList',
 	Permissions = 'permissions',
-	Random = 'random',
-	DateTime = 'dateTime',
-	ToTitleCase = 'toTitleCase',
-	PermissionsAndList = 'permissionsAndList'
+	DateTime = 'dateTime'
 }
 
 export const enum Colors {

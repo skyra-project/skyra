@@ -2,14 +2,13 @@ import { transformOauthGuildsAndUser } from '#lib/api/utils';
 import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
-import { getT } from '#lib/i18n/translate';
 import { getHandler } from '#root/languages/index';
 import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
-import type { InternationalizationOptions } from '@sapphire/plugin-i18next';
+import { i18next, type I18nextFormatter, type InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { envIsDefined, envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import {
 	ActivityType,
@@ -20,13 +19,15 @@ import {
 	Options,
 	Partials,
 	PermissionFlagsBits,
+	TimestampStyles,
+	time,
 	type ActivitiesOptions,
 	type ClientOptions,
 	type LocaleString,
 	type OAuth2Scopes,
 	type WebhookClientData
 } from 'discord.js';
-import type { FormatFunction, InterpolationOptions } from 'i18next';
+import type { InterpolationOptions } from 'i18next';
 import { join } from 'node:path';
 
 // Read config:
@@ -110,51 +111,61 @@ function parseInternationalizationDefaultVariables() {
 }
 
 function parseInternationalizationInterpolation(): InterpolationOptions {
-	return {
-		escapeValue: false,
-		defaultVariables: parseInternationalizationDefaultVariables(),
-		format: (...[value, format, lng, options]: Parameters<FormatFunction>) => {
-			const language = (lng ?? 'en-US') as LocaleString;
-			switch (format as LanguageFormatters) {
-				case LanguageFormatters.AndList: {
-					return getHandler(language!).listAnd.format(value as string[]);
-				}
-				case LanguageFormatters.OrList: {
-					return getHandler(language!).listOr.format(value as string[]);
-				}
-				case LanguageFormatters.Permissions: {
-					return getT(language)(`permissions:${value}`, options);
-				}
-				case LanguageFormatters.PermissionsAndList: {
-					const t = getT(language);
-					return getHandler(language!).listAnd.format((value as string[]).map((value) => t(`permissions:${value}`, options)));
-				}
-				case LanguageFormatters.HumanLevels: {
-					return getT(language)(`humanLevels:${GuildVerificationLevel[value]}`, options);
-				}
-				case LanguageFormatters.ExplicitContentFilter: {
-					return getT(language)(`guilds:explicitContentFilter${GuildExplicitContentFilter[value]}`, options);
-				}
-				case LanguageFormatters.MessageNotifications: {
-					return getT(language)(`guilds:defaultMessageNotifications${GuildDefaultMessageNotifications[value]}`, options);
-				}
-				case LanguageFormatters.Number: {
-					return getHandler(language!).number.format(value as number);
-				}
-				case LanguageFormatters.NumberCompact: {
-					return getHandler(language!).numberCompact.format(value as number);
-				}
-				case LanguageFormatters.Duration: {
-					return getHandler(language!).duration.format(value as number, (options?.precision as number) ?? 2);
-				}
-				case LanguageFormatters.DateTime: {
-					return getHandler(language!).dateTime.format(value as number);
-				}
-				default:
-					return value as string;
-			}
+	parseInternationalizationFormatters();
+	return { escapeValue: false, defaultVariables: parseInternationalizationDefaultVariables() };
+}
+
+function parseInternationalizationFormatters(): I18nextFormatter[] {
+	const { t } = i18next;
+
+	return [
+		// Add custom formatters:
+		{
+			name: LanguageFormatters.Number,
+			format: (lng, options) => {
+				const formatter = new Intl.NumberFormat(lng, { maximumFractionDigits: 2, ...options });
+				return (value) => formatter.format(value);
+			},
+			cached: true
+		},
+		{
+			name: LanguageFormatters.NumberCompact,
+			format: (lng, options) => {
+				const formatter = new Intl.NumberFormat(lng, { notation: 'compact', compactDisplay: 'short', maximumFractionDigits: 2, ...options });
+				return (value) => formatter.format(value);
+			},
+			cached: true
+		},
+		{
+			name: LanguageFormatters.Duration,
+			format: (lng, options) => {
+				const formatter = getHandler((lng ?? 'en-US') as LocaleString).duration;
+				const precision = (options?.precision as number) ?? 2;
+				return (value) => formatter.format(value, precision);
+			},
+			cached: true
+		},
+		// Add Discord markdown formatters:
+		{ name: LanguageFormatters.DateTime, format: (value) => time(new Date(value), TimestampStyles.ShortDateTime) },
+		// Add alias formatters:
+		{
+			name: LanguageFormatters.Permissions,
+			format: (value, lng, options) => t(`permissions:${value}`, { lng, ...options }) as string
+		},
+		{
+			name: LanguageFormatters.HumanLevels,
+			format: (value, lng, options) => t(`humanLevels:${GuildVerificationLevel[value]}`, { lng, ...options }) as string
+		},
+		{
+			name: LanguageFormatters.ExplicitContentFilter,
+			format: (value, lng, options) => t(`guilds:explicitContentFilter${GuildExplicitContentFilter[value]}`, { lng, ...options }) as string
+		},
+		{
+			name: LanguageFormatters.MessageNotifications,
+			format: (value, lng, options) =>
+				t(`guilds:defaultMessageNotifications${GuildDefaultMessageNotifications[value]}`, { lng, ...options }) as string
 		}
-	};
+	];
 }
 
 function parseInternationalizationOptions(): InternationalizationOptions {
@@ -164,9 +175,9 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 		defaultLanguageDirectory: LANGUAGE_ROOT,
 		fetchLanguage: ({ guild }) => {
 			if (!guild) return 'en-US';
-
 			return readSettings(guild, GuildSettings.Language);
 		},
+		formatters: parseInternationalizationFormatters(),
 		i18next: (_: string[], languages: string[]) => ({
 			supportedLngs: languages,
 			preload: languages,
@@ -175,7 +186,10 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 			returnNull: false,
 			load: 'all',
 			lng: 'en-US',
-			fallbackLng: 'en-US',
+			fallbackLng: {
+				'es-419': ['es-ES'], // Latin America Spanish falls back to Spain Spanish
+				default: ['en-US']
+			},
 			defaultNS: 'globals',
 			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
 			initImmediate: false,

@@ -82,9 +82,9 @@
 		],
 		"reminder": "This command can add and/or remove multiple roles at the same time."
 	},
-	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
-	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, andList}}.",
-	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, andList}}",
+	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, list(conjunction)}}",
+	"rolesetAdded": "Updated the {{name}} unique role set, it now has the following roles: {{roles, list(conjunction)}}.",
+	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, list(conjunction)}}",
 	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this group.",
 	"rolesetResetAll": "{{GREENTICK}} Successfully removed all rolesets.",
 	"rolesetResetNotExists": "{{REDCROSS}} The roleset `{{name}}` does not exist in this server.",

@@ -145,6 +145,14 @@ function parseInternationalizationFormatters(): I18nextFormatter[] {
 			},
 			cached: true
 		},
+		{
+			name: LanguageFormatters.HumanDateTime,
+			format: (lng, options) => {
+				const formatter = new Intl.DateTimeFormat(lng, { timeZone: 'Etc/UTC', dateStyle: 'short', timeStyle: 'medium', ...options });
+				return (value) => formatter.format(value);
+			},
+			cached: true
+		},
 		// Add Discord markdown formatters:
 		{ name: LanguageFormatters.DateTime, format: (value) => time(new Date(value), TimestampStyles.ShortDateTime) },
 		// Add alias formatters:

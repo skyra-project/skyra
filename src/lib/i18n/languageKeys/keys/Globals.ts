@@ -10,6 +10,7 @@ export const DurationValue = FT<{ value: number }>('globals:durationValue');
 export const NumberValue = FT<{ value: number }>('globals:numberValue');
 export const NumberCompactValue = FT<{ value: number }>('globals:numberCompactValue');
 export const DateTimeValue = FT<{ value: number }>('globals:dateTimeValue');
+export const HumanDateTimeValue = FT<{ value: number }>('globals:humanDateTimeValue');
 export const AndListValue = FT<{ value: string[] }>('globals:andListValue');
 export const OrListValue = FT<{ value: string[] }>('globals:orListValue');
 export const DateFormat = T('globals:dateFormat');

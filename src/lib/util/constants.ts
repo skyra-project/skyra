@@ -73,7 +73,8 @@ export const enum LanguageFormatters {
 	NumberCompact = 'numberCompact',
 	HumanLevels = 'humanLevels',
 	Permissions = 'permissions',
-	DateTime = 'dateTime'
+	DateTime = 'dateTime',
+	HumanDateTime = 'humanDateTime'
 }
 
 export const enum Colors {

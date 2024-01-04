@@ -9,6 +9,5 @@
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",
 	"dateTimeValue": "{{value, dateTime}}",
-	"andListValue": "{{value, andList}}",
 	"orListValue": "{{value, orList}}"
 }

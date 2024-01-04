@@ -82,9 +82,9 @@
 		],
 		"reminder": "Dieser Command kann mehrere Rollen gleichzeitig hinzufügen und/oder entfernen."
 	},
-	"rolesetCreated": "Das einzigartige Rollenset {{name}} wurde mit folgenden Rollen erstellt: {{roles, andList}}",
-	"rolesetAdded": "Die einzigartige Rollenset {{name}} wurde aktualisiert und enthält nun auch die folgenden Rollen: {{roles, andList}}.",
-	"rolesetRemoved": "Das einzigartige Rollenset {{name}} wird folgende Rollen nicht mehr enthalten: {{roles, andList}}",
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} In dieser Gruppe sind keine Rollensets konfiguriert.",
 	"rolesetResetAll": "{{GREENTICK}} Erfolgreich alle Rollensets entfernt.",
 	"rolesetResetNotExists": "{{REDCROSS}} Das Rollenset `{{name}}` existiert nicht auf diesem Server.",

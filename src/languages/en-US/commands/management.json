@@ -87,7 +87,7 @@
 	"stickyRolesRemove": "Successfully removed the specified role from {{user}}.",
 	"stickyRolesAdd": "Successfully added the specified role as sticky to {{user}}.",
 	"stickyRolesShowEmpty": "There are no sticky roles to show.",
-	"stickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles, andList}}.",
+	"stickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles, list(conjunction)}}.",
 	"createMuteDescription": "Prepare the mute system.",
 	"createMuteExtended": {
 		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the server settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{CONNECT, permissions}}** in voice channels for said role."

@@ -11,7 +11,8 @@
 	"numberValue": "{{value, number}}",
 	"numberCompactValue": "{{value, numberCompact}}",
 	"dateTimeValue": "{{value, dateTime}}",
-	"andListValue": "{{value, andList}}",
+	"humanDateTimeValue": "{{value, humanDateTime}}",
+	"andListValue": "{{value, list(conjunction)}}",
 	"orListValue": "{{value, orList}}",
 	"dateFormat": "MM/DD/YYYY",
 	"dateFormatExplanation": "Month/Day/Year"

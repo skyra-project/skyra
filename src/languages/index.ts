@@ -4,8 +4,9 @@ import { ExtendedHandler as EnGbHandler } from '#root/languages/en-GB/constants'
 import { ExtendedHandler as EnUsHandler } from '#root/languages/en-US/constants';
 import { ExtendedHandler as EsEsHandler } from '#root/languages/es-ES/constants';
 import { ExtendedHandler as NlHandler } from '#root/languages/nl/constants';
+import type { LocaleString } from 'discord.js';
 
-export const handlers = new Map<string, Handler>([
+export const handlers = new Map<LocaleString, Handler>([
 	['de', new DeHandler()],
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
@@ -13,6 +14,6 @@ export const handlers = new Map<string, Handler>([
 	['nl', new NlHandler()]
 ]);
 
-export function getHandler(name: string): Handler {
+export function getHandler(name: LocaleString): Handler {
 	return handlers.get(name) ?? handlers.get('en-US')!;
 }

@@ -21,7 +21,7 @@ function formatHeader(t: TFunction, message: GuildMessage): string {
  * of this function is placed inside of a codeblock.
  */
 function formatTimestamp(t: TFunction, timestamp: number): string {
-	return `[${t(LanguageKeys.Globals.DateTimeValue, { value: timestamp })}]`;
+	return `[${t(LanguageKeys.Globals.HumanDateTimeValue, { value: timestamp })}]`;
 }
 
 function formatAuthor(author: User): string {

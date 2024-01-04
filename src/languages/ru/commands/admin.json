@@ -82,9 +82,9 @@
 		],
 		"reminder": "Эта команда может добавить и/или удалить несколько ролей одновременно."
 	},
-	"rolesetCreated": "Набор уникальных ролей {{name}} создан со следующими ролями: {{roles, andList}}",
-	"rolesetAdded": "Набор уникальных ролей {{name}} обновлён, теперь он содержит следующие роли: {{roles, andList}}.",
-	"rolesetRemoved": "Набор уникальных ролей {{name}} больше не будет включать в себя следующие роли: {{roles, andList}}",
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
 	"rolesetResetEmpty": "",
 	"rolesetResetAll": "{{GREENTICK}} Все наборы ролей успешно удалены.",
 	"rolesetResetNotExists": "{{REDCROSS}} На этом сервере не существует набора ролей `{{name}}`.",

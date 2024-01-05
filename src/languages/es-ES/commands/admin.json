@@ -82,9 +82,9 @@
 		],
 		"reminder": "Este comando puede agregar y/o eliminar múltiples roles al mismo tiempo."
 	},
-	"rolesetCreated": "El conjunto de roles únicos {{name}} ha sido creado con los siguientes roles: {{roles, andList}}",
-	"rolesetAdded": "Actualizado conjunto de roles únicos {{name}}, ahora también tiene los siguientes roles: {{roles, andList}}.",
-	"rolesetRemoved": "El conjunto de roles únicos de {{name}} ya no incluirá los siguientes roles: {{roles, andList}}",
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} No existen conjuntos de roles configurados en este servidor.",
 	"rolesetResetAll": "{{GREENTICK}} Se han eliminado todos los conjuntos de roles con éxito.",
 	"rolesetResetNotExists": "{{REDCROSS}} The conjunto de roles `{{name}}` no existe en este servidor.",

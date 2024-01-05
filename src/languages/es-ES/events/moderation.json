@@ -9,8 +9,6 @@
 	"capsFilterDm": "¡Habla más bajo! Sé que necesitas expresar tus pensamientos. Hay un mensaje que borrado:{{message}}",
 	"capsFilterFooter": "Demasiadas Mayúsculas",
 	"inviteFilterAlert": "{{REDCROSS}} Estimado {{user}}, los enlaces de invitación no están permitidos aquí.",
-	"inviteFilterLog_one": "**Enlace**: {{links, andList}}",
-	"inviteFilterLog_other": "**Enlaces**: {{links, andList}}",
 	"inviteLink": "Enlace de Invitación",
 	"invites": "[Moderación Automática] Se ha activado el filtro de invitaciones, sin umbral.",
 	"invitesWithMaximum": "[Moderación Automática] Se ha activado el filtro de invitaciones, se ha alcanzado {{amount}} de {{maximum}} infracciones.",

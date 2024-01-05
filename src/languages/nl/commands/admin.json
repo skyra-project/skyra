@@ -82,9 +82,9 @@
 		],
 		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen."
 	},
-	"rolesetCreated": "De {{name}} unieke set van rollen is aangemaakt met de volgende rollen: {{roles, andList}}",
-	"rolesetAdded": "De set van rol met de naam {{name}} heeft nu ook de volgende rollen: {{roles, andList}}.",
-	"rolesetRemoved": "De rollen set met de naam {{name}} zal niet bevat niet langer de volgende rollen: {{roles, andList}}",
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} Er zijn geen rollen geconfigureerd in deze set.",
 	"rolesetResetAll": "{{GREENTICK}} Alle rollen sets zijn verwijderd.",
 	"rolesetResetNotExists": "{{REDCROSS}} De set van rollen met de naam `{{name}}` bestaat niet in deze server.",

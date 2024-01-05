@@ -9,8 +9,6 @@
 	"capsFilterDm": "नीचे बोलो! मुझे पता है कि आपको अपने विचार व्यक्त करने की जरूरत है। यह संदेश है जिसे मैंने हटा दिया है:{{message}}",
 	"capsFilterFooter": "बहुत सारे अपरकेस",
 	"inviteFilterAlert": "{{REDCROSS}} प्रिय {{user}}, यहां आमंत्रण लिंक की अनुमति नहीं है।",
-	"inviteFilterLog_one": "**लिंक**: {{links, andList}}",
-	"inviteFilterLog_other": "**लिंके**: {{links, andList}}",
 	"inviteLink": "आमंत्रण लिंक",
 	"invites": "[Auto-Moderation] आमंत्रण फ़िल्टर शुरू हो गया, कोई सीमा नहीं|",
 	"invitesWithMaximum": "[Auto-Moderation] आमंत्रण फ़िल्टर शुरू हो गया, {{maximum}} उल्लंघनों में से {{amount}} तक पहुंच गया।",

@@ -1,7 +1,6 @@
 {
 	"guildMemberAdd": "Nuevo Usuario",
 	"guildMemberAddDescription": "{{mention}} | **Se unió a Discord**: hace {{time, duration}}.",
-	"guildMemberAddedRoles_other": "**Roles añadidos**: {{addedRoles, andList}}",
 	"guildMemberAddedRoles_one": "**Rol añadido**: {{addedRoles}}",
 	"guildMemberAddMute": "Un usuario silenciado se ha unido",
 	"guildMemberBanned": "Usuario Baneado",
@@ -10,7 +9,6 @@
 	"guildMemberRemove": "Un usuario nos ha abandonado",
 	"guildMemberRemoveDescription": "{{mention}} | **Se unió al servidor**: Desconocido.",
 	"guildMemberRemoveDescriptionWithJoinedAt": "{{mention}} | **Se unió al servidor**: hace {{time, duration}}.",
-	"guildMemberRemovedRoles_other": "**Roles eliminados**: {{removedRoles, andList}}",
 	"guildMemberRemovedRoles_one": "**Rol eliminado**: {{removedRoles}}",
 	"guildMemberSoftBanned": "Usuario Softbaneado",
 	"nameUpdateNextWasNotSet": "**Siguiente**: No Establecido",

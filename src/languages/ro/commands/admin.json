@@ -82,9 +82,9 @@
 		],
 		"reminder": "Această comandă poate adăuga și/sau elimina mai multe roluri în același timp."
 	},
-	"rolesetCreated": "Roleset-ul unic {{name}} a fost creat cu următoarele roluri: {{roles, andList}}",
+	"rolesetCreated": "",
 	"rolesetAdded": "",
-	"rolesetRemoved": "Roleset-ul unic {{name}} nu o să mai includă următoarele roluri: {{roles, andList}}",
+	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} Nu există rolurset-uri configurate în acest grup.",
 	"rolesetResetAll": "{{GREENTICK}} Toate roleset-urile au fost eliminate cu succes.",
 	"rolesetResetNotExists": "{{REDCROSS}} Roleset-ul `{{name}}` nu există pe acest server.",

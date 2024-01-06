@@ -1147,9 +1147,9 @@ __metadata:
   linkType: hard
 
 "@sapphire/utilities@npm:^3.14.0, @sapphire/utilities@npm:^3.15.1":
-  version: 3.15.1
-  resolution: "@sapphire/utilities@npm:3.15.1"
-  checksum: 0687ec42ce1b3fd94fb57aec6935a13e8bd62574d750fcb4e9d655f1c78bea909312a72e6491c12240fc0d715babb9162a8c9ddb511c74aaa701306f67d69c85
+  version: 3.15.2
+  resolution: "@sapphire/utilities@npm:3.15.2"
+  checksum: c8b1e28c4b400850df2e9b278ff81cb5bb0a18bb158ce8a7e03b504405ab1a6ad9b884190c5b54c07c3c18644d42e1f6e6fa6b5c2bac9d5396589c3781c72008
   languageName: node
   linkType: hard
 

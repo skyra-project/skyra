@@ -1002,14 +1002,14 @@ __metadata:
   linkType: hard
 
 "@sapphire/plugin-api@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@sapphire/plugin-api@npm:6.0.1"
+  version: 6.1.0
+  resolution: "@sapphire/plugin-api@npm:6.1.0"
   dependencies:
     "@types/ws": "npm:^8.5.10"
-    tldts: "npm:^6.1.0"
+    tldts: "npm:^6.1.1"
     tslib: "npm:^2.6.2"
-    undici: "npm:^5.28.2"
-  checksum: 659de0cd5d995a42610e5ff9b1355859cd52eccbf5809c451f973a9bccfd14094a546be9624b2c4106ecaf5737477b0b877366f02d80f14036a736e85f3bb97e
+    undici: "npm:^6.2.1"
+  checksum: 3f8687b71ccc31ebfdc4eacc948d0731d35c6537cf37de6f4fd7da03e13d58c01f67655ca599d0daf6669fd1e807b81163edc951148d7ab92dd7b2a82cce1b1b
   languageName: node
   linkType: hard
 
@@ -7865,7 +7865,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tldts@npm:^6.1.0":
+"tldts@npm:^6.1.1":
   version: 6.1.1
   resolution: "tldts@npm:6.1.1"
   dependencies:
@@ -8197,12 +8197,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^5.28.2":
-  version: 5.28.2
-  resolution: "undici@npm:5.28.2"
+"undici@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "undici@npm:6.2.1"
   dependencies:
     "@fastify/busboy": "npm:^2.0.0"
-  checksum: 07ab8b812c7322f5faba55268562e3626463171ace8a2e5861e5793e69f8901e809bcdeb4013126fe8d1602baac247ea3c0c996073dbf9709516295b0a4dd18f
+  checksum: 9a7a557f32e4eb1780e8f894e528afa2ac9b4b9e57d5ee943537d59425b7c7562ebd13c6b56220fed30a68d0752daeb996c825fa89fd80af592aac6d0acaa27c
   languageName: node
   linkType: hard
 

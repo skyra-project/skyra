@@ -6,7 +6,7 @@ import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
+import { deleteMessage, getCustomEmojiUrl, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -84,9 +84,9 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(user))
 			.setThumbnail(
-				data.emoji.id === null
+				data.emoji.id === null //
 					? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))
-					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
+					: getCustomEmojiUrl(data.emoji.id, data.emoji.animated)
 			)
 			.setDescription(`[${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageId})`)
 			.setFooter({ text: `${data.channel.name} | ${t(LanguageKeys.Events.Reactions.FilterFooter)}` })

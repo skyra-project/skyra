@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, ZeroWidthSpace } from '#lib/util/constants';
 import { EmbedBuilder } from '@discordjs/builders';
+import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
@@ -11,8 +12,7 @@ import {
 	type EmbedAuthorData,
 	type Guild,
 	type GuildChannel,
-	type ImageExtension,
-	type ImageSize,
+	type ImageURLOptions,
 	type Message,
 	type MessageMentionTypes,
 	type ThreadChannel,
@@ -143,36 +143,13 @@ export function usesPomelo(user: User | APIUser) {
 	return isNullishOrEmpty(user.discriminator) || user.discriminator === '0';
 }
 
-/**
- * The options used for image URLs, ported from {@link https://github.com/discordjs/discord.js/blob/main/packages/rest/src/lib/CDN.ts}.
- */
-export interface AvatarOptions {
-	/**
-	 * The extension to use for the image URL
-	 *
-	 * @defaultValue `'webp'`
-	 */
-	extension?: ImageExtension;
-	/**
-	 * The size specified in the image URL
-	 */
-	size?: ImageSize;
-	/**
-	 * Whether or not to prefer the static version of an image asset.
-	 */
-	forceStatic?: boolean;
-}
-
-const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(user: User | APIUser, options: AvatarOptions = {}) {
+export function getDisplayAvatar(user: User | APIUser, options?: Readonly<ImageURLOptions>) {
 	if (user.avatar === null) {
-		const id = (usesPomelo(user) ? (BigInt(user.id) >> 22n) % 6n : Number(user.discriminator) % 5).toString();
-		return `${ROOT}/embed/avatars/${id}.png`;
+		const id = usesPomelo(user) ? Number(BigInt(user.id) >> 22n) % 6 : Number(user.discriminator) % 5;
+		return container.client.rest.cdn.defaultAvatar(id);
 	}
 
-	const extension = !options.forceStatic && user.avatar.startsWith('a_') ? 'gif' : options.extension ?? 'webp';
-	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
-	return `${ROOT}/avatars/${user.id}/${user.avatar}.${extension}${size}`;
+	return container.client.rest.cdn.avatar(user.id, user.avatar, options);
 }
 
 export function getTag(user: User | APIUser) {

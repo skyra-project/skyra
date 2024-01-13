@@ -4,7 +4,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { Colors } from '#utils/constants';
-import { getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
+import { getCustomEmojiUrl, getEmojiId, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -57,9 +57,9 @@ export class UserListener extends Listener {
 				.setColor(Colors.Green)
 				.setAuthor(getFullEmbedAuthor(user))
 				.setThumbnail(
-					data.emoji.id === null
+					data.emoji.id === null //
 						? getTwemojiUrl(getEncodedTwemoji(data.emoji.name!))
-						: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
+						: getCustomEmojiUrl(data.emoji.id, data.emoji.animated)
 				)
 				.setDescription(
 					[

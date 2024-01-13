@@ -1,5 +1,6 @@
 import { formatEmoji } from '@discordjs/builders';
 import { FormattedCustomEmojiWithGroups, TwemojiRegex } from '@sapphire/discord-utilities';
+import { container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
 
 // Based on the identifiers at https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/
@@ -29,6 +30,10 @@ export function getEncodedTwemoji(emoji: string): EncodedTwemoji {
  */
 export function getTwemojiUrl<E extends EncodedTwemoji>(emoji: E) {
 	return `https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/${emoji}.png` as const;
+}
+
+export function getCustomEmojiUrl(id: string, animated: boolean) {
+	return container.client.rest.cdn.emoji(id, { extension: animated ? 'gif' : 'png', size: 64 });
 }
 
 interface EmojiObjectPartial {

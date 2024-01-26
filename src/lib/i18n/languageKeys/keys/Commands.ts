@@ -1,5 +1,4 @@
 export * as Admin from '#lib/i18n/languageKeys/keys/commands/Admin';
-export * as Animal from '#lib/i18n/languageKeys/keys/commands/Animal';
 export * as Fun from '#lib/i18n/languageKeys/keys/commands/Fun';
 export * as Games from '#lib/i18n/languageKeys/keys/commands/Games';
 export * as General from '#lib/i18n/languageKeys/keys/commands/General';

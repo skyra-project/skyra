@@ -1,3 +1,11 @@
+export function asc(a: number, b: number): -1 | 0 | 1 {
+	return a < b ? -1 : a > b ? 1 : 0;
+}
+
+export function desc(a: number, b: number): -1 | 0 | 1 {
+	return a > b ? -1 : a < b ? 1 : 0;
+}
+
 /**
  * Gets the maximum value.
  * @param values The values to compare.

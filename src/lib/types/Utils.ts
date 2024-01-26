@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-types */
-export type CustomGet<K extends string, TCustom> = K & { __type__: TCustom };
+export type TypedT<TCustom = string> = string & { __type__: TCustom };
 
-export function T<TCustom = string>(k: string): CustomGet<string, TCustom> {
-	return k as CustomGet<string, TCustom>;
+export function T<TCustom = string>(k: string): TypedT<TCustom> {
+	return k as TypedT<TCustom>;
 }
 
-export type CustomFunctionGet<K extends string, TArgs, TReturn> = K & { __args__: TArgs; __return__: TReturn };
+export type TypedFT<TArgs, TReturn> = string & { __args__: TArgs; __return__: TReturn };
 
-export function FT<TArgs, TReturn = string>(k: string): CustomFunctionGet<string, TArgs, TReturn> {
-	return k as CustomFunctionGet<string, TArgs, TReturn>;
+export function FT<TArgs, TReturn = string>(k: string): TypedFT<TArgs, TReturn> {
+	return k as TypedFT<TArgs, TReturn>;
 }
 
 export interface Value<T = string> {

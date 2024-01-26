@@ -4,7 +4,7 @@ import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { Serializer } from '#lib/database/settings/structures/Serializer';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
-import type { CustomGet } from '#lib/types';
+import type { TypedT } from '#lib/types';
 import { container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, type NonNullObject } from '@sapphire/utilities';
@@ -13,7 +13,7 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 	/**
 	 * The i18n key for the configuration key.
 	 */
-	public description: CustomGet<string, string>;
+	public description: TypedT<string>;
 
 	/**
 	 * The maximum value for the configuration key.

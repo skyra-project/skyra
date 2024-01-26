@@ -2,7 +2,7 @@ import type { GuildSettingsOfType } from '#lib/database';
 import { writeSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { PermissionLevels, type CustomFunctionGet, type GuildMessage } from '#lib/types';
+import { PermissionLevels, type GuildMessage, type TypedFT } from '#lib/types';
 import { assertNonThread } from '#utils/functions';
 import { Args, Argument, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -10,7 +10,7 @@ import type { Nullish } from '@sapphire/utilities';
 import type { TextChannel } from 'discord.js';
 
 export abstract class ChannelConfigurationCommand extends SkyraCommand {
-	private readonly responseKey: CustomFunctionGet<string, { channel: string }, string>;
+	private readonly responseKey: TypedFT<{ channel: string }, string>;
 	private readonly settingsKey: GuildSettingsOfType<string | Nullish>;
 
 	public constructor(context: SkyraCommand.LoaderContext, options: ChannelConfigurationCommand.Options) {
@@ -52,7 +52,7 @@ export namespace ChannelConfigurationCommand {
 	 * The ChannelConfigurationCommand Options
 	 */
 	export type Options = SkyraCommand.Options & {
-		responseKey: CustomFunctionGet<string, { channel: string }, string>;
+		responseKey: TypedFT<{ channel: string }, string>;
 		settingsKey: GuildSettingsOfType<string | Nullish>;
 	};
 

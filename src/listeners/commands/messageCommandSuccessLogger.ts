@@ -1,6 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, Events, Listener, LogLevel, type MessageCommandSuccessPayload } from '@sapphire/framework';
-import type { Logger } from '@sapphire/plugin-logger';
 import { cyan } from 'colorette';
 import type { Guild, User } from 'discord.js';
 
@@ -15,7 +14,7 @@ export class UserListener extends Listener<typeof Events.MessageCommandSuccess> 
 	}
 
 	public override onLoad() {
-		this.enabled = (this.container.logger as Logger).level <= LogLevel.Debug;
+		this.enabled = this.container.logger.has(LogLevel.Debug);
 		return super.onLoad();
 	}
 

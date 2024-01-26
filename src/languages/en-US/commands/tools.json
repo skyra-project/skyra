@@ -32,7 +32,6 @@
 	},
 	"voteContentNeeded": "{{REDCROSS}} You must give a topic for the poll.",
 	"voteReactionBlocked": "{{REDCROSS}} I was not able to add the reactions necessary for this command to work because you have me blocked! 😢",
-	"whoisDescription": "Who are you?",
 	"whoisExtended": {
 		"usages": [
 			"",
@@ -46,26 +45,5 @@
 			]
 		]
 	},
-	"whoisMemberFields": {
-		"createdAt": "{{memberCreatedAt}}\n{{memberCreatedAtOffset}}",
-		"footer": "ID: {{member.id}}",
-		"joinedUnknown": "Unknown",
-		"joinedWithTimestamp": "{{memberJoinedAt}}\n{{memberJoinedAtOffset}}"
-	},
-	"whoisMemberPermissions": "Key Permissions",
-	"whoisMemberPermissionsAll": "All Permissions",
-	"whoisMemberRoles_one": "Role [1]",
-	"whoisMemberRoles_other": "Roles [{{count}}]",
-	"whoisMemberRoleListAndMore": "{{count}} more.",
-	"whoisMemberTitles": {
-		"createdAt": "Created At",
-		"joined": "Joined"
-	},
-	"whoisUserFields": {
-		"createdAt": "{{userCreatedAt}}\n{{userCreatedAtOffset}}",
-		"footer": "ID: {{user.id}}"
-	},
-	"whoisUserTitles": {
-		"createdAt": "Created At"
-	}
+	"whoisMemberRoleListAndMore": "{{count}} more."
 }

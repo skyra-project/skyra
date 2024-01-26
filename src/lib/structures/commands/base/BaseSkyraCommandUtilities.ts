@@ -1,6 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { SkyraArgs } from '#lib/structures/commands/SkyraArgs';
-import { PermissionLevels, type CustomGet } from '#lib/types';
+import { PermissionLevels, type TypedT } from '#lib/types';
 import { OWNERS } from '#root/config';
 import { seconds } from '#utils/common';
 import { Command, PreconditionContainerArray, UserError, type MessageCommand } from '@sapphire/framework';
@@ -71,8 +71,8 @@ export function implementSkyraCommandPaginatedOptions<T extends ExtendOptions<Co
 }
 
 export type ExtendOptions<T> = T & {
-	description: CustomGet<string, string>;
-	detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
+	description: TypedT<string>;
+	detailedDescription: TypedT<LanguageHelpDisplayOptions>;
 	guarded?: boolean;
 	hidden?: boolean;
 	permissionLevel?: number;

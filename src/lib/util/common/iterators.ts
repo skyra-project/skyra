@@ -1,3 +1,7 @@
+export function first<T>(iterator: IterableIterator<T>): T | undefined {
+	return iterator.next().value;
+}
+
 export function* map<T, R>(iterator: IterableIterator<T>, cb: (value: T) => R): IterableIterator<R> {
 	let result: IteratorResult<T> | null = null;
 	while (!(result = iterator.next()).done) {

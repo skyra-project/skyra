@@ -21,11 +21,11 @@
 		"#lib/types": "./dist/lib/types/index.js",
 		"#lib/i18n/languageKeys": "./dist/lib/i18n/languageKeys/index.js",
 		"#lib/*": "./dist/lib/*.js",
-		"#root/*": "./dist/*.js",
 		"#languages": "./dist/languages/index.js",
 		"#utils/common": "./dist/lib/util/common/index.js",
 		"#utils/functions": "./dist/lib/util/functions/index.js",
-		"#utils/*": "./dist/lib/util/*.js"
+		"#utils/*": "./dist/lib/util/*.js",
+		"#root/*": "./dist/*.js"
 	},
 	"scripts": {
 		"build": "tsc -b src",

@@ -9,8 +9,6 @@ export const ContextMenuName = T('commands/whois:contextMenuName');
 export const User = 'commands/whois:user';
 
 // Embed
-export const Joined = T('commands/whois:joined');
-export const Created = T('commands/whois:created');
 export const RolesTitle = FT<Value>('commands/whois:rolesTitle');
 export const PermissionsTitle = T('commands/whois:permissionsTitle');
 export const PermissionsAll = T('commands/whois:permissionsAll');
